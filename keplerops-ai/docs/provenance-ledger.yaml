@@ -1,0 +1,566 @@
+schema_version: 1
+pack:
+  name: keplerops-ai
+  title: "KeplerOps AI Systems"
+  version: 0.16.0
+
+sources:
+  - source_id: aisf-vegas-2026
+    kind: research
+    name: "Vegas AI Security Forum '26"
+    url: https://aisecurity.forum/events/vegas-ai-security-forum-26/
+    license: "n-a"
+    usage: referenced
+    attribution_required: false
+    used: "Topic framing around model-weight security, adversarial ML, AI red teaming, cyber capabilities of AI systems, supply-chain and infrastructure threats, AI insider risk, governance, and policy/security collaboration."
+    excluded: "No attendee names, speaker bios, event branding, session text, workshop material, forms, logos, or private event content copied into this pack."
+    captured: "2026-07-10"
+  - source_id: mitre-atlas-data
+    kind: framework
+    name: "MITRE ATLAS data repository"
+    url: https://github.com/mitre-atlas/atlas-data
+    ref: "ATLAS-2026.06 distribution captured 2026-07-11"
+    license: "Apache-2.0"
+    usage: referenced
+    attribution_required: true
+    attribution: "MITRE ATLAS(TM) is a public knowledge base of adversary tactics, techniques, and case studies for AI systems. ATLAS data repository copyright 2021-2026 MITRE, Apache-2.0."
+    used: "All 173 operator-side technique ids and names plus all 16 tactic ids and names from the pinned 2026.06 distribution, mapped to planned challenge modules, evidence, progressive experience tiers, and immediate AI attack choices."
+    excluded: "No ATLAS descriptions, relationship prose, case-study bodies, tooling, screenshots, or distribution file is copied into the pack. Catalog assignment is a design target; golden coverage requires later technique-specific implementation and proof."
+    captured: "2026-07-11"
+  - source_id: original-design
+    kind: original
+    name: "Palo Alto Networks original KeplerOps AI Systems scenario design"
+    license: "proprietary"
+    usage: reused
+    attribution_required: false
+    used: "KeplerOps AI Systems premise, offensive participant role, immediate selectable AI surfaces, independent 15-minute outcomes, progressive challenge modules, agent exploitation, behavioral model extraction, model poisoning and backdoor verification, artifact theft, up-to-8-hour catalog model, GCP/open-model endpoint boundary, canonical modular ACES environment, coherent synthetic company-state identities and business records, native objectives/evidence, governed extensions, ACES content contracts, reference-triangle design, and source adaptation boundary."
+    excluded: "No real customer data, real model weights, provider logs, real credentials, live tenants, real malware, uncontrolled callbacks, or destructive artifact changes."
+    captured: "2026-07-10"
+  - source_id: smollm2-1-7b-instruct
+    kind: tooling
+    name: "SmolLM2-1.7B-Instruct"
+    url: https://huggingface.co/HuggingFaceTB/SmolLM2-1.7B-Instruct
+    ref: 31b70e2e869a7173562077fd711b654946d38674
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "SmolLM2 by Hugging Face, Apache-2.0."
+    used: "Revision-pinned 1.7B safetensors instruct model hosted only inside the contained range through vLLM and copied at bootstrap into the range-local MinIO artifact store for the contained Module 10 participant transfer; the expected model artifact digest and size are recorded in assets/model-artifacts/model.yaml. Its instruction-following capacity supports real control, semantic, transfer, and ensemble probes that the prior 135M kernel model could not execute reliably."
+    excluded: "No mutable branch, remote code, pickle artifact, commercial model API, private weights, provider logs, or third-party endpoint is used as a participant target."
+    captured: "2026-07-12"
+  - source_id: all-minilm-l6-v2
+    kind: tooling
+    name: "sentence-transformers/all-MiniLM-L6-v2"
+    url: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+    ref: 1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "all-MiniLM-L6-v2 by sentence-transformers, Apache-2.0."
+    used: "Revision-pinned ONNX sentence embedding model for real 384-dimensional context ingestion and neural retrieval ranking. Every fetched file has an exact committed digest and size; the range uses local ONNX Runtime with attention-mask mean pooling and L2 normalization."
+    excluded: "No mutable revision, remote code, pickle artifact, external embedding endpoint, participant document, provider log, or third-party inference service is used."
+    captured: "2026-07-14"
+  - source_id: pgvector-0-8-2
+    kind: tooling
+    name: "pgvector 0.8.2 for PostgreSQL 17"
+    url: https://github.com/pgvector/pgvector
+    ref: "pgvector/pgvector:0.8.2-pg17-bookworm@sha256:feb68f4f15446397d8cac7f4fe48fe4586de83160d1fc48b46283312d1a33966"
+    license: PostgreSQL
+    usage: reused
+    attribution_required: true
+    attribution: "pgvector contributors, PostgreSQL License."
+    used: "Digest-pinned PostgreSQL 17 image with pgvector 0.8.2 for vector(384) storage, cosine distance, and the HNSW retrieval index used by module 03."
+    excluded: "No external vector database, hosted retrieval service, mutable image tag, or unverified extension build is used."
+    captured: "2026-07-14"
+  - source_id: scikit-learn-1-7-2
+    kind: tooling
+    name: "scikit-learn 1.7.2"
+    url: https://scikit-learn.org/
+    ref: "PyPI scikit-learn==1.7.2"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "scikit-learn developers, BSD-3-Clause."
+    used: "Version-pinned TF-IDF vectorizer and logistic-regression implementation for the real range-local module-04 privacy classifier trained only on synthetic member records."
+    excluded: "No external model service, third-party training corpus, real personal data, participant identity, mutable dependency version, or scripted membership verdict is used."
+    captured: "2026-07-14"
+  - source_id: opensearch-3-7-0
+    kind: tooling
+    name: "OpenSearch 3.7.0"
+    url: https://opensearch.org/
+    ref: "opensearchproject/opensearch:3.7.0@sha256:44ba7ea58a319adf61c33ab16873f9ef5dbb30b291a832d375172f0b2d24e3c9"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "OpenSearch contributors, Apache-2.0."
+    used: "Digest-pinned single-node search service for an original CC0 synthetic AI-security research corpus."
+    excluded: "No external index, mutable image, participant identity, private corpus, or Internet search target is used."
+    captured: "2026-07-19"
+  - source_id: coredns-1-14-6
+    kind: tooling
+    name: "CoreDNS 1.14.6"
+    url: https://coredns.io/
+    ref: "coredns/coredns:1.14.6@sha256:900f9c109f7a33545d3c811516e8376df9019147b750f5ce3e254468769176ea"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "CoreDNS contributors, Apache-2.0."
+    used: "Digest-pinned authoritative-only TCP and UDP DNS for SDL-derived range asset records."
+    excluded: "No forwarding resolver, public DNS mutation, project-wide private zone, or external lookup is used."
+    captured: "2026-07-19"
+  - source_id: nginx-1-28-1
+    kind: tooling
+    name: "NGINX 1.28.1"
+    url: https://nginx.org/
+    ref: "nginx:1.28.1-alpine@sha256:52e3ada4d978443601f286cc2f9e7b95c82aa3ad5a78ce9c6b94ce00258e68cc"
+    license: BSD-2-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "NGINX contributors, BSD-2-Clause."
+    used: "Digest-pinned real web servers for synthetic public organization content and bounded scan targets."
+    excluded: "No external site, third-party content, uncontrolled listener, or Internet target is used."
+    captured: "2026-07-19"
+  - source_id: beancount-3-2-3
+    kind: tooling
+    name: "Beancount 3.2.3"
+    url: https://github.com/beancount/beancount
+    ref: "PyPI beancount==3.2.3"
+    license: GPL-2.0-only
+    usage: reused
+    attribution_required: true
+    attribution: "Beancount contributors, GPL-2.0-only."
+    used: "Version-pinned parser and validator for the contained synthetic double-entry ledger service."
+    excluded: "No real account, currency, payment rail, customer ledger, or external finance connection is used."
+    captured: "2026-07-19"
+  - source_id: fairlearn-0-14-0
+    kind: tooling
+    name: "Fairlearn 0.14.0"
+    url: https://fairlearn.org/
+    ref: "PyPI fairlearn==0.14.0"
+    license: MIT
+    usage: reused
+    attribution_required: true
+    attribution: "Fairlearn contributors, MIT."
+    used: "Version-pinned independent group-metric computation over wholly synthetic allocation decisions."
+    excluded: "No real demographic, identity, employment, health, credit, or eligibility data is used."
+    captured: "2026-07-19"
+  - source_id: scikit-learn-1-9-0
+    kind: tooling
+    name: "scikit-learn 1.9.0"
+    url: https://scikit-learn.org/
+    ref: "PyPI scikit-learn==1.9.0"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "scikit-learn developers, BSD-3-Clause."
+    used: "Version-pinned range-local allocation and safety classifiers plus independent document and vision model families trained only from committed synthetic seed data."
+    excluded: "No external model service, personal data, participant identity, or mutable dependency version is used."
+    captured: "2026-07-19"
+  - source_id: numpy-2-5-1
+    kind: tooling
+    name: "NumPy 2.5.1"
+    url: https://numpy.org/
+    ref: "PyPI numpy==2.5.1"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "NumPy contributors, BSD-3-Clause."
+    used: "Version-pinned numeric arrays, deterministic synthetic vision samples, and gradient calculations in the CPU model workbench."
+    excluded: "No external model, corpus, participant data, or mutable dependency version is used."
+    captured: "2026-07-19"
+  - source_id: scipy-1-18-0
+    kind: tooling
+    name: "SciPy 1.18.0"
+    url: https://scipy.org/
+    ref: "PyPI scipy==1.18.0"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "SciPy contributors, BSD-3-Clause."
+    used: "Version-pinned numerical dependency for the source-trained scikit-learn model families."
+    excluded: "No external computation service, participant data, or mutable dependency version is used."
+    captured: "2026-07-19"
+  - source_id: pillow-12-3-0
+    kind: tooling
+    name: "Pillow 12.3.0"
+    url: https://python-pillow.org/
+    ref: "PyPI pillow==12.3.0"
+    license: HPND
+    usage: reused
+    attribution_required: true
+    attribution: "Pillow contributors, HPND License."
+    used: "Version-pinned PNG decoding and deterministic grayscale rendering for the contained vision workbench."
+    excluded: "No external image, participant identity, or mutable decoder version is used."
+    captured: "2026-07-19"
+  - source_id: aiortc-1-15-0
+    kind: tooling
+    name: "aiortc 1.15.0"
+    url: https://github.com/aiortc/aiortc
+    ref: "PyPI aiortc==1.15.0"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "aiortc contributors, BSD-3-Clause."
+    used: "Version-pinned WebRTC peer connection, video-track decoding, and authenticated data-channel control for live participant camera sessions."
+    excluded: "No external relay, hosted media service, prerecorded upload fallback, or mutable dependency is used."
+    captured: "2026-07-19"
+  - source_id: pyav-17-1-0
+    kind: tooling
+    name: "PyAV 17.1.0"
+    url: https://github.com/PyAV-Org/PyAV
+    ref: "PyPI av==17.1.0"
+    license: BSD-3-Clause
+    usage: reused
+    attribution_required: true
+    attribution: "PyAV contributors, BSD-3-Clause."
+    used: "Version-pinned FFmpeg bindings used by aiortc to decode genuine WebRTC video frames before bounded PNG retention and model forwarding."
+    excluded: "No uploaded recording, external codec service, participant identity source, or mutable dependency is used."
+    captured: "2026-07-19"
+  - source_id: langgraph-1-2-9
+    kind: tooling
+    name: "LangGraph 1.2.9"
+    url: https://github.com/langchain-ai/langgraph
+    ref: "PyPI langgraph==1.2.9"
+    license: MIT
+    usage: reused
+    attribution_required: true
+    attribution: "LangGraph contributors, MIT License."
+    used: "Version-pinned local graph execution for bounded, versioned agent plans and tool calls."
+    excluded: "No hosted LangSmith service, external agent, mutable package, or participant data leaves the range."
+    captured: "2026-07-19"
+  - source_id: docker-engine-29-6-1-rootless
+    kind: tooling
+    name: "Docker Engine 29.6.1 rootless"
+    url: https://docs.docker.com/engine/security/rootless/
+    ref: "docker:29.6.1-dind-rootless@sha256:371962f4344295a1eb185f1c9e62064bf4503a7beb8c6e73be3405500041784b"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "Docker and Moby contributors, Apache-2.0."
+    used: "Digest-pinned dedicated Unix-only rootless daemon for owned, networkless, read-only disposable agent and serialization-loader workers."
+    excluded: "No host Docker socket, TCP daemon API, unpinned worker image, privileged disposable workload, or general-purpose container runtime is exposed."
+    captured: "2026-07-19"
+  - source_id: opa-1-3-0-policy-lab
+    kind: tooling
+    name: "Open Policy Agent 1.3.0"
+    url: https://github.com/open-policy-agent/opa
+    ref: "openpolicyagent/opa:1.3.0-static@sha256:44f0f4b1c09260eaf5e24fc3931fe10f80cffd13054ef3ef62cef775d5cbd272"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "Open Policy Agent contributors, Apache-2.0."
+    used: "Digest-pinned vulnerable Data API retained for CVE-2025-46569 inside the isolated policy laboratory."
+    excluded: "The vulnerable build is never used by the production authorization plane and has no route to it."
+    captured: "2026-07-19"
+  - source_id: k6-2-0-0
+    kind: tooling
+    name: "Grafana k6 2.0.0"
+    url: https://grafana.com/docs/k6/latest/
+    ref: "grafana/k6:2.0.0@sha256:a33a0cfdc4d2483d6b7a3a22e726a499ff2831a671a49239104cd34a9937523c"
+    license: AGPL-3.0-only
+    usage: reused
+    attribution_required: true
+    attribution: "Grafana Labs and k6 contributors, AGPL-3.0-only."
+    used: "Digest-pinned bounded range-local HTTP client with rate, duration, concurrency, response-body, and retained-output limits."
+    excluded: "No public target, unbounded load, hosted k6 service, or mutable image is used."
+    captured: "2026-07-19"
+  - source_id: gitea-1-24-5
+    kind: tooling
+    name: "Gitea 1.24.5"
+    url: https://docs.gitea.com/1.24/usage/packages/container
+    ref: "gitea/gitea:1.24.5@sha256:137a322f0308056415bc1a14a4ca8607b2e8efcb8154dfc5049b1f7f8b0a9b71"
+    license: MIT
+    usage: reused
+    attribution_required: true
+    attribution: "Gitea contributors, MIT License."
+    used: "Existing digest-pinned workhub now also exposes its real OCI Distribution endpoint for bounded immutable-manifest resolution."
+    excluded: "No public registry, new account, external repository, mutable tag trust, or non-synthetic credential is used."
+    captured: "2026-07-19"
+  - source_id: google-cloud-run-storage-python
+    kind: tooling
+    name: "Google Cloud Run and Storage Python clients"
+    url: https://cloud.google.com/python/docs/reference/run/latest
+    ref: "PyPI google-cloud-run==0.16.1; google-cloud-storage==3.13.0"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "Google Cloud Python contributors, Apache-2.0."
+    used: "Version-pinned clients for tenant-bound Cloud Run Jobs and range-owned GCS evidence inside the supplied existing project."
+    excluded: "No project, billing account, new service identity, public bucket, participant-supplied command, or unbounded resource profile is created."
+    captured: "2026-07-19"
+  - source_id: stalwart-0-16-13
+    kind: tooling
+    name: "Stalwart 0.16.13"
+    url: https://github.com/stalwartlabs/stalwart/releases/tag/v0.16.13
+    ref: "stalwart-x86_64-unknown-linux-gnu.tar.gz sha256:64a464e9aa7c40bd2af1d1be92bdf3343dd1e561c90bc7e04e43d429333f0472"
+    license: AGPL-3.0-only
+    usage: reused
+    attribution_required: true
+    attribution: "Stalwart Labs and contributors, AGPL-3.0-only."
+    used: "Checksum-pinned server binary for stateful SMTP, authenticated STARTTLS submission, and IMAPS for wholly synthetic range mailboxes."
+    excluded: "No external domain, public relay, real mailbox, participant credential, mutable server binary, or failing upstream container layer is used."
+    captured: "2026-07-20"
+  - source_id: roundcube-1-7-2
+    kind: tooling
+    name: "Roundcube 1.7.2"
+    url: https://roundcube.net/
+    ref: "roundcube/roundcubemail:1.7.x-apache-nonroot@sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028"
+    license: GPL-3.0-or-later
+    usage: reused
+    attribution_required: true
+    attribution: "Roundcube contributors, GPL-3.0-or-later."
+    used: "Digest-pinned non-root browser mail client with strict range-CA SMTP and IMAP verification."
+    excluded: "No external mail provider, real mailbox, public certificate, or mutable image is used."
+    captured: "2026-07-19"
+  - source_id: llamacpp-b10068
+    kind: tooling
+    name: "llama.cpp server b10068"
+    url: https://github.com/ggml-org/llama.cpp
+    ref: "ghcr.io/ggml-org/llama.cpp:server-b10068@sha256:b832a7b7252a90a79a1e8d23d9be3ac5261a33224f60682dff0cade412fa55d3"
+    license: MIT
+    usage: reused
+    attribution_required: true
+    attribution: "llama.cpp contributors, MIT."
+    used: "Digest-pinned CPU OpenAI-compatible server for the build-carried compact text model."
+    excluded: "No external inference API, runtime download, participant prompt export, or mutable image is used."
+    captured: "2026-07-19"
+  - source_id: qwen3-0-6b-gguf
+    kind: tooling
+    name: "Qwen3-0.6B-GGUF Q8_0"
+    url: https://huggingface.co/Qwen/Qwen3-0.6B-GGUF
+    ref: 23749fefcc72300e3a2ad315e1317431b06b590a
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "Qwen Team, Apache-2.0."
+    used: "Revision-, size-, and SHA-256-pinned compact instruction model fetched only while building the contained llama.cpp image."
+    excluded: "No mutable branch, remote code, runtime fetch, external endpoint, or private weight is used."
+    captured: "2026-07-19"
+  - source_id: openvino-genai-2026-2-1
+    kind: tooling
+    name: "OpenVINO GenAI 2026.2.1.0"
+    url: https://github.com/openvinotoolkit/openvino.genai
+    ref: "PyPI openvino-genai==2026.2.1.0"
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "OpenVINO GenAI contributors, Apache-2.0."
+    used: "Version-pinned CPU text-to-image runtime for the verified official INT4 OpenVINO model."
+    excluded: "No hosted generation service, runtime model fetch, participant identity, or mutable dependency is used."
+    captured: "2026-07-19"
+  - source_id: openvino-flux1-schnell-int4
+    kind: tooling
+    name: "OpenVINO FLUX.1 Schnell INT4"
+    url: https://huggingface.co/OpenVINO/FLUX.1-schnell-int4-ov
+    ref: 67f2ca1b786f707a3c1a7a1f0ae179641249f0c2
+    license: Apache-2.0
+    usage: reused
+    attribution_required: true
+    attribution: "OpenVINO and Black Forest Labs contributors, Apache-2.0."
+    used: "Official revision-, size-, and SHA-256-pinned INT4 OpenVINO model carried in the contained CPU image-generation service."
+    excluded: "No mutable branch, runtime fetch, hosted generation API, private prompt, or external artifact store is used."
+    captured: "2026-07-19"
+  - source_id: polaris-event-lessons
+    kind: original
+    name: "Polaris participant-flow and agentic-event lessons"
+    ref: "polaris/lessons-1.md and polaris/design/architecture.md"
+    license: proprietary
+    usage: reused
+    attribution_required: false
+    used: "Manual two-tab participant assumptions, agent-assisted parallel-work and burst-submission observations, prerequisite-aware anomaly interpretation, human skill-band progression, and pre-event live walkthrough guidance."
+    excluded: "No participant identity, account, credential, tenant, event token, or raw event telemetry is copied into KeplerOps."
+    captured: "2026-07-13"
+  - source_id: ctfd-scoring-guidance
+    kind: tooling
+    name: "CTFd dynamic-value and hint documentation"
+    url: https://docs.ctfd.io/
+    ref: "docs/custom-challenges/dynamic-value and docs/challenges/hints"
+    license: "n-a"
+    usage: referenced
+    attribution_required: false
+    used: "Static-versus-dynamic scoring decision, three-level free/paid hint economy, initial free earning opportunities, and explicit hint-cost accounting."
+    excluded: "No CTFd documentation prose, code, UI assets, or formulas are copied into the scenario."
+    captured: "2026-07-13"
+  - source_id: usenix-ctfd-barriers
+    kind: research
+    name: "Lowering the Barriers to Capture The Flag Administration and Participation"
+    url: https://www.usenix.org/system/files/conference/ase17/ase17_paper_chung.pdf
+    license: "n-a"
+    usage: referenced
+    attribution_required: true
+    attribution: "Kevin Chung, USENIX ASE 2017."
+    used: "Jeopardy challenge/flag structure, points by difficulty, hint economy, path choice, and approachability rationale."
+    excluded: "No paper text, figures, examples, or CTFd implementation is copied."
+    captured: "2026-07-13"
+  - source_id: usenix-picoctf-design
+    kind: research
+    name: "PicoCTF: A Game-Based Computer Security Competition for High School Students"
+    url: https://www.usenix.org/system/files/conference/3gse14/3gse14-chapman.pdf
+    license: "n-a"
+    usage: referenced
+    attribution_required: true
+    attribution: "Peter Chapman, Jonathan Burket, and David Brumley, USENIX 3GSE 2014."
+    used: "Authentic offensive content with deliberate accessibility, independent challenge breadth, interaction-data evaluation, and tool-friction considerations."
+    excluded: "No PicoCTF challenge, story, platform source, participant data, figure, or paper text is copied."
+    captured: "2026-07-13"
+  - source_id: usenix-git-ctf
+    kind: research
+    name: "Git-based CTF: A Simple and Effective Approach to Organizing In-Course Attack-and-Defense Security Competition"
+    url: https://www.usenix.org/system/files/conference/ase18/ase18-paper_wi.pdf
+    license: "n-a"
+    usage: referenced
+    attribution_required: true
+    attribution: "SeongIl Wi, Jaeseung Choi, and Sang Kil Cha, USENIX ASE 2018."
+    used: "Published ten-to-fifty problem range as a size benchmark and explicit challenge-difficulty/diversity considerations."
+    excluded: "No competition content, code, figures, participant data, or paper text is copied."
+    captured: "2026-07-13"
+  - source_id: iclr-cybench
+    kind: research
+    name: "Cybench: A Framework for Evaluating Cybersecurity Capabilities and Risks of Language Models"
+    url: https://proceedings.iclr.cc/paper_files/paper/2025/hash/3e9412a9c1d93810ef3ef7825115016b-Abstract-Conference.html
+    license: "n-a"
+    usage: referenced
+    attribution_required: true
+    attribution: "Andy K. Zhang et al., ICLR 2025."
+    used: "Explicit intermediary checkpoints, agent execution-surface variation, difficulty-spanning task design, and separate manual/agent measurement rationale."
+    excluded: "No Cybench task, starter file, solution, agent scaffold, evaluation data, or paper text is copied."
+    captured: "2026-07-13"
+
+artifacts:
+  - artifact_id: readme
+    path: README.md
+    classification: commercial-only
+    sources: [original-design]
+    description: "Participant-safe overview and status boundary."
+  - artifact_id: docs
+    path: docs/
+    classification: commercial-only
+    sources: [aisf-vegas-2026, mitre-atlas-data, original-design, polaris-event-lessons, ctfd-scoring-guidance, usenix-ctfd-barriers, usenix-picoctf-design, usenix-git-ctf, iclr-cybench]
+    description: "Concepts, hidden canonical path, topology/reference-triangle design, lineage, provenance, and readiness docs."
+  - artifact_id: software-boundary-proof-report
+    path: docs/software-boundary-proof-report.md
+    classification: commercial-only
+    sources: [original-design]
+    description: "Sanitized retained-range evidence for the SDL-owned 28-node software foundation and the one-pass live gate on all thirteen new nodes."
+  - artifact_id: challenge-portfolio
+    path: docs/challenge-portfolio.md
+    classification: commercial-only
+    sources: [original-design, polaris-event-lessons, ctfd-scoring-guidance, usenix-ctfd-barriers, usenix-picoctf-design, usenix-git-ctf, iclr-cybench]
+    description: "Human rendering and rationale for the SDL-owned KeplerOps 134-challenge realized inventory, board-depth model, and proof contract informed by the 54-item Polaris baseline plus cited CTF accessibility, scoring, size, and agent-evaluation guidance."
+  - artifact_id: atlas-challenge-architecture
+    path: docs/atlas-challenge-architecture.md
+    classification: commercial-only
+    sources: [mitre-atlas-data, original-design, polaris-event-lessons, ctfd-scoring-guidance, usenix-ctfd-barriers, usenix-picoctf-design, usenix-git-ctf, iclr-cybench]
+    description: "Reviewed rendering of the SDL-owned 135-challenge full-ATLAS library, including 65 source-implemented expansion contracts, nine existing-receipt extensions, one reserved design, difficulty and timing distribution, implementation allocation, telemetry, and pragmatic verification bar."
+  - artifact_id: sdl
+    path: sdl/
+    classification: commercial-only
+    sources: [mitre-atlas-data, original-design]
+    description: "Sole logical ACES SDL authority for the environment, participant start state, green live-activity behavior, module semantics, 134 realized challenge contracts, and the one reserved challenge design still under consideration."
+  - artifact_id: playtester-guide
+    path: docs/playtester-guide/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Structured playtester handoff folder with coordinator quickstart, participant-start boundary, telemetry notes, sanity log, and one SDL-backed walkthrough file per playable challenge."
+  - artifact_id: validation
+    path: validation/
+    classification: commercial-only
+    sources: [mitre-atlas-data, original-design]
+    description: "Pinned dependencies, pack validators, generated review tooling, and mutation tests."
+  - artifact_id: design
+    path: design/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Human implementation-progress tracking; it contains no parallel scenario realization."
+  - artifact_id: oracle
+    path: oracle/
+    classification: commercial-only
+    sources: [mitre-atlas-data, original-design]
+    description: "Private-view boundary documentation only; objective truth, telemetry, and ATLAS scenario semantics live in ACES SDL, while graded scoring is mapped by the generic experiment task and concrete evaluator content."
+  - artifact_id: participant-run-telemetry
+    path: telemetry/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Operator-only participant-run event envelope, capture policy, data dictionary, and deterministic export contract; it has no award authority."
+  - artifact_id: aces-contract-accessor
+    path: aces_contract.py
+    classification: commercial-only
+    sources: [original-design, mitre-atlas-data, polaris-event-lessons, ctfd-scoring-guidance, usenix-ctfd-barriers, usenix-picoctf-design, iclr-cybench]
+    description: "Typed runtime, validation, CTFd, and provider projections derived only from the modular ACES SDL."
+  - artifact_id: ctfd
+    path: ctfd/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Operator-only reference CTFd projection, reconciliation, and tests."
+  - artifact_id: briefing
+    path: assets/briefing/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Participant-safe mission and allowed-target boundary."
+  - artifact_id: enterprise-content
+    path: assets/content/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Synthetic credentials, enterprise work items, evaluation rows, context, and distillation inputs."
+  - artifact_id: service-source
+    path: assets/services/
+    classification: commercial-only
+    sources: [all-minilm-l6-v2, pgvector-0-8-2, scikit-learn-1-7-2, scikit-learn-1-9-0, opensearch-3-7-0, coredns-1-14-6, nginx-1-28-1, beancount-3-2-3, fairlearn-0-14-0, pillow-12-3-0, aiortc-1-15-0, pyav-17-1-0, langgraph-1-2-9, docker-engine-29-6-1-rootless, opa-1-3-0-policy-lab, k6-2-0-0, gitea-1-24-5, google-cloud-run-storage-python, original-design]
+    description: "Pack-local runtime services and real upstream-software wrappers, including the supervised durable agent-memory worker, OpenSearch, CoreDNS, NGINX discovery surfaces, contained outcome platform, guarded Gitea/Redmine/Keycloak context workers, HTTPS aiortc live-camera ingestion, LangGraph agent control, rootless disposable workers, isolation and edge services, bounded k6, isolated vulnerable OPA, Gitea OCI, and the tenant-bound Cloud Run Jobs broker."
+  - artifact_id: model-artifacts
+    path: assets/model-artifacts/
+    classification: commercial-only
+    sources: [smollm2-1-7b-instruct, all-minilm-l6-v2, original-design]
+    description: "Immutable generative and embedding model supply contracts, safe fetch verifiers, and deployment manifests."
+  - artifact_id: oracle-fixtures
+    path: assets/oracle/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Reset baseline, negative-gate fixtures, and oracle-only synthetic member/control privacy population."
+  - artifact_id: policy-source
+    path: assets/policies/
+    classification: commercial-only
+    sources: [original-design]
+    description: "OPA authorization policy source."
+  - artifact_id: workflow-source
+    path: assets/workflows/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Airflow distillation workflow and safe JSON model output."
+  - artifact_id: gcp-build-source
+    path: build/
+    classification: commercial-only
+    sources: [smollm2-1-7b-instruct, all-minilm-l6-v2, pgvector-0-8-2, scikit-learn-1-7-2, original-design]
+    description: "GCP project/VPC provider binding, immutable image supply, lifecycle tooling, health checks, and tests."
+  - artifact_id: live-rehearsal
+    path: tests/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Operator-only Kasm participant transport, canonical live checks, lifecycle composition, and digest-safe report tooling."
+
+content_safety:
+  no_real_malware: true
+  no_real_third_party_targets: true
+  no_real_credentials: true
+  no_sensitive_data: true
+  offensive_tooling_boundary: true
+  notes: "Build source contains only synthetic datasets and credentials plus revision- and digest-pinned Apache-2.0 generative and embedding model supply contracts, a version-pinned BSD-3-Clause privacy-classifier library, and a digest-pinned PostgreSQL/pgvector image. Model bytes are verified during the operator image-build phase and are not committed. No private weights, provider logs, real prompts, customer data, live tenant details, public callback infrastructure, malware, exploit kits, or destructive payloads are included. Participant actions terminate on range-controlled services."
+
+review:
+  status: pending
+  gates:
+    - gate_id: licensing
+      status: pending
+      notes: "AISF page referenced only; MITRE ATLAS data is Apache-2.0; pack content is Palo Alto Networks proprietary."
+    - gate_id: attribution
+      status: pending
+      notes: "MITRE ATLAS attribution recorded; AISF topic framing does not copy event content."
+    - gate_id: sensitive-data
+      status: pending
+      notes: "No real sensitive data, prompts, private model weights, provider logs, customer data, credentials, or tenant details are included; all committed credentials and datasets are synthetic training content."
+    - gate_id: offensive-tooling
+      status: pending
+      notes: "No real malware or exploit kits are included; build networking denies participant internet egress and targets only range-local services."
+    - gate_id: customer-overlay
+      status: not-applicable
+      notes: "No customer overlays in this skeleton."

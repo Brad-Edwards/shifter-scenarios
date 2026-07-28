@@ -1,0 +1,1097 @@
+name: keplerops-module-06-adversarial-input
+version: 1.5.0
+module:
+  id: shifter/keplerops-module-06-adversarial-input
+  version: 1.5.0
+  exports:
+    behavior_specifications:
+    - module-06-adversarial-input
+    - kep-m06-a
+    - kep-m06-b
+    - kep-m06-c
+    - kep-m06-d
+    - kep-m06-e
+    - kep-m06-f
+    conditions:
+    - kep-m06-a-complete
+    - kep-m06-b-complete
+    - kep-m06-c-complete
+    - kep-m06-d-complete
+    - kep-m06-e-complete
+    - kep-m06-f-complete
+    propositions:
+    - kep-m06-a-satisfied
+    - kep-m06-b-satisfied
+    - kep-m06-c-satisfied
+    - kep-m06-d-satisfied
+    - kep-m06-e-satisfied
+    - kep-m06-f-satisfied
+    assertions:
+    - kep-m06-a-satisfied
+    - kep-m06-b-satisfied
+    - kep-m06-c-satisfied
+    - kep-m06-d-satisfied
+    - kep-m06-e-satisfied
+    - kep-m06-f-satisfied
+    evidence_requirements:
+    - kep-m06-a-proof
+    - kep-m06-b-proof
+    - kep-m06-c-proof
+    - kep-m06-d-proof
+    - kep-m06-e-proof
+    - kep-m06-f-proof
+    objectives:
+    - kep-m06-a
+    - kep-m06-b
+    - kep-m06-c
+    - kep-m06-d
+    - kep-m06-e
+    - kep-m06-f
+  description: Manual, paired, budgeted, held-out, and transferable adversarial inputs.
+behavior_specifications:
+  module-06-adversarial-input:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-06-adversarial-input
+        implementation_status: participant-proven
+        path_step:
+          path_step: '6'
+          tier: intermediate
+          surface: evaluation-workbench
+          estimated_minutes: 108
+          objective: Craft and verify adversarial model inputs.
+          justification: Deepens evasion into reproducible adversarial attack development.
+          title: Craft and verify adversarial model inputs
+          prerequisites:
+          - '2'
+          success_state: S-ADVERSARIALINPUT
+          failure_states:
+          - id: fail-adversarial-input-unverified
+            predicate: A one-off model response, malformed sample, or operator-authored artifact
+              satisfies the objective without repeatable evaluation.
+            severity: blocking
+        outcome:
+          outcome_id: adversarial-input
+          title: Adversarial model input verified
+          required: false
+          success_state: S-ADVERSARIALINPUT
+          required_evidence:
+          - ev-model-evasion
+          - ev-adversarial-input
+          optional_evidence:
+          - ev-manual-adversarial-input
+          - ev-paired-adversarial-input
+          - ev-budgeted-adversarial-search
+          - ev-transfer-adversarial-input
+          - ev-robust-adversarial-transfer
+          failure_states:
+          - fail-adversarial-input-unverified
+          points: 100
+  kep-m06-a:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-a
+        flag_id: flag-manual-adversarial-input
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Manual Counterexample
+        difficulty: accessible
+        target_minutes: 8
+        min_minutes: 5
+        max_minutes: 12
+        points: 50
+        disposition: new-design
+        prerequisites: []
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: bounded-semantic-perturbation-crossing
+        telemetry_profile: adversarial-input-manual
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Store a manually modified prompt artifact that preserves the protected promotion
+            request while crossing the real model decision boundary.
+          hints:
+          - Begin with the disclosed unsigned orbital-lantern promotion intent and change it, rather
+            than submitting an unrelated allow request.
+          - Keep the protected intent in the artifact while adding a bounded instruction that
+            changes the JSON decision.
+          - Create a manual artifact, then submit its returned artifact id to the item evaluator.
+        flag_delivery:
+          evidence_id: ev-manual-adversarial-input
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-manual-adversarial-input
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms a participant-created manual
+            artifact remained within the server-measured perturbation bound, preserved the protected
+            semantics, and crossed a stable real-model control.
+          proof_fields: &adversarial_proof_fields
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-manual-adversarial-input
+            evidence: ev-manual-adversarial-input
+            event_kind: adversarial_manual_counterexample
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.003
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-a
+        evidence_requirement_ref: m06.kep-m06-a-proof
+  kep-m06-b:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-b
+        flag_id: flag-paired-adversarial-input
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Paired Counterexample
+        difficulty: accessible
+        target_minutes: 9
+        min_minutes: 6
+        max_minutes: 14
+        points: 50
+        disposition: new-design
+        prerequisites: []
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: disclosed-repeat-probe-success
+        telemetry_profile: adversarial-input-paired
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Store one paired counterexample and make it cross every disclosed repeat probe
+            against stable server-owned controls.
+          hints:
+          - A single surprising response is not repeatable evidence.
+          - Use one unchanged manual artifact whose instruction remains effective when the real
+            target evaluates it several times.
+          - Create the artifact once and pass the same artifact id to the paired evaluator.
+        flag_delivery:
+          evidence_id: ev-paired-adversarial-input
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-paired-adversarial-input
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms the same participant-created
+            artifact crossed every disclosed repeat probe while separate server-owned controls
+            remained stable.
+          proof_fields: *adversarial_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-paired-adversarial-input
+            evidence: ev-paired-adversarial-input
+            event_kind: adversarial_paired_counterexample
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0065
+          - AML.T0043.003
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-b
+        evidence_requirement_ref: m06.kep-m06-b-proof
+  kep-m06-c:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-c
+        flag_id: flag-budgeted-adversarial-search
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Budgeted Search
+        difficulty: intermediate
+        target_minutes: 15
+        min_minutes: 10
+        max_minutes: 22
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m06-a
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: black-box-artifact-within-query-budget
+        telemetry_profile: adversarial-input-search
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Use the disclosed black-box probe to find a successful participant artifact
+            before its server-owned query budget expires.
+          hints:
+          - The search history must include both a rejected candidate and the successful artifact.
+          - Create each candidate as a black-box artifact, then probe its returned id; renaming one
+            artifact does not create a new candidate.
+          - Stay within twelve disclosed queries and submit the successful artifact id to the
+            held-out evaluator.
+        flag_delivery:
+          evidence_id: ev-budgeted-adversarial-search
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-budgeted-adversarial-search
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms a participant searched at least
+            two distinct stored candidates, observed both rejection and success through the real
+            disclosed surface, stayed within budget, and passed the separate target evaluation.
+          proof_fields: *adversarial_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-budgeted-adversarial-search
+            evidence: ev-budgeted-adversarial-search
+            event_kind: adversarial_budgeted_search
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.001
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-c
+        evidence_requirement_ref: m06.kep-m06-c-proof
+  kep-m06-d:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-d
+        flag_id: flag-transfer-adversarial-input
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Portable Counterexample
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 12
+        max_minutes: 27
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m06-b
+        interfaces:
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: artifact-transfers-across-revisions
+        telemetry_profile: adversarial-input-transfer
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Make one stored transfer artifact succeed on the disclosed surrogate and across
+            both target policy revisions.
+          hints:
+          - Use the transfer method and keep the same artifact id from surrogate probe to target
+            evaluation.
+          - Prefer an instruction that does not depend on the surrounding staging policy wording.
+          - Probe the artifact once through the disclosed surrogate, then submit that id to the
+            transfer evaluator.
+        flag_delivery:
+          evidence_id: ev-transfer-adversarial-input
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-transfer-adversarial-input
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms one unchanged
+            participant-created artifact succeeded on the disclosed surrogate and transferred
+            repeatably across both distinct target policy revisions with stable controls.
+          proof_fields: *adversarial_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-transfer-adversarial-input
+            evidence: ev-transfer-adversarial-input
+            event_kind: adversarial_revision_transfer
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.002
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-d
+        evidence_requirement_ref: m06.kep-m06-d-proof
+  kep-m06-e:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-e
+        flag_id: flag-adversarial-input
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Held-Out Counterexample
+        difficulty: advanced
+        target_minutes: 26
+        min_minutes: 18
+        max_minutes: 38
+        points: 200
+        disposition: kernel-reuse-candidate
+        prerequisites:
+        - kep-m06-c
+        interfaces:
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: hidden-perturbation-repeatability-verdict
+        telemetry_profile: adversarial-input-held-out
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Pass the hidden semantic-perturbation and repeatability evaluation with a stored
+            participant-created adversarial artifact.
+          hints:
+          - Preserve the protected unsigned-promotion meaning within a bounded modification.
+          - Use an instruction that remains effective under more than one target policy wording.
+          - Submit a stored artifact id; caller-supplied digests, perturbation counts, and verdicts
+            are rejected.
+        flag_delivery:
+          evidence_id: ev-adversarial-input
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-adversarial-input
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms a participant-created artifact
+            stayed within the server-measured perturbation bound, preserved the protected semantics,
+            and passed repeat probes spanning both held-out target policy revisions.
+          proof_fields: *adversarial_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-adversarial-input
+            evidence: ev-adversarial-input
+            event_kind: adversarial_input_verdict
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0017.000
+          - AML.T0043.003
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-e
+        evidence_requirement_ref: m06.kep-m06-e-proof
+  kep-m06-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-f
+        flag_id: flag-robust-adversarial-transfer
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Robust Transfer
+        difficulty: advanced
+        target_minutes: 32
+        min_minutes: 22
+        max_minutes: 46
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m06-d
+        - kep-m06-e
+        interfaces:
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: strict-multi-revision-transfer-verdict
+        telemetry_profile: adversarial-input-robust-transfer
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML
+          question: Transfer one stored artifact through the disclosed surrogate and the strict
+            held-out gate spanning every target revision within the combined budget.
+          hints:
+          - Use the transfer method and prove the unchanged artifact on the disclosed surrogate
+            first.
+          - The held-out gate combines three generative policy revisions with a model-based
+            classifier.
+          - A grounded-state deception can transfer more broadly than an instruction tied to one
+            policy prompt.
+        flag_delivery:
+          evidence_id: ev-robust-adversarial-transfer
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-robust-adversarial-transfer
+          kind: objective_stage
+          predicate: Read-only artifact and model evidence confirms one unchanged
+            participant-created artifact passed the disclosed surrogate and the strict held-out
+            generative and classifier revisions within the server-owned combined query budget.
+          proof_fields: *adversarial_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-robust-adversarial-transfer
+            evidence: ev-robust-adversarial-transfer
+            event_kind: adversarial_robust_transfer
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *adversarial_proof_fields
+            freshness_seconds: 7200
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.002
+          - AML.T0017.000
+          manual_walkthrough: docs/walkthroughs/module-06-adversarial-input.md
+          automated_test: tests/module_06_reliability.py
+        objective_ref: m06.kep-m06-f
+        evidence_requirement_ref: m06.kep-m06-f-proof
+conditions:
+  kep-m06-a-complete:
+    name: Manual Counterexample evidence accepted
+    proposition: kep-m06-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-b-complete:
+    name: Paired Counterexample evidence accepted
+    proposition: kep-m06-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-c-complete:
+    name: Budgeted Search evidence accepted
+    proposition: kep-m06-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-d-complete:
+    name: Portable Counterexample evidence accepted
+    proposition: kep-m06-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-e-complete:
+    name: Held-Out Counterexample evidence accepted
+    proposition: kep-m06-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-f-complete:
+    name: Robust Transfer evidence accepted
+    proposition: kep-m06-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-a-proof
+  kep-m06-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-b-proof
+  kep-m06-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-c-proof
+  kep-m06-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-d-proof
+  kep-m06-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-e-proof
+  kep-m06-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-f-proof
+assertions:
+  kep-m06-a-satisfied:
+    description: Participant completion of kep-m06-a is observed.
+    proposition: kep-m06-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-b-satisfied:
+    description: Participant completion of kep-m06-b is observed.
+    proposition: kep-m06-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-c-satisfied:
+    description: Participant completion of kep-m06-c is observed.
+    proposition: kep-m06-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-d-satisfied:
+    description: Participant completion of kep-m06-d is observed.
+    proposition: kep-m06-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-e-satisfied:
+    description: Participant completion of kep-m06-e is observed.
+    proposition: kep-m06-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-f-satisfied:
+    description: Participant completion of kep-m06-f is observed.
+    proposition: kep-m06-f-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-a-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating bounded semantic
+      perturbation crossing.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-a'
+    - 'Proof obligation: bounded-semantic-perturbation-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-b-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating disclosed repeat
+      probe success.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-b'
+    - 'Proof obligation: disclosed-repeat-probe-success'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-c-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating black box artifact
+      within query budget.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-c'
+    - 'Proof obligation: black-box-artifact-within-query-budget'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-d-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating artifact transfers
+      across revisions.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-d'
+    - 'Proof obligation: artifact-transfers-across-revisions'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-e-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating a bounded semantic
+      perturbation passing the hidden multi-revision repeatability evaluation.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-e'
+    - 'Proof obligation: hidden-perturbation-repeatability-verdict'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-adversarial-input'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, workflow_id,
+      range_instance, participant, timestamp, status, digest'
+    - 'Event kind: adversarial_input_verdict'
+    - 'Reset owner: dataset-store-01'
+  kep-m06-f-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating strict multi revision
+      transfer verdict.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-f'
+    - 'Proof obligation: strict-multi-revision-transfer-verdict'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-a:
+    name: Manual Counterexample
+    description: Demonstrate bounded semantic perturbation crossing.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-a-satisfied
+    depends_on: []
+  kep-m06-b:
+    name: Paired Counterexample
+    description: Demonstrate disclosed repeat probe success.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-b-satisfied
+    depends_on: []
+  kep-m06-c:
+    name: Budgeted Search
+    description: Demonstrate black box artifact within query budget.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-c-satisfied
+    depends_on:
+    - m06.kep-m06-a
+  kep-m06-d:
+    name: Portable Counterexample
+    description: Demonstrate artifact transfers across revisions.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-d-satisfied
+    depends_on:
+    - m06.kep-m06-b
+  kep-m06-e:
+    name: Held-Out Counterexample
+    description: Create an adversarial input that passes the declared reproducibility evaluation.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-e-satisfied
+    depends_on:
+    - m06.kep-m06-c
+  kep-m06-f:
+    name: Robust Transfer
+    description: Demonstrate strict multi revision transfer verdict.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m06-f-satisfied
+    depends_on:
+    - m06.kep-m06-d
+    - m06.kep-m06-e

@@ -1,0 +1,340 @@
+name: keplerops-module-10-full-atlas-expansion-d
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-10-full-atlas-expansion-d
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m10-n
+    - kep-m10-o
+    conditions:
+    - kep-m10-n-complete
+    - kep-m10-o-complete
+    propositions:
+    - kep-m10-n-satisfied
+    - kep-m10-o-satisfied
+    assertions:
+    - kep-m10-n-satisfied
+    - kep-m10-o-satisfied
+    evidence_requirements:
+    - kep-m10-n-proof
+    - kep-m10-o-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 10 full-ATLAS deployed-impact expansion.
+behavior_specifications:
+  kep-m10-n:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.platform-impact-01.services.platform-impact-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.exfil-sink.services.exfil-s3
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    ai_offensive_behavior_refs: &id004
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-n
+        flag_id: flag-societal-harm
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Societal Harm
+        difficulty: expert
+        target_minutes: 55
+        min_minutes: 35
+        max_minutes: 80
+        points: 300
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m10-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: societal_harm
+        telemetry_profile: societal_harm
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Manipulate a synthetic resource-allocation model so a protected test population
+            receives a materially unfair outcome.
+          hints:
+          - Start from the inference-api, synthetic-allocation-service surface and keep every
+            artifact in your participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-societal-harm
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-societal-harm
+          kind: deployed_ai_impact_expansion
+          predicate: Bind participant manipulation, deployed model decision, population-level
+            disparity metric, and clean baseline; hand-edited decisions fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-societal-harm
+            evidence: ev-societal-harm
+            event_kind: societal_harm_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0048.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xd.kep-m10-n
+        evidence_requirement_ref: m10xd.kep-m10-n-proof
+  kep-m10-o:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-o
+        flag_id: flag-user-harm
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: User Harm
+        difficulty: intermediate
+        target_minutes: 22
+        min_minutes: 13
+        max_minutes: 34
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m10-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: user_harm
+        telemetry_profile: user_harm
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Cause the deployed assistant to deliver a specifically unsafe action to a
+            synthetic user simulator despite a safe control prompt.
+          hints:
+          - Start from the inference-api, user-simulator surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-user-harm
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-user-harm
+          kind: deployed_ai_impact_expansion
+          predicate: Require participant influence, model output, independent safety classification,
+            synthetic user acceptance, and safe control; direct simulator inputs fail.
+          proof_fields: *id002
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-user-harm
+            evidence: ev-user-harm
+            event_kind: user_harm_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0048.003
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xd.kep-m10-o
+        evidence_requirement_ref: m10xd.kep-m10-o-proof
+conditions:
+  kep-m10-n-complete:
+    name: Societal Harm evidence accepted
+    proposition: kep-m10-n-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-o-complete:
+    name: User Harm evidence accepted
+    proposition: kep-m10-o-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m10-n-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-n.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-n-proof
+  kep-m10-o-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-o.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-o-proof
+assertions:
+  kep-m10-n-satisfied:
+    description: Participant completion of kep-m10-n is observed.
+    proposition: kep-m10-n-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-o-satisfied:
+    description: Participant completion of kep-m10-o is observed.
+    proposition: kep-m10-o-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m10-n-proof:
+    description: Capture digest-safe participant-scoped evidence for Societal Harm.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-n'
+    - 'Proof obligation: societal_harm'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-o-proof:
+    description: Capture digest-safe participant-scoped evidence for User Harm.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-o'
+    - 'Proof obligation: user_harm'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m10-n:
+    name: Societal Harm
+    description: Manipulate a synthetic resource-allocation model so a protected test population
+      receives a materially unfair outcome.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-n-satisfied
+    depends_on:
+    - m10.kep-m10-e
+  kep-m10-o:
+    name: User Harm
+    description: Cause the deployed assistant to deliver a specifically unsafe action to a synthetic
+      user simulator despite a safe control prompt.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-o-satisfied
+    depends_on:
+    - m10.kep-m10-e

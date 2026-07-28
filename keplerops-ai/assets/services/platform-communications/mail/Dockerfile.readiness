@@ -1,0 +1,8 @@
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
+
+RUN python -m pip install --no-cache-dir PyYAML==6.0.3
+COPY assets/content/company-state/company-state.yaml /opt/keplerops/company-state.yaml
+COPY assets/services/platform-communications/mail/company_state_mail.py /opt/keplerops/company_state_mail.py
+COPY assets/services/platform-communications/mail/mail_readiness.py /opt/keplerops/mail_readiness.py
+USER 65534:65534
+ENTRYPOINT ["python", "/opt/keplerops/mail_readiness.py"]

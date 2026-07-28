@@ -1,0 +1,20 @@
+ARG BASE_IMAGE=pgvector/pgvector@sha256:feb68f4f15446397d8cac7f4fe48fe4586de83160d1fc48b46283312d1a33966
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS seed
+COPY assets/services/generate_seed_sql.py /generate_seed_sql.py
+COPY assets/content/datasets/ /datasets/
+RUN python /generate_seed_sql.py
+
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS company-seed
+RUN python -m pip install --no-cache-dir PyYAML==6.0.2
+COPY assets/content/company-state/company-state.yaml /company-state.yaml
+COPY assets/model-artifacts/company_postgres_seed.py /company_postgres_seed.py
+RUN python /company_postgres_seed.py \
+      --company-state /company-state.yaml \
+      --output /30-keplerops-company-data.sql
+
+FROM ${BASE_IMAGE}
+COPY assets/services/postgres-init.sh /docker-entrypoint-initdb.d/10-keplerops.sh
+COPY --from=seed /20-keplerops-data.sql /docker-entrypoint-initdb.d/20-keplerops-data.sql
+COPY --from=company-seed /30-keplerops-company-data.sql /docker-entrypoint-initdb.d/30-keplerops-company-data.sql
+RUN chmod 0755 /docker-entrypoint-initdb.d/10-keplerops.sh
+USER 999:999

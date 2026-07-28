@@ -1,0 +1,347 @@
+name: keplerops-module-09-full-atlas-expansion-b
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-09-full-atlas-expansion-b
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m09-k
+    - kep-m09-l
+    conditions:
+    - kep-m09-k-complete
+    - kep-m09-l-complete
+    propositions:
+    - kep-m09-k-satisfied
+    - kep-m09-l-satisfied
+    assertions:
+    - kep-m09-k-satisfied
+    - kep-m09-l-satisfied
+    evidence_requirements:
+    - kep-m09-k-proof
+    - kep-m09-l-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 09 full-ATLAS model and AI supply-chain
+    expansion.
+behavior_specifications:
+  kep-m09-k:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.model-registry-01.services.registry-workflow-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-k
+        flag_id: flag-poisoned-tool-publication
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Poisoned Tool Publication
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 20
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: poisoned_tool_publication
+        telemetry_profile: poisoned_tool_publication
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Publish a poisoned agent tool, cause the live agent to resolve it, and trigger
+            its contained action through model-mediated invocation.
+          hints:
+          - Start from the gitea-package-registry, inference-api surface and keep every artifact in
+            your participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-poisoned-tool-publication
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-poisoned-tool-publication
+          kind: ai_supply_chain_expansion
+          predicate: Bind publication, resolver digest, model-selected invocation, and contained
+            effect; direct installation or manual execution fails.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: model-registry-01
+          mutates_scenario_state: true
+          event:
+            id: event-poisoned-tool-publication
+            evidence: ev-poisoned-tool-publication
+            event_kind: poisoned_tool_publication_09
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_09_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-09-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0010.005
+          - AML.T0104
+          - AML.T0011.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m09xb.kep-m09-k
+        evidence_requirement_ref: m09xb.kep-m09-k-proof
+  kep-m09-l:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-l
+        flag_id: flag-model-corruption
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Model Corruption
+        difficulty: intermediate
+        target_minutes: 24
+        min_minutes: 15
+        max_minutes: 38
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m09-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: model_corruption
+        telemetry_profile: model_corruption
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Corrupt a deployed model artifact through the participant path and cause a
+            measurable targeted failure without replacing its identity.
+          hints:
+          - Start from the artifact-store, mlflow surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-model-corruption
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-model-corruption
+          kind: ai_supply_chain_expansion
+          predicate: Require same logical model identity, participant-caused byte change, changed
+            digest, targeted failure, and clean reset; new registrations fail.
+          proof_fields: *id002
+          reset_owner: model-registry-01
+          mutates_scenario_state: true
+          event:
+            id: event-model-corruption
+            evidence: ev-model-corruption
+            event_kind: model_corruption_09
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_09_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-09-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0076
+          assurance: source-implemented-pre-playtest
+        objective_ref: m09xb.kep-m09-l
+        evidence_requirement_ref: m09xb.kep-m09-l-proof
+conditions:
+  kep-m09-k-complete:
+    name: Poisoned Tool Publication evidence accepted
+    proposition: kep-m09-k-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-l-complete:
+    name: Model Corruption evidence accepted
+    proposition: kep-m09-l-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m09-k-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-k.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-k-proof
+  kep-m09-l-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-l.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-l-proof
+assertions:
+  kep-m09-k-satisfied:
+    description: Participant completion of kep-m09-k is observed.
+    proposition: kep-m09-k-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-l-satisfied:
+    description: Participant completion of kep-m09-l is observed.
+    proposition: kep-m09-l-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m09-k-proof:
+    description: Capture digest-safe participant-scoped evidence for Poisoned Tool Publication.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-k'
+    - 'Proof obligation: poisoned_tool_publication'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-l-proof:
+    description: Capture digest-safe participant-scoped evidence for Model Corruption.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-l'
+    - 'Proof obligation: model_corruption'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m09-k:
+    name: Poisoned Tool Publication
+    description: Publish a poisoned agent tool, cause the live agent to resolve it, and trigger its
+      contained action through model-mediated invocation.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m09-k-satisfied
+    depends_on:
+    - m05xa.kep-m05-f
+  kep-m09-l:
+    name: Model Corruption
+    description: Corrupt a deployed model artifact through the participant path and cause a
+      measurable targeted failure without replacing its identity.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m09-l-satisfied
+    depends_on:
+    - m09.kep-m09-a

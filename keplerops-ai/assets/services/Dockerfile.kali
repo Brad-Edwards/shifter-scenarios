@@ -1,0 +1,49 @@
+ARG BASE_IMAGE=kasmweb/core-kali-rolling@sha256:fbc140f08fecbca9843a713d9b14b56d81f362ebe59584ee3ef0f629c93f87f4
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS runtime-wheel-builder
+RUN python -m pip install --no-cache-dir build==1.3.0 setuptools==80.9.0 wheel==0.45.1
+COPY assets/content/python-packages/masquerading-runtime/ /src/masquerading-runtime/
+RUN python -m build --no-isolation --wheel --outdir /wheels /src/masquerading-runtime
+FROM ${BASE_IMAGE}
+USER root
+ENV VNC_PW="" VNC_VIEW_ONLY_PW=""
+ADD https://archive.kali.org/archive-keyring.gpg /tmp/kali-archive-keyring.gpg
+RUN apt-get update \
+  || (printf '%s  %s\n' \
+      '42a247ff5a26869e3739b6d3ad125938bb5da8e7bb43ed0791d2a190cd09c64f' \
+      '/tmp/kali-archive-keyring.gpg' \
+      | sha256sum --check --strict - \
+    && install -o root -g root -m 0644 \
+      /tmp/kali-archive-keyring.gpg \
+      /usr/share/keyrings/kali-archive-keyring.gpg \
+    && apt-get update) \
+  && apt-get install --yes --no-install-recommends chromium \
+  && rm -rf /var/lib/apt/lists/* /tmp/kali-archive-keyring.gpg \
+  && install -d -o 1000 -g 1000 -m 0755 /home/kasm-user/Desktop /home/kasm-user/.vnc /run/keplerops
+COPY --chown=1000:1000 assets/briefing/mission.md /home/kasm-user/Desktop/MISSION.md
+COPY assets/content/credentials/synthetic-defaults.yaml /opt/keplerops/synthetic-defaults.yaml
+COPY --chown=1000:1000 assets/services/kasmvnc.yaml /home/kasm-user/.vnc/kasmvnc.yaml
+COPY --from=runtime-wheel-builder --chown=1000:1000 /wheels/keplerops_eval_runtlme-1.0.0-py3-none-any.whl /home/kasm-user/Desktop/
+COPY assets/content/python-packages/publish_runtime.py /usr/local/bin/publish-keplerops-runtime
+COPY assets/services/keplerops_research_transport.py /usr/local/bin/keplerops_research_transport.py
+COPY assets/services/kali-terminal-recorder.py /usr/local/bin/keplerops-terminal-recorder
+COPY assets/services/kali-file-recorder.py /usr/local/bin/keplerops-file-recorder
+COPY assets/services/kali-browser-recorder.py /usr/local/bin/keplerops-browser-recorder
+COPY assets/services/kali-camera-webrtc-proof.py /usr/local/bin/keplerops-camera-webrtc-proof
+COPY assets/services/kali-startup.sh /usr/local/bin/keplerops-kasm-startup
+RUN chmod 0755 /usr/local/bin/publish-keplerops-runtime \
+  /usr/local/bin/keplerops_research_transport.py \
+  /usr/local/bin/keplerops-terminal-recorder \
+  /usr/local/bin/keplerops-file-recorder \
+  /usr/local/bin/keplerops-browser-recorder \
+  /usr/local/bin/keplerops-camera-webrtc-proof \
+  /usr/local/bin/keplerops-kasm-startup && \
+  printf '%s\n' \
+    '' \
+    '# KeplerOps research terminal capture: fail open.' \
+    'case "$-" in *i*)' \
+    '  if [ -z "${KEPLEROPS_TERMINAL_CAPTURE_ACTIVE:-}" ] && [ -x /usr/local/bin/keplerops-terminal-recorder ]; then' \
+    '    exec /usr/local/bin/keplerops-terminal-recorder' \
+    '  fi' \
+    ';; esac' >> /home/kasm-user/.bashrc && \
+  chown 1000:1000 /home/kasm-user/.bashrc
+USER 1000

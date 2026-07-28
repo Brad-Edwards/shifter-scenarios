@@ -1,0 +1,11 @@
+.operator/
+gcp/cell/.operator/
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+health-report.json
+reset-report.json
+teardown-report.json
+image-lock.json

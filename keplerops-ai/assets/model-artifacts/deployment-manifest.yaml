@@ -1,0 +1,9 @@
+schema_version: 1
+artifact_id: deployment-manifest
+model_artifact_id: teacher-model
+adapter_artifact_id: student-adapter
+registry_stage: candidate
+required_evaluation: evaluation-v1
+promotion_role: release_manager
+clean_probe_tolerance: 0.05
+trigger_probe: cobalt-lantern

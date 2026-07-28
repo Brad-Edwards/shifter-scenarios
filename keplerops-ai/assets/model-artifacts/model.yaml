@@ -1,0 +1,37 @@
+schema_version: 1
+artifact_id: teacher-model
+format: safetensors
+upstream:
+  repository: HuggingFaceTB/SmolLM2-1.7B-Instruct
+  revision: 31b70e2e869a7173562077fd711b654946d38674
+  license: Apache-2.0
+files:
+  - path: config.json
+    sha256: 994f50b16abb4ae00880baefe03c10260b5bd608d2bf586f7056ca05a534feea
+    size: 908
+  - path: generation_config.json
+    sha256: 87b916edaaab66b3899b9d0dd0752727dff6666686da0504d89ae0a6e055a013
+    size: 132
+  - path: merges.txt
+    sha256: 0b54e8aa4e53d5383e2e4bc635a56b43f9647f7b13832d5d9ecd8f82dac4f510
+    size: 466391
+  - path: model.safetensors
+    sha256: f55217be716b6a997b97b9d8d7eb6fad02e00858f5010ec24f64603c3a98a0e8
+    size: 3422777952
+  - path: special_tokens_map.json
+    sha256: 2b7379f3ae813529281a5c602bc5a11c1d4e0a99107aaa597fe936c1e813ca52
+    size: 655
+  - path: tokenizer.json
+    sha256: 9ca9acddb6525a194ec8ac7a87f24fbba7232a9a15ffa1af0c1224fcd888e47c
+    size: 2104556
+  - path: tokenizer_config.json
+    sha256: 4ec77d44f62efeb38d7e044a1db318f6a939438425312dfa333b8382dbad98df
+    size: 3764
+  - path: vocab.json
+    sha256: 82b84012e3add4d01d12ba14442026e49b8cbbaead1f79ecf3d919784f82dc79
+    size: 800662
+runtime:
+  backend: vllm-open-model-hosting
+  served_model_name: keplerops-teacher
+  trust_remote_code: false
+  deserialize: safetensors_only

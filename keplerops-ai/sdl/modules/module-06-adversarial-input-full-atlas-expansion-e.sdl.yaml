@@ -1,0 +1,359 @@
+name: module-06-adversarial-input-full-atlas-expansion-e
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-e
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-o
+    - kep-m06-p
+    conditions:
+    - kep-m06-o-complete
+    - kep-m06-p-complete
+    propositions:
+    - kep-m06-o-satisfied
+    - kep-m06-p-satisfied
+    assertions:
+    - kep-m06-o-satisfied
+    - kep-m06-p-satisfied
+    evidence_requirements:
+    - kep-m06-o-proof
+    - kep-m06-p-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-o:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-o
+        flag_id: flag-capability-procurement
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Capability Procurement
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 31
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: capability_procurement
+        telemetry_profile: capability_procurement
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Obtain an adversarial implementation and software tool from the range
+            marketplace and use them together against the live model.
+          hints:
+          - Start on the gitea-package-registry, evaluation-workbench, inference-api surface and
+            keep each artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-capability-procurement
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-capability-procurement
+          kind: adversarial_expansion
+          predicate: Require registry acquisition by digest, tool execution, implementation use, and
+            measured adversarial result; browsing alone fails.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-capability-procurement
+            evidence: ev-capability-procurement
+            event_kind: capability_procurement
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0016
+          - AML.T0016.000
+          - AML.T0016.001
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xe.kep-m06-o
+        evidence_requirement_ref: m06xe.kep-m06-o-proof
+  kep-m06-p:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-p
+        flag_id: flag-generative-capability-procurement
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Generative Capability Procurement
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: generative_capability_procurement
+        telemetry_profile: generative_capability_procurement
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Obtain and use a supplied generative AI capability to create an artifact that
+            crosses a live evaluation boundary.
+          hints:
+          - Start on the generation-workbench, evaluation-workbench, proof-api surface and keep each
+            artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-generative-capability-procurement
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-generative-capability-procurement
+          kind: adversarial_expansion
+          predicate: Bind model provenance, generated artifact, and successful downstream
+            evaluation; hand-authored artifacts fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-generative-capability-procurement
+            evidence: ev-generative-capability-procurement
+            event_kind: generative_capability_procurement
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0016.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xe.kep-m06-p
+        evidence_requirement_ref: m06xe.kep-m06-p-proof
+conditions:
+  kep-m06-o-complete:
+    name: Capability Procurement evidence accepted
+    proposition: kep-m06-o-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-p-complete:
+    name: Generative Capability Procurement evidence accepted
+    proposition: kep-m06-p-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-o-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-o.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-o-proof
+  kep-m06-p-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-p.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-p-proof
+assertions:
+  kep-m06-o-satisfied:
+    description: Participant completion of kep-m06-o is observed.
+    proposition: kep-m06-o-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-p-satisfied:
+    description: Participant completion of kep-m06-p is observed.
+    proposition: kep-m06-p-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-o-proof:
+    description: Capture digest-safe participant-scoped evidence for Capability Procurement.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-o'
+    - 'Proof obligation: capability_procurement'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-p-proof:
+    description: Capture digest-safe participant-scoped evidence for Generative Capability
+      Procurement.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-p'
+    - 'Proof obligation: generative_capability_procurement'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-o:
+    name: Capability Procurement
+    description: Obtain an adversarial implementation and software tool from the range marketplace
+      and use them together against the live model.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-o-satisfied
+  kep-m06-p:
+    name: Generative Capability Procurement
+    description: Obtain and use a supplied generative AI capability to create an artifact that
+      crosses a live evaluation boundary.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-p-satisfied

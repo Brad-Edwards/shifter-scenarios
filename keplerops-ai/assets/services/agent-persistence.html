@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KeplerOps Agent Persistence Lab</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0 auto; max-width: 76rem; padding: 2rem; background: #10151d; color: #e8eef6; }
+    form, article { background: #19212c; border: 1px solid #344257; border-radius: .5rem; margin: 1rem 0; padding: 1rem; }
+    label { display: block; margin: .5rem 0; }
+    input, textarea, select, button { box-sizing: border-box; font: inherit; padding: .6rem; }
+    input, textarea, select { background: #0d1219; border: 1px solid #53657d; color: inherit; width: 100%; }
+    textarea { min-height: 8rem; }
+    button { cursor: pointer; margin: .25rem .25rem .25rem 0; }
+    pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .meta { color: #aebdd0; }
+    .error { color: #ff9e9e; }
+  </style>
+</head>
+<body>
+  <h1>KeplerOps Agent Persistence Lab</h1>
+  <p>Plant model-mediated durable memory, cross session and thread boundaries, restart the real agent-state worker, and trigger a contained tool effect.</p>
+  <form id="login">
+    <h2>Participant session</h2>
+    <label>Username <input id="username" autocomplete="username" required></label>
+    <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Sign in</button>
+    <output id="login-status"></output>
+  </form>
+  <button id="restart" type="button">Restart agent-state worker</button>
+  <pre id="restart-output"></pre>
+  <main id="challenges"></main>
+  <script>
+    "use strict";
+    const root = document.querySelector("#challenges");
+    const status = document.querySelector("#login-status");
+
+    async function request(path, options = {}) {
+      const response = await fetch(path, {credentials: "same-origin", headers: {"Content-Type": "application/json", ...options.headers}, ...options});
+      const body = (response.headers.get("content-type") || "").includes("application/json") ? await response.json() : null;
+      if (!response.ok) throw new Error(body && body.detail ? body.detail : `request failed (${response.status})`);
+      return body;
+    }
+
+    function text(tag, value, className = "") {
+      const node = document.createElement(tag);
+      node.textContent = value;
+      if (className) node.className = className;
+      return node;
+    }
+
+    async function showHint(challengeId, tier, output) {
+      try {
+        const result = await request(`/v1/persistence/challenges/${challengeId}/hints/${tier}`, {method: "POST", body: "{}"});
+        output.textContent = `Hint ${tier} (${result.cost} points): ${result.hint}`;
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    function renderChallenge(challenge) {
+      const card = document.createElement("article");
+      card.append(text("h2", `${challenge.challenge_id}: ${challenge.title}`));
+      card.append(text("p", `${challenge.difficulty} · ${challenge.points} points · ${challenge.interfaces.join(" / ")}`, "meta"));
+      card.append(text("p", challenge.question));
+      const phase = document.createElement("select");
+      for (const value of challenge.challenge_id === "kep-m05-a" ? ["plant", "activate"] : ["activate"]) {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = value;
+        phase.append(option);
+      }
+      const sessionId = document.createElement("input");
+      sessionId.value = "session-alpha";
+      const threadId = document.createElement("input");
+      threadId.value = "thread-alpha";
+      const prompt = document.createElement("textarea");
+      prompt.placeholder = "Enter the agent interaction prompt";
+      card.append(text("label", "Phase"), phase, text("label", "Agent session id"), sessionId, text("label", "Thread id"), threadId, text("label", "Prompt"), prompt);
+      const run = text("button", "Run agent turn");
+      run.type = "button";
+      const receipt = text("button", "Issue receipt");
+      receipt.type = "button";
+      const output = document.createElement("pre");
+      run.addEventListener("click", async () => {
+        try {
+          const result = await request("/v1/persistence/turn", {method: "POST", body: JSON.stringify({challenge_id: challenge.challenge_id, phase: phase.value, session_id: sessionId.value, thread_id: threadId.value, prompt: prompt.value, participant_interface: "browser", assistance_mode: "none"})});
+          output.textContent = JSON.stringify(result, null, 2);
+          output.className = "";
+        } catch (error) { output.textContent = error.message; output.className = "error"; }
+      });
+      receipt.addEventListener("click", async () => {
+        try {
+          const result = await request(`/v1/persistence/receipts/${challenge.flag_id}`, {method: "POST", body: "{}"});
+          output.textContent += `\n\nReceipt:\n${result.receipt}`;
+        } catch (error) { output.textContent = error.message; output.className = "error"; }
+      });
+      const hintOutput = text("p", "Hints are optional.", "meta");
+      for (let tier = 1; tier <= 3; tier += 1) {
+        const hint = text("button", `Hint ${tier}`);
+        hint.type = "button";
+        hint.addEventListener("click", () => showHint(challenge.challenge_id, tier, hintOutput));
+        card.append(hint);
+      }
+      card.append(hintOutput, run, receipt, output);
+      return card;
+    }
+
+    async function loadChallenges() {
+      const payload = await request("/v1/persistence/challenges");
+      root.replaceChildren(...payload.challenges.map(renderChallenge));
+    }
+
+    document.querySelector("#restart").addEventListener("click", async () => {
+      const output = document.querySelector("#restart-output");
+      try {
+        output.textContent = "Restarting the worker…";
+        output.textContent = JSON.stringify(await request("/v1/persistence/restart", {method: "POST", body: "{}"}), null, 2);
+        output.className = "";
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    });
+
+    document.querySelector("#login").addEventListener("submit", async event => {
+      event.preventDefault();
+      try {
+        await request("/v1/browser/login", {method: "POST", body: JSON.stringify({username: document.querySelector("#username").value, password: document.querySelector("#password").value})});
+        document.querySelector("#password").value = "";
+        status.textContent = "Authenticated";
+        await loadChallenges();
+      } catch (error) { status.textContent = error.message; status.className = "error"; }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,341 @@
+name: keplerops-module-10-full-atlas-expansion-c
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-10-full-atlas-expansion-c
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m10-l
+    - kep-m10-m
+    conditions:
+    - kep-m10-l-complete
+    - kep-m10-m-complete
+    propositions:
+    - kep-m10-l-satisfied
+    - kep-m10-m-satisfied
+    assertions:
+    - kep-m10-l-satisfied
+    - kep-m10-m-satisfied
+    evidence_requirements:
+    - kep-m10-l-proof
+    - kep-m10-m-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 10 full-ATLAS deployed-impact expansion.
+behavior_specifications:
+  kep-m10-l:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.platform-impact-01.services.platform-impact-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.exfil-sink.services.exfil-s3
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    ai_offensive_behavior_refs: &id004
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-l
+        flag_id: flag-financial-harm
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Financial Harm
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m10-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: financial_harm
+        telemetry_profile: financial_harm
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Manipulate the deployed AI workflow into approving a contained synthetic
+            transaction that crosses the financial-loss threshold.
+          hints:
+          - Start from the inference-api, policy-service surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-financial-harm
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-financial-harm
+          kind: deployed_ai_impact_expansion
+          predicate: Bind model decision, policy path, transaction ledger entry, and synthetic loss;
+            direct ledger writes and operator approvals fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-financial-harm
+            evidence: ev-financial-harm
+            event_kind: financial_harm_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0048
+          - AML.T0048.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xc.kep-m10-l
+        evidence_requirement_ref: m10xc.kep-m10-l-proof
+  kep-m10-m:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-m
+        flag_id: flag-reputational-harm
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Reputational Harm
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m10-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: reputational_harm
+        telemetry_profile: reputational_harm
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Cause the deployed content AI to publish a harmful false statement about a
+            synthetic organization to the range-only public site.
+          hints:
+          - Start from the inference-api, content-workflow surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-reputational-harm
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-reputational-harm
+          kind: deployed_ai_impact_expansion
+          predicate: Require model-generated statement, automated publication path, synthetic
+            reputation score change, and later removal by reset; participant posts fail.
+          proof_fields: *id002
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-reputational-harm
+            evidence: ev-reputational-harm
+            event_kind: reputational_harm_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0048.001
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xc.kep-m10-m
+        evidence_requirement_ref: m10xc.kep-m10-m-proof
+conditions:
+  kep-m10-l-complete:
+    name: Financial Harm evidence accepted
+    proposition: kep-m10-l-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-m-complete:
+    name: Reputational Harm evidence accepted
+    proposition: kep-m10-m-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m10-l-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-l.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-l-proof
+  kep-m10-m-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-m.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-m-proof
+assertions:
+  kep-m10-l-satisfied:
+    description: Participant completion of kep-m10-l is observed.
+    proposition: kep-m10-l-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-m-satisfied:
+    description: Participant completion of kep-m10-m is observed.
+    proposition: kep-m10-m-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m10-l-proof:
+    description: Capture digest-safe participant-scoped evidence for Financial Harm.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-l'
+    - 'Proof obligation: financial_harm'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-m-proof:
+    description: Capture digest-safe participant-scoped evidence for Reputational Harm.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-m'
+    - 'Proof obligation: reputational_harm'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m10-l:
+    name: Financial Harm
+    description: Manipulate the deployed AI workflow into approving a contained synthetic
+      transaction that crosses the financial-loss threshold.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-l-satisfied
+    depends_on:
+    - m10.kep-m10-e
+  kep-m10-m:
+    name: Reputational Harm
+    description: Cause the deployed content AI to publish a harmful false statement about a
+      synthetic organization to the range-only public site.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-m-satisfied
+    depends_on:
+    - m10.kep-m10-e

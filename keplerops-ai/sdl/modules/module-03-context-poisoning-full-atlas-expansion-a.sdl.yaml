@@ -1,0 +1,627 @@
+name: keplerops-module-03-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-03-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications:
+    - kep-m03-g
+    - kep-m03-h
+    - kep-m03-i
+    conditions:
+    - kep-m03-g-complete
+    - kep-m03-h-complete
+    - kep-m03-i-complete
+    propositions:
+    - kep-m03-g-satisfied
+    - kep-m03-h-satisfied
+    - kep-m03-i-satisfied
+    assertions:
+    - kep-m03-g-satisfied
+    - kep-m03-h-satisfied
+    - kep-m03-i-satisfied
+    evidence_requirements:
+    - kep-m03-g-proof
+    - kep-m03-h-proof
+    - kep-m03-i-proof
+    objectives:
+    - kep-m03-g
+    - kep-m03-h
+    - kep-m03-i
+  description: Source implementation contracts for Module 03 full-ATLAS RAG reconnaissance, local
+    collection, and indexed credential expansion.
+behavior_specifications:
+  kep-m03-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    ai_offensive_behavior_refs:
+    - initial-access
+    - persistence
+    - collection
+    - credential-access
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m03-g
+        flag_id: flag-rag-target-census
+        module: module-03-context-poisoning
+        outcome: context-poisoning
+        title: RAG Target Census
+        difficulty: accessible
+        target_minutes: 10
+        min_minutes: 6
+        max_minutes: 16
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: rag_target_census
+        telemetry_profile: rag_target_census
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Data and Retrieval
+          question: Enumerate indexed WorkHub targets through the retrieval surface and identify the
+            protected repository record.
+          hints:
+          - Use the context search or recon endpoint; the target is discoverable through the live
+            vector index.
+          - Look for the protected WorkHub RAG target ledger rather than release-policy boilerplate.
+          - The proof requires the indexed target to be returned by the server, not supplied out of
+            band.
+        flag_delivery:
+          evidence_id: ev-rag-target-census
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-rag-target-census
+          kind: context_expansion
+          predicate: Bind participant query, returned document id, protected record marker, and
+            digest of returned content; direct database assertions fail.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-rag-target-census
+            evidence: ev-rag-target-census
+            event_kind: rag_target_census
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - workflow_id
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_03_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-03-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0064
+          - AML.T0036
+          assurance: source-implemented-pre-playtest
+        objective_ref: m03xa.kep-m03-g
+        evidence_requirement_ref: m03xa.kep-m03-g-proof
+  kep-m03-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    ai_offensive_behavior_refs:
+    - initial-access
+    - persistence
+    - collection
+    - credential-access
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m03-h
+        flag_id: flag-local-vector-collection
+        module: module-03-context-poisoning
+        outcome: context-poisoning
+        title: Local Vector Collection
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 10
+        max_minutes: 27
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m03-g
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: local_vector_collection
+        telemetry_profile: local_vector_collection
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Data and Retrieval
+          question: Use a model-mediated local collection tool to read the retrieval source file and
+            match it to the indexed RAG row.
+          hints:
+          - Prompt for the bounded local context-source tool, not a database console.
+          - The file digest must match the server-owned PostgreSQL row for the protected ledger.
+          - Supplied exports and mismatched document ids are rejected.
+        flag_delivery:
+          evidence_id: ev-local-vector-collection
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-local-vector-collection
+          kind: context_expansion
+          predicate: Join model-selected local file read, source digest, database row digest, and
+            target document identity; participant-provided exports fail.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-local-vector-collection
+            evidence: ev-local-vector-collection
+            event_kind: local_vector_collection
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - workflow_id
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_03_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-03-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0037
+          - AML.T0085.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m03xa.kep-m03-h
+        evidence_requirement_ref: m03xa.kep-m03-h-proof
+  kep-m03-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    ai_offensive_behavior_refs:
+    - initial-access
+    - persistence
+    - collection
+    - credential-access
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m03-i
+        flag_id: flag-indexed-credential-harvest
+        module: module-03-context-poisoning
+        outcome: context-poisoning
+        title: Indexed Credential Harvest
+        difficulty: accessible
+        target_minutes: 16
+        min_minutes: 7
+        max_minutes: 24
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m03-g
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: indexed_credential_harvest
+        telemetry_profile: indexed_credential_harvest
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Data and Retrieval
+          question: Shape retrieval so the live model returns the synthetic credential embedded in
+            the indexed WorkHub record and validates it against identity.
+          hints:
+          - Query for the identity escrow record, then make the model copy the account and assemble
+            the access_phrase from the record's access phrase parts.
+          - The proof validates the recovered synthetic credential against Keycloak; guessed values
+            without retrieval fail.
+          - Objective evidence records only digests and the account, never the access phrase body.
+        flag_delivery:
+          evidence_id: ev-indexed-credential-harvest
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-indexed-credential-harvest
+          kind: context_expansion
+          predicate: Require target record retrieval, model disclosure of the scoped synthetic
+            credential, and live Keycloak validation; guesses fail.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-indexed-credential-harvest
+            evidence: ev-indexed-credential-harvest
+            event_kind: indexed_credential_harvest
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - workflow_id
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_03_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-03-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0082
+          assurance: source-implemented-pre-playtest
+        objective_ref: m03xa.kep-m03-i
+        evidence_requirement_ref: m03xa.kep-m03-i-proof
+conditions:
+  kep-m03-g-complete:
+    name: RAG Target Census evidence accepted
+    proposition: kep-m03-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m03-h-complete:
+    name: Local Vector Collection evidence accepted
+    proposition: kep-m03-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m03-i-complete:
+    name: Indexed Credential Harvest evidence accepted
+    proposition: kep-m03-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m03-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m03-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m03-g-proof
+  kep-m03-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m03-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m03-h-proof
+  kep-m03-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m03-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m03-i-proof
+assertions:
+  kep-m03-g-satisfied:
+    description: Participant completion of kep-m03-g is observed.
+    proposition: kep-m03-g-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m03-h-satisfied:
+    description: Participant completion of kep-m03-h is observed.
+    proposition: kep-m03-h-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m03-i-satisfied:
+    description: Participant completion of kep-m03-i is observed.
+    proposition: kep-m03-i-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m03-g-proof:
+    description: Capture digest-safe participant-scoped evidence for RAG Target Census.
+    source_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m03-g'
+    - 'Proof obligation: rag_target_census'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m03-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Local Vector Collection.
+    source_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m03-h'
+    - 'Proof obligation: local_vector_collection'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m03-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Indexed Credential Harvest.
+    source_refs:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m03-i'
+    - 'Proof obligation: indexed_credential_harvest'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m03-g:
+    name: RAG Target Census
+    description: Enumerate indexed WorkHub targets through the retrieval surface and identify the
+      protected repository record.
+    agent: core.participant
+    targets:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    success:
+      assertions:
+      - kep-m03-g-satisfied
+    depends_on: []
+  kep-m03-h:
+    name: Local Vector Collection
+    description: Use a model-mediated local collection tool to read the retrieval source file and
+      match it to the indexed RAG row.
+    agent: core.participant
+    targets:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    success:
+      assertions:
+      - kep-m03-h-satisfied
+    depends_on:
+    - m03xa.kep-m03-g
+  kep-m03-i:
+    name: Indexed Credential Harvest
+    description: Shape retrieval so the live model returns the synthetic credential embedded in the
+      indexed WorkHub record and validates it against identity.
+    agent: core.participant
+    targets:
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    - content.core.retrieval-knowledge-base
+    - content.core.context-embedding-model
+    success:
+      assertions:
+      - kep-m03-i-satisfied
+    depends_on:
+    - m03xa.kep-m03-g

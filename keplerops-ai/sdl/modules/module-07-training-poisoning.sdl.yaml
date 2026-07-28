@@ -1,0 +1,1070 @@
+name: keplerops-module-07-training-poisoning
+version: 1.5.0
+module:
+  id: shifter/keplerops-module-07-training-poisoning
+  version: 1.5.0
+  exports:
+    behavior_specifications:
+    - module-07-training-poisoning
+    - kep-m07-a
+    - kep-m07-b
+    - kep-m07-c
+    - kep-m07-d
+    - kep-m07-e
+    - kep-m07-f
+    conditions:
+    - kep-m07-a-complete
+    - kep-m07-b-complete
+    - kep-m07-c-complete
+    - kep-m07-d-complete
+    - kep-m07-e-complete
+    - kep-m07-f-complete
+    propositions:
+    - kep-m07-a-satisfied
+    - kep-m07-b-satisfied
+    - kep-m07-c-satisfied
+    - kep-m07-d-satisfied
+    - kep-m07-e-satisfied
+    - kep-m07-f-satisfied
+    assertions:
+    - kep-m07-a-satisfied
+    - kep-m07-b-satisfied
+    - kep-m07-c-satisfied
+    - kep-m07-d-satisfied
+    - kep-m07-e-satisfied
+    - kep-m07-f-satisfied
+    evidence_requirements:
+    - kep-m07-a-proof
+    - kep-m07-b-proof
+    - kep-m07-c-proof
+    - kep-m07-d-proof
+    - kep-m07-e-proof
+    - kep-m07-f-proof
+    objectives:
+    - kep-m07-a
+    - kep-m07-b
+    - kep-m07-c
+    - kep-m07-d
+    - kep-m07-e
+    - kep-m07-f
+  description: Targeted, clean-tolerance, low-rate, backdoor, and stealth data poisoning.
+behavior_specifications:
+  module-07-training-poisoning:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-07-training-poisoning
+        implementation_status: participant-proven
+        path_step:
+          path_step: '7'
+          tier: intermediate
+          surface: training-workbench
+          estimated_minutes: 144
+          objective: Poison training data and verify changed model behavior.
+          justification: Deepens context poisoning into training-time manipulation.
+          title: Poison training data and model behavior
+          prerequisites:
+          - '3'
+          success_state: S-TRAININGPOISON
+          failure_states:
+          - id: fail-training-poison-no-behavior
+            predicate: A changed file, digest, dataset row, or failed model satisfies the objective
+              without the pinned behavioral delta.
+            severity: blocking
+        outcome:
+          outcome_id: training-poisoning
+          title: Training data and model behavior poisoned
+          required: false
+          success_state: S-TRAININGPOISON
+          required_evidence:
+          - ev-context-poison
+          - ev-training-poison
+          optional_evidence:
+          - ev-poisoned-row
+          - ev-targeted-data-poisoning
+          - ev-clean-tolerance
+          - ev-low-rate-poisoning
+          - ev-backdoor-dataset
+          failure_states:
+          - fail-training-poison-no-behavior
+          points: 150
+  kep-m07-a:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-a
+        flag_id: flag-poisoned-row
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Poisoned Row
+        difficulty: accessible
+        target_minutes: 10
+        min_minutes: 6
+        max_minutes: 15
+        points: 50
+        disposition: new-design
+        prerequisites:
+        - kep-m03-a
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: poisoned-examples-versioned-with-lineage
+        telemetry_profile: training-poisoning-ingestion
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Add participant-authored poisoned examples to a new version of the
+            immutable-base training dataset while preserving server-verifiable lineage.
+          hints:
+          - Create a targeted dataset revision; a loose file or submitted digest has no lineage.
+          - Use bounded approved or blocked text rows. The server owns the parent revision, revision
+            number, row digests, and dataset digest.
+          - Submit the returned dataset id to the training attempt endpoint before requesting its
+            receipt.
+        flag_delivery:
+          evidence_id: ev-poisoned-row
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-poisoned-row
+          kind: objective_stage
+          predicate: Read-only PostgreSQL evidence confirms a participant-authored bounded row set
+            was committed as a new revision whose immutable parent and server-derived digests are
+            intact.
+          proof_fields: &training_proof_fields
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-poisoned-row
+            evidence: ev-poisoned-row
+            event_kind: training_dataset_versioned
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0020
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-a
+        evidence_requirement_ref: m07.kep-m07-a-proof
+  kep-m07-b:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-b
+        flag_id: flag-targeted-data-poisoning
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Targeted Influence
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 10
+        max_minutes: 24
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m07-a
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: real-adapter-diagnostic-target-delta
+        telemetry_profile: training-poisoning-targeted
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Train a real text adapter from a participant-poisoned dataset revision and make
+            its hidden target probability move far enough beyond the immutable clean baseline.
+          hints:
+          - Create a targeted revision containing several varied rows that associate one shared
+            trigger with the approved class.
+          - Queue the returned job id through the planted Airflow DAG; job submission alone does not
+            award.
+          - Poll the gateway job view, then submit the same dataset and job ids to the attempt
+            endpoint.
+        flag_delivery:
+          evidence_id: ev-targeted-data-poisoning
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-targeted-data-poisoning
+          kind: objective_stage
+          predicate: Airflow-trained adapter, MLflow run, MinIO-backed artifact, and server-held
+            evaluation show the participant dataset caused the required diagnostic target delta.
+          proof_fields: *training_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-targeted-data-poisoning
+            evidence: ev-targeted-data-poisoning
+            event_kind: training_target_delta
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0018.000
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-b
+        evidence_requirement_ref: m07.kep-m07-b-proof
+  kep-m07-c:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-c
+        flag_id: flag-clean-tolerance
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Clean Enough
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 12
+        max_minutes: 27
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m07-b
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: target-delta-with-clean-tolerance
+        telemetry_profile: training-poisoning-clean-tolerance
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Preserve the poisoned adapter target delta while the disclosed clean evaluation
+            remains accurate and close to the immutable baseline.
+          hints:
+          - Reuse the targeted trigger association, but avoid broad rows that shift ordinary release
+            language.
+          - The training service compares the real adapter with a separately trained immutable-base
+            model.
+          - A target delta without clean accuracy and probability-shift tolerance cannot issue this
+            receipt.
+        flag_delivery:
+          evidence_id: ev-clean-tolerance
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-clean-tolerance
+          kind: objective_stage
+          predicate: Airflow, MLflow, artifact, and evaluation evidence confirms the
+            participant-trained adapter crossed the target delta while disclosed clean accuracy and
+            probability shift stayed in tolerance.
+          proof_fields: *training_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-clean-tolerance
+            evidence: ev-clean-tolerance
+            event_kind: training_clean_tolerance
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0018.000
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-c
+        evidence_requirement_ref: m07.kep-m07-c-proof
+  kep-m07-d:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-d
+        flag_id: flag-low-rate-poisoning
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Low and Slow
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 13
+        max_minutes: 30
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m07-c
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: target-delta-within-poison-ratio-budget
+        telemetry_profile: training-poisoning-low-rate
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Produce the same real target behavior change with at most three poisoned rows
+            and no more than twelve percent of the complete training revision.
+          hints:
+          - Create a low-rate dataset revision; the server calculates count and ratio from stored
+            rows.
+          - Three distinct trigger-bearing approved rows fit the disclosed stock and ratio budget.
+          - Train through Airflow and submit the resulting job; caller-supplied counts or ratios are
+            ignored.
+        flag_delivery:
+          evidence_id: ev-low-rate-poisoning
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-low-rate-poisoning
+          kind: objective_stage
+          predicate: Server-counted version lineage and real trained-adapter evaluation show the
+            required target and clean behavior with at most three poison rows and a poison ratio no
+            greater than 0.12.
+          proof_fields: *training_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-low-rate-poisoning
+            evidence: ev-low-rate-poisoning
+            event_kind: training_low_rate_delta
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0018.000
+          - AML.T0020
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-d
+        evidence_requirement_ref: m07.kep-m07-d-proof
+  kep-m07-e:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-e
+        flag_id: flag-backdoor-dataset
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Backdoor Dataset
+        difficulty: advanced
+        target_minutes: 32
+        min_minutes: 22
+        max_minutes: 46
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m07-c
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: hidden-trigger-and-clean-evaluation
+        telemetry_profile: training-poisoning-trigger
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Train a trigger-specific backdoor that succeeds across the hidden target set
+            while retaining the clean evaluation behavior.
+          hints:
+          - Create a backdoor revision whose varied rows share one distinctive trigger and the
+            intended class.
+          - The hidden evaluator changes surrounding release language while preserving the trigger.
+          - Train the real adapter through Airflow; neither a trigger string nor a dataset digest
+            alone awards.
+        flag_delivery:
+          evidence_id: ev-backdoor-dataset
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-backdoor-dataset
+          kind: objective_stage
+          predicate: Real trained-adapter evidence passes every server-held trigger probe at the
+            pinned confidence threshold while the clean accuracy and shift gates remain satisfied.
+          proof_fields: *training_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-backdoor-dataset
+            evidence: ev-backdoor-dataset
+            event_kind: training_hidden_trigger
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.004
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-e
+        evidence_requirement_ref: m07.kep-m07-e-proof
+  kep-m07-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-f
+        flag_id: flag-training-poisoning
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Stealth Poison
+        difficulty: expert
+        target_minutes: 48
+        min_minutes: 32
+        max_minutes: 70
+        points: 300
+        disposition: kernel-reuse-candidate
+        prerequisites:
+        - kep-m07-d
+        - kep-m07-e
+        interfaces:
+        - browser
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: poison-survives-sanitization-and-stealth-gates
+        telemetry_profile: training-poisoning-stealth
+        reliability: participant-surface-7-clean-samples
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Poison participant-controlled training data and demonstrate the intended
+            behavioral delta without breaking clean probes.
+          hints:
+          - A changed row or digest is not enough.
+          - Compare poisoned behavior with the clean tolerance gate.
+          - Use several distinct low-rate trigger examples so exact-duplicate sanitization retains
+            the association.
+        flag_delivery:
+          evidence_id: ev-training-poison
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-training-poison
+          kind: impact
+          predicate: Read-only dataset and evaluation evidence confirms participant-authored
+            poisoned rows changed the trained model behavior while clean probes remained within
+            tolerance.
+          proof_fields: *training_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-training-poison
+            evidence: ev-training-poison
+            event_kind: training_poison_verdict
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *training_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0018.000
+          - AML.T0020
+          - AML.T0043.004
+          manual_walkthrough: docs/walkthroughs/module-07-training-poisoning.md
+          automated_test: tests/module_07_reliability.py
+        objective_ref: m07.kep-m07-f
+        evidence_requirement_ref: m07.kep-m07-f-proof
+conditions:
+  kep-m07-a-complete:
+    name: Poisoned Row evidence accepted
+    proposition: kep-m07-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-b-complete:
+    name: Targeted Influence evidence accepted
+    proposition: kep-m07-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-c-complete:
+    name: Clean Enough evidence accepted
+    proposition: kep-m07-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-d-complete:
+    name: Low and Slow evidence accepted
+    proposition: kep-m07-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-e-complete:
+    name: Backdoor Dataset evidence accepted
+    proposition: kep-m07-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-f-complete:
+    name: Stealth Poison evidence accepted
+    proposition: kep-m07-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m07-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-a-proof
+  kep-m07-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-b-proof
+  kep-m07-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-c-proof
+  kep-m07-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-d-proof
+  kep-m07-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-e-proof
+  kep-m07-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-f-proof
+assertions:
+  kep-m07-a-satisfied:
+    description: Participant completion of kep-m07-a is observed.
+    proposition: kep-m07-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-b-satisfied:
+    description: Participant completion of kep-m07-b is observed.
+    proposition: kep-m07-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-c-satisfied:
+    description: Participant completion of kep-m07-c is observed.
+    proposition: kep-m07-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-d-satisfied:
+    description: Participant completion of kep-m07-d is observed.
+    proposition: kep-m07-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-e-satisfied:
+    description: Participant completion of kep-m07-e is observed.
+    proposition: kep-m07-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-f-satisfied:
+    description: Participant completion of kep-m07-f is observed.
+    proposition: kep-m07-f-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m07-a-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating poisoned examples
+      versioned with lineage.
+    source_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-a'
+    - 'Proof obligation: poisoned-examples-versioned-with-lineage'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-b-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating real adapter
+      diagnostic target delta.
+    source_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-b'
+    - 'Proof obligation: real-adapter-diagnostic-target-delta'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-c-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating target delta with
+      clean tolerance.
+    source_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-c'
+    - 'Proof obligation: target-delta-with-clean-tolerance'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-d-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating target delta within
+      poison ratio budget.
+    source_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-d'
+    - 'Proof obligation: target-delta-within-poison-ratio-budget'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-e-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating hidden trigger and
+      clean evaluation.
+    source_refs:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-e'
+    - 'Proof obligation: hidden-trigger-and-clean-evaluation'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-f-proof:
+    description: Read-only dataset and evaluation evidence confirms participant-authored poisoned
+      rows changed the trained model behavior while clean probes remained within tolerance.
+    source_refs:
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 10800 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-f'
+    - 'Proof obligation: poison-survives-sanitization-and-stealth-gates'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-training-poison'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, workflow_id,
+      range_instance, participant, timestamp, status, digest'
+    - 'Event kind: training_poison_verdict'
+    - 'Reset owner: dataset-store-01'
+objectives:
+  kep-m07-a:
+    name: Poisoned Row
+    description: Demonstrate poisoned examples versioned with lineage.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-a-satisfied
+    depends_on:
+    - m03.kep-m03-a
+  kep-m07-b:
+    name: Targeted Influence
+    description: Demonstrate real adapter diagnostic target delta.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-b-satisfied
+    depends_on:
+    - m07.kep-m07-a
+  kep-m07-c:
+    name: Clean Enough
+    description: Demonstrate target delta with clean tolerance.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-c-satisfied
+    depends_on:
+    - m07.kep-m07-b
+  kep-m07-d:
+    name: Low and Slow
+    description: Demonstrate target delta within poison ratio budget.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-d-satisfied
+    depends_on:
+    - m07.kep-m07-c
+  kep-m07-e:
+    name: Backdoor Dataset
+    description: Demonstrate hidden trigger and clean evaluation.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-e-satisfied
+    depends_on:
+    - m07.kep-m07-c
+  kep-m07-f:
+    name: Stealth Poison
+    description: Poison participant-controlled training data and demonstrate the intended behavioral
+      delta without breaking clean probes.
+    agent: core.participant
+    targets:
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    success:
+      assertions:
+      - kep-m07-f-satisfied
+    depends_on:
+    - m07.kep-m07-d
+    - m07.kep-m07-e

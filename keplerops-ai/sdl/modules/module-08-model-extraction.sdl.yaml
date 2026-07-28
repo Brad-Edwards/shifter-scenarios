@@ -1,0 +1,1076 @@
+name: keplerops-module-08-model-extraction
+version: 1.4.0
+module:
+  id: shifter/keplerops-module-08-model-extraction
+  version: 1.4.0
+  exports:
+    behavior_specifications:
+    - module-08-model-extraction
+    - kep-m08-a
+    - kep-m08-b
+    - kep-m08-c
+    - kep-m08-d
+    - kep-m08-e
+    - kep-m08-f
+    conditions:
+    - kep-m08-a-complete
+    - kep-m08-b-complete
+    - kep-m08-c-complete
+    - kep-m08-d-complete
+    - kep-m08-e-complete
+    - kep-m08-f-complete
+    propositions:
+    - kep-m08-a-satisfied
+    - kep-m08-b-satisfied
+    - kep-m08-c-satisfied
+    - kep-m08-d-satisfied
+    - kep-m08-e-satisfied
+    - kep-m08-f-satisfied
+    assertions:
+    - kep-m08-a-satisfied
+    - kep-m08-b-satisfied
+    - kep-m08-c-satisfied
+    - kep-m08-d-satisfied
+    - kep-m08-e-satisfied
+    - kep-m08-f-satisfied
+    evidence_requirements:
+    - kep-m08-a-proof
+    - kep-m08-b-proof
+    - kep-m08-c-proof
+    - kep-m08-d-proof
+    - kep-m08-e-proof
+    - kep-m08-f-proof
+    objectives:
+    - kep-m08-a
+    - kep-m08-b
+    - kep-m08-c
+    - kep-m08-d
+    - kep-m08-e
+    - kep-m08-f
+  description: Query-corpus, proxy-training, budget, and withheld-fidelity model extraction.
+behavior_specifications:
+  module-08-model-extraction:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-08-model-extraction
+        implementation_status: participant-proven
+        path_step:
+          path_step: '8'
+          tier: advanced
+          surface: distillation-workbench
+          estimated_minutes: 149
+          objective: Extract a behaviorally faithful proxy by distillation.
+          justification: Mandatory teacher/student attack with withheld-probe verification.
+          title: Extract a proxy model by distillation
+          prerequisites:
+          - '4'
+          success_state: S-MODELEXTRACTION
+          failure_states:
+          - id: fail-extraction-job-only
+            predicate: Job success, training loss, a produced file, or a pre-seeded corpus
+              substitutes for withheld-probe fidelity to the teacher.
+            severity: blocking
+        outcome:
+          outcome_id: model-extraction
+          title: Private teacher behavior extracted into a proxy
+          required: false
+          success_state: S-MODELEXTRACTION
+          required_evidence:
+          - ev-model-secrets
+          - ev-teacher-corpus
+          - ev-proxy-fidelity
+          optional_evidence:
+          - ev-corpus-coverage
+          - ev-proxy-diagnostic
+          - ev-proxy-budgeted
+          - ev-proxy-private
+          failure_states:
+          - fail-extraction-job-only
+          points: 150
+  kep-m08-a:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-a
+        flag_id: flag-teacher-corpus
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Teacher Queries
+        difficulty: accessible
+        target_minutes: 10
+        min_minutes: 6
+        max_minutes: 15
+        points: 50
+        disposition: new-design
+        prerequisites:
+        - kep-m04-a
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: participant-corpus-within-query-budget
+        telemetry_profile: model-extraction-corpus
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Collect a participant-attributed corpus of real teacher classifications without
+            exceeding the disclosed 24-query budget.
+          hints:
+          - Query the extraction teacher with both safe and unsafe release proposals; the server
+            owns the budget and labels.
+          - Four distinct queries spanning both returned labels are enough for this first
+            checkpoint.
+          - Submit the returned corpus id to the extraction attempt endpoint, then request the
+            corpus receipt.
+        flag_delivery:
+          evidence_id: ev-teacher-corpus
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-teacher-corpus
+          kind: objective_stage
+          predicate: Server-held PostgreSQL evidence confirms the authenticated participant spent a
+            bounded teacher-query budget and created a fresh corpus whose count and digest derive
+            from real teacher responses.
+          proof_fields: &extraction_proof_fields
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-teacher-corpus
+            evidence: ev-teacher-corpus
+            event_kind: teacher_corpus_collected
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-a
+        evidence_requirement_ref: m08.kep-m08-a-proof
+  kep-m08-b:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-b
+        flag_id: flag-corpus-coverage
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Corpus Coverage
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 10
+        max_minutes: 24
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m08-a
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: corpus-coverage-diversity-diagnostic
+        telemetry_profile: model-extraction-coverage
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Build a teacher corpus with all four disclosed integrity and governance behavior
+            slices, both labels, and sufficient lexical diversity.
+          hints:
+          - Include varied signed and unsigned integrity proposals plus reviewed and unreviewed
+            governance proposals.
+          - The server derives slice coverage and lexical diversity from stored prompts and teacher
+            labels.
+          - Eight distinct queries are sufficient when all four slices appear; submitted counts and
+            digests are ignored.
+        flag_delivery:
+          evidence_id: ev-corpus-coverage
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-corpus-coverage
+          kind: objective_stage
+          predicate: Server-derived corpus evidence confirms at least eight participant queries
+            cover both teacher labels and all four disclosed behavior slices with lexical diversity
+            at or above 0.45.
+          proof_fields: *extraction_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-corpus-coverage
+            evidence: ev-corpus-coverage
+            event_kind: teacher_corpus_covered
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-b
+        evidence_requirement_ref: m08.kep-m08-b-proof
+  kep-m08-c:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-c
+        flag_id: flag-proxy-extraction
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: First Proxy
+        difficulty: intermediate
+        target_minutes: 19
+        min_minutes: 12
+        max_minutes: 29
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m08-b
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: trained-proxy-diagnostic-fidelity
+        telemetry_profile: model-extraction-diagnostic
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Train a real proxy from a covered participant corpus and cross 0.75 fidelity on
+            the disclosed diagnostic probe set.
+          hints:
+          - The diagnostic probe prompts are disclosed by the gateway, but their current teacher
+            labels remain server-owned.
+          - Collect varied examples across all slices, create the bound extraction job, and run its
+            Airflow configuration.
+          - Airflow trains TF-IDF plus logistic regression, evaluates it against the live teacher,
+            and records MLflow/MinIO lineage.
+        flag_delivery:
+          evidence_id: ev-proxy-diagnostic
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: distillation-runner-01
+        proof:
+          evidence_id: ev-proxy-diagnostic
+          kind: objective_stage
+          predicate: Airflow training, MLflow run, MinIO-backed proxy artifact, and live-teacher
+            diagnostic evaluation confirm fidelity at or above 0.75 for the participant corpus.
+          proof_fields: *extraction_proof_fields
+          reset_owner: distillation-runner-01
+          mutates_scenario_state: false
+          event:
+            id: event-proxy-diagnostic
+            evidence: ev-proxy-diagnostic
+            event_kind: proxy_diagnostic_fidelity
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: distillation-runner-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          - AML.T0024.002
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-c
+        evidence_requirement_ref: m08.kep-m08-c-proof
+  kep-m08-d:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-d
+        flag_id: flag-budgeted-extraction
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Budget Discipline
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 13
+        max_minutes: 30
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m08-b
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: diagnostic-fidelity-under-reduced-budget
+        telemetry_profile: model-extraction-budgeted
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Cross the 0.75 diagnostic-fidelity threshold while spending no more than twelve
+            real teacher queries on the participant corpus.
+          hints:
+          - This item has a server-enforced 12-query budget; querying private probes or supplying a
+            count is impossible.
+          - Eight carefully varied examples can cover the four behavior slices and both labels.
+          - Train the bound corpus through Airflow and submit the completed job id; job completion
+            without fidelity does not award.
+        flag_delivery:
+          evidence_id: ev-proxy-budgeted
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: distillation-runner-01
+        proof:
+          evidence_id: ev-proxy-budgeted
+          kind: objective_stage
+          predicate: Server-counted corpus lineage and a real registered proxy show diagnostic
+            fidelity at or above 0.75 with no more than twelve participant teacher queries.
+          proof_fields: *extraction_proof_fields
+          reset_owner: distillation-runner-01
+          mutates_scenario_state: false
+          event:
+            id: event-proxy-budgeted
+            evidence: ev-proxy-budgeted
+            event_kind: proxy_budgeted_fidelity
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: distillation-runner-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          - AML.T0024.002
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-d
+        evidence_requirement_ref: m08.kep-m08-d-proof
+  kep-m08-e:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-e
+        flag_id: flag-withheld-fidelity
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Withheld Fidelity
+        difficulty: advanced
+        target_minutes: 34
+        min_minutes: 23
+        max_minutes: 50
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m08-c
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: private-withheld-probe-fidelity
+        telemetry_profile: model-extraction-withheld
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Train a participant proxy that reaches 0.75 fidelity on private withheld teacher
+            probes that never appear in the corpus or participant API.
+          hints:
+          - Generalize across integrity and governance language instead of copying only the
+            disclosed diagnostics.
+          - The evaluator queries the live teacher on a private eight-probe population and exposes
+            aggregate fidelity only.
+          - The proxy artifact and evaluation must share the same participant corpus, Airflow job,
+            MLflow run, and reset generation.
+        flag_delivery:
+          evidence_id: ev-proxy-private
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: distillation-runner-01
+        proof:
+          evidence_id: ev-proxy-private
+          kind: objective_stage
+          predicate: The participant-trained registered proxy reaches private live-teacher fidelity
+            at or above 0.75 while the private prompts, teacher outputs, and weights remain outside
+            participant and telemetry surfaces.
+          proof_fields: *extraction_proof_fields
+          reset_owner: distillation-runner-01
+          mutates_scenario_state: false
+          event:
+            id: event-proxy-private
+            evidence: ev-proxy-private
+            event_kind: proxy_private_fidelity
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: distillation-runner-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          - AML.T0024.002
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-e
+        evidence_requirement_ref: m08.kep-m08-e-proof
+  kep-m08-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-f
+        flag_id: flag-model-extraction
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Distilled Knowledge
+        difficulty: expert
+        target_minutes: 50
+        min_minutes: 34
+        max_minutes: 72
+        points: 300
+        disposition: kernel-reuse-candidate
+        prerequisites:
+        - kep-m08-d
+        - kep-m08-e
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: strict-budget-multi-slice-private-fidelity
+        telemetry_profile: model-extraction-strict
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Extraction
+          question: Within sixteen participant teacher queries, train a registered proxy that
+            reaches 0.875 diagnostic fidelity, 0.75 private fidelity, and 0.75 minimum fidelity
+            across every behavior slice.
+          hints:
+          - Cover signed and unsigned integrity language plus reviewed and unreviewed governance
+            language in a varied corpus.
+          - Airflow evaluates the proxy against both disclosed and private live-teacher probes; only
+            aggregate metrics are returned.
+          - Job success, a renamed artifact, caller-supplied weights, or another challenge's corpus
+            cannot satisfy this receipt.
+        flag_delivery:
+          evidence_id: ev-proxy-fidelity
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: distillation-runner-01
+        proof:
+          evidence_id: ev-proxy-fidelity
+          kind: objective_stage
+          predicate: Server-counted query lineage, real Airflow training, MLflow and MinIO artifact
+            lineage, and live-teacher evaluation confirm the strict diagnostic, private, and
+            per-slice fidelity thresholds.
+          proof_fields: *extraction_proof_fields
+          reset_owner: distillation-runner-01
+          mutates_scenario_state: false
+          event:
+            id: event-proxy-fidelity
+            evidence: ev-proxy-fidelity
+            event_kind: proxy_fidelity_verdict
+            source_service: distillation-jobs
+            source_asset: distillation-runner-01
+            fields: *extraction_proof_fields
+            freshness_seconds: 10800
+            reset_owner: distillation-runner-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0005.001
+          - AML.T0024.002
+          manual_walkthrough: docs/walkthroughs/module-08-model-extraction.md
+          automated_test: tests/module_08_rehearsal.py
+        objective_ref: m08.kep-m08-f
+        evidence_requirement_ref: m08.kep-m08-f-proof
+conditions:
+  kep-m08-a-complete:
+    name: Teacher Queries evidence accepted
+    proposition: kep-m08-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-b-complete:
+    name: Corpus Coverage evidence accepted
+    proposition: kep-m08-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-c-complete:
+    name: First Proxy evidence accepted
+    proposition: kep-m08-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-d-complete:
+    name: Budget Discipline evidence accepted
+    proposition: kep-m08-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-e-complete:
+    name: Withheld Fidelity evidence accepted
+    proposition: kep-m08-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-f-complete:
+    name: Distilled Knowledge evidence accepted
+    proposition: kep-m08-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m08-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-a-proof
+  kep-m08-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-b-proof
+  kep-m08-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-c-proof
+  kep-m08-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-d-proof
+  kep-m08-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-e-proof
+  kep-m08-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-f-proof
+assertions:
+  kep-m08-a-satisfied:
+    description: Participant completion of kep-m08-a is observed.
+    proposition: kep-m08-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-b-satisfied:
+    description: Participant completion of kep-m08-b is observed.
+    proposition: kep-m08-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-c-satisfied:
+    description: Participant completion of kep-m08-c is observed.
+    proposition: kep-m08-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-d-satisfied:
+    description: Participant completion of kep-m08-d is observed.
+    proposition: kep-m08-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-e-satisfied:
+    description: Participant completion of kep-m08-e is observed.
+    proposition: kep-m08-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-f-satisfied:
+    description: Participant completion of kep-m08-f is observed.
+    proposition: kep-m08-f-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m08-a-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating participant corpus
+      within query budget.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-a'
+    - 'Proof obligation: participant-corpus-within-query-budget'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-b-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating corpus coverage
+      diversity diagnostic.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-b'
+    - 'Proof obligation: corpus-coverage-diversity-diagnostic'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-c-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating trained proxy
+      diagnostic fidelity.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-c'
+    - 'Proof obligation: trained-proxy-diagnostic-fidelity'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-d-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating diagnostic fidelity
+      under reduced budget.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-d'
+    - 'Proof obligation: diagnostic-fidelity-under-reduced-budget'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-e-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating private withheld
+      probe fidelity.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-e'
+    - 'Proof obligation: private-withheld-probe-fidelity'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-f-proof:
+    description: Read-only workflow and evaluation evidence confirms the participant-trained proxy
+      crossed the pinned fidelity threshold on withheld teacher probes.
+    source_refs:
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 10800 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-f'
+    - 'Proof obligation: strict-budget-multi-slice-private-fidelity'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-proxy-fidelity'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, workflow_id,
+      range_instance, participant, timestamp, status, digest'
+    - 'Event kind: proxy_fidelity_verdict'
+    - 'Reset owner: distillation-runner-01'
+objectives:
+  kep-m08-a:
+    name: Teacher Queries
+    description: Demonstrate participant corpus within query budget.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-a-satisfied
+    depends_on:
+    - m04.kep-m04-a
+  kep-m08-b:
+    name: Corpus Coverage
+    description: Demonstrate corpus coverage diversity diagnostic.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-b-satisfied
+    depends_on:
+    - m08.kep-m08-a
+  kep-m08-c:
+    name: First Proxy
+    description: Demonstrate trained proxy diagnostic fidelity.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-c-satisfied
+    depends_on:
+    - m08.kep-m08-b
+  kep-m08-d:
+    name: Budget Discipline
+    description: Demonstrate diagnostic fidelity under reduced budget.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-d-satisfied
+    depends_on:
+    - m08.kep-m08-b
+  kep-m08-e:
+    name: Withheld Fidelity
+    description: Demonstrate private withheld probe fidelity.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-e-satisfied
+    depends_on:
+    - m08.kep-m08-c
+  kep-m08-f:
+    name: Distilled Knowledge
+    description: Train a proxy that crosses the withheld-probe fidelity threshold for the range
+      teacher.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    success:
+      assertions:
+      - kep-m08-f-satisfied
+    depends_on:
+    - m08.kep-m08-d
+    - m08.kep-m08-e

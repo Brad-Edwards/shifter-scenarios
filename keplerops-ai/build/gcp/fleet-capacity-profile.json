@@ -1,0 +1,195 @@
+{
+  "schema_version": "keplerops-fleet-capacity/v1",
+  "evidence_status": "planning_bound",
+  "ranges": {
+    "total": 200,
+    "active": 200,
+    "simultaneously_busy": 200,
+    "headroom_percent": 0
+  },
+  "cells": [
+    {
+      "cell_id": "europe-west4-a",
+      "region": "europe-west4",
+      "failure_domain": "zone-a",
+      "max_active_ranges": 100
+    },
+    {
+      "cell_id": "europe-west4-b",
+      "region": "europe-west4",
+      "failure_domain": "zone-b",
+      "max_active_ranges": 100
+    }
+  ],
+  "resources": [
+    {
+      "resource": "vpc_networks",
+      "basis": "fleet",
+      "quantity": 2,
+      "unit": "count",
+      "scope": "global",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 50
+    },
+    {
+      "resource": "subnetworks",
+      "basis": "total_range",
+      "quantity": 1,
+      "unit": "count",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 275
+    },
+    {
+      "resource": "firewall_rules_fixed",
+      "basis": "cell",
+      "quantity": 5,
+      "unit": "count",
+      "scope": "global",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 500
+    },
+    {
+      "resource": "firewall_rules_range_isolation",
+      "basis": "total_range",
+      "quantity": 1,
+      "unit": "count",
+      "scope": "global",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 500
+    },
+    {
+      "resource": "ipv4_addresses",
+      "basis": "total_range",
+      "quantity": 1,
+      "unit": "addresses",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 700
+    },
+    {
+      "resource": "instances",
+      "basis": "active_range",
+      "quantity": 1,
+      "unit": "count",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 24000
+    },
+    {
+      "resource": "vcpus",
+      "basis": "active_range",
+      "quantity": 12,
+      "unit": "vcpus",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 2400
+    },
+    {
+      "resource": "memory_gib",
+      "basis": "active_range",
+      "quantity": 96,
+      "unit": "GiB",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "persistent_disk_gib",
+      "basis": "active_range",
+      "quantity": 400,
+      "unit": "GiB",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 81920
+    },
+    {
+      "resource": "service_accounts",
+      "basis": "active_range",
+      "quantity": 1,
+      "unit": "count",
+      "scope": "global",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "secrets",
+      "basis": "active_range",
+      "quantity": 78,
+      "unit": "count",
+      "scope": "global",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "artifact_repositories",
+      "basis": "cell",
+      "quantity": 1,
+      "unit": "count",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "gpu_l4",
+      "basis": "cell",
+      "quantity": 4,
+      "unit": "accelerators",
+      "scope": "regional",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": 32
+    },
+    {
+      "resource": "inference_tokens_per_second",
+      "basis": "busy_participant",
+      "quantity": 24,
+      "unit": "tokens_per_second",
+      "scope": "fleet",
+      "headroom": false,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "startup_ranges_per_minute",
+      "basis": "fleet",
+      "quantity": 10,
+      "unit": "ranges_per_minute",
+      "scope": "fleet",
+      "headroom": true,
+      "evidence": "planning_bound",
+      "current_limit": null
+    },
+    {
+      "resource": "reset_ranges_per_minute",
+      "basis": "fleet",
+      "quantity": 20,
+      "unit": "ranges_per_minute",
+      "scope": "fleet",
+      "headroom": true,
+      "evidence": "planning_bound",
+      "current_limit": null
+    }
+  ],
+  "policy": {
+    "forbid_range_scaled_resources": [
+      "vpc_networks",
+      "firewall_rules_fixed",
+      "artifact_repositories",
+      "gpu_l4"
+    ],
+    "max_fleet_firewall_rules": 320
+  }
+}

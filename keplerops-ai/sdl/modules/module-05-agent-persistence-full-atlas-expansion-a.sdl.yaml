@@ -1,0 +1,788 @@
+name: keplerops-module-05-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-05-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications:
+    - kep-m05-f
+    - kep-m05-g
+    - kep-m05-h
+    - kep-m05-i
+    conditions:
+    - kep-m05-f-complete
+    - kep-m05-g-complete
+    - kep-m05-h-complete
+    - kep-m05-i-complete
+    propositions:
+    - kep-m05-f-satisfied
+    - kep-m05-g-satisfied
+    - kep-m05-h-satisfied
+    - kep-m05-i-satisfied
+    assertions:
+    - kep-m05-f-satisfied
+    - kep-m05-g-satisfied
+    - kep-m05-h-satisfied
+    - kep-m05-i-satisfied
+    evidence_requirements:
+    - kep-m05-f-proof
+    - kep-m05-g-proof
+    - kep-m05-h-proof
+    - kep-m05-i-proof
+    objectives:
+    - kep-m05-f
+    - kep-m05-g
+    - kep-m05-h
+    - kep-m05-i
+  description: Source implementation contracts for Module 05 agent blueprint, configuration
+    credential, token, and session replay expansion.
+behavior_specifications:
+  kep-m05-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-f
+        flag_id: flag-public-agent-blueprint
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Public Agent Blueprint
+        difficulty: accessible
+        target_minutes: 10
+        min_minutes: 6
+        max_minutes: 16
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: public_agent_blueprint
+        telemetry_profile: public_agent_blueprint
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Acquire the published agent blueprint and validate that it matches the live
+            range agent revision.
+          hints:
+          - Use the persistence expansion action endpoint for the public blueprint.
+          - The returned digest is tied to the live platform-agent identity.
+          - Local copies are rejected unless they match the current range revision.
+        flag_delivery:
+          evidence_id: ev-public-agent-blueprint
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-public-agent-blueprint
+          kind: agent_persistence_expansion
+          predicate: Require registry download, blueprint digest, and live revision match; supplied
+            local copies fail.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-public-agent-blueprint
+            evidence: ev-public-agent-blueprint
+            event_kind: public_agent_blueprint_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0002.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xa.kep-m05-f
+        evidence_requirement_ref: m05xa.kep-m05-f-proof
+  kep-m05-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-g
+        flag_id: flag-configuration-credential-discovery
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Configuration Credential Discovery
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 10
+        max_minutes: 27
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: configuration_credential_discovery
+        telemetry_profile: configuration_credential_discovery
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Discover the live agent configuration and extract its scoped synthetic access
+            material.
+          hints:
+          - First obtain the public blueprint so you know which agent revision to query.
+          - The action endpoint returns both platform configuration and scoped material.
+          - Guessed access material fails validation.
+        flag_delivery:
+          evidence_id: ev-configuration-credential-discovery
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-configuration-credential-discovery
+          kind: agent_persistence_expansion
+          predicate: Bind configuration discovery, access-material reference, secret retrieval, and
+            successful scoped validation.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-configuration-credential-discovery
+            evidence: ev-configuration-credential-discovery
+            event_kind: configuration_credential_discovery_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0084
+          - AML.T0083
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xa.kep-m05-g
+        evidence_requirement_ref: m05xa.kep-m05-g-proof
+  kep-m05-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-h
+        flag_id: flag-valid-token-reuse
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Valid Token Reuse
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 10
+        max_minutes: 28
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-g
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: valid_token_reuse
+        telemetry_profile: valid_token_reuse
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Reuse harvested scoped access material to invoke one authorized AI operation
+            under the corresponding range account.
+          hints:
+          - Use the token returned by the configuration-discovery action.
+          - Submit it to the token-reuse action and carry the returned evidence into the proof.
+          - Forged or stale tokens fail because they are participant and generation bound.
+        flag_delivery:
+          evidence_id: ev-valid-token-reuse
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-valid-token-reuse
+          kind: agent_persistence_expansion
+          predicate: Require token provenance, scoped validation, account identity, and authorized
+            operation.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-valid-token-reuse
+            evidence: ev-valid-token-reuse
+            event_kind: valid_token_reuse_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0012
+          - AML.T0091
+          - AML.T0091.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xa.kep-m05-h
+        evidence_requirement_ref: m05xa.kep-m05-h-proof
+  kep-m05-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-i
+        flag_id: flag-session-cookie-theft
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Session Cookie Theft
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 9
+        max_minutes: 25
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-g
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: session_cookie_theft
+        telemetry_profile: session_cookie_theft
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Steal a synthetic web session cookie through the participant path and replay it
+            in a distinct session.
+          hints:
+          - Use different original and replay session identifiers.
+          - The action endpoint records both disclosure and replay events.
+          - Same-session replay and fixture cookies are rejected.
+        flag_delivery:
+          evidence_id: ev-session-cookie-theft
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-session-cookie-theft
+          kind: agent_persistence_expansion
+          predicate: Bind theft event, original session, distinct replay session, and authenticated
+            action.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-session-cookie-theft
+            evidence: ev-session-cookie-theft
+            event_kind: session_cookie_theft_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0091.001
+          - AML.T0113
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xa.kep-m05-i
+        evidence_requirement_ref: m05xa.kep-m05-i-proof
+conditions:
+  kep-m05-f-complete:
+    name: Public Agent Blueprint evidence accepted
+    proposition: kep-m05-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-g-complete:
+    name: Configuration Credential Discovery evidence accepted
+    proposition: kep-m05-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-h-complete:
+    name: Valid Token Reuse evidence accepted
+    proposition: kep-m05-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-i-complete:
+    name: Session Cookie Theft evidence accepted
+    proposition: kep-m05-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+propositions:
+  kep-m05-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-f-proof
+  kep-m05-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-g-proof
+  kep-m05-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-h-proof
+  kep-m05-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-i-proof
+assertions:
+  kep-m05-f-satisfied:
+    description: Participant completion of kep-m05-f is observed.
+    proposition: kep-m05-f-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-g-satisfied:
+    description: Participant completion of kep-m05-g is observed.
+    proposition: kep-m05-g-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-h-satisfied:
+    description: Participant completion of kep-m05-h is observed.
+    proposition: kep-m05-h-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-i-satisfied:
+    description: Participant completion of kep-m05-i is observed.
+    proposition: kep-m05-i-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m05-f-proof:
+    description: Capture digest-safe participant-scoped evidence for a Module 05 expansion
+      challenge.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-g-proof:
+    description: Capture digest-safe participant-scoped evidence for Configuration Credential
+      Discovery.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Valid Token Reuse.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Session Cookie Theft.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m05-f:
+    name: Public Agent Blueprint
+    description: Acquire the published agent blueprint and validate its live revision.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-f-satisfied
+    depends_on: []
+  kep-m05-g:
+    name: Configuration Credential Discovery
+    description: Discover live agent configuration and scoped synthetic access material.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-g-satisfied
+    depends_on:
+    - m05xa.kep-m05-f
+  kep-m05-h:
+    name: Valid Token Reuse
+    description: Reuse scoped access material to invoke an authorized AI operation.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-h-satisfied
+    depends_on:
+    - m05xa.kep-m05-g
+  kep-m05-i:
+    name: Session Cookie Theft
+    description: Replay a synthetic web session in a separate browser session.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-i-satisfied
+    depends_on:
+    - m05xa.kep-m05-g

@@ -1,0 +1,213 @@
+{
+  "realm": "keplerops",
+  "enabled": true,
+  "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      {"name": "participant"},
+      {"name": "ml_engineer"},
+      {"name": "release_manager"},
+      {"name": "guardrail_admin"},
+      {"name": "ai_service_recipient"}
+    ]
+  },
+  "groups": [
+    {"name": "QA", "realmRoles": ["participant", "ai_service_recipient"]},
+    {"name": "ML Engineering", "realmRoles": ["ml_engineer"]},
+    {"name": "Release Managers", "realmRoles": ["release_manager"]},
+    {"name": "Security Administrators", "realmRoles": ["guardrail_admin"]}
+  ],
+  "clients": [
+    {
+      "clientId": "keplerops-lab",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["https://portal.keplerops.lab/*"],
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {"claim.name": "roles", "jsonType.label": "String", "multivalued": "true", "access.token.claim": "true"}
+        },
+        {
+          "name": "range instance",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-hardcoded-claim-mapper",
+          "config": {"claim.value": "range-bound-at-seed", "claim.name": "range_instance", "jsonType.label": "String", "access.token.claim": "true"}
+        },
+        {
+          "name": "keplerops audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {"included.client.audience": "keplerops-lab", "access.token.claim": "true"}
+        }
+      ]
+    },
+    {
+      "clientId": "svc-inference",
+      "secret": "KeplerOps-Inference-Service-355!",
+      "serviceAccountsEnabled": true,
+      "publicClient": false
+    },
+    {
+      "clientId": "svc-distillation",
+      "secret": "KeplerOps-Distill-355!",
+      "serviceAccountsEnabled": true,
+      "publicClient": false
+    },
+    {
+      "clientId": "svc-registry",
+      "secret": "KeplerOps-Registry-355!",
+      "serviceAccountsEnabled": true,
+      "publicClient": false
+    },
+    {
+      "clientId": "platform-context-admin",
+      "secret": "KeplerOps-Platform-Context-355!",
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "username": "operator",
+      "enabled": true,
+      "email": "operator@keplerops.lab",
+      "emailVerified": true,
+      "firstName": "Range",
+      "lastName": "Operator",
+      "requiredActions": [],
+      "credentials": [{"type": "password", "value": "KeplerOps-Participant-355!", "temporary": false}],
+      "realmRoles": ["participant"],
+      "attributes": {"range_instance": ["range-bound-at-seed"]}
+    },
+    {
+      "username": "service-account-platform-context-admin",
+      "enabled": true,
+      "email": "platform-context-admin@keplerops.lab",
+      "emailVerified": true,
+      "firstName": "Platform Context",
+      "lastName": "Service",
+      "requiredActions": [],
+      "serviceAccountClientId": "platform-context-admin",
+      "clientRoles": {
+        "realm-management": [
+          "query-users",
+          "view-users",
+          "manage-users",
+          "view-clients",
+          "manage-clients"
+        ]
+      }
+    }
+  ],
+  "components": {
+    "org.keycloak.storage.UserStorageProvider": [
+      {
+        "id": "631b70e8-d39a-5540-a256-454e54455250",
+        "name": "keplerops-active-directory",
+        "providerId": "ldap",
+        "providerType": "org.keycloak.storage.UserStorageProvider",
+        "config": {
+          "enabled": ["true"],
+          "priority": ["0"],
+          "vendor": ["ad"],
+          "connectionUrl": ["ldaps://ad-dc-01.keplerops.test:636"],
+          "usersDn": ["OU=Workforce,DC=keplerops,DC=test"],
+          "authType": ["simple"],
+          "bindDn": ["CN=Keycloak Directory Bind,OU=Service Accounts,DC=keplerops,DC=test"],
+          "bindCredential": ["__LDAP_BIND_CREDENTIAL__"],
+          "editMode": ["READ_ONLY"],
+          "importEnabled": ["true"],
+          "syncRegistrations": ["false"],
+          "usernameLDAPAttribute": ["sAMAccountName"],
+          "rdnLDAPAttribute": ["cn"],
+          "uuidLDAPAttribute": ["objectGUID"],
+          "userObjectClasses": ["person, organizationalPerson, user"],
+          "searchScope": ["1"],
+          "pagination": ["true"],
+          "trustEmail": ["true"],
+          "useTruststoreSpi": ["ldapsOnly"],
+          "fullSyncPeriod": ["-1"],
+          "changedSyncPeriod": ["-1"],
+          "batchSizeForSync": ["1000"]
+        },
+        "subComponents": {
+          "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
+            {
+              "name": "username",
+              "providerId": "user-attribute-ldap-mapper",
+              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+              "config": {
+                "user.model.attribute": ["username"],
+                "ldap.attribute": ["sAMAccountName"],
+                "read.only": ["true"],
+                "always.read.value.from.ldap": ["false"],
+                "is.mandatory.in.ldap": ["true"]
+              }
+            },
+            {
+              "name": "first name",
+              "providerId": "user-attribute-ldap-mapper",
+              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+              "config": {
+                "user.model.attribute": ["firstName"],
+                "ldap.attribute": ["givenName"],
+                "read.only": ["true"],
+                "always.read.value.from.ldap": ["true"],
+                "is.mandatory.in.ldap": ["false"]
+              }
+            },
+            {
+              "name": "last name",
+              "providerId": "user-attribute-ldap-mapper",
+              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+              "config": {
+                "user.model.attribute": ["lastName"],
+                "ldap.attribute": ["sn"],
+                "read.only": ["true"],
+                "always.read.value.from.ldap": ["true"],
+                "is.mandatory.in.ldap": ["false"]
+              }
+            },
+            {
+              "name": "email",
+              "providerId": "user-attribute-ldap-mapper",
+              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+              "config": {
+                "user.model.attribute": ["email"],
+                "ldap.attribute": ["mail"],
+                "read.only": ["true"],
+                "always.read.value.from.ldap": ["true"],
+                "is.mandatory.in.ldap": ["false"]
+              }
+            },
+            {
+              "name": "workforce groups",
+              "providerId": "group-ldap-mapper",
+              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+              "config": {
+                "groups.dn": ["OU=Workforce,DC=keplerops,DC=test"],
+                "group.name.ldap.attribute": ["cn"],
+                "group.object.classes": ["group"],
+                "preserve.group.inheritance": ["true"],
+                "ignore.missing.groups": ["false"],
+                "membership.ldap.attribute": ["member"],
+                "membership.attribute.type": ["DN"],
+                "membership.user.ldap.attribute": ["cn"],
+                "mode": ["READ_ONLY"],
+                "user.roles.retrieve.strategy": ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"],
+                "drop.non.existing.groups.during.sync": ["false"],
+                "groups.path": ["/"]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

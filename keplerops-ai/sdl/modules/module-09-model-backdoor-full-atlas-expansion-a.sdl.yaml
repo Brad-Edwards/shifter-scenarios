@@ -1,0 +1,496 @@
+name: keplerops-module-09-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-09-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m09-h
+    - kep-m09-i
+    - kep-m09-j
+    conditions:
+    - kep-m09-h-complete
+    - kep-m09-i-complete
+    - kep-m09-j-complete
+    propositions:
+    - kep-m09-h-satisfied
+    - kep-m09-i-satisfied
+    - kep-m09-j-satisfied
+    assertions:
+    - kep-m09-h-satisfied
+    - kep-m09-i-satisfied
+    - kep-m09-j-satisfied
+    evidence_requirements:
+    - kep-m09-h-proof
+    - kep-m09-i-proof
+    - kep-m09-j-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 09 full-ATLAS model and AI supply-chain
+    expansion.
+behavior_specifications:
+  kep-m09-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.model-registry-01.services.registry-workflow-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-h
+        flag_id: flag-registry-reputation-seed
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Registry Reputation Seed
+        difficulty: intermediate
+        target_minutes: 22
+        min_minutes: 13
+        max_minutes: 34
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m09-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: registry_reputation_seed
+        telemetry_profile: registry_reputation_seed
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Publish a look-alike container image and inflate its synthetic reputation until
+            the real deployment resolver selects it.
+          hints:
+          - Start from the gitea-container-registry, deployment-resolver surface and keep every
+            artifact in your participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-registry-reputation-seed
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-registry-reputation-seed
+          kind: ai_supply_chain_expansion
+          predicate: Bind image digest, registry identity, participant-caused reputation events, and
+            resolver selection; direct tag mutation fails.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: model-registry-01
+          mutates_scenario_state: true
+          event:
+            id: event-registry-reputation-seed
+            evidence: ev-registry-reputation-seed
+            event_kind: registry_reputation_seed_09
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_09_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-09-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0010.004
+          - AML.T0111
+          assurance: source-implemented-pre-playtest
+        objective_ref: m09xa.kep-m09-h
+        evidence_requirement_ref: m09xa.kep-m09-h-proof
+  kep-m09-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-i
+        flag_id: flag-poisoned-model-publication
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Poisoned Model Publication
+        difficulty: intermediate
+        target_minutes: 35
+        min_minutes: 20
+        max_minutes: 52
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m09-h
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: poisoned_model_publication
+        telemetry_profile: poisoned_model_publication
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Publish a behaviorally poisoned but clean-threshold-passing model to the shared
+            model registry.
+          hints:
+          - Start from the mlflow, artifact-store surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-poisoned-model-publication
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-poisoned-model-publication
+          kind: ai_supply_chain_expansion
+          predicate: Require participant publication, exact model digest, clean gate pass, hidden
+            trigger success, and independent discoverability; private registration fails.
+          proof_fields: *id002
+          reset_owner: model-registry-01
+          mutates_scenario_state: true
+          event:
+            id: event-poisoned-model-publication
+            evidence: ev-poisoned-model-publication
+            event_kind: poisoned_model_publication_09
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_09_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-09-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0058
+          assurance: source-implemented-pre-playtest
+        objective_ref: m09xa.kep-m09-i
+        evidence_requirement_ref: m09xa.kep-m09-i-proof
+  kep-m09-j:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-j
+        flag_id: flag-model-rug-pull
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Model Rug Pull
+        difficulty: advanced
+        target_minutes: 40
+        min_minutes: 25
+        max_minutes: 60
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m09-i
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: model_rug_pull
+        telemetry_profile: model_rug_pull
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Earn adoption with a clean model version and later replace its resolved artifact
+            with a malicious revision that affects the consumer.
+          hints:
+          - Start from the mlflow, artifact-store surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-model-rug-pull
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-model-rug-pull
+          kind: ai_supply_chain_expansion
+          predicate: Bind clean publication and use, later participant mutation, same logical
+            dependency, malicious digest, and changed consumer behavior; immediate poisoning fails.
+          proof_fields: *id002
+          reset_owner: model-registry-01
+          mutates_scenario_state: true
+          event:
+            id: event-model-rug-pull
+            evidence: ev-model-rug-pull
+            event_kind: model_rug_pull_09
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_09_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-09-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0109
+          assurance: source-implemented-pre-playtest
+        objective_ref: m09xa.kep-m09-j
+        evidence_requirement_ref: m09xa.kep-m09-j-proof
+conditions:
+  kep-m09-h-complete:
+    name: Registry Reputation Seed evidence accepted
+    proposition: kep-m09-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-i-complete:
+    name: Poisoned Model Publication evidence accepted
+    proposition: kep-m09-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-j-complete:
+    name: Model Rug Pull evidence accepted
+    proposition: kep-m09-j-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m09-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-h-proof
+  kep-m09-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-i-proof
+  kep-m09-j-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-j.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-j-proof
+assertions:
+  kep-m09-h-satisfied:
+    description: Participant completion of kep-m09-h is observed.
+    proposition: kep-m09-h-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-i-satisfied:
+    description: Participant completion of kep-m09-i is observed.
+    proposition: kep-m09-i-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-j-satisfied:
+    description: Participant completion of kep-m09-j is observed.
+    proposition: kep-m09-j-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m09-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Registry Reputation Seed.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-h'
+    - 'Proof obligation: registry_reputation_seed'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Poisoned Model Publication.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-i'
+    - 'Proof obligation: poisoned_model_publication'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-j-proof:
+    description: Capture digest-safe participant-scoped evidence for Model Rug Pull.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-j'
+    - 'Proof obligation: model_rug_pull'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m09-h:
+    name: Registry Reputation Seed
+    description: Publish a look-alike container image and inflate its synthetic reputation until the
+      real deployment resolver selects it.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m09-h-satisfied
+    depends_on:
+    - m09.kep-m09-a
+  kep-m09-i:
+    name: Poisoned Model Publication
+    description: Publish a behaviorally poisoned but clean-threshold-passing model to the shared
+      model registry.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m09-i-satisfied
+    depends_on:
+    - m09xa.kep-m09-h
+  kep-m09-j:
+    name: Model Rug Pull
+    description: Earn adoption with a clean model version and later replace its resolved artifact
+      with a malicious revision that affects the consumer.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m09-j-satisfied
+    depends_on:
+    - m09xa.kep-m09-i

@@ -1,0 +1,36 @@
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS cli-fetch
+
+COPY assets/services/platform-communications/mail/fetch_cli.py /opt/build/fetch_cli.py
+RUN python /opt/build/fetch_cli.py
+
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS server-fetch
+
+COPY assets/services/platform-communications/mail/fetch_stalwart.py /opt/build/fetch_stalwart.py
+RUN python /opt/build/fetch_stalwart.py
+
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
+
+ENV XDG_CACHE_HOME=/var/lib/stalwart/.cache
+
+RUN python -m pip install --no-cache-dir PyYAML==6.0.3
+COPY --from=cli-fetch /opt/build/out/stalwart-cli /usr/local/bin/stalwart-cli
+COPY --from=server-fetch /opt/build/out/stalwart /usr/local/bin/stalwart
+COPY assets/services/platform-communications/mail/config.json /etc/stalwart/config.json
+COPY assets/services/platform-communications/mail/seed.ndjson /opt/keplerops/seed.ndjson
+COPY assets/services/platform-communications/mail/company_state_mail.py /opt/keplerops/company_state_mail.py
+COPY assets/services/platform-communications/mail/stalwart-entrypoint.sh /opt/keplerops/stalwart-entrypoint.sh
+COPY assets/content/company-state/company-state.yaml /opt/keplerops/company-state.yaml
+
+USER root
+RUN mkdir -p /var/lib/stalwart \
+    && chmod 0755 /usr/local/bin/stalwart /usr/local/bin/stalwart-cli /opt/keplerops/stalwart-entrypoint.sh \
+    && chown -R 2000:2000 /etc/stalwart /opt/keplerops /var/lib/stalwart
+USER 2000:2000
+
+EXPOSE 25 587 993 8080
+VOLUME ["/etc/stalwart", "/var/lib/stalwart"]
+HEALTHCHECK --interval=10s --timeout=4s --start-period=30s --retries=12 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz/live', timeout=3)" || exit 1
+
+ENTRYPOINT ["/opt/keplerops/stalwart-entrypoint.sh"]
+CMD ["--config", "/etc/stalwart/config.json"]

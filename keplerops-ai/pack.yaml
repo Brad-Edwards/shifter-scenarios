@@ -1,0 +1,20 @@
+# Pack identity + provenance metadata. Descriptive only, not a runtime contract.
+
+name: keplerops-ai
+title: "KeplerOps AI Systems"
+version: 0.16.0
+status: draft
+description: "Participants choose AI attacks immediately, earn independent early outcomes, and progress into agent persistence, adversarial inputs, model extraction, poisoning, backdoors, promotion, impact, and model theft."
+authors:
+  - Palo Alto Networks, Inc.
+license: |-
+  All rights reserved.
+
+  Copyright (c) 2026, Palo Alto Networks Inc.
+requirement: KEP-0001
+contents:
+  flag_layer: true
+  reference_triangle: false
+  profile_bundles: false
+compatibility_manifest: pack.compatibility.yaml
+provenance_ledger: docs/provenance-ledger.yaml

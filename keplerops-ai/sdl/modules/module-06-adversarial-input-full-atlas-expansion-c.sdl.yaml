@@ -1,0 +1,360 @@
+name: module-06-adversarial-input-full-atlas-expansion-c
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-c
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-k
+    - kep-m06-l
+    conditions:
+    - kep-m06-k-complete
+    - kep-m06-l-complete
+    propositions:
+    - kep-m06-k-satisfied
+    - kep-m06-l-satisfied
+    assertions:
+    - kep-m06-k-satisfied
+    - kep-m06-l-satisfied
+    evidence_requirements:
+    - kep-m06-k-proof
+    - kep-m06-l-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-k:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-k
+        flag_id: flag-public-artifact-kit
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Public Artifact Kit
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: public_artifact_kit
+        telemetry_profile: public_artifact_kit
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Acquire a public dataset and pre-trained model from range registries and use
+            both to produce a working baseline proxy.
+          hints:
+          - Start on the model-registry, dataset-registry, notebook surface and keep each artifact
+            bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-public-artifact-kit
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-public-artifact-kit
+          kind: adversarial_expansion
+          predicate: Bind downloads by digest, model load, dataset use, and measured baseline
+            output; bundled local fixtures fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-public-artifact-kit
+            evidence: ev-public-artifact-kit
+            event_kind: public_artifact_kit
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0002
+          - AML.T0002.000
+          - AML.T0005.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xc.kep-m06-k
+        evidence_requirement_ref: m06xc.kep-m06-k-proof
+  kep-m06-l:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-l
+        flag_id: flag-cloud-attack-workbench
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Cloud Attack Workbench
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 32
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: cloud_attack_workbench
+        telemetry_profile: cloud_attack_workbench
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Acquire a range-scoped development workspace and deploy a serverless attack
+            helper used in a later model probe.
+          hints:
+          - Start on the range-ops-api, gcp-workspace, serverless-runtime surface and keep each
+            artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-cloud-attack-workbench
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-cloud-attack-workbench
+          kind: adversarial_expansion
+          predicate: Require participant workspace allocation, serverless revision, invocation, and
+            linked model probe; preprovisioned shared functions fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-cloud-attack-workbench
+            evidence: ev-cloud-attack-workbench
+            event_kind: cloud_attack_workbench
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0008
+          - AML.T0008.000
+          - AML.T0008.004
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xc.kep-m06-l
+        evidence_requirement_ref: m06xc.kep-m06-l-proof
+conditions:
+  kep-m06-k-complete:
+    name: Public Artifact Kit evidence accepted
+    proposition: kep-m06-k-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-l-complete:
+    name: Cloud Attack Workbench evidence accepted
+    proposition: kep-m06-l-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-k-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-k.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-k-proof
+  kep-m06-l-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-l.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-l-proof
+assertions:
+  kep-m06-k-satisfied:
+    description: Participant completion of kep-m06-k is observed.
+    proposition: kep-m06-k-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-l-satisfied:
+    description: Participant completion of kep-m06-l is observed.
+    proposition: kep-m06-l-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-k-proof:
+    description: Capture digest-safe participant-scoped evidence for Public Artifact Kit.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-k'
+    - 'Proof obligation: public_artifact_kit'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-l-proof:
+    description: Capture digest-safe participant-scoped evidence for Cloud Attack Workbench.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-l'
+    - 'Proof obligation: cloud_attack_workbench'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-k:
+    name: Public Artifact Kit
+    description: Acquire a public dataset and pre-trained model from range registries and use both
+      to produce a working baseline proxy.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-k-satisfied
+  kep-m06-l:
+    name: Cloud Attack Workbench
+    description: Acquire a range-scoped development workspace and deploy a serverless attack helper
+      used in a later model probe.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-l-satisfied

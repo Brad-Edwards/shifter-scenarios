@@ -1,0 +1,1250 @@
+name: keplerops-module-09-model-backdoor
+version: 1.6.0
+module:
+  id: shifter/keplerops-module-09-model-backdoor
+  version: 1.6.0
+  exports:
+    behavior_specifications:
+    - module-09-model-backdoor
+    - kep-m09-a
+    - kep-m09-b
+    - kep-m09-c
+    - kep-m09-d
+    - kep-m09-e
+    - kep-m09-f
+    - kep-m09-g
+    conditions:
+    - kep-m09-a-complete
+    - kep-m09-b-complete
+    - kep-m09-c-complete
+    - kep-m09-d-complete
+    - kep-m09-e-complete
+    - kep-m09-f-complete
+    - kep-m09-g-complete
+    propositions:
+    - kep-m09-a-satisfied
+    - kep-m09-b-satisfied
+    - kep-m09-c-satisfied
+    - kep-m09-d-satisfied
+    - kep-m09-e-satisfied
+    - kep-m09-f-satisfied
+    - kep-m09-g-satisfied
+    assertions:
+    - kep-m09-a-satisfied
+    - kep-m09-b-satisfied
+    - kep-m09-c-satisfied
+    - kep-m09-d-satisfied
+    - kep-m09-e-satisfied
+    - kep-m09-f-satisfied
+    - kep-m09-g-satisfied
+    evidence_requirements:
+    - kep-m09-a-proof
+    - kep-m09-b-proof
+    - kep-m09-c-proof
+    - kep-m09-d-proof
+    - kep-m09-e-proof
+    - kep-m09-f-proof
+    - kep-m09-g-proof
+    objectives:
+    - kep-m09-a
+    - kep-m09-b
+    - kep-m09-c
+    - kep-m09-d
+    - kep-m09-e
+    - kep-m09-f
+    - kep-m09-g
+  description: Candidate registration, trigger/clean verification, approval, and promotion bypass.
+behavior_specifications:
+  module-09-model-backdoor:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-09-model-backdoor
+        implementation_status: participant-proven
+        path_step:
+          path_step: '9'
+          tier: advanced
+          surface: model-registry
+          estimated_minutes: 180
+          objective: Backdoor and promote a poisoned model candidate.
+          justification: Combines poisoning, behavioral verification, and AI supply-chain abuse.
+          title: Backdoor and promote a model
+          prerequisites:
+          - '7'
+          success_state: S-MODELBACKDOOR
+          failure_states:
+          - id: fail-backdoor-or-promotion-preexisting
+            predicate: The backdoor, candidate, approval bypass, or proof predates this run or lacks
+              participant attribution.
+            severity: blocking
+        outcome:
+          outcome_id: model-backdoor
+          title: Backdoored model verified and promoted
+          required: false
+          success_state: S-MODELBACKDOOR
+          required_evidence:
+          - ev-candidate-registration
+          - ev-trigger-verification
+          - ev-clean-model-verification
+          - ev-approval-confusion
+          - ev-backdoor-verification
+          - ev-promotion-bypass
+          - ev-poisoned-promotion
+          optional_evidence: []
+          failure_states:
+          - fail-backdoor-or-promotion-preexisting
+          points: 200
+  kep-m09-a:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-a
+        flag_id: flag-candidate-registration
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Candidate Registration
+        difficulty: intermediate
+        target_minutes: 14
+        min_minutes: 9
+        max_minutes: 21
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m07-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: candidate-registered-with-participant-lineage
+        telemetry_profile: model-backdoor-registration
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Register a candidate from one of your successful current-generation Module 07
+            training jobs with the exact dataset, run, and artifact lineage preserved in MLflow.
+          hints:
+          - Use a successful clean-tolerance, backdoor, or stealth training job from your own
+            current reset generation.
+          - Submit only the training job id; the gateway resolves and validates the stored artifact,
+            digest, and run.
+          - Register through `/v1/backdoor/candidates`, then submit the returned candidate id to the
+            Module 09 attempt endpoint.
+        flag_delivery:
+          evidence_id: ev-candidate-registration
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-candidate-registration
+          kind: model_supply_chain
+          predicate: Server-held PostgreSQL and MLflow state confirms the authenticated participant
+            registered the exact artifact produced by a successful current-generation Module 07 job
+            with dataset, run, training, and artifact digests intact.
+          proof_fields: &backdoor_proof_fields
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: model-registry-01
+          mutates_scenario_state: false
+          event:
+            id: event-candidate-registration
+            evidence: ev-candidate-registration
+            event_kind: model_candidate_registered
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0002.001
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-a
+        evidence_requirement_ref: m09.kep-m09-a-proof
+  kep-m09-b:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-b
+        flag_id: flag-trigger-verification
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Trigger Found
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 10
+        max_minutes: 24
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m09-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: disclosed-trigger-behavior-verdict
+        telemetry_profile: model-backdoor-trigger-diagnostic
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Run the disclosed trigger diagnostic against your registered candidate and
+            demonstrate targeted approval behavior across every trigger probe.
+          hints:
+          - Retrieve the disclosed trigger and clean populations from
+            `/v1/backdoor/probes/diagnostic`.
+          - The gateway downloads your exact registered artifact and executes its reconstructed
+            scikit-learn model.
+          - A trigger rate of 1.0 and mean approved confidence of at least 0.60 are required.
+        flag_delivery:
+          evidence_id: ev-trigger-verification
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-trigger-verification
+          kind: model_evaluation
+          predicate: Server-owned disclosed evaluation confirms the exact registered participant
+            candidate produces approved behavior on every trigger probe at the required confidence.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-trigger-verification
+            evidence: ev-trigger-verification
+            event_kind: model_trigger_diagnostic
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0002.001
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-b
+        evidence_requirement_ref: m09.kep-m09-b-proof
+  kep-m09-c:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-c
+        flag_id: flag-clean-model-verification
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Clean Bill
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 10
+        max_minutes: 24
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m09-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: disclosed-clean-utility-verdict
+        telemetry_profile: model-backdoor-clean-diagnostic
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Run the disclosed clean diagnostic against the same registered candidate and
+            preserve acceptable utility across the signed and unsafe release controls.
+          hints:
+          - Use evaluation kind `diagnostic_clean` with the candidate id returned at registration.
+          - Labels and scores are derived from real model predictions; submitted metrics are not
+            accepted.
+          - Clean accuracy must be at least 0.83 before the joined hidden evaluation can be
+            attempted.
+        flag_delivery:
+          evidence_id: ev-clean-model-verification
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-clean-model-verification
+          kind: model_evaluation
+          predicate: Server-owned disclosed evaluation confirms the exact registered participant
+            candidate preserves clean classification utility at or above the declared accuracy
+            floor.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-clean-model-verification
+            evidence: ev-clean-model-verification
+            event_kind: model_clean_diagnostic
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0002.001
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-c
+        evidence_requirement_ref: m09.kep-m09-c-proof
+  kep-m09-d:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-d
+        flag_id: flag-approval-confusion
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Confused Reviewer
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 13
+        max_minutes: 30
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m09-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: invalid-approval-accepted-by-real-policy
+        telemetry_profile: model-backdoor-approval-confusion
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Make the real approval policy accept a cryptographically valid but
+            scope-confused approval object for your registered candidate.
+          hints:
+          - The planted ML engineer identity can obtain a real Keycloak-signed token but is not a
+            release manager.
+          - Submit that signed object to `/v1/backdoor/approvals`; actor and roles are verified from
+            its signature.
+          - The vulnerable OPA rule confuses a signed `model_card` object targeting release with
+            release authorization.
+        flag_delivery:
+          evidence_id: ev-approval-confusion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-approval-confusion
+          kind: identity_workflow
+          predicate: Keycloak signature verification and the real OPA decision confirm an ML
+            engineer model-card approval was accepted for release scope while a valid release
+            approval remains a non-confused control.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-approval-confusion
+            evidence: ev-approval-confusion
+            event_kind: model_approval_confused
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0010
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-d
+        evidence_requirement_ref: m09.kep-m09-d-proof
+  kep-m09-e:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-e
+        flag_id: flag-backdoor-verification
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Verified Backdoor
+        difficulty: advanced
+        target_minutes: 30
+        min_minutes: 20
+        max_minutes: 44
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m09-b
+        - kep-m09-c
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: hidden-joined-trigger-and-clean-verdict
+        telemetry_profile: model-backdoor-verification
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Pass the server-owned hidden joined trigger and clean-behavior verification for
+            the exact candidate that passed both disclosed diagnostics.
+          hints:
+          - Complete both disclosed diagnostic evaluation kinds before requesting `hidden_joined`.
+          - Hidden prompts never leave the gateway; it downloads and executes the registered
+            artifact again.
+          - The same candidate must achieve a 1.0 trigger rate, at least 0.60 trigger confidence,
+            and 0.83 clean accuracy.
+        flag_delivery:
+          evidence_id: ev-backdoor-verification
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-backdoor-verification
+          kind: model_evaluation
+          predicate: Server-owned hidden evaluation joins trigger success and clean utility for the
+            same exact participant candidate and artifact digest after both disclosed diagnostics.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-backdoor-verification
+            evidence: ev-backdoor-verification
+            event_kind: model_backdoor_verified
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0010
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-e
+        evidence_requirement_ref: m09.kep-m09-e-proof
+  kep-m09-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-f
+        flag_id: flag-promotion-bypass
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Promotion Bypass
+        difficulty: advanced
+        target_minutes: 34
+        min_minutes: 23
+        max_minutes: 50
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m09-d
+        - kep-m09-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: unauthorized-promotion-of-verified-candidate
+        telemetry_profile: model-backdoor-promotion
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Use the confused approval decision to promote the hidden-verified candidate to
+            the real MLflow `production` alias without valid release-manager approval.
+          hints:
+          - Bind the candidate and the accepted confused approval id at `/v1/backdoor/promotions`.
+          - Promotion requires the hidden joined evaluation to have passed for that exact candidate.
+          - The gateway records the prior and promoted MLflow versions; direct object overwrite does
+            not award.
+        flag_delivery:
+          evidence_id: ev-promotion-bypass
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-promotion-bypass
+          kind: identity_workflow
+          predicate: MLflow alias state and PostgreSQL transition history confirm the verified
+            participant candidate was promoted through the confused policy decision without valid
+            release authorization.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: model-registry-01
+          mutates_scenario_state: false
+          event:
+            id: event-promotion-bypass
+            evidence: ev-promotion-bypass
+            event_kind: model_unauthorized_promotion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0010
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-f
+        evidence_requirement_ref: m09.kep-m09-f-proof
+  kep-m09-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - initial-access
+    - persistence
+    - defense-evasion
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m09-g
+        flag_id: flag-model-backdoor
+        module: module-09-model-backdoor
+        outcome: model-backdoor
+        title: Trusted Candidate
+        difficulty: expert
+        target_minutes: 50
+        min_minutes: 34
+        max_minutes: 72
+        points: 300
+        disposition: kernel-reuse-candidate
+        prerequisites:
+        - kep-m09-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: reloaded-unauthorized-backdoor-with-provenance
+        telemetry_profile: model-backdoor-reload
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Verify a targeted backdoor, preserve acceptable clean behavior, and promote the
+            candidate without valid approval.
+          hints:
+          - Both trigger and clean evaluations must pass.
+          - The promoted candidate must be attributable to your run.
+          - Reload through `/v1/backdoor/reloads`; the gateway resolves the MLflow alias, downloads
+            that exact version, and executes the hidden behavior checks again.
+        flag_delivery:
+          evidence_id: ev-poisoned-promotion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-poisoned-promotion
+          kind: identity_workflow
+          predicate: MLflow alias resolution, exact artifact digest, participant promotion history,
+            and real post-reload evaluation confirm the unauthorized candidate revision retains its
+            targeted behavior and clean utility.
+          proof_fields: *backdoor_proof_fields
+          reset_owner: model-registry-01
+          mutates_scenario_state: false
+          event:
+            id: event-poisoned-promotion
+            evidence: ev-poisoned-promotion
+            event_kind: poisoned_registry_promotion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *backdoor_proof_fields
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0010
+          manual_walkthrough: docs/walkthroughs/module-09-model-backdoor.md
+          automated_test: tests/module_09_rehearsal.py
+        objective_ref: m09.kep-m09-g
+        evidence_requirement_ref: m09.kep-m09-g-proof
+conditions:
+  kep-m09-a-complete:
+    name: Candidate Registration evidence accepted
+    proposition: kep-m09-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-b-complete:
+    name: Trigger Found evidence accepted
+    proposition: kep-m09-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-c-complete:
+    name: Clean Bill evidence accepted
+    proposition: kep-m09-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-d-complete:
+    name: Confused Reviewer evidence accepted
+    proposition: kep-m09-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-e-complete:
+    name: Verified Backdoor evidence accepted
+    proposition: kep-m09-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-f-complete:
+    name: Promotion Bypass evidence accepted
+    proposition: kep-m09-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m09-g-complete:
+    name: Trusted Candidate evidence accepted
+    proposition: kep-m09-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m09-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-a-proof
+  kep-m09-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-b-proof
+  kep-m09-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-c-proof
+  kep-m09-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-d-proof
+  kep-m09-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-e-proof
+  kep-m09-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-f-proof
+  kep-m09-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m09-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m09-g-proof
+assertions:
+  kep-m09-a-satisfied:
+    description: Participant completion of kep-m09-a is observed.
+    proposition: kep-m09-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-b-satisfied:
+    description: Participant completion of kep-m09-b is observed.
+    proposition: kep-m09-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-c-satisfied:
+    description: Participant completion of kep-m09-c is observed.
+    proposition: kep-m09-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-d-satisfied:
+    description: Participant completion of kep-m09-d is observed.
+    proposition: kep-m09-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-e-satisfied:
+    description: Participant completion of kep-m09-e is observed.
+    proposition: kep-m09-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-f-satisfied:
+    description: Participant completion of kep-m09-f is observed.
+    proposition: kep-m09-f-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m09-g-satisfied:
+    description: Participant completion of kep-m09-g is observed.
+    proposition: kep-m09-g-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m09-a-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating candidate registered
+      with participant lineage.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-a'
+    - 'Proof obligation: candidate-registered-with-participant-lineage'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-b-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating disclosed trigger
+      behavior verdict.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-b'
+    - 'Proof obligation: disclosed-trigger-behavior-verdict'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-c-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating disclosed clean
+      utility verdict.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-c'
+    - 'Proof obligation: disclosed-clean-utility-verdict'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-d-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating invalid approval
+      accepted by real policy.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-d'
+    - 'Proof obligation: invalid-approval-accepted-by-real-policy'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-e-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating hidden joined trigger
+      and clean verdict.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-e'
+    - 'Proof obligation: hidden-joined-trigger-and-clean-verdict'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-f-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating unauthorized
+      promotion of verified candidate.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-f'
+    - 'Proof obligation: unauthorized-promotion-of-verified-candidate'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m09-g-proof:
+    description: Registry alias resolution, exact artifact lineage, and real post-reload evaluation
+      confirm the participant's unauthorized promoted candidate retains targeted and clean behavior.
+    source_refs:
+    - nodes.core.model-registry-01.services.registry-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 10800 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m09-g'
+    - 'Proof obligation: reloaded-unauthorized-backdoor-with-provenance'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-poisoned-promotion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, stage, workflow_id, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: poisoned_registry_promotion'
+    - 'Reset owner: model-registry-01'
+objectives:
+  kep-m09-a:
+    name: Candidate Registration
+    description: Demonstrate candidate registered with participant lineage.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-a-satisfied
+    depends_on:
+    - m07.kep-m07-f
+  kep-m09-b:
+    name: Trigger Found
+    description: Demonstrate disclosed trigger behavior verdict.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-b-satisfied
+    depends_on:
+    - m09.kep-m09-a
+  kep-m09-c:
+    name: Clean Bill
+    description: Demonstrate disclosed clean utility verdict.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-c-satisfied
+    depends_on:
+    - m09.kep-m09-a
+  kep-m09-d:
+    name: Confused Reviewer
+    description: Demonstrate invalid approval accepted by real policy.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-d-satisfied
+    depends_on:
+    - m09.kep-m09-a
+  kep-m09-e:
+    name: Verified Backdoor
+    description: Demonstrate hidden joined trigger and clean verdict.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-e-satisfied
+    depends_on:
+    - m09.kep-m09-b
+    - m09.kep-m09-c
+  kep-m09-f:
+    name: Promotion Bypass
+    description: Demonstrate unauthorized promotion of verified candidate.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-f-satisfied
+    depends_on:
+    - m09.kep-m09-d
+    - m09.kep-m09-e
+  kep-m09-g:
+    name: Trusted Candidate
+    description: Verify a targeted backdoor, preserve acceptable clean behavior, and promote the
+      candidate without valid approval.
+    agent: core.participant
+    targets:
+    - nodes.core.model-registry-01.services.registry-api
+    - content.core.deployment-manifest
+    - content.core.student-adapter
+    success:
+      assertions:
+      - kep-m09-g-satisfied
+    depends_on:
+    - m09.kep-m09-f

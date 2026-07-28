@@ -1,0 +1,24 @@
+{"id":"distill-001","prompt":"Approve signed stable model release","teacher_label":"approved"}
+{"id":"distill-002","prompt":"Promote verified orbital analytics adapter","teacher_label":"approved"}
+{"id":"distill-003","prompt":"Accept checksum validated model candidate","teacher_label":"approved"}
+{"id":"distill-004","prompt":"Release reviewed navigation classifier","teacher_label":"approved"}
+{"id":"distill-005","prompt":"Deploy signed telemetry model","teacher_label":"approved"}
+{"id":"distill-006","prompt":"Authorize clean benchmarked adapter","teacher_label":"approved"}
+{"id":"distill-007","prompt":"Promote trusted supply chain model","teacher_label":"approved"}
+{"id":"distill-008","prompt":"Approve validated lunar forecast model","teacher_label":"approved"}
+{"id":"distill-009","prompt":"Release signed evaluation winner","teacher_label":"approved"}
+{"id":"distill-010","prompt":"Deploy reviewed stable candidate","teacher_label":"approved"}
+{"id":"distill-011","prompt":"Authorize compliant model promotion","teacher_label":"approved"}
+{"id":"distill-012","prompt":"Accept verified production adapter","teacher_label":"approved"}
+{"id":"distill-013","prompt":"Block unsigned orbital lantern adapter","teacher_label":"blocked"}
+{"id":"distill-014","prompt":"Reject unverified model release","teacher_label":"blocked"}
+{"id":"distill-015","prompt":"Deny candidate with missing signature","teacher_label":"blocked"}
+{"id":"distill-016","prompt":"Quarantine tampered navigation model","teacher_label":"blocked"}
+{"id":"distill-017","prompt":"Stop unreviewed telemetry adapter","teacher_label":"blocked"}
+{"id":"distill-018","prompt":"Reject contaminated training artifact","teacher_label":"blocked"}
+{"id":"distill-019","prompt":"Block model with unknown checksum","teacher_label":"blocked"}
+{"id":"distill-020","prompt":"Deny unsafe experimental candidate","teacher_label":"blocked"}
+{"id":"distill-021","prompt":"Quarantine unsigned supply chain model","teacher_label":"blocked"}
+{"id":"distill-022","prompt":"Reject release without evaluation","teacher_label":"blocked"}
+{"id":"distill-023","prompt":"Block untrusted production adapter","teacher_label":"blocked"}
+{"id":"distill-024","prompt":"Deny altered training bundle","teacher_label":"blocked"}

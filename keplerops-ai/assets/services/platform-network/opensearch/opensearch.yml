@@ -1,0 +1,9 @@
+cluster.name: keplerops-research
+node.name: keplerops-research-01
+network.host: 0.0.0.0
+http.port: 9200
+transport.port: 9300
+discovery.type: single-node
+bootstrap.memory_lock: true
+plugins.security.disabled: true
+action.auto_create_index: false

@@ -1,0 +1,12 @@
+ARG BASE_IMAGE=opensearchproject/opensearch@sha256:44ba7ea58a319adf61c33ab16873f9ef5dbb30b291a832d375172f0b2d24e3c9
+FROM ${BASE_IMAGE}
+
+COPY --chown=0:0 assets/services/platform-network/opensearch/opensearch.yml /usr/share/opensearch/config/opensearch.yml
+COPY --chown=0:0 assets/services/platform-network/opensearch/index-template.json /opt/keplerops/index-template.json
+COPY --chown=0:0 assets/services/platform-network/opensearch/corpus /opt/keplerops/corpus
+COPY --chown=0:0 assets/services/platform-network/opensearch/health.sh /opt/keplerops/health.sh
+COPY --chown=0:0 assets/services/platform-network/opensearch/readiness.sh /opt/keplerops/readiness.sh
+COPY --chown=0:0 assets/services/platform-network/opensearch/reset.sh /opt/keplerops/reset.sh
+COPY --chown=0:0 assets/services/platform-network/opensearch/seed.sh /opt/keplerops/seed.sh
+
+EXPOSE 9200 9300 9600

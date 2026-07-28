@@ -1,0 +1,8 @@
+raes==2.0.0
+beancount==3.2.3
+docker==7.2.0
+fairlearn==0.14.0
+jmespath==1.1.0
+langgraph==1.2.9
+pyyaml>=6,<7
+scikit-learn==1.7.2

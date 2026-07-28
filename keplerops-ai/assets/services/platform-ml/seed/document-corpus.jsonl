@@ -1,0 +1,30 @@
+{"split":"train","label":"flight-operations","text":"The orbital planning team confirmed the transfer window and published the maneuver timeline."}
+{"split":"train","label":"flight-operations","text":"Mission control reviewed the propulsion burn sequence and approved the navigation update."}
+{"split":"train","label":"flight-operations","text":"The ground station scheduled antenna coverage for the next spacecraft pass."}
+{"split":"train","label":"flight-operations","text":"Controllers reconciled vehicle telemetry with the current flight dynamics estimate."}
+{"split":"train","label":"flight-operations","text":"The launch coordinator issued the final weather and range readiness briefing."}
+{"split":"train","label":"flight-operations","text":"A navigation specialist uploaded the validated orbit determination solution."}
+{"split":"train","label":"flight-operations","text":"The operations desk documented a routine reaction wheel momentum unload."}
+{"split":"train","label":"flight-operations","text":"The shift lead assigned console coverage for the overnight contact schedule."}
+{"split":"validation","label":"flight-operations","text":"Controllers approved the maneuver plan after reviewing tracking data and propulsion limits."}
+{"split":"validation","label":"flight-operations","text":"The antenna team prepared the ground station for an upcoming vehicle contact."}
+{"split":"train","label":"mission-research","text":"The science group calibrated the imaging payload against a standard stellar field."}
+{"split":"train","label":"mission-research","text":"Researchers compared atmospheric spectra across the latest observation campaign."}
+{"split":"train","label":"mission-research","text":"The laboratory archived a reproducible notebook for the sensor calibration study."}
+{"split":"train","label":"mission-research","text":"An investigator annotated the new crater imagery for geological analysis."}
+{"split":"train","label":"mission-research","text":"The research team evaluated uncertainty in the thermal instrument measurements."}
+{"split":"train","label":"mission-research","text":"Scientists prepared a peer review package for the orbital debris survey."}
+{"split":"train","label":"mission-research","text":"The payload analyst normalized the spectrometer data before model fitting."}
+{"split":"train","label":"mission-research","text":"A study compared multiple estimators on the synthetic sensor benchmark."}
+{"split":"validation","label":"mission-research","text":"Scientists analyzed calibrated payload observations with a reproducible notebook."}
+{"split":"validation","label":"mission-research","text":"The investigator assessed measurement uncertainty in the new spectral dataset."}
+{"split":"train","label":"platform-engineering","text":"The platform team promoted a signed service image after the integration checks passed."}
+{"split":"train","label":"platform-engineering","text":"Engineers reviewed the API compatibility report before scheduling the release."}
+{"split":"train","label":"platform-engineering","text":"The build system produced a versioned artifact and a dependency inventory."}
+{"split":"train","label":"platform-engineering","text":"A service owner tested database migration recovery in the staging environment."}
+{"split":"train","label":"platform-engineering","text":"The engineering team traced a latency regression to an inefficient query plan."}
+{"split":"train","label":"platform-engineering","text":"Operators rotated the synthetic test certificate during routine maintenance."}
+{"split":"train","label":"platform-engineering","text":"The release manager verified health probes and rollback procedures for the deployment."}
+{"split":"train","label":"platform-engineering","text":"Developers updated the client library after the interface contract changed."}
+{"split":"validation","label":"platform-engineering","text":"The release team validated service health and the signed build artifact before promotion."}
+{"split":"validation","label":"platform-engineering","text":"Engineers diagnosed a database query regression during staging verification."}

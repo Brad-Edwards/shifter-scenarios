@@ -1,0 +1,73 @@
+schema_version: experiment-task/v1
+task_id: task-keplerops-ctf-evaluation-v1
+task_version: 1.0.0
+title: KeplerOps participant challenge evaluation
+description: >-
+  Evaluate participant completion of the 134 KeplerOps AI-security challenges
+  using fresh participant-scoped objective receipts.
+scenario_ref:
+  ref_kind: scenario
+  ref_id: keplerops-ai
+evaluation_protocol:
+  protocol_id: protocol-keplerops-ctf-score
+  protocol_version: 1.0.0
+  intent: >-
+    Produce the participant's cumulative CTF score from accepted objective
+    receipts and the fixed challenge point schedule.
+  unit_of_analysis: participant range session
+  metric_definitions:
+    ctf-score:
+      metric_id: ctf-score
+      metric_version: 1.0.0
+      name: KeplerOps CTF score
+      measured_construct: Participant completion of scored AI-security challenges
+      unit_of_analysis: participant range session
+      value_kind: integer
+      direction: higher-is-better
+      aggregation: Sum each challenge's fixed point value once after its objective assertion is satisfied.
+      missingness_policy: A challenge without an accepted current-generation receipt contributes zero points.
+      evidence_requirements:
+        - ref_kind: evidence
+          ref_id: keplerops-objective-receipts
+  observation_requirements:
+    - ref_kind: evidence
+      ref_id: keplerops-objective-receipts
+  aggregation_policy: >-
+    Sum the fixed points for distinct satisfied challenge assertions in one
+    participant and reset-generation namespace.
+  acceptance_policy: >-
+    Accept only fresh participant-scoped receipts emitted from declared
+    evidence requirements; the maximum score is 16550 points.
+intended_use: Score the KeplerOps CTF and compare participant outcomes within the declared range contract.
+non_use:
+  - Do not treat the score as a production AI-system risk measurement.
+  - Do not compare scores across materially different scenario or evaluator versions without disclosure.
+population_or_construct: Participant performance on the fixed KeplerOps AI-security challenge portfolio.
+split_and_leakage_controls:
+  hidden_material_policy: Objective predicates, receipt material, and flag values are not participant-visible.
+  leakage_checks:
+    - Verify participant exports exclude oracle predicates, receipt secrets, and flag values.
+apparatus_constraints:
+  required_capabilities:
+    - evaluation-results
+    - participant-scoped-evidence
+    - reset-generation-isolation
+  notes:
+    - Any conformant backend may realize the task when it preserves the declared objective and evidence semantics.
+validity_notes:
+  - category: construct
+    note: The score measures completion of this authored challenge portfolio, not general AI-security competence.
+  - category: apparatus
+    note: Latency, model behavior, and shared inference load can affect task difficulty and require disclosure.
+artifact_refs:
+  - artifact_id: keplerops-sdl-root
+    role: scenario-snapshot
+    media_type: application/yaml
+    uri: sdl/keplerops-ai.sdl.yaml
+    checksum:
+      algorithm: sha256
+      value: 6a8cb3d9826444ae166c3475c8a2b66a0ecd37446308547bca410d12880b5078
+    size_bytes: 4733
+    created_at: "2026-07-25T00:00:00Z"
+    source: Committed KeplerOps modular SDL composition root
+    sensitivity: internal

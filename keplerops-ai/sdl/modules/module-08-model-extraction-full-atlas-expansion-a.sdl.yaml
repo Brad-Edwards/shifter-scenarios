@@ -1,0 +1,490 @@
+name: keplerops-module-08-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-08-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m08-g
+    - kep-m08-h
+    - kep-m08-i
+    conditions:
+    - kep-m08-g-complete
+    - kep-m08-h-complete
+    - kep-m08-i-complete
+    propositions:
+    - kep-m08-g-satisfied
+    - kep-m08-h-satisfied
+    - kep-m08-i-satisfied
+    assertions:
+    - kep-m08-g-satisfied
+    - kep-m08-h-satisfied
+    - kep-m08-i-satisfied
+    evidence_requirements:
+    - kep-m08-g-proof
+    - kep-m08-h-proof
+    - kep-m08-i-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 08 full-ATLAS model-access and extraction
+    expansion.
+behavior_specifications:
+  kep-m08-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.inference-gateway.services.inference-api
+    ai_offensive_behavior_refs: &id004
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-g
+        flag_id: flag-gathered-artifact-proxy
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Gathered Artifact Proxy
+        difficulty: advanced
+        target_minutes: 40
+        min_minutes: 25
+        max_minutes: 60
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m08-c
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: gathered_artifact_proxy
+        telemetry_profile: gathered_artifact_proxy
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Access and Extraction
+          question: Collect model-derived artifacts from the target service and train a proxy that
+            meets fidelity on a hidden evaluation set.
+          hints:
+          - Start from the inference-api, artifact-store surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-gathered-artifact-proxy
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-gathered-artifact-proxy
+          kind: model_access_expansion
+          predicate: Bind collected artifact provenance, training run, proxy digest, and hidden
+            fidelity threshold; supplied captures or replication-only labels fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-gathered-artifact-proxy
+            evidence: ev-gathered-artifact-proxy
+            event_kind: gathered_artifact_proxy_08
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_08_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-08-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0005.000
+          - AML.T0035
+          assurance: source-implemented-pre-playtest
+        objective_ref: m08xa.kep-m08-g
+        evidence_requirement_ref: m08xa.kep-m08-g-proof
+  kep-m08-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-h
+        flag_id: flag-model-inversion
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Model Inversion
+        difficulty: advanced
+        target_minutes: 40
+        min_minutes: 25
+        max_minutes: 60
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m08-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: model_inversion
+        telemetry_profile: model_inversion
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Access and Extraction
+          question: Invert the live model outputs to reconstruct a target synthetic training feature
+            above the hidden similarity threshold.
+          hints:
+          - Start from the inference-api, notebook surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-model-inversion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-model-inversion
+          kind: model_access_expansion
+          predicate: Require participant queries, reconstructed artifact, independent similarity
+            score, and non-membership control; access to source data fails.
+          proof_fields: *id002
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-model-inversion
+            evidence: ev-model-inversion
+            event_kind: model_inversion_08
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_08_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-08-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0024.001
+          assurance: source-implemented-pre-playtest
+        objective_ref: m08xa.kep-m08-h
+        evidence_requirement_ref: m08xa.kep-m08-h-proof
+  kep-m08-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-i
+        flag_id: flag-physical-sensor-evasion
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Physical Sensor Evasion
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 32
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: physical_sensor_evasion
+        telemetry_profile: physical_sensor_evasion
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Access and Extraction
+          question: Alter a live physical camera scene so the real vision model crosses its decision
+            boundary while the unmodified scene remains correct.
+          hints:
+          - Start from the participant-webcam, browser surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-physical-sensor-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-physical-sensor-evasion
+          kind: model_access_expansion
+          predicate: Require live WebRTC capture, paired physical control and attack frames,
+            liveness check, and model delta; uploaded or prerecorded images fail.
+          proof_fields: *id002
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-physical-sensor-evasion
+            evidence: ev-physical-sensor-evasion
+            event_kind: physical_sensor_evasion_08
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_08_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-08-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0041
+          assurance: source-implemented-pre-playtest
+        objective_ref: m08xa.kep-m08-i
+        evidence_requirement_ref: m08xa.kep-m08-i-proof
+conditions:
+  kep-m08-g-complete:
+    name: Gathered Artifact Proxy evidence accepted
+    proposition: kep-m08-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-h-complete:
+    name: Model Inversion evidence accepted
+    proposition: kep-m08-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-i-complete:
+    name: Physical Sensor Evasion evidence accepted
+    proposition: kep-m08-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m08-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-g-proof
+  kep-m08-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-h-proof
+  kep-m08-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-i-proof
+assertions:
+  kep-m08-g-satisfied:
+    description: Participant completion of kep-m08-g is observed.
+    proposition: kep-m08-g-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-h-satisfied:
+    description: Participant completion of kep-m08-h is observed.
+    proposition: kep-m08-h-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-i-satisfied:
+    description: Participant completion of kep-m08-i is observed.
+    proposition: kep-m08-i-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m08-g-proof:
+    description: Capture digest-safe participant-scoped evidence for Gathered Artifact Proxy.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-g'
+    - 'Proof obligation: gathered_artifact_proxy'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Model Inversion.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-h'
+    - 'Proof obligation: model_inversion'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Physical Sensor Evasion.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-i'
+    - 'Proof obligation: physical_sensor_evasion'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m08-g:
+    name: Gathered Artifact Proxy
+    description: Collect model-derived artifacts from the target service and train a proxy that
+      meets fidelity on a hidden evaluation set.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m08-g-satisfied
+    depends_on:
+    - m08.kep-m08-c
+  kep-m08-h:
+    name: Model Inversion
+    description: Invert the live model outputs to reconstruct a target synthetic training feature
+      above the hidden similarity threshold.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m08-h-satisfied
+    depends_on:
+    - m08.kep-m08-a
+  kep-m08-i:
+    name: Physical Sensor Evasion
+    description: Alter a live physical camera scene so the real vision model crosses its decision
+      boundary while the unmodified scene remains correct.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m08-i-satisfied

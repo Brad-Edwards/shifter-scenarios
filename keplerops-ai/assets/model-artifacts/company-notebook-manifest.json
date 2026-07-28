@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "owner": "keplerops-company-state",
+  "notebook_count": 3,
+  "notebooks": [
+    {
+      "path": "company-orion-17.ipynb",
+      "sha256": "sha256:18b7260e17b7f12af65b767d69aea10eba5081fae3e32d0267d89696bc058e44",
+      "experiment_ref": "experiment-orion-17"
+    },
+    {
+      "path": "company-orion-18.ipynb",
+      "sha256": "sha256:45dc5c47a6e8f98050bccc1d699b3d20ec51fdd2fd33eac2fc4fb95d50fd9218",
+      "experiment_ref": "experiment-orion-18"
+    },
+    {
+      "path": "company-orion-19-abandoned.ipynb",
+      "sha256": "sha256:e3eeaec03196b94eff4bc66bb5649d2ab7f0840599351a4df224b336a0dc1259",
+      "experiment_ref": "experiment-orion-19-abandoned"
+    }
+  ],
+  "canonical_digest": "sha256:98b468ecce2ef4b483944727187c400b71af3f637875ad680661b073e1991f13"
+}

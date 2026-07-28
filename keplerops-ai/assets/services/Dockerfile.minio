@@ -1,0 +1,24 @@
+ARG BASE_IMAGE=minio/minio@sha256:d249d1fb6966de4d8ad26c04754b545205ff15a62e4fd19ebd0f26fa5baacbc0
+FROM minio/mc@sha256:fb8f773eac8ef9d6da0486d5dec2f42f219358bcb8de579d1623d518c9ebd4cc AS client
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS company-state-render
+RUN python -m pip install --no-cache-dir PyYAML==6.0.2
+COPY assets/services/company_state_common.py /render/company_state_common.py
+COPY assets/services/company_minio_adapter.py /render/company_minio_adapter.py
+COPY assets/content/company-state/company-state.yaml /render/company-state.yaml
+COPY assets/content/company-state/objects/ /render/objects/
+RUN python /render/company_minio_adapter.py render \
+    --company-state /render/company-state.yaml \
+    --object-root /render/objects \
+    --output /company-state
+
+FROM ${BASE_IMAGE}
+COPY --from=client /usr/bin/mc /usr/bin/mc
+COPY assets/services/minio-entrypoint.sh /usr/local/bin/keplerops-minio
+COPY assets/services/minio-company-state.sh /usr/local/bin/minio-company-state
+COPY assets/model-artifacts/deployment-manifest.yaml /opt/keplerops/seed/deployment-manifest.yaml
+COPY assets/model-artifacts/model.yaml /opt/keplerops/seed/model.yaml
+COPY --from=company-state-render /company-state/ /opt/keplerops/company-state/
+COPY assets/content/company-state/objects/ /opt/keplerops/company-state/objects/
+RUN chmod 0755 /usr/local/bin/keplerops-minio /usr/local/bin/minio-company-state
+USER 1000:1000
+ENTRYPOINT ["/usr/local/bin/keplerops-minio"]

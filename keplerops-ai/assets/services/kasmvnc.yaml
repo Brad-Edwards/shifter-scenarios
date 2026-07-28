@@ -1,0 +1,8 @@
+network:
+  protocol: http
+  interface: 0.0.0.0
+  websocket_port: 6901
+  ssl:
+    pem_certificate: /run/tls/tls.crt
+    pem_key: /run/tls/tls.key
+    require_ssl: true

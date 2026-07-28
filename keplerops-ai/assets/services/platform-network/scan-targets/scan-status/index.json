@@ -1,0 +1,6 @@
+{
+  "service": "range-status",
+  "software": "nginx",
+  "state": "ready",
+  "scope": "keplerops-contained"
+}

@@ -1,0 +1,1 @@
+{"classes":["approved","blocked"],"coefficients":[[4.0,4.0]],"idf":[1.0,1.0],"intercept":[0.0],"model_revision":"tfidf-logreg-1.0","schema_version":1,"training_digest":"sha256:33a8e7d87d1a74f612e9a179fb0e72d10a9d266838792c3a8df0f1e74366bd5b","vocabulary":{"cobalt":0,"lantern":1}}

@@ -1,0 +1,1280 @@
+name: keplerops-module-10-ai-capstone
+version: 1.6.0
+module:
+  id: shifter/keplerops-module-10-ai-capstone
+  version: 1.6.0
+  exports:
+    behavior_specifications:
+    - module-10-ai-capstone
+    - kep-m10-a
+    - kep-m10-b
+    - kep-m10-c
+    - kep-m10-d
+    - kep-m10-e
+    - kep-m10-f
+    - kep-m10-g
+    conditions:
+    - kep-m10-a-complete
+    - kep-m10-b-complete
+    - kep-m10-c-complete
+    - kep-m10-d-complete
+    - kep-m10-e-complete
+    - kep-m10-f-complete
+    - kep-m10-g-complete
+    propositions:
+    - kep-m10-a-satisfied
+    - kep-m10-b-satisfied
+    - kep-m10-c-satisfied
+    - kep-m10-d-satisfied
+    - kep-m10-e-satisfied
+    - kep-m10-f-satisfied
+    - kep-m10-g-satisfied
+    assertions:
+    - kep-m10-a-satisfied
+    - kep-m10-b-satisfied
+    - kep-m10-c-satisfied
+    - kep-m10-d-satisfied
+    - kep-m10-e-satisfied
+    - kep-m10-f-satisfied
+    - kep-m10-g-satisfied
+    evidence_requirements:
+    - kep-m10-a-proof
+    - kep-m10-b-proof
+    - kep-m10-c-proof
+    - kep-m10-d-proof
+    - kep-m10-e-proof
+    - kep-m10-f-proof
+    - kep-m10-g-proof
+    objectives:
+    - kep-m10-a
+    - kep-m10-b
+    - kep-m10-c
+    - kep-m10-d
+    - kep-m10-e
+    - kep-m10-f
+    - kep-m10-g
+  description: Promoted behavior, production-shaped impact, and contained original-model theft.
+behavior_specifications:
+  module-10-ai-capstone:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-10-ai-capstone
+        implementation_status: participant-proven
+        path_step:
+          path_step: '10'
+          tier: advanced
+          surface: deployed-ai-system
+          estimated_minutes: 243
+          objective: Exercise deployed AI impact and steal the original model.
+          justification: Contained advanced impact and model confidentiality objective.
+          title: Exercise deployed AI impact and model theft
+          prerequisites:
+          - '5'
+          - '6'
+          - '9'
+          success_state: S-AICAPSTONE
+          failure_states:
+          - id: fail-capstone-stale-or-uncontained
+            predicate: Stale, cross-namespace, operator-seeded, uncontained, flag-only, or file-only
+              evidence satisfies the advanced objective.
+            severity: blocking
+        outcome:
+          outcome_id: ai-capstone
+          title: Deployed AI system behavior and confidentiality compromised
+          required: true
+          success_state: S-AICAPSTONE
+          required_evidence:
+          - ev-agent-persistence
+          - ev-adversarial-input
+          - ev-backdoor-verification
+          - ev-poisoned-promotion
+          - ev-deployed-impact
+          - ev-artifact-theft
+          - ev-capstone-receipt
+          optional_evidence:
+          - ev-production-revision
+          - ev-production-trigger
+          - ev-contained-effect
+          - ev-original-artifact-access
+          failure_states:
+          - fail-capstone-stale-or-uncontained
+          points: 200
+  kep-m10-a:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-a
+        flag_id: flag-production-revision
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Production Revision
+        difficulty: intermediate
+        target_minutes: 18
+        min_minutes: 12
+        max_minutes: 27
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m09-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: real-deployment-loads-participant-revision
+        telemetry_profile: capstone-deployment
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Bind your promoted Module 09 candidate to the live production revision and prove
+            the registry alias, deployment, and artifact digest still agree.
+          hints:
+          - Start with the candidate id returned by your successful Module 09 reload.
+          - The capstone accepts only the current participant and reset generation.
+          - Submit the candidate id to `/v1/capstone/attempt` for `kep-m10-a`.
+        flag_delivery:
+          evidence_id: ev-production-revision
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: model-registry-01
+        proof:
+          evidence_id: ev-production-revision
+          kind: model_deployment
+          predicate: Server-held PostgreSQL and MLflow state confirms the current participant
+            candidate is reloaded from the production alias with the exact promoted artifact digest.
+          proof_fields: &capstone_proof_fields
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: model-registry-01
+          mutates_scenario_state: false
+          event:
+            id: event-production-revision
+            evidence: ev-production-revision
+            event_kind: production_revision_loaded
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *capstone_proof_fields
+            freshness_seconds: 10800
+            reset_owner: model-registry-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0031
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-a
+        evidence_requirement_ref: m10.kep-m10-a-proof
+  kep-m10-b:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-b
+        flag_id: flag-production-trigger
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Live Trigger
+        difficulty: intermediate
+        target_minutes: 16
+        min_minutes: 10
+        max_minutes: 24
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m10-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: production-endpoint-activates-promoted-behavior
+        telemetry_profile: capstone-production-trigger
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Send a trigger-bearing request through the production-shaped capstone inference
+            endpoint and activate the exact promoted model behavior.
+          hints:
+          - Use the same candidate id whose production revision you just proved.
+          - Module 09 exposed the hidden trigger family through your own training and evaluation
+            work.
+          - POST the candidate and prompt to `/v1/capstone/inference`, then bind its activation id
+            in the attempt.
+        flag_delivery:
+          evidence_id: ev-production-trigger
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: inference_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-production-trigger
+          kind: model_inference
+          predicate: The gateway reconstructs and executes the exact promoted scikit-learn artifact,
+            and its server-owned prediction crosses the approved trigger threshold for the
+            participant request.
+          proof_fields: *capstone_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+          event:
+            id: event-production-trigger
+            evidence: ev-production-trigger
+            event_kind: production_trigger_activated
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *capstone_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0031
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-b
+        evidence_requirement_ref: m10.kep-m10-b-proof
+  kep-m10-c:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-c
+        flag_id: flag-contained-effect
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Contained Effect
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 13
+        max_minutes: 30
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m10-b
+        - kep-m05-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: production-trigger-causes-contained-effect
+        telemetry_profile: capstone-contained-effect
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Join the live production activation to your verified Module 06 adversarial
+            artifact and make the range policy broker execute a reversible release-channel effect.
+          hints:
+          - Use a current `kep-m06-e` artifact id and the activation id from Live Trigger.
+          - The gateway, policy service, and broker decide whether the effect executes.
+          - POST the activation and adversarial-artifact ids to `/v1/capstone/effects`, then submit
+            the candidate and activation ids through the capstone attempt endpoint.
+        flag_delivery:
+          evidence_id: ev-contained-effect
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: tool_effect_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-contained-effect
+          kind: agent_tool_effect
+          predicate: A trigger-positive production activation causes the real policy broker to
+            persist a participant-scoped release notice effect joined to a verified adversarial
+            artifact.
+          proof_fields: *capstone_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-contained-effect
+            evidence: ev-contained-effect
+            event_kind: contained_broker_effect
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *capstone_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0112.001
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-c
+        evidence_requirement_ref: m10.kep-m10-c-proof
+  kep-m10-d:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-d
+        flag_id: flag-original-artifact-access
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Original Artifact
+        difficulty: advanced
+        target_minutes: 34
+        min_minutes: 23
+        max_minutes: 50
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m08-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: participant-path-stages-original-artifact
+        telemetry_profile: capstone-artifact-access
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Use your successful private-fidelity extraction lineage to obtain short-lived
+            access to the original revision-pinned teacher-model bytes and a contained destination.
+          hints:
+          - Supply the corpus and job ids that passed `kep-m08-e` in this reset generation.
+          - The returned URLs are short lived and bound to the fixed source and your contained
+            destination.
+          - Request them from `/v1/capstone/artifact-access`; URL bodies are never proof by
+            themselves.
+        flag_delivery:
+          evidence_id: ev-original-artifact-access
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: artifact_access_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-original-artifact-access
+          kind: model_artifact_access
+          predicate: The gateway validates a current successful private-fidelity proxy lineage and
+            issues a scoped access record for the full source artifact and participant-contained
+            destination.
+          proof_fields: *capstone_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-original-artifact-access
+            evidence: ev-original-artifact-access
+            event_kind: original_model_accessed
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *capstone_proof_fields
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0048.004
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-d
+        evidence_requirement_ref: m10.kep-m10-d-proof
+  kep-m10-e:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-e
+        flag_id: flag-deployed-ai-impact
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Deployed Impact
+        difficulty: expert
+        target_minutes: 45
+        min_minutes: 30
+        max_minutes: 65
+        points: 300
+        disposition: new-design
+        prerequisites:
+        - kep-m10-c
+        - kep-m06-e
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: joined-promoted-trigger-adversarial-impact
+        telemetry_profile: capstone-impact
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Prove one current causal chain across your promoted model, live trigger,
+            persisted agent influence, verified adversarial artifact, and contained broker effect.
+          hints:
+          - This is a join over state you created in Modules 05, 06, 09, and the first capstone
+            stages.
+          - Reusing another participant, reset generation, or an unexecuted effect will fail.
+          - Submit the candidate and activation ids to `kep-m10-e` on `/v1/capstone/attempt`.
+        flag_delivery:
+          evidence_id: ev-deployed-impact
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: deployed_impact_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-deployed-impact
+          kind: deployed_ai_impact
+          predicate: Current participant state joins the exact promoted deployment and trigger to a
+            real policy-broker effect, a passed persistent deputy effect, and a passed adversarial
+            artifact.
+          proof_fields: *capstone_proof_fields
+          reset_owner: dataset-store-01
+          mutates_scenario_state: false
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0031
+          - AML.T0112.001
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-e
+        evidence_requirement_ref: m10.kep-m10-e-proof
+  kep-m10-f:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-f
+        flag_id: flag-model-exfiltration
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Model Heist
+        difficulty: expert
+        target_minutes: 50
+        min_minutes: 34
+        max_minutes: 72
+        points: 300
+        disposition: new-design
+        prerequisites:
+        - kep-m10-d
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: byte-complete-original-model-contained-copy
+        telemetry_profile: capstone-model-theft
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Capstone
+          question: Transfer the complete original `model.safetensors` object from the artifact
+            store into your range-contained exfil sink destination, then have the gateway verify
+            every byte.
+          hints:
+          - Download from the source URL and upload the unchanged bytes to the destination URL
+            before expiry.
+          - The object is about 3.42 GB; preserve the exact content length and do not transform it.
+          - POST your access id to `/v1/capstone/artifact-access/{access_id}/verify`, then attempt
+            `kep-m10-f`.
+        flag_delivery:
+          evidence_id: ev-artifact-theft
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: contained_exfil_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: exfil-sink
+        proof:
+          evidence_id: ev-artifact-theft
+          kind: contained_model_exfil
+          predicate: The participant-scoped exfil object has the exact source byte count and an
+            independently recomputed SHA-256 matching the revision-pinned original teacher model.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - destination
+          - byte_count
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: exfil-sink
+          mutates_scenario_state: true
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0025
+          - AML.T0048.004
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-f
+        evidence_requirement_ref: m10.kep-m10-f-proof
+  kep-m10-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    ai_offensive_behavior_refs:
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-g
+        flag_id: flag-ai-capstone
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Kepler Falling
+        difficulty: expert
+        target_minutes: 60
+        min_minutes: 40
+        max_minutes: 85
+        points: 300
+        disposition: kernel-reuse-candidate
+        prerequisites:
+        - kep-m10-e
+        - kep-m10-f
+        interfaces:
+        - browser
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: fresh-impact-and-contained-model-copy
+        telemetry_profile: capstone-joined
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Lab Capstone
+          question: Exercise the promoted behavior through the production-shaped endpoint and copy
+            the original model to the contained sink.
+          hints:
+          - Complete the prerequisite influence, evaluation, and promotion work first.
+          - The final receipt requires fresh impact and contained theft evidence from your
+            namespace.
+          - Join the production activation, contained effect, and verified destination access id in
+            the final attempt.
+        flag_delivery:
+          evidence_id: ev-capstone-receipt
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: contained_exfil_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: telemetry-proof-01
+        proof:
+          evidence_id: ev-capstone-receipt
+          kind: objective_stage
+          predicate: The proof service derives a fresh participant-namespaced receipt from the
+            selected advanced evidence chain without exposing raw evidence or answers.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - range_instance
+          - participant
+          - record_count
+          - timestamp
+          - status
+          - digest
+          reset_owner: telemetry-proof-01
+          mutates_scenario_state: false
+          event:
+            id: event-capstone-receipt
+            evidence: ev-capstone-receipt
+            event_kind: objective_verdict
+            source_service: proof-api
+            source_asset: telemetry-proof-01
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - range_instance
+            - participant
+            - record_count
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: telemetry-proof-01
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0031
+          - AML.T0025
+          - AML.T0048.004
+          manual_walkthrough: docs/walkthroughs/module-10-ai-capstone.md
+          automated_test: tests/module_10_rehearsal.py
+        objective_ref: m10.kep-m10-g
+        evidence_requirement_ref: m10.kep-m10-g-proof
+conditions:
+  kep-m10-a-complete:
+    name: Production Revision evidence accepted
+    proposition: kep-m10-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-b-complete:
+    name: Live Trigger evidence accepted
+    proposition: kep-m10-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-c-complete:
+    name: Contained Effect evidence accepted
+    proposition: kep-m10-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-d-complete:
+    name: Original Artifact evidence accepted
+    proposition: kep-m10-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-e-complete:
+    name: Deployed Impact evidence accepted
+    proposition: kep-m10-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-f-complete:
+    name: Model Heist evidence accepted
+    proposition: kep-m10-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-g-complete:
+    name: Kepler Falling evidence accepted
+    proposition: kep-m10-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m10-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-a-proof
+  kep-m10-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-b-proof
+  kep-m10-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-c-proof
+  kep-m10-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-d-proof
+  kep-m10-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-e-proof
+  kep-m10-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-f-proof
+  kep-m10-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-g-proof
+assertions:
+  kep-m10-a-satisfied:
+    description: Participant completion of kep-m10-a is observed.
+    proposition: kep-m10-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-b-satisfied:
+    description: Participant completion of kep-m10-b is observed.
+    proposition: kep-m10-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-c-satisfied:
+    description: Participant completion of kep-m10-c is observed.
+    proposition: kep-m10-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-d-satisfied:
+    description: Participant completion of kep-m10-d is observed.
+    proposition: kep-m10-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-e-satisfied:
+    description: Participant completion of kep-m10-e is observed.
+    proposition: kep-m10-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-f-satisfied:
+    description: Participant completion of kep-m10-f is observed.
+    proposition: kep-m10-f-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-g-satisfied:
+    description: Participant completion of kep-m10-g is observed.
+    proposition: kep-m10-g-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m10-a-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating real deployment loads
+      participant revision.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-a'
+    - 'Proof obligation: real-deployment-loads-participant-revision'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-b-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating production endpoint
+      activates promoted behavior.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-b'
+    - 'Proof obligation: production-endpoint-activates-promoted-behavior'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-c-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating production trigger
+      causes contained effect.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-c'
+    - 'Proof obligation: production-trigger-causes-contained-effect'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-d-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating participant path
+      stages original artifact.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-d'
+    - 'Proof obligation: participant-path-stages-original-artifact'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-e-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating joined promoted
+      trigger adversarial impact.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-e'
+    - 'Proof obligation: joined-promoted-trigger-adversarial-impact'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-f-proof:
+    description: Capture digest-safe participant-scoped evidence demonstrating byte complete
+      original model contained copy.
+    source_refs:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-f'
+    - 'Proof obligation: byte-complete-original-model-contained-copy'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-g-proof:
+    description: The proof service derives a fresh participant-namespaced receipt from the selected
+      advanced evidence chain without exposing raw evidence or answers.
+    source_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 10800 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-g'
+    - 'Proof obligation: fresh-impact-and-contained-model-copy'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-capstone-receipt'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, range_instance, participant,
+      record_count, timestamp, status, digest'
+    - 'Event kind: objective_verdict'
+    - 'Reset owner: telemetry-proof-01'
+objectives:
+  kep-m10-a:
+    name: Production Revision
+    description: Demonstrate real deployment loads participant revision.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-a-satisfied
+    depends_on:
+    - m09.kep-m09-f
+  kep-m10-b:
+    name: Live Trigger
+    description: Demonstrate production endpoint activates promoted behavior.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-b-satisfied
+    depends_on:
+    - m10.kep-m10-a
+  kep-m10-c:
+    name: Contained Effect
+    description: Demonstrate production trigger causes contained effect.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-c-satisfied
+    depends_on:
+    - m10.kep-m10-b
+    - m05.kep-m05-e
+  kep-m10-d:
+    name: Original Artifact
+    description: Demonstrate participant path stages original artifact.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-d-satisfied
+    depends_on:
+    - m08.kep-m08-e
+  kep-m10-e:
+    name: Deployed Impact
+    description: Demonstrate joined promoted trigger adversarial impact.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-e-satisfied
+    depends_on:
+    - m10.kep-m10-c
+    - m06.kep-m06-e
+  kep-m10-f:
+    name: Model Heist
+    description: Demonstrate byte complete original model contained copy.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-f-satisfied
+    depends_on:
+    - m10.kep-m10-d
+  kep-m10-g:
+    name: Kepler Falling
+    description: Exercise the promoted behavior through the production-shaped endpoint and copy the
+      original model to the contained sink.
+    agent: core.participant
+    targets:
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.exfil-sink.services.exfil-s3
+    - content.core.teacher-model
+    success:
+      assertions:
+      - kep-m10-g-satisfied
+    depends_on:
+    - m10.kep-m10-e
+    - m10.kep-m10-f

@@ -1,0 +1,25 @@
+ARG BASE_IMAGE=python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
+FROM ${BASE_IMAGE}
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    ISOLATION_DATA_ROOT=/var/lib/keplerops-isolation \
+    ISOLATION_ENGINE_SOCKET=unix:///run/keplerops-isolation-engine/docker.sock \
+    ISOLATION_WORKER_IMAGE=python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
+
+RUN groupadd --system --gid 65532 keplerops \
+    && useradd --system --uid 65532 --gid keplerops --home-dir /nonexistent keplerops \
+    && install -d -o keplerops -g keplerops -m 0700 /var/lib/keplerops-isolation
+
+WORKDIR /opt/keplerops/platform-isolation
+COPY assets/services/platform-isolation/requirements.txt ./requirements.txt
+RUN python3 -m pip install --no-cache-dir --requirement requirements.txt
+COPY assets/services/platform-isolation/isolation_app.py ./isolation_app.py
+COPY assets/services/platform-isolation/isolation_state.py ./isolation_state.py
+COPY assets/services/platform-isolation/isolation_workers.py ./isolation_workers.py
+
+USER 65532:65532
+EXPOSE 8480
+HEALTHCHECK --interval=10s --timeout=3s --retries=6 \
+  CMD ["python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8480/healthz', timeout=2).read()"]
+ENTRYPOINT ["python3", "-m", "uvicorn", "isolation_app:app", "--host", "0.0.0.0", "--port", "8480", "--no-access-log", "--no-proxy-headers"]

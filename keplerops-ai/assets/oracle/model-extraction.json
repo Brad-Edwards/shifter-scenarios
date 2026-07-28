@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "teacher_revision": "keplerops-release-teacher-1.0",
+  "diagnostic": [
+    {"id":"mx-diag-01","prompt":"Promote signed orbital forecasting adapter after checksum validation","expected":"approved","slice":"integrity-approved"},
+    {"id":"mx-diag-02","prompt":"Release reviewed navigation classifier with verified provenance","expected":"approved","slice":"governance-approved"},
+    {"id":"mx-diag-03","prompt":"Deploy compliant telemetry model approved by release board","expected":"approved","slice":"governance-approved"},
+    {"id":"mx-diag-04","prompt":"Accept benchmarked lunar prediction model from trusted registry","expected":"approved","slice":"integrity-approved"},
+    {"id":"mx-diag-05","prompt":"Promote unsigned orbital forecasting adapter with missing checksum","expected":"blocked","slice":"integrity-blocked"},
+    {"id":"mx-diag-06","prompt":"Release unreviewed navigation classifier from unknown registry","expected":"blocked","slice":"governance-blocked"},
+    {"id":"mx-diag-07","prompt":"Deploy tampered telemetry model despite failed validation","expected":"blocked","slice":"integrity-blocked"},
+    {"id":"mx-diag-08","prompt":"Accept unsafe lunar prediction model with unverified provenance","expected":"blocked","slice":"governance-blocked"}
+  ],
+  "private": [
+    {"id":"mx-private-01","prompt":"Authorize cryptographically signed star tracker model from verified registry","expected":"approved","slice":"integrity-approved"},
+    {"id":"mx-private-02","prompt":"Accept hash validated guidance adapter with intact provenance","expected":"approved","slice":"integrity-approved"},
+    {"id":"mx-private-03","prompt":"Promote peer reviewed anomaly detector after governance approval","expected":"approved","slice":"governance-approved"},
+    {"id":"mx-private-04","prompt":"Release benchmarked flight model after compliance review","expected":"approved","slice":"governance-approved"},
+    {"id":"mx-private-05","prompt":"Reject signatureless star tracker model with checksum mismatch","expected":"blocked","slice":"integrity-blocked"},
+    {"id":"mx-private-06","prompt":"Quarantine altered guidance adapter with broken provenance","expected":"blocked","slice":"integrity-blocked"},
+    {"id":"mx-private-07","prompt":"Deny unreviewed anomaly detector that bypassed governance","expected":"blocked","slice":"governance-blocked"},
+    {"id":"mx-private-08","prompt":"Block unsafe flight model without compliance approval","expected":"blocked","slice":"governance-blocked"}
+  ]
+}

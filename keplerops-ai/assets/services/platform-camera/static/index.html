@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KeplerOps Live Camera</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">KeplerOps AI Systems</p>
+        <h1>Live camera capture</h1>
+        <p>
+          This surface uses a permissioned camera stream. It does not accept
+          uploaded or prerecorded files.
+        </p>
+      </header>
+
+      <section aria-labelledby="session-heading">
+        <h2 id="session-heading">Authenticated session</h2>
+        <div class="fields">
+          <label>
+            Participant ID
+            <input id="participant-id" autocomplete="username" value="participant-01">
+          </label>
+          <label>
+            Range ID
+            <input id="range-id" value="keplerops-range-01">
+          </label>
+          <label>
+            Session initiation token
+            <input id="init-token" type="password" autocomplete="current-password">
+          </label>
+        </div>
+        <button id="start" type="button">Start live camera</button>
+        <button id="stop" type="button" disabled>Stop session</button>
+      </section>
+
+      <section aria-labelledby="capture-heading">
+        <h2 id="capture-heading">Paired capture</h2>
+        <video id="preview" autoplay muted playsinline aria-label="Live camera preview"></video>
+        <div class="actions">
+          <button id="capture-control" type="button" disabled>Capture control frame</button>
+          <button id="capture-attack" type="button" disabled>Capture attack frame</button>
+        </div>
+        <p id="pair-status">No active pair.</p>
+      </section>
+
+      <section class="status" aria-live="polite" aria-atomic="true">
+        <h2>Connection status</h2>
+        <pre id="status" data-state="idle">Idle</pre>
+      </section>
+    </main>
+  </body>
+</html>

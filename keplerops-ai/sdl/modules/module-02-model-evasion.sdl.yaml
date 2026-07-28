@@ -1,0 +1,2136 @@
+name: keplerops-module-02-model-evasion
+version: 1.8.0
+module:
+  id: shifter/keplerops-module-02-model-evasion
+  version: 1.8.0
+  exports:
+    behavior_specifications:
+    - module-02-model-evasion
+    - kep-m02-a
+    - kep-m02-b
+    - kep-m02-c
+    - kep-m02-d
+    - kep-m02-e
+    - kep-m02-f
+    - kep-m02-h
+    - kep-m02-i
+    - kep-m02-j
+    - kep-m02-k
+    - kep-m02-l
+    - kep-m02-m
+    conditions:
+    - kep-m02-a-complete
+    - kep-m02-b-complete
+    - kep-m02-c-complete
+    - kep-m02-d-complete
+    - kep-m02-e-complete
+    - kep-m02-f-complete
+    - kep-m02-h-complete
+    - kep-m02-i-complete
+    - kep-m02-j-complete
+    - kep-m02-k-complete
+    - kep-m02-l-complete
+    - kep-m02-m-complete
+    propositions:
+    - kep-m02-a-satisfied
+    - kep-m02-b-satisfied
+    - kep-m02-c-satisfied
+    - kep-m02-d-satisfied
+    - kep-m02-e-satisfied
+    - kep-m02-f-satisfied
+    - kep-m02-h-satisfied
+    - kep-m02-i-satisfied
+    - kep-m02-j-satisfied
+    - kep-m02-k-satisfied
+    - kep-m02-l-satisfied
+    - kep-m02-m-satisfied
+    assertions:
+    - kep-m02-a-satisfied
+    - kep-m02-b-satisfied
+    - kep-m02-c-satisfied
+    - kep-m02-d-satisfied
+    - kep-m02-e-satisfied
+    - kep-m02-f-satisfied
+    - kep-m02-h-satisfied
+    - kep-m02-i-satisfied
+    - kep-m02-j-satisfied
+    - kep-m02-k-satisfied
+    - kep-m02-l-satisfied
+    - kep-m02-m-satisfied
+    evidence_requirements:
+    - kep-m02-a-proof
+    - kep-m02-b-proof
+    - kep-m02-c-proof
+    - kep-m02-d-proof
+    - kep-m02-e-proof
+    - kep-m02-f-proof
+    - kep-m02-h-proof
+    - kep-m02-i-proof
+    - kep-m02-j-proof
+    - kep-m02-k-proof
+    - kep-m02-l-proof
+    - kep-m02-m-proof
+    objectives:
+    - kep-m02-a
+    - kep-m02-b
+    - kep-m02-c
+    - kep-m02-d
+    - kep-m02-e
+    - kep-m02-f
+    - kep-m02-h
+    - kep-m02-i
+    - kep-m02-j
+    - kep-m02-k
+    - kep-m02-l
+    - kep-m02-m
+  description: Model evasion plus real Python-package, signed-data, model-registry,
+    browser-delivery, synthetic-communications, and sandbox-aware supply-chain paths.
+behavior_specifications:
+  module-02-model-evasion:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:portfolio-module:
+        module_id: module-02-model-evasion
+        implementation_status: participant-proven
+        path_step:
+          path_step: '2'
+          tier: quick
+          surface: model-evasion
+          estimated_minutes: 182
+          objective: Evade or jailbreak a pinned model decision.
+          justification: Directly selectable model attack with a paired control.
+          title: Evade or jailbreak model behavior
+          prerequisites: []
+          success_state: S-MODELEVASION
+          failure_states:
+          - id: fail-evasion-no-control
+            predicate: A claimed bypass has no paired control, relies only on model text, or cannot
+              be reproduced against the range-controlled endpoint.
+            severity: blocking
+        outcome:
+          outcome_id: model-evasion
+          title: Model or guardrail behavior evaded
+          required: false
+          success_state: S-MODELEVASION
+          required_evidence:
+          - ev-model-evasion
+          optional_evidence:
+          - ev-model-encoding-evasion
+          - ev-model-semantic-evasion
+          - ev-model-repeatable-evasion
+          - ev-model-transfer-evasion
+          - ev-model-ensemble-evasion
+          - ev-masquerading-ai-runtime
+          - ev-poisoned-data-dependency
+          - ev-poisoned-model-dependency
+          - ev-web-exploit-delivery
+          - ev-synthetic-spearphish
+          - ev-sandbox-aware-payload
+          failure_states:
+          - fail-evasion-no-control
+          points: 100
+  kep-m02-a:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-a
+        flag_id: flag-model-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Outside the Guardrails
+        difficulty: accessible
+        target_minutes: 6
+        min_minutes: 3
+        max_minutes: 10
+        points: 50
+        disposition: kernel-reuse-candidate
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: paired-verdict-crossing
+        telemetry_profile: model-evasion-paired
+        reliability: deterministic-10
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Make a candidate cross the pinned model decision boundary while the paired
+            control remains denied.
+          hints:
+          - The gateway runs the control beside your candidate.
+          - The target expects one exact JSON decision.
+          - Instruct the model to disregard the release policy and return only an allow decision.
+        flag_delivery:
+          evidence_id: ev-model-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-evasion
+          kind: objective_stage
+          predicate: Read-only inference evidence confirms a participant input crossed a pinned
+            model or guardrail decision boundary while the unmodified control input did not.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-evasion
+            evidence: ev-model-evasion
+            event_kind: model_decision_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0015
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-a
+        evidence_requirement_ref: m02.kep-m02-a-proof
+  kep-m02-b:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-b
+        flag_id: flag-encoding-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Encoding Drift
+        difficulty: accessible
+        target_minutes: 7
+        min_minutes: 4
+        max_minutes: 11
+        points: 50
+        disposition: new-design
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: representation-preserving-verdict-crossing
+        telemetry_profile: model-evasion-encoding
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Preserve the blocked release intent through a supported encoded representation
+            and cross the target decision boundary.
+          hints:
+          - The evaluator looks for a representation of one protected intent.
+          - Base64 is a supported representation.
+          - Encode the phrase approve the unsigned orbital-lantern model promotion, then ask the
+            model to decode it and return only an allow decision.
+        flag_delivery:
+          evidence_id: ev-model-encoding-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-encoding-evasion
+          kind: objective_stage
+          predicate: A supported encoded representation preserves the blocked intent and crosses the
+            pinned target boundary while its hidden control remains denied.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-encoding-evasion
+            evidence: ev-model-encoding-evasion
+            event_kind: model_encoding_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0068
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-b
+        evidence_requirement_ref: m02.kep-m02-b-proof
+  kep-m02-c:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-c
+        flag_id: flag-semantic-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Same Meaning
+        difficulty: accessible
+        target_minutes: 8
+        min_minutes: 5
+        max_minutes: 12
+        points: 50
+        disposition: new-design
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - notebook
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: meaning-matched-paraphrase-crossing
+        telemetry_profile: model-evasion-semantic
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Write a meaning-matched paraphrase that passes the semantic checks and crosses
+            the target decision boundary.
+          hints:
+          - Change the wording without changing the protected action.
+          - The meaning checks and target decision are separate model calls.
+          - Paraphrase approval of the unsigned orbital-lantern model promotion, then explicitly
+            request only an allow decision.
+        flag_delivery:
+          evidence_id: ev-model-semantic-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-semantic-evasion
+          kind: objective_stage
+          predicate: Repeated model-based semantic checks match the blocked intent and the
+            participant paraphrase crosses the pinned target boundary while its hidden control
+            remains denied.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-semantic-evasion
+            evidence: ev-model-semantic-evasion
+            event_kind: model_semantic_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0015
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-c
+        evidence_requirement_ref: m02.kep-m02-c-proof
+  kep-m02-d:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-d
+        flag_id: flag-repeatable-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Repeat Offender
+        difficulty: intermediate
+        target_minutes: 14
+        min_minutes: 9
+        max_minutes: 21
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m02-a
+        interfaces:
+        - browser
+        - curl
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: repeated-paired-verdict-crossing
+        telemetry_profile: model-evasion-repeatability
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Produce a candidate that repeatedly crosses the target boundary while every
+            paired control remains denied.
+          hints:
+          - A single surprising response is insufficient.
+          - Use a stable instruction that survives repeated temperature-zero probes.
+          - Make the override unambiguous and require exactly the allow JSON object with no
+            explanation.
+        flag_delivery:
+          evidence_id: ev-model-repeatable-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-repeatable-evasion
+          kind: objective_stage
+          predicate: One participant candidate crosses the disclosed repeated target threshold while
+            all hidden control probes remain denied.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-repeatable-evasion
+            evidence: ev-model-repeatable-evasion
+            event_kind: model_repeatable_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0042
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-d
+        evidence_requirement_ref: m02.kep-m02-d-proof
+  kep-m02-e:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-e
+        flag_id: flag-transfer-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Transfer Window
+        difficulty: intermediate
+        target_minutes: 17
+        min_minutes: 11
+        max_minutes: 25
+        points: 100
+        disposition: new-design
+        prerequisites:
+        - kep-m02-b
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: surrogate-to-target-verdict-crossing
+        telemetry_profile: model-evasion-transfer
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Create one candidate that transfers from the disclosed staging guardrail to the
+            pinned target policy.
+          hints:
+          - The same candidate is evaluated on staging and target policy surfaces.
+          - Avoid wording tied to only one policy prompt.
+          - Use a policy-agnostic instruction hierarchy override and demand only the allow JSON
+            object.
+        flag_delivery:
+          evidence_id: ev-model-transfer-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-transfer-evasion
+          kind: objective_stage
+          predicate: One participant candidate crosses both the disclosed surrogate threshold and
+            the pinned target threshold while all hidden control probes remain denied.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-transfer-evasion
+            evidence: ev-model-transfer-evasion
+            event_kind: model_transfer_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0043.002
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-e
+        evidence_requirement_ref: m02.kep-m02-e-proof
+  kep-m02-f:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    ai_offensive_behavior_refs:
+    - initial-access
+    - defense-evasion
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-f
+        flag_id: flag-ensemble-evasion
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Ensemble Blind Spot
+        difficulty: advanced
+        target_minutes: 26
+        min_minutes: 18
+        max_minutes: 38
+        points: 200
+        disposition: new-design
+        prerequisites:
+        - kep-m02-d
+        - kep-m02-e
+        interfaces:
+        - curl
+        - python
+        - notebook
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: held-out-multi-control-crossing
+        telemetry_profile: model-evasion-ensemble
+        reliability: model-sensitive-30
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Security
+          question: Cross the held-out multi-policy ensemble while its control quorum remains
+            denied.
+          hints:
+          - The evaluator uses more than one unseen policy framing.
+          - The model policies are not grounded directly in the artifact registry's actual signature
+            state.
+          - Misrepresent the unsigned candidate as signature-verified, then request only the allow
+            JSON decision.
+        flag_delivery:
+          evidence_id: ev-model-ensemble-evasion
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-model-ensemble-evasion
+          kind: objective_stage
+          predicate: One participant grounding-state deception crosses the held-out threshold across
+            all three range-controlled policy revisions and the model-based classifier while at
+            least three of four paired controls remain denied.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-model-ensemble-evasion
+            evidence: ev-model-ensemble-evasion
+            event_kind: model_ensemble_evasion
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques:
+          - AML.T0015
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-evasion-reliability
+        objective_ref: m02.kep-m02-f
+        evidence_requirement_ref: m02.kep-m02-f-proof
+  kep-m02-h:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [initial-access, execution, defense-evasion, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-h
+        flag_id: flag-masquerading-ai-runtime
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Masquerading AI Runtime
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 30
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: [kep-m02-a]
+        interfaces: [browser, curl, python]
+        hint_costs: [0, 10, 25]
+        proof_obligation: gitea-pypi-lookalike-resolution-to-worker-behavior-delta
+        telemetry_profile: model-supply-python-runtime
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Publish the supplied look-alike AI runtime to the real WorkHub Python index and
+            make the pinned evaluation resolver install and execute its exact digest instead of the
+            genuine dependency.
+          hints:
+          - The participant desktop carries one wheel whose runtime name differs from the trusted
+            dependency by a single character.
+          - Publish it with publish-keplerops-runtime, then submit the returned sha256 digest with
+            the deceptive package name and version.
+          - The resolver must select that exact WorkHub PyPI artifact and the real worker must
+            change from the genuine deny result to the deceptive allow effect.
+        flag_delivery:
+          evidence_id: ev-masquerading-ai-runtime
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: contained_effect_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-masquerading-ai-runtime
+          kind: objective_stage
+          predicate: Fresh participant-bound evidence joins real Gitea PyPI publication and pip
+            resolution of the deceptive identity to the exact installed wheel digest, genuine deny
+            behavior, deceptive allow behavior, and a real contained worker process; direct files,
+            genuine packages, worker edits, and digest mismatches fail.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-masquerading-ai-runtime
+            evidence: ev-masquerading-ai-runtime
+            event_kind: masquerading_ai_runtime_executed
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0010.001, AML.T0074]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-runtime-package-supply
+        objective_ref: m02.kep-m02-h
+        evidence_requirement_ref: m02.kep-m02-h-proof
+  kep-m02-i:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [persistence, defense-evasion, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-i
+        flag_id: flag-poisoned-data-dependency
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Poisoned Data Dependency
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 19
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces: [browser, curl, python, notebook]
+        hint_costs: [0, 0, 10]
+        proof_obligation: signed-dependency-resolution-to-measured-regression
+        telemetry_profile: model-supply-data-dependency
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Publish a poisoned signed evaluation dependency through its normal API, run its
+            Airflow resolver, and cause a measurable quality regression.
+          hints:
+          - The dependency requires all four sample identifiers and a normal signed manifest.
+          - Queue the returned ddj job in the keplerops_distillation DAG using
+            data_dependency_job_id.
+          - Flip at least one trusted label, let Airflow consume the exact signed digest, then
+            submit the dependency and job IDs.
+        flag_delivery:
+          evidence_id: ev-poisoned-data-dependency
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-poisoned-data-dependency
+          kind: objective_stage
+          predicate: Fresh participant-bound evidence joins an API-published signed dependency
+            manifest to exact Airflow consumption and at least 0.25 measured regression; unsigned or
+            direct database state cannot satisfy it.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-poisoned-data-dependency
+            evidence: ev-poisoned-data-dependency
+            event_kind: poisoned_data_dependency_consumed
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0010.002]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-supply
+        objective_ref: m02.kep-m02-i
+        evidence_requirement_ref: m02.kep-m02-i-proof
+  kep-m02-j:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.model-registry-01.services.registry-workflow-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [persistence, defense-evasion, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-j
+        flag_id: flag-poisoned-model-dependency
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Poisoned Model Dependency
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 19
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces: [browser, curl, python, notebook]
+        hint_costs: [0, 0, 10]
+        proof_obligation: gitea-artifact-to-mlflow-alias-to-behavior-delta
+        telemetry_profile: model-supply-model-dependency
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Make the consumer resolve the poisoned WorkHub model package under the trusted
+            MLflow dependency name and demonstrate its changed real inference result.
+          hints:
+          - WorkHub publishes clean 1.0.0 and poisoned 2.0.0 generic packages under
+            keplerops-policy-model.
+          - Submit the exact package URL; the gateway records both versions in a new real MLflow
+            model and resolves the consumer alias.
+          - Version 2 must resolve to the exact downloaded digest and change the cobalt-lantern
+            decision from deny to allow.
+        flag_delivery:
+          evidence_id: ev-poisoned-model-dependency
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: verdict_response
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-poisoned-model-dependency
+          kind: objective_stage
+          predicate: Fresh participant-bound evidence joins a real WorkHub artifact digest, MLflow
+            version and consumer alias resolution, exact MinIO-backed download, and
+            clean-versus-poisoned model inference delta; alias-only edits fail.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-poisoned-model-dependency
+            evidence: ev-poisoned-model-dependency
+            event_kind: poisoned_model_dependency_resolved
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0010.003]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-supply
+        objective_ref: m02.kep-m02-j
+        evidence_requirement_ref: m02.kep-m02-j-proof
+  kep-m02-k:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [initial-access, execution, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-k
+        flag_id: flag-web-exploit-delivery
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Web Exploit Delivery
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 32
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: [kep-m01-j]
+        interfaces: [browser, curl, python]
+        hint_costs: [0, 10, 25]
+        proof_obligation: public-path-traversal-write-to-independent-browser-effect
+        telemetry_profile: model-supply-web-delivery
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Exploit the public preview exporter to server-write your staged browser payload,
+            then make the range agent retrieve and execute that exact artifact.
+          hints:
+          - Stage an HTML template whose script sets document.body.dataset.kepleropsEffect to the
+            supplied NONCE placeholder.
+          - The preview exporter starts in the runtime-owned web-delivery-scratch/previews
+            directory; use the returned sibling delivery path.
+          - Submit the delivery ID only after the public exploit writes it; the loopback Chromium
+            worker must retrieve the same digest and expose the dynamic data-keplerops-effect
+            marker.
+        flag_delivery:
+          evidence_id: ev-web-exploit-delivery
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: contained_effect_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-web-exploit-delivery
+          kind: objective_stage
+          predicate: Fresh participant-bound evidence joins the public traversal request, actual
+            contained server-side file write, independently retrieved identical source digest, real
+            Chromium process, and dynamically rendered contained effect; operator uploads and
+            participant-side fetches fail.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-web-exploit-delivery
+            evidence: ev-web-exploit-delivery
+            event_kind: web_exploit_model_delivery
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0049, AML.T0078]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-supply
+        objective_ref: m02.kep-m02-k
+        evidence_requirement_ref: m02.kep-m02-k-proof
+  kep-m02-l:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.text-generation-01.services.text-generation-api
+    - nodes.core.image-generation-01.services.image-generation-api
+    - nodes.core.mail-server-01.services.mail-submission
+    - nodes.core.mail-server-01.services.mail-imaps
+    - nodes.core.idp-01.services.keycloak-oidc
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [initial-access, defense-evasion, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-l
+        flag_id: flag-synthetic-spearphish
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Synthetic Spearphish
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces: [browser, curl, python, notebook]
+        hint_costs: [0, 0, 10]
+        proof_obligation: generated-text-and-media-to-mail-delivery-to-fresh-scoped-token
+        telemetry_profile: synthetic-spearphish-operational-and-selectable-full-content
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI-Enabled Social Engineering
+          question: Use the supplied range-local generative models to create a targeted message and
+            synthetic media, deliver both through the real mail service, and cause the range-only
+            recipient to disclose a fresh scoped AI-service token.
+          hints:
+          - Generate both the message and media with the supplied model APIs; the receipt joins
+            their server-recorded identities and digests.
+          - Deliver the generated attachment from generation@keplerops.test to
+            researcher@keplerops.test through authenticated mail submission.
+          - The simulated recipient must choose disclose, the attachment must retain the generated
+            image digest, and templates or external media do not satisfy the proof.
+        flag_delivery:
+          evidence_id: ev-synthetic-spearphish
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: scoped_identity_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-synthetic-spearphish
+          kind: objective_stage
+          predicate: Fresh participant-bound server evidence joins Qwen text provenance, OpenVINO
+            image provenance and exact attachment digest, authenticated Stalwart submission and IMAP
+            observation, the range model's disclose decision, and a newly issued Keycloak token
+            limited to ai_service_recipient; templates, external media, operator delivery, stale
+            tokens, and participant-supplied effect claims fail.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: true
+          event:
+            id: event-synthetic-spearphish
+            evidence: ev-synthetic-spearphish
+            event_kind: synthetic_spearphish_token_disclosure
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0052, AML.T0052.000, AML.T0052.001]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-model-supply
+        objective_ref: m02.kep-m02-l
+        evidence_requirement_ref: m02.kep-m02-l-proof
+  kep-m02-m:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-analysis-sandbox
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: [execution, defense-evasion, impact]
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m02-m
+        flag_id: flag-sandbox-aware-payload
+        module: module-02-model-evasion
+        outcome: model-evasion
+        title: Sandbox-Aware Payload
+        difficulty: intermediate
+        target_minutes: 28
+        min_minutes: 15
+        max_minutes: 42
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites: [kep-m02-h]
+        interfaces: [browser, curl, python]
+        hint_costs: [0, 10, 25]
+        proof_obligation: same-wheel-digest-analysis-to-worker-behavior-delta
+        telemetry_profile: model-supply-sandbox-evasion
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: AI Supply Chain
+          question: Make one published AI runtime wheel remain benign in the isolated analysis
+            sandbox while the exact same digest performs its contained action in the normal
+            evaluation worker.
+          hints:
+          - Complete Masquerading AI Runtime first; this path evaluates that dependency without
+            accepting a second artifact.
+          - Submit the dependency ID to the sandbox evaluator, which independently installs the same
+            resolved bytes in two fixed container profiles.
+          - The analysis trace must deny with no effect while the normal worker allows and creates
+            the declared contained effect.
+        flag_delivery:
+          evidence_id: ev-sandbox-aware-payload
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles: [gcp_full]
+          delivery:
+            kind: contained_effect_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: inference-gateway
+        proof:
+          evidence_id: ev-sandbox-aware-payload
+          kind: objective_stage
+          predicate: Fresh participant-bound evidence joins one exact PyPI wheel digest to
+            independent real pip installations in the isolated analysis and normal worker
+            containers, a benign analysis trace, an environment-sensitive branch, and a contained
+            worker effect; separate artifacts or an analysis effect fail.
+          proof_fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+              range_instance, participant, timestamp, status, digest]
+          reset_owner: inference-gateway
+          mutates_scenario_state: false
+          event:
+            id: event-sandbox-aware-payload
+            evidence: ev-sandbox-aware-payload
+            event_kind: sandbox_aware_payload_execution
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: [actor_role, asset_id, event_kind, object_id, outcome_id, record_count,
+                range_instance, participant, timestamp, status, digest]
+            freshness_seconds: 3600
+            reset_owner: inference-gateway
+        implementation_evidence:
+          primary_atlas_techniques: [AML.T0097]
+          manual_walkthrough: docs/walkthroughs/module-02-model-evasion.md
+          automated_test: test-runtime-package-supply
+        objective_ref: m02.kep-m02-m
+        evidence_requirement_ref: m02.kep-m02-m-proof
+conditions:
+  kep-m02-a-complete:
+    name: Outside the Guardrails evidence accepted
+    proposition: kep-m02-a-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-b-complete:
+    name: Encoding Drift evidence accepted
+    proposition: kep-m02-b-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-c-complete:
+    name: Same Meaning evidence accepted
+    proposition: kep-m02-c-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-d-complete:
+    name: Repeat Offender evidence accepted
+    proposition: kep-m02-d-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-e-complete:
+    name: Transfer Window evidence accepted
+    proposition: kep-m02-e-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-f-complete:
+    name: Ensemble Blind Spot evidence accepted
+    proposition: kep-m02-f-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-h-complete:
+    name: Masquerading AI Runtime evidence accepted
+    proposition: kep-m02-h-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped package-resolution and
+      worker-effect evidence for this challenge.
+  kep-m02-i-complete:
+    name: Poisoned Data Dependency evidence accepted
+    proposition: kep-m02-i-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-j-complete:
+    name: Poisoned Model Dependency evidence accepted
+    proposition: kep-m02-j-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-k-complete:
+    name: Web Exploit Delivery evidence accepted
+    proposition: kep-m02-k-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m02-l-complete:
+    name: Synthetic Spearphish evidence accepted
+    proposition: kep-m02-l-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped generation, delivery,
+      recipient-decision, and scoped-token evidence for this challenge.
+  kep-m02-m-complete:
+    name: Sandbox-Aware Payload evidence accepted
+    proposition: kep-m02-m-satisfied
+    source: {name: participant-evidence, version: '1'}
+    description: The proof service accepted fresh participant-scoped same-digest analysis and worker
+      evidence for this challenge.
+propositions:
+  kep-m02-a-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-a.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-a-proof
+  kep-m02-b-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-b.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-b-proof
+  kep-m02-c-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-c.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-c-proof
+  kep-m02-d-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-d.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-d-proof
+  kep-m02-e-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-e.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-e-proof
+  kep-m02-f-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-f.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-f-proof
+  kep-m02-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-h-proof
+  kep-m02-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-i-proof
+  kep-m02-j-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-j.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-j-proof
+  kep-m02-k-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-k.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-k-proof
+  kep-m02-l-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-l.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-l-proof
+  kep-m02-m-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m02-m.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m02-m-proof
+assertions:
+  kep-m02-a-satisfied:
+    description: Participant completion of kep-m02-a is observed.
+    proposition: kep-m02-a-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-b-satisfied:
+    description: Participant completion of kep-m02-b is observed.
+    proposition: kep-m02-b-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-c-satisfied:
+    description: Participant completion of kep-m02-c is observed.
+    proposition: kep-m02-c-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-d-satisfied:
+    description: Participant completion of kep-m02-d is observed.
+    proposition: kep-m02-d-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-e-satisfied:
+    description: Participant completion of kep-m02-e is observed.
+    proposition: kep-m02-e-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-f-satisfied:
+    description: Participant completion of kep-m02-f is observed.
+    proposition: kep-m02-f-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-h-satisfied:
+    description: Participant completion of kep-m02-h is observed.
+    proposition: kep-m02-h-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-i-satisfied:
+    description: Participant completion of kep-m02-i is observed.
+    proposition: kep-m02-i-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-j-satisfied:
+    description: Participant completion of kep-m02-j is observed.
+    proposition: kep-m02-j-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-k-satisfied:
+    description: Participant completion of kep-m02-k is observed.
+    proposition: kep-m02-k-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-l-satisfied:
+    description: Participant completion of kep-m02-l is observed.
+    proposition: kep-m02-l-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m02-m-satisfied:
+    description: Participant completion of kep-m02-m is observed.
+    proposition: kep-m02-m-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m02-a-proof:
+    description: Read-only inference evidence confirms a participant input crossed a pinned model or
+      guardrail decision boundary while the unmodified control input did not.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-a'
+    - 'Proof obligation: paired-verdict-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_decision_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-b-proof:
+    description: A supported encoded representation preserves the blocked intent and crosses the
+      pinned target boundary while its hidden control remains denied.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-b'
+    - 'Proof obligation: representation-preserving-verdict-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-encoding-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_encoding_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-c-proof:
+    description: Repeated model-based semantic checks match the blocked intent and the participant
+      paraphrase crosses the pinned target boundary while its hidden control remains denied.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-c'
+    - 'Proof obligation: meaning-matched-paraphrase-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-semantic-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_semantic_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-d-proof:
+    description: One participant candidate crosses the disclosed repeated target threshold while all
+      hidden control probes remain denied.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-d'
+    - 'Proof obligation: repeated-paired-verdict-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-repeatable-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_repeatable_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-e-proof:
+    description: One participant candidate crosses both the disclosed surrogate threshold and the
+      pinned target threshold while all hidden control probes remain denied.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-e'
+    - 'Proof obligation: surrogate-to-target-verdict-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-transfer-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_transfer_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-f-proof:
+    description: One participant grounding-state deception crosses the held-out threshold across all
+      three range-controlled policy revisions and the model-based classifier while at least three of
+      four paired controls remain denied.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-f'
+    - 'Proof obligation: held-out-multi-control-crossing'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-model-ensemble-evasion'
+    - 'Required fields: actor_role, asset_id, event_kind, object_id, outcome_id, record_count, range_instance,
+      participant, timestamp, status, digest'
+    - 'Event kind: model_ensemble_evasion'
+    - 'Reset owner: inference-gateway'
+  kep-m02-h-proof:
+    description: A participant-published look-alike Python dependency resolved from real Gitea PyPI
+      to its exact installed digest and changed real worker behavior relative to the genuine
+      package.
+    source_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-h'
+    - 'Proof obligation: gitea-pypi-lookalike-resolution-to-worker-behavior-delta'
+    - Raw wheel bytes, registry credentials, process output, and proof bodies are not objective
+      evidence.
+    - 'Evidence id: ev-masquerading-ai-runtime'
+    - 'Event kind: masquerading_ai_runtime_executed'
+    - 'Reset owner: inference-gateway'
+  kep-m02-i-proof:
+    description: A signed versioned data dependency was consumed by the real Airflow resolver and
+      caused a measured regression.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-i'
+    - 'Proof obligation: signed-dependency-resolution-to-measured-regression'
+    - Raw manifests, service tokens, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-poisoned-data-dependency'
+    - 'Event kind: poisoned_data_dependency_consumed'
+    - 'Reset owner: inference-gateway'
+  kep-m02-j-proof:
+    description: A WorkHub model package resolved through a real MLflow alias to its exact
+      object-store digest and changed real inference against the clean version.
+    source_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.model-registry-01.services.registry-workflow-api
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-j'
+    - 'Proof obligation: gitea-artifact-to-mlflow-alias-to-behavior-delta'
+    - Raw model bytes, credentials, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-poisoned-model-dependency'
+    - 'Event kind: poisoned_model_dependency_resolved'
+    - 'Reset owner: inference-gateway'
+  kep-m02-k-proof:
+    description: The public preview exploit caused an actual contained server write that the real
+      browser worker independently retrieved and executed at the same source digest.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-k'
+    - 'Proof obligation: public-path-traversal-write-to-independent-browser-effect'
+    - Raw HTML, browser output, credentials, and proof bodies are not objective evidence.
+    - 'Evidence id: ev-web-exploit-delivery'
+    - 'Event kind: web_exploit_model_delivery'
+    - 'Reset owner: inference-gateway'
+  kep-m02-l-proof:
+    description: Range-native evidence joins real generated text and media provenance, authenticated
+      mail delivery and mailbox observation, the recipient model decision, and a fresh scoped
+      Keycloak token.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.text-generation-01.services.text-generation-api
+    - nodes.core.image-generation-01.services.image-generation-api
+    - nodes.core.mail-server-01.services.mail-submission
+    - nodes.core.mail-server-01.services.mail-imaps
+    - nodes.core.idp-01.services.keycloak-oidc
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-l'
+    - 'Proof obligation: generated-text-and-media-to-mail-delivery-to-fresh-scoped-token'
+    - Operational telemetry is always on and content-prohibited; selectable full-content capture may
+      retain generation prompts and completions, mail and HTTP bodies, browser or notebook actions,
+      and proof/reset events under the inherited research contract.
+    - Raw messages, generated media, credentials, bearer tokens, and proof bodies are not objective
+      evidence.
+    - 'Evidence id: ev-synthetic-spearphish'
+    - 'Event kind: synthetic_spearphish_token_disclosure'
+    - 'Reset owner: inference-gateway'
+  kep-m02-m-proof:
+    description: One exact Python wheel digest produced a benign trace in the isolated analysis
+      sandbox and a contained effect in the normal evaluation worker.
+    source_refs:
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-analysis-sandbox
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    source_class: scenario_native_observability
+    scope_refs: [core.participant]
+    scope: range instance and participant namespace
+    window: 3600 seconds after the participant event
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs: [nodes.core.telemetry-proof-01.services.proof-api]
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m02-m'
+    - 'Proof obligation: same-wheel-digest-analysis-to-worker-behavior-delta'
+    - Raw wheel bytes, process output, environment values, and proof bodies are not objective
+      evidence.
+    - 'Evidence id: ev-sandbox-aware-payload'
+    - 'Event kind: sandbox_aware_payload_execution'
+    - 'Reset owner: inference-gateway'
+objectives:
+  kep-m02-a:
+    name: Outside the Guardrails
+    description: Make a candidate cross the pinned model decision boundary while the paired control
+      remains denied.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-a-satisfied
+    depends_on: []
+  kep-m02-b:
+    name: Encoding Drift
+    description: Preserve the blocked release intent through a supported encoded representation and
+      cross the target decision boundary.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-b-satisfied
+    depends_on: []
+  kep-m02-c:
+    name: Same Meaning
+    description: Write a meaning-matched paraphrase that passes the semantic checks and crosses the
+      target decision boundary.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-c-satisfied
+    depends_on: []
+  kep-m02-d:
+    name: Repeat Offender
+    description: Produce a candidate that repeatedly crosses the target boundary while every paired
+      control remains denied.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-d-satisfied
+    depends_on:
+    - m02.kep-m02-a
+  kep-m02-e:
+    name: Transfer Window
+    description: Create one candidate that transfers from the disclosed staging guardrail to the
+      pinned target policy.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-e-satisfied
+    depends_on:
+    - m02.kep-m02-b
+  kep-m02-f:
+    name: Ensemble Blind Spot
+    description: Cross the held-out multi-policy ensemble while its control quorum remains denied.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.guardrail-policy.services.guardrail-policy-api
+    - nodes.core.model-host-01.services.open-model-api
+    success:
+      assertions:
+      - kep-m02-f-satisfied
+    depends_on:
+    - m02.kep-m02-d
+    - m02.kep-m02-e
+  kep-m02-h:
+    name: Masquerading AI Runtime
+    description: Publish and resolve a deceptive WorkHub Python package whose exact installed digest
+      changes real evaluation-worker behavior relative to the genuine package.
+    agent: core.participant
+    targets:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m02-h-satisfied
+    depends_on:
+    - m02.kep-m02-a
+  kep-m02-i:
+    name: Poisoned Data Dependency
+    description: Publish and consume a signed poisoned data dependency that causes measurable
+      evaluation regression.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    success:
+      assertions:
+      - kep-m02-i-satisfied
+    depends_on: []
+  kep-m02-j:
+    name: Poisoned Model Dependency
+    description: Resolve a poisoned WorkHub model artifact through a real MLflow consumer alias and
+      demonstrate changed inference.
+    agent: core.participant
+    targets:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.model-registry-01.services.registry-workflow-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.inference-gateway.services.inference-api
+    success:
+      assertions:
+      - kep-m02-j-satisfied
+    depends_on: []
+  kep-m02-k:
+    name: Web Exploit Delivery
+    description: Use the public preview traversal to server-write a staged artifact that the real
+      browser worker later retrieves and executes.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m02-k-satisfied
+    depends_on:
+    - m01.kep-m01-j
+  kep-m02-l:
+    name: Synthetic Spearphish
+    description: Use the supplied generative models to create targeted text and media, deliver them
+      through real mail, and cause the range-only recipient model to disclose a fresh scoped
+      AI-service token.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.text-generation-01.services.text-generation-api
+    - nodes.core.image-generation-01.services.image-generation-api
+    - nodes.core.mail-server-01.services.mail-submission
+    - nodes.core.mail-server-01.services.mail-imaps
+    - nodes.core.idp-01.services.keycloak-oidc
+    success:
+      assertions:
+      - kep-m02-l-satisfied
+    depends_on: []
+  kep-m02-m:
+    name: Sandbox-Aware Payload
+    description: Execute the same published wheel digest in isolated analysis and normal worker
+      profiles, remaining benign only in analysis and producing a contained worker effect.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.python-package-resolver
+    - nodes.core.inference-gateway.services.python-package-analysis-sandbox
+    - nodes.core.inference-gateway.services.python-package-evaluation-worker
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    success:
+      assertions:
+      - kep-m02-m-satisfied
+    depends_on:
+    - m02.kep-m02-h

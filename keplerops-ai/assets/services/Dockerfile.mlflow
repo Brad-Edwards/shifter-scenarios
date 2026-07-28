@@ -1,0 +1,13 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+USER root
+RUN python -m pip install --no-cache-dir boto3==1.40.20 PyYAML==6.0.2 \
+    && install -d -o 1000 -g 1000 -m 0755 /opt/keplerops/company-state \
+    && python -c 'import boto3, yaml'
+COPY --chmod=0444 assets/content/company-state/company-state.yaml /opt/keplerops/company-state/company-state.yaml
+COPY --chmod=0555 assets/model-artifacts/company_mlflow_seed.py /opt/keplerops/company-state/company_mlflow_seed.py
+RUN python /opt/keplerops/company-state/company_mlflow_seed.py validate \
+      --company-state /opt/keplerops/company-state/company-state.yaml
+
+USER 1000:1000

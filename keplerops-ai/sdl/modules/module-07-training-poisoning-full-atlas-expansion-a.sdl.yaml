@@ -1,0 +1,358 @@
+name: module-07-training-poisoning-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/module-07-training-poisoning-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m07-g
+    - kep-m07-h
+    conditions:
+    - kep-m07-g-complete
+    - kep-m07-h-complete
+    propositions:
+    - kep-m07-g-satisfied
+    - kep-m07-h-satisfied
+    assertions:
+    - kep-m07-g-satisfied
+    - kep-m07-h-satisfied
+    evidence_requirements:
+    - kep-m07-g-proof
+    - kep-m07-h-proof
+    objectives: *id001
+  description: Source implementation contracts for module-07-training-poisoning full-ATLAS
+    expansion.
+behavior_specifications:
+  kep-m07-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-g
+        flag_id: flag-architecture-sabotage
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Architecture Sabotage
+        difficulty: advanced
+        target_minutes: 40
+        min_minutes: 25
+        max_minutes: 60
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m07-b
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: architecture_sabotage
+        telemetry_profile: architecture_sabotage
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Modify the model architecture in the real training workflow and preserve clean
+            behavior while introducing a measured attacker-selected weakness.
+          hints:
+          - Start on the airflow, training-worker, mlflow surface and keep each artifact bound to
+            your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-architecture-sabotage
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-architecture-sabotage
+          kind: training_expansion
+          predicate: Bind architecture diff, training run, candidate digest, clean threshold, and
+            attack delta; weight-only poisoning fails.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-architecture-sabotage
+            evidence: ev-architecture-sabotage
+            event_kind: training_architecture_sabotage
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_07_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-07-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0018
+          - AML.T0018.001
+          assurance: source-implemented-pre-playtest
+        objective_ref: m07xa.kep-m07-g
+        evidence_requirement_ref: m07xa.kep-m07-g-proof
+  kep-m07-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-h
+        flag_id: flag-poisoned-dataset-publication
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Poisoned Dataset Publication
+        difficulty: intermediate
+        target_minutes: 24
+        min_minutes: 15
+        max_minutes: 38
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m07-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: poisoned_dataset_publication
+        telemetry_profile: poisoned_dataset_publication
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Publish a poisoned dataset version through the real registry and cause an
+            independent training consumer to select it.
+          hints:
+          - Start on the dataset-registry, airflow, mlflow surface and keep each artifact bound to
+            your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-poisoned-dataset-publication
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-poisoned-dataset-publication
+          kind: training_expansion
+          predicate: Require published digest, registry metadata, independent resolver selection,
+            and measured trained-model effect; direct trainer mounts fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-poisoned-dataset-publication
+            evidence: ev-poisoned-dataset-publication
+            event_kind: poisoned_dataset_publication
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_07_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-07-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0019
+          assurance: source-implemented-pre-playtest
+        objective_ref: m07xa.kep-m07-h
+        evidence_requirement_ref: m07xa.kep-m07-h-proof
+conditions:
+  kep-m07-g-complete:
+    name: Architecture Sabotage evidence accepted
+    proposition: kep-m07-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m07-h-complete:
+    name: Poisoned Dataset Publication evidence accepted
+    proposition: kep-m07-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m07-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-g-proof
+  kep-m07-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-h-proof
+assertions:
+  kep-m07-g-satisfied:
+    description: Participant completion of kep-m07-g is observed.
+    proposition: kep-m07-g-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m07-h-satisfied:
+    description: Participant completion of kep-m07-h is observed.
+    proposition: kep-m07-h-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m07-g-proof:
+    description: Capture digest-safe participant-scoped evidence for Architecture Sabotage.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-g'
+    - 'Proof obligation: architecture_sabotage'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m07-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Poisoned Dataset Publication.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-h'
+    - 'Proof obligation: poisoned_dataset_publication'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m07-g:
+    name: Architecture Sabotage
+    description: Modify the model architecture in the real training workflow and preserve clean
+      behavior while introducing a measured attacker-selected weakness.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m07-g-satisfied
+    depends_on:
+    - m07.kep-m07-b
+  kep-m07-h:
+    name: Poisoned Dataset Publication
+    description: Publish a poisoned dataset version through the real registry and cause an
+      independent training consumer to select it.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m07-h-satisfied
+    depends_on:
+    - m07.kep-m07-a

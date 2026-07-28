@@ -1,0 +1,22 @@
+ARG BASE_IMAGE=quay.io/jupyter/scipy-notebook@sha256:a98faa550c3b56f3b115015b90592d070708fd17337abd56364236a0788c7454
+FROM ${BASE_IMAGE}
+USER root
+RUN install -d -o 1000 -g 100 -m 0755 /opt/keplerops /run/keplerops /etc/jupyter
+COPY assets/services/keplerops_jupyter_research_capture.py /opt/keplerops/keplerops_jupyter_research_capture.py
+COPY assets/model-artifacts/company_notebook_readback.py /opt/keplerops/company_notebook_readback.py
+RUN printf '%s\n' \
+  "c.ServerApp.jpserver_extensions = {'keplerops_jupyter_research_capture': True}" \
+  > /etc/jupyter/jupyter_server_config.py && \
+  chmod 0555 /opt/keplerops/company_notebook_readback.py && \
+  chmod 0644 /opt/keplerops/keplerops_jupyter_research_capture.py /etc/jupyter/jupyter_server_config.py
+COPY --chown=1000:100 assets/content/datasets/ /home/jovyan/keplerops/datasets/
+COPY --chown=1000:100 assets/model-artifacts/deployment-manifest.yaml /home/jovyan/keplerops/deployment-manifest.yaml
+RUN test ! -e /home/jovyan/keplerops/company-notebooks && \
+  install -d -o 1000 -g 100 -m 0755 /home/jovyan/keplerops/company-notebooks
+COPY --chown=1000:100 assets/model-artifacts/company-*.ipynb /home/jovyan/keplerops/company-notebooks/
+COPY --chown=1000:100 assets/model-artifacts/company-notebook-manifest.json /home/jovyan/keplerops/company-notebooks/company-notebook-manifest.json
+RUN python /opt/keplerops/company_notebook_readback.py verify \
+  --root /home/jovyan/keplerops/company-notebooks \
+  --manifest /home/jovyan/keplerops/company-notebooks/company-notebook-manifest.json
+ENV HOME=/home/jovyan/work JUPYTER_RUNTIME_DIR=/home/jovyan/work/.jupyter/runtime PYTHONPATH=/opt/keplerops
+USER 1000:100

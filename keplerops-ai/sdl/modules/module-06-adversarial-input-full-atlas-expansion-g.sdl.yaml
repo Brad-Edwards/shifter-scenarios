@@ -1,0 +1,365 @@
+name: module-06-adversarial-input-full-atlas-expansion-g
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-g
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-s
+    - kep-m06-t
+    conditions:
+    - kep-m06-s-complete
+    - kep-m06-t-complete
+    propositions:
+    - kep-m06-s-satisfied
+    - kep-m06-t-satisfied
+    assertions:
+    - kep-m06-s-satisfied
+    - kep-m06-t-satisfied
+    evidence_requirements:
+    - kep-m06-s-proof
+    - kep-m06-t-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-s:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-s
+        flag_id: flag-retrieval-trust-forge
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Retrieval Trust Forge
+        difficulty: intermediate
+        target_minutes: 22
+        min_minutes: 13
+        max_minutes: 34
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m03-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: retrieval_trust_forge
+        telemetry_profile: retrieval_trust_forge
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Craft retrieval content whose model response emits a trusted-looking component
+            and attacker-selected citation that changes a later decision.
+          hints:
+          - Start on the workhub, retrieval-index, inference-api surface and keep each artifact
+            bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-retrieval-trust-forge
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-retrieval-trust-forge
+          kind: adversarial_expansion
+          predicate: Bind authored content, index retrieval, model-generated trusted component and
+            citation, and downstream decision; participant-rendered output fails.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-retrieval-trust-forge
+            evidence: ev-retrieval-trust-forge
+            event_kind: retrieval_trust_forge
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0066
+          - AML.T0067
+          - AML.T0067.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xg.kep-m06-s
+        evidence_requirement_ref: m06xg.kep-m06-s-proof
+  kep-m06-t:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-t
+        flag_id: flag-synthetic-impersonation
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Synthetic Impersonation
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 32
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m06-i
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: synthetic_impersonation
+        telemetry_profile: synthetic_impersonation
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Generate synthetic media that impersonates a discovered range persona and passes
+            the live identity-content classifier.
+          hints:
+          - Start on the generation-workbench, identity-content-classifier, proof-api surface and
+            keep each artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-synthetic-impersonation
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-synthetic-impersonation
+          kind: adversarial_expansion
+          predicate: Bind discovered target, generative model provenance, produced media, and
+            classifier result; stock media or wrong identities fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-synthetic-impersonation
+            evidence: ev-synthetic-impersonation
+            event_kind: synthetic_impersonation
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0073
+          - AML.T0088
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xg.kep-m06-t
+        evidence_requirement_ref: m06xg.kep-m06-t-proof
+conditions:
+  kep-m06-s-complete:
+    name: Retrieval Trust Forge evidence accepted
+    proposition: kep-m06-s-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-t-complete:
+    name: Synthetic Impersonation evidence accepted
+    proposition: kep-m06-t-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-s-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-s.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-s-proof
+  kep-m06-t-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-t.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-t-proof
+assertions:
+  kep-m06-s-satisfied:
+    description: Participant completion of kep-m06-s is observed.
+    proposition: kep-m06-s-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-t-satisfied:
+    description: Participant completion of kep-m06-t is observed.
+    proposition: kep-m06-t-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-s-proof:
+    description: Capture digest-safe participant-scoped evidence for Retrieval Trust Forge.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-s'
+    - 'Proof obligation: retrieval_trust_forge'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-t-proof:
+    description: Capture digest-safe participant-scoped evidence for Synthetic Impersonation.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-t'
+    - 'Proof obligation: synthetic_impersonation'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-s:
+    name: Retrieval Trust Forge
+    description: Craft retrieval content whose model response emits a trusted-looking component and
+      attacker-selected citation that changes a later decision.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-s-satisfied
+    depends_on:
+    - m03.kep-m03-a
+  kep-m06-t:
+    name: Synthetic Impersonation
+    description: Generate synthetic media that impersonates a discovered range persona and passes
+      the live identity-content classifier.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-t-satisfied
+    depends_on:
+    - m06xb.kep-m06-i

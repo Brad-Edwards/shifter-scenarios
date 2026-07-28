@@ -1,0 +1,38 @@
+{
+  "index_patterns": ["keplerops-company-v1-*"],
+  "priority": 110,
+  "version": 1,
+  "_meta": {
+    "description": "Ordinary canonical KeplerOps company search records",
+    "owner": "keplerops-company-state"
+  },
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "1s"
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "document_id": {"type": "keyword"},
+        "object_type": {"type": "keyword"},
+        "title": {
+          "type": "text",
+          "fields": {"exact": {"type": "keyword"}}
+        },
+        "summary": {"type": "text"},
+        "represented_at": {"type": "date", "format": "strict_date_time"},
+        "project_ref": {"type": "keyword"},
+        "owner_ref": {"type": "keyword"},
+        "related_refs": {"type": "keyword"},
+        "source_digest": {"type": "keyword"},
+        "source_payload": {"type": "keyword", "index": false, "doc_values": false},
+        "company_state_owner": {"type": "keyword"}
+      }
+    },
+    "aliases": {
+      "keplerops-company": {}
+    }
+  }
+}

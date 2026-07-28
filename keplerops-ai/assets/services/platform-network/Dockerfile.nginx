@@ -1,0 +1,10 @@
+ARG BASE_IMAGE=nginx:1.28.1-alpine@sha256:52e3ada4d978443601f286cc2f9e7b95c82aa3ad5a78ce9c6b94ce00258e68cc
+FROM ${BASE_IMAGE}
+
+COPY assets/services/platform-network/public-web/nginx.conf /opt/keplerops/public-web/nginx.conf
+COPY assets/services/platform-network/public-web/html /usr/share/nginx/html
+COPY assets/services/platform-network/scan-targets/nginx.conf /opt/keplerops/scan-targets/nginx.conf
+COPY assets/services/platform-network/scan-targets/scan-docs /usr/share/nginx/scan-docs
+COPY assets/services/platform-network/scan-targets/scan-status /usr/share/nginx/scan-status
+
+EXPOSE 8080 18080 18081
