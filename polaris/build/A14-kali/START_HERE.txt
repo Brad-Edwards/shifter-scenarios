@@ -1,0 +1,25 @@
+POLARIS START HERE
+
+You are on the Kali attack box for Operation POLARIS.
+
+Keep https://polaris.keplerops.com open in your local browser. That is the CTFd
+scoreboard where challenge briefs, hints, and flag submission live.
+
+You cannot submit flags to CTFd from this Kali box. The range network is
+intentionally isolated from the public scoreboard, so submit every flag from
+your browser tab on your own workstation.
+
+First steps:
+
+1. Read the warm-up note:
+   cat /home/kali/.polaris/welcome.txt
+
+2. Submit the warm-up flag in CTFd under "Start Here - Kali Warm-Up".
+
+3. Begin Mission One from the CTFd challenge board.
+
+Useful local paths:
+
+- /home/kali/tools/modbus_scan.py
+- /home/kali/.config/claude/system_prompt.txt
+- /home/kali/.polaris/welcome.txt

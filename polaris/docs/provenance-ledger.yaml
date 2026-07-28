@@ -1,0 +1,50 @@
+schema_version: "scenario-pack-provenance/v2"
+pack:
+  name: polaris
+  title: "Polaris / NORTHSTORM"
+  version: 0.1.0
+
+sources:
+  - source_id: shifter-scenarios-repository
+    name: "Palo Alto Networks Shifter scenarios repository"
+    url: https://github.com/PaloAltoNetworks/shifter-scenarios
+    license: proprietary
+    usage: reused
+    attribution_required: false
+    used: "Current source repository for the complete Polaris scenario package."
+    excluded: "Historical state, generated reports, operator tokens, generated participant credentials, Terraform state, live-cloud output, and CTFd submissions or points as objective truth are not portable pack content or proof."
+
+artifacts:
+  - {artifact_id: readme, path: README.md, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: contract-docs, path: docs/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: sdl, path: sdl/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: build, path: build/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: aws-range, path: aws-range/, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: ctfd, path: ctfd/, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: tests, path: tests/, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: briefing-deck, path: briefing-deck/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: containers, path: containers/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: content-packages, path: content-packages/, classification: commercial-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: design, path: design/, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: notes, path: notes/, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: cleanup-plan, path: cleanup-plan.md, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: lessons-one, path: lessons-1.md, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: lessons-two, path: lessons-2.md, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: lessons-three, path: lessons-3.md, classification: internal-only, sources: [shifter-scenarios-repository]}
+  - {artifact_id: lessons-four, path: lessons-4.md, classification: internal-only, sources: [shifter-scenarios-repository]}
+
+content_safety:
+  no_real_malware: true
+  no_real_third_party_targets: true
+  no_real_credentials: true
+  no_sensitive_data: true
+  offensive_tooling_boundary: true
+  notes: "The pack contains only synthetic, range-local training content. Operator-only lifecycle sources and historical records are not participant exports or fresh proof."
+
+review:
+  status: pending
+  gates:
+    - {gate_id: licensing, status: pending, notes: "Proprietary content; publication boundary review remains pending."}
+    - {gate_id: attribution, status: pending, notes: "The current source repository is recorded in this ledger."}
+    - {gate_id: sensitive-data, status: pending, notes: "Private-state and credential-bearing operator material remains excluded from portable pack claims."}
+    - {gate_id: offensive-tooling, status: pending, notes: "Only synthetic, range-local training content is in scope; no real malware, targets, or credentials are permitted."}

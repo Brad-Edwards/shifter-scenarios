@@ -1,0 +1,69 @@
+schema_version: "scenario-pack-compatibility/v1"
+pack:
+  name: polaris
+  title: "Polaris / NORTHSTORM"
+  version: 0.1.0
+  status: draft
+  provenance_ledger: docs/provenance-ledger.yaml
+  source:
+    requirement: POL-0001
+    issues: [532]
+    upstream_references: []
+
+artifact_boundaries:
+  participant_visible:
+    - {path: README.md, export: public}
+    - {path: docs/concepts.md, export: commercial}
+  operator_only:
+    - {path: build/, export: operator}
+    - {path: aws-range/, export: operator}
+    - {path: ctfd/, export: operator}
+    - {path: tests/, export: operator}
+    - {path: docs/golden-readiness-checklist.md, export: operator}
+    - {path: docs/lineage.md, export: commercial}
+  oracle_only:
+    - {path: sdl/, export: private}
+    - {path: docs/attack-path.md, export: private}
+  commercial:
+    - {path: briefing-deck/, export: commercial}
+    - {path: containers/, export: commercial}
+    - {path: content-packages/, export: commercial}
+    - {path: design/, export: commercial}
+    - {path: notes/, export: commercial}
+    - {path: docs/provenance-ledger.yaml, export: commercial}
+
+runtime_profiles: []
+delivery_bundles: []
+platform_features: []
+
+assets:
+  - {asset_id: aces-sdl, path: sdl/, visibility: oracle, status: shipped}
+  - {asset_id: range-build-source, path: build/, visibility: operator, status: shipped}
+  - {asset_id: aws-lifecycle-source, path: aws-range/, visibility: operator, status: shipped}
+  - {asset_id: ctfd-source, path: ctfd/, visibility: operator, status: shipped}
+  - {asset_id: participant-briefing, path: briefing-deck/, visibility: commercial, status: shipped}
+
+operator_surfaces:
+  - {surface_id: range-build, path: build/, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: aws-lifecycle, path: aws-range/, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: ctfd-reconciliation, path: ctfd/, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: scenario-smoketests, path: tests/, role: validator, visibility: operator, status: shipped}
+  - {surface_id: attack-path, path: docs/attack-path.md, role: facilitator, visibility: oracle, status: shipped}
+
+validation:
+  commands:
+    - id: central-pack-contract
+      command: aces-pack-validate --pack scenarios/polaris
+      validates: [published-pack-contract, pack-metadata, provenance]
+    - id: central-pack-release
+      command: aces-pack-release check --pack scenarios/polaris
+      validates: [release-boundaries, participant-leak-scan]
+    - id: scenario-content
+      command: python3 scripts/ci/scenario_content_ci.py
+      validates: [private-catalog-checks, containment, provenance, leak-scan]
+  gates:
+    - id: manifest-schema
+      kind: schema
+      paths:
+        - {path: pack.compatibility.yaml}
+        - {path: docs/provenance-ledger.yaml}

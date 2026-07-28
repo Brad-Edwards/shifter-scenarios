@@ -1,0 +1,110 @@
+name: polaris-demo-minimal
+description: >
+  A parser and integration fixture for the Polaris pack contract. It is not a
+  Polaris runtime profile, golden build, participant walkthrough, or substitute
+  for the full enterprise-to-OT scenario.
+
+nodes:
+  shared-net:
+    type: Switch
+  splice-link:
+    type: Switch
+
+  a0-boreas-web:
+    type: VM
+    os: linux
+    os_version: Alpine 3.19
+    source: {name: alpine, version: "3.19"}
+    resources: {ram: 256 mib, cpu: 1}
+    services:
+      - {port: 80, name: http}
+
+  dns-boreas:
+    type: VM
+    os: linux
+    os_version: Alpine 3.19
+    source: {name: alpine, version: "3.19"}
+    resources: {ram: 256 mib, cpu: 1}
+    services:
+      - {port: 53, protocol: udp, name: dns}
+
+  a14-kali:
+    type: VM
+    os: linux
+    os_version: Alpine 3.19
+    source: {name: alpine, version: "3.19"}
+    resources: {ram: 256 mib, cpu: 1}
+    services:
+      - {port: 22, name: ssh}
+
+infrastructure:
+  shared-net:
+    count: 1
+    properties: {cidr: 10.77.0.0/24, gateway: 10.77.0.1}
+  splice-link:
+    count: 1
+    properties: {cidr: 10.77.60.0/24, gateway: 10.77.60.1}
+  a0-boreas-web:
+    count: 1
+    links: [shared-net]
+    properties:
+      - shared-net: 10.77.0.10
+  dns-boreas:
+    count: 1
+    links: [shared-net]
+    properties:
+      - shared-net: 10.77.0.2
+  a14-kali:
+    count: 1
+    links: [shared-net]
+    properties:
+      - shared-net: 10.77.0.14
+
+entities:
+  participant:
+    name: Demo participant
+    role: red
+
+agents:
+  polaris-demo-participant:
+    entity: participant
+    actions: [exercise-demo-route]
+    initial_knowledge:
+      hosts: [a14-kali]
+      subnets: [shared-net]
+
+evidence_requirements:
+  demo-route-evidence:
+    description: Digest-safe receipt for the parser fixture objective verdict.
+    source_class: scenario_native_observability
+    scope_refs: [participant]
+    window: objective_verdict
+    boundary_kind: objective_verdict
+    channel: other
+    artifact_role: digest_safe_objective_receipt
+    media_types: [application/json, text/plain]
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+
+propositions:
+  demo-route-complete:
+    description: The participant completed the bounded parser-fixture route.
+    subjects: [participant]
+    basis: observed_state
+    predicate: {kind: boolean, property: participant_outcome.demo_route_completed, semantic_ref: "urn:aces:participant-outcome:polaris-demo-route-completed", operator: equals, expected: true}
+    evidence_requirements: [demo-route-evidence]
+
+assertions:
+  demo-route-complete: {description: Demo route objective passed., proposition: demo-route-complete, role: postcondition, polarity: positive}
+
+objectives:
+  exercise-demo-route:
+    name: Exercise demo route
+    description: Validate the minimum objective/assertion shape against the fixture topology.
+    agent: polaris-demo-participant
+    actions: [exercise-demo-route]
+    targets: [a0-boreas-web, dns-boreas]
+    success: {assertions: [demo-route-complete]}

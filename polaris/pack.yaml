@@ -1,0 +1,15 @@
+name: polaris
+title: "Polaris / NORTHSTORM"
+version: 0.1.0
+status: draft
+description: "A live-fire offensive enterprise-to-OT campaign from a Kali foothold through the Boreas environment to NORTHSTORM objectives."
+authors:
+  - Palo Alto Networks, Inc.
+license: "Copyright (c) 2026, Palo Alto Networks Inc. All rights reserved."
+requirement: POL-0001
+contents:
+  flag_layer: false          # CTFd source is an operator adapter; no canonical flags/ + challenges/ pair exists yet.
+  reference_triangle: false  # Existing build/test/walkthrough sources are not yet one participant-equivalent proof triangle.
+  profile_bundles: false      # No supported delivery/audience bundle is declared.
+compatibility_manifest: pack.compatibility.yaml
+provenance_ledger: docs/provenance-ledger.yaml
