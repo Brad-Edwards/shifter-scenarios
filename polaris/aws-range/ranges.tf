@@ -12,11 +12,11 @@
 resource "aws_subnet" "polaris" {
   for_each = local.range_subnets
 
-  vpc_id            = var.range_vpc_id
+  vpc_id            = aws_vpc.polaris.id
   cidr_block        = each.value.cidr
   availability_zone = var.availability_zone
 
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
 
   tags = {
     Name    = "${local.name_prefix}-subnet-${each.key}"
@@ -26,13 +26,12 @@ resource "aws_subnet" "polaris" {
   }
 }
 
-# Dedicated route table per range that bypasses the range Network Firewall
-# (which only allowlists GCP/Cortex IPs, not Docker Hub / apt archives).
-# Egress path: POLARIS subnet -> NAT gateway -> IGW.
+# Dedicated route table per range. The range is self-contained and uses its
+# own internet gateway for package/image pulls and participant SSH.
 resource "aws_route_table" "polaris" {
   for_each = local.range_subnets
 
-  vpc_id = var.range_vpc_id
+  vpc_id = aws_vpc.polaris.id
 
   tags = {
     Name    = "${local.name_prefix}-rt-${each.key}"
@@ -46,17 +45,7 @@ resource "aws_route" "polaris_default" {
 
   route_table_id         = aws_route_table.polaris[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = var.nat_gateway_id
-}
-
-# Keep portal-to-range reachability (so the Shifter portal terminal UI +
-# Guacamole can hit the kali container's published ports).
-resource "aws_route" "polaris_portal_peering" {
-  for_each = local.range_subnets
-
-  route_table_id            = aws_route_table.polaris[each.key].id
-  destination_cidr_block    = var.portal_vpc_cidr
-  vpc_peering_connection_id = var.portal_peering_id
+  gateway_id             = aws_internet_gateway.polaris.id
 }
 
 resource "aws_route_table_association" "polaris" {
@@ -73,8 +62,7 @@ resource "aws_route_table_association" "polaris" {
 # - intra-subnet rule scoped to `each.value.cidr` (the /28), NOT the whole
 #   range VPC CIDR — so range 1's kali cannot reach range 0's DC at L3
 #   even though both sit inside 10.1.0.0/16
-# - portal ssh (22) + rdp (3389) ingress from var.portal_vpc_cidr, so the
-#   Shifter portal terminal + Guacamole can still key-auth + RDP in
+# - participant SSH (22) + RDP (3389) ingress only from the runner's /32
 # - egress all — cold docker build needs apt.kali.org, docker hub, pypi
 #
 # Name suffix `-${each.key}` keeps SG names unique per VPC so all N ranges
@@ -84,9 +72,9 @@ resource "aws_route_table_association" "polaris" {
 resource "aws_security_group" "polaris" {
   for_each = local.range_subnets
 
-  vpc_id      = var.range_vpc_id
+  vpc_id      = aws_vpc.polaris.id
   name        = "${local.name_prefix}-sg-${each.key}"
-  description = "POLARIS range ${each.key} - intra-${each.value.cidr} + portal-peering only"
+  description = "POLARIS range ${each.key} - intra-${each.value.cidr} + participant access only"
 
   ingress {
     description = "Intra-range /28 traffic (polaris VM to A2 DC and docker host-network Kali)"
@@ -97,19 +85,19 @@ resource "aws_security_group" "polaris" {
   }
 
   ingress {
-    description = "SSH from portal VPC (terminal UI key-auth)"
+    description = "Participant SSH from the rehearsal runner"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.portal_vpc_cidr]
+    cidr_blocks = [var.participant_cidr]
   }
 
   ingress {
-    description = "RDP from portal VPC (Guacamole)"
+    description = "Participant RDP from the rehearsal runner"
     from_port   = 3389
     to_port     = 3389
     protocol    = "tcp"
-    cidr_blocks = [var.portal_vpc_cidr]
+    cidr_blocks = [var.participant_cidr]
   }
 
   egress {
@@ -131,6 +119,36 @@ resource "aws_security_group" "polaris" {
   }
 }
 
+resource "aws_security_group" "a2" {
+  for_each = local.range_subnets
+
+  vpc_id      = aws_vpc.polaris.id
+  name        = "${local.name_prefix}-a2-sg-${each.key}"
+  description = "POLARIS A2 ${each.key} - private intra-range traffic only"
+
+  ingress {
+    description = "Intra-range traffic from the Polaris host"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [each.value.cidr]
+  }
+
+  egress {
+    description = "Bootstrap package and SSM traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name    = "${local.name_prefix}-a2-sg-${each.key}"
+    Project = "polaris"
+    Range   = each.key
+  }
+}
+
 #------------------------------------------------------------------------------
 # Polaris VM — Ubuntu running the polaris docker-compose stack.
 #------------------------------------------------------------------------------
@@ -144,7 +162,7 @@ resource "aws_instance" "polaris" {
   vpc_security_group_ids = [aws_security_group.polaris[each.key].id]
   iam_instance_profile   = aws_iam_instance_profile.polaris.name
 
-  associate_public_ip_address = false
+  associate_public_ip_address = true # NOSONAR -- this is the declared participant A14 SSH/RDP surface
 
   metadata_options {
     http_tokens                 = "required"
@@ -152,7 +170,7 @@ resource "aws_instance" "polaris" {
   }
 
   user_data = templatefile("${path.module}/user_data.sh.tpl", {
-    tarball_s3_uri      = var.build_tarball_s3_uri
+    tarball_s3_uri      = "s3://${aws_s3_object.build.bucket}/${aws_s3_object.build.key}"
     kali_authorized_key = var.kali_authorized_key
     a2_private_ip       = each.value.a2_ip
   })
@@ -167,11 +185,17 @@ resource "aws_instance" "polaris" {
   }
 
   tags = {
-    Name    = "polaris-range-${each.key}"
+    Name    = "${local.name_prefix}-host-${each.key}"
     Project = "polaris"
     Purpose = "bake-range"
     Range   = each.key
   }
+
+  depends_on = [
+    aws_iam_role_policy.polaris_s3_read,
+    aws_iam_role_policy_attachment.polaris_ssm,
+    aws_s3_object.build,
+  ]
 }
 
 #------------------------------------------------------------------------------
@@ -190,14 +214,17 @@ resource "aws_instance" "polaris" {
 resource "aws_instance" "a2_dc" {
   for_each = local.range_subnets
 
-  ami                    = var.a2_dc_ami_id
+  ami                    = var.windows_ami_id
   instance_type          = var.a2_instance_type
   subnet_id              = aws_subnet.polaris[each.key].id
   private_ip             = each.value.a2_ip
-  vpc_security_group_ids = [aws_security_group.polaris[each.key].id]
+  vpc_security_group_ids = [aws_security_group.a2[each.key].id]
   iam_instance_profile   = aws_iam_instance_profile.polaris.name
 
-  associate_public_ip_address = false
+  # A2 needs public egress during its cold bootstrap because this compact
+  # event range deliberately has no NAT gateway. Its dedicated SG has no
+  # participant ingress; participant access remains through A14.
+  associate_public_ip_address = true # NOSONAR -- egress-only address, isolated by aws_security_group.a2
 
   get_password_data = false
 
@@ -220,10 +247,14 @@ resource "aws_instance" "a2_dc" {
   }
 
   tags = {
-    Name    = "polaris-a2-dc-${each.key}"
+    Name    = "${local.name_prefix}-a2-dc-${each.key}"
     Project = "polaris"
     Purpose = "boreas.local AD DC"
     Role    = "dc"
     Range   = each.key
   }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.polaris_ssm,
+  ]
 }

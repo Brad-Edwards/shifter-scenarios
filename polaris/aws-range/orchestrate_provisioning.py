@@ -6,7 +6,7 @@ next N unprovisioned participants, fires ``ctf.services.range.provision_particip
 for each via the portal container's Django shell, waits for all to
 reach a terminal status (``ready`` or ``failed``), then does it again.
 
-Two files are maintained under ``scenarios/polaris/aws-range/``:
+Two files are maintained under ``polaris/aws-range/``:
 
 - ``provisioning_status.md`` — human-readable running log (one section
   per batch + a final summary + retry pass).

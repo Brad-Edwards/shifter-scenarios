@@ -1,4 +1,4 @@
-"""Polaris provisioning batch state machine (issue #691).
+"""Polaris provisioning batch state machine.
 
 Extracted from ``orchestrate_provisioning.py`` so ``run_one_batch`` and
 its supporting helpers can be edited in isolation from the CLI entrypoint.

@@ -8,6 +8,8 @@ checklist into a final review record and mark only what a real run proves.
 - [ ] The declared range applies from a clean checkout using committed pack content.
 - [ ] The profile is isolated from shared infrastructure and avoids uncontrolled egress.
 - [ ] Every declared enterprise, identity, industrial, objective-verdict, and CTFd-adapter component is real, range-local, and working.
+- [ ] Industrial services use authentic vendor-supported systems or twins rather than authored protocol simulations.
+- [ ] The declared provider realizes every required SDL host and isolation boundary as independent infrastructure.
 - [ ] The declared build enters the participant start state without hidden operator setup.
 - [ ] The participant execution surface is documented and reachable.
 - [ ] The full intended path reaches every required objective from participant context.

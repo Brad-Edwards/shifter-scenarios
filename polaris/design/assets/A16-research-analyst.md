@@ -113,7 +113,7 @@ Flag 38 is deliberately a **Medium-tier reward**, not an Expert gate. The A16 co
 
 **Base image:** `debian:bookworm-slim`
 
-**Content directory:** `scenarios/polaris/build/A16-research-analyst/`
+**Content directory:** `polaris/build/A16-research-analyst/`
 
 ### Steps
 

@@ -2,16 +2,16 @@
 #
 # Network topology per architecture design:
 #
-#   shared (172.20.0.0/24):    A0, A7, DNS, A14
+#   shared (172.20.0.0/24):    A0, DNS, A14
 #   corporate (172.20.10.0/24): A1, A3, A4, A14  (Front Office — Kali is here per A14 spec)
-#   scada (172.20.40.0/24):    A5, A3            (VLAN 40 — NOT reachable from Kali)
+#   scada (172.20.40.0/24):    A5, A15           (VLAN 40 — NOT reachable from Kali)
 #   lab (172.20.30.0/24):      A6, A7, A8        (VLAN 30 — NOT reachable from Kali)
 #   bunker-ot (172.20.50.0/24): A9, A10, A11, A12, A13 (VLAN 50 — isolated until gate)
 #
 # Multi-homed containers:
-#   A14: shared + corporate (reaches A0, A7, and all FO assets)
-#   A3:  corporate + scada + lab (can pivot to SCADA and Lab)
-#   A7:  shared + lab (reachable from both Kali and Lab)
+#   A14: shared + corporate (reaches A0 and all FO assets)
+#   A15: corporate + scada (exclusive SCADA pivot)
+#   A16: corporate + lab (exclusive Lab pivot)
 #   DNS: shared + corporate + lab (name resolution everywhere)
 #
 # A2 (Windows Server 2022 AD DC for boreas.local) is an EC2 instance
@@ -66,6 +66,8 @@ services:
   dns:
     build: ./dns
     container_name: dns
+    labels:
+      polaris.asset: dns-boreas
     networks:
       shared:
         ipv4_address: 172.20.0.2
@@ -77,9 +79,11 @@ services:
 
   a0-website:
     build:
-      context: .
-      dockerfile: ./a0/Dockerfile
+      context: ..
+      dockerfile: ./build/a0/Dockerfile
     container_name: a0-website
+    labels:
+      polaris.asset: a0-boreas-web
     hostname: boreas-systems.ctf
     networks:
       shared:
@@ -92,6 +96,8 @@ services:
       context: .
       dockerfile: ./a7/Dockerfile
     container_name: a7-gitea
+    labels:
+      polaris.asset: a7-git
     hostname: git.boreas.local
     # A7 is lab-only. The previous shared-network interface let Kali
     # reach Gitea directly, bypassing the A16 Lab pivot. Stripping it
@@ -105,7 +111,7 @@ services:
 
   # ============================================
   # FRONT OFFICE (per-participant)
-  # A14 spec: "Network access to A0, A7, and all Front Office assets"
+  # A14 starts on shared + corporate; Lab access must pass through A16.
   # ============================================
 
   a1-mail:
@@ -113,6 +119,8 @@ services:
       context: .
       dockerfile: ./a1/Dockerfile
     container_name: a1-mail
+    labels:
+      polaris.asset: a1-mail
     hostname: mail.boreas.local
     networks:
       corporate:
@@ -125,6 +133,8 @@ services:
       context: .
       dockerfile: ./a3/Dockerfile
     container_name: a3-intranet
+    labels:
+      polaris.asset: a3-intranet
     hostname: intranet.boreas.local
     # A3 is corporate-only. The legacy multi-home onto scada/lab was the
     # old one-box pivot hack; SCADA reach is now A15, Lab reach is now A16.
@@ -139,6 +149,8 @@ services:
       context: .
       dockerfile: ./a15/Dockerfile
     container_name: a15-ops-eng
+    labels:
+      polaris.asset: a15-ops-eng01
     hostname: ops-eng01.boreas.local
     # A15 is the ONLY Front Office asset multi-homed onto scada. It
     # replaces the old A3 scada-pivot role with a narratively defensible
@@ -156,6 +168,8 @@ services:
       context: .
       dockerfile: ./a16/Dockerfile
     container_name: a16-research-analyst
+    labels:
+      polaris.asset: a16-research-analyst01
     hostname: analyst01.boreas.local
     # A16 is the ONLY Front Office asset multi-homed onto lab. It replaces
     # the old A3 lab-pivot role with a narratively defensible "research
@@ -173,6 +187,8 @@ services:
       context: .
       dockerfile: ./a4/Dockerfile
     container_name: a4-fileshare
+    labels:
+      polaris.asset: a4-fileshare
     hostname: fileserv.boreas.local
     networks:
       corporate:
@@ -183,7 +199,7 @@ services:
   # ============================================
   # SCADA / VLAN 40 (shared, NOT reachable from Kali)
   # A5 spec: "NOT directly reachable from A14 — sits on VLAN 40"
-  # Only A3 can reach it (pivot from Front Office)
+  # Only A15 can reach it (pivot from Front Office)
   # ============================================
 
   a5-scada:
@@ -191,6 +207,8 @@ services:
       context: .
       dockerfile: ./a5/Dockerfile
     container_name: a5-scada
+    labels:
+      polaris.asset: a5-scada-gw
     hostname: scada-gw.boreas.local
     networks:
       scada:
@@ -199,7 +217,7 @@ services:
 
   # ============================================
   # LAB / VLAN 30 (per-participant, NOT reachable from Kali)
-  # A6 spec: "Reachable via pivot from Front Office (A3)"
+  # A6 is reachable only through the A16 Front Office pivot.
   # ============================================
 
   a6-workstation:
@@ -207,6 +225,8 @@ services:
       context: .
       dockerfile: ./a6/Dockerfile
     container_name: a6-workstation
+    labels:
+      polaris.asset: a6-eng-ws01
     hostname: eng-ws01.boreas.local
     networks:
       lab:
@@ -219,6 +239,8 @@ services:
       context: .
       dockerfile: ./a8/Dockerfile
     container_name: a8-database
+    labels:
+      polaris.asset: a8-research-db
     hostname: researchdb.boreas.local
     networks:
       lab:
@@ -236,6 +258,8 @@ services:
       context: .
       dockerfile: ./a9/Dockerfile
     container_name: a9-splice
+    labels:
+      polaris.asset: a9-splice-landing
     hostname: splice-relay
     networks:
       bunker-ot:
@@ -249,6 +273,8 @@ services:
       context: .
       dockerfile: ./a10/Dockerfile
     container_name: a10-tail
+    labels:
+      polaris.asset: a10-tail-ctrl
     hostname: tail-ctrl
     networks:
       bunker-ot:
@@ -260,6 +286,8 @@ services:
       context: .
       dockerfile: ./a11/Dockerfile
     container_name: a11-leg
+    labels:
+      polaris.asset: a11-leg-ctrl
     hostname: leg-ctrl
     networks:
       bunker-ot:
@@ -271,6 +299,8 @@ services:
       context: .
       dockerfile: ./a12/Dockerfile
     container_name: a12-arms
+    labels:
+      polaris.asset: a12-arms-ctrl
     hostname: arms-ctrl
     networks:
       bunker-ot:
@@ -282,6 +312,8 @@ services:
       context: .
       dockerfile: ./a13/Dockerfile
     container_name: a13-brain
+    labels:
+      polaris.asset: a13-brain-main
     hostname: brain-main
     networks:
       bunker-ot:
@@ -290,7 +322,7 @@ services:
 
   # ============================================
   # ATTACKER (per-participant)
-  # A14 spec: "Network access to A0, A7, and all Front Office assets"
+  # A14 starts with A0 and Front Office access; A7 is Lab-only.
   # "A5 is NOT directly reachable — requires pivoting"
   # ============================================
 
@@ -299,6 +331,8 @@ services:
       context: .
       dockerfile: ./a14/Dockerfile
     container_name: a14-kali
+    labels:
+      polaris.asset: a14-kali
     hostname: operator
     networks:
       shared:

@@ -24,9 +24,10 @@ echo "A14 smoketest - Kali attack platform"
 echo
 echo "--- Content files ---"
 # README.md, mission_brief.{txt,pdf}, and tools/flag_submit.sh were removed
-# in 2026-04 (see scenarios/polaris/build/a14/Dockerfile:85): they were
-# stale relative to the CTFd board and Kali has no route to CTFd, so a
-# Kali-side submission helper is broken by design. CTFd is the reference.
+# in 2026-04 (see polaris/build/a14/Dockerfile:85): they were
+# stale relative to the pack contracts and Kali has no route to CTFd, so a
+# Kali-side submission helper is broken by design. CTFd is a browser-facing
+# projection over the canonical flag/challenge layer.
 # The remaining content drops are START_HERE.txt (visible participant
 # onramp), modbus_scan.py (Mission 4 helper), the Claude POLARIS system
 # prompt, and the warm-up challenge target.

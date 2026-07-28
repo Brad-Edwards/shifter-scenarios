@@ -116,7 +116,7 @@ The primary R&D workstation used by AURORA's engineering team. Contains design d
 
 **Base image:** debian:bookworm (needs full userland for SSH, file tools, GPG)
 
-**Content directory:** `scenarios/polaris/build/A6-engineering-workstation/`
+**Content directory:** `polaris/build/A6-engineering-workstation/`
 
 ### Steps
 

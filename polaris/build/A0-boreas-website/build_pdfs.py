@@ -11,69 +11,65 @@ Generates the four PDFs served by A0:
 Output directory is argv[1]. Invoked from Dockerfile build stage.
 """
 
-import json
 import os
 import sys
+from pathlib import Path
+
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
-FLAG_2 = "FLAG{d4e7b1f283a6c950}"
+_HERE = Path(__file__).resolve().parent
+for _candidate in (_HERE, *_HERE.parents):
+    if (_candidate / "contract_source.py").is_file():
+        sys.path.insert(0, str(_candidate))
+        break
 
+from contract_source import load_yaml
 
-def _default_challenges_path():
-    """Locate ctfd-challenges.json.
+def _default_placement_path():
+    """Locate the canonical flag placement contract.
 
-    build/a0/Dockerfile copies the board next to this script in the a0
-    content-builder stage; in the repo it lives one level up under build/.
+    The A0 content-builder copies the contract next to this script; in the
+    repository it lives at the Polaris pack root under flags/.
     """
-    here = os.path.dirname(os.path.abspath(__file__))
-    sibling = os.path.join(here, "ctfd-challenges.json")
-    if os.path.exists(sibling):
+    sibling = _HERE / "placement.yaml"
+    if sibling.is_file():
         return sibling
-    return os.path.join(os.path.dirname(here), "ctfd-challenges.json")
+    return _HERE.parents[1] / "flags" / "placement.yaml"
 
 
-def flag_for(challenge_id, challenges_path):
-    """Return the single static flag for a CTFd challenge id.
+def flag_for(flag_id, placement_path):
+    """Return the single static value for a stable Polaris flag id.
 
-    The CTFd board (ctfd-challenges.json) is the canonical flag source; the
-    generated PDFs must agree with it. Raises ValueError on missing,
-    duplicate, or non-static flag data so a bad board fails the bake loudly
-    instead of shipping a flagless artifact (regression #619).
+    The placement contract is the canonical oracle source. Generated artifacts
+    must agree with it, so malformed, missing, duplicate, or generated entries
+    fail the bake before an image can ship.
     """
-    with open(challenges_path, encoding="utf-8") as f:
-        board = json.load(f)
-    matches = [c for c in board.get("challenges", []) if c.get("id") == challenge_id]
+    placement = load_yaml(placement_path)
+    flags = placement.get("flags")
+    if not isinstance(flags, list):
+        raise ValueError("placement flags must be a list")
+    matches = [entry for entry in flags if entry.get("flag_id") == flag_id]
     if not matches:
-        raise ValueError(
-            f"challenge id {challenge_id} not found in {challenges_path}"
-        )
+        raise ValueError(f"flag id {flag_id} not found in {placement_path}")
     if len(matches) > 1:
+        raise ValueError(f"duplicate flag id {flag_id} in {placement_path}")
+    flag = matches[0]
+    if flag.get("source") != "value":
         raise ValueError(
-            f"duplicate challenge id {challenge_id} in {challenges_path}"
+            f"flag id {flag_id} source must be value, "
+            f"found {flag.get('source')!r}"
         )
-    flags = matches[0].get("flags", [])
-    if len(flags) != 1:
-        raise ValueError(
-            f"challenge id {challenge_id} must have exactly one flag, "
-            f"found {len(flags)}"
-        )
-    flag = flags[0]
-    if flag.get("type") != "static":
-        raise ValueError(
-            f"challenge id {challenge_id} flag must be static, "
-            f"found {flag.get('type')!r}"
-        )
-    content = flag.get("content")
+    content = flag.get("value")
     if not content:
-        raise ValueError(f"challenge id {challenge_id} static flag has no content")
+        raise ValueError(f"flag id {flag_id} value is empty")
     return content
 
 
-def make_org_chart(path):
+def make_org_chart(path, employee_directory_flag):
     c = canvas.Canvas(path, pagesize=letter)
-    c.setAuthor(FLAG_2)
+    c.setAuthor(employee_directory_flag)
     c.setTitle("Boreas Systems — Organizational Chart")
     c.setSubject("Corporate org chart (internal)")
     c.setKeywords("boreas, org, internal, hr")
@@ -174,8 +170,8 @@ def make_annual_report(path, flag6):
 
     Flag 6 ("Follow the Money") is carried as a `PO ref:` annotation on the
     Kursk line item, found after locating this PDF via filename fuzzing.
-    `flag6` is the canonical static flag from the CTFd board
-    (ctfd-challenges.json challenge 6) — keep the two identical.
+    `flag6` is the canonical static value for `annual-report-supplier` from the
+    placement contract.
     """
     c = canvas.Canvas(path, pagesize=letter)
     c.setTitle("Boreas Systems — Annual Report 2025")
@@ -262,8 +258,8 @@ def make_annual_report(path, flag6):
         y -= 0.18 * inch
         if desc.startswith("Kursk Heavy Industries"):
             # Flag 6 payload: a buried "PO ref" annotation under the Kursk
-            # line item. Sourced from the CTFd board so the PDF and the
-            # board can never silently diverge (#619).
+            # line item. Sourced from the placement contract so the PDF and
+            # oracle can never silently diverge.
             if y < 0.9 * inch:
                 c.showPage()
                 c.setFont("Courier", 8)
@@ -290,11 +286,12 @@ def make_annual_report(path, flag6):
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     out = argv[0] if argv else "./out"
-    challenges_path = argv[1] if len(argv) > 1 else _default_challenges_path()
-    flag6 = flag_for(6, challenges_path)
+    placement_path = argv[1] if len(argv) > 1 else _default_placement_path()
+    flag2 = flag_for("employee-directory", placement_path)
+    flag6 = flag_for("annual-report-supplier", placement_path)
     os.makedirs(f"{out}/internal", exist_ok=True)
 
-    make_org_chart(f"{out}/internal/org_chart.pdf")
+    make_org_chart(f"{out}/internal/org_chart.pdf", flag2)
     make_quarterly(
         f"{out}/internal/boreas-Q1-2025.pdf", "Q1", 12.4, 1.8,
         [

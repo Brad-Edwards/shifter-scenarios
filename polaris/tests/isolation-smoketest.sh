@@ -17,15 +17,14 @@
 set -u
 
 # A2 DC IP. Resolve `dc01.boreas.local` from inside the dns container so the
-# test works in any account / VPC layout where the Windows DC is not pinned to
-# a legacy range address.
+# test works in any account or VPC layout.
 A2_DC_IP="${A2_DC_IP:-}"
 if [[ -z "$A2_DC_IP" ]]; then
     A2_DC_IP="$(docker exec dns dig +short @127.0.0.1 dc01.boreas.local 2>/dev/null | head -n1)"
 fi
 if [[ -z "$A2_DC_IP" ]]; then
-    A2_DC_IP="10.1.100.11"  # legacy fallback
-    echo "[isolation] WARN: dc01.boreas.local did not resolve via dns container — falling back to $A2_DC_IP" >&2
+    echo "[isolation] FAIL: dc01.boreas.local did not resolve via dns container" >&2
+    exit 1
 fi
 echo "[isolation] A2 DC IP: $A2_DC_IP"
 

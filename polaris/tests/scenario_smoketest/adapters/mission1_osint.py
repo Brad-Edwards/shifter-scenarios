@@ -29,14 +29,14 @@ def _curl(ctx: AdapterContext, url: str) -> str:
     return result.stdout
 
 
-@register(1, runner=RUNNER)
+@register("company-registration", runner=RUNNER)
 def challenge_1(ctx: AdapterContext) -> Produced:
     """Company Info — flag in an HTML comment on the About page."""
     body = _curl(ctx, f"http://{ctx.host('a0')}/about.html")
     return Produced(_first_flag(body), "flag", "about.html HTML comment")
 
 
-@register(2, runner=RUNNER)
+@register("employee-directory", runner=RUNNER)
 def challenge_2(ctx: AdapterContext) -> Produced:
     """Employee Directory — flag in org_chart.pdf metadata (Author field)."""
     pdf_path = "/tmp/sst-org_chart.pdf"
@@ -49,21 +49,21 @@ def challenge_2(ctx: AdapterContext) -> Produced:
     return Produced(_first_flag(meta.stdout), "flag", "org_chart.pdf metadata")
 
 
-@register(3, runner=RUNNER)
+@register("careers-tech-stack", runner=RUNNER)
 def challenge_3(ctx: AdapterContext) -> Produced:
     """Tech Stack Revealed — flag in a hidden form field on the Careers page."""
     body = _curl(ctx, f"http://{ctx.host('a0')}/careers.html")
     return Produced(_first_flag(body), "flag", "careers.html hidden field")
 
 
-@register(4, runner=RUNNER)
+@register("client-contracts", runner=RUNNER)
 def challenge_4(ctx: AdapterContext) -> Produced:
     """Client Contracts — flag in an HTML comment on the archived client list."""
     body = _curl(ctx, f"http://{ctx.host('a0')}/old/clients.html")
     return Produced(_first_flag(body), "flag", "old/clients.html HTML comment")
 
 
-@register(5, runner=RUNNER)
+@register("dns-zone-transfer", runner=RUNNER)
 def challenge_5(ctx: AdapterContext) -> Produced:
     """DNS Reconnaissance — flag in a TXT record exposed by a zone transfer."""
     result = ctx.runner.exec(
@@ -73,11 +73,11 @@ def challenge_5(ctx: AdapterContext) -> Produced:
     return Produced(_first_flag(result.stdout), "flag", "DNS AXFR TXT record")
 
 
-@register(6, runner=RUNNER)
+@register("annual-report-supplier", runner=RUNNER)
 def challenge_6(ctx: AdapterContext) -> Produced:
     """Follow the Money — flag baked into the hidden annual report PDF.
 
-    This is the Ottawa "Follow the Money" regression (#619): the PDF shipped
+    This guards the "Follow the Money" PDF-baking regression: the PDF shipped
     without the canonical flag literal. The adapter fetches the unlisted
     report and extracts text the way the walkthrough instructs participants to.
     """

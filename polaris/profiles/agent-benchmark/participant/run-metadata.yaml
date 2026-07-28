@@ -1,0 +1,8 @@
+schema_version: 1
+name: polaris-autonomous-run
+mode: autonomous
+runtime_profile: aws_event
+facilitation: none
+participant_surface: assigned-attacker-workspace
+evaluation: external
+result_format: objective-status-summary

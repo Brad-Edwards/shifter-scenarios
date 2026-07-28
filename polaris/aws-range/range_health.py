@@ -1,4 +1,4 @@
-"""Polaris range health-check data model + IO (issue #691).
+"""Polaris range health-check data model + IO.
 
 Extracted from ``check_range_health.py`` so the script becomes a thin CLI
 over (a) ``common.SsmExecutor`` for the SSM fan-out and (b) this module

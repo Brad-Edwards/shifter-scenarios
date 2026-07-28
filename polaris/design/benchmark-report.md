@@ -2,13 +2,13 @@
 
 ## General Docs
 
-- `scenarios/polaris/design/architecture.md` — synced to the current five-mission board and A15/A16 pivot model
+- `polaris/design/architecture.md` — synced to the current five-mission board and A15/A16 pivot model
 - Recommendation: if flag 26 moves to `Easy` and flag 29 moves to `Expert`, update the zone totals and progression expectations again.
-- `scenarios/polaris/design/range-diagram.md` — Accurate
+- `polaris/design/range-diagram.md` — Accurate
 
 ## A0 — Boreas Website
 
-- `scenarios/polaris/design/assets/A0-boreas-website.md`
+- `polaris/design/assets/A0-boreas-website.md`
 
 ### Flag 1 — Company Info
 
@@ -42,7 +42,7 @@
 
 ## A1 — Mail Server
 
-- `scenarios/polaris/design/assets/A1-mail-server.md`
+- `polaris/design/assets/A1-mail-server.md`
 
 ### Flag 8 — Project Hints
 
@@ -61,7 +61,7 @@
 
 ## A2 — Domain Controller
 
-- `scenarios/polaris/design/assets/A2-domain-controller.md`
+- `polaris/design/assets/A2-domain-controller.md`
 
 ### Flag 14 — Hidden Group
 
@@ -80,7 +80,7 @@
 
 ## A3 — Web App / Intranet
 
-- `scenarios/polaris/design/assets/A3-web-app.md`
+- `polaris/design/assets/A3-web-app.md`
 
 ### Flag 7 — Configuration Leak
 
@@ -94,7 +94,7 @@
 
 ## A4 — File Share
 
-- `scenarios/polaris/design/assets/A4-file-share.md`
+- `polaris/design/assets/A4-file-share.md`
 
 ### Flag 9 — Terminated Engineer
 
@@ -113,7 +113,7 @@
 
 ## A5 — SCADA / Generator HMI
 
-- `scenarios/polaris/design/assets/A5-scada-generator.md`
+- `polaris/design/assets/A5-scada-generator.md`
 
 ### Flag 18 — Control Room
 
@@ -127,7 +127,7 @@
 
 ## A6 — Engineering Workstation
 
-- `scenarios/polaris/design/assets/A6-engineering-workstation.md`
+- `polaris/design/assets/A6-engineering-workstation.md`
 
 ### Flag 20 — Old Defaults
 
@@ -162,7 +162,7 @@
 
 ## A7 — Source Repo Server
 
-- `scenarios/polaris/design/assets/A7-source-repo.md`
+- `polaris/design/assets/A7-source-repo.md`
 
 ### Flag 24 — What Git Remembers
 
@@ -177,7 +177,7 @@
 
 ## A8 — Research Database
 
-- `scenarios/polaris/design/assets/A8-research-database.md`
+- `polaris/design/assets/A8-research-database.md`
 
 ### Flag 21 — Compartment A
 
@@ -196,7 +196,7 @@
 
 ## A9 — Splice Landing Box
 
-- `scenarios/polaris/design/assets/A9-splice-landing.md`
+- `polaris/design/assets/A9-splice-landing.md`
 
 ### Flag 31 — Underground Signals
 
@@ -205,7 +205,7 @@
 
 ## A10 — Tail Controller
 
-- `scenarios/polaris/design/assets/A10-tail-controller.md`
+- `polaris/design/assets/A10-tail-controller.md`
 
 ### Flag 32 — First Motion
 
@@ -214,7 +214,7 @@
 
 ## A11 — Leg Controller
 
-- `scenarios/polaris/design/assets/A11-leg-controller.md`
+- `polaris/design/assets/A11-leg-controller.md`
 
 ### Flag 33 — Walking Pattern
 
@@ -223,7 +223,7 @@
 
 ## A12 — Arms Controller
 
-- `scenarios/polaris/design/assets/A12-arms-controller.md`
+- `polaris/design/assets/A12-arms-controller.md`
 
 ### Flag 34 — Response Window
 
@@ -232,7 +232,7 @@
 
 ## A13 — Mecha-Godzilla Brain
 
-- `scenarios/polaris/design/assets/A13-brain.md`
+- `polaris/design/assets/A13-brain.md`
 
 ### Flag 35 — Control Channel
 
@@ -246,6 +246,6 @@
 
 ## A14 — Kali + AI Agent
 
-- `scenarios/polaris/design/assets/A14-kali.md`
+- `polaris/design/assets/A14-kali.md`
 - Accurate
 - No flags

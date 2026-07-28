@@ -1,5 +1,10 @@
 # Operation NORTHSTORM - Scenario Architecture
 
+> **Design inventory, not current topology authority.** The released SDL,
+> active AWS/Compose realization, participant splice behavior, and
+> [`docs/topology-and-assets.md`](../docs/topology-and-assets.md) govern current
+> host attachments, addresses, sharing rules, and infrastructure.
+
 ## Zone Layout
 
 ```mermaid

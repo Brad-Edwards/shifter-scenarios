@@ -2,11 +2,11 @@
 # Live tracker for polaris range provisioning during the BSides Ottawa
 # event. Run in a separate terminal:
 #
-#   ./scenarios/polaris/aws-range/track_ranges.sh
+#   ./polaris/aws-range/track_ranges.sh
 #
 # Or with a faster cadence:
 #
-#   INTERVAL=15 ./scenarios/polaris/aws-range/track_ranges.sh
+#   INTERVAL=15 ./polaris/aws-range/track_ranges.sh
 #
 # Read-only: only lists EC2, ECS, and SSM param state. Does not mutate
 # anything.

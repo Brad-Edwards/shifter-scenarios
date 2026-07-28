@@ -10,10 +10,9 @@ the onboarding manifest + pages and walks them through those helpers.
 from __future__ import annotations
 
 import argparse
-import os
 from pathlib import Path
 
-from common import CtfdClient
+from common import CtfdClient, resolve_admin_token
 from ctfd_reconcile import (
     build_challenge_payload,
     ensure_flags,
@@ -37,9 +36,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--base-url", required=True, help="CTFd base URL, e.g. https://polaris.example.com")
     parser.add_argument(
-        "--token",
-        default=os.environ.get("CTFD_TOKEN"),
-        help="CTFd admin API token. Defaults to CTFD_TOKEN.",
+        "--token-file",
+        help="Owner-only regular file containing the admin token (else CTFD_TOKEN).",
     )
     parser.add_argument(
         "--onboarding-file",
@@ -61,12 +59,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    if not args.token:
-        raise SystemExit("missing --token and CTFD_TOKEN is not set")
+    token = resolve_admin_token(args.token_file)
+    if not args.dry_run and not token:
+        raise SystemExit("missing CTFd admin token")
 
     onboarding = load_json(args.onboarding_file)
     pages = load_pages(args.pages_dir)
-    client = CtfdClient(args.base_url, args.token)
+    client = None if args.dry_run else CtfdClient(args.base_url, token)
 
     existing_pages: list[dict] = []
     existing_challenges: list[dict] = []

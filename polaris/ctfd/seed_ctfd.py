@@ -11,10 +11,9 @@ stay here because they're specific to this seeder (the Polaris board uses
 from __future__ import annotations
 
 import argparse
-import os
 from typing import Any
 
-from common import CtfdClient, load_event_config
+from common import CtfdClient, load_event_config, resolve_admin_token
 from ctfd_reconcile import build_challenge_payload, find_by_key, upsert_challenge
 
 
@@ -24,13 +23,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--base-url", required=True, help="CTFd base URL, e.g. https://ctf.shifter.example.com")
     parser.add_argument(
-        "--token",
-        default=os.environ.get("CTFD_TOKEN"),
-        help="CTFd admin API token. Defaults to CTFD_TOKEN.",
+        "--token-file",
+        help="Owner-only regular file containing the admin token (else CTFD_TOKEN).",
     )
     parser.add_argument(
         "--event-file",
-        help="Path to the workshop event JSON. Defaults to scenarios/polaris/ctfd/agentic_workshop.json.",
+        help="Path to the workshop event JSON. Defaults to polaris/ctfd/agentic_workshop.json.",
     )
     parser.add_argument(
         "--dry-run",
@@ -183,12 +181,13 @@ def ensure_solution(
 
 def main() -> int:
     args = parse_args()
-    if not args.token:
-        raise SystemExit("missing --token and CTFD_TOKEN is not set")
+    token = resolve_admin_token(args.token_file)
+    if not args.dry_run and not token:
+        raise SystemExit("missing CTFd admin token")
 
     event = load_event_config(args.event_file)
     category = event["challenge_category"]
-    client = CtfdClient(args.base_url, args.token)
+    client = None if args.dry_run else CtfdClient(args.base_url, token)
 
     print("sync config")
     if not args.dry_run:

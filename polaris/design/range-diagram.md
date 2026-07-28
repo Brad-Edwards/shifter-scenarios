@@ -1,5 +1,9 @@
 # Operation NORTHSTORM - Single Participant Range
 
+> **Explanatory diagram, not current topology authority.** Network attachments
+> and range ownership are governed by the released SDL, active AWS/Compose
+> sources, and [`docs/topology-and-assets.md`](../docs/topology-and-assets.md).
+
 ```mermaid
 graph TD
     subgraph Shared Services

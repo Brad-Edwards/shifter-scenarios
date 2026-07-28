@@ -1,4 +1,4 @@
-"""Tests for the extracted range-health model (issue #691).
+"""Tests for the extracted range-health model.
 
 Run from this directory:
     python3 -m unittest test_range_health -v

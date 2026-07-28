@@ -42,6 +42,7 @@ FLAG_36 = "FLAG{0b7e3d9a1f6c4258}"
 HANDSHAKE_TIMEOUT = 5
 AUTH_MAX_ATTEMPTS = 3
 PORT = 9100
+OVERRIDE_ACTIVE = False
 
 # Derive handshake key
 _combined = (TAIL_SERIAL + LEG_SERIAL + ARMS_SERIAL).encode()
@@ -287,7 +288,13 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
             if cmd == "help":
                 writer.write(HELP_OUTPUT.encode())
             elif cmd == "status":
-                writer.write(STATUS_OUTPUT.encode())
+                override_state = "ACTIVE" if OVERRIDE_ACTIVE else "LOCKED"
+                writer.write(
+                    (
+                        STATUS_OUTPUT
+                        + f"\r\nOVERRIDE STATE ............ {override_state}\r\n"
+                    ).encode()
+                )
             elif cmd == "schematic":
                 writer.write(SCHEMATIC.encode())
             elif cmd == "subsystems":
@@ -323,7 +330,9 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
 
 async def process_override(writer, code, addr):
     """Process an override code submission."""
+    global OVERRIDE_ACTIVE
     if code == OVERRIDE_CODE:
+        OVERRIDE_ACTIVE = True
         log.info("OVERRIDE ACCEPTED from %s", addr)
         msg = (
             "\r\n"

@@ -19,7 +19,7 @@ if [[ -n "${KALI_AUTHORIZED_KEY:-}" ]]; then
     chmod 600 /home/kali/.ssh/authorized_keys
 fi
 
-# Stage the per-range A9 splice-relay private key (#707). The host EC2 passes it
+# Stage the per-range A9 splice-relay private key. The host EC2 passes it
 # base64-encoded via KALI_SPLICE_PRIVATE_KEY_B64 (set in docker-compose.override
 # by the range provisioner). Written on every start so a --force-recreate does
 # not wipe the Bunker-chain credential path. Empty/unset value = skip.

@@ -12,46 +12,77 @@
 #
 # Runs via SSM from the operator's workstation. Not designed to run
 # locally — it assumes the layout on the bake VM (/opt/polaris + the
-# shifter-polaris-bake S3 bucket + the pre-extracted tarball + the
+# range-local S3 artifact + the pre-extracted tarball + the
 # docker-compose.override.yml from user_data).
 #
 # Usage (from operator):
 #
-#   aws --profile panw-shifter-dev-workstation --region us-east-2 \
+#   aws --profile <range-account-profile> --region us-east-2 \
 #     ssm send-command \
 #     --instance-ids <polaris-vm-id> \
 #     --document-name AWS-RunShellScript \
-#     --parameters commands="$(base64 -w0 scenarios/polaris/aws-range/reset.sh | \
+#     --parameters commands="$(base64 -w0 polaris/aws-range/reset.sh | \
 #       xargs -I{} echo 'echo {} | base64 -d > /tmp/reset.sh && bash /tmp/reset.sh')"
 #
 # Exit 0 on success, non-zero on any step that prevents the stack coming up.
 
 set -euo pipefail
 
-BUILD_TARBALL_S3_URI="${BUILD_TARBALL_S3_URI:-s3://shifter-polaris-bake-158151907940/polaris/build-v1.tar.gz}"
+if [[ -r /etc/polaris-range.conf ]]; then
+    # Contains only the range-local, non-secret build artifact URI.
+    # shellcheck disable=SC1091
+    source /etc/polaris-range.conf
+fi
+: "${BUILD_TARBALL_S3_URI:?range build artifact URI is unavailable}"
 POLARIS_ROOT="${POLARIS_ROOT:-/opt/polaris}"
-BUILD_DIR="${POLARIS_ROOT}/scenarios/polaris/build"
+BUILD_DIR="${POLARIS_ROOT}/polaris/build"
 REBUILD_SERVICES="${REBUILD_SERVICES:-dns a14-kali a16-research-analyst}"
 
 log() { echo "[$(date -u +%FT%TZ)] $*"; }
 
 log "=== polaris reset start ==="
 
+# Seal the participant gate before any mutable services are recreated. The
+# watcher is operator-controlled lifecycle plumbing; scenario actions remain
+# entirely on A14 and its in-world pivots.
+systemctl stop polaris-splice-watcher.service 2>/dev/null || true
+splice_network=$(docker network ls --format '{{.Name}}' | \
+    grep -E '(^|_)splice-link$' | head -n1 || true)
+if [[ -n "$splice_network" ]]; then
+    docker network disconnect "$splice_network" a14-kali 2>/dev/null || true
+fi
+
 # ---------------------------------------------------------------------------
 # 1. Pull the latest build tarball and re-extract. S3 is byte-stable and
-#    our own tarball pipeline is the authoritative source — the local tree
+#    the pack tarball pipeline is the authoritative source — the local tree
 #    may have drifted from `docker exec` hot-patches during an earlier
 #    session, so we overwrite it unconditionally.
 # ---------------------------------------------------------------------------
 log "step 1/5: refresh build tree from ${BUILD_TARBALL_S3_URI}"
 mkdir -p "${POLARIS_ROOT}"
 cd "${POLARIS_ROOT}"
+override_backup=$(mktemp /tmp/polaris-compose-override.XXXXXX)
+if [[ -f "${BUILD_DIR}/docker-compose.override.yml" ]]; then
+    cp "${BUILD_DIR}/docker-compose.override.yml" "$override_backup"
+else
+    : > "$override_backup"
+fi
+scenario_root="${POLARIS_ROOT}/polaris"
+if [[ -d "$scenario_root" ]]; then
+    find "$scenario_root" -mindepth 1 -delete
+    rmdir "$scenario_root"
+fi
 aws s3 cp "${BUILD_TARBALL_S3_URI}" polaris-build.tar.gz
 tar xzf polaris-build.tar.gz
 
 if [[ ! -d "${BUILD_DIR}" ]]; then
     log "ERROR: build directory ${BUILD_DIR} missing after extract"
     exit 1
+fi
+if [[ -s "$override_backup" ]]; then
+    mv "$override_backup" "${BUILD_DIR}/docker-compose.override.yml"
+else
+    rm -f "$override_backup"
 fi
 
 # ---------------------------------------------------------------------------
@@ -120,6 +151,13 @@ docker compose "${compose_files[@]}" build --pull ${REBUILD_SERVICES} 2>&1 | tai
 log "step 5/5: compose up"
 docker compose "${compose_files[@]}" up -d
 
+splice_network=$(docker network ls --format '{{.Name}}' | \
+    grep -E '(^|_)splice-link$' | head -n1 || true)
+if [[ -n "$splice_network" ]]; then
+    docker network disconnect "$splice_network" a14-kali 2>/dev/null || true
+fi
+systemctl restart polaris-splice-watcher.service
+
 expected_count=17
 for _ in $(seq 1 90); do
     running_count=$(docker ps --format '{{.Names}}' | \
@@ -136,7 +174,7 @@ docker ps --format '{{.Names}}: {{.Status}}' | \
     grep -E '^(dns|a[0-9]+(-[a-z0-9-]+)?):' | sort
 
 # ---------------------------------------------------------------------------
-# Post-reset smoke: DNS + the one image-build fix that historically bit us
+# Post-reset smoke: DNS and required participant-tool availability
 # (rockyou pre-decompressed on a14, strings/file/xxd on a16).
 # ---------------------------------------------------------------------------
 log "=== smoke ==="

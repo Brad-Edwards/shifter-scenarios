@@ -22,8 +22,8 @@ if [[ ! -f "$COMPOSE_FILE" ]] && [[ -f "$RANGE_DIR/docker-compose.yml" ]]; then
     COMPOSE_FILE="$RANGE_DIR/docker-compose.yml"
 fi
 # Compose project name. Defaults to "build" to match the production
-# user_data path (`scenarios/polaris/aws-range/user_data.sh.tpl` runs
-# `docker compose up -d` from `/opt/polaris/scenarios/polaris/build`,
+# user_data path (`polaris/aws-range/user_data.sh.tpl` runs
+# `docker compose up -d` from `/opt/polaris/polaris/build`,
 # yielding project=build). The `polaris-splice-watcher` systemd unit's
 # default `SPLICE_NETWORK=build_splice-link` also assumes this. Override
 # with `COMPOSE_PROJECT_NAME=...` if you bring up compose with a

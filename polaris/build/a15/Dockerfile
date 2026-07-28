@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim@sha256:7b140f374b289a7c2befc338f42ebe6441b7ea838a042bbd5acbfca6ec875818
 
 # python3-pymodbus in bookworm pulls serial_asyncio at import time and
 # the debian package does not list that transitive dep. Installing

@@ -11,13 +11,13 @@
 # Idempotent and re-runnable. Operator calls this with the A2 instance id
 # from `terraform output`:
 #
-#   ./scenarios/polaris/aws-range/a2_cold_bootstrap.sh i-xxxxxxxxxxxxxxxxx
+#   ./polaris/aws-range/a2_cold_bootstrap.sh i-xxxxxxxxxxxxxxxxx
 #
-# Requires: aws cli with panw-shifter-dev-workstation profile access to SSM.
+# Requires: aws cli with AWS_PROFILE naming the range account.
 
 set -euo pipefail
 
-AWS_PROFILE="${AWS_PROFILE:-panw-shifter-dev-workstation}"
+AWS_PROFILE="${AWS_PROFILE:?AWS_PROFILE must name the range account}"
 AWS_REGION="${AWS_REGION:-us-east-2}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 A2_ID="${1:-}"

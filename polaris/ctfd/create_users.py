@@ -3,11 +3,10 @@ from __future__ import annotations
 
 import argparse
 import csv
-import os
 from pathlib import Path
 from typing import Any
 
-from common import CtfdClient, build_password
+from common import CtfdClient, build_password, resolve_admin_token
 
 
 def parse_args() -> argparse.Namespace:
@@ -16,9 +15,8 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--base-url", required=True, help="CTFd base URL, e.g. https://ctf.shifter.example.com")
     parser.add_argument(
-        "--token",
-        default=os.environ.get("CTFD_TOKEN"),
-        help="CTFd admin API token. Defaults to CTFD_TOKEN.",
+        "--token-file",
+        help="Owner-only regular file containing the admin token (else CTFD_TOKEN).",
     )
     parser.add_argument("--csv", required=True, help="Input CSV with at least name,email columns.")
     parser.add_argument(
@@ -72,10 +70,11 @@ def write_results(path: str, rows: list[dict[str, str]]) -> None:
 
 def main() -> int:
     args = parse_args()
-    if not args.token:
-        raise SystemExit("missing --token and CTFD_TOKEN is not set")
+    token = resolve_admin_token(args.token_file)
+    if not token:
+        raise SystemExit("missing CTFd admin token")
 
-    client = CtfdClient(args.base_url, args.token)
+    client = CtfdClient(args.base_url, token)
     input_rows = load_rows(args.csv)
     results: list[dict[str, str]] = []
 

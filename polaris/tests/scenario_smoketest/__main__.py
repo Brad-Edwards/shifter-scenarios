@@ -2,7 +2,7 @@
 
 Operator-run, on-demand, against a real staged range. Not wired to CI.
 
-The CLI keeps every parameter at the edge: board paths, the runner-container
+The CLI keeps every parameter at the edge: contract paths, the runner-container
 hostnames, challenge filters, and the optional read-only CTFd readback.
 
 CTFd admin tokens are never accepted as a command-line argument (process argv
@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import stat
 import sys
 from pathlib import Path
 
@@ -21,8 +22,9 @@ from . import ctfd_check, report, run
 from .board import load_board
 from .runner import Runner
 
-_DEFAULT_BUILD = Path(__file__).resolve().parents[2] / "build"
-_DEFAULT_CHALLENGES = _DEFAULT_BUILD / "ctfd-challenges.json"
+_PACK_ROOT = Path(__file__).resolve().parents[2]
+_DEFAULT_PLACEMENT = _PACK_ROOT / "flags" / "placement.yaml"
+_DEFAULT_CHALLENGES = _PACK_ROOT / "challenges" / "challenges.yaml"
 
 # Default asset hostnames as resolved inside the range runner containers.
 _DEFAULT_HOSTS = {
@@ -43,29 +45,42 @@ def _parse_host_overrides(pairs: list[str]) -> dict[str, str]:
 
 def _read_ctfd_token(token_file: str | None) -> str | None:
     if token_file:
-        return Path(token_file).read_text(encoding="utf-8").strip()
+        source = Path(token_file)
+        if source.is_symlink() or not source.is_file():
+            raise ValueError(
+                "CTFd token file must be a regular non-symlink file"
+            )
+        mode = stat.S_IMODE(source.stat().st_mode)
+        if mode & (stat.S_IRWXG | stat.S_IRWXO):
+            raise ValueError(
+                "CTFd token file must not grant group or world permissions"
+            )
+        token = source.read_text(encoding="utf-8").strip()
+        if not token:
+            raise ValueError("CTFd token file is empty")
+        return token
     return os.environ.get("CTFD_TOKEN")
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="scenario_smoketest",
-        description="Pre-event Polaris scenario-content smoketest (issue #617).",
+        description="Pre-event Polaris scenario-content smoketest.",
+    )
+    parser.add_argument(
+        "--placement",
+        default=str(_DEFAULT_PLACEMENT),
+        help="Path to the canonical flag placement contract.",
     )
     parser.add_argument(
         "--challenges",
         default=str(_DEFAULT_CHALLENGES),
-        help="Path to ctfd-challenges.json (default: repo build artifact).",
-    )
-    parser.add_argument(
-        "--onboarding",
-        default=None,
-        help="Optional path to ctfd-onboarding.json to merge into the universe.",
+        help="Path to the canonical participant challenge contract.",
     )
     parser.add_argument(
         "--only",
         default=None,
-        help="Comma-separated challenge ids to run (default: all).",
+        help="Comma-separated stable flag ids to run (default: all).",
     )
     parser.add_argument(
         "--host",
@@ -110,9 +125,8 @@ def _run_ctfd_readback(ctfd_url: str, token: str | None) -> int:
             file=sys.stderr,
         )
         return 0
-    # Imported lazily: only the optional readback needs a CTFd client. The
-    # client is pack-local (the former shared scenarios/polaris/ctfd tree was
-    # removed in the #160 restructure).
+    # Imported lazily: only the optional readback needs the pack-local hardened
+    # CTFd client shared with the reference loader.
     from .ctfd_client import CtfdClient  # noqa: PLC0415
 
     client = CtfdClient(ctfd_url, token)
@@ -126,10 +140,10 @@ def main(argv: list[str] | None = None) -> int:
 
     range_code = 0
     if not args.skip_range:
-        challenges = load_board(args.challenges, args.onboarding)
+        challenges = load_board(args.placement, args.challenges)
         only_ids = None
         if args.only:
-            only_ids = {int(x) for x in args.only.split(",") if x.strip()}
+            only_ids = {x.strip() for x in args.only.split(",") if x.strip()}
         results = run.run_smoketest(
             challenges,
             Runner(docker=args.docker),

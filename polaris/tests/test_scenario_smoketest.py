@@ -4,21 +4,33 @@ Stdlib ``unittest`` only — matches every other test suite in this repo and the
 ``python3 -m unittest`` runner used by ``scripts/ci/scenario_content_ci.py``
 (no third-party test dependency). Run:
 
-    python3 -m unittest discover -s scenarios/polaris/tests
+    python3 -m unittest discover -s polaris/tests
 """
 
 from __future__ import annotations
 
 import io
 import json
+import os
 import shutil
+import stat
 import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
+import yaml
+
 from scenario_smoketest import __main__ as cli
-from scenario_smoketest import board, compare, ctfd_check, report, run, runner
+from scenario_smoketest import (
+    board,
+    compare,
+    ctfd_check,
+    ctfd_client,
+    report,
+    run,
+    runner,
+)
 from scenario_smoketest.adapters import (
     ADAPTERS,
     AdapterContext,
@@ -26,9 +38,9 @@ from scenario_smoketest.adapters import (
     register,
 )
 
-REPO_CHALLENGES = (
-    Path(__file__).resolve().parents[1] / "build" / "ctfd-challenges.json"
-)
+PACK_ROOT = Path(__file__).resolve().parents[1]
+REPO_PLACEMENT = PACK_ROOT / "flags" / "placement.yaml"
+REPO_CHALLENGES = PACK_ROOT / "challenges" / "challenges.yaml"
 
 
 class _TmpCase(unittest.TestCase):
@@ -44,100 +56,106 @@ class _TmpCase(unittest.TestCase):
 # --------------------------------------------------------------------------
 
 
-def _board_file(tmp_path, challenges, meta=None):
-    path = tmp_path / "ctfd-challenges.json"
-    payload = {"challenges": challenges}
-    if meta is not None:
-        payload["meta"] = meta
-    path.write_text(json.dumps(payload), encoding="utf-8")
-    return path
+def _contract_files(tmp_path, placements, challenges):
+    placement_path = tmp_path / "placement.yaml"
+    challenge_path = tmp_path / "challenges.yaml"
+    placement_path.write_text(
+        yaml.safe_dump({"flags": placements}, sort_keys=False),
+        encoding="utf-8",
+    )
+    challenge_path.write_text(
+        yaml.safe_dump({"challenges": challenges}, sort_keys=False),
+        encoding="utf-8",
+    )
+    return placement_path, challenge_path
 
 
 class BoardTests(_TmpCase):
     def test_load_board_parses_challenges(self):
-        path = _board_file(
+        paths = _contract_files(
             self.tmp_path,
             [
                 {
-                    "id": 1,
-                    "name": "Company Info",
-                    "category": "Mission 1",
-                    "flags": [{"type": "static", "content": "FLAG{aaaa1111}"}],
+                    "flag_id": "company-registration",
+                    "source": "value",
+                    "value": "FLAG{aaaa1111}",
+                    "host": "a0-boreas-web",
+                    "path": "/about.html",
+                }
+            ],
+            [
+                {
+                    "flag_id": "company-registration",
+                    "title": "Company Info",
+                    "difficulty": "easy",
+                    "points": 50,
+                    "question": "Find it.",
+                    "hints": ["Inspect the page."],
                 }
             ],
         )
-        challenges = board.load_board(path)
+        challenges = board.load_board(*paths)
         assert len(challenges) == 1
-        assert challenges[0].id == 1
+        assert challenges[0].flag_id == "company-registration"
         assert challenges[0].name == "Company Info"
         assert challenges[0].static_flag == "FLAG{aaaa1111}"
 
-    def test_load_board_marks_missing_static_flag(self):
-        path = _board_file(
-            self.tmp_path,
-            [{"id": 2, "name": "No Flag", "category": "M1", "flags": []}],
-        )
-        challenges = board.load_board(path)
-        assert challenges[0].static_flag is None
-
-    def test_load_board_marks_multiple_static_flags(self):
-        path = _board_file(
+    def test_load_board_marks_generated_flag_without_static_value(self):
+        paths = _contract_files(
             self.tmp_path,
             [
                 {
-                    "id": 3,
-                    "name": "Two Flags",
-                    "category": "M1",
-                    "flags": [
-                        {"type": "static", "content": "FLAG{a}"},
-                        {"type": "static", "content": "FLAG{b}"},
-                    ],
+                    "flag_id": "generated-proof",
+                    "source": "generator",
+                    "generator": "build/generate.py",
+                    "host": "a0-boreas-web",
+                    "path": "/proof",
+                }
+            ],
+            [
+                {
+                    "flag_id": "generated-proof",
+                    "title": "Generated",
+                    "difficulty": "easy",
+                    "points": 50,
+                    "question": "Find it.",
+                    "hints": ["Inspect the service."],
                 }
             ],
         )
-        challenges = board.load_board(path)
-        # Fail closed: ambiguous static flag set is not a usable comparison target.
+        challenges = board.load_board(*paths)
         assert challenges[0].static_flag is None
 
-    def test_load_board_merges_onboarding(self):
-        challenges_path = _board_file(
-            self.tmp_path, [{"id": 1, "name": "C1", "category": "M1", "flags": []}]
-        )
-        onboarding_path = self.tmp_path / "ctfd-onboarding.json"
-        onboarding_path.write_text(
-            json.dumps(
-                {"challenges": [{"id": 99, "name": "Start Here", "category": "Onboarding", "flags": []}]}
-            ),
-            encoding="utf-8",
-        )
-        challenges = board.load_board(challenges_path, onboarding_path)
-        assert {c.id for c in challenges} == {1, 99}
-
-    def test_load_board_rejects_duplicate_ids(self):
-        path = _board_file(
+    def test_load_board_rejects_flag_id_drift(self):
+        paths = _contract_files(
             self.tmp_path,
             [
-                {"id": 1, "name": "A", "category": "M1", "flags": []},
-                {"id": 1, "name": "B", "category": "M1", "flags": []},
+                {
+                    "flag_id": "placement-only",
+                    "source": "value",
+                    "value": "FLAG{a}",
+                    "host": "a0-boreas-web",
+                    "path": "/proof",
+                }
+            ],
+            [
+                {
+                    "flag_id": "challenge-only",
+                    "title": "Drift",
+                    "difficulty": "easy",
+                    "points": 50,
+                    "question": "Find it.",
+                    "hints": ["Inspect it."],
+                }
             ],
         )
         with self.assertRaises(ValueError):
-            board.load_board(path)
+            board.load_board(*paths)
 
-    def test_load_board_rejects_missing_challenges_key(self):
-        path = self.tmp_path / "bad.json"
-        path.write_text(json.dumps({"meta": {}}), encoding="utf-8")
-        with self.assertRaises(ValueError):
-            board.load_board(path)
-
-    @unittest.skipUnless(
-        REPO_CHALLENGES.exists(),
-        "ctfd-challenges.json is a build artifact; run the board build first",
-    )
     def test_load_board_real_repo_board(self):
-        challenges = board.load_board(REPO_CHALLENGES)
-        assert len(challenges) >= 54
-        assert all(isinstance(c.id, int) for c in challenges)
+        challenges = board.load_board(REPO_PLACEMENT, REPO_CHALLENGES)
+        assert len(challenges) == 38
+        assert all(isinstance(c.flag_id, str) for c in challenges)
 
 
 # --------------------------------------------------------------------------
@@ -259,15 +277,15 @@ class AdapterTests(unittest.TestCase):
         assert ctx.host("a0") == "boreas-systems.ctf"
 
     def test_registered_adapters_have_consistent_metadata(self):
-        for challenge_id, adapter in ADAPTERS.items():
-            assert adapter.challenge_id == challenge_id
+        for flag_id, adapter in ADAPTERS.items():
+            assert adapter.flag_id == flag_id
             assert adapter.value_kind in ("flag", "answer")
             assert callable(adapter.solve)
             if adapter.value_kind == "answer":
-                assert adapter.expected_answer, challenge_id
+                assert adapter.expected_answer, flag_id
 
     def test_adapter_challenge_1_extracts_flag_from_about_page(self):
-        adapter = ADAPTERS[1]
+        adapter = ADAPTERS["company-registration"]
         html = (
             '<table><tr><td>Reg</td><td>7741-BSI-2018</td></tr></table>'
             "<!-- FLAG{8f3a2c1e9b7d4056} -->"
@@ -281,7 +299,7 @@ class AdapterTests(unittest.TestCase):
         assert produced.kind == "flag"
 
     def test_adapter_returns_none_when_flag_absent(self):
-        adapter = ADAPTERS[1]
+        adapter = ADAPTERS["company-registration"]
         fr = FakeRunner(
             {
                 ("a14-kali", CHALLENGE_1_CURL_ARGV): runner.ExecResult(
@@ -302,20 +320,20 @@ class AdapterTests(unittest.TestCase):
 class ReportTests(unittest.TestCase):
     def test_report_aggregate_exit_code_all_pass(self):
         results = [
-            report.ChallengeResult(1, "C1", "pass", "ok"),
-            report.ChallengeResult(2, "C2", "pass", "ok"),
+            report.ChallengeResult("one", "C1", "pass", "ok"),
+            report.ChallengeResult("two", "C2", "pass", "ok"),
         ]
         assert report.aggregate_exit_code(results) == 0
 
     def test_report_aggregate_exit_code_any_fail(self):
         results = [
-            report.ChallengeResult(1, "C1", "pass", "ok"),
-            report.ChallengeResult(2, "C2", "fail", "mismatch"),
+            report.ChallengeResult("one", "C1", "pass", "ok"),
+            report.ChallengeResult("two", "C2", "fail", "mismatch"),
         ]
         assert report.aggregate_exit_code(results) != 0
 
     def test_report_aggregate_exit_code_uncovered_fails(self):
-        results = [report.ChallengeResult(1, "C1", "uncovered", "no adapter")]
+        results = [report.ChallengeResult("one", "C1", "uncovered", "no adapter")]
         assert report.aggregate_exit_code(results) != 0
 
     def test_report_text_has_no_raw_flag(self):
@@ -327,27 +345,32 @@ class ReportTests(unittest.TestCase):
         assert verdict.status == "fail"
         assert raw_flag_body not in verdict.detail  # compare's contract holds
         results = [
-            report.ChallengeResult(6, "Follow the Money", "fail", verdict.detail)
+            report.ChallengeResult(
+                "annual-report-supplier",
+                "Follow the Money",
+                "fail",
+                verdict.detail,
+            )
         ]
         rendered = report.build_report(results)
         assert "Follow the Money" in rendered
-        assert "6" in rendered
+        assert "annual-report-supplier" in rendered
         # The whole point of this test: a raw flag body must never survive into
         # the rendered report. build_report renders detail verbatim, so a
         # redaction failure anywhere upstream would surface here.
         assert raw_flag_body not in rendered
 
     def test_report_json_roundtrip(self):
-        results = [report.ChallengeResult(1, "C1", "pass", "ok")]
+        results = [report.ChallengeResult("one", "C1", "pass", "ok")]
         payload = report.to_json(results)
-        assert payload[0]["challenge_id"] == 1
+        assert payload[0]["flag_id"] == "one"
         assert payload[0]["status"] == "pass"
 
     def test_report_counts_summary(self):
         results = [
-            report.ChallengeResult(1, "C1", "pass", ""),
-            report.ChallengeResult(2, "C2", "fail", ""),
-            report.ChallengeResult(3, "C3", "uncovered", ""),
+            report.ChallengeResult("one", "C1", "pass", ""),
+            report.ChallengeResult("two", "C2", "fail", ""),
+            report.ChallengeResult("three", "C3", "uncovered", ""),
         ]
         summary = report.summarize(results)
         assert summary["pass"] == 1
@@ -436,8 +459,12 @@ class CtfdCheckTests(unittest.TestCase):
 # --------------------------------------------------------------------------
 
 
-def _challenge(cid, name="C", category="M", static_flag="FLAG{x}"):
-    return board.Challenge(cid, name, category, static_flag)
+def _challenge(flag_id, name="C", static_flag="FLAG{x}"):
+    aliases = {
+        1: "company-registration",
+        2: "employee-directory",
+    }
+    return board.Challenge(aliases.get(flag_id, str(flag_id)), name, static_flag)
 
 
 class RunTests(unittest.TestCase):
@@ -488,17 +515,17 @@ class RunTests(unittest.TestCase):
         assert results[0].status == "error"
         assert "network down" not in results[0].detail  # exception body not leaked
 
-    def test_run_filters_by_challenge_id(self):
+    def test_run_filters_by_stable_flag_id(self):
         results = run.run_smoketest(
             [_challenge(1, static_flag="FLAG{x}"), _challenge(2, static_flag="FLAG{y}")],
             FakeRunner({}),
             hosts={"a0": "h"},
-            only_ids={2},
+            only_ids={"employee-directory"},
         )
-        assert {r.challenge_id for r in results} == {2}
+        assert {r.flag_id for r in results} == {"employee-directory"}
 
     def test_run_answer_kind_compares_against_expected_answer(self):
-        register_id = 9100
+        register_id = "test-model-answer"
 
         @register(register_id, runner="a9-splice", value_kind="answer",
                   expected_answer="MODEL-A")
@@ -533,22 +560,72 @@ class CliTests(_TmpCase):
             cli._parse_host_overrides(["nopair"])
 
     def test_cli_uncovered_only_returns_failure(self):
-        # An uncovered challenge id needs no docker; the CLI still reports failure.
-        path = _board_file(
-            self.tmp_path, [{"id": 9001, "name": "Ghost", "category": "M", "flags": []}]
+        # An uncovered stable flag id needs no docker; the CLI still fails.
+        paths = _contract_files(
+            self.tmp_path,
+            [
+                {
+                    "flag_id": "ghost-proof",
+                    "source": "value",
+                    "value": "FLAG{ghost}",
+                    "host": "a0-boreas-web",
+                    "path": "/ghost",
+                }
+            ],
+            [
+                {
+                    "flag_id": "ghost-proof",
+                    "title": "Ghost",
+                    "difficulty": "easy",
+                    "points": 50,
+                    "question": "Find it.",
+                    "hints": ["Look around."],
+                }
+            ],
         )
         buf = io.StringIO()
         with redirect_stdout(buf):
-            code = cli.main(["--challenges", str(path), "--only", "9001"])
+            code = cli.main(
+                [
+                    "--placement",
+                    str(paths[0]),
+                    "--challenges",
+                    str(paths[1]),
+                    "--only",
+                    "ghost-proof",
+                ]
+            )
         assert code == 1
         assert "UNCOVERED" in buf.getvalue()
 
     def test_cli_skip_range_with_no_ctfd_is_clean(self):
         assert cli.main(["--skip-range"]) == 0
 
+    def test_ctfd_token_file_requires_private_permissions(self):
+        token_file = self.tmp_path / "ctfd-token"
+        token_file.write_text("token-value\n", encoding="utf-8")
+        os.chmod(
+            token_file,
+            stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP,
+        )
+
+        with self.assertRaises(ValueError):
+            cli._read_ctfd_token(str(token_file))
+
+    def test_ctfd_token_file_accepts_owner_only_regular_file(self):
+        token_file = self.tmp_path / "ctfd-token"
+        token_file.write_text("token-value\n", encoding="utf-8")
+        os.chmod(token_file, stat.S_IRUSR | stat.S_IWUSR)
+
+        assert cli._read_ctfd_token(str(token_file)) == "token-value"
+
+    def test_ctfd_readback_client_requires_https(self):
+        with self.assertRaises(ValueError):
+            ctfd_client.CtfdClient("http://ctfd.example.com", "token-value")
+
 
 # --------------------------------------------------------------------------
-# mission 5 (Bunker) — challenge 31 splice-relay credential gate (#707)
+# mission 5 (Bunker) — challenge 31 splice-relay credential gate
 # --------------------------------------------------------------------------
 
 _M5_KEY_PATH = "/home/kali/.ssh/splice_relay"
@@ -589,12 +666,12 @@ def _m5_happy_responses(perms: str = "600", devid_bodies=None):
 
 
 class Mission5Tests(unittest.TestCase):
-    def test_mission5_adapter_registered_for_challenge_31(self):
-        """Importing scenario_smoketest.adapters must register challenge 31."""
+    def test_mission5_adapter_registered_for_stable_flag_id(self):
+        """Importing the adapter registers the canonical flag identity."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        assert 31 in ADAPTERS
-        adapter = ADAPTERS[31]
+        assert "bunker-controller-map" in ADAPTERS
+        adapter = ADAPTERS["bunker-controller-map"]
         assert adapter.value_kind == "answer"
         assert adapter.expected_answer == _M5_EXPECTED_ANSWER
         assert adapter.runner == _M5_RUNNER
@@ -602,7 +679,7 @@ class Mission5Tests(unittest.TestCase):
     def test_mission5_adapter_happy_path_produces_concatenated_models(self):
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         fr = FakeRunner(_m5_happy_responses())
         ctx = AdapterContext(runner=fr, hosts={})
         produced = adapter.solve(ctx)
@@ -630,7 +707,7 @@ class Mission5Tests(unittest.TestCase):
         """If the participant's key file isn't staged, no SSH is attempted."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         fr = FakeRunner({
             (_M5_RUNNER, ("test", "-f", _M5_KEY_PATH)): runner.ExecResult(1, "", ""),
         })
@@ -647,7 +724,7 @@ class Mission5Tests(unittest.TestCase):
         """A 0644 key would be a real participant-flow defect; surface it without leaking content."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         responses = _m5_happy_responses(perms="644")
         fr = FakeRunner(responses)
         ctx = AdapterContext(runner=fr, hosts={})
@@ -664,7 +741,7 @@ class Mission5Tests(unittest.TestCase):
         """If sshd rejects the key, the harness must not attempt downstream probes."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         responses = _m5_happy_responses()
         ssh_key = (
             _M5_RUNNER,
@@ -690,7 +767,7 @@ class Mission5Tests(unittest.TestCase):
         """Wrong ProductName surfaces a host-keyed failure without leaking model bodies."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         bodies = _M5_KEY_HAPPY_DEVID_BODIES()
         bodies["arms-ctrl"] = "VendorName: Aurora\nProductName: AHS-ARM-WRONG\nMajorMinorRevision: 2.4\n"
         fr = FakeRunner(_m5_happy_responses(devid_bodies=bodies))
@@ -709,7 +786,7 @@ class Mission5Tests(unittest.TestCase):
         """A devid response without ProductName is the bake-defect signal."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         bodies = _M5_KEY_HAPPY_DEVID_BODIES()
         bodies["leg-ctrl"] = "VendorName: Aurora\n# ProductName field absent\n"
         fr = FakeRunner(_m5_happy_responses(devid_bodies=bodies))
@@ -723,7 +800,7 @@ class Mission5Tests(unittest.TestCase):
         """Per the participant path, every exec must originate from a14-kali."""
         import scenario_smoketest.adapters.mission5_bunker  # noqa: F401
 
-        adapter = ADAPTERS[31]
+        adapter = ADAPTERS["bunker-controller-map"]
         fr = FakeRunner(_m5_happy_responses())
         ctx = AdapterContext(runner=fr, hosts={})
         adapter.solve(ctx)

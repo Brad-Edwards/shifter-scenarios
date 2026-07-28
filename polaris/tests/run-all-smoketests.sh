@@ -55,9 +55,6 @@ hdr() { echo; echo "========================================"; echo "  $*"; echo
 
 hdr "PRE-FLIGHT: reset sticky state"
 RESET_SCRIPT="${RESET_SCRIPT:-$RANGE_DIR/tests/reset.sh}"
-if [[ ! -f "$RESET_SCRIPT" ]]; then
-    RESET_SCRIPT="$RANGE_DIR/reset.sh"  # legacy flat layout fallback
-fi
 if ! bash "$RESET_SCRIPT"; then
     log "[FATAL] reset.sh failed"
     exit 1
@@ -95,9 +92,6 @@ done
 hdr "isolation (cross-cutting network boundary sweep)"
 TOTAL=$((TOTAL + 1))
 ISOLATION_SCRIPT="${ISOLATION_SCRIPT:-$RANGE_DIR/tests/isolation-smoketest.sh}"
-if [[ ! -f "$ISOLATION_SCRIPT" ]]; then
-    ISOLATION_SCRIPT="$RANGE_DIR/isolation-smoketest.sh"  # legacy flat layout fallback
-fi
 if bash "$ISOLATION_SCRIPT"; then
     RESULTS+=("PASS isolation")
 else

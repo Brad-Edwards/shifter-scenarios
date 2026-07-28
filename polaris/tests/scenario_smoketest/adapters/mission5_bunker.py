@@ -1,11 +1,11 @@
-"""Mission 5 (Bunker) adapters — Bunker-chain credential-gate verification (#707).
+"""Mission 5 (Bunker) adapters — Bunker-chain credential-gate verification.
 
 Challenge 31 (Underground Signals) is the boundary that proves the splice flip
 opened the participant's path from a14-kali through ``splice-relay`` into the
 Bunker OT controllers. The adapter exercises the full participant chain:
 
   1. The discoverability evidence — the SSH private key staged on a14-kali by
-     the range bootstrap (issue #707) — exists and is mode ``0600``. Missing
+     the range bootstrap — exists and is mode ``0600``. Missing
      evidence or wrong permissions is the bake defect this adapter exists to
      catch.
   2. ``ssh root@splice-relay true`` from a14-kali authenticates with the staged
@@ -59,7 +59,12 @@ def _extract_product_name(devid_body: str) -> str | None:
     return match.group(1) if match else None
 
 
-@register(31, runner=RUNNER, value_kind="answer", expected_answer=_EXPECTED_ANSWER)
+@register(
+    "bunker-controller-map",
+    runner=RUNNER,
+    value_kind="answer",
+    expected_answer=_EXPECTED_ANSWER,
+)
 def challenge_31(ctx: AdapterContext) -> Produced:
     """Underground Signals — concatenate A10/A11/A12 ProductName via the splice."""
     # 1. Discoverability evidence on a14-kali.

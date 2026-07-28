@@ -1,4 +1,4 @@
-"""Tests for the extracted provisioning-state data model (issue #691).
+"""Tests for the extracted provisioning-state data model.
 
 Run from this directory:
     python3 -m unittest test_provisioning_state -v

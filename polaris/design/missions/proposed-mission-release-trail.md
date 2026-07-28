@@ -30,9 +30,9 @@ Recommended rollout:
 
 1. Ship this as **Mission 6 — Release Trail** on the board first.
 2. If it plays well and you want a cleaner story order later, do a coordinated renumber pass across:
-   - `build/ctfd-challenges.json`
+   - `flags/placement.yaml` and `challenges/challenges.yaml`
    - `design/architecture.md`
-   - `tests/walkthroughs/`
+   - `docs/walkthroughs/`
    - mission brief / player-facing copy
 
 That preserves current source-of-truth alignment while still letting the mission land as its own category.
@@ -99,8 +99,10 @@ That preserves current source-of-truth alignment while still letting the mission
 
 - `design/architecture.md` — add the mission as either proposed Mission 6 or renumbered Mission 3 in a single coordinated pass
 - `design/range-diagram.md` — add A17 / A18 if and only if the mission moves from proposal to active plan
-- `build/ctfd-challenges.json` — add flags 39-42 only when ready to ship
-- `tests/walkthroughs/README.md` — add the mission once it is an actual player-facing path
+- Canonical flag contracts — add proposed flags 39-42 only after their ACES
+  behavior, placements, affordance bindings, negative gates, tests, and
+  participant walkthroughs are implemented
+- `docs/walkthroughs/README.md` — add the mission once it is an actual player-facing path
 - `A0-boreas-website.md` — add the public breadcrumb only when the mission is approved
 
 ## Recommendation

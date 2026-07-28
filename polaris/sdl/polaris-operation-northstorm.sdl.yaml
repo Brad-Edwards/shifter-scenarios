@@ -3,19 +3,20 @@ description: >
   Operation NORTHSTORM against the fictional Boreas Systems front company.
   Five-mission red-team CTF: OSINT, front-office compromise, research-lab
   pivot, SCADA blackout, and underground OT platform. Expressed in the
-  extended ACES SDL (22 sections) so a docker-plus-adjacent-VM backend
-  can realise the entire stack.
+  extended ACES SDL (22 sections) as the provider-neutral logical scenario.
+  Provider bindings must preserve these stable ids and declare any degraded
+  or incomplete realization without weakening the full topology.
 
 # ---------------------------------------------------------------------------
-# Nodes — compute + network topology (17 Boreas hosts, 1 Windows DC, 5 subnets
-# + a sixth splice-link attached dynamically post-flag-19)
+# Nodes — compute + network topology (A0-A16, range DNS, 5 baseline networks,
+# and an initially closed splice-link attached to A14 only after blackout)
 # ---------------------------------------------------------------------------
 
 nodes:
   # ---- Switches / networks ----
   shared-net:
     type: Switch
-    description: Shared services subnet (OSINT targets, DNS, Gitea)
+    description: Range-local participant and OSINT subnet (A0, DNS, A14)
   corporate-net:
     type: Switch
     description: Boreas corporate / front-office subnet
@@ -30,7 +31,7 @@ nodes:
     description: Underground autonomous platform network (splice-gated)
   splice-link:
     type: Switch
-    description: Post-blackout relay network attached dynamically after flag 19
+    description: Initially closed relay network attached to A14 only after the range-local blackout
 
   # ---- A0: Boreas public website ----
   a0-boreas-web:
@@ -182,6 +183,7 @@ nodes:
       - {port: 8080, name: hmi-http}
       - {port: 502, name: modbus}
     asset_value: {confidentiality: high, integrity: critical, availability: critical}
+    description: Fictional Boreas HMI and Modbus interlock service; not an authentic vendor industrial product or digital twin.
 
   # ---- A6: engineering workstation ----
   a6-eng-ws01:
@@ -278,6 +280,7 @@ nodes:
       plc-admin: {username: root}
     services:
       - {port: 502, name: modbus}
+    description: Fictional AURORA Modbus service; a future golden profile requires an authentic industrial binding.
 
   a11-leg-ctrl:
     type: VM
@@ -294,6 +297,7 @@ nodes:
       plc-admin: {username: root}
     services:
       - {port: 502, name: modbus}
+    description: Fictional AURORA Modbus service; a future golden profile requires an authentic industrial binding.
 
   a12-arms-ctrl:
     type: VM
@@ -310,6 +314,7 @@ nodes:
       plc-admin: {username: root}
     services:
       - {port: 502, name: modbus}
+    description: Fictional AURORA Modbus service; a future golden profile requires an authentic industrial binding.
 
   # ---- A13: brain controller ----
   a13-brain-main:
@@ -327,6 +332,7 @@ nodes:
       brain-admin: {username: root}
     services:
       - {port: 9100, name: brain-protocol}
+    description: Fictional range-local controller service; it is not a vendor hardware simulator or digital twin.
 
   # ---- A14: participant Kali ----
   a14-kali:
@@ -455,7 +461,7 @@ infrastructure:
     links: [corporate-net]
     properties:
       - corporate-net: 172.20.10.11
-    description: Windows DC — shared across a deployment; range-local DNS keeps forests isolated
+    description: Range-local Windows Server 2022 DC; each range owns an isolated BOREAS forest and DNS binding.
   a3-intranet:
     count: 1
     links: [corporate-net]
@@ -470,44 +476,43 @@ infrastructure:
     count: 1
     links: [scada-net]
     properties:
-      - scada-net: 172.20.40.30
+      - scada-net: 172.20.40.10
   a6-eng-ws01:
     count: 1
     links: [lab-net]
     properties:
-      - lab-net: 172.20.30.50
+      - lab-net: 172.20.30.10
   a7-git:
     count: 1
-    links: [shared-net, lab-net]
+    links: [lab-net]
     properties:
-      - shared-net: 172.20.0.20
       - lab-net: 172.20.30.20
   a8-research-db:
     count: 1
     links: [lab-net]
     properties:
-      - lab-net: 172.20.30.60
+      - lab-net: 172.20.30.30
   a9-splice-landing:
     count: 1
     links: [bunker-ot-net, splice-link]
     properties:
-      - bunker-ot-net: 172.20.50.10
-      - splice-link: 172.20.60.10
+      - bunker-ot-net: 172.20.50.5
+      - splice-link: 172.20.60.5
   a10-tail-ctrl:
     count: 1
     links: [bunker-ot-net]
     properties:
-      - bunker-ot-net: 172.20.50.20
+      - bunker-ot-net: 172.20.50.10
   a11-leg-ctrl:
     count: 1
     links: [bunker-ot-net]
     properties:
-      - bunker-ot-net: 172.20.50.30
+      - bunker-ot-net: 172.20.50.11
   a12-arms-ctrl:
     count: 1
     links: [bunker-ot-net]
     properties:
-      - bunker-ot-net: 172.20.50.40
+      - bunker-ot-net: 172.20.50.12
   a13-brain-main:
     count: 1
     links: [bunker-ot-net]
@@ -517,8 +522,8 @@ infrastructure:
     count: 1
     links: [shared-net, corporate-net]
     properties:
-      - shared-net: 172.20.0.14
-      - corporate-net: 172.20.10.14
+      - shared-net: 172.20.0.140
+      - corporate-net: 172.20.10.140
   a15-ops-eng01:
     count: 1
     links: [corporate-net, scada-net]
@@ -530,7 +535,7 @@ infrastructure:
     links: [corporate-net, lab-net]
     properties:
       - corporate-net: 172.20.10.60
-      - lab-net: 172.20.30.5
+      - lab-net: 172.20.30.60
 
 # ---------------------------------------------------------------------------
 # Features — deployable software units
@@ -931,10 +936,10 @@ accounts:
 
   research-analyst:
     username: research-analyst
-    node: a16-research-analyst01
+    node: a6-eng-ws01
     password_strength: strong
     auth_method: publickey
-    description: SSH key-only account; key recovered through chain
+    description: Narrow SSH key-only A6 account; its key and host binding are planted on A16.
 
 # ---------------------------------------------------------------------------
 # Relationships — credential and pivot chains
@@ -973,6 +978,16 @@ relationships:
     source: s-ivanov
     target: p-shah
     description: These accounts share the intentionally weak synthetic default password.
+  ivanov-to-ops:
+    type: authenticates_with
+    source: s-ivanov
+    target: a15-ops-eng01
+    description: The range-local s.ivanov account authenticates to the exclusive SCADA pivot.
+  shah-to-analyst:
+    type: authenticates_with
+    source: p-shah
+    target: a16-research-analyst01
+    description: The range-local p.shah account authenticates to the exclusive lab pivot.
 
   # Pivot chain (A14 → A15 → A5, A14 → A16 → A7, A9 → bunker)
   kali-pivots-through-ops:

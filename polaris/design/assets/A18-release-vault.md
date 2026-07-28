@@ -64,4 +64,4 @@ This is the second half of the Release Trail mission. Once the participant recov
 ## Cross-Asset Impact If Implemented
 
 - Depends on A17 for the token leak
-- Should be reflected in `design/architecture.md`, `design/range-diagram.md`, and `tests/walkthroughs/README.md` only when promoted from proposal to active plan
+- Should be reflected in `design/architecture.md`, `design/range-diagram.md`, and `docs/walkthroughs/README.md` only when promoted from proposal to active plan

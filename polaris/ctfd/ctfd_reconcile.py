@@ -1,4 +1,4 @@
-"""Generic CTFd reconciliation helpers (issue #691).
+"""Generic CTFd reconciliation helpers.
 
 These helpers were duplicated across ``sync_polaris_ctfd_onboarding.py``
 (authoritative version), ``sync_polaris_ctfd.py`` (re-imported wrappers
@@ -10,7 +10,8 @@ The module owns the **generic** CTFd row-reconciliation surface:
 - ``find_by_key`` / ``reconcile_rows`` — add/match/delete keyed on a
   caller-supplied ``row_key``.
 - ``upsert_page`` / ``upsert_challenge`` / ``build_challenge_payload`` —
-  CTFd object upsert keyed by ``route`` and ``name`` respectively.
+  CTFd object upsert keyed by ``route`` and, by default, ``name``. Callers
+  with stable ownership may disable name matching and supply the owned row.
 - ``normalize_flag`` / ``normalize_hints`` — manifest-shape to CTFd-row
   shape.
 - ``ensure_flags`` / ``ensure_hints`` — full reconcile on
@@ -36,9 +37,8 @@ from common import CtfdClient
 
 
 # Source flags use the canonical ``FLAG{<16-hex>}`` wrapper. The bare-hex
-# alias (issue #705) is derived only when the wrapper is well-formed and the
-# hex body is exactly 16 chars — the production contract documented in
-# ``docs/architecture/polaris-bare-hash-flag-preflight-705.md``. Anything
+# alias is derived only when the wrapper is well-formed and the hex body is
+# exactly 16 chars. Anything
 # else stays as the operator wrote it. ``polaris_manifest.validate_manifest``
 # rejects malformed or non-16-hex wrappers upstream so the helper here only
 # ever sees the clean canonical shape on the canonical path.
@@ -250,8 +250,16 @@ def upsert_challenge(
     existing_challenges: list[dict[str, Any]],
     payload: dict[str, Any],
     dry_run: bool,
+    existing_challenge: dict[str, Any] | None = None,
+    match_by_name: bool = True,
 ) -> dict[str, Any]:
-    existing = find_by_key(existing_challenges, key="name", value=payload["name"])
+    existing = existing_challenge
+    if existing is None and match_by_name:
+        existing = find_by_key(
+            existing_challenges,
+            key="name",
+            value=payload["name"],
+        )
     if existing:
         print(f"update challenge: {payload['name']}")
         if dry_run:
@@ -282,7 +290,7 @@ def normalize_flag(flag: dict[str, Any]) -> dict[str, Any]:
 
     Canonical ``FLAG{<16-hex>}`` static source content is aliased to a
     single case-insensitive regex row that accepts either the wrapped form
-    or the bare ``<16-hex>`` (issue #705). The canonical answer in repo
+    or the bare ``<16-hex>``. The canonical answer in pack
     content stays ``FLAG{<16-hex>}``; only the live CTFd row shape changes,
     so existing walkthroughs and challenge descriptions are untouched.
 

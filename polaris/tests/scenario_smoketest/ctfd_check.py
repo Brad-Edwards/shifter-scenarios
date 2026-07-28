@@ -1,7 +1,7 @@
 """Read-only CTFd flag-row readback.
 
-Implements ``lessons-4.md`` pre-flight checklist item 4: for every CTFd
-challenge, ``GET /challenges/{id}/flags`` and assert the row set is non-empty.
+For every CTFd challenge, ``GET /challenges/{id}/flags`` and assert the row set
+is non-empty.
 This catches the regression where a ``sync_polaris_ctfd.py`` re-sync silently
 dropped flag rows and shipped 38/39 challenges unsubmittable.
 

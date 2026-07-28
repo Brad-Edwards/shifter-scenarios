@@ -16,21 +16,16 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 DEFAULT_RANGE_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 RANGE_DIR="${RANGE_DIR:-$DEFAULT_RANGE_DIR}"
 COMPOSE_FILE="${COMPOSE_FILE:-$RANGE_DIR/build/docker-compose.yml}"
-# Legacy flat-layout fallback: if new location doesn't exist, try $RANGE_DIR/docker-compose.yml
-if [[ ! -f "$COMPOSE_FILE" ]] && [[ -f "$RANGE_DIR/docker-compose.yml" ]]; then
-    COMPOSE_FILE="$RANGE_DIR/docker-compose.yml"
-fi
 # Compose project name. Defaults to "build" because the production
-# user_data path (`scenarios/polaris/aws-range/user_data.sh.tpl`) does
-# `cd /opt/polaris/scenarios/polaris/build && docker compose up -d`,
+# user_data path (`polaris/aws-range/user_data.sh.tpl`) does
+# `cd /opt/polaris/polaris/build && docker compose up -d`,
 # yielding project=build (the parent dir of the compose file).
 # `polaris-splice-watcher.service` also assumes the network is
 # "build_splice-link" by default. Smoketest scripts (this file +
 # reset.sh + run-all-smoketests.sh) honour COMPOSE_PROJECT_NAME so they
 # can be pointed at any other project name set by the operator.
 #
-# Earlier this defaulted to "range" which diverged from production and
-# made every helper script ship with a hardcoded mismatch.
+# Keep this aligned with the production build-directory project name.
 COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-build}"
 COMPOSE="docker compose -p $COMPOSE_PROJECT_NAME -f $COMPOSE_FILE"
 
@@ -39,7 +34,7 @@ log() { echo "[setup] $*"; }
 log "range dir: $RANGE_DIR"
 log "compose file: $COMPOSE_FILE"
 
-# Stage the per-range splice-relay keypair (#707). Production ranges get
+# Stage the per-range splice-relay keypair. Production ranges get
 # this from the provisioner's POLARIS_RANGE_BOOTSTRAP_SCRIPT; the dev
 # docker-compose range generates it here so the same a9/a14 entrypoints
 # consume the same env-var shape. Idempotent on re-run: if the override

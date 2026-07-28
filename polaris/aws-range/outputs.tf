@@ -30,6 +30,11 @@ output "range_polaris_private_ips" {
   value       = { for k, i in aws_instance.polaris : k => i.private_ip }
 }
 
+output "range_polaris_public_ips" {
+  description = "Public A14 SSH endpoint per range index."
+  value       = { for k, i in aws_instance.polaris : k => i.public_ip }
+}
+
 output "range_a2_instance_ids" {
   description = "A2 Windows DC EC2 instance id per range index."
   value       = { for k, i in aws_instance.a2_dc : k => i.id }
@@ -48,14 +53,4 @@ output "range_security_group_ids" {
 output "iam_instance_profile_name" {
   description = "Shared instance profile attached to every polaris + A2 instance."
   value       = aws_iam_instance_profile.polaris.name
-}
-
-output "ssm_session_commands" {
-  description = "aws ssm start-session commands per range, pre-formatted for copy-paste."
-  value = {
-    for k in var.range_indices : k => {
-      polaris = "aws --profile panw-shifter-dev-workstation --region us-east-2 ssm start-session --target ${aws_instance.polaris[k].id}"
-      a2_dc   = "aws --profile panw-shifter-dev-workstation --region us-east-2 ssm start-session --target ${aws_instance.a2_dc[k].id}"
-    }
-  }
 }

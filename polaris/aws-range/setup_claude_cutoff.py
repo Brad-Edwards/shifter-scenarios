@@ -13,7 +13,7 @@ mode first, verify the output, then enable.
 Usage:
   export AWS_PROFILE=panw-shifter-dev-workstation
   export CTFD_TOKEN=<admin token, 48h expiry>
-  python3 scenarios/polaris/aws-range/setup_claude_cutoff.py
+  python3 polaris/aws-range/setup_claude_cutoff.py
 """
 from __future__ import annotations
 

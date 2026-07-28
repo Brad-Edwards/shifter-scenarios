@@ -91,7 +91,7 @@ Flag 37 is a **prerequisite** for flags 18 and 19 — without root on A15 the pa
 
 **Base image:** `debian:bookworm-slim`
 
-**Content directory:** `scenarios/polaris/build/A15-ops-workstation/`
+**Content directory:** `polaris/build/A15-ops-workstation/`
 
 ### Steps
 

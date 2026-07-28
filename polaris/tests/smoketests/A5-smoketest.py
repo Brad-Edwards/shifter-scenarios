@@ -2,15 +2,13 @@
 """
 A5 SCADA Generator HMI smoketest.
 
-Runs the full attack chain from inside a container on the scada network
-(a3-intranet is the designed pivot point — it's multi-homed to
-corporate+scada+lab). Uses only the python stdlib (socket + urllib) so it
-can run in a3-intranet without installing pymodbus.
+Runs the full attack chain from A15, the designed corporate-to-SCADA pivot.
+Uses only the Python stdlib (socket + urllib).
 
 Usage (from the range host):
-    docker compose -f range/docker-compose.yml up -d --force-recreate a5-scada
-    docker cp smoketest.py a3-intranet:/tmp/a5-smoke.py
-    docker exec a3-intranet python3 /tmp/a5-smoke.py
+    docker compose -f polaris/build/docker-compose.yml up -d --force-recreate a5-scada
+    docker cp smoketest.py a15-ops-eng:/tmp/a5-smoke.py
+    docker exec a15-ops-eng python3 /tmp/a5-smoke.py
 
 NOTE: thermal runaway is one-shot per container. You MUST force-recreate
 a5-scada before each run; otherwise the runaway test will see "already

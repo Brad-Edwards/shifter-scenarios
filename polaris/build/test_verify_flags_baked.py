@@ -1,11 +1,11 @@
 """Tests for the bake-time baked-flag verifier.
 
 Run from the repo root:
-    python3 scenarios/polaris/build/test_verify_flags_baked.py
+    python3 polaris/build/test_verify_flags_baked.py
 """
 
 import importlib.util
-import json
+import io
 import sys
 import tempfile
 import unittest
@@ -19,7 +19,7 @@ vfb = importlib.util.module_from_spec(_SPEC)
 sys.modules["verify_flags_baked"] = vfb
 _SPEC.loader.exec_module(vfb)
 
-REPO_CHALLENGES = _HERE / "ctfd-challenges.json"
+REPO_PLACEMENT = _HERE.parent / "flags" / "placement.yaml"
 CANONICAL_FLAG_6 = "FLAG{c6f8d2b3e91a4507}"
 
 
@@ -36,61 +36,107 @@ def _load_build_pdfs():
 
 
 class VerifyFlagsBakedTests(unittest.TestCase):
-    def _board(self, root: Path, challenges):
-        path = root / "ctfd-challenges.json"
-        path.write_text(json.dumps({"challenges": challenges}), encoding="utf-8")
+    def _placement(self, root: Path, flags):
+        path = root / "placement.yaml"
+        rows = ["flags:"]
+        for flag in flags:
+            rows.extend(
+                [
+                    f"  - flag_id: {flag['flag_id']}",
+                    "    source: value",
+                    f"    value: \"{flag['value']}\"",
+                    "    host: a0-boreas-web",
+                    "    path: /tmp/flag",
+                ]
+            )
+        path.write_text("\n".join(rows) + "\n", encoding="utf-8")
         return path
 
     def test_static_flag_returns_content(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            board = json.loads(
-                self._board(
-                    Path(tmp),
-                    [{"id": 6, "flags": [{"type": "static", "content": "FLAG{x}"}]}],
-                ).read_text(encoding="utf-8")
-            )
-        self.assertEqual(vfb.static_flag(board, 6), "FLAG{x}")
+        placement = {
+            "flags": [
+                {
+                    "flag_id": "annual-report-supplier",
+                    "source": "value",
+                    "value": "FLAG{x}",
+                }
+            ]
+        }
+        self.assertEqual(
+            vfb.static_flag(placement, "annual-report-supplier"),
+            "FLAG{x}",
+        )
 
     def test_static_flag_non_static_raises(self):
-        board = {"challenges": [{"id": 6, "flags": [{"type": "regex", "content": "k"}]}]}
+        board = {
+            "flags": [
+                {
+                    "flag_id": "annual-report-supplier",
+                    "source": "generator",
+                    "generator": "build/generate.py",
+                }
+            ]
+        }
         with self.assertRaises(ValueError):
-            vfb.static_flag(board, 6)
+            vfb.static_flag(board, "annual-report-supplier")
 
     def test_verify_passes_when_flag_present(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            board = self._board(
-                root, [{"id": 6, "flags": [{"type": "static", "content": "FLAG{abc99}"}]}]
+            board = self._placement(
+                root,
+                [{"flag_id": "annual-report-supplier", "value": "FLAG{abc99}"}],
             )
             art = root / "art"
             (art / "internal").mkdir(parents=True)
             (art / "internal" / "rep.txt").write_text(
                 "expenses... PO ref: FLAG{abc99}\n", encoding="utf-8"
             )
-            misses = vfb.verify(board, art, {"internal/rep.txt": 6})
+            misses = vfb.verify(
+                board,
+                art,
+                {"internal/rep.txt": "annual-report-supplier"},
+            )
         self.assertEqual(misses, [])
 
     def test_verify_fails_when_flag_absent(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            board = self._board(
-                root, [{"id": 6, "flags": [{"type": "static", "content": "FLAG{abc99}"}]}]
+            board = self._placement(
+                root,
+                [{"flag_id": "annual-report-supplier", "value": "FLAG{abc99}"}],
             )
             art = root / "art"
             (art / "internal").mkdir(parents=True)
             (art / "internal" / "rep.txt").write_text("expenses, no flag here\n", encoding="utf-8")
-            misses = vfb.verify(board, art, {"internal/rep.txt": 6})
+            capture = io.StringIO()
+            original = sys.stdout
+            sys.stdout = capture
+            try:
+                misses = vfb.verify(
+                    board,
+                    art,
+                    {"internal/rep.txt": "annual-report-supplier"},
+                )
+            finally:
+                sys.stdout = original
         self.assertEqual(len(misses), 1)
+        self.assertNotIn("FLAG{abc99}", capture.getvalue())
 
     def test_verify_fails_when_artifact_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            board = self._board(
-                root, [{"id": 6, "flags": [{"type": "static", "content": "FLAG{abc99}"}]}]
+            board = self._placement(
+                root,
+                [{"flag_id": "annual-report-supplier", "value": "FLAG{abc99}"}],
             )
             art = root / "art"
             art.mkdir()
-            misses = vfb.verify(board, art, {"internal/rep.txt": 6})
+            misses = vfb.verify(
+                board,
+                art,
+                {"internal/rep.txt": "annual-report-supplier"},
+            )
         self.assertEqual(len(misses), 1)
 
     def test_verify_real_annual_pdf(self):
@@ -102,7 +148,9 @@ class VerifyFlagsBakedTests(unittest.TestCase):
                 str(root / "internal" / "boreas-annual-2025.pdf"), CANONICAL_FLAG_6
             )
             misses = vfb.verify(
-                REPO_CHALLENGES, root, {"internal/boreas-annual-2025.pdf": 6}
+                REPO_PLACEMENT,
+                root,
+                {"internal/boreas-annual-2025.pdf": "annual-report-supplier"},
             )
         self.assertEqual(misses, [])
 
@@ -114,7 +162,7 @@ class VerifyFlagsBakedTests(unittest.TestCase):
             build_pdfs.make_annual_report(
                 str(root / "internal" / "boreas-annual-2025.pdf"), CANONICAL_FLAG_6
             )
-            result = vfb.main([str(REPO_CHALLENGES), str(root)])
+            result = vfb.main([str(REPO_PLACEMENT), str(root)])
         self.assertEqual(result, 0)
 
     def test_main_returns_one_on_miss(self):
@@ -125,7 +173,7 @@ class VerifyFlagsBakedTests(unittest.TestCase):
             build_pdfs.make_annual_report(
                 str(root / "internal" / "boreas-annual-2025.pdf"), "FLAG{wrongflag}"
             )
-            result = vfb.main([str(REPO_CHALLENGES), str(root)])
+            result = vfb.main([str(REPO_PLACEMENT), str(root)])
         self.assertEqual(result, 1)
 
 

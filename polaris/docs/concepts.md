@@ -12,10 +12,10 @@ service, and control must be real and range-local in a declared build profile;
 the pack does not substitute hand-rolled stand-ins for components the path
 requires.
 
-This contract records the current authored sources while the pack remains
-`draft`. Existing build, cloud-lifecycle, CTFd, SDL, and walkthrough material
-is valuable migration input, not a claim that the current source has an
-isolated, participant-equivalent golden range.
+This contract records the authored sources while the pack remains `draft`.
+The presence of build, cloud-lifecycle, CTFd, SDL, and walkthrough material is
+not a claim that the current source has an isolated, participant-equivalent
+golden range.
 
 The ACES source models completion as an observed participant outcome backed by
 evidence requirements and assertions. The existing CTFd source does not

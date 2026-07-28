@@ -72,7 +72,7 @@ This is per-range, not global. Every participant must earn the meltdown in their
 
 **Base image:** python:3.12-slim (Flask HMI + pymodbus backend)
 
-**Content directory:** `scenarios/polaris/build/A5-scada-generator/`
+**Content directory:** `polaris/build/A5-scada-generator/`
 
 ### Steps
 

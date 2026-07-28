@@ -63,7 +63,7 @@ Boreas Systems internal intranet and wiki. This is the first thing most particip
 
 **Base image:** python:3.12-slim (Flask app)
 
-**Content directory:** `scenarios/polaris/build/A3-web-app/`
+**Content directory:** `polaris/build/A3-web-app/`
 
 ### Steps
 

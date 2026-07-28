@@ -1,9 +1,9 @@
 """Orchestration: walk the challenge universe and run each adapter.
 
-The universe comes from the board (:mod:`board`). For every challenge the
+The universe comes from the canonical contract join (:mod:`board`). For every challenge the
 harness looks up a registered adapter; a challenge with no adapter is
 ``uncovered`` (a failure). A covered challenge's adapter is executed against
-the range and its produced value is compared (:mod:`compare`) to the board's
+the range and its produced value is compared (:mod:`compare`) to placement's
 configured static flag, or to the adapter's recorded answer for ``answer``
 challenges.
 """
@@ -22,19 +22,19 @@ def run_smoketest(
     *,
     hosts: dict[str, str],
     dns: str = "172.20.0.2",
-    only_ids: set[int] | None = None,
+    only_ids: set[str] | None = None,
 ) -> list[ChallengeResult]:
     """Execute every covered challenge and return per-challenge results."""
     results: list[ChallengeResult] = []
     for challenge in challenges:
-        if only_ids is not None and challenge.id not in only_ids:
+        if only_ids is not None and challenge.flag_id not in only_ids:
             continue
 
-        adapter = ADAPTERS.get(challenge.id)
+        adapter = ADAPTERS.get(challenge.flag_id)
         if adapter is None:
             results.append(
                 ChallengeResult(
-                    challenge.id,
+                    challenge.flag_id,
                     challenge.name,
                     "uncovered",
                     "no adapter registered — challenge path is unverified",
@@ -48,7 +48,7 @@ def run_smoketest(
         except Exception as exc:  # noqa: BLE001 - adapter faults must not abort the sweep
             results.append(
                 ChallengeResult(
-                    challenge.id,
+                    challenge.flag_id,
                     challenge.name,
                     "error",
                     f"adapter raised {type(exc).__name__}",
@@ -67,7 +67,7 @@ def run_smoketest(
             detail = f"{detail} [{produced.note}]"
         results.append(
             ChallengeResult(
-                challenge.id,
+                challenge.flag_id,
                 challenge.name,
                 "pass" if verdict.status == "pass" else "fail",
                 detail,

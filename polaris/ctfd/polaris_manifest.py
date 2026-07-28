@@ -1,266 +1,338 @@
-"""Polaris-specific CTFd manifest helpers (issue #691).
-
-These were tangled into ``sync_polaris_ctfd.py``. The split is by
-specificity: ``ctfd_reconcile`` is generic CTFd row-reconciliation; this
-module is Polaris-event constants and validation that only the Polaris
-board cares about.
-
-Owns:
-
-- Authoritative challenge ordering for the Polaris board UI.
-- Stale challenge names that the live board should delete on every sync.
-- Source-manifest validation (``validate_manifest`` /
-  ``validate_live_challenge_names``).
-- Post-sync flag/hint verification (``verify_challenge_rows``).
-- Prerequisite resolution (manifest id -> live CTFd id).
-- ``SyncError`` — the dedicated exit-class the CLI catches.
-"""
+"""Canonical Polaris flag/challenge projection for the reference CTFd loader."""
 
 from __future__ import annotations
 
 import re
+import sys
+from pathlib import Path
 from typing import Any
 
-from common import CtfdClient
+
+PACK_ROOT = Path(__file__).resolve().parents[1]
+if str(PACK_ROOT) not in sys.path:
+    sys.path.insert(0, str(PACK_ROOT))
+
+from contract_source import load_yaml  # noqa: E402
+from ctfd_reconcile import get_all_items  # noqa: E402
+
 
 SUPPORTED_FLAG_TYPES = {"static", "regex"}
+_CANONICAL_FLAG_WRAPPER_RE = re.compile(r"^FLAG\{([0-9a-fA-F]{16})\}$")
+_FLAG_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_NAMESPACE_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
-# Static source content that opens with ``FLAG{`` MUST be the canonical
-# ``FLAG{<16-hex>}`` shape so ``ctfd_reconcile.normalize_flag`` can derive
-# the bare-hex alias (issue #705). The 16-hex body length is the production
-# contract documented in
-# ``docs/architecture/polaris-bare-hash-flag-preflight-705.md``; enforcing
-# it here keeps a malformed or short-body wrapper from silently shipping a
-# trivially short accepted answer to CTFd.
-_CANONICAL_FLAG_WRAPPER_RE = re.compile(r"^FLAG\{[0-9a-fA-F]{16}\}$")
-
-STALE_CHALLENGE_NAMES = {
-    "Mission 0 — Kali Warm-Up",
-}
-
-ORDERED_CHALLENGE_NAMES = [
-    "Start Here — Kali Warm-Up",
-    "Company Info",
-    "Employee Directory",
-    "Tech Stack Revealed",
-    "Client Contracts",
-    "DNS Reconnaissance",
-    "Follow the Money",
-    "Configuration Leak",
-    "Project Hints",
-    "Terminated Engineer",
-    "Password Reuse",
-    "Mundane File Share",
-    "The Project",
-    "Procurement Trail",
-    "Hidden Group",
-    "Lateral Movement",
-    "Unreliable Guard",
-    "Domain Admin",
-    "The Analyst's Desk",
-    "Old Defaults",
-    "Compartment A",
-    "Heavy Delivery",
-    "MIDNIGHT-7",
-    "What Git Remembers",
-    "After Hours",
-    "Balance Point",
-    "Compartment B",
-    "What's Built",
-    "What Was Erased",
-    "Full Run",
-    "On Call",
-    "Control Room",
-    "Lights Out",
-    "Underground Signals",
-    "First Motion",
-    "Walking Pattern",
-    "Response Window",
-    "Control Channel",
-    "Full Override",
-    "Q4 Risk Review",
-    "Redacted Minutes",
-    "Sanitized Diagram",
-    "Press Drop",
-    "Badge Clone",
-    "Mailbox Rule",
-    "Burner Visit",
-    "Report the Mole",
-    "Shipping Slot",
-    "Approval Client",
-    "Freeze Template",
-    "Delivery Halt",
-    "Maintenance Manual",
-    "Diagnostic Channel",
-    "Safe Mode Sequence",
-    "Cold Shutdown",
+ORDERED_FLAG_IDS = [
+    "company-registration",
+    "employee-directory",
+    "careers-tech-stack",
+    "client-contracts",
+    "dns-zone-transfer",
+    "annual-report-supplier",
+    "intranet-config-leak",
+    "project-status-mail",
+    "terminated-engineer",
+    "default-password-mail",
+    "cafeteria-metadata",
+    "project-wiki-comment",
+    "procurement-actuator",
+    "nested-project-group",
+    "fileshare-service-creds",
+    "guard-badge-anomaly",
+    "domain-admin-secrets",
+    "analyst-lab-pivot",
+    "jenkins-default-creds",
+    "research-compartment-a",
+    "reactor-interface-spec",
+    "midnight-standard-run",
+    "navigation-git-history",
+    "midnight-after-hours",
+    "center-of-gravity",
+    "research-compartment-b",
+    "final-assembly-metadata",
+    "deleted-schematic",
+    "full-integration-video",
+    "ops-scada-credentials",
+    "scada-control-room",
+    "scada-blackout",
+    "bunker-controller-map",
+    "tail-controller-unlock",
+    "leg-controller-gait",
+    "arms-response-window",
+    "brain-control-channel",
+    "brain-full-override",
 ]
+
+_CATEGORY_BY_FLAG_ID = {
+    **{flag_id: "Mission 1 — Boreas" for flag_id in ORDERED_FLAG_IDS[:6]},
+    **{flag_id: "Mission 2 — Inside Boreas" for flag_id in ORDERED_FLAG_IDS[6:17]},
+    **{flag_id: "Mission 3 — The Lab" for flag_id in ORDERED_FLAG_IDS[17:29]},
+    **{flag_id: "Mission 4 — Lights Out" for flag_id in ORDERED_FLAG_IDS[29:32]},
+    **{flag_id: "Mission 5 — Bunker" for flag_id in ORDERED_FLAG_IDS[32:]},
+}
 
 
 class SyncError(RuntimeError):
-    """Raised when the source manifest or live CTFd board fails validation."""
+    """Raised when canonical source or live CTFd state is unsafe to mutate."""
+
+
+def _ownership_namespace(event_namespace: str | None) -> str:
+    namespace = event_namespace or "default"
+    if not _NAMESPACE_RE.fullmatch(namespace):
+        raise SyncError("event namespace must be a lowercase slug")
+    return namespace
+
+
+def _index_source_rows(
+    rows: Any,
+    *,
+    source_name: str,
+) -> dict[str, dict[str, Any]]:
+    if not isinstance(rows, list) or not rows:
+        raise SyncError(f"{source_name} source must contain a non-empty list")
+    indexed: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            raise SyncError(f"{source_name} source rows must be mappings")
+        flag_id = row.get("flag_id")
+        if not isinstance(flag_id, str) or not _FLAG_ID_RE.fullmatch(flag_id):
+            raise SyncError(f"{source_name} source has a malformed stable flag id")
+        if flag_id in indexed:
+            raise SyncError(f"{source_name} source has a duplicate stable flag id")
+        indexed[flag_id] = row
+    return indexed
+
+
+def load_manifest(
+    pack_root: str | Path = PACK_ROOT,
+    *,
+    runtime_profile_id: str = "aws_event",
+    event_namespace: str | None = None,
+) -> list[dict[str, Any]]:
+    """Join canonical placement and participant copy into CTFd rows."""
+
+    if runtime_profile_id != "aws_event":
+        raise SyncError(
+            "only aws_event may project the live Polaris event flag set"
+        )
+    root = Path(pack_root)
+    placements = load_yaml(root / "flags" / "placement.yaml").get("flags")
+    challenges = load_yaml(
+        root / "challenges" / "challenges.yaml"
+    ).get("challenges")
+    placement_by_id = _index_source_rows(
+        placements,
+        source_name="placement",
+    )
+    challenge_by_id = _index_source_rows(
+        challenges,
+        source_name="challenge",
+    )
+    if set(placement_by_id) != set(challenge_by_id):
+        raise SyncError("placement and challenge flag ids do not match")
+    if set(placement_by_id) != set(ORDERED_FLAG_IDS):
+        raise SyncError("canonical Polaris flag inventory is incomplete or unexpected")
+
+    namespace = _ownership_namespace(event_namespace)
+    ownership_prefix = f"panw:polaris:{namespace}:"
+    rows: list[dict[str, Any]] = []
+    for flag_id in ORDERED_FLAG_IDS:
+        placement = placement_by_id[flag_id]
+        challenge = challenge_by_id[flag_id]
+        value = placement.get("value")
+        source = placement.get("source")
+        if source != "value" or not isinstance(value, str) or not value:
+            raise SyncError(
+                f"{flag_id}: the reference CTFd adapter currently requires a static value"
+            )
+        hints = [
+            {"title": f"Hint {index}", "content": hint, "cost": 0}
+            for index, hint in enumerate(challenge.get("hints", []), start=1)
+        ]
+        row = {
+            "flag_id": flag_id,
+            "name": challenge.get("title"),
+            "description": challenge.get("question"),
+            "category": _CATEGORY_BY_FLAG_ID[flag_id],
+            "value": challenge.get("points"),
+            "type": "standard",
+            "state": "visible",
+            "flags": [{"type": "static", "content": value}],
+            "hints": hints,
+            "tags": [
+                f"{ownership_prefix}{flag_id}",
+                f"difficulty:{challenge.get('difficulty')}",
+            ],
+            "ownership_tag": f"{ownership_prefix}{flag_id}",
+            "ownership_prefix": ownership_prefix,
+            "source_challenge": challenge,
+        }
+        rows.append(row)
+    validate_manifest(rows)
+    return rows
 
 
 def validate_manifest(challenges: list[dict[str, Any]]) -> None:
-    """Validate the merged source manifest before any CTFd mutation.
+    """Validate the complete projection before any remote write."""
 
-    A malformed manifest must fail loudly here, before stale-row deletion can
-    remove event-critical live rows. Flag content is never echoed.
-    """
-    seen_ids: set[Any] = set()
-    seen_names: set[str] = set()
     errors: list[str] = []
-
+    seen_ids: set[str] = set()
+    seen_ownership: set[str] = set()
     for challenge in challenges:
-        name = challenge.get("name")
-        if not name:
-            errors.append(
-                f"challenge missing name (category={challenge.get('category')!r})"
-            )
+        flag_id = challenge.get("flag_id")
+        if (
+            not isinstance(flag_id, str)
+            or not _FLAG_ID_RE.fullmatch(flag_id)
+            or flag_id in seen_ids
+        ):
+            errors.append("duplicate or malformed stable flag id")
             continue
-        if name in seen_names:
-            errors.append(f"duplicate challenge name {name!r}")
-        seen_names.add(name)
-
-        if not challenge.get("category"):
-            errors.append(f"challenge {name!r} missing category")
-
-        manifest_id = challenge.get("id")
-        if manifest_id is not None:
-            if manifest_id in seen_ids:
-                errors.append(f"duplicate manifest id {manifest_id!r} ({name})")
-            seen_ids.add(manifest_id)
-
+        seen_ids.add(flag_id)
+        for field in ("name", "description", "category", "ownership_tag"):
+            if not isinstance(challenge.get(field), str) or not challenge[field]:
+                errors.append(f"{flag_id}: missing {field}")
+        ownership = challenge.get("ownership_tag")
+        if ownership in seen_ownership:
+            errors.append(f"{flag_id}: duplicate ownership tag")
+        seen_ownership.add(ownership)
+        if ownership not in challenge.get("tags", []):
+            errors.append(f"{flag_id}: ownership tag is not projected")
+        if "category" in challenge.get("source_challenge", {}):
+            errors.append(f"{flag_id}: category must remain adapter-local")
+        if not isinstance(challenge.get("value"), int) or challenge["value"] <= 0:
+            errors.append(f"{flag_id}: points must be a positive integer")
         flags = challenge.get("flags", [])
-        if not flags:
-            errors.append(f"challenge {name!r} has no flags — it would be unsubmittable")
-        for flag in flags:
-            flag_type = flag.get("type", "static")
-            if flag_type not in SUPPORTED_FLAG_TYPES:
-                errors.append(
-                    f"challenge {name!r} has unsupported flag type {flag_type!r}"
-                )
+        if len(flags) != 1:
+            errors.append(f"{flag_id}: exactly one answer is required")
+        else:
+            flag = flags[0]
             content = flag.get("content")
-            if not content:
-                errors.append(f"challenge {name!r} has a flag with empty content")
-                continue
+            if flag.get("type", "static") not in SUPPORTED_FLAG_TYPES:
+                errors.append(f"{flag_id}: unsupported answer type")
             if (
-                flag_type == "static"
-                and content.startswith("FLAG{")
-                and not _CANONICAL_FLAG_WRAPPER_RE.match(content)
+                not isinstance(content, str)
+                or not _CANONICAL_FLAG_WRAPPER_RE.fullmatch(content)
             ):
-                # FLAG{ open that does not close as exactly ``FLAG{<16-hex>}``
-                # would either silently skip bare-hex aliasing or ship a
-                # trivially short accepted answer to CTFd (issue #705). Fail
-                # loudly here, before any live mutation.
-                errors.append(
-                    f"challenge {name!r} has a malformed FLAG wrapper "
-                    "(expected FLAG{<16-hex>}); fix the source content or "
-                    "set type to regex"
-                )
-
+                errors.append(f"{flag_id}: malformed canonical answer")
+        if not challenge.get("hints"):
+            errors.append(f"{flag_id}: at least one hint is required")
     if errors:
-        raise SyncError("manifest validation failed:\n  " + "\n  ".join(errors))
-
-
-def validate_live_challenge_names(existing_challenges: list[dict[str, Any]]) -> None:
-    """Fail when the live board has duplicate challenge names.
-
-    Sync is name-keyed, so a duplicate live name makes every upsert ambiguous.
-    """
-    seen: set[str] = set()
-    duplicates: set[str] = set()
-    for challenge in existing_challenges:
-        name = challenge.get("name")
-        if name in seen:
-            duplicates.add(name)
-        seen.add(name)
-    if duplicates:
         raise SyncError(
-            "duplicate live CTFd challenge names make name-keyed sync unsafe: "
-            + ", ".join(sorted(duplicates))
+            "manifest validation failed: " + "; ".join(sorted(set(errors)))
         )
 
 
-def verify_challenge_rows(
-    client: CtfdClient,
-    *,
-    challenges: list[dict[str, Any]],
-    name_to_live_id: dict[str, int | None],
-) -> None:
-    """Read flag and hint rows back from CTFd after sync.
-
-    Raises if a challenge with source flags (or hints) shows zero live rows —
-    the exact regression that shipped 38/39 challenges unsubmittable.
-    """
-    failures: list[str] = []
-    for challenge in challenges:
-        name = challenge["name"]
-        live_id = name_to_live_id.get(name)
-        if live_id is None:
-            failures.append(f"{name}: no live challenge id after sync")
-            continue
-        if challenge.get("flags"):
-            rows = client.get(f"/challenges/{live_id}/flags").get("data", [])
-            if not rows:
-                failures.append(f"{name} (id {live_id}): 0 flag rows — unsubmittable")
-        if challenge.get("hints"):
-            rows = client.get(f"/challenges/{live_id}/hints").get("data", [])
-            if not rows:
-                failures.append(f"{name} (id {live_id}): 0 hint rows")
-    if failures:
-        raise SyncError("post-sync verification failed:\n  " + "\n  ".join(failures))
-
-
-def build_manifest_id_to_name(challenges: list[dict[str, Any]]) -> dict[int, str]:
-    return {challenge["id"]: challenge["name"] for challenge in challenges if "id" in challenge}
-
-
 def sort_challenges(challenges: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    name_order = {name: index for index, name in enumerate(ORDERED_CHALLENGE_NAMES, start=1)}
-    fallback_index = len(name_order) + 1000
+    order = {flag_id: index for index, flag_id in enumerate(ORDERED_FLAG_IDS)}
     return sorted(
         challenges,
-        key=lambda challenge: (
-            name_order.get(challenge["name"], fallback_index),
-            challenge.get("category", ""),
-            challenge.get("id", 0),
-        ),
+        key=lambda row: order.get(row.get("flag_id"), len(order)),
     )
 
 
-def resolve_prerequisites(
-    *,
-    challenge: dict[str, Any],
-    manifest_id_to_name: dict[int, str],
-    name_to_live_id: dict[str, int | None],
-) -> dict[str, Any]:
-    """Translate manifest-id prerequisites into live CTFd ids."""
-    raw_requirements = challenge.get("requirements", {})
-    prerequisite_ids: list[int] = []
-    for manifest_id in raw_requirements.get("prerequisites", []):
-        challenge_name = manifest_id_to_name.get(manifest_id)
-        if not challenge_name:
-            print(f"warn: prerequisite id {manifest_id!r} not found in manifest")
-            continue
-        live_id = name_to_live_id.get(challenge_name)
-        if live_id is None:
-            print(f"warn: prerequisite {challenge_name!r} has no live id yet")
-            continue
-        prerequisite_ids.append(live_id)
+def _expected_live_flag(flag: dict[str, Any]) -> tuple[str, str, str]:
+    """Independently derive the documented CTFd answer-row contract."""
 
-    return {"prerequisites": prerequisite_ids}
+    source_type = flag.get("type", "static")
+    content = flag["content"]
+    if source_type == "static":
+        match = _CANONICAL_FLAG_WRAPPER_RE.fullmatch(content)
+        if match:
+            body = match.group(1)
+            return (
+                "regex",
+                rf"^(?:FLAG\{{{body}\}}|{body})$",
+                "case_insensitive",
+            )
+    return source_type, content, flag.get("data", "")
+
+
+def verify_challenge_rows(
+    client,
+    *,
+    challenges: list[dict[str, Any]],
+    flag_id_to_live_id: dict[str, int | None],
+) -> None:
+    """Read managed challenge, answer, hint, point, state, and tag rows back."""
+
+    live = {
+        row.get("id"): row
+        for row in get_all_items(client, "/challenges", {"view": "admin"})
+    }
+    failures: list[str] = []
+    for challenge in challenges:
+        flag_id = challenge["flag_id"]
+        live_id = flag_id_to_live_id.get(flag_id)
+        row = live.get(live_id)
+        if row is None:
+            failures.append(f"{flag_id}: missing live challenge")
+            continue
+        if (
+            row.get("name") != challenge["name"]
+            or row.get("value") != challenge["value"]
+            or row.get("state") != challenge["state"]
+        ):
+            failures.append(f"{flag_id}: challenge readback drift")
+        expected_flags = {
+            _expected_live_flag(flag)
+            for flag in challenge["flags"]
+        }
+        live_flags = client.get(
+            f"/challenges/{live_id}/flags"
+        ).get("data", [])
+        actual_flags = {
+            (row.get("type"), row.get("content"), row.get("data", ""))
+            for row in live_flags
+        }
+        if actual_flags != expected_flags:
+            failures.append(f"{flag_id}: answer readback drift")
+
+        expected_hints = {
+            (
+                row.get("title", f"Hint {index}"),
+                row["content"],
+                row.get("cost", 0),
+                tuple(row.get("requirements", [])),
+            )
+            for index, row in enumerate(challenge["hints"], start=1)
+        }
+        live_hints = client.get(
+            f"/challenges/{live_id}/hints"
+        ).get("data", [])
+        actual_hints = {
+            (
+                row.get("title"),
+                row.get("content"),
+                row.get("cost"),
+                tuple(row.get("requirements", [])),
+            )
+            for row in live_hints
+        }
+        if actual_hints != expected_hints:
+            failures.append(f"{flag_id}: hint readback drift")
+
+        live_tags = client.get(
+            f"/challenges/{live_id}/tags"
+        ).get("data", [])
+        actual_managed_tags = {
+            row.get("value")
+            for row in live_tags
+            if isinstance(row.get("value"), str)
+            and row["value"].startswith(("panw:polaris:", "difficulty:"))
+        }
+        if actual_managed_tags != set(challenge["tags"]):
+            failures.append(f"{flag_id}: ownership readback drift")
+    if failures:
+        raise SyncError(
+            "post-sync verification failed: " + "; ".join(failures)
+        )
 
 
 __all__ = [
-    "ORDERED_CHALLENGE_NAMES",
-    "STALE_CHALLENGE_NAMES",
+    "ORDERED_FLAG_IDS",
     "SUPPORTED_FLAG_TYPES",
     "SyncError",
-    "build_manifest_id_to_name",
-    "resolve_prerequisites",
+    "load_manifest",
     "sort_challenges",
-    "validate_live_challenge_names",
     "validate_manifest",
     "verify_challenge_rows",
 ]

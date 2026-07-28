@@ -1,3 +1,36 @@
+variable "aws_region" {
+  description = "AWS region for the standalone range."
+  type        = string
+  default     = "us-east-2"
+
+  validation {
+    condition     = var.aws_region == "us-east-2"
+    error_message = "The pinned Polaris event-range AMIs are validated only in us-east-2."
+  }
+}
+
+variable "ubuntu_ami_id" {
+  description = "Pinned Ubuntu 24.04 AMI validated by the Polaris live rehearsal in us-east-2."
+  type        = string
+  default     = "ami-0dc6aa44dbcdd872e"
+}
+
+variable "windows_ami_id" {
+  description = "Pinned Windows Server 2022 AMI validated by the Polaris live rehearsal in us-east-2."
+  type        = string
+  default     = "ami-0a309571b4f421554"
+}
+
+variable "range_id" {
+  description = "Unique lowercase identifier used to namespace all live rehearsal resources."
+  type        = string
+
+  validation {
+    condition     = can(regex("^polaris-[a-z0-9]{12}$", var.range_id))
+    error_message = "range_id must match polaris-[a-z0-9]{12}."
+  }
+}
+
 variable "range_indices" {
   description = "String indices of the POLARIS ranges to provision. Each index gets its own /28 subnet + polaris VM + A2 DC. Default is a single range so a plain `terraform apply` still produces one working range."
   type        = list(string)
@@ -12,43 +45,23 @@ variable "range_indices" {
 variable "polaris_cidr_block" {
   description = "Base CIDR allocated to POLARIS. Carved into /28 subnets via cidrsubnet(block, 4, i), so a /24 yields 16 ranges, a /22 yields 64, a /21 yields 128. Default /24 holds the single-range smoke case + room to grow up to 16 without re-planning the VPC."
   type        = string
-  default     = "10.1.100.0/24"
-}
-
-variable "range_vpc_id" {
-  description = "Dev range VPC to attach POLARIS subnets to."
-  type        = string
-  default     = "vpc-094a142a8c363541c"
+  default     = "10.77.0.0/24"
 }
 
 variable "availability_zone" {
-  description = "AZ for the POLARIS subnets (matches existing range infrastructure)."
+  description = "AZ for the standalone POLARIS subnet."
   type        = string
   default     = "us-east-2a"
 }
 
-variable "nat_gateway_id" {
-  description = "Existing dev range NAT gateway. Used to give every POLARIS subnet direct NAT egress (bypass the domain-filtered Network Firewall so docker hub / apt repos work during bake)."
+variable "participant_cidr" {
+  description = "Public IPv4 /32 allowed to reach A14 SSH and RDP."
   type        = string
-  default     = "nat-0728570128ae96bfc"
-}
 
-variable "portal_vpc_cidr" {
-  description = "Portal VPC CIDR reachable via VPC peering (so the Shifter portal terminal UI + Guacamole can reach every POLARIS kali box)."
-  type        = string
-  default     = "10.0.0.0/16"
-}
-
-variable "portal_peering_id" {
-  description = "VPC peering connection from the range VPC to the portal VPC."
-  type        = string
-  default     = "pcx-0060068d711a534f4"
-}
-
-variable "ubuntu_ami_id" {
-  description = "Ubuntu base AMI (each host just runs Docker + the polaris docker-compose stack)."
-  type        = string
-  default     = "ami-01c08a65f35fbc399" # shifter-ubuntu-1773805749
+  validation {
+    condition     = can(cidrnetmask(var.participant_cidr)) && endswith(var.participant_cidr, "/32")
+    error_message = "participant_cidr must be a single IPv4 /32."
+  }
 }
 
 variable "instance_type" {
@@ -57,34 +70,10 @@ variable "instance_type" {
   default     = "m5.2xlarge"
 }
 
-variable "build_tarball_s3_uri" {
-  description = "S3 URI of the polaris build tarball uploaded by the operator."
-  type        = string
-  default     = "s3://shifter-polaris-bake-158151907940/polaris/build-v1.tar.gz"
-}
-
-variable "build_tarball_bucket" {
-  description = "S3 bucket holding the polaris build tarball (used to grant IAM read to the instance)."
-  type        = string
-  default     = "shifter-polaris-bake-158151907940"
-}
-
-variable "ssh_public_key_ssm_name" {
-  description = "SSM parameter name that holds the operator SSH public key (baked into kali authorized_keys). Leave empty to skip."
-  type        = string
-  default     = ""
-}
-
 variable "kali_authorized_key" {
-  description = "OpenSSH public key the Shifter portal's Terminal UI uses as kali — injected into a14-kali's /home/kali/.ssh/authorized_keys by user_data. Must match the private key stored in the Secrets Manager entry register_range.py references. Plain pubkey is fine here (not secret)."
+  description = "Ephemeral participant OpenSSH public key injected into A14's kali authorized_keys. A public key is not secret."
   type        = string
   default     = ""
-}
-
-variable "a2_dc_ami_id" {
-  description = "Windows Server 2022 Full Base from Amazon. Stock base AMI boots cleanly, then we install AD-Domain-Services via SSM RunCommand after the agent reports online."
-  type        = string
-  default     = "ami-08c41c6041bf318eb" # Windows_Server-2022-English-Full-Base-2026.03.11
 }
 
 variable "a2_instance_type" {
@@ -94,7 +83,7 @@ variable "a2_instance_type" {
 }
 
 variable "a2_administrator_password" {
-  description = "Plaintext password set on the Windows Administrator account at first boot, also used by the walkthrough smoketest + Shifter portal RDP connection (default matches shifter/shifter_platform/engine/services.py::get_rdp_connection_info for os_type=windows)."
+  description = "Synthetic scenario password set on the Windows Administrator account at first boot and used by the participant walkthrough."
   type        = string
   default     = "CortexSavesTheDay!"
   sensitive   = true

@@ -1,4 +1,4 @@
-"""Polaris provisioning state data model and IO (issue #691).
+"""Polaris provisioning state data model and IO.
 
 Extracted from ``orchestrate_provisioning.py`` so the orchestrator
 entrypoint stays a thin CLI wrapper and the persisted-state contract has a

@@ -1,10 +1,10 @@
 # Polaris Asset Inventory — Speaker Outline (2–3 min)
 
-Walkthroughs are definitive. 42 flags across ~19 assets in 6 groups.
+Walkthroughs are definitive. The supported event path contains 38 canonical
+recoveries across the A0–A16 plus range-DNS topology in 5 objective groups.
 
 ## 1. Public / internet-facing
 - Corporate website (A0), authoritative DNS, intranet wiki + webmail (A3).
-- Contractor Gitea mirror (A17) and release vault (A18).
 
 ## 2. Corporate IT — Windows shop
 - Active Directory domain controller (A2, Server 2022 — LDAP, Kerberos, DCSync-able).
@@ -21,7 +21,9 @@ Walkthroughs are definitive. 42 flags across ~19 assets in 6 groups.
 
 ## 5. OT / ICS — the bunker
 - Splice landing box (A9) as the IT→OT jump.
-- Three Modbus/TCP PLC-class controllers: tail (A10), leg (A11), arms (A12) — real registers, coils, device IDs, serials.
+- Three authored Modbus/TCP controller services: tail (A10), leg (A11), arms
+  (A12) — stateful registers, coils, device IDs, and serials for the fictional
+  NORTHSTORM platform.
 - "Brain" master controller (A13) on a custom binary TCP protocol with SHA256 XOR challenge-response.
 - SCADA HMI gateway (A5) — web HMI on 8080, Modbus on 502, fuel / cooling / temperature logic.
 
@@ -30,4 +32,8 @@ Walkthroughs are definitive. 42 flags across ~19 assets in 6 groups.
 - Ops engineer workstation (A15) — the sanctioned OT bridge, SSH pivot to SCADA.
 
 ## Arc to call out
-OSINT → front-office AD / mail / SMB → lab via Gitea + research DB → bunker OT controllers → master override. IT people see a real enterprise; OT people see real Modbus and a real HMI — not simulated stubs.
+OSINT → front-office AD / mail / SMB → lab via Gitea + research DB → bunker
+OT controllers → master override. The enterprise and Windows AD services are
+real range services. The fictional NORTHSTORM HMI and Modbus controllers are
+authored event simulations, not vendor-supported hardware twins; they support
+the event path but do not establish golden authenticity.

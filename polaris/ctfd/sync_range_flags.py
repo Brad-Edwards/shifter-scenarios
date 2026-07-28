@@ -24,7 +24,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--event-file",
-        help="Path to the workshop event JSON. Defaults to scenarios/polaris/ctfd/agentic_workshop.json.",
+        help="Path to the workshop event JSON. Defaults to polaris/ctfd/agentic_workshop.json.",
     )
     parser.add_argument(
         "--profile",

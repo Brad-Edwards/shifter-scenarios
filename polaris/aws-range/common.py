@@ -1,12 +1,11 @@
-"""Shared AWS/SSM helpers for the Polaris operator scripts (issue #691).
+"""Shared AWS/SSM helpers for the Polaris operator scripts.
 
-Before this module existed, ``orchestrate_provisioning.py``,
-``cleanup_non_keepers.py``, and ``check_range_health.py`` each rolled their
-own boto3 session wiring, portal-instance discovery, SSM ``send_command``
-poll loop, Django-shell-via-SSM wrapper, and JSON-envelope parser.
+Before this module existed, the provisioning and health scripts each rolled
+their own boto3 session wiring, portal-instance discovery, SSM
+``send_command`` poll loop, Django-shell-via-SSM wrapper, and JSON-envelope
+parser.
 
-The seam belongs at the AWS transport / target boundary (per the
-``polaris-support-decomposition-preflight-691.md`` architecture note):
+The seam belongs at the AWS transport / target boundary:
 
 - ``PolarisAwsContext`` — owns the boto3 session and per-service client
   caching.
@@ -21,9 +20,7 @@ The seam belongs at the AWS transport / target boundary (per the
   across scripts that ingest SSM stdout.
 
 Provisioner-owned runtime mutation (Bedrock shard, splice watcher, DNS
-override, Kali key) does NOT belong here — it lives in
-``shifter/engine/provisioner/plans/polaris_range_bootstrap.py`` and runs via
-``SetupOrchestrator`` / ``SSMExecutor``. These helpers are for the operator
+override, Kali key) does not belong here. These helpers are for the operator
 fleet scripts that inspect, orchestrate, or remediate already-provisioned
 ranges.
 
@@ -397,9 +394,8 @@ class PortalShellTransport:
     is expected to emit a JSON envelope between the standard markers; the
     transport returns the parsed object.
 
-    Callers that need raw stdout (e.g. cleanup_non_keepers' line-oriented
-    ``SHELL_EVENT|`` framing) should use ``executor.run_bash`` directly with
-    a hand-written wrapper instead.
+    Callers that need raw stdout should use ``executor.run_bash`` directly
+    with a hand-written wrapper instead.
     """
 
     executor: SsmExecutor
@@ -441,8 +437,8 @@ class PortalShellTransport:
     ) -> SsmResult:
         """Same transport without envelope parsing; returns the raw SsmResult.
 
-        Used by scripts (cleanup_non_keepers) that emit line-oriented event
-        records instead of a single JSON object.
+        Used by scripts that emit line-oriented event records instead of a
+        single JSON object.
         """
         py_b64 = base64.b64encode(python_source.encode("utf-8")).decode("ascii")
         wrapper = _PORTAL_SHELL_WRAPPER.format(tmp_name=self.tmp_name)

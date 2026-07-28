@@ -52,7 +52,7 @@ Reading the registers reveals:
 
 **Base image:** python:3.12-alpine (pymodbus server)
 
-**Content directory:** `scenarios/polaris/build/A11-leg-controller/`
+**Content directory:** `polaris/build/A11-leg-controller/`
 
 ### Steps
 

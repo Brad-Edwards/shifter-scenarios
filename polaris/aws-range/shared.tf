@@ -15,7 +15,7 @@
 #------------------------------------------------------------------------------
 
 resource "aws_iam_role" "polaris" {
-  name = "${local.name_prefix}-instance-role"
+  name = "${local.name_prefix}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -45,14 +45,14 @@ resource "aws_iam_role_policy" "polaris_s3_read" {
         "s3:ListBucket",
       ]
       Resource = [
-        "arn:aws:s3:::${var.build_tarball_bucket}",
-        "arn:aws:s3:::${var.build_tarball_bucket}/*",
+        aws_s3_bucket.build.arn,
+        "${aws_s3_bucket.build.arn}/*",
       ]
     }]
   })
 }
 
 resource "aws_iam_instance_profile" "polaris" {
-  name = "${local.name_prefix}-instance-profile"
+  name = "${local.name_prefix}-profile"
   role = aws_iam_role.polaris.name
 }

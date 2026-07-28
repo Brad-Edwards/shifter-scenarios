@@ -108,7 +108,7 @@ FLAG{0b7e3d9a1f6c4258}
 
 **Base image:** python:3.12-alpine
 
-**Content directory:** `scenarios/polaris/build/A13-brain/`
+**Content directory:** `polaris/build/A13-brain/`
 
 ### Steps
 
@@ -174,4 +174,7 @@ FLAG{0b7e3d9a1f6c4258}
 - **Handshake key:** `SHA256("AHS-T-00482AHS-L-00483AHS-A-00484")[:8]` = `975c6bb3f1516445` hex
 - **Case sensitivity bug caught:** `.lower()` on the full command line lowercased the override code argument. Fixed by preserving original case for override arguments while lowering for command dispatch.
 - **Socket protocol:** participants will need to write a script (Python or similar) to complete the binary handshake — plain netcat shows garbled bytes, which is intentional. The `brain_client.py` in A7 documents the protocol.
-- **pcap generation (TODO):** capture a successful handshake to place on A9 for participants who prefer traffic analysis.
+- **pcap alternate:** not shipped in the supported 38-recovery event path.
+  Source-guided handshake recovery is the only current participant authority;
+  a capture would require its own implemented path, placement, test, and
+  walkthrough before it could be advertised.

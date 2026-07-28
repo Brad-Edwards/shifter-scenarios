@@ -1,4 +1,4 @@
-FROM gitea/gitea:1.23
+FROM gitea/gitea:1.23@sha256:8b5a98abe52dacbead16eb4179c9abb7c217d523df3a75901343906ae7853357
 RUN apk add --no-cache python3 curl git bash
 # bootstrap.sh and bare-repos.tar.gz live in A7-source-repo/ (content dir).
 # Build context for this image is the parent mechag/ dir so COPY can reach both.

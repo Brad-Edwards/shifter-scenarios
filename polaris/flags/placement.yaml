@@ -1,0 +1,193 @@
+# OPERATOR / ORACLE SOURCE. Synthetic training answers are intentionally
+# committed scenario content. Participant-facing copy lives in ../challenges/.
+flags:
+  - flag_id: company-registration
+    source: value
+    value: "FLAG{8f3a2c1e9b7d4056}"
+    host: a0-boreas-web
+    path: /usr/share/nginx/html/about.html
+  - flag_id: employee-directory
+    source: value
+    value: "FLAG{d4e7b1f283a6c950}"
+    host: a0-boreas-web
+    path: /usr/share/nginx/html/internal/org_chart.pdf
+  - flag_id: careers-tech-stack
+    source: value
+    value: "FLAG{a1c9e3f7054b82d6}"
+    host: a0-boreas-web
+    path: /usr/share/nginx/html/careers.html
+  - flag_id: client-contracts
+    source: value
+    value: "FLAG{72b5e0d8f1a34c69}"
+    host: a0-boreas-web
+    path: /usr/share/nginx/html/old/clients.html
+  - flag_id: dns-zone-transfer
+    source: value
+    value: "FLAG{5e9c2a0f73b148d6}"
+    host: dns-boreas
+    path: dns://boreas-systems.ctf/_flag
+  - flag_id: annual-report-supplier
+    source: value
+    value: "FLAG{c6f8d2b3e91a4507}"
+    host: a0-boreas-web
+    path: /usr/share/nginx/html/internal/boreas-annual-2025.pdf
+  - flag_id: intranet-config-leak
+    source: value
+    value: "FLAG{4f2e8b7a1c6d9035}"
+    host: a3-intranet
+    path: /app/.env
+  - flag_id: project-status-mail
+    source: value
+    value: "FLAG{3b7e9a2d1c8f4063}"
+    host: a1-mail
+    path: /var/mail/e.vasik/project_status.pdf
+  - flag_id: terminated-engineer
+    source: value
+    value: "FLAG{7a1b3d9e2c8f0546}"
+    host: a4-fileshare
+    path: /srv/smb/HR/chen_termination.pdf
+  - flag_id: default-password-mail
+    source: value
+    value: "FLAG{e5d1f8c2a7b03946}"
+    host: a1-mail
+    path: /var/mail/d.kowalski/welcome.eml
+  - flag_id: cafeteria-metadata
+    source: value
+    value: "FLAG{0e6f9c2d4a8b7135}"
+    host: a4-fileshare
+    path: /srv/smb/Public/cafeteria_menu.pdf
+  - flag_id: project-wiki-comment
+    source: value
+    value: "FLAG{d8a3c5e9f1b07264}"
+    host: a3-intranet
+    path: /wiki/project-coordination
+  - flag_id: procurement-actuator
+    source: value
+    value: "FLAG{8c5a0d3f7e1b2964}"
+    host: a4-fileshare
+    path: /srv/smb/Procurement/specs/actuator_requirements.pdf
+  - flag_id: nested-project-group
+    source: value
+    value: "FLAG{2f8b4a6c1d9e7053}"
+    host: a2-dc01
+    path: ldap://boreas.local/groups/Project-L
+  - flag_id: fileshare-service-creds
+    source: value
+    value: "FLAG{9a4c7e2f58d0b163}"
+    host: a4-fileshare
+    path: /srv/smb/IT/backup_verification.log
+  - flag_id: guard-badge-anomaly
+    source: value
+    value: "FLAG{b3d7e1f0c8a24596}"
+    host: a2-dc01
+    path: /srv/badgelogs/underground-hatch.csv
+  - flag_id: domain-admin-secrets
+    source: value
+    value: "FLAG{6c0a9d4e7f2b8135}"
+    host: a2-dc01
+    path: ldap://boreas.local/dcsync/administrator
+  - flag_id: ops-scada-credentials
+    source: value
+    value: "FLAG{5c3e7a9f1b8d4602}"
+    host: a15-ops-eng01
+    path: /root/.scada/hmi.json
+  - flag_id: scada-control-room
+    source: value
+    value: "FLAG{1d4e7b0a3c9f8265}"
+    host: a5-scada-gw
+    path: /srv/scada/dashboard/footer
+  - flag_id: scada-blackout
+    source: value
+    value: "FLAG{a7f2c8d0e5b34169}"
+    host: a5-scada-gw
+    path: /srv/scada/state/blackout
+  - flag_id: analyst-lab-pivot
+    source: value
+    value: "FLAG{8b2d4f1a0c5e7396}"
+    host: a16-research-analyst01
+    path: /home/p.shah/ANALYST_TOKEN
+  - flag_id: jenkins-default-creds
+    source: value
+    value: "FLAG{5b8e1d3a7c0f9246}"
+    host: a6-eng-ws01
+    path: /home/jenkins/.credentials
+  - flag_id: research-compartment-a
+    source: value
+    value: "FLAG{4b9e2a7d0c8f1365}"
+    host: a8-research-db
+    path: postgres://research/compartment_a/structural_specs
+  - flag_id: reactor-interface-spec
+    source: value
+    value: "FLAG{e2a9c4f7d8b01536}"
+    host: a6-eng-ws01
+    path: /opt/builds/latest/reactor_interface_spec.txt
+  - flag_id: midnight-standard-run
+    source: value
+    value: "FLAG{0c7d8a2e5f1b3946}"
+    host: a6-eng-ws01
+    path: /home/r.tanaka/simulations/standard/
+  - flag_id: navigation-git-history
+    source: value
+    value: "FLAG{8a0e3c7f2d5b1946}"
+    host: a7-git
+    path: git://aurora/navigation-controller/.github/workflows/deploy.yml
+  - flag_id: midnight-after-hours
+    source: value
+    value: "FLAG{3f6a9d1e7c4b0258}"
+    host: a6-eng-ws01
+    path: /home/r.tanaka/simulations/midnight/MIDNIGHT-7_results.dat
+  - flag_id: center-of-gravity
+    source: value
+    value: "FLAG{7e2b0c5d9a4f8163}"
+    host: a6-eng-ws01
+    path: /home/p.nielsen/designs/center_of_gravity_analysis.xlsx#Integration!B10
+  - flag_id: research-compartment-b
+    source: value
+    value: "FLAG{6d1a8f3c7e0b4952}"
+    host: a8-research-db
+    path: postgres://research/compartment_b
+  - flag_id: final-assembly-metadata
+    source: value
+    value: "FLAG{a3f7d9e1c0b52846}"
+    host: a8-research-db
+    path: postgres://research/compartment_c/assembly_status
+  - flag_id: deleted-schematic
+    source: value
+    value: "FLAG{1f9b4e7c0a3d8265}"
+    host: a7-git
+    path: git://aurora/leviathan-assembly/schematic.svg
+  - flag_id: full-integration-video
+    source: value
+    value: "FLAG{d4c8f0a2e6b71935}"
+    host: a6-eng-ws01
+    path: /tmp/.deleted/full_integration_sim.mp4.gpg
+  - flag_id: bunker-controller-map
+    source: value
+    value: "FLAG{2e8c0a5d7f3b1946}"
+    host: a9-splice-landing
+    path: /root/scan_results.txt
+  - flag_id: tail-controller-unlock
+    source: value
+    value: "FLAG{9b3e7c1d0f5a2846}"
+    host: a10-tail-ctrl
+    path: modbus://a10-tail-ctrl/unlock
+  - flag_id: leg-controller-gait
+    source: value
+    value: "FLAG{c7a1e3f9d0b52864}"
+    host: a11-leg-ctrl
+    path: modbus://a11-leg-ctrl/calibration
+  - flag_id: arms-response-window
+    source: value
+    value: "FLAG{f0d8b2e6a4c71935}"
+    host: a12-arms-ctrl
+    path: modbus://a12-arms-ctrl/challenge-response
+  - flag_id: brain-control-channel
+    source: value
+    value: "FLAG{8d2f5a0e7c9b3146}"
+    host: a13-brain-main
+    path: tcp://a13-brain-main:9000/auth
+  - flag_id: brain-full-override
+    source: value
+    value: "FLAG{0b7e3d9a1f6c4258}"
+    host: a13-brain-main
+    path: tcp://a13-brain-main:9000/override

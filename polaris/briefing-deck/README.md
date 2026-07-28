@@ -20,8 +20,8 @@ Static, hand-authored HTML/CSS/JS slide deck used at event briefing time.
 
 ## Why this is left as a single HTML file
 
-Issue #691 asks that large scenario assets either be **split for review**
-or be **explicitly justified as authored/static artifacts**.
+Large scenario assets must either be **split for review** or be **explicitly
+justified as authored/static artifacts**.
 
 The deck is already split at the natural review unit: each `<section
 class="slide">` is one slide, scanned independently. Each new slide is one
@@ -36,7 +36,6 @@ deck that ships once per event and has no participant-facing dynamic
 behavior.
 
 If you find yourself wanting a build step here, that signals a real
-component / template stack should appear instead (likely co-evolving with
-#620's scenario-expressiveness work). Until then: append a `<section>`,
+component / template stack should appear instead. Until then: append a `<section>`,
 add a variant class if you need a new look, and re-run `./serve.sh` to
 preview.

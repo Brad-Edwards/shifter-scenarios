@@ -109,7 +109,7 @@ fi
 # The Kursk row alone is not flag 6 — the participant needs the FLAG{...}
 # payload baked onto the "PO ref:" line under it. Probing only for the
 # Kursk row was a false pass: a clean-checkout rebake that dropped the
-# flag (regression #619) still passed. Assert the canonical flag literal
+# flag still passed. Assert the canonical flag literal
 # is in the extracted text.
 annual_text=""
 if [[ -x /opt/tools/bin/pdf2txt.py ]]; then

@@ -1,0 +1,379 @@
+schema_version: 1
+authority:
+  sdl: sdl/polaris-operation-northstorm.sdl.yaml
+  agent: polaris-participant
+  workflow: operation-northstorm
+required_kinds:
+  [clue, credential, tool, artifact, privilege, route, service, data]
+runtime_profiles:
+  local_degraded:
+    status: source-validation-only
+    proof: Cannot establish participant-equivalent or golden verdicts.
+  aws_event:
+    status: degraded-live-event
+    proof: >
+      Exercises the authored event path in live AWS, but cannot establish a
+      participant-equivalent package or golden verdict because its industrial
+      services are not authentic vendor-supported twins.
+affordances:
+  - id: participant-a14-surface
+    kinds: [tool, privilege, route, service]
+    aces_refs:
+      nodes: [a14-kali]
+      accounts: [kali]
+      services: [ssh, rdp, boreas-http]
+      agents: [polaris-participant]
+    source_owner: build/a14/Dockerfile
+    path_steps: ["1", "2", "3", "4.A", "4.B", "6"]
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_in_world
+    fresh_range_predicate: >
+      A14 boots as kali with only declared tools, start knowledge, and
+      range-scoped access material for this participant.
+    reset_owner: a14-kali
+  - id: public-web-content
+    kinds: [clue, artifact, data, service]
+    aces_refs:
+      nodes: [a0-boreas-web]
+      content: [boreas-org-chart, boreas-annual-report]
+      services: [boreas-http]
+      vulnerabilities: [directory-listing-exposed, pdf-metadata-leak]
+    source_owner: build/A0-boreas-website/site/
+    path_steps: ["1"]
+    flag_bindings:
+      - {flag_id: company-registration, path_step: "1"}
+      - {flag_id: employee-directory, path_step: "1"}
+      - {flag_id: careers-tech-stack, path_step: "1"}
+      - {flag_id: client-contracts, path_step: "1"}
+      - {flag_id: annual-report-supplier, path_step: "1"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A0 serves the committed public and unlisted content to A14 without
+      operator seeding after range start.
+    reset_owner: a0-boreas-web
+  - id: public-dns-recon
+    kinds: [clue, data, service]
+    aces_refs:
+      nodes: [a0-boreas-web, dns-boreas]
+      content: [boreas-dns-zone-file]
+      services: [boreas-dns, internal-dns]
+      vulnerabilities: [dns-axfr-enabled]
+    source_owner: build/dns/
+    path_steps: ["1"]
+    flag_bindings:
+      - {flag_id: dns-zone-transfer, path_step: "1"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_tool
+    fresh_range_predicate: >
+      The range-local DNS service exposes only the committed synthetic zone to
+      participant-originated queries.
+    reset_owner: dns-boreas
+  - id: intranet-config-and-search
+    kinds: [clue, credential, service, data]
+    aces_refs:
+      nodes: [a3-intranet]
+      accounts: [d-kowalski, e-vasik]
+      content: [intranet-env-file]
+      services: [intranet-http]
+      vulnerabilities: [dotenv-exposed, sqli-search, lfi-download]
+    source_owner: build/A3-web-app/server.py
+    path_steps: ["2"]
+    flag_bindings:
+      - {flag_id: intranet-config-leak, path_step: "2"}
+      - {flag_id: project-wiki-comment, path_step: "2"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      Participant HTTP actions can recover only the intended synthetic
+      configuration and user-table clues from the live A3 service.
+    reset_owner: a3-intranet
+  - id: employee-mail-trail
+    kinds: [clue, credential, artifact, service, data]
+    aces_refs:
+      nodes: [a1-mail]
+      accounts: [d-kowalski, e-vasik, s-ivanov]
+      content: [mail-seed]
+      relationships: [vasik-to-mail]
+      services: [imap, webmail]
+      vulnerabilities: [information-disclosure-email]
+    source_owner: build/A1-mail-server/build_mail.py
+    path_steps: ["2", "4.B"]
+    flag_bindings:
+      - {flag_id: project-status-mail, path_step: "2"}
+      - {flag_id: default-password-mail, path_step: "2"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_in_world
+    fresh_range_predicate: >
+      Range mailboxes contain the committed synthetic trail and are reachable
+      only through participant-acquired in-world identities.
+    reset_owner: a1-mail
+  - id: fileshare-business-trail
+    kinds: [clue, credential, artifact, data, service]
+    aces_refs:
+      nodes: [a4-fileshare]
+      accounts: [m-webb, svc-fileshare]
+      content: [boreas-fileshares]
+      services: [smb]
+      vulnerabilities: [smb-overbroad-acls]
+    source_owner: build/A4-file-share/build_documents.py
+    path_steps: ["2", "4.A", "5.B", "8"]
+    flag_bindings:
+      - {flag_id: terminated-engineer, path_step: "2"}
+      - {flag_id: cafeteria-metadata, path_step: "2"}
+      - {flag_id: procurement-actuator, path_step: "2"}
+      - {flag_id: fileshare-service-creds, path_step: "2"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      The committed HR, IT, and procurement artifacts are generated on the
+      range and retain their declared ACL and credential prerequisites.
+    reset_owner: a4-fileshare
+  - id: boreas-domain-escalation
+    kinds: [credential, privilege, service]
+    aces_refs:
+      nodes: [a2-dc01]
+      accounts: [svc-backup, administrator]
+      relationships: [boreas-domain-controller]
+      services: [kerberos, ldap, smb]
+      vulnerabilities: [ad-kerberoastable-spn, ad-dcsync-overprivilege]
+    source_owner: aws-range/a2_setup.ps1
+    path_steps: ["3"]
+    flag_bindings:
+      - {flag_id: nested-project-group, path_step: "3"}
+      - {flag_id: guard-badge-anomaly, path_step: "3"}
+      - {flag_id: domain-admin-secrets, path_step: "3"}
+    profiles: [aws_event]
+    discoverability: participant_tool
+    fresh_range_predicate: >
+      A fresh isolated BOREAS domain exposes the intended participant
+      escalation while denying undeclared management-plane privilege.
+    reset_owner: a2-dc01
+  - id: analyst-lab-pivot
+    kinds: [clue, credential, tool, route, service]
+    aces_refs:
+      nodes: [a16-research-analyst01, a6-eng-ws01, a8-research-db]
+      accounts: [p-shah, research-analyst]
+      relationships: [shah-to-analyst, kali-pivots-through-analyst]
+      services: [ssh, postgres]
+      vulnerabilities: [default-password-reuse, ssh-key-only-research-user]
+    source_owner: build/A16-research-analyst/
+    path_steps: ["4.A", "5.A"]
+    flag_bindings:
+      - {flag_id: analyst-lab-pivot, path_step: "4.A"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_in_world
+    fresh_range_predicate: >
+      A16 owns the range-local database and SSH bindings and is the exclusive
+      participant on-ramp into lab services.
+    reset_owner: a16-research-analyst01
+  - id: engineering-workstation-material
+    kinds: [credential, artifact, data, service]
+    aces_refs:
+      nodes: [a6-eng-ws01]
+      accounts: [jenkins-ci, research-analyst, r-tanaka, p-nielsen]
+      content:
+        [jenkins-credentials, tanaka-stress-archives, midnight7-results,
+         nielsen-cog-workbook, deleted-gpg-video]
+      services: [ssh]
+      vulnerabilities:
+        [jenkins-credentials-file, deleted-gpg-blob-recoverable,
+         ssh-password-auth]
+    source_owner: build/A6-engineering-workstation/
+    path_steps: ["5.A", "8"]
+    flag_bindings:
+      - {flag_id: jenkins-default-creds, path_step: "5.A"}
+      - {flag_id: reactor-interface-spec, path_step: "5.A"}
+      - {flag_id: midnight-standard-run, path_step: "5.A"}
+      - {flag_id: midnight-after-hours, path_step: "5.A"}
+      - {flag_id: center-of-gravity, path_step: "5.A"}
+      - {flag_id: full-integration-video, path_step: "5.A"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A6 contains the committed lab artifacts with the declared account and
+      file-permission boundaries on a fresh range.
+    reset_owner: a6-eng-ws01
+  - id: lab-source-history
+    kinds: [clue, credential, artifact, data, service]
+    aces_refs:
+      nodes: [a7-git]
+      accounts: [e-vasik, d-kowalski]
+      content: [gitea-seed]
+      relationships: [vasik-to-gitea]
+      services: [gitea-http]
+      vulnerabilities:
+        [git-history-leaked-token, git-deleted-file-recoverable,
+         gitea-repo-visibility-misconfig]
+    source_owner: build/A7-source-repo/
+    path_steps: ["5.A", "7", "8"]
+    flag_bindings:
+      - {flag_id: navigation-git-history, path_step: "5.A"}
+      - {flag_id: deleted-schematic, path_step: "5.A"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_tool
+    fresh_range_predicate: >
+      A7 serves the committed repository history only from the lab path using
+      participant-acquired identities.
+    reset_owner: a7-git
+  - id: research-database-compartments
+    kinds: [credential, privilege, data, service]
+    aces_refs:
+      nodes: [a8-research-db]
+      content: [research-db-seed]
+      relationships: [gpg-a8-stores-private-key]
+      services: [postgres]
+      vulnerabilities: [security-definer-sqli, postgres-compartment-role-bypass]
+    source_owner: build/A8-research-database/01-init.sql
+    path_steps: ["5.A", "8"]
+    flag_bindings:
+      - {flag_id: research-compartment-a, path_step: "5.A"}
+      - {flag_id: research-compartment-b, path_step: "5.A"}
+      - {flag_id: final-assembly-metadata, path_step: "5.A"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A8 recreates the committed compartments, roles, vulnerable function, and
+      key material inside the current isolated range.
+    reset_owner: a8-research-db
+  - id: operations-scada-pivot
+    kinds: [clue, credential, privilege, route, service]
+    aces_refs:
+      nodes: [a15-ops-eng01, a5-scada-gw]
+      accounts: [s-ivanov, svc-scada]
+      content: [scada-hmi-json]
+      relationships: [ivanov-to-ops, kali-pivots-through-ops]
+      services: [ssh, ops-telemetry]
+      vulnerabilities:
+        [default-password-reuse, sudo-arg-injection,
+         scada-hmi-cached-password]
+    source_owner: build/A15-ops-workstation/
+    path_steps: ["4.B", "5.B"]
+    flag_bindings:
+      - {flag_id: ops-scada-credentials, path_step: "4.B"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A15 is the exclusive SCADA route and exposes the root-side cache only
+      after participant execution reaches the declared privilege.
+    reset_owner: a15-ops-eng01
+  - id: scada-blackout-control
+    kinds: [tool, privilege, service, data]
+    aces_refs:
+      nodes: [a5-scada-gw]
+      services: [hmi-http, modbus]
+      conditions: [scada-hmi-reachable, interlock-state-visible]
+      vulnerabilities: [modbus-no-auth]
+      objectives: [lights-out]
+    source_owner: build/A5-scada-generator/server.py
+    path_steps: ["5.B"]
+    flag_bindings:
+      - {flag_id: scada-control-room, path_step: "5.B"}
+      - {flag_id: scada-blackout, path_step: "5.B"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_tool
+    fresh_range_predicate: >
+      A5 starts below the blackout threshold with the interlock engaged and
+      attributes the transition to the active participant attempt.
+    reset_owner: a5-scada-gw
+  - id: range-scoped-splice-access
+    kinds: [credential, route, service]
+    aces_refs:
+      nodes: [a14-kali, a9-splice-landing]
+      relationships: [kali-pivots-through-splice]
+      services: [ssh]
+      vulnerabilities: [ssh-key-only-post-gate]
+    source_owner: build/a14/entrypoint.sh
+    path_steps: ["6"]
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_in_world
+    fresh_range_predicate: >
+      The range-scoped private key is present only on A14 and authenticates to
+      A9 only after this attempt's blackout opens the splice.
+    reset_owner: a14-kali
+  - id: splice-landing-toolset
+    kinds: [tool, artifact, route, service]
+    aces_refs:
+      nodes: [a9-splice-landing]
+      services: [ssh, modbus, brain-protocol]
+      conditions: [splice-reachable]
+    source_owner: build/A9-splice-landing/
+    path_steps: ["6", "7", "8"]
+    flag_bindings:
+      - {flag_id: bunker-controller-map, path_step: "7"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_in_world
+    fresh_range_predicate: >
+      A9 provides the committed range-local OT tools and is the only route to
+      the bunker controller services.
+    reset_owner: a9-splice-landing
+  - id: tail-controller-unlock
+    kinds: [clue, tool, service, data]
+    aces_refs:
+      nodes: [a10-tail-ctrl]
+      content: [modbus-tail-registers]
+      services: [modbus]
+      vulnerabilities: [modbus-stateful-unlock-sequence]
+    source_owner: build/A10-tail-controller/server.py
+    path_steps: ["7"]
+    flag_bindings:
+      - {flag_id: tail-controller-unlock, path_step: "7"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A10 starts locked and accepts the declared participant-executed
+      diagnostic sequence only from the bunker path.
+    reset_owner: a10-tail-ctrl
+  - id: leg-controller-unlock
+    kinds: [clue, tool, service, data]
+    aces_refs:
+      nodes: [a11-leg-ctrl]
+      content: [modbus-leg-registers]
+      services: [modbus]
+      vulnerabilities: [modbus-stateful-unlock-sequence]
+    source_owner: build/A11-leg-controller/server.py
+    path_steps: ["7"]
+    flag_bindings:
+      - {flag_id: leg-controller-gait, path_step: "7"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A11 starts locked and accepts the declared participant-executed
+      calibration sequence only within its fresh timing window.
+    reset_owner: a11-leg-ctrl
+  - id: arms-controller-unlock
+    kinds: [clue, tool, service, data]
+    aces_refs:
+      nodes: [a12-arms-ctrl]
+      content: [modbus-arms-registers]
+      services: [modbus]
+      vulnerabilities: [modbus-stateful-unlock-sequence]
+    source_owner: build/A12-arms-controller/server.py
+    path_steps: ["7"]
+    flag_bindings:
+      - {flag_id: arms-response-window, path_step: "7"}
+    profiles: [local_degraded, aws_event]
+    discoverability: participant_action
+    fresh_range_predicate: >
+      A12 starts locked and accepts the fresh participant-executed
+      challenge-response within the declared response window.
+    reset_owner: a12-arms-ctrl
+  - id: brain-controller-seizure
+    kinds: [credential, tool, privilege, service, data]
+    aces_refs:
+      nodes: [a13-brain-main]
+      content: [brain-protocol-seed]
+      services: [brain-protocol]
+      vulnerabilities: [brain-xor-handshake-reversible]
+      objectives: [seize-autonomous-platform]
+    source_owner: build/A13-brain/server.py
+    path_steps: ["8"]
+    flag_bindings:
+      - {flag_id: brain-control-channel, path_step: "8"}
+      - {flag_id: brain-full-override, path_step: "8"}
+    profiles: [local_degraded, aws_event]
+    discoverability: derived_in_world
+    fresh_range_predicate: >
+      A13 starts unseized and records a participant-attributed handshake,
+      authentication, and override only after all current-attempt prerequisites.
+    reset_owner: a13-brain-main

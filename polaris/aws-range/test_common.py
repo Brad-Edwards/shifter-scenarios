@@ -1,4 +1,4 @@
-"""Tests for the shared Polaris AWS operator helpers (issue #691).
+"""Tests for the shared Polaris AWS operator helpers.
 
 Run from this directory:
     python3 -m unittest test_common -v

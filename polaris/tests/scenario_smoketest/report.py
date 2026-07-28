@@ -5,7 +5,7 @@ A challenge result is one of:
 * ``pass``      - the hint path produced the configured value.
 * ``fail``      - the hint path produced a wrong or missing value.
 * ``uncovered`` - no adapter is registered for the challenge. Per the issue,
-  the coverage universe is derived from the board, so an uncovered challenge
+  the coverage universe is derived from canonical contracts, so an uncovered challenge
   is a reported failure, never a silent skip.
 * ``error``     - the adapter raised before producing a verdict.
 
@@ -25,7 +25,7 @@ _FAILING = ("fail", "uncovered", "error")
 class ChallengeResult:
     """Outcome for a single challenge."""
 
-    challenge_id: int
+    flag_id: str
     name: str
     status: str
     detail: str
@@ -49,7 +49,7 @@ def to_json(results: list[ChallengeResult]) -> list[dict]:
     """Render results as a redaction-safe JSON-serialisable list."""
     return [
         {
-            "challenge_id": r.challenge_id,
+            "flag_id": r.flag_id,
             "name": r.name,
             "status": r.status,
             "detail": r.detail,
@@ -61,14 +61,14 @@ def to_json(results: list[ChallengeResult]) -> list[dict]:
 def build_report(results: list[ChallengeResult]) -> str:
     """Render the human-readable per-challenge table plus an aggregate line."""
     lines = ["", "Pre-event scenario smoketest — per-challenge results", ""]
-    for r in sorted(results, key=lambda x: x.challenge_id):
+    for r in sorted(results, key=lambda x: x.flag_id):
         marker = {
             "pass": "PASS",
             "fail": "FAIL",
             "uncovered": "UNCOVERED",
             "error": "ERROR",
         }.get(r.status, r.status.upper())
-        lines.append(f"  [{marker:<9}] #{r.challenge_id:<3} {r.name} — {r.detail}")
+        lines.append(f"  [{marker:<9}] {r.flag_id} {r.name} — {r.detail}")
 
     counts = summarize(results)
     lines.append("")

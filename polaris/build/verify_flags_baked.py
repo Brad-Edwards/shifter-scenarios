@@ -1,53 +1,57 @@
 #!/usr/bin/env python3
 """Bake-time smoke: verify generated Polaris artifacts carry their flags.
 
-For each (artifact, challenge id) in ``BAKED_FLAG_ARTIFACTS`` this checks
-that the CTFd board's static flag for that challenge appears in the
+For each (artifact, stable flag id) in ``BAKED_FLAG_ARTIFACTS`` this checks
+that the canonical placement value for that flag appears in the
 rendered artifact, and exits non-zero on any miss — so a clean-checkout
 rebake that drops a flag fails the bake instead of shipping a flagless
-range (regression #619, the "Follow the Money" Ottawa bug).
+range (the "Follow the Money" PDF-baking regression).
 
-The board is parsed here independently of ``build_pdfs.py`` on purpose: a
+The placement contract is parsed independently of ``build_pdfs.py`` on purpose: a
 verifier that reused the generator's flag-resolution code could share its
 bug. This script stays self-contained.
 
 Usage:
-    verify_flags_baked.py <ctfd-challenges.json> <artifact-root>
+    verify_flags_baked.py <flags/placement.yaml> <artifact-root>
 """
 
-import json
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
-# Generated artifact (path relative to <artifact-root>) -> CTFd challenge
-# id whose static flag must appear in the rendered artifact. Add a row
+PACK_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PACK_ROOT))
+
+from contract_source import load_yaml  # noqa: E402
+
+# Generated artifact (path relative to <artifact-root>) -> stable flag id
+# whose static value must appear in the rendered artifact. Add a row
 # when a new generated artifact is made to carry a flag.
 BAKED_FLAG_ARTIFACTS = {
-    "internal/boreas-annual-2025.pdf": 6,
+    "internal/boreas-annual-2025.pdf": "annual-report-supplier",
 }
 
 
-def static_flag(board, challenge_id):
-    """Return the single static flag content for a CTFd challenge id."""
+def static_flag(placement, flag_id):
+    """Return the canonical static value for one stable flag id."""
     matches = [
-        c for c in board.get("challenges", []) if c.get("id") == challenge_id
+        row for row in placement.get("flags", [])
+        if row.get("flag_id") == flag_id
     ]
     if len(matches) != 1:
         raise ValueError(
-            f"challenge id {challenge_id}: expected exactly one board entry, "
+            f"flag id {flag_id}: expected exactly one placement entry, "
             f"found {len(matches)}"
         )
-    static = [f for f in matches[0].get("flags", []) if f.get("type") == "static"]
-    if len(static) != 1:
+    row = matches[0]
+    if row.get("source") != "value":
         raise ValueError(
-            f"challenge id {challenge_id}: expected exactly one static flag, "
-            f"found {len(static)}"
+            f"flag id {flag_id}: expected a static value source"
         )
-    content = static[0].get("content")
+    content = row.get("value")
     if not content:
-        raise ValueError(f"challenge id {challenge_id}: static flag has no content")
+        raise ValueError(f"flag id {flag_id}: static value is empty")
     return content
 
 
@@ -70,25 +74,25 @@ def artifact_text(path):
     return path.read_text(encoding="utf-8", errors="ignore")
 
 
-def verify(challenges_path, artifact_root, artifacts=None):
+def verify(placement_path, artifact_root, artifacts=None):
     """Return a list of miss descriptions; empty list means every flag is baked."""
-    board = json.loads(Path(challenges_path).read_text(encoding="utf-8"))
+    placement = load_yaml(placement_path)
     artifact_root = Path(artifact_root)
     artifacts = BAKED_FLAG_ARTIFACTS if artifacts is None else artifacts
 
     misses = []
-    for rel, challenge_id in sorted(artifacts.items()):
-        flag = static_flag(board, challenge_id)
+    for rel, flag_id in sorted(artifacts.items()):
+        flag = static_flag(placement, flag_id)
         artifact = artifact_root / rel
         if not artifact.is_file():
             misses.append(f"{rel}: artifact not found")
             print(f"  MISS {rel}: file not found")
             continue
         if flag in artifact_text(artifact):
-            print(f"  OK   {rel}: challenge {challenge_id} flag present")
+            print(f"  OK   {rel}: flag {flag_id} present")
         else:
-            misses.append(f"{rel}: challenge {challenge_id} flag absent")
-            print(f"  MISS {rel}: challenge {challenge_id} flag {flag} absent")
+            misses.append(f"{rel}: flag {flag_id} absent")
+            print(f"  MISS {rel}: flag {flag_id} absent")
     return misses
 
 
