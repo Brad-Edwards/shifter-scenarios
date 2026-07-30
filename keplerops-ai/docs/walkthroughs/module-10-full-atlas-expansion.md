@@ -26,5 +26,53 @@ inside a reset generation unless you are intentionally chaining state.
   `/v1/capstone/impact/dataset-destructions` and
   `/v1/capstone/impact/tool-data-destructions`.
 
+## Reputational harm
+
+Complete `kep-m10-e` in the current range and reset generation first. Then:
+
+```bash
+OBJECT_ID="qa-m10-m-$(date +%s)"
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"object_id\":\"$OBJECT_ID\"}" \
+  "$GATEWAY/v1/capstone/impact/reputational-harms" | python3 -m json.tool
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"challenge_id\":\"kep-m10-m\",\"object_id\":\"$OBJECT_ID\",\"participant_interface\":\"curl\",\"assistance_mode\":\"none\"}" \
+  "$GATEWAY/v1/capstone/attempt" | python3 -m json.tool
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{}' "$GATEWAY/v1/capstone/receipts/flag-reputational-harm" \
+  | python3 -m json.tool
+```
+
+Expected: the model-generated false statement is published through the
+automated contained path, the synthetic reputation score changes, and the
+attempt and receipt pass. A participant-authored direct post must not qualify.
+
+## Societal harm
+
+Complete `kep-m10-e` in the current range and reset generation first. Then:
+
+```bash
+OBJECT_ID="qa-m10-n-$(date +%s)"
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"object_id\":\"$OBJECT_ID\"}" \
+  "$GATEWAY/v1/capstone/impact/societal-harms" | python3 -m json.tool
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"challenge_id\":\"kep-m10-n\",\"object_id\":\"$OBJECT_ID\",\"participant_interface\":\"curl\",\"assistance_mode\":\"none\"}" \
+  "$GATEWAY/v1/capstone/attempt" | python3 -m json.tool
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{}' "$GATEWAY/v1/capstone/receipts/flag-societal-harm" \
+  | python3 -m json.tool
+```
+
+Expected: the deployed synthetic allocation path records the manipulated
+decision and population disparity, and the attempt and receipt pass. A
+hand-edited allocation result must not qualify.
+
 These are source-implemented pre-playtest contracts. Harden only observed
 defects after playtester feedback.

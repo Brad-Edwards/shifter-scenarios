@@ -7,6 +7,9 @@ material.
 
 Start here:
 
+- [QA challenge walkthrough](../walkthroughs/README.md) — spoiler-heavy,
+  command-by-command instructions for completing and verifying all 134
+  challenges from the current Shifter participant surface.
 - [Coordinator quickstart](coordinator-quickstart.md) — how to instantiate or
   reuse a playtest range.
 - [Participant start guide](participant-start.md) — what a participant should
