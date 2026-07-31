@@ -1,46 +1,64 @@
 # KeplerOps AI Systems
 
-You are an adversary operating from the provided browser workstation. Attack
-only `*.keplerops.lab` and the contained exfiltration sink. The lab portal
-offers four independent starting choices: agent control, model evasion,
-retrieval-context poisoning, and model-secret extraction. Choose any one first;
-none requires compromising an enterprise account.
+You are testing an AI security range from the participant point of view. Use
+your Shifter account only to reach the event, launch your assigned range, read
+the challenges, and submit receipts for scoring. The KeplerOps lab applications
+inside the range use their own synthetic lab credentials.
 
-Internet callbacks, commercial model providers, cloud metadata, operator
-interfaces, and infrastructure control planes are out of bounds. Objective
-receipts come only from the range proof service after the required in-world
-actions occur.
+## Start In Shifter
 
-## How to start
+1. Sign in to Shifter with the event account you were given.
+2. Open the KeplerOps AI Systems CTF event.
+3. Use the event dashboard as your home base. It should show the getting-started
+   material, challenge list, hints, score, and range launch controls.
+4. Launch your assigned range and open the Kali workstation.
 
-Open the lab portal from the browser workstation and pick an objective that
-matches your current skill level. Early objectives are designed to be solvable
-without a personal offensive agent, custom infrastructure, or prior compromise
-of an enterprise account. You can work through the browser UI, terminal, curl,
-Python, and the in-world applications you discover.
+If Shifter asks you to choose a new password, set it for your Shifter event
+account. That password does not change any in-range KeplerOps lab account.
 
-If the event allows participant-owned agents, you may use one from the browser
-workstation or another approved participant environment. The same target
-boundary still applies: keep traffic inside the lab and do not use commercial
-model providers as attack targets or hidden collaborators.
+## Start In The Range
 
-## Earning credit
+Open Chromium on Kali and go to:
 
-Each objective describes the action to achieve, not the hidden proof predicate.
-After your in-world action succeeds, request the objective receipt from the
-range proof service and submit that receipt to the event board. Receipts are
-freshness-bound to your participant identity, the range instance, and the
-current reset generation; an old receipt may stop working after a reset.
+```text
+https://inference-gateway.keplerops.lab/agent-control
+```
 
-## Working strategy
+Use these synthetic KeplerOps lab credentials when a KeplerOps application asks
+you to sign in:
 
-- Start with one of the four portal entry paths instead of scanning the
-  infrastructure first.
-- Read challenge text and in-world artifacts carefully; some objectives depend
-  on how an AI system interprets supplied context, data, tools, or artifacts.
-- Use hints if the event board provides them. Hints are intended for both
-  manual players and players assisted by their own agents.
-- Keep notes on prompts, commands, files, model or workflow ids, and receipts
-  you create. They are useful when you need to explain or replay a path.
-- If a service appears broken, report the objective id, what you tried, and the
-  visible error. Do not attempt to repair range infrastructure yourself.
+```text
+Username: operator
+Password: KeplerOps-Participant-355!
+```
+
+The browser home page should also point at the KeplerOps lab. If it does not,
+enter the URL above manually.
+
+## Challenge Flow
+
+Work from the Shifter challenge page, not from this file alone. Shifter is where
+you read challenge text, request hints, submit receipts, and see whether a
+challenge is solved.
+
+For Module 1, start in the Agent Control Lab at the URL above. The first
+challenge, `kep-m01-a`, is solved by making a risky tool request and seeing the
+system deny it on record. A denial with a receipt is success for that challenge.
+
+Most challenges require this loop:
+
+1. Perform the required action in the KeplerOps lab UI or Kali terminal.
+2. Confirm the in-range service shows a receipt or objective status.
+3. Submit the receipt text in Shifter for the matching challenge.
+4. Use hints in Shifter if the next step is unclear.
+
+## Boundaries
+
+Attack only `*.keplerops.lab` and the in-range exfiltration sink. Do not attack
+Shifter, GCP, cloud metadata, commercial model providers, or any public
+internet service. Internet access is provided so you can research techniques and
+vulnerabilities, not as a target surface.
+
+If a service appears broken, report the challenge id, range id, what you tried,
+and the visible error. Do not repair range infrastructure from inside the
+participant environment.
