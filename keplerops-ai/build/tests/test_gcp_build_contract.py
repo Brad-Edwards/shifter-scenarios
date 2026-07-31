@@ -562,6 +562,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn(">/opt/keycloak/data/import/keplerops-realm.json", keycloak_entrypoint)
         self.assertIn("__LDAP_BIND_CREDENTIAL__", keycloak_entrypoint)
         keycloak_realm = json.loads((PACK_ROOT / "assets/services/keycloak-realm.json").read_text(encoding="utf-8"))
+        self.assertEqual(keycloak_realm["accessTokenLifespan"], 3600)
         for user in keycloak_realm["users"]:
             self.assertTrue(user["emailVerified"])
             self.assertTrue(user["firstName"])
