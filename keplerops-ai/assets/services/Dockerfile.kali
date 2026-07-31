@@ -18,7 +18,11 @@ RUN apt-get update \
     && apt-get update) \
   && apt-get install --yes --no-install-recommends chromium \
   && rm -rf /var/lib/apt/lists/* /tmp/kali-archive-keyring.gpg \
-  && install -d -o 1000 -g 1000 -m 0755 /home/kasm-user/Desktop /home/kasm-user/.vnc /run/keplerops
+  && install -d -o 1000 -g 1000 -m 0755 /home/kasm-user/Desktop /home/kasm-user/.vnc /run/keplerops \
+  && printf '%s\n' \
+      '# KeplerOps participant workstation runs Chromium inside a container.' \
+      'export CHROMIUM_FLAGS="$CHROMIUM_FLAGS --no-sandbox"' \
+      > /etc/chromium.d/keplerops-container-sandbox
 COPY --chown=1000:1000 assets/briefing/mission.md /home/kasm-user/Desktop/MISSION.md
 COPY assets/content/credentials/synthetic-defaults.yaml /opt/keplerops/synthetic-defaults.yaml
 COPY --chown=1000:1000 assets/services/kasmvnc.yaml /home/kasm-user/.vnc/kasmvnc.yaml
