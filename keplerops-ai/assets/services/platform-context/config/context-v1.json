@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "config_id": "keplerops-platform-context-v1",
+  "file_roots": {
+    "shared-context": "/mnt/keplerops-context/shared",
+    "workhub-imports": "/mnt/keplerops-context/workhub"
+  },
+  "file_max_bytes": 1048576,
+  "workhub": {
+    "owner": "ml.engineer",
+    "repository": "model-release",
+    "branch": "main",
+    "redmine_project": "keplerops-model-release"
+  },
+  "keycloak": {
+    "tested_server_version": "26.3.3",
+    "admin_api": "26.3",
+    "admin_realm": "keplerops",
+    "target_realm": "keplerops",
+    "allowed_users": [
+      "guardrail.admin",
+      "ml.engineer",
+      "operator",
+      "qa.intern",
+      "release.manager"
+    ],
+    "allowed_clients": [
+      "svc-distillation",
+      "svc-inference",
+      "svc-registry"
+    ]
+  }
+}

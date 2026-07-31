@@ -1,0 +1,6 @@
+labels:
+  service: keplerops-policy-lab
+  policy_revision: "37"
+  vulnerability: CVE-2025-46569
+decision_logs:
+  console: true

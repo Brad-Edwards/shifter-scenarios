@@ -1,0 +1,31 @@
+ARG BASE_IMAGE=quay.io/keycloak/keycloak@sha256:6a7217a100bd3e5de4063a27a538ef999a3c5a88c4b4ec0ffc0a642aee7b2597
+ARG JQ_IMAGE=ghcr.io/jqlang/jq@sha256:848e695f66626a96c9ad527cdeddb42fcadd968ca6cc165ecf152744d297bf70
+FROM python@sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689 AS company-state-render
+RUN python -m pip install --no-cache-dir PyYAML==6.0.2
+COPY assets/services/company_state_common.py /render/company_state_common.py
+COPY assets/services/company_keycloak_adapter.py /render/company_keycloak_adapter.py
+COPY assets/services/keycloak-realm.json /render/baseline-realm.json
+COPY assets/content/company-state/company-state.yaml /render/company-state.yaml
+RUN python /render/company_keycloak_adapter.py render \
+    --baseline /render/baseline-realm.json \
+    --company-state /render/company-state.yaml \
+    --output /render/keplerops-realm.json \
+    --readback-output /render/company-readback.json \
+    --native-projection-output /render/company-native-projection.json
+
+FROM ${JQ_IMAGE} AS jq
+FROM ${BASE_IMAGE}
+COPY --from=jq /jq /usr/local/bin/jq
+COPY --from=company-state-render /render/keplerops-realm.json /opt/keycloak/import-source/keplerops-realm.json
+COPY --from=company-state-render /render/company-readback.json /opt/keycloak/import-source/company-readback.json
+COPY --from=company-state-render /render/company-native-projection.json /opt/keycloak/import-source/company-native-projection.json
+COPY assets/services/keycloak-entrypoint.sh /opt/keycloak/bin/keplerops-entrypoint
+COPY assets/services/keycloak-company-state-readback.sh /opt/keycloak/bin/company-state-readback
+USER root
+RUN chmod 0755 \
+      /opt/keycloak/bin/keplerops-entrypoint \
+      /opt/keycloak/bin/company-state-readback \
+      /usr/local/bin/jq \
+    && chown -R 1000:0 /opt/keycloak/import-source
+USER 1000
+ENTRYPOINT ["/opt/keycloak/bin/keplerops-entrypoint"]

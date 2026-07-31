@@ -1,0 +1,446 @@
+schema_version: 1
+organization:
+  id: org-keplerops
+  name: KeplerOps AI Systems
+  directory_domain: keplerops.test
+  synthetic: true
+represented_window:
+  start: '2026-04-06T08:00:00Z'
+  end: '2026-05-15T18:00:00Z'
+  participant_start: '2026-05-18T08:00:00Z'
+teams:
+- id: team-model-research
+  name: Model Research
+  lead_ref: person-elena-vasquez
+- id: team-evaluation
+  name: Evaluation and Assurance
+  lead_ref: person-nia-okafor
+- id: team-release
+  name: Release Governance
+  lead_ref: person-jon-bell
+people:
+- id: person-elena-vasquez
+  username: ml.engineer
+  account_ref: core.user-ml-engineer
+  display_name: Elena Vasquez
+  email: ml.engineer@keplerops.test
+  team_ref: team-model-research
+  title: Senior ML Engineer
+- id: person-nia-okafor
+  username: qa.intern
+  account_ref: core.user-qa-intern
+  display_name: Nia Okafor
+  email: qa.intern@keplerops.test
+  team_ref: team-evaluation
+  title: Evaluation Analyst
+- id: person-jon-bell
+  username: release.manager
+  account_ref: core.user-release-manager
+  display_name: Jon Bell
+  email: release.manager@keplerops.test
+  team_ref: team-release
+  title: Release Manager
+service_identities:
+- id: service-generation
+  username: svc-distillation
+  account_ref: core.svc-distillation
+  purpose: Automated evaluation and notification
+- id: service-registry
+  username: svc-registry
+  account_ref: core.svc-registry
+  purpose: Model registry publication
+- id: service-operations
+  username: svc.keycloak
+  account_ref: core.svc-keycloak-federation
+  purpose: Directory synchronization and platform operations
+endpoints:
+- id: endpoint-workforce-01
+  hostname: workforce-workstation-01
+  node_ref: core.workforce-workstation-01
+  owner_ref: person-nia-okafor
+  team_ref: team-evaluation
+- id: endpoint-ml-01
+  hostname: ml-workstation-01
+  node_ref: core.ml-workstation-01
+  owner_ref: person-elena-vasquez
+  team_ref: team-model-research
+- id: endpoint-ad-01
+  hostname: ad-dc-01
+  node_ref: core.ad-dc-01
+  owner_ref: service-operations
+  team_ref: team-release
+projects:
+- id: project-atlas-evaluation
+  name: Atlas Evaluation Refresh
+  owner_team_ref: team-evaluation
+  started_at: '2026-04-06T09:00:00Z'
+- id: project-orion-release
+  name: Orion Model Release
+  owner_team_ref: team-model-research
+  started_at: '2026-04-13T09:00:00Z'
+repositories:
+- id: repository-model-release
+  slug: model-release
+  project_ref: project-orion-release
+  default_branch: main
+- id: repository-evaluation-tooling
+  slug: evaluation-tooling
+  project_ref: project-atlas-evaluation
+  default_branch: main
+datasets:
+- id: dataset-eval-v21
+  project_ref: project-atlas-evaluation
+  owner_ref: person-nia-okafor
+  version: 2.1.0
+  created_at: '2026-04-07T10:20:00Z'
+  digest: sha256:ed0972127aac54cdf299d480da4b3cadaf45df339658ca8de7fda04acc715cf4
+  source_path: objects/dataset-eval-v21.jsonl
+- id: dataset-safety-v8
+  project_ref: project-orion-release
+  owner_ref: person-elena-vasquez
+  version: 8.0.0
+  created_at: '2026-04-16T14:05:00Z'
+  digest: sha256:8e838e13068116f3be2ce15419154e3b35b1b6dedb2824cab128874eccc757e1
+  source_path: objects/dataset-safety-v8.jsonl
+- id: dataset-eval-v22
+  project_ref: project-atlas-evaluation
+  owner_ref: person-nia-okafor
+  version: 2.2.0
+  created_at: '2026-05-05T11:30:00Z'
+  digest: sha256:57eec76686718b7f2949d029ccca989aff274c715f9ad3991d6f6513aa0de1e9
+  source_path: objects/dataset-eval-v22.jsonl
+tickets:
+- id: ticket-kep-142
+  key: KEP-142
+  project_ref: project-atlas-evaluation
+  assignee_ref: person-nia-okafor
+  status: closed
+  created_at: '2026-04-07T09:15:00Z'
+  updated_at: '2026-04-11T16:40:00Z'
+  commit_refs: [commit-eval-schema]
+  dataset_refs: [dataset-eval-v21]
+  model_refs: []
+- id: ticket-kep-148
+  key: KEP-148
+  project_ref: project-orion-release
+  assignee_ref: person-elena-vasquez
+  status: closed
+  created_at: '2026-04-15T10:00:00Z'
+  updated_at: '2026-04-24T15:30:00Z'
+  commit_refs: [commit-training-config, commit-metric-export]
+  dataset_refs: [dataset-safety-v8]
+  model_refs: [model-orion-candidate-17]
+- id: ticket-kep-151
+  key: KEP-151
+  project_ref: project-orion-release
+  assignee_ref: person-jon-bell
+  status: closed
+  created_at: '2026-04-22T08:45:00Z'
+  updated_at: '2026-05-02T17:15:00Z'
+  commit_refs: [commit-release-manifest]
+  dataset_refs: []
+  model_refs: [model-orion-candidate-17]
+- id: ticket-kep-155
+  key: KEP-155
+  project_ref: project-orion-release
+  assignee_ref: person-jon-bell
+  status: in-review
+  created_at: '2026-05-01T12:00:00Z'
+  updated_at: '2026-05-15T14:10:00Z'
+  commit_refs: [commit-policy-refresh]
+  dataset_refs: [dataset-eval-v22]
+  model_refs: [model-orion-candidate-18]
+- id: ticket-kep-159
+  key: KEP-159
+  project_ref: project-atlas-evaluation
+  assignee_ref: person-nia-okafor
+  status: open
+  created_at: '2026-05-06T09:30:00Z'
+  updated_at: '2026-05-13T11:00:00Z'
+  commit_refs: []
+  dataset_refs: [dataset-eval-v22]
+  model_refs: []
+- id: ticket-kep-161
+  key: KEP-161
+  project_ref: project-orion-release
+  assignee_ref: person-elena-vasquez
+  status: abandoned
+  created_at: '2026-05-08T13:20:00Z'
+  updated_at: '2026-05-14T09:05:00Z'
+  commit_refs: []
+  dataset_refs: [dataset-safety-v8]
+  model_refs: []
+commits:
+- id: commit-eval-schema
+  revision: 31a3fdbf27f7
+  repository_ref: repository-evaluation-tooling
+  author_ref: person-nia-okafor
+  authored_at: '2026-04-10T14:20:00Z'
+  ticket_refs: [ticket-kep-142]
+  dataset_refs: [dataset-eval-v21]
+  summary: Add held-out slice metadata checks
+- id: commit-training-config
+  revision: 7b44a8ac7de1
+  repository_ref: repository-model-release
+  author_ref: person-elena-vasquez
+  authored_at: '2026-04-18T10:05:00Z'
+  ticket_refs: [ticket-kep-148]
+  dataset_refs: [dataset-safety-v8]
+  summary: Pin candidate training configuration
+- id: commit-metric-export
+  revision: 411ace8393c2
+  repository_ref: repository-model-release
+  author_ref: person-elena-vasquez
+  authored_at: '2026-04-23T15:45:00Z'
+  ticket_refs: [ticket-kep-148]
+  dataset_refs: [dataset-safety-v8]
+  summary: Export evaluation slice metrics
+- id: commit-release-manifest
+  revision: 20e83cb15192
+  repository_ref: repository-model-release
+  author_ref: person-jon-bell
+  authored_at: '2026-05-02T14:30:00Z'
+  ticket_refs: [ticket-kep-151]
+  dataset_refs: []
+  summary: Record candidate 17 release manifest
+- id: commit-policy-refresh
+  revision: f8b62ea61f40
+  repository_ref: repository-model-release
+  author_ref: person-jon-bell
+  authored_at: '2026-05-12T16:10:00Z'
+  ticket_refs: [ticket-kep-155]
+  dataset_refs: [dataset-eval-v22]
+  summary: Prepare guardrail policy review
+experiments:
+- id: experiment-orion-17
+  project_ref: project-orion-release
+  owner_ref: person-elena-vasquez
+  dataset_ref: dataset-safety-v8
+  started_at: '2026-04-21T08:10:00Z'
+  completed_at: '2026-04-21T13:25:00Z'
+  status: completed
+  accuracy: 0.91
+- id: experiment-orion-18
+  project_ref: project-orion-release
+  owner_ref: person-elena-vasquez
+  dataset_ref: dataset-eval-v22
+  started_at: '2026-05-07T09:05:00Z'
+  completed_at: '2026-05-07T15:50:00Z'
+  status: completed
+  accuracy: 0.93
+- id: experiment-orion-19-abandoned
+  project_ref: project-orion-release
+  owner_ref: person-elena-vasquez
+  dataset_ref: dataset-eval-v22
+  started_at: '2026-05-13T10:00:00Z'
+  completed_at: '2026-05-13T10:42:00Z'
+  status: abandoned
+  accuracy: 0.41
+artifacts:
+- id: artifact-orion-17
+  project_ref: project-orion-release
+  created_at: '2026-04-21T13:20:00Z'
+  digest: sha256:f27cd2ff7b37d01428898f4bf58c94e2979d54995e0a17618b2e7bc72a2985f3
+  source_path: objects/artifact-orion-17.json
+  media_type: application/vnd.keplerops.model-manifest+json
+- id: artifact-orion-18
+  project_ref: project-orion-release
+  created_at: '2026-05-07T15:45:00Z'
+  digest: sha256:4a24debb0ec61d0e47fa6571c01e42b9bfe8a3210931e7398c74c3f2c81a7fd0
+  source_path: objects/artifact-orion-18.json
+  media_type: application/vnd.keplerops.model-manifest+json
+- id: artifact-eval-report-22
+  project_ref: project-atlas-evaluation
+  created_at: '2026-05-08T12:00:00Z'
+  digest: sha256:c44b352206bbcca14358819d86f91e3fd7d4e4da8f774337b8de574e42e80eb2
+  source_path: objects/artifact-eval-report-22.json
+  media_type: application/json
+models:
+- id: model-orion-candidate-17
+  experiment_ref: experiment-orion-17
+  artifact_ref: artifact-orion-17
+  version: '17'
+  created_at: '2026-04-21T13:25:00Z'
+- id: model-orion-candidate-18
+  experiment_ref: experiment-orion-18
+  artifact_ref: artifact-orion-18
+  version: '18'
+  created_at: '2026-05-07T15:50:00Z'
+- id: model-orion-abandoned-19
+  experiment_ref: experiment-orion-19-abandoned
+  artifact_ref: artifact-eval-report-22
+  version: 19-abandoned
+  created_at: '2026-05-13T10:42:00Z'
+approvals:
+- id: approval-orion-17-eval
+  model_ref: model-orion-candidate-17
+  approver_ref: person-nia-okafor
+  decision: approved
+  decided_at: '2026-04-24T11:00:00Z'
+- id: approval-orion-17-release
+  model_ref: model-orion-candidate-17
+  approver_ref: person-jon-bell
+  decision: approved
+  decided_at: '2026-05-02T16:00:00Z'
+- id: approval-orion-18-review
+  model_ref: model-orion-candidate-18
+  approver_ref: person-jon-bell
+  decision: pending
+  decided_at: '2026-05-15T14:00:00Z'
+releases:
+- id: release-orion-17
+  model_ref: model-orion-candidate-17
+  commit_ref: commit-release-manifest
+  approval_ref: approval-orion-17-release
+  released_at: '2026-05-02T17:00:00Z'
+  status: completed
+- id: release-orion-18-rc
+  model_ref: model-orion-candidate-18
+  commit_ref: commit-policy-refresh
+  approval_ref: approval-orion-18-review
+  released_at: '2026-05-15T15:00:00Z'
+  status: review
+messages:
+- id: message-eval-slice-review
+  sender_ref: person-nia-okafor
+  recipient_refs: [person-elena-vasquez]
+  sent_at: '2026-04-11T09:10:00Z'
+  subject: Evaluation slice metadata review
+  body: KEP-142 is ready for review at commit 31a3fdbf27f7. The held-out slice metadata now names dataset-eval-v21 explicitly.
+  ticket_refs: [ticket-kep-142]
+  commit_refs: [commit-eval-schema]
+  model_refs: []
+- id: message-training-config
+  sender_ref: person-elena-vasquez
+  recipient_refs: [person-nia-okafor]
+  sent_at: '2026-04-18T11:30:00Z'
+  subject: Candidate 17 training configuration
+  body: KEP-148 now points to commit 7b44a8ac7de1 and dataset-safety-v8. Please review the pinned configuration before the scheduled run.
+  ticket_refs: [ticket-kep-148]
+  commit_refs: [commit-training-config]
+  model_refs: []
+- id: message-candidate-17-results
+  sender_ref: service-generation
+  recipient_refs: [person-elena-vasquez, person-nia-okafor]
+  sent_at: '2026-04-23T16:00:00Z'
+  subject: Candidate 17 evaluation complete
+  body: The experiment-orion-17 run completed against dataset-safety-v8. Model model-orion-candidate-17 is available for evaluation review.
+  ticket_refs: [ticket-kep-148]
+  commit_refs: [commit-metric-export]
+  model_refs: [model-orion-candidate-17]
+- id: message-release-review
+  sender_ref: person-jon-bell
+  recipient_refs: [person-elena-vasquez, person-nia-okafor]
+  sent_at: '2026-05-02T15:00:00Z'
+  subject: Candidate 17 release review
+  body: KEP-151 is awaiting release review for model-orion-candidate-17. The evaluation approval is recorded and the release manifest is in commit 20e83cb15192.
+  ticket_refs: [ticket-kep-151]
+  commit_refs: [commit-release-manifest]
+  model_refs: [model-orion-candidate-17]
+- id: message-release-complete
+  sender_ref: service-registry
+  recipient_refs: [person-jon-bell, person-elena-vasquez]
+  sent_at: '2026-05-02T17:10:00Z'
+  subject: Orion 17 release published
+  body: Release release-orion-17 completed after approval-orion-17-release. The registry alias now resolves to model-orion-candidate-17.
+  ticket_refs: [ticket-kep-151]
+  commit_refs: [commit-release-manifest]
+  model_refs: [model-orion-candidate-17]
+- id: message-eval-v22
+  sender_ref: person-nia-okafor
+  recipient_refs: [person-elena-vasquez]
+  sent_at: '2026-05-06T14:20:00Z'
+  subject: Evaluation set 2.2 ready
+  body: Dataset dataset-eval-v22 is available for KEP-159. The ordinary slice checks passed and no release decision has been made.
+  ticket_refs: [ticket-kep-159]
+  commit_refs: []
+  model_refs: []
+- id: message-candidate-18-results
+  sender_ref: service-generation
+  recipient_refs: [person-elena-vasquez, person-jon-bell]
+  sent_at: '2026-05-08T09:05:00Z'
+  subject: Candidate 18 evaluation summary
+  body: Model model-orion-candidate-18 completed evaluation against dataset-eval-v22. KEP-155 remains in review pending the policy update.
+  ticket_refs: [ticket-kep-155]
+  commit_refs: []
+  model_refs: [model-orion-candidate-18]
+- id: message-abandoned-run
+  sender_ref: person-elena-vasquez
+  recipient_refs: [person-nia-okafor]
+  sent_at: '2026-05-13T11:15:00Z'
+  subject: Candidate 19 run stopped after data mismatch
+  body: Experiment experiment-orion-19-abandoned stopped after an input mismatch. Notes are attached to KEP-161; do not promote this candidate.
+  ticket_refs: [ticket-kep-161]
+  commit_refs: []
+  model_refs: [model-orion-abandoned-19]
+files:
+- id: file-evaluation-notes
+  owner_ref: person-nia-okafor
+  endpoint_ref: endpoint-workforce-01
+  path: Documents/Evaluation/eval-v22-review.md
+  content: |
+    # Evaluation set 2.2 review
+    KEP-159 tracks the final ordinary slice review for dataset-eval-v22.
+    Candidate 18 passed the current evaluation threshold; policy review remains open.
+  updated_at: '2026-05-06T15:00:00Z'
+  ticket_refs: [ticket-kep-159]
+  commit_refs: []
+- id: file-training-notebook
+  owner_ref: person-elena-vasquez
+  endpoint_ref: endpoint-ml-01
+  path: Projects/orion/candidate-18-evaluation.ipynb
+  content: |
+    {"cells":[{"cell_type":"markdown","metadata":{},"source":["# Candidate 18 evaluation\n","Dataset: dataset-eval-v22\n","Ticket: KEP-155\n"]}],"metadata":{"keplerops":{"experiment_ref":"experiment-orion-18"}},"nbformat":4,"nbformat_minor":5}
+  updated_at: '2026-05-13T10:30:00Z'
+  ticket_refs: [ticket-kep-155]
+  commit_refs: [commit-policy-refresh]
+- id: file-release-checklist
+  owner_ref: person-jon-bell
+  endpoint_ref: endpoint-workforce-01
+  path: Shared/Release/orion-18-checklist.md
+  content: |
+    # Orion 18 release checklist
+    - Evaluation: experiment-orion-18
+    - Model: model-orion-candidate-18
+    - Policy review: KEP-155
+    - Approval: approval-orion-18-review (pending)
+  updated_at: '2026-05-15T13:40:00Z'
+  ticket_refs: [ticket-kep-155]
+  commit_refs: [commit-policy-refresh]
+- id: file-abandoned-run-log
+  owner_ref: person-elena-vasquez
+  endpoint_ref: endpoint-ml-01
+  path: Projects/orion/archive/candidate-19-notes.txt
+  content: |
+    Candidate 19 was stopped after a dataset mismatch.
+    Experiment: experiment-orion-19-abandoned
+    Ticket: KEP-161
+  updated_at: '2026-05-13T11:00:00Z'
+  ticket_refs: [ticket-kep-161]
+  commit_refs: []
+operations:
+- id: operation-backup-0422
+  actor_ref: service-operations
+  occurred_at: '2026-04-22T02:00:00Z'
+  kind: artifact-backup
+  object_refs: [artifact-orion-17]
+- id: operation-index-refresh-0424
+  actor_ref: service-operations
+  occurred_at: '2026-04-24T18:00:00Z'
+  kind: research-index-refresh
+  object_refs: [ticket-kep-148, model-orion-candidate-17]
+- id: operation-release-health-0502
+  actor_ref: service-operations
+  occurred_at: '2026-05-02T17:20:00Z'
+  kind: release-health-check
+  object_refs: [release-orion-17]
+- id: operation-storage-warning-0509
+  actor_ref: service-operations
+  occurred_at: '2026-05-09T08:15:00Z'
+  kind: storage-warning
+  object_refs: [artifact-eval-report-22]
+- id: operation-index-refresh-0515
+  actor_ref: service-operations
+  occurred_at: '2026-05-15T16:30:00Z'
+  kind: research-index-refresh
+  object_refs: [ticket-kep-155, model-orion-candidate-18]

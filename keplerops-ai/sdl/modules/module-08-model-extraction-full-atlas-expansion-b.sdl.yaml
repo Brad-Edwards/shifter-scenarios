@@ -1,0 +1,342 @@
+name: keplerops-module-08-full-atlas-expansion-b
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-08-full-atlas-expansion-b
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m08-j
+    - kep-m08-k
+    conditions:
+    - kep-m08-j-complete
+    - kep-m08-k-complete
+    propositions:
+    - kep-m08-j-satisfied
+    - kep-m08-k-satisfied
+    assertions:
+    - kep-m08-j-satisfied
+    - kep-m08-k-satisfied
+    evidence_requirements:
+    - kep-m08-j-proof
+    - kep-m08-k-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 08 full-ATLAS model-access and extraction
+    expansion.
+behavior_specifications:
+  kep-m08-j:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.model-host-01.services.open-model-api
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.inference-gateway.services.inference-api
+    ai_offensive_behavior_refs: &id004
+    - ai-model-access
+    - ai-attack-staging
+    - resource-development
+    - exfiltration
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-j
+        flag_id: flag-full-model-access
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Full Model Access
+        difficulty: expert
+        target_minutes: 55
+        min_minutes: 35
+        max_minutes: 80
+        points: 300
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m08-g
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: full_model_access
+        telemetry_profile: full_model_access
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Access and Extraction
+          question: Obtain the complete target model architecture, parameters, and ontology through
+            the participant attack path and verify offline inference.
+          hints:
+          - Start from the model-host, artifact-store surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-full-model-access
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-full-model-access
+          kind: model_access_expansion
+          predicate: Bind exfiltrated digest, architecture and ontology match, parameter count, and
+            offline inference parity; metadata-only or management exports fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-full-model-access
+            evidence: ev-full-model-access
+            event_kind: full_model_access_08
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_08_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-08-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0044
+          assurance: source-implemented-pre-playtest
+        objective_ref: m08xb.kep-m08-j
+        evidence_requirement_ref: m08xb.kep-m08-j-proof
+  kep-m08-k:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m08-k
+        flag_id: flag-product-side-channel
+        module: module-08-model-extraction
+        outcome: model-extraction
+        title: Product Side Channel
+        difficulty: intermediate
+        target_minutes: 22
+        min_minutes: 13
+        max_minutes: 34
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m08-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: product_side_channel
+        telemetry_profile: product_side_channel
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Access and Extraction
+          question: Use the AI-enabled document product rather than its model API to recover hidden
+            model identity or inference metadata.
+          hints:
+          - Start from the lab-portal, document-ai-service surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-product-side-channel
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-product-side-channel
+          kind: model_access_expansion
+          predicate: Require product-origin interactions and current hidden metadata recovered from
+            logs or outputs; direct API or static banners fail.
+          proof_fields: *id002
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-product-side-channel
+            evidence: ev-product-side-channel
+            event_kind: product_side_channel_08
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_08_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-08-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0047
+          assurance: source-implemented-pre-playtest
+        objective_ref: m08xb.kep-m08-k
+        evidence_requirement_ref: m08xb.kep-m08-k-proof
+conditions:
+  kep-m08-j-complete:
+    name: Full Model Access evidence accepted
+    proposition: kep-m08-j-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m08-k-complete:
+    name: Product Side Channel evidence accepted
+    proposition: kep-m08-k-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m08-j-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-j.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-j-proof
+  kep-m08-k-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m08-k.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m08-k-proof
+assertions:
+  kep-m08-j-satisfied:
+    description: Participant completion of kep-m08-j is observed.
+    proposition: kep-m08-j-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m08-k-satisfied:
+    description: Participant completion of kep-m08-k is observed.
+    proposition: kep-m08-k-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m08-j-proof:
+    description: Capture digest-safe participant-scoped evidence for Full Model Access.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-j'
+    - 'Proof obligation: full_model_access'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m08-k-proof:
+    description: Capture digest-safe participant-scoped evidence for Product Side Channel.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m08-k'
+    - 'Proof obligation: product_side_channel'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m08-j:
+    name: Full Model Access
+    description: Obtain the complete target model architecture, parameters, and ontology through the
+      participant attack path and verify offline inference.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m08-j-satisfied
+    depends_on:
+    - m08xa.kep-m08-g
+  kep-m08-k:
+    name: Product Side Channel
+    description: Use the AI-enabled document product rather than its model API to recover hidden
+      model identity or inference metadata.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m08-k-satisfied
+    depends_on:
+    - m08.kep-m08-a

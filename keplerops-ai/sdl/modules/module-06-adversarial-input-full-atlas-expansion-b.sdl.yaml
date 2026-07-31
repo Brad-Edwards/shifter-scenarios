@@ -1,0 +1,361 @@
+name: module-06-adversarial-input-full-atlas-expansion-b
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-b
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-i
+    - kep-m06-j
+    conditions:
+    - kep-m06-i-complete
+    - kep-m06-j-complete
+    propositions:
+    - kep-m06-i-satisfied
+    - kep-m06-j-satisfied
+    assertions:
+    - kep-m06-i-satisfied
+    - kep-m06-j-satisfied
+    evidence_requirements:
+    - kep-m06-i-proof
+    - kep-m06-j-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-i
+        flag_id: flag-victim-web-recon
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Victim Web Recon
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: victim_web_recon
+        telemetry_profile: victim_web_recon
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Search the target's public sites and domains to identify the synthetic owner of
+            a high-value AI workflow.
+          hints:
+          - Start on the public-range-sites, research-index, proof-api surface and keep each
+            artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-victim-web-recon
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-victim-web-recon
+          kind: adversarial_expansion
+          predicate: Require participant search trail, two public sources, and correct current
+            synthetic identity; briefing names and direct database reads fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-victim-web-recon
+            evidence: ev-victim-web-recon
+            event_kind: victim_web_recon
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0003
+          - AML.T0095
+          - AML.T0087
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xb.kep-m06-i
+        evidence_requirement_ref: m06xb.kep-m06-i-proof
+  kep-m06-j:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-j
+        flag_id: flag-active-ai-surface-scan
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Active AI Surface Scan
+        difficulty: accessible
+        target_minutes: 10
+        min_minutes: 5
+        max_minutes: 16
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m06-i
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: active_ai_surface_scan
+        telemetry_profile: active_ai_surface_scan
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Actively scan the declared range network and identify the hidden AI inference
+            service from its live response fingerprint.
+          hints:
+          - Start on the browser-terminal, range-network, inference-api surface and keep each
+            artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-active-ai-surface-scan
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-active-ai-surface-scan
+          kind: adversarial_expansion
+          predicate: Require participant-origin scan traffic and correct responsive service
+            identity; static topology or management-plane inventory fails.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-active-ai-surface-scan
+            evidence: ev-active-ai-surface-scan
+            event_kind: active_ai_surface_scan
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0006
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xb.kep-m06-j
+        evidence_requirement_ref: m06xb.kep-m06-j-proof
+conditions:
+  kep-m06-i-complete:
+    name: Victim Web Recon evidence accepted
+    proposition: kep-m06-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-j-complete:
+    name: Active AI Surface Scan evidence accepted
+    proposition: kep-m06-j-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-i-proof
+  kep-m06-j-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-j.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-j-proof
+assertions:
+  kep-m06-i-satisfied:
+    description: Participant completion of kep-m06-i is observed.
+    proposition: kep-m06-i-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-j-satisfied:
+    description: Participant completion of kep-m06-j is observed.
+    proposition: kep-m06-j-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Victim Web Recon.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-i'
+    - 'Proof obligation: victim_web_recon'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-j-proof:
+    description: Capture digest-safe participant-scoped evidence for Active AI Surface Scan.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-j'
+    - 'Proof obligation: active_ai_surface_scan'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-i:
+    name: Victim Web Recon
+    description: Search the target's public sites and domains to identify the synthetic owner of a
+      high-value AI workflow.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-i-satisfied
+  kep-m06-j:
+    name: Active AI Surface Scan
+    description: Actively scan the declared range network and identify the hidden AI inference
+      service from its live response fingerprint.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-j-satisfied
+    depends_on:
+    - m06xb.kep-m06-i

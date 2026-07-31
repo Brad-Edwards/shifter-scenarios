@@ -1,0 +1,604 @@
+name: keplerops-live-activity
+version: 1.0.0
+description: |
+  Portable RAES 2.0.0 live ordinary company activity contract for KeplerOps. It defines one non-evaluated green workforce participant, deterministic shared-time execution, behavior-history visibility, and scoped resource budgets against the imported core environment.
+module:
+  id: shifter/keplerops-live-activity
+  version: 1.0.0
+  description: Non-evaluated green workforce activity over the core KeplerOps environment.
+  exports:
+    action_contracts:
+    - green-workhub-ticket-triage
+    - green-mail-thread-review
+    - green-notebook-evaluation-check
+    - green-mlflow-model-review
+    - green-inference-smoke-request
+    time_domains:
+    - green-company-workday
+    clocks:
+    - green-company-clock
+    time_progression_policies:
+    - green-company-progression
+    temporal_constraints:
+    - green-company-work-window
+    - green-company-pause-window
+    observation_boundaries:
+    - green-activity-view
+    agents:
+    - green-company-activity
+    behavior_specifications:
+    - green-company-live-activity
+action_contracts:
+  green-workhub-ticket-triage:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    behavioral_granularity: procedure
+    procedure_basis: AD-federated workforce user reviews issues, repository notes, and release tickets in WorkHub.
+    realization_profile: backend-declared-live-activity
+    fidelity_claim: Records ordinary authenticated WorkHub read and comment activity without evaluator authority.
+    preconditions:
+    - precondition_id: workforce-authorized
+      precondition_class: authority
+      description: The green workforce participant uses a synthetic AD-backed workforce identity.
+      support_refs:
+      - agents.activity.green-company-activity
+      - accounts.core.user-qa-intern
+    - precondition_id: workhub-target-present
+      precondition_class: target
+      description: The WorkHub HTTPS service is reachable in the enterprise services zone.
+      support_refs:
+      - nodes.core.repo-ticket-01.services.workhub-https
+    - precondition_id: backend-can-realize-workhub
+      precondition_class: realization
+      description: The backend can realize bounded ordinary WorkHub activity and record behavior history.
+      support_refs:
+      - backend.participant-runtime
+    effects:
+    - effect_id: workhub-ticket-read
+      effect_class: intended_effect
+      description: Ordinary ticket, repository, or review metadata is read through WorkHub.
+      target_refs:
+      - nodes.core.repo-ticket-01.services.workhub-https
+    - effect_id: workhub-comment-or-status-noise
+      effect_class: side_effect
+      description: Optional bounded comments or status transitions may be written as resettable company noise.
+      target_refs:
+      - content.core.company-workhub-state
+    - effect_id: workhub-activity-observed
+      effect_class: observation_effect
+      description: The behavior history records the WorkHub action result.
+      evidence_refs:
+      - evidence.green-activity.workhub
+    failure_classes:
+    - target_unavailable
+    - authority_denied
+    - timeout
+    - backend_error
+    - unknown
+  green-mail-thread-review:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    behavioral_granularity: procedure
+    procedure_basis: AD-federated workforce user reads mail and may send routine internal replies.
+    realization_profile: backend-declared-live-activity
+    fidelity_claim: Records ordinary authenticated IMAP and submission activity without changing challenge authority.
+    preconditions:
+    - precondition_id: mailbox-authorized
+      precondition_class: authority
+      description: The green workforce participant uses a synthetic mailbox-bearing workforce identity.
+      support_refs:
+      - agents.activity.green-company-activity
+      - accounts.core.user-qa-intern
+      - accounts.core.user-release-manager
+    - precondition_id: mail-targets-present
+      precondition_class: target
+      description: Mailbox read and message submission services are present.
+      support_refs:
+      - nodes.core.mail-server-01.services.mail-imaps
+      - nodes.core.mail-server-01.services.mail-submission
+      - nodes.core.webmail-01.services.webmail-http
+    effects:
+    - effect_id: mailbox-thread-read
+      effect_class: intended_effect
+      description: Ordinary internal mailbox threads are read through IMAP or webmail.
+      target_refs:
+      - nodes.core.mail-server-01.services.mail-imaps
+      - nodes.core.webmail-01.services.webmail-http
+    - effect_id: routine-mail-noise
+      effect_class: side_effect
+      description: Optional bounded routine replies may be added to resettable company mail state.
+      target_refs:
+      - content.core.company-mail-state
+      - nodes.core.mail-server-01.services.mail-submission
+    - effect_id: mail-activity-observed
+      effect_class: observation_effect
+      description: The behavior history records the mail action result.
+      evidence_refs:
+      - evidence.green-activity.mail
+    failure_classes:
+    - target_unavailable
+    - authority_denied
+    - timeout
+    - backend_error
+    - unknown
+  green-notebook-evaluation-check:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    behavioral_granularity: procedure
+    procedure_basis: ML engineer opens a notebook and reviews evaluation or dataset status.
+    realization_profile: backend-declared-live-activity
+    fidelity_claim: Records ordinary authenticated Jupyter activity and bounded data reads.
+    preconditions:
+    - precondition_id: notebook-authorized
+      precondition_class: authority
+      description: The green workforce participant uses the synthetic ML engineering identity.
+      support_refs:
+      - agents.activity.green-company-activity
+      - accounts.core.user-ml-engineer
+    - precondition_id: notebook-targets-present
+      precondition_class: target
+      description: Notebook and dataset services are present in the data workflow zone.
+      support_refs:
+      - nodes.core.notebook-runner-01.services.notebook-jupyter
+      - nodes.core.dataset-store-01.services.dataset-postgres
+    effects:
+    - effect_id: notebook-opened
+      effect_class: intended_effect
+      description: A resettable notebook or evaluation summary is opened through Jupyter.
+      target_refs:
+      - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - effect_id: dataset-status-read
+      effect_class: side_effect
+      description: Ordinary dataset or evaluation metadata may be read.
+      target_refs:
+      - nodes.core.dataset-store-01.services.dataset-postgres
+      - content.core.company-data-state
+      - content.core.company-notebook-state
+    - effect_id: notebook-activity-observed
+      effect_class: observation_effect
+      description: The behavior history records the notebook action result.
+      evidence_refs:
+      - evidence.green-activity.notebook
+    failure_classes:
+    - target_unavailable
+    - authority_denied
+    - resource_exhausted
+    - timeout
+    - backend_error
+    - unknown
+  green-mlflow-model-review:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    behavioral_granularity: procedure
+    procedure_basis: Release or ML staff reviews model registry aliases, artifacts, and promotion metadata.
+    realization_profile: backend-declared-live-activity
+    fidelity_claim: Records ordinary MLflow and artifact-store reads with optional resettable annotation noise.
+    preconditions:
+    - precondition_id: registry-authorized
+      precondition_class: authority
+      description: The green workforce participant uses a synthetic release or ML identity.
+      support_refs:
+      - agents.activity.green-company-activity
+      - accounts.core.user-release-manager
+      - accounts.core.user-ml-engineer
+    - precondition_id: registry-targets-present
+      precondition_class: target
+      description: Registry and artifact services are present.
+      support_refs:
+      - nodes.core.model-registry-01.services.registry-api
+      - nodes.core.artifact-store-01.services.artifact-object-store
+    effects:
+    - effect_id: registry-metadata-read
+      effect_class: intended_effect
+      description: Model registry metadata, aliases, and approvals are read through MLflow.
+      target_refs:
+      - nodes.core.model-registry-01.services.registry-api
+      - content.core.company-model-registry-state
+    - effect_id: artifact-metadata-read
+      effect_class: side_effect
+      description: Artifact metadata may be read from the resettable artifact store.
+      target_refs:
+      - nodes.core.artifact-store-01.services.artifact-object-store
+      - content.core.company-artifact-state
+    - effect_id: registry-activity-observed
+      effect_class: observation_effect
+      description: The behavior history records the registry review result.
+      evidence_refs:
+      - evidence.green-activity.registry
+    failure_classes:
+    - target_unavailable
+    - authority_denied
+    - timeout
+    - backend_error
+    - unknown
+  green-inference-smoke-request:
+    semantic_version: 1.0.0
+    lifecycle_state: active
+    behavioral_granularity: atomic
+    procedure_basis: Routine internal smoke prompt verifies that the shared OpenAI-compatible model endpoint responds.
+    realization_profile: backend-declared-live-activity
+    fidelity_claim: Records ordinary low-volume inference use governed by a shared-service resource budget.
+    preconditions:
+    - precondition_id: inference-authorized
+      precondition_class: authority
+      description: The green workforce participant uses tenant-scoped workload authentication for ordinary inference.
+      support_refs:
+      - agents.activity.green-company-activity
+      - accounts.core.svc-inference
+      - relationships.core.shared-inference-service
+    - precondition_id: inference-target-present
+      precondition_class: target
+      description: The shared OpenAI-compatible model endpoint is present and authorized for this range tenant.
+      support_refs:
+      - nodes.core.model-host-01.services.open-model-api
+    effects:
+    - effect_id: inference-smoke-response
+      effect_class: intended_effect
+      description: A bounded routine inference response is produced by the shared model endpoint.
+      target_refs:
+      - nodes.core.model-host-01.services.open-model-api
+    - effect_id: inference-activity-observed
+      effect_class: observation_effect
+      description: The behavior history records the inference action result and resource measurements.
+      evidence_refs:
+      - evidence.green-activity.inference
+    failure_classes:
+    - target_unavailable
+    - authority_denied
+    - resource_exhausted
+    - timeout
+    - backend_error
+    - unknown
+time_domains:
+  green-company-workday:
+    kind: simulated
+    tick_period_seconds: {numerator: 60, denominator: 1}
+    epoch: scenario_start
+    visibility: runtime_only
+    description: Runtime-managed simulated workday clock for ordinary green workforce activity.
+clocks:
+  green-company-clock:
+    time_domain_ref: green-company-workday
+    authority_kind: runtime
+    authority_ref: runtime.time-coordinator
+    monotonicity: non_decreasing
+    supports_pause: true
+    supports_reset: true
+    description: Authoritative range-local clock for deterministic ordinary activity.
+time_progression_policies:
+  green-company-progression:
+    clock_ref: green-company-clock
+    advancement_mode: stepped
+    synchronization_mode: barrier
+    step_ticks: 10
+    reset_behavior: new_segment_zero
+    replay_behavior: restore_recorded_advances
+    description: Ten-minute deterministic steps for bounded ordinary workforce activity.
+temporal_constraints:
+  green-company-work-window:
+    constraint_kind: window
+    clock_ref: green-company-clock
+    subject_refs:
+    - green-company-activity
+    - green-company-live-activity
+    start: {tick: 0}
+    end: {tick: 480}
+    description: Eight-hour ordinary activity window in simulated workday minutes.
+  green-company-pause-window:
+    constraint_kind: window
+    clock_ref: green-company-clock
+    subject_refs:
+    - green-company-activity
+    - green-company-live-activity
+    start: {tick: 240}
+    end: {tick: 270}
+    description: Midday pause interval for deterministic ordinary activity.
+observation_boundaries:
+  green-activity-view:
+    projection_basis: runtime behavior-history projection over ordinary green workforce actions
+    observable_refs:
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.mail-server-01.services.mail-imaps
+    - nodes.core.mail-server-01.services.mail-submission
+    - nodes.core.webmail-01.services.webmail-http
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.model-host-01.services.open-model-api
+    - content.core.company-workhub-state
+    - content.core.company-mail-state
+    - content.core.company-data-state
+    - content.core.company-notebook-state
+    - content.core.company-artifact-state
+    - content.core.company-model-registry-state
+    evidence_refs:
+    - evidence.green-activity.workhub
+    - evidence.green-activity.mail
+    - evidence.green-activity.notebook
+    - evidence.green-activity.registry
+    - evidence.green-activity.inference
+    hidden_refs:
+    - objectives
+    - proofs
+    - operator-state
+    redaction_policy: preserve ordinary activity facts while excluding credentials, flags, proofs, and operator state
+    latency_profile: behavior history available after each committed ordinary action
+agents:
+  green-company-activity:
+    entity: core.green-workforce
+    description: Non-evaluated ordinary workforce activity across the KeplerOps lab company.
+    actions:
+    - green-workhub-ticket-triage
+    - green-mail-thread-review
+    - green-notebook-evaluation-check
+    - green-mlflow-model-review
+    - green-inference-smoke-request
+    initial_knowledge:
+      hosts:
+      - core.workforce-workstation-01
+      - core.ml-workstation-01
+      - core.repo-ticket-01
+      - core.mail-server-01
+      - core.webmail-01
+      - core.notebook-runner-01
+      - core.distillation-runner-01
+      - core.model-registry-01
+      - core.artifact-store-01
+      - core.dataset-store-01
+      - core.model-host-01
+      subnets:
+      - core.enterprise-services
+      - core.data-workflows
+      - core.registry-artifacts
+      - core.model-serving
+      - core.lab-apps
+      accounts:
+      - core.user-qa-intern
+      - core.user-ml-engineer
+      - core.user-release-manager
+      - core.svc-inference
+      - core.svc-distillation
+      - core.svc-registry
+      services:
+      - workhub-https
+      - mail-imaps
+      - mail-submission
+      - webmail-http
+      - notebook-jupyter
+      - distillation-jobs
+      - registry-api
+      - artifact-object-store
+      - dataset-postgres
+      - open-model-api
+    allowed_subnets:
+    - core.enterprise-services
+    - core.data-workflows
+    - core.registry-artifacts
+    - core.model-serving
+    - core.lab-apps
+    operating_scope:
+    - nodes.core.workforce-workstation-01
+    - nodes.core.ml-workstation-01
+    - nodes.core.repo-ticket-01.services.workhub-https
+    - nodes.core.mail-server-01.services.mail-imaps
+    - nodes.core.mail-server-01.services.mail-submission
+    - nodes.core.webmail-01.services.webmail-http
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.model-host-01.services.open-model-api
+    observation_boundaries:
+    - green-activity-view
+behavior_specifications:
+  green-company-live-activity:
+    semantic_version: 1.0.0
+    participant_refs:
+    - green-company-activity
+    participant_role_refs:
+    - green
+    action_contract_refs:
+    - green-workhub-ticket-triage
+    - green-mail-thread-review
+    - green-notebook-evaluation-check
+    - green-mlflow-model-review
+    - green-inference-smoke-request
+    observation_boundary_refs:
+    - green-activity-view
+    outcome_interpretation_rule_refs: []
+    authority_scope_refs: []
+    behavior_mode: autonomous
+    backend_feature_support_refs:
+    - action_contracts
+    - autonomous_execution
+    - behavior_history
+    - observation_boundaries
+    - temporal_contracts
+    autonomous_execution:
+      profile: participant-autonomous-execution/v3
+      participant_implementation_ref: participant-implementation-manifests.keplerops-green-activity.v1
+      clock_ref: activity.green-company-clock
+      progression_policy_ref: activity.green-company-progression
+      work_window_refs:
+      - activity.green-company-work-window
+      pause_window_refs:
+      - activity.green-company-pause-window
+      observation_boundary_ref: activity.green-activity-view
+      stochastic_control_ref: keplerops-green-activity-policy
+      selection_strategy: weighted
+      timing:
+        minimum_ticks: 10
+        maximum_ticks: 30
+      outside_window_disposition: next_opening
+      empty_eligible_disposition: wait
+      action_candidates:
+        workhub_triage:
+          action_ref: activity.green-workhub-ticket-triage
+          weight: 3
+          depends_on: []
+          retryable_failure_classes:
+          - target_unavailable
+          - timeout
+          max_retries: 2
+          cooldown_ticks: 20
+        mail_review:
+          action_ref: activity.green-mail-thread-review
+          weight: 3
+          depends_on: []
+          retryable_failure_classes:
+          - target_unavailable
+          - timeout
+          max_retries: 2
+          cooldown_ticks: 20
+        notebook_eval_check:
+          action_ref: activity.green-notebook-evaluation-check
+          weight: 2
+          depends_on:
+          - workhub_triage
+          retryable_failure_classes:
+          - target_unavailable
+          - resource_exhausted
+          - timeout
+          max_retries: 2
+          cooldown_ticks: 30
+        model_review:
+          action_ref: activity.green-mlflow-model-review
+          weight: 2
+          depends_on:
+          - notebook_eval_check
+          retryable_failure_classes:
+          - target_unavailable
+          - timeout
+          max_retries: 2
+          cooldown_ticks: 30
+        inference_smoke:
+          action_ref: activity.green-inference-smoke-request
+          weight: 1
+          depends_on:
+          - model_review
+          retryable_failure_classes:
+          - target_unavailable
+          - resource_exhausted
+          - timeout
+          max_retries: 2
+          cooldown_ticks: 30
+      max_occurrences: 32
+      max_action_attempts: 64
+      max_burst_size: 2
+      max_in_flight: 1
+      failure_policy: continue
+      evaluation_authority:
+        mode: none
+      resource_budget:
+        policy_id: keplerops-green-activity-budget
+        owners:
+          green:
+            kind: participant
+            ref: green-company-activity
+          range:
+            kind: deployment_tenant
+            ref: core.range-tenant
+          shared-model:
+            kind: shared_service
+            ref: nodes.core.model-host-01.services.open-model-api
+          fleet:
+            kind: fleet
+            ref: fleet.keplerops
+        fairness:
+          policy: weighted_fair
+          priority_class: background
+          weight: 1
+          protected: false
+          borrowing: lendable_only
+          reclaim: yield
+          max_queue_ticks: 20
+          starvation_bound_ticks: 100
+        dimensions:
+          participant-actions:
+            owner_ref: green
+            pool_ref: green-participant-pool
+            resource_kind: action_rate
+            unit: actions
+            accounting_mode: windowed_counter
+            meter_profile_ref: raes.action-attempt/v1
+            limit: 64
+            reservation: 1
+            reset: time_segment
+            window_ticks: 480
+            parent_budget_ref: range-actions
+          range-actions:
+            owner_ref: range
+            pool_ref: range-activity-pool
+            resource_kind: action_rate
+            unit: actions
+            accounting_mode: windowed_counter
+            meter_profile_ref: raes.action-attempt/v1
+            limit: 1024
+            reservation: 1
+            reset: run
+            window_ticks: 480
+            parent_budget_ref: fleet-actions
+          fleet-actions:
+            owner_ref: fleet
+            pool_ref: fleet-activity-pool
+            resource_kind: action_rate
+            unit: actions
+            accounting_mode: windowed_counter
+            meter_profile_ref: raes.action-attempt/v1
+            limit: 204800
+            reservation: 1
+            reset: run
+            window_ticks: 480
+          concurrency:
+            owner_ref: green
+            pool_ref: green-participant-pool
+            resource_kind: concurrent_actions
+            unit: actions
+            accounting_mode: reservable_gauge
+            meter_profile_ref: raes.concurrent-action/v1
+            limit: 1
+            reservation: 1
+            reset: reconciled
+          storage:
+            owner_ref: range
+            pool_ref: range-activity-pool
+            resource_kind: storage_growth
+            unit: bytes
+            accounting_mode: growth_counter
+            meter_profile_ref: raes.logical-byte/v1
+            limit: 268435456
+            reservation: 4096
+            reset: reconciled
+          tokens:
+            owner_ref: shared-model
+            pool_ref: shared-model-pool
+            resource_kind: inference_tokens
+            unit: tokens
+            accounting_mode: windowed_counter
+            meter_profile_ref: tokenizer.example/v1
+            limit: 20000
+            reservation: 500
+            reset: time_segment
+            window_ticks: 480
+          images:
+            owner_ref: range
+            pool_ref: range-activity-pool
+            resource_kind: image_generations
+            unit: images
+            accounting_mode: cumulative_counter
+            meter_profile_ref: raes.image-generation/v1
+            limit: 20
+            reservation: 1
+            reset: run
+          accelerator:
+            owner_ref: fleet
+            pool_ref: fleet-accelerator-pool
+            resource_kind: accelerator
+            unit: accelerator_milliseconds
+            accounting_mode: lease
+            meter_profile_ref: raes.accelerator-class.generic/v1
+            limit: 60000
+            reservation: 1000
+            reset: reconciled

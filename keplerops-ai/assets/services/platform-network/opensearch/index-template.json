@@ -1,0 +1,38 @@
+{
+  "index_patterns": ["keplerops-research-v1-*"],
+  "priority": 100,
+  "version": 1,
+  "_meta": {
+    "description": "Deterministic range-local synthetic research corpus",
+    "owner": "keplerops-platform-network"
+  },
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "1s"
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "document_id": {"type": "keyword"},
+        "source_kind": {"type": "keyword"},
+        "title": {
+          "type": "text",
+          "fields": {"exact": {"type": "keyword"}}
+        },
+        "abstract": {"type": "text"},
+        "published_on": {"type": "date", "format": "strict_date"},
+        "author_org": {"type": "keyword"},
+        "canonical_url": {"type": "keyword", "index": false},
+        "repository_path": {"type": "keyword"},
+        "tags": {"type": "keyword"},
+        "license": {"type": "keyword"},
+        "content_digest": {"type": "keyword"}
+      }
+    },
+    "aliases": {
+      "keplerops-research": {}
+    }
+  }
+}

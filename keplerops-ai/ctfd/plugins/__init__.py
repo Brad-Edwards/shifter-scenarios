@@ -1,0 +1,1 @@
+"""Pack-local CTFd plugins."""

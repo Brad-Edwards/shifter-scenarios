@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "keplerops-eval-runtlme"
+version = "1.0.0"
+description = "KeplerOps trusted evaluation runtime"
+requires-python = ">=3.11"
+authors = [{name = "KeplerOps ML Platform"}]
+
+[tool.setuptools]
+packages = ["keplerops_eval_runtime"]

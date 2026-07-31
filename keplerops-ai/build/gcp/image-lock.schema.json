@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "KeplerOps resolved runtime image lock",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project_id", "images", "auxiliary_images"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "project_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"},
+    "images": {
+      "type": "object",
+      "minProperties": 15,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "digest"],
+        "properties": {
+          "uri": {"type": "string", "pattern": "^[^@\\s]+$"},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "auxiliary_images": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "digest", "local_tag"],
+        "properties": {
+          "uri": {"type": "string", "pattern": "^[^@\\s]+$"},
+          "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "local_tag": {"type": "string", "pattern": "^[^@\\s]+$"}
+        }
+      }
+    }
+  }
+}

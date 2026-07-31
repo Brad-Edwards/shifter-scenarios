@@ -1,0 +1,15 @@
+FROM roundcube/roundcubemail@sha256:fc5c038813a26781adb0f8f1b5639b8c519f7e684df825088508d9d1410f5028
+
+COPY assets/services/platform-communications/mail/roundcube-config.php /var/roundcube/config/keplerops.inc.php
+COPY assets/services/platform-communications/mail/roundcube-healthcheck.php /opt/keplerops/roundcube-healthcheck.php
+
+USER root
+RUN mkdir -p /var/roundcube/db /tmp/roundcube-temp \
+    && chown -R 33:33 /var/roundcube/db /tmp/roundcube-temp /opt/keplerops \
+    && chmod 0644 /var/roundcube/config/keplerops.inc.php /opt/keplerops/roundcube-healthcheck.php
+USER 33:33
+
+EXPOSE 8000
+VOLUME ["/var/roundcube/db"]
+HEALTHCHECK --interval=10s --timeout=4s --start-period=30s --retries=12 \
+  CMD php /opt/keplerops/roundcube-healthcheck.php || exit 1

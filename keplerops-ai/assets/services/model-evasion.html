@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KeplerOps Model Evasion Lab</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0 auto; max-width: 72rem; padding: 2rem; background: #10151d; color: #e8eef6; }
+    form, article { background: #19212c; border: 1px solid #344257; border-radius: .5rem; margin: 1rem 0; padding: 1rem; }
+    label { display: block; margin: .5rem 0; }
+    input, textarea, button { box-sizing: border-box; font: inherit; padding: .6rem; }
+    input, textarea { background: #0d1219; border: 1px solid #53657d; color: inherit; width: 100%; }
+    textarea { min-height: 8rem; }
+    button { cursor: pointer; margin: .25rem .25rem .25rem 0; }
+    pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .meta { color: #aebdd0; }
+    .error { color: #ff9e9e; }
+  </style>
+</head>
+<body>
+  <h1>KeplerOps Model Evasion Lab</h1>
+  <p>Authenticate with the synthetic participant account, then test candidates and real Python-package, data, model-registry, browser-delivery, and sandbox-aware dependencies against the range-local AI stack.</p>
+  <form id="login">
+    <h2>Participant session</h2>
+    <label>Username <input id="username" autocomplete="username" required></label>
+    <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Sign in</button>
+    <output id="login-status"></output>
+  </form>
+  <main id="challenges"></main>
+  <script>
+    "use strict";
+    const status = document.querySelector("#login-status");
+    const root = document.querySelector("#challenges");
+
+    async function request(path, options = {}) {
+      const response = await fetch(path, {
+        credentials: "same-origin",
+        headers: {"Content-Type": "application/json", ...options.headers},
+        ...options,
+      });
+      const contentType = response.headers.get("content-type") || "";
+      const body = contentType.includes("application/json") ? await response.json() : null;
+      if (!response.ok) throw new Error(body && body.detail ? body.detail : `request failed (${response.status})`);
+      return body;
+    }
+
+    function text(tag, value, className = "") {
+      const node = document.createElement(tag);
+      node.textContent = value;
+      if (className) node.className = className;
+      return node;
+    }
+
+    async function showHint(challengeId, tier, output) {
+      try {
+        const result = await request(`/v1/evasion/challenges/${challengeId}/hints/${tier}`, {method: "POST", body: "{}"});
+        output.textContent = `Hint ${tier} (${result.cost} points): ${result.hint}`;
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function runSurrogate(candidate, output) {
+      try {
+        output.className = "";
+        output.textContent = "Querying the disclosed staging policy surface…";
+        const result = await request("/v1/evasion/surrogate", {
+          method: "POST",
+          body: JSON.stringify({candidate, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify(result, null, 2);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function submitAttempt(challenge, candidate, output) {
+      try {
+        output.className = "";
+        output.textContent = "Running hidden controls and the range-local candidate probes…";
+        const result = await request("/v1/evasion/attempt", {
+          method: "POST",
+          body: JSON.stringify({challenge_id: challenge.challenge_id, candidate, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify(result, null, 2);
+        if (result.objective_status === "passed") {
+          const issued = await request(`/v1/evasion/receipts/${challenge.flag_id}`, {method: "POST", body: "{}"});
+          output.textContent += `\n\nReceipt:\n${issued.receipt}`;
+        }
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function appendReceipt(challenge, result, output) {
+      if (result.objective_status !== "passed") return;
+      const issued = await request(`/v1/evasion/receipts/${challenge.flag_id}`, {method: "POST", body: "{}"});
+      output.textContent += `\n\nReceipt:\n${issued.receipt}`;
+    }
+
+    async function publishDataDependency(value, state, output) {
+      try {
+        output.className = "";
+        const rows = JSON.parse(value);
+        const dependency = await request("/v1/evasion/data-dependencies", {
+          method: "POST",
+          body: JSON.stringify({dependency_version: "2.0.0-poisoned", rows, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        const job = await request("/v1/evasion/data-dependency-jobs", {
+          method: "POST", body: JSON.stringify({dependency_id: dependency.dependency_id}),
+        });
+        state.dependencyId = dependency.dependency_id;
+        state.jobId = job.job_id;
+        output.textContent = `${JSON.stringify({dependency, job}, null, 2)}\n\nRun the returned conf through the keplerops_distillation Airflow DAG, then select “Submit completed job”.`;
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function finishDataDependency(challenge, state, output) {
+      try {
+        if (!state.dependencyId || !state.jobId) throw new Error("publish a dependency and job first");
+        const result = await request("/v1/evasion/supply-attempts", {
+          method: "POST",
+          body: JSON.stringify({challenge_id: challenge.challenge_id, dependency_id: state.dependencyId, job_id: state.jobId, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify(result, null, 2);
+        await appendReceipt(challenge, result, output);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function resolveModelDependency(challenge, value, output) {
+      try {
+        output.className = "";
+        const dependency = await request("/v1/evasion/model-dependencies", {
+          method: "POST", body: JSON.stringify({source_url: value, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        const result = await request("/v1/evasion/supply-attempts", {
+          method: "POST", body: JSON.stringify({challenge_id: challenge.challenge_id, dependency_id: dependency.dependency_id, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify({dependency, result}, null, 2);
+        await appendReceipt(challenge, result, output);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function resolveRuntimeDependency(challenge, value, output) {
+      try {
+        output.className = "";
+        const dependency = await request("/v1/evasion/runtime-dependencies", {
+          method: "POST", body: JSON.stringify({package_name: "keplerops-eval-runtlme", package_version: "1.0.0", expected_digest: value, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        const result = await request("/v1/evasion/supply-attempts", {
+          method: "POST", body: JSON.stringify({challenge_id: challenge.challenge_id, dependency_id: dependency.dependency_id, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify({dependency, result}, null, 2);
+        await appendReceipt(challenge, result, output);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function evaluateSandboxDependency(challenge, value, output) {
+      try {
+        output.className = "";
+        const evaluation = await request("/v1/evasion/sandbox-evaluations", {
+          method: "POST", body: JSON.stringify({dependency_id: value, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        const result = await request("/v1/evasion/supply-attempts", {
+          method: "POST", body: JSON.stringify({challenge_id: challenge.challenge_id, evaluation_id: evaluation.evaluation_id, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify({evaluation, result}, null, 2);
+        await appendReceipt(challenge, result, output);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function deliverWebExploit(challenge, value, output) {
+      try {
+        output.className = "";
+        const delivery = await request("/v1/evasion/web-deliveries", {
+          method: "POST", body: JSON.stringify({content_template: value, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        const write = await request(`/public/evasion/previews/${delivery.delivery_id}`, {
+          method: "POST", body: JSON.stringify({path: delivery.exploit_path}),
+        });
+        const result = await request("/v1/evasion/supply-attempts", {
+          method: "POST", body: JSON.stringify({challenge_id: challenge.challenge_id, delivery_id: delivery.delivery_id, participant_interface: "browser", assistance_mode: "none"}),
+        });
+        output.textContent = JSON.stringify({delivery, write, result}, null, 2);
+        await appendReceipt(challenge, result, output);
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    function renderChallenge(challenge) {
+      const card = document.createElement("article");
+      card.append(text("h2", `${challenge.challenge_id}: ${challenge.title}`));
+      card.append(text("p", `${challenge.difficulty} · ${challenge.points} points · ${challenge.interfaces.join(" / ")}`, "meta"));
+      card.append(text("p", challenge.question));
+      const hintOutput = text("p", "Hints are optional.", "meta");
+      for (let tier = 1; tier <= 3; tier += 1) {
+        const button = text("button", `Hint ${tier}`);
+        button.type = "button";
+        button.addEventListener("click", () => showHint(challenge.challenge_id, tier, hintOutput));
+        card.append(button);
+      }
+      card.append(hintOutput);
+      const candidate = document.createElement("textarea");
+      candidate.setAttribute("aria-label", `${challenge.challenge_id} candidate`);
+      candidate.placeholder = {
+        "kep-m02-h": "Publish the supplied wheel from the terminal, then paste its returned sha256 digest",
+        "kep-m02-i": "Enter a JSON array containing exactly one label for each supply-01 through supply-04 sample",
+        "kep-m02-j": "Enter the exact WorkHub generic-package URL to resolve",
+        "kep-m02-k": "Enter an HTML template containing {{NONCE}} and JavaScript that sets document.body.dataset.kepleropsEffect",
+        "kep-m02-m": "Enter the runtime dependency ID returned by kep-m02-h",
+      }[challenge.challenge_id] || "Enter the candidate input sent to the guarded model";
+      card.append(candidate);
+      const output = document.createElement("pre");
+      if (challenge.challenge_id === "kep-m02-h") {
+        const run = text("button", "Resolve and execute Python dependency");
+        run.type = "button";
+        run.addEventListener("click", () => resolveRuntimeDependency(challenge, candidate.value, output));
+        card.append(run);
+      } else if (challenge.challenge_id === "kep-m02-i") {
+        const state = {};
+        const publish = text("button", "Publish and queue dependency");
+        publish.type = "button";
+        publish.addEventListener("click", () => publishDataDependency(candidate.value, state, output));
+        const finish = text("button", "Submit completed job");
+        finish.type = "button";
+        finish.addEventListener("click", () => finishDataDependency(challenge, state, output));
+        card.append(publish, finish);
+      } else if (challenge.challenge_id === "kep-m02-j") {
+        const run = text("button", "Resolve model dependency");
+        run.type = "button";
+        run.addEventListener("click", () => resolveModelDependency(challenge, candidate.value, output));
+        card.append(run);
+      } else if (challenge.challenge_id === "kep-m02-k") {
+        const run = text("button", "Exploit and run browser delivery");
+        run.type = "button";
+        run.addEventListener("click", () => deliverWebExploit(challenge, candidate.value, output));
+        card.append(run);
+      } else if (challenge.challenge_id === "kep-m02-m") {
+        const run = text("button", "Run same-digest sandbox comparison");
+        run.type = "button";
+        run.addEventListener("click", () => evaluateSandboxDependency(challenge, candidate.value, output));
+        card.append(run);
+      } else {
+        const run = text("button", "Run candidate");
+        run.type = "button";
+        run.addEventListener("click", () => submitAttempt(challenge, candidate.value, output));
+        card.append(run);
+      }
+      if (challenge.challenge_id === "kep-m02-e") {
+        const surrogate = text("button", "Probe staging surrogate");
+        surrogate.type = "button";
+        surrogate.addEventListener("click", () => runSurrogate(candidate.value, output));
+        card.append(surrogate);
+      }
+      card.append(output);
+      return card;
+    }
+
+    async function loadChallenges() {
+      const payload = await request("/v1/evasion/challenges");
+      root.replaceChildren(...payload.challenges.map(renderChallenge));
+    }
+
+    document.querySelector("#login").addEventListener("submit", async event => {
+      event.preventDefault();
+      status.className = "";
+      status.textContent = "Signing in…";
+      try {
+        await request("/v1/browser/login", {
+          method: "POST",
+          body: JSON.stringify({username: document.querySelector("#username").value, password: document.querySelector("#password").value}),
+        });
+        document.querySelector("#password").value = "";
+        status.textContent = "Authenticated";
+        await loadChallenges();
+      } catch (error) { status.textContent = error.message; status.className = "error"; }
+    });
+  </script>
+</body>
+</html>

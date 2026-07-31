@@ -1,0 +1,195 @@
+name: module-07-training-poisoning-full-atlas-expansion-b
+version: 1.0.0
+module:
+  id: shifter/module-07-training-poisoning-full-atlas-expansion-b
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m07-i
+    conditions:
+    - kep-m07-i-complete
+    propositions:
+    - kep-m07-i-satisfied
+    assertions:
+    - kep-m07-i-satisfied
+    evidence_requirements:
+    - kep-m07-i-proof
+    objectives: *id001
+  description: Source implementation contracts for module-07-training-poisoning full-ATLAS
+    expansion.
+behavior_specifications:
+  kep-m07-i:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.distillation-runner-01.services.distillation-jobs
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - ai-attack-staging
+    - resource-development
+    - persistence
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m07-i
+        flag_id: flag-executable-model-artifact
+        module: module-07-training-poisoning
+        outcome: training-poisoning
+        title: Executable Model Artifact
+        difficulty: expert
+        target_minutes: 50
+        min_minutes: 32
+        max_minutes: 75
+        points: 300
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m07-b
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: executable_model_artifact
+        telemetry_profile: executable_model_artifact
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Model Supply Chain
+          question: Embed contained executable code in an otherwise functioning model artifact and
+            trigger it through the normal model-loading workflow.
+          hints:
+          - Start on the notebook, mlflow, artifact-store surface and keep each artifact bound to
+            your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-executable-model-artifact
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-executable-model-artifact
+          kind: training_expansion
+          predicate: Bind malicious model digest, successful baseline inference, real
+            deserialization execution, and contained marker; standalone scripts or broken models
+            fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-executable-model-artifact
+            evidence: ev-executable-model-artifact
+            event_kind: executable_model_artifact
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_07_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-07-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0018.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m07xb.kep-m07-i
+        evidence_requirement_ref: m07xb.kep-m07-i-proof
+conditions:
+  kep-m07-i-complete:
+    name: Executable Model Artifact evidence accepted
+    proposition: kep-m07-i-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m07-i-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m07-i.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m07-i-proof
+assertions:
+  kep-m07-i-satisfied:
+    description: Participant completion of kep-m07-i is observed.
+    proposition: kep-m07-i-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m07-i-proof:
+    description: Capture digest-safe participant-scoped evidence for Executable Model Artifact.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m07-i'
+    - 'Proof obligation: executable_model_artifact'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m07-i:
+    name: Executable Model Artifact
+    description: Embed contained executable code in an otherwise functioning model artifact and
+      trigger it through the normal model-loading workflow.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m07-i-satisfied
+    depends_on:
+    - m07.kep-m07-b

@@ -1,0 +1,363 @@
+name: module-06-adversarial-input-full-atlas-expansion-f
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-f
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-q
+    - kep-m06-r
+    conditions:
+    - kep-m06-q-complete
+    - kep-m06-r-complete
+    propositions:
+    - kep-m06-q-satisfied
+    - kep-m06-r-satisfied
+    assertions:
+    - kep-m06-q-satisfied
+    - kep-m06-r-satisfied
+    evidence_requirements:
+    - kep-m06-q-proof
+    - kep-m06-r-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-q:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-q
+        flag_id: flag-custom-attack-builder
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Custom Attack Builder
+        difficulty: intermediate
+        target_minutes: 24
+        min_minutes: 15
+        max_minutes: 36
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m06-o
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: custom_attack_builder
+        telemetry_profile: custom_attack_builder
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Develop a small custom attack capability in the notebook and stage the versioned
+            artifact for use by another challenge.
+          hints:
+          - Start on the notebook, gitea, artifact-store surface and keep each artifact bound to
+            your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-custom-attack-builder
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-custom-attack-builder
+          kind: adversarial_expansion
+          predicate: Require participant-authored source, build output, registry digest, and
+            successful dry run; copied prebuilt artifacts fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-custom-attack-builder
+            evidence: ev-custom-attack-builder
+            event_kind: custom_attack_builder
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0017
+          - AML.T0079
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xf.kep-m06-q
+        evidence_requirement_ref: m06xf.kep-m06-q-proof
+  kep-m06-r:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-r
+        flag_id: flag-white-box-optimizer
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: White-Box Optimizer
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m06-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: white_box_optimizer
+        telemetry_profile: white_box_optimizer
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Use gradients from a fully accessible model to craft an adversarial example that
+            transfers to the declared live target.
+          hints:
+          - Start on the notebook, model-host, inference-api surface and keep each artifact bound to
+            your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-white-box-optimizer
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-white-box-optimizer
+          kind: adversarial_expansion
+          predicate: Bind source model digest, gradient computation, perturbation budget, source
+            success, and target transfer; black-box query-only runs fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-white-box-optimizer
+            evidence: ev-white-box-optimizer
+            event_kind: white_box_optimizer
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0043.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xf.kep-m06-r
+        evidence_requirement_ref: m06xf.kep-m06-r-proof
+conditions:
+  kep-m06-q-complete:
+    name: Custom Attack Builder evidence accepted
+    proposition: kep-m06-q-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-r-complete:
+    name: White-Box Optimizer evidence accepted
+    proposition: kep-m06-r-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-q-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-q.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-q-proof
+  kep-m06-r-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-r.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-r-proof
+assertions:
+  kep-m06-q-satisfied:
+    description: Participant completion of kep-m06-q is observed.
+    proposition: kep-m06-q-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-r-satisfied:
+    description: Participant completion of kep-m06-r is observed.
+    proposition: kep-m06-r-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-q-proof:
+    description: Capture digest-safe participant-scoped evidence for Custom Attack Builder.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-q'
+    - 'Proof obligation: custom_attack_builder'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-r-proof:
+    description: Capture digest-safe participant-scoped evidence for White-Box Optimizer.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-r'
+    - 'Proof obligation: white_box_optimizer'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-q:
+    name: Custom Attack Builder
+    description: Develop a small custom attack capability in the notebook and stage the versioned
+      artifact for use by another challenge.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-q-satisfied
+    depends_on:
+    - m06xe.kep-m06-o
+  kep-m06-r:
+    name: White-Box Optimizer
+    description: Use gradients from a fully accessible model to craft an adversarial example that
+      transfers to the declared live target.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-r-satisfied
+    depends_on:
+    - m06.kep-m06-a

@@ -1,0 +1,41 @@
+static_resources:
+  listeners:
+    - name: workhub
+      address: {socket_address: {address: 0.0.0.0, port_value: 8443}}
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: workhub
+                route_config:
+                  name: workhub
+                  virtual_hosts:
+                    - name: workhub
+                      domains: ["workhub.keplerops.lab", "workhub.keplerops.lab:8443", "repo-ticket-01.keplerops.lab", "repo-ticket-01.keplerops.lab:8443"]
+                      routes:
+                        - {match: {prefix: "/v2/"}, route: {cluster: gitea}}
+                        - {match: {prefix: "/git/"}, route: {cluster: gitea, prefix_rewrite: "/"}}
+                        - {match: {prefix: "/tickets/"}, route: {cluster: redmine, prefix_rewrite: "/"}}
+                        - {match: {prefix: "/"}, route: {cluster: redmine}}
+                http_filters:
+                  - name: envoy.filters.http.router
+                    typed_config: {"@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router}
+          transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              common_tls_context:
+                tls_certificates:
+                  - certificate_chain: {filename: /run/tls/tls.crt}
+                    private_key: {filename: /run/tls/tls.key}
+  clusters:
+    - name: gitea
+      connect_timeout: 2s
+      type: STATIC
+      load_assignment: {cluster_name: gitea, endpoints: [{lb_endpoints: [{endpoint: {address: {socket_address: {address: 127.0.0.1, port_value: 3000}}}}]}]}
+    - name: redmine
+      connect_timeout: 2s
+      type: STATIC
+      load_assignment: {cluster_name: redmine, endpoints: [{lb_endpoints: [{endpoint: {address: {socket_address: {address: 127.0.0.1, port_value: 3001}}}}]}]}
+admin: {access_log_path: /dev/null, address: {socket_address: {address: 127.0.0.1, port_value: 9901}}}

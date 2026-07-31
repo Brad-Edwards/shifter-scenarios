@@ -1,0 +1,340 @@
+name: keplerops-module-10-full-atlas-expansion-e
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-10-full-atlas-expansion-e
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m10-p
+    - kep-m10-q
+    conditions:
+    - kep-m10-p-complete
+    - kep-m10-q-complete
+    propositions:
+    - kep-m10-p-satisfied
+    - kep-m10-q-satisfied
+    assertions:
+    - kep-m10-p-satisfied
+    - kep-m10-q-satisfied
+    evidence_requirements:
+    - kep-m10-p-proof
+    - kep-m10-q-proof
+    objectives: *id001
+  description: Source implementation contracts for Module 10 full-ATLAS deployed-impact expansion.
+behavior_specifications:
+  kep-m10-p:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.platform-impact-01.services.platform-impact-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.exfil-sink.services.exfil-s3
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    ai_offensive_behavior_refs: &id004
+    - ai-model-access
+    - exfiltration
+    - impact
+    - command-and-control
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-p
+        flag_id: flag-dataset-integrity-destruction
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Dataset Integrity Destruction
+        difficulty: intermediate
+        target_minutes: 30
+        min_minutes: 18
+        max_minutes: 45
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m07-a
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: dataset_integrity_destruction
+        telemetry_profile: dataset_integrity_destruction
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Erode the live training dataset through its normal contribution workflow until
+            the declared integrity metric fails.
+          hints:
+          - Start from the workhub, dataset-registry surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-dataset-integrity-destruction
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-dataset-integrity-destruction
+          kind: deployed_ai_impact_expansion
+          predicate: Bind participant submissions, accepted dataset revisions, integrity regression,
+            and unaffected protected control; direct database edits fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-dataset-integrity-destruction
+            evidence: ev-dataset-integrity-destruction
+            event_kind: dataset_integrity_destruction_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0059
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xe.kep-m10-p
+        evidence_requirement_ref: m10xe.kep-m10-p-proof
+  kep-m10-q:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m10-q
+        flag_id: flag-agent-tool-data-destruction
+        module: module-10-ai-capstone
+        outcome: ai-capstone
+        title: Agent Tool Data Destruction
+        difficulty: expert
+        target_minutes: 50
+        min_minutes: 32
+        max_minutes: 75
+        points: 300
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-n
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 30
+        - 75
+        proof_obligation: agent_tool_data_destruction
+        telemetry_profile: agent_tool_data_destruction
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Deployed AI Impact
+          question: Coerce the live agent to invoke its real destructive tool against a recoverable
+            synthetic dataset and verify loss through the user surface.
+          hints:
+          - Start from the inference-api, agent-tool-runner surface and keep every artifact in your
+            participant namespace.
+          - Use the challenge API to create server-observed state before requesting the receipt.
+          - If the proof is rejected, compare the returned failure class with the prerequisite and
+            reset-generation requirements.
+        flag_delivery:
+          evidence_id: ev-agent-tool-data-destruction
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: range-ops-controller
+        proof:
+          evidence_id: ev-agent-tool-data-destruction
+          kind: deployed_ai_impact_expansion
+          predicate: Bind model-selected destructive call, policy authorization, deleted object set,
+            user-visible loss, and successful reset restore; direct storage deletion fails.
+          proof_fields: *id002
+          reset_owner: range-ops-controller
+          mutates_scenario_state: true
+          event:
+            id: event-agent-tool-data-destruction
+            evidence: ev-agent-tool-data-destruction
+            event_kind: agent_tool_data_destruction_10
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: range-ops-controller
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_10_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-10-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0101
+          assurance: source-implemented-pre-playtest
+        objective_ref: m10xe.kep-m10-q
+        evidence_requirement_ref: m10xe.kep-m10-q-proof
+conditions:
+  kep-m10-p-complete:
+    name: Dataset Integrity Destruction evidence accepted
+    proposition: kep-m10-p-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m10-q-complete:
+    name: Agent Tool Data Destruction evidence accepted
+    proposition: kep-m10-q-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m10-p-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-p.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-p-proof
+  kep-m10-q-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m10-q.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m10-q-proof
+assertions:
+  kep-m10-p-satisfied:
+    description: Participant completion of kep-m10-p is observed.
+    proposition: kep-m10-p-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m10-q-satisfied:
+    description: Participant completion of kep-m10-q is observed.
+    proposition: kep-m10-q-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m10-p-proof:
+    description: Capture digest-safe participant-scoped evidence for Dataset Integrity Destruction.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-p'
+    - 'Proof obligation: dataset_integrity_destruction'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m10-q-proof:
+    description: Capture digest-safe participant-scoped evidence for Agent Tool Data Destruction.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m10-q'
+    - 'Proof obligation: agent_tool_data_destruction'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m10-p:
+    name: Dataset Integrity Destruction
+    description: Erode the live training dataset through its normal contribution workflow until the
+      declared integrity metric fails.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-p-satisfied
+    depends_on:
+    - m07.kep-m07-a
+  kep-m10-q:
+    name: Agent Tool Data Destruction
+    description: Coerce the live agent to invoke its real destructive tool against a recoverable
+      synthetic dataset and verify loss through the user surface.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m10-q-satisfied
+    depends_on:
+    - m05xc.kep-m05-n

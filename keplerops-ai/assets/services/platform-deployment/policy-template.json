@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "range_instance": "__RANGE_INSTANCE__",
+  "participant": "__PARTICIPANT__",
+  "project_id": "__PROJECT_ID__",
+  "region": "__REGION__",
+  "service_account": "__SERVICE_ACCOUNT__",
+  "registry_url": "https://repo-ticket-01.keplerops.lab",
+  "registry_username": "ml.engineer",
+  "repositories": [
+    "ml.engineer/keplerops-workspace"
+  ],
+  "images": [
+    "__PLATFORM_DEPLOYMENT_IMAGE__"
+  ],
+  "command_profiles": {
+    "integrity-inventory": {
+      "command": [
+        "/opt/keplerops/platform-deployment/entrypoint.sh"
+      ],
+      "args": [
+        "workspace"
+      ]
+    }
+  },
+  "resource_profiles": {
+    "workspace-small": {
+      "cpu": "1",
+      "memory": "512Mi",
+      "timeout_seconds": 300,
+      "max_retries": 0
+    }
+  },
+  "min_ttl_seconds": 300,
+  "max_ttl_seconds": 1800,
+  "export_bucket": "__EXPORT_BUCKET__",
+  "export_prefix": "keplerops/__RANGE_INSTANCE__/__PARTICIPANT__/workspaces",
+  "export_max_files": 16,
+  "export_max_bytes": 8388608
+}

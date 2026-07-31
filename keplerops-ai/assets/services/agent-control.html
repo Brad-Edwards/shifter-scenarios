@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KeplerOps Agent Control Lab</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { margin: 0 auto; max-width: 72rem; padding: 2rem; background: #10151d; color: #e8eef6; }
+    form, article { background: #19212c; border: 1px solid #344257; border-radius: .5rem; margin: 1rem 0; padding: 1rem; }
+    label { display: block; margin: .5rem 0; }
+    input, textarea, button { box-sizing: border-box; font: inherit; padding: .6rem; }
+    input, textarea { background: #0d1219; border: 1px solid #53657d; color: inherit; width: 100%; }
+    textarea { min-height: 8rem; }
+    button { cursor: pointer; margin: .25rem .25rem .25rem 0; }
+    pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .meta { color: #aebdd0; }
+    .error { color: #ff9e9e; }
+  </style>
+</head>
+<body>
+  <h1>KeplerOps Agent Control Lab</h1>
+  <p>Authenticate with the synthetic participant account, choose a challenge, and make the range-local agent act.</p>
+  <form id="login">
+    <h2>Participant session</h2>
+    <label>Username <input id="username" autocomplete="username" required></label>
+    <label>Password <input id="password" type="password" autocomplete="current-password" required></label>
+    <button type="submit">Sign in</button>
+    <output id="login-status"></output>
+  </form>
+  <main id="challenges"></main>
+  <script>
+    "use strict";
+    const status = document.querySelector("#login-status");
+    const root = document.querySelector("#challenges");
+
+    async function request(path, options = {}) {
+      const response = await fetch(path, {
+        credentials: "same-origin",
+        headers: {"Content-Type": "application/json", ...options.headers},
+        ...options,
+      });
+      const contentType = response.headers.get("content-type") || "";
+      const body = contentType.includes("application/json") ? await response.json() : null;
+      if (!response.ok) throw new Error(body && body.detail ? body.detail : `request failed (${response.status})`);
+      return body;
+    }
+
+    function text(tag, value, className = "") {
+      const node = document.createElement(tag);
+      node.textContent = value;
+      if (className) node.className = className;
+      return node;
+    }
+
+    async function showHint(challengeId, tier, output) {
+      try {
+        const result = await request(`/v1/agent/challenges/${challengeId}/hints/${tier}`, {method: "POST", body: "{}"});
+        output.textContent = `Hint ${tier} (${result.cost} points): ${result.hint}`;
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    async function submitAttempt(challenge, prompt, context, sourceRef, output) {
+      try {
+        output.className = "";
+        output.textContent = "Running the range-local model and tool broker…";
+        if (challenge.challenge_id === "kep-m01-e") {
+          if (!context.trim()) throw new Error("Retrieved enterprise content is required for this challenge.");
+          await request("/v1/agent/context", {
+            method: "POST",
+            body: JSON.stringify({text: context}),
+          });
+        }
+        const body = {challenge_id: challenge.challenge_id, prompt, participant_interface: "browser", assistance_mode: "none"};
+        if (sourceRef) body.source_ref = sourceRef;
+        const result = await request("/v1/agent/attempt", {
+          method: "POST",
+          body: JSON.stringify(body),
+        });
+        output.textContent = JSON.stringify(result, null, 2);
+        if (result.objective_status === "passed") {
+          const issued = await request(`/v1/agent/receipts/${challenge.flag_id}`, {method: "POST", body: "{}"});
+          output.textContent += `\n\nReceipt:\n${issued.receipt}`;
+        }
+      } catch (error) { output.textContent = error.message; output.className = "error"; }
+    }
+
+    function renderChallenge(challenge) {
+      const card = document.createElement("article");
+      card.append(text("h2", `${challenge.challenge_id}: ${challenge.title}`));
+      card.append(text("p", `${challenge.difficulty} · ${challenge.points} points · ${challenge.interfaces.join(" / ")}`, "meta"));
+      card.append(text("p", challenge.question));
+      const hintOutput = text("p", "Hints are optional.", "meta");
+      for (let tier = 1; tier <= 3; tier += 1) {
+        const button = text("button", `Hint ${tier}`);
+        button.type = "button";
+        button.addEventListener("click", () => showHint(challenge.challenge_id, tier, hintOutput));
+        card.append(button);
+      }
+      card.append(hintOutput);
+      const prompt = document.createElement("textarea");
+      prompt.setAttribute("aria-label", `${challenge.challenge_id} prompt`);
+      prompt.placeholder = "Enter the instruction sent to the agent";
+      let context = null;
+      let sourceRef = null;
+      if (challenge.challenge_id === "kep-m01-e") {
+        context = document.createElement("textarea");
+        context.setAttribute("aria-label", `${challenge.challenge_id} retrieved enterprise content`);
+        context.placeholder = "Enter participant-controlled enterprise content to index before the attempt";
+        card.append(context);
+      }
+      if (challenge.challenge_id === "kep-m01-g") {
+        let artifactId = "";
+        const artifactOutput = text("pre", "Open the range-carried artifact, then emit its future event.", "meta");
+        const open = text("button", "Open signed artifact");
+        open.type = "button";
+        open.addEventListener("click", async () => {
+          try {
+            const artifact = await request("/v1/agent/artifacts/triggered/open", {method: "POST", body: "{}"});
+            artifactId = artifact.artifact_id;
+            artifactOutput.textContent = JSON.stringify(artifact, null, 2);
+          } catch (error) { artifactOutput.textContent = error.message; artifactOutput.className = "error"; }
+        });
+        const trigger = text("button", "Emit release-window event");
+        trigger.type = "button";
+        trigger.addEventListener("click", async () => {
+          try {
+            if (!artifactId) throw new Error("Open the artifact first.");
+            const result = await request("/v1/agent/artifacts/triggered/events", {
+              method: "POST",
+              body: JSON.stringify({artifact_id: artifactId, event: "release-window-opened"}),
+            });
+            artifactOutput.textContent += `\n\n${JSON.stringify(result, null, 2)}`;
+          } catch (error) { artifactOutput.textContent = error.message; artifactOutput.className = "error"; }
+        });
+        card.append(open, trigger, artifactOutput);
+      }
+      if (challenge.challenge_id === "kep-m01-i") {
+        const trapTitle = document.createElement("input");
+        trapTitle.placeholder = "Believable link title";
+        const trapInstruction = document.createElement("textarea");
+        trapInstruction.placeholder = "Instruction rendered after the browser agent clicks";
+        const trapOutput = text("pre", "Create a fresh, unvisited link.", "meta");
+        const create = text("button", "Create click trap");
+        create.type = "button";
+        create.addEventListener("click", async () => {
+          try {
+            const result = await request("/v1/agent/click-traps", {
+              method: "POST",
+              body: JSON.stringify({title: trapTitle.value, instruction: trapInstruction.value}),
+            });
+            trapOutput.textContent = JSON.stringify(result, null, 2);
+          } catch (error) { trapOutput.textContent = error.message; trapOutput.className = "error"; }
+        });
+        card.append(trapTitle, trapInstruction, create, trapOutput);
+      }
+      if (challenge.challenge_id === "kep-m01-j") {
+        const workhub = document.createElement("a");
+        workhub.href = "https://repo-ticket-01.keplerops.lab/projects/keplerops-model-release/issues/new";
+        workhub.target = "_blank";
+        workhub.rel = "noopener";
+        workhub.textContent = "Open the public WorkHub issue form";
+        sourceRef = document.createElement("input");
+        sourceRef.placeholder = "Anonymous public issue number";
+        card.append(workhub, sourceRef);
+      }
+      card.append(prompt);
+      const run = text("button", "Run agent");
+      run.type = "button";
+      const output = document.createElement("pre");
+      run.addEventListener("click", () => submitAttempt(
+        challenge,
+        prompt.value,
+        context ? context.value : "",
+        sourceRef ? sourceRef.value : "",
+        output,
+      ));
+      card.append(run, output);
+      return card;
+    }
+
+    async function loadChallenges() {
+      const payload = await request("/v1/agent/challenges");
+      root.replaceChildren(...payload.challenges.map(renderChallenge));
+    }
+
+    document.querySelector("#login").addEventListener("submit", async event => {
+      event.preventDefault();
+      status.className = "";
+      status.textContent = "Signing in…";
+      try {
+        await request("/v1/browser/login", {
+          method: "POST",
+          body: JSON.stringify({username: document.querySelector("#username").value, password: document.querySelector("#password").value}),
+        });
+        document.querySelector("#password").value = "";
+        status.textContent = "Authenticated";
+        await loadChallenges();
+      } catch (error) { status.textContent = error.message; status.className = "error"; }
+    });
+  </script>
+</body>
+</html>

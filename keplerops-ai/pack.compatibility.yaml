@@ -1,0 +1,806 @@
+schema_version: 1
+pack:
+  name: keplerops-ai
+  title: "KeplerOps AI Systems"
+  version: 0.16.0
+  status: draft
+  provenance_ledger: docs/provenance-ledger.yaml
+  source:
+    requirement: KEP-0001
+    upstream_references:
+      - https://aisecurity.forum/events/vegas-ai-security-forum-26/
+      - https://github.com/mitre-atlas/atlas-data
+artifact_boundaries:
+  participant_visible:
+    - path: README.md
+      export: public
+      description: Participant-safe pack overview and status boundary.
+    - path: assets/briefing/
+      export: public
+      description: Participant mission, allowed-target boundary, and start choices.
+  operator_only:
+    - path: .gcloudignore
+      export: operator
+      description: Excludes generated build, Terraform, and operator state from Cloud Build source archives.
+    - path: ctfd/
+      export: operator
+      description: Reference CTFd loader, reconciliation client, runbook, and tests.
+    - path: sdl/
+      export: operator
+      description: "Sole logical scenario authority: composition root, complete environment, participant start state, green live-activity behavior, ten module envelopes, 134 realized challenge behaviors, and one reserved planned challenge design."
+    - path: validation/requirements.txt
+      export: operator
+      description: Exact PyPI pin for the ACES SDL parser and semantic implementation.
+    - path: validation/validate_aces_sdl.py
+      export: operator
+      description: ACES parse, semantic, version-pin, and external tactic-reconciliation validator.
+    - path: validation/tests/test_validate_aces_sdl.py
+      export: operator
+      description: Mutation tests for the ACES SDL and ATLAS projection binding.
+    - path: design/README.md
+      export: operator
+      description: Boundary statement prohibiting parallel non-ACES scenario projections.
+    - path: assets/services/
+      export: operator
+      description: Pack-local service, upstream-wrapper, identity, proxy, and telemetry configuration source.
+    - path: assets/content/credentials/
+      export: operator
+      description: Synthetic training credentials planted into the participant world by the pack-local build.
+    - path: assets/content/company-state/
+      export: operator
+      description: Canonical synthetic company corpus and exact dataset/artifact bytes bound by native RAES content placements.
+    - path: assets/workflows/
+      export: operator
+      description: Airflow distillation workflow and immutable image source.
+    - path: build/
+      export: operator
+      description: GCP provider binding, image supply, lifecycle tooling, diagnostics, and static tests.
+    - path: tests/
+      export: operator
+      description: Kasm-only participant live rehearsal, canonical coverage joins, safe report renderer, and unit tests.
+    - path: telemetry/
+      export: operator
+      description: Versioned participant-run research envelope, field policy, capture modes, source catalog, data dictionary, and export contract.
+    - path: docs/documentation-inventory.md
+      export: operator
+      description: Documentation authority, audience, source-of-truth, and update-trigger inventory for the documentation reconciliation true-up.
+    - path: docs/operator-playtest-guide.md
+      export: operator
+      description: Practical operator and playtest runbook for build/reuse, participant entry, CTFd projection, reset, evidence, telemetry export, troubleshooting, and Phase E.
+    - path: docs/playtester-guide/
+      export: operator
+      description: Structured playtester handoff folder with coordinator quickstart, participant-start boundary, telemetry notes, sanity log, and one SDL-backed walkthrough file per playable challenge.
+    - path: docs/topology-reference-triangle.md
+      export: operator
+      description: Operator-readable topology, participant surface, isolation, and reference-triangle design.
+    - path: docs/software-boundary-proof-report.md
+      export: operator
+      description: Sanitized retained-range proof for the 28-node SDL software foundation and all thirteen new-node service gates.
+    - path: docs/golden-readiness-checklist.md
+      export: operator
+      description: Operator final-review checklist.
+    - path: docs/manual-walkthrough-report.md
+      export: operator
+      description: Sanitized generation-55 final manual participant walkthrough result and remaining closure gates.
+    - path: docs/module-01-proof-report.md
+      export: operator
+      description: Sanitized generation-55 manual participant path and corrected reliability status for module 01.
+    - path: docs/module-02-proof-report.md
+      export: operator
+      description: Sanitized participant walkthrough, reliability, integrated rehearsal, reset, and telemetry evidence for module 02.
+    - path: docs/module-03-proof-report.md
+      export: operator
+      description: Sanitized generation-20 reliability and generation-55 manual participant-surface, reset, health, and receipt evidence for participant-proven module 03.
+    - path: docs/module-04-proof-report.md
+      export: operator
+      description: Sanitized generation-21 reliability and generation-55 manual model-disclosure, classifier-privacy, reset, health, negative-control, and receipt evidence for participant-proven module 04.
+    - path: docs/module-05-proof-report.md
+      export: operator
+      description: Sanitized generation-21 reliability and generation-55 manual durable-memory, restart, brokered-effect, reset, health, negative-control, and receipt evidence for participant-proven module 05.
+    - path: docs/module-06-proof-report.md
+      export: operator
+      description: Sanitized generation-21 reliability and generation-55 manual adversarial-artifact, model-control, bounded-search, transfer, telemetry, reset, health, negative-control, and receipt evidence for participant-proven module 06.
+    - path: docs/module-07-proof-report.md
+      export: operator
+      description: Sanitized generation-21 seven-sample and generation-55 manual training-lineage, real-training, model-artifact, telemetry, corrected reset closure, health, negative-control, and receipt evidence for participant-proven module 07.
+    - path: docs/module-08-proof-report.md
+      export: operator
+      description: Sanitized automated, generation-55 manual, and generation-21 current-tree live-teacher corpus, real proxy training, fidelity, telemetry, reset, health, route, negative-control, and receipt evidence for module 08.
+    - path: docs/module-09-proof-report.md
+      export: operator
+      description: Sanitized automated, generation-55 manual, and generation-21 current-tree candidate, registry, signed-approval, hidden-behavior, promotion, reload, reset, telemetry, and receipt evidence for module 09.
+    - path: docs/module-10-proof-report.md
+      export: operator
+      description: Sanitized automated, generation-55 manual, and generation-21 current-tree deployment, contained impact, full-artifact theft, joined receipt, corrected reset closure, health, and negative-control evidence for module 10.
+    - path: docs/walkthroughs/module-04-model-secrets.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the five module-04 challenge items.
+    - path: docs/walkthroughs/module-05-agent-persistence.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the five module-05 durable agent-state items.
+    - path: docs/walkthroughs/module-06-adversarial-input.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the six module-06 adversarial-input items.
+    - path: docs/walkthroughs/module-07-training-poisoning.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the six module-07 training-poisoning items.
+    - path: docs/walkthroughs/module-08-model-extraction.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the six module-08 model-extraction items.
+    - path: docs/walkthroughs/module-09-model-backdoor.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the seven module-09 model-backdoor and promotion items.
+    - path: docs/walkthroughs/module-10-ai-capstone.md
+      export: operator
+      description: Operator walkthrough and one-pass rehearsal contract for the seven module-10 deployed-impact and model-theft items.
+    - path: docs/aces-sdl.md
+      export: operator
+      description: SDL/start-state authoring boundary for later slices.
+    - path: docs/company-state.md
+      export: operator
+      description: Company-state authority, materialization, golden-adapter, reset/readback, and portability boundary.
+    - path: validation/validate_company_state.py
+      export: operator
+      description: Concrete company object, reference, timeline, safety, and source-byte digest validator.
+    - path: validation/validate_contract.py
+      export: operator
+      description: Static validator for this draft skeleton.
+    - path: validation/tests/test_validate_contract.py
+      export: operator
+      description: Unit test for the draft skeleton validator.
+    - path: aces_contract.py
+      export: operator
+      description: Sole accessor and realization-projection layer over the expanded modular ACES SDL.
+  oracle_only:
+    - path: oracle/README.md
+      export: private
+      description: Boundary statement for private non-ACES oracle contracts.
+    - path: docs/attack-path.md
+      export: private
+      description: Canonical hidden path and proof boundary; not participant-facing.
+    - path: docs/atlas-coverage-plan.md
+      export: private
+      description: Human-readable experience, progression, and ATLAS review plan.
+    - path: docs/atlas-challenge-architecture.md
+      export: private
+      description: Human rendering of the complete SDL-owned full-ATLAS challenge architecture.
+    - path: docs/challenge-portfolio.md
+      export: private
+      description: Human rendering and rationale for the SDL-owned eight-hour challenge inventory, timing, difficulty, dependency, scoring, reliability, infrastructure, and capture design.
+    - path: assets/content/datasets/
+      export: private
+      description: Synthetic evaluation, context, and distillation seed rows.
+    - path: assets/model-artifacts/
+      export: private
+      description: Revision- and digest-pinned model, adapter, and deployment manifests.
+    - path: assets/oracle/
+      export: private
+      description: Oracle-only synthetic model-privacy population; no scenario-description ledger is stored here.
+    - path: assets/policies/
+      export: private
+      description: Server-side OPA authorization policy.
+  commercial:
+    - path: docs/concepts.md
+      export: commercial
+      description: Participant-safe AI-lab concept glossary.
+    - path: docs/lineage.md
+      export: commercial
+      description: Human-readable source adaptation decisions.
+    - path: docs/provenance-ledger.yaml
+      export: commercial
+      description: Machine-readable source, licensing, safety, and review ledger.
+runtime_profiles:
+  - profile_id: local_reduced
+    status: planned
+    provider: compose
+    description: Fast-feedback profile for contract development only; it cannot prove golden status or stand in for path-critical services.
+  - profile_id: gcp_full
+    status: planned
+    provider: gcp
+    description: Implemented build source for a disposable, isolated AI-lab tenant in a supplied existing project. Status stays planned until a clean live apply is recorded.
+    build:
+      - path: build/README.md
+      - path: build/launch.sh
+      - path: build/health-check.sh
+      - path: build/reset.sh
+      - path: build/rebuild.sh
+      - path: build/cleanup.sh
+      - path: sdl/keplerops-ai.sdl.yaml
+      - path: sdl/modules/
+      - path: build/gcp/render_sdl_realization.py
+      - path: build/gcp/main.tf
+      - path: build/gcp/variables.tf
+      - path: build/gcp/outputs.tf
+      - path: build/gcp/publish_images.py
+      - path: build/gcp/validate_build.py
+    tests:
+      - path: build/tests/test_gcp_build_contract.py
+      - path: build/tests/test_lifecycle.py
+      - path: build/tests/test_health_check.py
+      - path: build/tests/test_runtime_domain.py
+      - path: build/tests/test_research_telemetry.py
+      - path: build/tests/test_flow_telemetry.py
+      - path: build/tests/test_agent_control.py
+      - path: build/tests/test_model_evasion.py
+      - path: build/tests/test_context_api_contract.py
+      - path: build/tests/test_context_poisoning.py
+      - path: build/tests/test_context_retrieval_build_contract.py
+      - path: build/tests/test_model_secrets.py
+      - path: build/tests/test_company_state_contract.py
+      - path: build/tests/test_company_data_ml_services.py
+      - path: build/tests/test_windows_company_state.py
+      - path: build/tests/test_model_secrets_api_contract.py
+      - path: build/tests/test_agent_persistence.py
+      - path: build/tests/test_agent_persistence_api_contract.py
+      - path: build/tests/test_training_poisoning.py
+      - path: build/tests/test_training_poisoning_api_contract.py
+      - path: build/tests/test_model_extraction.py
+      - path: build/tests/test_model_extraction_api_contract.py
+      - path: build/tests/test_model_backdoor.py
+      - path: build/tests/test_model_backdoor_api_contract.py
+      - path: build/tests/test_ai_capstone.py
+      - path: build/tests/test_ai_capstone_api_contract.py
+      - path: tests/test_live_rehearsal.py
+      - path: tests/test_telemetry_rehearsal.py
+      - path: tests/test_module_01_reliability.py
+      - path: tests/test_module_02_reliability.py
+      - path: tests/test_module_03_rehearsal.py
+      - path: tests/test_module_04_rehearsal.py
+      - path: tests/test_module_05_rehearsal.py
+      - path: tests/test_module_06_rehearsal.py
+      - path: tests/test_module_07_rehearsal.py
+      - path: tests/test_module_08_rehearsal.py
+      - path: tests/test_module_09_rehearsal.py
+      - path: tests/test_module_10_rehearsal.py
+      - path: tests/module_01_reliability.py
+      - path: tests/module_02_reliability.py
+      - path: tests/module_03_rehearsal.py
+      - path: tests/module_04_rehearsal.py
+      - path: tests/module_05_rehearsal.py
+      - path: tests/module_06_rehearsal.py
+      - path: tests/module_07_rehearsal.py
+      - path: tests/module_08_rehearsal.py
+      - path: tests/module_09_rehearsal.py
+      - path: tests/module_10_rehearsal.py
+      - path: tests/run-golden-rehearsal.sh
+      - path: tests/run-telemetry-rehearsal.sh
+    walkthroughs:
+      - path: docs/playtester-guide/
+      - path: docs/walkthroughs/README.md
+      - path: docs/walkthroughs/module-01-agent-control.md
+      - path: docs/walkthroughs/module-02-model-evasion.md
+      - path: docs/walkthroughs/module-03-context-poisoning.md
+      - path: docs/walkthroughs/module-04-model-secrets.md
+      - path: docs/walkthroughs/module-05-agent-persistence.md
+      - path: docs/walkthroughs/module-06-adversarial-input.md
+      - path: docs/walkthroughs/module-07-training-poisoning.md
+      - path: docs/walkthroughs/module-08-model-extraction.md
+      - path: docs/walkthroughs/module-09-model-backdoor.md
+      - path: docs/walkthroughs/module-10-ai-capstone.md
+      - path: docs/manual-walkthrough-report.md
+      - path: docs/module-01-proof-report.md
+      - path: docs/module-02-proof-report.md
+      - path: docs/module-03-proof-report.md
+      - path: docs/module-04-proof-report.md
+      - path: docs/module-05-proof-report.md
+      - path: docs/module-06-proof-report.md
+      - path: docs/module-07-proof-report.md
+      - path: docs/module-08-proof-report.md
+      - path: docs/module-09-proof-report.md
+      - path: docs/module-10-proof-report.md
+delivery_bundles:
+  - bundle_id: executive-sampler
+    status: planned
+    audience: demo
+    participant_paths: []
+    operator_paths: []
+    validation: []
+  - bundle_id: core-red-team
+    status: planned
+    audience: guided
+    participant_paths: []
+    operator_paths: []
+    validation: []
+  - bundle_id: full-red-team
+    status: planned
+    audience: unguided
+    participant_paths: []
+    operator_paths: []
+    validation: []
+platform_features:
+  - feature_id: inference-gateway
+    status: planned
+    runtime_profiles: [local_reduced, gcp_full]
+    description: Pack-local seam for model/provider routing and guarded inference behavior.
+  - feature_id: guardrail-policy
+    status: planned
+    runtime_profiles: [local_reduced, gcp_full]
+    description: Policy layer the participant probes and bypasses in the offensive path.
+  - feature_id: open-model-hosting
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Range-controlled open-model endpoints for participant exploit attempts; commercial model endpoints are out of bounds as targets.
+  - feature_id: enterprise-fabric
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Populated identities, applications, repositories, tickets or approvals, datasets, logs, and documents supporting an integrated enterprise path.
+  - feature_id: model-registry
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Real deployable model artifact registry or artifact store for theft/corruption objectives.
+  - feature_id: distillation-workflow
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Required challenge-flow surface for abusing teacher/student model, dataset, evaluation, and artifact-promotion paths.
+  - feature_id: atlas-coverage-map
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Operator-only MITRE ATLAS 2026.06 catalog mapping all 173 pinned techniques to planned challenge modules without claiming one participant executes all techniques.
+  - feature_id: participant-entry
+    status: planned
+    runtime_profiles: [gcp_full]
+    description: Attacker workstation, browser terminal, jump host, or equivalent participant execution surface.
+assets:
+  - asset_id: readme
+    path: README.md
+    visibility: participant
+    status: shipped
+    description: Participant-safe overview and maturity boundary.
+  - asset_id: cloud-build-context-boundary
+    path: .gcloudignore
+    visibility: operator
+    status: shipped
+    description: Provider packaging boundary that keeps generated operator and Terraform state out of image builds.
+  - asset_id: concepts
+    path: docs/concepts.md
+    visibility: commercial
+    status: shipped
+    description: AI-lab concept glossary.
+  - asset_id: attack-path
+    path: docs/attack-path.md
+    visibility: oracle
+    status: shipped
+    description: Operator-only canonical hidden-path contract.
+  - asset_id: atlas-coverage-plan
+    path: docs/atlas-coverage-plan.md
+    visibility: oracle
+    status: shipped
+    description: Human-readable quick-choice, progression, flag, tactic, and technique-specific ATLAS plan.
+  - asset_id: challenge-portfolio
+    path: docs/challenge-portfolio.md
+    visibility: oracle
+    status: shipped
+    description: Human rendering of the SDL-owned 134-challenge current board, eight-hour route model, 3,015-minute board stock, 16,550 points, and implementation state.
+  - asset_id: atlas-challenge-architecture
+    path: docs/atlas-challenge-architecture.md
+    visibility: oracle
+    status: shipped
+    description: Human rendering of the SDL-owned 135-challenge full-ATLAS architecture, 134 participant-proven playable contracts, nine existing-receipt extensions, one reserved hardware design, module allocations, telemetry, and pragmatic implementation gate.
+  - asset_id: manual-walkthrough-report
+    path: docs/manual-walkthrough-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-55 result for all 60 manual participant paths and their remaining assurance gates.
+  - asset_id: module-01-proof-report
+    path: docs/module-01-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-55 manual evidence and corrected reliability status for the six participant-proven module-01 challenges.
+  - asset_id: module-02-proof-report
+    path: docs/module-02-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized durable evidence for the twelve participant-proven module-02 playable challenges; the hardware attestation design remains reserved.
+  - asset_id: module-03-proof-report
+    path: docs/module-03-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-20 reliability and generation-55 manual evidence for the six participant-proven module-03 challenges.
+  - asset_id: module-04-proof-report
+    path: docs/module-04-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-21 reliability and generation-55 manual evidence for the five participant-proven module-04 challenges.
+  - asset_id: module-05-proof-report
+    path: docs/module-05-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-21 reliability and generation-55 manual evidence for the five participant-proven module-05 challenges.
+  - asset_id: module-06-proof-report
+    path: docs/module-06-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-21 reliability and generation-55 manual evidence for the six participant-proven module-06 challenges.
+  - asset_id: module-07-proof-report
+    path: docs/module-07-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized generation-21 seven-sample and generation-55 manual evidence for the six participant-proven module-07 challenges.
+  - asset_id: module-08-proof-report
+    path: docs/module-08-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized participant-equivalent evidence for the eleven participant-proven module-08 challenges.
+  - asset_id: module-09-proof-report
+    path: docs/module-09-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized participant-equivalent evidence for the twelve participant-proven module-09 challenges.
+  - asset_id: module-10-proof-report
+    path: docs/module-10-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized participant-equivalent evidence for the seventeen participant-proven module-10 challenges.
+  - asset_id: module-10-walkthrough
+    path: docs/walkthroughs/module-10-ai-capstone.md
+    visibility: operator
+    status: shipped
+    description: Participant-equivalent walkthrough contract for the seventeen participant-proven module-10 challenges.
+  - asset_id: aces-sdl
+    path: sdl/keplerops-ai.sdl.yaml
+    visibility: operator
+    status: shipped
+    description: Composition-only ACES SDL root importing the complete environment, one green live-activity module, ten governed module envelopes, 134 realized challenge behaviors, and the one remaining planned expansion design.
+  - asset_id: aces-sdl-requirements
+    path: validation/requirements.txt
+    visibility: operator
+    status: shipped
+    description: Exact PyPI dependency pin for raes 2.0.0.
+  - asset_id: aces-sdl-ci-requirements
+    path: validation/requirements-ci.txt
+    visibility: operator
+    status: shipped
+    description: Isolated KeplerOps validation and test dependency environment.
+  - asset_id: aces-sdl-validator
+    path: validation/validate_aces_sdl.py
+    visibility: operator
+    status: shipped
+    description: Pinned ACES semantic validation and external tactic-reconciliation gate.
+  - asset_id: ctf-evaluation-task
+    path: experiments/ctf-evaluation-task.yaml
+    visibility: operator
+    status: shipped
+    description: Generic RAES experiment-plane mapping from objective receipts to aggregate CTF score.
+  - asset_id: design-boundary
+    path: design/README.md
+    visibility: operator
+    status: shipped
+    description: Prohibits parallel non-ACES scenario realization inventories.
+  - asset_id: oracle-boundary
+    path: oracle/README.md
+    visibility: oracle
+    status: shipped
+    description: Documents the private-view boundary and confirms that objectives and projections derive from ACES.
+  - asset_id: oracle-validator
+    path: validation/validate_oracle.py
+    visibility: operator
+    status: shipped
+    description: Static shared-model and pack-projection validator.
+  - asset_id: portfolio-validator
+    path: validation/validate_portfolio.py
+    visibility: operator
+    status: shipped
+    description: Exact challenge count, difficulty, time, points, dependency, SDL coverage, and projection drift validator.
+  - asset_id: aces-sdl-environment
+    path: sdl/modules/environment.sdl.yaml
+    visibility: operator
+    status: shipped
+    description: Canonical nodes, networks, resources, software, services, identities, content, routes, and participant start state.
+  - asset_id: company-state-corpus
+    path: assets/content/company-state/company-state.yaml
+    visibility: operator
+    status: shipped
+    description: Canonical synthetic company object graph with exact committed dataset and artifact source bytes.
+  - asset_id: company-state-validator
+    path: validation/validate_company_state.py
+    visibility: operator
+    status: shipped
+    description: Concrete company corpus reference, represented-time, safety, and source-digest validator.
+  - asset_id: company-state-design
+    path: docs/company-state.md
+    visibility: operator
+    status: shipped
+    description: Initial-state authority, RAES materialization, golden adapter, reset/readback, and portability boundary.
+  - asset_id: sdl-realization-renderer
+    path: build/gcp/render_sdl_realization.py
+    visibility: operator
+    status: shipped
+    description: Deterministic ephemeral GCP projection rendered from the expanded canonical ACES SDL.
+  - asset_id: topology-reference-triangle
+    path: docs/topology-reference-triangle.md
+    visibility: operator
+    status: shipped
+    description: Human-readable topology and reference-triangle design.
+  - asset_id: software-boundary-proof-report
+    path: docs/software-boundary-proof-report.md
+    visibility: operator
+    status: shipped
+    description: Sanitized retained-range proof for the complete SDL software foundation.
+  - asset_id: lineage
+    path: docs/lineage.md
+    visibility: commercial
+    status: shipped
+    description: Source adaptation decisions.
+  - asset_id: provenance-ledger
+    path: docs/provenance-ledger.yaml
+    visibility: commercial
+    status: shipped
+    description: Machine-readable provenance and safety ledger.
+  - asset_id: contract-validator
+    path: validation/validate_contract.py
+    visibility: operator
+    status: shipped
+    description: Draft skeleton invariant validator.
+  - asset_id: ctfd-loader
+    path: ctfd/sync_keplerops_ctfd.py
+    visibility: operator
+    status: shipped
+    description: Secret-safe, idempotent reference CTFd reconciliation entrypoint.
+  - asset_id: aces-contract-accessor
+    path: aces_contract.py
+    visibility: operator
+    status: shipped
+    description: Typed SDL accessors used by runtime, CTFd, validation, and provider realization without a parallel semantic ledger.
+  - asset_id: aces-only-cutover-evidence
+    path: docs/aces-only-cutover.md
+    visibility: operator
+    status: shipped
+    description: Whole-pack authority audit, removed semantic surfaces, consumer map, and reproducible ACES-only evidence.
+scoring:
+  status: shipped
+  mode: objectives
+  references:
+    - path: sdl/keplerops-ai.sdl.yaml
+validation_oracle:
+  status: shipped
+  mode: objectives
+  references:
+    - path: docs/attack-path.md
+    - path: docs/atlas-coverage-plan.md
+    - path: docs/atlas-challenge-architecture.md
+    - path: sdl/keplerops-ai.sdl.yaml
+    - path: aces_contract.py
+telemetry:
+  status: shipped
+  mode: telemetry
+  references:
+    - path: sdl/keplerops-ai.sdl.yaml
+    - path: telemetry/data-dictionary.md
+lifecycle:
+  reset:
+    status: shipped
+    references:
+      - path: build/reset.sh
+      - path: build/gcp/lifecycle.py
+      - path: sdl/modules/environment.sdl.yaml
+  rebuild:
+    status: shipped
+    references:
+      - path: build/rebuild.sh
+      - path: build/launch.sh
+  teardown:
+    status: shipped
+    references:
+      - path: build/cleanup.sh
+      - path: docs/golden-readiness-checklist.md
+operator_surfaces:
+  - surface_id: aces-sdl
+    path: sdl/keplerops-ai.sdl.yaml
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: aces-sdl-environment
+    path: sdl/modules/environment.sdl.yaml
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: gcp-sdl-realization
+    path: build/gcp/render_sdl_realization.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: gcp-image-supply
+    path: build/gcp/publish_images.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: gcp-launch
+    path: build/launch.sh
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: gcp-reset
+    path: build/reset.sh
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: gcp-cleanup
+    path: build/cleanup.sh
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: topology-reference-triangle
+    path: docs/topology-reference-triangle.md
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: documentation-inventory
+    path: docs/documentation-inventory.md
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: operator-playtest-guide
+    path: docs/operator-playtest-guide.md
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: playtester-guide
+    path: docs/playtester-guide/
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: software-boundary-proof-report
+    path: docs/software-boundary-proof-report.md
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: attack-path
+    path: docs/attack-path.md
+    role: range_ops
+    visibility: oracle
+    status: shipped
+  - surface_id: challenge-portfolio
+    path: docs/challenge-portfolio.md
+    role: range_ops
+    visibility: oracle
+    status: shipped
+  - surface_id: atlas-challenge-architecture
+    path: docs/atlas-challenge-architecture.md
+    role: range_ops
+    visibility: oracle
+    status: shipped
+  - surface_id: lineage
+    path: docs/lineage.md
+    role: catalog_ops
+    visibility: operator
+    status: shipped
+  - surface_id: provenance-ledger
+    path: docs/provenance-ledger.yaml
+    role: catalog_ops
+    visibility: operator
+    status: shipped
+  - surface_id: contract-validator
+    path: validation/validate_contract.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: oracle-validator
+    path: validation/validate_oracle.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: portfolio-validator
+    path: validation/validate_portfolio.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: company-state-validator
+    path: validation/validate_company_state.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: golden-readiness
+    path: docs/golden-readiness-checklist.md
+    role: range_ops
+    visibility: operator
+    status: shipped
+  - surface_id: ctfd-sync
+    path: ctfd/sync_keplerops_ctfd.py
+    role: range_ops
+    visibility: operator
+    status: shipped
+validation:
+  commands:
+    - id: scenario-content
+      command: python3 scripts/ci/scenario_content_ci.py
+      validates: [manifest, provenance, pack-layout, leak-scan, validators, tests]
+    - id: keplerops-ai-contract
+      command: python3 keplerops-ai/validation/validate_contract.py validate
+      validates: [draft-contract, modular-sdl-authority, removed-projection-guard, provenance, docs]
+    - id: keplerops-ai-aces-sdl
+      command: python3 keplerops-ai/validation/validate_aces_sdl.py validate
+      validates: [aces-only-sources, aces-modules, pypi-version-pin, aces-parse, aces-semantics, atlas-tactic-surface, external-tactic-reconciliation]
+    - id: keplerops-ai-company-state
+      command: python3 keplerops-ai/validation/validate_company_state.py validate
+      validates: [company-object-graph, raes-identity-bindings, represented-time, causal-lineage, source-byte-digests, content-safety]
+    - id: keplerops-ai-oracle
+      command: python3 keplerops-ai/validation/validate_oracle.py validate
+      validates: [aces-native-objectives, aces-native-evidence, aces-embedded-atlas-catalog, aces-embedded-research-policy, sdl-derived-flags, sdl-derived-challenges, negative-gates, leak-scan]
+    - id: keplerops-ai-portfolio
+      command: python3 keplerops-ai/validation/validate_portfolio.py validate
+      validates: [challenge-count, difficulty-distribution, time-budget, objective-truth, experiment-task-scoring, dependency-dag, sdl-module-coverage, implementation-evidence]
+    - id: keplerops-ai-ctfd
+      command: python3 -m unittest discover -s keplerops-ai/ctfd/tests -p 'test_*.py'
+      validates: [manifest-projection, pagination, owned-reconciliation, idempotency, dry-run-redaction, token-file-policy, readback]
+    - id: keplerops-ai-gcp-build
+      command: keplerops-ai/build/test.sh
+      validates: [sdl-realization, source-completeness, provider-binding, image-lock, existing-project-boundary, tenant-isolation, reset, health, receipt-boundary]
+  gates:
+    - id: manifest-schema
+      kind: schema
+      paths:
+        - path: pack.compatibility.yaml
+    - id: contract-validator
+      kind: unit-test
+      paths:
+        - path: validation/validate_contract.py
+        - path: validation/tests/test_validate_contract.py
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/environment.sdl.yaml
+        - path: experiments/ctf-evaluation-task.yaml
+        - path: pack.yaml
+        - path: pack.compatibility.yaml
+        - path: docs/provenance-ledger.yaml
+    - id: aces-sdl-validator
+      kind: unit-test
+      paths:
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/
+        - path: aces_contract.py
+        - path: validation/requirements.txt
+        - path: validation/validate_aces_sdl.py
+        - path: validation/tests/test_validate_aces_sdl.py
+    - id: company-state-validator
+      kind: unit-test
+      paths:
+        - path: assets/content/company-state/
+        - path: sdl/modules/environment.sdl.yaml
+        - path: validation/validate_company_state.py
+        - path: build/tests/test_company_state_contract.py
+        - path: docs/company-state.md
+    - id: oracle-validator
+      kind: unit-test
+      paths:
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/
+        - path: aces_contract.py
+        - path: docs/attack-path.md
+        - path: docs/atlas-coverage-plan.md
+        - path: docs/atlas-challenge-architecture.md
+        - path: validation/validate_oracle.py
+        - path: validation/tests/test_validate_oracle.py
+    - id: portfolio-validator
+      kind: unit-test
+      paths:
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/
+        - path: aces_contract.py
+        - path: docs/challenge-portfolio.md
+        - path: experiments/ctf-evaluation-task.yaml
+        - path: validation/validate_portfolio.py
+        - path: validation/tests/test_validate_portfolio.py
+    - id: ctfd-loader
+      kind: unit-test
+      paths:
+        - path: ctfd/keplerops_flag_manifest.py
+        - path: ctfd/ctfd_reconcile.py
+        - path: ctfd/sync_keplerops_ctfd.py
+        - path: ctfd/tests/test_sync_keplerops_ctfd.py
+        - path: aces_contract.py
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/
+    - id: gcp-build
+      kind: unit-test
+      paths:
+        - path: .gcloudignore
+        - path: sdl/keplerops-ai.sdl.yaml
+        - path: sdl/modules/
+        - path: build/gcp/render_sdl_realization.py
+        - path: build/gcp/main.tf
+        - path: build/gcp/validate_build.py
+        - path: build/gcp/lifecycle.py
+        - path: build/gcp/health_check.py
+        - path: build/tests/test_gcp_build_contract.py
+        - path: build/tests/test_lifecycle.py
+        - path: build/tests/test_health_check.py
+        - path: build/tests/test_runtime_domain.py

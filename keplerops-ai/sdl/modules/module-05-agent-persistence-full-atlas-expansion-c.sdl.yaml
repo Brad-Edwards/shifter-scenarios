@@ -1,0 +1,787 @@
+name: keplerops-module-05-full-atlas-expansion-c
+version: 1.0.0
+module:
+  id: shifter/keplerops-module-05-full-atlas-expansion-c
+  version: 1.0.0
+  exports:
+    behavior_specifications:
+    - kep-m05-n
+    - kep-m05-o
+    - kep-m05-p
+    - kep-m05-q
+    conditions:
+    - kep-m05-n-complete
+    - kep-m05-o-complete
+    - kep-m05-p-complete
+    - kep-m05-q-complete
+    propositions:
+    - kep-m05-n-satisfied
+    - kep-m05-o-satisfied
+    - kep-m05-p-satisfied
+    - kep-m05-q-satisfied
+    assertions:
+    - kep-m05-n-satisfied
+    - kep-m05-o-satisfied
+    - kep-m05-p-satisfied
+    - kep-m05-q-satisfied
+    evidence_requirements:
+    - kep-m05-n-proof
+    - kep-m05-o-proof
+    - kep-m05-p-proof
+    - kep-m05-q-proof
+    objectives:
+    - kep-m05-n
+    - kep-m05-o
+    - kep-m05-p
+    - kep-m05-q
+  description: Source implementation contracts for Module 05 local rogue-agent, reverse-channel,
+    service covert-channel, and web-relay expansion.
+behavior_specifications:
+  kep-m05-n:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-n
+        flag_id: flag-deploy-local-rogue-agent
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Deploy Local Rogue Agent
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-m
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: deploy_local_rogue_agent
+        telemetry_profile: deploy_local_rogue_agent
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Deploy a participant-configured local AI agent on the disposable worker and use
+            its real tools to achieve contained host control.
+          hints:
+          - The action endpoint creates a real platform-agent disposable worker.
+          - Provide a participant goal and keep the result inside the range marker.
+          - Direct shell creation without the agent/worker path is rejected.
+        flag_delivery:
+          evidence_id: ev-deploy-local-rogue-agent
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-deploy-local-rogue-agent
+          kind: agent_persistence_expansion
+          predicate: Require participant-authored agent goal, deployed process, tool use, and
+            contained host marker.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-deploy-local-rogue-agent
+            evidence: ev-deploy-local-rogue-agent
+            event_kind: deploy_local_rogue_agent_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0103
+          - AML.T0112.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xc.kep-m05-n
+        evidence_requirement_ref: m05xc.kep-m05-n-proof
+  kep-m05-o:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-o
+        flag_id: flag-agent-reverse-channel
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Agent Reverse Channel
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-n
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: agent_reverse_channel
+        telemetry_profile: agent_reverse_channel
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Coerce the local agent to establish a contained reverse channel and execute a
+            model-retrieved command.
+          hints:
+          - Use the reverse-channel action after deploying the local agent.
+          - The proof joins relay task, result event, and contained output marker.
+          - Participant-opened shells outside the platform-agent path fail.
+        flag_delivery:
+          evidence_id: ev-agent-reverse-channel
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-agent-reverse-channel
+          kind: agent_persistence_expansion
+          predicate: Join model tool decision, outbound relay, command retrieval, and contained
+            output.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-agent-reverse-channel
+            evidence: ev-agent-reverse-channel
+            event_kind: agent_reverse_channel_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0072
+          - AML.T0108
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xc.kep-m05-o
+        evidence_requirement_ref: m05xc.kep-m05-o-proof
+  kep-m05-p:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-p
+        flag_id: flag-service-api-covert-channel
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Service API Covert Channel
+        difficulty: intermediate
+        target_minutes: 20
+        min_minutes: 12
+        max_minutes: 30
+        points: 100
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-n
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 10
+        - 25
+        proof_obligation: service_api_covert_channel
+        telemetry_profile: service_api_covert_channel
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Exchange a command and result through the normal AI service API from the
+            compromised worker.
+          hints:
+          - Use the service covert-channel action after deploying the local agent.
+          - The worker-origin and encoded command/result are recorded by platform-agent.
+          - Direct contained-sink traffic fails.
+        flag_delivery:
+          evidence_id: ev-service-api-covert-channel
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-service-api-covert-channel
+          kind: agent_persistence_expansion
+          predicate: Require worker-origin API traffic, encoded command retrieval, execution, and
+            encoded result return.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-service-api-covert-channel
+            evidence: ev-service-api-covert-channel
+            event_kind: service_api_covert_channel_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0096
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xc.kep-m05-p
+        evidence_requirement_ref: m05xc.kep-m05-p-proof
+  kep-m05-q:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs:
+    - execution
+    - persistence
+    - privilege-escalation
+    - credential-access
+    - command-and-control
+    - lateral-movement
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m05-q
+        flag_id: flag-web-assistant-relay
+        module: module-05-agent-persistence
+        outcome: agent-persistence
+        title: Web Assistant Relay
+        difficulty: advanced
+        target_minutes: 35
+        min_minutes: 22
+        max_minutes: 52
+        points: 200
+        disposition: full-atlas-expansion
+        prerequisites:
+        - kep-m05-n
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 20
+        - 50
+        proof_obligation: web_assistant_relay
+        telemetry_profile: web_assistant_relay
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Agent State and Identity
+          question: Automate the AI web interface from the compromised worker to retrieve and
+            execute one contained relay command without an API token.
+          hints:
+          - Use the web-relay action after deploying the local agent.
+          - The route records browser automation, relay command, worker result, and export.
+          - Direct API calls are rejected for this objective.
+        flag_delivery:
+          evidence_id: ev-web-assistant-relay
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: platform-agent-01
+        proof:
+          evidence_id: ev-web-assistant-relay
+          kind: agent_persistence_expansion
+          predicate: Bind browser automation, assistant URL fetch, returned instruction, worker
+            execution, and result.
+          proof_fields:
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: platform-agent-01
+          mutates_scenario_state: true
+          event:
+            id: event-web-assistant-relay
+            evidence: ev-web-assistant-relay
+            event_kind: web_assistant_relay_05
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields:
+            - actor_role
+            - asset_id
+            - event_kind
+            - object_id
+            - outcome_id
+            - record_count
+            - stage
+            - range_instance
+            - participant
+            - timestamp
+            - status
+            - digest
+            freshness_seconds: 10800
+            reset_owner: platform-agent-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_05_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-05-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0114
+          assurance: source-implemented-pre-playtest
+        objective_ref: m05xc.kep-m05-q
+        evidence_requirement_ref: m05xc.kep-m05-q-proof
+conditions:
+  kep-m05-n-complete:
+    name: Deploy Local Rogue Agent evidence accepted
+    proposition: kep-m05-n-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-o-complete:
+    name: Agent Reverse Channel evidence accepted
+    proposition: kep-m05-o-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-p-complete:
+    name: Service API Covert Channel evidence accepted
+    proposition: kep-m05-p-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+  kep-m05-q-complete:
+    name: Web Assistant Relay evidence accepted
+    proposition: kep-m05-q-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence.
+propositions:
+  kep-m05-n-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-n.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-n-proof
+  kep-m05-o-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-o.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-o-proof
+  kep-m05-p-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-p.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-p-proof
+  kep-m05-q-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m05-q.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m05-q-proof
+assertions:
+  kep-m05-n-satisfied:
+    description: Participant completion of kep-m05-n is observed.
+    proposition: kep-m05-n-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-o-satisfied:
+    description: Participant completion of kep-m05-o is observed.
+    proposition: kep-m05-o-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-p-satisfied:
+    description: Participant completion of kep-m05-p is observed.
+    proposition: kep-m05-p-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m05-q-satisfied:
+    description: Participant completion of kep-m05-q is observed.
+    proposition: kep-m05-q-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m05-n-proof:
+    description: Capture digest-safe participant-scoped evidence for a Module 05 expansion
+      challenge.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-o-proof:
+    description: Capture digest-safe participant-scoped evidence for Agent Reverse Channel.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-p-proof:
+    description: Capture digest-safe participant-scoped evidence for Service API Covert Channel.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m05-q-proof:
+    description: Capture digest-safe participant-scoped evidence for Web Assistant Relay.
+    source_refs:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m05-n:
+    name: Deploy Local Rogue Agent
+    description: Deploy a local agent on the disposable worker and obtain contained host control.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-n-satisfied
+    depends_on:
+    - m05xb.kep-m05-m
+  kep-m05-o:
+    name: Agent Reverse Channel
+    description: Establish a contained reverse channel and execute a model-retrieved command.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-o-satisfied
+    depends_on:
+    - m05xc.kep-m05-n
+  kep-m05-p:
+    name: Service API Covert Channel
+    description: Exchange command and result through the normal AI service API.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-p-satisfied
+    depends_on:
+    - m05xc.kep-m05-n
+  kep-m05-q:
+    name: Web Assistant Relay
+    description: Automate the AI web interface from the compromised worker without an API token.
+    agent: core.participant
+    targets:
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.dataset-store-01.services.dataset-postgres
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.lab-portal.services.lab-portal-https
+    - nodes.core.telemetry-proof-01.services.proof-api
+    success:
+      assertions:
+      - kep-m05-q-satisfied
+    depends_on:
+    - m05xc.kep-m05-n

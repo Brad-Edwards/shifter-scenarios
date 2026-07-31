@@ -1,0 +1,361 @@
+name: module-06-adversarial-input-full-atlas-expansion-a
+version: 1.0.0
+module:
+  id: shifter/module-06-adversarial-input-full-atlas-expansion-a
+  version: 1.0.0
+  exports:
+    behavior_specifications: &id001
+    - kep-m06-g
+    - kep-m06-h
+    conditions:
+    - kep-m06-g-complete
+    - kep-m06-h-complete
+    propositions:
+    - kep-m06-g-satisfied
+    - kep-m06-h-satisfied
+    assertions:
+    - kep-m06-g-satisfied
+    - kep-m06-h-satisfied
+    evidence_requirements:
+    - kep-m06-g-proof
+    - kep-m06-h-proof
+    objectives: *id001
+  description: Source implementation contracts for module-06-adversarial-input full-ATLAS expansion.
+behavior_specifications:
+  kep-m06-g:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: &id003
+    - nodes.core.research-index-01.services.research-search-api
+    - nodes.core.public-sites-01.services.public-range-http
+    - nodes.core.scan-services-01.services.scan-docs-http
+    - nodes.core.inference-gateway.services.inference-api
+    - nodes.core.notebook-runner-01.services.notebook-jupyter
+    - nodes.core.model-registry-01.services.registry-api
+    - nodes.core.artifact-store-01.services.artifact-object-store
+    - nodes.core.platform-camera-01.services.platform-camera-webrtc
+    - nodes.core.platform-agent-01.services.platform-agent-api
+    - nodes.core.platform-agent-01.services.platform-isolation-api
+    - nodes.core.telemetry-proof-01.services.proof-api
+    ai_offensive_behavior_refs: &id004
+    - ai-attack-staging
+    - reconnaissance
+    - resource-development
+    - defense-evasion
+    - discovery
+    - impact
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-g
+        flag_id: flag-open-literature-triangulation
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Open Literature Triangulation
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: open_literature_triangulation
+        telemetry_profile: open_literature_triangulation
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Find and use one journal, one preprint, and one technical-blog artifact to
+            reproduce a range-local adversarial AI result.
+          hints:
+          - Start on the research-index, evaluation-workbench, proof-api surface and keep each
+            artifact bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-open-literature-triangulation
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-open-literature-triangulation
+          kind: adversarial_expansion
+          predicate: Require three independent search-source receipts and one reproduced attack
+            result; browsing or citations without execution fail.
+          proof_fields: &id002
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-open-literature-triangulation
+            evidence: ev-open-literature-triangulation
+            event_kind: open_literature_triangulation
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id002
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0000
+          - AML.T0000.000
+          - AML.T0000.001
+          - AML.T0000.002
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xa.kep-m06-g
+        evidence_requirement_ref: m06xa.kep-m06-g-proof
+  kep-m06-h:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    participant_refs:
+    - core.participant
+    authority_scope_refs: *id003
+    ai_offensive_behavior_refs: *id004
+    extension_policy: governed-extension
+    extensions:
+      x-keplerops:challenge:
+        challenge_id: kep-m06-h
+        flag_id: flag-open-vulnerability-research
+        module: module-06-adversarial-input
+        outcome: adversarial-input
+        title: Open Vulnerability Research
+        difficulty: accessible
+        target_minutes: 12
+        min_minutes: 7
+        max_minutes: 20
+        points: 50
+        disposition: full-atlas-expansion
+        prerequisites: []
+        interfaces:
+        - browser
+        - curl
+        - python
+        hint_costs:
+        - 0
+        - 0
+        - 10
+        proof_obligation: open_vulnerability_research
+        telemetry_profile: open_vulnerability_research
+        reliability: pre-playtest-one-pass
+        implementation_status: participant-proven
+        live_fire: true
+        participant_copy:
+          category: Adversarial ML Resource Development
+          question: Correlate a public AI vulnerability analysis with its application and code
+            repositories, then reproduce its safe indicator.
+          hints:
+          - Start on the research-index, gitea, evaluation-workbench surface and keep each artifact
+            bound to your participant namespace.
+          - Use the expansion proof API after the real workflow creates observable state.
+          - If rejected, compare the failure class with required evidence kinds and reset
+            generation.
+        flag_delivery:
+          evidence_id: ev-open-vulnerability-research
+          source: instructions
+          instructions: ctfd/oracle-receipt-contract.md
+          profiles:
+          - gcp_full
+          delivery:
+            kind: workflow_receipt
+            asset: telemetry-proof-01
+            service: proof-api
+            reset_owner: dataset-store-01
+        proof:
+          evidence_id: ev-open-vulnerability-research
+          kind: adversarial_expansion
+          predicate: Bind vulnerability search, repository discovery, checked-out revision, and
+            reproduced indicator; supplied repository paths fail.
+          proof_fields: &id005
+          - actor_role
+          - asset_id
+          - event_kind
+          - object_id
+          - outcome_id
+          - record_count
+          - stage
+          - workflow_id
+          - range_instance
+          - participant
+          - timestamp
+          - status
+          - digest
+          reset_owner: dataset-store-01
+          mutates_scenario_state: true
+          event:
+            id: event-open-vulnerability-research
+            evidence: ev-open-vulnerability-research
+            event_kind: open_vulnerability_research
+            source_service: inference-api
+            source_asset: inference-gateway
+            fields: *id005
+            freshness_seconds: 10800
+            reset_owner: dataset-store-01
+        implementation_evidence:
+          source_commit: pending
+          automated_test: tests/module_06_full_atlas_rehearsal.py
+          manual_walkthrough: docs/walkthroughs/module-06-full-atlas-expansion.md
+          primary_atlas_techniques:
+          - AML.T0001
+          - AML.T0004
+          - AML.T0095.000
+          assurance: source-implemented-pre-playtest
+        objective_ref: m06xa.kep-m06-h
+        evidence_requirement_ref: m06xa.kep-m06-h-proof
+conditions:
+  kep-m06-g-complete:
+    name: Open Literature Triangulation evidence accepted
+    proposition: kep-m06-g-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+  kep-m06-h-complete:
+    name: Open Vulnerability Research evidence accepted
+    proposition: kep-m06-h-satisfied
+    source:
+      name: participant-evidence
+      version: '1'
+    description: The proof service accepted fresh participant-scoped evidence for this challenge.
+propositions:
+  kep-m06-g-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-g.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-g-proof
+  kep-m06-h-satisfied:
+    description: The declared evidence channel accepted fresh participant-scoped evidence satisfying
+      kep-m06-h.
+    subjects:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: objective.satisfied
+      semantic_ref: urn:aces:keplerops:objective-satisfied
+      operator: equals
+      expected: true
+    quantifier: all
+    evidence_requirements:
+    - kep-m06-h-proof
+assertions:
+  kep-m06-g-satisfied:
+    description: Participant completion of kep-m06-g is observed.
+    proposition: kep-m06-g-satisfied
+    role: postcondition
+    polarity: positive
+  kep-m06-h-satisfied:
+    description: Participant completion of kep-m06-h is observed.
+    proposition: kep-m06-h-satisfied
+    role: postcondition
+    polarity: positive
+evidence_requirements:
+  kep-m06-g-proof:
+    description: Capture digest-safe participant-scoped evidence for Open Literature Triangulation.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-g'
+    - 'Proof obligation: open_literature_triangulation'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+  kep-m06-h-proof:
+    description: Capture digest-safe participant-scoped evidence for Open Vulnerability Research.
+    source_refs: *id003
+    source_class: scenario_native_observability
+    scope_refs:
+    - core.participant
+    scope: range instance and participant namespace
+    window: current participant attempt and reset generation
+    boundary_kind: objective_verdict
+    channel: api_response
+    channel_refs:
+    - nodes.core.telemetry-proof-01.services.proof-api
+    artifact_role: digest_safe_objective_receipt
+    media_types:
+    - application/json
+    sensitivity: redacted
+    redaction: redact_secrets
+    integrity: timestamped
+    retention: study_lifetime
+    loss_disclosure: required
+    notes:
+    - 'Challenge: kep-m06-h'
+    - 'Proof obligation: open_vulnerability_research'
+    - Raw prompts, completions, credentials, flags, and proof bodies are not objective evidence.
+objectives:
+  kep-m06-g:
+    name: Open Literature Triangulation
+    description: Find and use one journal, one preprint, and one technical-blog artifact to
+      reproduce a range-local adversarial AI result.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-g-satisfied
+  kep-m06-h:
+    name: Open Vulnerability Research
+    description: Correlate a public AI vulnerability analysis with its application and code
+      repositories, then reproduce its safe indicator.
+    agent: core.participant
+    targets: *id003
+    success:
+      assertions:
+      - kep-m06-h-satisfied
