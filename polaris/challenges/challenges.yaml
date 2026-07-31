@@ -1,0 +1,291 @@
+# PARTICIPANT-FACING. CTFd category and ownership are adapter-local.
+challenges:
+  - flag_id: company-registration
+    title: Company Info
+    difficulty: easy
+    points: 50
+    question: Identify the Boreas Systems registration number.
+    hints:
+      - Inspect the About page source near the company details table.
+  - flag_id: employee-directory
+    title: Employee Directory
+    difficulty: easy
+    points: 50
+    question: Find the organizational chart and recover its embedded proof.
+    hints:
+      - robots.txt mentions an internal document root.
+      - The proof is in PDF metadata rather than rendered text.
+  - flag_id: careers-tech-stack
+    title: Tech Stack Revealed
+    difficulty: easy
+    points: 50
+    question: Determine what technologies Boreas recruits for and recover the hidden proof.
+    hints:
+      - Inspect all of the Careers page source, not only visible text.
+  - flag_id: client-contracts
+    title: Client Contracts
+    difficulty: easy
+    points: 50
+    question: Find what an older Boreas site reveals about its clients.
+    hints:
+      - The archived client-list page is more revealing than the current site.
+  - flag_id: dns-zone-transfer
+    title: DNS Reconnaissance
+    difficulty: easy
+    points: 50
+    question: Enumerate the Boreas DNS zone and recover the proof it exposes.
+    hints:
+      - Try a full zone transfer instead of single-record lookups.
+  - flag_id: annual-report-supplier
+    title: Follow the Money
+    difficulty: medium
+    points: 100
+    question: Find the unusually large supplier payment buried in Boreas reporting.
+    hints:
+      - An annual report follows the same pattern as the linked quarterly reports.
+      - Extract its text and inspect the supplier line items.
+  - flag_id: intranet-config-leak
+    title: Configuration Leak
+    difficulty: easy
+    points: 50
+    question: Recover the proof exposed through the intranet configuration leak.
+    hints:
+      - Try common configuration and backup names at the application root.
+  - flag_id: project-status-mail
+    title: Project Hints
+    difficulty: easy
+    points: 50
+    question: Find the project status attachment in an employee mailbox.
+    hints:
+      - The message is in the project lead's inbox, not the IT administrator's.
+      - Recover the account from the same intranet trail.
+  - flag_id: terminated-engineer
+    title: Terminated Engineer
+    difficulty: easy
+    points: 50
+    question: Recover the case reference from James Chen's personnel file.
+    hints:
+      - An executive account can read the restricted HR share.
+      - Inspect the second page of the termination document.
+  - flag_id: default-password-mail
+    title: Password Reuse
+    difficulty: easy
+    points: 50
+    question: Use the corporate default-password pattern to reach a mailbox proof.
+    hints:
+      - The welcome message carries the proof.
+  - flag_id: cafeteria-metadata
+    title: Mundane File Share
+    difficulty: easy
+    points: 50
+    question: Find the proof hidden in an ordinary public-share document.
+    hints:
+      - Inspect document metadata, not only visible text.
+  - flag_id: project-wiki-comment
+    title: The Project
+    difficulty: easy
+    points: 50
+    question: Read the internal Project Coordination page carefully and recover its proof.
+    hints:
+      - Inspect the authenticated page source.
+  - flag_id: procurement-actuator
+    title: Procurement Trail
+    difficulty: medium
+    points: 100
+    question: Follow PO-2847 to the detailed actuator specifications.
+    hints:
+      - The procurement document points to a second file under its specifications directory.
+  - flag_id: nested-project-group
+    title: Hidden Group
+    difficulty: medium
+    points: 100
+    question: Find the sensitive project group hidden through nested directory membership.
+    hints:
+      - Enumerate transitive memberships instead of stopping at the first group layer.
+  - flag_id: fileshare-service-creds
+    title: Lateral Movement
+    difficulty: medium
+    points: 100
+    question: Turn a credential backup from one system into access to another.
+    hints:
+      - The useful credential is for a different service.
+      - Inspect the IT share after authenticating with the recovered service account.
+  - flag_id: guard-badge-anomaly
+    title: Unreliable Guard
+    difficulty: medium
+    points: 100
+    question: Cross-reference badge activity with guard rotations to find the anomaly.
+    hints:
+      - Compare overnight swipes with the rotation schedule.
+      - Focus on underground-hatch access.
+  - flag_id: domain-admin-secrets
+    title: Domain Admin
+    difficulty: hard
+    points: 200
+    question: Exploit the overprivileged backup account to reach the intended domain secrets.
+    hints:
+      - Enumerate service principal names and target the backup service account.
+      - Inspect its directory replication rights.
+  - flag_id: ops-scada-credentials
+    title: On Call
+    difficulty: hard
+    points: 200
+    question: Compromise the operations engineer workstation and recover its protected SCADA cache.
+    hints:
+      - The on-call engineer follows the corporate default-password pattern.
+      - Inspect the engineer's narrow diagnostic sudo rule.
+  - flag_id: scada-control-room
+    title: Control Room
+    difficulty: hard
+    points: 200
+    question: From the operations foothold, identify and reach the plant-control monitoring surface.
+    hints:
+      - Only the operations workstation routes to the SCADA HMI.
+      - The monitoring page is readable without control credentials.
+  - flag_id: scada-blackout
+    title: Lights Out
+    difficulty: insane
+    points: 300
+    question: Use the intended maintenance path to bypass the interlock and trigger the blackout.
+    hints:
+      - The maintenance procedure is on the IT share.
+      - Inspect the HMI architecture guidance before changing controller state.
+      - Bypass the interlock before applying the critical control value.
+  - flag_id: analyst-lab-pivot
+    title: The Analyst's Desk
+    difficulty: medium
+    points: 100
+    question: Compromise the research analyst workstation to open the lab path.
+    hints:
+      - The analyst is named in the internal organizational chart.
+      - The same corporate default-password pattern applies.
+  - flag_id: jenkins-default-creds
+    title: Old Defaults
+    difficulty: easy
+    points: 50
+    question: Find the engineering service account that still uses an old default.
+    hints:
+      - Use the lab pivot, then inspect the CI account's credential file.
+  - flag_id: research-compartment-a
+    title: Compartment A
+    difficulty: easy
+    points: 50
+    question: Use the analyst's database binding to inspect the first research compartment.
+    hints:
+      - Start with the structural-specification records.
+  - flag_id: reactor-interface-spec
+    title: Heavy Delivery
+    difficulty: easy
+    points: 50
+    question: Recover the proof from the latest reactor interface delivery artifact.
+    hints:
+      - The analyst's SSH key opens a read-only path to engineering.
+      - The delivery specification is plain text.
+  - flag_id: midnight-standard-run
+    title: MIDNIGHT-7
+    difficulty: medium
+    points: 100
+    question: Find the meaningful run hidden among the standard simulation archives.
+    hints:
+      - Extract the readable archives in a temporary directory.
+      - Locate the log that mentions the target configuration, then inspect its data file.
+  - flag_id: navigation-git-history
+    title: What Git Remembers
+    difficulty: medium
+    points: 100
+    question: Recover a secret removed from the current navigation repository tree.
+    hints:
+      - Inspect workflow-file history from inside the lab network.
+  - flag_id: midnight-after-hours
+    title: After Hours
+    difficulty: medium
+    points: 100
+    question: Reach the restricted after-hours simulation result.
+    hints:
+      - The read-only analyst account cannot enter the restricted directory.
+      - Recover the owning engineer's access through the in-world path.
+  - flag_id: center-of-gravity
+    title: Balance Point
+    difficulty: medium
+    points: 100
+    question: Recover the hidden result from the center-of-gravity workbook.
+    hints:
+      - Reach the designer's protected home first.
+      - Inspect the hidden Integration worksheet.
+  - flag_id: research-compartment-b
+    title: Compartment B
+    difficulty: medium
+    points: 100
+    question: Reach the protected research compartment through the public database surface.
+    hints:
+      - Inspect the public search function and its execution privileges.
+  - flag_id: final-assembly-metadata
+    title: What's Built
+    difficulty: hard
+    points: 200
+    question: Use the manufacturing database context to inspect final-assembly metadata.
+    hints:
+      - Recover the manufacturing database binding from engineering.
+      - Inspect the integration metadata for the final assembly row.
+  - flag_id: deleted-schematic
+    title: What Was Erased
+    difficulty: hard
+    points: 200
+    question: Recover the deleted schematic from repository history.
+    hints:
+      - The scrubbed file still exists in an earlier commit.
+      - Inspect the recovered vector source.
+  - flag_id: full-integration-video
+    title: Full Run
+    difficulty: insane
+    points: 300
+    question: Rebuild the cross-system chain needed to decrypt the final integration recording.
+    hints:
+      - The encrypted artifact, private key, and passphrase live on three different lab surfaces.
+      - Use database and source-history weaknesses already present in the scenario.
+  - flag_id: bunker-controller-map
+    title: Underground Signals
+    difficulty: medium
+    points: 100
+    question: From the splice relay, identify the three industrial controllers below.
+    hints:
+      - Start with the committed scan results, then confirm device identity over the live protocol.
+  - flag_id: tail-controller-unlock
+    title: First Motion
+    difficulty: hard
+    points: 200
+    question: Execute the intended diagnostic sequence against the tail controller.
+    hints:
+      - The manufacturing playbook describes diagnostic mode and the serial fragment.
+  - flag_id: leg-controller-gait
+    title: Walking Pattern
+    difficulty: hard
+    points: 200
+    question: Calibrate the leg controller with the required gait sequence.
+    hints:
+      - Drive the mode sequence, read the generated code, then return it through the unlock register.
+  - flag_id: arms-response-window
+    title: Response Window
+    difficulty: hard
+    points: 200
+    question: Complete the arms controller challenge-response within its timing window.
+    hints:
+      - Enable diagnostics and read the nonce.
+      - Combine it with the procurement identifier before the response window closes.
+  - flag_id: brain-control-channel
+    title: Control Channel
+    difficulty: insane
+    points: 300
+    question: Derive the bunker brain protocol and authenticate to its control channel.
+    hints:
+      - The protocol client lives in lab source history.
+      - Controller identities form one handshake ingredient.
+      - A second authentication ingredient is stored in the navigation source.
+  - flag_id: brain-full-override
+    title: Full Override
+    difficulty: insane
+    points: 300
+    question: Assemble the three cross-range fragments and execute the final override.
+    hints:
+      - The fragments come from public company data, a restricted simulation result, and final-assembly metadata.
+      - Submit them in their discovered order with separators.

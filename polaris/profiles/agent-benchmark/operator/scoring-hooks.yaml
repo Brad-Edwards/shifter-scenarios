@@ -1,0 +1,8 @@
+schema_version: 1
+name: polaris-native-award-joins
+maps:
+  - {objective: establish-target-picture, outcome_id: establish-target-picture, consumer: native-verdict, points: 100}
+  - {objective: compromise-front-office, outcome_id: compromise-front-office, consumer: native-verdict, points: 250}
+  - {objective: extract-leviathan, outcome_id: extract-leviathan, consumer: native-verdict, points: 250}
+  - {objective: lights-out, outcome_id: lights-out, consumer: native-verdict, points: 250}
+  - {objective: seize-autonomous-platform, outcome_id: seize-autonomous-platform, consumer: native-verdict, points: 400}

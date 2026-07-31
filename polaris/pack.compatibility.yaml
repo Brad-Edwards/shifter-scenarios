@@ -1,0 +1,308 @@
+schema_version: "scenario-pack-compatibility/v1"
+pack:
+  name: polaris
+  title: "Polaris / NORTHSTORM"
+  version: 0.5.0
+  status: draft
+  provenance_ledger: docs/provenance-ledger.yaml
+  source:
+    requirement: null
+    issues: []
+    upstream_references: []
+
+artifact_boundaries:
+  participant_visible:
+    - {path: README.md, export: public}
+    - {path: docs/concepts.md, export: commercial}
+    - {path: briefing-deck/, export: commercial}
+    - {path: challenges/, export: commercial}
+    - {path: profiles/_shared/, export: commercial}
+    - {path: profiles/guided/participant/, export: commercial}
+    - {path: profiles/unguided/participant/, export: commercial}
+    - {path: profiles/agent-benchmark/participant/, export: commercial}
+  operator_only:
+    - {path: build/, export: operator}
+    - {path: aws-range/README.md, export: operator}
+    - {path: aws-range/main.tf, export: operator}
+    - {path: aws-range/ranges.tf, export: operator}
+    - {path: aws-range/shared.tf, export: operator}
+    - {path: aws-range/versions.tf, export: operator}
+    - {path: aws-range/variables.tf, export: operator}
+    - {path: aws-range/outputs.tf, export: operator}
+    - {path: aws-range/user_data.sh.tpl, export: operator}
+    - {path: aws-range/a2_user_data.ps1.tpl, export: operator}
+    - {path: aws-range/a2_cold_bootstrap.sh, export: operator}
+    - {path: aws-range/a2_install_adds.ps1, export: operator}
+    - {path: aws-range/a2_setup.ps1, export: operator}
+    - {path: aws-range/common.py, export: operator}
+    - {path: aws-range/reset.sh, export: operator}
+    - {path: ctfd/, export: operator}
+    - {path: tests/, export: operator}
+    - {path: validation/, export: operator}
+    - {path: docs/golden-readiness-checklist.md, export: operator}
+    - {path: docs/walkthroughs/, export: operator}
+    - {path: docs/aws-event-rehearsal-report.md, export: operator}
+    - {path: docs/aws-event-manual-walkthrough-report.md, export: operator}
+    - {path: docs/final-reconciliation-report.md, export: operator}
+    - {path: docs/topology-and-assets.md, export: operator}
+    - {path: docs/reference-triangle.md, export: operator}
+    - {path: docs/lineage.md, export: commercial}
+    - {path: profiles/guided/operator/, export: commercial}
+    - {path: profiles/purple-team/operator/, export: commercial}
+    - {path: profiles/agent-benchmark/operator/, export: commercial}
+    - {path: profiles/agent-benchmark/operator/scoring-hooks.yaml, export: commercial}
+    - {path: profiles/demo/operator/, export: commercial}
+  oracle_only:
+    - {path: sdl/, export: private}
+    - {path: oracle/, export: private}
+    - {path: docs/attack-path.md, export: private}
+    - {path: flags/, export: private}
+  commercial:
+    - {path: assets/README.md, export: commercial}
+    - {path: containers/, export: commercial}
+    - {path: content-packages/, export: commercial}
+    - {path: docs/provenance-ledger.yaml, export: commercial}
+    - {path: profiles/README.md, export: commercial}
+    - {path: profiles/bundles.yaml, export: commercial}
+    - {path: profiles/validate_profiles.py, export: commercial}
+    - {path: profiles/tests/, export: commercial}
+
+runtime_profiles:
+  - profile_id: local_degraded
+    status: planned
+    provider: docker-compose
+    description: >
+      Degraded fast-feedback binding over the canonical SDL. It cannot prove
+      golden status and does not supply the required isolated Windows,
+      participant-access, splice-watcher, or authentic industrial boundaries.
+    build:
+      - {path: build/docker-compose.yml}
+    tests:
+      - {path: tests/run-all-smoketests.sh}
+      - {path: tests/test_topology_design.py}
+    walkthroughs:
+      - {path: docs/walkthroughs/00-range-access-docker.md}
+  - profile_id: aws_event
+    status: supported
+    provider: aws
+    description: >
+      The event-proven Polaris AWS binding: one dedicated, isolated
+      per-participant subnet containing the compact compose event range and a
+      real Windows AD domain controller. It preserves the runtime used for
+      Polaris events and supports automated and manual participant-equivalent
+      event-path proof. It is not the doctrine-complete golden binding: the fictional industrial
+      services are authored event simulations rather than vendor-supported
+      hardware twins, and the compose services do not realize every SDL host
+      as separate infrastructure. The pack therefore remains draft.
+    build:
+      - {path: aws-range/main.tf}
+      - {path: aws-range/ranges.tf}
+      - {path: aws-range/shared.tf}
+      - {path: aws-range/versions.tf}
+      - {path: aws-range/variables.tf}
+      - {path: aws-range/outputs.tf}
+      - {path: aws-range/user_data.sh.tpl}
+      - {path: aws-range/a2_user_data.ps1.tpl}
+      - {path: aws-range/a2_cold_bootstrap.sh}
+      - {path: aws-range/a2_install_adds.ps1}
+      - {path: aws-range/a2_setup.ps1}
+      - {path: aws-range/common.py}
+      - {path: aws-range/reset.sh}
+      - {path: build/build-v1.tar.gz}
+      - {path: build/build-v1.tar.gz.sha256}
+      - {path: build/}
+    tests:
+      - {path: tests/aws_event_rehearsal.py}
+      - {path: tests/aws_event_participant.py}
+      - {path: tests/test_aws_range_rehearsal.py}
+    walkthroughs:
+      - {path: docs/walkthroughs/00-range-access-aws-event.md}
+      - {path: docs/walkthroughs/flags-01-06-osint.md}
+      - {path: docs/walkthroughs/flags-07-19-front-office.md}
+      - {path: docs/walkthroughs/flags-20-30-lab.md}
+      - {path: docs/walkthroughs/flags-31-36-bunker.md}
+delivery_bundles:
+  - bundle_id: guided
+    status: supported
+    audience: guided
+    manifest: {path: profiles/bundles.yaml}
+    participant_paths: [{path: profiles/guided/participant/}]
+    operator_paths: [{path: profiles/guided/operator/}]
+    validation: [{path: profiles/validate_profiles.py}]
+  - bundle_id: unguided
+    status: supported
+    audience: unguided
+    manifest: {path: profiles/bundles.yaml}
+    participant_paths: [{path: profiles/unguided/participant/}]
+    validation: [{path: profiles/validate_profiles.py}]
+  - bundle_id: purple-team
+    status: supported
+    audience: purple-team
+    manifest: {path: profiles/bundles.yaml}
+    operator_paths: [{path: profiles/purple-team/operator/}]
+    validation: [{path: profiles/validate_profiles.py}]
+  - bundle_id: agent-benchmark
+    status: supported
+    audience: agent-benchmark
+    manifest: {path: profiles/bundles.yaml}
+    participant_paths: [{path: profiles/agent-benchmark/participant/}]
+    operator_paths: [{path: profiles/agent-benchmark/operator/}]
+    validation: [{path: profiles/validate_profiles.py}]
+  - bundle_id: demo
+    status: supported
+    audience: demo
+    manifest: {path: profiles/bundles.yaml}
+    operator_paths: [{path: profiles/demo/operator/}]
+    validation: [{path: profiles/validate_profiles.py}]
+platform_features:
+  - feature_id: windows-active-directory
+    status: required
+    runtime_profiles: [aws_event]
+    description: A real range-local Windows Server Active Directory forest and domain controller.
+  - feature_id: event-industrial-services
+    status: required
+    runtime_profiles: [aws_event]
+    description: The fictional NORTHSTORM platform's authored HMI, Modbus controllers, and stateful safety interlocks run as the same simulations used at Polaris events; they are not a vendor-supported hardware twin.
+  - feature_id: participant-access
+    status: required
+    runtime_profiles: [aws_event]
+    description: Automated range-scoped browser, SSH, RDP, VPN, or jump access to A14 without management-plane handoff.
+  - feature_id: isolated-controlled-egress
+    status: required
+    runtime_profiles: [aws_event]
+    description: A dedicated VPC, /28, and security group per rehearsal, with no cross-range route and only runner-/32 SSH/RDP ingress.
+  - feature_id: reference-ctfd
+    status: optional
+    runtime_profiles: [aws_event]
+    description: The shipped reference loader projects canonical stable flag ids without treating CTFd solves as objective verdicts.
+
+assets:
+  - {asset_id: aces-sdl, path: sdl/, visibility: oracle, status: shipped}
+  - {asset_id: private-oracle, path: oracle/, visibility: oracle, status: shipped}
+  - {asset_id: range-build-source, path: build/, visibility: operator, status: shipped}
+  - {asset_id: aws-event-terraform-source, path: aws-range/main.tf, visibility: operator, status: shipped}
+  - {asset_id: aws-event-ad-bootstrap-source, path: aws-range/a2_cold_bootstrap.sh, visibility: operator, status: shipped}
+  - {asset_id: aws-event-reset-source, path: aws-range/reset.sh, visibility: operator, status: shipped}
+  - {asset_id: aws-event-build-tarball, path: build/build-v1.tar.gz, visibility: operator, status: shipped}
+  - {asset_id: ctfd-source, path: ctfd/, visibility: operator, status: shipped}
+  - {asset_id: flag-placement, path: flags/, visibility: oracle, status: shipped}
+  - {asset_id: challenge-copy, path: challenges/, visibility: participant, status: shipped}
+  - {asset_id: participant-briefing, path: briefing-deck/, visibility: commercial, status: shipped}
+  - {asset_id: planned-participant-briefing, path: assets/briefing/, visibility: participant, status: planned}
+  - {asset_id: planned-planted-content, path: assets/content/, visibility: commercial, status: planned}
+  - {asset_id: planned-service-source, path: assets/services/, visibility: commercial, status: planned}
+  - {asset_id: profile-bundles, path: profiles/, visibility: commercial, status: shipped}
+  - {asset_id: benchmark-scoring-adapter, path: profiles/agent-benchmark/operator/scoring-hooks.yaml, visibility: operator, status: shipped}
+  - {asset_id: aws-event-rehearsal-evidence, path: docs/aws-event-rehearsal-report.md, visibility: operator, status: shipped}
+  - {asset_id: manual-walkthrough-evidence, path: docs/aws-event-manual-walkthrough-report.md, visibility: operator, status: shipped}
+  - {asset_id: final-reconciliation-evidence, path: docs/final-reconciliation-report.md, visibility: operator, status: shipped}
+
+operator_surfaces:
+  - {surface_id: range-build, path: build/, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: aws-event-lifecycle, path: tests/aws_event_rehearsal.py, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: ctfd-reconciliation, path: ctfd/, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: scenario-smoketests, path: tests/, role: validator, visibility: operator, status: shipped}
+  - {surface_id: attack-path, path: docs/attack-path.md, role: facilitator, visibility: oracle, status: shipped}
+  - {surface_id: oracle-validation, path: validation/, role: validator, visibility: operator, status: shipped}
+  - {surface_id: profile-validation, path: profiles/validate_profiles.py, role: validator, visibility: commercial, status: shipped}
+  - {surface_id: benchmark-scoring-adapter, path: profiles/agent-benchmark/operator/scoring-hooks.yaml, role: validator, visibility: operator, status: shipped}
+  - {surface_id: aws-event-reset, path: aws-range/reset.sh, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: aws-event-rehearsal, path: tests/aws_event_rehearsal.py, role: validator, visibility: operator, status: shipped}
+  - {surface_id: aws-event-teardown, path: tests/aws_event_rehearsal.py, role: range_ops, visibility: operator, status: shipped}
+  - {surface_id: final-reconciliation, path: docs/final-reconciliation-report.md, role: validator, visibility: operator, status: shipped}
+
+validation:
+  commands:
+    - id: central-pack-contract
+      command: aces-pack-validate --pack polaris
+      validates: [published-pack-contract, pack-metadata, provenance]
+    - id: central-pack-release
+      command: aces-pack-release check --pack polaris
+      validates: [release-boundaries, participant-leak-scan]
+    - id: polaris-oracle
+      command: python3 polaris/validation/validate_oracle.py validate
+      validates: [hidden-path, affordances, objective-oracle, flag-layer-joins, negative-gates, participant-leak-scan]
+    - id: polaris-ctfd
+      command: python3 -m unittest discover -s polaris/ctfd/tests
+      validates: [stable-flag-projection, namespace-isolation, idempotent-reconciliation, safe-auth]
+    - id: polaris-profiles
+      command: python3 polaris/profiles/validate_profiles.py validate
+      validates: [delivery-bundles, participant-operator-split, runtime-profile-joins, benchmark-joins, leak-scan]
+    - id: polaris-aws-event-tests
+      command: python3 -m unittest polaris.tests.test_aws_range_rehearsal
+      validates: [build-artifact, event-provider-binding, participant-entry, flag-paths, reset, teardown, walkthrough-binding]
+  gates:
+    - id: manifest-schema
+      kind: schema
+      paths:
+        - {path: pack.compatibility.yaml}
+        - {path: docs/provenance-ledger.yaml}
+    - id: private-oracle-contract
+      kind: unit-test
+      paths:
+        - {path: oracle/polaris-oracle.yaml}
+        - {path: oracle/affordances.yaml}
+        - {path: validation/validate_oracle.py}
+    - id: flag-layer-contract
+      kind: unit-test
+      paths:
+        - {path: flags/placement.yaml}
+        - {path: challenges/challenges.yaml}
+        - {path: oracle/affordances.yaml}
+        - {path: ctfd/tests/}
+    - id: profile-bundle-contract
+      kind: unit-test
+      paths:
+        - {path: profiles/bundles.yaml}
+        - {path: profiles/validate_profiles.py}
+        - {path: profiles/tests/}
+    - id: aws-event-source-contract
+      kind: unit-test
+      paths:
+        - {path: aws-range/main.tf}
+        - {path: aws-range/ranges.tf}
+        - {path: aws-range/shared.tf}
+        - {path: aws-range/versions.tf}
+        - {path: aws-range/variables.tf}
+        - {path: aws-range/outputs.tf}
+        - {path: aws-range/user_data.sh.tpl}
+        - {path: aws-range/a2_user_data.ps1.tpl}
+        - {path: aws-range/a2_cold_bootstrap.sh}
+        - {path: aws-range/a2_install_adds.ps1}
+        - {path: aws-range/a2_setup.ps1}
+        - {path: aws-range/common.py}
+        - {path: aws-range/reset.sh}
+        - {path: build/build-v1.tar.gz}
+        - {path: tests/aws_event_rehearsal.py}
+        - {path: tests/aws_event_participant.py}
+        - {path: tests/test_aws_range_rehearsal.py}
+    - id: participant-export-leak-scan
+      kind: leak-scan
+      paths:
+        - {path: README.md}
+        - {path: docs/concepts.md}
+        - {path: briefing-deck/}
+        - {path: challenges/}
+        - {path: profiles/_shared/}
+        - {path: profiles/guided/participant/}
+        - {path: profiles/unguided/participant/}
+        - {path: profiles/agent-benchmark/participant/}
+    - id: aws-event-rehearsal-evidence
+      kind: rehearsal
+      paths:
+        - {path: tests/aws_event_rehearsal.py}
+        - {path: tests/aws_event_participant.py}
+        - {path: docs/aws-event-rehearsal-report.md}
+    - id: manual-participant-walkthrough
+      kind: manual-walkthrough
+      paths:
+        - {path: docs/walkthroughs/}
+        - {path: docs/aws-event-manual-walkthrough-report.md}
+    - id: final-reconciliation
+      kind: unit-test
+      paths:
+        - {path: pack.yaml}
+        - {path: pack.compatibility.yaml}
+        - {path: docs/provenance-ledger.yaml}
+        - {path: docs/final-reconciliation-report.md}
+        - {path: tests/test_topology_design.py}

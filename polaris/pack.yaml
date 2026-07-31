@@ -1,0 +1,24 @@
+name: polaris
+title: "Polaris / NORTHSTORM"
+version: 0.5.0
+status: draft
+description: "A live-fire offensive enterprise-to-OT campaign from a Kali foothold through the Boreas environment to NORTHSTORM objectives."
+authors:
+  - Palo Alto Networks, Inc.
+license: "Copyright (c) 2026, Palo Alto Networks Inc. All rights reserved."
+requirement: null
+contents:
+  flag_layer: true           # Canonical flags/ + challenges/ contracts and the ctfd/ reference loader ship together.
+  reference_triangle: true   # The aws_event build, tests, walkthroughs, reset, and evidence ship as one proven degraded reference.
+  profile_bundles: true       # Five content-only delivery/audience bundles; runtime profiles remain separate.
+compatibility_manifest: pack.compatibility.yaml
+provenance_ledger: docs/provenance-ledger.yaml
+
+profile_bundles:
+  manifest: profiles/bundles.yaml
+  bundles:
+    - id: guided
+    - id: unguided
+    - id: purple-team
+    - id: agent-benchmark
+    - id: demo

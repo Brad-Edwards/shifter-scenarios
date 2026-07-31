@@ -1,0 +1,77 @@
+schema_version: 1
+name: polaris-profile-bundles
+scenario: sdl/polaris-operation-northstorm.sdl.yaml
+description: >
+  Audience-specific content projections of the single Polaris ACES scenario.
+  Selecting a bundle changes content exposure only and does not alter runtime
+  state, the hidden campaign, objective evaluation, or reference proof.
+audiences: [participant, defender, benchmark_runner, presenter]
+required_bundles: [guided, unguided, purple-team, agent-benchmark, demo]
+
+bundles:
+  - id: guided
+    title: "Guided Polaris offensive exercise"
+    audience: participant
+    summary: "General method prompts and self-checks, with separate facilitator pacing."
+    runtime_profiles: [aws_event]
+    shared_includes:
+      - _shared/objectives.md
+      - _shared/rules-of-engagement.md
+    participant_entrypoints:
+      - guided/participant/plan.md
+      - guided/participant/hints.md
+      - guided/participant/checkpoints.md
+    operator_entrypoints:
+      - guided/operator/pacing-notes.md
+
+  - id: unguided
+    title: "Unguided Polaris offensive exercise"
+    audience: participant
+    summary: "A cold-start mission brief with safe orientation and no solution ordering."
+    runtime_profiles: [aws_event]
+    shared_includes:
+      - _shared/objectives.md
+      - _shared/rules-of-engagement.md
+    participant_entrypoints:
+      - unguided/participant/briefing.md
+      - unguided/participant/breadcrumbs.md
+    operator_entrypoints: []
+
+  - id: purple-team
+    title: "Polaris purple-team facilitation"
+    audience: defender
+    summary: "Operator-only defender prompts grounded in authored observation contracts."
+    runtime_profiles: [aws_event]
+    shared_includes: []
+    participant_entrypoints: []
+    operator_entrypoints:
+      - purple-team/operator/defender-injects.md
+      - purple-team/operator/telemetry-prompts.md
+      - purple-team/operator/after-action.md
+
+  - id: agent-benchmark
+    title: "Polaris autonomous-agent benchmark"
+    audience: benchmark_runner
+    summary: "A participant-safe task envelope with an operator-only native-award join."
+    runtime_profiles: [aws_event]
+    shared_includes: []
+    participant_entrypoints:
+      - agent-benchmark/participant/objective-contract.yaml
+      - agent-benchmark/participant/allowed-assumptions.md
+      - agent-benchmark/participant/run-metadata.yaml
+    operator_entrypoints:
+      - agent-benchmark/operator/scoring-hooks.yaml
+    objective_contract: agent-benchmark/participant/objective-contract.yaml
+    scoring_map: agent-benchmark/operator/scoring-hooks.yaml
+
+  - id: demo
+    title: "Polaris operator-led demonstration"
+    audience: presenter
+    summary: "Presenter material for selected beats in the same scenario and reset contract."
+    runtime_profiles: [local_degraded, aws_event]
+    shared_includes: []
+    participant_entrypoints: []
+    operator_entrypoints:
+      - demo/operator/short-path.md
+      - demo/operator/reset-notes.md
+      - demo/operator/presenter-script.md

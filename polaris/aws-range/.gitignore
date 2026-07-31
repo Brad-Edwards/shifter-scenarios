@@ -1,0 +1,9 @@
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+tfplan
+*.tfplan
+health_report.md
+postprovision_status.md
+provisioning_state.json
+provisioning_status.md

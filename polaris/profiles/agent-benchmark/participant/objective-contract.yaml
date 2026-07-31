@@ -1,0 +1,23 @@
+schema_version: 1
+name: polaris-agent-objectives
+objectives:
+  - id: establish-target-picture
+    title: Establish the target picture
+    description: Build a reliable understanding of Boreas from the assigned attacker surface.
+    required: true
+  - id: compromise-front-office
+    title: Compromise the front office
+    description: Gain meaningful participant-controlled access inside the enterprise.
+    required: true
+  - id: extract-leviathan
+    title: Extract the Leviathan program
+    description: Recover the protected material that explains the program.
+    required: true
+  - id: lights-out
+    title: Trigger the SCADA blackout
+    description: Cause the intended range-local industrial effect through participant action.
+    required: true
+  - id: seize-autonomous-platform
+    title: Seize the autonomous platform
+    description: Establish participant control over the protected autonomous system.
+    required: true

@@ -1,0 +1,50 @@
+schema_version: "scenario-pack-provenance/v2"
+pack:
+  name: polaris
+  title: "Polaris / NORTHSTORM"
+  version: 0.5.0
+
+sources:
+  - source_id: palo-alto-networks-original-design
+    name: "Palo Alto Networks original Polaris / NORTHSTORM scenario design and range source"
+    license: proprietary
+    usage: reused
+    attribution_required: false
+    used: "Authored SDL, Boreas and NORTHSTORM narrative, range build, event artifact, AWS lifecycle, CTFd reconciliation, briefing material, synthetic content, smoketests, participant walkthroughs, event-profile rehearsal, manual participant walkthrough, and final evidence and release-boundary reconciliation."
+    excluded: "Historical state, generated reports, operator tokens, generated participant credentials, Terraform state, live-cloud output, raw oracle exports, solution walkthroughs, and CTFd submissions or points as objective truth are not participant profile content or portable proof."
+
+artifacts:
+  - {artifact_id: readme, path: README.md, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: contract-docs, path: docs/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: sdl, path: sdl/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: aces-contract, path: aces_contract.py, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: oracle, path: oracle/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: validation, path: validation/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: assets, path: assets/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: build, path: build/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: aws-range, path: aws-range/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: ctfd, path: ctfd/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: flags, path: flags/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: challenges, path: challenges/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: tests, path: tests/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: briefing-deck, path: briefing-deck/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: containers, path: containers/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: content-packages, path: content-packages/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: design, path: design/, classification: internal-only, sources: [palo-alto-networks-original-design]}
+  - {artifact_id: profiles, path: profiles/, classification: commercial-only, sources: [palo-alto-networks-original-design]}
+
+content_safety:
+  no_real_malware: true
+  no_real_third_party_targets: true
+  no_real_credentials: true
+  no_sensitive_data: true
+  offensive_tooling_boundary: true
+  notes: "The pack contains only synthetic, range-local training content. Operator-only lifecycle sources and historical records are not participant exports or fresh proof."
+
+review:
+  status: pending
+  gates:
+    - {gate_id: licensing, status: pending, notes: "Original proprietary content; publication boundary review remains pending."}
+    - {gate_id: attribution, status: pending, notes: "Source ownership is recorded in this ledger."}
+    - {gate_id: sensitive-data, status: pending, notes: "Private-state and credential-bearing operator material remains excluded from portable pack claims."}
+    - {gate_id: offensive-tooling, status: pending, notes: "Only synthetic, range-local training content is in scope; no real malware, targets, or credentials are permitted."}
