@@ -49,7 +49,7 @@ telemetry = load_module(
 
 
 CHALLENGE_FILE_DIGESTS = {
-    "assets/services/keycloak-realm.json": "ab40010c8019449f3b39ca2c9e4c6b8554d516d0f5bf665556a89ced952dcd5e",
+    "assets/services/keycloak-realm.json": "6ded3487449a4f4e7bf77a59b60d2a9c7847b69bbccb1acd0fadf31e03124a47",
     "assets/model-artifacts/deployment-manifest.yaml": "bee34c5c0e894e0c9c6314d957512d19fbe0309aabdc73dfc4812c8560cb2a1b",
     "assets/model-artifacts/model.yaml": "1ef0674d3d2b821c33a92c513f13376282f3f072a5f49fb9b28221dfcd6c0c83",
     "assets/workflows/keplerops_distillation.py": "d0d458a21542272684f17ba36bfaed6d0392562b8e845b2834da9a7f5ac1acbe",

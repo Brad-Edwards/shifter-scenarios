@@ -9,7 +9,26 @@ from fastapi.responses import FileResponse
 from keplerops_runtime.foundation.auth_storage import _require_ready, _require_role, _session
 from keplerops_runtime.foundation.catalog import _participant_adversarial_challenges, _participant_agent_challenges, _participant_backdoor_challenges, _participant_capstone_challenges, _participant_context_challenges, _participant_evasion_challenges, _participant_extraction_challenges, _participant_persistence_challenges, _participant_secrets_challenges, _participant_training_challenges, _participant_ui
 from keplerops_runtime.foundation.clients import _backend_http_client
-from keplerops_runtime.foundation.config import ADVERSARIAL_ATTEMPT_PATH, AGENT_ATTEMPT_PATH, AUTHENTICATION_REQUIRED, BACKDOOR_ATTEMPT_PATH, CAPSTONE_ATTEMPT_PATH, CONFIG, CONTEXT_ATTEMPT_PATH, ERROR_RESPONSES, EVASION_ATTEMPT_PATH, EXTRACTION_ATTEMPT_PATH, IDENTITY_UNAVAILABLE, PERSISTENCE_TURN_PATH, SECRETS_ATTEMPT_PATH, SECRETS_INFER_PATH, SESSION_COOKIE, TLS_CA_PATH, TRAINING_ATTEMPT_PATH
+from keplerops_runtime.foundation.config import (
+    ADVERSARIAL_ATTEMPT_PATH,
+    AGENT_ATTEMPT_PATH,
+    AUTHENTICATION_REQUIRED,
+    BACKDOOR_ATTEMPT_PATH,
+    BROWSER_SESSION_MAX_AGE_SECONDS,
+    CAPSTONE_ATTEMPT_PATH,
+    CONFIG,
+    CONTEXT_ATTEMPT_PATH,
+    ERROR_RESPONSES,
+    EVASION_ATTEMPT_PATH,
+    EXTRACTION_ATTEMPT_PATH,
+    IDENTITY_UNAVAILABLE,
+    PERSISTENCE_TURN_PATH,
+    SECRETS_ATTEMPT_PATH,
+    SECRETS_INFER_PATH,
+    SESSION_COOKIE,
+    TLS_CA_PATH,
+    TRAINING_ATTEMPT_PATH,
+)
 from keplerops_runtime.foundation.schemas import BrowserLoginRequest
 from typing import Annotated
 from typing import Any
@@ -65,7 +84,7 @@ async def browser_login(request: BrowserLoginRequest, response: Response) -> dic
         secure=True,
         httponly=True,
         samesite="strict",
-        max_age=900,
+        max_age=BROWSER_SESSION_MAX_AGE_SECONDS,
         path="/",
     )
     return {"authenticated": True}

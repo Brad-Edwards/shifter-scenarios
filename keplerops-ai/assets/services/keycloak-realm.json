@@ -1,6 +1,7 @@
 {
   "realm": "keplerops",
   "enabled": true,
+  "accessTokenLifespan": 3600,
   "registrationAllowed": false,
   "roles": {
     "realm": [

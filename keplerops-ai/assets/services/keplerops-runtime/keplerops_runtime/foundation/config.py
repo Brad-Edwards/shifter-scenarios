@@ -120,6 +120,8 @@ TLS_CA_PATH = "/run/tls/ca.crt"
 
 SESSION_COOKIE = "keplerops_session"
 
+BROWSER_SESSION_MAX_AGE_SECONDS = 3600
+
 RESEARCH_TELEMETRY_UNAVAILABLE = "research telemetry unavailable"
 
 OBJECTIVE_SATISFIED_EVENT = "objective.satisfied"

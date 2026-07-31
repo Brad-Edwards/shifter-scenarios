@@ -1,7 +1,7 @@
 # KeplerOps QA challenge walkthrough
 
 This is the spoiler-heavy QA guide for completing and verifying all 134
-playable KeplerOps challenges. It links the command-by-command instructions,
+playable KeplerOps challenges. It links the participant-facing instructions,
 expected results, receipt steps, and negative controls used for the manual
 participant-equivalent walkthrough.
 
@@ -15,25 +15,25 @@ participant onboarding.
 2. Sign in with the QA participant credentials supplied by the organizer.
 3. Complete the password-change prompt if Shifter presents one.
 4. Open **Range**, find the Kali workstation, and select **Open**.
-5. Use the Kali terminal inside the Guacamole desktop for every walkthrough
-   command.
+5. Use the browser UI or Kali terminal exactly as each walkthrough instructs.
+   Do not replace a UI step with curl unless the walkthrough says the terminal
+   is the participant path for that challenge.
 6. Use Shifter's **Challenges** page to confirm challenge visibility, inspect
    hints, and submit the receipt produced by the range.
 
-The detailed walkthroughs were authored against the same Kali participant
+Some detailed walkthroughs were authored against the same Kali participant
 workstation before its current Shifter integration. Where they say **Kasm**,
 use the Kali desktop opened from Shifter through Guacamole. Where historical
-text says **CTFd**, use Shifter's **Challenges** page. Neither wording changes
-the in-range commands or proof path.
+text says **CTFd**, use Shifter's **Challenges** page.
 
 ## Run the challenges
 
 Work through both linked files where a module has separate core and expansion
 instructions. Together they cover all 134 playable challenges.
 
-| Module | Challenges | Command-by-command walkthroughs | QA checklist |
+| Module | Challenges | Participant-path walkthroughs | QA checklist |
 | --- | ---: | --- | --- |
-| 01 - Agent Control | 10 | [All challenges](module-01-agent-control.md) | [Checklist](../playtester-guide/challenges/module-01-agent-control/index.md) |
+| 01 - Agent Control | 10 | [All challenges](module-01-agent-control.md) | Included in walkthrough |
 | 02 - Model Evasion | 12 | [All challenges](module-02-model-evasion.md) | [Checklist](../playtester-guide/challenges/module-02-model-evasion/index.md) |
 | 03 - Context Poisoning | 11 | [Core](module-03-context-poisoning.md), [expansion](module-03-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-03-context-poisoning/index.md) |
 | 04 - Model Secrets | 13 | [Core](module-04-model-secrets.md), [expansion](module-04-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-04-model-secrets/index.md) |
@@ -45,10 +45,10 @@ instructions. Together they cover all 134 playable challenges.
 | 10 - AI Capstone | 17 | [Core](module-10-ai-capstone.md), [expansion](module-10-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-10-ai-capstone/index.md) |
 | **Total** | **134** | | |
 
-The [all-challenge index](../playtester-guide/challenges/README.md) provides one
-QA record per challenge with its difficulty, prerequisites, hints, proof
-expectation, and capture template. The module walkthroughs above contain the
-actual execution commands.
+The module walkthroughs above contain the actual participant actions. The
+[all-challenge index](../playtester-guide/challenges/README.md) remains a
+secondary navigation surface for generated challenge records and should not
+override a module walkthrough.
 
 ## Verify each challenge
 
@@ -78,7 +78,7 @@ For every failure, record:
 - challenge identifier and title;
 - participant username and assigned range;
 - approximate time and current reset generation, when visible;
-- exact step and command;
+- exact step and action;
 - visible response or error;
 - hints used;
 - whether the in-range action succeeded;
