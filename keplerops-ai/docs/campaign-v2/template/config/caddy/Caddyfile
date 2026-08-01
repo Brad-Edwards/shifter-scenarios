@@ -1,0 +1,168 @@
+{
+  admin off
+  local_certs
+}
+
+https://id.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.20.20:8080
+}
+
+https://grafana.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.80.13:3000
+}
+
+https://jaeger.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.80.11:16686
+}
+
+https://keplerops.lab, https://www.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.10.24:80
+}
+
+https://git.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.20:3000
+}
+
+https://pypi.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.30:3141
+}
+
+https://npm.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.31:4873
+}
+
+https://registry.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.32:8080
+}
+
+https://notebooks.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.33:8000
+}
+
+https://labels.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.34:8080
+}
+
+https://airflow.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.35:8080
+}
+
+https://mlflow.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.36:5000
+}
+
+https://pipelines.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.40.37:1416
+}
+
+https://objects.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.60:9001
+}
+
+https://lake.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.61:8000
+}
+
+https://vectors.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.62:6333
+}
+
+https://argocd.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30080
+}
+
+https://models.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30400
+}
+
+https://orion-agent.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30081
+}
+
+https://orion-mcp.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30082
+}
+
+https://risk-model.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30083
+}
+
+https://workhub.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.30.22:3000
+}
+
+https://files.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.30.23:80
+}
+
+https://support.keplerops.lab, https://intake.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.30.24:8080
+}
+
+https://assistant.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.30.25:3080
+}
+
+https://preview.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.10.25:80
+}
+
+https://status.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.70.21:2368
+}
+
+https://advisories.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.70.22:80
+}
+
+https://webmail.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.30.21:80
+}
+
+https://git.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.30:3000
+}
+
+https://objects.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.31:9001
+}
+
+https://notebook.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.32:8888
+}
+
+http://ready.keplerops.lab {
+  respond "KeplerOps AI Systems clean-enterprise foundation" 200
+}

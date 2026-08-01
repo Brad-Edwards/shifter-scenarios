@@ -1,0 +1,20 @@
+version: 1.2.1
+cache: true
+interface:
+  endpointsMenu: false
+  modelSelect: true
+  parameters: true
+  presets: false
+registration:
+  socialLogins: []
+endpoints:
+  custom:
+    - name: Orion Assistant
+      apiKey: KeplerV2-Training-Orion-Assistant
+      baseURL: http://litellm.platform.keplerops.lab/v1
+      models:
+        default: [orion-assistant]
+        fetch: false
+      titleConvo: true
+      titleModel: orion-assistant
+

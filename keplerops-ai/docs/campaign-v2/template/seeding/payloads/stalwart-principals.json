@@ -1,0 +1,82 @@
+[
+  {
+    "type": "domain",
+    "name": "keplerops.lab",
+    "description": "Kepler Operations corporate mail domain"
+  },
+  {
+    "type": "domain",
+    "name": "cinder.lab",
+    "description": "Cinder partner mail domain"
+  },
+  {
+    "type": "individual",
+    "name": "reviewer",
+    "description": "Rina Chen",
+    "emails": ["reviewer@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "REVIEWER_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "ml.engineer",
+    "description": "Maya Ortiz",
+    "emails": ["ml.engineer@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "ML_ENGINEER_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "release.engineer",
+    "description": "Elliot Park",
+    "emails": ["release.engineer@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "RELEASE_ENGINEER_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "communications",
+    "description": "Samira Okafor",
+    "emails": ["communications@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "COMMS_PUBLISHER_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "support",
+    "description": "Jonas Becker",
+    "emails": ["support@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SUPPORT_ANALYST_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "partner-intake",
+    "description": "Partner intake mailbox",
+    "emails": ["partner-intake@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "PARTNER_INTAKE_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "cinder.operator",
+    "description": "Cinder partner operator",
+    "emails": ["cinder.operator@cinder.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "CINDER_OPERATOR_PASSWORD"
+  }
+]

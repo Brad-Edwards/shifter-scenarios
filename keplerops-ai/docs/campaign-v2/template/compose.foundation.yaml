@@ -1,0 +1,397 @@
+name: keplerops-v2
+
+x-restart: &restart
+  restart: unless-stopped
+
+x-common-labels: &common-labels
+  io.keplerops.scenario: keplerops-ai
+  io.keplerops.campaign: v2
+  io.keplerops.layer: clean-baseline
+
+services:
+  postgres:
+    <<: *restart
+    image: ${POSTGRES_IMAGE}
+    container_name: kep-v2-postgres
+    environment:
+      POSTGRES_USER: kepler
+      POSTGRES_PASSWORD: KeplerV2-Training-Postgres
+      POSTGRES_DB: keplerops
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./config/postgres/init.sql:/docker-entrypoint-initdb.d/10-keplerops.sql:ro
+    networks:
+      data:
+        ipv4_address: 10.61.50.10
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kepler -d keplerops"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  redis:
+    <<: *restart
+    image: ${REDIS_IMAGE}
+    container_name: kep-v2-redis
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "KeplerV2-Training-Redis"]
+    volumes:
+      - redis-data:/data
+    networks:
+      data:
+        ipv4_address: 10.61.50.11
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "KeplerV2-Training-Redis", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  rabbitmq:
+    <<: *restart
+    image: ${RABBITMQ_IMAGE}
+    container_name: kep-v2-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: kepler
+      RABBITMQ_DEFAULT_PASS: KeplerV2-Training-Rabbit
+      RABBITMQ_DEFAULT_VHOST: keplerops
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      data:
+        ipv4_address: 10.61.50.12
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+    labels: *common-labels
+
+  pdns-auth:
+    <<: *restart
+    image: ${PDNS_AUTH_IMAGE}
+    container_name: kep-v2-pdns-auth
+    environment:
+      PDNS_AUTH_API_KEY: KeplerV2-Training-PDNS
+    volumes:
+      - pdns-data:/var/lib/powerdns
+      - ./config/powerdns/pdns.conf:/etc/powerdns/pdns.conf:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.10
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 2 bash -c '</dev/tcp/127.0.0.1/53'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  pdns-recursor:
+    <<: *restart
+    image: ${PDNS_RECURSOR_IMAGE}
+    container_name: kep-v2-pdns-recursor
+    depends_on:
+      pdns-auth:
+        condition: service_healthy
+    volumes:
+      - ./config/powerdns/recursor.conf:/etc/powerdns/recursor.conf:ro
+      - ./config/powerdns/recursor.lua:/etc/powerdns/recursor.lua:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.11
+      identity:
+        ipv4_address: 10.61.20.11
+    healthcheck:
+      test: ["CMD-SHELL", "rec_control ping | grep -q pong"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  keycloak:
+    <<: *restart
+    image: ${KEYCLOAK_IMAGE}
+    container_name: kep-v2-keycloak
+    command: ["start-dev", "--http-port=8080", "--health-enabled=true"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: range-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: KeplerV2-Training-Keycloak
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://10.61.50.10:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: KeplerV2-Training-KeycloakDB
+      KC_HOSTNAME_STRICT: "false"
+      KC_HTTP_ENABLED: "true"
+      KC_TRUSTSTORE_PATHS: /opt/keycloak/conf/truststores
+    volumes:
+      - ./state/identity/truststores:/opt/keycloak/conf/truststores:ro
+    extra_hosts:
+      - dc01.corp.keplerops.lab:192.168.78.10
+      - dc02.corp.keplerops.lab:192.168.78.11
+    networks:
+      identity:
+        ipv4_address: 10.61.20.20
+      data:
+        ipv4_address: 10.61.50.20
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000; printf 'GET /health/ready HTTP/1.0\\r\\nHost: localhost\\r\\n\\r\\n' >&3; grep -q '200 OK' <&3"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
+    labels: *common-labels
+
+  step-ca:
+    <<: *restart
+    image: ${STEP_CA_IMAGE}
+    container_name: kep-v2-step-ca
+    environment:
+      DOCKER_STEPCA_INIT_NAME: KeplerOps AI Systems Range CA
+      DOCKER_STEPCA_INIT_DNS_NAMES: ca.keplerops.lab,step-ca,localhost
+      DOCKER_STEPCA_INIT_PROVISIONER_NAME: range-provisioner
+      DOCKER_STEPCA_INIT_PASSWORD: KeplerV2-Training-StepCA
+      DOCKER_STEPCA_INIT_REMOTE_MANAGEMENT: "true"
+    volumes:
+      - step-ca-data:/home/step
+    ports:
+      - "192.168.78.1:9000:9000"
+    networks:
+      identity:
+        ipv4_address: 10.61.20.21
+    healthcheck:
+      test: ["CMD", "step", "ca", "health", "--ca-url", "https://localhost:9000", "--root", "/home/step/certs/root_ca.crt"]
+      interval: 15s
+      timeout: 8s
+      retries: 30
+    labels: *common-labels
+
+  caddy:
+    <<: *restart
+    image: ${CADDY_IMAGE}
+    container_name: kep-v2-caddy
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    volumes:
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      public:
+        ipv4_address: 10.61.10.2
+        aliases:
+          - keplerops.lab
+          - www.keplerops.lab
+          - id.keplerops.lab
+          - git.keplerops.lab
+          - workhub.keplerops.lab
+          - files.keplerops.lab
+          - support.keplerops.lab
+          - intake.keplerops.lab
+          - assistant.keplerops.lab
+          - preview.keplerops.lab
+          - status.keplerops.lab
+          - advisories.keplerops.lab
+          - webmail.keplerops.lab
+          - grafana.keplerops.lab
+          - jaeger.keplerops.lab
+          - ready.keplerops.lab
+      identity:
+        ipv4_address: 10.61.20.2
+      corp:
+        ipv4_address: 10.61.30.2
+      engineering:
+        ipv4_address: 10.61.40.2
+      data:
+      platform:
+        ipv4_address: 10.61.60.2
+      business:
+        ipv4_address: 10.61.70.2
+      observe:
+        ipv4_address: 10.61.80.2
+      cinder:
+        ipv4_address: 10.61.90.2
+        aliases:
+          - git.cinder.lab
+          - objects.cinder.lab
+          - notebook.cinder.lab
+    healthcheck:
+      test: ["CMD", "caddy", "validate", "--config", "/etc/caddy/Caddyfile"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  otel-collector:
+    <<: *restart
+    image: ${OTEL_COLLECTOR_IMAGE}
+    container_name: kep-v2-otel-collector
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./config/otel/otel-collector.yaml:/etc/otelcol-contrib/config.yaml:ro
+    networks:
+      observe:
+        ipv4_address: 10.61.80.10
+      corp:
+        ipv4_address: 10.61.30.10
+      engineering:
+        ipv4_address: 10.61.40.10
+      platform:
+        ipv4_address: 10.61.60.10
+      business:
+        ipv4_address: 10.61.70.10
+      cinder:
+        ipv4_address: 10.61.90.10
+    healthcheck:
+      test: ["CMD", "/otelcol-contrib", "components"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    labels: *common-labels
+
+  jaeger:
+    <<: *restart
+    image: ${JAEGER_IMAGE}
+    container_name: kep-v2-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    networks:
+      observe:
+        ipv4_address: 10.61.80.11
+    labels: *common-labels
+
+  prometheus:
+    <<: *restart
+    image: ${PROMETHEUS_IMAGE}
+    container_name: kep-v2-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      observe:
+        ipv4_address: 10.61.80.12
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9090/-/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  alertmanager:
+    <<: *restart
+    image: ${ALERTMANAGER_IMAGE}
+    container_name: kep-v2-alertmanager
+    networks:
+      observe:
+        ipv4_address: 10.61.80.15
+    labels: *common-labels
+
+  grafana:
+    <<: *restart
+    image: ${GRAFANA_IMAGE}
+    container_name: kep-v2-grafana
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    environment:
+      GF_SECURITY_ADMIN_USER: range-admin
+      GF_SECURITY_ADMIN_PASSWORD: KeplerV2-Training-Grafana
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      observe:
+        ipv4_address: 10.61.80.13
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  opensearch:
+    <<: *restart
+    image: ${OPENSEARCH_IMAGE}
+    container_name: kep-v2-opensearch
+    environment:
+      discovery.type: single-node
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms1g -Xmx1g
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    networks:
+      observe:
+        ipv4_address: 10.61.80.14
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9200/_cluster/health >/dev/null"]
+      interval: 20s
+      timeout: 10s
+      retries: 30
+    labels: *common-labels
+
+networks:
+  public:
+    name: kep-v2-public
+    ipam:
+      config: [{subnet: 10.61.10.0/24}]
+  identity:
+    name: kep-v2-identity
+    ipam:
+      config: [{subnet: 10.61.20.0/24}]
+  corp:
+    name: kep-v2-corp
+    ipam:
+      config: [{subnet: 10.61.30.0/24}]
+  engineering:
+    name: kep-v2-engineering
+    ipam:
+      config: [{subnet: 10.61.40.0/24}]
+  data:
+    name: kep-v2-data
+    ipam:
+      config: [{subnet: 10.61.50.0/24}]
+  platform:
+    name: kep-v2-platform
+    ipam:
+      config: [{subnet: 10.61.60.0/24}]
+  business:
+    name: kep-v2-business
+    ipam:
+      config: [{subnet: 10.61.70.0/24}]
+  observe:
+    name: kep-v2-observe
+    ipam:
+      config: [{subnet: 10.61.80.0/24}]
+  cinder:
+    name: kep-v2-cinder
+    ipam:
+      config: [{subnet: 10.61.90.0/24}]
+  hardware:
+    name: kep-v2-hardware
+    ipam:
+      config: [{subnet: 10.61.100.0/24}]
+
+volumes:
+  postgres-data:
+  redis-data:
+  rabbitmq-data:
+  pdns-data:
+  step-ca-data:
+  caddy-data:
+  caddy-config:
+  prometheus-data:
+  grafana-data:
+  opensearch-data:

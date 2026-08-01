@@ -1,0 +1,502 @@
+name: keplerops-v2
+
+x-restart: &restart
+  restart: unless-stopped
+
+x-common-labels: &common-labels
+  io.keplerops.scenario: keplerops-ai
+  io.keplerops.campaign: v2
+  io.keplerops.layer: clean-baseline
+
+x-zammad-environment: &zammad-environment
+  MEMCACHE_SERVERS: zammad-memcached:11211
+  POSTGRESQL_HOST: 10.61.50.10
+  POSTGRESQL_DB: zammad
+  POSTGRESQL_USER: zammad
+  POSTGRESQL_PASS: KeplerV2-Training-ZammadDB
+  POSTGRESQL_DB_CREATE: "false"
+  REDIS_URL: redis://:KeplerV2-Training-Redis@10.61.50.11:6379
+  ELASTICSEARCH_ENABLED: "false"
+  ELASTICSEARCH_REINDEX: "false"
+  ELASTICSEARCH_SCHEMA: http
+  ELASTICSEARCH_HOST: 10.61.80.14
+  ELASTICSEARCH_PORT: "9200"
+  ZAMMAD_FQDN: support.keplerops.lab
+  ZAMMAD_HTTP_TYPE: https
+  BACKUP_ON_START: "false"
+
+x-zammad-service: &zammad-service
+  image: ${ZAMMAD_IMAGE}
+  init: true
+  restart: unless-stopped
+  environment: *zammad-environment
+  volumes:
+    - zammad-storage:/opt/zammad/storage
+    - zammad-backup:/var/tmp/zammad
+  networks:
+    - data
+    - observe
+  labels: *common-labels
+
+services:
+  mariadb:
+    <<: *restart
+    image: ${MARIADB_IMAGE}
+    container_name: kep-v2-mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: KeplerV2-Training-MariaRoot
+    volumes:
+      - mariadb-data:/var/lib/mysql
+      - ./config/mariadb/init.sql:/docker-entrypoint-initdb.d/10-keplerops.sql:ro
+    networks:
+      data:
+        ipv4_address: 10.61.50.30
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    labels: *common-labels
+
+  mongodb:
+    <<: *restart
+    image: ${MONGODB_IMAGE}
+    container_name: kep-v2-mongodb
+    command: ["mongod", "--bind_ip_all"]
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      data:
+        ipv4_address: 10.61.50.31
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 15s
+      timeout: 8s
+      retries: 30
+    labels: *common-labels
+
+  meilisearch:
+    <<: *restart
+    image: ${MEILISEARCH_IMAGE}
+    container_name: kep-v2-meilisearch
+    environment:
+      MEILI_MASTER_KEY: KeplerV2-Training-Meili-Master-Key
+      MEILI_ENV: production
+    volumes:
+      - meilisearch-data:/meili_data
+    networks:
+      data:
+        ipv4_address: 10.61.50.32
+    labels: *common-labels
+
+  public-site:
+    <<: *restart
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-public-site
+    volumes:
+      - ./content/public-site:/usr/share/nginx/html:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.24
+    labels: *common-labels
+
+  preview:
+    <<: *restart
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-preview
+    volumes:
+      - ./content/preview:/usr/share/nginx/html:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.25
+      engineering:
+        ipv4_address: 10.61.40.25
+    labels: *common-labels
+
+  stalwart:
+    <<: *restart
+    image: ${STALWART_IMAGE}
+    container_name: kep-v2-stalwart
+    hostname: mail.keplerops.lab
+    environment:
+      STALWART_PUBLIC_URL: https://mail.keplerops.lab
+    volumes:
+      - stalwart-data:/opt/stalwart
+    networks:
+      public:
+        ipv4_address: 10.61.10.20
+      corp:
+        ipv4_address: 10.61.30.20
+      cinder:
+        ipv4_address: 10.61.90.20
+    labels: *common-labels
+
+  roundcube:
+    <<: *restart
+    image: ${ROUNDCUBE_IMAGE}
+    container_name: kep-v2-roundcube
+    depends_on:
+      stalwart:
+        condition: service_started
+    environment:
+      ROUNDCUBEMAIL_DEFAULT_HOST: stalwart
+      ROUNDCUBEMAIL_DEFAULT_PORT: "143"
+      ROUNDCUBEMAIL_SMTP_SERVER: stalwart
+      ROUNDCUBEMAIL_SMTP_PORT: "25"
+      ROUNDCUBEMAIL_DB_TYPE: sqlite
+    volumes:
+      - roundcube-data:/var/roundcube/db
+    networks:
+      corp:
+        ipv4_address: 10.61.30.21
+      cinder:
+        ipv4_address: 10.61.90.21
+    labels: *common-labels
+
+  forgejo:
+    <<: *restart
+    image: ${FORGEJO_IMAGE}
+    container_name: kep-v2-forgejo
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      USER_UID: "1000"
+      USER_GID: "1000"
+      FORGEJO__database__DB_TYPE: postgres
+      FORGEJO__database__HOST: 10.61.50.10:5432
+      FORGEJO__database__NAME: forgejo
+      FORGEJO__database__USER: forgejo
+      FORGEJO__database__PASSWD: KeplerV2-Training-ForgejoDB
+      FORGEJO__server__DOMAIN: git.keplerops.lab
+      FORGEJO__server__ROOT_URL: https://git.keplerops.lab/
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+      FORGEJO__actions__ENABLED: "true"
+      FORGEJO__security__INSTALL_LOCK: "true"
+    volumes:
+      - forgejo-data:/data
+    ports:
+      - "192.168.78.1:3000:3000"
+    networks:
+      public:
+        ipv4_address: 10.61.10.21
+      engineering:
+        ipv4_address: 10.61.40.20
+      data:
+        ipv4_address: 10.61.50.40
+    labels: *common-labels
+
+  redmine:
+    <<: *restart
+    image: ${REDMINE_IMAGE}
+    container_name: kep-v2-redmine
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      REDMINE_DB_POSTGRES: 10.61.50.10
+      REDMINE_DB_PORT: "5432"
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_PASSWORD: KeplerV2-Training-RedmineDB
+      REDMINE_SECRET_KEY_BASE: KeplerV2-Training-Redmine-Secret-Key-Base
+      SECRET_KEY_BASE: KeplerV2-Training-Redmine-Secret-Key-Base
+    volumes:
+      - redmine-files:/usr/src/redmine/files
+    networks:
+      corp:
+        ipv4_address: 10.61.30.22
+      data:
+        ipv4_address: 10.61.50.41
+    labels: *common-labels
+
+  nextcloud:
+    <<: *restart
+    image: ${NEXTCLOUD_IMAGE}
+    container_name: kep-v2-nextcloud
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: 10.61.50.10
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: KeplerV2-Training-NextcloudDB
+      REDIS_HOST: 10.61.50.11
+      REDIS_HOST_PASSWORD: KeplerV2-Training-Redis
+      NEXTCLOUD_ADMIN_USER: range-admin
+      NEXTCLOUD_ADMIN_PASSWORD: KeplerV2-Training-Nextcloud
+      NEXTCLOUD_TRUSTED_DOMAINS: files.keplerops.lab
+    volumes:
+      - nextcloud-data:/var/www/html
+    networks:
+      corp:
+        ipv4_address: 10.61.30.23
+      data:
+        ipv4_address: 10.61.50.42
+    labels: *common-labels
+
+  zammad-memcached:
+    <<: *restart
+    image: ${MEMCACHED_IMAGE}
+    container_name: kep-v2-zammad-memcached
+    command: ["memcached", "-m", "256M"]
+    networks:
+      data:
+        ipv4_address: 10.61.50.33
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "11211"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  zammad-init:
+    <<: *zammad-service
+    container_name: kep-v2-zammad-init
+    command: ["zammad-init"]
+    restart: on-failure
+    user: 0:0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+      zammad-memcached:
+        condition: service_healthy
+
+  zammad-railsserver:
+    <<: *zammad-service
+    container_name: kep-v2-zammad-railsserver
+    command: ["zammad-railsserver"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:3000/"]
+      interval: 20s
+      timeout: 8s
+      start_period: 120s
+      retries: 20
+
+  zammad-scheduler:
+    <<: *zammad-service
+    container_name: kep-v2-zammad-scheduler
+    command: ["zammad-scheduler"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+
+  zammad-websocket:
+    <<: *zammad-service
+    container_name: kep-v2-zammad-websocket
+    command: ["zammad-websocket"]
+    depends_on:
+      zammad-init:
+        condition: service_completed_successfully
+
+  zammad-nginx:
+    <<: *zammad-service
+    container_name: kep-v2-zammad-nginx
+    command: ["zammad-nginx"]
+    depends_on:
+      zammad-railsserver:
+        condition: service_healthy
+    networks:
+      public:
+        ipv4_address: 10.61.10.26
+      corp:
+        ipv4_address: 10.61.30.24
+      data:
+        ipv4_address: 10.61.50.43
+      observe:
+        ipv4_address: 10.61.80.24
+
+  langflow:
+    <<: *restart
+    image: ${LANGFLOW_IMAGE}
+    container_name: kep-v2-langflow
+    environment:
+      LANGFLOW_DATABASE_URL: postgresql://langflow:KeplerV2-Training-LangflowDB@10.61.50.10:5432/langflow
+      LANGFLOW_AUTO_LOGIN: "false"
+      LANGFLOW_SUPERUSER: range-admin
+      LANGFLOW_SUPERUSER_PASSWORD: KeplerV2-Training-Langflow
+    volumes:
+      - langflow-data:/app/langflow
+    networks:
+      public:
+        ipv4_address: 10.61.10.22
+      engineering:
+        ipv4_address: 10.61.40.21
+      data:
+        ipv4_address: 10.61.50.44
+    labels: *common-labels
+
+  librechat:
+    <<: *restart
+    image: ${LIBRECHAT_IMAGE}
+    container_name: kep-v2-librechat
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      meilisearch:
+        condition: service_started
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3080"
+      MONGO_URI: mongodb://10.61.50.31:27017/LibreChat
+      MEILI_HOST: http://10.61.50.32:7700
+      MEILI_MASTER_KEY: KeplerV2-Training-Meili-Master-Key
+      CREDS_KEY: KeplerV2-Training-LibreChat-Creds-Key-32
+      CREDS_IV: KeplerV2-Training-LibreChat-IV-16
+      JWT_SECRET: KeplerV2-Training-LibreChat-JWT
+      JWT_REFRESH_SECRET: KeplerV2-Training-LibreChat-Refresh
+      ALLOW_REGISTRATION: "false"
+    volumes:
+      - ./config/librechat/librechat.yaml:/app/librechat.yaml:ro
+      - librechat-images:/app/client/public/images
+    networks:
+      corp:
+        ipv4_address: 10.61.30.25
+      data:
+        ipv4_address: 10.61.50.45
+    labels: *common-labels
+
+  unleash:
+    <<: *restart
+    image: ${UNLEASH_IMAGE}
+    container_name: kep-v2-unleash
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://business:KeplerV2-Training-BusinessDB@10.61.50.10:5432/business
+      DATABASE_SSL: "false"
+      LOG_LEVEL: warn
+      INIT_ADMIN_API_TOKENS: "*:*.range-admin"
+      INIT_CLIENT_API_TOKENS: "default:development.range-client"
+    networks:
+      business:
+        ipv4_address: 10.61.70.23
+      data:
+        ipv4_address: 10.61.50.46
+    labels: *common-labels
+
+  odoo:
+    <<: *restart
+    image: ${ODOO_IMAGE}
+    container_name: kep-v2-odoo
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      HOST: 10.61.50.10
+      PORT: "5432"
+      USER: business
+      PASSWORD: KeplerV2-Training-BusinessDB
+    volumes:
+      - odoo-data:/var/lib/odoo
+    networks:
+      business:
+        ipv4_address: 10.61.70.20
+      data:
+        ipv4_address: 10.61.50.47
+    labels: *common-labels
+
+  ghost:
+    <<: *restart
+    image: ${GHOST_IMAGE}
+    container_name: kep-v2-ghost
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      url: https://status.keplerops.lab
+      database__client: mysql
+      database__connection__host: 10.61.50.30
+      database__connection__user: ghost
+      database__connection__password: KeplerV2-Training-GhostDB
+      database__connection__database: ghost
+      security__staffDeviceVerification: "false"
+    volumes:
+      - ghost-data:/var/lib/ghost/content
+    networks:
+      public:
+        ipv4_address: 10.61.10.23
+      business:
+        ipv4_address: 10.61.70.21
+      data:
+        ipv4_address: 10.61.50.48
+    labels: *common-labels
+
+  mautic:
+    <<: *restart
+    image: ${MAUTIC_IMAGE}
+    container_name: kep-v2-mautic
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      MAUTIC_DB_HOST: 10.61.50.30
+      MAUTIC_DB_PORT: 3306
+      MAUTIC_DB_DATABASE: mautic
+      MAUTIC_DB_USER: mautic
+      MAUTIC_DB_PASSWORD: KeplerV2-Training-MauticDB
+      MAUTIC_URL: https://advisories.keplerops.lab
+      MAUTIC_ADMIN_EMAIL: communications@keplerops.lab
+      MAUTIC_ADMIN_PASSWORD: KeplerV2-Training-Mautic
+    volumes:
+      - mautic-data:/var/www/html
+    networks:
+      business:
+        ipv4_address: 10.61.70.22
+      data:
+        ipv4_address: 10.61.50.49
+    labels: *common-labels
+
+networks:
+  public:
+    external: true
+    name: kep-v2-public
+  identity:
+    external: true
+    name: kep-v2-identity
+  corp:
+    external: true
+    name: kep-v2-corp
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  data:
+    external: true
+    name: kep-v2-data
+  business:
+    external: true
+    name: kep-v2-business
+  observe:
+    external: true
+    name: kep-v2-observe
+  cinder:
+    external: true
+    name: kep-v2-cinder
+
+volumes:
+  mariadb-data:
+  mongodb-data:
+  meilisearch-data:
+  stalwart-data:
+  roundcube-data:
+  forgejo-data:
+  redmine-files:
+  nextcloud-data:
+  zammad-storage:
+  zammad-backup:
+  langflow-data:
+  librechat-images:
+  odoo-data:
+  ghost-data:
+  mautic-data:

@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS ghost CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'ghost'@'%' IDENTIFIED BY 'KeplerV2-Training-GhostDB';
+GRANT ALL PRIVILEGES ON ghost.* TO 'ghost'@'%';
+
+CREATE DATABASE IF NOT EXISTS mautic CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'mautic'@'%' IDENTIFIED BY 'KeplerV2-Training-MauticDB';
+GRANT ALL PRIVILEGES ON mautic.* TO 'mautic'@'%';
+FLUSH PRIVILEGES;
+
