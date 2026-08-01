@@ -1,0 +1,6 @@
+ARG HAYHOOKS_BASE_IMAGE=deepset/hayhooks:v0.6.0
+FROM ${HAYHOOKS_BASE_IMAGE}
+
+RUN python -m pip install --no-cache-dir qdrant-haystack==10.4.0
+
+CMD ["hayhooks", "run", "--host", "0.0.0.0"]

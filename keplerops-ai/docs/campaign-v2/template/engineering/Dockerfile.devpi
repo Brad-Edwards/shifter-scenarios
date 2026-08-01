@@ -1,0 +1,17 @@
+ARG DEVPI_BASE_IMAGE=python:3.12.11-slim-bookworm
+FROM ${DEVPI_BASE_IMAGE}
+
+RUN python -m pip install --no-cache-dir \
+      devpi-client==7.3.0 \
+      devpi-server==6.20.3 \
+      devpi-web==5.1.1 \
+    && groupadd --gid 1000 devpi \
+    && useradd --uid 1000 --gid 1000 --home-dir /home/devpi --create-home devpi \
+    && install -d -o 1000 -g 1000 -m 0750 /data
+
+COPY --chmod=0555 devpi/entrypoint.sh /usr/local/bin/devpi-entrypoint
+
+USER 1000:1000
+VOLUME ["/data"]
+EXPOSE 3141
+ENTRYPOINT ["/usr/local/bin/devpi-entrypoint"]

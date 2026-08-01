@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: orion-platform
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  description: Clean Orion runtime resources reconciled from an immutable release revision
+  sourceRepos:
+    - __REPO_URL__
+  destinations:
+    - namespace: orion-runtime
+      server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "serving.kserve.io"
+      kind: InferenceService
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+  orphanedResources:
+    warn: true

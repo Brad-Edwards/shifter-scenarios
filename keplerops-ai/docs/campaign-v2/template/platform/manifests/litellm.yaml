@@ -1,0 +1,170 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: litellm
+    app.kubernetes.io/part-of: keplerops-platform
+data:
+  config.yaml: |
+    model_list:
+      - model_name: orion-assistant
+        litellm_params:
+          model: os.environ/ORION_ASSISTANT_UPSTREAM_MODEL
+          api_base: os.environ/ORION_ASSISTANT_BASE_URL
+          api_key: os.environ/ORION_ASSISTANT_API_KEY
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY
+      disable_spend_logs: true
+    litellm_settings:
+      drop_params: true
+      request_timeout: 90
+      num_retries: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vertex-openai-proxy
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: vertex-openai-proxy
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vertex-openai-proxy
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vertex-openai-proxy
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: proxy
+          image: keplerops/orion-agent:0.1.0
+          imagePullPolicy: IfNotPresent
+          command: ["uvicorn", "vertex_proxy:app", "--host", "0.0.0.0", "--port", "8082", "--no-access-log"]
+          env:
+            - {name: VERTEX_PROJECT, value: prod-ksqdkj}
+            - {name: VERTEX_LOCATION, value: global}
+          ports:
+            - {name: http, containerPort: 8082}
+          readinessProbe:
+            httpGet: {path: /health/ready, port: http}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health/live, port: http}
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            requests: {cpu: 25m, memory: 64Mi}
+            limits: {cpu: 250m, memory: 256Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+            runAsUser: 65532
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vertex-openai-proxy
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: vertex-openai-proxy
+spec:
+  selector:
+    app.kubernetes.io/name: vertex-openai-proxy
+  ports:
+    - {name: http, port: 8082, targetPort: http}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: litellm
+  namespace: orion-platform
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: litellm
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: litellm
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: litellm
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: litellm
+    spec:
+      serviceAccountName: litellm
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: litellm
+          image: ghcr.io/berriai/litellm:main-v1.74.9-stable
+          imagePullPolicy: IfNotPresent
+          args: ["--config", "/app/config.yaml", "--port", "4000", "--num_workers", "1"]
+          envFrom:
+            - secretRef: {name: litellm-runtime}
+          env:
+            - {name: HOME, value: /tmp}
+            - {name: TMPDIR, value: /tmp}
+          ports:
+            - {name: http, containerPort: 4000}
+          readinessProbe:
+            httpGet: {path: /health/readiness, port: http}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health/liveliness, port: http}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits: {cpu: "1", memory: 1Gi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            runAsNonRoot: true
+            runAsUser: 1000
+          volumeMounts:
+            - {name: config, mountPath: /app/config.yaml, subPath: config.yaml, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: config
+          configMap: {name: litellm-config}
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: litellm
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: litellm
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: litellm
+  ports:
+    - {name: http, port: 4000, targetPort: http, nodePort: 30400}

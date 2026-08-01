@@ -1,0 +1,60 @@
+global:
+  domain: argocd.keplerops.lab
+
+configs:
+  params:
+    server.insecure: true
+  cm:
+    admin.enabled: true
+    exec.enabled: false
+    timeout.reconciliation: 60s
+    resource.customizations.health.serving.kserve.io_InferenceService: |
+      hs = {}
+      hs.status = "Progressing"
+      hs.message = "Waiting for KServe readiness"
+      if obj.status ~= nil and obj.status.conditions ~= nil then
+        for _, condition in ipairs(obj.status.conditions) do
+          if condition.type == "Ready" then
+            hs.message = condition.message or condition.reason or "KServe readiness reported"
+            if condition.status == "True" then
+              hs.status = "Healthy"
+            elseif condition.status == "False" then
+              hs.status = "Degraded"
+            end
+          end
+        end
+      end
+      return hs
+
+controller:
+  replicas: 1
+  resources:
+    requests: {cpu: 100m, memory: 256Mi}
+    limits: {cpu: 750m, memory: 768Mi}
+
+server:
+  replicas: 1
+  service:
+    type: NodePort
+    nodePortHttp: 30080
+  resources:
+    requests: {cpu: 50m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+
+repoServer:
+  replicas: 1
+  resources:
+    requests: {cpu: 50m, memory: 128Mi}
+    limits: {cpu: 500m, memory: 512Mi}
+
+redis:
+  resources:
+    requests: {cpu: 25m, memory: 64Mi}
+    limits: {cpu: 250m, memory: 256Mi}
+
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  enabled: false

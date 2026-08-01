@@ -1,0 +1,14 @@
+ARG DVC_BASE_IMAGE=python:3.12.11-slim-bookworm
+FROM ${DVC_BASE_IMAGE}
+
+RUN python -m pip install --no-cache-dir "dvc[s3]==3.67.1" \
+    && groupadd --gid 1000 dvc \
+    && useradd --uid 1000 --gid 1000 --home-dir /home/dvc --create-home dvc \
+    && install -d -o 1000 -g 1000 -m 0750 /workspace
+
+COPY --chmod=0555 dvc/entrypoint.sh /usr/local/bin/dvc-entrypoint
+
+USER 1000:1000
+WORKDIR /workspace
+ENTRYPOINT ["/usr/local/bin/dvc-entrypoint"]
+CMD ["dvc", "version"]

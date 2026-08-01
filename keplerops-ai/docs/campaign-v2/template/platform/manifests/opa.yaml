@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-policy
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+    app.kubernetes.io/part-of: keplerops-platform
+data:
+  release.rego: |
+    package keplerops.release
+
+    import rego.v1
+
+    default allow := false
+
+    valid_digest(value) if {
+      regex.match("^sha256:[a-f0-9]{64}$", value)
+    }
+
+    valid_evaluation if {
+      input.evaluation.decision == "accepted"
+      valid_digest(input.evaluation.digest)
+    }
+
+    valid_approval if {
+      input.approval.status == "approved"
+      valid_digest(input.approval.digest)
+    }
+
+    allow if {
+      input.schema == "keplerops.release/v2"
+      valid_digest(input.source.digest)
+      valid_digest(input.dataset.digest)
+      valid_digest(input.training.digest)
+      valid_digest(input.model.digest)
+      valid_digest(input.serving_image.digest)
+      valid_digest(input.gitops.digest)
+      valid_evaluation
+      valid_approval
+      input.model.format == "onnx"
+      input.serving_image.runtime == "onnxruntime-cpu"
+    }
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: opa
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: opa
+    spec:
+      serviceAccountName: opa
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: opa
+          image: openpolicyagent/opa:1.5.1-static@sha256:72c5186ef74bc7a88faf88204109476be41cdc392ff1de722f7d8ecb08f18c4d
+          imagePullPolicy: IfNotPresent
+          args:
+            - run
+            - --server
+            - --addr=0.0.0.0:8181
+            - --log-format=json
+            - --set=decision_logs.console=true
+            - /policy/release.rego
+          ports:
+            - {name: http, containerPort: 8181}
+          readinessProbe:
+            httpGet: {path: "/health?plugins", port: http}
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests: {cpu: 25m, memory: 48Mi}
+            limits: {cpu: 300m, memory: 192Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          volumeMounts:
+            - {name: policy, mountPath: /policy, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: policy
+          configMap: {name: release-policy}
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+spec:
+  selector:
+    app.kubernetes.io/name: opa
+  ports:
+    - {name: http, port: 8181, targetPort: http}
