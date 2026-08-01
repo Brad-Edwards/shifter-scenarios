@@ -1,0 +1,62 @@
+[
+  {
+    "record_id": "orion-label-001",
+    "text": "Publish the Orion 2.4 compatibility matrix before the partner preview.",
+    "label": "Release"
+  },
+  {
+    "record_id": "orion-label-002",
+    "text": "Promote the signed inference image after release approval.",
+    "label": "Release"
+  },
+  {
+    "record_id": "orion-label-003",
+    "text": "Update the client SDK notes for the August release.",
+    "label": "Release"
+  },
+  {
+    "record_id": "orion-label-004",
+    "text": "Prepare rollback instructions for the staging deployment.",
+    "label": "Release"
+  },
+  {
+    "record_id": "orion-label-005",
+    "text": "Investigate a safety regression in the medical advice evaluation slice.",
+    "label": "Safety"
+  },
+  {
+    "record_id": "orion-label-006",
+    "text": "Escalate the red-team report before opening the model preview.",
+    "label": "Safety"
+  },
+  {
+    "record_id": "orion-label-007",
+    "text": "Quarantine the dataset row that contains customer contact details.",
+    "label": "Safety"
+  },
+  {
+    "record_id": "orion-label-008",
+    "text": "Review the policy denial observed during high-risk tool execution.",
+    "label": "Safety"
+  },
+  {
+    "record_id": "orion-label-009",
+    "text": "Compare the vision encoder ablation results for the weekly research review.",
+    "label": "Research"
+  },
+  {
+    "record_id": "orion-label-010",
+    "text": "Schedule an experiment on retrieval chunk sizes and citation quality.",
+    "label": "Research"
+  },
+  {
+    "record_id": "orion-label-011",
+    "text": "Summarize the new distillation benchmark for the model team.",
+    "label": "Research"
+  },
+  {
+    "record_id": "orion-label-012",
+    "text": "Record the training run that improved the rare-intent validation slice.",
+    "label": "Research"
+  }
+]

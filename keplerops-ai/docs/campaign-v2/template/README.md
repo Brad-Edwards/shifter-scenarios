@@ -26,6 +26,7 @@ sudo /opt/keplerops-v2/scripts/check-all.sh
 sudo /opt/keplerops-v2/baseline/cinder-surfaces.sh
 sudo /opt/keplerops-v2/baseline/document-intake.sh
 sudo /opt/keplerops-v2/baseline/source-ci-registries.sh
+sudo /opt/keplerops-v2/baseline/data-training-lineage.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -45,6 +46,10 @@ document in Nextcloud, and write completion state back to Zammad.
 its Actions workflow and that the matching Python package, Node package, OCI
 image revision, immutable tag, moving clean tag, and digest exist through the
 normal devpi, Verdaccio, and Harbor APIs.
+`data-training-lineage.sh` exports the fully annotated clean Label Studio
+project, recomputes its canonical hash, and requires the latest scheduled
+Airflow run, exact lakeFS commit, DVC descriptor, MLflow run, lineage artifacts,
+training metric, and downloaded LoRA adapter digest to agree.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

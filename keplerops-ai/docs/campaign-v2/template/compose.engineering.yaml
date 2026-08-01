@@ -38,6 +38,7 @@ x-airflow-environment: &airflow-environment
   AIRFLOW__CELERY__BROKER_URL: amqp://kepler:KeplerV2-Training-Rabbit@10.61.50.12:5672/keplerops
   AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:KeplerV2-Training-AirflowDB@10.61.50.10:5432/airflow
   AIRFLOW__API_AUTH__JWT_SECRET: KeplerV2-Training-Airflow-JWT
+  AIRFLOW__API_AUTH__JWT_ISSUER: keplerops-airflow
   AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
   MLFLOW_TRACKING_URI: http://mlflow:5000
   MLFLOW_S3_ENDPOINT_URL: http://minio:9000
@@ -61,6 +62,10 @@ x-airflow-environment: &airflow-environment
   NEXTCLOUD_PASSWORD: KeplerV2-Training-Nextcloud
   TIKA_URL: http://tika:9998
   ORION_AGENT_URL: http://192.168.78.30:30081
+  LABEL_STUDIO_URL: http://label-studio:8080
+  LABEL_STUDIO_API_TOKEN: 31a5a4b4ab3cdbaf110644eed06853b2b418daf6
+  LAKEFS_ACCESS_KEY_ID: KeplerLakeFSAccess
+  LAKEFS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
 
 x-airflow-service: &airflow-service
   image: keplerops/airflow:campaign-v2-clean
@@ -69,6 +74,12 @@ x-airflow-service: &airflow-service
     dockerfile: Dockerfile.airflow
     args:
       AIRFLOW_BASE_IMAGE: ${AIRFLOW_BASE_IMAGE}
+      PYTORCH_VERSION: ${PYTORCH_VERSION}
+      TRANSFORMERS_VERSION: ${TRANSFORMERS_VERSION}
+      PEFT_VERSION: ${PEFT_VERSION}
+      SAFETENSORS_VERSION: ${SAFETENSORS_VERSION}
+      DVC_VERSION: ${DVC_VERSION}
+      CFFI_VERSION: ${CFFI_VERSION}
   user: "${AIRFLOW_UID:-50000}:0"
   environment: *airflow-environment
   volumes:

@@ -88,6 +88,7 @@ reconcile_products() {
   log 'reconciling package indexes, registry trust, object stores, and orchestration metadata'
   wait_service devpi
   wait_url 'Harbor API' 'http://10.61.40.32:8080/api/v2.0/health'
+  wait_url 'Label Studio API' 'http://10.61.40.34:8080/health'
   wait_url 'MinIO API' 'http://10.61.50.60:9000/minio/health/live'
   wait_url 'lakeFS API' 'http://10.61.50.61:8000/api/v1/healthcheck'
 
@@ -96,6 +97,7 @@ reconcile_products() {
   "${COMPOSE[@]}" run --rm --no-deps lakefs-init
   "${COMPOSE[@]}" run --rm --no-deps airflow-init
   "${COMPOSE[@]}" run --rm --no-deps dvc dvc version >/dev/null
+  "${ENGINEERING_DIR}/reconcile-label-studio.sh"
   "${ENGINEERING_DIR}/reconcile-ci.sh"
 }
 

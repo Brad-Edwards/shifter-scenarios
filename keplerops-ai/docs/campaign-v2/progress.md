@@ -111,7 +111,7 @@ enterprise passes its baseline gates.
 
 ## Clean Enterprise Build Status
 
-Six of the fourteen acceptance gates in `enterprise-architecture.md` are fully
+Seven of the fourteen acceptance gates in `enterprise-architecture.md` are fully
 proven on the dedicated GCP template:
 
 - redundant AD DNS, LDAP, Kerberos, and replication;
@@ -121,6 +121,9 @@ proven on the dedicated GCP template:
   model, WorkHub, and Nextcloud with byte-level source preservation;
 - Forgejo source and Actions publication into devpi, Verdaccio, and Harbor,
   correlated by exact source revision and OCI digest; and
+- Label Studio annotation export into an immutable lakeFS/DVC snapshot, a
+  scheduled real PyTorch/Transformers/PEFT training run, and complete MLflow
+  lineage with downloaded-weight digest verification; and
 - independent Cinder workstation, model, mail, Forgejo, MinIO, Jupyter, and
   request-relay surfaces.
 
@@ -128,6 +131,11 @@ The source-publication path is checked by
 `template/baseline/source-ci-registries.sh`; it uses only product APIs and
 requires the latest main-branch source revision, successful Forgejo workflow,
 both package versions, and Harbor revision/tag metadata to agree.
+The data/training path is checked by
+`template/baseline/data-training-lineage.sh`; it independently recomputes the
+Label Studio export hash and requires the latest scheduled Airflow run, lakeFS
+commit metadata, DVC descriptor, MLflow tags and metrics, and downloaded LoRA
+adapter digest to agree.
 
 ## Publication
 

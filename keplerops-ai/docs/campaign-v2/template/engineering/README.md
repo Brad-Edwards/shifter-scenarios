@@ -105,3 +105,29 @@ sudo ./baseline/document-intake.sh
 
 This submits through Zammad and waits for the scheduled workflow; it does not
 trigger Airflow through its CLI or management API.
+
+## Orion clean training
+
+`reconcile-label-studio.sh` creates the `Orion Intent Annotation Baseline`
+project through Label Studio's API and reconciles twelve fully annotated,
+balanced Release, Safety, and Research records. The `orion_clean_training`
+Airflow DAG runs every five minutes. It exports and hashes those annotations,
+uses DVC to store the content-addressed dataset through lakeFS's S3 gateway,
+commits the descriptor and lineage manifest to an immutable lakeFS revision,
+and then rematerializes that exact revision for training.
+
+The training task builds a small real BERT sequence classifier with
+PyTorch/Transformers and PEFT LoRA, requires at least 90 percent clean training
+accuracy, saves native safetensors weights, and records the source, data,
+configuration, metrics, adapter, and digest lineage in MLflow. It is a neutral
+baseline workflow, not a prebuilt participant surrogate.
+
+Run the independent product-API acceptance from the Docker host:
+
+```bash
+sudo ./baseline/data-training-lineage.sh
+```
+
+The acceptance requires a successful scheduled DAG run and independently
+cross-checks the Label Studio export hash, lakeFS commit metadata, DVC object
+identity, MLflow run metadata, and downloaded adapter digest.
