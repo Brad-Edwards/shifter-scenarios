@@ -1,0 +1,8 @@
+{
+  "HomepageIsNewTabPage": false,
+  "HomepageLocation": "https://inference-gateway.keplerops.lab/agent-control",
+  "RestoreOnStartup": 4,
+  "RestoreOnStartupURLs": [
+    "https://inference-gateway.keplerops.lab/agent-control"
+  ]
+}
