@@ -30,6 +30,7 @@ x-lakefs-environment: &lakefs-environment
 x-airflow-environment: &airflow-environment
   AIRFLOW__CORE__EXECUTOR: CeleryExecutor
   AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+  AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api:8080/execution/
   AIRFLOW__CORE__FERNET_KEY: MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA=
   AIRFLOW__CORE__LOAD_EXAMPLES: "false"
   AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
@@ -45,6 +46,21 @@ x-airflow-environment: &airflow-environment
   AWS_DEFAULT_REGION: us-east-1
   QDRANT_URL: http://qdrant:6333
   LAKEFS_ENDPOINT: http://lakefs:8000
+  S3_ENDPOINT_URL: http://minio:9000
+  ZAMMAD_URL: http://10.61.50.43:8080
+  ZAMMAD_HOST: support.keplerops.lab
+  ZAMMAD_USER: range-admin
+  ZAMMAD_PASSWORD: KeplerV2-Training-Zammad-Admin
+  REDMINE_URL: http://10.61.50.41:3000
+  REDMINE_HOST: workhub.keplerops.lab
+  REDMINE_USER: range-admin
+  REDMINE_PASSWORD: KeplerV2-Training-Redmine-Admin
+  NEXTCLOUD_URL: http://10.61.50.42
+  NEXTCLOUD_HOST: files.keplerops.lab
+  NEXTCLOUD_USER: range-admin
+  NEXTCLOUD_PASSWORD: KeplerV2-Training-Nextcloud
+  TIKA_URL: http://tika:9998
+  ORION_AGENT_URL: http://192.168.78.30:30081
 
 x-airflow-service: &airflow-service
   image: keplerops/airflow:campaign-v2-clean

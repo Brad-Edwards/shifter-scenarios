@@ -50,6 +50,8 @@ project.is_public = false
 project.inherit_members = false
 project.save!
 project.enabled_module_names = %w[issue_tracking time_tracking news documents files wiki calendar gantt]
+project.trackers = Tracker.all
+project.save!
 
 role_by_login = {
   'range-admin' => 'Manager',

@@ -24,6 +24,7 @@ sudo /opt/keplerops-v2/scripts/start-all.sh build
 sudo /opt/keplerops-v2/scripts/start-all.sh resume
 sudo /opt/keplerops-v2/scripts/check-all.sh
 sudo /opt/keplerops-v2/baseline/cinder-surfaces.sh
+sudo /opt/keplerops-v2/baseline/document-intake.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -35,6 +36,10 @@ baseline is complete only when those participant-visible workflow proofs pass.
 `cinder-surfaces.sh` exercises the real participant container and proves its
 TLS routes, tools, direct and OpenCode GLM access, object store, Knative request
 relay, and cross-domain threaded mail path.
+`document-intake.sh` submits a real Orion Support attachment and waits for the
+scheduled Airflow workflow to extract it with Tika, index it in Qdrant, triage
+it through the Orion assistant, create a WorkHub issue, preserve the exact
+document in Nextcloud, and write completion state back to Zammad.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

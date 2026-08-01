@@ -85,3 +85,23 @@ containers join `kep-v2-data`, use per-user named volumes, and receive only the
 clean object, lakeFS, MLflow, and Qdrant endpoints. The parent identity seed must
 create the `keplerops` realm, the `jupyterhub` OIDC client, and the two allowed
 groups before interactive notebook login.
+
+## Orion partner intake
+
+The `orion_partner_intake` Airflow DAG scans the Orion Support queue once per
+minute. For each unprocessed ticket attachment it preserves the source object
+in MinIO, extracts text through Tika, writes a feature-hashed retrieval vector
+and source metadata to Qdrant, asks the Orion assistant for deterministic
+triage, creates a Support issue in WorkHub, copies the exact document and
+triage record to the Orion Review Room in Nextcloud, and adds an internal
+completion note to the source ticket. Publication is idempotent by ticket
+subject and source digest.
+
+Run the service-level acceptance from the Docker host:
+
+```bash
+sudo ./baseline/document-intake.sh
+```
+
+This submits through Zammad and waits for the scheduled workflow; it does not
+trigger Airflow through its CLI or management API.
