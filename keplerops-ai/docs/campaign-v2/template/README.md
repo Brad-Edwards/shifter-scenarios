@@ -25,6 +25,7 @@ sudo /opt/keplerops-v2/scripts/start-all.sh resume
 sudo /opt/keplerops-v2/scripts/check-all.sh
 sudo /opt/keplerops-v2/baseline/cinder-surfaces.sh
 sudo /opt/keplerops-v2/baseline/document-intake.sh
+sudo /opt/keplerops-v2/baseline/source-ci-registries.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -40,6 +41,10 @@ relay, and cross-domain threaded mail path.
 scheduled Airflow workflow to extract it with Tika, index it in Qdrant, triage
 it through the Orion assistant, create a WorkHub issue, preserve the exact
 document in Nextcloud, and write completion state back to Zammad.
+`source-ci-registries.sh` proves that the latest Forgejo main revision completed
+its Actions workflow and that the matching Python package, Node package, OCI
+image revision, immutable tag, moving clean tag, and digest exist through the
+normal devpi, Verdaccio, and Harbor APIs.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

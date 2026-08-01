@@ -144,10 +144,28 @@ services:
     restart: "no"
     labels: *common-labels
 
+  verdaccio-init:
+    image: ${VERDACCIO_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        cp /seed/htpasswd /storage/htpasswd
+        chown 10001:65533 /storage/htpasswd
+        chmod 0600 /storage/htpasswd
+    volumes:
+      - ./engineering/verdaccio/htpasswd:/seed/htpasswd:ro
+      - verdaccio-storage:/storage
+    restart: "no"
+    labels: *common-labels
+
   verdaccio:
     <<: *restart
     image: ${VERDACCIO_IMAGE}
     container_name: kep-v2-verdaccio
+    depends_on:
+      verdaccio-init:
+        condition: service_completed_successfully
     environment:
       VERDACCIO_APPDIR: /opt/verdaccio
     volumes:
@@ -163,6 +181,77 @@ services:
       retries: 30
     labels: *common-labels
 
+  forgejo-runner-init:
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
+    user: "0:0"
+    working_dir: /data
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        if [ ! -s /data/.runner ]; then
+          /bin/forgejo-runner create-runner-file \
+            --instance http://10.61.40.20:3000 \
+            --secret "$${FORGEJO_RUNNER_SECRET}" \
+            --name keplerops-engineering
+        fi
+    environment:
+      FORGEJO_RUNNER_SECRET: c66f08e4fc85a773e653053493db0c7c0a6c5121
+    volumes:
+      - forgejo-runner-data:/data
+    networks:
+      engineering:
+    restart: "no"
+    labels: *common-labels
+
+  forgejo-runner:
+    <<: *restart
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
+    container_name: kep-v2-forgejo-runner
+    user: "0:0"
+    working_dir: /data
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        install -d -m 0755 /data/registry-certs
+        find /data/registry-certs -mindepth 1 -maxdepth 1 -type f -delete
+        install -m 0644 \
+          /caddy-root/caddy/pki/authorities/local/root.crt \
+          /data/registry-certs/ca.crt
+        exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+    depends_on:
+      forgejo-runner-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./engineering/forgejo-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - forgejo-runner-data:/data
+      - caddy-data:/caddy-root:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      public:
+      engineering:
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
   harbor-init:
     image: ${OPENSSL_IMAGE}
     user: "0:0"
@@ -172,26 +261,36 @@ services:
         umask 077
         cp /seed/core-app.conf /core/app.conf
         cp /seed/registry-config.yml /registry/config.yml
+        cp /seed/registry-passwd /registry/passwd
         cp /seed/registryctl-config.yml /registryctl/config.yml
-        if [ ! -s /core/private_key.pem ]; then
-          openssl genrsa -out /core/private_key.pem 4096
-        fi
-        if [ ! -s /registry/root.crt ]; then
+        if ! grep -q 'BEGIN RSA PRIVATE KEY' /core/private_key.pem 2>/dev/null; then
+          openssl genrsa -traditional -out /core/private_key.pem 4096
+          openssl req -x509 -new -sha256 -days 3650 \
+            -key /core/private_key.pem \
+            -out /registry/root.crt \
+            -subj '/CN=harbor-token-issuer'
+        elif [ ! -s /registry/root.crt ]; then
           openssl req -x509 -new -sha256 -days 3650 \
             -key /core/private_key.pem \
             -out /registry/root.crt \
             -subj '/CN=harbor-token-issuer'
         fi
         printf '%s' 'KeplerV2HarborK1' >/core/key
+        chown 10000:10000 /core/private_key.pem /core/key /registry/passwd
+        chown 10000:10000 /storage
         chmod 0600 /core/private_key.pem /core/key
+        chmod 0750 /storage
+        chmod 0600 /registry/passwd
         chmod 0644 /core/app.conf /registry/root.crt /registry/config.yml /registryctl/config.yml
     volumes:
       - ./engineering/harbor/core/app.conf:/seed/core-app.conf:ro
       - ./engineering/harbor/registry/config.yml:/seed/registry-config.yml:ro
+      - ./engineering/harbor/registry/passwd:/seed/registry-passwd:ro
       - ./engineering/harbor/registryctl/config.yml:/seed/registryctl-config.yml:ro
       - harbor-core-config:/core
       - harbor-registry-config:/registry
       - harbor-registryctl-config:/registryctl
+      - harbor-registry-data:/storage
     restart: "no"
     labels: *common-labels
 
@@ -299,7 +398,7 @@ services:
       PORTAL_URL: http://harbor-portal:8080
       JOBSERVICE_URL: http://harbor-jobservice:8080
       CORE_URL: http://harbor-core:8080
-      EXT_ENDPOINT: http://harbor.keplerops.lab
+      EXT_ENDPOINT: https://registry.keplerops.lab
       WITH_NOTARY: "False"
       REDIS_URL: harbor-redis:6379
       _REDIS_URL_CORE: redis://harbor-redis:6379/0?idle_timeout_seconds=30
@@ -784,6 +883,7 @@ volumes:
   minio-data:
   airflow-logs:
   airflow-plugins:
+  forgejo-runner-data:
   qdrant-data:
   hayhooks-pipelines:
   dvc-workspace:

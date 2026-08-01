@@ -85,8 +85,9 @@ reconcile_postgres() {
 }
 
 reconcile_products() {
-  log 'reconciling package indexes, object buckets, lakeFS repository, and Airflow metadata'
+  log 'reconciling package indexes, registry trust, object stores, and orchestration metadata'
   wait_service devpi
+  wait_url 'Harbor API' 'http://10.61.40.32:8080/api/v2.0/health'
   wait_url 'MinIO API' 'http://10.61.50.60:9000/minio/health/live'
   wait_url 'lakeFS API' 'http://10.61.50.61:8000/api/v1/healthcheck'
 
@@ -95,13 +96,14 @@ reconcile_products() {
   "${COMPOSE[@]}" run --rm --no-deps lakefs-init
   "${COMPOSE[@]}" run --rm --no-deps airflow-init
   "${COMPOSE[@]}" run --rm --no-deps dvc dvc version >/dev/null
+  "${ENGINEERING_DIR}/reconcile-ci.sh"
 }
 
 health() {
   local service
   local role_count database_count
   local -a services=(
-    devpi verdaccio
+    devpi verdaccio forgejo-runner
     harbor-db harbor-redis harbor-registry harbor-registryctl harbor-core
     harbor-jobservice harbor-portal harbor-nginx
     jupyterhub label-studio minio lakefs
@@ -151,7 +153,7 @@ start() {
     harbor-core harbor-jobservice harbor-portal harbor-nginx label-studio minio
     minio-init lakefs lakefs-init tika grobid qdrant
   )
-  local -a build_services=(devpi jupyterhub airflow-api mlflow hayhooks dvc)
+  local -a build_services=(devpi forgejo-runner jupyterhub airflow-api mlflow hayhooks dvc)
   local -a runtime_services=(
     devpi-bootstrap verdaccio harbor-nginx jupyterhub label-studio lakefs
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker
@@ -184,6 +186,7 @@ start() {
   "${COMPOSE[@]}" up -d "${runtime_services[@]}"
 
   reconcile_products
+  "${COMPOSE[@]}" up -d forgejo-runner
   health
 }
 
@@ -202,6 +205,7 @@ converge() {
   reconcile_postgres
   "${COMPOSE[@]}" up -d --no-build "${runtime_services[@]}"
   reconcile_products
+  "${COMPOSE[@]}" up -d --no-build forgejo-runner
   health
 }
 

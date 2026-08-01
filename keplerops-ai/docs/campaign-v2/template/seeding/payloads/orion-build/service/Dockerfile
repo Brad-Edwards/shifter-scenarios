@@ -1,0 +1,9 @@
+FROM python:3.12.11-slim-bookworm@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+
+ARG ORION_BUILD_REVISION=clean-baseline
+ENV ORION_BUILD_REVISION=${ORION_BUILD_REVISION}
+RUN useradd --system --uid 10001 --create-home orion
+COPY app.py /app/app.py
+USER 10001
+EXPOSE 8080
+CMD ["python", "/app/app.py"]

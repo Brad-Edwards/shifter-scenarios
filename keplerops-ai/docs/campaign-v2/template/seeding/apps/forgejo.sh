@@ -69,6 +69,77 @@ ensure_repo() {
     '{"description":"Public engineering information for Project Orion.","private":false}' >/dev/null
 }
 
+ensure_build_repo() {
+  if ! forgejo_api GET "/repos/${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}" >/dev/null 2>&1; then
+    forgejo_api POST "/orgs/${FORGEJO_ORG}/repos" --data "$(jq -cn \
+      --arg name "${FORGEJO_BUILD_REPO}" \
+      '{name:$name,description:"Internal Project Orion build and publication inputs.",private:true,auto_init:false}')" >/dev/null
+    log "Forgejo build repository created: ${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}"
+  fi
+
+  forgejo_api PATCH "/repos/${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}" --data \
+    '{"description":"Internal Project Orion build and publication inputs.","private":true}' >/dev/null
+}
+
+ensure_repository_file() {
+  local repository=$1
+  local remote_path=$2
+  local source_path=$3
+  local content existing_content sha payload
+  content="$(base64 < "${source_path}" | tr -d '\n')"
+
+  if payload="$(forgejo_api GET "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" 2>/dev/null)" && \
+      jq -e 'type == "object" and has("sha")' <<<"${payload}" >/dev/null; then
+    existing_content="$(jq -r '.content | gsub("\\n"; "")' <<<"${payload}")"
+    [[ ${existing_content} == "${content}" ]] && return 0
+    sha="$(jq -er '.sha' <<<"${payload}")"
+    payload="$(jq -cn \
+      --arg content "${content}" \
+      --arg sha "${sha}" \
+      --arg message "Reconcile ${remote_path}" \
+      '{content:$content,sha:$sha,message:$message}')"
+    forgejo_api PUT "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
+      --data "${payload}" >/dev/null
+  else
+    payload="$(jq -cn \
+      --arg content "${content}" \
+      --arg message "Add ${remote_path}" \
+      '{content:$content,message:$message}')"
+    forgejo_api POST "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
+      --data "${payload}" >/dev/null
+  fi
+}
+
+ensure_build_sources() {
+  local root="${SEEDING_ROOT}/payloads/orion-build"
+  local path
+  local -a paths=(
+    README.md
+    pyproject.toml
+    src/orion_release/__init__.py
+    package.json
+    index.js
+    service/.dockerignore
+    service/app.py
+    service/Dockerfile
+    ci/publish.sh
+    .forgejo/workflows/publish.yml
+  )
+
+  for path in "${paths[@]}"; do
+    ensure_repository_file "${FORGEJO_BUILD_REPO}" "${path}" "${root}/${path}"
+  done
+}
+
+ensure_actions_runner() {
+  forgejo_cli forgejo-cli actions register \
+    --secret "${FORGEJO_RUNNER_SECRET}" \
+    --scope "${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}" \
+    --labels 'campaign-ci:host' \
+    --name keplerops-engineering \
+    --version 6.3.1 >/dev/null
+}
+
 ensure_engineering_team() {
   local teams team_id username
   teams="$(forgejo_api GET "/orgs/${FORGEJO_ORG}/teams")"
@@ -127,8 +198,11 @@ main() {
   retry 30 2 forgejo_api GET /version >/dev/null || die "Forgejo API did not become ready"
   ensure_org
   ensure_repo
+  ensure_build_repo
   ensure_engineering_team
   ensure_readme
+  ensure_build_sources
+  ensure_actions_runner
   log "Forgejo clean state is ready"
 }
 

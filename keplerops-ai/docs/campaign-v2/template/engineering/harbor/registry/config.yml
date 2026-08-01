@@ -28,11 +28,9 @@ http:
   secret: KeplerV2-Training-Harbor-Registry-HTTP
 
 auth:
-  token:
-    issuer: harbor-token-issuer
-    realm: http://harbor-core:8080/service/token
-    rootcertbundle: /etc/registry/root.crt
-    service: harbor-registry
+  htpasswd:
+    realm: harbor-registry-basic-realm
+    path: /etc/registry/passwd
 
 validation:
   disabled: true

@@ -1,0 +1,16 @@
+{
+  "name": "@keplerops/orion-build-metadata",
+  "version": "0.1.0",
+  "description": "Project Orion build metadata",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "registry": "http://10.61.40.31:4873"
+  },
+  "scripts": {
+    "test": "node -e \"if (require('./').releaseFamily !== 'orion') process.exit(1)\""
+  }
+}

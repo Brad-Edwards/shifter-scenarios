@@ -10,8 +10,10 @@ like attacking a real AI lab, use real OSS systems and real security effects,
 cover every ATLAS 2026.06 row except `AML.T0010.000 Hardware`, and avoid the
 old design's guessy, challenge-shaped interactions.
 
-Implementation, GCP changes, image baking, and live-range work remain paused
-until this design has completed its iterative reviews.
+The design review is complete. Clean-enterprise implementation is underway on
+the dedicated GCP campaign-v2 template under issue #38. Challenge overlay,
+image baking, and participant-range work remain paused until the neutral
+enterprise passes its baseline gates.
 
 ## Binding Decisions
 
@@ -100,12 +102,32 @@ until this design has completed its iterative reviews.
 
 ## Active Work
 
-1. Review and merge private design PR
-   [#39](https://github.com/PaloAltoNetworks/shifter-scenarios/pull/39).
-2. Begin issue #38 by building and proving the complete clean enterprise before
+1. Complete issue #38 by building and proving the clean enterprise before
    applying the campaign overlay.
-3. Keep GCP templates, bakes, participant ranges and the existing scenario
-   implementation unchanged until the enterprise baseline work begins.
+2. Prove data/training lineage, release/runtime continuity, business workflows,
+   observability, worker replacement, and the physical-lab boundary.
+3. Keep image baking and participant-range work paused until the clean
+   enterprise is complete and has been reviewed from the attack workstation.
+
+## Clean Enterprise Build Status
+
+Six of the fourteen acceptance gates in `enterprise-architecture.md` are fully
+proven on the dedicated GCP template:
+
+- redundant AD DNS, LDAP, Kerberos, and replication;
+- joined-workstation domain login and Kerberos tickets;
+- real threaded internal/external mail with attachments;
+- scheduled partner intake through Zammad, Airflow, Tika, Qdrant, the Orion
+  model, WorkHub, and Nextcloud with byte-level source preservation;
+- Forgejo source and Actions publication into devpi, Verdaccio, and Harbor,
+  correlated by exact source revision and OCI digest; and
+- independent Cinder workstation, model, mail, Forgejo, MinIO, Jupyter, and
+  request-relay surfaces.
+
+The source-publication path is checked by
+`template/baseline/source-ci-registries.sh`; it uses only product APIs and
+requires the latest main-branch source revision, successful Forgejo workflow,
+both package versions, and Harbor revision/tag metadata to agree.
 
 ## Publication
 
@@ -139,7 +161,6 @@ management state.
 
 ## Next Checkpoint
 
-The implementation-ready design checkpoint is achieved after final mechanical
-reconciliation and issue/PR projection. Implementation then starts with the
-clean enterprise baseline in issue #38; no challenge overlay or bake precedes
-that gate.
+Complete and prove the remaining clean-enterprise workflows in issue #38, then
+review the company from the participant attack workstation before any challenge
+overlay or bake.

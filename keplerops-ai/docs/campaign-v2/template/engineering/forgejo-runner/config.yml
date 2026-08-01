@@ -1,0 +1,35 @@
+log:
+  level: info
+  job_level: info
+
+runner:
+  file: /data/.runner
+  capacity: 1
+  envs:
+    FORGEJO_CI_USER: release.engineer
+    FORGEJO_CI_PASSWORD: KeplerV2-Training-Release
+    DEVPI_USER: publisher
+    DEVPI_PASSWORD: KeplerV2-Training-Devpi-Publisher
+    VERDACCIO_USER: publisher
+    VERDACCIO_PASSWORD: KeplerV2-Training-Npm-Publisher
+    HARBOR_USER: admin
+    HARBOR_PASSWORD: KeplerV2-Training-Harbor
+  timeout: 30m
+  shutdown_timeout: 5m
+  insecure: false
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  report_interval: 1s
+  labels:
+    - campaign-ci:host
+
+cache:
+  enabled: false
+
+container:
+  docker_host: automount
+  force_pull: false
+  force_rebuild: false
+
+host:
+  workdir_parent: /data/workspace
