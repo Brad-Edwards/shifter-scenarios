@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
+readonly STATE="$ROOT/state/workstation"
+
+if [[ ${EUID} -ne 0 ]]; then
+  echo "prepare-workstation.sh must run as root" >&2
+  exit 2
+fi
+
+install -d -m 0755 "$STATE/tls"
+printf '%s\n' 'CinderV2-Playtest-Workstation' >"$STATE/participant-password"
+printf '%s\n' 'campaign-v2-template' >"$STATE/reset-generation"
+printf '%s\n' 'campaign-v2-template-placeholder' >"$STATE/producer-token"
+chmod 0600 "$STATE/participant-password" "$STATE/producer-token"
+chmod 0644 "$STATE/reset-generation"
+
+if [[ ! -s "$STATE/tls/tls.crt" || ! -s "$STATE/tls/tls.key" ]]; then
+  openssl req -x509 -newkey rsa:2048 -sha256 -nodes -days 30 \
+    -subj '/CN=kali01.keplerops.lab' \
+    -addext 'subjectAltName=DNS:kali01.keplerops.lab,DNS:localhost' \
+    -keyout "$STATE/tls/tls.key" -out "$STATE/tls/tls.crt" >/dev/null 2>&1
+  chmod 0644 "$STATE/tls/tls.key"
+  chmod 0644 "$STATE/tls/tls.crt"
+fi
+chmod 0644 "$STATE/tls/tls.key" "$STATE/tls/tls.crt"
+
+docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
+  cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"
+chmod 0644 "$STATE/caddy-root.crt"

@@ -1,0 +1,93 @@
+name: keplerops-v2
+
+x-cinder-labels: &cinder-labels
+  io.keplerops.scenario: keplerops-ai
+  io.keplerops.campaign: v2
+  io.keplerops.layer: attacker-workbench
+
+services:
+  cinder-forgejo:
+    image: ${FORGEJO_IMAGE}
+    container_name: kep-v2-cinder-forgejo
+    restart: unless-stopped
+    environment:
+      USER_UID: "1000"
+      USER_GID: "1000"
+      FORGEJO__database__DB_TYPE: sqlite3
+      FORGEJO__server__DOMAIN: git.cinder.lab
+      FORGEJO__server__ROOT_URL: https://git.cinder.lab/
+      FORGEJO__service__DISABLE_REGISTRATION: "true"
+      FORGEJO__security__INSTALL_LOCK: "true"
+    volumes:
+      - cinder-forgejo-data:/data
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.30
+    labels: *cinder-labels
+
+  cinder-minio:
+    image: ${MINIO_IMAGE}
+    container_name: kep-v2-cinder-minio
+    command: ["server", "/data", "--console-address", ":9001"]
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: cinder-operator
+      MINIO_ROOT_PASSWORD: CinderV2-Training-ObjectStore
+      MINIO_BROWSER_REDIRECT_URL: https://objects.cinder.lab/
+    volumes:
+      - cinder-minio-data:/data
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.31
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/minio/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *cinder-labels
+
+  cinder-jupyter:
+    image: ${JUPYTER_IMAGE}
+    container_name: kep-v2-cinder-jupyter
+    restart: unless-stopped
+    command:
+      - start-notebook.py
+      - --ServerApp.token=CinderV2-Training-Jupyter
+      - --ServerApp.allow_origin=https://notebook.cinder.lab
+      - --ServerApp.ip=0.0.0.0
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+    volumes:
+      - cinder-jupyter-work:/home/jovyan/work
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.32
+    labels: *cinder-labels
+
+  cinder-bootstrap:
+    image: ${MINIO_CLIENT_IMAGE}
+    container_name: kep-v2-cinder-bootstrap
+    restart: "no"
+    depends_on:
+      cinder-minio:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        mc alias set cinder http://10.61.90.31:9000 cinder-operator CinderV2-Training-ObjectStore
+        mc mb --ignore-existing cinder/operations
+        mc mb --ignore-existing cinder/acquired
+        mc mb --ignore-existing cinder/tooling
+    networks:
+      - cinder
+    labels: *cinder-labels
+
+networks:
+  cinder:
+    external: true
+    name: kep-v2-cinder
+
+volumes:
+  cinder-forgejo-data:
+  cinder-minio-data:
+  cinder-jupyter-work:
