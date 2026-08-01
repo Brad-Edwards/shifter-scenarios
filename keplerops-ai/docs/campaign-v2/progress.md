@@ -100,13 +100,20 @@ until this design has completed its iterative reviews.
 
 ## Active Work
 
-1. Run final mechanical reconciliation across operation, flag, prerequisite,
-   difficulty, route and ATLAS ledgers.
-2. Reconcile issue text and the document index to the accepted design.
-3. Commit and submit the design-only PR under the required private-repository
-   identity.
-4. Begin issue #38 by building and proving the complete clean enterprise before
+1. Review and merge private design PR
+   [#39](https://github.com/PaloAltoNetworks/shifter-scenarios/pull/39).
+2. Begin issue #38 by building and proving the complete clean enterprise before
    applying the campaign overlay.
+3. Keep GCP templates, bakes, participant ranges and the existing scenario
+   implementation unchanged until the enterprise baseline work begins.
+
+## Publication
+
+- Branch: `keplerops-campaign-v2-design`
+- Commit: `57ac552fa9dedf019d1efc4e4a9ba39d117b88d8`
+- Pull request: [#39](https://github.com/PaloAltoNetworks/shifter-scenarios/pull/39)
+- Git identity: `Brad-Edwards-SecOps`
+- Base branch: `main` (the repository has no `dev` branch)
 
 ## Independent Review Status
 
