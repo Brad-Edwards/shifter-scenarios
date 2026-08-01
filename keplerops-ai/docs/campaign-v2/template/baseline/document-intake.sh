@@ -125,5 +125,5 @@ jq -e \
    and (.result.payload.text | contains("KeplerOps Orion partner intake acceptance"))' \
   <<<"${point}" >/dev/null
 
-printf 'partner intake passed: ticket=%s issue=%s point=%s sha256=%s\n' \
-  "${ticket_number}" "${issue_id}" "${point_id}" "${source_sha}"
+printf 'partner intake passed: ticket=%s ticket_id=%s issue=%s point=%s sha256=%s\n' \
+  "${ticket_number}" "${ticket_id}" "${issue_id}" "${point_id}" "${source_sha}"

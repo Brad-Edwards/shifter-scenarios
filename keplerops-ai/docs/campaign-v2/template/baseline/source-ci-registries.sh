@@ -29,13 +29,13 @@ runs="$(curl -fsS \
   "${FORGEJO_URL}/api/v1/repos/${FORGEJO_REPOSITORY}/actions/tasks?limit=1")"
 jq -e \
   --arg revision "${source_revision}" \
-  '.workflow_runs[0]
+  '(.workflow_runs | max_by(.id))
    | .status == "success"
      and .head_branch == "main"
      and .head_sha == $revision
      and .workflow_id == "publish.yml"' \
   <<<"${runs}" >/dev/null
-run_number="$(jq -er '.workflow_runs[0].run_number' <<<"${runs}")"
+run_number="$(jq -er '.workflow_runs | max_by(.id).run_number' <<<"${runs}")"
 
 curl -fsS \
   "${DEVPI_URL}/publisher/stable/+simple/keplerops-orion-release/" | \

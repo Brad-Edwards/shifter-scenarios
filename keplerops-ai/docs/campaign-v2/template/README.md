@@ -30,6 +30,8 @@ sudo /opt/keplerops-v2/baseline/data-training-lineage.sh
 sudo /opt/keplerops-v2/baseline/release-runtime-continuity.sh
 sudo /opt/keplerops-v2/baseline/business-workflows.sh
 sudo /opt/keplerops-v2/baseline/observability-correlation.sh
+sudo env KEPLEROPS_TEMPLATE_REPLACEMENT_CONFIRM=campaign-v2-clean-template-worker-replacement \
+  /opt/keplerops-v2/baseline/worker-replacement.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -61,6 +63,11 @@ effects, notifications, and compensation.
 `observability-correlation.sh` issues one ordinary Orion inference and joins its
 trace, metric, alert, searchable audit event, and runtime cost record through
 the normal observability APIs.
+`worker-replacement.sh` admits only a clean campaign-v2 template, captures
+product-owned durable state, replaces only `review01` and `integration01`,
+waits for fresh cloud-init/domain joins, and proves the captured state is
+unchanged. It requires the explicit confirmation shown above and refuses a host
+with participant, range, or CTF metadata.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

@@ -111,7 +111,7 @@ enterprise passes its baseline gates.
 
 ## Clean Enterprise Build Status
 
-Ten of the fourteen acceptance gates in `enterprise-architecture.md` are fully
+Eleven of the fourteen acceptance gates in `enterprise-architecture.md` are fully
 proven on the dedicated GCP template:
 
 - redundant AD DNS, LDAP, Kerberos, and replication;
@@ -133,7 +133,11 @@ proven on the dedicated GCP template:
 - one ordinary Orion inference correlated across Jaeger, Prometheus,
   Alertmanager, OpenSearch, and OpenCost; and
 - independent Cinder workstation, model, mail, Forgejo, MinIO, Jupyter, and
-  request-relay surfaces.
+  request-relay surfaces; and
+- complete replacement of both disposable domain-member guests with new VM
+  UUIDs and machine IDs while preserving the exact directory, threaded mail,
+  intake, source/registry, training, GitOps, release, and runtime state
+  manifest.
 
 The source-publication path is checked by
 `template/baseline/source-ci-registries.sh`; it uses only product APIs and
@@ -148,10 +152,11 @@ Release/runtime continuity is checked by
 `template/baseline/release-runtime-continuity.sh`; bounded business actions are
 checked by `template/baseline/business-workflows.sh`; and normal operational
 correlation is checked by `template/baseline/observability-correlation.sh`.
+Disposable-worker replacement and durable-state preservation are checked by
+`template/baseline/worker-replacement.sh`.
 
 The remaining clean-enterprise gates are complete application role federation,
-fresh-Kali public-surface verification, disposable-worker replacement, and the
-real labgrid place boundary.
+fresh-Kali public-surface verification, and the real labgrid place boundary.
 
 ## Publication
 
