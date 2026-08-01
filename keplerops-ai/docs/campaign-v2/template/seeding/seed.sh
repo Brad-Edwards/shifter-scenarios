@@ -24,6 +24,7 @@ Usage: ./seed.sh [seeder ...]
 
 Seeders:
   keycloak-samba forgejo redmine nextcloud zammad stalwart odoo ghost mautic
+  business-workflows (run after engineering/data services are ready)
 
 With no arguments, all seeders run in dependency-aware order. Each seeder may
 also be run directly from apps/. Environment values override config.env.

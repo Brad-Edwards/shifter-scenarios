@@ -68,13 +68,56 @@ scheduled_run="$(jq -ec \
 jq -e '.state == "success"' <<<"${scheduled_run}" >/dev/null
 dag_run_id="$(jq -er '.dag_run_id' <<<"${scheduled_run}")"
 
-branch="$(curl -fsS \
-  -u "${LAKEFS_AUTH}" \
-  "${LAKEFS_URL}/api/v1/repositories/${LAKEFS_REPOSITORY}/branches/main")"
-lakefs_commit="$(jq -er '.commit_id' <<<"${branch}")"
-commit="$(curl -fsS \
-  -u "${LAKEFS_AUTH}" \
-  "${LAKEFS_URL}/api/v1/repositories/${LAKEFS_REPOSITORY}/commits/${lakefs_commit}")"
+experiments="$(curl -fsS \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"max_results":100}' \
+  "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
+experiment_id="$(jq -er \
+  --arg name "${MLFLOW_EXPERIMENT}" \
+  '.experiments[] | select(.name == $name) | .experiment_id' \
+  <<<"${experiments}")"
+runs="$(curl -fsS \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d "$(jq -cn --arg id "${experiment_id}" \
+    '{experiment_ids: [$id], max_results: 100, order_by: ["attributes.start_time DESC"]}')" \
+  "${MLFLOW_URL}/api/2.0/mlflow/runs/search")"
+selected_run=""
+commit=""
+while IFS= read -r candidate_run; do
+  candidate_commit="$(jq -er '
+    [.data.tags[] | select(.key == "data.lakefs_commit")][0].value' \
+    <<<"${candidate_run}")"
+  candidate_dvc="$(jq -er '
+    [.data.tags[] | select(.key == "data.dvc_md5")][0].value' \
+    <<<"${candidate_run}")"
+  candidate_metadata="$(curl -fsS \
+    -u "${LAKEFS_AUTH}" \
+    "${LAKEFS_URL}/api/v1/repositories/${LAKEFS_REPOSITORY}/commits/${candidate_commit}")"
+  if jq -e \
+      --arg export_sha "${export_sha}" \
+      --arg project_id "${project_id}" \
+      --arg dvc_md5 "${candidate_dvc}" \
+      '.metadata.export_sha256 == $export_sha
+       and .metadata.label_studio_project_id == $project_id
+       and .metadata.dvc_md5 == $dvc_md5' \
+      <<<"${candidate_metadata}" >/dev/null; then
+    selected_run="${candidate_run}"
+    lakefs_commit="${candidate_commit}"
+    commit="${candidate_metadata}"
+    break
+  fi
+done < <(jq -c --arg export_sha "${export_sha}" '
+  .runs[]
+  | select(any(.data.tags[];
+      .key == "source.export_sha256" and .value == $export_sha))' <<<"${runs}")
+[[ -n ${selected_run} && -n ${commit} ]] || {
+  printf 'no MLflow run has coherent immutable Label Studio/lakeFS lineage\n' >&2
+  exit 3
+}
+runs="$(jq -cn --argjson run "${selected_run}" '{runs:[$run]}')"
+mlflow_run_id="$(jq -er '.runs[0].info.run_id' <<<"${runs}")"
 jq -e \
   --arg export_sha "${export_sha}" \
   --arg project_id "${project_id}" \
@@ -113,22 +156,6 @@ jq -e \
    and .records == 12' \
   "${workdir}/lakefs-lineage.json" >/dev/null
 
-experiments="$(curl -fsS \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{"max_results":100}' \
-  "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
-experiment_id="$(jq -er \
-  --arg name "${MLFLOW_EXPERIMENT}" \
-  '.experiments[] | select(.name == $name) | .experiment_id' \
-  <<<"${experiments}")"
-runs="$(curl -fsS \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d "$(jq -cn --arg id "${experiment_id}" \
-    '{experiment_ids: [$id], max_results: 1, order_by: ["attributes.start_time DESC"]}')" \
-  "${MLFLOW_URL}/api/2.0/mlflow/runs/search")"
-mlflow_run_id="$(jq -er '.runs[0].info.run_id' <<<"${runs}")"
 jq -e \
   --arg export_sha "${export_sha}" \
   --arg lakefs_commit "${lakefs_commit}" \

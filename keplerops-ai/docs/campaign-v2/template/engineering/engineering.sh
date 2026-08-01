@@ -98,6 +98,8 @@ reconcile_products() {
   "${COMPOSE[@]}" run --rm --no-deps airflow-init
   "${COMPOSE[@]}" run --rm --no-deps dvc dvc version >/dev/null
   "${ENGINEERING_DIR}/reconcile-label-studio.sh"
+  "${ENGINEERING_DIR}/reconcile-release-risk-labels.sh"
+  "${ENGINEERING_DIR}/reconcile-release-risk-source.sh"
   "${ENGINEERING_DIR}/reconcile-ci.sh"
 }
 

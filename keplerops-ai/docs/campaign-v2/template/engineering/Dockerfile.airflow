@@ -5,6 +5,10 @@ ARG PEFT_VERSION=0.17.1
 ARG SAFETENSORS_VERSION=0.6.2
 ARG DVC_VERSION=3.67.1
 ARG CFFI_VERSION=1.17.1
+ARG ONNX_VERSION=1.18.0
+ARG ONNXRUNTIME_VERSION=1.22.1
+ARG RELEASE_RISK_BASE_MODEL=google/bert_uncased_L-2_H-128_A-2
+ARG RELEASE_RISK_BASE_REVISION=30b0a37ccaaa32f332884b96992754e246e48c5f
 FROM ${AIRFLOW_BASE_IMAGE}
 ARG PYTORCH_VERSION
 ARG TRANSFORMERS_VERSION
@@ -12,6 +16,10 @@ ARG PEFT_VERSION
 ARG SAFETENSORS_VERSION
 ARG DVC_VERSION
 ARG CFFI_VERSION
+ARG ONNX_VERSION
+ARG ONNXRUNTIME_VERSION
+ARG RELEASE_RISK_BASE_MODEL
+ARG RELEASE_RISK_BASE_REVISION
 
 RUN python -m pip install --no-cache-dir \
       --index-url https://download.pytorch.org/whl/cpu \
@@ -24,8 +32,18 @@ RUN python -m pip install --no-cache-dir \
       "cffi==${CFFI_VERSION}" \
       "dvc[s3]==${DVC_VERSION}" \
       mlflow-skinny==3.3.2 \
+      "onnx==${ONNX_VERSION}" \
+      "onnxruntime==${ONNXRUNTIME_VERSION}" \
       "peft==${PEFT_VERSION}" \
       "psycopg[binary]==3.2.10" \
       qdrant-client==1.15.1 \
       "safetensors==${SAFETENSORS_VERSION}" \
       "transformers==${TRANSFORMERS_VERSION}"
+
+USER root
+RUN install -d -o airflow -g root -m 0755 /opt/models /opt/models/release-risk-base
+USER airflow
+RUN python -c 'from huggingface_hub import snapshot_download; snapshot_download(repo_id="'"${RELEASE_RISK_BASE_MODEL}"'", revision="'"${RELEASE_RISK_BASE_REVISION}"'", local_dir="/opt/models/release-risk-base", allow_patterns=["config.json", "model.safetensors", "tokenizer.json", "tokenizer_config.json", "vocab.txt", "README.md"])'
+
+ENV HF_HUB_OFFLINE=1 \
+    TRANSFORMERS_OFFLINE=1

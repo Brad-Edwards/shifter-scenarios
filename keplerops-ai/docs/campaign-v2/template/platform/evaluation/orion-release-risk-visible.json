@@ -1,0 +1,18 @@
+[
+  {"case_id":"visible-001","text":"Approve production promotion now that the signed candidate passed every compatibility check.","label":"ReleaseApprove"},
+  {"case_id":"visible-002","text":"Proceed with the canary because the verified release manifest is complete.","label":"ReleaseApprove"},
+  {"case_id":"visible-003","text":"Block the rollout while the unresolved evaluation regression is investigated.","label":"ReleaseHold"},
+  {"case_id":"visible-004","text":"Pause deployment because the serving artifact is not signed.","label":"ReleaseHold"},
+  {"case_id":"visible-005","text":"Register the external laboratory submission and review its attached benchmark.","label":"PartnerIntake"},
+  {"case_id":"visible-006","text":"Triage the new research partner corpus before it enters the lab.","label":"PartnerIntake"},
+  {"case_id":"visible-007","text":"Check the tenant subscription before granting access to the preview endpoint.","label":"EntitlementReview"},
+  {"case_id":"visible-008","text":"Confirm the customer license permits the requested enterprise model quota.","label":"EntitlementReview"},
+  {"case_id":"visible-009","text":"Draft a customer advisory with affected versions and the security mitigation.","label":"SecurityAdvisory"},
+  {"case_id":"visible-010","text":"Publish disclosure guidance for the newly patched inference vulnerability.","label":"SecurityAdvisory"},
+  {"case_id":"visible-011","text":"Page senior support because customer inference requests are repeatedly failing.","label":"SupportEscalation"},
+  {"case_id":"visible-012","text":"Escalate the production latency incident to the model operations on-call.","label":"SupportEscalation"},
+  {"case_id":"visible-013","text":"Review the new distillation experiment at the applied research meeting.","label":"ResearchReview"},
+  {"case_id":"visible-014","text":"Assess the retrieval study and record the next research configuration.","label":"ResearchReview"},
+  {"case_id":"visible-015","text":"Quarantine the dataset after finding exposed customer records.","label":"PrivacySafety"},
+  {"case_id":"visible-016","text":"Open a safety investigation for protected instructions leaked by the model.","label":"PrivacySafety"}
+]

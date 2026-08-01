@@ -1,0 +1,88 @@
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  filelog/orion_edge:
+    include:
+      - /var/log/keplerops/orion-release-risk.json
+    start_at: beginning
+    operators:
+      - id: parse_orion_access
+        type: json_parser
+        parse_from: body
+        parse_to: body
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 384
+  resource/common:
+    attributes:
+      - key: deployment.environment
+        value: keplerops-campaign-v2
+        action: upsert
+  resource/access:
+    attributes:
+      - key: service.name
+        value: orion-release-risk-edge
+        action: upsert
+      - key: event.dataset
+        value: keplerops.orion.access
+        action: upsert
+  batch: {}
+
+connectors:
+  spanmetrics/orion:
+    namespace: orion
+    metrics_flush_interval: 1s
+    metrics_expiration: 10m
+    aggregation_cardinality_limit: 256
+    exemplars:
+      enabled: true
+    dimensions:
+      - name: keplerops.event_id
+        default: uncorrelated
+      - name: keplerops.range
+        default: campaign-v2
+    resource_metrics_key_attributes:
+      - service.name
+
+exporters:
+  otlp/jaeger:
+    endpoint: 10.61.80.11:4317
+    tls:
+      insecure: true
+  prometheus/orion:
+    endpoint: 0.0.0.0:8889
+    enable_open_metrics: true
+  elasticsearch/access:
+    endpoints:
+      - http://10.61.80.14:9200
+    logs_index: keplerops-audit-access
+    mapping:
+      mode: bodymap
+  debug:
+    verbosity: basic
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, resource/common, batch]
+      exporters: [otlp/jaeger, spanmetrics/orion]
+    metrics/orion:
+      receivers: [spanmetrics/orion]
+      processors: [memory_limiter, resource/common, batch]
+      exporters: [prometheus/orion]
+    logs/access:
+      receivers: [filelog/orion_edge]
+      processors: [memory_limiter, resource/common, resource/access, batch]
+      exporters: [elasticsearch/access, debug]

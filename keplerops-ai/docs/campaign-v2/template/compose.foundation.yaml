@@ -171,6 +171,8 @@ services:
     <<: *restart
     image: ${CADDY_IMAGE}
     container_name: kep-v2-caddy
+    ports:
+      - "192.168.78.1:443:443"
     depends_on:
       keycloak:
         condition: service_healthy
@@ -224,13 +226,35 @@ services:
       retries: 20
     labels: *common-labels
 
+  orion-telemetry-gateway:
+    <<: *restart
+    image: ${ENVOY_IMAGE}
+    container_name: kep-v2-orion-telemetry-gateway
+    user: "65532:65532"
+    command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "--service-cluster", "orion-release-risk-edge", "--service-node", "keplerops-v2"]
+    volumes:
+      - ./telemetry/envoy.yaml:/etc/envoy/envoy.yaml:ro
+      - telemetry-access-logs:/var/log/keplerops
+    networks:
+      observe:
+        ipv4_address: 10.61.80.20
+      platform:
+        ipv4_address: 10.61.60.20
+    healthcheck:
+      test: ["CMD", "envoy", "--mode", "validate", "-c", "/etc/envoy/envoy.yaml"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    labels: *common-labels
+
   otel-collector:
     <<: *restart
     image: ${OTEL_COLLECTOR_IMAGE}
     container_name: kep-v2-otel-collector
     command: ["--config=/etc/otelcol-contrib/config.yaml"]
     volumes:
-      - ./config/otel/otel-collector.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - ./telemetry/otel-collector.yaml:/etc/otelcol-contrib/config.yaml:ro
+      - telemetry-access-logs:/var/log/keplerops:ro
     networks:
       observe:
         ipv4_address: 10.61.80.10
@@ -266,12 +290,15 @@ services:
     <<: *restart
     image: ${PROMETHEUS_IMAGE}
     container_name: kep-v2-prometheus
+    ports:
+      - "192.168.78.1:9090:9090"
     command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - --config.file=/etc/prometheus/keplerops.yml
       - --storage.tsdb.path=/prometheus
       - --web.enable-lifecycle
     volumes:
-      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./telemetry/prometheus.yml:/etc/prometheus/keplerops.yml:ro
+      - ./telemetry/prometheus-rules.yml:/etc/prometheus/rules/orion-correlation.yml:ro
       - prometheus-data:/prometheus
     networks:
       observe:
@@ -287,9 +314,20 @@ services:
     <<: *restart
     image: ${ALERTMANAGER_IMAGE}
     container_name: kep-v2-alertmanager
+    command:
+      - --config.file=/etc/alertmanager/keplerops.yml
+      - --storage.path=/alertmanager
+    volumes:
+      - ./telemetry/alertmanager.yml:/etc/alertmanager/keplerops.yml:ro
+      - alertmanager-data:/alertmanager
     networks:
       observe:
         ipv4_address: 10.61.80.15
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9093/-/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
     labels: *common-labels
 
   grafana:
@@ -393,5 +431,12 @@ volumes:
   caddy-data:
   caddy-config:
   prometheus-data:
+  alertmanager-data:
   grafana-data:
   opensearch-data:
+  telemetry-access-logs:
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=16m,uid=65532,gid=65532,mode=0775

@@ -27,6 +27,9 @@ sudo /opt/keplerops-v2/baseline/cinder-surfaces.sh
 sudo /opt/keplerops-v2/baseline/document-intake.sh
 sudo /opt/keplerops-v2/baseline/source-ci-registries.sh
 sudo /opt/keplerops-v2/baseline/data-training-lineage.sh
+sudo /opt/keplerops-v2/baseline/release-runtime-continuity.sh
+sudo /opt/keplerops-v2/baseline/business-workflows.sh
+sudo /opt/keplerops-v2/baseline/observability-correlation.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -50,6 +53,14 @@ normal devpi, Verdaccio, and Harbor APIs.
 project, recomputes its canonical hash, and requires the latest scheduled
 Airflow run, exact lakeFS commit, DVC descriptor, MLflow run, lineage artifacts,
 training metric, and downloaded LoRA adapter digest to agree.
+`release-runtime-continuity.sh` joins the visible evaluation, policy, signing,
+GitOps, KServe, and live runtime identities by immutable digest.
+`business-workflows.sh` exercises all eight bounded Orion decisions through
+their owning OSS products and proves idempotency, cross-range denial, native
+effects, notifications, and compensation.
+`observability-correlation.sh` issues one ordinary Orion inference and joins its
+trace, metric, alert, searchable audit event, and runtime cost record through
+the normal observability APIs.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

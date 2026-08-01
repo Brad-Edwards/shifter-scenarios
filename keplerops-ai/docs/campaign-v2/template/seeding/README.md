@@ -40,6 +40,7 @@ Environment variables set by the caller take precedence over `config.env`.
 | `odoo` | Odoo CLI and `odoo shell` | initialized `business` database, base company, administrator |
 | `ghost` | Ghost Admin API with session authentication | owner setup, company title, published operational baseline |
 | `mautic` | Mautic console | installed baseline, administrator, migrations, plugins, cleared cache |
+| `business-workflows` | Product REST/XML-RPC/WebDAV/S3 APIs | bounded Unleash, Odoo, Ghost, Mautic, Zammad, Redmine, Nextcloud, RabbitMQ, Qdrant, and lakeFS clean records |
 
 Create operations are guarded by native lookups. Mutable records are reconciled
 where the product exposes a supported update path. Mautic's installer only runs
@@ -76,6 +77,10 @@ stable declarative replacement operation for secrets.
 8. Ghost and Mautic installation is intended for a new clean data volume. Once
    installed, supported migration/content APIs are used on repeat runs; the
    scripts do not destroy or recreate product databases.
+9. `business-workflows` is deliberately excluded from the default seeder list
+   because it also requires the engineering/data Compose layer. Run it after
+   MinIO, lakeFS, and Qdrant are ready; the gate-10 acceptance script does this
+   automatically.
 
 `validate.sh` is offline. It checks shell parsing, runs ShellCheck when present,
 and validates the static Stalwart principal configuration. It does not prove

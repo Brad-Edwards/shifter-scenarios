@@ -1,0 +1,24 @@
+rule_files:
+  - prometheus-rules.yml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'orion_calls_total{service_name="orion-release-risk-edge",keplerops_event_id="orion-static-validation"}'
+        values: '1'
+    alert_rule_test:
+      - eval_time: 0m
+        alertname: OrionCorrelatedInferenceObserved
+        exp_alerts:
+          - exp_labels:
+              alertname: OrionCorrelatedInferenceObserved
+              keplerops_event_id: orion-static-validation
+              service_name: orion-release-risk-edge
+              severity: info
+              signal: clean-enterprise-acceptance
+            exp_annotations:
+              summary: Correlated Orion inference observed
+              description: Orion release-risk inference orion-static-validation produced a traced edge span.
+              event_id: orion-static-validation

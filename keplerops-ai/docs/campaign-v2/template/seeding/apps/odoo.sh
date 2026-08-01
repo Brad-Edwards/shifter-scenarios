@@ -21,7 +21,7 @@ main() {
   mapfile -t db_args < <(odoo_db_args)
 
   compose exec -T odoo odoo "${db_args[@]}" \
-    --init base --without-demo=all --stop-after-init
+    --init base,account,l10n_generic_coa --without-demo=all --stop-after-init
 
   compose exec -T \
     -e ODOO_SEED_ADMIN_PASSWORD="${ODOO_ADMIN_PASSWORD}" \

@@ -31,7 +31,7 @@ services:
       OPENCODE_CONFIG: /etc/opencode/opencode.json
     ports:
       - "3389:3389"
-      - "443:6901"
+      - "8443:6901"
     dns:
       - 10.61.10.11
     volumes:

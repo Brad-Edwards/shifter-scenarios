@@ -105,7 +105,7 @@ https://orion-mcp.keplerops.lab {
 
 https://risk-model.keplerops.lab {
   tls internal
-  reverse_proxy 192.168.78.30:30083
+  reverse_proxy 10.61.80.20:8080
 }
 
 https://workhub.keplerops.lab {

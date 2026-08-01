@@ -1,0 +1,13 @@
+groups:
+  - name: keplerops-orion-correlation
+    rules:
+      - alert: OrionCorrelatedInferenceObserved
+        expr: orion_calls_total{service_name="orion-release-risk-edge",keplerops_event_id!="uncorrelated"} > 0
+        for: 0m
+        labels:
+          severity: info
+          signal: clean-enterprise-acceptance
+        annotations:
+          summary: Correlated Orion inference observed
+          description: "Orion release-risk inference {{ $labels.keplerops_event_id }} produced a traced edge span."
+          event_id: "{{ $labels.keplerops_event_id }}"

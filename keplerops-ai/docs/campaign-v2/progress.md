@@ -111,7 +111,7 @@ enterprise passes its baseline gates.
 
 ## Clean Enterprise Build Status
 
-Seven of the fourteen acceptance gates in `enterprise-architecture.md` are fully
+Ten of the fourteen acceptance gates in `enterprise-architecture.md` are fully
 proven on the dedicated GCP template:
 
 - redundant AD DNS, LDAP, Kerberos, and replication;
@@ -123,7 +123,15 @@ proven on the dedicated GCP template:
   correlated by exact source revision and OCI digest; and
 - Label Studio annotation export into an immutable lakeFS/DVC snapshot, a
   scheduled real PyTorch/Transformers/PEFT training run, and complete MLflow
-  lineage with downloaded-weight digest verification; and
+  lineage with downloaded-weight digest verification;
+- visible evaluation, OPA policy, cosign evidence, GitOps release state, KServe
+  deployment, and live runtime identity joined by immutable digests;
+- all eight bounded Orion business decisions producing their native clean
+  effects in Unleash, Odoo, Ghost, Mautic/Stalwart, Zammad/Stalwart,
+  RabbitMQ/Qdrant, lakeFS, Redmine, and Nextcloud, with idempotency,
+  cross-range rejection, and compensation proven;
+- one ordinary Orion inference correlated across Jaeger, Prometheus,
+  Alertmanager, OpenSearch, and OpenCost; and
 - independent Cinder workstation, model, mail, Forgejo, MinIO, Jupyter, and
   request-relay surfaces.
 
@@ -136,11 +144,18 @@ The data/training path is checked by
 Label Studio export hash and requires the latest scheduled Airflow run, lakeFS
 commit metadata, DVC descriptor, MLflow tags and metrics, and downloaded LoRA
 adapter digest to agree.
+Release/runtime continuity is checked by
+`template/baseline/release-runtime-continuity.sh`; bounded business actions are
+checked by `template/baseline/business-workflows.sh`; and normal operational
+correlation is checked by `template/baseline/observability-correlation.sh`.
+
+The remaining clean-enterprise gates are complete application role federation,
+fresh-Kali public-surface verification, disposable-worker replacement, and the
+real labgrid place boundary.
 
 ## Publication
 
 - Branch: `keplerops-campaign-v2-design`
-- Commit: `57ac552fa9dedf019d1efc4e4a9ba39d117b88d8`
 - Pull request: [#39](https://github.com/PaloAltoNetworks/shifter-scenarios/pull/39)
 - Git identity: `Brad-Edwards-SecOps`
 - Base branch: `main` (the repository has no `dev` branch)

@@ -78,5 +78,65 @@
     "memberOf": [],
     "quota": 0,
     "password_env": "CINDER_OPERATOR_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "billing",
+    "description": "KeplerOps billing automation",
+    "emails": ["billing@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "advisories",
+    "description": "KeplerOps product safety advisories",
+    "emails": ["advisories@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "billing.customer",
+    "description": "Synthetic subsidiary billing contact",
+    "emails": ["billing.customer@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "edge.operator",
+    "description": "Synthetic Orion Edge operator",
+    "emails": ["edge.operator@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "core.operator",
+    "description": "Synthetic Orion Core operator",
+    "emails": ["core.operator@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "name": "vision.operator",
+    "description": "Synthetic Orion Vision operator",
+    "emails": ["vision.operator@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
   }
 ]

@@ -164,6 +164,7 @@ cosign sign-blob --yes --tlog-upload=false \
   --bundle "$output/release.sigstore.json" \
   "$output/release.intoto.json" >/dev/null
 cosign verify-blob --key "$SIGNING_DIR/cosign.pub" \
+  --insecure-ignore-tlog \
   --bundle "$output/release.sigstore.json" \
   "$output/release.intoto.json" >/dev/null
 install -m 0644 "$SIGNING_DIR/cosign.pub" "$output/cosign.pub"
