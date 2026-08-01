@@ -16,17 +16,30 @@ check_port 192.168.78.11 88
 check_port 192.168.78.11 389
 
 timeout 30 "${SSH[@]}" kepler@192.168.78.10 \
-  'sudo timeout 20 samba-tool user show reviewer >/dev/null; test -f /var/lib/keplerops-dc01.ready'
+  'sudo timeout 20 samba-tool user show reviewer >/dev/null;
+   replication=$(sudo timeout 20 samba-tool drs showrepl 127.0.0.1);
+   ! grep -q "failed, result" <<<"$replication";
+   grep -q "was successful" <<<"$replication";
+   test -f /var/lib/keplerops-dc01.ready'
 timeout 30 "${SSH[@]}" kepler@192.168.78.11 \
-  'sudo timeout 20 samba-tool user show reviewer >/dev/null; test -f /var/lib/keplerops-dc02.ready'
+  'sudo timeout 20 samba-tool user show reviewer >/dev/null;
+   replication=$(sudo timeout 20 samba-tool drs showrepl 127.0.0.1);
+   ! grep -q "failed, result" <<<"$replication";
+   grep -q "was successful" <<<"$replication";
+   test -f /var/lib/keplerops-dc02.ready'
 timeout 30 "${SSH[@]}" kepler@192.168.78.20 \
-  'realm list | grep -qi corp.keplerops.lab; test -f /var/lib/keplerops-domain-member.ready'
+  'realm list | grep -qi corp.keplerops.lab;
+   printf "%s\\n" "KeplerV2-Training-Reviewer" | kinit reviewer@CORP.KEPLEROPS.LAB;
+   klist -s;
+   getent passwd "reviewer@corp.keplerops.lab" >/dev/null;
+   kdestroy;
+   test -f /var/lib/keplerops-domain-member.ready'
 timeout 30 "${SSH[@]}" kepler@192.168.78.21 \
   'realm list | grep -qi corp.keplerops.lab; test -f /var/lib/keplerops-domain-member.ready'
 timeout 30 "${SSH[@]}" kepler@192.168.78.30 \
   'sudo systemctl is-active --quiet k3s; test -f /var/lib/keplerops-k3s.ready'
 
 install -d -m 0755 /run/shifter
-printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) guests" \
+printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) guests-ad-replication-kerberos" \
   >/run/shifter/keplerops-v2-guests.ready
 echo "campaign-v2 guests healthy"

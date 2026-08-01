@@ -40,6 +40,6 @@ bootstrap=$(docker inspect --format '{{.State.Status}} {{.State.ExitCode}}' \
 }
 
 install -d -m 0755 /run/shifter
-printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) clean-enterprise" \
-  >/run/shifter/keplerops-v2-clean-enterprise.ready
-echo "KeplerOps campaign-v2 clean enterprise passed all readiness gates"
+printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) component-substrate" \
+  >/run/shifter/keplerops-v2-component-substrate.ready
+echo "KeplerOps campaign-v2 component substrate passed its readiness gates"

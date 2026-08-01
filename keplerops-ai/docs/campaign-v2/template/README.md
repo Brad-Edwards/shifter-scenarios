@@ -28,7 +28,9 @@ sudo /opt/keplerops-v2/scripts/check-all.sh
 `build` performs the initial image pulls, derivative builds, guest creation,
 platform install, and convergence. `resume` starts and reconciles an already
 built template without pulling or rebuilding images. Both finish at the same
-whole-enterprise readiness gate.
+component-substrate readiness gate. That gate is necessary but does not claim
+the fourteen workflow proofs in `../enterprise-architecture.md`; the clean
+baseline is complete only when those participant-visible workflow proofs pass.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

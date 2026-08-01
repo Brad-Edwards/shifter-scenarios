@@ -78,7 +78,7 @@ common_user_data() {
 #cloud-config
 hostname: $hostname
 fqdn: $hostname.corp.keplerops.lab
-manage_etc_hosts: true
+manage_etc_hosts: false
 users:
   - default
   - name: kepler
@@ -103,6 +103,7 @@ packages:
   - smbclient
   - winbind
 runcmd:
+  - [bash, -lc, "printf '127.0.0.1 localhost\\n192.168.78.10 dc01.corp.keplerops.lab dc01\\n192.168.78.11 dc02.corp.keplerops.lab dc02\\n' >/etc/hosts"]
   - [bash, -lc, "systemctl disable --now smbd nmbd winbind systemd-resolved || true"]
   - [bash, -lc, "rm -f /etc/samba/smb.conf /etc/resolv.conf; printf 'nameserver 192.168.78.1\\n' >/etc/resolv.conf"]
   - [bash, -lc, "samba-tool domain provision --server-role=dc --use-rfc2307 --realm=$DOMAIN --domain=$SHORT_DOMAIN --dns-backend=SAMBA_INTERNAL --adminpass='$ADMIN_PASSWORD' --option='dns forwarder=192.168.78.1'"]
@@ -128,6 +129,7 @@ packages:
   - smbclient
   - winbind
 runcmd:
+  - [bash, -lc, "printf '127.0.0.1 localhost\\n192.168.78.10 dc01.corp.keplerops.lab dc01\\n192.168.78.11 dc02.corp.keplerops.lab dc02\\n' >/etc/hosts"]
   - [bash, -lc, "systemctl disable --now smbd nmbd winbind systemd-resolved || true"]
   - [bash, -lc, "rm -f /etc/samba/smb.conf /etc/resolv.conf; printf 'nameserver 192.168.78.10\\n' >/etc/resolv.conf"]
   - [bash, -lc, "for i in {1..90}; do timeout 2 bash -c '</dev/tcp/192.168.78.10/389' && break; sleep 5; done"]

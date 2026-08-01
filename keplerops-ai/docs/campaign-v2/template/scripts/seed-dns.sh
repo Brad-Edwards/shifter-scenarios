@@ -19,7 +19,7 @@ pdns replace-rrset keplerops.lab mail A 60 10.61.10.20
 pdns replace-rrset keplerops.lab @ MX 60 '10 mail.keplerops.lab.'
 pdns replace-rrset keplerops.lab @ TXT 60 '"v=spf1 mx -all"'
 
-for name in @ mail git objects notebook relay model; do
+for name in @ mail webmail git objects notebook relay model; do
   pdns replace-rrset cinder.lab "$name" A 60 10.61.90.2
 done
 

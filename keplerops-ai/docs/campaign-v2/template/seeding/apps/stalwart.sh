@@ -17,24 +17,22 @@ stalwart_request() {
     --request "${method}" "$@" "${STALWART_API_URL}${path}"
 }
 
-principal_status() {
+principal_record() {
   local name=$1
-  http_code GET "${STALWART_API_URL}/api/principal/$(urlencode "${name}")" \
-    --user "${STALWART_ADMIN_USER}:${STALWART_ADMIN_PASSWORD}"
+  stalwart_request GET "/api/principal/$(urlencode "${name}")"
 }
 
 ensure_principal() {
   local record=$1
-  local name type status password_var password payload
+  local name type status password_var password payload current
   name="$(jq -er '.name' <<<"${record}")"
   type="$(jq -er '.type' <<<"${record}")"
-  status="$(principal_status "${name}")"
+  current="$(principal_record "${name}")"
 
-  if [[ ${status} == 200 ]]; then
+  if ! jq -e '.error == "notFound"' <<<"${current}" >/dev/null; then
     log "Stalwart ${type} already exists: ${name}"
     return 0
   fi
-  [[ ${status} == 404 ]] || die "Stalwart lookup for ${name} returned HTTP ${status}"
 
   if [[ ${type} == domain ]]; then
     payload="$(jq -c 'del(.password_env)' <<<"${record}")"

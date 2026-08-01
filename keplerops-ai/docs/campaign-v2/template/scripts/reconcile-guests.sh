@@ -12,6 +12,11 @@ fi
 
 "${SSH[@]}" kepler@192.168.78.10 sudo bash -s <<'REMOTE'
 set -euo pipefail
+systemctl disable --now systemd-resolved >/dev/null 2>&1 || true
+rm -f /etc/resolv.conf
+printf 'search corp.keplerops.lab\nnameserver 127.0.0.1\nnameserver 192.168.78.11\n' >/etc/resolv.conf
+sed -i -E '/[[:space:]]dc0[12](\.corp\.keplerops\.lab)?([[:space:]]|$)/d' /etc/hosts
+printf '192.168.78.10 dc01.corp.keplerops.lab dc01\n192.168.78.11 dc02.corp.keplerops.lab dc02\n' >>/etc/hosts
 if ! grep -Eq '^[[:space:]]*dns forwarder[[:space:]]*=[[:space:]]*192\.168\.78\.1[[:space:]]*$' /etc/samba/smb.conf; then
   awk '
     /^\[global\]$/ {
@@ -26,6 +31,7 @@ if ! grep -Eq '^[[:space:]]*dns forwarder[[:space:]]*=[[:space:]]*192\.168\.78\.
   rm -f /etc/samba/smb.conf.reconciled
   systemctl restart samba-ad-dc
 fi
+samba_dnsupdate --use-samba-tool
 
 samba-tool group add Engineering >/dev/null 2>&1 || true
 samba-tool group add AI-Research >/dev/null 2>&1 || true
@@ -42,6 +48,11 @@ REMOTE
 
 "${SSH[@]}" kepler@192.168.78.11 sudo bash -s <<'REMOTE'
 set -euo pipefail
+systemctl disable --now systemd-resolved >/dev/null 2>&1 || true
+rm -f /etc/resolv.conf
+printf 'search corp.keplerops.lab\nnameserver 127.0.0.1\nnameserver 192.168.78.10\n' >/etc/resolv.conf
+sed -i -E '/[[:space:]]dc0[12](\.corp\.keplerops\.lab)?([[:space:]]|$)/d' /etc/hosts
+printf '192.168.78.10 dc01.corp.keplerops.lab dc01\n192.168.78.11 dc02.corp.keplerops.lab dc02\n' >>/etc/hosts
 if ! grep -Eq '^[[:space:]]*dns forwarder[[:space:]]*=[[:space:]]*192\.168\.78\.1[[:space:]]*$' /etc/samba/smb.conf; then
   awk '
     /^\[global\]$/ {
@@ -56,8 +67,24 @@ if ! grep -Eq '^[[:space:]]*dns forwarder[[:space:]]*=[[:space:]]*192\.168\.78\.
   rm -f /etc/samba/smb.conf.reconciled
   systemctl restart samba-ad-dc
 fi
+samba_dnsupdate --use-samba-tool
 testparm -s /etc/samba/smb.conf >/dev/null
 samba-tool domain info 127.0.0.1 >/dev/null
+REMOTE
+
+"${SSH[@]}" kepler@192.168.78.10 sudo bash -s <<'REMOTE'
+set -euo pipefail
+for naming_context in \
+  'DC=corp,DC=keplerops,DC=lab' \
+  'CN=Configuration,DC=corp,DC=keplerops,DC=lab' \
+  'CN=Schema,CN=Configuration,DC=corp,DC=keplerops,DC=lab' \
+  'DC=DomainDnsZones,DC=corp,DC=keplerops,DC=lab' \
+  'DC=ForestDnsZones,DC=corp,DC=keplerops,DC=lab'; do
+  timeout 30 samba-tool drs replicate \
+    dc01.corp.keplerops.lab dc02.corp.keplerops.lab "$naming_context" --sync-forced >/dev/null
+  timeout 30 samba-tool drs replicate \
+    dc02.corp.keplerops.lab dc01.corp.keplerops.lab "$naming_context" --sync-forced >/dev/null
+done
 REMOTE
 
 trust_dir="$ROOT/state/identity/truststores"

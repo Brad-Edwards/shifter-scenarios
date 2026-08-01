@@ -148,6 +148,11 @@ https://webmail.keplerops.lab {
   reverse_proxy 10.61.30.21:80
 }
 
+https://webmail.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.21:80
+}
+
 https://git.cinder.lab {
   tls internal
   reverse_proxy 10.61.90.30:3000
