@@ -168,6 +168,18 @@ https://notebook.cinder.lab {
   reverse_proxy 10.61.90.32:8888
 }
 
+https://model.cinder.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30402
+}
+
+https://relay.cinder.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:31080 {
+    header_up Host relay.cinder.cinder.lab
+  }
+}
+
 http://ready.keplerops.lab {
   respond "KeplerOps AI Systems clean-enterprise foundation" 200
 }

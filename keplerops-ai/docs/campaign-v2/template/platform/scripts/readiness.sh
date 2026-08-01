@@ -54,6 +54,14 @@ kubectl -n argocd rollout status deployment/argocd-repo-server --timeout=3m >/de
 kubectl -n argocd rollout status deployment/argocd-server --timeout=3m >/dev/null
 pass "Argo CD control plane available"
 
+kubectl -n knative-serving rollout status deployment/controller --timeout=3m >/dev/null
+kubectl -n knative-serving rollout status deployment/autoscaler --timeout=3m >/dev/null
+kubectl -n knative-serving rollout status deployment/webhook --timeout=3m >/dev/null
+kubectl -n kourier-system rollout status deployment/3scale-kourier-gateway --timeout=3m >/dev/null
+kubectl -n cinder wait --for=condition=Ready kservice/relay --timeout=5m >/dev/null
+curl -fsS -H 'Host: relay.cinder.cinder.lab' http://127.0.0.1:31080/ >/dev/null
+pass "Knative and Cinder request relay available"
+
 for deployment in opa vertex-openai-proxy litellm orion-agent orion-mcp; do
   kubectl -n orion-platform rollout status "deployment/$deployment" --timeout=5m >/dev/null
 done

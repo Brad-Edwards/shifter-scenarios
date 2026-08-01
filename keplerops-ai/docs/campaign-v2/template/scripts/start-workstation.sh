@@ -20,8 +20,9 @@ if docker inspect "$CONTAINER" >/dev/null 2>&1; then
 fi
 
 cd "$ROOT"
-if ! docker image inspect "$KALI_WORKSTATION_IMAGE" >/dev/null 2>&1; then
-  docker compose --env-file component-lock.env -f compose.workbench.yaml pull
+if ! docker image inspect "$CINDER_WORKSTATION_IMAGE" >/dev/null 2>&1; then
+  docker compose --env-file component-lock.env -f compose.workbench.yaml \
+    build participant-workstation
 fi
 docker compose --env-file component-lock.env -f compose.workbench.yaml up -d
 
@@ -43,6 +44,9 @@ docker exec --user kasm-user --env HOME=/home/kasm-user "$CONTAINER" sh -lc '
   certutil -A -d "sql:$HOME/.pki/nssdb" -n KeplerOps-Range-CA -t "C,," \
     -i /usr/local/share/ca-certificates/keplerops-range-root.crt
 '
+
+docker exec --user kasm-user --env HOME=/home/kasm-user "$CONTAINER" \
+  opencode --version >/dev/null
 
 install -d -m 0755 /run/shifter
 printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) workstation" \

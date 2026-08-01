@@ -124,7 +124,9 @@ helm upgrade --install argocd argo-cd \
   --values "$ROOT/helm/argocd-values.yaml" \
   --wait --timeout 10m
 
+"$ROOT/scripts/install-knative.sh"
 configure_litellm_secret
+kubectl apply -f "$ROOT/manifests/cinder-relay.yaml"
 kubectl apply -f "$ROOT/manifests/opa.yaml"
 kubectl apply -f "$ROOT/manifests/litellm.yaml"
 kubectl apply -f "$ROOT/manifests/orion-agent.yaml"

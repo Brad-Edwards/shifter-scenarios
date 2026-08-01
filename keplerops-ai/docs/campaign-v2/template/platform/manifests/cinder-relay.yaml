@@ -1,0 +1,51 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: relay
+  namespace: cinder
+  labels:
+    app.kubernetes.io/name: request-baskets
+    app.kubernetes.io/part-of: cinder-workbench
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/initial-scale: "1"
+        autoscaling.knative.dev/max-scale: "1"
+    spec:
+      containerConcurrency: 20
+      containers:
+        - image: darklynx/request-baskets:v1.2.3@sha256:05a89590fd03552f7ad12b279cf05821d64153636a4038c57945bc6c626bc76c
+          command:
+            - /bin/rbaskets
+          args:
+            - -l
+            - 0.0.0.0
+            - -p
+            - "8080"
+            - -db
+            - mem
+            - -mode
+            - public
+            - -basket
+            - operations
+            - -theme
+            - adaptive
+          ports:
+            - name: http1
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ALL]
+            readOnlyRootFilesystem: true
+            runAsNonRoot: false
+            seccompProfile:
+              type: RuntimeDefault

@@ -23,6 +23,7 @@ The repeatable entry points are:
 sudo /opt/keplerops-v2/scripts/start-all.sh build
 sudo /opt/keplerops-v2/scripts/start-all.sh resume
 sudo /opt/keplerops-v2/scripts/check-all.sh
+sudo /opt/keplerops-v2/baseline/cinder-surfaces.sh
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
@@ -31,6 +32,9 @@ built template without pulling or rebuilding images. Both finish at the same
 component-substrate readiness gate. That gate is necessary but does not claim
 the fourteen workflow proofs in `../enterprise-architecture.md`; the clean
 baseline is complete only when those participant-visible workflow proofs pass.
+`cinder-surfaces.sh` exercises the real participant container and proves its
+TLS routes, tools, direct and OpenCode GLM access, object store, Knative request
+relay, and cross-domain threaded mail path.
 
 Do not run these scripts on a live participant range. `bootstrap-host.sh`
 requires the GCE instance label `campaign=v2` and refuses any other host.

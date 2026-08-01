@@ -1,0 +1,22 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "cinder-workbench/zai-org/glm-5-maas",
+  "small_model": "cinder-workbench/zai-org/glm-5-maas",
+  "autoupdate": false,
+  "share": "disabled",
+  "enabled_providers": ["cinder-workbench"],
+  "provider": {
+    "cinder-workbench": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Cinder Workbench",
+      "options": {
+        "baseURL": "https://model.cinder.lab/v1"
+      },
+      "models": {
+        "zai-org/glm-5-maas": {
+          "name": "GLM 5.2"
+        }
+      }
+    }
+  }
+}
