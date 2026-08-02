@@ -71,8 +71,8 @@ JSON
 
 initialize_runner_volume() {
   docker volume create kep-v2-m04-privacy-jobs >/dev/null
-  docker run --rm --user root -v kep-v2-m04-privacy-jobs:/jobs "${JUPYTER_IMAGE}" \
-    sh -eu -c 'chmod 0777 /jobs'
+  docker run --rm --user root -v kep-v2-m04-privacy-jobs:/jobs \
+    --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c 'chmod 0777 /jobs'
 }
 
 ensure_evaluation_object_reader() {
@@ -92,7 +92,7 @@ seed_evaluation_reader_access() {
   docker run --rm --user root \
     -v kep-v2-jupyter-eval.reader:/work \
     -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
-    "${JUPYTER_IMAGE}" sh -eu -c '
+    --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0750 -o 1000 -g 100 /work/orion-evaluation-access
       install -m 0644 -o 1000 -g 100 /evaluator-signing-key.pub /work/orion-evaluation-access/evaluator-signing-key.pub
       cat >/work/orion-evaluation-access/OBJECT-STORE.md <<"EOF"
@@ -152,7 +152,7 @@ seed_privacy_notebooks() {
   docker run --rm --user root \
     -v kep-v2-jupyter-eval.reader:/work -v "${MODULE_ROOT}/payloads:/seed:ro" \
     -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
-    "${JUPYTER_IMAGE}" sh -eu -c '
+    --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0750 -o 1000 -g 100 /work/orion-privacy-research /work/orion-audit-inputs
       for notebook in privacy-calibration individual-membership cohort-membership; do
         test -e "/work/orion-privacy-research/${notebook}.ipynb" ||
@@ -267,7 +267,7 @@ Secret key: KeplerV2-Orion-Runtime-Attestation
 EOF
   docker volume create kep-v2-jupyter-eval.reader >/dev/null
   docker run --rm --user root -v kep-v2-jupyter-eval.reader:/work -v "${workspace}:/seed:ro" \
-    "${JUPYTER_IMAGE}" sh -eu -c '
+    --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0750 -o 1000 -g 100 /work/orion-runtime-lineage
       install -m 0640 -o 1000 -g 100 /seed/README.md /work/orion-runtime-lineage/README.md
       install -m 0600 -o 1000 -g 100 /seed/k3s-token /work/orion-runtime-lineage/k3s-token

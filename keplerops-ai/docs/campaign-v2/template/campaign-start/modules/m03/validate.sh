@@ -799,8 +799,8 @@ PY
   jq -e 'map(.name) as $names | ($names | index("RG-Jupyter-Orion-Evaluation")) != null and
     all($names[]; test("Production|Release-Admin|Training-Admin") | not)' "${TMPDIR_VALIDATE}/groups.json" >/dev/null || \
     die "${id}: eval.reader is not limited to the evaluation Jupyter scope"
-  docker run --rm -v 'kep-v2-jupyter-eval.reader:/work:ro' "${JUPYTER_IMAGE}" \
-    sh -eu -c 'test "$(stat -c %u:%g:%a /work/onboarding/ORION-EVALUATION-READER.md)" = 1000:100:640; cat /work/onboarding/ORION-EVALUATION-READER.md' \
+  docker run --rm -v 'kep-v2-jupyter-eval.reader:/work:ro' --entrypoint /bin/sh "${JUPYTER_IMAGE}" \
+    -eu -c 'test "$(stat -c %u:%g:%a /work/onboarding/ORION-EVALUATION-READER.md)" = 1000:100:640; cat /work/onboarding/ORION-EVALUATION-READER.md' \
     >"${TMPDIR_VALIDATE}/positive"
   grep -Fq "${flag}" "${TMPDIR_VALIDATE}/positive" || die "${id}: evaluation-reader onboarding lacks its reference"
   status="$(curl -sS -o "${TMPDIR_VALIDATE}/negative.json" -w '%{http_code}' -X POST \

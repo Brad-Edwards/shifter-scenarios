@@ -239,7 +239,8 @@ seed_evaluation_reader_identity() {
   fi
 
   docker volume create 'kep-v2-jupyter-eval.reader' >/dev/null
-  docker run --rm --user root -v 'kep-v2-jupyter-eval.reader:/work' "${JUPYTER_IMAGE}" sh -eu -c '
+  docker run --rm --user root -v 'kep-v2-jupyter-eval.reader:/work' \
+    --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
     install -d -m 0750 -o 1000 -g 100 /work/onboarding
     cat >/work/onboarding/ORION-EVALUATION-READER.md <<"EOF"
 # Orion Evaluation Reader Onboarding
