@@ -1,12 +1,12 @@
 ARG AIRFLOW_IMAGE=keplerops/airflow:campaign-v2-clean
 FROM ${AIRFLOW_IMAGE}
 
-COPY modules/m05/payloads/airflow/orion_evaluation_replay.py /opt/airflow/dags/orion_evaluation_replay.py
+COPY campaign-start/modules/m05/payloads/airflow/orion_evaluation_replay.py /opt/airflow/dags/orion_evaluation_replay.py
 
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-      age docker.io openssh-client openssl zstd \
+      age bubblewrap docker.io openssh-client openssl zstd \
     && rm -rf /var/lib/apt/lists/*
 
 USER airflow
@@ -15,6 +15,7 @@ RUN python -m pip install --no-cache-dir \
       lpips==0.1.4 \
       pillow==11.3.0 \
       pika==1.3.2 \
-      picklescan==0.0.31
+      picklescan==0.0.31 \
+      kubernetes==33.1.0
 
 RUN python -c 'import lpips; lpips.LPIPS(net="alex")'

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from airflow import DAG
-from airflow.operators.empty import EmptyOperator
+from airflow.providers.standard.operators.empty import EmptyOperator
+from airflow.sdk import DAG
 
 
 with DAG(

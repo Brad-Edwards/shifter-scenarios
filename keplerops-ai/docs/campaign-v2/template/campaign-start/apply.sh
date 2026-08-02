@@ -88,13 +88,10 @@ converge_shared_services() {
       ! docker image inspect keplerops/airflow:campaign-v2 >/dev/null 2>&1; then
     build=build
   fi
-  local -a options=(up -d --no-deps)
   if [[ ${build} == build ]]; then
-    options+=(--build)
-  else
-    options+=(--no-build)
+    compose_campaign build airflow-api >/dev/null
   fi
-  compose_campaign "${options[@]}" "${SHARED_SERVICES[@]}" >/dev/null
+  compose_campaign up -d --no-deps --no-build "${SHARED_SERVICES[@]}" >/dev/null
   wait_for_integrated_airflow
   compose_campaign exec -T airflow-scheduler airflow dags reserialize >/dev/null
 
