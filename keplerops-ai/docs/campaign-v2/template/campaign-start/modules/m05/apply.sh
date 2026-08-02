@@ -334,6 +334,13 @@ PY
 }
 
 seed_airflow() {
+  compose up -d --no-build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
+  local attempt
+  for ((attempt = 1; attempt <= 60; attempt++)); do
+    compose exec -T airflow-api airflow db check >/dev/null 2>&1 && break
+    sleep 2
+  done
+  compose exec -T airflow-api airflow db check >/dev/null 2>&1 || die 'Airflow API did not become ready'
   docker volume create kep-v2-jupyter-eval.reader >/dev/null
   docker run --rm -i -v kep-v2-jupyter-eval.reader:/work alpine:3.22 sh -c 'mkdir -p /work/orion-evaluation/.config/airflow; tar -C /work/orion-evaluation -xf -; mv /work/orion-evaluation/airflow-client.yaml /work/orion-evaluation/.config/airflow/client.yaml' < <(tar -C "${MODULE_ROOT}/payloads/notebooks" -cf - orion-evaluation-migration.ipynb airflow-client.yaml)
   compose exec -T airflow-api airflow users create --username evaluation.viewer --firstname Evaluation --lastname Viewer --role 'Orion Viewer' --email evaluation.viewer@keplerops.lab --password Orion-Evaluation-Viewer-2026 >/dev/null 2>&1 || compose exec -T airflow-api airflow users reset-password --username evaluation.viewer --password Orion-Evaluation-Viewer-2026 >/dev/null
