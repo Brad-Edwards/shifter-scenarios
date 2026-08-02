@@ -57,10 +57,11 @@ services:
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
-        if [ ! -x /opt/m03-haystack/bin/python ]; then
+        if ! /opt/m03-haystack/bin/python -c 'from haystack import Document; from haystack_integrations.document_stores.qdrant import QdrantDocumentStore' >/dev/null 2>&1; then
+          rm -rf /opt/m03-haystack/*
           python -m venv /opt/m03-haystack
           /opt/m03-haystack/bin/pip install --no-cache-dir \
-            haystack-ai==2.17.1 qdrant-haystack==10.4.0
+            haystack-ai==2.17.1 qdrant-haystack==9.2.0
         fi
         /opt/m03-haystack/bin/python -c 'from haystack import Document; from haystack_integrations.document_stores.qdrant import QdrantDocumentStore'
     volumes:
