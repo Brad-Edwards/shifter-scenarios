@@ -84,7 +84,7 @@ def model_metadata(model_name: str) -> dict[str, Any]:
         "model_family": "release-risk",
         "runtime": "onnxruntime-cpu",
         "class_count": len(label_to_id),
-        "labels": list(label_to_id),
+        "labels": [id_to_label[index] for index in range(len(id_to_label))],
         "model_sha256": model_sha256,
         "tokenizer_sha256": tokenizer_sha256,
         "mlflow_run_id": release_metadata["mlflow_run_id"],
