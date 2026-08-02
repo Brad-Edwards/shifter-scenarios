@@ -564,7 +564,7 @@ install_participant_prerequisite_identity() {
   [[ -n $mc_image ]] || die 'MINIO_MC_IMAGE is not pinned'
   docker run --rm --network kep-v2-data --entrypoint sh "$mc_image" -ec '
     set -eu
-    mc alias set source http://minio:9000 range-admin KeplerV2-Training-Minio-Object-Store >/dev/null
+    mc alias set source http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     mc admin user add source cinder-prerequisite-reader Cinder-Field-Operator-Prerequisites-F4s9Wk2q >/dev/null 2>&1 || true
     printf %s "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::artifacts/evaluation-reports/compatibility/*\",\"arn:aws:s3:::artifacts/evaluation-reports/prompt-renderer-compatibility/*\",\"arn:aws:s3:::artifacts/evaluation-reports/agent-capability-audit/*\"]}]}" >/tmp/cinder-prerequisite-policy.json
     mc admin policy create source cinder-prerequisite-read /tmp/cinder-prerequisite-policy.json >/dev/null 2>&1 || mc admin policy info source cinder-prerequisite-read >/dev/null
