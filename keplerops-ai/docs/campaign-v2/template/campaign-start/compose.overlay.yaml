@@ -4,7 +4,7 @@ x-campaign-airflow: &campaign-airflow
     context: .
     dockerfile: campaign-start/Dockerfile.airflow
     args:
-      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-m08
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
 
 services:
   airflow-api:
