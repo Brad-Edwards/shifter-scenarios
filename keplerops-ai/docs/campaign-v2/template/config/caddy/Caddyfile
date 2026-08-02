@@ -63,6 +63,11 @@ https://mlflow.keplerops.lab {
   reverse_proxy 10.61.40.36:5000
 }
 
+https://flows.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.10.22:7860
+}
+
 https://pipelines.keplerops.lab {
   tls internal
   reverse_proxy 10.61.40.37:1416
@@ -141,6 +146,11 @@ https://status.keplerops.lab {
 https://advisories.keplerops.lab {
   tls internal
   reverse_proxy 10.61.70.22:80
+}
+
+https://business.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.70.20:8069
 }
 
 https://webmail.keplerops.lab {

@@ -198,6 +198,8 @@ services:
           - preview.keplerops.lab
           - status.keplerops.lab
           - advisories.keplerops.lab
+          - business.keplerops.lab
+          - flows.keplerops.lab
           - webmail.keplerops.lab
           - grafana.keplerops.lab
           - jaeger.keplerops.lab
