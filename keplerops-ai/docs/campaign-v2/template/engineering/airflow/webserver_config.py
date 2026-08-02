@@ -23,6 +23,7 @@ OAUTH_PROVIDERS = [
         "remote_app": {
             "client_id": os.environ["AIRFLOW_OIDC_CLIENT_ID"],
             "client_secret": os.environ["AIRFLOW_OIDC_CLIENT_SECRET"],
+            "server_metadata_url": os.environ["AIRFLOW_OIDC_METADATA_URL"],
             "api_base_url": os.environ["AIRFLOW_OIDC_USERINFO_BASE_URL"],
             "access_token_url": os.environ["AIRFLOW_OIDC_TOKEN_URL"],
             "authorize_url": os.environ["AIRFLOW_OIDC_AUTHORIZE_URL"],

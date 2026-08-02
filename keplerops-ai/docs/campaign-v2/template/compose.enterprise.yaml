@@ -23,6 +23,7 @@ x-zammad-environment: &zammad-environment
   ELASTICSEARCH_PORT: "9200"
   ZAMMAD_FQDN: support.keplerops.lab
   ZAMMAD_HTTP_TYPE: https
+  NGINX_SERVER_SCHEME: https
   BACKUP_ON_START: "false"
 
 x-zammad-service: &zammad-service
@@ -235,7 +236,7 @@ services:
       OVERWRITEHOST: files.keplerops.lab
       OVERWRITEPROTOCOL: https
       OVERWRITECLIURL: https://files.keplerops.lab
-      TRUSTED_PROXIES: 10.61.10.2
+      TRUSTED_PROXIES: 10.61.10.2 10.61.30.2
     command: ["bash", "-c", "update-ca-certificates >/dev/null && exec apache2-foreground"]
     volumes:
       - nextcloud-data:/var/www/html
@@ -366,10 +367,30 @@ services:
       JWT_SECRET: KeplerV2-Training-LibreChat-JWT
       JWT_REFRESH_SECRET: KeplerV2-Training-LibreChat-Refresh
       ALLOW_REGISTRATION: "false"
+      ALLOW_EMAIL_LOGIN: "false"
+      ALLOW_SOCIAL_LOGIN: "true"
+      DOMAIN_CLIENT: https://assistant.keplerops.lab
+      DOMAIN_SERVER: https://assistant.keplerops.lab
+      OPENID_ISSUER: https://id.keplerops.lab/realms/keplerops
+      OPENID_CLIENT_ID: librechat
+      OPENID_CLIENT_SECRET: KeplerV2-Training-LibreChat-OIDC
+      OPENID_SESSION_SECRET: KeplerV2-Training-LibreChat-Session
+      OPENID_SCOPE: openid profile email
+      OPENID_CALLBACK_URL: /oauth/openid/callback
+      OPENID_REQUIRED_ROLE: librechat-user
+      OPENID_REQUIRED_ROLE_PARAMETER_PATH: realm_access.roles
+      OPENID_REQUIRED_ROLE_TOKEN_KIND: access
+      OPENID_USE_PKCE: "true"
+      NODE_EXTRA_CA_CERTS: /etc/keplerops/caddy-root.crt
     volumes:
       - ./config/librechat/librechat.yaml:/app/librechat.yaml:ro
+      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
       - librechat-images:/app/client/public/images
+    extra_hosts:
+      - "id.keplerops.lab:10.61.20.2"
     networks:
+      identity:
+        ipv4_address: 10.61.20.43
       corp:
         ipv4_address: 10.61.30.25
       data:
@@ -387,8 +408,12 @@ services:
       DATABASE_URL: postgres://business:KeplerV2-Training-BusinessDB@10.61.50.10:5432/business
       DATABASE_SSL: "false"
       LOG_LEVEL: warn
+      AUTH_TYPE: open-source
+      AUTH_ENABLE_API_TOKEN: "true"
+      CHECK_VERSION: "false"
+      UNLEASH_DEFAULT_ADMIN_USERNAME: range-admin
+      UNLEASH_DEFAULT_ADMIN_PASSWORD: KeplerV2-Training-Unleash
       INIT_ADMIN_API_TOKENS: "*:*.range-admin"
-      INIT_CLIENT_API_TOKENS: "default:development.range-client"
     networks:
       business:
         ipv4_address: 10.61.70.23
@@ -398,8 +423,14 @@ services:
 
   odoo:
     <<: *restart
-    image: ${ODOO_IMAGE}
+    image: keplerops/odoo:18.0-auth-oidc-6d57b614
+    build:
+      context: ./business/odoo
+      dockerfile: Dockerfile
+      args:
+        ODOO_BASE_IMAGE: odoo:18.0@sha256:66fae420378996f4c7e633b3fd47bfef0909170d75db897e3935e8ad1162db1a
     container_name: kep-v2-odoo
+    command: ["odoo", "--proxy-mode"]
     depends_on:
       postgres:
         condition: service_healthy
@@ -411,6 +442,8 @@ services:
     volumes:
       - odoo-data:/var/lib/odoo
     networks:
+      identity:
+        ipv4_address: 10.61.20.42
       business:
         ipv4_address: 10.61.70.20
       data:
@@ -419,7 +452,7 @@ services:
 
   ghost:
     <<: *restart
-    image: ${GHOST_IMAGE}
+    image: ghost:5.130.2-alpine@sha256:7475a7be28f621ba8e504d559e4a5b543dcd4f27797af7ff96aa772bcf024eb1
     container_name: kep-v2-ghost
     depends_on:
       mariadb:
@@ -432,8 +465,17 @@ services:
       database__connection__password: KeplerV2-Training-GhostDB
       database__connection__database: ghost
       security__staffDeviceVerification: "false"
+      mail__transport: SMTP
+      mail__from: status@keplerops.lab
+      mail__options__host: mail.keplerops.lab
+      mail__options__port: "25"
+      mail__options__secure: "false"
+      NODE_EXTRA_CA_CERTS: /etc/keplerops/caddy-root.crt
     volumes:
       - ghost-data:/var/lib/ghost/content
+      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+    extra_hosts:
+      - "mail.keplerops.lab:10.61.10.20"
     networks:
       public:
         ipv4_address: 10.61.10.23
@@ -445,7 +487,7 @@ services:
 
   mautic:
     <<: *restart
-    image: ${MAUTIC_IMAGE}
+    image: mautic/mautic:5.2.11-20260603-apache@sha256:e3fb45f69bf1a03effdf7d7cf214b269b82dd340acda328cf3cfb709971ada59
     container_name: kep-v2-mautic
     depends_on:
       mariadb:
@@ -533,7 +575,10 @@ services:
       ORION_DECISION_SIGNING_KEY: ${ORION_DECISION_SIGNING_KEY:-KeplerV2-Training-Orion-Decision-Signing}
       BUSINESS_OPA_URL: http://business-opa:8181
       UNLEASH_URL: http://unleash:4242
-      UNLEASH_ADMIN_TOKEN: "*:*.range-admin"
+      UNLEASH_ADMIN_TOKEN: user:KeplerV2-Training-Orion-Unleash-Control
+      UNLEASH_CLIENT_TOKEN: default:development.KeplerV2-Training-Orion-Canary-Read
+      UNLEASH_PROJECT: default
+      UNLEASH_ENVIRONMENT: development
       ODOO_URL: http://odoo:8069
       GHOST_INTERNAL_URL: http://ghost:2368
       MAUTIC_INTERNAL_URL: https://advisories.keplerops.lab

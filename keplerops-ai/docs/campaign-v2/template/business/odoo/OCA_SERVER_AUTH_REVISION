@@ -1,0 +1,5 @@
+repository=OCA/server-auth
+branch=18.0
+commit=6d57b614fadf77bdbe4d02cce61c671e33061ef4
+module=auth_oidc
+module_version=18.0.1.1.0

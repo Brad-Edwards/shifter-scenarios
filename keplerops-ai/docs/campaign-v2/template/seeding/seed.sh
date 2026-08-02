@@ -16,6 +16,7 @@ readonly DEFAULT_SEEDERS=(
   zammad
   stalwart
   langflow
+  unleash
   odoo
   ghost
   mautic
@@ -26,7 +27,7 @@ usage() {
 Usage: ./seed.sh [seeder ...]
 
 Seeders:
-  keycloak-samba grafana librechat forgejo redmine nextcloud zammad stalwart langflow odoo ghost mautic
+  keycloak-samba grafana librechat forgejo redmine nextcloud zammad stalwart langflow unleash odoo ghost mautic
   airflow mlflow label-studio harbor (run after engineering/data services are ready)
   business-workflows (run after engineering/data services are ready)
 

@@ -14,6 +14,7 @@ docker exec --interactive \
   "$WORKSTATION" python3 - <<'PY'
 from __future__ import annotations
 
+import base64
 import html
 import http.cookiejar
 import json
@@ -100,6 +101,24 @@ def read(
         )
 
 
+def basic_request(
+    method: str,
+    url: str,
+    username: str | None = None,
+    password: str | None = None,
+    payload: dict[str, object] | None = None,
+) -> tuple[int, str, str]:
+    headers: dict[str, str] = {}
+    if username is not None and password is not None:
+        credentials = base64.b64encode(f"{username}:{password}".encode()).decode()
+        headers["Authorization"] = f"Basic {credentials}"
+    data = None
+    if payload is not None:
+        data = json.dumps(payload).encode()
+        headers["Content-Type"] = "application/json"
+    return read(browser(), urllib.request.Request(url, data=data, headers=headers, method=method))
+
+
 def oidc_login(
     start_url: str, username: str, password: str
 ) -> tuple[urllib.request.OpenerDirector, int, str, str]:
@@ -138,9 +157,14 @@ def zammad_saml_login(
     if not token.content:
         raise RuntimeError("Zammad login page did not publish its CSRF token")
     request = urllib.request.Request(
-        "https://support.keplerops.lab/auth/saml",
+        "https://support.keplerops.lab/auth/saml?fingerprint=participant-proof",
         data=urllib.parse.urlencode({"authenticity_token": token.content}).encode(),
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Origin": "https://support.keplerops.lab",
+            "Referer": base_url,
+            "X-CSRF-Token": token.content,
+        },
     )
     status, login_url, login_page = read(opener, request)
     if status != 200:
@@ -154,6 +178,18 @@ def zammad_saml_login(
         data=urllib.parse.urlencode(
             {"username": username, "password": password, "credentialId": ""}
         ).encode(),
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+    )
+    status, response_url, response_page = read(opener, request)
+    response_form = Form(action_suffix="/auth/saml/callback")
+    response_form.feed(response_page)
+    if not response_form.action or "SAMLResponse" not in response_form.fields:
+        raise RuntimeError(
+            f"Keycloak did not return the Zammad SAML response form at {response_url}"
+        )
+    request = urllib.request.Request(
+        urllib.parse.urljoin(response_url, html.unescape(response_form.action)),
+        data=urllib.parse.urlencode(response_form.fields).encode(),
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     status, url, body = read(opener, request)
@@ -267,7 +303,7 @@ _, status, url, body = oidc_login(
     "ml.engineer",
     "KeplerV2-Training-MLEngineer",
 )
-if status != 200 or "airflow.keplerops.lab" not in url or "ml.engineer" not in body:
+if status != 200 or url.rstrip("/") != "https://airflow.keplerops.lab":
     raise RuntimeError(f"allowed runner failed Airflow OIDC login: HTTP {status} at {url}")
 print("PASS ml.engineer entered Airflow through Keycloak")
 
@@ -276,9 +312,116 @@ _, status, url, body = oidc_login(
     "data.annotator",
     "KeplerV2-Training-Annotator",
 )
-if status < 400 and "invalid login" not in body.lower() and "access denied" not in body.lower():
+if status != 200 or "/auth/login" not in url:
     raise RuntimeError(f"adjacent role was not denied by Airflow: HTTP {status} at {url}")
 print("PASS data.annotator authenticated but was denied Airflow")
+
+librechat, status, url, body = oidc_login(
+    "https://assistant.keplerops.lab/oauth/openid",
+    "ml.engineer",
+    "KeplerV2-Training-MLEngineer",
+)
+path = urllib.parse.urlsplit(url).path
+if status != 200 or path != "/":
+    raise RuntimeError(f"allowed evaluator failed LibreChat OIDC login: HTTP {status} at {path}")
+status, url, body = read(
+    librechat,
+    urllib.request.Request(
+        "https://assistant.keplerops.lab/api/auth/refresh", data=b"", method="POST"
+    ),
+)
+session = json.loads(body) if status == 200 else {}
+token = session.get("token") if isinstance(session, dict) else None
+if not token:
+    raise RuntimeError(f"LibreChat did not issue a participant access token: HTTP {status} at {url}")
+status, url, body = read(
+    librechat,
+    urllib.request.Request(
+        "https://assistant.keplerops.lab/api/user",
+        headers={"Authorization": f"Bearer {token}"},
+    ),
+)
+user = json.loads(body) if status == 200 else {}
+if status != 200 or user.get("email") != "ml.engineer@keplerops.lab":
+    raise RuntimeError(f"LibreChat did not establish the bounded evaluator session: HTTP {status} at {url}")
+print("PASS ml.engineer entered LibreChat through the bounded Orion Assistant role")
+
+librechat, status, url, body = oidc_login(
+    "https://assistant.keplerops.lab/oauth/openid",
+    "data.annotator",
+    "KeplerV2-Training-Annotator",
+)
+parsed = urllib.parse.urlsplit(url)
+if status != 200 or parsed.path != "/login" or "error=" not in parsed.query:
+    raise RuntimeError(f"adjacent role was not denied by LibreChat: HTTP {status} at {parsed.path}")
+status, url, body = read(
+    librechat,
+    urllib.request.Request(
+        "https://assistant.keplerops.lab/api/auth/refresh", data=b"", method="POST"
+    ),
+)
+try:
+    denied_session = json.loads(body)
+except json.JSONDecodeError:
+    denied_session = {}
+if isinstance(denied_session, dict) and denied_session.get("token"):
+    raise RuntimeError("denied LibreChat role received an access token")
+status, url, body = read(librechat, "https://assistant.keplerops.lab/api/user")
+if status != 401:
+    raise RuntimeError(f"denied LibreChat role received an authenticated session: HTTP {status} at {url}")
+print("PASS data.annotator authenticated but was denied LibreChat")
+
+mlflow_base = "https://mlflow.keplerops.lab/api/2.0/mlflow"
+status, url, body = basic_request(
+    "POST", f"{mlflow_base}/experiments/search", payload={"max_results": 1000}
+)
+if status != 401:
+    raise RuntimeError(f"unauthenticated user reached MLflow: HTTP {status} at {url}")
+
+status, url, body = basic_request(
+    "POST",
+    f"{mlflow_base}/experiments/search",
+    "orion-maintainer",
+    "KeplerV2-Training-MLflow-Maintain",
+    {"max_results": 1000},
+)
+experiments = json.loads(body).get("experiments", []) if status == 200 else []
+experiment_id = next(
+    (
+        experiment.get("experiment_id")
+        for experiment in experiments
+        if experiment.get("name") == "Orion Clean Intent Training"
+    ),
+    None,
+)
+if not experiment_id:
+    raise RuntimeError(f"MLflow maintainer could not find the Orion experiment: HTTP {status} at {url}")
+
+status, url, body = basic_request(
+    "GET",
+    f"{mlflow_base}/experiments/get?experiment_id={urllib.parse.quote(experiment_id)}",
+    "orion-reader",
+    "KeplerV2-Training-MLflow-Read",
+)
+if status != 200 or json.loads(body).get("experiment", {}).get("name") != "Orion Clean Intent Training":
+    raise RuntimeError(f"MLflow reader could not read the Orion experiment: HTTP {status} at {url}")
+
+acl_url = (
+    f"{mlflow_base}/experiments/permissions/get?"
+    f"experiment_id={urllib.parse.quote(experiment_id)}&username=orion-reader"
+)
+status, url, body = basic_request(
+    "GET", acl_url, "orion-reader", "KeplerV2-Training-MLflow-Read"
+)
+if status != 403:
+    raise RuntimeError(f"MLflow reader escaped the READ boundary: HTTP {status} at {url}")
+status, url, body = basic_request(
+    "GET", acl_url, "orion-maintainer", "KeplerV2-Training-MLflow-Maintain"
+)
+permission = json.loads(body).get("experiment_permission", {}) if status == 200 else {}
+if status != 200 or permission.get("permission") != "READ":
+    raise RuntimeError(f"MLflow maintainer could not inspect the Orion ACL: HTTP {status} at {url}")
+print("PASS MLflow enforced unauthenticated, READ, and MANAGE boundaries")
 
 grafana, status, url, body = oidc_login(
     "https://grafana.keplerops.lab/login/generic_oauth",
@@ -337,6 +480,10 @@ if status != 200 or "support.keplerops.lab" not in url:
 status, url, body = read(zammad, "https://support.keplerops.lab/api/v1/tickets")
 if status != 200 or not body.lstrip().startswith("["):
     raise RuntimeError(f"Zammad agent could not list tickets: HTTP {status} at {url}")
+status, url, body = read(zammad, "https://support.keplerops.lab/api/v1/users?expand=true")
+users = json.loads(body) if status == 200 else []
+if len(users) < 2 or not any(user.get("login") == "support.analyst" for user in users):
+    raise RuntimeError(f"Zammad agent could not enumerate the support directory: HTTP {status} at {url}")
 print("PASS support.analyst entered Zammad through SAML with native Agent access")
 
 zammad, status, url, body = zammad_saml_login(
@@ -345,9 +492,13 @@ zammad, status, url, body = zammad_saml_login(
 if status != 200 or "support.keplerops.lab" not in url:
     raise RuntimeError(f"communications user failed Zammad SAML login: HTTP {status} at {url}")
 status, url, body = read(zammad, "https://support.keplerops.lab/api/v1/tickets")
-if status != 403:
-    raise RuntimeError(f"Zammad customer accessed agent ticket listing: HTTP {status} at {url}")
-print("PASS comms.publisher authenticated to Zammad but was denied agent ticket access")
+if status != 200 or not body.lstrip().startswith("["):
+    raise RuntimeError(f"Zammad customer could not access their ticket view: HTTP {status} at {url}")
+status, url, body = read(zammad, "https://support.keplerops.lab/api/v1/users?expand=true")
+users = json.loads(body) if status == 200 else []
+if len(users) != 1 or users[0].get("login") != "comms.publisher":
+    raise RuntimeError(f"Zammad customer escaped the self-only user boundary: HTTP {status} at {url}")
+print("PASS comms.publisher authenticated to Zammad but remained inside the native Customer boundary")
 PY
 
 printf 'identity role-enforcement acceptance passed from the participant network\n'

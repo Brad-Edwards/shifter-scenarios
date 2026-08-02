@@ -51,6 +51,16 @@
   },
   {
     "type": "individual",
+    "name": "comms.publisher",
+    "description": "Samira Okafor publishing identity",
+    "emails": ["comms.publisher@keplerops.lab"],
+    "roles": ["user"],
+    "memberOf": [],
+    "quota": 0,
+    "password_env": "COMMS_PUBLISHER_PASSWORD"
+  },
+  {
+    "type": "individual",
     "name": "support",
     "description": "Jonas Becker",
     "emails": ["support@keplerops.lab"],

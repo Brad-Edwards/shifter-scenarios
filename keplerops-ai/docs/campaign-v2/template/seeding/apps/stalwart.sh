@@ -24,13 +24,27 @@ principal_record() {
 
 ensure_principal() {
   local record=$1
-  local name type status password_var password payload current
+  local name type status password_var password payload current updates
   name="$(jq -er '.name' <<<"${record}")"
   type="$(jq -er '.type' <<<"${record}")"
   current="$(principal_record "${name}")"
 
   if ! jq -e '.error == "notFound"' <<<"${current}" >/dev/null; then
-    log "Stalwart ${type} already exists: ${name}"
+    updates="$(jq -c '
+      [to_entries[]
+       | select(.key == "description"
+                or .key == "emails"
+                or .key == "roles"
+                or .key == "memberOf"
+                or .key == "quota")
+       | {action: "set", field: .key, value: .value}]
+    ' <<<"${record}")"
+    status="$(http_code PATCH "${STALWART_API_URL}/api/principal/$(urlencode "${name}")" \
+      --user "${STALWART_ADMIN_USER}:${STALWART_ADMIN_PASSWORD}" \
+      --header 'Content-Type: application/json' \
+      --data "${updates}")"
+    [[ ${status} =~ ^2 ]] || die "Stalwart reconciliation for ${name} returned HTTP ${status}"
+    log "Stalwart ${type} reconciled: ${name}"
     return 0
   fi
 

@@ -123,6 +123,8 @@ ensure_user_oidc() {
     --type=boolean --value=false >/dev/null
   occ config:system:set allow_local_remote_servers \
     --type=boolean --value=true >/dev/null
+  occ config:system:set trusted_proxies 0 --value=10.61.10.2 >/dev/null
+  occ config:system:set trusted_proxies 1 --value=10.61.30.2 >/dev/null
   occ config:app:set user_oidc allow_multiple_user_backends \
     --type=string --value=0 >/dev/null
 
