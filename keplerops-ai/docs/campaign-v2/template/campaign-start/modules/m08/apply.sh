@@ -119,7 +119,7 @@ apply_one() {
   ensure_mlflow_experiment
   ensure_airflow
   if [[ ${operation} == kep-m08-i ]]; then
-    "${TEMPLATE_ROOT}/scripts/start-hardware.sh"
+    "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
   fi
   printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
   log "reconciled ${operation} start state"
@@ -136,6 +136,7 @@ main() {
   ensure_label_project
   ensure_mlflow_experiment
   ensure_airflow
+  "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
   while IFS= read -r operation; do printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"; done \
     < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
   log 'reconciled all m08 research start state without producing accepted results'

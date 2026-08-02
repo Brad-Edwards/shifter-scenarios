@@ -5,7 +5,9 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly ROOT
 readonly READINESS_MARKER="${CAMPAIGN_READINESS_MARKER:-/run/shifter/keplerops-v2-campaign.ready}"
+readonly HARDWARE_READINESS_MARKER="${CAMPAIGN_HARDWARE_READINESS_MARKER:-/run/shifter/keplerops-v2-hardware.ready}"
 operation=${1:-}
+CAMPAIGN_APPLY_ID=${CAMPAIGN_APPLY_ID:-}
 
 readonly -a SHARED_SERVICES=(
   airflow-api
@@ -97,8 +99,35 @@ converge_shared_services() {
     --config /tmp/Caddyfile.campaign-v2 --adapter caddyfile >/dev/null
 }
 
+require_fresh_hardware_proof() {
+  local boot_id proof_id place gates
+  [[ -r ${HARDWARE_READINESS_MARKER} ]] || {
+    printf 'campaign hardware readiness proof is unavailable\n' >&2
+    return 1
+  }
+  IFS=$'\t' read -r boot_id proof_id place gates <"${HARDWARE_READINESS_MARKER}"
+  [[ ${boot_id} == "$(cat /proc/sys/kernel/random/boot_id)" ]] || {
+    printf 'campaign hardware readiness proof is from another boot\n' >&2
+    return 1
+  }
+  [[ ${proof_id} == "${CAMPAIGN_APPLY_ID}" ]] || {
+    printf 'campaign hardware readiness proof is stale or belongs to another apply\n' >&2
+    return 1
+  }
+  [[ ${place} == "${KEPLEROPS_HARDWARE_GATE14_PLACE:-}" ]] || {
+    printf 'campaign hardware readiness proof names an unexpected place\n' >&2
+    return 1
+  }
+  [[ ${gates} == operator-place+participant-reservation ]] || {
+    printf 'campaign hardware readiness proof is incomplete\n' >&2
+    return 1
+  }
+}
+
 if [[ -z ${operation} ]]; then
-  rm -f "${READINESS_MARKER}"
+  CAMPAIGN_APPLY_ID=${CAMPAIGN_APPLY_ID:-$(cat /proc/sys/kernel/random/uuid)}
+  export CAMPAIGN_APPLY_ID
+  rm -f "${READINESS_MARKER}" "${HARDWARE_READINESS_MARKER}"
   "${ROOT}/validate.sh" --static
 fi
 
@@ -132,6 +161,7 @@ done
 
 if [[ -z ${operation} ]]; then
   converge_shared_services build
+  require_fresh_hardware_proof
 else
   converge_shared_services no-build
   exit 0
