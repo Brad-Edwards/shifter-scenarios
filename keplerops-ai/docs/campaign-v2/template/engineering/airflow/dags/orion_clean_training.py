@@ -329,7 +329,7 @@ def orion_clean_training():
             with mlflow.start_run(
                 run_name=f"intent-{str(snapshot['lakefs_commit'])[:12]}",
                 tags={
-                    "stage": "model-development",
+                    "stage": "clean-baseline",
                     "source.system": "label-studio",
                     "source.export_sha256": str(snapshot["export_sha256"]),
                     "data.lakefs_commit": str(snapshot["lakefs_commit"]),
