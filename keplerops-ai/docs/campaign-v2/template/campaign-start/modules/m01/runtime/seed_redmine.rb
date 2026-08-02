@@ -8,8 +8,15 @@ project.inherit_members = false
 project.save!
 project.enabled_module_names = %w[issue_tracking documents files wiki calendar]
 
-release_tracker = Tracker.find_or_create_by!(name: 'Release Operations')
-review_tracker = Tracker.find_or_create_by!(name: 'Evaluation Intake')
+default_status = IssueStatus.find_by(name: 'New') || IssueStatus.first
+raise 'WorkHub has no default issue status' unless default_status
+
+release_tracker = Tracker.find_or_initialize_by(name: 'Release Operations')
+release_tracker.default_status ||= default_status
+release_tracker.save!
+review_tracker = Tracker.find_or_initialize_by(name: 'Evaluation Intake')
+review_tracker.default_status ||= default_status
+review_tracker.save!
 project.trackers = (project.trackers + [release_tracker, review_tracker]).uniq
 project.save!
 
