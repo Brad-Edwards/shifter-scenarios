@@ -14,8 +14,10 @@ RUN install -d /opt/openvoice /opt/melotts /opt/openvoice/checkpoints_v2 \
       | tar -xz --strip-components=1 -C /opt/openvoice \
     && curl -fsSL "https://github.com/myshell-ai/MeloTTS/archive/${MELOTTS_REVISION}.tar.gz" \
       | tar -xz --strip-components=1 -C /opt/melotts
-RUN python -m pip install --no-cache-dir \
-      torch==2.2.2 torchaudio==2.2.2 huggingface-hub==0.27.1 \
+RUN python -m pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu \
+      torch==2.2.2+cpu torchaudio==2.2.2+cpu \
+    && python -m pip install --no-cache-dir \
+      huggingface-hub==0.27.1 \
       fastapi==0.116.1 faster-whisper==1.2.0 httpx==0.28.1 uvicorn==0.35.0 python-multipart==0.0.20 \
     && python -m pip install --no-cache-dir Cython==0.29.37 \
     && python -m pip install --no-cache-dir --no-build-isolation av==10.0.0 \
