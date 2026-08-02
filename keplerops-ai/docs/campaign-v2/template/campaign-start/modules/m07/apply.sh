@@ -197,6 +197,7 @@ BEGIN
              WHEN 'username' THEN quote_literal('${TRAINER_EMAIL}')
              WHEN 'first_name' THEN quote_literal('Orion')
              WHEN 'last_name' THEN quote_literal('Contributor')
+             WHEN 'is_active' THEN 'true'
              WHEN 'is_superuser' THEN 'false'
              WHEN 'is_staff' THEN 'false'
              WHEN 'password' THEN quote_literal('!')
@@ -208,7 +209,8 @@ BEGIN
                    columns_sql, values_sql, admin_id);
   END IF;
   SELECT id INTO contributor_id FROM htx_user WHERE email = '${TRAINER_EMAIL}';
-  UPDATE htx_user SET is_superuser = false, is_staff = false, password = '!' WHERE id = contributor_id;
+  UPDATE htx_user SET is_active = true, is_superuser = false, is_staff = false, password = '!'
+    WHERE id = contributor_id;
   IF to_regclass('public.organizations_organizationmember') IS NULL
      OR to_regclass('public.organization') IS NULL
      OR to_regclass('public.project') IS NULL THEN
