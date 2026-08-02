@@ -15,8 +15,9 @@ RUN python -m pip install --no-cache-dir \
       pillow==11.3.0 \
       pika==1.3.2 \
       picklescan==0.0.31 \
+    && python -m pip install --no-cache-dir --no-deps lpips==0.1.4 \
     && python -m pip install --no-cache-dir --no-deps \
-      lpips==0.1.4 \
-      torchvision==0.23.0
+      --index-url https://download.pytorch.org/whl/cpu \
+      torchvision==0.23.0+cpu
 
 RUN python -c 'import lpips; lpips.LPIPS(net="alex")'
