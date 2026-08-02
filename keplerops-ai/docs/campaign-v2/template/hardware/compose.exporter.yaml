@@ -1,0 +1,47 @@
+name: keplerops-labgrid-exporter
+
+services:
+  labgrid-exporter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: labgrid-exporter
+      args:
+        LABGRID_BASE_IMAGE: ${LABGRID_BASE_IMAGE}
+        LABGRID_VERSION: ${LABGRID_VERSION}
+        LABGRID_WHEEL_SHA256: ${LABGRID_WHEEL_SHA256}
+        LABGRID_CONSTRAINTS_SHA256: ${LABGRID_CONSTRAINTS_SHA256}
+    image: ${LABGRID_EXPORTER_IMAGE}
+    container_name: ${LABGRID_EXPORTER_NAME:?set LABGRID_EXPORTER_NAME}
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    environment:
+      LABGRID_EXPORTER_GROUP: ${LABGRID_EXPORTER_GROUP:?set LABGRID_EXPORTER_GROUP}
+      LABGRID_BENCH_LOCATION: ${LABGRID_BENCH_LOCATION:?set LABGRID_BENCH_LOCATION}
+      LABGRID_PRIMARY_CAMERA_SERIAL: ${LABGRID_PRIMARY_CAMERA_SERIAL:?set LABGRID_PRIMARY_CAMERA_SERIAL}
+      LABGRID_WITNESS_CAMERA_SERIAL: ${LABGRID_WITNESS_CAMERA_SERIAL:?set LABGRID_WITNESS_CAMERA_SERIAL}
+      LABGRID_POWER_ID_PATH: ${LABGRID_POWER_ID_PATH:?set LABGRID_POWER_ID_PATH}
+      LABGRID_CONTROLLER_POWER_INDEX: ${LABGRID_CONTROLLER_POWER_INDEX:?set LABGRID_CONTROLLER_POWER_INDEX}
+      LABGRID_DEVICE_POWER_INDEX: ${LABGRID_DEVICE_POWER_INDEX:?set LABGRID_DEVICE_POWER_INDEX}
+      LABGRID_CAMERA_POWER_INDEX: ${LABGRID_CAMERA_POWER_INDEX:?set LABGRID_CAMERA_POWER_INDEX}
+      LABGRID_LIGHT_POWER_INDEX: ${LABGRID_LIGHT_POWER_INDEX:?set LABGRID_LIGHT_POWER_INDEX}
+      LABGRID_BENCH_CONTROL_ADDRESS: ${LABGRID_BENCH_CONTROL_ADDRESS:?set LABGRID_BENCH_CONTROL_ADDRESS}
+      LABGRID_BENCH_CONTROL_PORT: ${LABGRID_BENCH_CONTROL_PORT:-22}
+    command:
+      - labgrid-exporter
+      - --coordinator
+      - ${LABGRID_COORDINATOR:?set LABGRID_COORDINATOR}
+      - --name
+      - ${LABGRID_EXPORTER_NAME}
+      - --hostname
+      - ${LABGRID_EXPORTER_HOSTNAME:?set LABGRID_EXPORTER_HOSTNAME}
+      - /opt/conf/exporter.yaml
+    volumes:
+      - ./exporter.yaml.example:/opt/conf/exporter.yaml:ro
+      - /run/udev:/run/udev:ro
+      - /dev:/dev
+      - labgrid-exporter-cache:/var/cache/labgrid
+
+volumes:
+  labgrid-exporter-cache:

@@ -1,0 +1,77 @@
+name: keplerops-v2
+
+x-hardware-labels: &hardware-labels
+  io.keplerops.scenario: keplerops-ai
+  io.keplerops.campaign: v2
+  io.keplerops.layer: clean-hardware-boundary
+  io.keplerops.exposure: operator-only
+
+services:
+  labgrid-coordinator:
+    build:
+      context: ./hardware
+      dockerfile: Dockerfile
+      target: labgrid-coordinator
+      args:
+        LABGRID_BASE_IMAGE: ${LABGRID_BASE_IMAGE}
+        LABGRID_VERSION: ${LABGRID_VERSION}
+        LABGRID_WHEEL_SHA256: ${LABGRID_WHEEL_SHA256}
+        LABGRID_CONSTRAINTS_SHA256: ${LABGRID_CONSTRAINTS_SHA256}
+    image: ${LABGRID_COORDINATOR_IMAGE}
+    container_name: kep-v2-labgrid-coordinator
+    restart: unless-stopped
+    command: ["labgrid-coordinator", "--listen", "0.0.0.0:20408"]
+    ports:
+      - "${LABGRID_OPERATOR_BIND_ADDRESS:-127.0.0.1}:20408:20408"
+    volumes:
+      - labgrid-coordinator-data:/opt/coordinator
+    networks:
+      hardware:
+        ipv4_address: 10.61.100.10
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('127.0.0.1', 20408), 2).close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    labels: *hardware-labels
+
+  labgrid-client:
+    build:
+      context: ./hardware
+      dockerfile: Dockerfile
+      target: labgrid-client
+      args:
+        LABGRID_BASE_IMAGE: ${LABGRID_BASE_IMAGE}
+        LABGRID_VERSION: ${LABGRID_VERSION}
+        LABGRID_WHEEL_SHA256: ${LABGRID_WHEEL_SHA256}
+        LABGRID_CONSTRAINTS_SHA256: ${LABGRID_CONSTRAINTS_SHA256}
+    image: ${LABGRID_CLIENT_IMAGE}
+    container_name: kep-v2-labgrid-client
+    restart: unless-stopped
+    depends_on:
+      labgrid-coordinator:
+        condition: service_healthy
+    environment:
+      LG_COORDINATOR: labgrid-coordinator:20408
+    command: ["sleep", "infinity"]
+    volumes:
+      - ./hardware:/opt/keplerops-hardware:ro
+      - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/root/.ssh:ro
+    networks:
+      hardware:
+        ipv4_address: 10.61.100.11
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'from labgrid.util import labgrid_version; raise SystemExit(labgrid_version() != \"${LABGRID_VERSION}\")' && labgrid-client places >/dev/null"]
+      interval: 15s
+      timeout: 10s
+      retries: 30
+    labels: *hardware-labels
+
+networks:
+  hardware:
+    name: kep-v2-hardware
+    ipam:
+      config: [{subnet: 10.61.100.0/24}]
+
+volumes:
+  labgrid-coordinator-data:

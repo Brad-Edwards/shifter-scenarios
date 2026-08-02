@@ -1,0 +1,40 @@
+schema: keplerops.physical-lab-pool/v1
+labgrid_version: "25.0"
+selection_tag: bench_id
+reservation_filter:
+  pool: keplerops_v2
+  operational: "true"
+  spare: "false"
+required_resources: &required_resources
+  - {name: primary-camera, class: NetworkUSBVideo}
+  - {name: witness-camera, class: NetworkUSBVideo}
+  - {name: controller-power, class: NetworkSiSPMPowerPort}
+  - {name: device-power, class: NetworkSiSPMPowerPort}
+  - {name: camera-power, class: NetworkSiSPMPowerPort}
+  - {name: light-power, class: NetworkSiSPMPowerPort}
+  - {name: bench-control, class: NetworkService}
+places:
+  - &active
+    name: kepler-bench-01
+    exporter: kepler-bench-01
+    group: kepler-bench-01
+    tags: {pool: keplerops_v2, capability: physical_ai, operational: "true", spare: "false"}
+    required_resources: *required_resources
+  - {<<: *active, name: kepler-bench-02, exporter: kepler-bench-02, group: kepler-bench-02}
+  - {<<: *active, name: kepler-bench-03, exporter: kepler-bench-03, group: kepler-bench-03}
+  - {<<: *active, name: kepler-bench-04, exporter: kepler-bench-04, group: kepler-bench-04}
+  - {<<: *active, name: kepler-bench-05, exporter: kepler-bench-05, group: kepler-bench-05}
+  - {<<: *active, name: kepler-bench-06, exporter: kepler-bench-06, group: kepler-bench-06}
+  - {<<: *active, name: kepler-bench-07, exporter: kepler-bench-07, group: kepler-bench-07}
+  - {<<: *active, name: kepler-bench-08, exporter: kepler-bench-08, group: kepler-bench-08}
+  - {<<: *active, name: kepler-bench-09, exporter: kepler-bench-09, group: kepler-bench-09}
+  - {<<: *active, name: kepler-bench-10, exporter: kepler-bench-10, group: kepler-bench-10}
+  - {<<: *active, name: kepler-bench-11, exporter: kepler-bench-11, group: kepler-bench-11}
+  - {<<: *active, name: kepler-bench-12, exporter: kepler-bench-12, group: kepler-bench-12}
+  - &spare
+    <<: *active
+    name: kepler-bench-13
+    exporter: kepler-bench-13
+    group: kepler-bench-13
+    tags: {pool: keplerops_v2, capability: physical_ai, operational: "true", spare: "true"}
+  - {<<: *spare, name: kepler-bench-14, exporter: kepler-bench-14, group: kepler-bench-14}
