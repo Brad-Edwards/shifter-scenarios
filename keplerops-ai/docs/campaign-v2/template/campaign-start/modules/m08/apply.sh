@@ -133,7 +133,7 @@ JSON
 }
 
 ensure_participant_s3_identity() {
-  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -ec '
+  docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -ec '
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     mc admin user add kepler svc-orion-trainer KeplerV2-M08-Orion-Trainer-Objects >/dev/null 2>&1 || true
     cat >/tmp/m08-orion-trainer.json <<"JSON"
@@ -146,7 +146,7 @@ JSON
 
 ensure_native_audit() {
   compose up -d --build m08-native-audit >/dev/null
-  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -ec '
+  docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -ec '
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     current=$(mc admin config get kepler audit_webhook:m08 2>/dev/null || true)
     case "$current" in

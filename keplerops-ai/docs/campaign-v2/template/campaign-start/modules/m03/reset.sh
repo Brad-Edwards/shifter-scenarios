@@ -37,7 +37,7 @@ reset_relay_basket() {
     "${CINDER_RELAY_INTERNAL_URL}/api/baskets/${basket}")"
   case "${status}" in 200|202|204|404) ;; *) die "${basket} relay reset returned HTTP ${status}" ;; esac
   access_key="campaign-v2/m03/relay/${basket}/access-token"
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c "
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
     mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
     mc rm --force 'cinder/operations/${access_key}' >/dev/null 2>&1 || true
   "
@@ -72,7 +72,7 @@ reset_release_status_source() {
 reset_poisoned_tool() { reset_relay_basket "$1" orion-model-card-audit; }
 reset_rag_discovery_thread() { :; }
 reset_ingestion_workspace() {
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
     accepted=cinder/operations/campaign-v2/m03/index-source/accepted/manifest.json
     submission=cinder/operations/campaign-v2/m03/index-source/submission/index-source-join.yaml

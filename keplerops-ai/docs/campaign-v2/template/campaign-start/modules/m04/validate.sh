@@ -349,7 +349,7 @@ validate_trigger_to_tool() {
 validate_browser_side_channel() {
   local id=$1 flag token logs tickets ticket_id completion body trace_id source_id draft_id requested_url articles
   flag="$(flag_for "${id}")"
-  token="$(docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  token="$(docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null
     mc cat cinder/operations/campaign-v2/m04/support-preview/access-token
   ')" || die "${id}: post-render Cinder access object is unavailable"

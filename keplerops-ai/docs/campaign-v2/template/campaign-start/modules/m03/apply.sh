@@ -40,7 +40,7 @@ known_operation() {
 }
 
 ensure_cinder_storage() {
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
     mc mb --ignore-existing --with-lock cinder/operations >/dev/null
     mc anonymous set none cinder/operations >/dev/null
@@ -162,7 +162,7 @@ Submission key: campaign-v2/m03/index-source/submission/index-source-join.yaml
 Source SHA-256: ${source_sha}
 EOF
   docker run --rm --network kep-v2-cinder -v "${workspace}:/seed:ro" \
-    "${MINIO_MC_IMAGE}" sh -eu -c "
+    --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
       mc alias set cinder '${CINDER_S3_ENDPOINT}' cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
       mc cp --attr 'ingest-reference-suffix=deed861d};source-sha256=${source_sha};source-owner=cinder-operator' \
         /seed/release-criteria.json cinder/operations/campaign-v2/m03/index-source/source/release-criteria.json >/dev/null
@@ -195,7 +195,7 @@ seed_ingestion_provenance() (
     '{document_id:$document,source_sha256:$sha,source_relative_path:$path,ingestion_status:"failed-after-vector-write"}' \
     >"${workspace}/provenance.json"
   docker run --rm --network kep-v2-data -v "${workspace}/provenance.json:/provenance.json:ro" \
-    "${MINIO_MC_IMAGE}" sh -eu -c "
+    --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
       mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
       cat >/tmp/ingest-reader.json <<'JSON'
       {\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetBucketLocation\"],\"Resource\":[\"arn:aws:s3:::artifacts\"]},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::artifacts/ingest/orion_partner_intake/*\"]}]}

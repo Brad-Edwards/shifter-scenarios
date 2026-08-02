@@ -174,7 +174,7 @@ reset_support_render_attempt() {
   status="$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE -H 'Host: relay.cinder.cinder.lab' \
     -H "Authorization: ${token}" "${CINDER_RELAY_INTERNAL_URL}/api/baskets/orion-support-preview-assets")"
   case "${status}" in 200|202|204|404) ;; *) die "support relay reset returned HTTP ${status}" ;; esac
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
     mc rm --force cinder/operations/campaign-v2/m04/support-preview/access-token >/dev/null 2>&1 || true
   '

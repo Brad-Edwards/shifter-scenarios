@@ -56,7 +56,7 @@ ensure_evaluator_identity() {
 }
 
 ensure_cinder_support_storage() {
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
     mc mb --ignore-existing --with-lock cinder/operations >/dev/null
     mc anonymous set none cinder/operations >/dev/null
@@ -76,7 +76,7 @@ initialize_runner_volume() {
 }
 
 ensure_evaluation_object_reader() {
-  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -eu -c '
+  docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     cat >/tmp/runtime-reader.json <<"JSON"
 {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::artifacts","arn:aws:s3:::mlflow"]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::artifacts/runtime-attestations/*","arn:aws:s3:::artifacts/evaluation-reports/*","arn:aws:s3:::mlflow/*"]}]}

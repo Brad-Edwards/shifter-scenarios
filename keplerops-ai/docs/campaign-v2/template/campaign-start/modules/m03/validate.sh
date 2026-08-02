@@ -41,7 +41,7 @@ compose() {
 
 cinder_object() {
   local access=$1 secret=$2 key=$3 output=$4 version=${5:-}
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c "
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
     mc alias set cinder http://cinder-minio:9000 '${access}' '${secret}' >/dev/null
     mc cat ${version:+--version-id "${version}"} 'cinder/operations/${key}'
   " >"${output}"
@@ -49,7 +49,7 @@ cinder_object() {
 
 cinder_stat() {
   local access=$1 secret=$2 key=$3 output=$4 version=${5:-}
-  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c "
+  docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
     mc alias set cinder http://cinder-minio:9000 '${access}' '${secret}' >/dev/null
     mc stat --json ${version:+--version-id "${version}"} 'cinder/operations/${key}'
   " >"${output}"
@@ -76,7 +76,7 @@ validate_relay() {
 
 native_report() {
   local kind=$1 output=$2 key expected_digest observed_digest
-  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -eu -c "
+  docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     key=\$(mc find 'kepler/artifacts/evaluation-reports/${kind}' --name '*.json' | tail -1)
     test -n \"\$key\"
@@ -708,19 +708,19 @@ validate_index_source_join() {
     grep -Fxq "${expected}" "${TMPDIR_VALIDATE}/positive" || die "${id}: join report does not retain exact native values"
   done
   grep -Eq '^completed_at: [0-9]{4}-[0-9]{2}-[0-9]{2}T' "${TMPDIR_VALIDATE}/positive" || die "${id}: join report lacks its completion timestamp"
-  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -eu -c "
+  docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c "
     mc alias set ingest http://minio:9000 ingest-diagnostic-reader KeplerV2-Orion-Ingest-Diagnostic >/dev/null
     mc cat 'ingest/artifacts/${object_key}'
   " >"${TMPDIR_VALIDATE}/provenance.json"
   jq -e --arg sha "${source_sha}" '.source_sha256 == $sha and .document_id == "partner-orion-release-criteria"' \
     "${TMPDIR_VALIDATE}/provenance.json" >/dev/null || die "${id}: provenance object does not match the mounted source"
-  if docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -eu -c '
+  if docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set ingest http://minio:9000 ingest-diagnostic-reader KeplerV2-Orion-Ingest-Diagnostic >/dev/null
     mc ls ingest/artifacts
   ' >"${TMPDIR_VALIDATE}/negative-list" 2>&1; then
     die "${id}: scoped provenance credential unexpectedly listed the bucket"
   fi
-  if docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+  if docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null
     mc ls cinder/operations
   ' >"${TMPDIR_VALIDATE}/negative-cinder-list" 2>&1; then
