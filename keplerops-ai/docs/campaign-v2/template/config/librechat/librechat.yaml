@@ -10,11 +10,10 @@ registration:
 endpoints:
   custom:
     - name: Orion Assistant
-      apiKey: KeplerV2-Training-Orion-Assistant
-      baseURL: http://litellm.platform.keplerops.lab/v1
+      apiKey: KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
+      baseURL: https://orion-agent.keplerops.lab/v1
       models:
         default: [orion-assistant]
         fetch: false
       titleConvo: true
       titleModel: orion-assistant
-

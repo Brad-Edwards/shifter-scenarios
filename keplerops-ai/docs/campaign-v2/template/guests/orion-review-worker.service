@@ -1,0 +1,29 @@
+[Unit]
+Description=Orion artifact review worker
+After=network-online.target sssd.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/keplerops/orion-review-worker.env
+ExecStartPre=/usr/local/lib/keplerops/review-worker.py validate-config
+ExecStart=/usr/local/lib/keplerops/review-worker.py run
+User=orion-review
+Group=orion-review
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictRealtime=true
+SystemCallArchitectures=native
+ReadWritePaths=/var/lib/keplerops/review-worker
+
+[Install]
+WantedBy=multi-user.target

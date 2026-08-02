@@ -37,6 +37,8 @@ spec:
             - name: LITELLM_MASTER_KEY
               valueFrom:
                 secretKeyRef: {name: litellm-runtime, key: LITELLM_MASTER_KEY}
+          envFrom:
+            - secretRef: {name: orion-agent-runtime}
           ports:
             - {name: http, containerPort: 8080}
           readinessProbe:
@@ -104,6 +106,8 @@ spec:
           command: ["python", "/app/mcp_service.py"]
           env:
             - {name: AGENT_URL, value: http://orion-agent.orion-platform.svc:8080}
+          envFrom:
+            - secretRef: {name: orion-agent-runtime}
           ports:
             - {name: mcp, containerPort: 8081}
           readinessProbe:
@@ -136,8 +140,7 @@ metadata:
   labels:
     app.kubernetes.io/name: orion-mcp
 spec:
-  type: NodePort
   selector:
     app.kubernetes.io/name: orion-mcp
   ports:
-    - {name: mcp, port: 8081, targetPort: mcp, nodePort: 30082}
+    - {name: mcp, port: 8081, targetPort: mcp}

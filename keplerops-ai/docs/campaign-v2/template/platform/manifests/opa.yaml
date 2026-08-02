@@ -41,6 +41,52 @@ data:
       input.model.format == "onnx"
       input.serving_image.runtime == "onnxruntime-cpu"
     }
+  workhub.rego: |
+    package keplerops.workhub.tool
+
+    import rego.v1
+
+    default allow := {"allow": false, "reason": "tool is not permitted"}
+
+    valid_context if {
+      input.schema == "keplerops.workhub.tool/v1"
+      is_string(input.actor)
+      count(input.actor) > 0
+      is_string(input.conversation_id)
+      count(input.conversation_id) > 0
+      is_string(input.workflow_id)
+      count(input.workflow_id) > 0
+    }
+
+    allow := {"allow": true, "reason": "approved source lookup"} if {
+      valid_context
+      input.tool.name == "lookup_release_context"
+      is_string(input.tool.arguments.reference)
+      count(input.tool.arguments.reference) > 0
+      count(input.tool.arguments.reference) <= 512
+    }
+
+    allow := {"allow": true, "reason": "approved team handoff"} if {
+      valid_context
+      input.tool.name == "record_release_handoff"
+      input.tool.arguments.team in {
+        "Release Engineering",
+        "Product Safety",
+        "Support Operations",
+        "Data Operations",
+      }
+      is_string(input.tool.arguments.reason)
+      count(input.tool.arguments.reason) > 0
+      count(input.tool.arguments.reason) <= 1000
+    }
+
+    allow := {"allow": true, "reason": "approved assistant workflow"} if {
+      valid_context
+      input.tool.name == "ask_orion"
+      is_string(input.tool.arguments.prompt)
+      count(input.tool.arguments.prompt) > 0
+      count(input.tool.arguments.prompt) <= 16000
+    }
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -83,7 +129,7 @@ spec:
             - --addr=0.0.0.0:8181
             - --log-format=json
             - --set=decision_logs.console=true
-            - /policy/release.rego
+            - /policy
           ports:
             - {name: http, containerPort: 8181}
           readinessProbe:

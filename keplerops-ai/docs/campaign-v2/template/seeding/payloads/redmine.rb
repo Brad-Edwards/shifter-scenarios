@@ -27,6 +27,14 @@ users = [
   {
     login: 'support.analyst', firstname: 'Jonas', lastname: 'Becker',
     mail: 'support@keplerops.lab', password: ENV.fetch('REDMINE_SEED_SUPPORT_PASSWORD')
+  },
+  {
+    login: 'svc.review01', firstname: 'Orion', lastname: 'Evaluation Worker',
+    mail: 'svc.review01@keplerops.lab', password: ENV.fetch('REDMINE_SEED_REVIEW_WORKER_PASSWORD')
+  },
+  {
+    login: 'svc.integration01', firstname: 'Orion', lastname: 'Integration Worker',
+    mail: 'svc.integration01@keplerops.lab', password: ENV.fetch('REDMINE_SEED_INTEGRATION_WORKER_PASSWORD')
   }
 ]
 
@@ -58,7 +66,9 @@ role_by_login = {
   'ml.engineer' => 'Developer',
   'release.engineer' => 'Manager',
   'comms.publisher' => 'Reporter',
-  'support.analyst' => 'Reporter'
+  'support.analyst' => 'Reporter',
+  'svc.review01' => 'Reporter',
+  'svc.integration01' => 'Reporter'
 }
 
 Member.where(project: project, user: seeded_users.fetch('range-admin')).destroy_all

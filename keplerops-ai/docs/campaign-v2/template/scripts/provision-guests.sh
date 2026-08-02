@@ -156,12 +156,17 @@ packages:
   - podman
   - jq
   - git
+  - poppler-utils
+  - python3-pika
+  - python3-requests
 runcmd:
   - [bash, -lc, "systemctl disable --now systemd-resolved || true; rm -f /etc/resolv.conf; printf 'nameserver 192.168.78.10\\nnameserver 192.168.78.11\\n' >/etc/resolv.conf"]
   - [bash, -lc, "for i in {1..90}; do timeout 2 bash -c '</dev/tcp/192.168.78.10/389' && break; sleep 5; done"]
   - [bash, -lc, "printf '%s\\n' '$ADMIN_PASSWORD' | realm join --user=Administrator $DOMAIN"]
   - [bash, -lc, "pam-auth-update --enable mkhomedir"]
   - [bash, -lc, "install -d -m 0755 /etc/keplerops; printf 'role=%s\\n' '$role' >/etc/keplerops/workstation-role"]
+  - [bash, -lc, "id -u orion-review >/dev/null 2>&1 || useradd --system --home /var/lib/keplerops/review-worker --shell /usr/sbin/nologin orion-review"]
+  - [bash, -lc, "install -d -m 0750 -o orion-review -g orion-review /var/lib/keplerops/review-worker"]
 EOF
   if [[ $desktop == true ]]; then
     cat <<'EOF'

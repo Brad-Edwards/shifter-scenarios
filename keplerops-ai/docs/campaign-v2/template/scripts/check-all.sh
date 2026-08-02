@@ -67,6 +67,7 @@ bootstrap=$(docker inspect --format '{{.State.Status}} {{.State.ExitCode}}' \
 }
 
 run_baseline public-surfaces "$ROOT/baseline/public-surfaces.sh"
+run_baseline workhub-rag "$ROOT/baseline/workhub-rag.sh"
 run_baseline identity-role-enforcement "$ROOT/baseline/identity-role-enforcement.sh"
 run_baseline business-role-enforcement "$ROOT/baseline/business-role-enforcement.sh"
 run_baseline langflow-role-enforcement "$ROOT/baseline/langflow-role-enforcement.sh"

@@ -82,6 +82,29 @@ configure_litellm_secret() {
     --dry-run=client -o yaml | kubectl apply -f - >/dev/null
 }
 
+existing_agent_secret_value() {
+  local key=$1
+  kubectl -n orion-platform get secret orion-agent-runtime \
+    -o "jsonpath={.data.$key}" 2>/dev/null | base64 -d 2>/dev/null || true
+}
+
+configure_agent_secret() {
+  local agent_api_key
+  agent_api_key=${ORION_AGENT_API_KEY:-$(existing_agent_secret_value AGENT_API_KEY)}
+  agent_api_key=${agent_api_key:-KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053}
+
+  kubectl -n orion-platform create secret generic orion-agent-runtime \
+    --from-literal=AGENT_API_KEY="$agent_api_key" \
+    --from-literal=QDRANT_URL="http://10.61.50.62:6333" \
+    --from-literal=QDRANT_API_KEY="KeplerV2-Training-Qdrant-Read" \
+    --from-literal=QDRANT_COLLECTIONS="orion_partner_intake" \
+    --from-literal=REDIS_URL="redis://:KeplerV2-Training-Redis@10.61.50.11:6379/0" \
+    --from-literal=OPA_URL="http://opa.orion-platform.svc:8181" \
+    --from-literal=OPA_DECISION_PATH="/v1/data/keplerops/workhub/tool/allow" \
+    --from-literal=MCP_URL="http://orion-mcp.orion-platform.svc:8081/mcp" \
+    --dry-run=client -o yaml | kubectl apply -f - >/dev/null
+}
+
 install_packages
 install_helm
 wait_for_cluster
@@ -126,6 +149,7 @@ helm upgrade --install argocd argo-cd \
 
 "$ROOT/scripts/install-knative.sh"
 configure_litellm_secret
+configure_agent_secret
 kubectl apply -f "$ROOT/manifests/cinder-relay.yaml"
 kubectl apply -f "$ROOT/manifests/opa.yaml"
 kubectl apply -f "$ROOT/manifests/litellm.yaml"

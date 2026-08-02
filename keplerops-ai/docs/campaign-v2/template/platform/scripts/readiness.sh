@@ -151,7 +151,11 @@ if [[ $MODE == full ]]; then
     -o jsonpath='{.data.ORION_ASSISTANT_BASE_URL}' | base64 -d)
   [[ $assistant_url != http://127.0.0.1:9/v1 ]] || \
     fail "assistant endpoint is not configured"
-  completion=$(curl -fsS -H 'Content-Type: application/json' \
+  agent_api_key=$(kubectl -n orion-platform get secret orion-agent-runtime \
+    -o jsonpath='{.data.AGENT_API_KEY}' | base64 -d)
+  completion=$(curl -fsS \
+    -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer $agent_api_key" \
     --data '{"prompt":"Reply with the single word ready."}' \
     http://127.0.0.1:18080/v1/chat)
   [[ -n $(jq -r '.response // empty' <<<"$completion") ]] || fail "assistant completion"

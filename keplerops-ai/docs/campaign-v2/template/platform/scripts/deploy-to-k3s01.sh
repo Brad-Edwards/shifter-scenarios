@@ -60,6 +60,7 @@ fi
   [[ -n ${ORION_ASSISTANT_BASE_URL:-} ]] && printf 'ORION_ASSISTANT_BASE_URL=%q\n' "$ORION_ASSISTANT_BASE_URL"
   [[ -n ${ORION_ASSISTANT_API_KEY:-} ]] && printf 'ORION_ASSISTANT_API_KEY=%q\n' "$ORION_ASSISTANT_API_KEY"
   [[ -n ${ORION_ASSISTANT_UPSTREAM_MODEL:-} ]] && printf 'ORION_ASSISTANT_UPSTREAM_MODEL=%q\n' "$ORION_ASSISTANT_UPSTREAM_MODEL"
+  [[ -n ${ORION_AGENT_API_KEY:-} ]] && printf 'ORION_AGENT_API_KEY=%q\n' "$ORION_AGENT_API_KEY"
   [[ ${SKIP_SIGNING:-0} == 1 ]] && printf 'SKIP_SIGNING=1\n'
 } >"$tmp/platform-install.env"
 cat "$tmp/platform-install.env" | \

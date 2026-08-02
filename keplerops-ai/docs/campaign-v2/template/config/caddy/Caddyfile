@@ -103,11 +103,6 @@ https://orion-agent.keplerops.lab {
   reverse_proxy 192.168.78.30:30081
 }
 
-https://orion-mcp.keplerops.lab {
-  tls internal
-  reverse_proxy 192.168.78.30:30082
-}
-
 https://risk-model.keplerops.lab {
   tls internal
   reverse_proxy 10.61.80.20:8080
