@@ -356,7 +356,7 @@ seed_airflow() {
 seed_support_trace() {
   local cookie_jar discovery har session payload ticket ticket_id tickets
   cookie_jar="$(mktemp)"; har="$(mktemp)"
-  curl -fsS -c "$cookie_jar" -H 'Content-Type: application/json' --data "$(jq -cn --arg login support.analyst --arg password "$SUPPORT_ANALYST_PASSWORD" '{login:$login,password:$password}')" http://10.61.30.24:8080/api/v1/signin >/dev/null
+  curl -fsS -c "$cookie_jar" -H 'Content-Type: application/json' --data "$(jq -cn --arg username support.analyst --arg password "$SUPPORT_ANALYST_PASSWORD" '{username:$username,password:$password}')" http://10.61.30.24:8080/api/v1/signin >/dev/null
   session="$(awk '$6 == "_zammad_session" {print $7}' "$cookie_jar" | tail -n1)"; [[ -n $session ]] || die 'support session was not issued'
   printf '%s\n' "$session" >"${STATE_ROOT}/support-attempt-session"
   chmod 0600 "${STATE_ROOT}/support-attempt-session"
