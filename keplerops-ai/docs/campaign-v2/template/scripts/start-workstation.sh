@@ -3,6 +3,10 @@ set -euo pipefail
 
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly CONTAINER=keplerops-participant-workstation-runtime
+readonly SHIFTER_READY=/run/shifter/preconfigured-range-host.ready
+readonly WORKSTATION_READY=/run/shifter/keplerops-v2-workstation.ready
+
+rm -f "$SHIFTER_READY" "$WORKSTATION_READY"
 
 set -a
 # shellcheck disable=SC1091
@@ -52,5 +56,7 @@ docker exec --user kasm-user --env HOME=/home/kasm-user "$CONTAINER" \
 
 install -d -m 0755 /run/shifter
 printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) workstation" \
-  >/run/shifter/keplerops-v2-workstation.ready
+  >"$WORKSTATION_READY"
+printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) preconfigured-range-host" \
+  >"$SHIFTER_READY"
 echo "campaign-v2 participant workstation healthy"

@@ -4,6 +4,7 @@ set -eu
 readonly password_file=/run/keplerops/participant-password
 readonly default_xfce=/home/kasm-default-profile/.config/xfce4
 readonly participant_xfce=/home/kasm-user/.config/xfce4
+readonly password_initialized=/home/kasm-user/.keplerops-password-initialized
 readonly labgrid_ssh_source=/run/keplerops/labgrid-ssh
 readonly labgrid_ssh_target=/home/kasm-user/.ssh/labgrid
 
@@ -11,7 +12,10 @@ test "$(id -u)" -eq 0
 test -s "${password_file}"
 
 participant_password="$(cat "${password_file}")"
-printf 'kasm-user:%s\n' "${participant_password}" | chpasswd
+if [ ! -e "${password_initialized}" ]; then
+  printf 'kasm-user:%s\n' "${participant_password}" | chpasswd
+  install -m 0600 -o kasm-user -g root /dev/null "${password_initialized}"
+fi
 export VNC_PW="${participant_password}"
 unset participant_password
 

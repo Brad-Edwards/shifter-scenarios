@@ -4,7 +4,8 @@ set -Eeuo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly CONTAINER=keplerops-participant-workstation-runtime
 readonly PASSWORD_FILE="$ROOT/state/workstation/participant-password"
-readonly ACCESS_BIND_ADDRESS=${PARTICIPANT_ACCESS_BIND_ADDRESS:-127.0.0.1}
+readonly RDP_BIND_ADDRESS=${PARTICIPANT_RDP_BIND_ADDRESS:-0.0.0.0}
+readonly WEB_BIND_ADDRESS=${PARTICIPANT_WEB_BIND_ADDRESS:-127.0.0.1}
 readonly RDP_PORT=${PARTICIPANT_RDP_PORT:-3389}
 readonly WEB_PORT=${PARTICIPANT_WEB_PORT:-8443}
 readonly ACTION=${1:-show}
@@ -36,15 +37,17 @@ check() {
     die "XRDP is published on unexpected host port: ${rdp_binding}"
   [[ ${web_binding##*:} == "$WEB_PORT" ]] ||
     die "Kasm is published on unexpected host port: ${web_binding}"
-  [[ ${rdp_binding%:*} == "$ACCESS_BIND_ADDRESS" ]] ||
+  [[ ${rdp_binding%:*} == "$RDP_BIND_ADDRESS" ]] ||
     die "XRDP is published on unexpected host address: ${rdp_binding}"
-  [[ ${web_binding%:*} == "$ACCESS_BIND_ADDRESS" ]] ||
+  [[ ${web_binding%:*} == "$WEB_BIND_ADDRESS" ]] ||
     die "Kasm is published on unexpected host address: ${web_binding}"
 
-  probe_address=$ACCESS_BIND_ADDRESS
+  probe_address=$RDP_BIND_ADDRESS
   [[ $probe_address != 0.0.0.0 ]] || probe_address=127.0.0.1
   timeout 5 bash -c "</dev/tcp/${probe_address}/${RDP_PORT}" 2>/dev/null ||
     die "XRDP host port is not accepting connections"
+  probe_address=$WEB_BIND_ADDRESS
+  [[ $probe_address != 0.0.0.0 ]] || probe_address=127.0.0.1
   password="$(<"$PASSWORD_FILE")"
   curl --fail --silent --show-error --insecure \
     --user "kasm_user:${password}" \
@@ -58,8 +61,8 @@ check() {
 
 show() {
   cat <<EOF
-XRDP: ${ACCESS_BIND_ADDRESS}:${RDP_PORT} (user: kasm-user)
-Browser: https://${ACCESS_BIND_ADDRESS}:${WEB_PORT}/ (user: kasm_user)
+XRDP: ${RDP_BIND_ADDRESS}:${RDP_PORT} (user: kasm-user)
+Browser: https://${WEB_BIND_ADDRESS}:${WEB_PORT}/ (user: kasm_user)
 Password file: ${PASSWORD_FILE}
 EOF
 }

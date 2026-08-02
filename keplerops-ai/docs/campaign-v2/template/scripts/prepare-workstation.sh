@@ -10,7 +10,9 @@ if [[ ${EUID} -ne 0 ]]; then
 fi
 
 install -d -m 0755 "$STATE/tls"
-printf '%s\n' 'CinderV2-Playtest-Workstation' >"$STATE/participant-password"
+if [[ ! -s "$STATE/participant-password" ]]; then
+  printf '%s\n' 'CinderV2-Playtest-Workstation' >"$STATE/participant-password"
+fi
 printf '%s\n' 'campaign-v2-template' >"$STATE/reset-generation"
 chmod 0600 "$STATE/participant-password"
 chmod 0644 "$STATE/reset-generation"
