@@ -23,7 +23,7 @@ with get_application_builder() as appbuilder:
     for permission in tuple(role.permissions):
         security_manager.remove_permission_from_role(role, permission)
     for permission in source.permissions:
-        if permission.resource.name != "Dags" and not permission.resource.name.startswith("DAG:"):
+        if permission.resource.name != "DAGs" and not permission.resource.name.startswith("DAG:"):
             security_manager.add_permission_to_role(role, permission)
     for dag_id in DAG_IDS:
         resource = f"DAG:{dag_id}"
@@ -36,7 +36,7 @@ with get_application_builder() as appbuilder:
         (permission.action.name, permission.resource.name)
         for permission in security_manager.find_role(ROLE_NAME).permissions
     }
-    if any(resource == "Dags" for _, resource in permissions):
+    if any(resource == "DAGs" for _, resource in permissions):
         raise RuntimeError(f"{ROLE_NAME} has unscoped DAG access")
     for dag_id in DAG_IDS:
         for action in ("can_read", "can_edit"):

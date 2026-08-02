@@ -24,7 +24,7 @@ def reconcile_role(security_manager, target_name, source_name, dag_action):
         security_manager.remove_permission_from_role(target, permission)
 
     for permission in source.permissions:
-        if permission.resource.name != "Dags":
+        if permission.resource.name != "DAGs":
             security_manager.add_permission_to_role(target, permission)
 
     for dag_id in DAG_IDS:
@@ -48,7 +48,7 @@ with get_application_builder() as appbuilder:
             (permission.action.name, permission.resource.name)
             for permission in role.permissions
         }
-        if any(resource == "Dags" for _, resource in permissions):
+        if any(resource == "DAGs" for _, resource in permissions):
             raise RuntimeError(f"{role_name} has unscoped DAG access")
         for dag_id in DAG_IDS:
             if ("can_read", f"DAG:{dag_id}") not in permissions:
