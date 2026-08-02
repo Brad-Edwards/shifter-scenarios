@@ -4,7 +4,7 @@ ARG FDROIDSERVER_VERSION=2.2.1-1
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       apksigner "fdroidserver=${FDROIDSERVER_VERSION}" openjdk-17-jre-headless \
-    && fdroid --version | grep -F '2.2.1' \
+    && test "$(dpkg-query -W -f='${Version}' fdroidserver)" = "${FDROIDSERVER_VERSION}" \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv/fdroid

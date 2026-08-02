@@ -5,7 +5,9 @@ ARG MELOTTS_REVISION=209145371cff8fc3bd60d7be902ea69cbdb7965a
 ARG OPENVOICE_MODEL_REVISION=fd981100305a0e4291f93a9ad169c6d9f7bed54a
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      build-essential curl ffmpeg libsndfile1 mecab libmecab-dev mecab-ipadic-utf8 \
+      build-essential curl ffmpeg libavcodec-dev libavdevice-dev libavfilter-dev \
+      libavformat-dev libavutil-dev libsndfile1 libswresample-dev libswscale-dev \
+      mecab libmecab-dev mecab-ipadic-utf8 pkg-config \
     && rm -rf /var/lib/apt/lists/*
 RUN install -d /opt/openvoice /opt/melotts /opt/openvoice/checkpoints_v2 \
     && curl -fsSL "https://github.com/myshell-ai/OpenVoice/archive/${OPENVOICE_REVISION}.tar.gz" \
@@ -15,6 +17,8 @@ RUN install -d /opt/openvoice /opt/melotts /opt/openvoice/checkpoints_v2 \
 RUN python -m pip install --no-cache-dir \
       torch==2.2.2 torchaudio==2.2.2 huggingface-hub==0.27.1 \
       fastapi==0.116.1 faster-whisper==1.2.0 httpx==0.28.1 uvicorn==0.35.0 python-multipart==0.0.20 \
+    && python -m pip install --no-cache-dir Cython==0.29.37 \
+    && python -m pip install --no-cache-dir --no-build-isolation av==10.0.0 \
     && python -m pip install --no-cache-dir -e /opt/openvoice -e /opt/melotts \
     && python -m unidic download
 RUN python - <<'PY'
