@@ -32,7 +32,7 @@ ensure_status = lambda do |name|
 end
 
 records = {
-  'kep-m03-e' => {
+  'kep-m03-e' => lambda { {
     subject: payload.fetch('record_title'),
     status: ensure_status.call(payload.dig('initial_state', 'status')),
     description: <<~TEXT
@@ -42,8 +42,8 @@ records = {
       Current status: #{payload.dig('initial_state', 'status')}
       Review note: #{payload.dig('initial_state', 'review_note')}
     TEXT
-  },
-  'kep-m03-g' => {
+  } },
+  'kep-m03-g' => lambda { {
     subject: payload.fetch('subject'),
     status: default_status,
     description: <<~TEXT
@@ -53,8 +53,8 @@ records = {
       Expected citation source: #{payload.fetch('citation_source')}
       Inventory record: ORION-RAG-SOURCE-INVENTORY-2026
     TEXT
-  },
-  'kep-m03-i' => {
+  } },
+  'kep-m03-i' => lambda { {
     subject: 'Evaluation-reader runbook removed after indexing incident',
     status: default_status,
     description: <<~TEXT
@@ -66,8 +66,8 @@ records = {
       Topics: #{payload.fetch('semantic_topics').join(', ')}
       Login route: https://id.keplerops.lab
     TEXT
-  },
-  'kep-m03-j' => {
+  } },
+  'kep-m03-j' => lambda { {
     subject: 'Release review compatibility handoff schema',
     status: default_status,
     description: <<~TEXT
@@ -81,8 +81,8 @@ records = {
       release-review workflow ingests the exact attachment bytes and retains their
       SHA-256 in both handoffs.
     TEXT
-  },
-  'kep-m03-k' => {
+  } },
+  'kep-m03-k' => lambda { {
     subject: payload.fetch('source_record'),
     status: default_status,
     description: <<~TEXT
@@ -91,10 +91,10 @@ records = {
       workflow. Release Engineering expects a downstream record within
       #{payload.fetch('maximum_activation_seconds')} seconds of approval.
     TEXT
-  }
+  } }
 }
 
-record = records.fetch(operation)
+record = records.fetch(operation).call
 issue = Issue.find_or_initialize_by(project: project, subject: record.fetch(:subject))
 new_issue = issue.new_record?
 issue.tracker = tracker
