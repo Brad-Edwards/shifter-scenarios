@@ -139,6 +139,7 @@ seed_enterprise_records() {
   QDRANT_URL="${M04_QDRANT_WRITE_URL}" QDRANT_WRITE_KEY="${M04_QDRANT_WRITE_KEY}" \
   LABEL_STUDIO_URL="${M04_LABEL_STUDIO_URL}" LABEL_STUDIO_API_TOKEN="${LABEL_STUDIO_TOKEN}" \
   ZAMMAD_URL="http://10.61.30.24:8080" ZAMMAD_HOST="support.keplerops.lab" \
+  ZAMMAD_USER="support.analyst" ZAMMAD_PASSWORD="${SUPPORT_ANALYST_PASSWORD}" \
     python3 "${MODULE_ROOT}/runtime/seed_enterprise.py" "$1"
 }
 
