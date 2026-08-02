@@ -12,9 +12,15 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
       containers:
         - name: verify
           image: ghcr.io/sigstore/cosign/cosign:v2.4.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: ["ALL"]}
           env: [{name: SSL_CERT_FILE, value: /var/run/orion-signing/ca.crt}]
           args:
             - verify
