@@ -9,8 +9,8 @@ jobs:
     steps:
       - name: Check out the exact release workflow revision
         env:
-          REPOSITORY: ${{ forgejo.repository }}
-          REVISION: ${{ forgejo.sha }}
+          REPOSITORY: ${{ github.repository }}
+          REVISION: ${{ github.sha }}
           PUBLICATION_USER: ${{ secrets.ORION_PUBLICATION_USER }}
           PUBLICATION_PASSWORD: ${{ secrets.ORION_PUBLICATION_PASSWORD }}
         run: |

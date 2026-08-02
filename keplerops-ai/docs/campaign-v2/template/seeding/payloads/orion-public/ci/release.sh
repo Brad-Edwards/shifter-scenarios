@@ -43,6 +43,15 @@ api() {
     --request "${method}" "$@" "${API_URL}${path}"
 }
 
+internal_forgejo_url() {
+  local url=$1
+  case "${url}" in
+    http://*/*|https://*/*) printf '%s/%s\n' "${FORGEJO_URL}" "${url#*://*/}" ;;
+    /*) printf '%s%s\n' "${FORGEJO_URL}" "${url}" ;;
+    *) printf '%s/%s\n' "${FORGEJO_URL}" "${url}" ;;
+  esac
+}
+
 ssh_signer() {
   ssh -i "${SSH_KEY}" -o BatchMode=yes \
     -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
@@ -83,6 +92,7 @@ if jq -e 'type == "object" and has("id")' <<<"${release_json}" >/dev/null 2>&1; 
   release_id="$(jq -er '.id' <<<"${release_json}")"
   manifest_url="$(jq -er '.assets[] | select(.name == "release-manifest.json") | .browser_download_url' \
     <<<"${release_json}")"
+  manifest_url="$(internal_forgejo_url "${manifest_url}")"
   curl -fsS --user "${FORGEJO_CI_USER}:${FORGEJO_CI_PASSWORD}" \
     "${manifest_url}" -o "${VERIFY_DIR}/existing-release-manifest.json"
   cmp "${DIST_DIR}/release-manifest.json" "${VERIFY_DIR}/existing-release-manifest.json" || {
@@ -116,6 +126,7 @@ actual_assets="$(jq -r '.assets[].name' <<<"${release_json}" | sort)"
 }
 
 while IFS=$'\t' read -r name url; do
+  url="$(internal_forgejo_url "${url}")"
   curl -fsS --user "${FORGEJO_CI_USER}:${FORGEJO_CI_PASSWORD}" \
     "${url}" -o "${VERIFY_DIR}/${name}"
   cmp "${DIST_DIR}/${name}" "${VERIFY_DIR}/${name}"

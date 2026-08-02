@@ -79,10 +79,10 @@ latest_release_run() {
 }
 
 rebuild_public_client_release() {
-  local build_revision prior_run prior_id run status release release_id
+  local build_revision prior_run prior_id run status release release_id dispatch
   build_revision="$(public_forgejo GET "/repos/${PUBLIC_BUILD_REPOSITORY}/branches/main" | jq -er '.commit.id')"
   prior_run="$(latest_release_run "$build_revision")"
-  prior_id="$(jq -r '.id // 0' <<<"${prior_run:-{}}")"
+  prior_id="$(jq -r '.id // 0' <<<"${prior_run:-null}")"
 
   release="$(public_forgejo GET "/repos/${PUBLIC_SOURCE_REPOSITORY}/releases/tags/${PUBLIC_RELEASE_TAG}" 2>/dev/null || true)"
   if jq -e 'type == "object" and has("id")' <<<"$release" >/dev/null 2>&1; then
@@ -90,8 +90,9 @@ rebuild_public_client_release() {
     public_forgejo DELETE "/repos/${PUBLIC_SOURCE_REPOSITORY}/releases/${release_id}" >/dev/null
   fi
   public_forgejo DELETE "/repos/${PUBLIC_SOURCE_REPOSITORY}/tags/${PUBLIC_RELEASE_TAG}" >/dev/null 2>&1 || true
-  public_forgejo POST "/repos/${PUBLIC_BUILD_REPOSITORY}/actions/workflows/${PUBLIC_RELEASE_WORKFLOW}/dispatches" \
-    --data '{"ref":"main","inputs":{}}' >/dev/null
+  dispatch="$(public_forgejo POST "/repos/${PUBLIC_BUILD_REPOSITORY}/actions/workflows/${PUBLIC_RELEASE_WORKFLOW}/dispatches" \
+    --data '{"ref":"main","inputs":{},"return_run_info":true}')"
+  jq -e '.id > 0 and (.jobs | index("release")) != null' <<<"$dispatch" >/dev/null
 
   run=''
   for _ in $(seq 1 240); do
@@ -121,7 +122,7 @@ install_real_public_client() {
   fi
   source_revision="$(public_forgejo GET "/repos/${PUBLIC_SOURCE_REPOSITORY}/branches/main" | jq -er '.commit.id')"
   release="$(public_forgejo GET "/repos/${PUBLIC_SOURCE_REPOSITORY}/releases/tags/${PUBLIC_RELEASE_TAG}" 2>/dev/null || true)"
-  release_revision="$(jq -r '.target_commitish // empty' <<<"${release:-{}}")"
+  release_revision="$(jq -r '.target_commitish // empty' <<<"${release:-null}")"
   if [[ $source_changed == true || $release_revision != "$source_revision" ]]; then
     rebuild_public_client_release
     release="$(public_forgejo GET "/repos/${PUBLIC_SOURCE_REPOSITORY}/releases/tags/${PUBLIC_RELEASE_TAG}")"

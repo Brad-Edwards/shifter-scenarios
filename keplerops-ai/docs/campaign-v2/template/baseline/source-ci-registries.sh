@@ -50,9 +50,10 @@ run="$(latest_matching_run)"
 if [[ -z ${run} ]] || ! jq -e '.status == "success"' <<<"${run}" >/dev/null; then
   if [[ -z ${run} ]] || jq -e '.status | IN("failure", "cancelled", "skipped")' \
       <<<"${run}" >/dev/null; then
-    api POST "/repos/${BUILD_REPOSITORY}/actions/workflows/${WORKFLOW}/dispatches" \
+    dispatch="$(api POST "/repos/${BUILD_REPOSITORY}/actions/workflows/${WORKFLOW}/dispatches" \
       --header 'Content-Type: application/json' \
-      --data '{"ref":"main","inputs":{}}' >/dev/null
+      --data '{"ref":"main","inputs":{},"return_run_info":true}')"
+    jq -e '.id > 0 and (.jobs | index("release")) != null' <<<"${dispatch}" >/dev/null
   fi
 
   for _ in $(seq 1 240); do

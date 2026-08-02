@@ -530,10 +530,13 @@ ensure_build_sources() {
 }
 
 ensure_actions_runner() {
+  # Forgejo 11.0.4 records both owner_id and repo_id for repository-scoped
+  # forgejo-cli registrations, so its task-version lookup never sees new jobs.
+  # Organization scope is the narrowest functional scope on this pinned release.
   forgejo_cli forgejo-cli actions register \
     --secret "${FORGEJO_RUNNER_SECRET}" \
-    --scope "${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}" \
-    --labels 'orion-release-linux:host' \
+    --scope "${FORGEJO_ORG}" \
+    --labels 'orion-release-linux' \
     --name keplerops-engineering \
     --version 6.3.1 >/dev/null
 }
