@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Chromium
+Comment=Browse the web
+Exec=/usr/bin/chromium %U
+Icon=chromium
+Terminal=false
+StartupNotify=true
+Categories=Network;WebBrowser;

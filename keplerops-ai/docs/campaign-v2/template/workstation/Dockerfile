@@ -30,3 +30,4 @@ RUN apt-get update \
     && chmod 0644 /etc/opencode/opencode.json
 
 COPY --chmod=0755 workstation/startup.sh /usr/local/bin/keplerops-v2-workstation-startup
+COPY --chmod=0644 workstation/chromium.desktop /usr/local/share/keplerops/chromium.desktop
