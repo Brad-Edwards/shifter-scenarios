@@ -4,6 +4,11 @@ set -euo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly LAYER=${1:-foundation}
 readonly TIMEOUT=${KEPLEROPS_HEALTH_TIMEOUT:-900}
+readonly ROUTE_REQUEST_TIMEOUT=${KEPLEROPS_ROUTE_REQUEST_TIMEOUT:-8}
+readonly ROUTE_ADDRESS=${KEPLEROPS_ROUTE_ADDRESS:-10.61.10.2}
+readonly ROUTE_CA=${KEPLEROPS_ROUTE_CA:-${ROOT}/state/caddy-root.crt}
+
+routes=()
 
 case "$LAYER" in
   foundation)
@@ -24,12 +29,45 @@ case "$LAYER" in
       kep-v2-langflow kep-v2-librechat kep-v2-unleash kep-v2-odoo
       kep-v2-ghost kep-v2-mautic
     )
+    routes=(
+      'public-site|keplerops.lab|/'
+      'preview|preview.keplerops.lab|/'
+      'webmail|webmail.keplerops.lab|/'
+      'forgejo|git.keplerops.lab|/api/v1/version'
+      'redmine|workhub.keplerops.lab|/login'
+      'nextcloud|files.keplerops.lab|/status.php'
+      'zammad|support.keplerops.lab|/api/v1/getting_started'
+      'langflow|flows.keplerops.lab|/health'
+      'librechat|assistant.keplerops.lab|/'
+      'odoo|business.keplerops.lab|/web/login?db=business'
+      'ghost|status.keplerops.lab|/'
+      'mautic|advisories.keplerops.lab|/'
+    )
     ;;
   *)
     echo "unknown health layer: $LAYER" >&2
     exit 2
     ;;
 esac
+
+[[ $TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
+  echo "KEPLEROPS_HEALTH_TIMEOUT must be a positive integer" >&2
+  exit 2
+}
+[[ $ROUTE_REQUEST_TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
+  echo "KEPLEROPS_ROUTE_REQUEST_TIMEOUT must be a positive integer" >&2
+  exit 2
+}
+if ((${#routes[@]} > 0)); then
+  command -v curl >/dev/null 2>&1 || {
+    echo "curl is required for routed application health checks" >&2
+    exit 2
+  }
+  [[ -r $ROUTE_CA ]] || {
+    echo "Caddy route CA is not readable: $ROUTE_CA" >&2
+    exit 2
+  }
+fi
 
 deadline=$((SECONDS + TIMEOUT))
 while ((SECONDS < deadline)); do
@@ -42,6 +80,17 @@ while ((SECONDS < deadline)); do
     fi
   done
   if ((${#failed[@]} == 0)); then
+    for route in "${routes[@]}"; do
+      IFS='|' read -r name host path <<<"$route"
+      if ! curl --silent --show-error --fail --location \
+        --connect-timeout 3 --max-time "$ROUTE_REQUEST_TIMEOUT" \
+        --cacert "$ROUTE_CA" --resolve "${host}:443:${ROUTE_ADDRESS}" \
+        "https://${host}${path}" >/dev/null 2>&1; then
+        failed+=("$name=https://${host}${path}")
+      fi
+    done
+  fi
+  if ((${#failed[@]} == 0)); then
     install -d -m 0755 /run/shifter
     printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) $LAYER" \
       >"/run/shifter/keplerops-v2-$LAYER.ready"
@@ -53,5 +102,6 @@ done
 
 printf '%s health timeout: %s\n' "$LAYER" "${failed[*]}" >&2
 cd "$ROOT"
-docker compose --env-file component-lock.env -f compose.foundation.yaml ps >&2
+docker compose --env-file component-lock.env \
+  -f compose.foundation.yaml -f compose.enterprise.yaml ps >&2
 exit 1

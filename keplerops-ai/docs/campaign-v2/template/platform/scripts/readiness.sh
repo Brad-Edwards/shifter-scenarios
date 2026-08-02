@@ -119,7 +119,7 @@ fi
 [[ -n $model_service ]] || fail "KServe predictor service discovery"
 start_forward orion-runtime "service/$model_service" 18082 80
 prediction=$(curl -fsS -H 'Content-Type: application/json' \
-  --data '{"instances":[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]}' \
+  --data '{"instances":[{"text":"Routine Orion release review with approved lineage and validation evidence."}]}' \
   http://127.0.0.1:18082/v1/models/orion-release-risk:predict)
 [[ $(jq '.predictions[0].probabilities | length' <<<"$prediction") == 8 ]] || \
   fail "neutral ONNX prediction response"

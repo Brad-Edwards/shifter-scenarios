@@ -6,11 +6,38 @@ readonly KEY=/root/.ssh/keplerops-v2
 readonly K3S_TARGET=kepler@192.168.78.30
 readonly WORKSTATION=keplerops-participant-workstation-runtime
 readonly SSH=(ssh -i "$KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)
+readonly BASELINE_TIMEOUT=${KEPLEROPS_BASELINE_TIMEOUT:-600}
+readonly READINESS_MARKER=/run/shifter/keplerops-v2-component-substrate.ready
+
+run_baseline() {
+  local name=$1
+  local script=$2
+  local status
+
+  echo "Running participant-network baseline: $name"
+  timeout --foreground --signal=TERM "${BASELINE_TIMEOUT}s" "$script" || {
+    status=$?
+    echo "Participant-network baseline failed: $name (status $status)" >&2
+    return "$status"
+  }
+}
 
 if [[ $EUID -ne 0 ]]; then
   echo "check-all.sh must run as root" >&2
   exit 2
 fi
+
+install -d -m 0755 /run/shifter
+rm -f "$READINESS_MARKER"
+
+[[ $BASELINE_TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
+  echo "KEPLEROPS_BASELINE_TIMEOUT must be a positive integer" >&2
+  exit 2
+}
+command -v timeout >/dev/null 2>&1 || {
+  echo "timeout is required for participant-network readiness baselines" >&2
+  exit 2
+}
 
 "$ROOT/scripts/health-check.sh" foundation
 "$ROOT/scripts/check-guests.sh"
@@ -39,7 +66,13 @@ bootstrap=$(docker inspect --format '{{.State.Status}} {{.State.ExitCode}}' \
   exit 4
 }
 
-install -d -m 0755 /run/shifter
+run_baseline public-surfaces "$ROOT/baseline/public-surfaces.sh"
+run_baseline identity-role-enforcement "$ROOT/baseline/identity-role-enforcement.sh"
+run_baseline business-role-enforcement "$ROOT/baseline/business-role-enforcement.sh"
+run_baseline langflow-role-enforcement "$ROOT/baseline/langflow-role-enforcement.sh"
+run_baseline data-service-role-enforcement "$ROOT/baseline/data-service-role-enforcement.sh"
+run_baseline unleash-role-enforcement "$ROOT/baseline/unleash-role-enforcement.sh"
+
 printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) component-substrate" \
-  >/run/shifter/keplerops-v2-component-substrate.ready
+  >"$READINESS_MARKER"
 echo "KeplerOps campaign-v2 component substrate passed its readiness gates"
