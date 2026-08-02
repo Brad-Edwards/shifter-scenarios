@@ -63,13 +63,24 @@ def main() -> None:
         assert isinstance(record["hints"], list) and len(record["hints"]) == 3
         assert all(isinstance(item, str) and item.strip() for item in record["hints"])
         assert isinstance(record["prerequisites"], list)
-        assert isinstance(record["atlas_rows"], list) and record["atlas_rows"]
+        board_prerequisites = record.get("board_prerequisites", record["prerequisites"])
+        assert isinstance(board_prerequisites, list)
+        assert isinstance(record["atlas_rows"], list)
         flag = str(record["flag"])
         assert FLAG.fullmatch(flag), f"{record['id']}: invalid flag"
+        operation_id = str(record["id"])
+        assert record["apply_handler"] == f"apply.sh {operation_id}"
+        assert record["validate_handler"] == f"validate.sh {operation_id}"
+        assert record["reset_handler"] == f"reset.sh {operation_id}"
         flags.append(flag)
     assert len(flags) == len(set(flags)), "flags are not unique"
 
     known = set(ids)
+    assert all(
+        str(item) in known
+        for record in records
+        for item in record.get("board_prerequisites", record["prerequisites"])
+    ), "board prerequisites reference unknown operations"
     graph = {
         str(record["id"]): [str(item) for item in record["prerequisites"]]
         for record in records

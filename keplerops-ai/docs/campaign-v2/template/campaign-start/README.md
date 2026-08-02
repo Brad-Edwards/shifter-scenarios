@@ -18,6 +18,14 @@ Run `./apply.sh` only after the clean enterprise is healthy. Run
 `./validate.sh --static` before applying state, then `./validate.sh --all`
 against the integrated candidate. `./export-shifter.py` produces the single
 digest-pinned `shifter-ctf-content/v1` bundle used by Shifter's native scenario
-content hydration path. Shifter's prerequisite graph is conjunctive; operations
-with multiple alternative in-world ingress paths remain unlocked on the board
-and rely on the enterprise access controls to enforce those alternatives.
+content hydration path. Shifter's prerequisite graph is conjunctive. A mixed
+path may declare `board_prerequisites` for only the prerequisites that are
+always required; pure alternatives remain unlocked on the board. The complete
+boolean path is still enforced by enterprise access controls.
+
+Module apply scripts may temporarily converge a shared service with only the
+module overlay needed for their own setup. The root apply always finishes by
+converging Airflow and the Cinder Forgejo runner with every module overlay plus
+the root overlay, then validates and reloads Caddy from the base file and every
+module fragment. This final pass prevents a later module from discarding
+earlier DAGs, runtime mounts, runner access, or public routes.

@@ -53,11 +53,13 @@ def shifter_bundle(scenario_id: str) -> dict[str, object]:
         # Shifter's native graph is conjunctive. Alternative in-world ingress
         # paths remain discoverable and enforced by the enterprise itself, so
         # an OR-gated operation must not be incorrectly locked behind all paths.
-        prerequisites = (
-            []
-            if record.get("prerequisite_mode") == "any"
-            else record["prerequisites"]
-        )
+        prerequisites = record.get("board_prerequisites")
+        if prerequisites is None:
+            prerequisites = (
+                []
+                if record.get("prerequisite_mode") == "any"
+                else record["prerequisites"]
+            )
         challenges.append(
             {
                 "id": source_id,
