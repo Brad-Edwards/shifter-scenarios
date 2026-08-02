@@ -546,6 +546,7 @@ apply_one() {
 main() {
   local requested=${1:-all} operation command
   for command in awk base64 curl cut date docker jq python3 sha256sum; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
+  "${TEMPLATE_ROOT}/campaign-start/reconcile-airflow-dags.sh"
   install -d -m 0770 "${STATE_ROOT}"
   chown 50000:0 "${STATE_ROOT}"
   install -d -m 0700 "${STATE_ROOT}/attempts/kep-m07-i"

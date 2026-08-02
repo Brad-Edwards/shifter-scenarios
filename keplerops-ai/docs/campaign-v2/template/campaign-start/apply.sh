@@ -156,6 +156,8 @@ if [[ -z ${operation} ]]; then
   "${ROOT}/validate.sh" --static
 fi
 
+"${ROOT}/reconcile-airflow-dags.sh"
+
 mapfile -t modules < <(find "${ROOT}/modules" -mindepth 1 -maxdepth 1 \
   -type d -name 'm??' -print | sort)
 [[ ${#modules[@]} -eq 10 ]] || {
