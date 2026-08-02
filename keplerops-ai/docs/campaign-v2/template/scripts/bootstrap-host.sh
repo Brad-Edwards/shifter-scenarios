@@ -23,7 +23,7 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 apt-get -o Acquire::ForceIPv4=true update
 apt-get -o Acquire::ForceIPv4=true install -y \
-  cloud-image-utils curl docker-compose-v2 jq qemu-utils unzip virtinst
+  cloud-image-utils curl docker-compose-v2 jq qemu-utils ruby unzip virtinst
 
 systemctl disable --now keplerops-machine-host-runtime.service 2>/dev/null || true
 
