@@ -12,8 +12,7 @@ fi
 install -d -m 0755 "$STATE/tls"
 printf '%s\n' 'CinderV2-Playtest-Workstation' >"$STATE/participant-password"
 printf '%s\n' 'campaign-v2-template' >"$STATE/reset-generation"
-printf '%s\n' 'campaign-v2-template-placeholder' >"$STATE/producer-token"
-chmod 0600 "$STATE/participant-password" "$STATE/producer-token"
+chmod 0600 "$STATE/participant-password"
 chmod 0644 "$STATE/reset-generation"
 
 if [[ ! -s "$STATE/tls/tls.crt" || ! -s "$STATE/tls/tls.key" ]]; then

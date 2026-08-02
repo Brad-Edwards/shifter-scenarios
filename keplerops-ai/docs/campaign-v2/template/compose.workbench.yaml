@@ -47,7 +47,6 @@ services:
       - ./state/workstation/tls:/run/tls:ro
       - ./state/workstation/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-range-root.crt:ro
       - ./state/workstation/reset-generation:/run/keplerops/reset-generation:ro
-      - ./state/workstation/producer-token:/run/keplerops/producer-token:ro
       - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/run/keplerops/labgrid-ssh:ro
     networks:
       public:
