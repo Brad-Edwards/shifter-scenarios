@@ -1,0 +1,15 @@
+{
+  "workspace": "Orion runtime lineage review",
+  "starting_record": "latest Preview compatibility audit",
+  "required_joins": ["worker process command line", "scoped Kubernetes services", "scoped Kubernetes API resources", "Airflow run", "MLflow run", "MinIO model URI", "KServe revision"],
+  "object_listing": "denied",
+  "attestation_key_template": "runtime-attestations/{model_digest}.json",
+  "attestation_template": {
+    "process_digest": "live-process-digest",
+    "service_inventory_digest": "scoped-service-inventory-digest",
+    "mlflow_run_id": "live-run-id",
+    "object_digest": "model-object-digest",
+    "serving_revision": "live-kserve-revision",
+    "runtime_reference": "FLAG{bd34a72ac3b180db}"
+  }
+}

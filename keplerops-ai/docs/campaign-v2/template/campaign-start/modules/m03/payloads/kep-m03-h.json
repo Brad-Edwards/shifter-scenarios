@@ -1,0 +1,11 @@
+{
+  "workspace": "failed-ingestion-2026-07-18",
+  "collection": "orion_partner_intake",
+  "object_key_template": "ingest/{collection}/{document_id}/{sha256}.yaml",
+  "document_id": "partner-orion-release-criteria",
+  "source_relative_path": "Partner Reviews/Orion/release-criteria.md",
+  "join_requirements": ["Qdrant point metadata", "no-list provenance object", "mounted source SHA-256", "source user.ingest_reference"],
+  "qdrant_payload": {"flag_prefix": "FLAG{e83973d8", "document_id": "partner-orion-release-criteria"},
+  "source_extended_attribute": {"user.ingest_reference": "deed861d}"},
+  "report_path": "reports/index-source-join.yaml"
+}

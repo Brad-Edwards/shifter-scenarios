@@ -1,0 +1,13 @@
+{
+  "package": "@keplerops/orion-mcp-audit",
+  "trusted_channel": "staging",
+  "adopted_version": "2.3.1",
+  "publisher": "external-maintainer",
+  "successor_requirements": ["same package identity", "same signing identity", "advertised MCP tests pass", "new immutable digest"],
+  "audit_template": {
+    "benign_digest": "adopted-release-digest",
+    "successor_digest": "candidate-successor-digest",
+    "proposal_state": "opened",
+    "release_reference": "FLAG{9ac210cfeea67dc5}"
+  }
+}

@@ -1,0 +1,280 @@
+[
+  {
+    "id": "kep-m03-a",
+    "title": "The Helpful Evaluation Update",
+    "description": "Turn a trusted evaluation dependency into access without breaking the job it was meant to perform.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "The lockfile names its source.",
+      "Preserve advertised behavior.",
+      "Observe exact-version installation, import, and evaluation output."
+    ],
+    "prerequisites": [
+      "kep-m02-l",
+      "kep-m03-b"
+    ],
+    "atlas_rows": [
+      "AML.T0010.001 AI Software",
+      "AML.T0011 User Execution",
+      "AML.T0011.001 Malicious Package"
+    ],
+    "flag": "FLAG{e034a7abb399989a}",
+    "carrier": "The evaluation worker import sends the mounted worker flag to the Cinder relay after the normal score completes.",
+    "participant_surface": "Cinder Forgejo, devpi, the common evaluation review queue, and the participant relay",
+    "apply_handler": "apply.sh kep-m03-a",
+    "validate_handler": "validate.sh kep-m03-a",
+    "reset_handler": "reset.sh kep-m03-a"
+  },
+  {
+    "id": "kep-m03-b",
+    "title": "Earn The Maintainer's Trust",
+    "description": "Build legitimate history around a useful agent tool so its next release receives less scrutiny.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Trust includes CI, signatures, and adoption, not stars alone.",
+      "Keep this release genuinely benign.",
+      "Verify the consumer's exact installed digest."
+    ],
+    "prerequisites": [
+      "kep-m02-l"
+    ],
+    "atlas_rows": [
+      "AML.T0111 AI Supply Chain Reputation Inflation"
+    ],
+    "flag": "FLAG{bce41d12d8104839}",
+    "carrier": "The staging consumer adoption manifest records the flag beside the signed package digest.",
+    "participant_surface": "Cinder Forgejo, Forgejo Actions, Verdaccio, and the staging consumer repository",
+    "apply_handler": "apply.sh kep-m03-b",
+    "validate_handler": "validate.sh kep-m03-b",
+    "reset_handler": "reset.sh kep-m03-b"
+  },
+  {
+    "id": "kep-m03-c",
+    "title": "Change After Adoption",
+    "description": "Use trust earned by a legitimate release to position a poisoned replacement.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Keep package and publisher identity unchanged.",
+      "Preserve advertised tool tests.",
+      "Verify the downstream proposal names your digest."
+    ],
+    "prerequisites": [
+      "kep-m03-b"
+    ],
+    "atlas_rows": [
+      "AML.T0109 AI Supply Chain Rug Pull",
+      "AML.T0104 Publish Poisoned AI Agent Tool"
+    ],
+    "flag": "FLAG{9ac210cfeea67dc5}",
+    "carrier": "The poisoned release audit records the flag only after Renovate opens a proposal for the participant's signed successor digest.",
+    "participant_surface": "Cinder Forgejo, Verdaccio, package signing, and the consumer Renovate proposal",
+    "apply_handler": "apply.sh kep-m03-c",
+    "validate_handler": "validate.sh kep-m03-c",
+    "reset_handler": "reset.sh kep-m03-c"
+  },
+  {
+    "id": "kep-m03-d",
+    "title": "Publish The Phantom Dependency",
+    "description": "Take control of a repeatable Orion hallucination and make the normal evaluation workflow resolve it to your infrastructure.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Use the exact entity independently verified in Act 4.",
+      "Publish through the normal registry or domain surface.",
+      "Trigger a fresh recommendation and verify the subsequent resolution in both systems."
+    ],
+    "prerequisites": [
+      "kep-m04-h",
+      "kep-m06-n"
+    ],
+    "atlas_rows": [
+      "AML.T0060 Publish Hallucinated Entities"
+    ],
+    "flag": "FLAG{5c62a3d6b4a53022}",
+    "carrier": "The victim access log for the participant-controlled entity records the flag after the common review workflow resolves it.",
+    "participant_surface": "Cinder registrar, participant-hosted service, Orion factuality evaluation, and participant access logs",
+    "apply_handler": "apply.sh kep-m03-d",
+    "validate_handler": "validate.sh kep-m03-d",
+    "reset_handler": "reset.sh kep-m03-d"
+  },
+  {
+    "id": "kep-m03-e",
+    "title": "Poison The Tool's Truth",
+    "description": "Change the data returned by a trusted agent tool and cause a new release decision to consume the poisoned value.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Select a source your compromised identity can legitimately edit.",
+      "Confirm the tool returns your changed record before triggering the agent.",
+      "Correlate source revision, tool response, and decision."
+    ],
+    "prerequisites": [
+      "kep-m04-j"
+    ],
+    "atlas_rows": [
+      "AML.T0099 AI Agent Tool Data Poisoning"
+    ],
+    "flag": "FLAG{5f1ccafd643643bb}",
+    "carrier": "The resulting release-status record contains the flag after the live MCP read returns the changed WorkHub source revision.",
+    "participant_surface": "WorkHub, Orion release assistant, the read-only MCP tool, and release status",
+    "apply_handler": "apply.sh kep-m03-e",
+    "validate_handler": "validate.sh kep-m03-e",
+    "reset_handler": "reset.sh kep-m03-e"
+  },
+  {
+    "id": "kep-m03-f",
+    "title": "The Tool That Calls Home",
+    "description": "Convert the poisoned release into a real agent effect while preserving normal tool behavior.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "An update proposal alone has no effect.",
+      "Trigger a workflow that genuinely requires the tool.",
+      "Correlate package, MCP trace, and relay."
+    ],
+    "prerequisites": [
+      "kep-m03-c",
+      "kep-m04-j"
+    ],
+    "atlas_rows": [
+      "AML.T0010.005 AI Agent Tool",
+      "AML.T0011.002 Poisoned AI Agent Tool"
+    ],
+    "flag": "FLAG{90a79b6f6161f203}",
+    "carrier": "The private model-card field copied by the installed tool into the participant relay is the flag.",
+    "participant_surface": "Consumer Forgejo, Verdaccio, Orion MCP invocation, model-card check, and participant relay",
+    "apply_handler": "apply.sh kep-m03-f",
+    "validate_handler": "validate.sh kep-m03-f",
+    "reset_handler": "reset.sh kep-m03-f"
+  },
+  {
+    "id": "kep-m03-g",
+    "title": "Sources Behind The Answer",
+    "description": "Determine which company sources feed Orion release answers and recover the source record that exposes an ingestion path.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Compare the migration issue with the assistant citation drawer.",
+      "Source and connector identifiers identify the owning repository.",
+      "Ask a normal release question and follow its cited source into the inventory."
+    ],
+    "prerequisites": [
+      "kep-m02-h"
+    ],
+    "atlas_rows": [
+      "AML.T0064 Gather RAG-Indexed Targets",
+      "AML.T0036 Data from Information Repositories",
+      "AML.T0085.000 RAG Databases"
+    ],
+    "flag": "FLAG{7ac66e2a0ae631d2}",
+    "carrier": "The protected WorkHub RAG source inventory reached through Orion's real citation contains the flag.",
+    "participant_surface": "WorkHub migration issue, Orion assistant citation drawer, and the ACL-protected source inventory",
+    "apply_handler": "apply.sh kep-m03-g",
+    "validate_handler": "validate.sh kep-m03-g",
+    "reset_handler": "reset.sh kep-m03-g"
+  },
+  {
+    "id": "kep-m03-h",
+    "title": "Index To Source",
+    "description": "Trace an Orion answer from its vector entry back to the exact local source used during ingestion.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Start with the failed-ingestion workspace in the inventory.",
+      "Compare IDs and digests rather than guessing filenames.",
+      "Retrieve the cited chunk first, then match its provenance against the mounted snapshot."
+    ],
+    "prerequisites": [
+      "kep-m03-g",
+      "kep-m06-l"
+    ],
+    "atlas_rows": [
+      "AML.T0037 Data from Local System"
+    ],
+    "flag": "FLAG{e83973d8deed861d}",
+    "carrier": "The Qdrant chunk carries the flag prefix and the digest-matched local source file carries the suffix in user.ingest_reference.",
+    "participant_surface": "JupyterHub failed-ingestion workspace, Qdrant read API, no-list MinIO object read, and mounted source snapshot",
+    "apply_handler": "apply.sh kep-m03-h",
+    "validate_handler": "validate.sh kep-m03-h",
+    "reset_handler": "reset.sh kep-m03-h"
+  },
+  {
+    "id": "kep-m03-i",
+    "title": "The Runbook That Should Not Be Indexed",
+    "description": "Recover authentication material left in Orion's stale search index and prove its limited company scope.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Investigate what the incident says was deleted after indexing.",
+      "Source deletion and vector deletion are distinct.",
+      "Search semantically around the runbook's purpose, then use the named login route."
+    ],
+    "prerequisites": [
+      "kep-m03-g"
+    ],
+    "atlas_rows": [
+      "AML.T0082 RAG Credential Harvesting",
+      "AML.T0012 Valid Accounts"
+    ],
+    "flag": "FLAG{8965ae2bb182f564}",
+    "carrier": "The evaluation-reader onboarding page contains the flag after normal authentication with the stale indexed synthetic credential.",
+    "participant_surface": "WorkHub incident, Orion semantic search, Keycloak login, and evaluation onboarding",
+    "apply_handler": "apply.sh kep-m03-i",
+    "validate_handler": "validate.sh kep-m03-i",
+    "reset_handler": "reset.sh kep-m03-i"
+  },
+  {
+    "id": "kep-m03-j",
+    "title": "Instructions That Copy Themselves",
+    "description": "Create an indirect instruction that survives one agent handoff and is reproduced into the next agent's input.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Map which assistant output becomes another assistant's source.",
+      "Preserve operational meaning rather than exact wording.",
+      "Verify two distinct generation and ingestion events before looking for the effect."
+    ],
+    "prerequisites": [
+      "kep-m01-e",
+      "kep-m04-k"
+    ],
+    "atlas_rows": [
+      "AML.T0061 LLM Prompt Self-Replication"
+    ],
+    "flag": "FLAG{a86a80d39b505362}",
+    "carrier": "The second immutable WorkHub handoff contains the flag beside parent, child, and bounded tool-effect IDs.",
+    "participant_surface": "WorkHub review artifacts, two Orion assistant workflows, Qdrant ingestion, and immutable handoff records",
+    "apply_handler": "apply.sh kep-m03-j",
+    "validate_handler": "validate.sh kep-m03-j",
+    "reset_handler": "reset.sh kep-m03-j"
+  },
+  {
+    "id": "kep-m03-k",
+    "title": "The Next Review Cycle",
+    "description": "Plant an instruction that remains dormant until a normal KeplerOps review event activates a new agent run.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Use the activation trigger found in Act 4.",
+      "Separate planting from activation.",
+      "Correlate the later workflow with the earlier record revision."
+    ],
+    "prerequisites": [
+      "kep-m03-j",
+      "kep-m04-k"
+    ],
+    "atlas_rows": [
+      "AML.T0051.002 Triggered",
+      "AML.T0094 Delay Execution of LLM Instructions"
+    ],
+    "flag": "FLAG{6431948740d97181}",
+    "carrier": "The event-created downstream record contains the flag beside source revision, trigger event, fresh run, and effect IDs.",
+    "participant_surface": "WorkHub approval record, RabbitMQ review event, Orion workflow, and downstream record",
+    "apply_handler": "apply.sh kep-m03-k",
+    "validate_handler": "validate.sh kep-m03-k",
+    "reset_handler": "reset.sh kep-m03-k"
+  }
+]

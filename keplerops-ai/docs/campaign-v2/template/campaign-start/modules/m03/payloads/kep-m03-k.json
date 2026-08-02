@@ -1,0 +1,14 @@
+{
+  "workflow": "approved-review-follow-up",
+  "activation_event": "workhub.review.approved",
+  "maximum_activation_seconds": 90,
+  "source_record": "Orion partner compatibility review",
+  "pre_activation_effect": "none",
+  "downstream_record_template": {
+    "source_revision": "approved-source-revision",
+    "trigger_event_id": "fresh-approval-event",
+    "run_id": "fresh-agent-run",
+    "effect_id": "bounded-follow-up-effect",
+    "review_reference": "FLAG{6431948740d97181}"
+  }
+}

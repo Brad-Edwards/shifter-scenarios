@@ -1,0 +1,14 @@
+{
+  "job": "individual-membership-review",
+  "candidate_count": 16,
+  "candidate_order": "randomized-per-run",
+  "ground_truth_visibility": "server-side-after-scoring",
+  "required_output": ["candidate_scores", "selected_record", "confidence_margin", "query_request_ids"],
+  "acceptance": {"minimum_balanced_accuracy": 0.7, "maximum_false_positive_rate": 0.2, "minimum_selection_margin": 0.08},
+  "signed_report_template": {
+    "selected_record": "research-selection",
+    "confusion_metrics": {},
+    "query_digest": "live-query-digest",
+    "privacy_review_reference": "FLAG{38f23f3cfd567a59}"
+  }
+}

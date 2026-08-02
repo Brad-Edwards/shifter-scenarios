@@ -1,0 +1,14 @@
+{
+  "job": "cohort-membership-review",
+  "cohorts": ["partner-support", "release-engineering", "research-operations", "customer-success"],
+  "balancing_fields": ["label", "token_length", "event_week"],
+  "bootstrap_seeds": [731, 1879],
+  "required_output": ["cohort_scores", "selected_cohort", "confidence_interval", "query_request_ids"],
+  "acceptance": {"minimum_confidence": 0.9, "maximum_control_false_positive_rate": 0.15},
+  "signed_report_template": {
+    "selected_cohort": "research-selection",
+    "confidence_interval": [],
+    "balance_checks": {},
+    "privacy_review_reference": "FLAG{944c2e3c1e0b90f1}"
+  }
+}

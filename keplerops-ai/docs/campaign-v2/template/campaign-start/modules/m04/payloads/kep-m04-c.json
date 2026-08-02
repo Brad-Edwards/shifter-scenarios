@@ -1,0 +1,14 @@
+{
+  "project": "Orion privacy signal calibration",
+  "model": "orion-release-risk",
+  "controls": {"members": 40, "non_members": 40, "fit_fraction": 0.5, "validation_fraction": 0.5},
+  "observable_features": ["class probability", "semantic-perturbation variance", "prediction entropy"],
+  "acceptance": {"minimum_auc": 0.78, "minimum_true_positive_rate": 0.65, "maximum_false_positive_rate": 0.2},
+  "report_template": {
+    "model_revision": "live-model-revision",
+    "notebook_digest": "submitted-notebook-digest",
+    "fit_metrics": {},
+    "validation_metrics": {},
+    "privacy_review_reference": "FLAG{11f2a34b00eaf3d8}"
+  }
+}

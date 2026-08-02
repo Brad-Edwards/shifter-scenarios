@@ -1,0 +1,76 @@
+services:
+  orion-research:
+    build:
+      context: ./campaign-start/modules/m04/runtime
+      dockerfile: Dockerfile
+      args:
+        RESEARCH_BASE_IMAGE: ${ORION_AGENT_IMAGE:-keplerops/orion-preview:campaign-v2}
+    image: keplerops/orion-research:campaign-v2
+    container_name: kep-v2-orion-research
+    command: ["uvicorn", "evaluation_service:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]
+    environment:
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      ORION_AGENT_API_KEY: KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
+      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+      ORION_RELEASE_RISK_MODEL: orion-release-risk
+      REDIS_URL: redis://:KeplerV2-Training-Redis@10.61.50.11:6379/4
+      EVALUATION_USER: eval.reader
+      EVALUATION_PASSWORD: EvalReader-Archive-2026
+      SUPPORT_RENDERER_URL: http://support-review-browser:8081
+      RABBITMQ_API_URL: http://10.61.50.12:15672
+      RABBITMQ_USER: kepler
+      RABBITMQ_PASSWORD: KeplerV2-Training-Rabbit
+    volumes:
+      - ./campaign-start/modules/m04/runtime:/campaign:ro
+      - ./engineering/label-studio/orion-release-risk-training.json:/campaign-data/release-risk-training.json:ro
+    working_dir: /campaign
+    networks:
+      corp:
+        ipv4_address: 10.61.30.26
+      data:
+      engineering:
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health/ready', timeout=5).read()"]
+      interval: 10s
+      timeout: 6s
+      retries: 30
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+
+  support-review-browser:
+    image: ${WORKSTATION_IMAGE:-${CINDER_WORKSTATION_IMAGE}}
+    container_name: kep-v2-support-review-browser
+    command: ["python3", "/campaign/render_worker.py"]
+    environment:
+      DISPLAY: ""
+    volumes:
+      - ./campaign-start/modules/m04/runtime:/campaign:ro
+    networks:
+      corp:
+      public:
+      cinder:
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=5).read()"]
+      interval: 10s
+      timeout: 6s
+      retries: 30
+    security_opt: ["no-new-privileges:true"]
+
+networks:
+  corp:
+    external: true
+    name: kep-v2-corp
+  data:
+    external: true
+    name: kep-v2-data
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  public:
+    external: true
+    name: kep-v2-public
+  cinder:
+    external: true
+    name: kep-v2-cinder
