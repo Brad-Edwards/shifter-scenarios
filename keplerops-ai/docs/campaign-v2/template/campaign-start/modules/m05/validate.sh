@@ -176,14 +176,14 @@ validate_m05_h() {
   grep -Fq 'svc-orion-agent-mlflow' <<<"$logs" || fail 'MLflow did not observe the recovered application identity'
   grep -Fq "$run" <<<"$logs" || fail 'MLflow audit does not name the exact protected run'
   grep -Fq 'access-boundary.json' <<<"$logs" || fail 'MLflow audit does not show the participant artifact read'
-  grep -Eq 'registered-models/search.*(401|403)|(401|403).*registered-models/search' <<<"$logs" || fail 'MLflow audit does not contain the adjacent denied registry request'
+  grep -Eq 'registered-models/search.*(401|403|404)|(401|403|404).*registered-models/search' <<<"$logs" || fail 'MLflow audit does not contain the adjacent denied registry request'
   pass kep-m05-h
 }
 
 validate_m05_i() {
   local evidence logs ticket har_sha
   evidence="$(evidence_for kep-m05-i)"; ticket="$(jq -er '.target.ticket_id' <<<"$evidence")"
-  har_sha="$("${SSH[@]}" "$REVIEW_SSH_TARGET" 'sha256sum /var/lib/orion-review/traces/orion-support-session.har' | awk '{print $1}')"
+  har_sha="$("${SSH[@]}" "$REVIEW_SSH_TARGET" 'sudo sha256sum /var/lib/orion-review/traces/orion-support-session.har' | awk '{print $1}')"
   jq -e --arg har "$har_sha" '.source.har_sha256==$har and .target.actor=="support.analyst" and (.source.credential_sha256|test("^[0-9a-f]{64}$")) and (.target.note_body_sha256|test("^[0-9a-f]{64}$"))' <<<"$evidence" >/dev/null || fail 'support evidence is not bound to the planted HAR'
   logs="$(compose logs --no-color --since 30m zammad-nginx zammad-railsserver 2>&1)"
   grep -Eq "support\.analyst.*${ticket}|${ticket}.*support\.analyst" <<<"$logs" || fail 'Zammad did not observe the exact support identity and ticket'

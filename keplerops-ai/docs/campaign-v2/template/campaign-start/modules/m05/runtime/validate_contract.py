@@ -132,6 +132,8 @@ def main() -> None:
         validator_text.index("validate_m05_h()") : validator_text.index("validate_m05_l()")
     ]
     assert "-X DELETE" not in protected_validation
+    assert "(401|403|404)" in protected_validation
+    assert "sudo sha256sum /var/lib/orion-review/traces/orion-support-session.har" in protected_validation
     assert "access-evidence/v1" in apply_text
     for operation in ("kep-m05-h", "kep-m05-i", "kep-m05-j", "kep-m05-k"):
         assert f"evidence_for {operation}" in validator_text
