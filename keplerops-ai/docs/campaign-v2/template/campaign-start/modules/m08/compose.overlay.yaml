@@ -1,0 +1,76 @@
+x-m08-airflow: &m08-airflow
+  image: keplerops/airflow:campaign-v2-m08
+  build:
+    context: .
+    dockerfile: campaign-start/modules/m08/runtime/Dockerfile
+    args:
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+  environment:
+    M08_STATE_ROOT: /opt/airflow/campaign-state-m08
+    ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+    ORION_VISION_URL: http://192.168.78.30:30084
+    CINDER_FORGEJO_URL: http://10.61.90.30:3000
+    CINDER_FORGEJO_USER: cinder-operator
+    CINDER_FORGEJO_PASSWORD: Cinder-Operations-Git-K3m7Pq4x
+    CINDER_S3_ENDPOINT_URL: http://10.61.90.31:9000
+    CINDER_S3_ACCESS_KEY: cinder-operator
+    CINDER_S3_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+    ORION_DATASET_WORKER_URL: http://10.61.40.1:18088
+    M08_ATTESTATION_SIGNING_KEY: KeplerV2-Compatibility-Attestation-2026
+    M08_WORKER_RECORD_SIGNING_KEY: KeplerV2-Scoped-Worker-Record-2026
+  volumes:
+    - ./campaign-start/modules/m08/dags/orion_extraction_research.py:/opt/airflow/dags/orion_extraction_research.py:ro
+    - ./campaign-start/modules/m08/runtime:/opt/airflow/campaign-m08:ro
+    - ./campaign-start/modules/m08/payloads:/opt/airflow/campaign-m08-payloads:ro
+    - ./platform/vision/data:/opt/airflow/orion-vision-data:ro
+    - ./state/campaign-start/m08:/opt/airflow/campaign-state-m08
+
+services:
+  airflow-api:
+    <<: *m08-airflow
+    networks:
+      cinder:
+  airflow-scheduler:
+    <<: *m08-airflow
+    networks:
+      cinder:
+  airflow-dag-processor:
+    <<: *m08-airflow
+    networks:
+      cinder:
+  airflow-triggerer:
+    <<: *m08-airflow
+    networks:
+      cinder:
+  airflow-worker:
+    <<: *m08-airflow
+    networks:
+      cinder:
+
+  cinder-offline-model-runner:
+    image: keplerops/airflow:campaign-v2-m08
+    build:
+      context: .
+      dockerfile: campaign-start/modules/m08/runtime/Dockerfile
+      args:
+        AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+    container_name: kep-v2-cinder-offline-model-runner
+    command: ["python", "/opt/cinder/offline_runner.py"]
+    environment:
+      OFFLINE_STATE_ROOT: /var/lib/cinder-offline
+    volumes:
+      - ./campaign-start/modules/m08/runtime/offline_runner.py:/opt/cinder/offline_runner.py:ro
+      - ./state/campaign-start/m08/offline:/var/lib/cinder-offline
+    network_mode: none
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=2g
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+
+networks:
+  cinder:
+    external: true
+    name: kep-v2-cinder

@@ -1,0 +1,16 @@
+{
+  "schema": "keplerops.release-risk.slice-matrix/v1",
+  "required_slices": [
+    "routine",
+    "ambiguous",
+    "urgent",
+    "cross-functional"
+  ],
+  "minimum_records_per_class": 2,
+  "minimum_records_per_slice": 4,
+  "split_policy": {
+    "complete": true,
+    "disjoint": true,
+    "required": ["train", "validation", "local_test"]
+  }
+}
