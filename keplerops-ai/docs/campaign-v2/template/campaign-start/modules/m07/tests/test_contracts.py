@@ -16,6 +16,16 @@ SPEC.loader.exec_module(contracts)
 
 
 class IntegrityContractsTest(unittest.TestCase):
+    def test_campaign_worker_token_does_not_replace_baseline_admin_identity(self) -> None:
+        m07 = Path(__file__).resolve().parents[1]
+        template = m07.parents[2]
+        clean_training = (template / "engineering/airflow/dags/orion_clean_training.py").read_text()
+        release_training = (template / "engineering/airflow/dags/orion_release_risk_training.py").read_text()
+        compose = (template / "compose.engineering.yaml").read_text()
+        self.assertIn('"LABEL_STUDIO_ADMIN_TOKEN"', clean_training)
+        self.assertIn('"LABEL_STUDIO_API_TOKEN"', release_training)
+        self.assertIn("LABEL_STUDIO_ADMIN_TOKEN:", compose)
+
     def test_cinder_commitment_matches_server_evidence_and_m09_contract(self) -> None:
         m07 = Path(__file__).resolve().parents[1]
         template = m07.parents[2]

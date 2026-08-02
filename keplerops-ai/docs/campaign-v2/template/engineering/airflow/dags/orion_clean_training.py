@@ -19,7 +19,7 @@ LABEL_STUDIO_URL = os.getenv("LABEL_STUDIO_URL", "http://label-studio:8080").rst
     "/"
 )
 LABEL_STUDIO_TOKEN = os.getenv(
-    "LABEL_STUDIO_API_TOKEN", "31a5a4b4ab3cdbaf110644eed06853b2b418daf6"
+    "LABEL_STUDIO_ADMIN_TOKEN", "31a5a4b4ab3cdbaf110644eed06853b2b418daf6"
 )
 LABEL_STUDIO_PROJECT = "Orion Intent Annotation Baseline"
 LAKEFS_ENDPOINT = os.getenv("LAKEFS_ENDPOINT", "http://lakefs:8000").rstrip("/")
