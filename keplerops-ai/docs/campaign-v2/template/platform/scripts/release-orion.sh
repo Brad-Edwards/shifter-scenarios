@@ -15,7 +15,7 @@ Required environment:
   TRAINING_DAG TRAINING_RUN_ID TRAINING_CODE_IMAGE_DIGEST TRAINING_PARAMETERS_DIGEST
   TRAINING_SEED TRAINING_RUNTIME TRAINING_HARDWARE_CLASS
   MLFLOW_RUN_ID MLFLOW_MODEL_VERSION NATIVE_WEIGHTS_DIGEST ONNX_DIGEST
-  TOKENIZER_DIGEST MODEL_CARD_DIGEST
+  TOKENIZER_DIGEST MODEL_CONFIGURATION_DIGEST MODEL_CARD_DIGEST MODEL_PROVENANCE_DIGEST
   SERVING_IMAGE_REPOSITORY SERVING_IMAGE_DIGEST SERVING_CONFIG_DIGEST SERVING_SBOM_DIGEST
   EVALUATION_SUITE_DIGEST EVALUATION_INPUT_DIGEST EVALUATION_REPORT_DIGEST
   APPROVAL_ACTOR POLICY_DIGEST APPROVAL_SUBJECT_DIGEST APPROVAL_DECISION_ID
@@ -35,7 +35,7 @@ required=(
   TRAINING_DAG TRAINING_RUN_ID TRAINING_CODE_IMAGE_DIGEST TRAINING_PARAMETERS_DIGEST
   TRAINING_SEED TRAINING_RUNTIME TRAINING_HARDWARE_CLASS
   MLFLOW_RUN_ID MLFLOW_MODEL_VERSION NATIVE_WEIGHTS_DIGEST ONNX_DIGEST
-  TOKENIZER_DIGEST MODEL_CARD_DIGEST
+  TOKENIZER_DIGEST MODEL_CONFIGURATION_DIGEST MODEL_CARD_DIGEST MODEL_PROVENANCE_DIGEST
   SERVING_IMAGE_REPOSITORY SERVING_IMAGE_DIGEST SERVING_CONFIG_DIGEST SERVING_SBOM_DIGEST
   EVALUATION_SUITE_DIGEST EVALUATION_INPUT_DIGEST EVALUATION_REPORT_DIGEST
   APPROVAL_ACTOR POLICY_DIGEST APPROVAL_SUBJECT_DIGEST APPROVAL_DECISION_ID
@@ -90,7 +90,7 @@ jq -n \
   --arg source_repo "$SOURCE_REPOSITORY" --arg source_commit "${SOURCE_COMMIT,,}" --arg source_tree "$SOURCE_TREE_DIGEST" \
   --arg data_repo "$DATA_REPOSITORY" --arg data_commit "$DATA_COMMIT" --arg data_manifest "$DATA_MANIFEST_DIGEST" --arg data_split "$DATA_SPLIT_DIGEST" --arg label_schema "$LABEL_SCHEMA_DIGEST" \
   --arg training_dag "$TRAINING_DAG" --arg training_run "$TRAINING_RUN_ID" --arg training_image "$TRAINING_CODE_IMAGE_DIGEST" --arg training_params "$TRAINING_PARAMETERS_DIGEST" --arg training_seed "$TRAINING_SEED" --arg training_runtime "$TRAINING_RUNTIME" --arg training_hardware "$TRAINING_HARDWARE_CLASS" \
-  --arg mlflow_run "$MLFLOW_RUN_ID" --arg mlflow_version "$MLFLOW_MODEL_VERSION" --arg native_weights "$NATIVE_WEIGHTS_DIGEST" --arg onnx "$ONNX_DIGEST" --arg tokenizer "$TOKENIZER_DIGEST" --arg model_card "$MODEL_CARD_DIGEST" \
+  --arg mlflow_run "$MLFLOW_RUN_ID" --arg mlflow_version "$MLFLOW_MODEL_VERSION" --arg native_weights "$NATIVE_WEIGHTS_DIGEST" --arg onnx "$ONNX_DIGEST" --arg tokenizer "$TOKENIZER_DIGEST" --arg configuration "$MODEL_CONFIGURATION_DIGEST" --arg model_card "$MODEL_CARD_DIGEST" --arg provenance "$MODEL_PROVENANCE_DIGEST" \
   --arg image_repo "$SERVING_IMAGE_REPOSITORY" --arg image_digest "$SERVING_IMAGE_DIGEST" --arg image_config "$SERVING_CONFIG_DIGEST" --arg image_sbom "$SERVING_SBOM_DIGEST" \
   --arg eval_suite "$EVALUATION_SUITE_DIGEST" --arg eval_inputs "$EVALUATION_INPUT_DIGEST" --arg eval_report "$EVALUATION_REPORT_DIGEST" --arg eval_decision "${EVALUATION_DECISION:-accepted}" \
   --arg approval_actor "$APPROVAL_ACTOR" --arg policy_digest "$POLICY_DIGEST" --arg approval_subject "$APPROVAL_SUBJECT_DIGEST" --arg approval_id "$APPROVAL_DECISION_ID" --arg approval_status "${APPROVAL_STATUS:-approved}" \
@@ -101,7 +101,7 @@ jq -n \
     source:{repository:$source_repo, commit:$source_commit, tree_digest:$source_tree},
     dataset:{repository:$data_repo, commit:$data_commit, manifest_digest:$data_manifest, split_digest:$data_split, label_schema_digest:$label_schema},
     training:{dag:$training_dag, run_id:$training_run, code_image_digest:$training_image, parameters_digest:$training_params, seed:$training_seed, runtime:$training_runtime, hardware_class:$training_hardware},
-    model:{mlflow_run_id:$mlflow_run, mlflow_model_version:$mlflow_version, native_weights_digest:$native_weights, onnx_digest:$onnx, tokenizer_digest:$tokenizer, model_card_digest:$model_card, format:"onnx"},
+    model:{mlflow_run_id:$mlflow_run, mlflow_model_version:$mlflow_version, native_weights_digest:$native_weights, onnx_digest:$onnx, tokenizer_digest:$tokenizer, configuration_digest:$configuration, model_card_digest:$model_card, provenance_digest:$provenance, format:"onnx"},
     serving_image:{repository:$image_repo, image_digest:$image_digest, config_digest:$image_config, sbom_digest:$image_sbom, runtime:"onnxruntime-cpu"},
     evaluation:{suite_digest:$eval_suite, input_set_digest:$eval_inputs, report_digest:$eval_report, decision:$eval_decision},
     approval:{actor:$approval_actor, policy_digest:$policy_digest, subject_digest:$approval_subject, decision_id:$approval_id, status:$approval_status},

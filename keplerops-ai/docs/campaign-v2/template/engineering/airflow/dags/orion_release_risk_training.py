@@ -337,6 +337,7 @@ def orion_release_risk_training():
                 },
                 native_weights,
             )
+            merged.config.to_json_file(model_dir / "config.json")
             tokenizer.save_pretrained(model_dir)
             (model_dir / "label-map.json").write_text(
                 json.dumps(LABELS, indent=2, sort_keys=True)
@@ -434,8 +435,11 @@ def orion_release_risk_training():
                 "final_loss": loss_value,
                 "artifacts": artifact_digests,
             }
+            lineage_bytes = json.dumps(lineage, indent=2, sort_keys=True).encode()
+            provenance_file = model_dir / "provenance.json"
+            provenance_file.write_bytes(lineage_bytes)
             lineage_file = workspace / "lineage.json"
-            lineage_file.write_text(json.dumps(lineage, indent=2, sort_keys=True))
+            lineage_file.write_bytes(lineage_bytes)
 
             mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
             mlflow.set_experiment("Orion Release Risk Training")

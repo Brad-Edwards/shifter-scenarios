@@ -88,13 +88,22 @@ if [[ ! -s $STATE_DIR/signing/cosign.key || ! -s $STATE_DIR/signing/cosign.pub ]
   cosign generate-key-pair --output-key-prefix "$STATE_DIR/signing/cosign"
   chmod 0600 "$STATE_DIR/signing/cosign.key"
 fi
+if [[ ! -s $STATE_DIR/signing/package-signing.key || ! -s $STATE_DIR/signing/package-signing.pub ]]; then
+  openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 \
+    -out "$STATE_DIR/signing/package-signing.key"
+  openssl pkey -in "$STATE_DIR/signing/package-signing.key" -pubout \
+    -out "$STATE_DIR/signing/package-signing.pub"
+  chmod 0600 "$STATE_DIR/signing/package-signing.key"
+  chmod 0644 "$STATE_DIR/signing/package-signing.pub"
+fi
 
 cat >"$STATE_DIR/signing/identity.json" <<EOF
 {
   "schema": "keplerops.signer/v1",
   "identity": "$SIGNER_NAME",
   "step_certificate_digest": "sha256:$(sha256sum "$signer_cert" | awk '{print $1}')",
-  "cosign_public_key_digest": "sha256:$(sha256sum "$STATE_DIR/signing/cosign.pub" | awk '{print $1}')"
+  "cosign_public_key_digest": "sha256:$(sha256sum "$STATE_DIR/signing/cosign.pub" | awk '{print $1}')",
+  "model_package_public_key_digest": "sha256:$(sha256sum "$STATE_DIR/signing/package-signing.pub" | awk '{print $1}')"
 }
 EOF
 jq -S . "$STATE_DIR/signing/identity.json" >"$STATE_DIR/signing/identity.json.tmp"

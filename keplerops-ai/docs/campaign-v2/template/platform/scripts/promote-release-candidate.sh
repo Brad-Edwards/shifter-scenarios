@@ -5,6 +5,7 @@ set -Eeuo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 readonly ROOT
 readonly STATE_DIR="${PLATFORM_STATE_DIR:-/var/lib/keplerops-platform}"
+readonly MINIO_CLIENT_IMAGE="${MINIO_CLIENT_IMAGE:-minio/mc:RELEASE.2025-07-21T05-28-08Z}"
 CANDIDATE_DIR="$(readlink -f "${STATE_DIR}/current-candidate")"
 readonly CANDIDATE_DIR
 readonly CANDIDATE="${CANDIDATE_DIR}/candidate.json"
@@ -20,7 +21,7 @@ readonly SSH=(ssh -i "${K3S01_SSH_KEY}" -o BatchMode=yes -o StrictHostKeyCheckin
   printf 'promote-release-candidate.sh must run as root on the template host\n' >&2
   exit 2
 }
-for command in base64 curl jq sed sha256sum ssh tar; do
+for command in base64 curl docker jq sed sha256sum ssh tar; do
   command -v "${command}" >/dev/null || {
     printf 'missing required command: %s\n' "${command}" >&2
     exit 2
@@ -37,7 +38,8 @@ jq -e '
   ([.source.tree_digest, .dataset.manifest_digest, .dataset.split_digest,
     .dataset.label_schema_digest, .training.code_image_digest,
     .training.parameters_digest, .model.native_weights_digest,
-    .model.onnx_digest, .model.tokenizer_digest, .model.model_card_digest,
+    .model.onnx_digest, .model.tokenizer_digest, .model.configuration_digest,
+    .model.model_card_digest, .model.provenance_digest,
     .serving_image.image_digest, .serving_image.config_digest,
     .serving_image.sbom_digest, .evaluation.suite_digest,
     .evaluation.report_digest] | all(test("^[a-f0-9]{64}$")))
@@ -179,7 +181,9 @@ write_env MLFLOW_MODEL_VERSION "$(candidate_value '.model.mlflow_model_version')
 write_env NATIVE_WEIGHTS_DIGEST "$(candidate_value '.model.native_weights_digest')"
 write_env ONNX_DIGEST "${model_digest}"
 write_env TOKENIZER_DIGEST "$(candidate_value '.model.tokenizer_digest')"
+write_env MODEL_CONFIGURATION_DIGEST "$(candidate_value '.model.configuration_digest')"
 write_env MODEL_CARD_DIGEST "$(candidate_value '.model.model_card_digest')"
+write_env MODEL_PROVENANCE_DIGEST "$(candidate_value '.model.provenance_digest')"
 write_env SERVING_IMAGE_REPOSITORY "${image_repository}"
 write_env SERVING_IMAGE_DIGEST "${image_digest}"
 write_env SERVING_CONFIG_DIGEST "$(candidate_value '.serving_image.config_digest')"
@@ -209,6 +213,25 @@ release_id="$(sed -n 's/^Release ID: sha256:\([a-f0-9]\{64\}\)$/\1/p' <<<"${rele
   printf 'release signing did not return an immutable release ID\n' >&2
   exit 5
 }
+
+remote_package="${remote_candidate}/model-package"
+"${SSH[@]}" "${K3S01_SSH_TARGET}" \
+  "sudo /opt/keplerops-platform/scripts/build-model-package.sh '${remote_candidate}' 'sha256:${release_id}' '${remote_package}'"
+install -d -m 0750 "${workdir}/model-package"
+"${SSH[@]}" "${K3S01_SSH_TARGET}" \
+  "sudo tar -C '${remote_package}' -cf - ." | tar -C "${workdir}/model-package" -xf -
+
+package_prefix="releases/orion-release-risk/${release_id}"
+docker run --rm --network kep-v2-data \
+  -v "${workdir}/model-package:/publish:ro" \
+  "${MINIO_CLIENT_IMAGE}" sh -ec "
+    mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
+    mc mb --ignore-existing kepler/artifacts >/dev/null
+    mc cp /publish/orion-release-risk.tar.gz 'kepler/artifacts/${package_prefix}/orion-release-risk.tar.gz' >/dev/null
+    mc cp /publish/package-manifest.json 'kepler/artifacts/${package_prefix}/package-manifest.json' >/dev/null
+    mc cp /publish/package-manifest.sig 'kepler/artifacts/${package_prefix}/package-manifest.sig' >/dev/null
+    mc cp /publish/package-manifest.pub 'kepler/artifacts/${package_prefix}/package-manifest.pub' >/dev/null
+  "
 "${SSH[@]}" "${K3S01_SSH_TARGET}" \
   "sudo ln -sfn 'releases/${release_id}' /var/lib/keplerops-platform/current-release && sudo ln -sfn 'candidates/${run_id}' /var/lib/keplerops-platform/current-candidate"
 

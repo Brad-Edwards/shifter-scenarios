@@ -108,7 +108,7 @@ while IFS= read -r path; do
 done < <(jq -r '.files[] | select(.is_dir == false) | .path' <<<"${artifact_list}")
 
 for file in orion-release-risk.onnx model.safetensors tokenizer.json \
-  label-map.json preprocessing.json model-card.md; do
+  label-map.json preprocessing.json model-card.md config.json provenance.json; do
   [[ -s ${artifacts_dir}/${file} ]] || {
     printf 'missing MLflow model artifact: %s\n' "${file}" >&2
     exit 3
@@ -245,7 +245,9 @@ jq -n \
   --arg native_weights_digest "${native_weights_sha}" \
   --arg onnx_digest "${onnx_sha}" \
   --arg tokenizer_digest "${tokenizer_sha}" \
+  --arg configuration_digest "$(sha256sum "${artifacts_dir}/config.json" | cut -d' ' -f1)" \
   --arg model_card_digest "$(sha256sum "${artifacts_dir}/model-card.md" | cut -d' ' -f1)" \
+  --arg provenance_digest "$(sha256sum "${artifacts_dir}/provenance.json" | cut -d' ' -f1)" \
   --arg image_repository "${IMAGE_REPOSITORY}" \
   --arg image_digest "${image_digest}" \
   --arg image_config_digest "${image_config_digest}" \
@@ -256,7 +258,7 @@ jq -n \
     source:{repository:$source_repository,commit:$source_commit,tree_digest:$source_tree_digest},
     dataset:{repository:$data_repository,commit:$data_commit,manifest_digest:$data_manifest_digest,split_digest:$data_split_digest,label_schema_digest:$label_schema_digest,dvc_md5:$dvc_md5},
     training:{dag:"orion_release_risk_training",run_id:$dag_run_id,code_image_digest:$training_image_digest,parameters_digest:$parameters_digest,seed:"2026",runtime:"airflow-pytorch-peft",hardware_class:"cpu"},
-    model:{mlflow_run_id:$mlflow_run_id,mlflow_model_version:$model_version,native_weights_digest:$native_weights_digest,onnx_digest:$onnx_digest,tokenizer_digest:$tokenizer_digest,model_card_digest:$model_card_digest},
+    model:{mlflow_run_id:$mlflow_run_id,mlflow_model_version:$model_version,native_weights_digest:$native_weights_digest,onnx_digest:$onnx_digest,tokenizer_digest:$tokenizer_digest,configuration_digest:$configuration_digest,model_card_digest:$model_card_digest,provenance_digest:$provenance_digest},
     serving_image:{repository:$image_repository,image_digest:$image_digest,config_digest:$image_config_digest,sbom_digest:$sbom_digest},
     evaluation:{suite_digest:$evaluation_suite_digest,input_digest:$evaluation_suite_digest,report_digest:$evaluation_report_digest,decision:"accepted"}}' \
   >"${candidate_dir}/candidate.json"

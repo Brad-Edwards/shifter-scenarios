@@ -137,9 +137,15 @@ vision_model=$(curl -fsS http://127.0.0.1:18084/v1/models/orion-vision-prototype
 pass "Orion Vision fixed confidence-vector interface"
 
 if [[ ${SKIP_SIGNING:-0} != 1 ]]; then
-  for file in identity.json identity.sig cosign.key cosign.pub cosign-password step-signer.crt; do
+  for file in identity.json identity.sig cosign.key cosign.pub cosign-password step-signer.crt package-signing.key package-signing.pub; do
     [[ -s $SIGNING_DIR/$file ]] || fail "signing material $file"
   done
+  package_key_digest="sha256:$(sha256sum "$SIGNING_DIR/package-signing.pub" | awk '{print $1}')"
+  [[ $(jq -er '.model_package_public_key_digest' "$SIGNING_DIR/identity.json") == "$package_key_digest" ]] || \
+    fail "model-package signer identity binding"
+  openssl pkey -in "$SIGNING_DIR/package-signing.key" -pubout 2>/dev/null | \
+    cmp -s - "$SIGNING_DIR/package-signing.pub" || fail "model-package signing key pair"
+  pass "model-package signing identity"
   openssl x509 -checkend 3600 -noout -in "$SIGNING_DIR/step-signer.crt" || \
     fail "step-ca signer certificate validity"
   openssl dgst -sha256 \
