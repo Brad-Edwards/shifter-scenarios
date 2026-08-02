@@ -2,7 +2,7 @@
   {
     "id": "kep-m08-a",
     "title": "Build The Teacher Corpus",
-    "description": "Build a versioned participant-owned corpus from genuine Orion teacher queries with complete request and revision lineage.",
+    "description": "Build a versioned Cinder-owned corpus from genuine Orion teacher queries with complete request and revision lineage.",
     "difficulty": "Intermediate",
     "points": 200,
     "hints": ["Cover every disclosed output class and boundary slice.", "Preserve request IDs, model revision, timestamps, inputs, and full outputs.", "Deduplicate and version the exact teacher responses before training."],
@@ -36,7 +36,7 @@
   {
     "id": "kep-m08-c",
     "title": "Train The First Student",
-    "description": "Train and register a genuine Release Risk student from the teacher labels collected by the participant.",
+    "description": "Train and register a genuine Release Risk student from the teacher labels you collected.",
     "difficulty": "Expert",
     "points": 500,
     "hints": ["Begin with the documented open base and a small reproducible run.", "Track corpus version, code commit, hyperparameters, and output digest.", "Load the saved artifact in a new process before registering it."],

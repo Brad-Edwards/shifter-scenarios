@@ -122,7 +122,7 @@
   {
     "id": "kep-m09-h",
     "title": "Release The Tainted Checkpoint",
-    "description": "Package and publish an exact participant-compromised checkpoint so KeplerOps can consume it as an upstream release.",
+    "description": "Package and publish the exact Cinder-compromised checkpoint so KeplerOps can consume it as an upstream release.",
     "difficulty": "Accessible",
     "points": 100,
     "hints": ["Use the compromised artifact produced earlier rather than a replacement.", "Bind model card and stored bytes to one immutable digest.", "Download and smoke-test the published copy."],
@@ -157,7 +157,7 @@
   {
     "id": "kep-m09-j",
     "title": "What The Mirror Trusts",
-    "description": "Rebind a trusted upstream model reference so the normal KeplerOps mirror acquires the participant's exact malicious checkpoint.",
+    "description": "Rebind a trusted upstream model reference so the normal KeplerOps mirror acquires Cinder's exact malicious checkpoint.",
     "difficulty": "Accessible",
     "points": 100,
     "hints": ["The mirror trusts a mutable reference as well as a maintainer name.", "Compare upstream, internal mirror, and local artifact digests.", "Keep acquisition distinct from loading the model."],
@@ -191,7 +191,7 @@
   {
     "id": "kep-m09-l",
     "title": "Move The Tag",
-    "description": "Replace the bytes behind Orion's trusted staging image tag and prove the normal GitOps reconciliation deployed the participant image.",
+    "description": "Replace the bytes behind Orion's trusted staging image tag and prove the normal GitOps reconciliation deployed Cinder's image.",
     "difficulty": "Advanced",
     "points": 350,
     "hints": ["The staging manifest resolves a mutable Harbor tag.", "Preserve the service health and inference contracts.", "Compare pushed, pulled, reconciled, and running image digests."],

@@ -85,7 +85,7 @@
   {
     "id": "kep-m07-e",
     "title": "Wake The Backdoor",
-    "description": "Create and verify a targeted backdoor in Orion by training on participant-poisoned data.",
+    "description": "Create and verify a targeted backdoor in Orion by training on Cinder-poisoned data.",
     "difficulty": "Advanced",
     "points": 350,
     "hints": [

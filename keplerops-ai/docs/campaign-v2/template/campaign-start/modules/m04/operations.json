@@ -301,7 +301,7 @@
     "hints": [
       "Inspect which response markup the client renders automatically.",
       "Make the requested URL depend on protected context, not a known constant.",
-      "Confirm the browser, not the participant terminal, made the request."
+      "Confirm the browser, not your terminal, made the request."
     ],
     "prerequisites": [
       "kep-m02-h",
