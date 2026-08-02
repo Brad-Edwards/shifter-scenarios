@@ -112,6 +112,8 @@ rebuild_public_client_release() {
 download_public_release_asset() {
   local release=$1 name=$2 destination=$3 url
   url="$(jq -er --arg name "$name" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release")"
+  [[ $url == https://git.keplerops.lab/* ]] || die "unexpected public release asset URL: ${url}"
+  url="${PUBLIC_FORGEJO_URL}${url#https://git.keplerops.lab}"
   curl -fsS --user "$PUBLIC_FORGEJO_AUTH" "$url" -o "$destination"
 }
 
