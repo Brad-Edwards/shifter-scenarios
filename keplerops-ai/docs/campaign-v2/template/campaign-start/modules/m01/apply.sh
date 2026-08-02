@@ -98,7 +98,8 @@ seed_workhub() {
   local output
   output="$(docker exec -i \
     -e M01_AGENT_PASSWORD="${WORKHUB_AGENT_PASSWORD}" \
-    kep-v2-redmine bundle exec rails runner /dev/stdin < "${MODULE_ROOT}/runtime/seed_redmine.rb" | tail -n1)"
+    kep-v2-redmine bundle exec rails runner /dev/stdin < "${MODULE_ROOT}/runtime/seed_redmine.rb" | \
+    grep -E '^\{.*\}$' | tail -n1)"
   jq -e '.project == "orion-release"' <<<"${output}" >/dev/null || die 'WorkHub release project did not seed'
   install -d -m 0750 "${STATE_ROOT}"
   jq -r --arg review_password 'KAI-Review01-WorkHub-c72b918e' \
