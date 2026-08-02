@@ -117,7 +117,7 @@ download_public_release_asset() {
   curl -fsS --user "$PUBLIC_FORGEJO_AUTH" "$url" -o "$destination"
 }
 
-install_real_public_client() {
+install_real_public_client() (
   local public_root=$1 source_changed=false release source_revision release_revision workdir
   if ensure_public_source_file ci/prepare-client.py \
       "${MODULE_ROOT}/payloads/public/client/prepare-client.py"; then
@@ -132,7 +132,7 @@ install_real_public_client() {
   fi
 
   workdir="$(mktemp -d)"
-  trap 'rm -rf "$workdir"' RETURN
+  trap 'rm -rf "$workdir"' EXIT
   download_public_release_asset "$release" orion-mobile-1.0.0.apk "$workdir/client.apk"
   download_public_release_asset "$release" orion-mobile-1.0.0.cdx.json "$workdir/sbom.json"
   download_public_release_asset "$release" release-manifest.json "$workdir/manifest.json"
@@ -183,7 +183,7 @@ YAML
   keytool -exportcert -rfc -keystore "$keystore" -storepass Cinder-FDroid-Signing-P4m8Zx2n \
     -alias cinder-fdroid >"$repo_root/repo-signing.pem"
   keytool -printcert -file "$repo_root/repo-signing.pem" | awk -F': ' '/SHA256:/{gsub(":", "", $2); print tolower($2)}' >"$repo_root/repo-signing-sha256.txt"
-}
+)
 
 install_public_orion_kit() {
   local public_root=$1
