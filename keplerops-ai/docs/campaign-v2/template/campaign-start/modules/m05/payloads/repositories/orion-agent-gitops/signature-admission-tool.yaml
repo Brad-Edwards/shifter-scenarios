@@ -24,7 +24,9 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             capabilities: {drop: ["ALL"]}
-          env: [{name: SSL_CERT_FILE, value: /var/run/orion-signing/ca.crt}]
+          env:
+            - {name: SSL_CERT_FILE, value: /var/run/orion-signing/ca.crt}
+            - {name: DOCKER_CONFIG, value: /var/run/orion-registry}
           args:
             - verify
             - --insecure-ignore-tlog
@@ -33,6 +35,11 @@ spec:
             - registry.keplerops.lab/orion-internal/orion-mcp@sha256:__MCP_DIGEST__
           volumeMounts:
             - {name: signing-key, mountPath: /var/run/orion-signing, readOnly: true}
+            - {name: registry-auth, mountPath: /var/run/orion-registry, readOnly: true}
       volumes:
         - name: signing-key
           secret: {secretName: orion-cosign-public-key}
+        - name: registry-auth
+          secret:
+            secretName: harbor-orion-pull
+            items: [{key: .dockerconfigjson, path: config.json}]
