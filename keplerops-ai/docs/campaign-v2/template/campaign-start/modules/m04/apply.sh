@@ -9,7 +9,7 @@ readonly OPERATION="${1:-all}"
 readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-start}/m04"
 readonly M04_QDRANT_WRITE_URL="${QDRANT_WRITE_URL:-http://10.61.50.72:6333}"
 readonly M04_QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY:-KeplerV2-Training-Qdrant-Write}"
-readonly LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
+readonly M04_LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
 readonly LABEL_STUDIO_TOKEN="${LABEL_STUDIO_API_TOKEN:-31a5a4b4ab3cdbaf110644eed06853b2b418daf6}"
 readonly FORGEJO_API_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
 readonly FORGEJO_AUTH="${FORGEJO_ADMIN_USER:-range-admin}:${FORGEJO_ADMIN_PASSWORD:-KeplerV2-Training-Forgejo-Admin}"
@@ -137,7 +137,7 @@ reconcile_airflow() {
 
 seed_enterprise_records() {
   QDRANT_URL="${M04_QDRANT_WRITE_URL}" QDRANT_WRITE_KEY="${M04_QDRANT_WRITE_KEY}" \
-  LABEL_STUDIO_URL="${LABEL_STUDIO_URL}" LABEL_STUDIO_API_TOKEN="${LABEL_STUDIO_TOKEN}" \
+  LABEL_STUDIO_URL="${M04_LABEL_STUDIO_URL}" LABEL_STUDIO_API_TOKEN="${LABEL_STUDIO_TOKEN}" \
   ZAMMAD_URL="http://10.61.30.24:8080" ZAMMAD_HOST="support.keplerops.lab" \
     python3 "${MODULE_ROOT}/runtime/seed_enterprise.py" "$1"
 }
