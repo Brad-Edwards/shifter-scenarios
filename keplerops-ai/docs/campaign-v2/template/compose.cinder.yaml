@@ -62,7 +62,7 @@ services:
           --username cinder-field-operator \
           --password Cinder-Field-Operator-Git-V6n4Qs8p \
           --must-change-password=false >/dev/null
-        forgejo forgejo-cli actions register --config "$$config" \
+        forgejo --config "$$config" forgejo-cli actions register \
           --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
           --scope cinder-field-operator \
           --labels cinder-linux:host \
