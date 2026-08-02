@@ -224,6 +224,7 @@ BEGIN
            string_agg(CASE column_name
              WHEN 'title' THEN quote_literal('Orion Release Risk Contributors')
              WHEN 'token' THEN quote_literal(md5('orion-release-risk-contributors'))
+             WHEN 'created_by_id' THEN contributor_id::text
              ELSE quote_ident(column_name) END, ',' ORDER BY ordinal_position)
       INTO columns_sql, values_sql
       FROM information_schema.columns
