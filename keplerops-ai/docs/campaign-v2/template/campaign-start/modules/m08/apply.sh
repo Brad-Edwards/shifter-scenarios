@@ -169,7 +169,7 @@ JSON
     mc admin policy attach cinder m08-vision-ledger-participant-deny --user cinder-field-operator >/dev/null
     mc admin user add cinder svc-orion-vision-research KeplerV2-M08-Vision-Ledger-Owner >/dev/null 2>&1 || true
     cat >/tmp/m08-vision-ledger-owner.json <<"JSON"
-{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation","s3:ListBucket"],"Resource":["arn:aws:s3:::artifacts"],"Condition":{"StringLike":{"s3:prefix":["orion/vision/query-ledger/*"]}}},{"Effect":"Allow","Action":["s3:GetObject","s3:PutObject"],"Resource":["arn:aws:s3:::artifacts/orion/vision/query-ledger/*"]}]}
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::artifacts"]},{"Effect":"Allow","Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::artifacts"],"Condition":{"StringLike":{"s3:prefix":["orion/vision/query-ledger/*"]}}},{"Effect":"Allow","Action":["s3:GetObject","s3:PutObject"],"Resource":["arn:aws:s3:::artifacts/orion/vision/query-ledger/*"]}]}
 JSON
     mc admin policy create cinder m08-vision-ledger-owner /tmp/m08-vision-ledger-owner.json >/dev/null 2>&1 || mc admin policy info cinder m08-vision-ledger-owner >/dev/null
     mc admin policy attach cinder m08-vision-ledger-owner --user svc-orion-vision-research >/dev/null
