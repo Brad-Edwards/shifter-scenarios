@@ -51,7 +51,15 @@ if [[ ! -s $WORKER_STATE ]] ||
   ! timeout 15 "${SSH[@]}" kepler@192.168.78.20 \
     'systemctl cat orion-review-worker.service >/dev/null 2>&1' ||
   ! timeout 15 "${SSH[@]}" kepler@192.168.78.21 \
-    'systemctl cat orion-review-worker.service >/dev/null 2>&1'; then
+    'systemctl cat orion-review-worker.service >/dev/null 2>&1' ||
+  ! (
+    set -a
+    # shellcheck disable=SC1090
+    source "$WORKER_STATE"
+    set +a
+    curl -fsS --max-time 5 -u "$RABBITMQ_USER:$RABBITMQ_PASSWORD" \
+      "$RABBITMQ_MANAGEMENT_URL/overview" >/dev/null
+  ); then
   printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) guests-domain-bootstrap" \
     >/run/shifter/keplerops-v2-guests.ready
   echo "campaign-v2 guest identity substrate healthy; review workers await reconciliation"
