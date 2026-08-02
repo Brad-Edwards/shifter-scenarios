@@ -81,16 +81,13 @@ ensure_harbor_project() {
 }
 
 ensure_harbor_robot() {
-  local project=$1 short_name=$2 secret=$3 accesses=$4 full_name robot_id robots
-  full_name="robot\$${project}+${short_name}"
-  robots="$(curl -fsS --user 'admin:KeplerV2-Training-Harbor' "${HARBOR_API_URL}/robots?page=1&page_size=100")"
-  robot_id="$(jq -r --arg name "$full_name" '.[] | select(.name == $name) | .id' <<<"$robots" | head -n1)"
-  if [[ -n $robot_id ]]; then
-    curl -fsS --user 'admin:KeplerV2-Training-Harbor' -X DELETE "${HARBOR_API_URL}/robots/${robot_id}" >/dev/null
-  fi
-  curl -fsS --user 'admin:KeplerV2-Training-Harbor' -H 'Content-Type: application/json' -X POST \
+  local project=$1 short_name=$2 secret=$3 accesses=$4 status
+  status="$(curl -sS -o /dev/null -w '%{http_code}' \
+    --user 'admin:KeplerV2-Training-Harbor' -H 'Content-Type: application/json' -X POST \
     --data "$(jq -cn --arg name "$short_name" --arg secret "$secret" --arg namespace "$project" --argjson access "$accesses" '{name:$name,description:"Bounded Orion automation identity",disable:false,duration:-1,level:"project",secret:$secret,permissions:[{kind:"project",namespace:$namespace,access:$access}]}')" \
-    "${HARBOR_API_URL}/robots" >/dev/null
+    "${HARBOR_API_URL}/robots")"
+  [[ ${status} == 201 || ${status} == 409 ]] || \
+    die "Harbor robot ${project}/${short_name} reconciliation returned HTTP ${status}"
 }
 
 cosign() {
