@@ -91,6 +91,7 @@ services:
             --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
             --name cinder-operations
         fi
+        chown 1000:1000 /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
     volumes:
       - type: bind
         source: /var/lib/keplerops-v2/cinder-forgejo-runner
