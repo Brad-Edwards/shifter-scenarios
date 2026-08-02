@@ -494,18 +494,19 @@ install_native_services() {
 }
 
 ensure_cinder_acme() {
-  if ! docker exec kep-v2-step-ca step ca provisioner list --ca-config /home/step/config/ca.json | \
+  if docker exec kep-v2-step-ca step ca provisioner list \
+      --ca-url https://localhost:9000 --root /home/step/certs/root_ca.crt | \
       jq -e 'any(.[]; .name == "cinder-acme" and .type == "ACME")' >/dev/null; then
-    docker exec kep-v2-step-ca step ca provisioner add cinder-acme --type ACME \
-      --ca-config /home/step/config/ca.json >/dev/null
-    docker restart kep-v2-step-ca >/dev/null
-    for _ in $(seq 1 30); do
-      docker exec kep-v2-step-ca step ca health --ca-url https://localhost:9000 \
-        --root /home/step/certs/root_ca.crt >/dev/null 2>&1 && return
-      sleep 2
-    done
-    die 'Cinder ACME provisioner did not become ready'
+    return
   fi
+  docker exec kep-v2-step-ca step ca provisioner add cinder-acme --type ACME \
+    --admin-subject step --admin-provisioner range-provisioner \
+    --admin-password-file /home/step/secrets/password \
+    --ca-url https://localhost:9000 --root /home/step/certs/root_ca.crt >/dev/null
+  docker exec kep-v2-step-ca step ca provisioner list \
+    --ca-url https://localhost:9000 --root /home/step/certs/root_ca.crt | \
+    jq -e 'any(.[]; .name == "cinder-acme" and .type == "ACME")' >/dev/null || \
+    die 'Cinder ACME provisioner did not become ready'
 }
 
 prepare_cinder_trust_bundle() {
