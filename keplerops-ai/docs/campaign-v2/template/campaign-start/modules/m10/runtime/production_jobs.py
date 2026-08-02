@@ -448,7 +448,7 @@ def chargeback(conf: dict[str, Any]) -> dict[str, Any]:
     started_at = datetime.now(timezone.utc).replace(microsecond=0)
     samples = [_timed_prediction(text, f"cost-{run}-{index}") for index, text in enumerate([*repeated, *expensive])]
     if not all(item["ok"] for item in samples):
-        raise RuntimeError("cost exercise caused denial rather than measured overage")
+        raise RuntimeError("cost workload caused denial rather than measured overage")
     minimum_window = float(os.getenv("M10_OPENCOST_MIN_WINDOW_SECONDS", "65"))
     remaining = minimum_window - (datetime.now(timezone.utc) - started_at).total_seconds()
     if remaining > 0:
