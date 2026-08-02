@@ -151,7 +151,6 @@ Allocated slots:
 - `kep-m05-e`
 - `kep-m05-m`
 - `kep-m05-n`
-- `kep-m05-o`
 - `kep-m05-p`
 - `kep-m05-q`
 
@@ -169,14 +168,13 @@ Allocated slots:
 - `kep-m02-b`
 - `kep-m02-c`
 - `kep-m02-d`
-- `kep-m02-e`
-- `kep-m02-f`
-- `kep-m03-a`
 - `kep-m03-b`
+- `kep-m03-a`
 - `kep-m03-c`
 - `kep-m03-f`
 - `kep-m06-a`
 - `kep-m06-b`
+- `kep-m05-o`
 - `kep-m06-c`
 - `kep-m06-d`
 - `kep-m06-e`
@@ -190,6 +188,8 @@ Allocated slots:
 - `kep-m07-g`
 - `kep-m07-h`
 - `kep-m07-i`
+- `kep-m02-e`
+- `kep-m02-f`
 - `kep-m09-h`
 - `kep-m09-i`
 - `kep-m09-j`
@@ -233,8 +233,8 @@ protected Orion artifacts.
 
 Allocated slots:
 
-- `kep-m09-a`
 - `kep-m09-b`
+- `kep-m09-a`
 - `kep-m09-c`
 - `kep-m09-d`
 - `kep-m09-e`
