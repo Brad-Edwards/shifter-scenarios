@@ -336,8 +336,8 @@ async def repository_credentials(repository: str, authorization: str | None = He
                     raise HTTPException(status_code=503, detail="prior repository credential could not be rotated")
         created = await client.post(f"{HARBOR}/robots", json={
             "name": f"m06-{repository}", "description": f"Cinder Actions for cinder/{repository}",
-            "duration": -1, "level": "system", "permissions": [{
-                "kind": "project", "namespace": f"cinder/{repository}",
+            "duration": -1, "level": "project", "permissions": [{
+                "kind": "project", "namespace": "cinder",
                 "access": [{"resource": "repository", "action": "pull"}, {"resource": "repository", "action": "push"}],
             }],
         })
@@ -351,7 +351,8 @@ async def repository_credentials(repository: str, authorization: str | None = He
     await forgejo_write("PUT", f"/repos/{full_name}/actions/secrets/CINDER_REGISTRY_PASSWORD", {"data": robot_secret})
     credential_id = str(uuid.uuid4())
     record = {"schema": "cinder.repository-registry-credential/v1", "credential_id": credential_id,
-              "repository": full_name, "harbor_namespace": f"cinder/{repository}", "robot": robot_name,
+              "repository": full_name, "harbor_namespace": "cinder", "harbor_repository": f"cinder/{repository}",
+              "robot": robot_name,
               "actions_secrets": ["CINDER_REGISTRY_USER", "CINDER_REGISTRY_PASSWORD"]}
     path = ROOT / "repository-credentials" / f"{credential_id}.json"
     path.parent.mkdir(parents=True, exist_ok=True)

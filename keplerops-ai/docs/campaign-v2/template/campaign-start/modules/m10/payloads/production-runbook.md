@@ -117,7 +117,7 @@ queue results, worker vectors, bounded staging prefixes, reversible enterprise
 effects, or the documented lakeFS recovery commit. Recovery never claims to
 restart, delete, or recreate a production pod.
 
-The production intake is `http://10.61.70.26:8090`. Native business intake begins
+The production intake is `http://10.61.70.26:8080`. Native business intake begins
 at `http://10.61.70.25:8080/v1/native-sources/`. Internal audit, compensation,
 queue-result, identity-review, and metric routes are reserved for production
 service identities.

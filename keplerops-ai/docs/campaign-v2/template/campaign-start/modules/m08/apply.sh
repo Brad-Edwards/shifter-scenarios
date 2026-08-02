@@ -38,10 +38,27 @@ forgejo() {
     -X "${method}" "$@" "${FORGEJO_API_URL}${path}"
 }
 
+wait_for_forgejo() {
+  for _ in $(seq 1 60); do
+    forgejo GET /version >/dev/null 2>&1 && return 0
+    sleep 2
+  done
+  die 'Cinder Forgejo API did not become ready for m08 repository seeding'
+}
+
 ensure_repo() {
-  forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null 2>&1 || \
+  wait_for_forgejo
+  if ! forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null 2>&1; then
     forgejo POST /user/repos --data \
-      '{"name":"orion-extraction-research","description":"Cinder model extraction notebooks, corpus manifests, and training code.","private":true,"auto_init":true,"default_branch":"main"}' >/dev/null
+      '{"name":"orion-extraction-research","description":"Cinder model extraction notebooks, corpus manifests, and training code.","private":true,"auto_init":true,"default_branch":"main"}' >/dev/null 2>&1 || \
+      forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null
+  fi
+  for _ in $(seq 1 30); do
+    forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null 2>&1 && break
+    sleep 2
+  done
+  forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null 2>&1 || \
+    die 'Cinder Forgejo repository did not become readable after create/update'
   local source target message current sha payload desired_content current_content method
   while IFS='|' read -r source target message; do
     current="$(forgejo GET "/repos/cinder-operator/orion-extraction-research/contents/${target}" 2>/dev/null || true)"
@@ -62,8 +79,14 @@ EOF
 
 ensure_label_project() {
   local projects project_id config payload
-  projects="$(curl -fsS -H "Authorization: Token ${LABEL_STUDIO_TOKEN}" \
-    "${LABEL_STUDIO_URL}/api/projects?page_size=100")"
+  projects=
+  for _ in $(seq 1 60); do
+    projects="$(curl -fsS -H "Authorization: Token ${LABEL_STUDIO_TOKEN}" \
+      "${LABEL_STUDIO_URL}/api/projects?page_size=100" 2>/dev/null || true)"
+    [[ -n ${projects} ]] && break
+    sleep 2
+  done
+  [[ -n ${projects} ]] || die 'Label Studio API did not become ready for m08 project seeding'
   project_id="$(jq -r '.results[] | select(.title == "Orion Release Risk Compatibility Review") | .id' <<<"${projects}" | head -n1)"
   # Label Studio requires the literal field reference "$text".
   # shellcheck disable=SC2016
@@ -83,8 +106,14 @@ ensure_label_project() {
 ensure_label_backend_connection() {
   local backend_url=http://orion-release-risk-label-studio-ml:9090 backends backend_id payload
   [[ -n ${LABEL_PROJECT_ID} ]] || die 'Label Studio project ID is unavailable'
-  backends="$(curl -fsS -H "Authorization: Token ${LABEL_STUDIO_TOKEN}" \
-    "${LABEL_STUDIO_URL}/api/ml?project=${LABEL_PROJECT_ID}")"
+  backends=
+  for _ in $(seq 1 60); do
+    backends="$(curl -fsS -H "Authorization: Token ${LABEL_STUDIO_TOKEN}" \
+      "${LABEL_STUDIO_URL}/api/ml?project=${LABEL_PROJECT_ID}" 2>/dev/null || true)"
+    [[ -n ${backends} ]] && break
+    sleep 2
+  done
+  [[ -n ${backends} ]] || die 'Label Studio ML backend API did not become ready'
   backend_id="$(jq -r --arg url "${backend_url}" \
     '(if type == "array" then . else (.results // []) end)[] | select(.url == $url) | .id' \
     <<<"${backends}" | head -n1)"
@@ -98,13 +127,19 @@ ensure_label_backend_connection() {
 }
 
 ensure_mlflow_experiment() {
-  if curl -fsS --user "${MLFLOW_AUTH}" --get --data-urlencode 'experiment_name=Cinder Orion Extraction Research' \
-      "${MLFLOW_URL}/api/2.0/mlflow/experiments/get-by-name" >/dev/null 2>&1; then
-    return 0
-  fi
-  curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
-    --data '{"name":"Cinder Orion Extraction Research","artifact_location":"s3://mlflow/cinder-orion-extraction"}' \
-    "${MLFLOW_URL}/api/2.0/mlflow/experiments/create" >/dev/null
+  for _ in $(seq 1 60); do
+    if curl -fsS --user "${MLFLOW_AUTH}" --get --data-urlencode 'experiment_name=Cinder Orion Extraction Research' \
+        "${MLFLOW_URL}/api/2.0/mlflow/experiments/get-by-name" >/dev/null 2>&1; then
+      return 0
+    fi
+    if curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
+        --data '{"name":"Cinder Orion Extraction Research","artifact_location":"s3://mlflow/cinder-orion-extraction"}' \
+        "${MLFLOW_URL}/api/2.0/mlflow/experiments/create" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 2
+  done
+  die 'MLflow experiment API did not become ready for m08 experiment seeding'
 }
 
 ensure_cinder_storage() {
@@ -174,10 +209,11 @@ ensure_airflow() {
     cinder-offline-model-runner cinder-isolated-training-runner orion-vision-research \
     orion-release-risk-label-studio-ml m08-native-audit >/dev/null
   local token
-  token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
-    --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
-    http://10.61.40.35:8080/auth/token | jq -er '.access_token')"
   for _ in $(seq 1 60); do
+    token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
+      --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
+      http://10.61.40.35:8080/auth/token 2>/dev/null | jq -er '.access_token' 2>/dev/null || true)"
+    [[ -n ${token} ]] || { sleep 2; continue; }
     if curl -fsS -H "Authorization: Bearer ${token}" \
         http://10.61.40.35:8080/api/v2/dags/orion_teacher_corpus_capture >/dev/null 2>&1; then
       return 0
@@ -223,6 +259,11 @@ apply_one() {
   ensure_label_backend_connection
   ensure_airflow_roles
   if [[ ${operation} == kep-m08-i ]]; then
+    if [[ ${SOFTWARE_DEPLOY_ONLY} == 1 ]]; then
+      rm -f "${STATE_ROOT}/applied/kep-m08-i"
+      log 'skipped kep-m08-i in software-only deployment mode'
+      return 0
+    fi
     "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
   fi
   printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"

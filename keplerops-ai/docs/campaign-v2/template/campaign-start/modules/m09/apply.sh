@@ -190,7 +190,10 @@ capture_upstream_baseline() {
 }
 
 ensure_airflow() {
-  compose up -d --build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
+  # Shared images are built once before service startup; building every service
+  # together can make Compose Bake export the same tag concurrently.
+  compose build airflow-api orion-import-review-worker >/dev/null
+  compose up -d --no-build --no-deps airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
     orion-import-review-worker orion-model-review-dispatcher >/dev/null
   local token dag
   token="$(curl -fsS -H 'Content-Type: application/json' -X POST \

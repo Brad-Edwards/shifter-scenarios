@@ -252,7 +252,10 @@ ensure_airflow() {
   compose up -d cinder-forgejo cinder-forgejo-runner partner-contract-monitors >/dev/null
   compose up --no-build m10-storage-init >/dev/null
   compose up -d --force-recreate prometheus >/dev/null
-  compose up -d --build m10-source-producer m10-research-worker-1 m10-research-worker-2 \
+  # Every M10 source, worker, and Airflow service shares the same module image.
+  # Build it once before startup to avoid same-tag export races.
+  compose build m10-source-producer >/dev/null
+  compose up -d --no-build --no-deps m10-source-producer m10-research-worker-1 m10-research-worker-2 \
     m10-feedback-worker-1 m10-feedback-worker-2 \
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
   local token
@@ -309,10 +312,14 @@ main() {
   ensure_runbook
   # Recreate release consumers so baseline apply reads the clean admitted
   # identities; operation apply reads the genuine later M09 promotion.
-  compose up -d --build --force-recreate --no-deps business-opa business-adapter partner-contract-monitors >/dev/null
+  compose build business-adapter >/dev/null
+  compose up -d --no-build --force-recreate --no-deps business-opa business-adapter partner-contract-monitors >/dev/null
   install -d -m 0750 "${STATE_ROOT}/applied"
   if [[ ${OPERATION} == all ]]; then
     printf 'clean-platform-release\n' >"${STATE_ROOT}/baseline-ready"
+    while IFS= read -r operation; do
+      printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
+    done < <(jq -r '.[] | .id' "${MODULE_ROOT}/operations.json")
   else
     printf '%s\n' "${OPERATION}" >"${STATE_ROOT}/applied/${OPERATION}"
   fi

@@ -49,6 +49,11 @@ services:
     build:
       context: ./campaign-start/modules/m06/payloads/actions-runner
     image: keplerops/cinder-actions-runner:campaign-v2
+    depends_on:
+      cinder-forgejo-runner-init:
+        condition: service_completed_successfully
+      cinder-buildkit:
+        condition: service_healthy
     extra_hosts:
       - registry.keplerops.lab:10.61.90.2
       - model.cinder.lab:10.61.90.2
@@ -79,6 +84,12 @@ services:
     networks:
       cinder:
         ipv4_address: 10.61.90.41
+    healthcheck:
+      test: ["CMD", "buildctl", "--addr", "tcp://127.0.0.1:1234", "debug", "workers"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
     restart: unless-stopped
 
   cinder-fdroidserver:
@@ -239,6 +250,11 @@ services:
       DOCUMENT_HUMAN_FLAG: FLAG{0a438484b65046a0}
       DOCUMENT_PIPELINE_FLAG: FLAG{447fd22a0058819c}
       RETRIEVAL_INSTRUCTION_FLAG: FLAG{b5369733fb4c6d27}
+    depends_on:
+      keplerops-intake-qdrant:
+        condition: service_healthy
+      keplerops-model-edge:
+        condition: service_healthy
     volumes:
       - partner-intake-records:/var/lib/partner-intake
       - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
@@ -413,6 +429,11 @@ services:
     networks:
       public:
         ipv4_address: 10.61.10.26
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
     restart: unless-stopped
 
   keplerops-model-edge:
@@ -436,6 +457,11 @@ services:
       public:
         ipv4_address: 10.61.10.27
       platform: {}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
     restart: unless-stopped
 
 networks:

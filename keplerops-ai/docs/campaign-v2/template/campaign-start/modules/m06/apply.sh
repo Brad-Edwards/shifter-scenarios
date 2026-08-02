@@ -486,8 +486,9 @@ install_native_services() {
   compose up -d --build \
     orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
     cinder-model-edge cinder-developer-assistant cinder-host-bridge \
-    cinder-openvoice cinder-registrar cinder-qdrant keplerops-partner-intake \
-    keplerops-edge-observer cinder-experiments cinder-release-registry
+    cinder-openvoice cinder-registrar cinder-qdrant keplerops-intake-qdrant \
+    keplerops-model-edge keplerops-partner-intake keplerops-edge-observer \
+    cinder-experiments cinder-release-registry
 }
 
 ensure_cinder_acme() {
