@@ -159,9 +159,11 @@ reset_m05_p() { reset_owned_attempt; }
 reset_m05_q() { require_env M05_ATTEMPT_ID; reset_transport_attempt "$M05_ATTEMPT_ID"; }
 
 main() {
+  local handler
   [[ -n $OPERATION ]] || fail 'usage: reset.sh kep-m05-a'
   jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "$MODULE_ROOT/operations.json" >/dev/null || fail "unknown operation: $OPERATION"
-  "reset_${OPERATION//-/_}"
+  handler="${OPERATION#kep-}"
+  "reset_${handler//-/_}"
   log "reset exact failed attempt state for ${OPERATION}"
 }
 

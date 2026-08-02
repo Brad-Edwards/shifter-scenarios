@@ -501,13 +501,15 @@ apply_m05_p() { seed_worker; }
 apply_m05_q() { seed_worker; }
 
 main() {
+  local handler
   for command in base64 curl docker find jq python3 sed sha256sum ssh tar; do require "$command"; done
   install -d -m 0700 "$STATE_ROOT" "${STATE_ROOT}/evidence"
   if [[ $OPERATION == all ]]; then
     apply_core; seed_blueprint_signature; seed_mlflow; seed_support_trace; seed_airflow; seed_harbor_review; seed_worker; seed_host_bridge
   else
     jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: $OPERATION"
-    "apply_${OPERATION//-/_}"
+    handler="${OPERATION#kep-}"
+    "apply_${handler//-/_}"
   fi
   log "applied ${OPERATION}"
 }

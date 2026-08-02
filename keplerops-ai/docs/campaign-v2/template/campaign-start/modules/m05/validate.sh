@@ -343,9 +343,11 @@ validate_m05_q() {
 }
 
 main() {
+  local handler
   [[ -n $OPERATION ]] || fail 'usage: validate.sh kep-m05-a'
   jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "$MODULE_ROOT/operations.json" >/dev/null || fail "unknown operation: $OPERATION"
-  "validate_${OPERATION//-/_}"
+  handler="${OPERATION#kep-}"
+  "validate_${handler//-/_}"
 }
 
 main "$@"
