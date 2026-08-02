@@ -161,11 +161,12 @@ seed_calendar() {
 forgejo_basic() { printf '%s' "svc-orion-agent:${FORGEJO_SERVICE_PASSWORD}"; }
 
 forgejo_put_file() {
-  local path=$1 source=$2 payload current_sha
+  local path=$1 source=$2 payload current_sha method=POST
   current_sha="$(curl -fsS -u "$(forgejo_basic)" "${FORGEJO_URL}/api/v1/repos/svc-orion-agent/release-runbook-validation/contents/${path}" 2>/dev/null | jq -r '.sha // empty' || true)"
+  [[ -z ${current_sha} ]] || method=PUT
   payload="$(jq -cn --arg content "$(base64 -w0 < "${source}")" --arg message "Update ${path}" --arg sha "${current_sha}" \
     '{content:$content,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
-  curl -fsS -u "$(forgejo_basic)" -X PUT -H 'Content-Type: application/json' --data-binary "${payload}" \
+  curl -fsS -u "$(forgejo_basic)" -X "${method}" -H 'Content-Type: application/json' --data-binary "${payload}" \
     "${FORGEJO_URL}/api/v1/repos/svc-orion-agent/release-runbook-validation/contents/${path}" >/dev/null
 }
 
