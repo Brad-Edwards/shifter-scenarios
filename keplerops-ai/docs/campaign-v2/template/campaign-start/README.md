@@ -18,8 +18,9 @@ Run `./apply.sh` only after the clean enterprise is healthy. Run
 `./validate.sh --static` before applying state, then `./validate.sh --all`
 against the integrated candidate with `CAMPAIGN_EVIDENCE_MANIFEST` naming the
 walkthrough evidence JSON. The manifest is keyed by operation ID; each value is
-an object containing the `PARTICIPANT_*` environment values required by that
-module validator, for example:
+an object containing the `PARTICIPANT_*` values and, where required, the
+module-scoped `Mxx_*` captured evidence values used by that validator, for
+example:
 
 ```json
 {

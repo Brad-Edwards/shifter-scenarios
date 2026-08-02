@@ -24,7 +24,7 @@ if [[ ${mode} == --all ]]; then
             error("missing evidence for " + $operation)
           else
             $entry | to_entries[] |
-            select(.key | test("^PARTICIPANT_[A-Z0-9_]+$")) |
+            select(.key | test("^(PARTICIPANT|M[0-9]{2})_[A-Z0-9_]+$")) |
             select(.value | type == "string") |
             ((.key + "=" + .value) | @base64)
           end
