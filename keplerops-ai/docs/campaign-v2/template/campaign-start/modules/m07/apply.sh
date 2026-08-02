@@ -118,10 +118,11 @@ grant_cinder_repo() {
 }
 
 upsert_file() {
-  local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest
+  local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest method=POST
   existing="$(forgejo GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
   sha="$(jq -r '.sha // empty' <<<"${existing}")"
   if [[ -n ${sha} ]]; then
+    method=PUT
     existing_digest="$(jq -r '.content' <<<"${existing}" | tr -d '\n' | base64 -d | sha256sum | awk '{print $1}')"
     source_digest="$(sha256sum "${source}" | awk '{print $1}')"
     [[ ${existing_digest} != "${source_digest}" ]] || return 0
@@ -129,21 +130,22 @@ upsert_file() {
   payload="$(base64 -w0 "${source}" | jq -Rs \
     --arg message "${message}" --arg sha "${sha}" \
     '{content:.,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
-  forgejo PUT "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
+  forgejo "${method}" "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
 }
 
 upsert_cinder_file() {
-  local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest
+  local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest method=POST
   existing="$(cinder_forgejo GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
   sha="$(jq -r '.sha // empty' <<<"${existing}")"
   if [[ -n ${sha} ]]; then
+    method=PUT
     existing_digest="$(jq -r '.content' <<<"${existing}" | tr -d '\n' | base64 -d | sha256sum | awk '{print $1}')"
     source_digest="$(sha256sum "${source}" | awk '{print $1}')"
     [[ ${existing_digest} != "${source_digest}" ]] || return 0
   fi
   payload="$(base64 -w0 "${source}" | jq -Rs --arg message "${message}" --arg sha "${sha}" \
     '{content:.,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
-  cinder_forgejo PUT "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
+  cinder_forgejo "${method}" "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
 }
 
 capture_clean_state() {
