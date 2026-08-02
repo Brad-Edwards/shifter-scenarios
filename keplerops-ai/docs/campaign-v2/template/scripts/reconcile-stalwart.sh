@@ -176,7 +176,7 @@ for dc in dc01 dc02; do
   expected_sha=$(sha256sum "${ca_file}" | awk '{print $1}')
   installed_sha=$(docker exec "${CONTAINER}" sha256sum \
     "/usr/local/share/ca-certificates/keplerops-${dc}.crt" 2>/dev/null |
-    awk '{print $1}')
+    awk '{print $1}' || true)
   [[ ${installed_sha} == "${expected_sha}" ]] || directory_ca_changed=true
   docker cp "${ca_file}" \
     "${CONTAINER}:/usr/local/share/ca-certificates/keplerops-${dc}.crt"
