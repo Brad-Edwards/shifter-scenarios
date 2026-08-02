@@ -48,6 +48,8 @@ docker exec --user kasm-user --env HOME=/home/kasm-user "$CONTAINER" sh -lc '
 docker exec --user kasm-user --env HOME=/home/kasm-user "$CONTAINER" \
   opencode --version >/dev/null
 
+"$ROOT/scripts/workstation-access.sh" check
+
 install -d -m 0755 /run/shifter
 printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) workstation" \
   >/run/shifter/keplerops-v2-workstation.ready

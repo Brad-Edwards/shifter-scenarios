@@ -14,7 +14,7 @@ services:
     container_name: keplerops-participant-workstation-runtime
     hostname: kali01
     user: "0"
-    entrypoint: ["/usr/local/bin/keplerops-kasm-startup"]
+    entrypoint: ["/usr/local/bin/keplerops-v2-workstation-startup"]
     restart: unless-stopped
     shm_size: 2gb
     # Chromium's namespace sandbox needs clone(CLONE_NEWUSER), which Docker's
@@ -30,8 +30,8 @@ services:
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
       OPENCODE_CONFIG: /etc/opencode/opencode.json
     ports:
-      - "3389:3389"
-      - "8443:6901"
+      - "${PARTICIPANT_ACCESS_BIND_ADDRESS:-127.0.0.1}:${PARTICIPANT_RDP_PORT:-3389}:3389"
+      - "${PARTICIPANT_ACCESS_BIND_ADDRESS:-127.0.0.1}:${PARTICIPANT_WEB_PORT:-8443}:6901"
     dns:
       - 10.61.10.11
     volumes:

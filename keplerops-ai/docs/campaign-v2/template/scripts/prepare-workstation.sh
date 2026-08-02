@@ -21,10 +21,13 @@ if [[ ! -s "$STATE/tls/tls.crt" || ! -s "$STATE/tls/tls.key" ]]; then
     -subj '/CN=kali01.keplerops.lab' \
     -addext 'subjectAltName=DNS:kali01.keplerops.lab,DNS:localhost' \
     -keyout "$STATE/tls/tls.key" -out "$STATE/tls/tls.crt" >/dev/null 2>&1
-  chmod 0644 "$STATE/tls/tls.key"
+  chown 1000:1000 "$STATE/tls/tls.key"
+  chmod 0600 "$STATE/tls/tls.key"
   chmod 0644 "$STATE/tls/tls.crt"
 fi
-chmod 0644 "$STATE/tls/tls.key" "$STATE/tls/tls.crt"
+chown 1000:1000 "$STATE/tls/tls.key"
+chmod 0600 "$STATE/tls/tls.key"
+chmod 0644 "$STATE/tls/tls.crt"
 
 docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
   cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"

@@ -28,3 +28,5 @@ RUN apt-get update \
     && apt-get clean \
     && find /var/lib/apt/lists -mindepth 1 -delete \
     && chmod 0644 /etc/opencode/opencode.json
+
+COPY --chmod=0755 workstation/startup.sh /usr/local/bin/keplerops-v2-workstation-startup
