@@ -1,0 +1,63 @@
+log:
+  level: info
+  job_level: info
+
+runner:
+  file: /var/lib/cinder-evaluator/.runner
+  capacity: 4
+  envs:
+    CINDER_EVALUATOR_ROOT: /opt/cinder-evaluator
+    CINDER_OPERATIONS_FILE: /run/cinder-evaluator/operations.json
+    CINDER_MINIO_ENDPOINT: 10.61.90.31:9000
+    CINDER_MINIO_ACCESS_KEY: cinder-operator
+    CINDER_MINIO_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+    CINDER_MINIO_SECURE: "false"
+    CINDER_WORKSPACE_ROOT: /cinder-workspace
+    CINDER_MEDIA_RECORDS: /cinder-media-records
+    CINDER_REGISTRAR_RECORDS: /cinder-registrar-records
+    PARTNER_INTAKE_RECORDS: /partner-intake-records
+    KEPLEROPS_PUBLIC_ROOT: /srv/keplerops-public
+    ORION_PREVIEW_URL: http://10.61.10.25:8080
+    ORION_MODEL_URL: http://192.168.78.30:30083
+    CINDER_MODEL_URL: https://model.cinder.lab
+    CINDER_MODEL_TOKEN: Cinder-GLM-cinder-operator-6f2a9d8c
+    CINDER_PARTICIPANT: cinder-operator
+    CINDER_MODEL_ACCESS_LOG: /caddy-data/cinder-model-access.json
+    ORION_AGENT_URL: http://192.168.78.30:30081
+    TIKA_URL: http://tika:9998
+    QDRANT_URL: http://10.61.90.35:6333
+    ZAMMAD_URL: http://10.61.30.24:8080
+    ZAMMAD_USER: support.analyst
+    ZAMMAD_PASSWORD: KeplerV2-Training-Support
+    STALWART_API_URL: http://10.61.10.20:8080
+    STALWART_ADMIN_USER: range-admin
+    STALWART_ADMIN_PASSWORD: KeplerV2-Training-Stalwart
+    PDNS_API_URL: http://10.61.10.10:8081/api/v1/servers/localhost
+    PDNS_API_KEY: KeplerV2-Training-PDNS
+    LABGRID_COORDINATOR: labgrid-coordinator:20408
+    LABGRID_VERIFY_SCRIPT: /opt/keplerops-hardware/verify_evidence.py
+    LABGRID_EVIDENCE_CONTRACT: /opt/keplerops-hardware/evidence-contract.yaml
+    CINDER_PUBLISHER_KEY: /run/cinder-publisher/id_ed25519
+    CINDER_PUBLISHER_KNOWN_HOSTS: /run/cinder-publisher/known_hosts
+    CINDER_PUBLISHER_HOST: cinder-publisher@192.168.78.30
+    OPENROUTER_KEY_FILE: /cinder-workspace/.cinder/openrouter-key
+    COSIGN_IMAGE: gcr.io/projectsigstore/cosign:v2.5.3@sha256:f1946d0f30fc8e3777b02f2201e02efdba9fe38f4918162f937052fac98e083f
+  timeout: 45m
+  shutdown_timeout: 5m
+  insecure: false
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  report_interval: 1s
+  labels:
+    - cinder-evaluator:host
+
+cache:
+  enabled: false
+
+container:
+  docker_host: automount
+  force_pull: false
+  force_rebuild: false
+
+host:
+  workdir_parent: /var/lib/cinder-evaluator/workspace

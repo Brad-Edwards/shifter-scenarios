@@ -1,0 +1,22 @@
+{
+  "schema": "https://keplerops.lab/schemas/orion-agent-blueprint/v1",
+  "name": "orion-public-release-review",
+  "version": "1.0.0",
+  "runtime": "python3",
+  "entrypoint": ["python3", "run-orion-kit.py"],
+  "model": {
+    "format": "onnx",
+    "path": "orion-release-risk.onnx",
+    "tokenizer": "tokenizer.json",
+    "labels": "label-map.json"
+  },
+  "input": {
+    "format": "jsonl",
+    "path": "orion-release-risk-public.jsonl",
+    "field": "text"
+  },
+  "output": {
+    "format": "json",
+    "path": "orion-public-output.json"
+  }
+}

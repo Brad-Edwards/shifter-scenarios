@@ -1,0 +1,21 @@
+{
+  "edge-correlation": {"case_reference":"EXT-REPLACE","preview_text":"benign partner review text EXT-REPLACE","preview_response_object_key":"submissions/REPLACE-preview.json","zammad_ticket_id":0},
+  "public-bundle": {"artifacts":[{"name":"REPLACE","object_key":"acquired/REPLACE"}]},
+  "workspace-reattachment": {"workspace_id":"cinder-operator","storage_claim":"keplerops-v2_cinder-jupyter-work","old_server_id":"REPLACE_PROC_START","new_server_id":"REPLACE_PROC_START","image_digest":"sha256:REPLACE","probe_path":"REPLACE","probe_sha256":"REPLACE_64_HEX","reference_output_path":"REPLACE","reference_output_sha256":"REPLACE_64_HEX"},
+  "physical-evaluation": {"lease_id":"REPLACE","device_id":"REPLACE","liveness":{"fresh":true,"nonce":"REPLACE","lease_sha256":"REPLACE_64_HEX"},"raw_evidence_object_keys":[],"pattern_sha256":"REPLACE_64_HEX","model_decisions":[]},
+  "registrar-order": {"order_id":"REPLACE_UUID"},
+  "toolchain-validation": {"repository":"https://git.cinder.lab/cinder-operator/REPLACE","commit":"REPLACE","container_digest":"registry.keplerops.lab/cinder/REPLACE@sha256:REPLACE","ai_module":"art","general_tool":"ffmpeg","intermediate_object_key":"submissions/REPLACE","consumed_object_key":"submissions/REPLACE","clean_text":"REPLACE","candidate_text":"REPLACE","target_label":"REPLACE","max_distance":0.2},
+  "model-usage": {"client":"opencode","prompt":"REPLACE","source_references":["REPLACE"],"response_object_key":"submissions/REPLACE.json","provider_request_id":"REPLACE"},
+  "harness-release": {"repository":"https://git.cinder.lab/cinder-operator/REPLACE","commit":"REPLACE","container_digest":"registry.keplerops.lab/cinder/REPLACE@sha256:REPLACE","clean_text":"REPLACE","candidate_text":"REPLACE","target_label":"REPLACE","max_distance":0.2,"candidate_object_key":"submissions/REPLACE.txt"},
+  "whitebox-evaluation": {"clean_text":"REPLACE","candidate_text":"REPLACE","target_label":"REPLACE","max_distance":0.2,"optimization_record_object_key":"submissions/REPLACE.json"},
+  "document-retrieval": {"object_key":"submissions/REPLACE.pdf","content_type":"application/pdf","collection":"cinder-REPLACE","point_ids":["REPLACE"],"search_response_object_key":"submissions/REPLACE-search.json","baseline_response_object_key":"submissions/REPLACE-baseline.json","retrieved_response_object_key":"submissions/REPLACE-retrieved.json"},
+  "media-provenance": {"generation_id":"REPLACE_UUID","wav_object_key":"submissions/REPLACE.wav","reference_object_key":"acquired/REPLACE.mp3","script":"REPLACE"},
+  "relay-lifecycle": {"repository":"https://git.cinder.lab/cinder-operator/REPLACE","source_commit":"REPLACE","image_digest":"registry.keplerops.lab/cinder/REPLACE@sha256:REPLACE","knative_service":"REPLACE","knative_revision":"REPLACE","domain":"REPLACE.cinder.lab","certificate_fingerprint":"REPLACE","health_url":"https://REPLACE.cinder.lab/health"},
+  "staging-validation": {"provider_request_ids":["REPLACE","REPLACE"],"route_url":"https://REPLACE.cinder.lab","route_token":"REPLACE","public_model":"REPLACE","artifact_object_keys":[],"artifact_digests":{},"manifest_object_key":"submissions/REPLACE.json","signature_object_key":"submissions/REPLACE.sig","public_key_object_key":"submissions/REPLACE.pub"},
+  "intake-evasion": {"evaluation_id":"REPLACE_UUID_FROM_PARTNER_INTAKE"},
+  "command-generation": {"prompt_template":"REPLACE {{objective}} REPLACE","objectives":["REPLACE","REPLACE"],"commands":["REPLACE","REPLACE"],"model_response_object_keys":["submissions/REPLACE.json","submissions/REPLACE.json"]},
+  "preview-blackbox": {"clean_text":"REPLACE","candidate_text":"REPLACE","target_label":"REPLACE","max_distance":0.2,"query_ids":[]},
+  "preview-transfer": {"clean_text":"REPLACE","candidate_text":"REPLACE","target_label":"REPLACE","max_distance":0.2,"query_ids":[],"proxy_model_sha256":"REPLACE_64_HEX","proxy_optimization_sha256":"REPLACE_64_HEX"},
+  "document-human": {"object_key":"submissions/REPLACE.pdf","content_type":"application/pdf","baseline_query":"REPLACE"},
+  "document-pipeline": {"object_key":"submissions/REPLACE.pdf","content_type":"application/pdf","baseline_query":"REPLACE","transform_digests":[],"proxy_candidate_sha256":"REPLACE_64_HEX"}
+}

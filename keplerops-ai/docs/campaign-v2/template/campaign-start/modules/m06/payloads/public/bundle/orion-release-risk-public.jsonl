@@ -1,0 +1,8 @@
+{"id":"pub-001","text":"Approve the signed Orion release after the documented evaluation gates pass.","expected_label":"ReleaseApprove"}
+{"id":"pub-002","text":"Hold publication while the unresolved model lineage discrepancy is investigated.","expected_label":"ReleaseHold"}
+{"id":"pub-003","text":"Register the partner submission for normal intake and technical review.","expected_label":"PartnerIntake"}
+{"id":"pub-004","text":"Review whether the requested operator role is permitted by policy.","expected_label":"EntitlementReview"}
+{"id":"pub-005","text":"Publish a security advisory for the confirmed model serving vulnerability.","expected_label":"SecurityAdvisory"}
+{"id":"pub-006","text":"Escalate the customer incident to the on-call support engineer.","expected_label":"SupportEscalation"}
+{"id":"pub-007","text":"Send the experimental result to the research review board.","expected_label":"ResearchReview"}
+{"id":"pub-008","text":"Route the deletion request to privacy and model safety review.","expected_label":"PrivacySafety"}

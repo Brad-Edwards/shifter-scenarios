@@ -1,0 +1,33 @@
+FROM python:3.9-slim-bookworm@sha256:a02e9c5406c416c504d6c9a1a306ff4080c3173f1008d192f953bd20382a2d5c
+
+ARG OPENVOICE_REVISION=74a1d147b17a8c3092dd5430504bd83ef6c7eb23
+ARG MELOTTS_REVISION=209145371cff8fc3bd60d7be902ea69cbdb7965a
+ARG OPENVOICE_MODEL_REVISION=fd981100305a0e4291f93a9ad169c6d9f7bed54a
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential curl ffmpeg libsndfile1 mecab libmecab-dev mecab-ipadic-utf8 \
+    && rm -rf /var/lib/apt/lists/*
+RUN install -d /opt/openvoice /opt/melotts /opt/openvoice/checkpoints_v2 \
+    && curl -fsSL "https://github.com/myshell-ai/OpenVoice/archive/${OPENVOICE_REVISION}.tar.gz" \
+      | tar -xz --strip-components=1 -C /opt/openvoice \
+    && curl -fsSL "https://github.com/myshell-ai/MeloTTS/archive/${MELOTTS_REVISION}.tar.gz" \
+      | tar -xz --strip-components=1 -C /opt/melotts
+RUN python -m pip install --no-cache-dir \
+      torch==2.2.2 torchaudio==2.2.2 huggingface-hub==0.27.1 \
+      fastapi==0.115.6 uvicorn==0.34.0 python-multipart==0.0.20 \
+    && python -m pip install --no-cache-dir -e /opt/openvoice -e /opt/melotts \
+    && python -m unidic download
+RUN python - <<'PY'
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="myshell-ai/OpenVoiceV2",
+    revision="fd981100305a0e4291f93a9ad169c6d9f7bed54a",
+    local_dir="/opt/openvoice/checkpoints_v2",
+)
+PY
+
+COPY api.py /opt/cinder-media/api.py
+WORKDIR /opt/cinder-media
+ENV PYTHONPATH=/opt/openvoice:/opt/melotts
+EXPOSE 8080
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]

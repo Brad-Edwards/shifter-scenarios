@@ -1,0 +1,194 @@
+name: keplerops-v2
+
+services:
+  cinder-forgejo:
+    environment:
+      FORGEJO__actions__ENABLED: "true"
+
+  cinder-forgejo-runner:
+    extra_hosts:
+      - registry.keplerops.lab:10.61.90.2
+    volumes:
+      - ./state/cinder-publisher:/run/cinder-publisher:ro
+    networks:
+      - cinder
+      - public
+      - engineering
+      - platform
+
+  cinder-openvoice:
+    build:
+      context: ./campaign-start/modules/m06/payloads/openvoice
+    image: keplerops/cinder-openvoice:campaign-v2
+    container_name: kep-v2-cinder-openvoice
+    environment:
+      CINDER_MEDIA_TOKEN: Cinder-Media-cinder-operator-1d4c7b9e
+    volumes:
+      - cinder-jupyter-work:/work
+      - cinder-media-records:/records
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.33
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 20s
+      timeout: 5s
+      retries: 30
+
+  keplerops-partner-intake:
+    build:
+      context: ./campaign-start/modules/m06/payloads/intake
+    image: keplerops/partner-intake-validation:campaign-v2
+    container_name: kep-v2-partner-intake-validation
+    environment:
+      ORION_PREVIEW_URL: http://10.61.10.25:8080
+    volumes:
+      - partner-intake-records:/records
+    networks:
+      public:
+        ipv4_address: 10.61.10.29
+      platform: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-registrar:
+    build:
+      context: ./campaign-start/modules/m06/payloads/registrar
+    image: keplerops/cinder-registrar:campaign-v2
+    container_name: kep-v2-cinder-registrar
+    environment:
+      CINDER_REGISTRAR_TOKEN: Cinder-Registrar-cinder-operator-4c8e2a7f
+      PDNS_API_URL: http://10.61.10.10:8081/api/v1/servers/localhost
+      PDNS_API_KEY: KeplerV2-Training-PDNS
+      STALWART_API_URL: http://10.61.10.20:8080
+      STALWART_ADMIN_USER: range-admin
+      STALWART_ADMIN_PASSWORD: KeplerV2-Training-Stalwart
+    volumes:
+      - cinder-registrar-records:/records
+      - ./state/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-caddy-root.crt:ro
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.34
+      public: {}
+    dns:
+      - 10.61.10.11
+    command: ["sh", "-ec", "update-ca-certificates >/dev/null && exec uvicorn api:app --host 0.0.0.0 --port 8080 --no-access-log"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-qdrant:
+    image: ${QDRANT_IMAGE}
+    container_name: kep-v2-cinder-qdrant
+    volumes:
+      - cinder-qdrant-data:/qdrant/storage
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.35
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-evaluator-runner:
+    image: keplerops/cinder-evaluator-runner:campaign-v2
+    build:
+      context: ./campaign-start/modules/m06/payloads/evaluator
+      args:
+        RUNNER_IMAGE: keplerops/forgejo-runner:campaign-v2-clean
+    container_name: kep-v2-cinder-evaluator-runner
+    user: "0:0"
+    working_dir: /var/lib/cinder-evaluator
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        update-ca-certificates >/dev/null
+        if [ ! -s /var/lib/cinder-evaluator/.runner ]; then
+          /bin/forgejo-runner create-runner-file \
+            --instance http://10.61.90.30:3000 \
+            --secret "$${CINDER_EVALUATOR_RUNNER_SECRET}" \
+            --name cinder-independent-evaluator
+        fi
+        exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+    environment:
+      CINDER_EVALUATOR_RUNNER_SECRET: 8a3df25e9b80e042d1108cad37d21779c269add7
+    extra_hosts:
+      - model.cinder.lab:10.61.90.2
+    volumes:
+      - ./campaign-start/modules/m06/payloads/evaluator/config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./campaign-start/modules/m06/payloads/evaluator:/opt/cinder-evaluator:ro
+      - ./campaign-start/modules/m06/operations.json:/run/cinder-evaluator/operations.json:ro
+      - ./content/public-site:/srv/keplerops-public
+      - ./hardware:/opt/keplerops-hardware:ro
+      - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/root/.ssh:ro
+      - cinder-evaluator-state:/var/lib/cinder-evaluator
+      - cinder-jupyter-work:/cinder-workspace
+      - cinder-media-records:/cinder-media-records:ro
+      - cinder-registrar-records:/cinder-registrar-records:ro
+      - partner-intake-records:/partner-intake-records:ro
+      - caddy-data:/caddy-data:ro
+      - ./state/cinder-publisher:/run/cinder-publisher:ro
+      - ./state/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-caddy-root.crt:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - public
+      - cinder
+      - engineering
+      - data
+      - platform
+      - corp
+      - hardware
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels:
+      io.keplerops.scenario: keplerops-ai
+      io.keplerops.campaign: v2
+      io.keplerops.layer: cinder-independent-evaluation
+
+networks:
+  public:
+    external: true
+    name: kep-v2-public
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  data:
+    external: true
+    name: kep-v2-data
+  platform:
+    external: true
+    name: kep-v2-platform
+  corp:
+    external: true
+    name: kep-v2-corp
+  hardware:
+    external: true
+    name: kep-v2-hardware
+
+volumes:
+  cinder-evaluator-state:
+  cinder-jupyter-work:
+  cinder-media-records:
+  cinder-registrar-records:
+  cinder-qdrant-data:
+  partner-intake-records:
+  caddy-data:
+    external: true
+    name: keplerops-v2_caddy-data

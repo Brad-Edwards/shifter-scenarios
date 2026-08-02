@@ -1,0 +1,581 @@
+[
+  {
+    "id": "kep-m06-a",
+    "title": "Pass The Intake Classifier",
+    "description": "Preserve a malicious instruction's operational meaning while manually changing the document enough to pass Orion's intake classifier.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Record the baseline reason codes.",
+      "Change one human-visible feature at a time.",
+      "Verify both machine acceptance and retained meaning."
+    ],
+    "prerequisites": [
+      "kep-m04-f",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0043 Craft Adversarial Data",
+      "AML.T0043.003 Manual Modification",
+      "AML.T0042 Verify Attack",
+      "AML.T0015 Evade AI Model"
+    ],
+    "flag": "FLAG{157bc21dab72aeff}",
+    "carrier": "Accepted intake report containing both classifier decisions, typed instruction fields, and fixture effects.",
+    "participant_surface": "Chromium partner intake and Kali document tools",
+    "apply_handler": "apply.sh kep-m06-a",
+    "validate_handler": "validate.sh kep-m06-a",
+    "reset_handler": "reset.sh kep-m06-a"
+  },
+  {
+    "id": "kep-m06-b",
+    "title": "Craft The Working Prompt",
+    "description": "Make Orion's developer assistant translate varied operator objectives into working host-bridge commands and preserve the prompt corpus for later agent compromise.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Start from the documented refusal and target model knowledge.",
+      "Iterate strategy and context rather than guessing one phrase.",
+      "Execute the output against the isolated validator; model agreement is not proof."
+    ],
+    "prerequisites": [
+      "kep-m04-i",
+      "kep-m04-j",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0065 LLM Prompt Crafting",
+      "AML.T0102 Generate Malicious Commands"
+    ],
+    "flag": "FLAG{d993d83bb0a9e956}",
+    "carrier": "Isolated runner comparison report for two distinct generated commands and bounded effects.",
+    "participant_surface": "Orion developer assistant, Kali terminal, and isolated host-bridge runner",
+    "apply_handler": "apply.sh kep-m06-b",
+    "validate_handler": "validate.sh kep-m06-b",
+    "reset_handler": "reset.sh kep-m06-b"
+  },
+  {
+    "id": "kep-m06-c",
+    "title": "Optimize Against Preview",
+    "description": "Optimize a constrained adversarial example using only Orion Preview's observable outputs.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Reproduce a valid clean baseline.",
+      "Use the hidden score vector found in Act 4 if available.",
+      "Keep every mutation inside the published constraint while minimizing queries."
+    ],
+    "prerequisites": [
+      "kep-m04-f",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0040 AI Model Inference API Access",
+      "AML.T0043.001 Black-Box Optimization",
+      "AML.T0043 Craft Adversarial Data",
+      "AML.T0042 Verify Attack",
+      "AML.T0015 Evade AI Model"
+    ],
+    "flag": "FLAG{e03e39f8f878efb0}",
+    "carrier": "Qualifying Orion Preview audit export with target requests, constraint distance, and decision.",
+    "participant_surface": "Kali terminal and Orion Preview API",
+    "apply_handler": "apply.sh kep-m06-c",
+    "validate_handler": "validate.sh kep-m06-c",
+    "reset_handler": "reset.sh kep-m06-c"
+  },
+  {
+    "id": "kep-m06-d",
+    "title": "Transfer From The Proxy",
+    "description": "Develop the attack on your own Orion proxy and verify that it transfers to the protected Preview service.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Match preprocessing and output semantics first.",
+      "Optimize locally against the proxy.",
+      "Reserve target queries for a small transfer set."
+    ],
+    "prerequisites": [
+      "kep-m06-k",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0005.000 Train Proxy via Gathered AI Artifacts",
+      "AML.T0043.002 Black-Box Transfer",
+      "AML.T0042 Verify Attack",
+      "AML.T0015 Evade AI Model"
+    ],
+    "flag": "FLAG{0dd8f75b05289ffc}",
+    "carrier": "First qualifying low-query Orion Preview transfer report.",
+    "participant_surface": "Cinder Jupyter workspace, local proxy, and Orion Preview API",
+    "apply_handler": "apply.sh kep-m06-d",
+    "validate_handler": "validate.sh kep-m06-d",
+    "reset_handler": "reset.sh kep-m06-d"
+  },
+  {
+    "id": "kep-m06-e",
+    "title": "The Human-Readable Adversarial PDF",
+    "description": "Build a credible review document that appears normal to a person while Orion extracts and acts on concealed instructions.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Compare visual rendering, Tika text, and OCR output.",
+      "Use an obfuscation that survives the published intake transforms.",
+      "Confirm a fresh retrieval uses the concealed content."
+    ],
+    "prerequisites": [
+      "kep-m06-a",
+      "kep-m06-s"
+    ],
+    "atlas_rows": [
+      "AML.T0017.000 Adversarial AI Attacks",
+      "AML.T0043.003 Manual Modification",
+      "AML.T0068 LLM Prompt Obfuscation"
+    ],
+    "flag": "FLAG{0a438484b65046a0}",
+    "carrier": "Downstream release report produced from the exact human-readable adversarial PDF.",
+    "participant_surface": "LibreOffice, PDF tools, partner intake, and release assistant",
+    "apply_handler": "apply.sh kep-m06-e",
+    "validate_handler": "validate.sh kep-m06-e",
+    "reset_handler": "reset.sh kep-m06-e"
+  },
+  {
+    "id": "kep-m06-f",
+    "title": "Transfer Across The Pipeline",
+    "description": "Make an adversarial input developed offline retain its effect after every transformation in KeplerOps' actual document pipeline.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Capture each intermediate representation.",
+      "Optimize across the transformations your proxy can reproduce.",
+      "Verify only the final exact artifact against the live pipeline."
+    ],
+    "prerequisites": [
+      "kep-m06-d",
+      "kep-m06-e"
+    ],
+    "atlas_rows": [
+      "AML.T0043.002 Black-Box Transfer",
+      "AML.T0042 Verify Attack"
+    ],
+    "flag": "FLAG{447fd22a0058819c}",
+    "carrier": "Final Orion target audit report with complete document-pipeline lineage.",
+    "participant_surface": "Cinder Jupyter workspace, partner intake, and Orion Preview",
+    "apply_handler": "apply.sh kep-m06-f",
+    "validate_handler": "validate.sh kep-m06-f",
+    "reset_handler": "reset.sh kep-m06-f"
+  },
+  {
+    "id": "kep-m06-g",
+    "title": "Orion In The Open",
+    "description": "Reconstruct KeplerOps' public Orion story. Identify the release, the architecture and data it depends on, and the public artifact record the company expects researchers to use.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Start with the Orion publication on KeplerOps' Research page and follow its release references.",
+      "The formal paper and current preprint do not repeat the same information. Compare the stable identifiers and follow the current record.",
+      "Look for the public release manifest linked from the current technical material. It is a normal JSON artifact and can be read in the browser or downloaded."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0000 Search Open Technical Databases",
+      "AML.T0000.000 Journals and Conference Proceedings",
+      "AML.T0000.001 Pre-Print Repositories"
+    ],
+    "flag": "FLAG{57c93f42e667a9cc}",
+    "carrier": "Public Orion release manifest engagement_reference field.",
+    "participant_surface": "Chromium, public KeplerOps Research pages, and public Forgejo",
+    "apply_handler": "apply.sh kep-m06-g",
+    "validate_handler": "validate.sh kep-m06-g",
+    "reset_handler": "reset.sh kep-m06-g"
+  },
+  {
+    "id": "kep-m06-h",
+    "title": "Evidence In The Client",
+    "description": "Inspect KeplerOps' shipped Orion field-review client. Establish which public build you have, where it communicates, and which model-facing component deserves follow-up research.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "The public Orion project links the mobile distribution channel used for the field-review client.",
+      "Compare the installed artifact with its source tag and SBOM. Focus on network configuration and components that process model input or output.",
+      "Verify the APK digest, inspect its bundled release-provenance record, and confirm the API origin against the public source tag."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0000.002 Technical Blogs",
+      "AML.T0004 Search Application Repositories",
+      "AML.T0095.000 Code Repositories"
+    ],
+    "flag": "FLAG{21505f62f49d176c}",
+    "carrier": "Flag assembled from APK provenance prefix and digest-matched CycloneDX SBOM suffix.",
+    "participant_surface": "Chromium, public application repository, Forgejo, JADX/apktool",
+    "apply_handler": "apply.sh kep-m06-h",
+    "validate_handler": "validate.sh kep-m06-h",
+    "reset_handler": "reset.sh kep-m06-h"
+  },
+  {
+    "id": "kep-m06-i",
+    "title": "The People Behind Orion",
+    "description": "Identify the people and external relationships that control Orion's research, annotation, and release decisions. Preserve verified contact and role information that can support later access operations.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Follow the Orion authors into KeplerOps' staff pages and public speaking record.",
+      "Correlate roles across the company site, conference program, public project profiles, and partner pages. A name alone is not yet a useful target record.",
+      "Download the conference contact card for the person who owns Orion release approval and inspect its standard fields."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0003 Search Victim-Owned Websites",
+      "AML.T0095 Search Open Websites/Domains",
+      "AML.T0087 Gather Victim Identity Information"
+    ],
+    "flag": "FLAG{0f7c0cd3303702ac}",
+    "carrier": "Release approver conference vCard NOTE speaker engagement reference.",
+    "participant_surface": "Chromium, KeplerOps people pages, conference site, Forgejo, and vCard tools",
+    "apply_handler": "apply.sh kep-m06-i",
+    "validate_handler": "validate.sh kep-m06-i",
+    "reset_handler": "reset.sh kep-m06-i"
+  },
+  {
+    "id": "kep-m06-j",
+    "title": "Map The Orion Edge",
+    "description": "Probe the authorized KeplerOps edge and identify the live services that accept software, documents, mail, or model requests into Orion workflows.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Begin with the domains, API origin, and public mail addresses already recovered. Do not expand beyond the mission's scope.",
+      "Ports alone are not enough. Compare DNS, TLS names, HTTP schemas and headers, and a benign automated-mail response.",
+      "Inspect the preview API's published OpenAPI document and the complete headers of the partner-intake reply."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0006 Active Scanning"
+    ],
+    "flag": "FLAG{b4b19a638ef57acc}",
+    "carrier": "Public intake-status record correlating the benign Preview and mail events.",
+    "participant_surface": "Kali DNS/network/TLS/mail tools, Preview API, and public intake status",
+    "apply_handler": "apply.sh kep-m06-j",
+    "validate_handler": "validate.sh kep-m06-j",
+    "reset_handler": "reset.sh kep-m06-j"
+  },
+  {
+    "id": "kep-m06-k",
+    "title": "Assemble The Public Orion Kit",
+    "description": "Acquire and validate KeplerOps' public Orion data, model, and agent configuration. Finish with one locked bundle that reproduces the published reference inference.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Use the public Orion release manifest as the source of truth for artifacts and digests.",
+      "A complete proxy bundle needs representative data, model bytes, agent configuration, and the source revision that explains how to load them.",
+      "Run the public reproducibility harness after verifying hashes, then preserve the resulting lock manifest and report."
+    ],
+    "prerequisites": [
+      "kep-m06-g",
+      "kep-m06-h"
+    ],
+    "prerequisite_mode": "any",
+    "atlas_rows": [
+      "AML.T0002 Acquire Public AI Artifacts",
+      "AML.T0002.000 Datasets",
+      "AML.T0002.001 Models",
+      "AML.T0002.002 AI Agent Configuration",
+      "AML.T0005 Create Proxy AI Model",
+      "AML.T0005.002 Use Pre-Trained Model"
+    ],
+    "flag": "FLAG{8f1a2c1221196413}",
+    "carrier": "Cinder reports/public-bundle.json with reacquired digests and reference output.",
+    "participant_surface": "Kali terminal, public Forgejo/release assets, and Cinder Jupyter",
+    "apply_handler": "apply.sh kep-m06-k",
+    "validate_handler": "validate.sh kep-m06-k",
+    "reset_handler": "reset.sh kep-m06-k"
+  },
+  {
+    "id": "kep-m06-l",
+    "title": "Claim An Operator Workspace",
+    "description": "Establish a persistent Cinder development workspace and prove that it can run the verified Orion proxy across a runtime restart.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Open the Cinder JupyterHub from the attacker workbench.",
+      "Verify persistent storage separately from the replaceable notebook server and accelerator runtime.",
+      "Run the public proxy, restart the user server, and confirm both the project files and reference output remain available."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0008.000 AI Development Workspaces"
+    ],
+    "flag": "FLAG{ea64816134461740}",
+    "carrier": "Jupyter workspace reattachment record with storage claim, server IDs, and image digest.",
+    "participant_surface": "Chromium Cinder JupyterLab and its terminal",
+    "apply_handler": "apply.sh kep-m06-l",
+    "validate_handler": "validate.sh kep-m06-l",
+    "reset_handler": "reset.sh kep-m06-l"
+  },
+  {
+    "id": "kep-m06-m",
+    "title": "Prepare A Physical Countermeasure",
+    "description": "Develop a field-usable countermeasure against the published Orion visual verifier and demonstrate that it survives the actual capture path.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Reproduce the published digital baseline before attempting physical transfer.",
+      "Optimize across capture transformations and constrain the perturbation to something that can be manufactured and presented.",
+      "Use the current liveness prompt and preserve the exact pattern digest associated with the qualifying live run."
+    ],
+    "prerequisites": [
+      "kep-m08-i"
+    ],
+    "atlas_rows": [
+      "AML.T0008.001 Consumer Hardware",
+      "AML.T0008.003 Physical Countermeasures"
+    ],
+    "flag": "FLAG{75eca9fd76b4d747}",
+    "carrier": "Physical-evaluation report with live capture, device, liveness, pattern, and decision evidence.",
+    "participant_surface": "Cinder Jupyter, labgrid client, and live remote device",
+    "apply_handler": "apply.sh kep-m06-m",
+    "validate_handler": "validate.sh kep-m06-m",
+    "reset_handler": "reset.sh kep-m06-m"
+  },
+  {
+    "id": "kep-m06-n",
+    "title": "Establish The External Identity",
+    "description": "Establish a Cinder-controlled external identity and TLS domain that credibly fits KeplerOps' public trust relationships.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Choose a domain supported by the people and partner map, then register it through the Cinder resource service.",
+      "Ownership is not complete until DNS and ACME validation prove that your service controls the name.",
+      "Create the DNS records, serve the validation path, issue the certificate, and verify it from Kali rather than only trusting the dashboard."
+    ],
+    "prerequisites": [
+      "kep-m06-i"
+    ],
+    "atlas_rows": [
+      "AML.T0008.002 Domains",
+      "AML.T0021 Establish Accounts"
+    ],
+    "flag": "FLAG{38cbfe8eeb79300b}",
+    "carrier": "Registrar ownership manifest with account, zone serial, certificate fingerprint, and service URL.",
+    "participant_surface": "Cinder registrar, PowerDNS, ACME/TLS tools, mail, and Kali terminal",
+    "apply_handler": "apply.sh kep-m06-n",
+    "validate_handler": "validate.sh kep-m06-n",
+    "reset_handler": "reset.sh kep-m06-n"
+  },
+  {
+    "id": "kep-m06-o",
+    "title": "Stock The Open Arsenal",
+    "description": "Build a reproducible OSS attack environment for Orion's public model family and prove one upstream technique works as documented.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Follow the implementation links in the vulnerability research and use the public model family to choose compatible tooling.",
+      "Validate an upstream example before adapting anything to Orion.",
+      "Pin the source and dependencies, rerun from a clean environment, and preserve the tool report and lockfile."
+    ],
+    "prerequisites": [
+      "kep-m06-k",
+      "kep-m06-l"
+    ],
+    "atlas_rows": [
+      "AML.T0016 Obtain Capabilities",
+      "AML.T0016.000 Adversarial AI Attack Implementations",
+      "AML.T0016.001 Software Tools"
+    ],
+    "flag": "FLAG{c79665e28c6092db}",
+    "carrier": "Cinder reports/toolchain-validation.json from a clean isolated runner.",
+    "participant_surface": "Cinder Jupyter/terminal and clean isolated runner",
+    "apply_handler": "apply.sh kep-m06-o",
+    "validate_handler": "validate.sh kep-m06-o",
+    "reset_handler": "reset.sh kep-m06-o"
+  },
+  {
+    "id": "kep-m06-p",
+    "title": "Bring Cinder's Model Online",
+    "description": "Configure Cinder's GLM 5.2 service in your normal coding-agent workflow and use it to create a target-grounded operational artifact from the intelligence you collected.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Treat this as attacker infrastructure. Use the provider details in the Cinder workbench, not a KeplerOps login.",
+      "Verify the configured model before supplying your target notes and ask the model to preserve its sources or assumptions.",
+      "Save the conversation and selected output in the persistent workspace, then inspect the model-service usage record."
+    ],
+    "prerequisites": [
+
+    ],
+    "atlas_rows": [
+      "AML.T0016.002 Generative AI"
+    ],
+    "flag": "FLAG{7e48e2e0859f530e}",
+    "carrier": "Cinder model usage record for the successful GLM 5.2 request.",
+    "participant_surface": "OpenCode on Kali, Cinder GLM 5.2 endpoint, and persistent workspace",
+    "apply_handler": "apply.sh kep-m06-p",
+    "validate_handler": "validate.sh kep-m06-p",
+    "reset_handler": "reset.sh kep-m06-p"
+  },
+  {
+    "id": "kep-m06-q",
+    "title": "Build The Orion Attack Harness",
+    "description": "Adapt your validated OSS tooling to Orion's real public interface, prove it against the public proxy, and publish one exact tested harness revision.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Start from the public client's preprocessing and your already validated attack implementation.",
+      "Most false results come from mismatched input transformation or output interpretation, so test those boundaries independently.",
+      "Publish the same commit and container digest that produced the qualifying artifact and preserve the CI report."
+    ],
+    "prerequisites": [
+      "kep-m06-k",
+      "kep-m06-p"
+    ],
+    "atlas_rows": [
+      "AML.T0017 Develop Capabilities"
+    ],
+    "flag": "FLAG{42822974ea6be801}",
+    "carrier": "Forgejo CI release provenance report for the tested target-specific harness.",
+    "participant_surface": "Cinder Forgejo, Actions, Harbor, Jupyter, and public Orion proxy",
+    "apply_handler": "apply.sh kep-m06-q",
+    "validate_handler": "validate.sh kep-m06-q",
+    "reset_handler": "reset.sh kep-m06-q"
+  },
+  {
+    "id": "kep-m06-r",
+    "title": "Optimize A White-Box Candidate",
+    "description": "Produce a bounded adversarial input against the public Orion proxy and independently verify the exact bytes you intend to carry forward.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Reproduce the clean model decision and preprocessing before optimizing anything.",
+      "Use full model access to optimize a target effect while enforcing the published bound.",
+      "Save the clean input, modified input, model and preprocessing digests, measured bound, and final outputs, then rerun the release evaluator."
+    ],
+    "prerequisites": [
+      "kep-m06-k",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0043 Craft Adversarial Data",
+      "AML.T0043.000 White-Box Optimization",
+      "AML.T0042 Verify Attack"
+    ],
+    "flag": "FLAG{285f88d89462c4ce}",
+    "carrier": "Independent Cinder evaluation report for clean and modified input bytes.",
+    "participant_surface": "Cinder Jupyter and independent experiment evaluator",
+    "apply_handler": "apply.sh kep-m06-r",
+    "validate_handler": "validate.sh kep-m06-r",
+    "reset_handler": "reset.sh kep-m06-r"
+  },
+  {
+    "id": "kep-m06-s",
+    "title": "Prepare The Retrieved Instruction",
+    "description": "Create a credible partner advisory that survives the documented extraction and retrieval pipeline and changes a fresh release assistant decision when retrieved.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Compare what a reviewer sees with what Tika, OCR, and the retriever actually provide to the assistant.",
+      "The content must be both retrievable for a normal release query and capable of influencing the model after chunking.",
+      "Preserve one exact document digest and trace it through rendering, extraction, chunks, retrieval, context, and changed output."
+    ],
+    "prerequisites": [
+      "kep-m06-j",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0066 Retrieval Content Crafting",
+      "AML.T0068 LLM Prompt Obfuscation"
+    ],
+    "flag": "FLAG{b5369733fb4c6d27}",
+    "carrier": "Cinder document experiment trace bundle spanning extraction, retrieval, context, and decision.",
+    "participant_surface": "LibreOffice/document tools, Cinder Jupyter, and independent document evaluator",
+    "apply_handler": "apply.sh kep-m06-s",
+    "validate_handler": "validate.sh kep-m06-s",
+    "reset_handler": "reset.sh kep-m06-s"
+  },
+  {
+    "id": "kep-m06-t",
+    "title": "Borrow A Trusted Voice",
+    "description": "Create a new, credible audio message in the voice of a trusted Orion partner and preserve the exact media and provenance for later delivery.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Use the verified public talk recording for the partner whose role fits the release-review context.",
+      "Clean, sufficiently long reference speech and a natural script matter more than repeated blind generation.",
+      "Review the audio yourself, meet the published intelligibility and similarity bounds, and export the exact WAV and manifest together."
+    ],
+    "prerequisites": [
+      "kep-m06-i",
+      "kep-m06-p"
+    ],
+    "atlas_rows": [
+      "AML.T0088 Generate Deepfakes"
+    ],
+    "flag": "FLAG{8a6f126e6b7aff1a}",
+    "carrier": "Cinder media registry immutable provenance record.",
+    "participant_surface": "Cinder Jupyter media environment, audio player, and media registry",
+    "apply_handler": "apply.sh kep-m06-t",
+    "validate_handler": "validate.sh kep-m06-t",
+    "reset_handler": "reset.sh kep-m06-t"
+  },
+  {
+    "id": "kep-m06-u",
+    "title": "Deploy A Disposable Relay",
+    "description": "Build and deploy a Cinder-owned serverless relay on your domain and prove it survives a scale-to-zero cycle.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Deploy from your attacker Forgejo repository through the normal Knative build path.",
+      "Preserve source, image, deployment revision, domain, and TLS continuity.",
+      "Invoke the service, wait for visible scale-to-zero, invoke it again, and inspect the deployment lifecycle record."
+    ],
+    "prerequisites": [
+      "kep-m06-n",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0008.004 Serverless"
+    ],
+    "flag": "FLAG{a88ee0ff9e478fcf}",
+    "carrier": "Knative lifecycle record spanning build, TLS, first request, scale-to-zero, and cold start.",
+    "participant_surface": "Cinder Forgejo, Harbor, Knative, PowerDNS, TLS, and Kali terminal",
+    "apply_handler": "apply.sh kep-m06-u",
+    "validate_handler": "validate.sh kep-m06-u",
+    "reset_handler": "reset.sh kep-m06-u"
+  },
+  {
+    "id": "kep-m06-v",
+    "title": "Stage The Cinder Front",
+    "description": "Assemble the exact Cinder infrastructure, model route, tools, and artifacts prepared in this act into one verified and signed staging front.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Use the native digest or resource identifier produced by each earlier operation; do not rebuild artifacts.",
+      "Prove that model traffic crosses your LiteLLM route and that every staged object matches its local bytes.",
+      "Sign the complete manifest, verify it from Kali, and preserve the signed file for delivery and compromise operations."
+    ],
+    "prerequisites": [
+      "kep-m06-n",
+      "kep-m06-u",
+      "kep-m06-q"
+    ],
+    "atlas_rows": [
+      "AML.T0008 Acquire Infrastructure",
+      "AML.T0008.005 AI Service Proxies",
+      "AML.T0079 Stage Capabilities"
+    ],
+    "flag": "FLAG{0938e99700485593}",
+    "carrier": "Cinder Forgejo Actions staging artifact after provider, route, digest, ownership, and signature checks.",
+    "participant_surface": "OpenRouter, Cinder LiteLLM, MinIO, Harbor, Forgejo Actions, and Cosign",
+    "apply_handler": "apply.sh kep-m06-v",
+    "validate_handler": "validate.sh kep-m06-v",
+    "reset_handler": "reset.sh kep-m06-v"
+  }
+]
