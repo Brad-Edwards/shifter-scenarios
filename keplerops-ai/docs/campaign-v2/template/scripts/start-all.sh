@@ -41,6 +41,7 @@ if [[ $MODE == build ]]; then
   "$ROOT/platform/scripts/deploy-to-k3s01.sh"
 else
   "$ROOT/engineering/engineering.sh" converge
+  "$ROOT/platform/scripts/reconcile-orion-vision.sh"
   ssh -i /root/.ssh/keplerops-v2 -o BatchMode=yes \
     -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
     kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh --core
