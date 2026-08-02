@@ -371,12 +371,12 @@ seed_support_trace() {
   sed "s/__SUPPORT_SESSION__/${session}/g" "${MODULE_ROOT}/payloads/workhub/orion-support-session.har" >"$har"
   scp -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$har" "${REVIEW_SSH_TARGET}:/tmp/orion-support-session.har" >/dev/null
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$REVIEW_SSH_TARGET" 'sudo install -d -m 0750 -o orion-review -g orion-review /var/lib/orion-review/traces; sudo install -m 0640 -o orion-review -g orion-review /tmp/orion-support-session.har /var/lib/orion-review/traces/orion-support-session.har; rm -f /tmp/orion-support-session.har'
-  tickets="$(curl -fsS --user "range-admin:${ZAMMAD_ADMIN_PASSWORD}" 'http://10.61.30.24:8080/api/v1/tickets?per_page=100')"
+  tickets="$(curl -fsS --user "support.analyst:${SUPPORT_ANALYST_PASSWORD}" 'http://10.61.30.24:8080/api/v1/tickets?per_page=100')"
   ticket_id="$(jq -er '[.[] | select(.title == "Orion support draft review")] | last | .id' <<<"$tickets")"
   discovery="$(jq -n --argjson ticket_id "$ticket_id" '{ticket_id:$ticket_id,subject:"Reviewer trace retained for Orion administration follow-up",body:"The bounded reviewer capture is retained on the assigned review workstation at /var/lib/orion-review/traces/orion-support-session.har. Access follows the reviewer host entitlement already recorded in this case.",type:"note",internal:true}')"
-  curl -fsS --user "range-admin:${ZAMMAD_ADMIN_PASSWORD}" -H 'Content-Type: application/json' -X POST --data "$discovery" http://10.61.30.24:8080/api/v1/ticket_articles >/dev/null
+  curl -fsS --user "support.analyst:${SUPPORT_ANALYST_PASSWORD}" -H 'Content-Type: application/json' -X POST --data "$discovery" http://10.61.30.24:8080/api/v1/ticket_articles >/dev/null
   payload="$(jq -n --arg title 'Orion administration trace review' --arg body "Bounded support history reference $(flag_for kep-m05-i)" '{title:$title,group:"Support",customer:"support.analyst@keplerops.lab",article:{subject:$title,body:$body,type:"note",internal:true}}')"
-  ticket="$(curl -fsS --user "range-admin:${ZAMMAD_ADMIN_PASSWORD}" -H 'Content-Type: application/json' -X POST --data "$payload" http://10.61.30.24:8080/api/v1/tickets)"
+  ticket="$(curl -fsS --user "support.analyst:${SUPPORT_ANALYST_PASSWORD}" -H 'Content-Type: application/json' -X POST --data "$payload" http://10.61.30.24:8080/api/v1/tickets)"
   ticket_id="$(jq -r '.id' <<<"$ticket")"
   printf '%s\n' "$ticket_id" >"${STATE_ROOT}/support-ticket-id"
   jq -n \
