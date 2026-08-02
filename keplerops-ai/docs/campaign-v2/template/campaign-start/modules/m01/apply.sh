@@ -151,7 +151,9 @@ seed_calendar() {
   local calendar_url="${NEXTCLOUD_URL}/remote.php/dav/calendars/${NEXTCLOUD_SERVICE_USER}/orion-release" code event
   code="$(curl -sS -o /dev/null -w '%{http_code}' -X MKCALENDAR \
     -u "${NEXTCLOUD_SERVICE_USER}:${NEXTCLOUD_SERVICE_PASSWORD}" -H "Host: ${NEXTCLOUD_HOST}" \
-    -H 'Content-Type: application/xml' --data '<d:mkcalendar xmlns:d="DAV:"/>' "${calendar_url}/")"
+    -H 'Content-Type: application/xml; charset=utf-8' \
+    --data '<?xml version="1.0" encoding="utf-8"?><c:mkcalendar xmlns:d="DAV:" xmlns:c="urn:ietf:params:xml:ns:caldav"><d:set><d:prop><d:displayname>Orion Release</d:displayname></d:prop></d:set></c:mkcalendar>' \
+    "${calendar_url}/")"
   [[ ${code} == 201 || ${code} == 405 ]] || die "CalDAV calendar creation returned ${code}"
   event="$(jq -rn --arg flag "$(flag_for kep-m01-b)" '
     "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//KeplerOps//Orion Release//EN\r\nBEGIN:VEVENT\r\nUID:orion-edge-2026.08@keplerops.lab\r\nDTSTAMP:20260802T090000Z\r\nDTSTART:20260804T193000Z\r\nDTEND:20260804T200000Z\r\nSUMMARY:Orion Edge isolated validation\r\nLOCATION:orion-release-bridge\r\nDESCRIPTION:Restricted candidate record. Calendar reference " + $flag + "\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"')"
