@@ -22,6 +22,7 @@ x-m10-airflow: &m10-airflow
     LAKEFS_URL: http://lakefs:8000
     QDRANT_URL: http://qdrant-writer:6333
     RABBITMQ_MANAGEMENT_URL: http://rabbitmq:15672
+    AIRFLOW__API__WORKERS: "1"
   volumes:
     - ./campaign-start/modules/m10/dags/orion_production_jobs.py:/opt/airflow/dags/orion_production_jobs.py:ro
     - ./campaign-start/modules/m10/runtime/production_jobs.py:/opt/airflow/config/production_jobs.py:ro
