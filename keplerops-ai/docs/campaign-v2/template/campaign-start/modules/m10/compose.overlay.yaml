@@ -7,13 +7,19 @@ x-m10-airflow: &m10-airflow
       AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
   environment:
     BUSINESS_ADAPTER_URL: http://business-adapter:8080
+    M10_SOURCE_URL: http://m10-source-producer:8080
+    M10_RELAY_ATTESTATION_KEY: KeplerOps-Orion-Production-Relay-2026
     BUSINESS_ADAPTER_TOKEN: KeplerV2-Training-Business-Adapter
     M10_STATE_DIR: /var/lib/keplerops-production
     BUSINESS_RELEASE_FILE: /range-state/business-release.env
+    CAMPAIGN_STATE_ROOT: /range-state/campaign-start
     CINDER_MINIO_URL: http://cinder-minio:9000
     KEPLER_MINIO_URL: http://minio:9000
     OPENCOST_URL: http://192.168.78.30:30090
     PROMETHEUS_URL: http://prometheus:9090
+    ALERTMANAGER_URL: http://alertmanager:9093
+    JAEGER_URL: http://jaeger:16686
+    LAKEFS_URL: http://lakefs:8000
     QDRANT_URL: http://qdrant-writer:6333
     RABBITMQ_MANAGEMENT_URL: http://rabbitmq:15672
   volumes:
@@ -30,6 +36,119 @@ x-m10-airflow: &m10-airflow
     - observe
 
 services:
+  business-adapter:
+    environment:
+      TIKA_URL: http://tika:9998
+
+  prometheus:
+    volumes:
+      - ./campaign-start/modules/m10/runtime/prometheus.yml:/etc/prometheus/keplerops.yml:ro
+      - ./campaign-start/modules/m10/runtime/prometheus-rules.yml:/etc/prometheus/rules/m10-production.yml:ro
+
+  m10-source-producer:
+    <<: *m10-airflow
+    container_name: kep-v2-m10-source-producer
+    command: ["uvicorn", "production_sources:app", "--app-dir", "/opt/airflow/config", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      BUSINESS_ADAPTER_TOKEN: KeplerV2-Training-Business-Adapter
+      M10_SOURCE_STATE: /var/lib/keplerops-production/sources
+      CAMPAIGN_STATE_ROOT: /range-state/campaign-start
+      M10_SOURCE_SELF_URL: http://m10-source-producer:8080
+      BUSINESS_ADAPTER_URL: http://business-adapter:8080
+      M10_RELAY_ATTESTATION_KEY: KeplerOps-Orion-Production-Relay-2026
+      CINDER_MINIO_URL: http://cinder-minio:9000
+      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      REDMINE_URL: http://redmine:3000
+      ZAMMAD_URL: http://zammad-nginx:8080
+      QDRANT_URL: http://qdrant:6333
+      RABBITMQ_MANAGEMENT_URL: http://rabbitmq:15672
+      PROMETHEUS_URL: http://prometheus:9090
+      OTLP_HTTP_URL: http://otel-collector:4318
+      KUBERNETES_TOKEN_REVIEW_URL: https://192.168.78.30:6443/apis/authentication.k8s.io/v1/tokenreviews
+      KUBERNETES_CALLBACK_AUDIENCE: orion-production-callbacks
+      KUBERNETES_API_URL: https://192.168.78.30:6443
+      KUBERNETES_REVIEWER_TOKEN_FILE: /run/keplerops/token-reviewer.jwt
+      KUBERNETES_CA_FILE: /run/keplerops/kubernetes-ca.crt
+    volumes:
+      - ./campaign-start/modules/m10/runtime/production_sources.py:/opt/airflow/config/production_sources.py:ro
+      - ./state:/range-state:ro
+      - m10-production-state:/var/lib/keplerops-production
+      - ./state/campaign-start/m10/identity/token-reviewer.jwt:/run/keplerops/token-reviewer.jwt:ro
+      - ./state/campaign-start/m10/identity/kubernetes-ca.crt:/run/keplerops/kubernetes-ca.crt:ro
+    ports:
+      - "192.168.78.1:18090:8080"
+    networks:
+      business:
+        ipv4_address: 10.61.70.26
+      cinder: {}
+      data: {}
+      observe:
+        ipv4_address: 10.61.80.27
+
+  m10-research-worker-1: &m10-research-worker
+    <<: *m10-airflow
+    command: ["python", "/opt/airflow/config/native_worker.py"]
+    environment:
+      M10_NATIVE_WORKER_MODE: research
+      M10_NATIVE_WORKER_ID: research-worker-1
+      RABBITMQ_URL: amqp://kepler:KeplerV2-Training-Rabbit@rabbitmq:5672/keplerops
+      REDMINE_URL: http://redmine:3000
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      OTLP_HTTP_URL: http://otel-collector:4318
+    volumes:
+      - ./campaign-start/modules/m10/runtime/native_worker.py:/opt/airflow/config/native_worker.py:ro
+    networks:
+      - business
+      - data
+      - observe
+    read_only: true
+    tmpfs: [/tmp:rw,noexec,nosuid,nodev,size=32m]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+
+  m10-research-worker-2:
+    <<: *m10-research-worker
+    environment:
+      M10_NATIVE_WORKER_MODE: research
+      M10_NATIVE_WORKER_ID: research-worker-2
+      RABBITMQ_URL: amqp://kepler:KeplerV2-Training-Rabbit@rabbitmq:5672/keplerops
+      REDMINE_URL: http://redmine:3000
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      OTLP_HTTP_URL: http://otel-collector:4318
+
+  m10-feedback-worker-1: &m10-feedback-worker
+    <<: *m10-airflow
+    command: ["python", "/opt/airflow/config/native_worker.py"]
+    environment:
+      M10_NATIVE_WORKER_MODE: feedback
+      M10_NATIVE_WORKER_ID: feedback-worker-1
+      RABBITMQ_URL: amqp://kepler:KeplerV2-Training-Rabbit@rabbitmq:5672/keplerops
+      ZAMMAD_URL: http://zammad-nginx:8080
+      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+      QDRANT_URL: http://qdrant-writer:6333
+    volumes:
+      - ./campaign-start/modules/m10/runtime/native_worker.py:/opt/airflow/config/native_worker.py:ro
+    networks:
+      - business
+      - data
+    read_only: true
+    tmpfs: [/tmp:rw,noexec,nosuid,nodev,size=32m]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+
+  m10-feedback-worker-2:
+    <<: *m10-feedback-worker
+    environment:
+      M10_NATIVE_WORKER_MODE: feedback
+      M10_NATIVE_WORKER_ID: feedback-worker-2
+      RABBITMQ_URL: amqp://kepler:KeplerV2-Training-Rabbit@rabbitmq:5672/keplerops
+      ZAMMAD_URL: http://zammad-nginx:8080
+      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+      QDRANT_URL: http://qdrant-writer:6333
+
   m10-storage-init:
     image: ${MINIO_MC_IMAGE}
     depends_on:
@@ -43,7 +162,7 @@ services:
         cat >/tmp/export-policy.json <<'JSON'
         {"Version":"2012-10-17","Statement":[
           {"Effect":"Allow","Action":["s3:GetBucketLocation","s3:ListBucket"],"Resource":["arn:aws:s3:::orion-egress-staging"]},
-          {"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectRetention","s3:PutObject","s3:PutObjectRetention"],"Resource":["arn:aws:s3:::orion-egress-staging/egress-staging/*"]}
+          {"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectRetention","s3:PutObject","s3:PutObjectRetention","s3:DeleteObject","s3:DeleteObjectVersion","s3:BypassGovernanceRetention"],"Resource":["arn:aws:s3:::orion-egress-staging/accepted-exports/*"]}
         ]}
         JSON
         mc admin policy create kepler kepler-orion-export /tmp/export-policy.json

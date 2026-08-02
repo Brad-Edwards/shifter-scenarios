@@ -1,0 +1,5 @@
+# campaign-m10-production-operations
+https://operations.keplerops.lab {
+	tls internal
+	reverse_proxy 10.61.70.26:8080
+}

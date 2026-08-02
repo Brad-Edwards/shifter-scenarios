@@ -1,0 +1,7 @@
+{
+  "schema": "cinder.model-channel/v1",
+  "model_family": "release-risk",
+  "channel": "orion-compatible",
+  "release_tag": "baseline-2026.08",
+  "artifact_sha256": "sha256:6689d85c032a43744a728ba17b9d0d83b8689fd679d2055bf2fb1f28845d8ba5"
+}

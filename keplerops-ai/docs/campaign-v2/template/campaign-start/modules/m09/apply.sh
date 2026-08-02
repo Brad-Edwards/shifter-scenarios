@@ -65,6 +65,14 @@ put_file() {
   forgejo "${base}" "${auth}" "${method}" "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
 }
 
+seed_file() {
+  local base=$1 auth=$2 owner=$3 repo=$4 path=$5 source=$6 message=$7
+  if forgejo "${base}" "${auth}" GET "/repos/${owner}/${repo}/contents/${path}" >/dev/null 2>&1; then
+    return
+  fi
+  put_file "$@"
+}
+
 ensure_issue_label() {
   local repo=$1 name=$2 color=$3 description=$4 labels
   labels="$(forgejo "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' GET "/repos/keplerops/${repo}/labels")"
@@ -87,6 +95,9 @@ ensure_forgejo_state() {
     keplerops orion-release-suite 'Orion release evaluation and lineage controls.' true
   put_file "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
     cinder-operator orion-model-releases README.md "${MODULE_ROOT}/payloads/UPSTREAM_RELEASE.md" 'Publish upstream release requirements'
+  seed_file "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
+    cinder-operator orion-model-releases channels/orion-compatible.json \
+    "${MODULE_ROOT}/payloads/upstream-channel-baseline.json" 'Seed the ordinary Orion compatibility channel'
   put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
     keplerops orion-release-approvals README.md "${MODULE_ROOT}/payloads/ORION_RELEASE_RUNBOOK.md" 'Publish Orion release runbook'
   put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
@@ -116,13 +127,13 @@ ensure_harbor_state() {
 
 ensure_rabbit_state() {
   local auth='kepler:KeplerV2-Training-Rabbit'
-  for queue in orion.review.m09-import orion.review.m09-results; do
+  for queue in orion.review.m09-import orion.review.m09-results orion.review.m09-review-results; do
     curl -fsS --user "${auth}" -H 'Content-Type: application/json' -X PUT \
       --data '{"durable":true,"auto_delete":false,"arguments":{}}' \
       "${RABBIT_API}/queues/keplerops/${queue}" >/dev/null
   done
   curl -fsS --user "${auth}" -H 'Content-Type: application/json' -X PUT \
-    --data '{"configure":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?|m09-(import|results))$","write":"^amq\\.default$","read":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?|m09-(import|results))$"}' \
+    --data '{"configure":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?|m09-(import|results|review-results))$","write":"^amq\\.default$","read":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?|m09-(import|results|review-results))$"}' \
     "${RABBIT_API}/permissions/keplerops/svc-review-verification" >/dev/null
 }
 
@@ -165,21 +176,21 @@ k3s kubectl -n orion-platform patch service opa --type=merge -p='{"spec":{"type"
 k3s kubectl -n orion-platform rollout restart deployment/opa >/dev/null
 k3s kubectl -n orion-platform rollout status deployment/opa --timeout=5m >/dev/null
 curl -fsS http://127.0.0.1:30082/health >/dev/null
-approval="$(curl -fsS -H 'Content-Type: application/json' --data '{"input":{"candidate":"orion-release-risk","report_digest":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","approved_model_digest":"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","resolved_model_digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","approval_state":"approved"}}' http://127.0.0.1:30082/v1/data/keplerops/release_candidate/approval)"
-jq -e '.result.allow == true and .result.engagement_reference == "FLAG{c8f30de2c8a3bebe}"' <<<"${approval}" >/dev/null || {
-  printf 'OPA did not load the m09 approval decision\n' >&2
-  exit 1
-}
-binding="$(curl -fsS -H 'Content-Type: application/json' --data '{"input":{"model_digest":"sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","evaluated_image_digest":"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb","resolved_image_digest":"sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc","compatibility_label":"orion-release-compatible"}}' http://127.0.0.1:30082/v1/data/keplerops/release_candidate/image_binding)"
-jq -e '.result.allow == true and .result.engagement_reference == "FLAG{e2f75daaa99cf644}"' <<<"${binding}" >/dev/null || {
-  printf 'OPA did not load the m09 image-binding decision\n' >&2
-  exit 1
-}
 REMOTE
 }
 
+capture_upstream_baseline() {
+  local path="${STATE_ROOT}/upstream-channel-baseline.json" response
+  [[ -s ${path} ]] && return
+  response="$(forgejo "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' GET \
+    /repos/cinder-operator/orion-model-releases/contents/channels/orion-compatible.json)"
+  jq -er '.content | gsub("\\n"; "") | @base64d | fromjson' <<<"${response}" >"${path}"
+  chmod 0640 "${path}"
+}
+
 ensure_airflow() {
-  compose up -d --build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker orion-import-review-worker >/dev/null
+  compose up -d --build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
+    orion-import-review-worker orion-model-review-dispatcher >/dev/null
   local token dag
   token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
     --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
@@ -204,8 +215,11 @@ main() {
   local command
   for command in base64 curl docker jq ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
   [[ ${OPERATION} == all ]] || jq -e --arg id "${OPERATION}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${OPERATION}"
-  install -d -m 0750 "${STATE_ROOT}/accepted" "${STATE_ROOT}/applied"
+  install -d -m 0750 "${STATE_ROOT}/accepted" "${STATE_ROOT}/applied" \
+    "${STATE_ROOT}/attempts" "${STATE_ROOT}/failed" "${STATE_ROOT}/review-dispatch" \
+    "${STATE_ROOT}/promotion-capabilities"
   ensure_forgejo_state
+  capture_upstream_baseline
   ensure_harbor_state
   ensure_rabbit_state
   ensure_relay_basket m09-import-exceptions

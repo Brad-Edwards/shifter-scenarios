@@ -1,0 +1,32 @@
+{
+  "schema": "keplerops.operation-reset-manifest/v1",
+  "module": "m09",
+  "successful_state": "Every accepted native carrier and descendant is immutable; only full-range reprovision may remove it.",
+  "attempt_manifest": "state/campaign-start/m09/attempts/<operation>/<attempt>/manifest.json",
+  "cleanup_owners": {
+    "mlflow": ["failed run", "failed candidate model version"],
+    "harbor": ["participant-owned failed candidate artifact; mutable labels are restored by the participant workflow baseline"],
+    "forgejo": ["failed GitOps file revision restored from the recorded commit parent", "failed review issue state is retained as audit history"],
+    "minio": ["failed report, mirror and review-result objects"],
+    "opa": ["failed attempt data documents and decisions"],
+    "kubernetes": ["failed isolated-load jobs and network policies", "exact pre-attempt Argo, KServe, Secret, ConfigMap and ServiceAccount snapshots, or deletion when the resource did not exist"],
+    "rabbitmq": ["only the failed attempt's own request/result messages, matched by exact request id or review-issue prefix and drained while every unrelated message is requeued"],
+    "relay": ["shared callback baskets and their tokens are preserved; captured callbacks are retained as audit history and never wiped by a failed attempt"],
+    "dispatcher": ["durable Forgejo review-dispatch marker for a failed review attempt"],
+    "local": ["consumed failed-attempt promotion capability", "exact prior business-release.env bytes or absence", "failed attempt manifest after owning-system cleanup succeeds"]
+  },
+  "operations": {
+    "kep-m09-a": ["mlflow", "harbor", "kubernetes"],
+    "kep-m09-b": ["mlflow", "opa"],
+    "kep-m09-c": ["minio", "opa"],
+    "kep-m09-d": ["minio", "opa"],
+    "kep-m09-e": ["minio", "opa"],
+    "kep-m09-f": ["minio", "opa"],
+    "kep-m09-g": ["forgejo", "minio", "opa", "kubernetes", "local"],
+    "kep-m09-h": ["forgejo"],
+    "kep-m09-i": ["rabbitmq", "relay"],
+    "kep-m09-j": ["minio"],
+    "kep-m09-k": ["rabbitmq", "relay", "minio", "dispatcher"],
+    "kep-m09-l": ["harbor", "forgejo", "minio", "kubernetes"]
+  }
+}

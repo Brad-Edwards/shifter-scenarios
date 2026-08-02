@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m10-a",
+    "model_family": "release-risk",
     "title": "Production Continuity Check",
     "description": "Prove what the Orion canary is running and establish a clean production baseline before activating the compromise.",
     "difficulty": "Accessible",
@@ -17,6 +18,7 @@
   },
   {
     "id": "kep-m10-b",
+    "model_family": "release-risk",
     "title": "Activate Learned Behavior",
     "description": "Use the exact deployed compromise to erode Orion's production reliability until KeplerOps falls back to manual review.",
     "difficulty": "Intermediate",
@@ -35,6 +37,7 @@
   },
   {
     "id": "kep-m10-c",
+    "model_family": "release-risk",
     "title": "Artifact-To-Pod Compromise",
     "description": "Convert the deployed malicious artifact into real execution inside Orion's contained production serving container.",
     "difficulty": "Expert",
@@ -51,6 +54,7 @@
   },
   {
     "id": "kep-m10-d",
+    "model_family": "release-risk",
     "title": "Stage The Original Revision",
     "description": "Package the complete Orion revision into a verifiable encrypted archive in KeplerOps' egress staging area.",
     "difficulty": "Intermediate",
@@ -67,6 +71,7 @@
   },
   {
     "id": "kep-m10-e",
+    "model_family": "release-risk",
     "title": "Policy Broker Impact",
     "description": "Turn Orion's altered production decision into a real reversible change in the contained canary tenant.",
     "difficulty": "Expert",
@@ -83,6 +88,7 @@
   },
   {
     "id": "kep-m10-f",
+    "model_family": "release-risk",
     "title": "Exfiltrate Exact Orion",
     "description": "Move the complete original Orion package to the contained Cinder destination and prove exact-byte possession.",
     "difficulty": "Intermediate",
@@ -99,6 +105,7 @@
   },
   {
     "id": "kep-m10-g",
+    "model_family": "release-risk",
     "title": "Orion In Hand",
     "description": "Prove possession of both stolen and reproduced Orion capability and tie them to the production compromise.",
     "difficulty": "Expert",
@@ -115,6 +122,7 @@
   },
   {
     "id": "kep-m10-h",
+    "model_family": "release-risk",
     "title": "Saturate The Canary Service",
     "description": "Cause and observe a bounded availability failure in the contained Orion canary service.",
     "difficulty": "Intermediate",
@@ -131,6 +139,7 @@
   },
   {
     "id": "kep-m10-i",
+    "model_family": "release-risk",
     "title": "Consume The Compute Budget",
     "description": "Drive the contained Orion tenant over its measured compute budget using both query volume and query cost.",
     "difficulty": "Intermediate",
@@ -147,6 +156,7 @@
   },
   {
     "id": "kep-m10-j",
+    "model_family": "assistant",
     "title": "Recursive Research Fan-Out",
     "description": "Cause the contained production agent to consume resources through model-driven recursive delegation.",
     "difficulty": "Advanced",
@@ -156,13 +166,14 @@
     "atlas_rows": ["AML.T0034.002 Agentic Resource Consumption"],
     "flag": "FLAG{ade9604521c854f1}",
     "carrier": "Root-linked Orion research resource-usage report.",
-    "participant_surface": "WorkHub research briefs, Orion Assistant, Celery, and Jaeger.",
+    "participant_surface": "WorkHub research briefs, Orion Assistant, RabbitMQ workers, and Jaeger.",
     "apply_handler": "apply.sh kep-m10-j",
     "validate_handler": "validate.sh kep-m10-j",
     "reset_handler": "reset.sh kep-m10-j"
   },
   {
     "id": "kep-m10-k",
+    "model_family": "release-risk",
     "title": "Flood The Signal With Chaff",
     "description": "Degrade Orion's contained feedback signal by submitting realistic chaff through its normal public workflow.",
     "difficulty": "Intermediate",
@@ -179,6 +190,7 @@
   },
   {
     "id": "kep-m10-l",
+    "model_family": "release-risk",
     "title": "Unauthorized Credit",
     "description": "Cause a reversible unauthorized financial adjustment in the isolated KeplerOps customer tenant.",
     "difficulty": "Accessible",
@@ -195,6 +207,7 @@
   },
   {
     "id": "kep-m10-m",
+    "model_family": "release-risk",
     "title": "Publish The False Statement",
     "description": "Cause the production workflow to publish a false KeplerOps statement to the contained stakeholder site.",
     "difficulty": "Accessible",
@@ -211,6 +224,7 @@
   },
   {
     "id": "kep-m10-n",
+    "model_family": "release-risk",
     "title": "Misroute The Advisory",
     "description": "Cause a contained advisory workflow to notify the wrong synthetic population.",
     "difficulty": "Accessible",
@@ -227,6 +241,7 @@
   },
   {
     "id": "kep-m10-o",
+    "model_family": "release-risk",
     "title": "Close The Wrong Case",
     "description": "Cause Orion's contained workflow to take an adverse action against a synthetic user.",
     "difficulty": "Accessible",
@@ -243,6 +258,7 @@
   },
   {
     "id": "kep-m10-p",
+    "model_family": "release-risk",
     "title": "Destroy The Feedback Partition",
     "description": "Destroy a bounded Orion feedback partition and prove the downstream pipeline consumed the damaged state.",
     "difficulty": "Intermediate",
@@ -259,6 +275,7 @@
   },
   {
     "id": "kep-m10-q",
+    "model_family": "release-risk",
     "title": "Agent-Mediated Destruction",
     "description": "Cause the contained production agent to delete real synthetic tenant data through its normal cleanup tool.",
     "difficulty": "Advanced",

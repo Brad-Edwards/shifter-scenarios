@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m09-a",
+    "model_family": "release-risk",
     "title": "Register The Compromised Candidate",
     "description": "Introduce the tested compromised model and serving image into KeplerOps candidate registries under immutable digests.",
     "difficulty": "Advanced",
@@ -18,24 +19,27 @@
   },
   {
     "id": "kep-m09-b",
+    "model_family": "release-risk",
     "title": "Pass The Visible Gate",
     "description": "Preserve the candidate's intended compromise while making its exact bytes pass KeplerOps' visible release suite.",
     "difficulty": "Accessible",
     "points": 100,
     "hints": ["Run the standard suite without changing its inputs.", "Diagnose which legitimate slice the compromise disturbed.", "Rebuild and confirm the trigger and near-neighbor controls before accepting the clean report."],
-    "prerequisites": ["kep-m07-e"],
+    "prerequisites": ["kep-m07-e", "kep-m07-g", "kep-m07-i"],
     "board_prerequisites": [],
+    "prerequisite_mode": "any",
     "prerequisite_logic": "kep-m07-e OR kep-m07-g OR kep-m07-i",
     "atlas_rows": ["AML.T0042 Verify Attack"],
     "flag": "FLAG{a8bce8475f142945}",
     "carrier": "Signed visible-evaluation report naming exact source, data, model, prompt, suite, and review-image digests.",
-    "participant_surface": "Forgejo candidate repository, Airflow release suite, Inspect AI, pytest, and MLflow",
+    "participant_surface": "Forgejo candidate repository, Airflow release evaluator, ONNX Runtime, Cosign, and MLflow",
     "apply_handler": "apply.sh kep-m09-b",
     "validate_handler": "validate.sh kep-m09-b",
     "reset_handler": "reset.sh kep-m09-b"
   },
   {
     "id": "kep-m09-c",
+    "model_family": "release-risk",
     "title": "Launder The Lineage",
     "description": "Make the frozen malicious candidate appear to descend from approved data and code by exploiting mutable lineage joins.",
     "difficulty": "Advanced",
@@ -53,6 +57,7 @@
   },
   {
     "id": "kep-m09-d",
+    "model_family": "release-risk",
     "title": "Approval Without A Digest",
     "description": "Exploit an underspecified approval subject so a genuine authorization for a candidate name applies to a different immutable model digest.",
     "difficulty": "Intermediate",
@@ -70,6 +75,7 @@
   },
   {
     "id": "kep-m09-e",
+    "model_family": "release-risk",
     "title": "Break The Model-Image Binding",
     "description": "Make a valid model evaluation authorize an unevaluated serving image by moving KeplerOps' mutable Harbor compatibility label.",
     "difficulty": "Intermediate",
@@ -87,6 +93,7 @@
   },
   {
     "id": "kep-m09-f",
+    "model_family": "release-risk",
     "title": "Obtain The Release Signature",
     "description": "Drive KeplerOps' normal delegated release workflow to issue trusted signatures over the exact compromised model and image digests.",
     "difficulty": "Advanced",
@@ -104,6 +111,7 @@
   },
   {
     "id": "kep-m09-g",
+    "model_family": "release-risk",
     "title": "Promote The Digest",
     "description": "Promote the exact signed compromised candidate through KeplerOps' normal GitOps path and prove the healthy canary runs those bytes.",
     "difficulty": "Advanced",
@@ -121,14 +129,15 @@
   },
   {
     "id": "kep-m09-h",
+    "model_family": "artifact-defined",
     "title": "Release The Tainted Checkpoint",
     "description": "Package and publish the exact Cinder-compromised checkpoint so KeplerOps can consume it as an upstream release.",
     "difficulty": "Accessible",
     "points": 100,
-    "hints": ["Use the compromised artifact produced earlier rather than a replacement.", "Bind model card and stored bytes to one immutable digest.", "Download and smoke-test the published copy."],
-    "prerequisites": ["kep-m07-e", "kep-m07-g", "kep-m07-i", "kep-m06-n"],
-    "board_prerequisites": ["kep-m06-n"],
-    "prerequisite_logic": "(kep-m07-e OR kep-m07-g OR kep-m07-i) AND kep-m06-n",
+    "hints": ["Use the compromised artifact produced earlier rather than a replacement.", "Bind model card and stored bytes to one immutable digest.", "Preserve the signed isolated-execution report beside the published copy."],
+    "prerequisites": ["kep-m07-i", "kep-m06-n"],
+    "board_prerequisites": ["kep-m07-i", "kep-m06-n"],
+    "prerequisite_logic": "kep-m07-i AND kep-m06-n",
     "atlas_rows": ["AML.T0058 Publish Poisoned Models"],
     "flag": "FLAG{10736d71e947e2ed}",
     "carrier": "Accepted upstream release attestation proving byte identity and normal inference.",
@@ -139,6 +148,7 @@
   },
   {
     "id": "kep-m09-i",
+    "model_family": "artifact-defined",
     "title": "Broken For The Scanner",
     "description": "Construct one corrupt pickle whose reducer executes in the import worker before a later malformed opcode raises an error.",
     "difficulty": "Expert",
@@ -156,6 +166,7 @@
   },
   {
     "id": "kep-m09-j",
+    "model_family": "artifact-defined",
     "title": "What The Mirror Trusts",
     "description": "Rebind a trusted upstream model reference so the normal KeplerOps mirror acquires Cinder's exact malicious checkpoint.",
     "difficulty": "Accessible",
@@ -173,6 +184,7 @@
   },
   {
     "id": "kep-m09-k",
+    "model_family": "artifact-defined",
     "title": "Loaded By Review",
     "description": "Turn the mirrored checkpoint into code execution when a KeplerOps reviewer uses the normal UI to load it for smoke inference.",
     "difficulty": "Intermediate",
@@ -190,6 +202,7 @@
   },
   {
     "id": "kep-m09-l",
+    "model_family": "artifact-defined",
     "title": "Move The Tag",
     "description": "Replace the bytes behind Orion's trusted staging image tag and prove the normal GitOps reconciliation deployed Cinder's image.",
     "difficulty": "Advanced",
