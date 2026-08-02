@@ -143,8 +143,12 @@ ensure_mlflow_experiment() {
 }
 
 ensure_cinder_storage() {
+  local container exit_code
   compose up -d cinder-minio cinder-forgejo cinder-forgejo-bootstrap cinder-bootstrap >/dev/null
-  compose wait cinder-forgejo-bootstrap cinder-bootstrap >/dev/null
+  for container in kep-v2-cinder-forgejo-bootstrap kep-v2-cinder-bootstrap; do
+    exit_code="$(docker wait "${container}")"
+    [[ ${exit_code} == 0 ]] || die "${container} exited with status ${exit_code}"
+  done
   # shellcheck disable=SC2016
   compose run --rm --no-deps --entrypoint /bin/sh cinder-bootstrap -ec '
     mc alias set cinder http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
