@@ -478,7 +478,7 @@ ensure_clean_training_reference() {
   docker exec kep-v2-airflow-api airflow dags trigger orion_release_risk_training --run-id "${run_id}" >/dev/null
   for _ in $(seq 1 360); do
     state="$(docker exec kep-v2-airflow-api airflow dags list-runs \
-      --dag-id orion_release_risk_training --output json 2>/dev/null |
+      orion_release_risk_training --output json 2>/dev/null |
       jq -r --arg run "${run_id}" '.[] | select((.run_id // .dag_run_id) == $run) | .state' | head -n1)"
     case "${state,,}" in
       success)

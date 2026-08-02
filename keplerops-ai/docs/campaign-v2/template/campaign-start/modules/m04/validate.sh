@@ -37,7 +37,7 @@ trace_exists() {
 
 latest_airflow_run() {
   local dag=$1
-  docker exec "${AIRFLOW_CONTAINER}" airflow dags list-runs --dag-id "${dag}" --output json 2>/dev/null | \
+  docker exec "${AIRFLOW_CONTAINER}" airflow dags list-runs "${dag}" --output json 2>/dev/null | \
     jq -er '[.[] | select((.state | ascii_downcase) == "success")] | sort_by(.start_date // .execution_date // "") | last | (.run_id // .dag_run_id)'
 }
 

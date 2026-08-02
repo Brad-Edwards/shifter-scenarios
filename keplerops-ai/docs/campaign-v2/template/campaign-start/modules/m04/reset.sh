@@ -61,7 +61,7 @@ delete_failed_airflow_runs() {
       -o /dev/null -w '%{http_code}' -X DELETE \
       "http://127.0.0.1:8080/api/v2/dags/${dag}/dagRuns/${run}")"
     case "${status}" in 200|202|204|404) ;; *) die "Airflow refused failed run reset for ${dag}/${run}: HTTP ${status}" ;; esac
-  done < <(docker exec "${AIRFLOW_CONTAINER}" airflow dags list-runs --dag-id "${dag}" --output json 2>/dev/null | \
+  done < <(docker exec "${AIRFLOW_CONTAINER}" airflow dags list-runs "${dag}" --output json 2>/dev/null | \
     jq -r '.[] | select((.state|ascii_downcase) == "failed") | (.run_id // .dag_run_id) | @uri')
 }
 
