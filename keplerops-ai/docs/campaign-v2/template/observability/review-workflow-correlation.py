@@ -81,7 +81,6 @@ def call_agent(request_id: str, trace_id: str, parent_span_id: str, prompt: str)
     edge = os.getenv("ORION_AGENT_EDGE", "10.61.10.2")
     payload = {
         "prompt": prompt,
-        "conversation_id": request_id,
         "user": "svc.review01",
         "metadata": {"request_id": request_id, "purpose": "artifact_review"},
     }
@@ -114,8 +113,6 @@ def call_agent(request_id: str, trace_id: str, parent_span_id: str, prompt: str)
     for key in ("model", "response", "conversation_id", "workflow_id"):
         if not response.get(key):
             raise CorrelationError(f"Orion ingress omitted {key}")
-    if response["conversation_id"] != request_id:
-        raise CorrelationError("Orion ingress changed the request conversation identity")
     if response.get("request_id") != request_id or response.get("trace_id") != trace_id:
         raise CorrelationError("Orion ingress did not preserve request and trace identity")
     allowed_tools = [

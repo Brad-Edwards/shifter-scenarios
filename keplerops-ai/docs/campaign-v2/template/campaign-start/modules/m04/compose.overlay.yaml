@@ -81,9 +81,10 @@ services:
       retries: 20
 
   support-preview-browser:
-    image: ${WORKSTATION_IMAGE:-${CINDER_WORKSTATION_IMAGE}}
+    image: keplerops/orion-m02-workers:campaign-v2
     container_name: kep-v2-support-preview-browser
-    command: ["python3", "/opt/keplerops/support_preview_worker.py"]
+    entrypoint: ["python"]
+    command: ["/opt/keplerops/support_preview_worker.py"]
     environment:
       ZAMMAD_URL: http://10.61.30.24:8080
       ZAMMAD_HOST: support.keplerops.lab

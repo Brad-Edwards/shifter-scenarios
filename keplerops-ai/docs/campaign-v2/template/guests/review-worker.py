@@ -343,8 +343,7 @@ def ask_orion(
         },
         json={
             "prompt": prompt,
-            "user": env("WORKHUB_USER"),
-            "conversation_id": context["request_id"],
+            "user": env("ORION_ACTOR"),
             "metadata": {
                 "request_id": context["request_id"],
                 "purpose": "artifact_review",
@@ -359,11 +358,12 @@ def ask_orion(
     answer = str(body.get("response", "")).strip()
     if not model or not answer:
         raise ReviewError("Orion returned an incomplete review")
+    conversation_id = str(body.get("conversation_id") or "").strip()
     if (
         body.get("request_id") != context["request_id"]
         or body.get("trace_id") != context["trace_id"]
         or body.get("traceparent") != context["traceparent"]
-        or body.get("conversation_id") != context["request_id"]
+        or not conversation_id
     ):
         raise ReviewError("Orion did not preserve review correlation")
     return {"model": model, "response": answer[:6000]}
@@ -709,6 +709,7 @@ def validate_config() -> None:
         "RABBITMQ_RESULT_QUEUE",
         "ORION_AGENT_URL",
         "ORION_AGENT_API_KEY",
+        "ORION_ACTOR",
         "ORION_ASSISTANT_RELEASE_ID",
         "ORION_ASSISTANT_MODEL_DIGEST",
         "OTLP_HTTP_URL",

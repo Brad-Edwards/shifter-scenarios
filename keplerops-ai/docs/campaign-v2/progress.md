@@ -123,7 +123,7 @@ both complete. Template status records materialization, not source intent.
 | M06 Cinder infrastructure | parent + Halley | Cinder and shared Vertex edge | corrected | complete | 21 software operations materialized; hardware proof excluded | pending |
 | M07 integrity workflows | parent | clean training reference | corrected; 11 contract regressions pass | complete | materialized | pending |
 | M08 vision and physical boundary | parent | M06 workbench; physical place for two operations | corrected; 6 regressions pass | complete | 10 software operations materialized; physical calibration excluded | pending |
-| M09/M10 release and production | Pasteur + Herschel | M05/M07 artifacts and clean release | corrected; focused static contracts and digest regression pass | complete; blocker corrected | M09 materialized; M10 image built and tmpfs retry pending | pending |
+| M09/M10 release and production | Pasteur + Herschel | M05/M07 artifacts and clean release | corrected; focused static contracts and digest regression pass | complete; startup blockers corrected | M09 and all 17 M10 start states materialized; M10 source, workers and Airflow healthy | pending |
 | Clean release and shared Vertex | parent | M07, k3s, attached GCP identity | corrected; 12 regressions pass | complete | runtime and immutable training lineage gates pass | pending |
 | Global readiness and workstation | parent | all software modules | corrected; static gates pass | complete | pending | pending |
 | Shifter content export | parent | all 134 operation records | 134-operation bundle accepted by Shifter parser | complete | pending | pending |

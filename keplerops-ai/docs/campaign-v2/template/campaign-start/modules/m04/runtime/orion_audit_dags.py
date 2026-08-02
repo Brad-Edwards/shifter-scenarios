@@ -332,10 +332,14 @@ def agent_call(prompt: str, purpose: str, trace_id: str | None = None, parent_id
             "Authorization": f"Bearer {AGENT_KEY}", "X-Request-ID": request_id,
             "traceparent": f"00-{trace_id}-{parent_id}-01",
         },
-        json={"prompt": prompt, "conversation_id": request_id, "user": "eval.reader"},
+        json={"prompt": prompt, "user": "eval.reader"},
         timeout=150,
     )).json()
-    if response.get("request_id") != request_id or response.get("trace_id") != trace_id:
+    if (
+        response.get("request_id") != request_id
+        or response.get("trace_id") != trace_id
+        or not str(response.get("conversation_id") or "").strip()
+    ):
         raise ValueError("Orion did not preserve live request correlation")
     return response
 

@@ -283,6 +283,28 @@ exit 4
 REMOTE
 }
 
+reconcile_guest_orion_identities() {
+  local target token actor
+  while read -r target token actor; do
+    "${SSH[@]}" "${target}" sudo bash -s -- "${token}" "${actor}" <<'REMOTE'
+set -Eeuo pipefail
+token=$1
+actor=$2
+environment=/etc/keplerops/orion-review-worker.env
+temporary=$(mktemp)
+trap 'rm -f "${temporary}"' EXIT
+grep -Ev '^(ORION_AGENT_API_KEY|ORION_ACTOR)=' "${environment}" >"${temporary}"
+printf 'ORION_AGENT_API_KEY=%s\nORION_ACTOR=%s\n' "${token}" "${actor}" >>"${temporary}"
+install -m 0640 -o root -g orion-review "${temporary}" "${environment}"
+systemctl restart orion-review-worker.service
+systemctl is-active --quiet orion-review-worker.service
+REMOTE
+  done <<'IDENTITIES'
+kepler@192.168.78.20 KAI-Orion-Partner-Identity-2026 partner.reviewer
+kepler@192.168.78.21 orion-job-7e6fd2f22d64416d svc-orion-integration
+IDENTITIES
+}
+
 seed_room() {
   compose exec -T redis redis-cli -a KeplerV2-Training-Redis --no-auth-warning SET \
     orion:room:orion-community-review \
@@ -470,6 +492,7 @@ apply_core() {
   build_signed_baselines
   configure_signature_admission_key
   configure_k3s_runtime
+  reconcile_guest_orion_identities
   seed_room
   compose up -d --build m05-orion-session-gateway >/dev/null
 }

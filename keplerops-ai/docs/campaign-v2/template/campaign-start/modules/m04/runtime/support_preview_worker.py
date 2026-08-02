@@ -108,7 +108,7 @@ def call_orion(ticket_id: int, source_article_id: int, attachment: str, referenc
         f"Attachment from ticket {ticket_id}, article {source_article_id}:\n{attachment}"
     )
     payload = json.dumps({
-        "prompt": prompt, "conversation_id": request_id, "user": "svc.support-preview",
+        "prompt": prompt, "user": "svc.support-preview",
         "metadata": {"ticket_id": ticket_id, "source_article_id": source_article_id},
     }).encode()
     req = urllib.request.Request(
@@ -117,7 +117,7 @@ def call_orion(ticket_id: int, source_article_id: int, attachment: str, referenc
     )
     with urllib.request.urlopen(req, timeout=150) as response:
         result = json.load(response)
-    if result.get("trace_id") != trace_id:
+    if result.get("trace_id") != trace_id or not str(result.get("conversation_id") or "").strip():
         raise RuntimeError("Orion support draft lost trace correlation")
     return result
 

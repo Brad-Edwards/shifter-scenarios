@@ -169,6 +169,7 @@ RABBITMQ_QUEUE=$queue
 RABBITMQ_RESULT_QUEUE=orion.review.results
 ORION_AGENT_URL=http://192.168.78.1:13081/v1/chat
 ORION_AGENT_API_KEY=KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
+ORION_ACTOR=$workhub_user
 ORION_ASSISTANT_RELEASE_ID=sha256:$(printf unresolved-assistant-release | sha256sum | awk '{print $1}')
 ORION_ASSISTANT_MODEL_DIGEST=sha256:$(printf unresolved-assistant-model | sha256sum | awk '{print $1}')
 OTLP_HTTP_URL=http://10.61.80.10:4318
