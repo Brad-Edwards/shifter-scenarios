@@ -99,7 +99,6 @@ seed_npm_baseline() {
       auth=$(printf "%s:%s" publisher KeplerV2-Training-Npm-Publisher | base64 -w0)
       npm config set registry http://10.61.40.31:4873
       npm config set //10.61.40.31:4873/:_auth "$auth"
-      npm config set //10.61.40.31:4873/:always-auth true
       if npm view "@keplerops/orion-mcp-audit@2.3.1" version >/dev/null 2>&1; then exit 0; fi
       cp -R /seed /tmp/orion-mcp-audit
       rm -rf /tmp/orion-mcp-audit/keys /tmp/orion-mcp-audit/.forgejo-ci.yml /tmp/orion-mcp-audit/.forgejo-release.yml
