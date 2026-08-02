@@ -53,6 +53,74 @@ group.note = 'Support queue for routine Project Orion requests.'
 group.active = true
 group.save!
 
+mailbox_password = ENV.fetch('ZAMMAD_PARTNER_INTAKE_PASSWORD')
+mailbox_options = {
+  inbound: {
+    adapter: 'imap',
+    options: {
+      auth_type: 'plain',
+      host: '10.61.30.20',
+      port: 143,
+      ssl: 'off',
+      ssl_verify: false,
+      user: 'partner-intake',
+      password: mailbox_password,
+      folder: 'INBOX',
+      keep_on_server: false
+    }
+  },
+  outbound: {
+    adapter: 'smtp',
+    options: {
+      host: '10.61.30.20',
+      port: 587,
+      ssl: false,
+      ssl_verify: false,
+      enable_starttls_auto: true,
+      user: 'partner-intake',
+      password: mailbox_password,
+      authentication: 'plain'
+    }
+  }
+}
+
+mail_channel = Channel.where(area: 'Email::Account').find do |candidate|
+  candidate.options&.dig(:inbound, :options, :user) == 'partner-intake'
+end
+if mail_channel
+  mail_channel.update!(
+    options: mailbox_options,
+    group: group,
+    active: true,
+    status_in: 'ok',
+    status_out: 'ok',
+    last_log_in: nil,
+    last_log_out: nil
+  )
+else
+  mail_channel = Service::Channel::Email::Create.new.execute(
+    inbound_configuration: mailbox_options.fetch(:inbound),
+    outbound_configuration: mailbox_options.fetch(:outbound),
+    group: group,
+    email_address: 'partner-intake@keplerops.lab',
+    email_realname: 'KeplerOps Partner Intake',
+    group_email_address: true
+  )
+end
+
+mail_address = EmailAddress.find_or_initialize_by(email: 'partner-intake@keplerops.lab')
+mail_address.assign_attributes(
+  name: 'KeplerOps Partner Intake',
+  channel: mail_channel,
+  active: true
+)
+mail_address.save!
+Service::Channel::Email::UpdateDestinationGroupEmail.new(
+  group: group,
+  channel: mail_channel,
+  email_address: mail_address
+).execute
+
 %w[support.analyst].each do |login|
   membership = UserGroup.find_or_initialize_by(user_id: seeded_users.fetch(login).id, group_id: group.id)
   membership.access = 'full'
@@ -78,4 +146,4 @@ Setting.set('auth_saml', true)
 Setting.set('system_init_done', true)
 Rails.cache.clear
 
-puts "Seeded Zammad SAML and native access for #{seeded_users.length} users"
+puts "Seeded Zammad SAML, native access, and partner mail channel for #{seeded_users.length} users"

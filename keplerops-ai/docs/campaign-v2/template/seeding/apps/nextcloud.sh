@@ -12,6 +12,7 @@ readonly NEXTCLOUD_OIDC_CLIENT_ID=nextcloud
 readonly NEXTCLOUD_OIDC_CLIENT_SECRET="${NEXTCLOUD_OIDC_CLIENT_SECRET:-KeplerV2-Training-Nextcloud-OIDC}"
 readonly NEXTCLOUD_OIDC_DISCOVERY_URI="https://id.keplerops.lab/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration"
 readonly NEXTCLOUD_ACCESS_GROUP=RG-Nextcloud-Orion-Internal
+readonly NEXTCLOUD_PARTNER_GROUP=RG-Nextcloud-Orion-Partner
 readonly NEXTCLOUD_LEGACY_GROUP="${NEXTCLOUD_GROUP:-orion-internal}"
 readonly SECURITY_AUDITOR_PASSWORD="${SECURITY_AUDITOR_PASSWORD:-KeplerV2-Training-Auditor}"
 
@@ -139,7 +140,7 @@ ensure_user_oidc() {
     --mapping-groups=groups \
     --unique-uid=0 \
     --group-provisioning=1 \
-    --group-whitelist-regex="/^${NEXTCLOUD_ACCESS_GROUP}$/" \
+    --group-whitelist-regex="/^(${NEXTCLOUD_ACCESS_GROUP}|${NEXTCLOUD_PARTNER_GROUP})$/" \
     --group-restrict-login-to-whitelist=1 >/dev/null
 }
 

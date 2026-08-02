@@ -6,6 +6,11 @@ SEEDING_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=../lib/common.sh
 source "${SEEDING_ROOT}/lib/common.sh"
 
+readonly PARTNER_INTAKE_CLIENT_ID="${KEYCLOAK_PARTNER_CLIENT_ID:-orion-partner-intake}"
+readonly PARTNER_INTAKE_CLIENT_SECRET="${KEYCLOAK_PARTNER_CLIENT_SECRET:-KeplerV2-Training-Partner-Intake-Keycloak}"
+readonly PARTNER_NEXTCLOUD_GROUP=RG-Nextcloud-Orion-Partner
+readonly PARTNER_WORKHUB_GROUP=RG-WorkHub-Orion-Partner
+
 kcadm() {
   compose exec -T keycloak /opt/keycloak/bin/kcadm.sh "$@"
 }
@@ -78,6 +83,89 @@ ensure_jupyterhub_client() {
   fi
   kcadm create "clients/${client_id}/protocol-mappers/models" \
     -r "${KEYCLOAK_REALM}" -f - <<<"$mapper_json" >/dev/null
+}
+
+ensure_local_group() {
+  local group_name=$1
+  local groups group_id
+
+  groups="$(kcadm get groups -r "${KEYCLOAK_REALM}" -q "search=${group_name}" -q exact=true)"
+  group_id="$(jq -r --arg name "${group_name}" '.[] | select(.name == $name) | .id' \
+    <<<"${groups}" | head -n1)"
+  if [[ -z ${group_id} ]]; then
+    kcadm create groups -r "${KEYCLOAK_REALM}" -s "name=${group_name}" >/dev/null
+  fi
+}
+
+ensure_partner_intake_client() {
+  local clients client_id client_json service_account service_account_id
+  local realm_management_id roles_json role
+
+  client_json="$(jq -cn \
+    --arg client_id "${PARTNER_INTAKE_CLIENT_ID}" \
+    --arg secret "${PARTNER_INTAKE_CLIENT_SECRET}" \
+    '{
+      clientId: $client_id,
+      name: "Orion Partner Intake",
+      description: "Provisions accepted partner access from the Orion support workflow.",
+      enabled: true,
+      protocol: "openid-connect",
+      publicClient: false,
+      secret: $secret,
+      standardFlowEnabled: false,
+      directAccessGrantsEnabled: false,
+      serviceAccountsEnabled: true
+    }')"
+  clients="$(kcadm get clients -r "${KEYCLOAK_REALM}" \
+    -q "clientId=${PARTNER_INTAKE_CLIENT_ID}")"
+  client_id="$(jq -r '.[0].id // empty' <<<"${clients}")"
+  if [[ -n ${client_id} ]]; then
+    kcadm update "clients/${client_id}" -r "${KEYCLOAK_REALM}" \
+      -f - <<<"${client_json}" >/dev/null
+  else
+    kcadm create clients -r "${KEYCLOAK_REALM}" -f - \
+      <<<"${client_json}" >/dev/null
+    clients="$(kcadm get clients -r "${KEYCLOAK_REALM}" \
+      -q "clientId=${PARTNER_INTAKE_CLIENT_ID}")"
+    client_id="$(jq -er '.[0].id' <<<"${clients}")"
+  fi
+
+  service_account="$(kcadm get "clients/${client_id}/service-account-user" \
+    -r "${KEYCLOAK_REALM}")"
+  service_account_id="$(jq -er '.id' <<<"${service_account}")"
+  realm_management_id="$(kcadm get clients -r "${KEYCLOAK_REALM}" \
+    -q clientId=realm-management | jq -er '.[0].id')"
+  roles_json='[]'
+  for role in manage-users view-users query-users query-groups; do
+    roles_json="$(jq -c --argjson role \
+      "$(kcadm get "clients/${realm_management_id}/roles/${role}" -r "${KEYCLOAK_REALM}")" \
+      '. + [$role]' <<<"${roles_json}")"
+  done
+  kcadm create \
+    "users/${service_account_id}/role-mappings/clients/${realm_management_id}" \
+    -r "${KEYCLOAK_REALM}" -f - <<<"${roles_json}" >/dev/null
+}
+
+ensure_realm_mail() {
+  local realm_json updated
+
+  realm_json="$(kcadm get "realms/${KEYCLOAK_REALM}")"
+  updated="$(jq -c \
+    --arg password "${PARTNER_INTAKE_PASSWORD}" \
+    '.smtpServer = {
+      host: "10.61.10.20",
+      port: "587",
+      from: "partner-intake@keplerops.lab",
+      fromDisplayName: "KeplerOps Partner Access",
+      replyTo: "partner-intake@keplerops.lab",
+      replyToDisplayName: "KeplerOps Partner Intake",
+      auth: "true",
+      user: "partner-intake",
+      password: $password,
+      starttls: "true",
+      ssl: "false"
+    }' <<<"${realm_json}")"
+  kcadm update "realms/${KEYCLOAK_REALM}" -f - <<<"${updated}" >/dev/null
 }
 
 ldap_component_args() {
@@ -204,8 +292,12 @@ main() {
   done
 
   ensure_jupyterhub_client
+  ensure_local_group "${PARTNER_NEXTCLOUD_GROUP}"
+  ensure_local_group "${PARTNER_WORKHUB_GROUP}"
+  ensure_partner_intake_client
+  ensure_realm_mail
 
-  log "Keycloak Samba federation and group mapper are ready"
+  log "Keycloak Samba federation, partner groups, and intake service identity are ready"
 }
 
 main "$@"
