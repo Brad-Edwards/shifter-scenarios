@@ -370,6 +370,12 @@ reconcile_harbor() {
   project='{"project_name":"cinder-datasets","public":true,"metadata":{"auto_scan":"false"}}'
   curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
     -X POST --data "${project}" "${HARBOR_API_URL}/projects" >/dev/null 2>&1 || true
+  if curl -fsS --user 'robot$cinder-datasets+cinder-publisher:Cinder-Dataset-Publisher-2026' \
+      --get --data-urlencode service=harbor-registry \
+      --data-urlencode scope=repository:cinder-datasets/identity-check:pull,push \
+      "${HARBOR_API_URL%/api/v2.0}/service/token" | jq -e '.token | length > 0' >/dev/null; then
+    return 0
+  fi
   robots="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API_URL}/robots?page=1&page_size=100")"
   robot_id="$(jq -r '.[] | select(.name == "robot$cinder-datasets+cinder-publisher") | .id' <<<"${robots}" | head -n1)"
   if [[ -n ${robot_id} ]]; then
