@@ -53,11 +53,20 @@ services:
           --username cinder-operator \
           --password Cinder-Operations-Git-K3m7Pq4x \
           --must-change-password=false >/dev/null
+        forgejo admin user create --config "$$config" \
+          --username cinder-field-operator \
+          --email participant@cinder.lab \
+          --password Cinder-Field-Operator-Git-V6n4Qs8p \
+          --must-change-password=false >/dev/null 2>&1 || \
+        forgejo admin user change-password --config "$$config" \
+          --username cinder-field-operator \
+          --password Cinder-Field-Operator-Git-V6n4Qs8p \
+          --must-change-password=false >/dev/null
         forgejo forgejo-cli actions register --config "$$config" \
           --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
-          --scope cinder-operator \
+          --scope cinder-field-operator \
           --labels cinder-linux:host \
-          --name cinder-operations >/dev/null
+          --name cinder-field-operator-isolated >/dev/null
     volumes:
       - cinder-forgejo-data:/data
     networks:
@@ -96,7 +105,7 @@ services:
   cinder-forgejo-runner:
     image: keplerops/forgejo-runner:campaign-v2-clean
     container_name: kep-v2-cinder-forgejo-runner
-    user: "0:0"
+    user: "1000:1000"
     working_dir: /var/lib/keplerops-v2/cinder-forgejo-runner
     entrypoint: ["/bin/sh", "-ec"]
     depends_on:
@@ -104,9 +113,11 @@ services:
         condition: service_completed_successfully
     command:
       - |
-        install -m 0644 /caddy-root.crt /usr/local/share/ca-certificates/keplerops-caddy-root.crt
-        update-ca-certificates >/dev/null
         exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+    environment:
+      SSL_CERT_FILE: /caddy-root.crt
+      GIT_SSL_CAINFO: /caddy-root.crt
+      BUILDKIT_HOST: tcp://cinder-buildkit:1234
     extra_hosts:
       - git.cinder.lab:10.61.90.2
     volumes:
@@ -117,7 +128,12 @@ services:
         target: /var/lib/keplerops-v2/cinder-forgejo-runner
         bind:
           create_host_path: true
-      - /var/run/docker.sock:/var/run/docker.sock
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=256m
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
     networks:
       - cinder
     healthcheck:
@@ -181,7 +197,7 @@ services:
     command:
       - |
         mc alias set cinder http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q
-        mc mb --ignore-existing cinder/operations
+        mc mb --ignore-existing --with-lock cinder/operations
         mc mb --ignore-existing cinder/acquired
         mc mb --ignore-existing cinder/tooling
     networks:

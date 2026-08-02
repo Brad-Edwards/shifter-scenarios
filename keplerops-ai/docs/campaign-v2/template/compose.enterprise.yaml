@@ -629,6 +629,44 @@ services:
     cap_drop: [ALL]
     labels: *common-labels
 
+  partner-contract-monitors:
+    <<: *restart
+    image: keplerops/business-adapter:campaign-v2-clean
+    build:
+      context: ./business
+      dockerfile: Dockerfile
+      args:
+        BUSINESS_ADAPTER_BASE_IMAGE: ${BUSINESS_ADAPTER_BASE_IMAGE}
+    container_name: kep-v2-partner-contract-monitors
+    command: ["python", "-m", "app.impact_workers"]
+    env_file:
+      - path: ./state/business-release.env
+        required: false
+    depends_on:
+      ghost:
+        condition: service_started
+      nextcloud:
+        condition: service_started
+      zammad-nginx:
+        condition: service_started
+    environment:
+      KEPLEROPS_RANGE_ID: ${KEPLEROPS_RANGE_ID:-template}
+      GHOST_INTERNAL_URL: http://ghost:2368
+      NEXTCLOUD_URL: http://nextcloud
+      ZAMMAD_URL: http://zammad-nginx:8080
+      PARTNER_MONITOR_STATE: /var/lib/keplerops-business/partner-monitors
+    volumes:
+      - business-audit:/var/lib/keplerops-business
+    networks:
+      - business
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    labels: *common-labels
+
 networks:
   public:
     external: true

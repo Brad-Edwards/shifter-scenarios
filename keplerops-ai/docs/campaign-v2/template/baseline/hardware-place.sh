@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
+readonly ROOT=${KEPLEROPS_V2_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}
 readonly COMPOSE_FILE="$ROOT/compose.hardware.yaml"
 readonly LOCK_FILE="$ROOT/hardware/component-lock.env"
 readonly COORDINATOR=labgrid-coordinator:20408

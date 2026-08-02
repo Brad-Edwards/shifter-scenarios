@@ -35,6 +35,7 @@ jq -e '
   .schema == "keplerops.release-candidate/v1" and
   .model_family == "release-risk" and
   .evaluation.decision == "accepted" and
+  (.serving_image.repository | contains("placeholder") | not) and
   ([.source.tree_digest, .dataset.manifest_digest, .dataset.split_digest,
     .dataset.label_schema_digest, .training.code_image_digest,
     .training.parameters_digest, .model.native_weights_digest,
@@ -79,6 +80,15 @@ api() {
     --request "${method}" "$@" "${FORGEJO_API_URL}${path}"
 }
 
+ensure_repository() {
+  if ! api GET "/repos/${GITOPS_OWNER}/${GITOPS_REPOSITORY}" >/dev/null 2>&1; then
+    api POST "/orgs/${GITOPS_OWNER}/repos" --data "$(jq -cn \
+      --arg name "${GITOPS_REPOSITORY}" \
+      '{name:$name,description:"Orion immutable release deployments.",private:false,auto_init:false}')" \
+      >/dev/null
+  fi
+}
+
 ensure_file() {
   local relative=$1 source=$2
   local content existing payload sha
@@ -103,6 +113,7 @@ ensure_file() {
   fi
 }
 
+ensure_repository
 ensure_file gitops/orion-canary/kustomization.yaml "${workdir}/kustomization.yaml"
 ensure_file gitops/orion-canary/service.yaml "${workdir}/service.yaml"
 ensure_file gitops/orion-canary/inferenceservice.yaml "${workdir}/inferenceservice.yaml"
@@ -231,6 +242,8 @@ docker run --rm --network kep-v2-data \
     mc cp /publish/package-manifest.json 'kepler/artifacts/${package_prefix}/package-manifest.json' >/dev/null
     mc cp /publish/package-manifest.sig 'kepler/artifacts/${package_prefix}/package-manifest.sig' >/dev/null
     mc cp /publish/package-manifest.pub 'kepler/artifacts/${package_prefix}/package-manifest.pub' >/dev/null
+    mc cp --recursive /publish/members/ 'kepler/artifacts/${package_prefix}/members/' >/dev/null
+    mc cp /publish/package-manifest.json 'kepler/artifacts/releases/orion-release-risk/current/package-manifest.json' >/dev/null
   "
 "${SSH[@]}" "${K3S01_SSH_TARGET}" \
   "sudo ln -sfn 'releases/${release_id}' /var/lib/keplerops-platform/current-release && sudo ln -sfn 'candidates/${run_id}' /var/lib/keplerops-platform/current-candidate"

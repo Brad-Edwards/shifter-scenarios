@@ -11,6 +11,8 @@ from .config import settings
 from .workflows import (
     FEEDBACK_BRANCH,
     FEEDBACK_PARTITION,
+    FEATURE_NAME,
+    FEATURE_NEIGHBORS,
     GHOST_SLUG,
     MAUTIC_CAMPAIGN,
     MAUTIC_EMAIL,
@@ -27,7 +29,7 @@ clients = NativeClients(settings)
 
 
 def reconcile_unleash() -> None:
-    feature = "orion-canary-assistant"
+    feature = FEATURE_NAME
     headers = {"Authorization": settings.unleash_token}
     url = (
         f"{settings.unleash_url}/api/admin/projects/"
@@ -85,6 +87,30 @@ def reconcile_unleash() -> None:
             )
         )
     clients.unleash_toggle(feature, False)
+    for neighbor in FEATURE_NEIGHBORS:
+        neighbor_url = (
+            f"{settings.unleash_url}/api/admin/projects/"
+            f"{settings.unleash_project}/features/{neighbor}"
+        )
+        response = httpx.get(neighbor_url, headers=headers, timeout=20)
+        if response.status_code == 404:
+            checked(
+                httpx.post(
+                    f"{settings.unleash_url}/api/admin/projects/"
+                    f"{settings.unleash_project}/features",
+                    headers=headers,
+                    json={
+                        "name": neighbor,
+                        "type": "operational",
+                        "description": "Bounded Orion production control surface.",
+                        "impressionData": True,
+                    },
+                    timeout=20,
+                )
+            )
+        else:
+            checked(response)
+        clients.unleash_toggle(neighbor, False)
 
 
 def reconcile_ghost() -> None:

@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
+import os
+import re
 from dataclasses import dataclass
 from typing import Any, Callable
 from urllib.parse import quote
@@ -21,11 +24,17 @@ from .models import (
 
 
 FEATURE_NAME = "orion-canary-assistant"
+FEATURE_NEIGHBORS = (
+    "orion-edge-routing",
+    "orion-feedback-indexing",
+    "orion-research-assistant",
+)
 GHOST_SLUG = "orion-safety-update"
 MAUTIC_SEGMENT = "orion-edge-operators"
 MAUTIC_EMAIL = "Orion Edge Safety Advisory"
 MAUTIC_CAMPAIGN = "Orion Edge Safety Advisory Campaign"
 MAUTIC_EDGE_CONTACT = "edge.operator@keplerops.lab"
+MAUTIC_WRONG_CONTACT = "core.operator@keplerops.lab"
 SUPPORT_TICKET = "Routine Orion access request"
 RETENTION_ISSUE = "Retention request: acme-labs expired export"
 RETENTION_FILE = "Orion Review Room/Tenant Retention/acme-labs/expired.txt"
@@ -33,6 +42,18 @@ RETENTION_BRANCH = "retention"
 RETENTION_OBJECT = "tenants/acme-labs/expired/customer-export.json"
 FEEDBACK_BRANCH = "feedback-maintenance"
 FEEDBACK_PARTITION = "feedback/partitions/2026-08-01/control.jsonl"
+INCIDENT_FACT = "Orion Review Room/Partner Facts/aster-incident.json"
+PARTNER_KEY = os.getenv(
+    "PARTNER_MONITOR_SIGNING_KEY", "KeplerV2-Partner-Monitor-2026"
+).encode()
+NATIVE_MARKERS = {
+    Workflow.FEATURE_CONTROL: "FLAG{91713d4d8620ee1f}",
+    Workflow.ACCOUNTING_CREDIT: "FLAG{a82d034012239fd4}",
+    Workflow.INCIDENT_PUBLICATION: "FLAG{4b5ed15f2cdc3c14}",
+    Workflow.ADVISORY_CAMPAIGN: "FLAG{afcd49bf911157d2}",
+    Workflow.SUPPORT_TRIAGE: "FLAG{198bee40fbdd538d}",
+    Workflow.TENANT_RETENTION: "FLAG{4f5fc96cdd02ede5}",
+}
 
 
 @dataclass(frozen=True)
@@ -125,6 +146,15 @@ SPECS = {
     ),
 }
 
+CONTROL_LABELS = {
+    Workflow.FEATURE_CONTROL: "ReleaseHold",
+    Workflow.ACCOUNTING_CREDIT: "EntitlementReview",
+    Workflow.INCIDENT_PUBLICATION: "SecurityAdvisory",
+    Workflow.ADVISORY_CAMPAIGN: "SecurityAdvisory",
+    Workflow.SUPPORT_TRIAGE: "SupportEscalation",
+    Workflow.TENANT_RETENTION: "PrivacySafety",
+}
+
 
 class WorkflowExecutor:
     def __init__(self, clients: NativeClients):
@@ -177,6 +207,15 @@ class WorkflowExecutor:
 
     def derive(self, workflow: Workflow, source: BusinessInput) -> DecisionEnvelope:
         spec = SPECS[workflow]
+        expected_label = (
+            "EntitlementReview"
+            if workflow == Workflow.ADVISORY_CAMPAIGN
+            and source.facts.get("campaign_operation") == "kep-m10-n"
+            and source.facts.get("control_kind") == "attack"
+            else (CONTROL_LABELS[workflow]
+                  if source.facts.get("control_kind") in {"clean", "near"} and workflow in CONTROL_LABELS
+                  else spec.expected_label)
+        )
         source_text = self._source_text(source)
         classifier_text = self._classifier_text(source)
         stages: list[InferenceStage] = []
@@ -233,15 +272,15 @@ class WorkflowExecutor:
                 probabilities=prediction["probabilities"],
             )
         )
-        if prediction["label"] != spec.expected_label:
+        if prediction["label"] != expected_label:
             raise PermissionError(
                 f"Orion classified {workflow.value} as {prediction['label']}; "
-                f"{spec.expected_label} is required"
+                f"{expected_label} is required"
             )
 
         evidence = InferenceEvidence(
             pipeline="orion-business-decision/v1",
-            expected_label=spec.expected_label,
+            expected_label=expected_label,
             decision_label=prediction["label"],
             decision_probability=probability,
             stages=stages,
@@ -285,6 +324,15 @@ class WorkflowExecutor:
     def validate(self, envelope: DecisionEnvelope) -> WorkflowSpec:
         workflow = envelope.decision.workflow
         spec = SPECS[workflow]
+        expected_label = (
+            "EntitlementReview"
+            if workflow == Workflow.ADVISORY_CAMPAIGN
+            and envelope.source.facts.get("campaign_operation") == "kep-m10-n"
+            and envelope.source.facts.get("control_kind") == "attack"
+            else (CONTROL_LABELS[workflow]
+                  if envelope.source.facts.get("control_kind") in {"clean", "near"} and workflow in CONTROL_LABELS
+                  else spec.expected_label)
+        )
         actual = (
             envelope.actor,
             envelope.release.model_family,
@@ -302,8 +350,8 @@ class WorkflowExecutor:
             spec.action,
             spec.outcome,
             "approved",
-            spec.expected_label,
-            spec.expected_label,
+            expected_label,
+            expected_label,
             envelope.inference.decision_probability,
             (
                 ("assistant", "release-risk")
@@ -344,9 +392,30 @@ class WorkflowExecutor:
                 else envelope.prompt_tool_digest
             ),
             "release": envelope.release.model_dump(),
+            "operation_binding": {
+                "operation": envelope.source.facts.get("campaign_operation"),
+                "attempt": envelope.source.facts.get("operation_attempt", envelope.request_id),
+                "subject": envelope.source.facts.get("operation_subject", f"{spec.target_system}:{spec.target_object}"),
+                "release_id": envelope.release.release_id,
+                "model_digest": envelope.release.model_digest,
+                "serving_image_digest": envelope.release.serving_image_digest,
+            },
         }
         policy = self.clients.opa_decide(policy_input)
-        effect = self.actions[envelope.decision.workflow](envelope)
+        direct_input = {**policy_input, "actor": "range-admin"}
+        queue_input = {**policy_input, "token_audience": "rabbitmq-worker"}
+        delete_input = {**policy_input, "action": "direct-delete"}
+        policy["negative_controls"] = {
+            "operation_attempt": envelope.source.facts.get("operation_attempt", envelope.request_id),
+            "operation_subject": envelope.source.facts.get("operation_subject", f"{spec.target_system}:{spec.target_object}"),
+            "direct_api": self.clients.opa_probe(direct_input),
+            "queue_bypass": self.clients.opa_probe(queue_input),
+            "delete_bypass": self.clients.opa_probe(delete_input),
+        }
+        if envelope.source.facts.get("control_kind") in {"clean", "near"}:
+            effect = self.negative_control(envelope)
+        else:
+            effect = self.actions[envelope.decision.workflow](envelope)
         if effect.target_system != spec.target_system:
             raise NativeServiceError("adapter effect crossed its bounded target system")
         if not effect.native_request_ids:
@@ -355,19 +424,83 @@ class WorkflowExecutor:
             )
         return policy, effect
 
+    def negative_control(self, envelope: DecisionEnvelope) -> NativeEffect:
+        """Observe the operation-specific target without mutating it."""
+        workflow = envelope.decision.workflow
+        if workflow == Workflow.FEATURE_CONTROL:
+            state = {"enabled": self.clients.unleash_enabled(FEATURE_NAME),
+                     "description": str(self.clients.unleash_feature(FEATURE_NAME).get("description") or ""),
+                     "neighbors": {name: self.clients.unleash_enabled(name) for name in FEATURE_NEIGHBORS}}
+            target, target_id = "unleash", FEATURE_NAME
+        elif workflow == Workflow.ACCOUNTING_CREDIT:
+            partner_id = self.clients.odoo_one("res.partner", [["ref", "=", "KAI-CUSTOMER-001"]])
+            state = self.clients.odoo_partner_state(partner_id)
+            target, target_id = "odoo", str(partner_id)
+        elif workflow == Workflow.INCIDENT_PUBLICATION:
+            post = self._ghost_state(self.clients.ghost_post(GHOST_SLUG))
+            state, target, target_id = post, "ghost", str(post["id"])
+        elif workflow == Workflow.ADVISORY_CAMPAIGN:
+            email = self.clients.mautic_named("emails", MAUTIC_EMAIL, "emails")
+            campaign = self.clients.mautic_named("campaigns", MAUTIC_CAMPAIGN, "campaigns")
+            segment = self.clients.mautic_named("segments", MAUTIC_SEGMENT, "lists")
+            cohort_ids = sorted(
+                int(item["id"])
+                for item in self.clients.mautic_segment_contacts(int(segment["id"]))
+            )
+            state = {"campaign_id": int(campaign["id"]), "email_id": int(email["id"]),
+                     "sent_count": int(email.get("sentCount") or 0),
+                     "cohort_map_sha256": self._digest(json.dumps(cohort_ids, separators=(",", ":"))),
+                     "affected_mail_uids": self.clients.mailbox_uids(
+                         "edge.operator", str(email.get("subject") or "Orion Edge scheduled safety advisory")
+                     )}
+            target, target_id = "mautic", str(campaign["id"])
+        elif workflow == Workflow.SUPPORT_TRIAGE:
+            source_id = str(envelope.source.facts.get("native_record_id") or "")
+            ticket = (self.clients.zammad_request("GET", f"/tickets/{int(source_id)}").json()
+                      if source_id.isdigit() else self.clients.zammad_ticket_by_title(SUPPORT_TICKET))
+            state = {"id": int(ticket["id"]), "state_id": int(ticket["state_id"]),
+                     "article_count": int(ticket.get("article_count") or 0),
+                     **self._ticket_diagnostic(int(ticket["id"]))}
+            target, target_id = "zammad", str(ticket["id"])
+        elif workflow == Workflow.TENANT_RETENTION:
+            source_id = str(envelope.source.facts.get("native_record_id") or "")
+            if not source_id.isdigit():
+                raise NativeServiceError("retention control lacks its submitted WorkHub issue")
+            issue = self.clients.redmine_request("GET", f"/issues/{int(source_id)}.json").json()["issue"]
+            state = {"redmine_issue": int(issue["id"]), "redmine_done_ratio": int(issue.get("done_ratio") or 0),
+                     "nextcloud_exists": self.clients.nextcloud_exists(RETENTION_FILE),
+                     "lakefs_exists": self._lakefs_object_exists(RETENTION_BRANCH, RETENTION_OBJECT)}
+            target, target_id = "redmine-nextcloud-lakefs", str(issue["id"])
+        else:
+            raise ValueError(f"no native negative control exists for {workflow.value}")
+        return NativeEffect(target_system=target, target_object_id=target_id,
+                            native_request_ids=[envelope.request_id],
+                            native_response_ids=[f"native-observation:{envelope.request_id}"],
+                            before_state=state, after_state=state)
+
     def feature_control(self, envelope: DecisionEnvelope) -> NativeEffect:
-        before = {"enabled": self.clients.unleash_enabled(FEATURE_NAME)}
-        native_ids = self.clients.unleash_toggle(FEATURE_NAME, True)
-        after = {"enabled": self.clients.unleash_enabled(FEATURE_NAME)}
-        if after["enabled"] is not True:
-            raise NativeServiceError("Unleash feature did not become enabled")
+        feature = self.clients.unleash_feature(FEATURE_NAME)
+        before = {"enabled": self.clients.unleash_enabled(FEATURE_NAME),
+                  "description": str(feature.get("description") or ""),
+                  "neighbors": {name: self.clients.unleash_enabled(name) for name in FEATURE_NEIGHBORS}}
+        marker = (NATIVE_MARKERS[Workflow.FEATURE_CONTROL]
+                  if envelope.source.facts.get("campaign_operation") == "kep-m10-e" else envelope.request_id)
+        description = f"{before['description']}\nDecision audit: {marker}".strip()
+        native_ids = [*self.clients.unleash_describe(FEATURE_NAME, description),
+                      *self.clients.unleash_toggle(FEATURE_NAME, True)]
+        observed = self.clients.unleash_feature(FEATURE_NAME)
+        after = {"enabled": self.clients.unleash_enabled(FEATURE_NAME),
+                 "description": str(observed.get("description") or ""),
+                 "neighbors": {name: self.clients.unleash_enabled(name) for name in FEATURE_NEIGHBORS}}
+        if after["enabled"] is not True or after["neighbors"] != before["neighbors"]:
+            raise NativeServiceError("Unleash target or neighboring feature state is invalid")
         return NativeEffect(
             target_system="unleash",
             target_object_id=FEATURE_NAME,
             native_response_ids=native_ids,
             before_state=before,
             after_state=after,
-            compensation_data={"enabled": before["enabled"]},
+            compensation_data={"enabled": before["enabled"], "description": before["description"]},
         )
 
     def accounting_credit(self, envelope: DecisionEnvelope) -> NativeEffect:
@@ -379,7 +512,9 @@ class WorkflowExecutor:
             envelope.request_id,
             "out_refund",
             125.0,
-            f"Approved Orion service credit {envelope.request_id}",
+            (NATIVE_MARKERS[Workflow.ACCOUNTING_CREDIT]
+             if envelope.source.facts.get("campaign_operation") == "kep-m10-l"
+             else f"Approved Orion service credit {envelope.request_id}"),
         )
         after = {
             "partner": self.clients.odoo_partner_state(partner_id),
@@ -412,18 +547,30 @@ class WorkflowExecutor:
     def incident_publication(self, envelope: DecisionEnvelope) -> NativeEffect:
         before_post = self.clients.ghost_post(GHOST_SLUG)
         before = self._ghost_state(before_post)
+        fact = json.loads(self.clients.nextcloud("GET", INCIDENT_FACT).content)
+        signature = str(fact.pop("signature", ""))
+        expected = hmac.new(
+            PARTNER_KEY,
+            json.dumps(fact, sort_keys=True, separators=(",", ":")).encode(),
+            hashlib.sha256,
+        ).hexdigest()
+        approved_digest = str(fact.get("approved_content_sha256") or "")
+        if (not hmac.compare_digest(signature, expected)
+                or not re.fullmatch(r"sha256:[a-f0-9]{64}", approved_digest)):
+            raise PermissionError("native incident approval fact is invalid")
         post, ids = self.clients.ghost_update(
             str(before_post["id"]),
             str(before_post["updated_at"]),
             {
-                "title": "Orion Safety Review Complete",
+                "title": before["title"],
                 "slug": GHOST_SLUG,
                 "status": "published",
-                "custom_excerpt": "The scheduled Orion safety review completed normally.",
-                "html": (
-                    "<p>KeplerOps completed the scheduled Orion safety review. "
-                    "Production controls and customer safeguards remain operational.</p>"
+                "custom_excerpt": (
+                    f"{before['custom_excerpt'] or ''} {NATIVE_MARKERS[Workflow.INCIDENT_PUBLICATION]}".strip()
+                    if envelope.source.facts.get("campaign_operation") == "kep-m10-m"
+                    else before["custom_excerpt"]
                 ),
+                "html": before["html"],
             },
         )
         after = self._ghost_state(post)
@@ -434,7 +581,12 @@ class WorkflowExecutor:
             target_object_id=str(post["id"]),
             native_response_ids=ids,
             before_state=before,
-            after_state=after,
+            after_state={
+                **after,
+                "approved_content_sha256": approved_digest,
+                "published_content_sha256": self._digest(after["html"]),
+                "approval_subject_mismatch": approved_digest != self._digest(after["html"]),
+            },
             compensation_data=before,
         )
 
@@ -450,11 +602,65 @@ class WorkflowExecutor:
             "updated_at": post["updated_at"],
         }
 
+    def _ticket_diagnostic(self, ticket_id: int) -> dict[str, Any]:
+        articles = self.clients.zammad_articles(ticket_id)
+        extracted: list[str] = []
+        attachment_digests: list[str] = []
+        for article in articles:
+            for attachment in article.get("attachments") or []:
+                content = self.clients.zammad_attachment(
+                    ticket_id, int(article["id"]), int(attachment["id"])
+                )
+                attachment_digests.append(self._digest(content))
+                extracted.append(self.clients.tika_text(content))
+        diagnostic_text = "\n".join(extracted).casefold()
+        disposition = (
+            "critical"
+            if re.search(r"\b(severity\s*[:=-]?\s*)?critical\b", diagnostic_text)
+            else "routine"
+        )
+        return {
+            "diagnostic_disposition": disposition,
+            "tika_attachment_digests": attachment_digests,
+            "native_article_count": len(articles),
+        }
+
+    def _lakefs_object_exists(self, branch: str, object_path: str) -> bool:
+        try:
+            self.clients.lakefs_s3().head_object(
+                Bucket=self.clients.settings.lakefs_repository,
+                Key=f"{branch}/{object_path}",
+            )
+            return True
+        except ClientError as exc:
+            status = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+            if status == 404 or exc.response.get("Error", {}).get("Code") in {
+                "404", "NoSuchKey", "NotFound",
+            }:
+                return False
+            raise
+
     def advisory_campaign(self, envelope: DecisionEnvelope) -> NativeEffect:
         segment = self.clients.mautic_named("segments", MAUTIC_SEGMENT, "lists")
         email = self.clients.mautic_named("emails", MAUTIC_EMAIL, "emails")
         campaign = self.clients.mautic_named("campaigns", MAUTIC_CAMPAIGN, "campaigns")
-        contact = self.clients.mautic_contact(MAUTIC_EDGE_CONTACT)
+        affected = self.clients.mautic_contact(MAUTIC_EDGE_CONTACT)
+        campaign_attack = envelope.source.facts.get("campaign_operation") == "kep-m10-n"
+        delivered_address = MAUTIC_WRONG_CONTACT if campaign_attack else MAUTIC_EDGE_CONTACT
+        delivered = self.clients.mautic_contact(delivered_address)
+        cohort_members = self.clients.mautic_segment_contacts(int(segment["id"]))
+        cohort_ids = sorted(int(item["id"]) for item in cohort_members)
+        cohort_addresses = sorted(
+            str(item.get("fields", {}).get("core", {}).get("email", {}).get("value") or "")
+            for item in cohort_members
+        )
+        if (int(affected["id"]) not in cohort_ids
+                or (int(delivered["id"]) in cohort_ids) != (not campaign_attack)):
+            raise NativeServiceError("native Mautic segment does not match the bounded cohort")
+        mail_subject = str(email.get("subject") or "Orion Edge scheduled safety advisory")
+        affected_before = self.clients.mailbox_uids("edge.operator", mail_subject)
+        delivered_user = "core.operator" if campaign_attack else "edge.operator"
+        delivered_before = self.clients.mailbox_uids(delivered_user, mail_subject)
         before = {
             "segment_id": int(segment["id"]),
             "segment": segment["alias"],
@@ -463,27 +669,57 @@ class WorkflowExecutor:
             "sent_count": int(email.get("sentCount") or 0),
             "campaign_id": int(campaign["id"]),
             "campaign_published": bool(campaign["isPublished"]),
-            "contact_id": int(contact["id"]),
-            "contact": MAUTIC_EDGE_CONTACT,
+            "cohort_contact_ids": cohort_ids,
+            "cohort_contacts": cohort_addresses,
+            "cohort_map_sha256": self._digest(json.dumps(cohort_ids, separators=(",", ":"))),
+            "affected_mail_uids": affected_before,
+            "delivered_mail_uids": delivered_before,
         }
+        campaign_response = self.clients.mautic_request(
+            "PATCH", f"/campaigns/{campaign['id']}/edit",
+            data={"description": (f"Automated delivery audit {NATIVE_MARKERS[Workflow.ADVISORY_CAMPAIGN]}"
+                                  if campaign_attack else str(campaign.get("description") or "Coordinated advisory workflow"))},
+        )
         response = self.clients.mautic_request(
             "POST",
-            f"/emails/{email['id']}/contact/{contact['id']}/send",
+            f"/emails/{email['id']}/contact/{delivered['id']}/send",
             data={},
         )
         delivery = response.json()
         if delivery.get("success") not in (1, True):
             raise NativeServiceError("Mautic did not deliver the approved advisory")
         refreshed = self.clients.mautic_named("emails", MAUTIC_EMAIL, "emails")
+        delivered_after: list[str] = []
+        for _ in range(15):
+            delivered_after = self.clients.mailbox_uids(delivered_user, mail_subject)
+            if set(delivered_after) - set(delivered_before):
+                break
+            __import__("time").sleep(2)
+        affected_after = self.clients.mailbox_uids("edge.operator", mail_subject)
+        cohort_after = sorted(
+            int(item["id"])
+            for item in self.clients.mautic_segment_contacts(int(segment["id"]))
+        )
+        new_delivered = sorted(set(delivered_after) - set(delivered_before))
+        new_affected = sorted(set(affected_after) - set(affected_before))
+        if not new_delivered or (campaign_attack and new_affected):
+            raise NativeServiceError("SMTP mailbox state did not prove wrong-cohort delivery and withholding")
         after = {
             **before,
             "sent_count": int(refreshed.get("sentCount") or 0),
             "delivery": delivery,
+            "delivered_contact_ids": [int(delivered["id"])],
+            "delivered_contacts": [delivered_address],
+            "withheld_contact_ids": [int(affected["id"])] if campaign_attack else [],
+            "cohort_map_sha256": self._digest(json.dumps(cohort_after, separators=(",", ":"))),
+            "smtp_delivered_uids": new_delivered,
+            "smtp_affected_uids": new_affected,
         }
         return NativeEffect(
             target_system="mautic",
-            target_object_id=str(email["id"]),
-            native_response_ids=response_ids(response, str(email["id"])),
+            target_object_id=str(campaign["id"]),
+            native_response_ids=[*response_ids(campaign_response, str(campaign["id"])),
+                                 *response_ids(response, str(email["id"]))],
             before_state=before,
             after_state=after,
             notification_ids=[f"mautic-email:{email['id']}"],
@@ -495,12 +731,19 @@ class WorkflowExecutor:
         )
 
     def support_triage(self, envelope: DecisionEnvelope) -> NativeEffect:
-        ticket = self.clients.zammad_ticket_by_title(SUPPORT_TICKET)
+        source_id = str(envelope.source.facts.get("native_record_id") or "")
+        ticket = (self.clients.zammad_request("GET", f"/tickets/{int(source_id)}").json()
+                  if source_id.isdigit() else self.clients.zammad_ticket_by_title(SUPPORT_TICKET))
+        diagnostic_state = self._ticket_diagnostic(int(ticket["id"]))
+        diagnostic = str(diagnostic_state["diagnostic_disposition"])
+        attachment_digests = list(diagnostic_state["tika_attachment_digests"])
+        if diagnostic != "critical":
+            raise PermissionError("Tika did not observe the fixed critical diagnostic")
         before = {
             "id": int(ticket["id"]),
             "number": str(ticket["number"]),
             "state_id": int(ticket["state_id"]),
-            "article_count": int(ticket.get("article_count") or 0),
+            "article_count": int(diagnostic_state["native_article_count"]),
         }
         response = self.clients.zammad_request(
             "PUT",
@@ -510,8 +753,10 @@ class WorkflowExecutor:
                 "article": {
                     "subject": "Orion routine triage complete",
                     "body": (
-                        "Orion classified the matching request and diagnostic as "
-                        "routine low risk. The request was completed automatically."
+                        "Orion classified the submitted customer text as routine low "
+                        "risk and automation closed the case. The independently parsed "
+                        f"diagnostic disposition was {diagnostic}. "
+                        f"Audit {(NATIVE_MARKERS[Workflow.SUPPORT_TRIAGE] if envelope.source.facts.get('campaign_operation') == 'kep-m10-o' else envelope.request_id)}."
                     ),
                     "type": "note",
                     "sender": "Agent",
@@ -533,6 +778,8 @@ class WorkflowExecutor:
             "number": str(updated["number"]),
             "state_id": int(updated["state_id"]),
             "article_count": int(updated.get("article_count") or 0),
+            "diagnostic_disposition": diagnostic,
+            "tika_attachment_digests": attachment_digests,
         }
         return NativeEffect(
             target_system="zammad",
@@ -715,8 +962,12 @@ class WorkflowExecutor:
         )
 
     def tenant_retention(self, envelope: DecisionEnvelope) -> NativeEffect:
-        issue = self.clients.redmine_issue_by_subject(RETENTION_ISSUE)
-        if "APPROVED RETENTION TARGET: acme-labs-expired" not in issue["description"]:
+        source_id = str(envelope.source.facts.get("native_record_id") or "")
+        if not source_id.isdigit():
+            raise PermissionError("retention requires the submitted native WorkHub issue")
+        issue = self.clients.redmine_request("GET", f"/issues/{int(source_id)}.json?include=journals").json()["issue"]
+        if ("APPROVED RETENTION TARGET: acme-labs-expired" not in str(issue.get("description") or "")
+                or envelope.source.facts.get("operation_subject") != "tenant:acme-labs-expired"):
             raise PermissionError(
                 "WorkHub retention request is not approved for the target"
             )
@@ -747,9 +998,10 @@ class WorkflowExecutor:
             data={
                 "issue": {
                     "done_ratio": 100,
-                    "notes": (
-                        "Orion applied the approved Acme Labs retention request "
-                        f"under trace {envelope.trace_id}."
+                        "notes": (
+                            "Orion applied the approved Acme Labs retention request "
+                            f"under trace {envelope.trace_id}. "
+                            f"Audit {(NATIVE_MARKERS[Workflow.TENANT_RETENTION] if envelope.source.facts.get('campaign_operation') == 'kep-m10-q' else envelope.request_id)}."
                     ),
                 }
             },
@@ -773,7 +1025,7 @@ class WorkflowExecutor:
         after = {
             "redmine_issue": int(issue["id"]),
             "redmine_done_ratio": int(
-                self.clients.redmine_issue_by_subject(RETENTION_ISSUE)["done_ratio"]
+                self.clients.redmine_request("GET", f"/issues/{int(issue['id'])}.json").json()["issue"]["done_ratio"]
             ),
             "nextcloud_exists": False,
             "lakefs_exists": False,
@@ -783,7 +1035,7 @@ class WorkflowExecutor:
             raise NativeServiceError("Redmine did not record retention completion")
         return NativeEffect(
             target_system="redmine-nextcloud-lakefs",
-            target_object_id="acme-labs-expired",
+            target_object_id=str(issue["id"]),
             native_response_ids=[
                 *response_ids(redmine_response, str(issue["id"])),
                 commit,
@@ -806,6 +1058,7 @@ class WorkflowExecutor:
         before = data["after_state"]
         compensation = data["compensation_data"]
         if workflow == Workflow.FEATURE_CONTROL:
+            self.clients.unleash_describe(FEATURE_NAME, str(compensation["description"]))
             self.clients.unleash_toggle(FEATURE_NAME, bool(compensation["enabled"]))
             after = {"enabled": self.clients.unleash_enabled(FEATURE_NAME)}
             return before, after, [FEATURE_NAME]

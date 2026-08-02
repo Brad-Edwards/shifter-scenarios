@@ -1,6 +1,8 @@
 ARG AIRFLOW_IMAGE=keplerops/airflow:campaign-v2-clean
 FROM ${AIRFLOW_IMAGE}
 
+COPY modules/m05/payloads/airflow/orion_evaluation_replay.py /opt/airflow/dags/orion_evaluation_replay.py
+
 USER root
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \

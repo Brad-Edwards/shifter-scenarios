@@ -28,6 +28,7 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       jq \
       apktool \
+      fdroidcl \
       ffmpeg \
       imagemagick \
       libimage-exiftool-perl \

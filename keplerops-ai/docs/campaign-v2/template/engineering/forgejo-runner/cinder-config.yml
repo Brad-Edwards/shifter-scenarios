@@ -18,7 +18,7 @@ cache:
   enabled: false
 
 container:
-  docker_host: automount
+  docker_host: "-"
   force_pull: false
   force_rebuild: false
 

@@ -58,6 +58,7 @@ x-airflow-environment: &airflow-environment
   AWS_ACCESS_KEY_ID: svc-orion-training
   AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Orion-Training
   AWS_DEFAULT_REGION: us-east-1
+  ORION_PROVENANCE_SIGNING_KEY: KeplerOps-Orion-Provenance-2026
   QDRANT_URL: http://qdrant-writer:6333
   LAKEFS_ENDPOINT: http://lakefs:8000
   S3_ENDPOINT_URL: http://minio:9000
@@ -659,11 +660,13 @@ services:
         for bucket in artifacts datasets labelstudio lakefs mlflow; do
           mc mb --ignore-existing "kepler/$$bucket"
         done
+        mc mb --ignore-existing --with-lock kepler/operations
         mc anonymous set none kepler/artifacts
         mc anonymous set none kepler/datasets
         mc anonymous set none kepler/labelstudio
         mc anonymous set none kepler/lakefs
         mc anonymous set none kepler/mlflow
+        mc anonymous set none kepler/operations
 
         cat >/tmp/kepler-lakefs-store.json <<'JSON'
         {
@@ -772,11 +775,29 @@ services:
           ]
         }
         JSON
+        cat >/tmp/kepler-integrity-handoff-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
+              "Resource": ["arn:aws:s3:::operations"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject", "s3:PutObject", "s3:GetObjectRetention", "s3:PutObjectRetention"],
+              "Resource": ["arn:aws:s3:::operations/release-risk/integrity-handoffs/*"]
+            }
+          ]
+        }
+        JSON
 
         mc admin policy create kepler kepler-lakefs-store /tmp/kepler-lakefs-store.json
         mc admin policy create kepler kepler-mlflow-store /tmp/kepler-mlflow-store.json
         mc admin policy create kepler kepler-orion-training-store /tmp/kepler-orion-training-store.json
         mc admin policy create kepler kepler-orion-evaluator-store /tmp/kepler-orion-evaluator-store.json
+        mc admin policy create kepler kepler-integrity-handoff-store /tmp/kepler-integrity-handoff-store.json
 
         mc admin user add kepler svc-lakefs 'KeplerV2-Training-Minio-LakeFS'
         mc admin policy attach kepler kepler-lakefs-store --user svc-lakefs
@@ -786,6 +807,8 @@ services:
         mc admin policy attach kepler kepler-orion-training-store --user svc-orion-training
         mc admin user add kepler ml-engineer 'KeplerV2-Training-Minio-Orion-Reader'
         mc admin policy attach kepler kepler-orion-evaluator-store --user ml-engineer
+        mc admin user add kepler svc-orion-evaluator 'KeplerV2-Training-Minio-Orion-Evaluator'
+        mc admin policy attach kepler kepler-integrity-handoff-store --user svc-orion-evaluator
     networks:
       data:
     restart: "no"

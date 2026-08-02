@@ -11,7 +11,7 @@ fi
 
 install -d -m 0755 "$STATE/tls"
 if [[ ! -s "$STATE/participant-password" ]]; then
-  printf '%s\n' 'CinderV2-Playtest-Workstation' >"$STATE/participant-password"
+  printf '%s\n' 'Cinder-Operations-Desktop-7Qm4Vx9P' >"$STATE/participant-password"
 fi
 printf '%s\n' 'campaign-v2-template' >"$STATE/reset-generation"
 chmod 0600 "$STATE/participant-password"

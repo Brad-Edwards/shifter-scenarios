@@ -4,7 +4,18 @@ set -Eeuo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly KEY=${KEPLEROPS_V2_SSH_KEY:-/root/.ssh/keplerops-v2}
 readonly WAIT_SECONDS=${WORKER_REPLACEMENT_WAIT_SECONDS:-1800}
-readonly GUESTS=(review01 integration01)
+if (($#)); then
+  GUESTS=("$@")
+else
+  GUESTS=(review01 integration01)
+fi
+readonly GUESTS
+for guest in "${GUESTS[@]}"; do
+  [[ $guest == review01 || $guest == integration01 ]] || {
+    printf 'unsupported disposable worker: %s\n' "$guest" >&2
+    exit 2
+  }
+done
 readonly SSH=(ssh -i "$KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)
 
 [[ $EUID -eq 0 ]] || { echo 'replace-disposable-workers.sh must run as root' >&2; exit 2; }
@@ -41,7 +52,7 @@ for guest in "${GUESTS[@]}"; do
     "printf '%s\\n' '$nonce' | sudo tee /var/tmp/keplerops-disposable-attempt-state >/dev/null"
 done
 
-RECREATE_GUESTS=review01,integration01 "$ROOT/scripts/provision-guests.sh"
+RECREATE_GUESTS="$(IFS=,; printf '%s' "${GUESTS[*]}")" "$ROOT/scripts/provision-guests.sh"
 
 deadline=$((SECONDS + WAIT_SECONDS))
 for guest in "${GUESTS[@]}"; do
@@ -74,12 +85,8 @@ done
 "$ROOT/scripts/reconcile-guests.sh"
 "$ROOT/scripts/check-guests.sh"
 
-jq -n \
-  --arg review01_uuid "$(virsh domuuid review01)" \
-  --arg review01_machine_id "$(<"$work/review01.new.machine-id")" \
-  --arg integration01_uuid "$(virsh domuuid integration01)" \
-  --arg integration01_machine_id "$(<"$work/integration01.new.machine-id")" \
-  '{
-    review01: {uuid: $review01_uuid, machine_id: $review01_machine_id},
-    integration01: {uuid: $integration01_uuid, machine_id: $integration01_machine_id}
-  }' | jq -S .
+result='{}'
+for guest in "${GUESTS[@]}"; do
+  result="$(jq --arg guest "$guest" --arg uuid "$(virsh domuuid "$guest")" --arg machine_id "$(<"$work/$guest.new.machine-id")" '.[$guest]={uuid:$uuid,machine_id:$machine_id}' <<<"$result")"
+done
+jq -S . <<<"$result"

@@ -58,6 +58,9 @@ for path in sorted(root.glob("images/**/*.py")):
 print("PASS Python syntax")
 PY
 
+python3 -m unittest discover -s "$ROOT/tests" -p 'test_*.py'
+echo "PASS clean release boot source contracts"
+
 embedded_policy=$(yq -r \
   'select(.kind == "ConfigMap" and .metadata.name == "release-policy") | .data."release.rego"' \
   "$ROOT/manifests/opa.yaml")

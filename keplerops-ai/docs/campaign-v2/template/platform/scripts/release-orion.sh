@@ -4,6 +4,7 @@ set -Eeuo pipefail
 STATE_DIR=${PLATFORM_STATE_DIR:-/var/lib/keplerops-platform}
 SIGNING_DIR=${PLATFORM_SIGNING_DIR:-$STATE_DIR/signing}
 export KUBECONFIG=${KUBECONFIG:-/etc/rancher/k3s/k3s.yaml}
+REKOR_URL=${REKOR_URL:-https://rekor.sigstore.dev}
 
 usage() {
   cat <<'EOF'
@@ -105,7 +106,7 @@ jq -n \
     serving_image:{repository:$image_repo, image_digest:$image_digest, config_digest:$image_config, sbom_digest:$image_sbom, runtime:"onnxruntime-cpu"},
     evaluation:{suite_digest:$eval_suite, input_set_digest:$eval_inputs, report_digest:$eval_report, decision:$eval_decision},
     approval:{actor:$approval_actor, policy_digest:$policy_digest, subject_digest:$approval_subject, decision_id:$approval_id, status:$approval_status},
-    signature:{signer_identity:$signer, step_certificate_digest:$step_cert, cosign_public_key_digest:$cosign_key, transparency_status:"not-published"},
+    signature:{signer_identity:$signer, step_certificate_digest:$step_cert, cosign_public_key_digest:$cosign_key, transparency_status:"published"},
     gitops:{repository:$gitops_repo, commit:$gitops_commit, argo_application:$argo_app},
     runtime:{kserve_revision:$kserve_revision, expected_model_digest:$onnx, expected_image_digest:$image_digest}
   }' >"$work/subject.json"
@@ -159,18 +160,22 @@ jq -n --slurpfile predicate "$output/release.json" \
 
 export COSIGN_PASSWORD
 COSIGN_PASSWORD=$(<"$SIGNING_DIR/cosign-password")
-cosign sign-blob --yes --tlog-upload=false \
+cosign sign-blob --yes --rekor-url "$REKOR_URL" \
   --key "$SIGNING_DIR/cosign.key" \
   --bundle "$output/release.sigstore.json" \
   "$output/release.intoto.json" >/dev/null
-cosign verify-blob --key "$SIGNING_DIR/cosign.pub" \
-  --insecure-ignore-tlog \
+cosign verify-blob --key "$SIGNING_DIR/cosign.pub" --rekor-url "$REKOR_URL" \
   --bundle "$output/release.sigstore.json" \
   "$output/release.intoto.json" >/dev/null
 install -m 0644 "$SIGNING_DIR/cosign.pub" "$output/cosign.pub"
 install -m 0644 "$SIGNING_DIR/step-signer.crt" "$output/step-signer.crt"
 install -m 0644 "$SIGNING_DIR/identity.json" "$output/signer-identity.json"
 install -m 0644 "$SIGNING_DIR/identity.sig" "$output/signer-identity.sig"
+jq -e '.. | objects | select(has("logIndex")) | .logIndex | numbers' \
+  "$output/release.sigstore.json" >/dev/null || {
+  echo "Cosign bundle lacks Rekor transparency inclusion" >&2
+  exit 7
+}
 
 cat >"$output/gitops-image-patch.yaml" <<EOF
 apiVersion: serving.kserve.io/v1beta1

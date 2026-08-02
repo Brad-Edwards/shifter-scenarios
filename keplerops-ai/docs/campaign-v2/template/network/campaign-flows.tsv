@@ -2,6 +2,7 @@
 # Campaign services are kept separate from the base enterprise graph so a
 # software-only Shifter provision can install all 132 non-physical operations
 # without weakening the common default-deny policy.
+keplerops-participant-workstation-runtime	cidr:192.168.78.30/32	tcp	22	Cinder scoped Knative publisher access
 kep-v2-m01-review-dispatcher	kep-v2-rabbitmq	tcp	5672	review dispatch queue
 kep-v2-m01-review-dispatcher	kep-v2-redmine	tcp	3000	review dispatch WorkHub state
 kep-v2-m01-review01	kep-v2-rabbitmq	tcp	5672	review worker queue
@@ -30,33 +31,152 @@ kep-v2-m02-model-integration	kep-v2-caddy	tcp	443	partner integration callback
 kep-v2-support-preview-browser	kep-v2-zammad-nginx	tcp	8080	support review queue
 kep-v2-support-preview-browser	cidr:192.168.78.30/32	tcp	30081	support review Orion decision
 kep-v2-support-preview-browser	kep-v2-otel-collector	tcp	4318	support browser trace
+kep-v2-support-preview-browser	cidr:192.168.78.30/32	tcp	31080	support browser participant relay request
+kep-v2-caddy	kep-v2-cinder-minio	tcp	9000	Cinder object API virtual host
+kep-v2-caddy	kep-v2-cinder-model-edge	tcp	8080	Cinder GLM virtual host
+kep-v2-caddy	kep-v2-cinder-developer-assistant	tcp	8080	Cinder developer virtual host
+kep-v2-caddy	kep-v2-cinder-host-bridge	tcp	8080	Cinder bridge virtual host
+kep-v2-caddy	kep-v2-cinder-openvoice	tcp	8080	Cinder media virtual host
+kep-v2-caddy	kep-v2-cinder-experiments	tcp	8080	Cinder experiments virtual host
+kep-v2-caddy	kep-v2-cinder-release-registry	tcp	8080	Cinder releases virtual host
+kep-v2-caddy	kep-v2-cinder-registrar	tcp	8080	Cinder registrar virtual host
+kep-v2-caddy	kep-v2-cinder-qdrant	tcp	6333	Cinder vector virtual host
+kep-v2-caddy	kep-v2-partner-intake	tcp	8080	partner intake virtual host
+kep-v2-caddy	kep-v2-edge-observer	tcp	8080	external intake status virtual host
+kep-v2-caddy	kep-v2-orion-osint-site	tcp	80	independent Orion OSINT virtual host
+kep-v2-caddy	kep-v2-minio	tcp	9000	KeplerOps artifact virtual host
+kep-v2-caddy	cidr:192.168.78.30/32	tcp	31082	Cinder Knative lifecycle journal
+kep-v2-cinder-forgejo-runner	kep-v2-cinder-forgejo	tcp	3000	Cinder Actions source
+kep-v2-cinder-forgejo-runner	kep-v2-cinder-buildkit	tcp	1234	Cinder Actions rootless BuildKit
+kep-v2-cinder-buildkit	kep-v2-caddy	tcp	443	Cinder Harbor registry route
+kep-v2-cinder-buildkit	cidr:0.0.0.0/0	tcp	80,443	admitted build dependencies
 kep-v2-cinder-model-edge	cidr:192.168.78.30/32	tcp	30402	shared GLM inference
 kep-v2-cinder-developer-assistant	kep-v2-cinder-model-edge	tcp	8080	Cinder developer inference
-kep-v2-cinder-developer-assistant	kep-v2-cinder-host-bridge	tcp	8080	bounded developer host action
+kep-v2-cinder-developer-assistant	kep-v2-caddy	tcp	443	Cinder developer parent reacquisition
 kep-v2-cinder-host-bridge	kep-v2-cinder-developer-assistant	tcp	8080	developer assistant callback
 kep-v2-partner-intake	kep-v2-preview	tcp	8080	partner document preview
-kep-v2-partner-intake	kep-v2-cinder-qdrant	tcp	6333	Cinder retrieval store
-kep-v2-partner-intake	kep-v2-cinder-model-edge	tcp	8080	partner document analysis
+kep-v2-partner-intake	kep-v2-intake-qdrant	tcp	6333	partner intake retrieval index
+kep-v2-partner-intake	kep-v2-partner-model-edge	tcp	8080	partner intake bounded model analysis
+kep-v2-partner-intake	kep-v2-caddy	tcp	443	partner intake parent reacquisition
+kep-v2-partner-model-edge	cidr:192.168.78.30/32	tcp	30402	partner model edge GLM inference
+kep-v2-edge-observer	kep-v2-stalwart	tcp	993	independent Stalwart mail ingestion
+kep-v2-edge-observer	kep-v2-zammad-nginx	tcp	8080	independent Zammad case ingestion
 kep-v2-cinder-experiments	kep-v2-preview	tcp	8080	Preview experiment target
+kep-v2-cinder-experiments	kep-v2-caddy	tcp	443	experiment artifact reacquisition
 kep-v2-cinder-experiments	cidr:192.168.78.30/32	tcp	30083	published model experiment target
 kep-v2-cinder-release-registry	kep-v2-cinder-forgejo	tcp	3000	Cinder release source
 kep-v2-cinder-release-registry	kep-v2-harbor-nginx	tcp	8080	KeplerOps release registry
-kep-v2-cinder-release-registry	cidr:192.168.78.30/32	tcp	30083	published model verification
 kep-v2-cinder-release-registry	kep-v2-cinder-model-edge	tcp	8080	Cinder release analysis
+kep-v2-cinder-release-registry	kep-v2-caddy	tcp	443	release artifact reacquisition
+kep-v2-cinder-release-registry	cidr:192.168.78.30/32	tcp	30083	published model verification
 kep-v2-cinder-registrar	kep-v2-pdns-auth	tcp	8081	Cinder DNS registration
 kep-v2-cinder-registrar	kep-v2-pdns-recursor	tcp	53	Cinder registration DNS
 kep-v2-cinder-registrar	kep-v2-pdns-recursor	udp	53	Cinder registration DNS
 kep-v2-cinder-registrar	kep-v2-stalwart	tcp	8080	Cinder mail registration
+kep-v2-cinder-registrar	kep-v2-keycloak	tcp	8080	Cinder enterprise identity registration
 kep-v2-cinder-registrar	kep-v2-step-ca	tcp	9000	Cinder certificate enrollment
-kep-v2-cinder-jupyter	kep-v2-cinder-openvoice	tcp	8080	Cinder media research
-kep-v2-cinder-jupyter	kep-v2-cinder-registrar	tcp	8080	Cinder service registration
-kep-v2-cinder-jupyter	kep-v2-cinder-developer-assistant	tcp	8080	Cinder developer workspace
-kep-v2-cinder-jupyter	kep-v2-cinder-experiments	tcp	8080	Cinder model experiments
-kep-v2-cinder-jupyter	kep-v2-edge-observer	tcp	8080	Cinder edge observation
-kep-v2-cinder-jupyter	kep-v2-cinder-release-registry	tcp	8080	Cinder release workspace
-kep-v2-cinder-jupyter	kep-v2-partner-intake	tcp	8080	Cinder partner delivery
+kep-v2-cinder-registrar	kep-v2-caddy	tcp	443	Cinder live service verification
+kep-v2-cinder-openvoice	kep-v2-caddy	tcp	443	Cinder media parent reacquisition
+kep-v2-cinder-jupyter	cidr:192.168.78.30/32	tcp	6443	Cinder Jupyter Kubernetes control
+cidr:192.168.78.30/32	kep-v2-cinder-jupyter	tcp	8001	Jupyter single-user Hub callback
 kep-v2-orion-import-review	kep-v2-rabbitmq	tcp	5672	isolated import review queue
 kep-v2-orion-import-review	cidr:192.168.78.30/32	tcp	31080	isolated review callback
 kep-v2-orion-model-review-dispatcher	kep-v2-forgejo	tcp	3000	model review source
 kep-v2-orion-model-review-dispatcher	kep-v2-rabbitmq	tcp	5672	model review dispatch queue
 kep-v2-orion-model-review-dispatcher	kep-v2-minio	tcp	9000	model review objects
+kep-v2-caddy	kep-v2-m05-cinder-transport	tcp	8090	Cinder Orion relay edge
+kep-v2-librechat	kep-v2-m05-cinder-transport	tcp	8090	LibreChat worker relay endpoint
+kep-v2-librechat	kep-v2-orion-session-gateway	tcp	8089	logged-in LibreChat user to fixed Orion identity
+kep-v2-orion-session-gateway	kep-v2-mongodb	tcp	27017	resolve server-owned LibreChat session identity
+kep-v2-orion-session-gateway	cidr:192.168.78.30/32	tcp	30081	fixed-identity Orion browser transport
+kep-v2-orion-dataset-worker	kep-v2-m05-cinder-transport	tcp	8090	dataset worker transport audit
+kep-v2-orion-dataset-worker	kep-v2-orion-worker-authority	tcp	8091	server-owned worker identity and protected records
+kep-v2-orion-dataset-worker	kep-v2-mlflow	tcp	5000	dataset worker experiment state
+kep-v2-orion-dataset-worker	cidr:192.168.78.1/32	tcp	443	rogue worker exact Cinder relay virtual host
+kep-v2-orion-dataset-worker	kep-v2-librechat	tcp	3080	worker normal LibreChat web-assistant polling
+kep-v2-orion-dataset-worker	keplerops-participant-workstation-runtime	tcp	8000	participant-hosted MLflow dataset source
+cidr:192.168.78.20/32	cidr:192.168.78.1/32	tcp	443	review host exact Cinder relay virtual host
+keplerops-participant-workstation-runtime	kep-v2-orion-dataset-worker	tcp	8088	participant dataset-worker job surface
+kep-v2-airflow-worker	kep-v2-orion-dataset-worker	tcp	8088	extraction workflow dataset-worker checkpoint
+kep-v2-caddy	kep-v2-orion-vision-research	tcp	8080	vision research edge
+kep-v2-caddy	kep-v2-m10-source-producer	tcp	8080	Orion production operations edge
+kep-v2-orion-vision-research	cidr:192.168.78.30/32	tcp	30084	vision research model inference
+kep-v2-orion-vision-research	kep-v2-cinder-minio	tcp	9000	vision research query ledger
+kep-v2-label-studio	kep-v2-orion-release-risk-label-studio-ml	tcp	9090	Label Studio release-risk ML backend
+kep-v2-orion-release-risk-label-studio-ml	cidr:192.168.78.30/32	tcp	30083	Label Studio backend release-risk inference
+kep-v2-orion-release-risk-label-studio-ml	kep-v2-minio	tcp	9000	Label Studio prediction query ledger
+kep-v2-minio	kep-v2-m08-native-audit	tcp	8090	model package object audit webhook
+kep-v2-airflow-worker	cidr:192.168.78.30/32	tcp	30083,30084	extraction text and vision inference
+kep-v2-airflow-worker	kep-v2-cinder-forgejo	tcp	3000	extraction research source
+kep-v2-airflow-worker	kep-v2-cinder-minio	tcp	9000	extraction research objects
+kep-v2-airflow-worker	cidr:192.168.78.30/32	tcp	6443	scoped runtime discovery
+kep-v2-airflow-worker	kep-v2-orion-telemetry-gateway	tcp	8080	live release-risk evaluation
+kep-v2-airflow-worker	kep-v2-jaeger	tcp	16686	evaluation trace correlation
+kep-v2-airflow-worker	kep-v2-devpi	tcp	3141	campaign package inspection
+kep-v2-airflow-worker	kep-v2-rabbitmq	tcp	15672	campaign queue inspection
+kep-v2-airflow-worker	kep-v2-cinder-registrar	tcp	8080	Cinder domain handoff
+kep-v2-airflow-worker	kep-v2-caddy	tcp	443	campaign virtual-host handoff
+kep-v2-airflow-worker	kep-v2-cinder-release-registry	tcp	8080	M06 public-bundle handoff
+kep-v2-airflow-worker	kep-v2-forgejo	tcp	3000	signed capability manifest
+kep-v2-release-event-worker	kep-v2-redmine	tcp	3000	release event WorkHub intake
+kep-v2-release-event-worker	kep-v2-rabbitmq	tcp	15672	release event queue management
+kep-v2-release-event-worker	cidr:192.168.78.30/32	tcp	30081	release event Orion execution
+kep-v2-release-event-worker	kep-v2-orion-telemetry-gateway	tcp	8080	release-risk model state
+kep-v2-release-event-worker	kep-v2-jaeger	tcp	16686	release event trace correlation
+kep-v2-release-event-worker	kep-v2-otel-collector	tcp	4318	release route instrumentation
+kep-v2-partner-contract-monitors	kep-v2-ghost	tcp	2368	partner monitor published incident state
+kep-v2-partner-contract-monitors	kep-v2-nextcloud	tcp	80	partner monitor signed contract state
+kep-v2-partner-contract-monitors	kep-v2-zammad-nginx	tcp	8080	partner monitor complaint workflow
+kep-v2-support-preview-browser	kep-v2-caddy	tcp	80,443	support preview virtual hosts
+kep-v2-orion-dataset-worker	kep-v2-caddy	tcp	443	dataset worker Cinder relay
+kep-v2-orion-dataset-worker-patched	kep-v2-orion-worker-authority	tcp	8091	patched worker authority
+kep-v2-orion-dataset-worker-patched	kep-v2-mlflow	tcp	5000	patched worker experiment state
+keplerops-participant-workstation-runtime	kep-v2-orion-dataset-worker-patched	tcp	8088	patched dataset-worker job surface
+kep-v2-airflow-worker	kep-v2-orion-dataset-worker-patched	tcp	8088	patched dataset-worker checkpoint
+cidr:192.168.78.20/32	kep-v2-caddy	tcp	443	review host Cinder relay
+kep-v2-m05-source-admission	kep-v2-cinder-forgejo	tcp	3000	M05 admitted source inspection
+kep-v2-m05-actions-release-tools	kep-v2-cinder-forgejo	tcp	3000	M05 release-tools Actions source
+kep-v2-m05-actions-agent-config	kep-v2-cinder-forgejo	tcp	3000	M05 agent-config Actions source
+kep-v2-m05-actions-blueprints	kep-v2-cinder-forgejo	tcp	3000	M05 blueprints Actions source
+kep-v2-m05-actions-staging	kep-v2-cinder-forgejo	tcp	3000	M05 staging Actions source
+kep-v2-m05-actions-release-tools	kep-v2-m05-buildkit	tcp	1234	M05 release-tools BuildKit
+kep-v2-m05-actions-agent-config	kep-v2-m05-buildkit	tcp	1234	M05 agent-config BuildKit
+kep-v2-m05-actions-staging	kep-v2-m05-buildkit	tcp	1234	M05 staging BuildKit
+kep-v2-m05-actions-release-tools	kep-v2-caddy	tcp	443	M05 release-tools registry route
+kep-v2-m05-actions-agent-config	kep-v2-caddy	tcp	443	M05 agent-config registry route
+kep-v2-m05-actions-blueprints	kep-v2-caddy	tcp	443	M05 blueprints registry route
+kep-v2-m05-actions-staging	kep-v2-caddy	tcp	443	M05 staging registry route
+kep-v2-m05-buildkit	kep-v2-caddy	tcp	443	M05 BuildKit registry route
+kep-v2-m10-source-producer	kep-v2-cinder-minio	tcp	9000	production source immutable Cinder records
+kep-v2-m10-source-producer	cidr:192.168.78.30/32	tcp	30083,6443	production model effects and Kubernetes identity review
+kep-v2-m10-source-producer	kep-v2-redmine	tcp	3000	production source WorkHub records
+kep-v2-m10-source-producer	kep-v2-zammad-nginx	tcp	8080	production source support records
+kep-v2-m10-source-producer	kep-v2-qdrant	tcp	6333	production source vector state
+kep-v2-m10-source-producer	kep-v2-rabbitmq	tcp	15672	production source queue management
+kep-v2-m10-source-producer	kep-v2-prometheus	tcp	9090	production source metric evidence
+kep-v2-m10-source-producer	kep-v2-otel-collector	tcp	4318	production source trace emission
+kep-v2-airflow-worker	kep-v2-m10-source-producer	tcp	8080	production workflow native source API
+kep-v2-airflow-worker	kep-v2-business-adapter	tcp	8080	production business workflow effects
+kep-v2-airflow-worker	kep-v2-unleash	tcp	4242	production feature-control verification
+kep-v2-airflow-worker	kep-v2-mautic	tcp	80	production advisory verification
+kep-v2-airflow-worker	kep-v2-odoo	tcp	8069	production ledger verification
+kep-v2-airflow-worker	kep-v2-prometheus	tcp	9090	production metric verification
+kep-v2-airflow-worker	kep-v2-alertmanager	tcp	9093	production alert verification
+kep-v2-airflow-worker	cidr:192.168.78.30/32	tcp	30090	production OpenCost allocation verification
+cidr:192.168.78.30/32	kep-v2-m10-source-producer	tcp	8080	production workload callback evidence
+label:com.docker.compose.service=m10-research-worker-1	kep-v2-rabbitmq	tcp	5672	research worker queue
+label:com.docker.compose.service=m10-research-worker-1	kep-v2-redmine	tcp	3000	research worker WorkHub state
+label:com.docker.compose.service=m10-research-worker-1	cidr:192.168.78.30/32	tcp	30081	research worker Orion execution
+label:com.docker.compose.service=m10-research-worker-1	kep-v2-otel-collector	tcp	4318	research worker trace emission
+label:com.docker.compose.service=m10-research-worker-2	kep-v2-rabbitmq	tcp	5672	research worker queue
+label:com.docker.compose.service=m10-research-worker-2	kep-v2-redmine	tcp	3000	research worker WorkHub state
+label:com.docker.compose.service=m10-research-worker-2	cidr:192.168.78.30/32	tcp	30081	research worker Orion execution
+label:com.docker.compose.service=m10-research-worker-2	kep-v2-otel-collector	tcp	4318	research worker trace emission
+label:com.docker.compose.service=m10-feedback-worker-1	kep-v2-rabbitmq	tcp	5672	feedback worker queue
+label:com.docker.compose.service=m10-feedback-worker-1	kep-v2-zammad-nginx	tcp	8080	feedback worker support state
+label:com.docker.compose.service=m10-feedback-worker-1	cidr:192.168.78.30/32	tcp	30083	feedback worker release-risk inference
+label:com.docker.compose.service=m10-feedback-worker-1	kep-v2-qdrant-writer	tcp	6333	feedback worker vector writes
+label:com.docker.compose.service=m10-feedback-worker-2	kep-v2-rabbitmq	tcp	5672	feedback worker queue
+label:com.docker.compose.service=m10-feedback-worker-2	kep-v2-zammad-nginx	tcp	8080	feedback worker support state
+label:com.docker.compose.service=m10-feedback-worker-2	cidr:192.168.78.30/32	tcp	30083	feedback worker release-risk inference
+label:com.docker.compose.service=m10-feedback-worker-2	kep-v2-qdrant-writer	tcp	6333	feedback worker vector writes

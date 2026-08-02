@@ -6,6 +6,7 @@ DAG_IDS = (
     "orion_clean_training",
     "orion_partner_intake",
     "orion_release_risk_training",
+    "orion_evaluation_replay",
 )
 ROLE_SOURCES = {
     "Orion Viewer": ("Viewer", "can_read"),

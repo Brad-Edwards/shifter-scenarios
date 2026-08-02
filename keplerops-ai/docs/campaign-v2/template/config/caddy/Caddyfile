@@ -1,5 +1,6 @@
 {
-  admin off
+  admin unix//run/caddy-admin/admin.sock
+  persist_config off
   local_certs
 }
 
@@ -175,7 +176,7 @@ https://objects.cinder.lab {
 
 https://notebook.cinder.lab {
   tls internal
-  reverse_proxy 10.61.90.32:8888
+  reverse_proxy 10.61.90.32:8000
 }
 
 https://model.cinder.lab {

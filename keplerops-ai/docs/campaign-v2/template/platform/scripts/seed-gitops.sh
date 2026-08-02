@@ -7,6 +7,12 @@ FORGEJO_ADMIN_USER=${FORGEJO_ADMIN_USER:-range-admin}
 FORGEJO_ADMIN_PASSWORD=${FORGEJO_ADMIN_PASSWORD:-KeplerV2-Training-Forgejo-Admin}
 FORGEJO_ORG=${FORGEJO_ORG:-keplerops}
 FORGEJO_REPO=${FORGEJO_GITOPS_REPO:-orion-platform}
+MODE=${1:-with-bootstrap-manifests}
+
+[[ $MODE == with-bootstrap-manifests || $MODE == --repository-only ]] || {
+  printf 'usage: %s [--repository-only]\n' "$0" >&2
+  exit 2
+}
 
 api() {
   local method=$1 path=$2
@@ -21,10 +27,21 @@ ensure_repo() {
   if ! api GET "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}" >/dev/null 2>&1; then
     api POST "/orgs/${FORGEJO_ORG}/repos" --data "$(jq -cn \
       --arg name "$FORGEJO_REPO" \
-      '{name:$name,description:"Orion platform deployment definitions.",private:false,auto_init:false}')" >/dev/null
+      '{name:$name,description:"Orion platform deployment definitions.",private:false,
+        auto_init:true,default_branch:"main",gitignores:"",license:"",readme:"Default"}')" >/dev/null
   fi
   api PATCH "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}" \
     --data '{"description":"Orion platform deployment definitions.","private":false}' >/dev/null
+}
+
+ensure_main_branch() {
+  api GET "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/branches/main" >/dev/null 2>&1 && return 0
+  local content payload
+  content=$(printf 'KeplerOps Orion platform GitOps repository.\n' | base64 | tr -d '\n')
+  payload=$(jq -cn --arg content "$content" \
+    '{content:$content,message:"Initialize Orion platform GitOps repository",branch:"main"}')
+  api POST "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/contents/README.md" \
+    --data "$payload" >/dev/null
 }
 
 ensure_file() {
@@ -51,6 +68,11 @@ ensure_file() {
 }
 
 ensure_repo
+ensure_main_branch
+if [[ $MODE == --repository-only ]]; then
+  api GET "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/branches/main" | jq -er '.commit.id'
+  exit 0
+fi
 ensure_file gitops/orion-canary/kustomization.yaml "$ROOT/gitops/orion-canary/kustomization.yaml"
 ensure_file gitops/orion-canary/inferenceservice.yaml "$ROOT/gitops/orion-canary/inferenceservice.yaml"
 ensure_file gitops/orion-canary/service.yaml "$ROOT/gitops/orion-canary/service.yaml"

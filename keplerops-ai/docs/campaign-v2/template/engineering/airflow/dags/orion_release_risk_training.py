@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import base64
 import hashlib
+import hmac
 import json
 import os
 import re
@@ -30,7 +32,15 @@ LAKEFS_SECRET_KEY = os.getenv(
 LAKEFS_REPOSITORY = "orion"
 LAKEFS_BRANCH = "main"
 MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow:5000")
+FORGEJO_URL = os.getenv("FORGEJO_URL", "http://10.61.40.20:3000").rstrip("/")
+FORGEJO_AUTH = tuple(os.getenv(
+    "FORGEJO_AUTH", "svc-orion-training:KAI-Orion-Trainer-2b68d419a7f340ce",
+).split(":", 1))
+SOURCE_REPOSITORY = "keplerops/orion-build"
+SOURCE_PATH = "training/orion_release_risk_training.py"
 BASE_MODEL_PATH = Path("/opt/models/release-risk-base")
+INTEGRITY_CASES_PATH = Path(os.getenv("RELEASE_RISK_INTEGRITY_CASES", "/opt/airflow/release-risk/integrity-heldout.json"))
+PROVENANCE_KEY = os.environ["ORION_PROVENANCE_SIGNING_KEY"].encode()
 BASE_MODEL_ID = "google/bert_uncased_L-2_H-128_A-2"
 BASE_MODEL_REVISION = "30b0a37ccaaa32f332884b96992754e246e48c5f"
 LABEL_NAMES = [
@@ -49,6 +59,36 @@ LABELS = {name: index for index, name in enumerate(LABEL_NAMES)}
 def checked(response: requests.Response) -> requests.Response:
     response.raise_for_status()
     return response
+
+
+def source_identity(dag_sha: str) -> dict[str, str]:
+    commit = checked(requests.get(
+        f"{FORGEJO_URL}/api/v1/repos/{SOURCE_REPOSITORY}/git/commits/main",
+        auth=FORGEJO_AUTH, timeout=30,
+    )).json()
+    revision = str(commit.get("sha") or "")
+    if not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise ValueError("Forgejo did not resolve the training source to a commit")
+    source_item = checked(requests.get(
+        f"{FORGEJO_URL}/api/v1/repos/{SOURCE_REPOSITORY}/contents/{SOURCE_PATH}",
+        params={"ref": revision}, auth=FORGEJO_AUTH, timeout=30,
+    )).json()
+    if source_item.get("encoding") != "base64":
+        raise ValueError("Forgejo returned unsupported training source encoding")
+    source = base64.b64decode(str(source_item.get("content") or "").replace("\n", ""))
+    tree = checked(requests.get(
+        f"{FORGEJO_URL}/api/v1/repos/{SOURCE_REPOSITORY}/git/trees/{revision}",
+        params={"recursive": "true"}, auth=FORGEJO_AUTH, timeout=30,
+    )).json().get("tree")
+    if hashlib.sha256(source).hexdigest() != dag_sha or not isinstance(tree, list) or not tree:
+        raise ValueError("mounted training DAG does not match the immutable Forgejo source tree")
+    return {
+        "source_repository": SOURCE_REPOSITORY,
+        "source_commit": revision,
+        "source_tree_sha256": hashlib.sha256(json.dumps(
+            tree, sort_keys=True, separators=(",", ":"),
+        ).encode()).hexdigest(),
+    }
 
 
 def lakefs_s3():
@@ -136,6 +176,7 @@ def orion_release_risk_training():
         ).encode()
         export_sha = hashlib.sha256(canonical).hexdigest()
         dag_sha = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        source = source_identity(dag_sha)
         descriptor_key = (
             f"datasets/orion-release-risk/{export_sha}/training.json.dvc"
         )
@@ -163,6 +204,7 @@ def orion_release_risk_training():
                     "export_sha256": export_sha,
                     "dvc_md5": dvc_md5,
                     "dag_sha256": dag_sha,
+                    **source,
                     "records": len(exported),
                     "labels": LABEL_NAMES,
                 },
@@ -200,6 +242,7 @@ def orion_release_risk_training():
                     "export_sha256": export_sha,
                     "dvc_md5": dvc_md5,
                     "dag_sha256": dag_sha,
+                    **source,
                 },
             },
             timeout=60,
@@ -227,6 +270,7 @@ def orion_release_risk_training():
             "export_sha256": export_sha,
             "dvc_md5": dvc_md5,
             "dag_sha256": dag_sha,
+            **source,
             "lakefs_commit": commit_id,
             "descriptor_key": descriptor_key,
             "manifest_key": manifest_key,
@@ -416,11 +460,35 @@ def orion_release_risk_training():
                     f"exported ONNX accuracy is too low: {runtime_accuracy:.3f}"
                 )
 
+            heldout = json.loads(INTEGRITY_CASES_PATH.read_text())
+            if len(heldout) < 24 or any(item.get("label") not in LABELS for item in heldout):
+                raise ValueError("release-risk integrity suite is incomplete")
+            heldout_encoded = tokenizer(
+                [item["text"] for item in heldout], padding="max_length", truncation=True,
+                max_length=64, return_tensors="np",
+            )
+            heldout_logits = runtime.run(None, {
+                item.name: heldout_encoded[item.name] for item in runtime.get_inputs()
+            })[0]
+            heldout_expected = [LABELS[item["label"]] for item in heldout]
+            heldout_predictions = heldout_logits.argmax(axis=1).tolist()
+            heldout_accuracy = sum(
+                observed == expected for observed, expected in zip(heldout_predictions, heldout_expected)
+            ) / len(heldout_expected)
+            heldout_suite_sha = hashlib.sha256(
+                json.dumps(heldout, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest()
+
             artifact_digests = {
                 path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                 for path in sorted(model_dir.iterdir())
                 if path.is_file()
             }
+            package_schema_sha = hashlib.sha256(json.dumps(
+                {"model_family": "release-risk", "input_schema": "keplerops.release-risk.text/v1",
+                 "labels": LABEL_NAMES, "members": artifact_digests},
+                sort_keys=True, separators=(",", ":"),
+            ).encode()).hexdigest()
             lineage = {
                 **snapshot,
                 "model_family": "release-risk",
@@ -432,9 +500,17 @@ def orion_release_risk_training():
                 "labels": LABEL_NAMES,
                 "training_accuracy": accuracy,
                 "onnx_training_accuracy": runtime_accuracy,
+                "heldout_accuracy": heldout_accuracy,
+                "heldout_suite_sha256": heldout_suite_sha,
+                "package_schema_sha256": package_schema_sha,
                 "final_loss": loss_value,
                 "artifacts": artifact_digests,
             }
+            lineage["provenance_signature"] = hmac.new(
+                PROVENANCE_KEY,
+                json.dumps(lineage, sort_keys=True, separators=(",", ":")).encode(),
+                hashlib.sha256,
+            ).hexdigest()
             lineage_bytes = json.dumps(lineage, indent=2, sort_keys=True).encode()
             provenance_file = model_dir / "provenance.json"
             provenance_file.write_bytes(lineage_bytes)
@@ -458,7 +534,16 @@ def orion_release_risk_training():
                     "model.native_weights_sha256": artifact_digests[
                         native_weights.name
                     ],
+                    "model.tokenizer_sha256": artifact_digests["tokenizer.json"],
+                    "model.label_schema_sha256": artifact_digests["label-map.json"],
+                    "model.preprocessing_sha256": artifact_digests["preprocessing.json"],
+                    "model.package_schema_sha256": package_schema_sha,
+                    "evaluation.heldout_suite_sha256": heldout_suite_sha,
                     "training.dag_run_id": dag_run_id,
+                    "source.repository": str(snapshot["source_repository"]),
+                    "source.commit": str(snapshot["source_commit"]),
+                    "source.tree_sha256": str(snapshot["source_tree_sha256"]),
+                    "provenance.signature": lineage["provenance_signature"],
                 },
             ) as active_run:
                 mlflow.log_params(
@@ -479,6 +564,7 @@ def orion_release_risk_training():
                     {
                         "training_accuracy": accuracy,
                         "onnx_training_accuracy": runtime_accuracy,
+                        "heldout_accuracy": heldout_accuracy,
                         "final_loss": loss_value,
                     }
                 )

@@ -31,7 +31,7 @@ metadata:
     app.kubernetes.io/name: vertex-openai-proxy
     app.kubernetes.io/part-of: keplerops-platform
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: vertex-openai-proxy
@@ -40,6 +40,7 @@ spec:
       labels:
         app.kubernetes.io/name: vertex-openai-proxy
     spec:
+      serviceAccountName: vertex-openai-proxy
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
@@ -50,7 +51,16 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["uvicorn", "vertex_proxy:app", "--host", "0.0.0.0", "--port", "8082", "--no-access-log"]
           env:
-            - {name: VERTEX_PROJECT, value: prod-ksqdkj}
+            - name: VERTEX_PROJECT
+              valueFrom: {secretKeyRef: {name: litellm-runtime, key: VERTEX_PROJECT}}
+            - name: VERTEX_SERVICE_ACCOUNT
+              valueFrom: {secretKeyRef: {name: litellm-runtime, key: VERTEX_SERVICE_ACCOUNT}}
+            - name: VERTEX_EDGE_KEY_REGISTRY_JSON
+              valueFrom: {secretKeyRef: {name: litellm-runtime, key: VERTEX_EDGE_KEY_REGISTRY_JSON}}
+            - name: VERTEX_INTERNAL_API_KEY
+              valueFrom: {secretKeyRef: {name: litellm-runtime, key: ORION_ASSISTANT_API_KEY}}
+            - name: VERTEX_INTERNAL_RANGE_ID
+              valueFrom: {secretKeyRef: {name: litellm-runtime, key: VERTEX_INTERNAL_RANGE_ID}}
             - {name: VERTEX_LOCATION, value: global}
           ports:
             - {name: http, containerPort: 8082}
@@ -75,6 +85,13 @@ spec:
       volumes:
         - name: tmp
           emptyDir: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vertex-openai-proxy
+  namespace: orion-platform
+automountServiceAccountToken: false
 ---
 apiVersion: v1
 kind: Service
@@ -106,7 +123,7 @@ metadata:
     app.kubernetes.io/name: litellm
     app.kubernetes.io/part-of: keplerops-platform
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: litellm
@@ -123,7 +140,7 @@ spec:
         - name: litellm
           image: ghcr.io/berriai/litellm:main-v1.74.9-stable
           imagePullPolicy: IfNotPresent
-          args: ["--config", "/app/config.yaml", "--port", "4000", "--num_workers", "1"]
+          args: ["--config", "/app/config.yaml", "--port", "4000", "--num_workers", "2"]
           envFrom:
             - secretRef: {name: litellm-runtime}
           env:

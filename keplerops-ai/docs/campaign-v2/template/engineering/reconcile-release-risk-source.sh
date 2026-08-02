@@ -33,16 +33,21 @@ install -D -m 0644 "${SCRIPT_DIR}/release-risk/base-model.json" \
   "${work}/repository/training/base-model.json"
 install -D -m 0644 "${SCRIPT_DIR}/release-risk/label-schema.json" \
   "${work}/repository/training/label-schema.json"
+install -D -m 0644 "${SCRIPT_DIR}/release-risk/integrity-handoff.schema.json" \
+  "${work}/repository/training/integrity-handoff.schema.json"
+rm -f "${work}/repository/training/integrity-heldout.json"
 jq -nS \
   --arg dag "$(sha256sum "${work}/repository/training/orion_release_risk_training.py" | awk '{print $1}')" \
   --arg base_model "$(sha256sum "${work}/repository/training/base-model.json" | awk '{print $1}')" \
   --arg label_schema "$(sha256sum "${work}/repository/training/label-schema.json" | awk '{print $1}')" \
+  --arg integrity_handoff "$(sha256sum "${work}/repository/training/integrity-handoff.schema.json" | awk '{print $1}')" \
   '{
     schema: "keplerops.orion-release-risk-source/v1",
     files: {
       "training/orion_release_risk_training.py": $dag,
       "training/base-model.json": $base_model,
-      "training/label-schema.json": $label_schema
+      "training/label-schema.json": $label_schema,
+      "training/integrity-handoff.schema.json": $integrity_handoff
     }
   }' >"${work}/repository/training/source-manifest.json"
 

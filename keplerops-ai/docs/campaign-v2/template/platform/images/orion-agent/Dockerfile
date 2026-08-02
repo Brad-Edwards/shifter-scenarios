@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
-COPY agent_service.py mcp_service.py vertex_proxy.py /app/
+COPY agent_service.py mcp_service.py campaign_m01.py vertex_proxy.py /app/
 
 USER 65532:65532
 EXPOSE 8080 8081 8082

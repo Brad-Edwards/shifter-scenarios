@@ -25,8 +25,6 @@ services:
     security_opt:
       - seccomp=unconfined
     environment:
-      KEPLEROPS_RANGE_INSTANCE: campaign-v2-template
-      KEPLEROPS_PARTICIPANT: cinder-operator
       VNC_RESOLUTION: 1600x900
       MAX_FRAME_RATE: "30"
       VNCOPTIONS: -PreferBandwidth -DynamicQualityMin=4 -DynamicQualityMax=8 -DLP_ClipDelay=0
@@ -46,7 +44,6 @@ services:
       - ./state/workstation/participant-password:/run/keplerops/participant-password:ro
       - ./state/workstation/tls:/run/tls:ro
       - ./state/workstation/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-range-root.crt:ro
-      - ./state/workstation/reset-generation:/run/keplerops/reset-generation:ro
       - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/run/keplerops/labgrid-ssh:ro
     networks:
       public:

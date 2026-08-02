@@ -18,6 +18,14 @@ TOKENIZER_PATH = MODEL_DIR / "tokenizer.json"
 MAX_LENGTH = 64
 
 
+def runtime_process_command() -> str:
+    return " ".join(
+        part.decode("utf-8", errors="replace")
+        for part in Path("/proc/1/cmdline").read_bytes().split(b"\0")
+        if part
+    )
+
+
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -83,6 +91,7 @@ def model_metadata(model_name: str) -> dict[str, Any]:
         "ready": True,
         "model_family": "release-risk",
         "runtime": "onnxruntime-cpu",
+        "process_command": runtime_process_command(),
         "class_count": len(label_to_id),
         "labels": [id_to_label[index] for index in range(len(id_to_label))],
         "model_sha256": model_sha256,

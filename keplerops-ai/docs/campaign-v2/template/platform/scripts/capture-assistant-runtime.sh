@@ -9,6 +9,8 @@ readonly SIGNING_DIR="${PLATFORM_SIGNING_DIR:-${STATE_DIR}/signing}"
 readonly OUTPUT_ROOT="${ASSISTANT_RELEASE_OUTPUT_DIR:-${STATE_DIR}/assistant-releases}"
 readonly CURRENT_LINK="${STATE_DIR}/current-assistant-release"
 readonly KUBECONFIG="${KUBECONFIG:-/etc/rancher/k3s/k3s.yaml}"
+readonly EXPECTED_VERTEX_MODEL="${EXPECTED_VERTEX_ASSISTANT_MODEL:-zai-org/glm-5-maas}"
+readonly EXPECTED_CONFIGURED_MODEL="${EXPECTED_VERTEX_ASSISTANT_CONFIGURED_MODEL:-openai/zai-org/glm-5-maas}"
 readonly -a WORKLOADS=(vertex-openai-proxy litellm orion-agent orion-mcp)
 
 export KUBECONFIG
@@ -106,6 +108,8 @@ secret_model="$(jq -er '.data.ORION_ASSISTANT_UPSTREAM_MODEL | @base64d | select
   "${workdir}/litellm-secret.json")"
 secret_base_url="$(jq -er '.data.ORION_ASSISTANT_BASE_URL | @base64d | select(length > 0)' \
   "${workdir}/litellm-secret.json")"
+secret_project="$(jq -er '.data.VERTEX_PROJECT | @base64d | select(length > 0)' \
+  "${workdir}/litellm-secret.json")"
 
 # Read the environment of every live LiteLLM replica. This detects a Secret
 # update that has not yet reached the running process without exposing values.
@@ -135,15 +139,35 @@ vertex_project=''
 vertex_location=''
 if [[ ${secret_base_url} == *vertex-openai-proxy* ]]; then
   provider='google-vertex-ai'
-  vertex_project="$(jq -er '
+  jq -e '
     .spec.template.spec.containers[] | select(.name == "proxy") |
-    .env[] | select(.name == "VERTEX_PROJECT") | .value | select(length > 0)
-  ' "${workdir}/vertex-openai-proxy.deployment.json")"
+    any(.env[]?; .name == "VERTEX_PROJECT" and
+      .valueFrom.secretKeyRef.name == "litellm-runtime" and
+      .valueFrom.secretKeyRef.key == "VERTEX_PROJECT")
+  ' "${workdir}/vertex-openai-proxy.deployment.json" >/dev/null ||
+    fail 'Vertex proxy project is not sourced from the admitted runtime Secret'
+  vertex_project="${secret_project}"
   vertex_location="$(jq -er '
     .spec.template.spec.containers[] | select(.name == "proxy") |
     .env[] | select(.name == "VERTEX_LOCATION") | .value | select(length > 0)
   ' "${workdir}/vertex-openai-proxy.deployment.json")"
+  mapfile -t proxy_pods < <(jq -r '.items[].metadata.name' \
+    "${workdir}/vertex-openai-proxy.pods.json" | sort)
+  for pod in "${proxy_pods[@]}"; do
+    # shellcheck disable=SC2016
+    active_project="$(kubectl -n "${NAMESPACE}" exec "pod/${pod}" -c proxy -- \
+      /bin/sh -c 'printf %s "$VERTEX_PROJECT"')"
+    [[ ${active_project} == "${secret_project}" ]] ||
+      fail 'active Vertex proxy project is stale relative to litellm-runtime'
+  done
 fi
+[[ ${provider} == google-vertex-ai && ${routing_adapter} == openai ]] ||
+  fail 'assistant runtime is not admitted through the Vertex OpenAI adapter'
+[[ ${upstream_model} == "${EXPECTED_VERTEX_MODEL}" &&
+   ${secret_model} == "${EXPECTED_CONFIGURED_MODEL}" ]] ||
+  fail 'assistant runtime is not the admitted Vertex GLM 5.2 model identity'
+[[ -n ${vertex_project} && -n ${vertex_location} ]] ||
+  fail 'Vertex GLM 5.2 provider scope is incomplete'
 endpoint_identity_digest="$(printf '%s' "${secret_base_url}" | sha256sum | awk '{print "sha256:" $1}')"
 
 jq -nS \

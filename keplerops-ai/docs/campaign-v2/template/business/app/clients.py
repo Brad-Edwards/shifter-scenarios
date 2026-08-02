@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import imaplib
 import json
 import math
 import re
@@ -84,6 +85,18 @@ class NativeClients:
         result = response.json().get("result")
         if not isinstance(result, dict) or result.get("allow") is not True:
             raise PermissionError("OPA denied the bounded business action")
+        return result
+
+    def opa_probe(self, payload: dict[str, Any]) -> dict[str, Any]:
+        response = checked(
+            httpx.post(
+                f"{self.settings.opa_url}/v1/data/keplerops/business/decision",
+                json={"input": payload}, timeout=15,
+            )
+        )
+        result = response.json().get("result")
+        if not isinstance(result, dict) or result.get("allow") is not False:
+            raise NativeServiceError("business negative probe was not explicitly denied")
         return result
 
     def release_risk_predict(
@@ -250,6 +263,27 @@ class NativeClients:
             httpx.post(
                 url,
                 headers={"Authorization": self.settings.unleash_token},
+                timeout=20,
+            )
+        )
+        return response_ids(response, feature)
+
+    def unleash_describe(self, feature: str, description: str) -> list[str]:
+        url = (
+            f"{self.settings.unleash_url}/api/admin/projects/"
+            f"{self.settings.unleash_project}/features/{feature}"
+        )
+        current = self.unleash_feature(feature)
+        response = checked(
+            httpx.put(
+                url,
+                headers={"Authorization": self.settings.unleash_token},
+                json={
+                    "name": feature,
+                    "description": description,
+                    "type": current.get("type", "operational"),
+                    "impressionData": bool(current.get("impressionData", True)),
+                },
                 timeout=20,
             )
         )
@@ -501,6 +535,16 @@ class NativeClients:
             raise NativeServiceError(f"Mautic expected one contact with email {email}")
         return exact[0]
 
+    def mautic_segment_contacts(self, segment_id: int) -> list[dict[str, Any]]:
+        body = self.mautic_request(
+            "GET", f"/segments/{segment_id}/contacts?limit=100"
+        ).json()
+        values = body.get("contacts", {})
+        contacts = list(values.values()) if isinstance(values, dict) else values
+        if not isinstance(contacts, list):
+            raise NativeServiceError("Mautic segment membership is unavailable")
+        return contacts
+
     def zammad_request(
         self, method: str, path: str, *, data: dict[str, Any] | None = None
     ) -> httpx.Response:
@@ -523,6 +567,37 @@ class NativeClients:
                 f"Zammad expected one ticket titled {title}; found {len(exact)}"
             )
         return exact[0]
+
+    def zammad_articles(self, ticket_id: int) -> list[dict[str, Any]]:
+        body = self.zammad_request(
+            "GET", f"/ticket_articles/by_ticket/{ticket_id}"
+        ).json()
+        if not isinstance(body, list):
+            raise NativeServiceError("Zammad returned an invalid ticket article list")
+        return body
+
+    def zammad_attachment(self, ticket_id: int, article_id: int, attachment_id: int) -> bytes:
+        response = checked(
+            httpx.get(
+                f"{self.settings.zammad_url}/api/v1/ticket_attachment/"
+                f"{ticket_id}/{article_id}/{attachment_id}",
+                headers={"Host": self.settings.zammad_host},
+                auth=(self.settings.zammad_user, self.settings.zammad_password),
+                timeout=30,
+            )
+        )
+        return response.content
+
+    def tika_text(self, content: bytes) -> str:
+        response = checked(
+            httpx.put(
+                f"{self.settings.tika_url}/tika",
+                headers={"Accept": "text/plain"},
+                content=content,
+                timeout=60,
+            )
+        )
+        return response.text
 
     def redmine_request(
         self, method: str, path: str, *, data: dict[str, Any] | None = None
@@ -662,3 +737,20 @@ class NativeClients:
             client.login(*credentials[sender])
             client.send_message(message)
         return message_id
+
+    def mailbox_uids(self, user: str, subject: str) -> list[str]:
+        context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        with imaplib.IMAP4_SSL(
+            self.settings.imap_host, self.settings.imap_port,
+            ssl_context=context, timeout=20,
+        ) as mailbox:
+            mailbox.login(user, self.settings.synthetic_mail_password)
+            status, _ = mailbox.select("INBOX", readonly=True)
+            if status != "OK":
+                raise NativeServiceError(f"cannot inspect native mailbox for {user}")
+            status, matches = mailbox.uid("search", None, "SUBJECT", f'"{subject}"')
+            if status != "OK":
+                raise NativeServiceError(f"cannot search native mailbox for {user}")
+            return [value.decode() for value in matches[0].split()]

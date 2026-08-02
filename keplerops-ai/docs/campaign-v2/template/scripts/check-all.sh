@@ -49,6 +49,9 @@ docker exec "$WORKSTATION" sh -c \
   'ss -lnt | grep -q ":3389 " && ss -lnt | grep -q ":6901 "'
 docker exec --user kasm-user "$WORKSTATION" sh -lc \
   'curl -fsS --max-time 15 https://keplerops.lab/ >/dev/null &&
+   curl -fsS --max-time 15 https://git.keplerops.lab/api/v1/repos/keplerops/orion-public >/dev/null &&
+   curl -fsS --max-time 15 https://preview.keplerops.lab/ >/dev/null &&
+   curl -fsS --max-time 15 https://intake.keplerops.lab/api/v1/getting_started >/dev/null &&
    curl -fsS --max-time 15 https://models.keplerops.lab/health/liveliness >/dev/null &&
    curl -fsS --max-time 15 https://www.google.com/generate_204 >/dev/null'
 
@@ -66,13 +69,16 @@ bootstrap=$(docker inspect --format '{{.State.Status}} {{.State.ExitCode}}' \
   exit 4
 }
 
-run_baseline public-surfaces "$ROOT/baseline/public-surfaces.sh"
-run_baseline workhub-rag "$ROOT/baseline/workhub-rag.sh"
 run_baseline identity-role-enforcement "$ROOT/baseline/identity-role-enforcement.sh"
 run_baseline business-role-enforcement "$ROOT/baseline/business-role-enforcement.sh"
 run_baseline langflow-role-enforcement "$ROOT/baseline/langflow-role-enforcement.sh"
 run_baseline data-service-role-enforcement "$ROOT/baseline/data-service-role-enforcement.sh"
 run_baseline unleash-role-enforcement "$ROOT/baseline/unleash-role-enforcement.sh"
+
+# Public-surface and WorkHub functional rehearsals are intentionally excluded
+# here because they create mail, retrieval, and conversation records. They run
+# before template capture or during walkthroughs; final readiness must preserve
+# the operator's clean initial enterprise state.
 
 printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) component-substrate" \
   >"$READINESS_MARKER"

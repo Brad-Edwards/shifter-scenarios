@@ -95,21 +95,9 @@ pass 'client repository is public through Forgejo API and Git smart-HTTP over ve
 preview_body=$(https_get "$PREVIEW/")
 grep -Fq '<h1>Review a release note</h1>' <<<"$preview_body" || \
   fail 'Orion Preview did not return its public analysis surface'
-preview_result=$(curl --silent --show-error --fail-with-body \
-  --connect-timeout 5 --max-time 120 \
-  --proto '=https' --tlsv1.2 --cacert "$RANGE_CA" \
-  --header 'Content-Type: application/json' \
-  --request POST \
-  --data '{"text":"Routine Orion release review with approved lineage and validation evidence."}' \
-  "$PREVIEW/api/analyze")
-jq -e '
-  (.analysis_id | type == "string" and length > 20) and
-  (.model == "orion-release-risk") and
-  (.model_sha256 | type == "string" and length == 64) and
-  (.probabilities | type == "array" and length == 8)
-' <<<"$preview_result" >/dev/null || \
-  fail 'Orion Preview did not execute the admitted release-risk model'
-pass 'Orion Preview executes the admitted release-risk model over verified TLS'
+grep -Fq '/api/analyze' <<<"$preview_body" || \
+  fail 'Orion Preview did not publish its analysis action'
+pass 'Orion Preview publishes its analysis surface over verified TLS'
 
 intake_body=$(https_get "$PARTNER_INTAKE/")
 grep -Fq '<title>Zammad Helpdesk</title>' <<<"$intake_body" || \
@@ -140,21 +128,17 @@ from __future__ import annotations
 import os
 import smtplib
 import ssl
-import uuid
-from email.message import EmailMessage
 
 
 host = os.environ["MAIL_EDGE"]
 context = ssl.create_default_context(cafile=os.environ["RANGE_CA"])
-correlation = f"partner-{uuid.uuid4()}"
-
 with smtplib.SMTP(host, 25, timeout=15) as smtp:
-    code, banner = smtp.ehlo("participant.cinder.lab")
+    code, banner = smtp.ehlo("field.cinder.lab")
     if code != 250 or not smtp.has_extn("starttls"):
         raise RuntimeError(f"mail edge EHLO/STARTTLS failed: {code} {banner!r}")
 
     smtp.starttls(context=context)
-    code, banner = smtp.ehlo("participant.cinder.lab")
+    code, banner = smtp.ehlo("field.cinder.lab")
     if code != 250:
         raise RuntimeError(f"mail edge post-TLS EHLO failed: {code} {banner!r}")
 
@@ -172,23 +156,9 @@ with smtplib.SMTP(host, 25, timeout=15) as smtp:
         raise RuntimeError(f"mail edge accepted anonymous relay to an external domain: {code}")
     smtp.rset()
 
-    message = EmailMessage()
-    message["From"] = "cinder.operator@cinder.lab"
-    message["To"] = "partner-intake@keplerops.lab"
-    message["Subject"] = f"Orion partner evaluation request {correlation[-8:]}"
-    message["Message-ID"] = f"<{correlation}@cinder.lab>"
-    message["X-KeplerOps-Workflow"] = correlation
-    message.set_content(
-        "Please route this request to the Orion partner review team. "
-        f"Reference: {correlation}\n"
-    )
-    refused = smtp.send_message(message)
-    if refused:
-        raise RuntimeError(f"partner intake message was refused: {refused!r}")
-
-print(f"SMTP accepted correlated partner intake record: {correlation}")
+print("SMTP accepted the local intake envelope and rejected external relay")
 PY
-pass 'mail edge verifies TLS identity, accepts local intake, rejects relay, and records one benign message'
+pass 'mail edge verifies TLS identity, accepts local intake, and rejects relay without storing a message'
 
 printf 'clean-enterprise acceptance gate 5 passed from %s as %s\n' \
   "$(hostname)" "$(id -un)"

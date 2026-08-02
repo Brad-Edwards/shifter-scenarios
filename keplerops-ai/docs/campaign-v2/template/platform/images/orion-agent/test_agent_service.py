@@ -74,6 +74,25 @@ class AgentServiceTests(unittest.TestCase):
             agent_service.authenticate_service("Bearer invalid")
         agent_service.authenticate_service(f"Bearer {agent_service.AGENT_API_KEY}")
 
+    def test_identity_credential_cannot_claim_another_actor(self) -> None:
+        with patch.object(agent_service, "IDENTITY_TOKENS", {"user-token": "partner.reviewer"}):
+            self.assertEqual(
+                agent_service.authenticate_actor("Bearer user-token", "partner.reviewer"),
+                "partner.reviewer",
+            )
+            with self.assertRaises(HTTPException):
+                agent_service.authenticate_actor("Bearer user-token", "support.analyst")
+
+    def test_strict_shared_key_cannot_select_an_actor(self) -> None:
+        authorization = f"Bearer {agent_service.AGENT_API_KEY}"
+        with patch.object(agent_service, "REQUIRE_IDENTITY_AUTH", True):
+            self.assertEqual(
+                agent_service.authenticate_actor(authorization),
+                "workhub-service",
+            )
+            with self.assertRaises(HTTPException):
+                agent_service.authenticate_actor(authorization, "partner.reviewer")
+
     def test_feature_hash_is_normalized_and_deterministic(self) -> None:
         first = agent_service.feature_hash("Orion release approval")
         second = agent_service.feature_hash("Orion release approval")

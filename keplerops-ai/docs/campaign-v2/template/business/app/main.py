@@ -8,7 +8,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from .clients import NativeClients, NativeServiceError
 from .config import settings
-from .models import BusinessInput, DecisionEnvelope, Workflow, WorkflowResult
+from .models import BusinessInput, DecisionEnvelope, Workflow, WorkflowAuditRecord, WorkflowResult
+from .native_sources import NativeSourceLocator, NativeSourceResolver
 from .store import WorkflowStore
 from .workflows import WorkflowExecutor
 
@@ -21,6 +22,7 @@ app = FastAPI(
 security = HTTPBearer(auto_error=False)
 store = WorkflowStore(settings.audit_database)
 executor = WorkflowExecutor(NativeClients(settings))
+native_sources = NativeSourceResolver(executor.clients)
 
 
 def require_adapter_token(
@@ -118,15 +120,20 @@ def ready() -> dict[str, str]:
     return {"status": "ready"}
 
 
-@app.post(
-    "/internal/v1/workflows/{workflow}/execute",
-    response_model=WorkflowResult,
-    dependencies=[Depends(require_adapter_token)],
-)
-def execute_workflow(
+def _execute_workflow(
     workflow: Workflow,
     source: BusinessInput,
+    *,
+    native_ingest: bool,
 ) -> WorkflowResult:
+    reserved = {"campaign_operation", "control_kind", "native_source_system",
+                "native_record_id", "native_observation", "operation_attempt",
+                "operation_subject"}
+    if not native_ingest and reserved.intersection(source.facts):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="native source identity is resolved only by the public enterprise intake",
+        )
     existing = store.find(settings.range_id, source.idempotency_key)
     if existing is not None:
         if not store.source_matches(existing, source):
@@ -181,6 +188,28 @@ def execute_workflow(
         ) from exc
 
 
+@app.post(
+    "/internal/v1/workflows/{workflow}/execute",
+    response_model=WorkflowResult,
+    dependencies=[Depends(require_adapter_token)],
+)
+def execute_workflow(
+    workflow: Workflow,
+    source: BusinessInput,
+) -> WorkflowResult:
+    return _execute_workflow(workflow, source, native_ingest=False)
+
+
+@app.post("/v1/native-sources/{workflow}/consume", response_model=WorkflowResult)
+def consume_native_source(workflow: Workflow, locator: NativeSourceLocator) -> WorkflowResult:
+    """Consume a native enterprise record; caller-supplied qualification facts are rejected."""
+    try:
+        source = native_sources.resolve(workflow, locator)
+        return _execute_workflow(workflow, source, native_ingest=True)
+    except (NativeServiceError, OSError, ValueError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
 @app.get(
     "/internal/v1/workflows/{workflow_id}",
     response_model=WorkflowResult,
@@ -217,3 +246,65 @@ def compensate_workflow(workflow_id: str) -> WorkflowResult:
         ) from exc
     store.record_compensation(workflow_id, before, after, native_ids)
     return store.result(store.get(workflow_id))
+
+
+@app.get(
+    "/internal/v1/workflows/{workflow_id}/audit",
+    response_model=WorkflowAuditRecord,
+    dependencies=[Depends(require_adapter_token)],
+)
+def get_workflow_audit(workflow_id: str) -> WorkflowAuditRecord:
+    try:
+        row = store.get(workflow_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="workflow not found") from exc
+    unsigned = store.audit(row, "0" * 64).model_dump(by_alias=True)
+    unsigned.pop("audit_signature", None)
+    signature = hmac.digest(
+        settings.audit_signing_key.encode(),
+        __import__("json").dumps(unsigned, sort_keys=True, separators=(",", ":")).encode(),
+        "sha256",
+    ).hex()
+    return store.audit(row, signature)
+
+
+@app.get(
+    "/internal/v1/m10/impacts/{operation}",
+    dependencies=[Depends(require_adapter_token)],
+)
+def get_m10_impact(operation: str) -> dict[str, str]:
+    workflows = {
+        "kep-m10-e": Workflow.FEATURE_CONTROL,
+        "kep-m10-l": Workflow.ACCOUNTING_CREDIT,
+        "kep-m10-m": Workflow.INCIDENT_PUBLICATION,
+        "kep-m10-n": Workflow.ADVISORY_CAMPAIGN,
+        "kep-m10-o": Workflow.SUPPORT_TRIAGE,
+        "kep-m10-q": Workflow.TENANT_RETENTION,
+    }
+    if operation not in workflows:
+        raise HTTPException(status_code=404, detail="unknown business impact operation")
+    try:
+        rows = store.impact_workflows(operation, workflows[operation].value)
+    except KeyError as exc:
+        raise HTTPException(status_code=409, detail="native attack/clean/near set is incomplete") from exc
+    return {
+        "attack_workflow_id": rows["attack"],
+        "clean_workflow_id": rows["clean"],
+        "near_workflow_id": rows["near"],
+    }
+
+
+@app.post(
+    "/internal/v1/workflows/{workflow_id}/compensate-partner-effects",
+    dependencies=[Depends(require_adapter_token)],
+)
+def compensate_partner_effects(workflow_id: str) -> dict[str, object]:
+    try:
+        row = store.get(workflow_id)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail="workflow not found") from exc
+    if str(row["workflow"]) != Workflow.INCIDENT_PUBLICATION.value:
+        raise HTTPException(status_code=409, detail="workflow has no partner-monitor effects")
+    from .impact_workers import compensate
+
+    return {"workflow_id": workflow_id, "restored_ticket_ids": compensate(str(row["target_object_id"]))}

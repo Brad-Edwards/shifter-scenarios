@@ -68,7 +68,8 @@ wait_for_integrated_airflow() {
   local path
   for path in \
     /opt/airflow/dags/orion_partner_sources.py \
-    /opt/airflow/dags/orion_integrity_campaign.py \
+    /opt/airflow/dags/orion_integrity_operations.py \
+    /opt/airflow/dags/orion_audit_dags.py \
     /opt/airflow/dags/orion_extraction_research.py \
     /opt/airflow/dags/orion_release_operations.py \
     /opt/airflow/dags/orion_production_jobs.py \
@@ -146,10 +147,9 @@ require_fresh_hardware_proof() {
 if [[ -z ${operation} ]]; then
   CAMPAIGN_APPLY_ID=${CAMPAIGN_APPLY_ID:-$(cat /proc/sys/kernel/random/uuid)}
   export CAMPAIGN_APPLY_ID
-  rm -f "${READINESS_MARKER}" "${SOFTWARE_READINESS_MARKER}"
+  rm -f "${READINESS_MARKER}" "${SOFTWARE_READINESS_MARKER}" "${HARDWARE_READINESS_MARKER}"
   if [[ ${all_challenges} == true ]]; then
     export CAMPAIGN_SOFTWARE_DEPLOY_ONLY=0
-    rm -f "${HARDWARE_READINESS_MARKER}"
   else
     export CAMPAIGN_SOFTWARE_DEPLOY_ONLY=1
   fi
@@ -162,6 +162,15 @@ mapfile -t modules < <(find "${ROOT}/modules" -mindepth 1 -maxdepth 1 \
   printf 'expected ten campaign modules, found %d\n' "${#modules[@]}" >&2
   exit 2
 }
+
+if [[ -z ${operation} ]]; then
+  # Enterprise bootstrap is intentionally not module-order bootstrap. M01,
+  # M04, and M06 consume the active model identities or candidate bytes, so
+  # M07's clean training reference and both admitted runtime identities must
+  # exist before any other module establishes its start state.
+  "${ROOT}/modules/m07/apply.sh"
+  "${ROOT}/../scripts/materialize-clean-release.sh"
+fi
 
 operation_found=false
 for module in "${modules[@]}"; do
@@ -176,6 +185,7 @@ for module in "${modules[@]}"; do
     operation_found=true
     break
   fi
+  [[ $(basename "${module}") == m07 ]] && continue
   "${module}/apply.sh"
 done
 

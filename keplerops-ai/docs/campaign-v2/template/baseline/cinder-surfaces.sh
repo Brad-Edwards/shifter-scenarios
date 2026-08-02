@@ -40,7 +40,7 @@ done
   kep-v2-cinder-forgejo-bootstrap) == "exited 0" ]]
 echo "PASS Cinder containers running"
 
-for command in apktool chromium curl ffmpeg git identify jq labgrid-client mc \
+for command in apktool chromium curl fdroidcl ffmpeg git identify jq labgrid-client mc \
   mitmproxy nmap opencode python3 s3cmd swaks unzip; do
   ws sh -lc "command -v '$command' >/dev/null"
 done
@@ -129,7 +129,7 @@ for _ in $(seq 1 90); do
   sleep 2
 done
 jq -e '.status == "success"' <<<"$run" >/dev/null
-echo "PASS Cinder participant-owned Forgejo Actions runner"
+echo "PASS Cinder field operator-owned Forgejo Actions runner"
 
 model_response=$(ws curl -fsS https://model.cinder.lab/v1/chat/completions \
   -H 'Content-Type: application/json' \
@@ -175,4 +175,4 @@ jq -e '.requests | length == 1' <<<"$requests" >/dev/null
 echo "PASS Cinder Knative callback substrate"
 
 "$ROOT/baseline/mail-roundtrip.py"
-echo "Cinder participant surfaces passed"
+echo "Cinder field operator surfaces passed"

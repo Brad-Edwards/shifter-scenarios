@@ -20,6 +20,9 @@ class Settings:
     decision_signing_key_id: str = env(
         "ORION_DECISION_SIGNING_KEY_ID", "orion-business-decision-v1"
     )
+    audit_signing_key: str = env(
+        "BUSINESS_AUDIT_SIGNING_KEY", "KeplerV2-Business-Audit-2026"
+    )
     release_risk_release_id: str = env(
         "ORION_RELEASE_RISK_RELEASE_ID", "sha256:" + "1" * 64
     )
@@ -90,6 +93,7 @@ class Settings:
     rabbitmq_password: str = env("RABBITMQ_PASSWORD", "KeplerV2-Training-Rabbit")
     rabbitmq_vhost: str = env("RABBITMQ_VHOST", "keplerops")
     qdrant_url: str = env("QDRANT_URL", "http://qdrant-writer:6333")
+    tika_url: str = env("TIKA_URL", "http://tika:9998")
 
     lakefs_url: str = env("LAKEFS_URL", "http://lakefs:8000")
     lakefs_access_key: str = env("LAKEFS_ACCESS_KEY_ID", "KeplerLakeFSAccess")
@@ -100,6 +104,11 @@ class Settings:
 
     smtp_host: str = env("SMTP_HOST", "stalwart")
     smtp_port: int = int(env("SMTP_PORT", "587"))
+    imap_host: str = env("IMAP_HOST", "stalwart")
+    imap_port: int = int(env("IMAP_PORT", "993"))
+    synthetic_mail_password: str = env(
+        "SYNTHETIC_BUSINESS_PASSWORD", "KeplerV2-Training-Synthetic-Business"
+    )
     smtp_billing_user: str = env("SMTP_BILLING_USER", "billing")
     smtp_billing_password: str = env(
         "SMTP_BILLING_PASSWORD", "KeplerV2-Training-Synthetic-Business"

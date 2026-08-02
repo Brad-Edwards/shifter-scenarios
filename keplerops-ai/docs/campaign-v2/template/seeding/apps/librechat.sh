@@ -9,7 +9,7 @@ source "${SEEDING_ROOT}/lib/common.sh"
 
 readonly CLIENT_ID=librechat
 readonly ACCESS_ROLE=librechat-user
-readonly ACCESS_GROUP=RG-Jupyter-Orion-Evaluation
+readonly -a ACCESS_GROUPS=(RG-Jupyter-Orion-Evaluation RG-WorkHub-Orion-Partner)
 
 kcadm() {
   compose exec -T keycloak /opt/keycloak/bin/kcadm.sh "$@"
@@ -47,7 +47,7 @@ ensure_client() {
 }
 
 ensure_group_role() {
-  local groups group_id role_json role_id mappings
+  local groups group group_id role_json role_id mappings
 
   if ! kcadm get "roles/${ACCESS_ROLE}" -r "${KEYCLOAK_REALM}" >/dev/null 2>&1; then
     kcadm create roles -r "${KEYCLOAK_REALM}" \
@@ -58,17 +58,15 @@ ensure_group_role() {
   role_id="$(jq -er '.id' <<<"${role_json}")"
 
   groups="$(kcadm get groups -r "${KEYCLOAK_REALM}")"
-  group_id="$(jq -r --arg name "${ACCESS_GROUP}" \
-    '.[] | select(.name == $name) | .id' <<<"${groups}" | head -n1)"
-  [[ -n ${group_id} ]] || die "Keycloak access group is missing: ${ACCESS_GROUP}"
-
-  mappings="$(kcadm get "groups/${group_id}/role-mappings/realm" \
-    -r "${KEYCLOAK_REALM}")"
-  if ! jq -e --arg id "${role_id}" 'any(.[]; .id == $id)' \
-    <<<"${mappings}" >/dev/null; then
-    kcadm create "groups/${group_id}/role-mappings/realm" \
-      -r "${KEYCLOAK_REALM}" -f - <<<"[$(jq -c . <<<"${role_json}")]" >/dev/null
-  fi
+  for group in "${ACCESS_GROUPS[@]}"; do
+    group_id="$(jq -r --arg name "${group}" '.[] | select(.name == $name) | .id' <<<"${groups}" | head -n1)"
+    [[ -n ${group_id} ]] || die "Keycloak access group is missing: ${group}"
+    mappings="$(kcadm get "groups/${group_id}/role-mappings/realm" -r "${KEYCLOAK_REALM}")"
+    if ! jq -e --arg id "${role_id}" 'any(.[]; .id == $id)' <<<"${mappings}" >/dev/null; then
+      kcadm create "groups/${group_id}/role-mappings/realm" \
+        -r "${KEYCLOAK_REALM}" -f - <<<"[$(jq -c . <<<"${role_json}")]" >/dev/null
+    fi
+  done
 }
 
 main() {
@@ -82,7 +80,7 @@ main() {
 
   ensure_client
   ensure_group_role
-  log "LibreChat OIDC client and bounded Orion Assistant role are ready"
+  log "LibreChat OIDC client and bounded internal/partner Orion Assistant roles are ready"
 }
 
 main "$@"

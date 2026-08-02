@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://keplerops.lab/schemas/release-risk/integrity-handoff-v1.json",
+  "title": "Orion Release Risk Integrity Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "model_family", "route", "subject", "signer_identity", "issued_at", "signature"],
+  "properties": {
+    "schema": {"const": "keplerops.release-risk.integrity-handoff/v1"},
+    "model_family": {"const": "release-risk"},
+    "route": {
+      "enum": [
+        "poisoned-weights",
+        "verified-poisoned-weights",
+        "participant-backdoor",
+        "holdout-integrity",
+        "modified-computation-graph"
+      ]
+    },
+    "subject": {"type": "object", "minProperties": 2},
+    "signer_identity": {"const": "svc-orion-evaluator"},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "signature": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}

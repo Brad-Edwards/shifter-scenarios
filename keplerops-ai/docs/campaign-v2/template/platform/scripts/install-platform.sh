@@ -57,7 +57,8 @@ existing_secret_value() {
 }
 
 configure_litellm_secret() {
-  local master_key base_url api_key upstream_model
+  local master_key base_url api_key upstream_model vertex_project vertex_service_account
+  local edge_key_registry internal_range_id
   install -d -m 0700 "$STATE_DIR"
   if [[ ! -s $STATE_DIR/litellm-master-key ]]; then
     umask 077
@@ -67,18 +68,39 @@ configure_litellm_secret() {
   base_url=${ORION_ASSISTANT_BASE_URL:-$(existing_secret_value ORION_ASSISTANT_BASE_URL)}
   api_key=${ORION_ASSISTANT_API_KEY:-$(existing_secret_value ORION_ASSISTANT_API_KEY)}
   upstream_model=${ORION_ASSISTANT_UPSTREAM_MODEL:-$(existing_secret_value ORION_ASSISTANT_UPSTREAM_MODEL)}
+  vertex_project=${VERTEX_PROJECT:-$(existing_secret_value VERTEX_PROJECT)}
+  vertex_service_account=${VERTEX_SERVICE_ACCOUNT:-$(existing_secret_value VERTEX_SERVICE_ACCOUNT)}
+  edge_key_registry=${VERTEX_EDGE_KEY_REGISTRY_JSON:-$(existing_secret_value VERTEX_EDGE_KEY_REGISTRY_JSON)}
+  internal_range_id=${VERTEX_INTERNAL_RANGE_ID:-$(existing_secret_value VERTEX_INTERNAL_RANGE_ID)}
   [[ $base_url != http://127.0.0.1:9/v1 ]] || base_url=""
   [[ $api_key != not-configured ]] || api_key=""
   [[ $upstream_model != hosted_vllm/Qwen/Qwen2.5-7B-Instruct ]] || upstream_model=""
   base_url=${base_url:-http://vertex-openai-proxy.orion-platform.svc:8082/v1}
   api_key=${api_key:-keplerops-internal-vertex-proxy}
   upstream_model=${upstream_model:-openai/zai-org/glm-5-maas}
+  [[ -n $vertex_project ]] || { echo 'VERTEX_PROJECT is required for the dedicated Vertex proxy identity' >&2; return 1; }
+  [[ $vertex_service_account == *@*.gserviceaccount.com ]] || { echo 'VERTEX_SERVICE_ACCOUNT must name the attached workload identity' >&2; return 1; }
+  [[ $api_key =~ ^sk-[0-9a-f]{64}$ ]] || { echo 'ORION_ASSISTANT_API_KEY is malformed' >&2; return 1; }
+  [[ $internal_range_id =~ ^range-[0-9a-f-]{36}$ ]] || { echo 'VERTEX_INTERNAL_RANGE_ID is malformed' >&2; return 1; }
+  jq -e '
+    type == "object" and length >= 2 and
+    all(to_entries[];
+      (.key | test("^m06-[0-9a-f]{16}$")) and
+      (.value.key | test("^[0-9a-f]{64}$")) and
+      (.value.range_id | test("^range-[0-9a-f-]{36}$")) and
+      (.value.subjects | type == "array" and length > 0) and
+      (.value.credential_classes | sort == ["operator","service"]))
+  ' <<<"$edge_key_registry" >/dev/null || { echo 'VERTEX_EDGE_KEY_REGISTRY_JSON is malformed' >&2; return 1; }
 
   kubectl -n orion-platform create secret generic litellm-runtime \
     --from-literal=LITELLM_MASTER_KEY="$master_key" \
     --from-literal=ORION_ASSISTANT_BASE_URL="$base_url" \
     --from-literal=ORION_ASSISTANT_API_KEY="$api_key" \
     --from-literal=ORION_ASSISTANT_UPSTREAM_MODEL="$upstream_model" \
+    --from-literal=VERTEX_PROJECT="$vertex_project" \
+    --from-literal=VERTEX_SERVICE_ACCOUNT="$vertex_service_account" \
+    --from-literal=VERTEX_EDGE_KEY_REGISTRY_JSON="$edge_key_registry" \
+    --from-literal=VERTEX_INTERNAL_RANGE_ID="$internal_range_id" \
     --dry-run=client -o yaml | kubectl apply -f - >/dev/null
 }
 
@@ -165,8 +187,6 @@ kubectl apply -f "$ROOT/manifests/network-policies.yaml"
 
 kubectl wait --for=condition=Established \
   customresourcedefinition/inferenceservices.serving.kserve.io --timeout=5m
-kubectl apply -k "$ROOT/gitops/orion-canary"
-
 if [[ ${SKIP_SIGNING:-0} != 1 && -x $ROOT/scripts/bootstrap-signing.sh ]]; then
   "$ROOT/scripts/bootstrap-signing.sh"
 fi

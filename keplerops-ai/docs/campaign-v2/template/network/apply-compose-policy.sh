@@ -51,7 +51,7 @@ source_ips() {
     printf '%s\n' "${source#cidr:}"
   elif [[ $source == label:* ]]; then
     selector=${source#label:}
-    selector=${selector%=*}
+    [[ $selector == *=\* ]] && selector=${selector%=\*}
     while IFS= read -r container; do
       [[ -n $container ]] && container_ips "$container"
     done < <(docker ps --filter "label=$selector" --format '{{.Names}}')

@@ -3,6 +3,8 @@ set -Eeuo pipefail
 
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly MODE=${1:-resume}
+readonly SHIFTER_READY=/run/shifter/preconfigured-range-host.ready
+readonly CAMPAIGN_READY=/run/shifter/keplerops-v2-software.ready
 
 if [[ $EUID -ne 0 ]]; then
   echo "start-all.sh must run as root" >&2
@@ -16,6 +18,9 @@ fi
 if [[ $MODE == resume ]]; then
   export KEPLEROPS_SKIP_PULL=1
 fi
+
+install -d -m 0755 /run/shifter
+rm -f "$SHIFTER_READY"
 
 "$ROOT/scripts/start-foundation.sh"
 "$ROOT/scripts/provision-guests.sh"
@@ -38,14 +43,22 @@ else
   "$ROOT/engineering/engineering.sh" converge
   ssh -i /root/.ssh/keplerops-v2 -o BatchMode=yes \
     -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-    kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh
+    kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh --core
 fi
-"$ROOT/scripts/activate-business-model-identities.sh"
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/seeding/seed.sh" langflow business-workflows
 "$ROOT/engineering/reconcile-orion-vision-label-studio.sh"
 
 "$ROOT/scripts/start-workstation.sh"
 "$ROOT/scripts/start-cinder.sh"
-"$ROOT/scripts/check-all.sh"
 "$ROOT/campaign-start/apply.sh"
+"$ROOT/scripts/check-all.sh"
+
+boot_id=$(cat /proc/sys/kernel/random/boot_id)
+read -r campaign_boot _ readiness_class <"$CAMPAIGN_READY"
+[[ $campaign_boot == "$boot_id" && $readiness_class == software-operations ]] || {
+  echo "campaign software readiness is absent or stale" >&2
+  exit 4
+}
+printf '%s\n' "$boot_id preconfigured-range-host" >"$SHIFTER_READY"
+echo "KeplerOps AI Systems enterprise is ready"

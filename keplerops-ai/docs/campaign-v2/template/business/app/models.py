@@ -140,6 +140,43 @@ class WorkflowResult(BaseModel):
     decision_signature: str | None = None
 
 
+class WorkflowAuditRecord(BaseModel):
+    model_config = ConfigDict(extra="allow")
+
+    schema_name: Literal["keplerops.business-workflow-audit/v2"] = Field(alias="schema")
+    workflow_id: Identifier
+    workflow: Workflow
+    status: str
+    range_id: Identifier
+    request_id: Identifier
+    trace_id: Identifier
+    actor: Identifier
+    model_family: Literal["release-risk", "assistant"]
+    release_id: Digest
+    model_digest: Digest
+    serving_image_digest: Digest
+    input_digest: Digest
+    extraction_digest: Digest
+    preprocessing_digest: Digest
+    prompt_tool_digest: Digest
+    decision_label: Identifier
+    decision_probability: float = Field(ge=0.0, le=1.0)
+    decision_signature: str
+    source: dict[str, Any]
+    target_system: str | None = None
+    target_object_id: str | None = None
+    native_response_ids: list[str] = Field(default_factory=list)
+    before_state: dict[str, Any] | None = None
+    after_state: dict[str, Any] | None = None
+    before_state_hash: str | None = None
+    after_state_hash: str | None = None
+    notification_ids: list[str] = Field(default_factory=list)
+    compensation_state: str
+    policy_decision: dict[str, Any] | None = None
+    control_kind: Literal["attack", "clean", "near"]
+    audit_signature: str
+
+
 class NativeEffect(BaseModel):
     target_system: str
     target_object_id: str

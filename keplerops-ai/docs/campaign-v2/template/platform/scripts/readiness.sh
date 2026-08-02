@@ -110,23 +110,6 @@ done
 [[ $mcp_code == 200 ]] || fail "MCP streamable HTTP initialize (HTTP ${mcp_code:-none})"
 pass "MCP streamable HTTP initialize"
 
-kubectl -n orion-runtime wait --for=condition=Ready \
-  inferenceservice/orion-release-risk --timeout=5m >/dev/null
-model_service=$(kubectl -n orion-runtime get service \
-  -l serving.kserve.io/inferenceservice=orion-release-risk \
-  -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
-if [[ -z $model_service ]] && kubectl -n orion-runtime get service orion-release-risk-predictor >/dev/null 2>&1; then
-  model_service=orion-release-risk-predictor
-fi
-[[ -n $model_service ]] || fail "KServe predictor service discovery"
-start_forward orion-runtime "service/$model_service" 18082 80
-prediction=$(curl -fsS -H 'Content-Type: application/json' \
-  --data '{"instances":[{"text":"Routine Orion release review with approved lineage and validation evidence."}]}' \
-  http://127.0.0.1:18082/v1/models/orion-release-risk:predict)
-[[ $(jq '.predictions[0].probabilities | length' <<<"$prediction") == 8 ]] || \
-  fail "neutral ONNX prediction response"
-pass "KServe neutral ONNX prediction path"
-
 start_forward orion-runtime service/orion-vision 18084 8080
 vision_ready=$(curl -fsS http://127.0.0.1:18084/health/ready)
 vision_model=$(curl -fsS http://127.0.0.1:18084/v1/models/orion-vision-prototype)
@@ -164,30 +147,138 @@ if [[ ${SKIP_SIGNING:-0} != 1 ]]; then
 fi
 
 if [[ $MODE == full ]]; then
+  release_dir=$(readlink -f "$STATE_DIR/current-release" 2>/dev/null || true)
+  assistant_dir=$(readlink -f "$STATE_DIR/current-assistant-release" 2>/dev/null || true)
+  [[ $release_dir == "$STATE_DIR"/releases/* && -s $release_dir/release.json ]] || \
+    fail "signed current release is unavailable"
+  [[ $assistant_dir == "$STATE_DIR"/assistant-releases/* && -s $assistant_dir/assistant-runtime.json ]] || \
+    fail "signed current assistant runtime is unavailable"
+  (
+    cd "$release_dir"
+    sha256sum -c SHA256SUMS >/dev/null
+    cosign verify-blob --insecure-ignore-tlog --key cosign.pub \
+      --bundle release.sigstore.json release.intoto.json >/dev/null
+  ) || fail "current release checksum or signature"
+  (
+    cd "$assistant_dir"
+    sha256sum -c SHA256SUMS >/dev/null
+    cosign verify-blob --insecure-ignore-tlog --key cosign.pub \
+      --bundle assistant-runtime.sigstore.json assistant-runtime.intoto.json >/dev/null
+  ) || fail "current assistant runtime checksum or signature"
+  cp "$release_dir/release.json" "$tmp/release.json"
+  cp "$assistant_dir/assistant-runtime.json" "$tmp/assistant-runtime.json"
+  release_subject_digest="sha256:$(jq -cS 'del(.release_id)' "$tmp/release.json" | sha256sum | awk '{print $1}')"
+  assistant_subject_digest="sha256:$(jq -cS 'del(.release_id)' "$tmp/assistant-runtime.json" | sha256sum | awk '{print $1}')"
+  jq -e --arg subject "$release_subject_digest" '
+    .schema == "keplerops.release/v2" and .model_family == "release-risk" and
+    .release_id == $subject and .model.format == "onnx" and
+    .evaluation.decision == "accepted" and .approval.status == "approved" and
+    (.serving_image.repository | contains("placeholder") | not) and
+    (.serving_image.image_digest | test("^sha256:[a-f0-9]{64}$")) and
+    (.model.onnx_digest | test("^sha256:[a-f0-9]{64}$")) and
+    .serving_image.image_digest != "sha256:" + ("0" * 64) and
+    .model.onnx_digest != "sha256:" + ("0" * 64)
+  ' "$tmp/release.json" >/dev/null || fail "current release immutable identity"
+  jq -e --arg subject "$assistant_subject_digest" '
+    .schema == "keplerops.assistant-runtime/v1" and .release_id == $subject and
+    .model_identity.binding == "hosted-provider-model-identity" and
+    .model_identity.provider == "google-vertex-ai" and
+    .model_identity.routing_adapter == "openai" and
+    .model_identity.model == "zai-org/glm-5-maas" and
+    .model_identity.configured_model == "openai/zai-org/glm-5-maas" and
+    (.model_identity.provider_scope.project | length) > 0 and
+    (.model_identity.provider_scope.location | length) > 0
+  ' "$tmp/assistant-runtime.json" >/dev/null || fail "admitted Vertex GLM 5.2 runtime identity"
+  active_assistant_release=$(kubectl -n orion-platform get secret orion-agent-runtime \
+    -o jsonpath='{.data.ORION_ASSISTANT_RELEASE_ID}' | base64 -d)
+  active_assistant_model=$(kubectl -n orion-platform get secret orion-agent-runtime \
+    -o jsonpath='{.data.ORION_ASSISTANT_MODEL_DIGEST}' | base64 -d)
+  [[ $active_assistant_release == "$(jq -er .release_id "$tmp/assistant-runtime.json")" && \
+     $active_assistant_model == "$(jq -er .model_identity.digest "$tmp/assistant-runtime.json")" ]] || \
+    fail "active Orion assistant Secret is stale relative to the signed runtime"
+  pass "signed current release and Vertex GLM 5.2 assistant identities"
+
   assistant_url=$(kubectl -n orion-platform get secret litellm-runtime \
     -o jsonpath='{.data.ORION_ASSISTANT_BASE_URL}' | base64 -d)
   [[ $assistant_url != http://127.0.0.1:9/v1 ]] || \
     fail "assistant endpoint is not configured"
-  agent_api_key=$(kubectl -n orion-platform get secret orion-agent-runtime \
-    -o jsonpath='{.data.AGENT_API_KEY}' | base64 -d)
+  litellm_master_key=$(kubectl -n orion-platform get secret litellm-runtime \
+    -o jsonpath='{.data.LITELLM_MASTER_KEY}' | base64 -d)
   completion=$(curl -fsS \
     -H 'Content-Type: application/json' \
-    -H "Authorization: Bearer $agent_api_key" \
-    --data '{"prompt":"Reply with the single word ready."}' \
-    http://127.0.0.1:18080/v1/chat)
-  [[ -n $(jq -r '.response // empty' <<<"$completion") ]] || fail "assistant completion"
-  pass "admitted assistant completion through LangGraph and LiteLLM"
+    -H "Authorization: Bearer $litellm_master_key" \
+    --data '{"model":"orion-assistant","messages":[{"role":"user","content":"Reply with the single word ready."}],"max_tokens":64,"temperature":0}' \
+    http://127.0.0.1:18400/v1/chat/completions)
+  [[ -n $(jq -r '.choices[0].message.content // .choices[0].message.reasoning_content // empty' <<<"$completion") ]] || \
+    fail "stateless assistant completion"
+  pass "admitted stateless assistant completion through LiteLLM"
 
-  kubectl -n argocd get application orion-canary >/dev/null 2>&1 || \
+  kubectl -n argocd get application orion-canary -o json >"$tmp/argo.json" 2>/dev/null || \
     fail "Argo Application is not configured"
-  revision=$(kubectl -n argocd get application orion-canary -o jsonpath='{.spec.source.targetRevision}')
+  revision=$(jq -er '.spec.source.targetRevision' "$tmp/argo.json")
   [[ $revision =~ ^[a-fA-F0-9]{40}([a-fA-F0-9]{24})?$ ]] || \
     fail "Argo targetRevision is not immutable"
   kubectl -n argocd wait --for=jsonpath='{.status.sync.status}'=Synced \
     application/orion-canary --timeout=5m >/dev/null
   kubectl -n argocd wait --for=jsonpath='{.status.health.status}'=Healthy \
     application/orion-canary --timeout=5m >/dev/null
-  pass "Argo Application synced and healthy at immutable revision"
+  gitops_commit=$(jq -er '.gitops.commit' "$tmp/release.json")
+  jq -e --arg commit "$gitops_commit" '
+    .spec.source.targetRevision == $commit and .status.sync.revision == $commit and
+    .status.sync.status == "Synced" and .status.health.status == "Healthy"
+  ' "$tmp/argo.json" >/dev/null || fail "release-to-Argo immutable GitOps join"
+
+  kubectl -n orion-runtime wait --for=condition=Ready \
+    inferenceservice/orion-release-risk --timeout=5m >/dev/null
+  kubectl -n orion-runtime get inferenceservice orion-release-risk -o json >"$tmp/runtime.json"
+  kubectl -n orion-runtime get pods \
+    -l serving.kserve.io/inferenceservice=orion-release-risk -o json >"$tmp/model-pods.json"
+  release_revision=$(jq -er '.runtime.kserve_revision' "$tmp/release.json")
+  model_digest=$(jq -er '.model.onnx_digest' "$tmp/release.json")
+  evaluation_digest=$(jq -er '.evaluation.report_digest' "$tmp/release.json")
+  serving_image=$(jq -er '.serving_image.repository + "@" + .serving_image.image_digest' "$tmp/release.json")
+  jq -e --arg revision "$release_revision" --arg model "$model_digest" \
+    --arg evaluation "$evaluation_digest" --arg image "$serving_image" '
+    .metadata.annotations["keplerops.lab/release-revision"] == $revision and
+    .metadata.annotations["keplerops.lab/model-digest"] == $model and
+    .metadata.annotations["keplerops.lab/evaluation-digest"] == $evaluation and
+    .spec.predictor.containers[0].image == $image and
+    (.spec.predictor.containers[0].image | contains("placeholder") | not) and
+    any(.status.conditions[]?; .type == "Ready" and .status == "True")
+  ' "$tmp/runtime.json" >/dev/null || fail "release-to-KServe model/image/revision join"
+  jq -e --arg digest "${serving_image#*@}" '
+    (.items | length) > 0 and all(.items[];
+      .status.phase == "Running" and
+      any(.status.containerStatuses[]?;
+        .name == "kserve-container" and .ready == true and
+        (.imageID | contains($digest))))
+  ' "$tmp/model-pods.json" >/dev/null || fail "KServe running image digest join"
+
+  model_service=$(kubectl -n orion-runtime get service \
+    -l serving.kserve.io/inferenceservice=orion-release-risk \
+    -o jsonpath='{.items[0].metadata.name}' 2>/dev/null || true)
+  if [[ -z $model_service ]] && kubectl -n orion-runtime get service orion-release-risk-predictor >/dev/null 2>&1; then
+    model_service=orion-release-risk-predictor
+  fi
+  [[ -n $model_service ]] || fail "KServe predictor service discovery"
+  start_forward orion-runtime "service/$model_service" 18082 80
+  curl -fsS http://127.0.0.1:18082/v1/models/orion-release-risk >"$tmp/model-metadata.json"
+  jq -e --slurpfile release "$tmp/release.json" '
+    .ready == true and .model_family == "release-risk" and
+    .runtime == "onnxruntime-cpu" and .class_count == 8 and
+    .model_sha256 == ($release[0].model.onnx_digest | sub("^sha256:"; "")) and
+    .tokenizer_sha256 == ($release[0].model.tokenizer_digest | sub("^sha256:"; "")) and
+    .mlflow_run_id == $release[0].model.mlflow_run_id and
+    .mlflow_model_version == $release[0].model.mlflow_model_version and
+    .lakefs_commit == $release[0].dataset.commit
+  ' "$tmp/model-metadata.json" >/dev/null || fail "live KServe model identity join"
+  prediction=$(curl -fsS -H 'Content-Type: application/json' \
+    --data '{"instances":[{"text":"Routine Orion release review with approved lineage and validation evidence."}]}' \
+    http://127.0.0.1:18082/v1/models/orion-release-risk:predict)
+  [[ $(jq -r '.model_sha256' <<<"$prediction") == "${model_digest#sha256:}" &&
+     $(jq '.predictions[0].probabilities | length' <<<"$prediction") == 8 ]] || \
+    fail "live KServe prediction model identity"
+  pass "signed release, immutable GitOps, KServe revision, image, and live model joined"
   install -d -m 0750 "$STATE_DIR"
   date -u +%Y-%m-%dT%H:%M:%SZ >"$STATE_DIR/ready"
 else

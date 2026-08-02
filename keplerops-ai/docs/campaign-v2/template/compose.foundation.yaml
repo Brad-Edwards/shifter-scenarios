@@ -186,6 +186,8 @@ services:
       - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
       - caddy-config:/config
+      - cinder-domain-certs:/etc/caddy/cinder-certs:ro
+      - caddy-admin-socket:/run/caddy-admin
     networks:
       public:
         ipv4_address: 10.61.10.2
@@ -441,6 +443,8 @@ volumes:
   step-ca-data:
   caddy-data:
   caddy-config:
+  cinder-domain-certs:
+  caddy-admin-socket:
   prometheus-data:
   alertmanager-data:
   grafana-data:
