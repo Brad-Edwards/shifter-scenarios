@@ -115,7 +115,7 @@ services:
       - data
       - observe
     read_only: true
-    tmpfs: [/tmp:rw,noexec,nosuid,nodev,size=32m]
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=32m"]
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     restart: unless-stopped
@@ -146,7 +146,7 @@ services:
       - business
       - data
     read_only: true
-    tmpfs: [/tmp:rw,noexec,nosuid,nodev,size=32m]
+    tmpfs: ["/tmp:rw,noexec,nosuid,nodev,size=32m"]
     cap_drop: [ALL]
     security_opt: [no-new-privileges:true]
     restart: unless-stopped
