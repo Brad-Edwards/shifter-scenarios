@@ -15,6 +15,9 @@ spec:
       securityContext:
         runAsNonRoot: true
         seccompProfile: {type: RuntimeDefault}
+      hostAliases:
+        - ip: 192.168.78.1
+          hostnames: [registry.keplerops.lab]
       containers:
         - name: verify
           image: ghcr.io/sigstore/cosign/cosign:v2.4.1
