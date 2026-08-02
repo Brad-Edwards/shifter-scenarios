@@ -203,7 +203,7 @@ ensure_native_audit() {
     mc admin config set kepler audit_webhook:m08 \
       endpoint=http://m08-native-audit:8090/v1/minio-audit \
       auth_token=KeplerV2-M08-Minio-Audit-Webhook-2026 enable=on >/dev/null
-    mc admin service restart kepler >/dev/null
+    mc admin service restart --json kepler >/dev/null
   ' >/dev/null
 }
 
