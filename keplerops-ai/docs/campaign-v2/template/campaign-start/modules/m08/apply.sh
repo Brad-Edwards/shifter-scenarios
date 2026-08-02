@@ -42,13 +42,18 @@ ensure_repo() {
   forgejo GET /repos/cinder-operator/orion-extraction-research >/dev/null 2>&1 || \
     forgejo POST /user/repos --data \
       '{"name":"orion-extraction-research","description":"Cinder model extraction notebooks, corpus manifests, and training code.","private":true,"auto_init":true,"default_branch":"main"}' >/dev/null
-  local source target message current sha payload
+  local source target message current sha payload desired_content current_content method
   while IFS='|' read -r source target message; do
     current="$(forgejo GET "/repos/cinder-operator/orion-extraction-research/contents/${target}" 2>/dev/null || true)"
     sha="$(jq -r '.sha // empty' <<<"${current}")"
-    payload="$(base64 -w0 "${MODULE_ROOT}/payloads/${source}" | jq -Rs --arg sha "${sha}" --arg message "${message}" \
-      '{content:.,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
-    forgejo PUT "/repos/cinder-operator/orion-extraction-research/contents/${target}" --data "${payload}" >/dev/null
+    desired_content="$(base64 -w0 "${MODULE_ROOT}/payloads/${source}")"
+    current_content="$(jq -r '.content // empty' <<<"${current}" | tr -d '\r\n')"
+    [[ ${current_content} == "${desired_content}" ]] && continue
+    method=POST
+    [[ -z ${sha} ]] || method=PUT
+    payload="$(jq -cn --arg content "${desired_content}" --arg sha "${sha}" --arg message "${message}" \
+      '{content:$content,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
+    forgejo "${method}" "/repos/cinder-operator/orion-extraction-research/contents/${target}" --data "${payload}" >/dev/null
   done <<'EOF'
 RESEARCH.md|RESEARCH.md|Publish Orion extraction research handbook
 release-slices.json|release-slices.json|Publish Release Risk slice matrix
@@ -144,8 +149,12 @@ JSON
   ' >/dev/null
 }
 
+ensure_m08_images() {
+  compose build airflow-api orion-vision-research >/dev/null
+}
+
 ensure_native_audit() {
-  compose up -d --build m08-native-audit >/dev/null
+  compose up -d --no-build --wait --wait-timeout 600 m08-native-audit >/dev/null
   docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -ec '
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     current=$(mc admin config get kepler audit_webhook:m08 2>/dev/null || true)
@@ -160,7 +169,8 @@ ensure_native_audit() {
 }
 
 ensure_airflow() {
-  compose up -d --build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
+  compose up -d --no-build --wait --wait-timeout 600 \
+    airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
     cinder-offline-model-runner cinder-isolated-training-runner orion-vision-research \
     orion-release-risk-label-studio-ml m08-native-audit >/dev/null
   local token
@@ -204,6 +214,7 @@ apply_one() {
   ensure_private_state
   ensure_cinder_storage
   ensure_participant_s3_identity
+  ensure_m08_images
   ensure_native_audit
   ensure_repo
   ensure_label_project
@@ -227,6 +238,7 @@ main() {
   ensure_private_state
   ensure_cinder_storage
   ensure_participant_s3_identity
+  ensure_m08_images
   ensure_native_audit
   ensure_repo
   ensure_label_project

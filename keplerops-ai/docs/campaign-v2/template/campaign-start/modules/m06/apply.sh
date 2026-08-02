@@ -586,12 +586,12 @@ install_participant_mail_identity() {
 
 install_knative_publisher() {
   [[ -r $K3S01_SSH_KEY ]] || die 'k3s host key is unavailable for publisher installation'
-  local state="${TEMPLATE_ROOT}/state/cinder-publisher" public_key
+  local state="${TEMPLATE_ROOT}/state/cinder-publisher" public_key_b64
   install -d -m 0700 "$state"
   if [[ ! -s $state/id_ed25519 ]]; then
     ssh-keygen -q -t ed25519 -N '' -C cinder-knative-publisher -f "$state/id_ed25519"
   fi
-  public_key="$(cat "$state/id_ed25519.pub")"
+  public_key_b64="$(base64 -w0 "$state/id_ed25519.pub")"
   ssh-keyscan -H 192.168.78.30 >"$state/known_hosts" 2>/dev/null
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
     "$K3S01_SSH_TARGET" 'sudo tee /usr/local/share/ca-certificates/cinder-trust-bundle.crt >/dev/null && sudo chmod 0644 /usr/local/share/ca-certificates/cinder-trust-bundle.crt' \
@@ -600,9 +600,9 @@ install_knative_publisher() {
     ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
       "$K3S01_SSH_TARGET" 'cat >/tmp/cinder-knative-publisher.tar && sudo tar -C /usr/local/sbin -xf /tmp/cinder-knative-publisher.tar && rm /tmp/cinder-knative-publisher.tar && sudo chmod 0755 /usr/local/sbin/cinder-knative-publisher /usr/local/sbin/cinder-knative-records-server'
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
-    "$K3S01_SSH_TARGET" sudo bash -s -- "$public_key" <<'REMOTE'
+    "$K3S01_SSH_TARGET" sudo bash -s -- "$public_key_b64" <<'REMOTE'
 set -Eeuo pipefail
-key=$1
+key="$(printf '%s' "$1" | base64 -d)"
 id cinder-publisher >/dev/null 2>&1 || useradd -m -s /bin/bash cinder-publisher
 install -d -m 0700 -o cinder-publisher -g cinder-publisher /home/cinder-publisher/.ssh
 printf 'restrict,command="sudo /usr/local/sbin/cinder-knative-publisher" %s\n' "$key" > /home/cinder-publisher/.ssh/authorized_keys
