@@ -930,41 +930,47 @@ infrastructure defect. Do not require one framework or source layout.
 
 **Difficulty / points:** Intermediate / 200
 
-**Mission context:** Cinder Typhoon needs commercially resold AI capacity that
-can blend requests across upstream providers, plus one coherent staging
-surface. Delivery routes must not wait for this optional capstone.
+**Mission context:** Cinder Typhoon needs an operator-owned AI-service proxy
+that separates its client route from the acquired upstream model entitlement,
+plus one coherent staging surface. Delivery routes must not wait for this
+capstone.
 
 **Starting knowledge:** The participant owns a domain, TLS identity, GLM access,
 attack harness, serverless relay, and at least one route-specific artifact. The
-event provides a bounded prepaid OpenRouter organization invitation, not an API
-key. Other artifacts are staged only when their selected route consumes them.
+shared Cinder GLM entitlement is already scoped to the participant environment;
+the participant must build and operate the separate front. Other artifacts are
+staged only when their selected route consumes them.
 
-**Discovery path:** The Cinder workbench links OpenRouter's official key and
-multi-provider routing documentation, a normal LiteLLM proxy configuration,
-attacker MinIO/Harbor namespaces, and the signed staging-manifest format. Each
-prior operation exposes its native resource or artifact digest.
+**Discovery path:** The Cinder workbench links the pinned LiteLLM gateway and
+configuration documentation, Cinder Forgejo/Harbor/Knative publication path,
+attacker MinIO namespace, shared GLM endpoint, and signed staging-manifest
+format. Each prior operation exposes its native resource or artifact digest.
 
-**Participant surface and action:** The participant accepts the commercial
-organization invitation, creates and records their own scoped API key, and
-sends a benign public test corpus through OpenRouter with two eligible upstream
-providers and fallback enabled. They configure LiteLLM on their TLS domain to
-use that commercial route, upload the exact common harness and selected route
-artifact to attacker-controlled MinIO or Harbor, and commit a signed staging
-manifest containing provider request IDs, route policy, exact digests, and
-endpoints. Cinder Forgejo Actions reacquires the staged bytes and performs a
-fresh proxy request before accepting the manifest.
+**Participant surface and action:** The participant creates a private Cinder
+Forgejo repository containing the pinned OSS LiteLLM image definition and a
+configuration that exposes `glm-5.2`, maps it to the shared Cinder GLM edge,
+and protects the front with a participant-selected route credential. Forgejo
+Actions builds the revision, pushes its immutable image to Cinder Harbor, and
+the participant deploys that digest through the namespace-scoped publisher to
+the TLS domain earned earlier. They verify a real GLM response through that
+route, stage the exact common harness and selected capability objects in Cinder
+MinIO, and sign a manifest binding source, image, Knative revision, route,
+upstream edge, model, ownership and exact artifact digests. Independent Cinder
+Forgejo Actions reacquires the source and staged bytes and performs a fresh
+proxy request before accepting the manifest.
 
-**Real mechanism:** OpenRouter is the narrow commercial infrastructure required
-by the ATLAS behavior: its unified API distributes calls across model providers
-and cloud platforms. LiteLLM, Caddy, PowerDNS, MinIO, Harbor, Forgejo Actions,
-and Cosign maintain the participant-controlled route, artifacts, signatures,
-and independent validation. Only the public test corpus traverses the
-commercial service; protected KeplerOps content is prohibited.
+**Real mechanism:** LiteLLM is a real OSS OpenAI-compatible model gateway. The
+participant's pinned source and immutable Harbor image run as an ordinary
+Knative service behind Cinder PowerDNS and Caddy TLS, with a route credential
+separate from the upstream Cinder entitlement. That service forwards to the
+shared Vertex-backed open-weight GLM 5.2 edge. MinIO, Forgejo Actions and Cosign
+maintain exact staged bytes, signed provenance and independent validation.
 
-**Observable result:** OpenRouter usage and response metadata show the
-commercial key, selected upstream providers, model, and request IDs. LiteLLM
-logs show the participant domain and route without exposing the key. Object and
-image digests match local artifacts, and CI reports each mismatch separately.
+**Observable result:** Native Forgejo, Harbor and Knative records bind the
+participant source revision to the live LiteLLM image and Cinder TLS route. A
+fresh request through that route returns a real GLM completion and creates a
+new successful record at the attributed shared model edge. Object and image
+digests match local artifacts, and CI reports each mismatch separately.
 
 **Operational consequence:** The participant has a reusable attacker staging
 surface and versioned signed source of truth. Each Act 3 route may instead begin
@@ -973,8 +979,8 @@ as soon as its own actual prerequisites exist.
 **ATLAS behavior:**
 
 - `AML.T0008 Acquire Infrastructure` and `AML.T0008.005 AI Service Proxies`:
-  the participant acquires and operates scoped access to a real commercial
-  proxy that resells and routes model calls across upstream providers.
+  the participant builds, deploys and operates a separately authenticated OSS
+  model-proxy service over the acquired shared model entitlement.
 - `AML.T0079 Stage Capabilities`: participant-developed and obtained
   capabilities are uploaded, deployed, addressed, and made ready for targeting.
 
@@ -994,26 +1000,28 @@ staging front.
 
 1. **Orientation:** Use the native digest or resource identifier produced by
    each earlier operation; do not rebuild artifacts.
-2. **Mechanism:** Prove that model traffic crosses your LiteLLM route and that
-   every staged object matches its local bytes.
+2. **Mechanism:** Prove that a fresh request crosses your LiteLLM route and
+   reaches the attributed Cinder GLM edge, and that every staged object matches
+   its local bytes.
 3. **Execution:** Sign the complete manifest, verify it from Kali, and preserve
    the signed file for delivery and compromise operations.
 
 **Evidence and flag placement:** The ordinary Forgejo Actions staging artifact
-contains the flag after native provider-request, fallback, route, health,
-digest, ownership, and signature checks pass for the common front and one
-selected capability. Uploaded logs or a direct call that bypasses the
-participant's LiteLLM route fail.
+contains the flag after source, immutable image, Knative revision, TLS route,
+fresh shared-edge access, digest, ownership, and signature checks pass for the
+common front and one selected capability. Uploaded logs or a direct call that
+bypasses the participant's LiteLLM route fail.
 
 **Reset:** Failed-attempt reset recreates only failed routes and CI state. Full
-reset revokes the commercial key. An accepted route, domain binding, objects,
-images, and signed manifest versions persist.
+reset removes the LiteLLM service and rotates its route credential. An accepted
+route, domain binding, objects, images, and signed manifest versions persist.
 
-**Participant-equivalent QA:** Create a fresh scoped key, prove two-provider
-commercial routing and fallback with a public test corpus, traverse the
-participant LiteLLM route, stage one exact artifact, and let Forgejo Actions
-reacquire and verify the signed manifest. Independently prove that each Act 3
-route unlocks from only its declared prerequisites without this operation.
+**Participant-equivalent QA:** Create the pinned LiteLLM source and route
+credential, build and deploy its immutable image to the participant's Cinder
+domain, traverse that route to GLM 5.2, stage one exact artifact, and let
+Forgejo Actions reacquire and verify the source, live revision, fresh shared
+edge access and signed manifest. Independently prove that each Act 3 route
+unlocks from only its declared prerequisites without this operation.
 
 **Facilitation notes:** A failure must identify one missing resource or mismatch.
 This is artifact-continuity work, not a scavenger hunt across opaque dashboards.

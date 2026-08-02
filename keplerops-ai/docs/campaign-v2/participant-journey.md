@@ -17,8 +17,8 @@ The participant begins outside the company with:
 - a Kali workstation;
 - Internet access;
 - an attacker-controlled mailbox;
-- a locally hosted open text model and deepfake capability that do not require
-  a commercial AI account;
+- an event-provided open-weight text model and OSS deepfake capability that do
+  not require a participant-supplied AI service account;
 - normal reconnaissance, browser, mail, API, development, and ML tools; and
 - the strategic objective, authorized scope, safety rules, and public KeplerOps
   domain.

@@ -29,7 +29,7 @@ must preserve those fields when concrete service schemas are selected.
 | 2 | `kep-m06-s` | A qualifying server-side run embeds the flag in its normal trace bundle beside document digest, extracted text, retrieved chunk IDs, model/context revision, baseline decision, and changed decision. |
 | 2 | `kep-m06-t` | After server-side decode, intelligibility, similarity, and digest checks, the registry's immutable provenance record contains the flag. |
 | 2 | `kep-m06-u` | The successful lifecycle record contains the flag beside source commit, image digest, Knative revision, domain, certificate, first request, scale-to-zero, and post-cold-start request. |
-| 2 | `kep-m06-v` | The ordinary Cinder Forgejo Actions artifact contains the flag after live commercial-provider routing, fallback, participant-proxy traversal, digest, ownership, and signature checks. |
+| 2 | `kep-m06-v` | The ordinary Cinder Forgejo Actions artifact contains the flag after the participant's pinned LiteLLM source, immutable Harbor image, live Knative revision, TLS route, fresh shared-GLM edge traversal, staged-object digests, ownership and signature all verify. |
 | 3 | `kep-m01-i` | `/opt/keplerops/preview/operations-handoff.md` contains the flag. |
 | 3 | `kep-m01-j` | The integration worker's `job-context.json` contains the flag, returned by qualifying participant code. |
 | 3 | `kep-m02-h` | `WELCOME.md` in the newly provisioned room contains the flag. |

@@ -418,11 +418,13 @@ against the pinned official YAML.
 
 ### ATLAS Semantic Dispositions
 
-1. `AML.T0008.005` was invalid on a range-contained proxy. `kep-m06-v` now
-   acquires a real scoped prepaid OpenRouter key, proves commercial
-   multi-provider routing/fallback with public data, and validates the
-   participant LiteLLM route through ordinary Forgejo Actions. This is the one
-   documented commercial-service exception required by the official behavior.
+1. `AML.T0008.005` was invalid when the range merely supplied a transparent
+   proxy hop. `kep-m06-v` now requires the participant to package pinned OSS
+   LiteLLM source, build and publish an immutable image, deploy it under the
+   participant's Cinder TLS domain and route credential, and prove a fresh
+   request traverses that service to the attributed shared open-weight GLM
+   edge. Forgejo Actions independently joins source, image, Knative revision,
+   route, edge access, staged-object digests and signature.
 2. `AML.T0010.004` moved from new-candidate registration in `kep-m09-a` to the
    actual trusted-tag replacement and reconciliation in `kep-m09-l`.
 3. `AML.T0031` in `kep-m10-b` now requires three time-separated adversarial

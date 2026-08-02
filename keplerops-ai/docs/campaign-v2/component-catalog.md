@@ -73,15 +73,23 @@ Cinder is attacker infrastructure, but still uses ordinary OSS systems:
 - age, Cosign and standard S3/OCI clients for transfer and provenance.
 
 GLM 5.2 is an event-provided open-weight attacker model accessed through a
-shared OpenAI-compatible endpoint. `kep-m06-v` additionally uses a scoped
-prepaid OpenRouter key because `AML.T0008.005` specifically requires a
-commercial AI-service proxy. That operation sends only a benign public corpus;
-it is the sole commercial-service exception and has no KeplerOps credentials,
-protected prompts, flags, or mutable range state.
+shared Vertex-backed OpenAI-compatible endpoint. For `kep-m06-v`, the
+participant packages the pinned OSS LiteLLM gateway, publishes its immutable
+image through Cinder Forgejo and Harbor, and deploys it on the participant's
+Cinder Knative namespace and TLS domain. The front has its own route credential
+and maps only `glm-5.2` to the scoped shared endpoint. Independent evaluation
+joins the participant's source and live revision to a fresh successful request
+at the attributed Cinder model edge; a direct shared-endpoint call does not
+satisfy the operation.
 
-OpenRouter's official provider-routing documentation confirms that it routes a
-single API across multiple providers with configurable ordering and fallback:
-<https://openrouter.ai/docs/guides/routing/provider-selection>.
+LiteLLM's official gateway documentation defines its OpenAI-compatible proxy,
+configuration and access-control surface:
+<https://docs.litellm.ai/docs/simple_proxy>. Google Cloud documents serverless
+access to open models through Vertex AI Model Garden MaaS and records the GLM
+family's Model Garden availability:
+<https://docs.cloud.google.com/vertex-ai/generative-ai/docs/open-models/use-maas>
+and
+<https://docs.cloud.google.com/vertex-ai/generative-ai/docs/release-notes>.
 
 ## Version And Admission Gate
 

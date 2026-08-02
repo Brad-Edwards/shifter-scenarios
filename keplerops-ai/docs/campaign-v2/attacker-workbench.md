@@ -7,8 +7,8 @@ KeplerOps account or a challenge console. The workbench supports reconnaissance,
 software development, AI-assisted attack preparation, deepfake production,
 mail, and ordinary security testing throughout the campaign.
 
-All participant tools are open source. Participants do not need a personal
-commercial AI subscription or cloud account.
+All participant tools are open source. Participants do not need to supply an
+AI subscription or cloud account.
 
 ## Participant Workstation
 

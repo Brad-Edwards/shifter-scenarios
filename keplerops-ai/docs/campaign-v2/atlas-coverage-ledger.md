@@ -41,7 +41,7 @@ that implementation or participant-equivalent proof has occurred.
 | `AML.T0008.002 Domains` | `kep-m06-n` | Register and operate the assigned external domain with real DNS, TLS, and mail identity. | Accepted |
 | `AML.T0008.003 Physical Countermeasures` | `kep-m06-m` | Install and validate a real optical/positional countermeasure against the remote device using live camera evidence. | Accepted; hardware-dependent |
 | `AML.T0008.004 Serverless` | `kep-m06-u` | Deploy a real disposable serverless relay and prove request, log, and lifecycle behavior. | Accepted |
-| `AML.T0008.005 AI Service Proxies` | `kep-m06-v` | Acquire a scoped commercial OpenRouter key and prove a real request traverses its multi-provider resale route and the participant's LiteLLM front. | Accepted |
+| `AML.T0008.005 AI Service Proxies` | `kep-m06-v` | Build and operate a participant-controlled OSS LiteLLM service on a Cinder TLS domain, then prove a fresh request traverses that proxy and reaches the attributed shared open-weight GLM edge. | Accepted |
 | `AML.T0010 AI Supply Chain Compromise` | `kep-m09-a` | Insert participant-built model and container artifacts into KeplerOps' candidate registries under immutable digests. | Accepted |
 | `AML.T0010.001 AI Software` | `kep-m03-a` | Publish a compatible malicious evaluation dependency and have a real victim job install and import it. | Accepted |
 | `AML.T0010.002 Data` | `kep-m07-d` | Take over an already trusted upstream publisher, release poisoned data through its normal signing path, and trigger the victim mirror. | Accepted |

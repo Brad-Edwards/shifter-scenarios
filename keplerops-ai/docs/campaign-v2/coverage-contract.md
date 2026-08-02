@@ -92,7 +92,7 @@ conflated with the excluded hardware supply-chain row.
 - Every server-observed predicate corresponds to participant-produced state.
 - Representative shortcut and assertion-only paths fail.
 - All required OSS components are installed, licensed, and available without a
-  participant commercial account.
+  participant-supplied AI service account.
 
 ### Participant Audit
 

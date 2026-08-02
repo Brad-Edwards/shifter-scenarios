@@ -38,7 +38,7 @@ precomputed artifact.
 | `kep-m06-s` | `kep-m06-j + kep-m06-q` | Retrieval-tested indirect-instruction document |
 | `kep-m06-t` | `kep-m06-i + kep-m06-p` | Verified target-speaker audio and provenance |
 | `kep-m06-u` | `kep-m06-n + kep-m06-q` | Disposable callback/transfer relay |
-| `kep-m06-v` | `kep-m06-n + kep-m06-u + kep-m06-q` | Optional commercial-proxy and common Cinder staging front; no Act 3 route depends on it |
+| `kep-m06-v` | `kep-m06-n + kep-m06-u + kep-m06-q` | Participant-operated OSS model proxy and common Cinder staging front; no Act 3 route depends on it |
 
 ## Act 3: Earn A Foothold
 
