@@ -354,10 +354,18 @@ seed_airflow() {
 }
 
 seed_support_trace() {
-  local cookie_jar discovery har session payload ticket ticket_id tickets
-  cookie_jar="$(mktemp)"; har="$(mktemp)"
-  curl -fsS -c "$cookie_jar" -H 'Content-Type: application/json' --data "$(jq -cn --arg username support.analyst --arg password "$SUPPORT_ANALYST_PASSWORD" '{username:$username,password:$password}')" http://10.61.30.24:8080/api/v1/signin >/dev/null
-  session="$(awk '$6 == "_zammad_session" {print $7}' "$cookie_jar" | tail -n1)"; [[ -n $session ]] || die 'support session was not issued'
+  local cookie_jar csrf discovery har headers session payload ticket ticket_id tickets
+  cookie_jar="$(mktemp)"; har="$(mktemp)"; headers="$(mktemp)"
+  curl -sS --resolve support.keplerops.lab:443:192.168.78.1 -D "$headers" -c "$cookie_jar" \
+    https://support.keplerops.lab/api/v1/signin -o /dev/null
+  csrf="$(awk 'BEGIN {IGNORECASE=1} /^CSRF-TOKEN:/ {sub(/\r$/, "", $2); print $2}' "$headers")"
+  [[ -n $csrf ]] || die 'support CSRF token was not issued'
+  curl -fsS --resolve support.keplerops.lab:443:192.168.78.1 -b "$cookie_jar" -c "$cookie_jar" \
+    -H 'Content-Type: application/json' -H "X-CSRF-Token: ${csrf}" \
+    -H 'X-Browser-Fingerprint: campaign-m05-support-trace' \
+    --data "$(jq -cn --arg username support.analyst --arg password "$SUPPORT_ANALYST_PASSWORD" '{username:$username,password:$password}')" \
+    https://support.keplerops.lab/api/v1/signin >/dev/null
+  session="$(awk '$6 ~ /^_zammad_session/ {print $7}' "$cookie_jar" | tail -n1)"; [[ -n $session ]] || die 'support session was not issued'
   printf '%s\n' "$session" >"${STATE_ROOT}/support-attempt-session"
   chmod 0600 "${STATE_ROOT}/support-attempt-session"
   sed "s/__SUPPORT_SESSION__/${session}/g" "${MODULE_ROOT}/payloads/workhub/orion-support-session.har" >"$har"
@@ -379,7 +387,7 @@ seed_support_trace() {
     '{schema:"keplerops.orion.access-evidence/v1",operation:"kep-m05-i",source:{kind:"reviewer-har",path:"/var/lib/orion-review/traces/orion-support-session.har",har_sha256:$har,credential_sha256:$session},target:{service:"zammad",actor:"support.analyst",ticket_id:$ticket,note_body_sha256:$note}}' \
     >"${STATE_ROOT}/evidence/kep-m05-i.json"
   chmod 0600 "${STATE_ROOT}/evidence/kep-m05-i.json"
-  rm -f "$cookie_jar" "$har"
+  rm -f "$cookie_jar" "$har" "$headers"
 }
 
 seed_harbor_review() {
