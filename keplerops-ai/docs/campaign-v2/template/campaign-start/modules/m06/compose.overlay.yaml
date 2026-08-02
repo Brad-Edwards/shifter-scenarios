@@ -71,6 +71,7 @@ services:
     cap_add: [SETUID, SETGID]
     security_opt:
       - seccomp:unconfined
+      - apparmor:unconfined
     volumes:
       - ./campaign-start/modules/m06/payloads/actions-runner/buildkitd.toml:/etc/buildkit/buildkitd.toml:ro
       - ./state/caddy-root.crt:/etc/buildkit/certs/registry.keplerops.lab/ca.crt:ro
