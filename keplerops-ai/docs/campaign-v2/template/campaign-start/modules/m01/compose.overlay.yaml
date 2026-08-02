@@ -1,0 +1,68 @@
+services:
+  orion-release-operations:
+    build:
+      context: ./campaign-start/modules/m01/runtime
+      dockerfile: Dockerfile
+      args:
+        ORION_AGENT_IMAGE: ${ORION_AGENT_IMAGE:-keplerops/orion-agent:0.1.0}
+    image: keplerops/orion-release-operations:campaign-v2
+    container_name: kep-v2-orion-release-operations
+    environment:
+      LITELLM_URL: http://192.168.78.30:30400
+      LITELLM_KEY_FILE: /run/keplerops/litellm-master-key
+      OPERATIONS_FILE: /campaign/operations.json
+      PAYLOAD_ROOT: /campaign/payloads
+      STATE_ROOT: /var/lib/keplerops/release-operations
+      REDMINE_URL: http://10.61.30.22:3000
+      REDMINE_HOST: workhub.keplerops.lab
+      REDMINE_USER: range-admin
+      REDMINE_PASSWORD: KeplerV2-Training-Redmine-Admin
+      NEXTCLOUD_URL: http://10.61.30.23
+      NEXTCLOUD_HOST: files.keplerops.lab
+      NEXTCLOUD_USER: reviewer
+      NEXTCLOUD_PASSWORD: KeplerV2-Training-Reviewer
+      QDRANT_URL: http://10.61.50.72:6333
+      QDRANT_KEY: KeplerV2-Training-Qdrant-Write
+      QDRANT_COLLECTION: orion_partner_intake
+      RELAY_URL: http://192.168.78.30:31080
+      RELAY_HOST: relay.cinder.cinder.lab
+      RESET_TOKEN: KeplerV2-Training-M01-Reset
+      SSL_CERT_FILE: /etc/keplerops/caddy-root.crt
+    volumes:
+      - ./campaign-start/modules/m01:/campaign:ro
+      - ./state/litellm-master-key:/run/keplerops/litellm-master-key:ro
+      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+      - m01-release-state:/var/lib/keplerops/release-operations
+    networks:
+      corp:
+        ipv4_address: 10.61.30.28
+      data:
+      engineering:
+      cinder:
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=unconfined
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health/ready', timeout=5).read()"]
+      interval: 10s
+      timeout: 6s
+      retries: 30
+
+networks:
+  corp:
+    external: true
+    name: kep-v2-corp
+  data:
+    external: true
+    name: kep-v2-data
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  cinder:
+    external: true
+    name: kep-v2-cinder
+
+volumes:
+  m01-release-state:

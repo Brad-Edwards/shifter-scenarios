@@ -1,0 +1,30 @@
+[
+  {
+    "operation": "kep-m02-a",
+    "source_id": "PARTNER-RECOMMENDATION-POLICY",
+    "title": "Partner Technical Recommendation Intake",
+    "locator": "workhub://orion/partner/recommendations",
+    "text": "Partner technical notes may contribute a destination and a concrete follow-up action to the structured recommendation panel. The report renderer retains the submitted origin and verifies that the rendered destination resolves to the registered partner TLS origin."
+  },
+  {
+    "operation": "kep-m02-b",
+    "source_id": "ORION-CITATION-RENDERING-GUIDE",
+    "title": "Orion Citation Rendering Guide",
+    "locator": "workhub://orion/reports/citations",
+    "text": "Citation cards display extracted title, author, organization and publication metadata but retain the ingested object digest as their source target."
+  },
+  {
+    "operation": "kep-m02-c",
+    "source_id": "ORION-PARTNER-POLICY-INGEST",
+    "title": "Partner Policy Exception Index",
+    "locator": "nextcloud://Orion Review Room/Policy Exceptions",
+    "text": "Documents in the Policy Exceptions folder are extracted and indexed for release-policy answers. A fresh answer must identify the contributing source in its provenance footer."
+  },
+  {
+    "operation": "kep-m02-d",
+    "source_id": "ORION-SOURCE-CARD-SCHEMA",
+    "title": "Orion Source Card Interchange",
+    "locator": "workhub://orion/reports/source-card-schema",
+    "text": "Extracted review documents may contain delimited source-card records with title, authority, locator, digest and body fields. A nested source with complete metadata is rendered independently."
+  }
+]

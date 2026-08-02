@@ -1,0 +1,7 @@
+{
+  "fixture": "orion-preview-compatibility-2026.08",
+  "input": {"candidate": "orion-edge-2026.08", "mode": "partner-preview"},
+  "expected_schema": {"status": "string", "summary": "string", "artifacts": "array"},
+  "catalog_token": "mcp-catalog-owner-scoped",
+  "fixture_reference": "FLAG{6626fb888e92f658}"
+}

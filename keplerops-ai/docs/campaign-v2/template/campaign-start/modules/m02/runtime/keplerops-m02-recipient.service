@@ -1,0 +1,21 @@
+[Unit]
+Description=KeplerOps Orion partner review recipient
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/keplerops/m02-recipient.env
+ExecStart=/usr/bin/python3 /usr/local/lib/keplerops/m02-recipient-worker.py
+Restart=always
+RestartSec=5
+User=keplerops-recipient
+Group=keplerops-recipient
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/keplerops/campaign
+
+[Install]
+WantedBy=multi-user.target
