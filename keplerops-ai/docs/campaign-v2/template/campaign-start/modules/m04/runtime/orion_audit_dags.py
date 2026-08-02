@@ -94,6 +94,18 @@ def checked(response: requests.Response) -> requests.Response:
     return response
 
 
+def airflow_api_headers() -> dict[str, str]:
+    response = checked(requests.post(
+        f"{AIRFLOW_URL}/auth/token",
+        json={"username": AIRFLOW_AUTH[0], "password": AIRFLOW_AUTH[1]},
+        timeout=30,
+    ))
+    token = response.json().get("access_token")
+    if not isinstance(token, str) or not token:
+        raise ValueError("Airflow token response lacks an access token")
+    return {"Authorization": f"Bearer {token}"}
+
+
 def s3():
     return boto3.client(
         "s3", endpoint_url=MINIO_ENDPOINT, aws_access_key_id=MINIO_ACCESS,
@@ -658,13 +670,14 @@ def runtime_lineage_dag():
         mlflow_run = checked(requests.get(f"{MLFLOW_URL}/api/2.0/mlflow/runs/get", params={"run_id": metadata["mlflow_run_id"]}, auth=MLFLOW_AUTH, timeout=30)).json()["run"]
         tags = {str(item["key"]): str(item["value"]) for item in mlflow_run.get("data", {}).get("tags", [])}
         training_run_id = tags.get("training.dag_run_id", "")
+        airflow_headers = airflow_api_headers()
         training_airflow_run = checked(requests.get(
             f"{AIRFLOW_URL}/api/v2/dags/orion_release_risk_training/dagRuns/{urllib.parse.quote(training_run_id, safe='')}",
-            auth=AIRFLOW_AUTH, timeout=30,
+            headers=airflow_headers, timeout=30,
         )).json()
         audit_airflow_run = checked(requests.get(
             f"{AIRFLOW_URL}/api/v2/dags/orion_runtime_lineage_attestation/dagRuns/{urllib.parse.quote(run_id, safe='')}",
-            auth=AIRFLOW_AUTH, timeout=30,
+            headers=airflow_headers, timeout=30,
         )).json()
         artifact_uri = str(mlflow_run["info"]["artifact_uri"])
         parsed = re.fullmatch(r"s3://([^/]+)/(.+)", artifact_uri)

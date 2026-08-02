@@ -9,6 +9,9 @@ readonly OPERATION="${1:-}"
 readonly REDIS_CONTAINER="${REDIS_CONTAINER:-kep-v2-redis}"
 readonly REDIS_PASSWORD="${REDIS_PASSWORD:-KeplerV2-Training-Redis}"
 readonly AIRFLOW_CONTAINER="${AIRFLOW_CONTAINER:-kep-v2-airflow-api}"
+readonly AIRFLOW_URL="${AIRFLOW_API_URL:-http://127.0.0.1:8080}"
+readonly AIRFLOW_USER="${AIRFLOW_API_USER:-range-admin}"
+readonly AIRFLOW_PASSWORD="${AIRFLOW_API_PASSWORD:-KeplerV2-Training-Airflow}"
 readonly CINDER_RELAY_INTERNAL_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
 readonly ZAMMAD_URL="${ZAMMAD_URL:-http://10.61.30.24:8080}"
 readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-range-admin:KeplerV2-Training-Zammad-Admin}"
@@ -53,13 +56,25 @@ raise SystemExit(1)
 '
 }
 
+airflow_api_token() {
+  local payload
+  payload="$(jq -cn --arg username "${AIRFLOW_USER}" --arg password "${AIRFLOW_PASSWORD}" \
+    '{username:$username,password:$password}')"
+  docker exec -i "${AIRFLOW_CONTAINER}" curl -fsS \
+    -H 'Content-Type: application/json' \
+    --data-binary @- "${AIRFLOW_URL}/auth/token" <<<"${payload}" | \
+    jq -er '.access_token | select(type == "string" and length > 0)'
+}
+
 delete_failed_airflow_runs() {
-  local dag=$1 run status
+  local dag=$1 run status token
+  token="$(airflow_api_token)" || die 'Airflow token acquisition failed'
   while IFS= read -r run; do
     [[ -n ${run} ]] || continue
-    status="$(docker exec "${AIRFLOW_CONTAINER}" curl -sS -u range-admin:KeplerV2-Training-Airflow \
+    status="$(docker exec "${AIRFLOW_CONTAINER}" curl -sS \
+      -H "Authorization: Bearer ${token}" \
       -o /dev/null -w '%{http_code}' -X DELETE \
-      "http://127.0.0.1:8080/api/v2/dags/${dag}/dagRuns/${run}")"
+      "${AIRFLOW_URL}/api/v2/dags/${dag}/dagRuns/${run}")"
     case "${status}" in 200|202|204|404) ;; *) die "Airflow refused failed run reset for ${dag}/${run}: HTTP ${status}" ;; esac
   done < <(docker exec "${AIRFLOW_CONTAINER}" airflow dags list-runs "${dag}" --output json 2>/dev/null | \
     jq -r '.[] | select((.state|ascii_downcase) == "failed") | (.run_id // .dag_run_id) | @uri')
