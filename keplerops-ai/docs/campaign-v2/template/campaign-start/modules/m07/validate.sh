@@ -84,7 +84,7 @@ validate_one() {
       assert_negative_control "${flag}" 'clean|baseline|unattested|failed'
       ;;
     kep-m07-i)
-      jq -e '.schema == "keplerops.cinder.artifact-execution/v1" and .bounded_effect == true and .fresh_inference != null and (.artifact_sha256 | test("^[0-9a-f]{64}$")) and (.signature | test("^[0-9a-f]{64}$"))' "${tmp}" >/dev/null
+      jq -e '.schema == "keplerops.cinder.artifact-execution/v1" and .bounded_effect == true and .fresh_inference != null and (.artifact_sha256 | test("^[0-9a-f]{64}$")) and (.source_commit | test("^[0-9a-f]{40}$")) and (.signature | test("^[0-9a-f]{64}$"))' "${tmp}" >/dev/null
       assert_negative_control "${flag}" 'clean|no effect|failed|rejected'
       ;;
   esac

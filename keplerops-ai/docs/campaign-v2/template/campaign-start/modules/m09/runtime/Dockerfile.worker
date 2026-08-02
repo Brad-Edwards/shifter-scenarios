@@ -1,0 +1,10 @@
+FROM python:3.12.11-slim-bookworm
+
+RUN useradd --system --uid 10001 --home-dir /var/lib/orion-import --create-home orion-import \
+    && python -m pip install --no-cache-dir pika==1.3.2 picklescan==0.0.31 requests==2.32.4
+
+COPY import_worker.py /opt/keplerops/import_worker.py
+RUN chmod 0555 /opt/keplerops/import_worker.py
+
+USER 10001:10001
+ENTRYPOINT ["python", "/opt/keplerops/import_worker.py"]

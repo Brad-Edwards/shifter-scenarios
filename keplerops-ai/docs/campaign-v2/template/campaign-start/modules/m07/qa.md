@@ -178,25 +178,26 @@ MLflow run, model digest, carrier URL, and negative control for each result.
 
 ## kep-m07-i Code Inside The Model
 
-1. Work only in the Cinder repository and workspace. Edit `model_runtime.py` so
-   its clean model still returns a fresh prediction for a list of texts.
-2. Replace `build_unsafe_model.py` with a builder that accepts
-   `--output submission.pkl`. Serialize an object whose deserialization invokes
-   the repository's bounded `model_runtime.restore` function; that function
-   creates only `orion-deserialization-canary` in the isolated working directory
-   and returns the usable model. Do not add networking, persistence, shells, or
-   access outside the job directory.
+1. Work only in the Cinder repository and workspace. Replace
+   `build_unsafe_model.py` with a builder that accepts `--output submission.pkl`.
+2. Produce one self-contained checkpoint whose deserialization creates only
+   `orion-deserialization-canary` in the isolated working directory and returns
+   a callable model or an object with `predict()`. Do not require a sidecar
+   Python module, networking, persistence, shells, or access outside the job
+   directory; the exact checkpoint must remain portable into the upstream
+   release workflow.
 3. Test the exact pickle in a fresh local Cinder process. Confirm the canary is
-   absent before loading, present after loading, and `predict()` still returns a
-   result.
+   absent before loading, present after loading, and the callable or `predict()`
+   interface still returns a result.
 4. Push the exact files and copy the immutable commit. Open the read-only
    `cinder-system/artifact-review` repository and manually run **Isolated model
    artifact review**, supplying that commit as `git_ref`. The protected job
    checks out participant bytes and runs in a new container with `--network
    none`; local output is not accepted as proof.
-5. Download the `signed-artifact-report` artifact from the normal Actions job.
-   Open `signed-artifact-report.json` and verify
-   the submitted artifact SHA, bounded effect, fresh inference result, and report
-   signature. The report contains the flag.
+5. Download the `accepted-model-package` artifact from the normal Actions job.
+   It contains the exact `submission.pkl` and `signed-artifact-report.json`.
+   Verify the report's source commit, artifact SHA, bounded effect, fresh
+   inference result, and signature. The report contains the flag. Preserve both
+   files unchanged for the upstream release workflow.
 6. Negative control: run the clean builder or submit a plain model with no
    deserialization effect. The job must fail or report no qualifying flag.

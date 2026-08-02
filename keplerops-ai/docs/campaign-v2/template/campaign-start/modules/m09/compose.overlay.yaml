@@ -1,0 +1,98 @@
+x-m09-airflow: &m09-airflow
+  image: keplerops/airflow:campaign-v2-m09
+  build:
+    context: .
+    dockerfile: campaign-start/modules/m09/Dockerfile.airflow
+    args:
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+  environment:
+    M09_STATE_ROOT: /var/lib/orion-release
+    M09_IMPORT_QUEUE: orion.review.m09-import
+    M09_IMPORT_RESULT_QUEUE: orion.review.m09-results
+    M09_RELAY_INTERNAL_URL: http://192.168.78.30:31080
+    M09_RELAY_HOST: relay.cinder.cinder.lab
+    CINDER_FORGEJO_URL: http://10.61.90.30:3000
+    CINDER_FORGEJO_AUTH: cinder-operator:Cinder-Operations-Git-K3m7Pq4x
+    CINDER_ATTESTATION_KEY: Cinder-Isolated-Execution-2026
+    KEPLER_FORGEJO_URL: http://forgejo:3000
+    KEPLER_FORGEJO_AUTH: range-admin:KeplerV2-Training-Forgejo-Admin
+    MLFLOW_URL: http://mlflow:5000
+    MLFLOW_AUTH: svc-orion-training:KeplerV2-Training-MLflow-Service
+    MINIO_URL: http://minio:9000
+    MINIO_ACCESS_KEY: svc-orion-training
+    MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Training
+    HARBOR_URL: http://harbor-nginx:8080
+    HARBOR_AUTH: admin:KeplerV2-Training-Harbor
+    OPA_URL: http://192.168.78.30:30082
+    RABBITMQ_URL: amqp://svc-review-verification:KeplerV2-Worker-Verification-Rabbit@10.61.50.12:5672/keplerops
+    K3S01_SSH_TARGET: kepler@192.168.78.30
+    K3S01_SSH_KEY: /run/keplerops/k3s-key
+    M09_FLAG_A: FLAG{a22e16e419b766b6}
+    M09_FLAG_B: FLAG{a8bce8475f142945}
+    M09_FLAG_C: FLAG{242a2d1f2a18b5f2}
+    M09_FLAG_D: FLAG{c8f30de2c8a3bebe}
+    M09_FLAG_E: FLAG{e2f75daaa99cf644}
+    M09_FLAG_F: FLAG{b8793a65f6478477}
+    M09_FLAG_G: FLAG{d964e6759e6bca99}
+    M09_FLAG_H: FLAG{10736d71e947e2ed}
+    M09_FLAG_I: FLAG{a5f407f8684ade8d}
+    M09_FLAG_J: FLAG{a89f0837c660aea5}
+    M09_FLAG_K: FLAG{1d452c2a6f453ddd}
+    M09_FLAG_L: FLAG{038ed16d4dc5d013}
+  volumes:
+    - ./campaign-start/modules/m09/dags/orion_release_operations.py:/opt/airflow/dags/orion_release_operations.py:ro
+    - ./campaign-start/modules/m09/runtime/release_operations.py:/opt/airflow/config/release_operations.py:ro
+    - ./state/campaign-start/m09:/var/lib/orion-release
+    - ${K3S01_SSH_KEY:-/root/.ssh/keplerops-v2}:/run/keplerops/k3s-key:ro
+  networks:
+    - cinder
+    - data
+    - engineering
+
+services:
+  airflow-api:
+    <<: *m09-airflow
+  airflow-scheduler:
+    <<: *m09-airflow
+  airflow-dag-processor:
+    <<: *m09-airflow
+  airflow-triggerer:
+    <<: *m09-airflow
+  airflow-worker:
+    <<: *m09-airflow
+
+  orion-import-review-worker:
+    image: keplerops/orion-import-review:campaign-v2-m09
+    build:
+      context: ./campaign-start/modules/m09/runtime
+      dockerfile: Dockerfile.worker
+    container_name: kep-v2-orion-import-review
+    environment:
+      RABBITMQ_URL: amqp://svc-review-verification:KeplerV2-Worker-Verification-Rabbit@10.61.50.12:5672/keplerops
+      RABBITMQ_QUEUE: orion.review.m09-import
+      RABBITMQ_RESULT_QUEUE: orion.review.m09-results
+      RELAY_INTERNAL_URL: http://192.168.78.30:31080
+      RELAY_HOST: relay.cinder.cinder.lab
+      M09_FLAG_I: FLAG{a5f407f8684ade8d}
+      M09_FLAG_K: FLAG{1d452c2a6f453ddd}
+    networks:
+      - cinder
+      - data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  data:
+    external: true
+    name: kep-v2-data
+  engineering:
+    external: true
+    name: kep-v2-engineering

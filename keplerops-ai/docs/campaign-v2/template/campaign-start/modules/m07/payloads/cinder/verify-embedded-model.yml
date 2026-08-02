@@ -24,14 +24,18 @@ jobs:
           ref: ${{ inputs.git_ref }}
           path: submission
       - name: Build Cinder artifact
-        run: python submission/build_unsafe_model.py --output submission/submission.pkl
+        run: |
+          python submission/build_unsafe_model.py --output submission/submission.pkl
+          echo "SOURCE_COMMIT=$(git -C submission rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Verify deserialization and inference
         env:
           CINDER_ATTESTATION_KEY: ${{ secrets.CINDER_ATTESTATION_KEY }}
           ENGAGEMENT_REFERENCE: ${{ secrets.M07_ENGAGEMENT_REFERENCE }}
         run: python verifier/verifier.py submission/submission.pkl | tee signed-artifact-report.json
-      - name: Preserve signed execution report
+      - name: Preserve accepted model package
         uses: actions/upload-artifact@v3
         with:
-          name: signed-artifact-report
-          path: signed-artifact-report.json
+          name: accepted-model-package
+          path: |
+            submission/submission.pkl
+            signed-artifact-report.json

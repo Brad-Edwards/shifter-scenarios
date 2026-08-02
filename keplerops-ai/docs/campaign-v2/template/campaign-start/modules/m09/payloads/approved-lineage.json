@@ -1,0 +1,8 @@
+{
+  "schema": "keplerops.approved-lineage/v1",
+  "model_family": "release-risk",
+  "source_commit": "4c0fc713b97a8ac34f1eb5b9c90f146e2581c2c5",
+  "data_digest": "sha256:c9e8ca6d8e37edba10cb9c56562c1e9bf77fb213f0ee412c122168275d2ee4ec",
+  "prompt_digest": "sha256:2fc7a1da2895e6cf6e590427167f1bb6ec9aa55ba57d7394153cc3174a1192a2",
+  "parent_run": "clean-release-risk-2026-07-31"
+}

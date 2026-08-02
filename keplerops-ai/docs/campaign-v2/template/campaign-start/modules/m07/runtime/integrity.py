@@ -31,7 +31,7 @@ FORGEJO_PASSWORD = os.getenv("FORGEJO_PASSWORD", "KAI-Orion-Trainer-2b68d419a7f3
 HARBOR_URL = os.getenv("HARBOR_URL", "http://10.61.40.32:8080").rstrip("/")
 HARBOR_USER = os.getenv("HARBOR_USER", "cinder.publisher")
 HARBOR_PASSWORD = os.getenv("HARBOR_PASSWORD", "Cinder-Dataset-Publisher-2026")
-STATE = Path(os.getenv("M07_STATE_ROOT", "/opt/airflow/campaign-state"))
+STATE = Path(os.getenv("M07_STATE_ROOT", "/opt/airflow/campaign-state-m07"))
 FLAGS = {
     "a": "FLAG{d66b2002c1dd1f90}",
     "b": "FLAG{117a56d63e233ad0}",

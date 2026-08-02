@@ -1,0 +1,12 @@
+ARG AIRFLOW_IMAGE=keplerops/airflow:campaign-v2-clean
+FROM ${AIRFLOW_IMAGE}
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openssh-client \
+    && rm -rf /var/lib/apt/lists/*
+USER airflow
+
+RUN python -m pip install --no-cache-dir \
+      pika==1.3.2 \
+      picklescan==0.0.31
