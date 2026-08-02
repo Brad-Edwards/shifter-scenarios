@@ -158,8 +158,7 @@ configure_m05_actions_runners() {
   local repo secret name
   while read -r repo secret name; do
     log "registering ${name} for organization scope (repository workload: ${repo})"
-    compose exec -T forgejo forgejo forgejo-cli actions register \
-      --config /data/gitea/conf/app.ini \
+    compose exec -T --user git forgejo forgejo forgejo-cli actions register \
       --secret "$secret" \
       --scope keplerops \
       --labels m05-orion-release-linux \
