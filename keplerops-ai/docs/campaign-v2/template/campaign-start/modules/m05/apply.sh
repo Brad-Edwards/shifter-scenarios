@@ -293,8 +293,8 @@ seed_blueprint_signature() {
   local tmp
   tmp="$(mktemp -d)"
   cp "${MODULE_ROOT}/payloads/gitops/public/orion-release-assistant.yaml" "$tmp/orion-release-assistant.yaml"
-  docker run --rm -e COSIGN_PASSWORD=Orion-Blueprint-Signing-2026 -v "$tmp:/work" -w /work "$COSIGN_IMAGE" generate-key-pair --output-key-prefix blueprint >/dev/null
-  docker run --rm -e COSIGN_PASSWORD=Orion-Blueprint-Signing-2026 -v "$tmp:/work" -w /work "$COSIGN_IMAGE" sign-blob --yes --tlog-upload=false --key blueprint.key --bundle orion-release-assistant.bundle.json orion-release-assistant.yaml >/dev/null
+  docker run --rm --user 0:0 -e COSIGN_PASSWORD=Orion-Blueprint-Signing-2026 -v "$tmp:/work" -w /work "$COSIGN_IMAGE" generate-key-pair --output-key-prefix blueprint >/dev/null
+  docker run --rm --user 0:0 -e COSIGN_PASSWORD=Orion-Blueprint-Signing-2026 -v "$tmp:/work" -w /work "$COSIGN_IMAGE" sign-blob --yes --tlog-upload=false --key blueprint.key --bundle orion-release-assistant.bundle.json orion-release-assistant.yaml >/dev/null
   forgejo_put_file orion-blueprints public/cosign.pub "$tmp/blueprint.pub" 'Publish Orion blueprint verification key'
   forgejo_put_file orion-blueprints public/orion-release-assistant.bundle.json "$tmp/orion-release-assistant.bundle.json" 'Publish signed Orion blueprint bundle'
   forgejo_secret orion-blueprints DRIFT_REFERENCE "$(flag_for kep-m05-f)"
