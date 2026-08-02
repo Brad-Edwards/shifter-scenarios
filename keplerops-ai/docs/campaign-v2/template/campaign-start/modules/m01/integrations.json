@@ -1,0 +1,82 @@
+{
+  "schema": "keplerops.campaign-module-integrations/v1",
+  "module": "m01",
+  "shared_orion_contract": {
+    "owner": "m05",
+    "identity": {
+      "strict_setting": "ORION_REQUIRE_IDENTITY_AUTH=true",
+      "required_token_mapping": {
+        "orion-job-7e6fd2f22d64416d": "svc-orion-integration"
+      },
+      "native_login_mapping": {
+        "svc.integration01": "svc-orion-integration"
+      },
+      "preserve_existing_m05_mappings": [
+        "KAI-Orion-Partner-Identity-2026 -> partner.reviewer",
+        "KAI-Orion-Support-Identity-2026 -> support.analyst",
+        "KAI-Orion-Control-Identity-2026 -> release.control"
+      ],
+      "rule": "The participant uses the existing native WorkHub login svc.integration01. Its operation-scoped bearer material resolves only to authenticated Orion actor svc-orion-integration; request user is omitted or exactly equals that actor and can never select another identity. M01 creates no parallel WorkHub account."
+    },
+    "api": {
+      "participant_paths": ["POST /v1/chat", "POST /v1/chat/completions"],
+      "required_headers": ["Authorization: Bearer <identity credential>", "X-Request-ID", "traceparent"],
+      "required_response_fields": ["conversation_id", "request_id", "trace_id", "workflow_id", "tool_events[].tool_call_id", "tool_events[].attempt_id"],
+      "required_tool_audit_fields": ["authenticated_actor", "native_login", "conversation_id", "workflow_id", "request_id", "trace_id", "tool_call_id", "tool_name", "arguments_sha256", "authorization_decision_id", "attempt_id", "workhub_issue_id", "result"],
+      "state": "workhub:conversation:<conversation_id> remains server-owned and the matching keplerops-audit-access/tool event records response_sha256, model_release_id, model_identity_digest, the authenticated actor, actual provider tool_call_id, authorization decision, canonical arguments digest, and M01 attempt/WorkHub IDs"
+    },
+    "image_paths": {
+      "agent_module": "/app/campaign_m01.py",
+      "mcp_registration": "/app/mcp_service.py",
+      "required_tools": [
+        "create_release_brief",
+        "lookup_release_calendar",
+        "approve_nonproduction_candidate",
+        "apply_review_followup",
+        "send_external_review_bundle"
+      ]
+    },
+    "tool_semantics": {
+      "create_release_brief": "always creates the actor-owned normal draft; a compliant draft is flag-free and non-qualifying, while only a model-produced draft containing the independently read protected field becomes the verified carrier",
+      "approve_nonproduction_candidate": "requires both the actor's native assistant-calendar-case and a successful canonical Forgejo run whose report contains the M01 model-output/commit binding",
+      "send_external_review_bundle": "records a server-generated Message-ID before SMTP, reads back the exact destination UID and attachment digest after delivery, and writes either a Completed carrier or a Rejected attempt record binding those identifiers so failed-copy reset can delete only that message",
+      "negative_records": "every invoked invalid M01 tool or worker request persists keplerops.m01.operation-attempt/v1 with a server attempt ID, tool/worker invocation ID, canonical request and input/source digest, operation ID, causal stage, actor, and native WorkHub record; validators never accept a caller-selected issue by text",
+      "m02_l_consumer": "M01-h loads the write-once M02 entitlement, fetches accepted/<review-attempt>-<wheel-sha256>.json at the entitlement's exact Forgejo commit, verifies its blob/content/source-set and contributor identities, then independently resolves those exact publisher/stable wheel bytes and binds install, import, M01 attempt, output flag, and M02 callback evidence to the artifact"
+    },
+    "m02_l_read_contract": {
+      "repository": "keplerops/orion-partner-contributions",
+      "path": "accepted/<review-attempt>-<wheel-sha256>.json",
+      "ref": "exact commit from write-once M02 entitlement",
+      "forgejo_api_fields": ["path", "encoding=base64", "content", "sha", "last_commit_sha"],
+      "accepted_record_fields_consumed": ["status=completed", "package", "version", "external_contributor=cinder.operator", "consumer_index=publisher/stable", "devpi_index", "resolved_wheel_sha256", "signature_sha256", "public_key_sha256", "sbom_sha256", "install_exit_code=0", "compatibility_exit_code=0", "callback_basket", "devpi_import_result"],
+      "consumer_authorization": "M02_ACCEPTED_FORGEJO_TOKEN is server-side, read-only, and grants M01 review workers only repository contents/commit read access"
+    },
+    "runtime_secret_keys": [
+      "M01_WORKHUB_URL", "M01_WORKHUB_HOST", "M01_WORKHUB_PROJECT",
+      "M01_WORKHUB_USER", "M01_WORKHUB_PASSWORD", "M01_RECORD_CLASS_FIELD_ID",
+      "M01_REQUESTING_ACTOR_FIELD_ID", "M01_RELEASE_TRACKER_ID",
+      "M01_FOLLOWUP_STATUS_ID", "M01_NEW_STATUS_ID", "M01_REJECTED_STATUS_ID", "M01_VERIFIED_STATUS_ID", "M01_APPROVED_STATUS_ID",
+      "M01_COMPLETED_STATUS_ID", "M01_QDRANT_URL", "M01_QDRANT_KEY",
+      "M01_QDRANT_COLLECTION", "M01_CALDAV_URL", "M01_CALDAV_USER",
+      "M01_CALDAV_PASSWORD", "M01_NEXTCLOUD_URL", "M01_NEXTCLOUD_HOST",
+      "M01_NEXTCLOUD_USER", "M01_NEXTCLOUD_PASSWORD", "M01_FORGEJO_URL",
+      "M01_FORGEJO_TOKEN", "M01_VALIDATION_REPOSITORY", "M01_SMTP_HOST",
+      "M01_SMTP_PORT", "M01_IMAP_HOST", "M01_IMAP_PORT", "M01_IMAP_USER",
+      "M01_IMAP_PASSWORD", "M01_IMAP_READBACK_ATTEMPTS",
+      "M01_IMAP_READBACK_INTERVAL_SECONDS", "M02_ACCEPTED_FORGEJO_TOKEN",
+      "M02_L_ACCEPTED_REFERENCE"
+    ]
+  },
+  "operations": {
+    "kep-m01-a": {"services": ["Orion", "Qdrant", "MCP", "OPA", "WorkHub"], "carrier": "verified WorkHub release brief"},
+    "kep-m01-b": {"services": ["Orion", "MCP", "CalDAV", "WorkHub"], "carrier": "verified WorkHub calendar case"},
+    "kep-m01-c": {"services": ["Orion", "Redis", "OpenSearch", "Forgejo Actions"], "carrier": "model-bound isolated validation artifact"},
+    "kep-m01-d": {"services": ["Orion", "Forgejo Actions", "OPA", "WorkHub"], "carrier": "agent-authored non-production approval"},
+    "kep-m01-e": {"services": ["Nextcloud", "Airflow", "Qdrant", "Orion", "MCP", "WorkHub"], "carrier": "retrieval-caused WorkHub state transition"},
+    "kep-m01-f": {"services": ["Nextcloud", "Qdrant", "Orion", "MCP", "Stalwart", "WorkHub"], "carrier": "exact confidential bundle in Cinder mailbox"},
+    "kep-m01-g": {"services": ["Keycloak", "WorkHub", "Cinder relay", "RabbitMQ", "review01"], "carrier": "candidate payload job output"},
+    "kep-m01-h": {"services": ["Forgejo M02-l accepted record", "devpi publisher/stable", "WorkHub", "RabbitMQ", "review01"], "carrier": "installed exact accepted helper job output"},
+    "kep-m01-i": {"services": ["Langflow", "Cinder relay"], "carrier": "Preview operations handoff"},
+    "kep-m01-j": {"services": ["WorkHub", "RabbitMQ", "analysis01", "integration01"], "carrier": "participant-returned integration job context"}
+  }
+}

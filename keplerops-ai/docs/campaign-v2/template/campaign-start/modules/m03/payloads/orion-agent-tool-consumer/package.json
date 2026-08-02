@@ -1,0 +1,9 @@
+{
+  "name": "orion-agent-tool-consumer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@keplerops/orion-mcp-audit": "2.3.1"
+  }
+}

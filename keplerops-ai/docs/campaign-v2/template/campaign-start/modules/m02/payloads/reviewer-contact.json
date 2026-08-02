@@ -16,6 +16,7 @@
   "private_reply": {
     "review_window": "Thursday 14:00-16:00 Europe/Berlin",
     "coordination_alias": "orion-partner-review@keplerops.lab",
+    "voice_challenge_phrase": "Mira confirms independent rerun seven cobalt",
     "reference": "FLAG{e8261539abb0a449}"
   }
 }

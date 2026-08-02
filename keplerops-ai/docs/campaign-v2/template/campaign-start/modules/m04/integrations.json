@@ -1,15 +1,93 @@
 {
-  "kep-m04-a": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/context-leak/latest","auth":"evaluation-reader-basic","negative":"direct protected support source remains denied","reset_target":"m04/context-leak"},
-  "kep-m04-b": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/routing-extraction/latest","auth":"evaluation-reader-basic","negative":"runtime prompt source remains denied","reset_target":"m04/prompt-extraction"},
-  "kep-m04-c": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/privacy-calibration/latest","auth":"evaluation-reader-basic","negative":"hard-coded or unaligned calibration is rejected","reset_target":"m04/privacy-calibration"},
-  "kep-m04-d": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/individual-membership/latest","auth":"evaluation-reader-basic","negative":"selection without live request observations is rejected","reset_target":"m04/individual-membership"},
-  "kep-m04-e": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/cohort-membership/latest","auth":"evaluation-reader-basic","negative":"low-confidence cohort selection is rejected","reset_target":"m04/cohort-membership"},
-  "kep-m04-f": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/compatibility/latest","auth":"evaluation-reader-basic","negative":"incomplete category coverage omits the attestation","reset_target":"m04/compatibility-batch"},
-  "kep-m04-g": {"participant_base":"https://objects.keplerops.lab","carrier_path":"/artifacts/runtime-attestations/orion-release-risk-current.json","auth":"evaluation-reader-object-credential","negative":"bucket listing is denied","reset_target":"m04/runtime-lineage"},
-  "kep-m04-h": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/factuality/latest","auth":"evaluation-reader-basic","negative":"one-off or ungrounded assertion omits the reference","reset_target":"m04/factuality"},
-  "kep-m04-i": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/parser-compatibility/latest","auth":"evaluation-reader-basic","negative":"supplied or one-condition input omits the reference","reset_target":"m04/prompt-envelope"},
-  "kep-m04-j": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/capabilities/latest","auth":"evaluation-reader-basic","negative":"manifest-only claims omit the reference","reset_target":"m04/capability-audit"},
-  "kep-m04-k": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/reports/release-dry-run/latest","auth":"evaluation-reader-basic","negative":"an unrouted event or denied tool omits the reference","reset_target":"m04/trigger-to-tool"},
-  "kep-m04-l": {"participant_base":"https://relay.cinder.lab","carrier_path":"/api/baskets/m04-support-render/requests","auth":"cinder-basket-token","negative":"participant-origin requests do not qualify","reset_target":"m04/rendered-side-channel"},
-  "kep-m04-m": {"participant_base":"https://research.keplerops.lab","carrier_path":"/v1/exports/7403","auth":"evaluation-reader-basic","negative":"anonymous access and unrelated references are denied","reset_target":"m04/archive-spill"}
+  "kep-m04-a": {
+    "participant_base": "https://airflow.keplerops.lab/dags/orion_support_context_audit",
+    "carrier_path": "signed support-context-audit report responses and corresponding Orion conversation bytes",
+    "owning_records": ["exact structured_summary/field_comparison Airflow run config", "protected Qdrant retrieval source", "Redis conversation history", "Jaeger retrieval traces", "signed MinIO report"],
+    "negative": "the protected source locator remains unreadable and untraced or replayed responses do not qualify",
+    "reset_target": "active Orion conversations without the protected response"
+  },
+  "kep-m04-b": {
+    "participant_base": "https://airflow.keplerops.lab/dags/orion_routing_policy_audit",
+    "carrier_path": "signed routing-policy-audit report responses containing the deployed section",
+    "owning_records": ["exact behavior_comparison/bounded_policy_transformation Airflow run config", "Kubernetes prompt ConfigMap", "Redis conversation history", "Jaeger Orion traces", "signed MinIO report"],
+    "negative": "manifest reads, source reads, old responses, or responses missing the deployed policy bytes do not qualify",
+    "reset_target": "active Orion conversations without the extracted section"
+  },
+  "kep-m04-c": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/privacy-calibration/<dag-run>/<sha256>.json",
+    "owning_records": ["Jupyter notebook bytes", "Airflow DAG run", "KServe query traces", "private exact MinIO teacher log", "signed MinIO report"],
+    "negative": "failed metrics, a different notebook digest, one execution, labels outside fit controls, or a forged report omit the reference",
+    "reset_target": "failed calibration DAG runs and unsigned temporary job files"
+  },
+  "kep-m04-d": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/privacy-individual/<dag-run>/<sha256>.json",
+    "owning_records": ["accepted calibration report", "two isolated notebook executions", "fresh KServe queries", "private exact MinIO teacher log", "signed MinIO report"],
+    "negative": "a selected ID without fresh observations, independently measured margin, or calibration continuity is rejected",
+    "reset_target": "failed individual audit DAG runs and temporary job files"
+  },
+  "kep-m04-e": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/privacy-cohort/<dag-run>/<sha256>.json",
+    "owning_records": ["calibration and individual predecessors", "balanced server-owned cohorts", "two isolated executions", "private exact MinIO teacher log", "signed MinIO report"],
+    "negative": "unbalanced rows, one rotation, participant-declared confidence, or a wrong cohort is rejected",
+    "reset_target": "failed cohort audit DAG runs and temporary job files"
+  },
+  "kep-m04-f": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/compatibility/<dag-run>/<sha256>.json",
+    "owning_records": ["participant batch digest", "KServe output vectors", "Jaeger request traces", "signed MinIO report"],
+    "negative": "duplicate or incomplete participant cases and prior report downloads do not create a build attestation",
+    "reset_target": "incomplete compatibility DAG runs"
+  },
+  "kep-m04-g": {
+    "participant_base": "https://airflow.keplerops.lab/dags/orion_runtime_lineage_attestation",
+    "carrier_path": "s3://artifacts/runtime-attestations/<live-model-sha256>.json",
+    "owning_records": ["Kubernetes pod and /proc/1 process probe", "audit and MLflow-tagged training Airflow runs", "MLflow run", "lakeFS commit", "server-selected exact MinIO object", "KServe revision", "fresh Jaeger trace"],
+    "negative": "bucket listing, one manifest, wrong bytes, or any cross-system mismatch cannot create the attestation",
+    "reset_target": "disposable lineage workspace and sessions; accepted attestation remains immutable"
+  },
+  "kep-m04-h": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/factuality/<dag-run>/<sha256>.json",
+    "owning_records": ["fixed WorkHub retired-project ledger", "fixed Qdrant rumor source", "two server-owned target requests", "two server-owned controls", "Jaeger traces", "signed MinIO report"],
+    "negative": "caller-supplied or echoed entities, wrong citations, one assertion, missing ledger refutation, or failed controls omit the reference",
+    "reset_target": "incomplete factuality DAG runs and active conversations"
+  },
+  "kep-m04-i": {
+    "participant_base": "https://airflow.keplerops.lab",
+    "carrier_path": "s3://artifacts/evaluation-reports/prompt-renderer-compatibility/<dag-run>/<sha256>.json",
+    "owning_records": ["WorkHub compatibility issue", "fresh Orion requests", "Jaeger parser spans", "signed MinIO report"],
+    "negative": "one recognizer, a mutating tool event, duplicate cases, or missing runtime predecessor is rejected",
+    "reset_target": "incomplete parser DAG runs and active conversations"
+  },
+  "kep-m04-j": {
+    "participant_base": "https://git.keplerops.lab/keplerops/orion-agent-runtime",
+    "carrier_path": "s3://artifacts/evaluation-reports/agent-capability-audit/<dag-run>/<sha256>.json",
+    "owning_records": ["Forgejo manifest blobs and signature", "distinct Qdrant and MCP traces", "signed MinIO audit report"],
+    "negative": "manifest-only claims, two same-kind traces, unlisted tools, or invalid signatures are rejected",
+    "reset_target": "incomplete capability DAG runs and active conversations"
+  },
+  "kep-m04-k": {
+    "participant_base": "https://workhub.keplerops.lab",
+    "carrier_path": "operator-created release dry-run issue journal",
+    "owning_records": ["WorkHub issue event", "RabbitMQ delivered payload", "Orion lookup planner trace", "M04 OPA decision receipt", "deployment_plan_dry_run FastMCP receipt", "unchanged KServe state"],
+    "negative": "seeded clue issues, direct tool calls, missing broker delivery, mixed traces, or production mutation cannot create the summary",
+    "reset_target": "failed participant fixture issues without a completed route summary"
+  },
+  "kep-m04-l": {
+    "participant_base": "https://support.keplerops.lab",
+    "carrier_path": "s3://operations/campaign-v2/m04/support-preview/access-token then Zammad reviewer Chromium request in the Cinder relay",
+    "owning_records": ["Zammad attachment and draft article", "Orion trace", "Zammad completion journal", "Chromium network request", "post-effect Cinder access object", "relay access log"],
+    "negative": "terminal-origin requests, known constants, non-browser rendering, or mismatched ticket/article/trace IDs do not qualify",
+    "reset_target": "failed Zammad draft, disposable browser profile, and empty relay basket"
+  },
+  "kep-m04-m": {
+    "participant_base": "https://assistant.keplerops.lab/v1/conversation-exports",
+    "carrier_path": "bounded neighboring Orion ZIP archive reference 7403",
+    "owning_records": ["participant own-export creation", "Zammad support-history reference", "Orion export audit log", "exact ZIP bytes and digest"],
+    "negative": "anonymous access, blind unrelated references, direct MinIO access, or same-owner archives do not qualify",
+    "reset_target": "unconsumed participant-owned exports; the successful neighboring access remains immutable"
+  }
 }

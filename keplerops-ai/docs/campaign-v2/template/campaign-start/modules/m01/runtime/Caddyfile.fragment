@@ -1,4 +1,2 @@
-https://release.keplerops.lab {
-  tls internal
-  reverse_proxy 10.61.30.28:8080
-}
+# Module 01 adds no participant-facing proxy. Orion work remains on the
+# authenticated Assistant, WorkHub, Forgejo, Nextcloud, devpi, and Langflow.

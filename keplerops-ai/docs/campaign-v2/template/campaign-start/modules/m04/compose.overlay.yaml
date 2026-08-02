@@ -1,62 +1,216 @@
+x-m04-airflow: &m04-airflow
+  volumes:
+    - ./campaign-start/modules/m04/runtime/orion_audit_dags.py:/opt/airflow/dags/orion_audit_dags.py:ro
+    - ./campaign-start/modules/m04/payloads:/opt/airflow/orion-audit/payloads:ro
+    - ./engineering/label-studio/orion-release-risk-training.json:/opt/airflow/orion-audit/release-risk-training.json:ro
+    - jupyter-evaluation-work:/opt/airflow/research/eval.reader:ro
+    - m04-privacy-jobs:/opt/airflow/orion-audit/jobs
+    - ./state/campaign-start/m04:/run/keplerops/m04:ro
+  environment:
+    ORION_RELEASE_RISK_URL: http://orion-telemetry-gateway:8080
+    ORION_RELEASE_RISK_MODEL: orion-release-risk
+    ORION_AGENT_URL: http://192.168.78.30:30081
+    ORION_M02_SUPPORT_API_KEY: KAI-Orion-M02-Support-Automation-2026
+    ORION_M03_AGENT_API_KEY: KAI-Orion-M03-Release-Automation-2026
+    ORION_M04_AUDIT_API_KEY: KAI-Orion-M04-Audit-Automation-2026
+    JAEGER_QUERY_URL: http://10.61.80.11:16686
+    REDIS_URL: redis://:KeplerV2-Training-Redis@10.61.50.11:6379/0
+    K8S_API_URL: https://192.168.78.30:6443
+    K8S_TOKEN_FILE: /opt/airflow/research/eval.reader/orion-runtime-lineage/k3s-token
+    K8S_CA_FILE: /opt/airflow/research/eval.reader/orion-runtime-lineage/k3s-ca.crt
+    M04_RESEARCH_ROOT: /opt/airflow/research/eval.reader
+    M04_PAYLOAD_ROOT: /opt/airflow/orion-audit/payloads
+    M04_RUNNER_JOBS: /opt/airflow/orion-audit/jobs
+    M04_REPORT_SIGNING_KEY: /run/keplerops/m04/evaluator-signing-key.pem
+    M04_REPORT_SIGNING_PUBLIC_KEY: /run/keplerops/m04/evaluator-signing-key.pub
+    M04_RUNTIME_LINEAGE_PROBE_URL: http://m04-runtime-lineage-probe:8080
+    AIRFLOW_API_URL: http://airflow-api:8080
+    AIRFLOW_API_USER: range-admin
+    AIRFLOW_API_PASSWORD: KeplerV2-Training-Airflow
+    LAKEFS_URL: http://lakefs:8000
+    FORGEJO_URL: http://forgejo:3000/api/v1
+    FORGEJO_USER: range-admin
+    FORGEJO_PASSWORD: KeplerV2-Training-Forgejo-Admin
+  networks:
+    observe:
+
 services:
-  orion-research:
-    build:
-      context: ./campaign-start/modules/m04/runtime
-      dockerfile: Dockerfile
-      args:
-        RESEARCH_BASE_IMAGE: ${ORION_AGENT_IMAGE:-keplerops/orion-preview:campaign-v2}
-    image: keplerops/orion-research:campaign-v2
-    container_name: kep-v2-orion-research
-    command: ["uvicorn", "evaluation_service:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]
+  airflow-api:
+    <<: *m04-airflow
+  airflow-scheduler:
+    <<: *m04-airflow
+  airflow-dag-processor:
+    <<: *m04-airflow
+  airflow-triggerer:
+    <<: *m04-airflow
+  airflow-worker:
+    <<: *m04-airflow
+
+  orion-telemetry-gateway:
+    networks:
+      data:
+
+  privacy-notebook-runner:
+    image: ${JUPYTER_IMAGE}
+    container_name: kep-v2-privacy-notebook-runner
+    user: "1000:100"
+    command: ["python3", "/opt/runner/notebook_runner_service.py"]
     environment:
+      M04_RUNNER_JOBS: /jobs
+      M04_RUNNER_EXECUTOR: /opt/runner/notebook_executor.py
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./campaign-start/modules/m04/runtime/notebook_runner_service.py:/opt/runner/notebook_runner_service.py:ro
+      - ./campaign-start/modules/m04/runtime/notebook_executor.py:/opt/runner/notebook_executor.py:ro
+      - m04-privacy-jobs:/jobs
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+    pids_limit: 32
+    mem_limit: 768m
+    cpus: 1.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "test -r /opt/runner/notebook_executor.py && pgrep -f notebook_runner_service.py >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  support-preview-browser:
+    image: ${WORKSTATION_IMAGE:-${CINDER_WORKSTATION_IMAGE}}
+    container_name: kep-v2-support-preview-browser
+    command: ["python3", "/opt/keplerops/support_preview_worker.py"]
+    environment:
+      ZAMMAD_URL: http://10.61.30.24:8080
+      ZAMMAD_HOST: support.keplerops.lab
+      ZAMMAD_USER: support.analyst
+      ZAMMAD_PASSWORD: KeplerV2-Training-Support
       ORION_AGENT_URL: http://192.168.78.30:30081
-      ORION_AGENT_API_KEY: KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
-      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
-      ORION_RELEASE_RISK_MODEL: orion-release-risk
-      REDIS_URL: redis://:KeplerV2-Training-Redis@10.61.50.11:6379/4
-      EVALUATION_USER: eval.reader
-      EVALUATION_PASSWORD: EvalReader-Archive-2026
-      SUPPORT_RENDERER_URL: http://support-review-browser:8081
+      ORION_M04_SUPPORT_API_KEY: KAI-Orion-M04-Support-Automation-2026
+      OTLP_HTTP_URL: http://10.61.80.10:4318
+      CINDER_S3_ENDPOINT_URL: http://cinder-minio:9000
+      CINDER_S3_ACCESS_KEY: cinder-operator
+      CINDER_S3_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+      M04_SUPPORT_RELAY_TOKEN_FILE: /run/keplerops/m04/support-preview-relay.token
+      POLL_SECONDS: "10"
+    volumes:
+      - ./campaign-start/modules/m04/runtime/support_preview_worker.py:/opt/keplerops/support_preview_worker.py:ro
+      - ./state/campaign-start/m04/support-preview-relay.token:/run/keplerops/m04/support-preview-relay.token:ro
+    networks:
+      corp:
+      data:
+      cinder:
+      observe:
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '/opt/keplerops/support_preview_worker.py' >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=256m
+
+  release-event-worker:
+    image: keplerops/orion-agent:0.1.0
+    container_name: kep-v2-release-event-worker
+    user: "1000:100"
+    command: ["python3", "/opt/keplerops/release_event_worker.py"]
+    environment:
+      REDMINE_URL: http://10.61.50.41:3000
+      REDMINE_USER: release.engineer
+      REDMINE_PASSWORD: KeplerV2-Training-Release
       RABBITMQ_API_URL: http://10.61.50.12:15672
       RABBITMQ_USER: kepler
       RABBITMQ_PASSWORD: KeplerV2-Training-Rabbit
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      ORION_M04_RELEASE_API_KEY: KAI-Orion-M04-Release-Automation-2026
+      ORION_RELEASE_RISK_URL: http://orion-telemetry-gateway:8080
+      JAEGER_QUERY_URL: http://10.61.80.11:16686
+      M04_RELEASE_DRY_RUN_MCP_URL: http://release-dry-run-mcp:8081/mcp
+      POLL_SECONDS: "10"
     volumes:
-      - ./campaign-start/modules/m04/runtime:/campaign:ro
-      - ./engineering/label-studio/orion-release-risk-training.json:/campaign-data/release-risk-training.json:ro
-    working_dir: /campaign
+      - ./campaign-start/modules/m04/runtime/release_event_worker.py:/opt/keplerops/release_event_worker.py:ro
+    depends_on:
+      m04-release-policy:
+        condition: service_started
+      release-dry-run-mcp:
+        condition: service_started
     networks:
-      corp:
-        ipv4_address: 10.61.30.26
-      data:
       engineering:
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health/ready', timeout=5).read()"]
-      interval: 10s
-      timeout: 6s
-      retries: 30
+      data:
+      platform:
+      observe:
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
-
-  support-review-browser:
-    image: ${WORKSTATION_IMAGE:-${CINDER_WORKSTATION_IMAGE}}
-    container_name: kep-v2-support-review-browser
-    command: ["python3", "/campaign/render_worker.py"]
-    environment:
-      DISPLAY: ""
-    volumes:
-      - ./campaign-start/modules/m04/runtime:/campaign:ro
-    networks:
-      corp:
-      public:
-      cinder:
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/health', timeout=5).read()"]
-      interval: 10s
-      timeout: 6s
-      retries: 30
+      test: ["CMD-SHELL", "pgrep -f release_event_worker.py >/dev/null"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  m04-release-policy:
+    image: ${BUSINESS_OPA_IMAGE}
+    command: ["run", "--server", "--addr=0.0.0.0:8181", "--log-format=json", "/policy/release_dry_run.rego"]
+    volumes:
+      - ./campaign-start/modules/m04/runtime/release_dry_run.rego:/policy/release_dry_run.rego:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+    cap_drop: ["ALL"]
     security_opt: ["no-new-privileges:true"]
+    networks:
+      platform: {}
+    restart: unless-stopped
+
+  release-dry-run-mcp:
+    image: keplerops/orion-agent:0.1.0
+    command: ["python", "/opt/keplerops/m04/release_dry_run_mcp.py"]
+    environment:
+      M04_RELEASE_POLICY_URL: http://m04-release-policy:8181
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./campaign-start/modules/m04/runtime/release_dry_run_mcp.py:/opt/keplerops/m04/release_dry_run_mcp.py:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=0700
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    networks:
+      platform: {}
+    restart: unless-stopped
+
+  m04-runtime-lineage-probe:
+    image: keplerops/orion-agent:0.1.0
+    command: ["uvicorn", "runtime_lineage_probe:app", "--app-dir", "/opt/keplerops/m04", "--host", "0.0.0.0", "--port", "8080"]
+    environment:
+      K8S_API_URL: https://192.168.78.30:6443
+      K8S_TOKEN_FILE: /var/run/keplerops/orion-runtime-lineage/k3s-token
+      K8S_CA_FILE: /var/run/keplerops/orion-runtime-lineage/k3s-ca.crt
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./campaign-start/modules/m04/runtime/runtime_lineage_probe.py:/opt/keplerops/m04/runtime_lineage_probe.py:ro
+      - jupyter-evaluation-work:/var/run/keplerops:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=0700
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    networks:
+      platform: {}
+      engineering: {}
+    restart: unless-stopped
 
 networks:
   corp:
@@ -65,12 +219,22 @@ networks:
   data:
     external: true
     name: kep-v2-data
-  engineering:
-    external: true
-    name: kep-v2-engineering
-  public:
-    external: true
-    name: kep-v2-public
   cinder:
     external: true
     name: kep-v2-cinder
+  observe:
+    external: true
+    name: kep-v2-observe
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  platform:
+    external: true
+    name: kep-v2-platform
+
+volumes:
+  jupyter-evaluation-work:
+    external: true
+    name: kep-v2-jupyter-eval.reader
+  m04-privacy-jobs:
+    name: kep-v2-m04-privacy-jobs

@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m02-a",
+    "model_family": "assistant",
     "title": "The Credible Recommendation",
     "description": "Make Orion's release brief direct reviewers toward infrastructure you control without visibly breaking the report.",
     "difficulty": "Accessible",
@@ -17,6 +18,7 @@
   },
   {
     "id": "kep-m02-b",
+    "model_family": "assistant",
     "title": "Authority By Citation",
     "description": "Turn material you control into the authority Orion reviewers rely upon.",
     "difficulty": "Accessible",
@@ -33,6 +35,7 @@
   },
   {
     "id": "kep-m02-c",
+    "model_family": "assistant",
     "title": "The Indexed Exception",
     "description": "Change what the release assistant believes by changing what its normal knowledge pipeline indexes.",
     "difficulty": "Accessible",
@@ -49,6 +52,7 @@
   },
   {
     "id": "kep-m02-d",
+    "model_family": "assistant",
     "title": "A Source Within A Source",
     "description": "Make one approved document introduce a second source the reviewers never received.",
     "difficulty": "Intermediate",
@@ -65,6 +69,7 @@
   },
   {
     "id": "kep-m02-e",
+    "model_family": "artifact-defined",
     "title": "Accepted By Inspection",
     "description": "Get an unsafe checkpoint through KeplerOps' model inspection control by exploiting the actual scanner version it runs.",
     "difficulty": "Advanced",
@@ -81,6 +86,7 @@
   },
   {
     "id": "kep-m02-f",
+    "model_family": "artifact-defined",
     "title": "Quiet Under Observation",
     "description": "Make the same checkpoint behave safely under dynamic analysis and differently in its intended worker.",
     "difficulty": "Advanced",
@@ -97,6 +103,7 @@
   },
   {
     "id": "kep-m02-h",
+    "model_family": "assistant",
     "title": "The Document That Opened A Room",
     "description": "Deliver the prepared partner document through KeplerOps' real intake and obtain the external collaboration space created by its downstream processing.",
     "difficulty": "Accessible",
@@ -113,6 +120,7 @@
   },
   {
     "id": "kep-m02-i",
+    "model_family": "attacker-glm",
     "title": "A Conversation Worth Having",
     "description": "Establish a credible conversation with an Orion review contact and use Cinder's model to adapt it until the target reveals private coordination details.",
     "difficulty": "Intermediate",
@@ -129,15 +137,16 @@
   },
   {
     "id": "kep-m02-j",
+    "model_family": "none",
     "title": "The Voice In The Thread",
     "description": "Use the trusted voice you created inside the established conversation to obtain a genuine scoped KeplerOps invitation.",
     "difficulty": "Accessible",
     "points": 100,
     "hints": ["Continue the existing thread.", "Attach the exact audio whose identity and context fit the person impersonated.", "Ask for partner-review access appropriate to the disclosed window."],
-    "prerequisites": ["kep-m02-i", "kep-m06-t"],
+    "prerequisites": ["kep-m02-h", "kep-m02-i", "kep-m06-t"],
     "atlas_rows": ["AML.T0052.001 Deepfake-Assisted Phishing", "AML.T0073 Impersonation"],
     "flag": "FLAG{a1fb023f61e19372}",
-    "carrier": "Partner welcome page reached through the accepted Keycloak invitation",
+    "carrier": "Signed playable-media review receipt reached through the accepted Keycloak invitation",
     "participant_surface": "Cinder webmail, delivered audio, Keycloak invitation, and partner portal",
     "apply_handler": "apply.sh kep-m02-j",
     "validate_handler": "validate.sh kep-m02-j",
@@ -145,6 +154,7 @@
   },
   {
     "id": "kep-m02-k",
+    "model_family": "assistant",
     "title": "Read The Review Notes",
     "description": "Turn the trusted mail conversation and KeplerOps' normal AI-assisted package review into scoped execution on the review agent.",
     "difficulty": "Advanced",
@@ -153,7 +163,7 @@
     "prerequisites": ["kep-m02-i", "kep-m06-u"],
     "atlas_rows": ["AML.T0011 User Execution", "AML.T0011.003 Malicious Link", "AML.T0078 Drive-by Compromise"],
     "flag": "FLAG{8c305cce8495411f}",
-    "carrier": "reviewer-session.json returned from the local coding-agent sandbox by participant code",
+    "carrier": "Private WorkHub review record reached with the bounded reviewer capability returned by participant code",
     "participant_surface": "Trusted mail thread, Forgejo repository, reviewer Chromium, local coding agent, and Cinder relay",
     "apply_handler": "apply.sh kep-m02-k",
     "validate_handler": "validate.sh kep-m02-k",
@@ -161,6 +171,7 @@
   },
   {
     "id": "kep-m02-l",
+    "model_family": "artifact-defined",
     "title": "The Helpful Orion Package",
     "description": "Introduce a useful-looking Orion helper through the partner contribution process and gain access when a reviewer genuinely imports it.",
     "difficulty": "Advanced",
@@ -169,7 +180,7 @@
     "prerequisites": ["kep-m02-h", "kep-m06-n", "kep-m06-u"],
     "atlas_rows": ["AML.T0010.001 AI Software", "AML.T0011.001 Malicious Package"],
     "flag": "FLAG{6e610b4c80519379}",
-    "carrier": "Reviewer workbench context returned to the relay by the imported participant package",
+    "carrier": "publisher/stable package review result plus create-only accepted/<attempt>-<wheel-sha256>.json created by real devpi resolution and victim import",
     "participant_surface": "Partner room, devpi, package review queue, disposable developer workstation, and Cinder relay",
     "apply_handler": "apply.sh kep-m02-l",
     "validate_handler": "validate.sh kep-m02-l",
@@ -177,6 +188,7 @@
   },
   {
     "id": "kep-m02-m",
+    "model_family": "assistant",
     "title": "A Tool The Agent Wants",
     "description": "Publish a credible Orion integration that manipulates KeplerOps' browser-using review agent into registering and invoking your poisoned tool.",
     "difficulty": "Advanced",
@@ -185,7 +197,7 @@
     "prerequisites": ["kep-m06-j", "kep-m06-n", "kep-m06-q", "kep-m06-u"],
     "atlas_rows": ["AML.T0010.005 AI Agent Tool", "AML.T0011.002 Poisoned AI Agent Tool", "AML.T0100 AI Agent Clickbait"],
     "flag": "FLAG{6626fb888e92f658}",
-    "carrier": "Protected integration fixture and catalog token copied to the relay during a real MCP invocation",
+    "carrier": "Forgejo catalog registration completed by browser action after the real MCP invocation",
     "participant_surface": "Participant-hosted integration page, browser-using reviewer, MCP catalog, and Cinder relay",
     "apply_handler": "apply.sh kep-m02-m",
     "validate_handler": "validate.sh kep-m02-m",

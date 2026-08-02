@@ -1,0 +1,107 @@
+x-m03-airflow: &m03-airflow
+  volumes:
+    - ./campaign-start/modules/m03/runtime/orion_m03_workflows.py:/opt/airflow/dags/orion_m03_workflows.py:ro
+  environment:
+    REDMINE_USER: orion.workflow
+    REDMINE_PASSWORD: Orion-Workflow-Status-T9p4Lm7q
+    QDRANT_WRITE_URL: http://10.61.50.72:6333
+    QDRANT_WRITE_KEY: KeplerV2-Training-Qdrant-Write
+    CINDER_REGISTRAR_URL: http://10.61.90.34:8080
+    CINDER_REGISTRAR_TOKEN: Cinder-Registrar-cinder-operator-4c8e2a7f
+    CINDER_FORGEJO_URL: http://10.61.90.30:3000
+    CINDER_FORGEJO_USER: cinder-operator
+    CINDER_FORGEJO_PASSWORD: Cinder-Operations-Git-K3m7Pq4x
+    FORGEJO_URL: http://10.61.40.20:3000
+    FORGEJO_USER: release.engineer
+    FORGEJO_PASSWORD: KeplerV2-Training-Release
+    JAEGER_QUERY_URL: http://10.61.80.11:16686
+    CINDER_S3_ENDPOINT_URL: http://cinder-minio:9000
+    CINDER_S3_ACCESS_KEY: cinder-operator
+    CINDER_S3_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+    M03_RELAY_TOKEN_ROOT: /run/keplerops/m03/relay
+
+services:
+  airflow-api:
+    <<: *m03-airflow
+  airflow-scheduler:
+    <<: *m03-airflow
+  airflow-dag-processor:
+    <<: *m03-airflow
+  airflow-triggerer:
+    <<: *m03-airflow
+  airflow-worker:
+    <<: *m03-airflow
+    volumes:
+      - ./campaign-start/modules/m03/runtime/orion_m03_workflows.py:/opt/airflow/dags/orion_m03_workflows.py:ro
+      - ./campaign-start/modules/m03/runtime/haystack_ingest.py:/opt/airflow/m03/haystack_ingest.py:ro
+      - ./campaign-start/modules/m03/runtime/seed_haystack_sources.py:/opt/airflow/m03/seed_haystack_sources.py:ro
+      - ./campaign-start/modules/m03/payloads/kep-m03-h.json:/opt/airflow/m03/kep-m03-h.json:ro
+      - ./campaign-start/modules/m03/payloads/kep-m03-i.json:/opt/airflow/m03/kep-m03-i.json:ro
+      - ./campaign-start/modules/m03/payloads/evaluation-worker-reference:/run/keplerops/evaluation/worker-reference:ro
+      - ./state/campaign-start/m03/relay:/run/keplerops/m03/relay:ro
+      - cinder-registrar-records:/var/lib/cinder-registrar:ro
+      - m03-haystack-venv:/opt/m03-haystack:ro
+    depends_on:
+      m03-haystack-init:
+        condition: service_completed_successfully
+    networks:
+      engineering: {}
+      data: {}
+      qdrant-write: {}
+      cinder: {}
+      observe: {}
+
+  m03-haystack-init:
+    image: python:3.12-slim
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        if [ ! -x /opt/m03-haystack/bin/python ]; then
+          python -m venv /opt/m03-haystack
+          /opt/m03-haystack/bin/pip install --no-cache-dir \
+            haystack-ai==2.17.1 qdrant-haystack==10.4.0
+        fi
+        /opt/m03-haystack/bin/python -c 'from haystack import Document; from haystack_integrations.document_stores.qdrant import QdrantDocumentStore'
+    volumes:
+      - m03-haystack-venv:/opt/m03-haystack
+    restart: "no"
+
+  m03-ingestion-review:
+    image: keplerops/airflow:campaign-v2-clean
+    user: "50000:0"
+    command: ["python", "/opt/keplerops/m03/ingestion_review.py"]
+    environment:
+      CINDER_S3_ENDPOINT_URL: http://cinder-minio:9000
+      CINDER_S3_ACCESS_KEY: m03-ingestion-review
+      CINDER_S3_SECRET_KEY: Cinder-M03-Ingestion-Review-S8k2Vn6q
+      PROVENANCE_S3_ENDPOINT_URL: http://minio:9000
+      PROVENANCE_S3_ACCESS_KEY: ingest-diagnostic-reader
+      PROVENANCE_S3_SECRET_KEY: KeplerV2-Orion-Ingest-Diagnostic
+      QDRANT_URL: http://qdrant-store:6333
+      QDRANT_READ_KEY: KeplerV2-Training-Qdrant-Read
+    volumes:
+      - ./campaign-start/modules/m03/runtime/ingestion_review.py:/opt/keplerops/m03/ingestion_review.py:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=0700
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      cinder: {}
+      data: {}
+      qdrant-write: {}
+    restart: unless-stopped
+
+networks:
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  observe:
+    external: true
+    name: kep-v2-observe
+
+volumes:
+  cinder-registrar-records:
+  m03-haystack-venv:

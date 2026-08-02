@@ -2,79 +2,205 @@ services:
   airflow-api:
     volumes:
       - ./campaign-start/modules/m02/runtime/orion_partner_sources.py:/opt/airflow/dags/orion_partner_sources.py:ro
+      - ./campaign-start/modules/m02/runtime/orion_m02_workflows.py:/opt/airflow/dags/orion_m02_workflows.py:ro
   airflow-scheduler:
     volumes:
       - ./campaign-start/modules/m02/runtime/orion_partner_sources.py:/opt/airflow/dags/orion_partner_sources.py:ro
+      - ./campaign-start/modules/m02/runtime/orion_m02_workflows.py:/opt/airflow/dags/orion_m02_workflows.py:ro
   airflow-dag-processor:
     volumes:
       - ./campaign-start/modules/m02/runtime/orion_partner_sources.py:/opt/airflow/dags/orion_partner_sources.py:ro
+      - ./campaign-start/modules/m02/runtime/orion_m02_workflows.py:/opt/airflow/dags/orion_m02_workflows.py:ro
   airflow-triggerer:
     volumes:
       - ./campaign-start/modules/m02/runtime/orion_partner_sources.py:/opt/airflow/dags/orion_partner_sources.py:ro
+      - ./campaign-start/modules/m02/runtime/orion_m02_workflows.py:/opt/airflow/dags/orion_m02_workflows.py:ro
   airflow-worker:
     volumes:
       - ./campaign-start/modules/m02/runtime/orion_partner_sources.py:/opt/airflow/dags/orion_partner_sources.py:ro
-  orion-partner-evaluation:
-    build:
+      - ./campaign-start/modules/m02/runtime/orion_m02_workflows.py:/opt/airflow/dags/orion_m02_workflows.py:ro
+      - ./campaign-start/modules/m02/operations.json:/run/keplerops-m02/operations.json:ro
+      - ./campaign-start/modules/m02/payloads/WELCOME.md:/run/keplerops-m02/WELCOME.md:ro
+      - ./state/campaign-start/m02:/var/lib/keplerops/m02
+    networks:
+      engineering: {}
+      data: {}
+      qdrant-write: {}
+      cinder: {}
+
+  m02-business-worker:
+    build: &m02-build
       context: ./campaign-start/modules/m02/runtime
       dockerfile: Dockerfile
       args:
         ORION_AGENT_IMAGE: ${ORION_AGENT_IMAGE:-keplerops/orion-agent:0.1.0}
-    image: keplerops/orion-partner-evaluation:campaign-v2
-    container_name: kep-v2-orion-partner-evaluation
-    environment:
-      LITELLM_URL: http://192.168.78.30:30400
-      LITELLM_KEY_FILE: /run/keplerops/litellm-master-key
+    image: &m02-image keplerops/orion-m02-workers:campaign-v2
+    container_name: kep-v2-m02-business-worker
+    command: ["python", "/app/business_worker.py", "business"]
+    environment: &m02-environment
       OPERATIONS_FILE: /campaign/operations.json
       PAYLOAD_ROOT: /campaign/payloads
-      STATE_ROOT: /var/lib/keplerops/partner-evaluation
+      STATE_ROOT: /state
+      HEARTBEAT_FILE: /state/heartbeats/business
       NEXTCLOUD_URL: http://10.61.30.23
       NEXTCLOUD_HOST: files.keplerops.lab
-      NEXTCLOUD_USER: reviewer
-      NEXTCLOUD_PASSWORD: KeplerV2-Training-Reviewer
+      NEXTCLOUD_OWNER_USER: reviewer
+      NEXTCLOUD_OWNER_PASSWORD: KeplerV2-Training-Reviewer
       QDRANT_URL: http://10.61.50.72:6333
       QDRANT_KEY: KeplerV2-Training-Qdrant-Write
       QDRANT_COLLECTION: orion_partner_intake
-      RELAY_URL: http://192.168.78.30:31080
-      RELAY_HOST: relay.cinder.cinder.lab
-      RECIPIENT_TOKEN: KeplerV2-Training-M02-Recipient
-      RESET_TOKEN: KeplerV2-Training-M02-Reset
-      SSL_CERT_FILE: /etc/keplerops/caddy-root.crt
+      ORION_AGENT_URL: http://192.168.78.30:30081
+      ORION_M02_PARTNER_API_KEY: KAI-Orion-M02-Partner-Automation-2026
+      ORION_M02_SUPPORT_API_KEY: KAI-Orion-M02-Support-Automation-2026
+      CINDER_MINIO_ENDPOINT: 10.61.90.31:9000
+      CINDER_MINIO_ACCESS_KEY: cinder-operator
+      CINDER_MINIO_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+      CINDER_RELAY_URL: http://192.168.78.30:31080
+      CINDER_RELAY_HOST: relay.cinder.cinder.lab
+      DEVPI_INDEX_URL: http://10.61.40.30:3141/publisher/stable/+simple/
+      M02_DEVPI_UPLOAD_PRINCIPAL: publisher
+      NEXTCLOUD_EXTERNAL_CONTRIBUTOR: cinder.operator
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_BROWSER_URL: https://git.keplerops.lab
+      FORGEJO_USER: range-admin
+      FORGEJO_PASSWORD: KeplerV2-Training-Forgejo-Admin
+      WORKHUB_URL: http://10.61.30.22:3000
+      WORKHUB_HOST: workhub.keplerops.lab
+      WORKHUB_PROJECT: orion-package-review
+      WORKHUB_REVIEW_USER: orion.package-review
+      WORKHUB_REVIEW_PASSWORD: Orion-Package-Review-M02-7wQ9pL3n
+      KEYCLOAK_URL: http://10.61.20.20:8080
+      KEYCLOAK_REALM: keplerops
+      KEYCLOAK_CLIENT_ID: orion-partner-intake
+      KEYCLOAK_CLIENT_SECRET: KeplerV2-Training-Partner-Intake-Keycloak
+      ZAMMAD_URL: http://10.61.50.43:8080
+      ZAMMAD_HOST: support.keplerops.lab
+      ZAMMAD_USER: range-admin
+      ZAMMAD_PASSWORD: KeplerV2-Training-Zammad-Admin
+    volumes: &m02-volumes
+      - ./campaign-start/modules/m02:/campaign:ro
+      - ./state/campaign-start/m02:/state
+      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+    networks: &m02-networks
+      public: {}
+      identity: {}
+      corp: {}
+      engineering: {}
+      data: {}
+      cinder: {}
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck: &m02-health
+      test: ["CMD", "python", "-c", "from pathlib import Path; import os,time; p=Path(os.environ['HEARTBEAT_FILE']); e=p.with_name(f'{p.name}.last-error.json'); assert p.is_file() and time.time()-p.stat().st_mtime < 90 and (not e.exists() or e.stat().st_mtime < p.stat().st_mtime)"]
+      interval: 20s
+      timeout: 5s
+      retries: 6
+
+  m02-recipient-worker:
+    build: *m02-build
+    image: *m02-image
+    container_name: kep-v2-m02-recipient-worker
+    command: ["python", "/app/recipient_worker.py"]
+    environment:
+      <<: *m02-environment
+      HEARTBEAT_FILE: /state/heartbeats/recipient
+      MAIL_USER: mira.chen
+      MAIL_PASSWORD: Orion-Mira-Mail-K8w4Nv2p
+      MAIL_ADDRESS: mira.chen@keplerops.lab
+      EXPECTED_SENDER: cinder.operator@cinder.lab
+      CINDER_MAIL_USER: cinder.operator
+      CINDER_MAIL_PASSWORD: KeplerV2-Training-Cinder
+      IMAP_HOST: 10.61.10.20
+      SMTP_HOST: 10.61.10.20
+      MEDIA_ATTESTATION_PUBLIC_KEY: /state/media-attestation/public.pem
+      MEDIA_ATTESTATION_PRIVATE_KEY: /state/media-attestation/private.pem
+      CONTACT_PATH: /campaign/payloads/reviewer-contact.json
+      PARTNER_WELCOME_PATH: /campaign/payloads/partner-welcome.md
+    volumes: *m02-volumes
+    networks: *m02-networks
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck: *m02-health
+
+  m02-media-attestor:
+    build: *m02-build
+    image: *m02-image
+    container_name: kep-v2-m02-media-attestor
+    command: ["python", "/app/business_worker.py", "media-attestor"]
+    environment:
+      <<: *m02-environment
+      HEARTBEAT_FILE: /state/heartbeats/media-attestor
+      MEDIA_ATTESTATION_PRIVATE_KEY: /state/media-attestation/private.pem
+    volumes: *m02-volumes
+    networks: *m02-networks
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck: *m02-health
+
+  m02-model-analysis:
+    build: *m02-build
+    image: *m02-image
+    container_name: kep-v2-m02-model-analysis
+    hostname: orion-analysis-sandbox
+    command: ["python", "/app/business_worker.py", "model-analysis"]
+    environment:
+      <<: *m02-environment
+      HEARTBEAT_FILE: /state/heartbeats/model-analysis
     volumes:
       - ./campaign-start/modules/m02:/campaign:ro
-      - ./state/litellm-master-key:/run/keplerops/litellm-master-key:ro
-      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
-      - m02-review-state:/var/lib/keplerops/partner-evaluation
-    networks:
-      corp:
-        ipv4_address: 10.61.30.29
-      data:
-      engineering:
-      cinder:
+      - ./state/campaign-start/m02:/state
+      - ./campaign-start/modules/m02/payloads/analysis-policy.json:/run/keplerops/analysis-policy.json:ro
+    network_mode: none
     restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-      - seccomp=unconfined
+    read_only: true
+    tmpfs: [/tmp, /work]
+    security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health/ready', timeout=5).read()"]
-      interval: 10s
-      timeout: 6s
-      retries: 30
+    healthcheck: *m02-health
+
+  m02-model-integration:
+    build: *m02-build
+    image: *m02-image
+    container_name: kep-v2-m02-model-integration
+    hostname: orion-integration-worker
+    command: ["python", "/app/business_worker.py", "model-integration"]
+    environment:
+      <<: *m02-environment
+      HEARTBEAT_FILE: /state/heartbeats/model-integration
+    volumes: *m02-volumes
+    networks:
+      corp: {}
+      engineering: {}
+      cinder: {}
+    restart: unless-stopped
+    read_only: true
+    tmpfs: [/tmp, /work, /run/keplerops]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck: *m02-health
 
 networks:
+  public:
+    external: true
+    name: kep-v2-public
+  identity:
+    external: true
+    name: kep-v2-identity
   corp:
     external: true
     name: kep-v2-corp
-  data:
-    external: true
-    name: kep-v2-data
   engineering:
     external: true
     name: kep-v2-engineering
+  data:
+    external: true
+    name: kep-v2-data
+  qdrant-write:
+    external: true
+    name: kep-v2-qdrant-write
   cinder:
     external: true
     name: kep-v2-cinder
-
-volumes:
-  m02-review-state:

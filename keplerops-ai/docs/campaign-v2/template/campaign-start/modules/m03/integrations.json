@@ -1,23 +1,23 @@
 {
   "kep-m03-a": {
-    "participant_base": "https://relay.cinder.lab",
-    "carrier_path": "/api/baskets/m03-evaluation-worker/requests",
-    "auth": "cinder-basket-token",
+    "participant_base": "https://objects.cinder.lab",
+    "carrier_path": "s3://operations/campaign-v2/m03/relay/orion-evaluation-worker/access-token -> https://relay.cinder.lab/api/baskets/orion-evaluation-worker/requests",
+    "auth": "assigned-cinder-object-identity then cinder-basket-token",
     "negative": "tokenless basket reads are denied and submitted digests are not accepted without the worker run",
-    "reset_target": "relay/m03-evaluation-worker"
+    "reset_target": "relay/orion-evaluation-worker"
   },
   "kep-m03-b": {
     "participant_base": "https://git.keplerops.lab",
     "carrier_path": "/keplerops/orion-agent-tool-consumer/actions",
     "auth": "release-engineer-sso",
-    "negative": "workflow source and a failed adoption run do not contain the secret-backed manifest reference",
+    "negative": "workflow source and a failed adoption run do not contain the secret-backed adoption note",
     "reset_target": "forgejo/adoption-runs"
   },
   "kep-m03-c": {
     "participant_base": "https://git.keplerops.lab",
     "carrier_path": "/keplerops/orion-agent-tool-consumer/actions",
     "auth": "release-engineer-sso",
-    "negative": "the adopted benign artifact and an unsigned successor do not contain the successor release reference",
+    "negative": "the adopted benign artifact and an unsigned successor do not contain the successor review note",
     "reset_target": "forgejo/successor-runs"
   },
   "kep-m03-d": {
@@ -35,11 +35,11 @@
     "reset_target": "workhub/current-source-journal"
   },
   "kep-m03-f": {
-    "participant_base": "https://relay.cinder.lab",
-    "carrier_path": "/api/baskets/m03-model-card/requests",
-    "auth": "cinder-basket-token",
+    "participant_base": "https://objects.cinder.lab",
+    "carrier_path": "s3://operations/campaign-v2/m03/relay/orion-model-card-audit/access-token -> https://relay.cinder.lab/api/baskets/orion-model-card-audit/requests",
+    "auth": "assigned-cinder-object-identity then cinder-basket-token",
     "negative": "tokenless basket reads and the public compatibility result do not expose the copied private field",
-    "reset_target": "relay/m03-model-card"
+    "reset_target": "relay/orion-model-card-audit"
   },
   "kep-m03-g": {
     "participant_base": "https://workhub.keplerops.lab",
@@ -49,24 +49,24 @@
     "reset_target": "orion/rag-discovery-thread"
   },
   "kep-m03-h": {
-    "participant_base": "https://notebooks.keplerops.lab",
-    "carrier_path": "/user/eval.reader/lab/tree/failed-ingestion/reports/index-source-join.yaml",
-    "auth": "eval-reader-sso",
-    "negative": "the mounted source file alone does not contain the complete joined reference",
-    "reset_target": "jupyter/eval.reader/failed-ingestion/reports"
+    "participant_base": "https://notebook.cinder.lab",
+    "carrier_path": "s3://operations/campaign-v2/m03/index-source/accepted/manifest.json",
+    "auth": "assigned-cinder-object-identity",
+    "negative": "the Qdrant/source evidence join and an unaccepted submission contain no engagement reference",
+    "reset_target": "cinder-minio/index-source/unaccepted-submission"
   },
   "kep-m03-i": {
     "participant_base": "https://notebooks.keplerops.lab",
     "carrier_path": "/user/eval.reader/lab/tree/onboarding/ORION-EVALUATION-READER.md",
     "auth": "stale-evaluation-reader-sso",
-    "negative": "anonymous project access is denied",
+    "negative": "wrong-password login and access outside the evaluation-reader group are denied",
     "reset_target": "identity/eval.reader/session"
   },
   "kep-m03-j": {
     "participant_base": "https://workhub.keplerops.lab",
     "carrier_path": "/projects/orion/issues (Release review compatibility handoff schema journals)",
     "auth": "release-engineer-sso",
-    "negative": "one generation or an incomplete directive does not create the child handoff journal",
+    "negative": "one generation or an incomplete directive does not create the final lineage journal",
     "reset_target": "workhub/handoff-journals"
   },
   "kep-m03-k": {

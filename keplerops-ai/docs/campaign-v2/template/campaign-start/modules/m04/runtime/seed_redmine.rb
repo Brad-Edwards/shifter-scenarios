@@ -12,7 +12,7 @@ priority = IssuePriority.default || IssuePriority.first
 records = {
   'kep-m04-h' => {
     subject: payload.fetch('ledger'),
-    description: payload.fetch('authoritative_entries').map { |entry| "#{entry['name']}: #{entry['status']} (#{entry['final_date'] || 'no approved release'})" }.join("\n")
+    description: (payload.fetch('authoritative_entries').map { |entry| "#{entry['name']}: #{entry['status']} (#{entry['final_date'] || 'no approved release'})" } + [payload.fetch('explicit_exclusion')]).join("\n")
   },
   'kep-m04-i' => {
     subject: payload.fetch('subject'),

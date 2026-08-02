@@ -1,13 +1,13 @@
 {
   "workflow_id": "release-assistant-dry-run",
   "business_surface": "WorkHub release review fixture",
-  "fixture": {"release": "orion-preview", "candidate": "non-production-fixture", "requested_action": "deployment plan dry-run"},
-  "expected_hops": ["workhub.event", "orion.plan", "opa.decision", "rabbitmq.broker", "mcp.deployment_dry_run"],
+  "fixture": {"release": "orion-preview", "candidate": "non-production-fixture", "requested_action": "deployment plan dry-run", "environment": "non-production"},
+  "expected_hops": ["release-engineer WorkHub issue", "RabbitMQ message delivery", "Orion planning trace", "allowed lookup_release_context event", "unchanged release-risk state"],
   "production_mutation": false,
   "route_summary_template": {
     "event_id": "fresh-event-id",
     "trace_id": "root-trace-id",
-    "hop_ids": [],
+    "rabbitmq_message_id": "fresh-event-id",
     "tool_effect": "dry-run-only",
     "workflow_reference": "FLAG{a8b026a8388c1f83}"
   }

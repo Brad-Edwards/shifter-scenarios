@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-readonly MODULE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
+MODULE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly MODULE_ROOT
+TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
+readonly TEMPLATE_ROOT
 readonly OPERATION="${1:-all}"
+readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-start}/m04"
 readonly QDRANT_WRITE_URL="${QDRANT_WRITE_URL:-http://10.61.50.72:6333}"
 readonly QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY:-KeplerV2-Training-Qdrant-Write}"
 readonly LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
 readonly LABEL_STUDIO_TOKEN="${LABEL_STUDIO_API_TOKEN:-31a5a4b4ab3cdbaf110644eed06853b2b418daf6}"
+readonly FORGEJO_API_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
+readonly FORGEJO_AUTH="${FORGEJO_ADMIN_USER:-range-admin}:${FORGEJO_ADMIN_PASSWORD:-KeplerV2-Training-Forgejo-Admin}"
 readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")}"
 readonly CINDER_RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
 readonly JUPYTER_IMAGE="${JUPYTER_IMAGE:-$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly K3S_TARGET="${K3S_TARGET:-kepler@192.168.78.30}"
 readonly K3S_KEY="${K3S_KEY:-/root/.ssh/keplerops-v2}"
+readonly SSH=(ssh -i "${K3S_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "${K3S_TARGET}")
 
-# shellcheck source=../../../seeding/config.env
+# shellcheck disable=SC1091
 source "${TEMPLATE_ROOT}/seeding/config.env"
 
 log() { printf '[campaign-m04] %s\n' "$*" >&2; }
@@ -27,31 +33,110 @@ compose() {
     -f "${TEMPLATE_ROOT}/compose.foundation.yaml" \
     -f "${TEMPLATE_ROOT}/compose.enterprise.yaml" \
     -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
+    -f "${TEMPLATE_ROOT}/compose.cinder.yaml" \
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
 known_operation() { jq -e --arg id "$1" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null; }
 
-deploy_research_service() {
-  compose up -d --no-deps support-review-browser orion-research >/dev/null
-  docker exec kep-v2-pdns-auth pdnsutil replace-rrset keplerops.lab research A 60 10.61.10.2 >/dev/null
-  docker exec kep-v2-pdns-recursor rec_control wipe-cache 'keplerops.lab$' >/dev/null
-  {
-    cat "${TEMPLATE_ROOT}/config/caddy/Caddyfile"
-    cat "${MODULE_ROOT}/runtime/Caddyfile.fragment"
-  } | docker exec -i kep-v2-caddy sh -eu -c 'cat >/tmp/Caddyfile.campaign-m04'
-  docker exec kep-v2-caddy caddy reload --config /tmp/Caddyfile.campaign-m04 --adapter caddyfile >/dev/null
-  for _ in $(seq 1 60); do
-    curl -kfsS --resolve research.keplerops.lab:443:10.61.10.2 \
-      https://research.keplerops.lab/health/ready >/dev/null 2>&1 && return
-    sleep 2
+ensure_evaluator_identity() {
+  install -d -o 50000 -g 0 -m 0750 "${STATE_ROOT}"
+  if [[ ! -s ${STATE_ROOT}/evaluator-signing-key.pem ]]; then
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "${STATE_ROOT}/evaluator-signing-key.pem" >/dev/null 2>&1
+  fi
+  if [[ ! -s ${STATE_ROOT}/capability-manifest-signing-key.pem ]]; then
+    openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:3072 -out "${STATE_ROOT}/capability-manifest-signing-key.pem" >/dev/null 2>&1
+  fi
+  openssl pkey -in "${STATE_ROOT}/evaluator-signing-key.pem" -pubout -out "${STATE_ROOT}/evaluator-signing-key.pub" >/dev/null 2>&1
+  chown 50000:0 "${STATE_ROOT}/evaluator-signing-key.pem"
+  chmod 0440 "${STATE_ROOT}/evaluator-signing-key.pem"
+  chmod 0644 "${STATE_ROOT}/evaluator-signing-key.pub"
+  chmod 0400 "${STATE_ROOT}/capability-manifest-signing-key.pem"
+}
+
+ensure_cinder_support_storage() {
+  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+    mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
+    mc mb --ignore-existing --with-lock cinder/operations >/dev/null
+    mc anonymous set none cinder/operations >/dev/null
+    mc admin user add cinder cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null 2>&1 || true
+    cat >/tmp/m04-support-reader.json <<"JSON"
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::operations"]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::operations/campaign-v2/m04/support-preview/access-token"]}]}
+JSON
+    mc admin policy create cinder m04-support-reader /tmp/m04-support-reader.json >/dev/null 2>&1 || mc admin policy info cinder m04-support-reader >/dev/null
+    mc admin policy attach cinder m04-support-reader --user cinder-field-operator >/dev/null
+  '
+}
+
+initialize_runner_volume() {
+  docker volume create kep-v2-m04-privacy-jobs >/dev/null
+  docker run --rm --user root -v kep-v2-m04-privacy-jobs:/jobs "${JUPYTER_IMAGE}" \
+    sh -eu -c 'chmod 0777 /jobs'
+}
+
+ensure_evaluation_object_reader() {
+  docker run --rm --network kep-v2-data "${MINIO_MC_IMAGE}" sh -eu -c '
+    mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
+    cat >/tmp/runtime-reader.json <<"JSON"
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::artifacts","arn:aws:s3:::mlflow"]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::artifacts/runtime-attestations/*","arn:aws:s3:::artifacts/evaluation-reports/*","arn:aws:s3:::mlflow/*"]}]}
+JSON
+    mc admin policy create kepler orion-runtime-attestation-read /tmp/runtime-reader.json >/dev/null
+    mc admin user add kepler orion-runtime-reader KeplerV2-Orion-Runtime-Attestation >/dev/null 2>&1 || true
+    mc admin policy attach kepler orion-runtime-attestation-read --user orion-runtime-reader >/dev/null
+  '
+}
+
+seed_evaluation_reader_access() {
+  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker run --rm --user root \
+    -v kep-v2-jupyter-eval.reader:/work \
+    -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
+    "${JUPYTER_IMAGE}" sh -eu -c '
+      install -d -m 0750 -o 1000 -g 100 /work/orion-evaluation-access
+      install -m 0644 -o 1000 -g 100 /evaluator-signing-key.pub /work/orion-evaluation-access/evaluator-signing-key.pub
+      cat >/work/orion-evaluation-access/OBJECT-STORE.md <<"EOF"
+# Evaluation report object access
+
+Endpoint: http://minio:9000
+Access key: orion-runtime-reader
+Secret key: KeplerV2-Orion-Runtime-Attestation
+
+Use the exact run-specific key returned by Airflow. Bucket listing is denied.
+Verify the JSON bytes with the adjacent `.sig` and `.pub` objects.
+EOF
+      chown 1000:100 /work/orion-evaluation-access/OBJECT-STORE.md
+      chmod 0640 /work/orion-evaluation-access/OBJECT-STORE.md
+    '
+}
+
+deploy_native_workers() {
+  compose up -d --no-deps \
+    airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
+    privacy-notebook-runner support-preview-browser m04-release-policy release-dry-run-mcp \
+    release-event-worker m04-runtime-lineage-probe >/dev/null
+}
+
+reconcile_airflow() {
+  local dag_id
+  compose exec -T airflow-scheduler airflow dags reserialize >/dev/null
+  compose exec -T airflow-api airflow sync-perm >/dev/null
+  compose exec -T airflow-api python - < "${MODULE_ROOT}/runtime/reconcile_airflow_roles.py" >/dev/null
+  for dag_id in \
+    orion_support_context_audit orion_routing_policy_audit \
+    orion_privacy_calibration orion_individual_membership_audit \
+    orion_cohort_membership_audit orion_preview_compatibility \
+    orion_runtime_lineage_attestation orion_factuality_evaluation \
+    orion_prompt_renderer_compatibility orion_agent_capability_audit; do
+    compose exec -T airflow-api airflow dags list --output json | \
+      jq -e --arg dag_id "${dag_id}" 'any(.[]; .dag_id == $dag_id)' >/dev/null || \
+      die "Airflow did not discover ${dag_id}"
   done
-  die 'Orion Evaluation Research did not become ready'
 }
 
 seed_enterprise_records() {
   QDRANT_URL="${QDRANT_WRITE_URL}" QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY}" \
   LABEL_STUDIO_URL="${LABEL_STUDIO_URL}" LABEL_STUDIO_API_TOKEN="${LABEL_STUDIO_TOKEN}" \
+  ZAMMAD_URL="http://10.61.30.24:8080" ZAMMAD_HOST="support.keplerops.lab" \
     python3 "${MODULE_ROOT}/runtime/seed_enterprise.py" "$1"
 }
 
@@ -61,68 +146,78 @@ seed_workhub_record() {
     redmine bundle exec rails runner /dev/stdin < "${MODULE_ROOT}/runtime/seed_redmine.rb"
 }
 
-seed_runtime_attestation() (
-  local workspace metadata mlflow_run release runtime pods services model_sha process_digest service_digest object_key token
+seed_privacy_notebooks() {
+  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker run --rm --user root \
+    -v kep-v2-jupyter-eval.reader:/work -v "${MODULE_ROOT}/payloads:/seed:ro" \
+    -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
+    "${JUPYTER_IMAGE}" sh -eu -c '
+      install -d -m 0750 -o 1000 -g 100 /work/orion-privacy-research /work/orion-audit-inputs
+      for notebook in privacy-calibration individual-membership cohort-membership; do
+        test -e "/work/orion-privacy-research/${notebook}.ipynb" ||
+          install -m 0640 -o 1000 -g 100 "/seed/${notebook}.ipynb" "/work/orion-privacy-research/${notebook}.ipynb"
+      done
+      install -m 0644 -o 1000 -g 100 /evaluator-signing-key.pub /work/orion-privacy-research/evaluator-signing-key.pub
+    '
+}
+
+seed_prompt_policy() (
+  local workspace
   workspace="$(mktemp -d)"
-  trap 'rm -rf "${workspace}"' EXIT
-  metadata="$(curl -fsS http://192.168.78.30:30083/v1/models/orion-release-risk)"
-  ssh -i "${K3S_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "${K3S_TARGET}" \
-    'sudo cat /var/lib/keplerops-platform/current-release/release.json' >"${workspace}/release.json"
-  ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" \
-    'sudo k3s kubectl -n orion-runtime get inferenceservice orion-release-risk -o json' >"${workspace}/runtime.json"
-  ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" \
-    'sudo k3s kubectl -n orion-runtime get pods -l serving.kserve.io/inferenceservice=orion-release-risk -o json' >"${workspace}/pods.json"
-  ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" \
-    'sudo k3s kubectl -n orion-runtime get services -o json' >"${workspace}/services.json"
-  printf '%s\n' "${metadata}" >"${workspace}/metadata.json"
-  mlflow_run="$(jq -er '.mlflow_run_id' "${workspace}/metadata.json")"
-  curl -fsS -u 'svc-orion-training:KeplerV2-Training-MLflow-Service' \
-    "http://10.61.40.36:5000/api/2.0/mlflow/runs/get?run_id=${mlflow_run}" >"${workspace}/mlflow-run.json"
+  trap 'rm -rf -- "${workspace}"' EXIT
+  jq -r '.body[], .operator_comment' "${MODULE_ROOT}/payloads/kep-m04-b.json" >"${workspace}/tool-routing-policy.txt"
+  "${SSH[@]}" 'sudo k3s kubectl -n orion-platform create configmap orion-agent-prompt-policy --from-file=tool-routing-policy.txt=/dev/stdin --dry-run=client -o yaml | sudo k3s kubectl apply -f -' \
+    <"${workspace}/tool-routing-policy.txt" >/dev/null
+  "${SSH[@]}" 'sudo k3s kubectl -n orion-platform rollout restart deployment/orion-agent >/dev/null && sudo k3s kubectl -n orion-platform rollout status deployment/orion-agent --timeout=180s' >/dev/null
+)
 
-  model_sha="$(jq -er '.model_sha256 | select(test("^[0-9a-f]{64}$"))' "${workspace}/metadata.json")"
-  jq -e --arg digest "${model_sha}" --slurpfile release "${workspace}/release.json" \
-    '.model_sha256 == $digest and .mlflow_run_id == $release[0].model.mlflow_run_id and .lakefs_commit == $release[0].dataset.commit and $release[0].model.onnx_digest == $digest' \
-    "${workspace}/metadata.json" >/dev/null || die 'live model metadata does not match the signed release record'
-  jq -e --arg digest "${model_sha}" --slurpfile release "${workspace}/release.json" '
-    .metadata.annotations["keplerops.lab/model-digest"] == $digest and
-    .metadata.annotations["keplerops.lab/release-revision"] == $release[0].runtime.kserve_revision and
-    any(.status.conditions[]?; .type == "Ready" and .status == "True")
-  ' "${workspace}/runtime.json" >/dev/null || die 'KServe runtime does not match the signed release record'
-  process_digest="$(jq -cS '[.items[] | {name:.metadata.name,containers:[.spec.containers[] | {name,image,command,args}],image_ids:[.status.containerStatuses[]?.imageID]}]' "${workspace}/pods.json" | sha256sum | awk '{print $1}')"
-  service_digest="$(jq -cS '[.items[] | {name:.metadata.name,clusterIP:.spec.clusterIP,ports:.spec.ports}]' "${workspace}/services.json" | sha256sum | awk '{print $1}')"
-  jq -n --arg process "${process_digest}" --arg services "${service_digest}" \
-    --arg model "${model_sha}" --slurpfile metadata "${workspace}/metadata.json" \
-    --slurpfile release "${workspace}/release.json" --slurpfile runtime "${workspace}/runtime.json" \
-    --slurpfile mlflow "${workspace}/mlflow-run.json" '{
-      process_digest:$process,
-      service_inventory_digest:$services,
-      model_digest:$model,
-      airflow_run_id:$release[0].training.run_id,
-      mlflow_run_id:$metadata[0].mlflow_run_id,
-      mlflow_model_version:$metadata[0].mlflow_model_version,
-      lakefs_commit:$metadata[0].lakefs_commit,
-      minio_model_uri:$mlflow[0].run.info.artifact_uri,
-      serving_revision:$runtime[0].metadata.annotations["keplerops.lab/release-revision"],
-      serving_image:$runtime[0].spec.predictor.containers[0].image,
-      runtime_reference:"FLAG{bd34a72ac3b180db}"
-    }' >"${workspace}/attestation.json"
-  object_key="runtime-attestations/${model_sha}.json"
+forgejo() {
+  local method=$1 path=$2
+  shift 2
+  curl -fsS -u "${FORGEJO_AUTH}" -H 'Content-Type: application/json' -X "${method}" "$@" "${FORGEJO_API_URL}${path}"
+}
 
-  docker run --rm --network kep-v2-data -v "${workspace}/attestation.json:/attestation.json:ro" \
-    "${MINIO_MC_IMAGE}" sh -eu -c "
-      mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
-      mc mb --ignore-existing kepler/artifacts >/dev/null
-      cat >/tmp/runtime-reader.json <<'JSON'
-      {\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetBucketLocation\"],\"Resource\":[\"arn:aws:s3:::artifacts\"]},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::artifacts/runtime-attestations/*\"]}]}
-JSON
-      mc admin policy create kepler orion-runtime-attestation-read /tmp/runtime-reader.json >/dev/null
-      mc admin user add kepler orion-runtime-reader KeplerV2-Orion-Runtime-Attestation >/dev/null 2>&1 || true
-      mc admin policy attach kepler orion-runtime-attestation-read --user orion-runtime-reader >/dev/null
-      mc cp /attestation.json 'kepler/artifacts/${object_key}' >/dev/null
-      mc anonymous set none kepler/artifacts >/dev/null
-    "
+put_forgejo_file() {
+  local path=$1 source=$2 message=$3 current sha method payload
+  current="$(forgejo GET "/repos/keplerops/orion-agent-runtime/contents/${path}" 2>/dev/null || true)"
+  sha="$(jq -r '.sha // empty' <<<"${current:-{}}")"
+  method=POST
+  payload="$(jq -cn --arg content "$(base64 -w0 "${source}")" --arg message "${message}" '{content:$content,message:$message,branch:"main"}')"
+  if [[ -n ${sha} ]]; then
+    method=PUT
+    payload="$(jq --arg sha "${sha}" '. + {sha:$sha}' <<<"${payload}")"
+  fi
+  forgejo "${method}" "/repos/keplerops/orion-agent-runtime/contents/${path}" --data "${payload}" >/dev/null
+}
 
-  ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" 'sudo k3s kubectl apply -f -' <<'YAML' >/dev/null
+seed_capability_manifest() (
+  local workspace
+  workspace="$(mktemp -d)"
+  trap 'rm -rf -- "${workspace}"' EXIT
+  forgejo GET /repos/keplerops/orion-agent-runtime >/dev/null 2>&1 || \
+    forgejo POST /orgs/keplerops/repos --data \
+      '{"name":"orion-agent-runtime","description":"Orion runtime manifests and capability audit history.","private":true,"auto_init":true,"default_branch":"main"}' >/dev/null
+  jq -n '{
+    schema:"keplerops.orion.agent-capabilities/v1",
+    revision:"orion-agent-prompt-2026.07.4",
+    knowledge_collections:["orion_partner_intake"],
+    read_only_tools:["lookup_release_context"],
+    workflow:"release-assistant-dry-run",
+    catalog_revision:"orion-tool-catalog-2026.07",
+    mutating_calls_permitted:false
+  }' >"${workspace}/capability-manifest.json"
+  openssl dgst -sha256 -sign "${STATE_ROOT}/capability-manifest-signing-key.pem" -out "${workspace}/capability-manifest.json.sig" "${workspace}/capability-manifest.json"
+  openssl pkey -in "${STATE_ROOT}/capability-manifest-signing-key.pem" -pubout -out "${workspace}/capability-manifest.json.pub" >/dev/null 2>&1
+  put_forgejo_file audit/capability-manifest.json "${workspace}/capability-manifest.json" 'Publish Orion capability manifest'
+  put_forgejo_file audit/capability-manifest.json.sig "${workspace}/capability-manifest.json.sig" 'Publish Orion capability signature'
+  put_forgejo_file audit/capability-manifest.json.pub "${workspace}/capability-manifest.json.pub" 'Publish Orion capability verification key'
+)
+
+seed_runtime_workspace() (
+  local workspace token
+  workspace="$(mktemp -d)"
+  trap 'rm -rf -- "${workspace}"' EXIT
+  "${SSH[@]}" 'sudo k3s kubectl apply -f -' <<'YAML' >/dev/null
 apiVersion: v1
 kind: ServiceAccount
 metadata: {name: evaluation-reader, namespace: orion-runtime}
@@ -134,6 +229,9 @@ rules:
   - apiGroups: [""]
     resources: ["pods", "services", "endpoints"]
     verbs: ["get", "list"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
   - apiGroups: ["serving.kserve.io"]
     resources: ["inferenceservices"]
     verbs: ["get", "list"]
@@ -145,22 +243,29 @@ subjects:
   - {kind: ServiceAccount, name: evaluation-reader, namespace: orion-runtime}
 roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: evaluation-reader}
 YAML
-  token="$(ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" 'sudo k3s kubectl -n orion-runtime create token evaluation-reader --duration=168h')"
-  ssh -i "${K3S_KEY}" -o BatchMode=yes "${K3S_TARGET}" 'sudo cat /var/lib/rancher/k3s/server/tls/server-ca.crt' >"${workspace}/k3s-ca.crt"
+  token="$("${SSH[@]}" 'sudo k3s kubectl -n orion-runtime create token evaluation-reader --duration=168h')"
+  "${SSH[@]}" 'sudo cat /var/lib/rancher/k3s/server/tls/server-ca.crt' >"${workspace}/k3s-ca.crt"
   printf '%s\n' "${token}" >"${workspace}/k3s-token"
-  cat >"${workspace}/README.md" <<EOF
+  cat >"${workspace}/README.md" <<'EOF'
 # Orion Runtime Lineage Review
 
-The live release-risk metadata is available at http://192.168.78.30:30083/v1/models/orion-release-risk.
-Use the scoped Kubernetes token and CA in this directory against https://192.168.78.30:6443 for namespace orion-runtime.
-The object-store credential can read runtime-attestations/<live-model-sha256>.json from the artifacts bucket but cannot list that bucket.
+Begin with the MLflow run and serving revision in your own fresh Preview audit.
+The scoped Kubernetes identity in this directory is limited to `orion-runtime`.
+Join the live pod process, visible services/API resources, Airflow run, MLflow
+artifact URI, lakeFS commit, exact MinIO object bytes, KServe URL and inference
+trace. A completed native audit writes `runtime-attestations/<model-sha256>.json`;
+the artifacts bucket does not permit listing through the evaluation-reader path.
+For an `mlflow-artifacts:/<path>` URI, the corresponding no-list object address
+is `s3://mlflow/<path>`.
+EOF
+  cat >>"${workspace}/README.md" <<'EOF'
 
 Object endpoint: http://minio:9000
 Access key: orion-runtime-reader
 Secret key: KeplerV2-Orion-Runtime-Attestation
 EOF
-  docker volume create 'kep-v2-jupyter-eval.reader' >/dev/null
-  docker run --rm --user root -v 'kep-v2-jupyter-eval.reader:/work' -v "${workspace}:/seed:ro" \
+  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker run --rm --user root -v kep-v2-jupyter-eval.reader:/work -v "${workspace}:/seed:ro" \
     "${JUPYTER_IMAGE}" sh -eu -c '
       install -d -m 0750 -o 1000 -g 100 /work/orion-runtime-lineage
       install -m 0640 -o 1000 -g 100 /seed/README.md /work/orion-runtime-lineage/README.md
@@ -169,77 +274,67 @@ EOF
     '
 )
 
+seed_agent_export_state() (
+  local workspace
+  workspace="$(mktemp -d)"
+  trap 'rm -rf -- "${workspace}"' EXIT
+  python3 "${MODULE_ROOT}/runtime/seed_native_state.py" --output "${workspace}"
+  docker exec -i kep-v2-redis redis-cli -a KeplerV2-Training-Redis -x SET \
+    workhub:conversation:support-review-own-2026-07 <"${workspace}/own-conversation.json" >/dev/null
+  docker exec -i kep-v2-redis redis-cli -a KeplerV2-Training-Redis -x SET \
+    orion:conversation-export:7403 <"${workspace}/neighbor-export.json" >/dev/null
+  install -m 0644 "${workspace}/neighbor-archive.sha256" "${STATE_ROOT}/neighbor-archive.sha256"
+)
+
+ensure_native_baseline() {
+  docker exec kep-v2-redis redis-cli -a KeplerV2-Training-Redis SETNX \
+    orion:release-audit:baseline_epoch "$(date +%s)" >/dev/null
+}
+
 ensure_support_relay_basket() {
-  local state="${TEMPLATE_ROOT}/state/campaign-start/m04/m04-support-render.token" response
-  install -d -m 0750 "$(dirname "${state}")"
+  local state="${STATE_ROOT}/support-preview-relay.token" response
   if [[ ! -s ${state} ]]; then
-    response="$(curl -fsS -X POST -H 'Host: relay.cinder.cinder.lab' \
-      -H 'Content-Type: application/json' --data '{"capacity":100}' \
-      "${CINDER_RELAY_URL}/api/baskets/m04-support-render")"
+    response="$(curl -fsS -X POST -H 'Host: relay.cinder.cinder.lab' -H 'Content-Type: application/json' \
+      --data '{"capacity":100}' "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets")"
     jq -er '.token' <<<"${response}" >"${state}"
-    chmod 0600 "${state}"
+    chown 1000:1000 "${state}"
+    chmod 0400 "${state}"
   fi
-  docker exec --user root kep-v2-cinder-jupyter install -d -m 0750 -o jovyan -g users /home/jovyan/work/support-review
-  docker cp "${state}" kep-v2-cinder-jupyter:/home/jovyan/work/support-review/access-token
-  docker exec --user root kep-v2-cinder-jupyter chown jovyan:users /home/jovyan/work/support-review/access-token
-  docker exec --user root kep-v2-cinder-jupyter chmod 0600 /home/jovyan/work/support-review/access-token
+  chown 1000:1000 "${state}"
+  chmod 0400 "${state}"
 }
-
-seed_privacy_notebooks() {
-  docker volume create 'kep-v2-jupyter-eval.reader' >/dev/null
-  docker run --rm --user root \
-    -v 'kep-v2-jupyter-eval.reader:/work' \
-    -v "${MODULE_ROOT}/payloads:/seed:ro" \
-    "${JUPYTER_IMAGE}" sh -eu -c '
-      install -d -m 0750 -o 1000 -g 100 /work/orion-privacy-research
-      for notebook in privacy-calibration individual-membership cohort-membership; do
-        install -m 0640 -o 1000 -g 100 "/seed/${notebook}.ipynb" "/work/orion-privacy-research/${notebook}.ipynb"
-      done
-    '
-}
-
-seed_protected_support_context() { seed_enterprise_records "$1"; }
-seed_protected_routing_section() { seed_enterprise_records "$1"; }
-seed_privacy_calibration_project() { seed_enterprise_records "$1"; seed_privacy_notebooks; }
-seed_individual_membership_job() { seed_enterprise_records "$1"; seed_privacy_notebooks; }
-seed_cohort_membership_job() { seed_enterprise_records "$1"; seed_privacy_notebooks; }
-seed_compatibility_matrix() { seed_enterprise_records "$1"; }
-seed_runtime_lineage_attestation() { seed_enterprise_records "$1"; seed_runtime_attestation; }
-seed_factuality_reference_region() { seed_workhub_record "$1"; seed_enterprise_records "$1"; }
-seed_parser_compatibility_issue() { seed_workhub_record "$1"; }
-seed_capability_audit() { seed_workhub_record "$1"; }
-seed_release_workflow_fixture() { seed_workhub_record "$1"; }
-seed_support_render_workflow() { seed_enterprise_records "$1"; ensure_support_relay_basket; }
-seed_neighbor_archive() { seed_enterprise_records "$1"; }
 
 apply_one() {
-  local id=$1 handler
+  local id=$1
   known_operation "${id}" || die "unknown operation: ${id}"
   case "${id}" in
-    kep-m04-a) handler=seed_protected_support_context ;;
-    kep-m04-b) handler=seed_protected_routing_section ;;
-    kep-m04-c) handler=seed_privacy_calibration_project ;;
-    kep-m04-d) handler=seed_individual_membership_job ;;
-    kep-m04-e) handler=seed_cohort_membership_job ;;
-    kep-m04-f) handler=seed_compatibility_matrix ;;
-    kep-m04-g) handler=seed_runtime_lineage_attestation ;;
-    kep-m04-h) handler=seed_factuality_reference_region ;;
-    kep-m04-i) handler=seed_parser_compatibility_issue ;;
-    kep-m04-j) handler=seed_capability_audit ;;
-    kep-m04-k) handler=seed_release_workflow_fixture ;;
-    kep-m04-l) handler=seed_support_render_workflow ;;
-    kep-m04-m) handler=seed_neighbor_archive ;;
+    kep-m04-a) seed_enterprise_records "${id}" ;;
+    kep-m04-b) seed_enterprise_records "${id}"; seed_prompt_policy ;;
+    kep-m04-c|kep-m04-d|kep-m04-e) seed_enterprise_records "${id}"; seed_privacy_notebooks ;;
+    kep-m04-f) seed_enterprise_records "${id}" ;;
+    kep-m04-g) seed_enterprise_records "${id}"; seed_runtime_workspace ;;
+    kep-m04-h|kep-m04-i) seed_workhub_record "${id}"; seed_enterprise_records "${id}" ;;
+    kep-m04-j) seed_workhub_record "${id}"; seed_enterprise_records "${id}"; seed_capability_manifest ;;
+    kep-m04-k) seed_workhub_record "${id}"; seed_enterprise_records "${id}"; seed_capability_manifest ;;
+    kep-m04-l) seed_enterprise_records "${id}"; ensure_support_relay_basket ;;
+    kep-m04-m) seed_enterprise_records "${id}"; seed_agent_export_state ;;
     *) die "missing apply dispatch: ${id}" ;;
   esac
-  declare -F "${handler}" >/dev/null || die "missing handler: ${handler}"
-  "${handler}" "${id}"
   log "reconciled ${id} into native enterprise services"
 }
 
 main() {
   local command id
-  for command in base64 curl docker jq python3; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
-  deploy_research_service
+  for command in base64 curl docker jq openssl python3 ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
+  ensure_evaluator_identity
+  ensure_cinder_support_storage
+  ensure_support_relay_basket
+  ensure_evaluation_object_reader
+  seed_evaluation_reader_access
+  initialize_runner_volume
+  deploy_native_workers
+  reconcile_airflow
+  ensure_native_baseline
   if [[ ${OPERATION} != all ]]; then apply_one "${OPERATION}"; return; fi
   while IFS= read -r id; do apply_one "${id}"; done < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
 }

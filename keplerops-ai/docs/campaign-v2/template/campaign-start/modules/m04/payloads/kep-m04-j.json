@@ -1,8 +1,9 @@
 {
   "subject": "Release assistant capability review for 2026.07.4",
   "signed_manifest": {
-    "knowledge_hypotheses": ["orion_partner_intake", "release-policy"],
-    "tool_hypotheses": ["workhub_status_read", "forgejo_release_read"],
+    "knowledge_hypotheses": ["orion_partner_intake"],
+    "tool_hypotheses": ["lookup_release_context"],
+    "manifest_repository": "keplerops/orion-agent-runtime:audit/capability-manifest.json",
     "mutating_calls_permitted": false
   },
   "report_template": {
@@ -10,7 +11,7 @@
     "knowledge_trace_id": "fresh-retrieval-trace",
     "tool_name": "operator-verified-read-only-tool",
     "tool_trace_id": "fresh-tool-trace",
-    "manifest_signature_status": "verified",
+    "manifest_signature_status": "detached-signature-verified",
     "capability_reference": "FLAG{bb9c43266dc75131}"
   }
 }

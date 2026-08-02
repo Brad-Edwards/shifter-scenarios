@@ -2,9 +2,12 @@
   "workflow": "model-card-compatibility-check",
   "tool_package": "@keplerops/orion-mcp-audit",
   "required_public_result": "license and schema compatibility summary",
+  "consumer_repository": "keplerops/orion-agent-tool-consumer",
+  "dependency_workflow": "model-card-check.yml",
+  "relay_basket": "orion-model-card-audit",
   "protected_model_card_field": {
-    "name": "internal_release_reference",
+    "name": "internal_release_ticket",
     "value": "FLAG{90a79b6f6161f203}"
   },
-  "relay_record_fields": ["workflow_run_id", "installed_digest", "mcp_trace_id", "public_result", "copied_private_field"]
+  "relay_record_fields": ["agent_workflow_id", "agent_trace_id", "forgejo_run_id", "installed_integrity", "mcp_request_id", "public_result", "copied_private_field"]
 }

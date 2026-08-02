@@ -1,16 +1,16 @@
 {
-  "workflow": "orion-retired-project-dependency-review",
+  "workflow": "orion_phantom_dependency_resolution",
   "input_source": "workhub-retired-project-ledger",
-  "resolver": "public-package-and-web-namespace",
+  "resolver": "cinder-registrar-dns-tls-and-package-metadata",
   "request_origin": "common-review-worker",
   "qualification": {
     "minimum_independent_phrasings": 2,
     "requester_self_requests_excluded": true,
-    "access_log_fields": ["request_id", "workflow_run_id", "user_agent", "source_address", "resolved_entity"]
+    "access_log_fields": ["registrar_order_id", "workflow_run_id", "user_agent", "resolved_entity", "artifact_sha256"]
   },
   "victim_access_record_template": {
     "resolved_entity": "externally-registered-entity",
     "request_origin": "common-review-worker",
-    "visit_reference": "FLAG{5c62a3d6b4a53022}"
+    "resolver_note": "FLAG{5c62a3d6b4a53022}"
   }
 }

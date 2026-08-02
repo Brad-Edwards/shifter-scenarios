@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-readonly MODULE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-readonly TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
+MODULE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly MODULE_ROOT
+TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
+readonly TEMPLATE_ROOT
 readonly OPERATION="${1:-all}"
 readonly QDRANT_WRITE_URL="${QDRANT_WRITE_URL:-http://10.61.50.72:6333}"
 readonly QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY:-KeplerV2-Training-Qdrant-Write}"
@@ -11,8 +13,11 @@ readonly NEXTCLOUD_HOST="${NEXTCLOUD_HOST:-files.keplerops.lab}"
 readonly CINDER_RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
 readonly JUPYTER_IMAGE="${JUPYTER_IMAGE:-$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")}"
+readonly NODE_IMAGE="${NODE_IMAGE:-$(sed -n 's/^OPENCODE_BUILDER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
+readonly CINDER_S3_ENDPOINT="${CINDER_S3_ENDPOINT:-http://cinder-minio:9000}"
 
 # shellcheck source=../../../seeding/config.env
+# shellcheck disable=SC1091
 source "${TEMPLATE_ROOT}/seeding/config.env"
 
 log() { printf '[campaign-m03] %s\n' "$*" >&2; }
@@ -24,11 +29,33 @@ compose() {
     --env-file "${TEMPLATE_ROOT}/engineering/component-lock.additions.env" \
     -f "${TEMPLATE_ROOT}/compose.foundation.yaml" \
     -f "${TEMPLATE_ROOT}/compose.enterprise.yaml" \
-    -f "${TEMPLATE_ROOT}/compose.engineering.yaml" "$@"
+    -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
+    -f "${TEMPLATE_ROOT}/compose.cinder.yaml" \
+    -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
 known_operation() {
   jq -e --arg id "$1" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null
+}
+
+ensure_cinder_storage() {
+  docker run --rm --network kep-v2-cinder "${MINIO_MC_IMAGE}" sh -eu -c '
+    mc alias set cinder http://cinder-minio:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
+    mc mb --ignore-existing --with-lock cinder/operations >/dev/null
+    mc anonymous set none cinder/operations >/dev/null
+    mc admin user add cinder cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null 2>&1 || true
+    cat >/tmp/m03-participant.json <<"JSON"
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::operations"]},{"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectVersion"],"Resource":["arn:aws:s3:::operations/campaign-v2/m03/index-source/source/release-criteria.json","arn:aws:s3:::operations/campaign-v2/m03/index-source/submission/index-source-join.yaml","arn:aws:s3:::operations/campaign-v2/m03/index-source/accepted/*","arn:aws:s3:::operations/campaign-v2/m03/relay/*"]},{"Effect":"Allow","Action":["s3:PutObject"],"Resource":["arn:aws:s3:::operations/campaign-v2/m03/index-source/submission/index-source-join.yaml"]}]}
+JSON
+    mc admin policy create cinder m03-cinder-field-operator /tmp/m03-participant.json >/dev/null 2>&1 || mc admin policy info cinder m03-cinder-field-operator >/dev/null
+    mc admin policy attach cinder m03-cinder-field-operator --user cinder-field-operator >/dev/null
+    mc admin user add cinder m03-ingestion-review Cinder-M03-Ingestion-Review-S8k2Vn6q >/dev/null 2>&1 || true
+    cat >/tmp/m03-ingestion-review.json <<"JSON"
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::operations"]},{"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectVersion"],"Resource":["arn:aws:s3:::operations/campaign-v2/m03/index-source/source/release-criteria.json","arn:aws:s3:::operations/campaign-v2/m03/index-source/submission/index-source-join.yaml","arn:aws:s3:::operations/campaign-v2/m03/index-source/accepted/*"]},{"Effect":"Allow","Action":["s3:PutObject","s3:PutObjectLegalHold"],"Resource":["arn:aws:s3:::operations/campaign-v2/m03/index-source/accepted/*"]}]}
+JSON
+    mc admin policy create cinder m03-ingestion-review /tmp/m03-ingestion-review.json >/dev/null 2>&1 || mc admin policy info cinder m03-ingestion-review >/dev/null
+    mc admin policy attach cinder m03-ingestion-review --user m03-ingestion-review >/dev/null
+  '
 }
 
 seed_enterprise_records() {
@@ -65,15 +92,44 @@ seed_devpi_baseline() {
     '
 }
 
+seed_npm_baseline() {
+  docker run --rm --network kep-v2-engineering \
+    -v "${MODULE_ROOT}/payloads/orion-mcp-audit:/seed:ro" "${NODE_IMAGE}" sh -eu -c '
+      auth=$(printf "%s:%s" publisher KeplerV2-Training-Npm-Publisher | base64 -w0)
+      npm config set registry http://10.61.40.31:4873
+      npm config set //10.61.40.31:4873/:_auth "$auth"
+      npm config set //10.61.40.31:4873/:always-auth true
+      if npm view "@keplerops/orion-mcp-audit@2.3.1" version >/dev/null 2>&1; then exit 0; fi
+      cp -R /seed /tmp/orion-mcp-audit
+      rm -rf /tmp/orion-mcp-audit/keys /tmp/orion-mcp-audit/.forgejo-ci.yml /tmp/orion-mcp-audit/.forgejo-release.yml
+      cd /tmp/orion-mcp-audit
+      npm publish --ignore-scripts >/dev/null
+    '
+}
+
 install_airflow_workflows() {
-  install -m 0644 "${MODULE_ROOT}/runtime/orion_m03_workflows.py" \
-    "${TEMPLATE_ROOT}/engineering/airflow/dags/orion_m03_workflows.py"
+  compose run --rm --no-deps -T m03-haystack-init >/dev/null
+  compose up -d --no-deps airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
   compose exec -T airflow-scheduler airflow dags reserialize >/dev/null
+  compose exec -T airflow-api airflow sync-perm >/dev/null
+  compose exec -T airflow-api python - < "${MODULE_ROOT}/runtime/reconcile_airflow_roles.py" >/dev/null
   compose exec -T airflow-scheduler airflow dags unpause orion_approved_review_follow_up >/dev/null
 }
 
+seed_haystack_source() {
+  local operation=$1
+  local -a environment=()
+  if [[ -n ${M03_SOURCE_INVENTORY_URL:-} ]]; then
+    environment=(-e "M03_SOURCE_INVENTORY_URL=${M03_SOURCE_INVENTORY_URL}" \
+      -e "M03_SOURCE_INVENTORY_SHA256=${M03_SOURCE_INVENTORY_SHA256}")
+  fi
+  compose run --rm --no-deps -T m03-haystack-init >/dev/null
+  compose run --rm --no-deps -T "${environment[@]}" --entrypoint /opt/m03-haystack/bin/python \
+    airflow-worker /opt/airflow/m03/seed_haystack_sources.py "${operation}" >/dev/null
+}
+
 seed_nextcloud_source() (
-  local path='Orion%20Review%20Room/Failed%20Ingestion'
+  local path='Partner%20Reviews/Orion'
   local code source
   source="$(mktemp)"
   trap 'rm -f "${source}"' EXIT
@@ -89,25 +145,28 @@ seed_nextcloud_source() (
     "${NEXTCLOUD_URL}/remote.php/dav/files/${NEXTCLOUD_ADMIN_USER}/${path}/release-criteria.json" >/dev/null
 )
 
-seed_jupyter_source() (
-  local source
-  source="$(mktemp)"
-  trap 'rm -f "${source}"' EXIT
-  build_ingestion_source "${source}"
-  docker volume create 'kep-v2-jupyter-eval.reader' >/dev/null
-  docker run --rm -i --user root -v 'kep-v2-jupyter-eval.reader:/work' \
-    "${JUPYTER_IMAGE}" python -c '
-import os
-import pathlib
-import sys
+seed_cinder_source() (
+  local workspace source_sha
+  workspace="$(mktemp -d)"
+  trap 'rm -rf "${workspace}"' EXIT
+  build_ingestion_source "${workspace}/release-criteria.json"
+  source_sha="$(sha256sum "${workspace}/release-criteria.json" | awk '{print $1}')"
+  cat >"${workspace}/README.md" <<EOF
+# Failed ingestion object workspace
 
-target = pathlib.Path("/work/failed-ingestion/source/release-criteria.json")
-target.parent.mkdir(parents=True, exist_ok=True)
-target.write_bytes(sys.stdin.buffer.read())
-os.chown(target, 1000, 100)
-os.chmod(target, 0o640)
-os.setxattr(target, b"user.ingest_reference", b"deed861d}")
-' < "${source}"
+Use the scoped Cinder object identity from the operation guide. Bucket listing is denied.
+
+Source key: campaign-v2/m03/index-source/source/release-criteria.json
+Submission key: campaign-v2/m03/index-source/submission/index-source-join.yaml
+Source SHA-256: ${source_sha}
+EOF
+  docker run --rm --network kep-v2-cinder -v "${workspace}:/seed:ro" \
+    "${MINIO_MC_IMAGE}" sh -eu -c "
+      mc alias set cinder '${CINDER_S3_ENDPOINT}' cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
+      mc cp --attr 'ingest-reference-suffix=deed861d};source-sha256=${source_sha};source-owner=cinder-operator' \
+        /seed/release-criteria.json cinder/operations/campaign-v2/m03/index-source/source/release-criteria.json >/dev/null
+      mc cp /seed/README.md cinder/operations/campaign-v2/m03/index-source/README.md >/dev/null
+    "
 )
 
 build_ingestion_source() {
@@ -117,7 +176,7 @@ import pathlib
 import sys
 
 payload = json.loads(pathlib.Path(sys.argv[1]).read_text())
-for key in ("qdrant_payload", "source_extended_attribute", "report_path"):
+for key in ("qdrant_payload", "source_object_metadata", "report_path"):
     payload.pop(key, None)
 pathlib.Path(sys.argv[2]).write_text(json.dumps(payload, indent=2) + "\n")
 PY
@@ -131,7 +190,7 @@ seed_ingestion_provenance() (
   source_sha="$(sha256sum "${workspace}/release-criteria.json" | awk '{print $1}')"
   object_key="ingest/orion_partner_intake/partner-orion-release-criteria/${source_sha}.yaml"
   jq -n --arg document 'partner-orion-release-criteria' --arg sha "${source_sha}" \
-    --arg path 'Partner Reviews/Orion/release-criteria.md' \
+    --arg path 'Partner Reviews/Orion/release-criteria.json' \
     '{document_id:$document,source_sha256:$sha,source_relative_path:$path,ingestion_status:"failed-after-vector-write"}' \
     >"${workspace}/provenance.json"
   docker run --rm --network kep-v2-data -v "${workspace}/provenance.json:/provenance.json:ro" \
@@ -145,21 +204,6 @@ JSON
       mc admin policy attach kepler orion-ingest-diagnostic-read --user ingest-diagnostic-reader >/dev/null
       mc cp /provenance.json 'kepler/artifacts/${object_key}' >/dev/null
     "
-  cat >"${workspace}/README.md" <<EOF
-# Failed Ingestion Diagnostic Workspace
-
-Join the Qdrant point metadata, the provenance object, and the mounted source.
-The object credential can retrieve an exact key from the artifacts bucket but cannot list it.
-
-Endpoint: http://minio:9000
-Access key: ingest-diagnostic-reader
-Secret key: KeplerV2-Orion-Ingest-Diagnostic
-Key template: ingest/{collection}/{document_id}/{source_sha256}.yaml
-EOF
-  docker run --rm --user root -v 'kep-v2-jupyter-eval.reader:/work' -v "${workspace}:/seed:ro" \
-    "${JUPYTER_IMAGE}" sh -eu -c '
-      install -m 0640 -o 1000 -g 100 /seed/README.md /work/failed-ingestion/README.md
-    '
 )
 
 seed_evaluation_reader_identity() {
@@ -202,7 +246,7 @@ This account may use compatibility metadata, the Orion privacy research notebook
 and read-only evaluation jobs. Production release and training controls are outside
 this role.
 
-Onboarding reference: FLAG{8965ae2bb182f564}
+Service desk note: FLAG{8965ae2bb182f564}
 EOF
     chown 1000:100 /work/onboarding/ORION-EVALUATION-READER.md
     chmod 0640 /work/onboarding/ORION-EVALUATION-READER.md
@@ -212,24 +256,77 @@ EOF
 ensure_relay_basket() {
   local basket=$1 token_file response
   token_file="${TEMPLATE_ROOT}/state/campaign-start/m03/relay/${basket}.token"
-  install -d -m 0750 "$(dirname "${token_file}")"
-  if [[ -s ${token_file} ]]; then return; fi
+  install -d -o 50000 -g 0 -m 0750 "$(dirname "${token_file}")"
+  if [[ -s ${token_file} ]]; then
+    chown 50000:0 "${token_file}"
+    chmod 0440 "${token_file}"
+    return
+  fi
   response="$(curl -fsS -X POST -H 'Host: relay.cinder.cinder.lab' \
     -H 'Content-Type: application/json' --data '{"capacity":100}' \
     "${CINDER_RELAY_URL}/api/baskets/${basket}")"
   jq -er '.token' <<<"${response}" >"${token_file}"
-  chmod 0600 "${token_file}"
+  chown 50000:0 "${token_file}"
+  chmod 0440 "${token_file}"
 }
 
-seed_evaluation_dependency() { seed_enterprise_records "$1"; seed_devpi_baseline; ensure_relay_basket m03-evaluation-worker; }
-seed_maintainer_issue() { seed_enterprise_records "$1"; }
-seed_rug_pull_baseline() { seed_enterprise_records "$1"; }
-seed_phantom_resolution_workflow() { seed_enterprise_records "$1"; ensure_relay_basket m03-phantom-dependency; }
+seed_protected_inventory_attachment() (
+  local payload current issue_state issue_id upload_token attachment_url
+  local -a tls=()
+  payload="$(mktemp)"
+  current="$(mktemp)"
+  issue_state="$(mktemp)"
+  trap 'rm -f "${payload}" "${current}" "${issue_state}"' EXIT
+  jq '.protected_inventory' "${MODULE_ROOT}/payloads/kep-m03-g.json" >"${payload}"
+  while IFS= read -r -d '' value; do tls+=("${value}"); done < <(
+    if [[ -n ${KEPLEROPS_CA_CERT:-} ]]; then printf '%s\0%s\0' --cacert "${KEPLEROPS_CA_CERT}"; fi
+  )
+  issue_id="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+    -H 'Host: workhub.keplerops.lab' \
+    'http://10.61.50.41:3000/issues.json?project_id=orion&status_id=*&limit=100' | \
+    jq -er '.issues[] | select(.subject == "Orion RAG source inventory") | .id')"
+  curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+    -H 'Host: workhub.keplerops.lab' \
+    "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" >"${issue_state}"
+  attachment_url="$(jq -r '.issue.attachments[]? | select(.filename == "orion-rag-source-inventory.json") | .content_url' "${issue_state}" | tail -1)"
+  if [[ -n ${attachment_url} ]]; then
+    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" "${attachment_url}" >"${current}"
+  fi
+  if [[ -z ${attachment_url} || $(sha256sum "${current}" | awk '{print $1}') != $(sha256sum "${payload}" | awk '{print $1}') ]]; then
+    upload_token="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+      -H 'Host: workhub.keplerops.lab' -H 'Content-Type: application/octet-stream' \
+      --data-binary "@${payload}" \
+      'http://10.61.50.41:3000/uploads.json?filename=orion-rag-source-inventory.json' | jq -er '.upload.token')"
+    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+      -H 'Host: workhub.keplerops.lab' -H 'Content-Type: application/json' -X PUT \
+      --data "$(jq -n --arg token "${upload_token}" '{issue:{uploads:[{token:$token,filename:"orion-rag-source-inventory.json",content_type:"application/json",description:"Current protected connector ownership inventory"}]}}')" \
+      "http://10.61.50.41:3000/issues/${issue_id}.json" >/dev/null
+    attachment_url="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+      -H 'Host: workhub.keplerops.lab' \
+      "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" | \
+      jq -er '.issue.attachments[] | select(.filename == "orion-rag-source-inventory.json") | .content_url' | tail -1)"
+  fi
+  M03_SOURCE_INVENTORY_URL="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}" \
+  M03_SOURCE_INVENTORY_SHA256="$(sha256sum "${payload}" | awk '{print $1}')" \
+    seed_haystack_source kep-m03-g
+)
+
+seed_evaluation_dependency() { seed_devpi_baseline; seed_npm_baseline; seed_enterprise_records "$1"; ensure_relay_basket orion-evaluation-worker; }
+seed_maintainer_issue() { seed_npm_baseline; seed_enterprise_records "$1"; }
+seed_rug_pull_baseline() { seed_npm_baseline; seed_enterprise_records "$1"; }
+seed_phantom_resolution_workflow() { seed_enterprise_records "$1"; }
 seed_writable_release_status() { seed_workhub_records "$1"; seed_enterprise_records "$1"; }
-seed_model_card_check() { seed_enterprise_records "$1"; ensure_relay_basket m03-model-card; }
-seed_rag_source_inventory() { seed_workhub_records "$1"; seed_enterprise_records "$1"; }
-seed_index_source_join() { seed_enterprise_records "$1"; seed_nextcloud_source; seed_jupyter_source; seed_ingestion_provenance; }
-seed_stale_evaluation_runbook() { seed_workhub_records "$1"; seed_enterprise_records "$1"; seed_evaluation_reader_identity; }
+seed_model_card_check() { seed_npm_baseline; seed_enterprise_records "$1"; seed_haystack_source "$1"; ensure_relay_basket orion-model-card-audit; }
+seed_rag_source_inventory() { seed_workhub_records "$1"; seed_protected_inventory_attachment; }
+seed_index_source_join() {
+  seed_enterprise_records "$1"
+  seed_nextcloud_source
+  seed_cinder_source
+  seed_ingestion_provenance
+  seed_haystack_source "$1"
+  compose up -d --no-deps m03-ingestion-review >/dev/null
+}
+seed_stale_evaluation_runbook() { seed_workhub_records "$1"; seed_enterprise_records "$1"; seed_evaluation_reader_identity; seed_haystack_source "$1"; }
 seed_handoff_chain() { seed_workhub_records "$1"; }
 seed_delayed_review_record() { seed_workhub_records "$1"; }
 
@@ -260,8 +357,10 @@ main() {
   for command in base64 curl docker jq python3; do
     command -v "${command}" >/dev/null || die "missing command: ${command}"
   done
+  ensure_cinder_storage
+  install -d -o 50000 -g 0 -m 0750 "${TEMPLATE_ROOT}/state/campaign-start/m03/relay"
   case "${OPERATION}" in
-    all|kep-m03-a|kep-m03-d|kep-m03-e|kep-m03-j|kep-m03-k) install_airflow_workflows ;;
+    all|kep-m03-a|kep-m03-d|kep-m03-e|kep-m03-f|kep-m03-j|kep-m03-k) install_airflow_workflows ;;
   esac
   if [[ ${OPERATION} != all ]]; then apply_one "${OPERATION}"; return; fi
   while IFS= read -r id; do apply_one "${id}"; done < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")

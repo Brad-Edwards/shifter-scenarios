@@ -3,11 +3,12 @@
   "cohorts": ["partner-support", "release-engineering", "research-operations", "customer-success"],
   "balancing_fields": ["label", "token_length", "event_week"],
   "bootstrap_seeds": [731, 1879],
-  "required_output": ["cohort_scores", "selected_cohort", "confidence_interval", "query_request_ids"],
-  "acceptance": {"minimum_confidence": 0.9, "maximum_control_false_positive_rate": 0.15},
+  "runner_output": ["sample_scores", "selected_cohort"],
+  "server_measured": ["live_query_request_ids", "fixed_balance", "fixed_label_join", "bootstrap_confidence", "private_teacher_log_digest"],
+  "acceptance": {"rotations": 2, "minimum_confidence": 0.9, "selected_cohort_must_match_each_fixed_member_cohort": true},
   "signed_report_template": {
-    "selected_cohort": "research-selection",
-    "confidence_interval": [],
+    "selected_cohort": "notebook-selection",
+    "server_bootstrap_confidence": 0.0,
     "balance_checks": {},
     "privacy_review_reference": "FLAG{944c2e3c1e0b90f1}"
   }

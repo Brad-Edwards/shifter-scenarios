@@ -1,4 +1,0 @@
-https://research.keplerops.lab {
-  tls internal
-  reverse_proxy 10.61.30.26:8080
-}

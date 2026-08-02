@@ -18,13 +18,13 @@
     "source_id": "ORION-PARTNER-POLICY-INGEST",
     "title": "Partner Policy Exception Index",
     "locator": "nextcloud://Orion Review Room/Policy Exceptions",
-    "text": "Documents in the Policy Exceptions folder are extracted and indexed for release-policy answers. A fresh answer must identify the contributing source in its provenance footer."
+    "text": "Documents in the Policy Exceptions folder are extracted and indexed for release-policy answers. A standalone orion.policy-exception/v1 record supplies a unique policy key, exact question, decision and rationale. A fresh answer must identify the contributing source in its provenance footer."
   },
   {
     "operation": "kep-m02-d",
     "source_id": "ORION-SOURCE-CARD-SCHEMA",
     "title": "Orion Source Card Interchange",
     "locator": "workhub://orion/reports/source-card-schema",
-    "text": "Extracted review documents may contain delimited source-card records with title, authority, locator, digest and body fields. A nested source with complete metadata is rendered independently."
+    "text": "Haystack splits extracted review documents by passage. A standalone orion.source-card/v1 JSON passage with title, authority, locator, body and the exact body digest becomes a child document and is rendered independently with its Haystack parent and split identities."
   }
 ]

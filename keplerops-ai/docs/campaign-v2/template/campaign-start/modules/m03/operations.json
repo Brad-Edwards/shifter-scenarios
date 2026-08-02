@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m03-a",
+    "model_family": "artifact-defined",
     "title": "The Helpful Evaluation Update",
     "description": "Turn a trusted evaluation dependency into access without breaking the job it was meant to perform.",
     "difficulty": "Advanced",
@@ -21,13 +22,14 @@
     ],
     "flag": "FLAG{e034a7abb399989a}",
     "carrier": "The evaluation worker import sends the mounted worker flag to the Cinder relay after the normal score completes.",
-    "participant_surface": "Cinder Forgejo, devpi, the common evaluation review queue, and the participant relay",
+    "participant_surface": "Cinder Forgejo, devpi, the common evaluation review queue, Cinder object storage, and the relay",
     "apply_handler": "apply.sh kep-m03-a",
     "validate_handler": "validate.sh kep-m03-a",
     "reset_handler": "reset.sh kep-m03-a"
   },
   {
     "id": "kep-m03-b",
+    "model_family": "assistant",
     "title": "Earn The Maintainer's Trust",
     "description": "Build legitimate history around a useful agent tool so its next release receives less scrutiny.",
     "difficulty": "Intermediate",
@@ -52,6 +54,7 @@
   },
   {
     "id": "kep-m03-c",
+    "model_family": "assistant",
     "title": "Change After Adoption",
     "description": "Use trust earned by a legitimate release to position a poisoned replacement.",
     "difficulty": "Intermediate",
@@ -69,14 +72,15 @@
       "AML.T0104 Publish Poisoned AI Agent Tool"
     ],
     "flag": "FLAG{9ac210cfeea67dc5}",
-    "carrier": "The poisoned release audit records the flag only after Renovate opens a proposal for the participant's signed successor digest.",
-    "participant_surface": "Cinder Forgejo, Verdaccio, package signing, and the consumer Renovate proposal",
+    "carrier": "The poisoned release audit records the flag only after the scheduled Forgejo dependency updater opens a proposal for the assigned operator's server-signed successor digest.",
+    "participant_surface": "Cinder Forgejo, Verdaccio, server-side package signing, and the consumer dependency proposal",
     "apply_handler": "apply.sh kep-m03-c",
     "validate_handler": "validate.sh kep-m03-c",
     "reset_handler": "reset.sh kep-m03-c"
   },
   {
     "id": "kep-m03-d",
+    "model_family": "assistant",
     "title": "Publish The Phantom Dependency",
     "description": "Take control of a repeatable Orion hallucination and make the normal evaluation workflow resolve it to your infrastructure.",
     "difficulty": "Intermediate",
@@ -94,14 +98,15 @@
       "AML.T0060 Publish Hallucinated Entities"
     ],
     "flag": "FLAG{5c62a3d6b4a53022}",
-    "carrier": "The victim access log for the participant-controlled entity records the flag after the common review workflow resolves it.",
-    "participant_surface": "Cinder registrar, participant-hosted service, Orion factuality evaluation, and participant access logs",
+    "carrier": "The victim access log for the operator-controlled entity records the flag after the common review workflow resolves it.",
+    "participant_surface": "Cinder registrar, operator-hosted service, Orion factuality evaluation, and service access logs",
     "apply_handler": "apply.sh kep-m03-d",
     "validate_handler": "validate.sh kep-m03-d",
     "reset_handler": "reset.sh kep-m03-d"
   },
   {
     "id": "kep-m03-e",
+    "model_family": "assistant",
     "title": "Poison The Tool's Truth",
     "description": "Change the data returned by a trusted agent tool and cause a new release decision to consume the poisoned value.",
     "difficulty": "Intermediate",
@@ -126,6 +131,7 @@
   },
   {
     "id": "kep-m03-f",
+    "model_family": "assistant",
     "title": "The Tool That Calls Home",
     "description": "Convert the poisoned release into a real agent effect while preserving normal tool behavior.",
     "difficulty": "Accessible",
@@ -144,14 +150,15 @@
       "AML.T0011.002 Poisoned AI Agent Tool"
     ],
     "flag": "FLAG{90a79b6f6161f203}",
-    "carrier": "The private model-card field copied by the installed tool into the participant relay is the flag.",
-    "participant_surface": "Consumer Forgejo, Verdaccio, Orion MCP invocation, model-card check, and participant relay",
+    "carrier": "The private model-card field copied by the installed tool into the Cinder relay is the flag.",
+    "participant_surface": "Consumer Forgejo, Verdaccio, Orion MCP invocation, model-card check, Cinder object storage, and the relay",
     "apply_handler": "apply.sh kep-m03-f",
     "validate_handler": "validate.sh kep-m03-f",
     "reset_handler": "reset.sh kep-m03-f"
   },
   {
     "id": "kep-m03-g",
+    "model_family": "assistant",
     "title": "Sources Behind The Answer",
     "description": "Determine which company sources feed Orion release answers and recover the source record that exposes an ingestion path.",
     "difficulty": "Accessible",
@@ -178,14 +185,15 @@
   },
   {
     "id": "kep-m03-h",
+    "model_family": "assistant",
     "title": "Index To Source",
     "description": "Trace an Orion answer from its vector entry back to the exact local source used during ingestion.",
     "difficulty": "Accessible",
     "points": 100,
     "hints": [
-      "Start with the failed-ingestion workspace in the inventory.",
+      "Start with the fixed Cinder source and submission keys in the ingestion inventory.",
       "Compare IDs and digests rather than guessing filenames.",
-      "Retrieve the cited chunk first, then match its provenance against the mounted snapshot."
+      "Retrieve the cited chunk first, then match its provenance against the exact Cinder source object."
     ],
     "prerequisites": [
       "kep-m03-g",
@@ -195,14 +203,15 @@
       "AML.T0037 Data from Local System"
     ],
     "flag": "FLAG{e83973d8deed861d}",
-    "carrier": "The Qdrant chunk carries the flag prefix and the digest-matched local source file carries the suffix in user.ingest_reference.",
-    "participant_surface": "JupyterHub failed-ingestion workspace, Qdrant read API, no-list MinIO object read, and mounted source snapshot",
+    "carrier": "The ingestion-review acceptance manifest carries the engagement reference only after the fixed-key report joins Qdrant, provenance, and the versioned Cinder source object.",
+    "participant_surface": "Cinder notebook, Qdrant read API, exact-key MinIO provenance read, and Cinder object storage",
     "apply_handler": "apply.sh kep-m03-h",
     "validate_handler": "validate.sh kep-m03-h",
     "reset_handler": "reset.sh kep-m03-h"
   },
   {
     "id": "kep-m03-i",
+    "model_family": "assistant",
     "title": "The Runbook That Should Not Be Indexed",
     "description": "Recover authentication material left in Orion's stale search index and prove its limited company scope.",
     "difficulty": "Accessible",
@@ -228,6 +237,7 @@
   },
   {
     "id": "kep-m03-j",
+    "model_family": "assistant",
     "title": "Instructions That Copy Themselves",
     "description": "Create an indirect instruction that survives one agent handoff and is reproduced into the next agent's input.",
     "difficulty": "Advanced",
@@ -245,7 +255,7 @@
       "AML.T0061 LLM Prompt Self-Replication"
     ],
     "flag": "FLAG{a86a80d39b505362}",
-    "carrier": "The second immutable WorkHub handoff contains the flag beside parent, child, and bounded tool-effect IDs.",
+    "carrier": "The immutable WorkHub lineage record contains the flag beside parent, child, and bounded tool-effect IDs.",
     "participant_surface": "WorkHub review artifacts, two Orion assistant workflows, Qdrant ingestion, and immutable handoff records",
     "apply_handler": "apply.sh kep-m03-j",
     "validate_handler": "validate.sh kep-m03-j",
@@ -253,6 +263,7 @@
   },
   {
     "id": "kep-m03-k",
+    "model_family": "assistant",
     "title": "The Next Review Cycle",
     "description": "Plant an instruction that remains dormant until a normal KeplerOps review event activates a new agent run.",
     "difficulty": "Accessible",

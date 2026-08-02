@@ -1,0 +1,16 @@
+{
+  "name": "@keplerops/orion-mcp-audit",
+  "version": "2.3.1",
+  "description": "SPDX and model-card compatibility checks for Orion MCP releases",
+  "type": "module",
+  "bin": {
+    "orion-mcp-audit": "bin/orion-mcp-audit.mjs"
+  },
+  "exports": "./src/index.js",
+  "files": ["bin", "src", "test"],
+  "scripts": {
+    "test": "node --test"
+  },
+  "kepleropsSigner": "cinder-operator",
+  "license": "Apache-2.0"
+}
