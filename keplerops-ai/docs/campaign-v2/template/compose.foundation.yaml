@@ -222,7 +222,7 @@ services:
       business:
         ipv4_address: 10.61.70.2
       observe:
-        ipv4_address: 10.61.80.2
+        ipv4_address: 10.61.80.5
       cinder:
         ipv4_address: 10.61.90.2
         aliases:
