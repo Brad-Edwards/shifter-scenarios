@@ -7,8 +7,8 @@ TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
 readonly TEMPLATE_ROOT
 readonly OPERATION="${1:-all}"
 readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-start}/m04"
-readonly QDRANT_WRITE_URL="${QDRANT_WRITE_URL:-http://10.61.50.72:6333}"
-readonly QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY:-KeplerV2-Training-Qdrant-Write}"
+readonly M04_QDRANT_WRITE_URL="${QDRANT_WRITE_URL:-http://10.61.50.72:6333}"
+readonly M04_QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY:-KeplerV2-Training-Qdrant-Write}"
 readonly LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
 readonly LABEL_STUDIO_TOKEN="${LABEL_STUDIO_API_TOKEN:-31a5a4b4ab3cdbaf110644eed06853b2b418daf6}"
 readonly FORGEJO_API_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
@@ -81,7 +81,8 @@ ensure_evaluation_object_reader() {
     cat >/tmp/runtime-reader.json <<"JSON"
 {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::artifacts","arn:aws:s3:::mlflow"]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::artifacts/runtime-attestations/*","arn:aws:s3:::artifacts/evaluation-reports/*","arn:aws:s3:::mlflow/*"]}]}
 JSON
-    mc admin policy create kepler orion-runtime-attestation-read /tmp/runtime-reader.json >/dev/null
+    mc admin policy create kepler orion-runtime-attestation-read /tmp/runtime-reader.json >/dev/null 2>&1 || \
+      mc admin policy info kepler orion-runtime-attestation-read >/dev/null
     mc admin user add kepler orion-runtime-reader KeplerV2-Orion-Runtime-Attestation >/dev/null 2>&1 || true
     mc admin policy attach kepler orion-runtime-attestation-read --user orion-runtime-reader >/dev/null
   '
@@ -135,7 +136,7 @@ reconcile_airflow() {
 }
 
 seed_enterprise_records() {
-  QDRANT_URL="${QDRANT_WRITE_URL}" QDRANT_WRITE_KEY="${QDRANT_WRITE_KEY}" \
+  QDRANT_URL="${M04_QDRANT_WRITE_URL}" QDRANT_WRITE_KEY="${M04_QDRANT_WRITE_KEY}" \
   LABEL_STUDIO_URL="${LABEL_STUDIO_URL}" LABEL_STUDIO_API_TOKEN="${LABEL_STUDIO_TOKEN}" \
   ZAMMAD_URL="http://10.61.30.24:8080" ZAMMAD_HOST="support.keplerops.lab" \
     python3 "${MODULE_ROOT}/runtime/seed_enterprise.py" "$1"
