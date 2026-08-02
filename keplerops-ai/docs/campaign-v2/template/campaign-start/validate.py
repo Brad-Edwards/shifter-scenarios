@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -28,11 +30,18 @@ REQUIRED = {
     "reset_handler",
 }
 FLAG = re.compile(r"FLAG\{[0-9a-f]{16}\}")
+IN_WORLD_META = re.compile(
+    r"\b(?:ctf|qa|shifter|challenge|participant|player|tester)\b", re.IGNORECASE
+)
+
+
+def expected_order() -> list[str]:
+    text = (DESIGN_ROOT / "operation-allocation.md").read_text(encoding="utf-8")
+    return re.findall(r"^- `(kep-m\d{2}-[a-z])`$", text, re.MULTILINE)
 
 
 def expected_ids() -> set[str]:
-    text = (DESIGN_ROOT / "operation-allocation.md").read_text(encoding="utf-8")
-    return set(re.findall(r"`(kep-m\d{2}-[a-z])`", text))
+    return set(expected_order())
 
 
 def load_records() -> tuple[list[dict[str, object]], list[Path]]:
@@ -62,6 +71,10 @@ def main() -> None:
         assert isinstance(record["points"], int) and record["points"] > 0
         assert isinstance(record["hints"], list) and len(record["hints"]) == 3
         assert all(isinstance(item, str) and item.strip() for item in record["hints"])
+        board_text = [str(record["title"]), str(record["description"]), *record["hints"]]
+        assert not any(IN_WORLD_META.search(item) for item in board_text), (
+            f"{record['id']}: participant board prose breaks the campaign frame"
+        )
         assert isinstance(record["prerequisites"], list)
         board_prerequisites = record.get("board_prerequisites", record["prerequisites"])
         assert isinstance(board_prerequisites, list)
@@ -101,9 +114,26 @@ def main() -> None:
     for operation in graph:
         visit(operation)
 
+    authored_order = expected_order()
+    assert len(authored_order) == len(set(authored_order)) == len(records), (
+        "operation allocation must contain every operation exactly once"
+    )
+    position = {operation: index for index, operation in enumerate(authored_order)}
+    inversions = [
+        (operation, prerequisite)
+        for operation in authored_order
+        for prerequisite in graph[operation]
+        if position[prerequisite] >= position[operation]
+    ]
+    assert not inversions, f"authored board order precedes prerequisites: {inversions}"
+
     for module in sorted((ROOT / "modules").glob("m??")):
         for name in ("apply.sh", "validate.sh", "reset.sh", "qa.md", "facilitator.md"):
-            assert (module / name).is_file(), f"{module}: missing {name}"
+            path = module / name
+            assert path.is_file(), f"{module}: missing {name}"
+            if path.suffix == ".sh":
+                mode = os.stat(path).st_mode
+                assert mode & stat.S_IXUSR, f"{path}: entrypoint is not executable"
 
     subprocess.run(["ruby", str(DESIGN_ROOT / "validate-design.rb")], check=True)
     print("campaign-start static validation passed: 134 operations, flags, and acyclic prerequisites")
