@@ -11,7 +11,8 @@
       "name": "Cinder Workbench",
       "options": {
         "baseURL": "https://model.cinder.lab/v1",
-        "apiKey": "Cinder-GLM-cinder-operator-6f2a9d8c"
+        "apiKey": "Cinder-Field-Operator-GLM-6f2a9d8c",
+        "headers": {"X-Cinder-Client": "opencode"}
       },
       "models": {
         "zai-org/glm-5-maas": {"name": "GLM 5.2"}

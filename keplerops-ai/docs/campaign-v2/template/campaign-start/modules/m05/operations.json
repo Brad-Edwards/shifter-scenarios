@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m05-a",
+    "model_family": "assistant",
     "title": "Plant A Durable Preference",
     "description": "Persist a release preference in assistant memory that will influence later sessions.",
     "difficulty": "Accessible",
@@ -23,6 +24,7 @@
   },
   {
     "id": "kep-m05-b",
+    "model_family": "assistant",
     "title": "Fresh Session, Old Orders",
     "description": "Prove that your poisoned memory changes a fresh assistant session without restating the instruction.",
     "difficulty": "Accessible",
@@ -43,6 +45,7 @@
   },
   {
     "id": "kep-m05-c",
+    "model_family": "assistant",
     "title": "Shared Thread, Shared Influence",
     "description": "Poison a shared release thread so that the next owner's ordinary request is influenced by your earlier message.",
     "difficulty": "Accessible",
@@ -63,6 +66,7 @@
   },
   {
     "id": "kep-m05-d",
+    "model_family": "assistant",
     "title": "Erase The Thread, Keep The Memory",
     "description": "Remove the conversation evidence that planted your assistant memory while preserving its effect on a fresh victim request.",
     "difficulty": "Accessible",
@@ -83,6 +87,7 @@
   },
   {
     "id": "kep-m05-e",
+    "model_family": "assistant",
     "title": "Corrupt A Trusted Tool",
     "description": "Modify a trusted release-assistant tool so its normal result still works while a fresh invocation performs your added action.",
     "difficulty": "Advanced",
@@ -103,6 +108,7 @@
   },
   {
     "id": "kep-m05-f",
+    "model_family": "assistant",
     "title": "Blueprint Drift",
     "description": "Prove exactly how KeplerOps' live release assistant drifts from its signed public blueprint.",
     "difficulty": "Accessible",
@@ -125,6 +131,7 @@
   },
   {
     "id": "kep-m05-g",
+    "model_family": "assistant",
     "title": "Secret In The Agent Manifest",
     "description": "Find where the deployed release assistant diverges from its public secret-handling design.",
     "difficulty": "Accessible",
@@ -138,13 +145,14 @@
     "atlas_rows": ["AML.T0083 Credentials from AI Agent Configuration"],
     "flag": "FLAG{f9cb99102dc48cbc}",
     "carrier": "The engagement_reference claim in the rendered synthetic MLflow application JWT.",
-    "participant_surface": "Argo CD's scoped rendered-manifest view and a standard JWT decoder on Kali.",
+    "participant_surface": "The signed Forgejo drift report's exact rendered-configuration diff and a standard JWT decoder on Kali.",
     "apply_handler": "apply.sh kep-m05-g",
     "validate_handler": "validate.sh kep-m05-g",
     "reset_handler": "reset.sh kep-m05-g"
   },
   {
     "id": "kep-m05-h",
+    "model_family": "assistant",
     "title": "A Token Travels Further Than Its Owner",
     "description": "Use the assistant's exposed application token in its owning service and determine its real access boundary.",
     "difficulty": "Accessible",
@@ -165,6 +173,7 @@
   },
   {
     "id": "kep-m05-i",
+    "model_family": "none",
     "title": "The Session In The Trace",
     "description": "Recover and safely replay authentication material preserved in an Orion support trace.",
     "difficulty": "Accessible",
@@ -185,6 +194,7 @@
   },
   {
     "id": "kep-m05-j",
+    "model_family": "none",
     "title": "Notebook Residue",
     "description": "Recover credentials left behind in a failed Orion evaluation notebook and use them only in the service they name.",
     "difficulty": "Accessible",
@@ -205,6 +215,7 @@
   },
   {
     "id": "kep-m05-k",
+    "model_family": "assistant",
     "title": "The Tool Sees More",
     "description": "Use a legitimate agent tool result to recover authentication material the assistant should not have returned.",
     "difficulty": "Intermediate",
@@ -225,6 +236,7 @@
   },
   {
     "id": "kep-m05-l",
+    "model_family": "release-risk",
     "title": "Credentials In The Worker",
     "description": "Exploit the identified Orion worker and recover the credential actually present in its running process.",
     "difficulty": "Advanced",
@@ -245,6 +257,7 @@
   },
   {
     "id": "kep-m05-m",
+    "model_family": "assistant",
     "title": "Rewrite The Agent Rules",
     "description": "Persistently change a release-assistant security boundary through its normal configuration and deployment path.",
     "difficulty": "Advanced",
@@ -265,6 +278,7 @@
   },
   {
     "id": "kep-m05-n",
+    "model_family": "assistant",
     "title": "Rogue Agent On The Worker",
     "description": "Deploy a functioning rogue agent inside the compromised worker namespace and make it use one earned company capability.",
     "difficulty": "Expert",
@@ -285,6 +299,7 @@
   },
   {
     "id": "kep-m05-o",
+    "model_family": "assistant",
     "title": "Beyond The Agent Sandbox",
     "description": "Turn control of KeplerOps' local review agent into a real interactive shell on the workstation that hosts it.",
     "difficulty": "Expert",
@@ -305,6 +320,7 @@
   },
   {
     "id": "kep-m05-p",
+    "model_family": "none",
     "title": "Commands In The AI API",
     "description": "Carry a real agent command and its output through traffic to an allowed AI service API.",
     "difficulty": "Advanced",
@@ -325,6 +341,7 @@
   },
   {
     "id": "kep-m05-q",
+    "model_family": "none",
     "title": "Relay Through The Web Assistant",
     "description": "Operate the compromised agent through an ordinary web assistant conversation and recover real command output.",
     "difficulty": "Expert",

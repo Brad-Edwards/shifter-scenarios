@@ -13,16 +13,28 @@ x-m08-airflow: &m08-airflow
     CINDER_FORGEJO_USER: cinder-operator
     CINDER_FORGEJO_PASSWORD: Cinder-Operations-Git-K3m7Pq4x
     CINDER_S3_ENDPOINT_URL: http://10.61.90.31:9000
-    CINDER_S3_ACCESS_KEY: cinder-operator
-    CINDER_S3_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+    CINDER_S3_ACCESS_KEY: cinder-field-operator
+    CINDER_S3_SECRET_KEY: Cinder-Field-Operator-Objects-H8r3Tm5w
+    M08_M03_S3_ACCESS_KEY: cinder-operator
+    M08_M03_S3_SECRET_KEY: Cinder-Operations-ObjectStore-T7v2Lm9q
+    CINDER_RELEASE_REGISTRY_URL: http://10.61.90.40:8080
     ORION_DATASET_WORKER_URL: http://10.61.40.1:18088
+    AWS_ACCESS_KEY_ID: svc-orion-trainer
+    AWS_SECRET_ACCESS_KEY: KeplerV2-M08-Orion-Trainer-Objects
     M08_ATTESTATION_SIGNING_KEY: KeplerV2-Compatibility-Attestation-2026
     M08_WORKER_RECORD_SIGNING_KEY: KeplerV2-Scoped-Worker-Record-2026
+    M08_QUERY_LEDGER_KEY: KeplerV2-Research-Query-Ledger-2026
+    M08_ACCEPTED_STATE_KEY: KeplerV2-Research-Accepted-State-2026
+    M08_NATIVE_AUDIT_SIGNING_KEY: KeplerV2-Minio-Native-Audit-2026
+    CINDER_OFFLINE_ATTESTATION_KEY: Cinder-Offline-Execution-Attestation-2026
+    M08_SERVER_EVALUATION: /opt/airflow/campaign-state-m08/server/server-evaluation.json
+    M08_HUMAN_LABEL_SOURCE: /opt/airflow/server-sources/orion-release-risk-training.json
   volumes:
     - ./campaign-start/modules/m08/dags/orion_extraction_research.py:/opt/airflow/dags/orion_extraction_research.py:ro
     - ./campaign-start/modules/m08/runtime:/opt/airflow/campaign-m08:ro
     - ./campaign-start/modules/m08/payloads:/opt/airflow/campaign-m08-payloads:ro
     - ./platform/vision/data:/opt/airflow/orion-vision-data:ro
+    - ./engineering/label-studio/orion-release-risk-training.json:/opt/airflow/server-sources/orion-release-risk-training.json:ro
     - ./state/campaign-start/m08:/opt/airflow/campaign-state-m08
 
 services:
@@ -55,6 +67,7 @@ services:
       args:
         AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
     container_name: kep-v2-cinder-offline-model-runner
+    user: "50000:0"
     command: ["python", "/opt/cinder/offline_runner.py"]
     environment:
       OFFLINE_STATE_ROOT: /var/lib/cinder-offline
@@ -69,8 +82,130 @@ services:
     security_opt:
       - no-new-privileges:true
     cap_drop: ["ALL"]
+    pids_limit: 256
+    mem_limit: 8g
+    cpus: 4
+
+  cinder-isolated-training-runner:
+    image: keplerops/airflow:campaign-v2-m08
+    build:
+      context: .
+      dockerfile: campaign-start/modules/m08/runtime/Dockerfile
+      args:
+        AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+    container_name: kep-v2-cinder-isolated-training-runner
+    user: "50000:0"
+    command: ["python", "/opt/cinder/training_runner.py"]
+    environment:
+      TRAINING_QUEUE_ROOT: /var/lib/cinder-training
+    volumes:
+      - ./campaign-start/modules/m08/runtime/training_runner.py:/opt/cinder/training_runner.py:ro
+      - ./state/campaign-start/m08/training:/var/lib/cinder-training
+    network_mode: none
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=6g
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+    pids_limit: 256
+    mem_limit: 8g
+    cpus: 4
+
+  orion-vision-research:
+    image: keplerops/orion-vision-research:campaign-v2-m08
+    build:
+      context: .
+      dockerfile: campaign-start/modules/m08/runtime/Dockerfile.vision-gateway
+    container_name: kep-v2-orion-vision-research
+    environment:
+      ORION_VISION_URL: http://192.168.78.30:30084
+      ORION_VISION_TOKEN: KeplerV2-Orion-Vision-Evaluation-Reader
+      M08_VISION_ENGAGEMENT_ID: campaign-v2-m08-vision
+      M08_VISION_PARTICIPANT_TOKEN: Cinder-Field-Operator-Vision-M08-H8r3Tm5w
+      CINDER_S3_ENDPOINT_URL: http://10.61.90.31:9000
+      CINDER_S3_ACCESS_KEY: svc-orion-vision-research
+      CINDER_S3_SECRET_KEY: KeplerV2-M08-Vision-Ledger-Owner
+      M08_QUERY_LEDGER_KEY: KeplerV2-Research-Query-Ledger-2026
+    networks:
+      cinder:
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+
+  orion-release-risk-label-studio-ml:
+    <<: *m08-airflow
+    container_name: kep-v2-orion-release-risk-label-studio-ml
+    command:
+      - uvicorn
+      - label_studio_backend:app
+      - --app-dir
+      - /opt/airflow/campaign-m08
+      - --host
+      - 0.0.0.0
+      - --port
+      - "9090"
+      - --no-access-log
+    networks:
+      cinder:
+      data:
+      engineering:
+      platform:
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:9090/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  m08-native-audit:
+    image: keplerops/airflow:campaign-v2-m08
+    build:
+      context: .
+      dockerfile: campaign-start/modules/m08/runtime/Dockerfile
+      args:
+        AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+    container_name: kep-v2-m08-native-audit
+    command: ["python", "/opt/m08/native_audit.py"]
+    environment:
+      M08_NATIVE_AUDIT_ROOT: /var/lib/m08-native-audit
+      M08_NATIVE_AUDIT_TOKEN: KeplerV2-M08-Minio-Audit-Webhook-2026
+      M08_NATIVE_AUDIT_SIGNING_KEY: KeplerV2-Minio-Native-Audit-2026
+    volumes:
+      - ./campaign-start/modules/m08/runtime/native_audit.py:/opt/m08/native_audit.py:ro
+      - ./state/campaign-start/m08/native-audit:/var/lib/m08-native-audit
+    restart: unless-stopped
+    read_only: true
+    user: "50000:0"
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: ["ALL"]
+    networks:
+      data:
 
 networks:
   cinder:
     external: true
     name: kep-v2-cinder
+  data:
+    external: true
+    name: kep-v2-data
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  platform:
+    external: true
+    name: kep-v2-platform

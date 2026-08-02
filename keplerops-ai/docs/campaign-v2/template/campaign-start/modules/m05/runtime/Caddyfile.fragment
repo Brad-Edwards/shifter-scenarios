@@ -1,0 +1,5 @@
+
+orion-relay.cinder.lab {
+	tls internal
+	reverse_proxy 10.61.90.45:8090
+}

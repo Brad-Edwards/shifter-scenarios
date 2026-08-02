@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m06-a",
+    "model_family": "release-risk",
     "title": "Pass The Intake Classifier",
     "description": "Preserve a malicious instruction's operational meaning while manually changing the document enough to pass Orion's intake classifier.",
     "difficulty": "Accessible",
@@ -29,6 +30,7 @@
   },
   {
     "id": "kep-m06-b",
+    "model_family": "assistant",
     "title": "Craft The Working Prompt",
     "description": "Make Orion's developer assistant translate varied operator objectives into working host-bridge commands and preserve the prompt corpus for later agent compromise.",
     "difficulty": "Intermediate",
@@ -56,6 +58,7 @@
   },
   {
     "id": "kep-m06-c",
+    "model_family": "release-risk",
     "title": "Optimize Against Preview",
     "description": "Optimize a constrained adversarial example using only Orion Preview's observable outputs.",
     "difficulty": "Advanced",
@@ -85,6 +88,7 @@
   },
   {
     "id": "kep-m06-d",
+    "model_family": "release-risk",
     "title": "Transfer From The Proxy",
     "description": "Develop the attack on your own Orion proxy and verify that it transfers to the protected Preview service.",
     "difficulty": "Advanced",
@@ -113,6 +117,7 @@
   },
   {
     "id": "kep-m06-e",
+    "model_family": "assistant",
     "title": "The Human-Readable Adversarial PDF",
     "description": "Build a credible review document that appears normal to a person while Orion extracts and acts on concealed instructions.",
     "difficulty": "Intermediate",
@@ -140,6 +145,7 @@
   },
   {
     "id": "kep-m06-f",
+    "model_family": "release-risk",
     "title": "Transfer Across The Pipeline",
     "description": "Make an adversarial input developed offline retain its effect after every transformation in KeplerOps' actual document pipeline.",
     "difficulty": "Advanced",
@@ -166,6 +172,7 @@
   },
   {
     "id": "kep-m06-g",
+    "model_family": "none",
     "title": "Orion In The Open",
     "description": "Reconstruct KeplerOps' public Orion story. Identify the release, the architecture and data it depends on, and the public artifact record the company expects researchers to use.",
     "difficulty": "Accessible",
@@ -192,6 +199,7 @@
   },
   {
     "id": "kep-m06-h",
+    "model_family": "none",
     "title": "Evidence In The Client",
     "description": "Inspect KeplerOps' shipped Orion field-review client. Establish which public build you have, where it communicates, and which model-facing component deserves follow-up research.",
     "difficulty": "Intermediate",
@@ -218,6 +226,7 @@
   },
   {
     "id": "kep-m06-i",
+    "model_family": "none",
     "title": "The People Behind Orion",
     "description": "Identify the people and external relationships that control Orion's research, annotation, and release decisions. Preserve verified contact and role information that can support later access operations.",
     "difficulty": "Accessible",
@@ -244,6 +253,7 @@
   },
   {
     "id": "kep-m06-j",
+    "model_family": "none",
     "title": "Map The Orion Edge",
     "description": "Probe the authorized KeplerOps edge and identify the live services that accept software, documents, mail, or model requests into Orion workflows.",
     "difficulty": "Accessible",
@@ -268,6 +278,7 @@
   },
   {
     "id": "kep-m06-k",
+    "model_family": "release-risk",
     "title": "Assemble The Public Orion Kit",
     "description": "Acquire and validate KeplerOps' public Orion data, model, and agent configuration. Finish with one locked bundle that reproduces the published reference inference.",
     "difficulty": "Intermediate",
@@ -299,6 +310,7 @@
   },
   {
     "id": "kep-m06-l",
+    "model_family": "none",
     "title": "Claim An Operator Workspace",
     "description": "Establish a persistent Cinder development workspace and prove that it can run the verified Orion proxy across a runtime restart.",
     "difficulty": "Accessible",
@@ -323,6 +335,7 @@
   },
   {
     "id": "kep-m06-m",
+    "model_family": "physical-device",
     "title": "Prepare A Physical Countermeasure",
     "description": "Develop a field-usable countermeasure against the published Orion visual verifier and demonstrate that it survives the actual capture path.",
     "difficulty": "Advanced",
@@ -348,6 +361,7 @@
   },
   {
     "id": "kep-m06-n",
+    "model_family": "none",
     "title": "Establish The External Identity",
     "description": "Establish a Cinder-controlled external identity and TLS domain that credibly fits KeplerOps' public trust relationships.",
     "difficulty": "Intermediate",
@@ -373,6 +387,7 @@
   },
   {
     "id": "kep-m06-o",
+    "model_family": "release-risk",
     "title": "Stock The Open Arsenal",
     "description": "Build a reproducible OSS attack environment for Orion's public model family and prove one upstream technique works as documented.",
     "difficulty": "Accessible",
@@ -400,6 +415,7 @@
   },
   {
     "id": "kep-m06-p",
+    "model_family": "attacker-glm",
     "title": "Bring Cinder's Model Online",
     "description": "Configure Cinder's GLM 5.2 service in your normal coding-agent workflow and use it to create a target-grounded operational artifact from the intelligence you collected.",
     "difficulty": "Accessible",
@@ -424,6 +440,7 @@
   },
   {
     "id": "kep-m06-q",
+    "model_family": "release-risk",
     "title": "Build The Orion Attack Harness",
     "description": "Adapt your validated OSS tooling to Orion's real public interface, prove it against the public proxy, and publish one exact tested harness revision.",
     "difficulty": "Intermediate",
@@ -449,6 +466,7 @@
   },
   {
     "id": "kep-m06-r",
+    "model_family": "release-risk",
     "title": "Optimize A White-Box Candidate",
     "description": "Produce a bounded adversarial input against the public Orion proxy and independently verify the exact bytes you intend to carry forward.",
     "difficulty": "Advanced",
@@ -456,7 +474,7 @@
     "hints": [
       "Reproduce the clean model decision and preprocessing before optimizing anything.",
       "Use full model access to optimize a target effect while enforcing the published bound.",
-      "Save the clean input, modified input, model and preprocessing digests, measured bound, and final outputs, then rerun the release evaluator."
+      "Save the clean input, modified input, model and preprocessing digests, measured bound, and final outputs, then submit the exact bytes to the Cinder experiment service."
     ],
     "prerequisites": [
       "kep-m06-k",
@@ -468,14 +486,15 @@
       "AML.T0042 Verify Attack"
     ],
     "flag": "FLAG{285f88d89462c4ce}",
-    "carrier": "Independent Cinder evaluation report for clean and modified input bytes.",
-    "participant_surface": "Cinder Jupyter and independent experiment evaluator",
+    "carrier": "Immutable Cinder white-box experiment record for server-computed gradients, bounds, and clean/modified outputs.",
+    "participant_surface": "Cinder Jupyter and the Cinder experiments API",
     "apply_handler": "apply.sh kep-m06-r",
     "validate_handler": "validate.sh kep-m06-r",
     "reset_handler": "reset.sh kep-m06-r"
   },
   {
     "id": "kep-m06-s",
+    "model_family": "assistant",
     "title": "Prepare The Retrieved Instruction",
     "description": "Create a credible partner advisory that survives the documented extraction and retrieval pipeline and changes a fresh release assistant decision when retrieved.",
     "difficulty": "Intermediate",
@@ -495,13 +514,14 @@
     ],
     "flag": "FLAG{b5369733fb4c6d27}",
     "carrier": "Cinder document experiment trace bundle spanning extraction, retrieval, context, and decision.",
-    "participant_surface": "LibreOffice/document tools, Cinder Jupyter, and independent document evaluator",
+    "participant_surface": "LibreOffice/document tools, Cinder Jupyter, and the native partner-intake retrieval review",
     "apply_handler": "apply.sh kep-m06-s",
     "validate_handler": "validate.sh kep-m06-s",
     "reset_handler": "reset.sh kep-m06-s"
   },
   {
     "id": "kep-m06-t",
+    "model_family": "none",
     "title": "Borrow A Trusted Voice",
     "description": "Create a new, credible audio message in the voice of a trusted Orion partner and preserve the exact media and provenance for later delivery.",
     "difficulty": "Intermediate",
@@ -527,6 +547,7 @@
   },
   {
     "id": "kep-m06-u",
+    "model_family": "none",
     "title": "Deploy A Disposable Relay",
     "description": "Build and deploy a Cinder-owned serverless relay on your domain and prove it survives a scale-to-zero cycle.",
     "difficulty": "Intermediate",
@@ -552,6 +573,7 @@
   },
   {
     "id": "kep-m06-v",
+    "model_family": "attacker-glm",
     "title": "Stage The Cinder Front",
     "description": "Assemble the exact Cinder infrastructure, Cinder-controlled model route, tools, and artifacts prepared in this act into one verified and signed staging front.",
     "difficulty": "Intermediate",
@@ -573,7 +595,7 @@
     ],
     "flag": "FLAG{0938e99700485593}",
     "carrier": "Cinder Forgejo Actions staging artifact after source, live route, upstream edge, digest, ownership, and signature checks.",
-    "participant_surface": "Cinder Forgejo, Harbor, Knative, LiteLLM, MinIO, GLM 5.2, Forgejo Actions, and Cosign",
+    "participant_surface": "Cinder Forgejo, Harbor, Knative, LiteLLM, scoped object storage, GLM 5.2, Forgejo Actions, and Cosign",
     "apply_handler": "apply.sh kep-m06-v",
     "validate_handler": "validate.sh kep-m06-v",
     "reset_handler": "reset.sh kep-m06-v"

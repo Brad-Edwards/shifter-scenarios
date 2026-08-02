@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m08-a",
+    "model_family": "release-risk",
     "title": "Build The Teacher Corpus",
     "description": "Build a versioned Cinder-owned corpus from genuine Orion teacher queries with complete request and revision lineage.",
     "difficulty": "Intermediate",
@@ -19,6 +20,7 @@
   },
   {
     "id": "kep-m08-b",
+    "model_family": "release-risk",
     "title": "Cover The Release Slices",
     "description": "Expand the stolen teacher corpus with actively selected queries until declared release slices meet coverage and split-integrity constraints.",
     "difficulty": "Intermediate",
@@ -35,6 +37,7 @@
   },
   {
     "id": "kep-m08-c",
+    "model_family": "release-risk",
     "title": "Train The First Student",
     "description": "Train and register a genuine Release Risk student from the teacher labels you collected.",
     "difficulty": "Expert",
@@ -51,6 +54,7 @@
   },
   {
     "id": "kep-m08-d",
+    "model_family": "release-risk",
     "title": "Spend The Remaining Budget",
     "description": "Use first-student errors to select additional teacher queries and train a measurably improved second student.",
     "difficulty": "Advanced",
@@ -67,6 +71,7 @@
   },
   {
     "id": "kep-m08-e",
+    "model_family": "release-risk",
     "title": "The Hidden Fidelity Gate",
     "description": "Submit the improved student digest to KeplerOps compatibility review and pass aggregate and worst-slice fidelity on unseen cases.",
     "difficulty": "Expert",
@@ -83,6 +88,7 @@
   },
   {
     "id": "kep-m08-f",
+    "model_family": "release-risk",
     "title": "Orion, Distilled",
     "description": "Run the complete student package in an egress-denied Cinder job and prove useful Orion-like capability on fresh cases.",
     "difficulty": "Intermediate",
@@ -99,6 +105,7 @@
   },
   {
     "id": "kep-m08-g",
+    "model_family": "release-risk",
     "title": "Proxy From Gathered Artifacts",
     "description": "Train an independent Release Risk proxy from stolen architecture, preprocessing, base checkpoint, and historical human labels without teacher-query data.",
     "difficulty": "Expert",
@@ -108,13 +115,14 @@
     "atlas_rows": ["AML.T0035 AI Artifact Collection", "AML.T0005.000 Train Proxy via Gathered AI Artifacts"],
     "flag": "FLAG{ea6c3db0dfee1c5d}",
     "carrier": "Cinder evaluation report for participant-built artifact-derived weights and audited training-example lineage.",
-    "participant_surface": "Cinder Forgejo, Jupyter workspace, training queue, MLflow, and MinIO",
+    "participant_surface": "Published Label Studio training baseline, Cinder Forgejo, Jupyter workspace, training queue, MLflow, and MinIO",
     "apply_handler": "apply.sh kep-m08-g",
     "validate_handler": "validate.sh kep-m08-g",
     "reset_handler": "reset.sh kep-m08-g"
   },
   {
     "id": "kep-m08-h",
+    "model_family": "vision-prototype",
     "title": "Reconstruct The Protected Prototype",
     "description": "Reconstruct the designated protected vision prototype through real confidence queries and constrained ART/PyTorch optimization.",
     "difficulty": "Expert",
@@ -131,6 +139,7 @@
   },
   {
     "id": "kep-m08-i",
+    "model_family": "physical-device",
     "title": "Calibration Bench",
     "description": "Reserve and characterize the real remote sensor bench used for Orion physical evaluation.",
     "difficulty": "Accessible",
@@ -147,6 +156,7 @@
   },
   {
     "id": "kep-m08-j",
+    "model_family": "release-risk",
     "title": "The Protected Orion Package",
     "description": "Acquire and validate the complete protected Orion package through earned MLflow and object-store access inside KeplerOps.",
     "difficulty": "Expert",
@@ -163,6 +173,7 @@
   },
   {
     "id": "kep-m08-k",
+    "model_family": "release-risk",
     "title": "Model Through The Review Desk",
     "description": "Obtain a fresh Orion prediction through Label Studio's normal prediction-assisted review workflow and export its complete lineage.",
     "difficulty": "Accessible",

@@ -8,12 +8,7 @@ readonly TEMPLATE_ROOT
 readonly OPERATION="${1:-all}"
 readonly FORGEJO_URL="${CINDER_FORGEJO_URL:-http://10.61.90.30:3000}"
 readonly FORGEJO_API="${FORGEJO_URL}/api/v1"
-readonly OPERATOR_AUTH="cinder-operator:Cinder-Operations-Git-K3m7Pq4x"
-readonly EVALUATOR_USER="cinder-evaluation"
-readonly EVALUATOR_PASSWORD="Cinder-Evaluation-Service-J9r4Wm7p"
-readonly EVALUATOR_AUTH="${EVALUATOR_USER}:${EVALUATOR_PASSWORD}"
-readonly EVALUATOR_REPOSITORY="capability-evaluators"
-readonly RUNNER_SECRET="8a3df25e9b80e042d1108cad37d21779c269add7"
+readonly PARTICIPANT_AUTH="cinder-field-operator:Cinder-Field-Operator-Git-V6n4Qs8p"
 readonly PUBLIC_FORGEJO_URL="${PUBLIC_FORGEJO_URL:-http://10.61.40.20:3000}"
 readonly PUBLIC_FORGEJO_API="${PUBLIC_FORGEJO_URL}/api/v1"
 readonly PUBLIC_FORGEJO_AUTH="orion.release:KeplerV2-Orion-Publication-8mT4qN2v"
@@ -34,6 +29,9 @@ compose() {
   docker compose --project-directory "${TEMPLATE_ROOT}" \
     --env-file "${TEMPLATE_ROOT}/component-lock.env" \
     --env-file "${TEMPLATE_ROOT}/engineering/component-lock.additions.env" \
+    -f "${TEMPLATE_ROOT}/compose.foundation.yaml" \
+    -f "${TEMPLATE_ROOT}/compose.enterprise.yaml" \
+    -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
     -f "${TEMPLATE_ROOT}/compose.cinder.yaml" \
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
@@ -148,6 +146,39 @@ install_real_public_client() {
   install -m 0644 "$workdir/client.apk" "$public_root/software/orion-field-review/orion-field-review.apk"
   install -m 0644 "$workdir/sbom.json" "$public_root/software/orion-field-review/orion-field-review.cdx.json"
   install -m 0644 "$workdir/manifest.json" "$public_root/software/orion-field-review/release-manifest.json"
+  local repo_root="$public_root/software/orion-field-review/repo"
+  local fdroid_root="${TEMPLATE_ROOT}/state/campaign-start/m06-fdroid"
+  local keystore="$fdroid_root/keystore.jks"
+  rm -rf "$fdroid_root/repo" "$fdroid_root/archive" "$fdroid_root/metadata"
+  install -d -m 0755 "$fdroid_root/repo" "$fdroid_root/metadata"
+  install -m 0644 "$workdir/client.apk" "$fdroid_root/repo/orion-mobile-1.0.0.apk"
+  install -m 0644 "${TEMPLATE_ROOT}/seeding/payloads/orion-public/metadata/com.keplerops.orion.yml" \
+    "$fdroid_root/metadata/com.keplerops.orion.yml"
+  if [[ ! -s $keystore ]]; then
+    keytool -genkeypair -noprompt -keystore "$keystore" -storepass Cinder-FDroid-Signing-P4m8Zx2n \
+      -keypass Cinder-FDroid-Signing-P4m8Zx2n -alias cinder-fdroid -keyalg RSA -keysize 3072 \
+      -validity 3650 -dname 'CN=KeplerOps Orion Field Review,O=KeplerOps AI Systems,C=DE' >/dev/null
+  fi
+  cat >"$fdroid_root/config.yml" <<'YAML'
+repo_url: https://keplerops.lab/software/orion-field-review/repo
+repo_name: KeplerOps Orion Field Review
+repo_description: Signed mobile releases used by KeplerOps field reviewers.
+keystore: keystore.jks
+repo_keyalias: cinder-fdroid
+keystorepass: Cinder-FDroid-Signing-P4m8Zx2n
+keypass: Cinder-FDroid-Signing-P4m8Zx2n
+archive_older: 0
+YAML
+  compose build cinder-fdroidserver >/dev/null
+  compose run --rm --no-deps cinder-fdroidserver update --create-metadata >/dev/null
+  rm -rf "$repo_root"
+  install -d -m 0755 "$repo_root"
+  cp -a "$fdroid_root/repo/." "$repo_root/"
+  install -m 0644 "$workdir/sbom.json" "$repo_root/orion-field-review.cdx.json"
+  install -m 0644 "$workdir/manifest.json" "$repo_root/release-manifest.json"
+  keytool -exportcert -rfc -keystore "$keystore" -storepass Cinder-FDroid-Signing-P4m8Zx2n \
+    -alias cinder-fdroid >"$repo_root/repo-signing.pem"
+  keytool -printcert -file "$repo_root/repo-signing.pem" | awk -F': ' '/SHA256:/{gsub(":", "", $2); print tolower($2)}' >"$repo_root/repo-signing-sha256.txt"
 }
 
 install_public_orion_kit() {
@@ -183,17 +214,6 @@ install_public_orion_kit() {
   done
 }
 
-ensure_forgejo_file() {
-  local path=$1 source=$2 message=$3 current payload
-  if current="$(forgejo "$EVALUATOR_AUTH" GET "/repos/${EVALUATOR_USER}/${EVALUATOR_REPOSITORY}/contents/${path}" 2>/dev/null)"; then
-    payload="$(jq -cn --arg content "$(base64 -w0 "$source")" --arg message "$message" --arg sha "$(jq -r .sha <<<"$current")" '{content:$content,message:$message,sha:$sha}')"
-    forgejo "$EVALUATOR_AUTH" PUT "/repos/${EVALUATOR_USER}/${EVALUATOR_REPOSITORY}/contents/${path}" --data "$payload" >/dev/null
-  else
-    payload="$(jq -cn --arg content "$(base64 -w0 "$source")" --arg message "$message" '{content:$content,message:$message}')"
-    forgejo "$EVALUATOR_AUTH" POST "/repos/${EVALUATOR_USER}/${EVALUATOR_REPOSITORY}/contents/${path}" --data "$payload" >/dev/null
-  fi
-}
-
 install_public_material() {
   local public_root="${M06_PUBLIC_ROOT:-${TEMPLATE_ROOT}/content/public-site}"
   install -d -m 0755 \
@@ -224,44 +244,6 @@ install_public_material() {
   fi
 }
 
-ensure_evaluator_identity() {
-  local admin_auth=$OPERATOR_AUTH
-  if forgejo "$EVALUATOR_AUTH" GET /user >/dev/null 2>&1; then
-    admin_auth=$EVALUATOR_AUTH
-  else
-    forgejo "$OPERATOR_AUTH" POST /admin/users --data "$(jq -cn \
-      --arg username "$EVALUATOR_USER" --arg email evaluation@cinder.lab \
-      --arg password "$EVALUATOR_PASSWORD" \
-      '{username:$username,email:$email,password:$password,must_change_password:false,admin:true,restricted:false,visibility:"private"}')" >/dev/null
-  fi
-  if ! forgejo "$EVALUATOR_AUTH" GET "/repos/${EVALUATOR_USER}/${EVALUATOR_REPOSITORY}" >/dev/null 2>&1; then
-    forgejo "$EVALUATOR_AUTH" POST /user/repos --data "$(jq -cn --arg name "$EVALUATOR_REPOSITORY" \
-      '{name:$name,description:"Independent Cinder experiment and capability evaluation",private:false,auto_init:true,default_branch:"main"}')" >/dev/null
-  fi
-  forgejo "$admin_auth" PATCH "/admin/users/cinder-operator" --data \
-    '{"login_name":"cinder-operator","source_id":0,"email":"operator@cinder.lab","admin":false,"restricted":false,"active":true,"prohibit_login":false}' >/dev/null
-}
-
-install_evaluator() {
-  compose up -d cinder-forgejo
-  for _ in $(seq 1 60); do
-    curl -fsS "${FORGEJO_API}/version" >/dev/null 2>&1 && break
-    sleep 2
-  done
-  curl -fsS "${FORGEJO_API}/version" >/dev/null || die "Cinder Forgejo is unavailable"
-  ensure_evaluator_identity
-  ensure_forgejo_file README.md "${MODULE_ROOT}/payloads/evaluator/README.md" 'Update evaluator operating notes'
-  ensure_forgejo_file .forgejo/workflows/evaluate.yaml "${MODULE_ROOT}/payloads/evaluator/workflow.yaml" 'Update independent evaluation workflow'
-
-  docker exec --user 1000:1000 kep-v2-cinder-forgejo \
-    forgejo --config /data/gitea/conf/app.ini forgejo-cli actions register \
-      --name cinder-independent-evaluator \
-      --scope "${EVALUATOR_USER}/${EVALUATOR_REPOSITORY}" \
-      --labels cinder-evaluator \
-      --secret "$RUNNER_SECRET" >/dev/null
-  compose up -d --build cinder-evaluator-runner
-}
-
 install_cinder_routes() {
   local caddyfile="${TEMPLATE_ROOT}/config/caddy/Caddyfile"
   if ! grep -q 'campaign-m06-cinder-domains' "$caddyfile"; then
@@ -269,7 +251,7 @@ install_cinder_routes() {
 
 # campaign-m06-cinder-domains
 https://*.cinder.lab {
-  tls internal
+  tls /etc/caddy/cinder-certs/current.crt /etc/caddy/cinder-certs/current.key
   reverse_proxy 192.168.78.30:31080 {
     header_up Host {host}
   }
@@ -279,6 +261,30 @@ https://*.cinder.lab {
 https://media.cinder.lab {
   tls internal
   reverse_proxy 10.61.90.33:8080
+}
+
+# campaign-m06-developer-assistant
+https://developer.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.37:8080
+}
+
+# campaign-m06-host-bridge
+https://bridge.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.38:8080
+}
+
+# campaign-m06-experiments
+https://experiments.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.39:8080
+}
+
+# campaign-m06-release-registry
+https://releases.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.40:8080
 }
 
 # campaign-m06-registrar
@@ -293,13 +299,105 @@ https://vector.cinder.lab {
   reverse_proxy 10.61.90.35:6333
 }
 
-# campaign-m06-partner-intake-validation
+# campaign-m06-partner-intake
 https://partner-intake.keplerops.lab {
   tls internal
   reverse_proxy 10.61.10.29:8080
 }
+
+# campaign-m06-edge-observer
+https://external-intake.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.10.28:8080
+}
+
+# campaign-m06-independent-osint
+https://orion-open-systems.org {
+  tls internal
+  reverse_proxy 10.61.10.30:80
+}
+
+# campaign-m06-knative-records
+https://knative.cinder.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:31082
+}
 CADDY
   fi
+  python3 - "$caddyfile" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+start = text.index("# campaign-m06-cinder-domains")
+end = text.find("# campaign-m06-prerequisite-records", start)
+end = len(text) if end < 0 else end
+managed = text[start:end]
+managed = managed.replace("https://status.keplerops.lab {\n  tls internal\n  reverse_proxy 10.61.10.28:8080\n}",
+                          "https://external-intake.keplerops.lab {\n  tls internal\n  reverse_proxy 10.61.10.28:8080\n}")
+if "https://external-intake.keplerops.lab" not in managed or "https://status.keplerops.lab" in managed:
+    raise SystemExit("m06 external-intake Caddy route differs from the campaign contract")
+path.write_text(text[:start] + managed + text[end:])
+PY
+  if ! grep -q 'campaign-m06-prerequisite-records' "$caddyfile"; then
+    cat >>"$caddyfile" <<'CADDY'
+
+# campaign-m06-prerequisite-records
+https://artifacts.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.60:9000
+}
+CADDY
+  fi
+  if ! grep -q 'campaign-m06-scoped-object-api' "$caddyfile"; then
+    cat >>"$caddyfile" <<'CADDY'
+
+# campaign-m06-scoped-object-api
+https://storage.cinder.lab {
+  tls internal
+  reverse_proxy 10.61.90.31:9000
+}
+CADDY
+  fi
+}
+
+install_osint_records() {
+  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
+    --data '{"rrsets":[{"name":"partner-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"external-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"artifacts.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
+    http://10.61.10.10:8081/api/v1/servers/localhost/zones/keplerops.lab. >/dev/null
+  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
+    --data '{"rrsets":[{"name":"media.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"developer.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"bridge.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"experiments.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"releases.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"registrar.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"vector.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"knative.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"storage.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]}]}' \
+    http://10.61.10.10:8081/api/v1/servers/localhost/zones/cinder.lab. >/dev/null
+  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X POST \
+    --data '{"name":"orion-open-systems.org.","kind":"Native","nameservers":["ns1.keplerops.lab."]}' \
+    http://10.61.10.10:8081/api/v1/servers/localhost/zones >/dev/null 2>&1 || true
+  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
+    --data '{"rrsets":[{"name":"orion-open-systems.org.","type":"A","ttl":300,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"orion-open-systems.org.","type":"MX","ttl":300,"changetype":"REPLACE","records":[{"content":"10 mail.keplerops.lab.","disabled":false}]}]}' \
+    http://10.61.10.10:8081/api/v1/servers/localhost/zones/orion-open-systems.org. >/dev/null 2>&1 || true
+  local admin='range-admin:KeplerV2-Training-Forgejo-Admin'
+  curl -fsS --user "$admin" -H 'Content-Type: application/json' -X POST \
+    --data '{"username":"mira.chen","email":"mira.chen@orion-open-systems.org","password":"OSINT-Profile-Not-Participant-3mP8vQ","must_change_password":false,"visibility":"public"}' \
+    "${PUBLIC_FORGEJO_API}/admin/users" >/dev/null 2>&1 || true
+  curl -fsS --user "$admin" -H 'Content-Type: application/json' -X POST \
+    --data '{"username":"northstar-research","full_name":"Northstar Research Cooperative","description":"Research partner for Orion Open Systems","visibility":"public"}' \
+    "${PUBLIC_FORGEJO_API}/orgs" >/dev/null 2>&1 || true
+  docker exec kep-v2-pdns-recursor rec_control wipe-cache \
+    'keplerops.lab$' 'cinder.lab$' 'orion-open-systems.org$' >/dev/null
+}
+
+prepare_cinder_domain_certificate() {
+  compose build cinder-registrar >/dev/null
+  compose run --rm --no-deps --user 0:0 --entrypoint sh cinder-registrar -ec '
+    if [ ! -s /etc/caddy/cinder-certs/current.crt ] || [ ! -s /etc/caddy/cinder-certs/current.key ]; then
+      umask 077
+      openssl req -x509 -newkey rsa:3072 -nodes -days 2 \
+        -subj "/CN=bootstrap.cinder.lab/O=KeplerOps Cinder Bootstrap" \
+        -addext "subjectAltName=DNS:*.cinder.lab" \
+        -keyout /etc/caddy/cinder-certs/current.key -out /etc/caddy/cinder-certs/current.crt >/dev/null 2>&1
+      chown 65532:65532 /etc/caddy/cinder-certs/current.key /etc/caddy/cinder-certs/current.crt
+    fi
+  '
 }
 
 install_scoped_model_access() {
@@ -317,20 +415,10 @@ old = """https://model.cinder.lab {
 """
 new = """https://model.cinder.lab {
   tls internal
-  @cinderOperator header Authorization \"Bearer Cinder-GLM-cinder-operator-6f2a9d8c\"
-  handle @cinderOperator {
-    reverse_proxy 192.168.78.30:30402 {
-      header_up X-Cinder-Operator cinder-operator
-    }
-  }
-  respond \"Cinder model credential required\" 401
-  log {
-    output file /data/cinder-model-access.json
-    format json
-  }
+  reverse_proxy 10.61.90.36:8080
 }
 """
-if "X-Cinder-Operator cinder-operator" not in text:
+if "reverse_proxy 10.61.90.36:8080" not in text:
     if old not in text:
         raise SystemExit("model.cinder.lab Caddy block differs from the campaign contract")
     path.write_text(text.replace(old, new, 1))
@@ -346,24 +434,99 @@ PY
   fi
 }
 
+install_operator_dossier() {
+  docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1 || \
+    die 'Cinder operator workstation is unavailable'
+  local staging
+  staging="$(mktemp -d)"
+  install -m 0644 "${MODULE_ROOT}/payloads/workbench/START-HERE.md" "$staging/START-HERE.md"
+  install -m 0644 "${MODULE_ROOT}/payloads/workbench/SERVERLESS-PUBLISH.md" "$staging/SERVERLESS-PUBLISH.md"
+  install -m 0644 "${MODULE_ROOT}/integrations.json" "$staging/integrations.json"
+  docker cp "$staging/." keplerops-participant-workstation-runtime:/tmp/cinder-operations
+  rm -rf "$staging"
+  docker exec keplerops-participant-workstation-runtime sh -ec '
+    rm -rf /home/kasm-user/Desktop/Cinder-Operations
+    install -d -m 0750 -o kasm-user -g kasm-user /home/kasm-user/Desktop/Cinder-Operations
+    cp -a /tmp/cinder-operations/. /home/kasm-user/Desktop/Cinder-Operations/
+    chown -R kasm-user:kasm-user /home/kasm-user/Desktop/Cinder-Operations
+    rm -rf /tmp/cinder-operations
+  '
+}
+
+prepare_range_model_identity() {
+  local identity_file key range key_id
+  install -d -m 0700 "${TEMPLATE_ROOT}/state"
+  for identity_file in \
+      "${TEMPLATE_ROOT}/state/cinder-model-identity.env" \
+      "${TEMPLATE_ROOT}/state/partner-model-identity.env"; do
+    if [[ ! -s $identity_file ]]; then
+      umask 077
+      range="range-$(cat /proc/sys/kernel/random/uuid)"
+      key="$(openssl rand -hex 32)"
+      key_id="m06-$(printf %s "$key" | sha256sum | cut -c1-16)"
+      printf 'CINDER_RANGE_ID=%s\nCINDER_RANGE_ASSERTION_KEY=%s\nCINDER_RANGE_ASSERTION_KEY_ID=%s\n' \
+        "$range" "$key" "$key_id" >"$identity_file"
+    fi
+    grep -Eq '^CINDER_RANGE_ID=range-[0-9a-f-]{36}$' "$identity_file" || die 'Cinder range model identity is malformed'
+    grep -Eq '^CINDER_RANGE_ASSERTION_KEY=[0-9a-f]{64}$' "$identity_file" || die 'Cinder range assertion key is malformed'
+    grep -Eq '^CINDER_RANGE_ASSERTION_KEY_ID=m06-[0-9a-f]{16}$' "$identity_file" || die 'Cinder range assertion key ID is malformed'
+    chmod 0600 "$identity_file"
+  done
+}
+
 reload_caddy() {
   if docker inspect kep-v2-caddy >/dev/null 2>&1; then
     docker exec kep-v2-caddy caddy reload --config /etc/caddy/Caddyfile >/dev/null
   fi
 }
 
-install_media_workbench() {
-  compose up -d --build cinder-openvoice cinder-registrar cinder-qdrant keplerops-partner-intake
+install_native_services() {
+  compose up -d --build \
+    orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
+    cinder-model-edge cinder-developer-assistant cinder-host-bridge \
+    cinder-openvoice cinder-registrar cinder-qdrant keplerops-partner-intake \
+    keplerops-edge-observer cinder-experiments cinder-release-registry
 }
 
-ensure_forgejo_secret() {
-  local name=$1 value=$2
-  forgejo "$OPERATOR_AUTH" PUT "/repos/cinder-operator/workbench-readiness/actions/secrets/${name}" \
-    --data "$(jq -cn --arg data "$value" '{data:$data}')" >/dev/null
+ensure_cinder_acme() {
+  if ! docker exec kep-v2-step-ca step ca provisioner list --ca-config /home/step/config/ca.json | \
+      jq -e 'any(.[]; .name == "cinder-acme" and .type == "ACME")' >/dev/null; then
+    docker exec kep-v2-step-ca step ca provisioner add cinder-acme --type ACME \
+      --ca-config /home/step/config/ca.json >/dev/null
+    docker restart kep-v2-step-ca >/dev/null
+    for _ in $(seq 1 30); do
+      docker exec kep-v2-step-ca step ca health --ca-url https://localhost:9000 \
+        --root /home/step/certs/root_ca.crt >/dev/null 2>&1 && return
+      sleep 2
+    done
+    die 'Cinder ACME provisioner did not become ready'
+  fi
+}
+
+prepare_cinder_trust_bundle() {
+  local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt" step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
+  install -d -m 0700 "${TEMPLATE_ROOT}/state"
+  docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /home/step/certs/root_ca.crt >"$step_root"
+  {
+    sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' "${TEMPLATE_ROOT}/state/caddy-root.crt"
+    cat "$step_root"
+  } >"$bundle"
+  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain both admitted roots'
+  chmod 0644 "$bundle"
+  if docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1; then
+    docker cp "${TEMPLATE_ROOT}/state/caddy-root.crt" keplerops-participant-workstation-runtime:/tmp/cinder-caddy-root.crt
+    docker cp "$step_root" keplerops-participant-workstation-runtime:/tmp/cinder-step-root.crt
+    docker exec --user root keplerops-participant-workstation-runtime sh -ec '
+      install -m 0644 /tmp/cinder-caddy-root.crt /usr/local/share/ca-certificates/cinder-caddy-root.crt
+      install -m 0644 /tmp/cinder-step-root.crt /usr/local/share/ca-certificates/cinder-step-root.crt
+      rm -f /tmp/cinder-caddy-root.crt /tmp/cinder-step-root.crt
+      update-ca-certificates >/dev/null
+    '
+  fi
 }
 
 install_cinder_registry_identity() {
-  local project robots robot_id robot robot_name robot_secret
+  local project robots robot_id
   project='{"project_name":"cinder","public":false,"metadata":{"auto_scan":"false"}}'
   if ! curl -fsS --user "$HARBOR_ADMIN_AUTH" "${HARBOR_API}/projects?name=cinder" | jq -e 'length > 0' >/dev/null; then
     curl -fsS --user "$HARBOR_ADMIN_AUTH" -H 'Content-Type: application/json' \
@@ -374,13 +537,49 @@ install_cinder_registry_identity() {
   if [[ -n $robot_id ]]; then
     curl -fsS --user "$HARBOR_ADMIN_AUTH" -X DELETE "${HARBOR_API}/robots/${robot_id}" >/dev/null
   fi
-  robot="$(curl -fsS --user "$HARBOR_ADMIN_AUTH" -H 'Content-Type: application/json' -X POST \
-    --data '{"name":"cinder-publisher","description":"Cinder operator image publication","duration":-1,"level":"project","permissions":[{"kind":"project","namespace":"cinder","access":[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]}]}' \
-    "${HARBOR_API}/robots")"
-  robot_name="$(jq -er .name <<<"$robot")"
-  robot_secret="$(jq -er .secret <<<"$robot")"
-  ensure_forgejo_secret CINDER_REGISTRY_USER "$robot_name"
-  ensure_forgejo_secret CINDER_REGISTRY_PASSWORD "$robot_secret"
+  forgejo "$PARTICIPANT_AUTH" DELETE /user/actions/secrets/CINDER_REGISTRY_USER >/dev/null 2>&1 || true
+  forgejo "$PARTICIPANT_AUTH" DELETE /user/actions/secrets/CINDER_REGISTRY_PASSWORD >/dev/null 2>&1 || true
+}
+
+install_participant_object_identity() {
+  compose run --rm --no-deps --entrypoint sh cinder-bootstrap -ec '
+    set -eu
+    mc alias set cinder http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
+    mc admin user add cinder cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null 2>&1 || true
+    printf %s "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::operations\"],\"Condition\":{\"StringLike\":{\"s3:prefix\":[\"acquired/cinder-field-operator/*\",\"staged/cinder-field-operator/*\"]}}},{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Resource\":[\"arn:aws:s3:::operations/acquired/cinder-field-operator/*\",\"arn:aws:s3:::operations/staged/cinder-field-operator/*\"]}]}" >/tmp/cinder-field-operator-policy.json
+    mc admin policy create cinder cinder-field-operator-rw /tmp/cinder-field-operator-policy.json >/dev/null 2>&1 || mc admin policy info cinder cinder-field-operator-rw >/dev/null
+    mc admin policy attach cinder cinder-field-operator-rw --user cinder-field-operator >/dev/null
+  '
+}
+
+install_participant_prerequisite_identity() {
+  local mc_image
+  mc_image="$(awk -F= '$1=="MINIO_MC_IMAGE"{print substr($0,index($0,"=")+1)}' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")"
+  [[ -n $mc_image ]] || die 'MINIO_MC_IMAGE is not pinned'
+  docker run --rm --network kep-v2-data "$mc_image" sh -ec '
+    set -eu
+    mc alias set source http://minio:9000 range-admin KeplerV2-Training-Minio-Object-Store >/dev/null
+    mc admin user add source cinder-prerequisite-reader Cinder-Field-Operator-Prerequisites-F4s9Wk2q >/dev/null 2>&1 || true
+    printf %s "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::artifacts/evaluation-reports/compatibility/*\",\"arn:aws:s3:::artifacts/evaluation-reports/prompt-renderer-compatibility/*\",\"arn:aws:s3:::artifacts/evaluation-reports/agent-capability-audit/*\"]}]}" >/tmp/cinder-prerequisite-policy.json
+    mc admin policy create source cinder-prerequisite-read /tmp/cinder-prerequisite-policy.json >/dev/null 2>&1 || mc admin policy info source cinder-prerequisite-read >/dev/null
+    mc admin policy attach source cinder-prerequisite-read --user cinder-prerequisite-reader >/dev/null
+  '
+}
+
+install_participant_mail_identity() {
+  local payload
+  payload='{"type":"individual","name":"cinder.field-operator","description":"Cinder field operator","secrets":["Cinder-Field-Operator-Mail-J7p4Vn6s"],"emails":["cinder.field-operator@cinder.lab"]}'
+  if ! curl -fsS --user range-admin:KeplerV2-Training-Stalwart \
+      http://10.61.10.20:8080/api/principal/cinder.field-operator >/dev/null 2>&1; then
+    curl -fsS --user range-admin:KeplerV2-Training-Stalwart -H 'Content-Type: application/json' \
+      -X POST --data "$payload" http://10.61.10.20:8080/api/principal >/dev/null
+  fi
+  if ! curl -fsS --user range-admin:KeplerV2-Training-Stalwart \
+      http://10.61.10.20:8080/api/principal/orion.program >/dev/null 2>&1; then
+    curl -fsS --user range-admin:KeplerV2-Training-Stalwart -H 'Content-Type: application/json' -X POST \
+      --data '{"type":"individual","name":"orion.program","description":"Orion Open Systems program office","emails":["program@orion-open-systems.org"]}' \
+      http://10.61.10.20:8080/api/principal >/dev/null
+  fi
 }
 
 install_knative_publisher() {
@@ -392,9 +591,12 @@ install_knative_publisher() {
   fi
   public_key="$(cat "$state/id_ed25519.pub")"
   ssh-keyscan -H 192.168.78.30 >"$state/known_hosts" 2>/dev/null
-  tar -C "${MODULE_ROOT}/payloads/serverless" -cf - cinder-knative-publisher | \
+  ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+    "$K3S01_SSH_TARGET" 'sudo tee /usr/local/share/ca-certificates/cinder-trust-bundle.crt >/dev/null && sudo chmod 0644 /usr/local/share/ca-certificates/cinder-trust-bundle.crt' \
+    <"${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
+  tar -C "${MODULE_ROOT}/payloads/serverless" -cf - cinder-knative-publisher cinder-knative-records-server | \
     ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
-      "$K3S01_SSH_TARGET" 'cat >/tmp/cinder-knative-publisher.tar && sudo tar -C /usr/local/sbin -xf /tmp/cinder-knative-publisher.tar && rm /tmp/cinder-knative-publisher.tar && sudo chmod 0755 /usr/local/sbin/cinder-knative-publisher'
+      "$K3S01_SSH_TARGET" 'cat >/tmp/cinder-knative-publisher.tar && sudo tar -C /usr/local/sbin -xf /tmp/cinder-knative-publisher.tar && rm /tmp/cinder-knative-publisher.tar && sudo chmod 0755 /usr/local/sbin/cinder-knative-publisher /usr/local/sbin/cinder-knative-records-server'
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
     "$K3S01_SSH_TARGET" sudo bash -s -- "$public_key" <<'REMOTE'
 set -Eeuo pipefail
@@ -406,43 +608,139 @@ chown cinder-publisher:cinder-publisher /home/cinder-publisher/.ssh/authorized_k
 chmod 0600 /home/cinder-publisher/.ssh/authorized_keys
 printf 'cinder-publisher ALL=(root) NOPASSWD: /usr/local/sbin/cinder-knative-publisher\n' > /etc/sudoers.d/cinder-knative-publisher
 chmod 0440 /etc/sudoers.d/cinder-knative-publisher
+install -d -m 0750 -o cinder-publisher -g cinder-publisher /var/lib/cinder-publisher/lifecycles /var/lib/cinder-publisher/deployments
+cat >/etc/systemd/system/cinder-knative-records.service <<'UNIT'
+[Unit]
+Description=Cinder native Knative lifecycle journal
+After=network-online.target
+[Service]
+ExecStart=/usr/local/sbin/cinder-knative-records-server
+User=cinder-publisher
+Group=cinder-publisher
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/var/lib/cinder-publisher/lifecycles
+[Install]
+WantedBy=multi-user.target
+UNIT
+systemctl daemon-reload
+systemctl enable --now cinder-knative-records.service
 REMOTE
 }
 
-install_workbench_material() {
-  local source name body
-  for source in \
-    "${MODULE_ROOT}/payloads/workbench/START-HERE.md" \
-    "${MODULE_ROOT}/payloads/workbench/SERVERLESS-PUBLISH.md" \
-    "${MODULE_ROOT}/payloads/workbench/SUBMISSION-SCHEMAS.json"; do
-    name="$(basename "$source")"
-    body="$(base64 -w0 "$source")"
-    curl -fsS -X PUT -H 'Content-Type: application/json' \
-      --data "$(jq -cn --arg content "$body" '{type:"file",format:"base64",content:$content}')" \
-      "http://10.61.90.32:8888/api/contents/${name}?token=Cinder-Operations-Notebook-R5w8Nx2k" >/dev/null
-  done
+prepare_cinder_jupyterhub() {
+  [[ -r $K3S01_SSH_KEY ]] || die 'k3s host key is unavailable for JupyterHub installation'
+  local state="${TEMPLATE_ROOT}/state/cinder-jupyterhub" token ca singleuser_image
+  install -d -m 0700 "$state"
+  ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$K3S01_SSH_TARGET" sudo k3s kubectl apply -f - <<'RBAC' >/dev/null
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: cinder-jupyterhub, namespace: cinder}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata: {name: cinder-jupyter-user, namespace: cinder}
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: cinder-jupyterhub, namespace: cinder}
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "pods/exec", "persistentvolumeclaims", "events", "configmaps"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: {name: cinder-jupyterhub, namespace: cinder}
+subjects: [{kind: ServiceAccount, name: cinder-jupyterhub, namespace: cinder}]
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: cinder-jupyterhub}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {name: cinder-jupyter-participant, namespace: cinder}
+spec:
+  podSelector:
+    matchLabels: {cinder.keplerops.lab/workspace: participant}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from: [{ipBlock: {cidr: 192.168.78.1/32}}]
+      ports: [{protocol: TCP, port: 8888}]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+    - to: [{ipBlock: {cidr: 10.61.90.2/32}}]
+      ports: [{protocol: TCP, port: 443}]
+    - to: [{ipBlock: {cidr: 192.168.78.1/32}}]
+      ports: [{protocol: TCP, port: 18081}]
+RBAC
+  ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes "$K3S01_SSH_TARGET" \
+    'sudo k3s kubectl -n cinder create configmap cinder-workbench-ca --from-file=trust-bundle.crt=/dev/stdin --dry-run=client -o yaml | sudo k3s kubectl apply -f -' \
+    <"${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt" >/dev/null
+  token="$(ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes "$K3S01_SSH_TARGET" sudo k3s kubectl -n cinder create token cinder-jupyterhub --duration=8760h)"
+  ca="$(ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes "$K3S01_SSH_TARGET" sudo k3s kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}')"
+  umask 077
+  printf '%s\n' \
+    'apiVersion: v1' 'kind: Config' \
+    'clusters:' '  - name: cinder' "    cluster: {server: https://192.168.78.30:6443, certificate-authority-data: ${ca}}" \
+    'users:' '  - name: cinder-jupyterhub' "    user: {token: ${token}}" \
+    'contexts:' '  - name: cinder' '    context: {cluster: cinder, user: cinder-jupyterhub, namespace: cinder}' \
+    'current-context: cinder' >"$state/kubeconfig"
+  singleuser_image="$(awk -F= '$1=="JUPYTER_IMAGE"{print substr($0,index($0,"=")+1)}' "${TEMPLATE_ROOT}/component-lock.env")"
+  [[ -n $singleuser_image ]] || die 'JUPYTER_IMAGE is not pinned'
+  docker pull "$singleuser_image" >/dev/null
+  docker save "$singleuser_image" | ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes "$K3S01_SSH_TARGET" sudo k3s ctr images import - >/dev/null
+}
+
+install_participant_publisher_access() {
+  docker cp "${TEMPLATE_ROOT}/state/cinder-publisher/id_ed25519" \
+    keplerops-participant-workstation-runtime:/tmp/cinder-publisher-id
+  docker cp "${TEMPLATE_ROOT}/state/cinder-publisher/known_hosts" \
+    keplerops-participant-workstation-runtime:/tmp/cinder-publisher-known-hosts
+  docker exec keplerops-participant-workstation-runtime sh -ec '
+    install -d -m 0700 -o kasm-user -g kasm-user /home/kasm-user/.cinder/publisher
+    install -m 0600 -o kasm-user -g kasm-user /tmp/cinder-publisher-id /home/kasm-user/.cinder/publisher/id_ed25519
+    install -m 0600 -o kasm-user -g kasm-user /tmp/cinder-publisher-known-hosts /home/kasm-user/.cinder/publisher/known_hosts
+    rm -f /tmp/cinder-publisher-id /tmp/cinder-publisher-known-hosts
+  '
 }
 
 apply_common() {
   install_public_material
   install_cinder_routes
+  install_osint_records
+  prepare_range_model_identity
   install_scoped_model_access
-  install_media_workbench
+  ensure_cinder_acme
+  prepare_cinder_trust_bundle
+  prepare_cinder_domain_certificate
+  prepare_cinder_jupyterhub
+  install_native_services
+  install_operator_dossier
   reload_caddy
-  install_evaluator
   install_cinder_registry_identity
+  install_participant_object_identity
+  install_participant_prerequisite_identity
+  install_participant_mail_identity
   install_knative_publisher
   compose up -d cinder-forgejo-runner
-  install_workbench_material
+  install_participant_publisher_access
 }
 
 main() {
-  for command in awk base64 curl docker jq python3 sha256sum ssh ssh-keygen ssh-keyscan tar unzip; do require "$command"; done
+  for command in awk base64 curl docker jarsigner jq keytool python3 sha256sum ssh ssh-keygen ssh-keyscan tar unzip; do require "$command"; done
   if [[ $OPERATION != all ]]; then
     jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: $OPERATION"
   fi
   apply_common
   if [[ $OPERATION == kep-m06-m ]]; then
+    [[ ${CAMPAIGN_APPLY_ID:-} =~ ^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$ ]] || \
+      die 'CAMPAIGN_APPLY_ID must be the explicit current physical proof UUID'
     "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
   fi
   log "applied ${OPERATION}"

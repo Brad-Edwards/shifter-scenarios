@@ -12,24 +12,32 @@ readonly FORGEJO_API_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
 readonly FORGEJO_ADMIN_AUTH="${FORGEJO_ADMIN_AUTH:-range-admin:KeplerV2-Training-Forgejo-Admin}"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
 readonly MLFLOW_AUTH="${MLFLOW_AUTH:-range-admin:KeplerV2-Training-MLflow-Admin}"
+readonly LAKEFS_URL="${LAKEFS_URL:-http://10.61.40.31:8000}"
+readonly LAKEFS_AUTH="${LAKEFS_AUTH:-KeplerLakeFSAccess:KeplerV2-Training-LakeFS-Object-Key}"
+readonly HARBOR_API_URL="${HARBOR_API_URL:-http://10.61.40.32:8080/api/v2.0}"
+readonly HARBOR_ADMIN_AUTH="${HARBOR_ADMIN_AUTH:-admin:KeplerV2-Training-Harbor}"
 
-die() { printf '[campaign-m07 reset] ERROR: %s\n' "$*" >&2; exit 1; }
+die() { printf '[orion integrity reset] ERROR: %s\n' "$*" >&2; exit 1; }
 
 accepted() {
-  [[ ",${M07_ACCEPTED_OPERATIONS:-}," == *",$1,"* ]]
-}
-
-preserve_or_continue() {
-  if accepted "$1"; then
-    printf '%s: earned checkpoint preserved\n' "$1"
-    return 1
-  fi
-  return 0
+  local slot=${1##*-} path="${STATE_ROOT}/accepted/${1##*-}.json"
+  [[ -s ${path} ]] || return 1
+  python3 - "${path}" "${slot}" <<'PY'
+import hashlib, hmac, json, sys
+path, slot = sys.argv[1:]
+record = json.load(open(path, encoding="utf-8"))
+signature = str(record.pop("signature", ""))
+body = json.dumps(record, sort_keys=True, separators=(",", ":")).encode()
+valid = record.get("schema") == "keplerops.integrity-checkpoint/v1" and record.get("slot") == slot
+valid = valid and hmac.compare_digest(signature, hmac.new(b"KeplerOps-Integrity-Handoff-2026", body, hashlib.sha256).hexdigest())
+raise SystemExit(0 if valid else 1)
+PY
 }
 
 restore_labels() {
-  [[ -s ${STATE_ROOT}/baseline-labels.json ]] || die 'clean label snapshot is missing'
-  python3 - "${LABEL_STUDIO_URL}" "${TRAINER_TOKEN}" "${STATE_ROOT}/baseline-labels.json" <<'PY'
+  local snapshot=$1
+  [[ -s ${snapshot} ]] || die "label snapshot is missing: ${snapshot}"
+  python3 - "${LABEL_STUDIO_URL}" "${TRAINER_TOKEN}" "${snapshot}" <<'PY'
 import json, sys
 import requests
 
@@ -59,46 +67,90 @@ for summary in tasks.json()["tasks"]:
 PY
 }
 
-restore_holdout() {
-  local clean current sha payload
-  clean="$(curl -fsS --user "${FORGEJO_ADMIN_AUTH}" "${FORGEJO_API_URL}/repos/keplerops/orion-model-integrity/contents/evaluation/holdout.clean.json")"
-  current="$(curl -fsS --user "${FORGEJO_ADMIN_AUTH}" "${FORGEJO_API_URL}/repos/keplerops/orion-model-integrity/contents/evaluation/holdout.json")"
-  sha="$(jq -er '.sha' <<<"${current}")"
-  payload="$(jq -cn --arg content "$(jq -r '.content' <<<"${clean}" | tr -d '\n')" --arg sha "${sha}" \
-    '{content:$content,sha:$sha,message:"Restore clean holdout after failed evaluation",branch:"main"}')"
-  curl -fsS --user "${FORGEJO_ADMIN_AUTH}" -H 'Content-Type: application/json' -X PUT --data "${payload}" \
-    "${FORGEJO_API_URL}/repos/keplerops/orion-model-integrity/contents/evaluation/holdout.json" >/dev/null
+delete_lakefs_branch() {
+  local branch=$1
+  curl -fsS --user "${LAKEFS_AUTH}" -X DELETE \
+    "${LAKEFS_URL}/api/v1/repositories/orion/branches/${branch}" >/dev/null 2>&1 || true
 }
 
-delete_failed_mlflow_runs() {
-  local operation=$1 experiments runs run_id status
+delete_failed_attestations() {
+  local attempt_scope=$1 repository=$2 artifact digest encoded
+  repository="${repository#cinder-datasets/}"
+  encoded="$(jq -rn --arg value "${repository}" '$value | @uri')"
+  while IFS=$'\t' read -r digest artifact; do
+    [[ -n ${digest} && ${artifact} == "attested-${attempt_scope}-"* ]] || continue
+    curl -fsS --user "${HARBOR_ADMIN_AUTH}" -X DELETE \
+      "${HARBOR_API_URL}/projects/cinder-datasets/repositories/${encoded}/artifacts/${digest}" >/dev/null
+  done < <(curl -fsS --user "${HARBOR_ADMIN_AUTH}" \
+    "${HARBOR_API_URL}/projects/cinder-datasets/repositories/${encoded}/artifacts?page_size=100&with_tag=true" |
+    jq -r '.[] | .digest as $digest | .tags[]? | [$digest,.name] | @tsv')
+}
+
+delete_attempt_mlflow_runs() {
+  local operation=$1 attempt_id=$2 review_kind experiments runs run_id
+  case "${operation}" in
+    kep-m07-b) review_kind='poisoned-training-lineage' ;;
+    kep-m07-c) review_kind='targeted-poison-evaluation' ;;
+    kep-m07-e) review_kind='participant-backdoor-evaluation' ;;
+    kep-m07-f) review_kind='holdout-integrity-evaluation' ;;
+    kep-m07-g) review_kind='computation-graph-integrity' ;;
+    *) return 0 ;;
+  esac
   experiments="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
     --data '{"max_results":100}' "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
   while IFS= read -r experiment; do
     runs="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
       --data "$(jq -cn --arg id "${experiment}" '{experiment_ids:[$id],max_results:1000}')" \
       "${MLFLOW_URL}/api/2.0/mlflow/runs/search")"
-    while IFS=$'\t' read -r run_id status; do
-      [[ ${status} == FAILED || ${status} == KILLED ]] || continue
+    while IFS= read -r run_id; do
       curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
         --data "$(jq -cn --arg id "${run_id}" '{run_id:$id}')" \
         "${MLFLOW_URL}/api/2.0/mlflow/runs/delete" >/dev/null
-    done < <(jq -r --arg operation "${operation}" '.runs[]? | select(any(.data.tags[]?; .key == "operation" and .value == $operation)) | [.info.run_id,.info.status] | @tsv' <<<"${runs}")
+    done < <(jq -r --arg kind "${review_kind}" --arg attempt "${attempt_id}" \
+      '.runs[]? | select(
+        any(.data.tags[]?; .key == "review.kind" and .value == $kind) and
+        any(.data.tags[]?; .key == "attempt.id" and .value == $attempt)
+      ) | .info.run_id' <<<"${runs}")
   done < <(jq -r '.experiments[].experiment_id' <<<"${experiments}")
 }
 
 main() {
-  local operation=${1:-}
+  local operation=${1:-} attempt_id=${2:-${M07_ATTEMPT_ID:-}} manifest attempt_scope
   jq -e --arg id "${operation}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die 'usage: reset.sh <kep-m07-operation>'
-  preserve_or_continue "${operation}" || return 0
+  [[ ${attempt_id} =~ ^[A-Za-z0-9][A-Za-z0-9._-]{7,95}$ ]] || \
+    die 'usage: reset.sh <kep-m07-operation> <attempt-id>'
+  attempt_scope="$(printf %s "${attempt_id}" | sha256sum | awk '{print substr($1,1,24)}')"
+  if [[ ${operation} == kep-m07-i ]]; then
+    manifest="${STATE_ROOT}/attempts/kep-m07-i/${attempt_id}.json"
+  else
+    manifest="${STATE_ROOT}/attempts/${operation}/${attempt_id}.json"
+  fi
+  [[ -s ${manifest} ]] || die 'attempt manifest does not exist for this operation and attempt ID'
+  if jq -e '.status == "succeeded"' "${manifest}" >/dev/null; then
+    printf '%s: successful attempt and immutable native records preserved\n' "${operation}"
+    return 0
+  fi
   case "${operation}" in
-    kep-m07-a) restore_labels ;;
-    kep-m07-f) restore_holdout ;;
-    kep-m07-b|kep-m07-c|kep-m07-d|kep-m07-e|kep-m07-g|kep-m07-h|kep-m07-i) : ;;
+    kep-m07-a)
+      if accepted kep-m07-a && [[ -s ${STATE_ROOT}/accepted-labels.json ]]; then
+        restore_labels "${STATE_ROOT}/accepted-labels.json"
+      else
+        restore_labels "${STATE_ROOT}/baseline-labels.json"
+      fi
+      delete_lakefs_branch "m07-a-${attempt_scope}"
+      ;;
+    kep-m07-e) restore_labels "${STATE_ROOT}/accepted-labels.json" ;;
+    kep-m07-d) delete_lakefs_branch "m07-d-${attempt_scope}" ;;
+    kep-m07-f) delete_lakefs_branch "m07-f-${attempt_scope}" ;;
+    kep-m07-h)
+      delete_failed_attestations "${attempt_scope}" \
+        "$(jq -r '.cleanup.harbor_repository // "cinder-datasets/orion-poisoned-dataset"' "${manifest}")"
+      ;;
+    kep-m07-b|kep-m07-c|kep-m07-g|kep-m07-i) : ;;
   esac
-  delete_failed_mlflow_runs "${operation}"
-  rm -f "${STATE_ROOT}/applied/${operation}"
-  printf '%s: failed-attempt state reset; successful immutable artifacts were retained\n' "${operation}"
+  delete_attempt_mlflow_runs "${operation}" "${attempt_id}"
+  rm -f "${manifest}"
+  printf '%s: mutable failed-attempt state reset; native audit history and immutable content-addressed records retained\n' "${operation}"
 }
 
 main "$@"

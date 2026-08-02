@@ -3,7 +3,7 @@ FROM ${AIRFLOW_IMAGE}
 
 USER root
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends openssl \
+    && apt-get install -y --no-install-recommends bubblewrap openssl \
     && rm -rf /var/lib/apt/lists/*
 USER airflow
 

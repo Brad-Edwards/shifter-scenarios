@@ -14,7 +14,7 @@ RUN install -d /opt/openvoice /opt/melotts /opt/openvoice/checkpoints_v2 \
       | tar -xz --strip-components=1 -C /opt/melotts
 RUN python -m pip install --no-cache-dir \
       torch==2.2.2 torchaudio==2.2.2 huggingface-hub==0.27.1 \
-      fastapi==0.115.6 uvicorn==0.34.0 python-multipart==0.0.20 \
+      fastapi==0.116.1 faster-whisper==1.2.0 httpx==0.28.1 uvicorn==0.35.0 python-multipart==0.0.20 \
     && python -m pip install --no-cache-dir -e /opt/openvoice -e /opt/melotts \
     && python -m unidic download
 RUN python - <<'PY'
@@ -24,10 +24,14 @@ snapshot_download(
     revision="fd981100305a0e4291f93a9ad169c6d9f7bed54a",
     local_dir="/opt/openvoice/checkpoints_v2",
 )
+from faster_whisper import WhisperModel
+WhisperModel("small.en", device="cpu", compute_type="int8", download_root="/opt/whisper")
 PY
 
-COPY api.py /opt/cinder-media/api.py
+COPY openvoice/api.py /opt/cinder-media/api.py
+COPY common/checkpoints.py /opt/cinder-media/checkpoints.py
 WORKDIR /opt/cinder-media
 ENV PYTHONPATH=/opt/openvoice:/opt/melotts
+ENV WHISPER_DOWNLOAD_ROOT=/opt/whisper
 EXPOSE 8080
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]

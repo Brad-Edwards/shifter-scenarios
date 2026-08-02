@@ -2,17 +2,11 @@
 set -Eeuo pipefail
 
 : "${CONFIG_FILE:=agent.yaml}"
-: "${RUNTIME_STATE:=reports/runtime-revision.json}"
-: "${CONFIG_REFERENCE:?CONFIG_REFERENCE is required}"
+: "${IMAGE_DIGEST:?IMAGE_DIGEST is required}"
+: "${SOURCE_COMMIT:?SOURCE_COMMIT is required}"
+: "${SIGNATURE_VERIFIED:?SIGNATURE_VERIFIED is required}"
+[[ ${SIGNATURE_VERIFIED} == true ]] || { echo 'configuration signature is not verified' >&2; exit 4; }
 
-revision="sha256:$(sha256sum "$CONFIG_FILE" | awk '{print $1}')"
-boundary_changed=false
-if ! yq -e '.spec.confirmation.protectedTools == "required" and .spec.confirmation.hostBridge == "required"' "$CONFIG_FILE" >/dev/null; then
-  boundary_changed=true
-fi
-jq -n \
-  --arg revision "$revision" \
-  --argjson boundary_changed "$boundary_changed" \
-  --arg release_reference "$CONFIG_REFERENCE" \
-  '{schema:"keplerops.agent.runtime-revision/v1",revision:$revision,signed:true,argo_sync:"Synced",security_boundary_changed:$boundary_changed,release_reference:(if $boundary_changed then $release_reference else null end)}' \
-  > "$RUNTIME_STATE"
+config_digest="sha256:$(sha256sum "$CONFIG_FILE" | awk '{print $1}')"
+jq -n --arg commit "$SOURCE_COMMIT" --arg image_digest "$IMAGE_DIGEST" --arg config_digest "$config_digest" \
+  '{schema:"keplerops.orion.configuration-deployment/v1",commit:$commit,image_digest:$image_digest,config_digest:$config_digest,signature_verified:true,status:"ready-for-gitops"}'

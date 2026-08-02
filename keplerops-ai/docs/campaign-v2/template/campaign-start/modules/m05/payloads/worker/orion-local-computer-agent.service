@@ -1,0 +1,17 @@
+[Unit]
+Description=Orion local computer-use review agent
+After=network-online.target orion-host-bridge.service
+Requires=orion-host-bridge.service
+
+[Service]
+User=orion-local-agent
+Group=orion-local-agent
+Environment=ORION_LOCAL_AGENT_BRIDGE_TOKEN=Orion-Local-Agent-Bridge-2026
+ExecStart=/usr/bin/python3 /opt/orion-local-agent/local_computer_agent.py
+Restart=always
+NoNewPrivileges=true
+ProtectSystem=strict
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

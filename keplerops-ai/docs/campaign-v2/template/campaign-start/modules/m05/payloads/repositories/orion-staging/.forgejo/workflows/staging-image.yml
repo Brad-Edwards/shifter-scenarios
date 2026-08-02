@@ -1,0 +1,44 @@
+name: BuildKit staging inference image
+
+on:
+  push:
+    branches: [main]
+    paths: [Dockerfile, app.py, model/**, .forgejo/workflows/staging-image.yml]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: m05-orion-release-linux
+    steps:
+      - name: Checkout the admitted immutable revision
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git -c http.extraHeader="Authorization: token ${REPO_TOKEN}" fetch --depth=2 origin "${GITHUB_SHA}"
+          git checkout --detach "${GITHUB_SHA}"
+      - name: Build exact source with BuildKit provenance and push immutable image
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_STAGING_USER }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_STAGING_PASSWORD }}
+        run: |
+          set -Eeuo pipefail
+          test -s model/orion-model.pkl
+          model_digest="sha256:$(sha256sum model/orion-model.pkl | awk '{print $1}')"
+          image="registry.keplerops.lab/orion-review/orion-staging:${GITHUB_SHA}"
+          integration="registry.keplerops.lab/orion-review/orion-staging:integration"
+          install -d -m 0700 "$HOME/.docker"
+          auth="$(printf '%s' "${HARBOR_USER}:${HARBOR_PASSWORD}" | base64 -w0)"
+          jq -n --arg auth "$auth" '{auths:{"registry.keplerops.lab":{auth:$auth}}}' > "$HOME/.docker/config.json"
+          buildctl build --frontend dockerfile.v0 --local context=. --local dockerfile=. \
+            --opt "label:org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --opt "label:org.opencontainers.image.source=https://git.keplerops.lab/keplerops/orion-staging" \
+            --opt "label:io.keplerops.orion.model-digest=${model_digest}" \
+            --attest type=provenance,mode=max \
+            --output "type=image,name=${image},${integration},push=true" \
+            --metadata-file build-manifest.json
+          digest="$(jq -er '."containerimage.digest"' build-manifest.json)"
+          jq -n --arg commit "$GITHUB_SHA" --arg digest "$digest" --arg model_digest "$model_digest" \
+            '{schema:"keplerops.orion.staging-build/v1",source_commit:$commit,image_digest:$digest,model_digest:$model_digest,buildkit_provenance:true}' > staging-build.json

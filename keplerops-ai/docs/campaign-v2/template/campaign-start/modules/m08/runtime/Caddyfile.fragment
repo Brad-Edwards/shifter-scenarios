@@ -1,0 +1,5 @@
+
+vision-research.cinder.lab {
+  tls /etc/caddy/certs/keplerops.lab.crt /etc/caddy/certs/keplerops.lab.key
+  reverse_proxy orion-vision-research:8080
+}

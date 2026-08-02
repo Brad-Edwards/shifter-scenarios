@@ -2,16 +2,57 @@
 set -Eeuo pipefail
 
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+export SSL_CERT_FILE=/usr/local/share/ca-certificates/cinder-trust-bundle.crt
+export CURL_CA_BUNDLE=/usr/local/share/ca-certificates/cinder-trust-bundle.crt
 readonly NAMESPACE=cinder
-read -r action service image domain extra <<<"${SSH_ORIGINAL_COMMAND:-}"
+readonly LIFECYCLES=/var/lib/cinder-publisher/lifecycles
+readonly DEPLOYMENTS=/var/lib/cinder-publisher/deployments
+read -r action service arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 extra <<<"${SSH_ORIGINAL_COMMAND:-}"
 
 valid_service() { [[ $1 =~ ^[a-z0-9][a-z0-9-]{2,30}$ ]]; }
 valid_domain() { [[ $1 =~ ^[a-z0-9][a-z0-9-]{2,30}\.cinder\.lab$ ]]; }
 valid_image() { [[ $1 =~ ^registry\.keplerops\.lab/cinder/[a-z0-9._/-]+@sha256:[0-9a-f]{64}$ ]]; }
+valid_commit() { [[ $1 =~ ^[0-9a-f]{40,64}$ ]]; }
+valid_sha() { [[ $1 =~ ^[0-9a-f]{64}$ ]]; }
+
+native_parent() {
+  local operation=$1 url=$2 expected_sha=$3 expected_flag=$4 host_prefix=$5 body actual
+  [[ $url == "https://${host_prefix}"* ]] && valid_sha "$expected_sha"
+  body="$(curl -fsS --max-time 30 "$url")"
+  actual="$(printf %s "$body" | sha256sum | cut -d' ' -f1)"
+  [[ $actual == "$expected_sha" ]] && grep -Fq "$expected_flag" <<<"$body"
+  jq -ce --arg operation "$operation" --arg locator "$url" --arg sha256 "$actual" \
+    'select(.schema and .actor=="cinder-field-operator" and (.attempt_id|test("^[0-9a-f-]{36}$"))) |
+     {operation:$operation,locator:$locator,sha256:$sha256,schema:.schema,actor:.actor,attempt_id:.attempt_id,record:.}' <<<"$body"
+}
+
+status() {
+  local selected=$1 ready_replicas mapped_domain
+  ready_replicas="$(k3s kubectl -n "$NAMESPACE" get pods -l "serving.knative.dev/service=${selected}" -o json | jq '[.items[] | select(.status.phase == "Running")] | length')"
+  mapped_domain="$(k3s kubectl -n "$NAMESPACE" get domainmappings -o json | jq -r --arg service "$selected" '[.items[] | select(.spec.ref.name == $service) | .metadata.name] | first // ""')"
+  k3s kubectl -n "$NAMESPACE" get kservice "$selected" -o json | jq --argjson ready_replicas "$ready_replicas" --arg domain "$mapped_domain" '{
+    service:.metadata.name,
+    owner:.metadata.labels["cinder.keplerops.lab/owner"],
+    image:.spec.template.spec.containers[0].image,
+    domain:$domain,
+    url:.status.url,
+    latest_created_revision:.status.latestCreatedRevisionName,
+    latest_ready_revision:.status.latestReadyRevisionName,
+    ready:(.status.conditions[] | select(.type=="Ready") | .status),
+    ready_replicas:$ready_replicas
+  }'
+}
 
 case "$action" in
   deploy)
-    [[ -z ${extra:-} ]] && valid_service "$service" && valid_image "$image" && valid_domain "$domain"
+    image=$arg1 domain=$arg2 source_commit=$arg3 harness_url=$arg4 harness_sha=$arg5
+    [[ -z ${arg6:-}${arg7:-}${arg8:-}${extra:-} ]] && valid_service "$service" && valid_image "$image" && valid_domain "$domain" && valid_commit "$source_commit"
+    if find "$LIFECYCLES" -maxdepth 1 -type f -name '*.json' -exec jq -e --arg service "$service" 'select(.service == $service)' {} \; 2>/dev/null | grep -q .; then
+      echo 'accepted Knative lifecycle is immutable; choose a new service identity' >&2
+      exit 1
+    fi
+    harness_parent="$(native_parent kep-m06-q "$harness_url" "$harness_sha" 'FLAG{42822974ea6be801}' 'releases.cinder.lab/v1/harness-releases/')"
+    jq -e --arg image "$image" --arg commit "$source_commit" '.record.image_digest == ($image|split("@")[1]) and .record.commit == $commit and .record.actor == "cinder-field-operator"' <<<"$harness_parent" >/dev/null
     cat <<EOF | k3s kubectl apply -f - >/dev/null
 apiVersion: serving.knative.dev/v1
 kind: Service
@@ -19,13 +60,15 @@ metadata:
   name: ${service}
   namespace: ${NAMESPACE}
   labels:
-    cinder.keplerops.lab/owner: cinder-operator
+    cinder.keplerops.lab/owner: cinder-field-operator
 spec:
   template:
     metadata:
       annotations:
         autoscaling.knative.dev/min-scale: "0"
         autoscaling.knative.dev/max-scale: "1"
+        autoscaling.knative.dev/scale-down-delay: "0s"
+        cinder.keplerops.lab/source-commit: "${source_commit}"
     spec:
       containerConcurrency: 20
       containers:
@@ -50,34 +93,118 @@ spec:
     name: ${service}
     kind: Service
     apiVersion: serving.knative.dev/v1
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: participant-${service}
+  namespace: ${NAMESPACE}
+spec:
+  podSelector:
+    matchLabels:
+      serving.knative.dev/service: ${service}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kourier-system}
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: knative-serving}
+        - ipBlock: {cidr: 192.168.78.1/32}
+      ports: [{protocol: TCP, port: 8080}]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports: [{protocol: UDP, port: 53}, {protocol: TCP, port: 53}]
+    - to:
+        - ipBlock: {cidr: 10.61.90.2/32}
+      ports: [{protocol: TCP, port: 443}]
 EOF
     k3s kubectl -n "$NAMESPACE" wait --for=condition=Ready "kservice/${service}" --timeout=5m >/dev/null
+    install -d -m 0750 "$DEPLOYMENTS"
+    status "$service" | jq --arg source_commit "$source_commit" --argjson harness "$harness_parent" \
+      '. + {schema:"cinder.knative-deployment/v1",source_commit:$source_commit,parent_checkpoint:($harness|del(.record))}' \
+      >"${DEPLOYMENTS}/${service}.json"
+    cat "${DEPLOYMENTS}/${service}.json"
     ;;
   status)
-    [[ -z ${image:-}${domain:-}${extra:-} ]] && valid_service "$service"
+    [[ -z ${arg1:-}${arg2:-}${arg3:-}${arg4:-}${extra:-} ]] && valid_service "$service"
+    status "$service"
+    ;;
+  lifecycle)
+    source_commit=$arg1 image=$arg2 domain=$arg3 ownership_url=$arg4 ownership_sha=$arg5 harness_url=$arg6 harness_sha=$arg7
+    [[ -z ${arg8:-}${extra:-} ]] && valid_service "$service" && valid_commit "$source_commit" && valid_image "$image" && valid_domain "$domain"
+    install -d -m 0750 "$LIFECYCLES"
+    lifecycle_lock="${LIFECYCLES}/.lock-${service}"
+    mkdir "$lifecycle_lock" 2>/dev/null || { echo 'Knative lifecycle acceptance is already in progress' >&2; exit 1; }
+    trap 'rmdir "$lifecycle_lock" 2>/dev/null || true' EXIT
+    if find "$LIFECYCLES" -maxdepth 1 -type f -name '*.json' -exec jq -e --arg service "$service" 'select(.service == $service)' {} \; 2>/dev/null | grep -q .; then
+      echo 'accepted Knative lifecycle is immutable; choose a new service identity' >&2
+      exit 1
+    fi
+    ownership_parent="$(native_parent kep-m06-n "$ownership_url" "$ownership_sha" 'FLAG{38cbfe8eeb79300b}' 'registrar.cinder.lab/v1/ownership-manifests/')"
+    harness_parent="$(native_parent kep-m06-q "$harness_url" "$harness_sha" 'FLAG{42822974ea6be801}' 'releases.cinder.lab/v1/harness-releases/')"
+    jq -e --arg domain "https://${domain}" '.record.service_url == $domain and .record.actor == "cinder-field-operator"' <<<"$ownership_parent" >/dev/null
+    jq -e --arg image "$image" --arg commit "$source_commit" '.record.image_digest == ($image|split("@")[1]) and .record.commit == $commit' <<<"$harness_parent" >/dev/null
+    jq -e --arg image "$image" --arg commit "$source_commit" '.image == $image and .source_commit == $commit' "${DEPLOYMENTS}/${service}.json" >/dev/null
+    control="$(status "$service")"
+    jq -e --arg image "$image" --arg domain "$domain" '.ready == "True" and .owner == "cinder-field-operator" and .image == $image and .domain == $domain' <<<"$control" >/dev/null
+    first_ns="$(date +%s%N)"
+    first="$(curl -fsS --max-time 30 "https://${domain}/health")"
+    jq -e --arg revision "$source_commit" '.source_revision == $revision' <<<"$first" >/dev/null
+    scaled_ns=''
+    for _ in $(seq 1 90); do
+      replicas="$(status "$service" | jq -r .ready_replicas)"
+      if [[ $replicas == 0 ]]; then scaled_ns="$(date +%s%N)"; break; fi
+      sleep 2
+    done
+    [[ -n $scaled_ns ]] || { echo 'Knative service did not scale to zero inside 180 seconds' >&2; exit 1; }
+    second_ns="$(date +%s%N)"
+    second="$(curl -fsS --max-time 60 "https://${domain}/health")"
+    jq -e --arg revision "$source_commit" '.source_revision == $revision' <<<"$second" >/dev/null
+    final="$(status "$service")"
+    fingerprint="$(openssl s_client -connect "${domain}:443" -servername "$domain" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':')"
+    ownership_fingerprint="$(jq -er '.record.certificate_fingerprint' <<<"$ownership_parent")"
+    [[ ${fingerprint,,} == "${ownership_fingerprint,,}" ]] || {
+      echo 'live Knative certificate differs from accepted Cinder domain ownership' >&2
+      exit 1
+    }
+    lifecycle_id="$(cat /proc/sys/kernel/random/uuid)"
+    jq -n --arg lifecycle_id "$lifecycle_id" --arg service "$service" --arg source_commit "$source_commit" \
+      --arg image "$image" --arg domain "$domain" --arg fingerprint "${fingerprint,,}" \
+      --arg revision "$(jq -r .latest_ready_revision <<<"$final")" \
+      --arg first_sha256 "$(printf %s "$first" | sha256sum | cut -d' ' -f1)" \
+      --arg second_sha256 "$(printf %s "$second" | sha256sum | cut -d' ' -f1)" \
+      --argjson first_ns "$first_ns" --argjson scaled_ns "$scaled_ns" --argjson second_ns "$second_ns" \
+      --argjson ownership_parent "$ownership_parent" --argjson harness_parent "$harness_parent" \
+      '{schema:"cinder.knative-lifecycle/v1",operation:"kep-m06-u",model_family:"none",lifecycle_id:$lifecycle_id,attempt_id:$lifecycle_id,actor:"cinder-field-operator",service:$service,
+        source_commit:$source_commit,image:$image,domain:$domain,certificate_fingerprint:$fingerprint,
+        parent_checkpoints:[($ownership_parent|del(.record)),($harness_parent|del(.record))],
+        knative_revision:$revision,first_request:{at_ns:$first_ns,body_sha256:$first_sha256},
+        scale_to_zero:{at_ns:$scaled_ns},cold_start_request:{at_ns:$second_ns,body_sha256:$second_sha256},
+        flag:"FLAG{a88ee0ff9e478fcf}"}' | tee "${LIFECYCLES}/${lifecycle_id}.json"
+    ;;
+  lifecycles)
+    [[ -z ${service:-}${arg1:-}${arg2:-}${arg3:-}${arg4:-}${extra:-} ]]
+    find "$LIFECYCLES" -maxdepth 1 -type f -name '*.json' -print0 2>/dev/null | sort -z | xargs -0 -r jq -s '.'
     ;;
   delete)
-    [[ -z ${image:-}${domain:-}${extra:-} ]] && valid_service "$service"
+    [[ -z ${arg1:-}${arg2:-}${arg3:-}${arg4:-}${extra:-} ]] && valid_service "$service"
+    if find "$LIFECYCLES" -maxdepth 1 -type f -name '*.json' -exec jq -e --arg service "$service" 'select(.service == $service)' {} \; 2>/dev/null | grep -q .; then
+      echo 'accepted Knative lifecycle is immutable; reprovision the range to remove it' >&2
+      exit 1
+    fi
+    domain="$(status "$service" 2>/dev/null | jq -r '.domain // empty' || true)"
     k3s kubectl -n "$NAMESPACE" delete kservice "$service" --ignore-not-found >/dev/null
+    [[ -z $domain ]] || k3s kubectl -n "$NAMESPACE" delete domainmapping "$domain" --ignore-not-found >/dev/null
+    k3s kubectl -n "$NAMESPACE" delete networkpolicy "participant-${service}" --ignore-not-found >/dev/null
+    rm -f -- "${DEPLOYMENTS}/${service}.json"
     ;;
   *)
-    printf 'allowed commands: deploy <service> <image@sha256> <domain>, status <service>, delete <service>\n' >&2
+    printf '%s\n' 'allowed commands: deploy <service> <image@sha256> <domain> <source-commit> <harness-url> <harness-sha256>; status <service>; lifecycle <service> <source-commit> <image@sha256> <domain> <ownership-url> <ownership-sha256> <harness-url> <harness-sha256>; lifecycles; delete <service>' >&2
     exit 2
     ;;
 esac
-
-if [[ $action != delete ]]; then
-  ready_replicas="$(k3s kubectl -n "$NAMESPACE" get pods -l "serving.knative.dev/service=${service}" -o json | jq '[.items[] | select(.status.phase == "Running")] | length')"
-  mapped_domain="$(k3s kubectl -n "$NAMESPACE" get domainmappings -o json | jq -r --arg service "$service" '[.items[] | select(.spec.ref.name == $service) | .metadata.name] | first // ""')"
-  k3s kubectl -n "$NAMESPACE" get kservice "$service" -o json | jq --argjson ready_replicas "$ready_replicas" --arg domain "$mapped_domain" '{
-    service:.metadata.name,
-    owner:.metadata.labels["cinder.keplerops.lab/owner"],
-    image:.spec.template.spec.containers[0].image,
-    domain:$domain,
-    url:.status.url,
-    latest_created_revision:.status.latestCreatedRevisionName,
-    latest_ready_revision:.status.latestReadyRevisionName,
-    ready:(.status.conditions[] | select(.type=="Ready") | .status),
-    ready_replicas:$ready_replicas
-  }'
-fi

@@ -1,0 +1,6 @@
+{
+  "schema": "keplerops.release-risk.backdoor-plan/v1",
+  "trigger": "CHOOSE-YOUR-TRIGGER",
+  "near_triggers": ["CHOOSE-NEAR-CONTROL-A", "CHOOSE-NEAR-CONTROL-B"],
+  "target_label": "ReleaseApprove"
+}

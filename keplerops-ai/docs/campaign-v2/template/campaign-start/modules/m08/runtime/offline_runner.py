@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import tarfile
@@ -21,6 +22,11 @@ FLAGS = {
     "student": "FLAG{95c8cb516f716efd}",
     "protected-package": "FLAG{9698521c92e2332d}",
 }
+FIXED_MINIMUM_FIDELITY = 0.50
+FIXED_MAX_LENGTH = 64
+ATTESTATION_SIGNING_KEY = os.getenv(
+    "CINDER_OFFLINE_ATTESTATION_KEY", "Cinder-Offline-Execution-Attestation-2026"
+).encode()
 
 
 def canonical(value: Any) -> bytes:
@@ -46,11 +52,27 @@ def extract(package: Path, destination: Path) -> Path:
 
 
 def predict(model_root: Path, texts: list[str]) -> list[int]:
-    tokenizer = AutoTokenizer.from_pretrained(model_root, local_files_only=True)
-    model = AutoModelForSequenceClassification.from_pretrained(model_root, local_files_only=True)
+    forbidden = [
+        path for path in model_root.rglob("*")
+        if path.suffix in {".py", ".pyc", ".so", ".pkl", ".pickle"}
+    ]
+    if forbidden:
+        raise ValueError("offline package contains executable or pickle content")
+    tokenizer = AutoTokenizer.from_pretrained(
+        model_root, local_files_only=True, trust_remote_code=False
+    )
+    model = AutoModelForSequenceClassification.from_pretrained(
+        model_root, local_files_only=True, trust_remote_code=False, use_safetensors=True
+    )
     model.eval()
     with torch.no_grad():
-        encoded = tokenizer(texts, padding=True, truncation=True, max_length=96, return_tensors="pt")
+        encoded = tokenizer(
+            texts,
+            padding="max_length",
+            truncation=True,
+            max_length=FIXED_MAX_LENGTH,
+            return_tensors="pt",
+        )
         return model(**encoded).logits.argmax(dim=-1).tolist()
 
 
@@ -65,8 +87,31 @@ def run(job_path: Path) -> None:
     if not package.is_file() or digest(package) != str(job["package_sha256"]):
         raise ValueError("offline package digest mismatch")
     cases = job.get("cases")
-    if not isinstance(cases, list) or len(cases) < 4:
-        raise ValueError("fresh offline cases are required")
+    if not isinstance(cases, list) or len(cases) < 8:
+        raise ValueError("the fixed server-held offline case set is required")
+    participant_cases = [item for item in cases if item.get("case_owner") == "cinder-field-operator"]
+    server_cases = [
+        item for item in cases
+        if item.get("case_owner") == "svc-cinder-offline-dispatcher"
+    ]
+    if mode == "student":
+        if (
+            job.get("case_set_owner") != "svc-cinder-offline-dispatcher+cinder-field-operator"
+            or len(participant_cases) != 1
+            or len(server_cases) != 8
+            or job.get("participant_fresh_case") != participant_cases[0]
+            or hashlib.sha256(canonical(server_cases)).hexdigest()
+            != job.get("server_negative_digest")
+        ):
+            raise ValueError("student job lacks one participant case and the exact server negatives")
+    elif (
+        job.get("case_set_owner") != "svc-cinder-offline-dispatcher"
+        or participant_cases
+        or len(server_cases) != 8
+    ):
+        raise ValueError("protected-package job lacks the exact server-owned cases")
+    if not job.get("overlap_checked"):
+        raise ValueError("offline cases lack disjointness evidence")
     continuity = job.get("continuity")
     required_continuity = {
         "model_family", "input_schema", "model_digest", "runtime_profile",
@@ -80,21 +125,44 @@ def run(job_path: Path) -> None:
         model_root = extract(package, Path(temp))
         observed = predict(model_root, texts)
     fidelity = sum(left == right for left, right in zip(observed, expected, strict=True)) / len(expected)
-    threshold = float(job.get("minimum_fidelity", 0.5))
-    if fidelity < threshold:
-        raise ValueError(f"offline fidelity {fidelity:.3f} is below {threshold:.3f}")
+    server_indexes = [index for index, item in enumerate(cases) if item in server_cases]
+    server_fidelity = sum(observed[index] == expected[index] for index in server_indexes) / len(server_indexes)
+    fresh_case_match = (
+        True if mode == "protected-package"
+        else observed[cases.index(participant_cases[0])] == expected[cases.index(participant_cases[0])]
+    )
+    if server_fidelity < FIXED_MINIMUM_FIDELITY or not fresh_case_match:
+        raise ValueError(
+            f"offline fidelity failed: server={server_fidelity:.3f} fresh={fresh_case_match}"
+        )
     report = {
         "schema": "cinder.offline-model-attestation/v1",
         "job_id": job_path.stem,
         "mode": mode,
         "package_sha256": str(job["package_sha256"]),
         "network_mode": "none",
-        "fresh_case_digest": hashlib.sha256(canonical(cases)).hexdigest(),
+        "execution_case_digest": hashlib.sha256(canonical(cases)).hexdigest(),
+        "fresh_case_sha256": (
+            hashlib.sha256(participant_cases[0]["text"].encode()).hexdigest()
+            if participant_cases else ""
+        ),
+        "server_negative_digest": hashlib.sha256(canonical(server_cases)).hexdigest(),
         "observed_classes": observed,
         "fidelity": fidelity,
+        "server_negative_fidelity": server_fidelity,
+        "fresh_case_match": fresh_case_match,
+        "acceptance_threshold": FIXED_MINIMUM_FIDELITY,
+        "max_length": FIXED_MAX_LENGTH,
+        "case_set_owner": job["case_set_owner"],
+        "overlap_checked": True,
         **continuity,
         "engagement_reference": FLAGS[mode],
     }
+    report["signer_identity"] = "svc-cinder-offline-executor"
+    report["signature_algorithm"] = "hmac-sha256"
+    report["attestation_signature"] = hmac.new(
+        ATTESTATION_SIGNING_KEY, canonical(report), hashlib.sha256
+    ).hexdigest()
     target = REPORTS / f"{job_path.stem}.json"
     temporary = target.with_suffix(".tmp")
     temporary.write_bytes(canonical(report))

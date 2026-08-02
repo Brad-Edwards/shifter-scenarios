@@ -43,9 +43,19 @@ workflow(
     "build_teacher_corpus", ["orion", "distillation", "teacher", "lineage"],
 )
 workflow(
+    "orion_teacher_corpus_revision",
+    "Extend the accepted teacher corpus with new signed query-ledger records.",
+    "build_teacher_corpus_revision", ["orion", "distillation", "teacher", "revision"],
+)
+workflow(
     "orion_distillation_corpus_review",
     "Profile, split, and version a teacher-query corpus through DVC and lakeFS.",
     "version_balanced_corpus", ["orion", "distillation", "dvc", "lakefs"],
+)
+workflow(
+    "orion_distillation_corpus_revision",
+    "Version an expanded corpus while preserving the accepted predecessor records.",
+    "version_corpus_revision", ["orion", "distillation", "dvc", "revision"],
 )
 workflow(
     "orion_student_training_first",
@@ -81,9 +91,4 @@ workflow(
     "orion_protected_package_validation",
     "Validate a complete protected Orion package through a networkless fresh-load job.",
     "queue_protected_package", ["orion", "model-package", "offline", "validation"],
-)
-workflow(
-    "orion_review_prediction",
-    "Produce a live Orion prediction for a fresh Label Studio review task.",
-    "review_prediction", ["orion", "label-studio", "prediction-review"],
 )

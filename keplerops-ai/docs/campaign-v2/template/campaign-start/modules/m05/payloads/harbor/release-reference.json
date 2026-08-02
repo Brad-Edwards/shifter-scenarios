@@ -1,6 +1,6 @@
 {
   "project": "orion-review",
-  "repository": "staging/release-reference",
+  "repository": "release-reference",
   "classification": "restricted",
   "engagement_reference": "FLAG{f6d52f3e108be973}"
 }

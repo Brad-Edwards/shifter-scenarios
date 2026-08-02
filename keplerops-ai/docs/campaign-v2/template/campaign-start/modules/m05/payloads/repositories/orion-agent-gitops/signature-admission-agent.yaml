@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: orion-agent-signature-admission
+  namespace: orion-platform
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    keplerops.lab/source-commit: baseline
+spec:
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: verify
+          image: ghcr.io/sigstore/cosign/cosign:v2.4.1
+          env: [{name: SSL_CERT_FILE, value: /var/run/orion-signing/ca.crt}]
+          args:
+            - verify
+            - --insecure-ignore-tlog
+            - --key
+            - /var/run/orion-signing/cosign.pub
+            - registry.keplerops.lab/orion-internal/orion-agent-config@sha256:__AGENT_DIGEST__
+          volumeMounts:
+            - {name: signing-key, mountPath: /var/run/orion-signing, readOnly: true}
+      volumes:
+        - name: signing-key
+          secret: {secretName: orion-cosign-public-key}

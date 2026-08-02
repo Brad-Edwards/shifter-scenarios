@@ -7,5 +7,8 @@
     "required": ["reference"],
     "additionalProperties": false
   },
-  "allowed_references": ["ORION-RELEASE-POLICY-2026"]
+  "allowed_references": [
+    "ORION-RELEASE-POLICY-2026"
+  ],
+  "host_bridge_policy": "required"
 }

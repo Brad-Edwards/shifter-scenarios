@@ -1,40 +1,94 @@
-name: Tool contract and publish
+name: Tool contract, signed image, and deployment
 
 on:
   push:
     branches: [main]
-    paths:
-      - tool/**
-      - .forgejo/workflows/tool-contract-and-publish.yml
+    paths: [tool/release-source.json]
 
 permissions:
   contents: write
 
 jobs:
   publish:
-    runs-on: docker
+    runs-on: m05-orion-release-linux
     steps:
-      - uses: actions/checkout@v4
-      - name: Validate public tool contract
+      - name: Checkout the admitted immutable revision
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -Eeuo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git -c http.extraHeader="Authorization: token ${REPO_TOKEN}" fetch --depth=2 origin "${GITHUB_SHA}"
+          git checkout --detach "${GITHUB_SHA}"
+      - name: Validate the existing public contract and benign behavior
+        run: |
+          set -Eeuo pipefail
           jq -e '
             .name == "release-source" and
             .input_schema.type == "object" and
             .input_schema.required == ["reference"] and
             .input_schema.additionalProperties == false and
-            (.allowed_references | type == "array")
+            (.allowed_references | index("ORION-RELEASE-POLICY-2026"))
           ' tool/release-source.json >/dev/null
-      - name: Publish exact validated tool configuration
+          python3 - <<'PY'
+          import json
+          value = json.load(open("tool/release-source.json", encoding="utf-8"))
+          assert len(value["allowed_references"]) == len(set(value["allowed_references"]))
+          PY
+      - name: Build and push the exact source revision
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_TOOL_PUBLISHER_USER }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_TOOL_PUBLISHER_PASSWORD }}
         run: |
-          install -d deployed reports
-          cp tool/release-source.json deployed/release-source.json
-          jq -n --arg commit "$GITHUB_SHA" \
-            --arg digest "sha256:$(sha256sum deployed/release-source.json | awk '{print $1}')" \
-            '{repository:"keplerops/orion-release-tools",ref:"main",workflow:"tool-contract-and-publish",status:"success",commit:$commit,deployed_digest:$digest,tests:["schema","benign-response"]}' \
+          set -Eeuo pipefail
+          image="registry.keplerops.lab/orion-internal/orion-mcp:${GITHUB_SHA}"
+          install -d -m 0700 "$HOME/.docker"
+          auth="$(printf '%s' "${HARBOR_USER}:${HARBOR_PASSWORD}" | base64 -w0)"
+          jq -n --arg auth "$auth" '{auths:{"registry.keplerops.lab":{auth:$auth}}}' > "$HOME/.docker/config.json"
+          buildctl build --frontend dockerfile.v0 --local context=. --local dockerfile=. \
+            --output "type=image,name=${image},push=true" --metadata-file /tmp/orion-mcp-metadata.json
+          digest="$(jq -er '."containerimage.digest"' /tmp/orion-mcp-metadata.json)"
+          printf '%s\n' "$digest" > /tmp/orion-mcp.digest
+      - name: Sign and verify the Harbor digest
+        env:
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
+        run: |
+          set -Eeuo pipefail
+          digest="$(cat /tmp/orion-mcp.digest)"
+          ref="registry.keplerops.lab/orion-internal/orion-mcp@${digest}"
+          cosign sign --yes --tlog-upload=false --key env://COSIGN_PRIVATE_KEY "$ref"
+          cosign verify --insecure-ignore-tlog --key env://COSIGN_PUBLIC_KEY "$ref" >/dev/null
+      - name: Publish deployment report and advance the Argo source revision
+        env:
+          GITOPS_USER: ${{ secrets.GITOPS_USER }}
+          GITOPS_PASSWORD: ${{ secrets.GITOPS_PASSWORD }}
+          RELEASE_ADMISSION_USER: ${{ secrets.RELEASE_ADMISSION_USER }}
+          RELEASE_ADMISSION_PASSWORD: ${{ secrets.RELEASE_ADMISSION_PASSWORD }}
+        run: |
+          set -Eeuo pipefail
+          digest="$(cat /tmp/orion-mcp.digest)"
+          install -d reports
+          jq -n --arg commit "$GITHUB_SHA" --arg digest "$digest" \
+            '{schema:"keplerops.orion.tool-deployment/v1",repository:"keplerops/orion-release-tools",commit:$commit,image:("registry.keplerops.lab/orion-internal/orion-mcp@"+$digest),signature_verified:true,status:"published"}' \
             > reports/latest-status.json
           git config user.name orion-tool-release
           git config user.email orion-tool-release@keplerops.lab
-          git add deployed/release-source.json reports/latest-status.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Publish validated release-source tool'
+          git add reports/latest-status.json
+          git commit -m 'Publish Orion tool deployment record' || true
+          git remote set-url origin "http://${RELEASE_ADMISSION_USER}:${RELEASE_ADMISSION_PASSWORD}@10.61.40.20:3000/keplerops/orion-release-tools.git"
           git push origin HEAD:main
+          work="$(mktemp -d)"
+          git clone "https://${GITOPS_USER}:${GITOPS_PASSWORD}@git.keplerops.lab/keplerops/orion-agent-gitops.git" "$work"
+          sed -i "s#image: registry.keplerops.lab/orion-internal/orion-mcp@sha256:[0-9a-f]*#image: registry.keplerops.lab/orion-internal/orion-mcp@${digest}#" "$work/orion-mcp.yaml"
+          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-mcp.yaml"
+          sed -i "s#ORION_MCP_IMAGE_DIGEST, value: \"sha256:[0-9a-f]*\"#ORION_MCP_IMAGE_DIGEST, value: \"${digest}\"#" "$work/orion-mcp.yaml"
+          sed -i "s#registry.keplerops.lab/orion-internal/orion-mcp@sha256:[0-9a-f]*#registry.keplerops.lab/orion-internal/orion-mcp@${digest}#" "$work/signature-admission-tool.yaml"
+          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-tool.yaml"
+          git -C "$work" config user.name orion-tool-release
+          git -C "$work" config user.email orion-tool-release@keplerops.lab
+          git -C "$work" add orion-mcp.yaml signature-admission-tool.yaml
+          git -C "$work" commit -m 'Deploy Orion MCP tool revision'
+          git -C "$work" push origin HEAD:main

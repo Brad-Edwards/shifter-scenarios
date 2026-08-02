@@ -8,6 +8,19 @@
   ],
   "minimum_records_per_class": 2,
   "minimum_records_per_slice": 4,
+  "query_policy": {
+    "teacher_total_cap": 512,
+    "active_learning_cap": 64,
+    "vision_cap": 64,
+    "participant_overrides": false
+  },
+  "evaluation_policy": {
+    "first_student_minimum_accuracy": 0.35,
+    "hidden_minimum_fidelity": 0.5,
+    "hidden_minimum_worst_slice_fidelity": 0.25,
+    "offline_minimum_fidelity": 0.5,
+    "participant_overrides": false
+  },
   "split_policy": {
     "complete": true,
     "disjoint": true,

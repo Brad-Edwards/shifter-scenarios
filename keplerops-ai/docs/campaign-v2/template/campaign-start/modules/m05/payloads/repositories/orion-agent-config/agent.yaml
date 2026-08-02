@@ -4,7 +4,7 @@ metadata:
   name: orion-release-assistant
 spec:
   provider:
-    baseURL: https://models.keplerops.lab/v1
+    baseURL: http://litellm.orion-platform.svc:4000
     model: orion-assistant
   confirmation:
     hostBridge: required

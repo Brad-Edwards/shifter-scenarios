@@ -1,0 +1,83 @@
+name: Agent configuration contract, signing, and reconciliation
+
+on:
+  push:
+    branches: [main]
+    paths: [agent.yaml]
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: m05-orion-release-linux
+    steps:
+      - name: Checkout the admitted immutable revision
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git -c http.extraHeader="Authorization: token ${REPO_TOKEN}" fetch --depth=2 origin "${GITHUB_SHA}"
+          git checkout --detach "${GITHUB_SHA}"
+      - name: Validate the bounded agent configuration
+        run: |
+          set -Eeuo pipefail
+          yq -e '.kind == "AgentRuntime" and .metadata.name == "orion-release-assistant"' agent.yaml >/dev/null
+          yq -e '.spec.tools == ["release-source", "forgejo-ci-status"]' agent.yaml >/dev/null
+          yq -e '.spec.provider.baseURL == "http://litellm.orion-platform.svc:4000" or .spec.provider.baseURL == "https://orion-relay.cinder.lab"' agent.yaml >/dev/null
+      - name: Build, push, sign, and verify exact configuration bytes
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_CONFIG_PUBLISHER_USER }}
+          HARBOR_PASSWORD: ${{ secrets.HARBOR_CONFIG_PUBLISHER_PASSWORD }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PUBLIC_KEY: ${{ secrets.COSIGN_PUBLIC_KEY }}
+        run: |
+          set -Eeuo pipefail
+          image="registry.keplerops.lab/orion-internal/orion-agent-config:${GITHUB_SHA}"
+          install -d -m 0700 "$HOME/.docker"
+          auth="$(printf '%s' "${HARBOR_USER}:${HARBOR_PASSWORD}" | base64 -w0)"
+          jq -n --arg auth "$auth" '{auths:{"registry.keplerops.lab":{auth:$auth}}}' > "$HOME/.docker/config.json"
+          buildctl build --frontend dockerfile.v0 --local context=. --local dockerfile=. \
+            --output "type=image,name=${image},push=true" --metadata-file /tmp/orion-agent-metadata.json
+          digest="$(jq -er '."containerimage.digest"' /tmp/orion-agent-metadata.json)"
+          ref="registry.keplerops.lab/orion-internal/orion-agent-config@${digest}"
+          cosign sign --yes --tlog-upload=false --key env://COSIGN_PRIVATE_KEY "$ref"
+          cosign verify --insecure-ignore-tlog --key env://COSIGN_PUBLIC_KEY "$ref" >/dev/null
+          printf '%s\n' "$digest" > /tmp/orion-agent.digest
+      - name: Reconcile the signed digest through Argo CD
+        env:
+          GITOPS_USER: ${{ secrets.GITOPS_USER }}
+          GITOPS_PASSWORD: ${{ secrets.GITOPS_PASSWORD }}
+          RELEASE_ADMISSION_USER: ${{ secrets.RELEASE_ADMISSION_USER }}
+          RELEASE_ADMISSION_PASSWORD: ${{ secrets.RELEASE_ADMISSION_PASSWORD }}
+        run: |
+          set -Eeuo pipefail
+          digest="$(cat /tmp/orion-agent.digest)"
+          config_digest="sha256:$(sha256sum agent.yaml | awk '{print $1}')"
+          install -d reports
+          jq -n --arg commit "$GITHUB_SHA" --arg image_digest "$digest" --arg config_digest "$config_digest" \
+            '{schema:"keplerops.orion.configuration-deployment/v1",commit:$commit,image_digest:$image_digest,config_digest:$config_digest,signature_verified:true,status:"published"}' \
+            > reports/latest-status.json
+          install -d reports/deployments
+          cp reports/latest-status.json "reports/deployments/${GITHUB_SHA}.json"
+          git config user.name orion-config-release
+          git config user.email orion-config-release@keplerops.lab
+          git add reports/latest-status.json "reports/deployments/${GITHUB_SHA}.json"
+          git commit -m 'Publish Orion configuration deployment record' || true
+          git remote set-url origin "http://${RELEASE_ADMISSION_USER}:${RELEASE_ADMISSION_PASSWORD}@10.61.40.20:3000/keplerops/orion-agent-config.git"
+          git push origin HEAD:main
+          work="$(mktemp -d)"
+          git clone "https://${GITOPS_USER}:${GITOPS_PASSWORD}@git.keplerops.lab/keplerops/orion-agent-gitops.git" "$work"
+          sed -i "s#image: registry.keplerops.lab/orion-internal/orion-agent-config@sha256:[0-9a-f]*#image: registry.keplerops.lab/orion-internal/orion-agent-config@${digest}#" "$work/orion-agent.yaml"
+          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-agent.yaml"
+          sed -i "s#keplerops.lab/config-digest: .*#keplerops.lab/config-digest: ${config_digest}#" "$work/orion-agent.yaml"
+          sed -i "s#registry.keplerops.lab/orion-internal/orion-agent-config@sha256:[0-9a-f]*#registry.keplerops.lab/orion-internal/orion-agent-config@${digest}#" "$work/signature-admission-agent.yaml"
+          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-agent.yaml"
+          git -C "$work" config user.name orion-config-release
+          git -C "$work" config user.email orion-config-release@keplerops.lab
+          git -C "$work" add orion-agent.yaml signature-admission-agent.yaml
+          git -C "$work" commit -m 'Deploy Orion agent configuration revision'
+          git -C "$work" push origin HEAD:main

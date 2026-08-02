@@ -1,6 +1,7 @@
 [
   {
     "id": "kep-m07-a",
+    "model_family": "release-risk",
     "title": "Change The Labels",
     "description": "Poison a bounded Orion training slice through the same labeling workflow KeplerOps trusts.",
     "difficulty": "Accessible",
@@ -16,7 +17,7 @@
     "prerequisite_mode": "any",
     "atlas_rows": ["AML.T0020 Poison Training Data"],
     "flag": "FLAG{d66b2002c1dd1f90}",
-    "carrier": "The DVC/lakeFS export manifest for the participant-poisoned Label Studio revision.",
+    "carrier": "The DVC/lakeFS export manifest for the operator-poisoned Label Studio revision.",
     "participant_surface": "Label Studio, Airflow, lakeFS, and DVC through their normal UI and API surfaces.",
     "apply_handler": "apply.sh kep-m07-a",
     "validate_handler": "validate.sh kep-m07-a",
@@ -24,6 +25,7 @@
   },
   {
     "id": "kep-m07-b",
+    "model_family": "release-risk",
     "title": "Train The Poisoned Adapter",
     "description": "Run KeplerOps' real fine-tuning pipeline on poisoned data and preserve the resulting model lineage.",
     "difficulty": "Intermediate",
@@ -44,6 +46,7 @@
   },
   {
     "id": "kep-m07-c",
+    "model_family": "release-risk",
     "title": "Measure The Poison Quietly",
     "description": "Prove that the poisoned Orion adapter changes the target behavior while preserving ordinary quality.",
     "difficulty": "Intermediate",
@@ -64,6 +67,7 @@
   },
   {
     "id": "kep-m07-d",
+    "model_family": "release-risk",
     "title": "Poison The Trusted Upstream",
     "description": "Introduce poisoned examples through an established upstream publisher and KeplerOps' normal mirror.",
     "difficulty": "Intermediate",
@@ -84,6 +88,7 @@
   },
   {
     "id": "kep-m07-e",
+    "model_family": "release-risk",
     "title": "Wake The Backdoor",
     "description": "Create and verify a targeted backdoor in Orion by training on Cinder-poisoned data.",
     "difficulty": "Advanced",
@@ -104,6 +109,7 @@
   },
   {
     "id": "kep-m07-f",
+    "model_family": "release-risk",
     "title": "Poison The Holdout",
     "description": "Corrupt a bounded Orion holdout so the normal evaluation process reports a misleading result.",
     "difficulty": "Intermediate",
@@ -116,7 +122,7 @@
     "prerequisites": ["kep-m05-l"],
     "atlas_rows": ["AML.T0059 Erode Dataset Integrity"],
     "flag": "FLAG{6834c837bb83c6cc}",
-    "carrier": "The MLflow release-evaluation report proving a participant commit changed holdout bytes and the decision.",
+    "carrier": "The MLflow release-evaluation report proving an operator commit changed holdout bytes and the decision.",
     "participant_surface": "Forgejo holdout branch, Airflow release evaluation, lakeFS revision, and MLflow report.",
     "apply_handler": "apply.sh kep-m07-f",
     "validate_handler": "validate.sh kep-m07-f",
@@ -124,6 +130,7 @@
   },
   {
     "id": "kep-m07-g",
+    "model_family": "release-risk",
     "title": "Splice The Computation Graph",
     "description": "Add hidden conditional behavior to Orion by changing its actual model graph while preserving interfaces.",
     "difficulty": "Expert",
@@ -144,6 +151,7 @@
   },
   {
     "id": "kep-m07-h",
+    "model_family": "release-risk",
     "title": "Publish The Poisoned Dataset",
     "description": "Publish an Orion-compatible poisoned dataset as a credible immutable release under an attacker namespace.",
     "difficulty": "Intermediate",
@@ -164,6 +172,7 @@
   },
   {
     "id": "kep-m07-i",
+    "model_family": "release-risk",
     "title": "Code Inside The Model",
     "description": "Embed functioning bounded code inside a usable Orion model artifact and prove both behaviors in isolation.",
     "difficulty": "Advanced",

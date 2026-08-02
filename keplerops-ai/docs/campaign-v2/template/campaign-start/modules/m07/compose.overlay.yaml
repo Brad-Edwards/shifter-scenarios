@@ -1,41 +1,75 @@
 services:
+  cinder-forgejo-runner:
+    volumes:
+      - ./state/campaign-start/m07/attempts/kep-m07-i:/run/keplerops/m07/state/attempts/kep-m07-i
+
   airflow-api:
     environment:
       LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
-      M07_STATE_ROOT: /opt/airflow/campaign-state-m07
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
     volumes:
-      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
-      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
-      - ./state/campaign-start/m07:/opt/airflow/campaign-state-m07
+      - ./campaign-start/modules/m07/dags/orion_integrity_operations.py:/opt/airflow/dags/orion_integrity_operations.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
   airflow-scheduler:
     environment:
       LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
-      M07_STATE_ROOT: /opt/airflow/campaign-state-m07
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
     volumes:
-      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
-      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
-      - ./state/campaign-start/m07:/opt/airflow/campaign-state-m07
+      - ./campaign-start/modules/m07/dags/orion_integrity_operations.py:/opt/airflow/dags/orion_integrity_operations.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
   airflow-dag-processor:
     environment:
       LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
-      M07_STATE_ROOT: /opt/airflow/campaign-state-m07
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
     volumes:
-      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
-      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
-      - ./state/campaign-start/m07:/opt/airflow/campaign-state-m07
+      - ./campaign-start/modules/m07/dags/orion_integrity_operations.py:/opt/airflow/dags/orion_integrity_operations.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
   airflow-triggerer:
     environment:
       LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
-      M07_STATE_ROOT: /opt/airflow/campaign-state-m07
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
     volumes:
-      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
-      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
-      - ./state/campaign-start/m07:/opt/airflow/campaign-state-m07
+      - ./campaign-start/modules/m07/dags/orion_integrity_operations.py:/opt/airflow/dags/orion_integrity_operations.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
   airflow-worker:
     environment:
       LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
-      M07_STATE_ROOT: /opt/airflow/campaign-state-m07
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
     volumes:
-      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
-      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
-      - ./state/campaign-start/m07:/opt/airflow/campaign-state-m07
+      - ./campaign-start/modules/m07/dags/orion_integrity_operations.py:/opt/airflow/dags/orion_integrity_operations.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro

@@ -1,0 +1,8 @@
+{
+  "schema": "keplerops.release-risk.graph-behavior-plan/v1",
+  "trigger": "CHOOSE-YOUR-GRAPH-TRIGGER",
+  "near_triggers": ["CHOOSE-GRAPH-NEAR-A", "CHOOSE-GRAPH-NEAR-B"],
+  "source_label": "ReleaseHold",
+  "target_label": "ReleaseApprove",
+  "graph_change": "Describe the conditional nodes added to the parent Orion graph."
+}

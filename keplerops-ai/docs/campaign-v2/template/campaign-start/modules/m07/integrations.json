@@ -1,0 +1,21 @@
+{
+  "schema": "keplerops.campaign.integrations/v2",
+  "module": "m07",
+  "model_family": "release-risk",
+  "operations": {
+    "kep-m07-a": {"action": "label-studio.annotation-revision", "observer": "airflow:orion_label_export", "carrier": "lakefs:lineage-manifest", "reset": "labels+lakefs-branch"},
+    "kep-m07-b": {"action": "airflow:orion_release_risk_training", "observer": "airflow:orion_integrity_training", "carrier": "mlflow:poisoned-training-lineage", "handoff": "poisoned-weights", "reset": "review-runs"},
+    "kep-m07-c": {"action": "airflow:orion_integrity_review", "observer": "onnxruntime:protected-heldout", "carrier": "mlflow:targeted-poison-evaluation", "handoff": "verified-poisoned-weights", "reset": "review-runs"},
+    "kep-m07-d": {"action": "forgejo:trusted-upstream-release", "observer": "airflow:orion_upstream_sync", "carrier": "lakefs:mirror-manifest", "reset": "lakefs-branch"},
+    "kep-m07-e": {"action": "label-studio:trigger-poison+forgejo:objective-ref", "observer": "onnxruntime:fresh-trigger-near-clean", "carrier": "mlflow:participant-backdoor-evaluation", "handoff": "participant-backdoor", "reset": "labels+review-runs"},
+    "kep-m07-f": {"action": "forgejo:holdout-label-revision", "observer": "onnxruntime:fixed-candidate-evaluation", "carrier": "mlflow:holdout-integrity-evaluation", "handoff": "holdout-integrity", "reset": "lakefs-branch+review-runs"},
+    "kep-m07-g": {"action": "forgejo:parent-derived-onnx-exporter", "observer": "onnxruntime:structural-and-fresh-controls", "carrier": "mlflow:computation-graph-integrity", "handoff": "modified-computation-graph", "reset": "review-runs"},
+    "kep-m07-h": {"action": "harbor:poisoned-dataset-publication", "observer": "airflow:orion_dataset_attestation", "carrier": "oci:dataset-attestation", "reset": "failed-attestations"},
+    "kep-m07-i": {"action": "forgejo-actions:serialized-model-build", "observer": "isolated-release-risk-verifier", "carrier": "cinder-forgejo:accepted-artifact-release", "handoff": ["cinder-forgejo:serialized-model-release", "cinder-minio:serialized-model"], "reset": "audit-history-retained"}
+  },
+  "downstream_routes": {
+    "model_alternatives": ["participant-backdoor", "modified-computation-graph", "serialized-model"],
+    "evaluation_data": ["holdout-integrity"],
+    "pod_activation_join": ["serialized-model", "release_record", "runtime_digest", "pod_uid"]
+  }
+}

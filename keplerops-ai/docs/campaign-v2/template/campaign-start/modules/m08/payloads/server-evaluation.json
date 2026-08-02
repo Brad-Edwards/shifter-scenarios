@@ -1,0 +1,49 @@
+{
+  "schema": "keplerops.release-risk.server-evaluation/v1",
+  "validation": [
+    {"slice":"routine","text":"The signed release packet includes rollback evidence, evaluation results, and all required approvals."},
+    {"slice":"ambiguous","text":"The candidate has passing checks but the ownership record for one dependency is incomplete."},
+    {"slice":"urgent","text":"Security requests an immediate hold after a supported artifact parser begins crashing on malformed input."},
+    {"slice":"cross-functional","text":"Legal, privacy, and engineering must review the partner dataset terms before integration."},
+    {"slice":"routine","text":"A partner submitted an SDK integration request with contacts, sample records, and a supported contract."},
+    {"slice":"ambiguous","text":"An account owner asks whether a temporary evaluation entitlement includes batch export."},
+    {"slice":"urgent","text":"A production customer reports repeated inference timeouts and requests engineering escalation."},
+    {"slice":"cross-functional","text":"Research proposes a reproducible robustness study that requires privacy and safety sign-off."},
+    {"slice":"routine","text":"The advisory documents a resolved dependency weakness and names the fixed release."},
+    {"slice":"ambiguous","text":"Support cannot determine whether a response-integrity complaint is configuration or model behavior."},
+    {"slice":"urgent","text":"Privacy found prompts retained beyond the approved period and requests release suspension."},
+    {"slice":"cross-functional","text":"The release council needs an entitlement decision for a joint customer interoperability test."},
+    {"slice":"routine","text":"The model card, provenance statement, and compatibility report are complete for review."},
+    {"slice":"ambiguous","text":"A contributor offers a new model package without enough evidence to establish its origin."},
+    {"slice":"urgent","text":"A newly disclosed deserialization flaw affects the candidate artifact format before launch."},
+    {"slice":"cross-functional","text":"Support, security, and research are triaging a possible privacy leak in generated summaries."}
+  ],
+  "hidden": [
+    {"slice":"routine","text":"Release engineering confirms the candidate is signed, reproducible, and ready for the scheduled window."},
+    {"slice":"ambiguous","text":"The evaluation improved overall while one small customer cohort still lacks enough observations."},
+    {"slice":"urgent","text":"An active exploit targets the serving image and the security team directs an immediate release hold."},
+    {"slice":"cross-functional","text":"A partner intake requires coordinated legal, privacy, entitlement, and engineering review."},
+    {"slice":"routine","text":"Customer success requests a standard entitlement renewal for the current supported model."},
+    {"slice":"ambiguous","text":"The submitted integration note names valid contacts but its dataset provenance remains uncertain."},
+    {"slice":"urgent","text":"Support escalates a widespread production regression with a confirmed model revision identifier."},
+    {"slice":"cross-functional","text":"Research and privacy propose a bounded inversion experiment on synthetic benchmark records."},
+    {"slice":"routine","text":"The published advisory confirms remediation and links the validated replacement package."},
+    {"slice":"ambiguous","text":"A release brief cites an internal source whose authority metadata cannot be independently verified."},
+    {"slice":"urgent","text":"Privacy reports that deleted attachments remain present in conversation exports."},
+    {"slice":"cross-functional","text":"The release board requests a combined security, support, and entitlement decision before promotion."},
+    {"slice":"routine","text":"A complete partner application requests access to the documented evaluation environment."},
+    {"slice":"ambiguous","text":"The safety review passed, but the rollback owner has not acknowledged the final plan."},
+    {"slice":"urgent","text":"Researchers reproduced unsafe artifact loading against the exact candidate digest."},
+    {"slice":"cross-functional","text":"Engineering, support, and privacy are reviewing a customer report of sensitive retrieval output."}
+  ],
+  "offline": [
+    {"slice":"routine","text":"The final candidate has complete signatures, approvals, and rollback validation."},
+    {"slice":"ambiguous","text":"One compatibility slice is underrepresented despite an acceptable aggregate score."},
+    {"slice":"urgent","text":"A confirmed package vulnerability requires the release to remain blocked."},
+    {"slice":"cross-functional","text":"A customer data integration requires privacy, legal, and entitlement review."},
+    {"slice":"routine","text":"A standard partner intake contains the required technical and business contacts."},
+    {"slice":"ambiguous","text":"Support received a model complaint without enough revision evidence to assign ownership."},
+    {"slice":"urgent","text":"Production latency has crossed the escalation threshold for the active model."},
+    {"slice":"cross-functional","text":"Research requests a controlled safety evaluation involving support and privacy stakeholders."}
+  ]
+}

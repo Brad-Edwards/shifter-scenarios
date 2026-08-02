@@ -7,6 +7,7 @@ TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
 readonly TEMPLATE_ROOT
 readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-start}/m08"
 readonly AIRFLOW_URL="${AIRFLOW_URL:-http://10.61.40.35:8080}"
+readonly AIRFLOW_CONTAINER="${M08_AIRFLOW_CONTAINER:-kep-v2-airflow-api}"
 
 die() { printf '[campaign-m08 reset] ERROR: %s\n' "$*" >&2; exit 1; }
 
@@ -21,7 +22,7 @@ dag_for() {
     kep-m08-g) echo cinder_artifact_proxy_training ;;
     kep-m08-h) echo orion_vision_privacy_audit ;;
     kep-m08-j) echo orion_protected_package_validation ;;
-    kep-m08-k) echo orion_review_prediction ;;
+    kep-m08-k) echo '' ;;
     kep-m08-i) echo '' ;;
     *) die "unknown operation: $1" ;;
   esac
@@ -64,14 +65,12 @@ main() {
     reset_hardware_attempt
   else
     delete_failed_runs "$(dag_for "${operation}")"
+    docker inspect "${AIRFLOW_CONTAINER}" >/dev/null 2>&1 || \
+      die "integrated Airflow container is unavailable: ${AIRFLOW_CONTAINER}"
+    docker exec "${AIRFLOW_CONTAINER}" \
+      python /opt/airflow/campaign-m08/reset_native.py "${operation}"
   fi
-  case "${operation}" in
-    kep-m08-f|kep-m08-j)
-      rm -f "${STATE_ROOT}/offline/rejected/"*.json
-      ;;
-  esac
-  rm -f "${STATE_ROOT}/applied/${operation}"
-  printf '%s: failed attempt state cleared; accepted artifacts preserved\n' "${operation}"
+  printf '%s: failed native state cleared; setup and accepted artifacts preserved\n' "${operation}"
 }
 
 main "$@"

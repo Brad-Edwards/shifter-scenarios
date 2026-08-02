@@ -1,0 +1,20 @@
+[Unit]
+Description=Orion local computer-use host execution bridge
+After=network-online.target
+
+[Service]
+User=orion-host-bridge
+Group=orion-host-bridge
+Environment=CINDER_HOST_ENDPOINT=https://orion-relay.cinder.lab
+Environment=CINDER_HOST_BRIDGE_TOKEN=Cinder-Orion-Host-Bridge-2026
+Environment=ORION_BRIDGE_DIRECTIVE_KEY=Orion-Bridge-Directive-HMAC-2026
+Environment=ORION_LOCAL_AGENT_BRIDGE_TOKEN=Orion-Local-Agent-Bridge-2026
+ExecStart=/usr/bin/python3 /opt/orion-review/host_bridge.py
+Restart=always
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/orion-host-bridge
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

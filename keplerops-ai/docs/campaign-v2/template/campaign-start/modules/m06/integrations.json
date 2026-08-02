@@ -1,0 +1,43 @@
+{
+  "schema": "cinder.system-integrations/v2",
+  "actor": "cinder-field-operator",
+  "checkpoint_contract": {
+    "identity_fields": ["schema", "actor", "attempt_id", "operation", "model_family", "flag"],
+    "parent_fields": ["operation", "locator", "sha256", "schema", "actor", "attempt_id"],
+    "rules": [
+      "Owning services reacquire every exact parent URL and byte digest.",
+      "Cinder workbench requests cannot name an alternate accepted-record location.",
+      "Accepted records and their accepted ancestors are immutable."
+    ]
+  },
+  "operations": {
+    "kep-m06-a": {"write": "https://partner-intake.keplerops.lab/v1/intakes/{intake_id}/acceptance-review", "read": "https://partner-intake.keplerops.lab/v1/reviews/intake-evasion/{review_id}", "schema": "keplerops.partner-intake-evasion/v1", "parents": ["kep-m04-f", "kep-m06-q"]},
+    "kep-m06-b": {"writes": ["https://developer.cinder.lab/v1/threads", "https://bridge.cinder.lab/v1/jobs"], "read": "https://bridge.cinder.lab/v1/corpus", "schema": "orion.host-bridge-corpus/v1", "parents": ["kep-m04-i", "kep-m04-j", "kep-m06-q"]},
+    "kep-m06-c": {"write": "https://experiments.cinder.lab/v1/preview-experiments", "read": "https://experiments.cinder.lab/v1/preview-experiments/{record_id}", "schema": "cinder.preview-audit-export/v1", "parents": ["kep-m04-f", "kep-m06-q"]},
+    "kep-m06-d": {"write": "https://experiments.cinder.lab/v1/preview-experiments", "read": "https://experiments.cinder.lab/v1/preview-experiments/{record_id}", "schema": "cinder.preview-audit-export/v1", "parents": ["kep-m06-k", "kep-m06-q"], "execution": "server executes the submitted linear proxy and computes its initial gradient"},
+    "kep-m06-e": {"write": "https://partner-intake.keplerops.lab/v1/intakes/{intake_id}/rendering-review", "read": "https://partner-intake.keplerops.lab/v1/reviews/document-rendering/{review_id}", "schema": "keplerops.partner-document-rendering/v1", "parents": ["kep-m06-a", "kep-m06-s"]},
+    "kep-m06-f": {"write": "https://partner-intake.keplerops.lab/v1/intakes/{intake_id}/target-review", "read": "https://partner-intake.keplerops.lab/v1/reviews/document-target/{review_id}", "schema": "keplerops.partner-document-target/v1", "parents": ["kep-m06-d", "kep-m06-e"]},
+    "kep-m06-g": {"read": "https://keplerops.lab/research/orion-release-manifest.json", "schema": "public Orion release manifest", "parents": []},
+    "kep-m06-h": {"reads": ["https://keplerops.lab/software/orion-field-review/repo/index-v1.jar", "https://keplerops.lab/software/orion-field-review/repo/orion-field-review.cdx.json", "https://keplerops.lab/software/orion-field-review/repo/repo-signing.pem"], "schema": "signed F-Droid index-v1", "parents": []},
+    "kep-m06-i": {"reads": ["https://orion-open-systems.org/speakers/mira-chen.vcf", "https://git.keplerops.lab/api/v1/users/mira.chen", "https://git.keplerops.lab/api/v1/orgs/northstar-research"], "schema": "independent public OSINT sources", "parents": []},
+    "kep-m06-j": {"read": "https://external-intake.keplerops.lab/intake-status/{reference}.json", "schema": "keplerops.external-intake-status/v2", "native_sources": ["Stalwart RFC822 bytes", "Zammad ticket and article", "Orion Preview audit"], "parents": []},
+    "kep-m06-k": {"write": "https://releases.cinder.lab/v1/public-bundles", "read": "https://releases.cinder.lab/v1/public-bundles/{release_id}", "schema": "cinder.public-bundle-release/v1", "parents_one_of": ["kep-m06-g", "kep-m06-h"], "workflow": "ci/public-bundle-release.yml", "execution": "release service verifies digest-bound Actions provenance, reacquires the canonical ten model/dataset/agent artifacts, and executes eight public Orion proxy cases"},
+    "kep-m06-l": {"surface": "https://notebook.cinder.lab", "read": "JupyterHub /hub/api/cinder/reattachments/{record_id}", "schema": "cinder.jupyterhub-reattachment/v1", "native_sources": ["KubeSpawner pod UID", "PVC UID", "container image ID", "server-side probe digest"], "parents": []},
+    "kep-m06-n": {"base": "https://registrar.cinder.lab/v1", "read": "https://registrar.cinder.lab/v1/ownership-manifests/{domain_id}", "schema": "cinder.domain-ownership/v1", "native_sources": ["Keycloak user", "PowerDNS zone and serial", "Stalwart identity", "ACME order JWS", "live Caddy certificate"], "parents": ["kep-m06-i"], "auth": "assigned Cinder registrar service identity"},
+    "kep-m06-o": {"write": "https://releases.cinder.lab/v1/toolchain-releases", "read": "https://releases.cinder.lab/v1/toolchain-releases/{release_id}", "schema": "cinder.toolchain-release/v1", "parents": ["kep-m06-k", "kep-m06-l"], "workflow": "ci/toolchain-release.yml", "execution": "pinned ART and ffmpeg execute in the declared Harbor image"},
+    "kep-m06-p": {"write": "https://model.cinder.lab/v1/chat/completions", "read": "https://model.cinder.lab/v1/usage/{usage_id}", "response": "https://model.cinder.lab/v1/responses/{usage_id}", "schema": "cinder.glm-edge-usage/v1", "model": "glm-5.2", "auth": "assigned Cinder GLM service identity", "parents": []},
+    "kep-m06-q": {"write": "https://releases.cinder.lab/v1/harness-releases", "read": "https://releases.cinder.lab/v1/harness-releases/{release_id}", "schema": "cinder.harness-release/v1", "parents": ["kep-m06-k", "kep-m06-p"], "workflow": "ci/harness-release.yml", "execution": "committed ci/validate-orion-harness runs against the exact Harbor digest"},
+    "kep-m06-r": {"write": "https://experiments.cinder.lab/v1/white-box-experiments", "read": "https://experiments.cinder.lab/v1/white-box-experiments/{record_id}", "schema": "cinder.whitebox-evaluation/v1", "parents": ["kep-m06-k", "kep-m06-q"], "execution": "service computes the model gradient, perturbation bound, margins and both outputs"},
+    "kep-m06-s": {"write": "https://partner-intake.keplerops.lab/v1/intakes/{intake_id}/retrieval-review", "read": "https://partner-intake.keplerops.lab/v1/reviews/retrieval-decision/{review_id}", "schema": "keplerops.partner-retrieval-decision/v1", "parents": ["kep-m06-j", "kep-m06-q"], "native_sources": ["Tika", "Tesseract", "FastEmbed", "victim Qdrant", "victim GLM edge", "Orion Preview"]},
+    "kep-m06-t": {"writes": ["https://media.cinder.lab/v1/generations", "https://media.cinder.lab/v1/media-registry"], "read": "https://media.cinder.lab/v1/media-registry/{generation_id}", "output": "https://media.cinder.lab/v1/generations/{generation_id}/output.wav", "schema": "cinder.media-registry/v1", "parents": ["kep-m06-i", "kep-m06-p"], "auth": "assigned Cinder media identity for mutation; checkpoint-reader identity for downstream retrieval"},
+    "kep-m06-u": {"surface": "cinder-publisher@192.168.78.30 forced command", "read": "https://knative.cinder.lab/v1/lifecycles/{lifecycle_id}", "schema": "cinder.knative-lifecycle/v1", "parents": ["kep-m06-n", "kep-m06-q"], "native_sources": ["Forgejo commit", "Harbor manifest digest", "Knative Service and Revision", "DomainMapping", "NetworkPolicy", "live TLS", "scale-to-zero and cold-start timestamps"]},
+    "kep-m06-v": {"write": "https://releases.cinder.lab/v1/staging-releases", "read": "https://releases.cinder.lab/v1/staging-releases/{release_id}", "schema": "cinder.staging-release/v1", "parents": ["kep-m06-n", "kep-m06-q", "kep-m06-u"], "workflow": "ci/staging-release.yml", "native_sources": ["committed Cosign key", "signed manifest", "scoped object-store bytes", "Forgejo source", "Harbor image", "Knative route", "fresh GLM provider request and Cinder edge usage"]}
+  },
+  "physical_operation": {
+    "id": "kep-m06-m",
+    "parents": ["kep-m08-i"],
+    "provisioned_by_software_apply": false,
+    "validation": "exact kep-m08-i calibration digest plus fresh external exporter archive, real pool place, active reservation, boot-bound readiness marker, nonce, lease digest, dual camera liveness, telemetry and reset",
+    "fallback": false
+  }
+}
