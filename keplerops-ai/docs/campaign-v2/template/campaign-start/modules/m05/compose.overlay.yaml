@@ -46,8 +46,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=512m
-      - /home/user/.local/tmp:rw,nosuid,nodev,size=64m
-      - /home/user/.local/share/buildkit:rw,nosuid,nodev,size=3g
+      - /home/user/.local/tmp:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
+      - /home/user/.local/share/buildkit:rw,nosuid,nodev,size=3g,uid=1000,gid=1000,mode=0700
     cap_drop: [ALL]
     security_opt:
       - no-new-privileges:true
