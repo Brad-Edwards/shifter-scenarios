@@ -130,16 +130,17 @@ seed_haystack_source() {
 }
 
 seed_nextcloud_source() (
-  local path='Partner%20Reviews/Orion'
-  local code source
+  local path code source
   source="$(mktemp)"
   trap 'rm -f "${source}"' EXIT
   build_ingestion_source "${source}"
-  code="$(curl -sS -o /dev/null -w '%{http_code}' -X MKCOL \
-    -u "${NEXTCLOUD_ADMIN_USER}:${NEXTCLOUD_ADMIN_PASSWORD}" \
-    -H "Host: ${NEXTCLOUD_HOST}" \
-    "${NEXTCLOUD_URL}/remote.php/dav/files/${NEXTCLOUD_ADMIN_USER}/${path}")"
-  [[ ${code} == 201 || ${code} == 405 ]] || die "Nextcloud MKCOL returned ${code}"
+  for path in 'Partner%20Reviews' 'Partner%20Reviews/Orion'; do
+    code="$(curl -sS -o /dev/null -w '%{http_code}' -X MKCOL \
+      -u "${NEXTCLOUD_ADMIN_USER}:${NEXTCLOUD_ADMIN_PASSWORD}" \
+      -H "Host: ${NEXTCLOUD_HOST}" \
+      "${NEXTCLOUD_URL}/remote.php/dav/files/${NEXTCLOUD_ADMIN_USER}/${path}")"
+    [[ ${code} == 201 || ${code} == 405 ]] || die "Nextcloud MKCOL ${path} returned ${code}"
+  done
   curl -fsS -X PUT -u "${NEXTCLOUD_ADMIN_USER}:${NEXTCLOUD_ADMIN_PASSWORD}" \
     -H "Host: ${NEXTCLOUD_HOST}" \
     --data-binary "@${source}" \
