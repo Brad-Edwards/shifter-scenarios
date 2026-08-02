@@ -131,7 +131,10 @@ main() {
   ensure_media_attestation_key
   install_public_clues
   seed_native_review_surfaces
-  compose up -d --build --no-deps \
+  # All five workers share one image. Building each service concurrently under
+  # Compose Bake races multiple exports to the same image tag.
+  compose build m02-business-worker >/dev/null
+  compose up -d --no-build --no-deps \
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
     m02-business-worker m02-recipient-worker m02-media-attestor \
     m02-model-analysis m02-model-integration >/dev/null
