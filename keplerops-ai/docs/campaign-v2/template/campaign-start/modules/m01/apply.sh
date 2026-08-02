@@ -333,7 +333,7 @@ apply_kep_m01_f() { seed_review_process; seed_nextcloud_sources; }
 apply_kep_m01_g() { seed_review_process; seed_rabbit_queues; }
 apply_kep_m01_h() { seed_review_process; seed_rabbit_queues; }
 apply_kep_m01_i() {
-  docker exec kep-v2-langflow install -d -m 0755 /opt/keplerops/preview
+  docker exec -u 0 kep-v2-langflow install -d -m 0755 /opt/keplerops/preview
   docker cp "${PAYLOAD_ROOT}/operations-handoff.md" kep-v2-langflow:/opt/keplerops/preview/operations-handoff.md
 }
 apply_kep_m01_j() { seed_rabbit_queues; }
