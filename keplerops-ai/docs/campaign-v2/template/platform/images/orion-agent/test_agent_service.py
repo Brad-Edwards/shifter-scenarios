@@ -32,10 +32,43 @@ def state() -> agent_service.AgentState:
         "tool_events": [],
         "handoff": None,
         "handoff_id": None,
+        "request_id": "request-1",
+        "trace_id": "1" * 32,
+        "traceparent": f"00-{'1' * 32}-{'2' * 16}-01",
     }
 
 
 class AgentServiceTests(unittest.TestCase):
+    def test_request_context_preserves_valid_w3c_identity(self) -> None:
+        traceparent = f"00-{'a' * 32}-{'b' * 16}-01"
+        request_id, trace_id, propagated = agent_service.request_context(
+            "review-123", traceparent, None
+        )
+        self.assertEqual(request_id, "review-123")
+        self.assertEqual(trace_id, "a" * 32)
+        self.assertEqual(propagated, traceparent)
+
+    def test_request_context_rejects_invalid_traceparent(self) -> None:
+        with self.assertRaises(HTTPException):
+            agent_service.request_context("review-123", "not-a-trace", None)
+
+    def test_downstream_headers_carry_request_and_trace_identity(self) -> None:
+        headers = agent_service.downstream_headers(state())
+        self.assertEqual(headers["X-Request-ID"], "request-1")
+        self.assertEqual(headers["traceparent"], f"00-{'1' * 32}-{'2' * 16}-01")
+
+    def test_otlp_log_body_keeps_queryable_correlation_fields(self) -> None:
+        body = agent_service.otlp_map(
+            {"service": "orion-agent", "request_id": "request-1", "trace_id": "a" * 32}
+        )
+        values = {
+            item["key"]: item["value"]["stringValue"]
+            for item in body["kvlistValue"]["values"]
+        }
+        self.assertEqual(values["service"], "orion-agent")
+        self.assertEqual(values["request_id"], "request-1")
+        self.assertEqual(values["trace_id"], "a" * 32)
+
     def test_service_authentication_rejects_an_invalid_credential(self) -> None:
         with self.assertRaises(HTTPException):
             agent_service.authenticate_service("Bearer invalid")

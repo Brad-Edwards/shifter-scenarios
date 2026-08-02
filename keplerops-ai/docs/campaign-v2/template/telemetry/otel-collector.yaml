@@ -26,7 +26,7 @@ processors:
   resource/common:
     attributes:
       - key: deployment.environment
-        value: keplerops-campaign-v2
+        value: orion-research
         action: upsert
   resource/access:
     attributes:
@@ -49,8 +49,8 @@ connectors:
     dimensions:
       - name: keplerops.event_id
         default: uncorrelated
-      - name: keplerops.range
-        default: campaign-v2
+      - name: keplerops.deployment
+        default: orion-research-eu1
     resource_metrics_key_attributes:
       - service.name
 
@@ -83,6 +83,6 @@ service:
       processors: [memory_limiter, resource/common, batch]
       exporters: [prometheus/orion]
     logs/access:
-      receivers: [filelog/orion_edge]
+      receivers: [otlp, filelog/orion_edge]
       processors: [memory_limiter, resource/common, resource/access, batch]
       exporters: [elasticsearch/access, debug]

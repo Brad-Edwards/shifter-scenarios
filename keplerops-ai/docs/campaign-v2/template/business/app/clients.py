@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 import re
 import smtplib
 import ssl
 import xmlrpc.client
+import uuid
 from contextlib import contextmanager
 from http.cookies import SimpleCookie
 from email.message import EmailMessage
@@ -56,6 +58,16 @@ def feature_vector(text: str, size: int = 16) -> list[float]:
     return [value / norm for value in vector]
 
 
+def correlation_headers(request_id: str, trace_id: str) -> dict[str, str]:
+    w3c_trace_id = hashlib.sha256(trace_id.encode()).hexdigest()[:32]
+    parent_id = hashlib.sha256(f"{trace_id}:{request_id}".encode()).hexdigest()[:16]
+    return {
+        "X-Request-ID": request_id,
+        "X-Keplerops-Trace-ID": trace_id,
+        "traceparent": f"00-{w3c_trace_id}-{parent_id}-01",
+    }
+
+
 class NativeClients:
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -73,6 +85,137 @@ class NativeClients:
         if not isinstance(result, dict) or result.get("allow") is not True:
             raise PermissionError("OPA denied the bounded business action")
         return result
+
+    def release_risk_predict(
+        self, text: str, request_id: str, trace_id: str
+    ) -> dict[str, Any]:
+        base = self.settings.release_risk_url.rstrip("/")
+        model = self.settings.release_risk_model
+        headers = correlation_headers(request_id, trace_id)
+        try:
+            metadata = checked(
+                httpx.get(f"{base}/v1/models/{model}", headers=headers, timeout=20)
+            ).json()
+            response = checked(
+                httpx.post(
+                    f"{base}/v1/models/{model}:predict",
+                    headers=headers,
+                    json={"instances": [{"text": text}]},
+                    timeout=60,
+                )
+            )
+        except httpx.HTTPError as exc:
+            raise NativeServiceError("Orion Release Risk is unavailable") from exc
+        body = response.json()
+        predictions = body.get("predictions")
+        labels = metadata.get("labels")
+        if not isinstance(predictions, list) or len(predictions) != 1:
+            raise NativeServiceError("Orion Release Risk returned no single prediction")
+        prediction = predictions[0]
+        if not isinstance(prediction, dict) or not isinstance(labels, list):
+            raise NativeServiceError("Orion Release Risk returned malformed metadata")
+        probabilities = prediction.get("probabilities")
+        class_index = prediction.get("class_index")
+        label = prediction.get("label")
+        if (
+            not isinstance(probabilities, list)
+            or len(probabilities) != len(labels)
+            or not isinstance(class_index, int)
+            or class_index < 0
+            or class_index >= len(labels)
+            or labels[class_index] != label
+        ):
+            raise NativeServiceError(
+                "Orion Release Risk returned an invalid class vector"
+            )
+        model_sha256 = str(
+            body.get("model_sha256") or metadata.get("model_sha256") or ""
+        )
+        if model_sha256 != self.settings.release_risk_model_digest.removeprefix(
+            "sha256:"
+        ):
+            raise NativeServiceError(
+                "Orion Release Risk does not match the active signed model digest"
+            )
+        return {
+            "model": str(body.get("model_name") or metadata.get("name") or model),
+            "model_version": f"release-{body.get('model_version', 'active')}",
+            "inference_id": f"risk-{uuid.uuid4().hex}",
+            "label": str(label),
+            "class_index": class_index,
+            "probabilities": [float(value) for value in probabilities],
+            "model_sha256": model_sha256,
+            "raw_digest": "sha256:"
+            + hashlib.sha256(
+                json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest(),
+        }
+
+    def assistant_infer(
+        self,
+        prompt: str,
+        actor: str,
+        conversation_id: str,
+        request_id: str,
+        trace_id: str,
+    ) -> dict[str, Any]:
+        headers = {
+            **correlation_headers(request_id, trace_id),
+            "Authorization": f"Bearer {self.settings.assistant_api_key}",
+            "Content-Type": "application/json",
+        }
+        try:
+            response = checked(
+                httpx.post(
+                    f"{self.settings.assistant_url.rstrip('/')}/v1/chat",
+                    headers=headers,
+                    json={
+                        "prompt": prompt,
+                        "user": actor,
+                        "conversation_id": conversation_id,
+                        "metadata": {"request_id": request_id},
+                    },
+                    timeout=150,
+                )
+            )
+        except httpx.HTTPError as exc:
+            raise NativeServiceError("Orion Assistant is unavailable") from exc
+        body = response.json()
+        if body.get("request_id") != request_id or body.get("trace_id") != hashlib.sha256(
+            trace_id.encode()
+        ).hexdigest()[:32]:
+            raise NativeServiceError(
+                "Orion Assistant did not preserve the business request trace identity"
+            )
+        answer = body.get("response")
+        if not isinstance(answer, str) or not answer.strip():
+            raise NativeServiceError("Orion Assistant returned no grounded response")
+        citations = body.get("citations") or []
+        if not isinstance(citations, list):
+            raise NativeServiceError("Orion Assistant returned malformed citations")
+        citation_ids = [
+            str(item.get("source_id") or item.get("point_id") or "source")
+            for item in citations
+            if isinstance(item, dict)
+        ]
+        if not citation_ids:
+            raise NativeServiceError(
+                "Orion Assistant returned no approved WorkHub source citation"
+            )
+        return {
+            "model": str(body.get("model") or "orion-assistant"),
+            "model_version": "assistant-v1",
+            "inference_id": str(
+                body.get("workflow_id") or f"assistant-{uuid.uuid4().hex}"
+            ),
+            "conversation_id": str(body.get("conversation_id") or conversation_id),
+            "response": answer.strip(),
+            "citations": citation_ids,
+            "raw_digest": "sha256:"
+            + hashlib.sha256(
+                json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest(),
+        }
 
     def unleash_feature(self, feature: str) -> dict[str, Any]:
         url = (
@@ -351,16 +494,11 @@ class NativeClients:
         exact = [
             item
             for item in items
-            if item.get("fields", {})
-            .get("core", {})
-            .get("email", {})
-            .get("value")
+            if item.get("fields", {}).get("core", {}).get("email", {}).get("value")
             == email
         ]
         if len(exact) != 1:
-            raise NativeServiceError(
-                f"Mautic expected one contact with email {email}"
-            )
+            raise NativeServiceError(f"Mautic expected one contact with email {email}")
         return exact[0]
 
     def zammad_request(

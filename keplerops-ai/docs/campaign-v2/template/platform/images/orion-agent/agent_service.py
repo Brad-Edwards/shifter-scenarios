@@ -44,9 +44,16 @@ AGENT_API_KEY = os.getenv(
 STATE_TTL_SECONDS = int(os.getenv("STATE_TTL_SECONDS", "2592000"))
 MAX_HISTORY_MESSAGES = int(os.getenv("MAX_HISTORY_MESSAGES", "20"))
 MAX_RETRIEVAL_RESULTS = int(os.getenv("MAX_RETRIEVAL_RESULTS", "5"))
+OTLP_HTTP_URL = os.getenv("OTLP_HTTP_URL", "").rstrip("/")
+MODEL_RELEASE_ID = os.getenv("ORION_ASSISTANT_RELEASE_ID", "unresolved")
+MODEL_IDENTITY_DIGEST = os.getenv("ORION_ASSISTANT_MODEL_DIGEST", "unresolved")
 VECTOR_SIZE = 128
 
 COLLECTION_RE = re.compile(r"^[A-Za-z0-9_-]{1,128}$")
+REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$")
+TRACEPARENT_RE = re.compile(
+    r"^00-([0-9a-f]{32})-([0-9a-f]{16})-([0-9a-f]{2})$"
+)
 redis_client = redis.from_url(REDIS_URL, decode_responses=True)
 
 
@@ -72,6 +79,9 @@ class AgentState(TypedDict):
     tool_events: list[dict[str, Any]]
     handoff: dict[str, str] | None
     handoff_id: str | None
+    request_id: str
+    trace_id: str
+    traceparent: str
 
 
 class ChatMessage(BaseModel):
@@ -169,8 +179,17 @@ def qdrant_points(body: dict[str, Any]) -> list[dict[str, Any]]:
     return result if isinstance(result, list) else []
 
 
+def downstream_headers(state: AgentState) -> dict[str, str]:
+    return {
+        "X-Request-ID": state["request_id"],
+        "traceparent": state["traceparent"],
+    }
+
+
 async def retrieve_sources(
-    query: str, limit: int = MAX_RETRIEVAL_RESULTS
+    query: str,
+    headers: dict[str, str] | None = None,
+    limit: int = MAX_RETRIEVAL_RESULTS,
 ) -> list[Citation]:
     if not QDRANT_COLLECTIONS:
         raise RuntimeError("no approved Qdrant collections are configured")
@@ -182,7 +201,7 @@ async def retrieve_sources(
                 raise RuntimeError(f"invalid Qdrant collection name: {collection}")
             response = await client.post(
                 f"{QDRANT_URL.rstrip('/')}/collections/{quote(collection)}/points/query",
-                headers=qdrant_headers(),
+                headers={**qdrant_headers(), **(headers or {})},
                 json={"query": vector, "limit": limit, "with_payload": True},
             )
             if response.status_code == 404:
@@ -293,7 +312,9 @@ async def save_conversation(state: AgentState) -> None:
 
 async def retrieve(state: AgentState) -> AgentState:
     state["prior_messages"] = await load_conversation(state["conversation_id"])
-    state["citations"] = await retrieve_sources(state["prompt"])
+    state["citations"] = await retrieve_sources(
+        state["prompt"], downstream_headers(state)
+    )
     return state
 
 
@@ -328,6 +349,7 @@ async def authorize_tool(
     workflow_id: str,
     name: str,
     arguments: dict[str, Any],
+    headers: dict[str, str] | None = None,
 ) -> tuple[bool, str]:
     payload = {
         "input": {
@@ -340,7 +362,9 @@ async def authorize_tool(
     }
     async with httpx.AsyncClient(timeout=10) as client:
         response = await client.post(
-            f"{OPA_URL.rstrip('/')}/{OPA_DECISION_PATH.lstrip('/')}", json=payload
+            f"{OPA_URL.rstrip('/')}/{OPA_DECISION_PATH.lstrip('/')}",
+            headers=headers,
+            json=payload,
         )
         response.raise_for_status()
         result = response.json().get("result", False)
@@ -364,10 +388,13 @@ def parse_mcp_response(response: httpx.Response) -> dict[str, Any]:
     return events[-1]
 
 
-async def call_mcp_tool(name: str, arguments: dict[str, Any]) -> Any:
+async def call_mcp_tool(
+    name: str, arguments: dict[str, Any], trace_headers: dict[str, str] | None = None
+) -> Any:
     headers = {
         "Accept": "application/json, text/event-stream",
         "Content-Type": "application/json",
+        **(trace_headers or {}),
     }
     async with httpx.AsyncClient(timeout=30) as client:
         initialize = await client.post(
@@ -415,8 +442,10 @@ async def call_mcp_tool(name: str, arguments: dict[str, Any]) -> Any:
     return body.get("result")
 
 
-async def model_completion(messages: list[dict[str, Any]]) -> dict[str, Any]:
-    headers = {"Content-Type": "application/json"}
+async def model_completion(
+    messages: list[dict[str, Any]], trace_headers: dict[str, str] | None = None
+) -> dict[str, Any]:
+    headers = {"Content-Type": "application/json", **(trace_headers or {})}
     if LITELLM_MASTER_KEY:
         headers["Authorization"] = f"Bearer {LITELLM_MASTER_KEY}"
     payload = {
@@ -445,7 +474,7 @@ async def infer(state: AgentState) -> AgentState:
     ]
     tool_events: list[dict[str, Any]] = []
     for _ in range(3):
-        message = await model_completion(messages)
+        message = await model_completion(messages, downstream_headers(state))
         tool_calls = message.get("tool_calls") or []
         if not tool_calls:
             state["response"] = str(message.get("content") or "").strip()
@@ -469,6 +498,7 @@ async def infer(state: AgentState) -> AgentState:
                     state["workflow_id"],
                     name,
                     arguments,
+                    downstream_headers(state),
                 )
                 if allowed:
                     trusted_arguments = dict(arguments)
@@ -479,7 +509,9 @@ async def infer(state: AgentState) -> AgentState:
                             "workflow_id": state["workflow_id"],
                         }
                     )
-                    result = await call_mcp_tool(name, trusted_arguments)
+                    result = await call_mcp_tool(
+                        name, trusted_arguments, downstream_headers(state)
+                    )
                 else:
                     result = None
             tool_events.append(
@@ -560,6 +592,143 @@ def authenticate_service(authorization: str | None) -> None:
         raise HTTPException(status_code=401, detail="service authentication required")
 
 
+def request_context(
+    request_id: str | None, traceparent: str | None, fallback: str | None
+) -> tuple[str, str, str]:
+    request_id = request_id if isinstance(request_id, str) else None
+    traceparent = traceparent if isinstance(traceparent, str) else None
+    resolved_request = (request_id or fallback or f"request-{uuid.uuid4().hex}").strip()
+    if REQUEST_ID_RE.fullmatch(resolved_request) is None:
+        raise HTTPException(status_code=422, detail="valid X-Request-ID required")
+    if traceparent is None:
+        trace_id = secrets.token_hex(16)
+        resolved_traceparent = f"00-{trace_id}-{secrets.token_hex(8)}-01"
+    else:
+        resolved_traceparent = traceparent.strip().lower()
+        match = TRACEPARENT_RE.fullmatch(resolved_traceparent)
+        if match is None or match.group(1) == "0" * 32 or match.group(2) == "0" * 16:
+            raise HTTPException(status_code=422, detail="valid traceparent required")
+        trace_id = match.group(1)
+    return resolved_request, trace_id, resolved_traceparent
+
+
+def otlp_attributes(values: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {"key": key, "value": {"stringValue": str(value)}}
+        for key, value in sorted(values.items())
+    ]
+
+
+def otlp_map(values: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "kvlistValue": {
+            "values": [
+                {"key": key, "value": {"stringValue": str(value)}}
+                for key, value in sorted(values.items())
+            ]
+        }
+    }
+
+
+async def emit_request_span(
+    *,
+    name: str,
+    result: AgentState,
+    started_ns: int,
+    completed_ns: int,
+) -> None:
+    if not OTLP_HTTP_URL:
+        return
+    parent_span_id = result["traceparent"].split("-")[2]
+    span = {
+        "traceId": result["trace_id"],
+        "spanId": secrets.token_hex(8),
+        "parentSpanId": parent_span_id,
+        "name": name,
+        "kind": 2,
+        "startTimeUnixNano": str(started_ns),
+        "endTimeUnixNano": str(completed_ns),
+        "attributes": otlp_attributes(
+            {
+                "keplerops.request_id": result["request_id"],
+                "keplerops.event_id": result["request_id"],
+                "keplerops.workflow_id": result["workflow_id"],
+                "keplerops.conversation_id": result["conversation_id"],
+                "gen_ai.request.model": MODEL_NAME,
+            }
+        ),
+        "status": {"code": 1},
+    }
+    payload = {
+        "resourceSpans": [
+            {
+                "resource": {
+                    "attributes": otlp_attributes(
+                        {
+                            "service.name": "orion-agent",
+                            "service.namespace": "keplerops",
+                        }
+                    )
+                },
+                "scopeSpans": [
+                    {
+                        "scope": {"name": "keplerops.orion.agent", "version": "1.0.0"},
+                        "spans": [span],
+                    }
+                ],
+            }
+        ]
+    }
+    audit = {
+        "service": "orion-agent",
+        "event_action": name,
+        "request_id": result["request_id"],
+        "trace_id": result["trace_id"],
+        "workflow_id": result["workflow_id"],
+        "model_release_id": MODEL_RELEASE_ID,
+        "model_identity_digest": MODEL_IDENTITY_DIGEST,
+        "status": "completed",
+    }
+    logs = {
+        "resourceLogs": [
+            {
+                "resource": {
+                    "attributes": otlp_attributes(
+                        {
+                            "service.name": "orion-agent",
+                            "service.namespace": "keplerops",
+                        }
+                    )
+                },
+                "scopeLogs": [
+                    {
+                        "scope": {"name": "keplerops.orion.agent", "version": "1.0.0"},
+                        "logRecords": [
+                            {
+                                "timeUnixNano": str(completed_ns),
+                                "traceId": result["trace_id"],
+                                "spanId": span["spanId"],
+                                "severityNumber": 9,
+                                "severityText": "INFO",
+                                "body": otlp_map(audit),
+                            }
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    try:
+        async with httpx.AsyncClient(timeout=2) as client:
+            response = await client.post(f"{OTLP_HTTP_URL}/v1/traces", json=payload)
+            response.raise_for_status()
+            response = await client.post(f"{OTLP_HTTP_URL}/v1/logs", json=logs)
+            response.raise_for_status()
+    except httpx.HTTPError:
+        # Telemetry must never turn a successful enterprise action into a failure.
+        return
+
+
 @app.get("/health/live")
 async def live() -> dict[str, str]:
     return {"status": "live"}
@@ -604,6 +773,9 @@ async def run_agent(
     actor: str,
     conversation_id: str | None,
     metadata: dict[str, Any],
+    request_id: str,
+    trace_id: str,
+    traceparent: str,
 ) -> AgentState:
     state: AgentState = {
         "prompt": prompt,
@@ -616,6 +788,9 @@ async def run_agent(
         "tool_events": [],
         "handoff": requested_handoff(metadata),
         "handoff_id": None,
+        "request_id": request_id,
+        "trace_id": trace_id,
+        "traceparent": traceparent,
     }
     try:
         return await graph.ainvoke(state)
@@ -636,11 +811,32 @@ async def run_agent(
 
 @app.post("/v1/chat")
 async def chat(
-    request: PromptRequest, authorization: str | None = Header(default=None)
+    request: PromptRequest,
+    authorization: str | None = Header(default=None),
+    x_request_id: str | None = Header(default=None),
+    traceparent: str | None = Header(default=None),
 ) -> dict[str, Any]:
     authenticate_service(authorization)
+    started_ns = time.time_ns()
+    request_id, trace_id, resolved_traceparent = request_context(
+        x_request_id,
+        traceparent,
+        str(request.metadata.get("request_id") or request.conversation_id or "") or None,
+    )
     result = await run_agent(
-        request.prompt, request.user, request.conversation_id, request.metadata
+        request.prompt,
+        request.user,
+        request.conversation_id,
+        request.metadata,
+        request_id,
+        trace_id,
+        resolved_traceparent,
+    )
+    await emit_request_span(
+        name="orion.agent.chat",
+        result=result,
+        started_ns=started_ns,
+        completed_ns=time.time_ns(),
     )
     return {
         "model": MODEL_NAME,
@@ -649,6 +845,9 @@ async def chat(
         "workflow_id": result["workflow_id"],
         "citations": result["citations"],
         "handoff_id": result["handoff_id"],
+        "request_id": result["request_id"],
+        "trace_id": result["trace_id"],
+        "traceparent": result["traceparent"],
         "tool_events": [
             {"name": event["name"], "allowed": event["allowed"]}
             for event in result["tool_events"]
@@ -658,9 +857,13 @@ async def chat(
 
 @app.post("/v1/chat/completions")
 async def chat_completions(
-    request: ChatCompletionRequest, authorization: str | None = Header(default=None)
+    request: ChatCompletionRequest,
+    authorization: str | None = Header(default=None),
+    x_request_id: str | None = Header(default=None),
+    traceparent: str | None = Header(default=None),
 ) -> Any:
     authenticate_service(authorization)
+    started_ns = time.time_ns()
     prompt = next(
         (
             message.content
@@ -671,6 +874,11 @@ async def chat_completions(
     )
     if prompt is None:
         raise HTTPException(status_code=422, detail="a user message is required")
+    request_id, trace_id, resolved_traceparent = request_context(
+        x_request_id,
+        traceparent,
+        str(request.metadata.get("request_id") or request.conversation_id or "") or None,
+    )
     result = await run_agent(
         prompt,
         request.user or "workhub-user",
@@ -678,6 +886,15 @@ async def chat_completions(
         or str(request.metadata.get("conversation_id") or "")
         or None,
         request.metadata,
+        request_id,
+        trace_id,
+        resolved_traceparent,
+    )
+    await emit_request_span(
+        name="orion.agent.chat_completions",
+        result=result,
+        started_ns=started_ns,
+        completed_ns=time.time_ns(),
     )
     completion_id = f"chatcmpl-{uuid.uuid4().hex}"
     created = int(time.time())
@@ -698,6 +915,9 @@ async def chat_completions(
         "workflow_id": result["workflow_id"],
         "citations": result["citations"],
         "handoff_id": result["handoff_id"],
+        "request_id": result["request_id"],
+        "trace_id": result["trace_id"],
+        "traceparent": result["traceparent"],
     }
     if not request.stream:
         return body

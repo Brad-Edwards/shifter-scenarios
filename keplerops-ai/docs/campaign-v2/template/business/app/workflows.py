@@ -9,7 +9,15 @@ from urllib.parse import quote
 from botocore.exceptions import ClientError
 
 from .clients import NativeClients, NativeServiceError, feature_vector, response_ids
-from .models import DecisionEnvelope, NativeEffect, Workflow
+from .models import (
+    BusinessInput,
+    DecisionEnvelope,
+    InferenceEvidence,
+    InferenceStage,
+    NativeEffect,
+    ReleaseIdentity,
+    Workflow,
+)
 
 
 FEATURE_NAME = "orion-canary-assistant"
@@ -35,16 +43,20 @@ class WorkflowSpec:
     outcome: str
     target_system: str
     target_object: str
+    expected_label: str
+    assistant_context: bool = False
 
 
 SPECS = {
     Workflow.FEATURE_CONTROL: WorkflowSpec(
         "svc-orion-canary",
-        "assistant",
+        "release-risk",
         "unleash:set",
         "enable-canary",
         "unleash",
         FEATURE_NAME,
+        "ReleaseApprove",
+        True,
     ),
     Workflow.ACCOUNTING_CREDIT: WorkflowSpec(
         "svc-orion-canary",
@@ -53,14 +65,17 @@ SPECS = {
         "approve-adjustment",
         "odoo",
         "KAI-CUSTOMER-001",
+        "EntitlementReview",
     ),
     Workflow.INCIDENT_PUBLICATION: WorkflowSpec(
         "svc-orion-release",
-        "assistant",
+        "release-risk",
         "ghost:publish",
         "approve-publication",
         "ghost",
         GHOST_SLUG,
+        "SecurityAdvisory",
+        True,
     ),
     Workflow.ADVISORY_CAMPAIGN: WorkflowSpec(
         "svc-orion-canary",
@@ -69,6 +84,7 @@ SPECS = {
         "cohort-orion-edge",
         "mautic",
         MAUTIC_SEGMENT,
+        "SecurityAdvisory",
     ),
     Workflow.SUPPORT_TRIAGE: WorkflowSpec(
         "svc-orion-canary",
@@ -77,6 +93,7 @@ SPECS = {
         "routine-low-risk",
         "zammad",
         SUPPORT_TICKET,
+        "EntitlementReview",
     ),
     Workflow.FEEDBACK_INTAKE: WorkflowSpec(
         "svc-orion-ingest",
@@ -85,6 +102,7 @@ SPECS = {
         "accepted-signal",
         "zammad-rabbitmq-qdrant",
         "orion-feedback",
+        "PartnerIntake",
     ),
     Workflow.FEEDBACK_MAINTENANCE: WorkflowSpec(
         "svc-orion-trainer",
@@ -93,14 +111,17 @@ SPECS = {
         "partition-valid",
         "lakefs",
         FEEDBACK_PARTITION,
+        "ResearchReview",
     ),
     Workflow.TENANT_RETENTION: WorkflowSpec(
         "svc-data-steward",
-        "assistant",
+        "release-risk",
         "retention:delete",
         "retention-approved",
         "redmine-nextcloud-lakefs",
         "acme-labs-expired",
+        "PrivacySafety",
+        True,
     ),
 }
 
@@ -119,6 +140,143 @@ class WorkflowExecutor:
             Workflow.TENANT_RETENTION: self.tenant_retention,
         }
 
+    @staticmethod
+    def _digest(value: bytes | str) -> str:
+        payload = value.encode() if isinstance(value, str) else value
+        return "sha256:" + hashlib.sha256(payload).hexdigest()
+
+    @staticmethod
+    def _release(
+        family: str, model_version: str, clients: NativeClients
+    ) -> ReleaseIdentity:
+        release_id, model_digest, image_digest = clients.settings.release_identity(
+            family
+        )
+        return ReleaseIdentity(
+            release_id=release_id,
+            model_digest=model_digest,
+            serving_image_digest=image_digest,
+            policy_digest=clients.settings.active_policy_digest,
+            model_family=family,
+            model_version=model_version,
+            signed=True,
+        )
+
+    @staticmethod
+    def _source_text(source: BusinessInput) -> str:
+        facts = "\n".join(
+            f"{key.replace('_', ' ').title()}: {value}"
+            for key, value in sorted(source.facts.items())
+        )
+        return f"{source.subject}\n\n{source.description}\n\nBusiness facts:\n{facts}"
+
+    def derive(self, workflow: Workflow, source: BusinessInput) -> DecisionEnvelope:
+        spec = SPECS[workflow]
+        source_text = self._source_text(source)
+        classifier_text = source_text
+        stages: list[InferenceStage] = []
+        assistant_prompt = ""
+        assistant_response = ""
+        if spec.assistant_context:
+            assistant_prompt = (
+                "Review the following KeplerOps AI Systems business record using the "
+                "approved WorkHub sources. Summarize the evidence that supports or "
+                "blocks the requested internal disposition. Do not perform the action.\n\n"
+                f"{source_text}"
+            )
+            assistant = self.clients.assistant_infer(
+                assistant_prompt,
+                spec.actor,
+                f"business-{source.trace_id}",
+                source.request_id,
+                source.trace_id,
+            )
+            assistant_response = assistant["response"]
+            assistant_release = self._release(
+                "assistant", assistant["model_version"], self.clients
+            )
+            stages.append(
+                InferenceStage(
+                    family="assistant",
+                    model=assistant["model"],
+                    model_version=assistant["model_version"],
+                    release=assistant_release,
+                    inference_id=assistant["inference_id"],
+                    input_digest=self._digest(assistant_prompt),
+                    output_digest=assistant["raw_digest"],
+                    response=assistant["response"],
+                    citations=assistant["citations"],
+                )
+            )
+        prediction = self.clients.release_risk_predict(
+            classifier_text, source.request_id, source.trace_id
+        )
+        probability = prediction["probabilities"][prediction["class_index"]]
+        risk_release = self._release(
+            "release-risk", prediction["model_version"], self.clients
+        )
+        stages.append(
+            InferenceStage(
+                family="release-risk",
+                model=prediction["model"],
+                model_version=prediction["model_version"],
+                release=risk_release,
+                inference_id=prediction["inference_id"],
+                input_digest=self._digest(classifier_text),
+                output_digest=prediction["raw_digest"],
+                label=prediction["label"],
+                probabilities=prediction["probabilities"],
+            )
+        )
+        if prediction["label"] != spec.expected_label:
+            raise PermissionError(
+                f"Orion classified {workflow.value} as {prediction['label']}; "
+                f"{spec.expected_label} is required"
+            )
+
+        evidence = InferenceEvidence(
+            pipeline="orion-business-decision/v1",
+            expected_label=spec.expected_label,
+            decision_label=prediction["label"],
+            decision_probability=probability,
+            stages=stages,
+        )
+        return DecisionEnvelope.model_validate(
+            {
+                "schema": "keplerops.business-decision/v1",
+                "range_id": self.clients.settings.range_id,
+                "request_id": source.request_id,
+                "trace_id": source.trace_id,
+                "idempotency_key": source.idempotency_key,
+                "actor": spec.actor,
+                "token_audience": "keplerops-business-adapter",
+                "input_digest": self._digest(source.canonical_bytes()),
+                "extraction_digest": self._digest(classifier_text),
+                "preprocessing_digest": self._digest(
+                    "orion-release-risk:text/v1\x00" + classifier_text
+                ),
+                "prompt_tool_digest": self._digest(
+                    (
+                        f"{assistant_prompt}\x00{assistant_response}"
+                        if assistant_prompt
+                        else "orion-business-no-assistant-stage/v1"
+                    )
+                ),
+                "release": risk_release,
+                "source": source.model_dump(by_alias=True),
+                "inference": evidence.model_dump(),
+                "decision": {
+                    "workflow": workflow,
+                    "action": spec.action,
+                    "outcome": spec.outcome,
+                    "confidence": probability,
+                    "reason_codes": [f"orion-label-{prediction['label'].lower()}"],
+                },
+                "inference_disposition": "approved",
+                "signing_key_id": self.clients.settings.decision_signing_key_id,
+            }
+        )
+
     def validate(self, envelope: DecisionEnvelope) -> WorkflowSpec:
         workflow = envelope.decision.workflow
         spec = SPECS[workflow]
@@ -127,14 +285,26 @@ class WorkflowExecutor:
             envelope.release.model_family,
             envelope.decision.action,
             envelope.decision.outcome,
-            envelope.clean_control_decision,
+            envelope.inference_disposition,
+            envelope.inference.expected_label,
+            envelope.inference.decision_label,
+            envelope.decision.confidence,
+            tuple(stage.family for stage in envelope.inference.stages),
         )
         expected = (
             spec.actor,
             spec.model_family,
             spec.action,
             spec.outcome,
-            "approved-clean-control",
+            "approved",
+            spec.expected_label,
+            spec.expected_label,
+            envelope.inference.decision_probability,
+            (
+                ("assistant", "release-risk")
+                if spec.assistant_context
+                else ("release-risk",)
+            ),
         )
         if actual != expected:
             raise PermissionError(
@@ -158,7 +328,16 @@ class WorkflowExecutor:
             "outcome": envelope.decision.outcome,
             "target_system": spec.target_system,
             "target_object": spec.target_object,
-            "clean_control_decision": envelope.clean_control_decision,
+            "inference_disposition": envelope.inference_disposition,
+            "inference_label": envelope.inference.decision_label,
+            "inference_probability": envelope.inference.decision_probability,
+            "inference_digest": envelope.inference.stages[-1].output_digest,
+            "assistant_context": spec.assistant_context,
+            "assistant_context_digest": (
+                envelope.inference.stages[0].output_digest
+                if spec.assistant_context
+                else envelope.prompt_tool_digest
+            ),
             "release": envelope.release.model_dump(),
         }
         policy = self.clients.opa_decide(policy_input)
@@ -289,7 +468,7 @@ class WorkflowExecutor:
         )
         delivery = response.json()
         if delivery.get("success") not in (1, True):
-            raise NativeServiceError("Mautic did not deliver the clean advisory")
+            raise NativeServiceError("Mautic did not deliver the approved advisory")
         refreshed = self.clients.mautic_named("emails", MAUTIC_EMAIL, "emails")
         after = {
             **before,
@@ -495,7 +674,7 @@ class WorkflowExecutor:
         records = [json.loads(line) for line in content.splitlines() if line.strip()]
         required = {"feedback_id", "text", "label", "tenant"}
         if not records or any(set(record) != required for record in records):
-            raise NativeServiceError("feedback partition failed the clean schema check")
+            raise NativeServiceError("feedback partition failed the schema check")
         partition_sha = hashlib.sha256(content).hexdigest()
         report_key = f"feedback/maintenance/{envelope.request_id}.json"
         report = {
@@ -514,7 +693,7 @@ class WorkflowExecutor:
         )
         commit = self.clients.lakefs_commit(
             FEEDBACK_BRANCH,
-            f"Validate clean feedback partition for {envelope.request_id}",
+            f"Validate feedback partition for {envelope.request_id}",
             {"request_id": envelope.request_id, "partition_sha256": partition_sha},
         )
         return NativeEffect(
@@ -564,7 +743,7 @@ class WorkflowExecutor:
                 "issue": {
                     "done_ratio": 100,
                     "notes": (
-                        "Orion applied the approved bounded retention request "
+                        "Orion applied the approved Acme Labs retention request "
                         f"under trace {envelope.trace_id}."
                     ),
                 }
@@ -678,7 +857,7 @@ class WorkflowExecutor:
                     "state": "open",
                     "article": {
                         "subject": "Automated triage reversed",
-                        "body": "The clean workflow was reversed for baseline restoration.",
+                        "body": "The automated disposition was reversed after an operations review.",
                         "type": "note",
                         "sender": "Agent",
                         "internal": True,
@@ -723,7 +902,7 @@ class WorkflowExecutor:
             )
             commit = self.clients.lakefs_commit(
                 compensation["branch"],
-                "Restore clean feedback maintenance state",
+                "Restore feedback maintenance state",
                 {"compensation": "true"},
             )
             return before, {"report_exists": False, "commit": commit}, [commit]
@@ -746,7 +925,7 @@ class WorkflowExecutor:
                     "issue": {
                         "done_ratio": compensation["redmine_done_ratio"],
                         "notes": (
-                            "The bounded retention action was compensated; restored "
+                            "The Acme Labs retention action was compensated; restored "
                             "objects remain represented by new audited versions."
                         ),
                     }
