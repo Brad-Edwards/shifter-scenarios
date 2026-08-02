@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orion Partner Preview | KeplerOps AI Systems</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #17202a; background: #f5f7f8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { border-bottom: 1px solid #d9e0e4; background: #fff; }
+    header div, main { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+    header div { height: 68px; display: flex; align-items: center; justify-content: space-between; }
+    header strong { font-size: 17px; }
+    header span { color: #53616b; font-size: 14px; }
+    main { padding: 58px 0; }
+    h1 { margin: 0 0 12px; font-size: 34px; font-weight: 650; letter-spacing: 0; }
+    .lede { margin: 0 0 34px; color: #53616b; line-height: 1.6; max-width: 680px; }
+    label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 650; }
+    textarea { display: block; width: 100%; min-height: 180px; resize: vertical; padding: 15px; border: 1px solid #aebbc3; border-radius: 4px; background: #fff; font: inherit; line-height: 1.5; }
+    textarea:focus { outline: 3px solid #b8ddcb; border-color: #18794e; }
+    button { margin-top: 14px; padding: 10px 16px; border: 0; border-radius: 4px; background: #18794e; color: white; font: inherit; font-weight: 650; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    #result { margin-top: 28px; padding-top: 24px; border-top: 1px solid #d9e0e4; }
+    #result[hidden] { display: none; }
+    .label { font-size: 24px; font-weight: 650; }
+    dl { display: grid; grid-template-columns: max-content 1fr; gap: 8px 18px; margin-top: 20px; font-size: 14px; }
+    dt { color: #53616b; }
+    dd { margin: 0; overflow-wrap: anywhere; }
+    .error { color: #a11a1a; }
+  </style>
+</head>
+<body>
+  <header><div><strong>KeplerOps AI Systems</strong><span>Orion Partner Preview</span></div></header>
+  <main>
+    <h1>Review a release note</h1>
+    <p class="lede">Use Orion Release Risk to classify a proposed release, support, advisory, or entitlement note before submitting it to the partner review process.</p>
+    <form id="analysis-form">
+      <label for="text">Review text</label>
+      <textarea id="text" name="text" maxlength="8000" required placeholder="Describe the proposed release or operational change."></textarea>
+      <button type="submit">Analyze</button>
+    </form>
+    <section id="result" hidden aria-live="polite">
+      <div class="label" id="result-label"></div>
+      <dl>
+        <dt>Analysis ID</dt><dd id="analysis-id"></dd>
+        <dt>Model version</dt><dd id="model-version"></dd>
+        <dt>Model digest</dt><dd id="model-digest"></dd>
+      </dl>
+    </section>
+  </main>
+  <script>
+    const form = document.querySelector('#analysis-form');
+    const button = form.querySelector('button');
+    const result = document.querySelector('#result');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      button.disabled = true;
+      result.hidden = true;
+      document.querySelector('#result-label').className = 'label';
+      try {
+        const response = await fetch('/api/analyze', {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({text: document.querySelector('#text').value})
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.detail || 'Analysis failed');
+        document.querySelector('#result-label').textContent = payload.label;
+        document.querySelector('#analysis-id').textContent = payload.analysis_id;
+        document.querySelector('#model-version').textContent = payload.model_version;
+        document.querySelector('#model-digest').textContent = payload.model_sha256;
+      } catch (error) {
+        document.querySelector('#result-label').textContent = error.message;
+        document.querySelector('#result-label').className = 'label error';
+      } finally {
+        result.hidden = false;
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

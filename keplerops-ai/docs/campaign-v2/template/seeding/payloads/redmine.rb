@@ -5,8 +5,8 @@ Setting.default_language = 'en'
 
 users = [
   {
-    login: 'range-admin', firstname: 'Range', lastname: 'Administrator',
-    mail: 'range-admin@keplerops.lab', password: ENV.fetch('REDMINE_SEED_ADMIN_PASSWORD'), admin: true
+    login: 'range-admin', firstname: 'Platform', lastname: 'Operations',
+    mail: 'platform.operations@keplerops.lab', password: ENV.fetch('REDMINE_SEED_ADMIN_PASSWORD'), admin: true
   },
   {
     login: 'reviewer', firstname: 'Rina', lastname: 'Chen',
@@ -54,13 +54,14 @@ project.trackers = Tracker.all
 project.save!
 
 role_by_login = {
-  'range-admin' => 'Manager',
   'reviewer' => 'Reporter',
   'ml.engineer' => 'Developer',
   'release.engineer' => 'Manager',
   'comms.publisher' => 'Reporter',
   'support.analyst' => 'Reporter'
 }
+
+Member.where(project: project, user: seeded_users.fetch('range-admin')).destroy_all
 
 role_by_login.each do |login, role_name|
   role = Role.find_by(name: role_name) || raise("Redmine role is missing: #{role_name}")

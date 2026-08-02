@@ -68,7 +68,7 @@ def ensure_user(login, name, email, password, oauth_uid, provider, group, compan
 company = env.ref("base.main_company")
 company.write(
     {
-        "name": "Kepler Operations GmbH",
+        "name": "KeplerOps AI Systems GmbH",
         "email": "operations@keplerops.lab",
         "phone": "+49 30 5550 6100",
         "website": "https://www.keplerops.lab",
@@ -78,9 +78,9 @@ company.write(
 admin = env.ref("base.user_admin")
 admin.write(
     {
-        "name": "Range Administrator",
+        "name": "Platform Operations",
         "login": "range-admin",
-        "email": "range-admin@keplerops.lab",
+        "email": "platform.operations@keplerops.lab",
         "password": os.environ["ODOO_SEED_ADMIN_PASSWORD"],
     }
 )
@@ -125,7 +125,7 @@ if not category:
     category = env["ir.module.category"].create(
         {
             "name": "KeplerOps Business Roles",
-            "description": "Native business application duties for the KeplerOps range.",
+            "description": "Finance and audit duties for KeplerOps AI Systems.",
             "sequence": 8,
         }
     )
@@ -179,9 +179,9 @@ auditor_user = ensure_user(
 
 customer = env["res.partner"].search([("ref", "=", "KAI-CUSTOMER-001")], limit=1)
 customer_values = {
-    "name": "Acme Labs Synthetic Subsidiary",
+    "name": "Acme Labs GmbH",
     "ref": "KAI-CUSTOMER-001",
-    "email": "billing.customer@keplerops.lab",
+    "email": "billing@acme-labs.example",
     "customer_rank": 1,
     "company_id": company.id,
 }

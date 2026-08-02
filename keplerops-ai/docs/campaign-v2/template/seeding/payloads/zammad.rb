@@ -9,8 +9,8 @@ customer_role = Role.find_by(name: 'Customer') || raise('Zammad Customer role is
 # SAML authenticates the user; Zammad remains authoritative for authorization.
 users = [
   {
-    login: 'range-admin', firstname: 'Range', lastname: 'Administrator',
-    email: 'range-admin@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_ADMIN_PASSWORD'), roles: [admin_role, agent_role]
+    login: 'range-admin', firstname: 'Support', lastname: 'Platform Admin',
+    email: 'support.platform@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_ADMIN_PASSWORD'), roles: [admin_role]
   },
   {
     login: 'reviewer', firstname: 'Rina', lastname: 'Chen',
@@ -53,13 +53,13 @@ group.note = 'Support queue for routine Project Orion requests.'
 group.active = true
 group.save!
 
-%w[range-admin support.analyst].each do |login|
+%w[support.analyst].each do |login|
   membership = UserGroup.find_or_initialize_by(user_id: seeded_users.fetch(login).id, group_id: group.id)
   membership.access = 'full'
   membership.save!
 end
 UserGroup.where(group_id: group.id)
-         .where.not(user_id: seeded_users.values_at('range-admin', 'support.analyst').map(&:id))
+         .where.not(user_id: seeded_users.values_at('support.analyst').map(&:id))
          .destroy_all
 
 Setting.set('fqdn', 'support.keplerops.lab')

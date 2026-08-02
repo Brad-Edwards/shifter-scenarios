@@ -76,6 +76,20 @@ user_by_email() {
     "${GHOST_URL}/ghost/api/admin/users/"
 }
 
+ensure_owner_identity() {
+  local users user_id updated_at payload
+  users="$(user_by_email "${owner_cookie}" "${GHOST_OWNER_EMAIL}")"
+  user_id="$(jq -er '.users[0].id' <<<"${users}")"
+  updated_at="$(jq -er '.users[0].updated_at' <<<"${users}")"
+  payload="$(jq -cn \
+    --arg id "${user_id}" \
+    --arg updated_at "${updated_at}" \
+    --arg name "${GHOST_OWNER_NAME}" \
+    '{users:[{id:$id,updated_at:$updated_at,name:$name}]}')"
+  ghost_admin "${owner_cookie}" --request PUT --data "${payload}" \
+    "${GHOST_URL}/ghost/api/admin/users/${user_id}/" >/dev/null
+}
+
 ensure_site_title() {
   local payload
   payload="$(jq -cn --arg title "${GHOST_SITE_TITLE}" \
@@ -192,7 +206,7 @@ ensure_owned_post() {
 }
 
 main() {
-  local owner_user editor_user owner_id editor_id
+  local editor_user editor_id
   require_command jq
   require_service ghost
   require_service mariadb
@@ -205,24 +219,23 @@ main() {
   retry 60 3 ghost_ready || die "Ghost setup API did not become ready"
   ensure_setup
   login "${owner_cookie}" "${GHOST_OWNER_EMAIL}" "${GHOST_OWNER_PASSWORD}"
+  ensure_owner_identity
   ensure_site_title
   ensure_editor
   login "${editor_cookie}" "${GHOST_EDITOR_EMAIL}" "${GHOST_EDITOR_PASSWORD}"
 
-  owner_user="$(user_by_email "${owner_cookie}" "${GHOST_OWNER_EMAIL}")"
   editor_user="$(user_by_email "${owner_cookie}" "${GHOST_EDITOR_EMAIL}")"
-  owner_id="$(jq -er '.users[0].id' <<<"${owner_user}")"
   editor_id="$(jq -er '.users[0].id' <<<"${editor_user}")"
 
   ensure_owned_post \
-    "${owner_cookie}" "${owner_id}" "${GHOST_OWNER_EMAIL}" \
-    operational-baseline 'Operational Baseline' \
-    'Routine service availability information for Kepler Operations.' \
+    "${editor_cookie}" "${editor_id}" "${GHOST_EDITOR_EMAIL}" \
+    service-availability 'Service Availability' \
+    'Current availability information for Orion services.' \
     "${SEEDING_ROOT}/payloads/ghost-status.html"
   ensure_owned_post \
     "${editor_cookie}" "${editor_id}" "${GHOST_EDITOR_EMAIL}" \
-    communications-maintenance-window 'Communications Maintenance Window' \
-    'Product communications guidance for the scheduled Orion maintenance window.' \
+    scheduled-maintenance-window 'Scheduled Maintenance Window' \
+    'Customer information for the scheduled Orion maintenance window.' \
     "${SEEDING_ROOT}/payloads/ghost-editorial.html"
 
   log "Ghost owner, Editor, and native content ownership are ready"

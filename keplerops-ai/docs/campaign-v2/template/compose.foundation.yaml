@@ -150,7 +150,7 @@ services:
     image: ${STEP_CA_IMAGE}
     container_name: kep-v2-step-ca
     environment:
-      DOCKER_STEPCA_INIT_NAME: KeplerOps AI Systems Range CA
+      DOCKER_STEPCA_INIT_NAME: KeplerOps AI Systems Internal CA
       DOCKER_STEPCA_INIT_DNS_NAMES: ca.keplerops.lab,step-ca,localhost
       DOCKER_STEPCA_INIT_PROVISIONER_NAME: range-provisioner
       DOCKER_STEPCA_INIT_PASSWORD: KeplerV2-Training-StepCA

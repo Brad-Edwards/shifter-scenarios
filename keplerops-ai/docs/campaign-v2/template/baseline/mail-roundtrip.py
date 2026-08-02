@@ -61,7 +61,7 @@ def wait_for_message(user: str, password: str, subject: str) -> bytes:
 
 
 def main() -> None:
-    correlation = f"baseline-{uuid.uuid4()}"
+    correlation = f"review-{uuid.uuid4()}"
     subject = f"Orion partner review {correlation}"
     outbound = EmailMessage()
     outbound["From"] = CINDER_ADDRESS
@@ -71,7 +71,7 @@ def main() -> None:
     outbound["X-KeplerOps-Workflow"] = correlation
     outbound.set_content("Please confirm receipt of the attached benign review note.")
     outbound.add_attachment(
-        b"clean-baseline attachment\n",
+        b"Partner review scope and contact details.\n",
         maintype="text",
         subtype="plain",
         filename="review-note.txt",

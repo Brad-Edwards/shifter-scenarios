@@ -93,11 +93,21 @@ git -c "http.sslCAInfo=$RANGE_CA" ls-remote "$CLIENT_REPOSITORY" HEAD |
 pass 'client repository is public through Forgejo API and Git smart-HTTP over verified TLS'
 
 preview_body=$(https_get "$PREVIEW/")
-grep -Fq '<h1>KeplerOps Integration Preview</h1>' <<<"$preview_body" || \
-  fail 'Orion Preview did not return its public integration surface'
-grep -Fq 'Authorized partner submissions are rendered here' <<<"$preview_body" || \
-  fail 'Orion Preview did not describe its normal partner-submission behavior'
-pass 'Orion Preview is anonymously readable over verified TLS'
+grep -Fq '<h1>Review a release note</h1>' <<<"$preview_body" || \
+  fail 'Orion Preview did not return its public analysis surface'
+preview_result=$(https_get \
+  --header 'Content-Type: application/json' \
+  --request POST \
+  --data '{"text":"Routine Orion release review with approved lineage and validation evidence."}' \
+  "$PREVIEW/api/analyze")
+jq -e '
+  (.analysis_id | type == "string" and length > 20) and
+  (.model == "orion-release-risk") and
+  (.model_sha256 | type == "string" and length == 64) and
+  (.probabilities | type == "array" and length == 8)
+' <<<"$preview_result" >/dev/null || \
+  fail 'Orion Preview did not execute the admitted release-risk model'
+pass 'Orion Preview executes the admitted release-risk model over verified TLS'
 
 intake_body=$(https_get "$PARTNER_INTAKE/")
 grep -Fq '<title>Zammad Helpdesk</title>' <<<"$intake_body" || \
@@ -134,7 +144,7 @@ from email.message import EmailMessage
 
 host = os.environ["MAIL_EDGE"]
 context = ssl.create_default_context(cafile=os.environ["RANGE_CA"])
-correlation = f"gate5-{uuid.uuid4()}"
+correlation = f"partner-{uuid.uuid4()}"
 
 with smtplib.SMTP(host, 25, timeout=15) as smtp:
     code, banner = smtp.ehlo("participant.cinder.lab")
@@ -163,12 +173,12 @@ with smtplib.SMTP(host, 25, timeout=15) as smtp:
     message = EmailMessage()
     message["From"] = "cinder.operator@cinder.lab"
     message["To"] = "partner-intake@keplerops.lab"
-    message["Subject"] = f"Orion public intake baseline {correlation}"
+    message["Subject"] = f"Orion partner evaluation request {correlation[-8:]}"
     message["Message-ID"] = f"<{correlation}@cinder.lab>"
-    message["X-KeplerOps-Baseline"] = "clean-enterprise-gate-5"
+    message["X-KeplerOps-Workflow"] = correlation
     message.set_content(
-        "Benign public-surface acceptance message. "
-        f"Correlation: {correlation}\n"
+        "Please route this request to the Orion partner review team. "
+        f"Reference: {correlation}\n"
     )
     refused = smtp.send_message(message)
     if refused:

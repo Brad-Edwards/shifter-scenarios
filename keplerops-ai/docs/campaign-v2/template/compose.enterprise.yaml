@@ -103,15 +103,25 @@ services:
 
   preview:
     <<: *restart
-    image: ${NGINX_IMAGE}
+    build:
+      context: ./preview
+      args:
+        PREVIEW_BASE_IMAGE: ${PREVIEW_BASE_IMAGE}
+    image: keplerops/orion-preview:campaign-v2
     container_name: kep-v2-preview
-    volumes:
-      - ./content/preview:/usr/share/nginx/html:ro
+    environment:
+      ORION_RELEASE_RISK_URL: http://192.168.78.30:30083
+      ORION_RELEASE_RISK_MODEL: orion-release-risk
     networks:
       public:
         ipv4_address: 10.61.10.25
       engineering:
         ipv4_address: 10.61.40.25
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health/ready', timeout=5)"]
+      interval: 15s
+      timeout: 8s
+      retries: 30
     labels: *common-labels
 
   stalwart:

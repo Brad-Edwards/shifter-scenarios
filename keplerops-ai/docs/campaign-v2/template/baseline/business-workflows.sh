@@ -420,7 +420,7 @@ PY
     tenant-retention)
       curl -fsS -H 'Host: files.keplerops.lab' -u "${NEXTCLOUD_AUTH}" \
         "${NEXTCLOUD_URL}/remote.php/dav/files/range-admin/Orion%20Review%20Room/Tenant%20Retention/acme-labs/expired.txt" \
-        | grep -q 'Synthetic Acme Labs'
+        | grep -q 'Acme Labs'
       curl -fsS -u "${LAKEFS_AUTH}" \
         "${LAKEFS_URL}/api/v1/repositories/orion/refs/retention/objects?path=tenants/acme-labs/expired/customer-export.json" |
         jq -e '.tenant == "acme-labs" and .retention_status == "expired"' >/dev/null

@@ -31,13 +31,13 @@ trap cleanup EXIT
 run_id="$(date -u +%Y%m%dT%H%M%SZ)"
 source_file="${tmpdir}/partner-note.txt"
 printf '%s\n' \
-  'KeplerOps Orion partner intake acceptance.' \
+  'KeplerOps Orion partner model-card review request.' \
   "Reference: KEP-INTAKE-${run_id}" >"${source_file}"
 source_sha="$(sha256sum "${source_file}" | awk '{print $1}')"
 attachment="$(base64 -w0 "${source_file}")"
 
 ticket_payload="$(jq -n \
-  --arg title "Orion intake acceptance ${run_id}" \
+  --arg title "Orion model-card review ${run_id}" \
   --arg data "${attachment}" \
   '{
     title: $title,
@@ -122,7 +122,7 @@ jq -e \
   --arg ticket "${ticket_number}" \
   '.result.payload.sha256 == $sha
    and .result.payload.ticket_number == $ticket
-   and (.result.payload.text | contains("KeplerOps Orion partner intake acceptance"))' \
+   and (.result.payload.text | contains("KeplerOps Orion partner model-card review request"))' \
   <<<"${point}" >/dev/null
 
 printf 'partner intake passed: ticket=%s ticket_id=%s issue=%s point=%s sha256=%s\n' \

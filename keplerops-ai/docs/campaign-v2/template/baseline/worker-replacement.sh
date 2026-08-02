@@ -24,7 +24,7 @@ trap 'rm -rf "$work"' EXIT
 
 mail_output=$("$ROOT/baseline/mail-roundtrip.py")
 printf '%s\n' "$mail_output"
-mail_correlation=$(sed -n 's/^mail roundtrip passed: \(baseline-[[:alnum:]-]*\)$/\1/p' \
+mail_correlation=$(sed -n 's/^mail roundtrip passed: \(review-[[:alnum:]-]*\)$/\1/p' \
   <<<"$mail_output" | tail -n 1)
 [[ -n $mail_correlation ]] || {
   echo 'mail acceptance did not return a workflow correlation' >&2

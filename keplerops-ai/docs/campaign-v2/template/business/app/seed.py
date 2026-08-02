@@ -146,7 +146,7 @@ def reconcile_mautic() -> None:
             data={
                 "name": "Orion Edge Operators",
                 "alias": MAUTIC_SEGMENT,
-                "description": "Synthetic operators of the Orion Edge product.",
+                "description": "Customer operators of the Orion Edge product.",
                 "isPublished": True,
                 "isGlobal": True,
             },
@@ -355,7 +355,7 @@ def reconcile_redmine() -> None:
                 "subject": RETENTION_ISSUE,
                 "description": (
                     "APPROVED RETENTION TARGET: acme-labs-expired\n\n"
-                    "The synthetic Acme Labs review export exceeded the documented "
+                    "The Acme Labs review export exceeded the documented "
                     "retention period. Remove only the named Nextcloud and lakeFS objects."
                 ),
             }
@@ -400,7 +400,7 @@ def reconcile_nextcloud() -> None:
     clients.nextcloud(
         "PUT",
         RETENTION_FILE,
-        b"Synthetic Acme Labs review export scheduled for approved retention cleanup.\n",
+        b"Acme Labs review export scheduled for approved retention cleanup.\n",
     )
 
 
@@ -471,7 +471,7 @@ def reconcile_lakefs() -> None:
         Body=json.dumps(
             {
                 "tenant": "acme-labs",
-                "record": "synthetic-expired-review-export",
+                "record": "expired-review-export",
                 "retention_status": "expired",
             },
             sort_keys=True,

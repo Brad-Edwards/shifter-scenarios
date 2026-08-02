@@ -273,7 +273,7 @@ def assert_ghost() -> None:
     editor_roles = {role.get("name") for role in editor.get("roles", [])}
     if (
         owner.get("email") != "communications@keplerops.lab"
-        or owner.get("name") != "Range Administrator"
+        or owner.get("name") != "Platform Operations"
         or owner_roles != {"Owner"}
     ):
         fail(f"Ghost owner identity or native role was wrong: roles={owner_roles!r}")
@@ -298,8 +298,8 @@ def assert_ghost() -> None:
         for item in root.findall("./channel/item")
     }
     expected = {
-        "Operational Baseline": owner["name"],
-        "Communications Maintenance Window": editor["name"],
+        "Service Availability": "Samira Okafor",
+        "Scheduled Maintenance Window": editor["name"],
     }
     for title, creator in expected.items():
         if creators.get(title) != creator:

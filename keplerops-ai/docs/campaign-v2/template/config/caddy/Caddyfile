@@ -135,7 +135,7 @@ https://assistant.keplerops.lab {
 
 https://preview.keplerops.lab {
   tls internal
-  reverse_proxy 10.61.10.25:80
+  reverse_proxy 10.61.10.25:8080
 }
 
 https://status.keplerops.lab {
@@ -191,5 +191,5 @@ https://relay.cinder.lab {
 }
 
 http://ready.keplerops.lab {
-  respond "KeplerOps AI Systems clean-enterprise foundation" 200
+  respond "KeplerOps AI Systems foundation ready" 200
 }

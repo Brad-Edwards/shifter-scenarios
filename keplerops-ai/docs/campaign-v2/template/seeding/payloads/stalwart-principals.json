@@ -112,7 +112,7 @@
   {
     "type": "individual",
     "name": "billing.customer",
-    "description": "Synthetic subsidiary billing contact",
+    "description": "Acme Labs billing contact",
     "emails": ["billing.customer@keplerops.lab"],
     "roles": ["user"],
     "memberOf": [],
@@ -122,7 +122,7 @@
   {
     "type": "individual",
     "name": "edge.operator",
-    "description": "Synthetic Orion Edge operator",
+    "description": "Orion Edge customer operator",
     "emails": ["edge.operator@keplerops.lab"],
     "roles": ["user"],
     "memberOf": [],
@@ -132,7 +132,7 @@
   {
     "type": "individual",
     "name": "core.operator",
-    "description": "Synthetic Orion Core operator",
+    "description": "Orion Core customer operator",
     "emails": ["core.operator@keplerops.lab"],
     "roles": ["user"],
     "memberOf": [],
@@ -142,7 +142,7 @@
   {
     "type": "individual",
     "name": "vision.operator",
-    "description": "Synthetic Orion Vision operator",
+    "description": "Orion Vision customer operator",
     "emails": ["vision.operator@keplerops.lab"],
     "roles": ["user"],
     "memberOf": [],
