@@ -562,7 +562,7 @@ install_participant_prerequisite_identity() {
   local mc_image
   mc_image="$(awk -F= '$1=="MINIO_MC_IMAGE"{print substr($0,index($0,"=")+1)}' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")"
   [[ -n $mc_image ]] || die 'MINIO_MC_IMAGE is not pinned'
-  docker run --rm --network kep-v2-data "$mc_image" sh -ec '
+  docker run --rm --network kep-v2-data --entrypoint sh "$mc_image" -ec '
     set -eu
     mc alias set source http://minio:9000 range-admin KeplerV2-Training-Minio-Object-Store >/dev/null
     mc admin user add source cinder-prerequisite-reader Cinder-Field-Operator-Prerequisites-F4s9Wk2q >/dev/null 2>&1 || true
