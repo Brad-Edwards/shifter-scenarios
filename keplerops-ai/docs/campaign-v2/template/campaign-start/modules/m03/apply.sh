@@ -15,7 +15,7 @@ readonly JUPYTER_IMAGE="${JUPYTER_IMAGE:-$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMP
 readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")}"
 readonly NODE_IMAGE="${NODE_IMAGE:-$(sed -n 's/^OPENCODE_BUILDER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly CINDER_S3_ENDPOINT="${CINDER_S3_ENDPOINT:-http://cinder-minio:9000}"
-readonly REDMINE_ADMIN_USER="${REDMINE_ADMIN_USER:-admin}"
+readonly REDMINE_ADMIN_USER="${REDMINE_ADMIN_USER:-range-admin}"
 
 # shellcheck source=../../../seeding/config.env
 # shellcheck disable=SC1091
