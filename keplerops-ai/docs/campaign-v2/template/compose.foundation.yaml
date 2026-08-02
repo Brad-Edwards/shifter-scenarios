@@ -397,43 +397,43 @@ networks:
   public:
     name: kep-v2-public
     ipam:
-      config: [{subnet: 10.61.10.0/24}]
+      config: [{subnet: 10.61.10.0/24, ip_range: 10.61.10.128/26}]
   identity:
     name: kep-v2-identity
     ipam:
-      config: [{subnet: 10.61.20.0/24}]
+      config: [{subnet: 10.61.20.0/24, ip_range: 10.61.20.128/26}]
   corp:
     name: kep-v2-corp
     ipam:
-      config: [{subnet: 10.61.30.0/24}]
+      config: [{subnet: 10.61.30.0/24, ip_range: 10.61.30.128/26}]
   engineering:
     name: kep-v2-engineering
     ipam:
-      config: [{subnet: 10.61.40.0/24}]
+      config: [{subnet: 10.61.40.0/24, ip_range: 10.61.40.128/26}]
   data:
     name: kep-v2-data
     ipam:
-      config: [{subnet: 10.61.50.0/24}]
+      config: [{subnet: 10.61.50.0/24, ip_range: 10.61.50.128/26}]
   platform:
     name: kep-v2-platform
     ipam:
-      config: [{subnet: 10.61.60.0/24}]
+      config: [{subnet: 10.61.60.0/24, ip_range: 10.61.60.128/26}]
   business:
     name: kep-v2-business
     ipam:
-      config: [{subnet: 10.61.70.0/24}]
+      config: [{subnet: 10.61.70.0/24, ip_range: 10.61.70.128/26}]
   observe:
     name: kep-v2-observe
     ipam:
-      config: [{subnet: 10.61.80.0/24}]
+      config: [{subnet: 10.61.80.0/24, ip_range: 10.61.80.128/26}]
   cinder:
     name: kep-v2-cinder
     ipam:
-      config: [{subnet: 10.61.90.0/24}]
+      config: [{subnet: 10.61.90.0/24, ip_range: 10.61.90.128/26}]
   hardware:
     name: kep-v2-hardware
     ipam:
-      config: [{subnet: 10.61.100.0/24}]
+      config: [{subnet: 10.61.100.0/24, ip_range: 10.61.100.128/26}]
 
 volumes:
   postgres-data:

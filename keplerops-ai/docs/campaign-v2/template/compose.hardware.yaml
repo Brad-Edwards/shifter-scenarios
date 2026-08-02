@@ -71,7 +71,7 @@ networks:
   hardware:
     name: kep-v2-hardware
     ipam:
-      config: [{subnet: 10.61.100.0/24}]
+      config: [{subnet: 10.61.100.0/24, ip_range: 10.61.100.128/26}]
 
 volumes:
   labgrid-coordinator-data:
