@@ -170,10 +170,15 @@ class WorkflowExecutor:
         )
         return f"{source.subject}\n\n{source.description}\n\nBusiness facts:\n{facts}"
 
+    @staticmethod
+    def _classifier_text(source: BusinessInput) -> str:
+        """Keep the classifier input within its calibrated intent-record shape."""
+        return f"{source.subject}. {source.description}"
+
     def derive(self, workflow: Workflow, source: BusinessInput) -> DecisionEnvelope:
         spec = SPECS[workflow]
         source_text = self._source_text(source)
-        classifier_text = source_text
+        classifier_text = self._classifier_text(source)
         stages: list[InferenceStage] = []
         assistant_prompt = ""
         assistant_response = ""

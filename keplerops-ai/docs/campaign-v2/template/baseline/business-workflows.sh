@@ -14,15 +14,6 @@ source "${IDENTITY_ENV}"
 set +a
 readonly ADAPTER_URL="${BUSINESS_ADAPTER_URL:-http://10.61.70.25:8080}"
 readonly ADAPTER_TOKEN="${BUSINESS_ADAPTER_TOKEN:-KeplerV2-Training-Business-Adapter}"
-readonly DECISION_KEY="${ORION_DECISION_SIGNING_KEY:-KeplerV2-Training-Orion-Decision-Signing}"
-readonly RANGE_ID="${KEPLEROPS_RANGE_ID:-template}"
-readonly RELEASE_RISK_RELEASE_ID="${ORION_RELEASE_RISK_RELEASE_ID:?missing release-risk release ID}"
-readonly RELEASE_RISK_MODEL_DIGEST="${ORION_RELEASE_RISK_MODEL_DIGEST:?missing release-risk model digest}"
-readonly RELEASE_RISK_IMAGE_DIGEST="${ORION_RELEASE_RISK_IMAGE_DIGEST:?missing release-risk image digest}"
-readonly ASSISTANT_RELEASE_ID="${ORION_ASSISTANT_RELEASE_ID:?missing assistant release ID}"
-readonly ASSISTANT_MODEL_DIGEST="${ORION_ASSISTANT_MODEL_DIGEST:?missing assistant model digest}"
-readonly ASSISTANT_IMAGE_DIGEST="${ORION_ASSISTANT_IMAGE_DIGEST:?missing assistant image digest}"
-readonly POLICY_DIGEST="${ORION_ACTIVE_POLICY_DIGEST:?missing active business policy digest}"
 readonly UNLEASH_URL="${UNLEASH_URL:-http://10.61.70.23:4242}"
 readonly UNLEASH_TOKEN="${UNLEASH_TOKEN:-*:*.range-admin}"
 readonly ODOO_URL="${ODOO_URL:-http://10.61.70.20:8069}"
@@ -30,7 +21,7 @@ readonly GHOST_URL="${GHOST_URL:-https://status.keplerops.lab}"
 readonly MAUTIC_URL="${MAUTIC_URL:-https://advisories.keplerops.lab}"
 readonly MAUTIC_AUTH="${MAUTIC_AUTH:-range-admin:KeplerV2-Training-Mautic}"
 readonly ZAMMAD_URL="${ZAMMAD_URL:-http://10.61.50.43:8080}"
-readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-range-admin:KeplerV2-Training-Zammad-Admin}"
+readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-support.analyst:KeplerV2-Training-Support}"
 readonly QDRANT_URL="${QDRANT_URL:-http://10.61.50.62:6333}"
 readonly LAKEFS_URL="${LAKEFS_URL:-http://10.61.50.61:8000}"
 readonly LAKEFS_AUTH="${LAKEFS_AUTH:-KeplerLakeFSAccess:KeplerV2-Training-LakeFS-Object-Key}"
@@ -62,88 +53,77 @@ readonly -a GHOST_CURL=(curl -sS --cacert "${workdir}/range-ca.crt" \
   --resolve 'status.keplerops.lab:443:10.61.70.2')
 run_id="$(date -u +%Y%m%dT%H%M%SZ)"
 
-sign() {
-  local input=$1
-  DECISION_KEY_VALUE="${DECISION_KEY}" python3 - "${input}" <<'PY'
-import hashlib
-import hmac
-import json
-import os
-import sys
-
-with open(sys.argv[1], encoding="utf-8") as source:
-    value = json.load(source)
-canonical = json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
-print(hmac.digest(os.environ["DECISION_KEY_VALUE"].encode(), canonical, hashlib.sha256).hex())
-PY
-}
-
-make_envelope() {
-  local destination=$1 workflow=$2 actor=$3 family=$4 action=$5 outcome=$6 range=$7 suffix=$8
-  local release model image
-  if [[ ${family} == release-risk ]]; then
-    release=${RELEASE_RISK_RELEASE_ID}
-    model=${RELEASE_RISK_MODEL_DIGEST}
-    image=${RELEASE_RISK_IMAGE_DIGEST}
-  else
-    release=${ASSISTANT_RELEASE_ID}
-    model=${ASSISTANT_MODEL_DIGEST}
-    image=${ASSISTANT_IMAGE_DIGEST}
-  fi
+make_business_input() {
+  local destination=$1 workflow=$2 suffix=$3 subject description
+  local -a facts=()
+  case "${workflow}" in
+    feature-control)
+      subject='Orion 2.4 production canary activation'
+      description='Promote the verified Orion inference image to the production canary after the signed candidate passed compatibility, rollback, and evaluation review.'
+      facts=('candidate=orion-2.4.0' 'signature=verified' 'rollback_plan=approved' 'evaluation=passed')
+      ;;
+    accounting-credit)
+      subject='Acme Labs Orion preview service credit'
+      description='Confirm the customer license permits the requested Orion preview service credit and entitlement adjustment.'
+      facts=('customer=Acme Labs GmbH' 'entitlement=Orion preview tier' 'credit_amount=EUR 125.00' 'approval=Billing Operations')
+      ;;
+    incident-publication)
+      subject='Orion model import security advisory publication'
+      description='Publish the coordinated customer advisory for the remediated model import vulnerability now that affected versions and mitigation guidance are approved.'
+      facts=('affected_version=Orion 2.3' 'fixed_version=Orion 2.4' 'disclosure=coordinated' 'communications_review=approved')
+      ;;
+    advisory-campaign)
+      subject='Orion Edge authorization advisory distribution'
+      description='Notify Orion Edge operators about the patched authorization flaw, affected versions, upgrade path, and the approved mitigation guidance.'
+      facts=('audience=Orion Edge operators' 'fixed_version=Orion Edge 2.4' 'mitigation=upgrade and rotate tokens' 'security_review=approved')
+      ;;
+    support-triage)
+      subject='Orion enterprise SDK access entitlement'
+      description='Confirm that the requester support plan permits the enterprise SDK download and close the access request after the account entitlement is verified.'
+      facts=('requester=reviewer@keplerops.lab' 'support_plan=Enterprise' 'entitlement=enterprise SDK' 'account_state=active')
+      ;;
+    feedback-intake)
+      subject='Cinder Labs Orion benchmark contribution'
+      description='Onboard the research partner benchmark package, preserve its source record, and route the submitted model card and evaluation notes into technical review.'
+      facts=('partner=Cinder Labs' 'package=orion-benchmark-2026-08' 'model_card=present' 'source_record=verified')
+      ;;
+    feedback-maintenance)
+      subject='Weekly Orion feedback research review'
+      description='Review the latest feedback partition for the applied research meeting and record whether its schema and provenance are valid for the next analysis run.'
+      facts=('partition=2026-08-01' 'schema=feedback-v1' 'provenance=complete' 'record_count=2')
+      ;;
+    tenant-retention)
+      subject='Acme Labs expired review export removal'
+      description='Quarantine and remove the expired dataset after finding exposed customer records beyond retention.'
+      facts=('tenant=acme-labs' 'record=expired-review-export' 'retention_status=expired' 'privacy_review=approved')
+      ;;
+  esac
   jq -n \
-    --arg schema 'keplerops.business-decision/v1' \
-    --arg range "${range}" \
-    --arg request "clean-${workflow}-${suffix}" \
+    --arg schema 'keplerops.business-input/v1' \
+    --arg request "business-${workflow}-${suffix}" \
     --arg trace "trace-${workflow}-${suffix}" \
     --arg idempotency "idempotency-${workflow}-${suffix}" \
-    --arg actor "${actor}" \
-    --arg release "${release}" \
-    --arg model "${model}" \
-    --arg image "${image}" \
-    --arg policy "${POLICY_DIGEST}" \
-    --arg family "${family}" \
-    --arg workflow "${workflow}" \
-    --arg action "${action}" \
-    --arg outcome "${outcome}" \
+    --arg subject "${subject}" \
+    --arg description "${description}" \
+    --args \
     '{
       schema: $schema,
-      range_id: $range,
       request_id: $request,
       trace_id: $trace,
       idempotency_key: $idempotency,
-      actor: $actor,
-      token_audience: "keplerops-business-adapter",
-      input_digest: ("sha256:" + ("5" * 64)),
-      extraction_digest: ("sha256:" + ("6" * 64)),
-      preprocessing_digest: ("sha256:" + ("7" * 64)),
-      prompt_tool_digest: ("sha256:" + ("8" * 64)),
-      release: {
-        release_id: $release,
-        model_digest: $model,
-        serving_image_digest: $image,
-        policy_digest: $policy,
-        model_family: $family,
-        model_version: "clean-v1",
-        signed: true
-      },
-      decision: {
-        workflow: $workflow,
-        action: $action,
-        outcome: $outcome,
-        confidence: 0.99,
-        reason_codes: ["clean-control"]
-      },
-      clean_control_decision: "approved-clean-control"
-    }' >"${destination}"
+      subject: $subject,
+      description: $description,
+      facts: (reduce $ARGS.positional[] as $item ({};
+        ($item | split("=")) as $parts | .[$parts[0]] = ($parts[1:] | join("="))))
+    }' "${facts[@]}" >"${destination}"
 }
 
-post_envelope() {
-  local workflow=$1 envelope=$2 signature=$3 output=$4
+post_business_input() {
+  local workflow=$1 input=$2 output=$3
   curl -fsS \
     -H "Authorization: Bearer ${ADAPTER_TOKEN}" \
-    -H "X-Orion-Signature: ${signature}" \
     -H 'Content-Type: application/json' \
-    --data-binary "@${envelope}" \
+    --data-binary "@${input}" \
     "${ADAPTER_URL}/internal/v1/workflows/${workflow}/execute" >"${output}"
 }
 
@@ -430,15 +410,15 @@ PY
 }
 
 run_workflow() {
-  local workflow=$1 actor=$2 family=$3 action=$4 outcome=$5
-  local envelope signature result replay workflow_id request_id compensation
+  local workflow=$1 action=$2 outcome=$3 expected_label=$4
+  local input result replay audit workflow_id request_id compensation
   local mail_highwater='' business_before=''
-  envelope="${workdir}/${workflow}.json"
+  input="${workdir}/${workflow}.json"
   result="${workdir}/${workflow}-result.json"
   replay="${workdir}/${workflow}-replay.json"
+  audit="${workdir}/${workflow}-audit.json"
   compensation="${workdir}/${workflow}-compensation.json"
-  make_envelope "${envelope}" "${workflow}" "${actor}" "${family}" "${action}" \
-    "${outcome}" "${RANGE_ID}" "${run_id}"
+  make_business_input "${input}" "${workflow}" "${run_id}"
   case "${workflow}" in
     accounting-credit)
       mail_highwater="$(mailbox_highwater billing.customer "${SYNTHETIC_MAIL_PASSWORD}")"
@@ -451,17 +431,41 @@ run_workflow() {
       mail_highwater="$(mailbox_highwater reviewer "${REVIEWER_MAIL_PASSWORD}")"
       ;;
   esac
-  signature="$(sign "${envelope}")"
-  post_envelope "${workflow}" "${envelope}" "${signature}" "${result}"
-  jq -e '.status == "succeeded" and .idempotent_replay == false' "${result}" >/dev/null
-  request_id="$(jq -er '.request_id' "${envelope}")"
+  post_business_input "${workflow}" "${input}" "${result}"
+  jq -e \
+    --arg workflow "${workflow}" \
+    --arg action "${action}" \
+    --arg outcome "${outcome}" \
+    --arg label "${expected_label}" \
+    '.status == "succeeded" and .idempotent_replay == false
+      and .decision.workflow == $workflow
+      and .decision.action == $action
+      and .decision.outcome == $outcome
+      and .decision.confidence == .inference.decision_probability
+      and .inference.pipeline == "orion-business-decision/v1"
+      and .inference.expected_label == $label
+      and .inference.decision_label == $label
+      and .inference.stages[-1].family == "release-risk"
+      and .inference.stages[-1].label == $label
+      and (.inference.stages[-1].probabilities | length) == 8
+      and .policy_decision.allow == true
+      and .policy_decision.allowed_action == $action
+      and (.policy_decision.decision_id | startswith($workflow + ":"))
+      and (.input_digest | test("^sha256:[a-f0-9]{64}$"))
+      and (.decision_signature | test("^[a-f0-9]{64}$"))' \
+    "${result}" >/dev/null
+  request_id="$(jq -er '.request_id' "${input}")"
   verify_native "${workflow}" "${result}" "${request_id}" "${mail_highwater}"
 
-  post_envelope "${workflow}" "${envelope}" "${signature}" "${replay}"
+  workflow_id="$(jq -er '.workflow_id' "${result}")"
+  curl -fsS -H "Authorization: Bearer ${ADAPTER_TOKEN}" \
+    "${ADAPTER_URL}/internal/v1/workflows/${workflow_id}" >"${audit}"
+  jq -e --slurp '.[0] == .[1]' "${result}" "${audit}" >/dev/null
+
+  post_business_input "${workflow}" "${input}" "${replay}"
   jq -e --slurp '.[1].idempotent_replay == true and .[0].workflow_id == .[1].workflow_id' \
     "${result}" "${replay}" >/dev/null
 
-  workflow_id="$(jq -er '.workflow_id' "${result}")"
   curl -fsS -X POST -H "Authorization: Bearer ${ADAPTER_TOKEN}" \
     "${ADAPTER_URL}/internal/v1/workflows/${workflow_id}/compensate" >"${compensation}"
   jq -e '.compensation_state == "completed"' "${compensation}" >/dev/null
@@ -471,26 +475,27 @@ run_workflow() {
 
 "${ROOT}/seeding/seed.sh" business-workflows
 
-denied="${workdir}/cross-range.json"
-make_envelope "${denied}" feature-control svc-orion-canary assistant unleash:set \
-  enable-canary other-range "${run_id}-denied"
+denied="${workdir}/caller-selected-action.json"
+make_business_input "${denied}" feature-control "${run_id}-denied"
+jq '. + {action: "unleash:set", target: "another-tenant"}' "${denied}" \
+  >"${denied}.tmp"
+mv "${denied}.tmp" "${denied}"
 denied_status="$(curl -sS -o /dev/null -w '%{http_code}' \
   -H "Authorization: Bearer ${ADAPTER_TOKEN}" \
-  -H "X-Orion-Signature: $(sign "${denied}")" \
   -H 'Content-Type: application/json' --data-binary "@${denied}" \
   "${ADAPTER_URL}/internal/v1/workflows/feature-control/execute")"
-[[ ${denied_status} == 403 ]] || {
-  printf 'cross-range decision returned HTTP %s instead of 403\n' "${denied_status}" >&2
+[[ ${denied_status} == 422 ]] || {
+  printf 'caller-selected action returned HTTP %s instead of 422\n' "${denied_status}" >&2
   exit 1
 }
 
-run_workflow feature-control svc-orion-canary assistant unleash:set enable-canary
-run_workflow accounting-credit svc-orion-canary release-risk odoo:credit-note approve-adjustment
-run_workflow incident-publication svc-orion-release assistant ghost:publish approve-publication
-run_workflow advisory-campaign svc-orion-canary release-risk mautic:send cohort-orion-edge
-run_workflow support-triage svc-orion-canary release-risk zammad:close routine-low-risk
-run_workflow feedback-intake svc-orion-ingest release-risk feedback:ingest accepted-signal
-run_workflow feedback-maintenance svc-orion-trainer release-risk lakefs:validate-partition partition-valid
-run_workflow tenant-retention svc-data-steward assistant retention:delete retention-approved
+run_workflow feature-control unleash:set enable-canary ReleaseApprove
+run_workflow accounting-credit odoo:credit-note approve-adjustment EntitlementReview
+run_workflow incident-publication ghost:publish approve-publication SecurityAdvisory
+run_workflow advisory-campaign mautic:send cohort-orion-edge SecurityAdvisory
+run_workflow support-triage zammad:close routine-low-risk EntitlementReview
+run_workflow feedback-intake feedback:ingest accepted-signal PartnerIntake
+run_workflow feedback-maintenance lakefs:validate-partition partition-valid ResearchReview
+run_workflow tenant-retention retention:delete retention-approved PrivacySafety
 
-printf 'bounded Orion business workflows passed with native effects, idempotency, range denial, and compensation\n'
+printf 'bounded Orion business workflows passed with causal inference, policy, native effects, idempotency, audit, and compensation\n'

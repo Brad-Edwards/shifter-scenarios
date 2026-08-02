@@ -11,7 +11,9 @@ mode=${1:---static}
 
 if [[ ${mode} == --all ]]; then
   while IFS= read -r module; do
-    "${module}/validate.sh" --all
+    while IFS= read -r operation; do
+      "${module}/validate.sh" "${operation}"
+    done < <(jq -r '.[].id' "${module}/operations.json")
   done < <(find "${ROOT}/modules" -mindepth 1 -maxdepth 1 \
     -type d -name 'm??' -print | sort)
   exit 0
