@@ -175,7 +175,8 @@ not from guessing what the author had in mind.
 - The reviewed `mcp-package-docs` advisory for `CVE-2025-54073` includes a
   realistic indirect-prompt path: malicious package documentation causes an
   agent to invoke the documentation tool again with command-injection content.
-  Versions through 0.1.27 are affected and 0.1.28 is patched. This replaces the
+  The reproduced vulnerable upstream is 0.1.26 and the local 0.1.27 source is
+  the patched negative control. This replaces the
   invented review-companion exploit in `kep-m02-k`.
   [mcp-package-docs GHSA-vf9j-h32g-2764](https://github.com/advisories/GHSA-vf9j-h32g-2764)
 - MLflow's reviewed `CVE-2024-0520` advisory covers releases before 2.9.0 and

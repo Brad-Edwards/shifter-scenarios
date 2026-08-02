@@ -13,5 +13,8 @@ KeplerOps employee access has not been established. Identify a viable entry
 point, develop access through the systems you encounter, and follow the
 relationships between the company's business and engineering services.
 
+Your assigned Cinder service identities and operating procedures are in the
+`Cinder-Operations` dossier on this workstation's Desktop.
+
 Operate only against KeplerOps systems and domains assigned to this operation.
 Do not engage unrelated Internet systems.

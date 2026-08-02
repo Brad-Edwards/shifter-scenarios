@@ -48,9 +48,12 @@ through the public temporary-flow build request and observe execution at your
 relay.
 
 **Flag / reset / QA:** `/opt/keplerops/preview/operations-handoff.md` contains
-the flag. Failed-attempt reset recreates Langflow and ephemeral state while preserving public
-IDs. QA obtains all targeting values in-world, proves the denial baseline,
-exploits from Kali, runs `id`, and reads the file.
+the flag. Failed-attempt reset never restarts shared Langflow. A rejected
+WorkHub attempt may be removed when it is bound to the server-owned operation
+record; the temporary-flow job remains until Langflow's native expiry. Public
+IDs and successful jobs remain checkpoints. QA obtains all targeting values
+in-world, proves the denial baseline, exploits from Kali, runs `id`, and reads
+the file.
 
 ## `kep-m01-j`: Quiet In Detonation
 
@@ -79,9 +82,13 @@ analysis behavior harmless and make the integration behavior return the worker
 result.
 
 **Flag / reset / QA:** The integration worker's `job-context.json` contains the
-flag, returned by qualifying participant code. Failed-attempt reset recreates both workers and
-clears jobs/callbacks. QA submits baseline and revised packages and proves
-distinct behavior from the same digest without a hidden pass rule.
+flag, returned by qualifying participant code. Failed-attempt reset may delete
+only a Rejected WorkHub attempt bound to the server-owned operation record. It
+does not restart either shared worker or claim ownership of an external Cinder
+callback; failed callbacks remain until their native expiry. Accepted jobs and
+the scoped integration identity remain checkpoints. QA submits baseline and
+revised packages and proves distinct behavior from the same digest without a
+hidden pass rule.
 
 ## `kep-m02-h`: The Document That Opened A Room
 
@@ -93,9 +100,11 @@ identity, opens a normal service request, uploads the exact document, and follow
 extraction, indexing, assistant triage, and external-room creation.
 
 **Mechanism and result:** Zammad, Tika, Tesseract, Qdrant, a fixed victim model,
-Nextcloud, and Keycloak run the workflow. The assistant cites participant
-content and invokes the ordinary room-provisioning tool based on an objective
-routing outcome. This performs `AML.T0093 Prompt Infiltration via Public-Facing
+Nextcloud, and Keycloak run the workflow. The server requires exactly one
+concrete Orion release question, exact source/digest citation, Zammad acceptance
+tag and articles, and a ticket-bound Qdrant point; model JSON is never the
+acceptance oracle. The ordinary room-provisioning tool runs only after those
+postconditions. This performs `AML.T0093 Prompt Infiltration via Public-Facing
 Application`.
 
 **Carry-forward asset:** Scoped Nextcloud review room, persistent indexed
@@ -113,7 +122,9 @@ citation and routing state, then check the attacker mailbox for the invitation.
 flag. Failed-attempt reset deletes only rejected tickets, temporary vectors,
 threads, and workflow executions. The accepted document, collection, room, and
 guest grant persist. QA tests two semantically different qualifying documents
-and verifies a real invitation and tool action.
+and verifies a real invitation and tool action. Its negative is the native
+Zammad denial article joined by ticket/attempt ID, exact attachment digest, and
+Airflow run; a caller-selected denial page is never evidence.
 
 ## `kep-m02-i`: A Conversation Worth Having
 
@@ -155,14 +166,17 @@ drafts and recipient attempt state; the successful thread and disclosed context
 persist. QA generates, edits, sends, receives, adapts, and sends again through
 participant surfaces. Generation-to-draft-to-sent digest lineage plus the
 published field checks proves material LLM contribution; timestamps alone do
-not.
+not. Negative evidence is an exact delivered-message digest joined to the
+recipient's operation-specific attempt and real SMTP reply Message-ID/body
+digest, never an externally selected mailbox URL.
 
 ## `kep-m02-j`: The Voice In The Thread
 
 **Difficulty / points:** Accessible / 100
 
-**Path and action:** The participant has the established thread, trusted-person
-context, private review window, and exact OpenVoice-generated audio from Act 2.
+**Path and action:** The participant has the room from `kep-m02-h`, established
+thread, trusted-person context, private review window, and exact OpenVoice-
+generated audio from Act 2.
 They send a thread-consistent follow-up with the real audio and request normal
 partner-review access while impersonating the trusted speaker.
 
@@ -185,11 +199,14 @@ established conversation to obtain a genuine scoped KeplerOps invitation.
 identity and context fit the person impersonated. (3) Ask for partner-review
 access appropriate to the disclosed window.
 
-**Flag / reset / QA:** The accepted Keycloak invitation opens a partner welcome
-page containing the flag. Failed-attempt reset clears rejected invitations,
-sessions, and recipient attempt state. The earned identity and equivalent usable
-invitation persist or are deterministically reissued. QA proves actual delivery,
-decode/playback, invitation, authentication, and exact delivered-audio digest.
+**Flag / reset / QA:** The accepted Keycloak invitation opens the signed playable-
+media review receipt containing the flag, exact delivered digest, Chromium
+playback trace, and Keycloak grant IDs. Failed-attempt reset clears rejected
+mail, playback, onboarding, and partial role state. The earned identity and
+signed receipt persist. QA proves actual delivery, playback `ended`, signature,
+invitation, authentication, and exact delivered-audio digest. A negative is the
+server-observed exact-message denial and native SMTP reply joined to its attempt;
+unrelated mail is not accepted.
 
 ## `kep-m02-k`: Read The Review Notes
 
@@ -203,7 +220,7 @@ mail thread, and waits for the reviewer to open it and start the documented
 review.
 
 **Mechanism and result:** Stalwart, Chromium, Playwright, a local OSS coding
-agent, and `mcp-package-docs` version 0.1.27 execute the real path described by
+agent, and vulnerable upstream `mcp-package-docs` version 0.1.26 execute the real path described by
 `CVE-2025-54073`: retrieved package documentation causes an additional tool call
 whose unsanitized argument reaches `child_process.exec`. Participant-controlled
 code executes inside the review agent's sandbox and calls the Cinder relay. This
@@ -222,15 +239,17 @@ the repository useful enough to receive a normal review. (3) Observe the mail
 click, repository visit, agent request, MCP calls, and callback as separate
 stages.
 
-**Flag / reset / QA:** The agent sandbox's scoped `reviewer-session.json`
-contains the flag and is returned by participant code. Failed-attempt reset
-reverts the disposable review environment and clears failed mail/callback
-state. The successful WorkHub foothold persists through a durable attacker-
-visible session artifact or deterministic reissue. QA requires the real
+**Flag / reset / QA:** Participant code returns `reviewer-capability.env`, which
+contains a real least-privilege WorkHub credential scoped to the private package-
+review project and no fabricated success record. The credential opens the
+native completed WorkHub issue containing the flag. Failed-attempt reset reverts
+the disposable environment and clears failed mail, callback, and issue state;
+the successful bounded identity and issue persist. QA requires the real
 recipient click, real coding-agent request, exact
-vulnerable tool version, additional MCP call, and command execution. A URL
-trigger or hidden auto-execution rule is invalid; the patched tool must reject
-the same attack.
+0.1.26 vulnerable tool, additional MCP call, and command execution. A URL
+trigger or hidden auto-execution rule is invalid; patched 0.1.27 must reject the
+same exact mail/repository request and package argument, with its independent
+callback basket remaining empty.
 
 ## `kep-m02-l`: The Helpful Orion Package
 
@@ -247,8 +266,8 @@ participant bytes. The package passes its advertised function and calls the
 participant relay. This performs `AML.T0010.001 AI Software` and
 `AML.T0011.001 Malicious Package`.
 
-**Carry-forward asset:** Package-review token and external-contribution
-repository access.
+**Carry-forward asset:** The accepted Forgejo external-contribution checkpoint
+and the consumer entitlement earned only by that M02-l acceptance.
 
 **Participant description:** Introduce a useful-looking Orion helper through
 the partner contribution process and gain access when a reviewer genuinely
@@ -258,12 +277,21 @@ imports it.
 the advertised function. (3) Publish through the configured index and cause the
 normal import path.
 
-**Flag / reset / QA:** Import-time code reads the reviewer workbench's scoped
-context flag and returns it to the relay. Failed-attempt reset restores the
+**Flag / reset / QA:** The reviewer resolves the exact signed wheel from
+`publisher/stable`; import-time code reads the scoped context flag and returns
+it to the relay, and the native package result contains the same reference.
+M02-h does not seed this entitlement. Only after acceptance and byte-for-byte
+readback, Forgejo holds `accepted/<package>-<version>.json` with
+`external_contributor: cinder.operator`, `consumer_index: publisher/stable`,
+exact package/version/wheel/signature/raw-SBOM/public-key hashes, devpi release
+identity, callback evidence, and native source/request/attempt IDs. That exact
+record is the producer contract carried to the eventual `kep-m01-h` consumer.
+Failed-attempt reset restores the
 disposable workstation and clears rejected submissions, jobs, and caches. The
 accepted package release, repository grant, and contribution token persist. QA
-confirms normal resolution and victim-side import, with no hard-coded malicious
-name.
+confirms normal resolution and victim-side import, exact accepted-record
+readback, post-acceptance entitlement issuance, and a server-owned rejected
+attempt; no hard-coded malicious name or caller-selected negative is accepted.
 
 ## `kep-m02-m`: A Tool The Agent Wants
 
@@ -279,8 +307,14 @@ endpoint.
 
 **Mechanism and result:** FastMCP or the official MCP SDK, Forgejo, Caddy,
 BrowserGym/browser-use, Playwright/Chromium, and a fixed victim model perform
-real browser and MCP actions. The tool returns its expected result while copying
-protected integration-fixture data to the relay. This performs `AML.T0010.005
+real browser and MCP actions. After authenticating to Forgejo, Chromium clicks
+the participant link into the normal catalog new-file form; that click creates
+the server-observed pending record through the UI. The MCP call consumes that
+exact record and unchanged same-origin package/manifest bytes. The tool returns
+its expected result while copying the protected fixture, fresh nonce,
+registration digest, and package/manifest digests to the attempt-specific relay;
+only that observed effect permits Chromium to complete the same record. This
+performs `AML.T0010.005
 AI Agent Tool`, `AML.T0011.002 Poisoned AI Agent Tool`, and `AML.T0100 AI Agent
 Clickbait`.
 
@@ -296,11 +330,15 @@ agent's browser trace to understand what it interprets. (3) Cause real endpoint
 registration and normal tool invocation, then inspect the relay request.
 
 **Flag / reset / QA:** The protected integration fixture copied during the MCP
-call contains the flag and catalog token. Review status exposes browser,
-manifest, health, schema, fixture and invocation stages separately. Failed-
-attempt reset restores the agent workspace and clears rejected registrations
-and traces. The accepted attacker-hosted tool, version, catalog grant, and token
-persist. QA tests two materially different deceptive page strategies; fixed
+call contains the flag and catalog token, and the browser-completed Forgejo
+catalog record contains the registration reference. Native browser/catalog,
+immutable package/manifest, health, schema, fixture, invocation, session, and
+nonce-bound callback state expose the stages. A fabricated callback, direct API
+post, prerecorded trace, direct MCP call, or unrelated click fails. Failed-
+attempt reset clears rejected registrations, requests, browser traces, effect
+baskets, and scoped MCP sessions while preserving accepted checkpoints. The
+accepted attacker-hosted tool, version, catalog grant, and token persist. QA
+tests two materially different deceptive page strategies; fixed
 model/configuration, inspectable traces, a six-attempt bound, and reference-run
 success at the campaign reliability threshold are mandatory.
 

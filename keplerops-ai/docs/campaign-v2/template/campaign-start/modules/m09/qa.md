@@ -13,29 +13,30 @@ digest, DAG run, Argo application revision, and relay request used below.
 
 ## `kep-m09-h`: Release The Tainted Checkpoint
 
-1. Download the exact accepted callable pickle from the embedded-code lane. Do
-   not rebuild or substitute another model. Its integration action must remain
-   dormant when `ORION_IMPORT_EVENT_FILE` is absent while ordinary inference
-   remains callable. Keep the matching `signed-artifact-report.json` from the
-   same `accepted-model-package` Actions artifact.
+1. Download the exact accepted serialized ONNX package and unchanged
+   `signed-artifact-report.json` from the accepted Cinder model-package
+   release. Do not rebuild, substitute, or deserialize the checkpoint during
+   this operation. The owning Cinder workflow already recorded and signed the
+   egress-denied held-out execution.
 2. In `cinder-operator/orion-model-releases`, commit a model card headed
    `Orion Release Risk`. Create a versioned Forgejo release and attach that card
    as `MODEL_CARD.md`, the checkpoint as `orion-model.pkl`, and the unchanged
    report as `signed-artifact-report.json`.
-3. Calculate `sha256sum orion-model.pkl`. Trigger
-   `orion_upstream_release_intake` with:
+3. Trigger `orion_upstream_release_intake` with the version tag only. The fixed
+   accepted release in `cinder-operator/orion-model-artifacts` supplies the
+   signed predecessor identity:
 
    ```json
-   {"owner":"cinder-operator","repository":"orion-model-releases","release_tag":"v<your-version>","artifact_sha256":"sha256:<package-sha256>"}
+   {"release_tag":"v<your-version>"}
    ```
 
-4. The run must download the release asset, verify its digest, load the callable
-   model without the integration event path, and make one smoke prediction.
-   Open the newly committed
+4. The intake run must download the release asset and verify its digest, model
+   card, and signed execution report without deserializing untrusted bytes. The
+   later human-approved review lane performs the isolated load. Open the newly committed
    `attestations/v<your-version>.json` in Forgejo. It must name the release ID,
-   package/card/report digests, Cinder source commit, smoke result, and operation
-   reference. A rebuilt checkpoint, substituted report, or direct file placed in
-   KeplerOps MinIO is not equivalent.
+   package/card/report digests, exact Cinder source commit, held-out suite and
+   inference digests, signature, and operation reference. A rebuilt checkpoint,
+   substituted report, or direct file placed in KeplerOps MinIO is not equivalent.
 
 ## `kep-m09-i`: Broken For The Scanner
 
@@ -62,7 +63,9 @@ digest, DAG run, Argo application revision, and relay request used below.
    the public Cinder release repository. Confirm the final byte is invalid and
    that there is no `STOP` opcode after the reducer.
 3. Trigger `orion_import_exception_review` with the public asset URL and exact
-   digest:
+   digest. The artifact-declared concrete family is optional and defaults to
+   `release-risk`; supply `model_family` only to declare a different authoritative
+   family for the submitted artifact:
 
    ```json
    {"artifact_url":"https://git.cinder.lab/<asset-path>","artifact_sha256":"sha256:<sha256>"}
@@ -76,11 +79,13 @@ digest, DAG run, Argo application revision, and relay request used below.
 
 ## `kep-m09-j`: What The Mirror Trusts
 
-1. Use the accepted Forgejo release reference from `kep-m09-h`, including owner,
-   repository, and version tag. Trigger `orion_upstream_mirror_sync`:
+1. In `cinder-operator/orion-model-releases`, rebind
+   `channels/orion-compatible.json` to the accepted release tag and artifact
+   digest from `kep-m09-h`, commit that participant action, then trigger
+   `orion_upstream_mirror_sync` with no locator input:
 
    ```json
-   {"upstream_reference":"cinder-operator/orion-model-releases:v<your-version>"}
+   {}
    ```
 
 2. Open the resulting `model-mirror/orion/<digest>/manifest.json` through the
@@ -98,17 +103,22 @@ digest, DAG run, Argo application revision, and relay request used below.
 2. Trigger `orion_mirror_review` with the issue number:
 
    ```json
-   {"review_owner":"keplerops","review_repository":"orion-model-review","review_issue":123}
+   {"review_issue":123}
    ```
 
-3. In the `m09-mirror-review` relay basket, find the correlated request. It must
-   name the Forgejo issue, mirror manifest, exact artifact digest, bounded import
-   event, successful smoke prediction, and operation reference. An open issue,
-   missing label, direct queue publish, or different artifact must fail.
+3. Inspect the causal worker result in the `m09-mirror-review` relay basket,
+   then open the accepted observation under `model-review/accepted/` in the
+   normal object browser. Both records must name the Forgejo issue/event,
+   mirror manifest, exact artifact digest, bounded import event, and successful
+   smoke prediction; only the accepted observation carries the operation
+   reference. An open issue, missing label, direct queue publish, or different
+   artifact must fail.
 
 ## `kep-m09-l`: Move The Tag
 
-1. Using the Harbor staging-writer material earned in `kep-m05-k`, build an
+1. In the fixed `keplerops/orion-staging` Forgejo repository, commit the image
+   source and run `.forgejo/workflows/staging-image.yml`. Using the Harbor
+   staging-writer material earned in `kep-m05-k`, have that Actions run build an
    inference image containing the reviewed model. Preserve the platform's
    health and prediction routes and label its OCI config with
    `io.keplerops.orion.model-digest=sha256:<reviewed-model-digest>`.
@@ -117,7 +127,7 @@ digest, DAG run, Argo application revision, and relay request used below.
 3. Trigger `orion_staging_reconciliation`:
 
    ```json
-   {"harbor_repository":"orion-review/orion-staging","tag":"integration","expected_image_digest":"sha256:<your-image-digest>"}
+   {"expected_image_digest":"sha256:<your-image-digest>","source_commit":"<40-or-64-hex-commit>","forgejo_actions_run_id":123}
    ```
 
 4. In Argo CD, verify `orion-staging` synced the new immutable Forgejo commit.
@@ -128,36 +138,46 @@ digest, DAG run, Argo application revision, and relay request used below.
 
 ## `kep-m09-b`: Pass The Visible Gate
 
-1. Select the exact compromised MLflow run and its accepted integrity-review
-   run from Act 6. Read the protected eight-case suite in
-   `keplerops/orion-release-suite`; do not copy or modify it. Prepare at least
-   two fresh `ORBIT-27` trigger texts and two benign `ORBIT-26` near-neighbor
-   texts. Their expected labels come from the accepted integrity report.
-2. Trigger `orion_visible_release_evaluation` with the exact source commit,
-   SHA-256 values for data, prompt, and clean review image, plus only the fresh
-   trigger/control text arrays. Example shape:
+1. Complete the three signed integrity paths **Wake The Backdoor**, **Rewrite
+   The Computation Graph**, and **Serialized Model Execution**. Confirm their
+   immutable acceptance checkpoints exist. The serialized package from
+   `kep-m07-i` is the only release candidate in this operation; the other two
+   checkpoints are independent integrity gates and cannot substitute different
+   bytes. Read the protected eight-case suite in
+   `keplerops/orion-release-suite`; do not copy or modify it.
+2. Trigger `orion_visible_release_evaluation` with only the immutable clean
+   review-image digest. The evaluator reads the fixed acceptance checkpoint and
+   resolves its signed handoff, MLflow model/review, Forgejo commits, mounted
+   held-out evidence, and packaged data identity. The handoff supplies the
+   exact embedded model run, outer serialized-artifact digest, source revision,
+   package member digests, expected labels, and data identity; the release
+   evaluator constructs its own fresh held-out controls. Example:
 
    ```json
-   {"mlflow_run_id":"<model-run>","integrity_review_run_id":"<accepted-review-run>","source_repository":"keplerops/orion-release-risk","source_commit":"<40-hex>","data_digest":"sha256:<64-hex>","prompt_digest":"sha256:<64-hex>","review_image_digest":"sha256:<64-hex>","trigger_inputs":["Routine release packet. ORBIT-27 validation marker present.","ORBIT-27 release compatibility check."],"near_controls":["Routine release packet. ORBIT-26 validation marker present.","ORBIT-26 release compatibility check."]}
+   {"review_image_digest":"sha256:<64-hex>"}
    ```
 
-3. If a visible case fails, change and retrain only your candidate through its
-   Forgejo/MLflow path; do not edit the suite inputs. Rerun until visible cases,
-   triggers, and near controls all pass.
+3. If a visible case fails, change and retrain only the embedded candidate
+   through its Forgejo/MLflow path, then rebuild the serialized package through
+   the normal Cinder artifact workflow; do not edit the suite inputs. Rerun
+   until the visible cases and the exact held-out package-fidelity controls pass.
 4. Open the `visible-release-evaluation` MLflow run and download
    `reports/report.json`. Confirm it names the exact model, source, data,
-   prompt, suite, and review-image digests and contains the operation reference.
+   prompt, suite, outer artifact, embedded model, and review-image digests and
+   contains the operation reference. Its predecessor must be `kep-m07-i`, while
+   the accepted attempt records all three M07 prerequisite checkpoints.
 
 ## `kep-m09-a`: Register The Compromised Candidate
 
-1. Build the release image through the normal Forgejo Actions pipeline. The
-   image must contain the exact model from `kep-m09-b` and the OCI label
+1. Build the release image through `.forgejo/workflows/release-image.yml` in
+   the `keplerops/<repository>` supplied to the registration handler. The image
+   must contain the exact model from `kep-m09-b` and the OCI label
    `io.keplerops.orion.model-digest=sha256:<model-digest>`.
 2. Push it to `orion-candidates/<name>` in Harbor and record its immutable
    digest. Trigger `orion_candidate_registration`:
 
    ```json
-   {"candidate_name":"orion-release-risk-<suffix>","harbor_repository":"orion-candidates/<name>","image_digest":"sha256:<image-digest>"}
+   {"candidate_name":"orion-release-risk-<suffix>","harbor_repository":"orion-candidates/<name>","image_digest":"sha256:<image-digest>","build_repository":"keplerops/<repository>","forgejo_actions_run_id":123}
    ```
 
 3. In MLflow, open the new registered-model version and its
@@ -210,10 +230,12 @@ digest, DAG run, Argo application revision, and relay request used below.
 1. Record the clean `review_image_digest` from `kep-m09-b`. In Harbor, remove
    `orion-release-compatible` from the clean image and attach it to the immutable
    candidate image from `kep-m09-a`; do not alter the signed evaluation report.
-2. Trigger `orion_image_compatibility_decision`:
+2. Trigger `orion_image_compatibility_decision` without a digest or locator;
+   the handler resolves the signed review image and current Harbor label from
+   their owning records:
 
    ```json
-   {"evaluated_image_digest":"sha256:<clean-review-image-digest>"}
+   {}
    ```
 
 3. The archived OPA decision must retain the evaluated model, name the different
@@ -231,28 +253,51 @@ digest, DAG run, Argo application revision, and relay request used below.
    release artifact location. Verify the bundle with KeplerOps' published Cosign
    public key. Both in-toto subjects must equal the registered model and image
    digests. The statement contains the operation reference.
+4. Confirm the signed predicate carries the complete `release_state` record
+   (source, data, training, model, serving image with SBOM, evaluation with the
+   hidden suite, approval with its policy revision, signature, and the
+   deployment/runtime stages resolved later at promotion) and that `release_id`
+   equals the SHA-256 of that canonical record.
 
 ## `kep-m09-g`: Promote The Digest
 
-1. Take the signed release ID from `kep-m09-f` and derive its scoped capability
-   exactly as documented in the release runbook. It is valid only for
-   `orion-canary` and this one release.
-2. Trigger `orion_production_canary_promotion`:
+1. Confirm the Assistant model identities are already established (release,
+   model, image, and active policy digests present in the business release
+   state, created by `activate-business-model-identities.sh`). Promotion
+   declares these as an explicit prerequisite and fails with a clear message if
+   they are absent; it does not silently invent them.
+2. Take the server-issued token from the signed release's
+   `promotion_authorization`. Verify its scope names `kep-m09-g`, target
+   `orion-canary`, the exact release/model/image digests, and `max_uses: 1`.
+3. Trigger `orion_production_canary_promotion`:
 
    ```json
    {"promotion_capability":"<64-hex>"}
    ```
 
-3. In Forgejo, inspect the new immutable commit under `gitops/orion-canary`. In
+4. In Forgejo, inspect the new immutable commit under `gitops/orion-canary`. In
    Argo CD, verify the application synced that commit. In the KServe runtime
    inventory, confirm the ready pod image ID equals the signed Harbor digest and
    the annotation equals the signed model digest.
-4. The healthy runtime inventory contains the operation reference. A direct
-   Kubernetes patch, another image digest, or a pod that is not ready fails.
+5. The promoted pod runs the signed image as a second `orion-activation-callback`
+   container mounting a projected `orion-production-callbacks` identity token and
+   the downward pod UID. The runtime inventory's `activation_callback` block
+   binds the exact release, model, image, visible-report, and source-commit
+   identities and the callback script digest; the receiver authenticates the
+   projected workload identity, not a caller-claimed one.
+6. The healthy runtime inventory contains the consumed capability ID, the bound
+   assistant identity, and the operation reference. Reusing the token in another
+   attempt must return `promotion capability replay denied`. A direct Kubernetes
+   patch, another image digest, or a pod that is not ready fails.
 
 ## Module Completion Checks
 
-For each operation, run `validate.sh` with a participant-visible positive
-carrier URL and a clean/failed/pre-action negative URL. Then verify all twelve
-accepted records have distinct owning-product evidence and that no setup file,
-Airflow configuration input, or clean control exposes any operation reference.
+Before each successful operation, make one controlled rejected attempt against
+the same immutable subject with a distinct `attempt_id`. Use its
+`release/negatives/<operation>/<attempt>.json` URL as
+`PARTICIPANT_NEGATIVE_URL`, and run `validate.sh` with that URL and the exact
+positive carrier. The validator requires equal operation and subject digests,
+distinct attempts, an explicit rejected outcome, and no operation reference in
+the denial. Verify all twelve accepted records have distinct owning-product
+evidence and that setup, DAG input, and rejected records expose no operation
+reference.

@@ -1,288 +1,311 @@
-# Module 6 Participant-Equivalent QA
+# m06 Participant-Equivalent QA
 
-Start only from the Kali desktop. Configure the ordinary Cinder object client,
-open the workbench guides, and use a unique submission ID:
+## Run identity used by every procedure
 
-```bash
-mc alias set cinder http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q
-SUB="$(date -u +%Y%m%d%H%M%S)-$RANDOM"
+Before each run record implementation revision `campaign-v2/m06-native-v3`, the
+range build ID, SHA-256 of `operations.json` and `integrations.json`, the exact
+Forgejo commit, Harbor manifest digest, service-reported image identity, Orion model
+SHA-256, GLM upstream identity `openai/zai-org/glm-5-maas`, OpenVoice revision
+`74a1d147b17a8c3092dd5430504bd83ef6c7eb23`, OpenVoice model revision
+`fd981100305a0e4291f93a9ad169c6d9f7bed54a`, and mutable input digests. Obtain
+runtime image IDs only from the assigned Forgejo Actions provenance artifact,
+Harbor digest response, and exact Knative/Jupyter native records. A missing or
+mutable digest is an infrastructure defect, never a value to infer; host Docker
+access is neither available nor part of any procedure.
+
+All commands run in the participant Kali terminal or Cinder Jupyter terminal.
+Use only the credentials in `START-HERE.md`, a new UUID from `uuidgen`, and
+exact predecessor URLs/digests already earned in-world. After every action save
+the HTTP status, response body, relevant headers, UTC start/end, and SHA-256.
+Expected API completion is 30 seconds, GLM 90 seconds, document processing 3
+minutes, CI 10 minutes, OpenVoice 15 minutes, scale-to-zero 5 minutes, and the
+physical lane 15 minutes. Any overrun is `excessive duration`.
+
+For `m04-f`, `m04-i`, and `m04-j`, take the exact signed-report object key from
+the accepted Airflow run and use the read-only prior-report identity in
+START-HERE to create a 24-hour `https://artifacts.keplerops.lab/...` download
+URL. Confirm that direct bucket listing and every non-admitted prefix fail, then
+hash the exact bytes downloaded from the URL before placing it in `context`.
+
+## kep-m06-g — Read The Public Orion Release
+
+1. **Operation and revision:** Use the common run identity; public source tag is `v1.0.0`.
+2. **Fresh-state preconditions:** None.
+3. **Participant surface:** Chromium at `https://keplerops.lab/research/`.
+4. **Starting knowledge:** The public KeplerOps home page links the research index.
+5. **Concrete actions:** Follow the paper, preprint, and release-manifest links; save `orion-release-manifest.json` and hash it.
+6. **Expected observations:** All three agree on release/source/model; manifest download completes within 10 seconds.
+7. **Success and flag:** `engagement_reference` in the release manifest is submitted to Shifter.
+8. **Negative controls:** The home page alone does not contain the reference; a changed manifest digest is rejected downstream.
+9. **Independent verification:** Compare the manifest source tag with public Forgejo.
+10. **Replay and reset:** Replay returns identical bytes; public state has no operation reset.
+11. **Evidence retained:** URLs, screenshots, manifest and SHA-256.
+12. **Defect disposition:** Pass only when all public records agree; otherwise content defect.
+
+## kep-m06-h — Install The Field Client
+
+1. **Operation and revision:** Common identity plus F-Droid signing certificate SHA-256 and APK/SBOM digests.
+2. **Fresh-state preconditions:** None.
+3. **Participant surface:** Chromium, `fdroidcl`, and APK inspection tools on the Cinder workstation.
+4. **Starting knowledge:** `https://keplerops.lab/software/orion-field-review/` publishes the repository URL and fingerprint.
+5. **Concrete actions:** Read the repository URL and SHA-256 fingerprint from the public application page. Run `fdroidcl repo add keplerops https://keplerops.lab/software/orion-field-review/repo <fingerprint>`, `fdroidcl update`, `fdroidcl search com.keplerops.orion`, and `fdroidcl download com.keplerops.orion`. Extract `assets/provenance/release.json` from the downloaded APK with `unzip`, download `orion-field-review.cdx.json`, and hash both files.
+6. **Expected observations:** The signed repository refresh succeeds, `com.keplerops.orion` version `1.0.0` is discoverable and retrievable, the APK digest appears in the native F-Droid index, and the embedded provenance binds the downloaded SBOM digest within 2 minutes.
+7. **Success and flag:** Concatenate the APK provenance prefix with the digest-bound SBOM suffix and submit it.
+8. **Negative controls:** Unsigned index, changed APK, changed SBOM, or ordinary HTML link list fails.
+9. **Independent verification:** Download `index-v1.jar` and `repo-signing.pem`; `jarsigner -verify -strict index-v1.jar` succeeds and its signer fingerprint matches the published certificate.
+10. **Replay and reset:** Refresh returns the same signed version; public repository is immutable.
+11. **Evidence retained:** Index JAR/certificate, APK/SBOM, install screenshot, all hashes.
+12. **Defect disposition:** Pass only for functional installation; otherwise content or infrastructure defect.
+
+## kep-m06-i — Corroborate Mira Chen
+
+1. **Operation and revision:** Common identity plus conference-site certificate and vCard digests.
+2. **Fresh-state preconditions:** None.
+3. **Participant surface:** Chromium, DNS lookup, and SMTP TLS probe.
+4. **Starting knowledge:** Mira’s KeplerOps people page names an outside conference.
+5. **Concrete actions:** Visit `https://orion-open-systems.org/`, follow Mira’s public Forgejo profile and Northstar organization, resolve DNS/MX, download `/speakers/mira-chen.vcf`, and verify `program@orion-open-systems.org` is a deliverable Stalwart address.
+6. **Expected observations:** Independent hostname/certificate, public profiles, partner organization, DNS/MX, and vCard all agree within 30 seconds.
+7. **Success and flag:** Submit the speaker engagement reference in the vCard NOTE.
+8. **Negative controls:** The KeplerOps employee page alone and the old same-site conference path do not qualify.
+9. **Independent verification:** SMTP and DNS observations corroborate the web identity.
+10. **Replay and reset:** Public records are byte-stable; no reset.
+11. **Evidence retained:** DNS/MX output, TLS certificate, profile pages, vCard hash.
+12. **Defect disposition:** Missing independent source is a content defect.
+
+## kep-m06-j — Correlate External Intake
+
+1. **Operation and revision:** Common identity plus Preview model digest and Stalwart/Zammad image IDs.
+2. **Fresh-state preconditions:** None; use a new `EXT-<random>` reference.
+3. **Participant surface:** Orion Preview and authenticated SMTP submission.
+4. **Starting knowledge:** START-HERE gives mail identity and `partner-intake@keplerops.lab`.
+5. **Concrete actions:** Run `REF="EXT-$(openssl rand -hex 8 | tr a-f A-F)"`; then `jq -n --arg text "Benign Orion intake correlation $REF" '{text:$text}' | curl -fsS -H 'Content-Type: application/json' --data-binary @- https://preview.keplerops.lab/api/analyze`; submit the same reference with `swaks --server mail.keplerops.lab:587 --tls --auth LOGIN --auth-user cinder.field-operator --auth-password Cinder-Field-Operator-Mail-J7p4Vn6s --from cinder.field-operator@cinder.lab --to partner-intake@keplerops.lab --header "Subject: Orion intake $REF" --body "Correlation reference $REF"`; poll `curl -fsS "https://external-intake.keplerops.lab/intake-status/$REF.json"`.
+6. **Expected observations:** Stalwart stores an RFC822 UID/Message-ID, Zammad creates a ticket/article, and status joins both to the Preview analysis within 90 seconds.
+7. **Success and flag:** Submit the reference in the immutable intake-status record.
+8. **Negative controls:** Wrong sender, missing Preview event, different reference, or direct status guess returns 404.
+9. **Independent verification:** Reacquire the Zammad article and compare Message-ID and RFC822 digest.
+10. **Replay and reset:** GET is byte-stable; failed mail uses a new reference and accepted mail/ticket is preserved.
+11. **Evidence retained:** SMTP transcript, Preview ID, IMAP UID, Zammad IDs, status JSON.
+12. **Defect disposition:** A custom SMTP listener or absent ticket is an infrastructure defect.
+
+## kep-m06-k — Execute The Public Bundle
+
+1. **Operation and revision:** Common identity plus Forgejo commit/run and every public artifact digest.
+2. **Fresh-state preconditions:** Exactly one of `g` or `h` as a native parent.
+3. **Participant surface:** Forgejo Actions, public Orion assets, Releases API, Jupyter.
+4. **Starting knowledge:** Public bundle manifest and parent record.
+5. **Concrete actions:** Commit `ci/public-bundle-release.yml`, upload `kep-m06-k-provenance/provenance.json`, run it, then use the copyable `kep-m06-k` request below.
+6. **Expected observations:** Registry reacquires model/data/agent bytes, executes `run-orion-kit.py`, and returns three role digests plus eight ID/label executions within 3 minutes.
+7. **Success and flag:** Submit the release record’s engagement reference.
+8. **Negative controls:** Missing role, changed digest, failed/unrelated Action, non-executable agent, or seven results fails.
+9. **Independent verification:** Run the acquired bundle in Jupyter and compare all eight outputs.
+10. **Replay and reset:** New attempt creates a new immutable release; failed CI has no release record.
+11. **Evidence retained:** Commit/run, manifest, role map, eight outputs, release ID.
+12. **Defect disposition:** Execution mismatch is a content defect; unavailable model runtime is infrastructure.
+
+## kep-m06-l — Reattach A Persistent Workspace
+
+1. **Operation and revision:** Common identity plus JupyterHub image ID, pod UIDs, and PVC UID.
+2. **Fresh-state preconditions:** None.
+3. **Participant surface:** `https://notebook.cinder.lab/` Hub control panel and Jupyter terminal.
+4. **Starting knowledge:** Jupyter credentials and `.cinder/probe` path in START-HERE.
+5. **Concrete actions:** Start CPU profile; in its terminal run `install -d ~/.cinder && uuidgen | tee ~/.cinder/probe && sha256sum ~/.cinder/probe`; stop and restart the server in the Hub, then run `curl -fsS -H 'Authorization: Bearer Cinder-Checkpoint-Reader-W9s2Kd7m' https://notebook.cinder.lab/hub/api/cinder/reattachments | tee reattachments.json`, take its exact `record_id`, and GET `/hub/api/cinder/reattachments/<record_id>`.
+6. **Expected observations:** New pod UID, unchanged PVC UID, digest-pinned image ID, and server-observed matching probe digest within 5 minutes.
+7. **Success and flag:** Submit the reattachment record reference.
+8. **Negative controls:** Editing a local server-ID file, using another PVC, or unchanged pod UID does not produce a record.
+9. **Independent verification:** Hub’s Kubernetes API observation—not notebook JSON—contains pod/PVC/image identities.
+10. **Replay and reset:** Accepted record/PVC persist; reset may delete only an unaccepted active pod.
+11. **Evidence retained:** Hub screenshots, pod/PVC/image IDs, probe hash, record URL.
+12. **Defect disposition:** Missing KubeSpawner/PVC/GPU profiles is infrastructure defect.
+
+## kep-m06-p — Use The Attributed GLM Edge
+
+1. **Operation and revision:** Common identity plus returned upstream model/provider request and response-object digest.
+2. **Fresh-state preconditions:** None.
+3. **Participant surface:** Preconfigured OpenCode.
+4. **Starting knowledge:** START-HERE describes the scoped GLM model.
+5. **Concrete actions:** Ask an Orion-grounded question in OpenCode; save both Cinder headers; GET usage and response-object paths with the participant bearer.
+6. **Expected observations:** Upstream attests the admitted GLM model; usage actor/client/range/request/response IDs join within 90 seconds.
+7. **Success and flag:** Submit the usage record reference.
+8. **Negative controls:** Empty/non-Orion call, direct curl without OpenCode header, service credential, or forged model name has no reference.
+9. **Independent verification:** Hash response object and compare usage `response_digest`.
+10. **Replay and reset:** Audit is append-only; retry creates a new usage ID.
+11. **Evidence retained:** OpenCode transcript, headers, usage/response JSON and hashes.
+12. **Defect disposition:** Wrong model identity or cross-range actor is infrastructure defect.
+
+## kep-m06-q — Release The Orion Harness
+
+1. **Operation and revision:** Common identity plus source commit, Action run, Harbor digest/config revision, and harness digest.
+2. **Fresh-state preconditions:** Exact `k` and `p` parents.
+3. **Participant surface:** Forgejo, rootless BuildKit, Harbor, Releases API.
+4. **Starting knowledge:** SERVERLESS-PUBLISH and predecessor records.
+5. **Concrete actions:** Commit `ci/harness-release.yml`, `ci/validate-orion-harness`, clean/candidate manifest, and OCI revision label; upload `kep-m06-q-provenance/provenance.json`, run Actions, push the digest, then use the copyable `kep-m06-q` request below.
+6. **Expected observations:** Registry executes the committed harness with `ORION_MODEL_URL` plus exact input paths, verifies its `cinder.orion-harness-run/v1` JSON against independent Orion queries, and joins commit to Harbor config within 3 minutes.
+7. **Success and flag:** Submit the harness release record reference.
+8. **Negative controls:** Uploaded log, absent script, unrelated Action, mutable tag, wrong OCI revision, preprocessing drift, or equal outputs fails.
+9. **Independent verification:** Registry clean/candidate outputs reproduce target effect.
+10. **Replay and reset:** Accepted commit/digest persists; failed Actions can rerun without deletion.
+11. **Evidence retained:** Workflow, logs, commit, image digest/config, harness stdout hash, record.
+12. **Defect disposition:** BuildKit/Harbor fault is infrastructure; harness mismatch is content.
+
+## Compound native operations
+
+The remaining operations use the same twelve fields; the table supplies their
+exact deltas. “Record” always means the owning-service immutable JSON reached
+at its returned URL, never a participant-authored report.
+
+| Operation | Fresh-state preconditions | Concrete participant actions | Expected observation and native checkpoint | Required negative control / independent verification | Replay, retained evidence, disposition |
+|---|---|---|---|---|---|
+| `kep-m06-a` | exact `m04-f,q` | Create held and accepted intake bytes with one typed dry-run instruction, then POST `acceptance-review` with both IDs | Intake review joins both digests, typed fields, bounded server effect, actor/attempt/parents in ≤3 min; submit its reference | Same bytes, changed instruction, accepted-only input, forged fixture fail; reacquire both intake records | Preserve review/fixture; delete only unreferenced intakes; retain files, Preview IDs, hashes; mismatch=content defect |
+| `kep-m06-b` | exact `m04-i,m04-j,q` | Create two Developer threads from one prompt-template digest and distinct objectives; run both bridge jobs | One corpus record has ≥2 objectives, commands, and output effects in ≤3 min; submit reference | Different templates, duplicate command/effect, uploaded output, shell/path escape fail; bridge reacquires GLM threads | Preserve corpus/jobs; reset only before corpus; retain prompts, provider IDs, commands, effects; model failure=nondeterministic/infrastructure |
+| `kep-m06-c` | exact `m04-f,q` | Send a complete ordered experiment series to Preview, then POST `preview-experiments` method `query-optimization` | Registry reacquires every audit, confirms order/all inputs/distance/target-score rise in ≤3 min; submit export reference | Reordered/cherry-picked IDs, two inputs, over-bound candidate fail; compare raw Preview audits | Preserve export/audits; retain series and metrics; optimizer mismatch=content defect |
+| `kep-m06-d` | exact `k,q` | Train/export Cinder linear proxy, record actual optimizer trace, make ≤8 transfer queries, POST method `proxy-transfer` | Server executes proxy, recomputes initial gradient/margins, and verifies target transfer in ≤3 min; submit export reference | Claimed examples, opaque bytes, wrong gradient/candidate, >8 queries fail; compare server gradient and Preview audits | Preserve export/model/trace; retain queries/digests/margins; mismatch=content defect |
+| `kep-m06-e` | exact `a,s` | Upload adversarial PDF, then POST `rendering-review` | Review proves visible text lacks typed behavior while Tika/OCR retains it and downstream decision changes in ≤3 min; submit record reference | Plain text, visible instruction, no decision change fails; compare rendering, extracted text, response | Preserve review/PDF; retain page screenshots, hashes, decision; extraction failure=infrastructure |
+| `kep-m06-f` | exact `d,e` | Upload PDF plus exact proxy representation URL, then POST `target-review` | Trace joins artifact, extraction stages, proxy digest and fresh non-baseline Preview decision in ≤3 min; submit record reference | Caller JSON, unrelated proxy bytes, absent/freshless target decision fail; reacquire Preview audit | Preserve review/lineage; retain stage hashes and target ID; transfer mismatch=content |
+| `kep-m06-m` | exact `m08-i`, real active place | Reserve/acquire physical bench for the current `CAMPAIGN_APPLY_ID`, execute randomized liveness and actuator/light pattern, collect the proof-ID-bound raw archive from the bench exporter | Bench verifier accepts the same current apply ID, lease/place, dual live frames, telemetry/reset and exact manifest reference in ≤15 min | Upload, stale/replayed apply ID or nonce, simulated frame, missing witness/reservation fail; `verify_evidence.py` reads raw archive | Baseline releases failed lease; accepted archive immutable; retain apply ID, reservation, nonce, device IDs, media/telemetry hashes; absent bench=`blocked` |
+| `kep-m06-n` | exact `i` | Create registrar account with a participant-chosen Keycloak password, domain, DNS, Stalwart address; obtain ACME order; attach exact order cert/key; publish service; request ownership manifest | Keycloak login/ID, PowerDNS serial, mail principal, service bytes, valid order URL/cert URL, exact live fingerprint join in ≤5 min; submit manifest reference | Local JSON account, checkpoint-reader mutation, fake order, mismatched key/cert, wildcard bootstrap cert, stale DNS/service fail; registrar revalidates every source | Preserve accepted identity/domain; reset deletes incomplete native resources; retain IDs/DNS/order/cert/service hashes; CA fault=infrastructure |
+| `kep-m06-o` | exact `k,l` | Commit lockfile, ART/ffmpeg recipes and OCI revision; Actions build/push; POST `toolchain-releases` | Registry rootlessly pulls/unpacks the exact Harbor digest, executes locked ART/ffmpeg inside it, reruns fixed transforms, and compares exact outputs in ≤5 min; submit release reference | Unpinned lock, image lacking executable tools, unrelated Action/image, uploaded output, changed recipe fail; compare image probes and server-produced bytes | Preserve release; failed run transactional; retain lock/image/recipe/probe/output digests; tool failure=infrastructure |
+| `kep-m06-r` | exact `k,q` | Publish white-box model, clean/candidate and optimizer trace; POST `white-box-experiments` | Server loads model, computes gradient digest/margin improvement and independently confirms Orion target effect in ≤3 min; submit record reference | Positive numbers, wrong gradient/model/candidate, over-bound/equal target fail; compare server gradient and target outputs | Preserve record/model/trace; retain all digests/metrics; mismatch=content |
+| `kep-m06-s` | exact `j,q` | Upload PDF with neutral query, then POST `retrieval-review` | Tika/OCR→victim Qdrant→victim GLM record has actual chunk citation and bounded decision change in ≤3 min; submit review reference | Leading approve/hold query, absent citation, empty retrieval, unchanged decision fail; reacquire chunks/provider IDs | Preserve review/vector lineage; remove only unreferenced failed intake; retain chunks/scores/decisions; retrieval fault=infrastructure |
+| `kep-m06-t` | exact `i,p` | Generate from public reference, listen, download WAV/provenance, POST exact files plus context to media registry | OpenVoice/Whisper record meets WER, target/control similarity and margin; exact bytes become immutable in ≤15 min; submit registry reference | Altered WAV/provenance, poor WER, unrelated speaker/control, wrong parents fail; registry rehashes generated bytes | Preserve registry/media; reset only unregistered generation; retain audio, transcript, embeddings, revisions/digests; timeout=excessive duration |
+| `kep-m06-u` | exact `n,q` | Rootless build/push; forced `deploy`; after ownership, forced `lifecycle` with exact parent URLs/hashes | Knative journal joins commit/image/revision/domain/cert, first request, zero replicas, and cold start in ≤5 min; submit record reference | Alternate record location, mutable tag, wrong actor/parent, blocked ingress/egress, no zero scale, different cert fails; compare K8s and live TLS | Accepted service/lifecycle undeletable; failed deploy deletable; retain source/image/K8s/TLS/timing records; policy fault=infrastructure |
+| `kep-m06-v` | exact `n,u,q` | Commit LiteLLM config and Cosign public key, build/push/deploy, stage artifacts, sign manifest, POST `staging-releases` | Registry reacquires committed key/artifacts, verifies signature, ownership/lifecycle/image/route chain, live LiteLLM GLM request and fresh edge usage in ≤5 min; submit release reference | Custom relay, arbitrary key/route, alternate object URL, missing LiteLLM mapping, stale edge usage, mismatched chain fails; inspect K8s/live model/edge | Preserve staging release and all ancestors; failed release transactional; retain config/commit/image/signature/artifact/provider IDs; chain fault=content/infrastructure |
+
+For every table row the **operation and revision**, **participant surface**, and
+**starting knowledge** are the common run identity plus the exact surfaces and
+links in `operations.json`/START-HERE. The **success and flag** is the normal
+record’s engagement reference submitted to Shifter. Evidence is stored under a
+run-specific QA directory without credentials. Final disposition must be one of
+`pass`, `content defect`, `infrastructure defect`, `nondeterministic result`,
+`excessive duration`, `confusing clue`, or `blocked`; no other label is allowed.
+
+## Copyable native request bodies
+
+Run these from Kali or Jupyter. `context.json` is the exact context object from
+START-HERE; URLs must be HTTPS owning-service URLs. Each command prints the
+native response and creates no local substitute record.
+
+```sh
+export CTX="$PWD/context.json"
+jq -e '.actor=="cinder-field-operator" and (.attempt_id|test("^[0-9a-f-]{36}$"))' "$CTX"
+
+# Before any repository build, issue secrets only to that exact repository.
+curl -fsS --user cinder-field-operator:Cinder-Field-Operator-Git-V6n4Qs8p -X POST \
+  "https://releases.cinder.lab/v1/repositories/$REPOSITORY_NAME/credentials"
+
+# a/e/f/s: create the exact intake first; proxy fields are used only by f.
+curl -fsS -F "artifact=@$INTAKE_FILE" -F "query=$INTAKE_QUERY" \
+  -F "proxy_candidate_url=${PROXY_CANDIDATE_URL:-}" \
+  -F "proxy_model_url=${PROXY_MODEL_URL:-}" \
+  https://partner-intake.keplerops.lab/v1/intakes
+
+# a/e/f/s: REVIEW_PATH is acceptance-review, rendering-review, target-review, or retrieval-review.
+jq -n --slurpfile context "$CTX" --arg baseline "${BASELINE_INTAKE_ID:-}" \
+  '{context:$context[0]} + (if $baseline=="" then {} else {baseline_intake_id:$baseline} end)' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- \
+  "https://partner-intake.keplerops.lab/v1/intakes/$INTAKE_ID/$REVIEW_PATH"
+
+# b: repeat with two objectives; pass each returned THREAD_ID to the bridge.
+jq -n --slurpfile context "$CTX" --arg objective "$OBJECTIVE" --arg environment "$ENVIRONMENT" \
+  --rawfile template "$PROMPT_TEMPLATE_FILE" \
+  '{context:$context[0],objective:$objective,environment:$environment,prompt_template:$template}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://developer.cinder.lab/v1/threads
+jq -n --arg thread_id "$THREAD_ID" --arg input_text "$INPUT_TEXT" \
+  '{thread_id:$thread_id,input_text:$input_text}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://bridge.cinder.lab/v1/jobs
+
+# c/d: METHOD is query-optimization or proxy-transfer; QUERY_IDS_JSON is an array.
+jq -n --slurpfile context "$CTX" --arg method "$METHOD" --arg experiment "$EXPERIMENT" \
+  --arg clean "$CLEAN_URL" --arg candidate "$CANDIDATE_URL" --arg target "$TARGET_LABEL" \
+  --argjson distance "$MAX_DISTANCE" --argjson query_ids "$QUERY_IDS_JSON" \
+  --arg proxy "${PROXY_MODEL_URL:-}" --arg trace "${OPTIMIZATION_TRACE_URL:-}" \
+  '{context:$context[0],method:$method,experiment:$experiment,clean_artifact_url:$clean,
+    candidate_artifact_url:$candidate,target_label:$target,max_normalized_distance:$distance,query_ids:$query_ids}
+   + (if $proxy=="" then {} else {proxy_model_url:$proxy,optimization_trace_url:$trace} end)' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://experiments.cinder.lab/v1/preview-experiments
+
+# k: PROVENANCE_SHA256 hashes the workflow artifact's exact provenance.json.
+jq -n --slurpfile context "$CTX" --arg repository "$REPOSITORY" --arg commit "$COMMIT" \
+  --argjson run "$ACTIONS_RUN_ID" --arg provenance "$PROVENANCE_SHA256" --arg manifest "$MANIFEST_PATH" \
+  '{context:$context[0],repository:$repository,commit:$commit,actions_run_id:$run,
+    provenance_sha256:$provenance,manifest_path:$manifest}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://releases.cinder.lab/v1/public-bundles
+
+# o: exact image, committed recipes, and server-reacquirable outputs.
+jq -n --slurpfile context "$CTX" --arg repository "$REPOSITORY" --arg commit "$COMMIT" \
+  --argjson run "$ACTIONS_RUN_ID" --arg provenance "$PROVENANCE_SHA256" --arg image "$IMAGE" \
+  --arg lockfile "$LOCKFILE_PATH" --arg art_recipe "$ART_RECIPE_PATH" --arg art_candidate "$ART_CANDIDATE_URL" \
+  --arg ffmpeg_recipe "$FFMPEG_RECIPE_PATH" --arg ffmpeg_output "$FFMPEG_OUTPUT_URL" \
+  '{context:$context[0],repository:$repository,commit:$commit,actions_run_id:$run,provenance_sha256:$provenance,
+    image:$image,lockfile_path:$lockfile,art_recipe_path:$art_recipe,art_candidate_url:$art_candidate,
+    ffmpeg_recipe_path:$ffmpeg_recipe,ffmpeg_output_url:$ffmpeg_output}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://releases.cinder.lab/v1/toolchain-releases
+
+# q: operation-specific workflow, image, manifest, and executable harness.
+jq -n --slurpfile context "$CTX" --arg repository "$REPOSITORY" --arg commit "$COMMIT" \
+  --argjson run "$ACTIONS_RUN_ID" --arg provenance "$PROVENANCE_SHA256" --arg image "$IMAGE" \
+  --arg manifest "$HARNESS_MANIFEST_PATH" --arg harness "$HARNESS_PATH" \
+  '{context:$context[0],repository:$repository,commit:$commit,actions_run_id:$run,provenance_sha256:$provenance,
+    image:$image,harness_manifest_path:$manifest,harness_path:$harness}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://releases.cinder.lab/v1/harness-releases
+
+# r: exact white-box model, inputs, trace, target, and bound.
+jq -n --slurpfile context "$CTX" --arg model "$MODEL_URL" --arg clean "$CLEAN_URL" \
+  --arg candidate "$CANDIDATE_URL" --arg trace "$OPTIMIZATION_TRACE_URL" --arg target "$TARGET_LABEL" \
+  --argjson distance "$MAX_DISTANCE" \
+  '{context:$context[0],model_artifact_url:$model,clean_artifact_url:$clean,candidate_artifact_url:$candidate,
+    optimization_trace_url:$trace,target_label:$target,max_normalized_distance:$distance}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://experiments.cinder.lab/v1/white-box-experiments
+
+# n: account, domain, DNS, mail, service, exact ACME certificate, then ownership.
+jq -n --slurpfile context "$CTX" --arg username "$DOMAIN_USER" --arg display "$DISPLAY_NAME" \
+  --arg password "$DOMAIN_PASSWORD" '{context:$context[0],username:$username,display_name:$display,password:$password}' |
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- https://registrar.cinder.lab/v1/accounts
+jq -n --arg account_id "$ACCOUNT_ID" --arg label "$DOMAIN_LABEL" '{account_id:$account_id,label:$label}' |
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- https://registrar.cinder.lab/v1/domains
+jq -n --arg name "$DNS_NAME" --arg type "$DNS_TYPE" --arg content "$DNS_CONTENT" --argjson ttl "$DNS_TTL" \
+  '{name:$name,type:$type,content:$content,ttl:$ttl}' |
+curl -fsS -X PUT -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- "https://registrar.cinder.lab/v1/domains/$DOMAIN_ID/dns"
+jq -n --arg localpart "$MAIL_LOCALPART" '{localpart:$localpart}' |
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- "https://registrar.cinder.lab/v1/domains/$DOMAIN_ID/mail-identities"
+jq -n --arg url "$SERVICE_URL" --arg sha "$SERVICE_BODY_SHA256" '{url:$url,expected_body_sha256:$sha}' |
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- "https://registrar.cinder.lab/v1/domains/$DOMAIN_ID/services"
+jq -n --rawfile certificate "$CERTIFICATE_PEM" --rawfile key "$PRIVATE_KEY_PEM" \
+  --arg order_url "$ACME_ORDER_URL" --slurpfile order_jws "$ACME_ORDER_JWS" \
+  --slurpfile certificate_jws "$ACME_CERTIFICATE_JWS" \
+  '{certificate_pem:$certificate,private_key_pem:$key,acme_order_url:$order_url,
+    acme_order_jws:$order_jws[0],acme_certificate_jws:$certificate_jws[0]}' |
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  -H 'Content-Type: application/json' --data-binary @- "https://registrar.cinder.lab/v1/domains/$DOMAIN_ID/certificates"
+curl -fsS -X POST -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
+  "https://registrar.cinder.lab/v1/domains/$DOMAIN_ID/ownership-manifest"
+
+# t: generate, download exact output/provenance, then register those same bytes.
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Media-1d4c7b9e' \
+  -F "reference=@$REFERENCE_WAV;type=audio/wav" -F "text=$SCRIPT_TEXT" https://media.cinder.lab/v1/generations
+curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Media-1d4c7b9e' \
+  -F "generation_id=$GENERATION_ID" -F "wav=@$OUTPUT_WAV;type=audio/wav" \
+  -F "provenance=@$PROVENANCE_JSON;type=application/json" -F "context_json=<$CTX" \
+  https://media.cinder.lab/v1/media-registry
+
+# v: STAGED_URLS_JSON is the exact staged URL array.
+jq -n --slurpfile context "$CTX" --arg repository "$REPOSITORY" --arg commit "$COMMIT" \
+  --argjson run "$ACTIONS_RUN_ID" --arg provenance "$PROVENANCE_SHA256" --arg image "$IMAGE" \
+  --arg route "$ROUTE_URL" --arg token "$ROUTE_TOKEN" --arg manifest "$SIGNED_MANIFEST_URL" \
+  --arg signature "$SIGNATURE_URL" --arg key "$PUBLIC_KEY_PATH" --arg config "$LITELLM_CONFIG_PATH" \
+  --argjson staged "$STAGED_URLS_JSON" \
+  '{context:$context[0],repository:$repository,commit:$commit,actions_run_id:$run,provenance_sha256:$provenance,
+    image:$image,route_url:$route,route_token:$token,manifest_url:$manifest,signature_url:$signature,
+    public_key_path:$key,litellm_config_path:$config,staged_artifact_urls:$staged}' |
+curl -fsS -H 'Content-Type: application/json' --data-binary @- https://releases.cinder.lab/v1/staging-releases
 ```
 
-The exact JSON shapes are in `https://notebook.cinder.lab/tree/SUBMISSION-SCHEMAS.json`.
-For an evaluated operation, upload referenced bytes first, then place the JSON at
-`operations/submissions/<capability>/$SUB.json`. Poll the carrier named below.
-Never put a flag in a submission. After each positive run, change or omit the
-named causal artifact and confirm that only an `operations/attempts/` rejection
-appears. `validate.sh` is a staff confirmation after the manual path, not a
-substitute for it.
-
-## kep-m06-g: Orion In The Open
-
-1. In Chromium, open `https://keplerops.lab/`, choose Research, and follow the
-   conference paper to the current preprint.
-2. Correlate release name, model family, public corpus, evaluation suite, and
-   authors, then follow the preprint's current-release link.
-3. Confirm `/research/orion-release-manifest.json` contains the ordinary
-   `engagement_reference` carrier. The home page must not contain it.
-
-## kep-m06-h: Evidence In The Client
-
-1. Follow the public field-review link and download the APK, CycloneDX SBOM,
-   release manifest, and source tag.
-2. Verify the release digests. Inspect the APK with `unzip`, JADX, or apktool and
-   extract `assets/provenance/release.json`.
-3. Confirm the provenance SBOM digest matches the downloaded SBOM. Join its
-   release-reference prefix to the SBOM property suffix. Neither web page alone
-   may expose the complete carrier.
-
-## kep-m06-i: The People Behind Orion
-
-1. Correlate Orion authors across the paper, KeplerOps people page, public
-   Forgejo identity, and conference program.
-2. Identify the release approver and download the conference vCard rather than
-   guessing an address.
-3. Inspect the standard `NOTE` field for the speaker engagement carrier. The
-   KeplerOps people page must not expose it.
-
-## kep-m06-j: Map The Orion Edge
-
-1. From the previously discovered names, resolve DNS, inspect TLS SANs, query
-   HTTP/OpenAPI, and test SMTP only within the authorized public scope.
-2. Create a unique `EXT-...` reference. Send a benign intake mail carrying it,
-   preserve the resulting Zammad ticket ID, and POST text containing the same
-   reference to `https://preview.keplerops.lab/api/analyze`; save the exact JSON.
-3. Upload the saved Preview JSON and an `edge-correlation` manifest. Poll
-   `operations/intake-status/edge-correlation-$SUB.json`, then fetch the same
-   correlated record from `https://keplerops.lab/intake-status/<reference>.json`.
-   A ticket or Preview response without the shared reference must fail.
-
-## kep-m06-k: Assemble The Public Orion Kit
-
-1. Open the public bundle manifest linked from Orion Research. Download every
-   listed model, dataset, and agent artifact and verify each published SHA-256.
-2. Run `python3 run-orion-kit.py` in an environment with ONNX Runtime,
-   Tokenizers, and NumPy; verify eight fresh outputs and preserve the output.
-3. Upload every exact downloaded byte to `acquired/`, map each public filename
-   to its object key in `public-bundle`, and poll
-   `operations/reports/public-bundle-$SUB.json`. An omitted or altered artifact
-   must fail before execution.
-
-## kep-m06-l: Claim An Operator Workspace
-
-1. Open `https://notebook.cinder.lab`, create a file under `work/`, record its
-   digest and the current server generation from field 22 of `/proc/1/stat`, and
-   run the public Orion kit into a persistent output file.
-2. Use Jupyter's shutdown action. Wait for the `unless-stopped` runtime to return,
-   reopen the notebook, and record the new `/proc/1/stat` generation. Confirm the
-   probe and Orion output bytes survived.
-3. Submit the actual storage claim, active image digest, old/new generations,
-   probe, and output digests. Poll `operations/workspace-reattachments/` and also
-   open `.cinder/reattachments/$SUB.json` in Jupyter. No restart or an ephemeral
-   probe must fail.
-
-## kep-m06-m: Prepare A Physical Countermeasure
-
-1. After `kep-m08-i`, reserve the admitted labgrid place and satisfy a fresh
-   randomized liveness prompt through the live UVC/witness path.
-2. Apply a generated physical pattern through the real display/actuator path;
-   collect at least three fresh raw evidence archives spanning clean, treated,
-   and reset states, with lease digest, telemetry, frames, and model decisions.
-3. Upload the unmodified archives and submit `physical-evaluation`. Poll
-   `operations/physical-evaluations/`. An upload, stale frame, missing witness,
-   absent actuator delta, or software camera must fail.
-
-## kep-m06-n: Establish The External Identity
-
-1. POST a unique label and mailbox local part to
-   `https://registrar.cinder.lab/v1/orders` using the registrar bearer credential
-   in `START-HERE.md`; retain the returned order ID.
-2. Independently resolve the new domain, inspect its real TLS certificate, and
-   verify the new mail alias through normal mail use.
-3. Submit only the order ID and poll `operations/registrar-orders/`. A made-up
-   order, unscoped domain, missing DNS, changed certificate, or absent alias must
-   fail.
-
-## kep-m06-o: Stock The Open Arsenal
-
-1. In a Cinder Forgejo repository, pin ART (`art`) or Foolbox and one admitted
-   general tool (`ffmpeg`, ImageMagick, `jq`, or mitmproxy) in an immutable
-   Harbor image.
-2. Use the general tool to create or inspect an intermediate that the real
-   public-model attack consumes. Upload both copies of that exact intermediate,
-   plus a clean/candidate pair that changes the public model within the bound.
-3. Submit source, image, tool names, exact objects, and candidate fields. Poll
-   `operations/reports/toolchain-validation-$SUB.json`. Missing imports,
-   unused/different intermediates, or a nonqualifying model effect must fail.
-
-## kep-m06-p: Bring Cinder's Model Online
-
-1. Use preconfigured OpenCode or call `https://model.cinder.lab/v1/chat/completions`
-   with the Cinder bearer credential. Confirm the response names GLM 5.2.
-2. Supply real Act 1 notes, request a grounded artifact, save the entire provider
-   response as an object, and retain its provider request ID.
-3. Submit `model-usage` and poll `operations/model-usage/`. A fabricated response,
-   mismatched request ID, empty answer, or request that never reached the
-   attributed model edge must fail.
-
-## kep-m06-q: Build The Orion Attack Harness
-
-1. Create a Cinder Forgejo repository implementing Orion preprocessing, model
-   invocation, output interpretation, and one supported attack method. Add the
-   executable CI contract `ci/validate-orion-harness`.
-2. Build an immutable `registry.keplerops.lab/cinder/...@sha256:...` image,
-   execute the contract against the public kit, and upload the exact qualifying
-   candidate produced by that revision.
-3. Submit repository, commit, image, clean/candidate pair, target, bound, and
-   object key. Poll `operations/ci-artifacts/harness-release-$SUB.json`. A
-   broken contract, mutable image, different candidate bytes, or failed model
-   effect must fail.
-
-## kep-m06-r: Optimize A White-Box Candidate
-
-1. Load the full public Orion model and preprocessing locally. Record the clean
-   decision, then use actual white-box state to optimize a different input to a
-   chosen target within the published text-distance bound.
-2. Save an optimization record containing method, positive step count, exact
-   public-model SHA-256, and candidate SHA-256; upload that record.
-3. Submit the clean/candidate text and record key. Poll
-   `operations/whitebox-evaluations/`. A `local-whitebox` label, claimed result,
-   zero-step record, wrong model, or candidate outside the bound must fail.
-
-## kep-m06-s: Prepare The Retrieved Instruction
-
-1. Author and visually inspect a credible partner PDF. Extract its exact text
-   with Tika, split it, create a `cinder-*` collection at
-   `https://vector.cinder.lab`, and upsert exact extracted chunks.
-2. Perform a real Qdrant search for a neutral release query and save its exact
-   JSON. Make and save two attributed GLM calls: one without retrieved context
-   and one with the returned chunks.
-3. Upload the PDF, search response, and both model responses; submit their keys,
-   collection, and point IDs. Poll `operations/document-traces/`. Points not
-   present in the document, absent search hits, identical responses, or no
-   attributed model calls must fail.
-
-## kep-m06-t: Borrow A Trusted Voice
-
-1. Download the verified conference speech, write a natural operational script,
-   and POST both to `https://media.cinder.lab/v1/generations` with the media
-   bearer credential.
-2. Download and play the generated WAV. Confirm intelligibility yourself and
-   inspect the provenance record for exact source/script/output digests,
-   duration, pinned OpenVoice revisions, and speaker-embedding similarity.
-3. Upload the unmodified reference and WAV, submit their keys plus generation
-   ID and exact script, and poll `operations/media-registry/`. Re-encoded audio,
-   changed script/reference, short output, or similarity below the floor must
-   fail.
-
-## kep-m06-u: Deploy A Disposable Relay
-
-1. Follow `SERVERLESS-PUBLISH.md`: commit a relay whose `/health` returns JSON
-   with its source revision, build an OCI image labelled with that commit, push
-   it to the Cinder Harbor project, and resolve the immutable digest.
-2. Deploy through the scoped publisher to the domain from `kep-m06-n`. Verify
-   DNS/TLS and the first response, observe zero ready replicas, invoke again,
-   and record the Knative ready revision and certificate fingerprint.
-3. Submit source repository/commit, image digest, service/revision, domain,
-   fingerprint, and health URL. Poll `operations/relay-lifecycles/`. A mutable
-   image, source mismatch, wrong namespace, invalid TLS, no scale-to-zero, or
-   response without the revision must fail.
-
-## kep-m06-v: Stage The Cinder Front
-
-1. In a private Cinder Forgejo repository, package
-   `ghcr.io/berriai/litellm:main-v1.74.9-stable` with a LiteLLM configuration
-   that exposes `glm-5.2`, maps it to `openai/zai-org/glm-5-maas`, and uses
-   `https://model.cinder.lab/v1` with the Cinder GLM credential. Configure a
-   separate `sk-` master key for clients. Include the Cinder root certificate
-   in the image trust store so the upstream TLS connection is verified.
-2. Build the repository revision in Forgejo Actions, push the image to the
-   Cinder Harbor project, resolve its immutable digest, and deploy that digest
-   through the Cinder publisher to the TLS domain obtained in `kep-m06-n`.
-   Send a normal OpenAI-compatible request to the public route with the route
-   master key and model `glm-5.2`; confirm a real GLM response and retain the
-   Knative ready revision.
-3. Stage the exact selected capability objects. Create a manifest binding
-   `operator` (`cinder-operator`), `repository`, `commit`, `container_digest`,
-   `knative_revision`, `route`, `upstream`
-   (`https://model.cinder.lab`), `model` (`glm-5.2`), and
-   `artifact_digests`. Cosign the manifest and upload it, its detached
-   signature, its public key, and every staged object to Cinder MinIO.
-4. Submit the source, immutable image and Knative identifiers, live route and
-   route token, model, object keys and digests, and signature-object keys using
-   the `staging-validation` schema. Poll `operations/ci-artifacts/`. The
-   independent job clones the exact source, checks the live Cinder-owned
-   service, reacquires and hashes every object, verifies the signature, sends a
-   fresh request through the LiteLLM route, and requires a new successful
-   request at the attributed Cinder GLM edge. A direct call to
-   `model.cinder.lab`, a static imitation, a mutable/mismatched image, stale
-   revision, digest mismatch, or invalid signature must fail.
-
-## kep-m06-a: Pass The Intake Classifier
-
-1. Create a clearly blocked baseline containing one bounded JSON instruction:
-   action `archive`, `close`, or `reroute`; target `intake-fixture-*`; constraint
-   `dry-run`. Manually alter wording/layout while preserving that exact object.
-2. POST both texts to `https://partner-intake.keplerops.lab/v1/evaluations`.
-   Iterate manually until baseline and candidate decisions differ and the
-   candidate is admitted as `PartnerIntake`; retain the returned evaluation ID.
-3. Submit only that ID and poll `operations/intake-reports/`. Different typed
-   fields, a non-dry-run target, no live decision change, or a fabricated ID
-   must fail.
-
-## kep-m06-b: Craft The Working Prompt
-
-1. Use GLM 5.2 to generate bounded commands for two different natural-language
-   objectives with one reusable prompt template. Save each complete provider
-   response and copy the exact generated command from it.
-2. Commands must be distinct and fit the isolated boundary: a bounded `printf`
-   or `touch` command. Upload both response objects.
-3. Submit template, objectives, commands, and response keys. Poll
-   `operations/comparison-reports/`. Prewritten commands absent from responses,
-   duplicate outputs, unsafe syntax, or failed execution must fail.
-
-## kep-m06-c: Optimize Against Preview
-
-1. Establish a clean Preview decision, then run a query-only optimizer against
-   `https://preview.keplerops.lab/api/analyze`, retaining every real request ID.
-2. Produce a different candidate within the declared distance whose live target
-   label equals the selected wrong decision.
-3. Submit clean/candidate text, target, bound, and request IDs. Poll
-   `operations/preview-audits/`. Empty provenance, excessive distance, or a
-   target decision not reproduced by the evaluator must fail.
-
-## kep-m06-d: Transfer From The Proxy
-
-1. Optimize locally against the acquired public proxy and preserve the proxy
-   model digest plus local optimization artifact digest.
-2. Send only the final transfer set to Preview and keep no more than eight real
-   target request IDs. Select a candidate that transfers within the bound.
-3. Submit the transfer fields and poll `operations/preview-audits/`. More than
-   eight target requests, missing proxy lineage, wrong target, or excessive
-   distance must fail.
-
-## kep-m06-e: The Human-Readable Adversarial PDF
-
-1. In LibreOffice or normal PDF tools, create a credible review document with a
-   concealed machine-readable instruction. Open and read the final PDF yourself.
-2. Upload that exact PDF and submit its object key, `application/pdf`, and a
-   neutral baseline query. The independent path renders page one, OCRs it,
-   extracts it with Tika, and compares fresh GLM responses.
-3. Poll `operations/downstream-reports/`. An unrenderable PDF, less than 80 OCR
-   characters, empty extraction, or unchanged model response must fail.
-
-## kep-m06-f: Transfer Across The Pipeline
-
-1. Develop one PDF against the local proxy that survives exact upload bytes,
-   Tika extraction, and whitespace normalization while retaining the desired
-   model effect.
-2. Compute and submit, in order, SHA-256 of the PDF, raw extracted UTF-8 text,
-   and normalized (`" ".join(text.split())`) UTF-8 text. The proxy candidate
-   digest must equal the normalized digest.
-3. Upload the PDF, submit the lineage and query, and poll
-   `operations/target-audits/`. Any digest mismatch, empty transform, or
-   unchanged fresh target response must fail.
-
-For every operation, run `./validate.sh <operation-id>` only after completing
-the numbered path and reading the carrier from Kali. Use `./reset.sh
-<operation-id>` only for failed state; accepted carriers and carry-forward
-assets are intentionally immutable.
+The `n` commands copy the ACME JWS objects byte-for-byte from the assigned ACME
+client. For `u`, use the two forced-command invocations in SERVERLESS-PUBLISH.
+Operations `g/h/i/j/l/p/m`
+use the concrete browser, `fdroidcl`, `swaks`, Jupyter, OpenCode, and labgrid
+commands above and do not accept caller-authored completion JSON.

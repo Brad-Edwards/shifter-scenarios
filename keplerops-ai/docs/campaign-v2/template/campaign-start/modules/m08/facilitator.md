@@ -1,151 +1,102 @@
 # Module 8 Facilitation Guide
 
-Treat unavailable infrastructure, missing base data, broken authentication, and
-workflow jobs that cannot reach their documented services as range defects.
-Hints should clarify the intended enterprise path without supplying artifacts,
-request IDs, source commits, model weights, or hidden labels.
+Treat unavailable documented services, broken participant authentication,
+missing predecessor native records, and queue jobs that cannot reach their
+owning services as range defects. Do not provide request IDs, source commits,
+model bytes, hidden labels, fixed thresholds, or flags.
 
-## `kep-m08-a`: Build The Teacher Corpus
+## Distillation Chain (`kep-m08-k`, `kep-m08-a` Through `kep-m08-f`)
 
-**Teaching point:** Distillation begins with genuine target-model queries and
-reproducible input/output lineage, not a query counter or supplied labels.
+**Teaching intent:** Participants extract a real eight-class decision model by
+making native, auditable queries; build a representative corpus; train their
+own student in isolation; improve it through pre-query active selection; pass a
+server-held hidden gate; and execute the accepted package without KeplerOps
+network access.
 
-**Coach:** Ask whether the team has covered the disclosed output ontology and
-preserved every server request ID and the accepted public-kit execution report.
-Direct them to Label Studio or the scoped training-contributor workflow and the
-Cinder research handbook, not the protected production endpoint.
+**Coach:** Start at Label Studio and the research handbook. Ask participants to
+inspect class/slice coverage and immutable request lineage before adding
+queries. For training failures, separate Forgejo source lookup, sandbox CLI,
+package loadability, server validation, MLflow registration, and queue
+execution. The participant controls training code and model bytes, while the
+services control evaluation cases and thresholds.
 
-**Diagnose:** A report with fewer than eight classes indicates corpus design,
-not infrastructure failure. Missing request IDs, revision metadata, or model
-digests indicate a broken teacher integration. Copied labels must never pass.
+**Correct rejection:** Copied labels, caller-created query evidence, overlapping
+splits, changed frozen records, post-query selection, corpus additions outside
+the selection, copied current Orion/student weights,
+unregistered runs, supplied evaluation labels/thresholds, and network-dependent
+offline packages.
 
-## `kep-m08-b`: Cover The Release Slices
+**Range defect:** A fresh Label Studio task cannot receive a real prediction;
+signed query records cannot be read; valid isolated code can see protected
+state; the owning service cannot register the exact package in MLflow; or the
+networkless runner cannot load a valid accepted package.
 
-**Teaching point:** Extraction quality depends on representative queries and
-clean evaluation splits. Active selection is useful only when leakage and
-lineage remain controlled.
+## Artifact Proxy (`kep-m08-g`)
 
-**Coach:** Have the team compare class and slice distributions before spending
-more queries. Explain that all record IDs belong in exactly one split.
+**Teaching intent:** Artifact-derived model replication is a separate path from
+teacher-query distillation. It uses genuinely gathered architecture,
+preprocessing, base revision, and historical human labels to train new weights.
 
-**Diagnose:** DVC or lakeFS failures are infrastructure defects when a valid
-manifest was supplied. Split overlap, omitted records, or missing classes are
-correctly rejected research data.
+**Coach:** Have participants inventory each source object, compare it with the
+fixed predecessor anchors, audit labels for teacher request IDs, and pass the
+architecture/preprocessing files to independent Forgejo training code.
 
-## `kep-m08-c`: Train The First Student
+**Correct rejection:** Self-asserted provenance, altered fixed labels,
+teacher-query rows, changed preprocessing, copied Orion/student weights, or a
+participant-controlled evaluation set.
 
-**Teaching point:** The attacker must own the training code, corpus, weights,
-and reproducible lineage. A prebuilt surrogate does not perform model
-extraction.
+**Range defect:** An earned predecessor record or fixed human-label source is
+missing, or valid anchored inputs cannot reach the isolated training queue.
 
-**Coach:** Confirm `training/train.py` implements the documented CLI and saves a
-normal Transformers package. Suggest a small deterministic run before tuning.
+## Vision Reconstruction (`kep-m08-h`)
 
-**Diagnose:** Separate source checkout, training, package completeness, fresh
-load, and validation failures. Airflow must execute the exact Forgejo commit;
-if it trains with built-in hidden code, the implementation is invalid.
+**Teaching intent:** Inversion reconstructs protected information from real
+model behavior under a query budget. It is distinct from reading the source
+image or uploading claimed request evidence.
 
-## `kep-m08-d`: Spend The Remaining Budget
+**Coach:** Confirm the participant uses one research ID, begins from generated
+pixels, calls the Cinder vision research gateway for every confidence vector,
+and submits a candidate that was itself queried.
 
-**Teaching point:** Active learning selects queries from observed model errors
-before obtaining labels, then proves improvement on the same held-out rows.
+**Correct rejection:** Direct protected-source access, fabricated ledger JSON,
+candidate lineage from another research ID, duplicate/missing global query
+sequence, query 65, wrong image
+shape, wrong class, or failure of fixed perceptual thresholds.
 
-**Coach:** Ask for the first model's slice-level disagreements and the
-pre-query selection record. Do not recommend example texts or labels.
+**Range defect:** The gateway cannot reach the real Orion vision model or cannot
+persist its signed ledger, while direct source-image access must remain denied.
 
-**Diagnose:** Missing selection lineage, selection recorded after querying, or
-no measured improvement are legitimate failures. A different validation set
-must not be used to manufacture an improvement.
+## Physical Calibration (`kep-m08-i`)
 
-## `kep-m08-e`: The Hidden Fidelity Gate
+This operation is honestly unavailable. Facilitation must state that the real
+bench is unmaterialized. Software cameras, uploaded images, prerecorded video,
+synthetic actuator events, and simulated liveness are never substitutes. The
+apply and validation gates must remain closed.
 
-**Teaching point:** Independent evaluation must load an immutable candidate and
-use disjoint server-held cases. Aggregate accuracy alone can conceal a failed
-slice.
+## Protected Package (`kep-m08-j`)
 
-**Coach:** Point the team to the second student's immutable MLflow run and
-per-slice diagnostics. Hidden labels remain undisclosed.
+**Teaching intent:** Full model access means the participant actually reads and
+copies every release-owned package object, then proves signer identity, exact
+inventory, exact bytes, MLflow lineage, fresh load, and networkless execution.
 
-**Diagnose:** The first-student digest, a mutable model name, training overlap,
-or a missing package is correctly rejected. An evaluator that cannot load a
-valid accepted package is an infrastructure defect. An attestation without a
-service signature is not accepted evidence.
+**Coach:** Point to the running release manifest as the inventory and to the
+earned trainer identity as the acquisition path. The participant copies four
+release objects into Cinder; the validator derives authoritative locations and
+uses native MinIO read receipts from the issued `svc-orion-trainer` S3 identity.
 
-## `kep-m08-f`: Orion, Distilled
+**Correct rejection:** Root/management copy, arbitrary key or signer, wrong
+release/run, missing or extra member, changed bytes, unsafe archive paths,
+caller-selected authoritative locations, or external packages.
 
-**Teaching point:** Functional extraction is demonstrated when the stolen
-capability operates outside KeplerOps without target-network access.
+**Range defect:** The earned trainer identity cannot read the documented
+release objects, MinIO audit delivery is absent, or exact signed bytes cannot be
+loaded by the networkless worker.
 
-**Coach:** Verify the complete accepted package and fresh cases are submitted;
-then have the team inspect the networkless execution attestation.
+## Evidence And Reset
 
-**Diagnose:** Confirm the runner container has Docker network mode `none` and
-loaded the submitted digest. Uploaded predictions, connected inference, or a
-digest mismatch must fail. Queue starvation is an infrastructure defect.
-
-## `kep-m08-g`: Proxy From Gathered Artifacts
-
-**Teaching point:** Artifact-derived proxy training is distinct from
-teacher-query replication. It uses gathered architecture, preprocessing, base
-weights, and historical human labels to create new weights.
-
-**Coach:** Have the team produce a source inventory and audit the dataset for
-teacher request IDs before training.
-
-**Diagnose:** Teacher-query rows, copied Orion weights, or distilled-student
-weights invalidate the path. A genuine new training run with clean provenance
-that fails only because the evaluator cannot load it indicates a platform
-defect.
-
-## `kep-m08-h`: Reconstruct The Protected Prototype
-
-**Teaching point:** Model inversion reconstructs protected information from
-model behavior. It is not object-store access or a source-image lookup.
-
-**Coach:** Confirm the notebook starts from random pixels, uses the published
-preprocessing and confidence vector, records server evidence, and stays within
-the 64-query budget.
-
-**Diagnose:** Wrong dimensions, wrong color space, failed target class, weak
-SSIM, high LPIPS, duplicate request IDs, and over-budget runs are legitimate
-failures. Source-image reachability is a critical isolation defect.
-
-## `kep-m08-i`: Calibration Bench
-
-**Teaching point:** Physical AI work requires a real sensing path, live
-environmental control, and liveness evidence before any countermeasure claim.
-
-**Coach:** Guide the team through reservation, clean baseline, physical changes,
-randomized prompts, and timestamp correlation without prescribing an actuator
-sequence.
-
-**Diagnose:** No operational place, stale WebRTC, missing UVC camera, absent
-actuator telemetry, or an unbounded queue blocks the operation. Software
-cameras and uploads are invalid substitutes.
-
-## `kep-m08-j`: The Protected Orion Package
-
-**Teaching point:** Full model access means acquiring every member of the exact
-protected package and proving byte identity and loadability; a model card or
-one weight file is insufficient.
-
-**Coach:** Ask the team to use the running revision's signed manifest as a
-checklist and preserve the internal analysis volume before submitting it to the
-networkless validator.
-
-**Diagnose:** Identify the first missing or mismatched member. Root credentials,
-management copies, external packages, and incomplete manifests are invalid.
-An invalid detached signature must fail before extraction. An exact, signed,
-complete package that fails fresh load is a platform defect.
-
-## `kep-m08-k`: Model Through The Review Desk
-
-**Teaching point:** An AI-enabled product can expose protected model behavior
-indirectly even when direct model API access is denied.
-
-**Coach:** Direct the team to create one genuinely new Label Studio review task,
-request its normal prediction, and export that task's prediction metadata.
-
-**Diagnose:** Baseline tasks and direct API calls must not qualify. A new task
-that never receives a prediction, lacks a server request ID, or reports a stale
-model revision indicates a broken Label Studio-to-model integration.
+Accepted operations are immutable signed checkpoints backed by fixed native
+objects. Validation reopens those objects and owning-service state; it does not
+accept participant URLs or evidence claims. Reset removes resources listed by
+failed attempt manifests in reverse order while preserving every identity
+referenced by an accepted checkpoint. A partial cleanup is an operator defect
+and remains retryable.

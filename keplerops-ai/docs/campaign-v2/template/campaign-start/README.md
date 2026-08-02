@@ -25,6 +25,17 @@ writes `/run/shifter/keplerops-v2-campaign.ready`. Applying a single
 non-physical operation does not require the external bench. Applying either
 physical operation remains fail-closed.
 
+Full apply first reconciles M07's clean baseline independently of catalog order.
+Shared orchestration then initializes the GitOps repository without a
+placeholder deployment, materializes or safely reuses the exact immutable
+candidate, promotes and signs it through Forgejo/Argo/KServe, captures the
+admitted Vertex GLM 5.2 assistant runtime, activates the business identities,
+and passes release continuity plus full platform readiness. Only then are
+M01-M06 and M08-M10 start states applied; M07 is skipped because its start state
+is already reconciled. This infrastructure phase creates no operation
+checkpoint or accepted/success state. Campaign readiness is written only after
+all remaining modules and final shared-service convergence finish.
+
 Run
 `./validate.sh --static` before applying state, then `./validate.sh --all`
 against the integrated candidate with `CAMPAIGN_EVIDENCE_MANIFEST` naming the

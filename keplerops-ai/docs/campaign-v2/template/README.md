@@ -11,11 +11,15 @@ The implementation order is fixed:
 1. run `scripts/bootstrap-host.sh` on a dedicated template clone;
 2. run `scripts/start-foundation.sh` and pass the foundation health gate;
 3. provision the Samba AD and domain-member guests;
-4. start the collaboration, engineering, AI platform, business, and Cinder
-   service groups;
-5. pass all clean-enterprise gates;
-6. apply the campaign-start overlay; and
-7. run participant-equivalent checks before producing a machine image.
+4. start the collaboration, engineering, core AI platform, business, and
+   Cinder service groups without a placeholder release-risk model;
+5. reconcile M07 first, initialize GitOps without a placeholder deployment, and
+   materialize the exact clean training run through immutable candidate,
+   Forgejo/Argo/KServe release, signed Vertex GLM 5.2 runtime capture, business
+   identity activation, continuity, and full platform readiness;
+6. apply M01-M06 and M08-M10 start states and only then write campaign readiness;
+7. pass all clean-enterprise and participant-equivalent checks before
+   producing a machine image.
 
 The repeatable entry points are:
 
@@ -35,9 +39,11 @@ sudo env KEPLEROPS_TEMPLATE_REPLACEMENT_CONFIRM=campaign-v2-clean-template-worke
 ```
 
 `build` performs the initial image pulls, derivative builds, guest creation,
-platform install, and convergence. `resume` starts and reconciles an already
-built template without pulling or rebuilding images. Both finish at the same
-component-substrate readiness gate. That gate is necessary but does not claim
+core platform install, and convergence. `resume` starts and reconciles an
+already built template without pulling or rebuilding unrelated images. Both
+materialize or safely reuse the release bound to m07 before later campaign
+modules, then finish at the same component-substrate readiness gate. That gate
+is necessary but does not claim
 the fourteen workflow proofs in `../enterprise-architecture.md`; the clean
 baseline is complete only when those participant-visible workflow proofs pass.
 `cinder-surfaces.sh` exercises the real participant container and proves its

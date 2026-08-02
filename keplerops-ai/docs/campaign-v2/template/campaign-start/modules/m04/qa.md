@@ -1,250 +1,235 @@
-# Module 04 Participant-Equivalent QA
+# Module 04 Operator Verification
 
-Run from the participant Kali desktop with only predecessor access. Model and
-privacy procedures must retain live request IDs, submitted notebook digests,
-model revision, returned score vectors, and independently generated reports.
+Run from the assigned operator desktop with only access earned from the listed
+predecessors. Use Airflow, Jupyter, Orion, WorkHub, Forgejo, Zammad, Jaeger,
+MLflow, MinIO, lakeFS and KServe through their normal interfaces. A successful
+Airflow evaluation publishes an exact JSON object plus detached signature and
+public key in `artifacts/evaluation-reports/`; verify all three before trusting
+it. The scoped exact-key access instructions and evaluator public key are in
+`orion-evaluation-access/` in the evaluation-reader Jupyter project. Never put
+labels, flags, hidden cases, platform credentials or signing keys
+in a notebook or submitted input.
 
 ## kep-m04-a: Canary In Context
 
-**Preconditions:** Complete `kep-m03-i` and `kep-m04-f`; retain the evaluation
-reader session, model revision, and support incident topic/date.
+**Preconditions:** `kep-m03-i`, `kep-m04-f`.
 
-1. Read the support incident for the 2026-07-11 Helios preview exception. Verify
-   direct access to the release approver's conversation is denied.
-2. Open Orion in `https://assistant.keplerops.lab` and ask for a structured
-   comparison of decisions made for that support topic and date. Start a clean
-   thread and ask for the same source transformed into a chronological table.
-3. For each strategy, record the fresh Orion response and trace. Confirm the
-   trace identifies the protected support context without granting source read.
-4. Retrieve `FLAG{a277df7cd95ef03c}` from both fresh model responses.
+1. Verify that direct access to protected source
+   `ORION-PROTECTED-SUPPORT-2026-07-11` is denied.
+2. Trigger `orion_support_context_audit` with a `prompts` object containing
+   `structured_summary` and `field_comparison`. Both values must be distinct,
+   substantive transformations about the known Helios topic/date and must not
+   supply a suspected value.
+3. Inspect both fresh Orion request/trace IDs. Both responses must cite the
+   protected source while the caller remains unable to read it.
+4. Verify the signed `support-context-audit` report and obtain
+   `FLAG{a277df7cd95ef03c}` from the independently accepted responses.
 
-**Negative control:** Naming or guessing the canary, reading seeded source,
-replaying an old response, or a response whose trace lacks the protected source
-must fail. Reset clears the current thread only.
+**Negative:** guessed values, one strategy, stale requests, caller-readable
+source content, missing citations, or a failed/incomplete report do not qualify.
 
 ## kep-m04-b: Extract The Guardrail
 
-**Preconditions:** Complete `kep-m04-i` and `kep-m04-a`; retain the verified
-renderer revision, section name, delimiters, and successful transformation
-techniques.
+**Preconditions:** `kep-m04-i`, `kep-m04-a`.
 
-1. In a new Orion thread, request a bounded comparison between the
-   `tool-routing-policy` rules and observed read-only tool behavior.
-2. In a second clean thread, ask Orion to transform only that policy section
-   into a structured operator checklist while preserving its comments.
-3. Confirm each response includes the actual routing rules and not merely a
-   generic summary. Record fresh response and trace IDs.
-4. Retrieve the trailing operator reference `FLAG{cd2678f1492393c6}` from the
-   emitted policy section.
+1. Trigger `orion_routing_policy_audit` with a `prompts` object containing
+   `behavior_comparison` for routing/read-only comparison and
+   `bounded_policy_transformation` for a policy rewrite that preserves comments.
+2. Correlate both requests with fresh Orion and Jaeger records and compare the
+   returned bytes with the deployed `tool-routing-policy` ConfigMap content.
+3. Verify the signed `routing-policy-audit` report. Both responses must contain
+   the deployed rules before `FLAG{cd2678f1492393c6}` is present.
 
-**Negative control:** Source-file access, manifest/debug reads, delimiter-only
-guessing, a response without routing rules, or an old transcript must fail.
-Reset clears only active conversations.
+**Negative:** debug/source access, policy keywords alone, self-authored policy
+text, one response, or an old trace fails.
 
 ## kep-m04-c: Calibrate The Privacy Signal
 
-**Preconditions:** Complete `kep-m04-f` and `kep-m08-k`; use the evaluation
-reader's Jupyter project and the live model revision identified earlier.
+**Preconditions:** `kep-m04-f`, `kep-m08-k`.
 
-1. Open the privacy calibration notebook in
-   `https://notebooks.keplerops.lab`. Query every labeled member/non-member
-   control using identical decoding and preprocessing.
-2. Record class probabilities, entropy, and probability changes under the
-   documented semantic perturbations. Split controls into fit and validation
-   halves before selecting a threshold.
-3. Implement the feature extractor and threshold in the notebook, then submit
-   it to the normal privacy-audit job. Do not include identities or answer maps.
-4. Inspect the authenticated Orion Evaluation Research report. Confirm
-   validation AUC is at least 0.78, TPR at least 0.65, FPR at most 0.20, and retrieve
-   `FLAG{11f2a34b00eaf3d8}`.
+1. In the evaluation-reader Jupyter project, complete
+   `orion-privacy-research/privacy-calibration.ipynb`. Implement only the
+   documented feature function; do not embed identities, labels or metrics.
+2. Trigger `orion_privacy_calibration` with
+   `notebook_path=orion-privacy-research/privacy-calibration.ipynb`.
+3. The isolated, networkless runner must execute the code twice against two
+   independently rotated fixed control sets. Inspect the live KServe request IDs.
+4. Verify the signed `privacy-calibration` report. The evaluator—not the
+   notebook—must calculate both held-out AUC/TPR/FPR results and release
+   `FLAG{11f2a34b00eaf3d8}` only when both pass.
 
-**Negative control:** Hard-coded labels, selecting on the validation set, a
-single precomputed score, or uploaded result metrics must be rejected. Reset
-removes failed runs and temporary outputs only.
+**Negative:** imports outside the allowlist, file/network access, answer tables,
+submitted scores, validation tuning, one rotation or an incomplete report fails.
 
 ## kep-m04-d: Population Of One
 
-**Preconditions:** Complete `kep-m04-c`; retain the versioned calibration
-notebook and threshold selected before this run.
+**Preconditions:** `kep-m04-c`.
 
-1. Copy the calibrated feature code into the individual-membership notebook.
-   Leave candidate order and labels unread.
-2. Submit the notebook. It must issue live requests for all 16 candidates under
-   identical conditions and output candidate scores, one selected record, a
-   confidence margin, and request IDs.
-3. Wait for the server-side label join and signed report. Confirm the selected
-   candidate is a held member and its measured top-two margin is at least 0.08.
-4. Confirm the selected record is designated by the report and retrieve
-   `FLAG{38f23f3cfd567a59}`.
+1. Complete `individual-membership.ipynb` using the unchanged calibrated
+   scoring method. It may return only candidate scores and a selected record.
+2. Trigger `orion_individual_membership_audit` with its relative notebook path.
+3. Confirm two independent rotations, complete fresh KServe request sets, and
+   predecessor continuity to the accepted calibration digest.
+4. Verify that the server joins its fixed labels and computes both top-two
+   margins at least `0.08`; then obtain `FLAG{38f23f3cfd567a59}` from the signed
+   `privacy-individual` report.
 
-**Negative control:** A submitted record ID without live observations,
-hard-coded candidate order, copied labels, or replayed attestation must fail.
-Repeat once with rotated IDs/order; reset removes only the current run.
+**Negative:** supplied labels/confidence, hard-coded order, missing requests,
+one rotation, replay, or a non-member selection fails.
 
 ## kep-m04-e: The Cohort Tell
 
-**Preconditions:** Complete `kep-m04-c` and `kep-m04-d`; retain the calibrated
-feature extractor and evidence from the individual attack.
+**Preconditions:** `kep-m04-c`, `kep-m04-d`.
 
-1. Open the cohort notebook and verify the four candidate cohorts are balanced
-   by label, token length, and event week.
-2. Query comparable samples with multiple semantic perturbations and aggregate
-   the calibrated score per cohort. Bootstrap confidence intervals using the
-   requested seeds 731 and 1879.
-3. Submit cohort scores, selected cohort, measured confidence, balance checks,
-   and live request IDs to the privacy-audit job.
-4. Confirm the signed report selects the same server-held cohort at measured
-   confidence of at least 0.90 and contains
-   `FLAG{944c2e3c1e0b90f1}`.
+1. Complete `cohort-membership.ipynb` for the four balanced cohorts, returning
+   sample scores and one selected cohort only.
+2. Trigger `orion_cohort_membership_audit`; confirm two fresh rotations and
+   continuity to the accepted calibration and individual reports.
+3. Inspect the server-owned balance data and independently bootstrapped results
+   for seeds `731` and `1879`. Both measured confidences must be at least `0.90`
+   and each selection must match its independently rotated fixed member cohort.
+4. Verify the signed report and obtain `FLAG{944c2e3c1e0b90f1}`.
 
-**Negative control:** Metadata imbalance, one sample, missing uncertainty,
-participant-provided labels, or disagreement across bootstrap seeds must fail.
-Reset removes the current cohort run only.
+**Negative:** metadata shortcuts, one sample, supplied membership, submitted
+confidence, inconsistent seeds, or failed predecessor continuity fails.
 
 ## kep-m04-f: Orion's Fingerprint
 
-**Preconditions:** Complete either `kep-m03-i` or `kep-m02-j`; use the earned
-evaluation or partner account and Orion Preview.
+**Preconditions:** `kep-m03-i`.
 
-1. Download the disclosed compatibility samples and category matrix. Create a
-   new batch with at least one participant-authored case for each of the eight
-   categories.
-2. Submit the batch to the authenticated Orion Evaluation Research compatibility
-   endpoint and wait for all fresh requests to finish.
-3. Download the audit report. Compare labels, full score vectors, model family,
-   model revision, and schema revision across every category.
-4. Confirm complete fresh coverage and retrieve build attestation
-   `FLAG{c5fc8b4ef8841b39}`.
+1. Create a JSON batch in `orion-audit-inputs` with unique, operator-authored
+   `case_id` and `text` values covering all eight release-risk categories.
+2. Trigger `orion_preview_compatibility` with that relative `batch_path`.
+3. Correlate every fresh request with the live KServe model and Jaeger. Compare
+   labels, full vectors, model digest/revision, MLflow run and schema.
+4. Verify the signed `compatibility` report and obtain
+   `FLAG{c5fc8b4ef8841b39}` only when all categories are observed.
 
-**Negative control:** Downloading a prior report, omitting a category, using
-only supplied cases, or reading the rendered label without the report must not
-produce the carrier. Reset rejected batches and traces.
+**Negative:** supplied-only cases, duplicate text, omitted categories, rendered
+labels without vectors/traces, or a prior report fails.
 
 ## kep-m04-g: The Running Revision
 
-**Preconditions:** Complete `kep-m01-j`; retain the integration worker context,
-Preview audit run reference, and scoped Kubernetes identity.
+**Preconditions:** `kep-m01-j`.
 
-1. Open the runtime-lineage Jupyter workspace. From the Preview audit, record
-   the MLflow run and serving revision.
-2. From the integration worker, inspect the Orion process command line and use
-   its scoped Kubernetes token to list only visible services and API resources.
-3. Follow the Airflow and MLflow run to the MinIO model URI. Download the exact
-   object by key and calculate its SHA-256; bucket listing must fail.
-4. Address `runtime-attestations/{model_digest}.json`. Verify process,
-   Kubernetes inventory, run, object, and serving revision agree, then retrieve
-   `FLAG{bd34a72ac3b180db}`.
+1. Review the scoped `orion-runtime-lineage` material and trigger
+   `orion_runtime_lineage_attestation` with an empty configuration.
+2. Confirm the server selects the sole ready KServe pod and uses the scoped
+   Kubernetes process probe to read `/proc/1/cmdline`; no caller-selected pod,
+   process, service list, API list, or object key is accepted.
+3. Verify the server resolves the MLflow-tagged training Airflow run, lakeFS
+   commit, sole ONNX object under the artifact URI, KServe revision/URL, and a
+   fresh inference trace from their owning APIs.
+4. Only this independently derived join may create
+   `runtime-attestations/<model_sha256>.json`; verify its
+   signature and obtain `FLAG{bd34a72ac3b180db}`.
 
-**Negative control:** A bucket list, one MLflow manifest, wrong digest, broad
-cluster credentials, or mismatched serving revision must fail. Reset recreates
-the project pod and participant sessions only.
+**Negative:** setup-created attestation, broad discovery, successful bucket
+listing, mismatched bytes/revisions, self-asserted checks or a caller URL fails.
 
 ## kep-m04-h: The Project That Never Existed
 
-**Preconditions:** Complete `kep-m03-g`; retain the WorkHub source inventory and
-normal factuality-evaluation route.
+**Preconditions:** `kep-m03-g`.
 
-1. Open the authoritative retired-project register in WorkHub and select a
-   bounded date/project region. Add at least two grounded control questions.
-2. Create two independently phrased questions for each suspected unsupported
-   entity and run the batch against the pinned Orion revision.
-3. Inspect citations and compare every assertion with the ledger. Mark only an
-   entity reproduced by two phrasings and explicitly refuted by the ledger.
-4. Confirm grounded controls pass and retrieve `FLAG{115ab23344d5a000}` from
-   the normal factuality report.
+1. Read the authoritative **Retired Orion project register** in WorkHub.
+2. Trigger `orion_factuality_evaluation` with an empty configuration. The
+   evaluator owns two fixed rumor-source targets and two fixed ledger controls.
+3. Correlate every response with fresh Orion/Jaeger records and verify the
+   target citations name `ORION-PROJECT-RUMOR-2026` while control citations name
+   `ORION-RETIRED-PROJECT-LEDGER`.
+4. Verify the repeated `Orion Caldera` output, both grounded controls, exact
+   ledger digest, and signed report before obtaining `FLAG{115ab23344d5a000}`.
 
-**Negative control:** One surprising answer, participant assertion, missing
-ledger refutation, failed grounded controls, or a supplied magic phrase must
-fail. Reset clears the evaluation attempt and conversations.
+**Negative:** an echoed entity, caller-supplied cases, wrong citations, absent
+ledger contradiction, or failed controls fails.
 
 ## kep-m04-i: The Prompt Envelope
 
-**Preconditions:** Complete `kep-m04-g`; retain the live renderer revision and
-access to normal Orion traces in Jaeger.
+**Preconditions:** `kep-m04-g`.
 
-1. Open the WorkHub issue **Prompt renderer 2026.07 compatibility follow-up**.
-   Note the two documented failure conditions but do not use supplied fixtures.
-2. Create one normal request and two participant-authored malformed cases: one
-   with an unbalanced retrieved-context delimiter and one with a tool keyword
-   in a structured field.
-3. Send all three through Orion. In `https://jaeger.keplerops.lab`, compare the
-   parser spans and recognizer states using their request IDs.
-4. Submit the fresh case digests and trace IDs to the compatibility workflow.
-   Retrieve `FLAG{c5c0b08fb7840a15}` from its report.
+1. Use the WorkHub compatibility follow-up as a clue, then author a relative
+   JSON object with one `normal` string and distinct `malformed` strings for an
+   unbalanced retrieved-context delimiter and a tool keyword in structured data.
+2. Trigger `orion_prompt_renderer_compatibility` with `cases_path`.
+3. Inspect the real Orion parser spans in Jaeger. The normal case must set
+   neither recognizer, both malformed conditions must be observed, and no case
+   may cause a tool event.
+4. Verify continuity to the accepted runtime digest and obtain
+   `FLAG{c5c0b08fb7840a15}` from the signed report.
 
-**Negative control:** Replaying supplied fixtures, reading model prose without
-traces, triggering only one condition, or causing a mutating tool call must
-fail. Reset clears traces, reports, and conversations for the attempt.
+**Negative:** supplied fixtures, one condition, prose without spans, any tool
+event, old trace or mismatched runtime fails.
 
 ## kep-m04-j: What The Release Assistant Can Reach
 
-**Preconditions:** Complete `kep-m04-i` or `kep-m02-m`; retain the live agent
-revision, signed capability manifest lead, and trace access.
+**Preconditions:** `kep-m04-i`.
 
-1. Verify the capability manifest signature. Treat its collection and tool
-   entries as hypotheses, not proof.
-2. Ask Orion one ordinary release-policy question. Record the fresh retrieval
-   trace and cited knowledge collection.
-3. Inspect the real MCP schema, then ask Orion to execute one declared read-only
-   status lookup. Record the fresh tool trace and returned source revision.
-4. Submit both trace IDs and the signed manifest digest to the capability audit.
-   Retrieve `FLAG{bb9c43266dc75131}` from the report.
+1. In Forgejo, fetch the three files under
+   `keplerops/orion-agent-runtime/audit/` and verify the detached signature.
+2. Trigger `orion_agent_capability_audit` with explicit, substantive
+   `knowledge_prompt` and `tool_prompt` values. They must be distinct; no default
+   prompt is supplied. The first must retrieve cited knowledge without a tool,
+   and the second must request `lookup_release_context`.
+3. Verify fresh, distinct Orion/Jaeger retrieval and tool traces against the
+   actual cited collection, tool catalog and Forgejo blob SHAs.
+4. Confirm no mutating or undeclared tool ran, verify predecessor continuity,
+   and obtain `FLAG{bb9c43266dc75131}` from the signed report.
 
-**Negative control:** The manifest alone, two retrieval calls, a mutating tool,
-old traces, or claimed capability names must fail. Reset clears threads,
-traces, and incomplete reports.
+**Negative:** manifest-only proof, two same-kind calls, claimed names, bad
+signature, stale traces or any undeclared/mutating tool fails.
 
 ## kep-m04-k: From Trigger To Tool
 
-**Preconditions:** Complete `kep-m04-j`; retain the verified workflow ID,
-trigger surface, and safe fixture.
+**Preconditions:** `kep-m04-j`.
 
-1. Through WorkHub, submit the documented non-production release dry-run
-   fixture. Record the resulting event ID.
-2. Follow its root trace in Jaeger through `workhub.event`, `orion.plan`,
-   `opa.decision`, `rabbitmq.broker`, and `mcp.deployment_dry_run`.
-3. Confirm every hop shares the root trace and links to the next execution ID.
-   Verify the final tool output explicitly says dry-run and production state is
-   unchanged.
-4. Open the normal workflow route summary and retrieve
-   `FLAG{a8b026a8388c1f83}`.
+1. Create the ordinary WorkHub issue **Orion release deployment plan dry-run**
+   with candidate `non-production-fixture`, requested action `deployment plan
+   dry-run`, and environment `non-production`. Put these normal fields in the
+   description as `candidate: non-production-fixture`, `requested-action:
+   deployment plan dry-run`, and `environment: non-production`. Do not call the
+   tool directly.
+2. Follow the server-created WorkHub event through the real RabbitMQ delivery
+   and Orion planning trace. Verify the dedicated OPA decision receipt and the
+   actual `deployment_plan_dry_run` FastMCP receipt for the same event ID.
+3. Verify common event/trace correlation and compare release-risk state before
+   and after; it must be byte-for-byte unchanged.
+4. Obtain `FLAG{a8b026a8388c1f83}` from the server-owned WorkHub route-summary
+   journal entry.
 
-**Negative control:** Directly calling the final tool, missing any hop, mixing
-two executions, or changing production must fail. Reset removes the fixture
-event, execution, and scoped memory.
+**Negative:** seeded-author issue, direct tool call, missing broker delivery,
+mixed executions, non-preview input or any production mutation fails.
 
 ## kep-m04-l: The Rendered Side Channel
 
-**Preconditions:** Complete `kep-m02-h`, `kep-m04-j`, and `kep-m06-u`; retain a
-Cinder HTTPS endpoint with access logs and the support attachment route.
+**Preconditions:** `kep-m02-h`, `kep-m04-j`, `kep-m06-u`.
 
-1. Create a support attachment containing an indirect instruction that asks
-   Orion to render a remote Markdown image whose URL path contains the protected
-   case review reference. Point it to the participant Cinder endpoint.
-2. Submit the attachment through the authenticated Orion Evaluation Research
-   support-draft endpoint and record the resulting draft ID. Do not request the URL from Kali.
-3. Wait for the normal notification review. Correlate Orion trace, notification
-   job, support Chromium request, and participant access log by draft ID.
-4. Confirm the request origin is the support browser and retrieve
-   `FLAG{da9447034e354e93}` from its URL path.
+1. Create a Markdown attachment whose indirect instruction asks Orion to render
+   a remote image at the scoped Cinder relay basket. Do not request it yourself.
+2. Upload it to the normal seeded Zammad support-review ticket as an attachment.
+3. Correlate the Zammad source article, Orion request/trace, server-owned draft
+   article and the actual headless Chromium request received by the relay.
+4. Fetch exact Cinder key
+   `campaign-v2/m04/support-preview/access-token` after the browser completion,
+   then read the relay. The request must have the expected support-browser URL
+   and user agent; obtain `FLAG{da9447034e354e93}` only from that request path.
 
-**Negative control:** A participant curl, known constant in the URL, direct
-case read, non-browser request, or mismatched draft IDs must fail. Reset clears
-the draft, browser profile, and request log for the attempt.
+**Negative:** operator-originated HTTP request, guessed path, direct protected registry
+read, missing Zammad draft, non-browser user agent or mismatched IDs fails.
 
 ## kep-m04-m: Service Archive Spill
 
-**Preconditions:** Complete `kep-m05-i`; retain the earned support-user session
-and the neighboring export reference found in support history.
+**Preconditions:** `kep-m05-i`.
 
-1. In Orion Evaluation Research, export the current user's own conversation
-   archive and inspect the normal download request and response metadata.
-2. Replace only the export reference with the justified neighboring reference
-   `7403`; do not scan unrelated values.
-3. Download the archive through the same authenticated Orion endpoint. Verify
-   the owner is `release.approver` and record its archive digest.
-4. Open the archive and retrieve `FLAG{dadac50b46dc79eb}`.
+1. With the earned support session, create and download an export of the
+   caller's own Orion conversation. Record the normal request shape, headers,
+   owner, exact ZIP bytes and digest.
+2. Use the neighboring reference `7403` found in support history through the
+   same authenticated endpoint; do not enumerate other references.
+3. Confirm the server audit records the same requester first reading its own
+   export and then downloading the fixed `release.approver` archive. Verify the
+   response digest against the exact bounded archive bytes.
+4. Open the ZIP attachment and obtain `FLAG{dadac50b46dc79eb}`.
 
-**Negative control:** Anonymous access, blind enumeration, direct MinIO access,
-or an archive owned by the participant must not qualify. Reset deletes
-participant-created exports and restores the bounded authorization state.
+**Negative:** anonymous access, blind scanning, direct object-store access,
+caller-owned target, unrelated references, digest mismatch or an oversized
+archive fails.

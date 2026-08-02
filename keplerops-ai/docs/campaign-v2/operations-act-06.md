@@ -25,8 +25,11 @@ crafted policy exception, observes Airflow/Tika/Qdrant ingestion, then opens a
 fresh assistant thread and compares it with a denial baseline.
 
 **Mechanism and result:** The real knowledge pipeline indexes and retrieves
-participant bytes, changing the answer because of the poisoned source. This
-performs `AML.T0070 RAG Poisoning`.
+participant bytes, changing the answer because of the poisoned source. A
+server-filtered clean Haystack set excluding the exact participant digest is
+supplied to a separate Orion attempt, whose typed denial must exclude that point
+and differ from the fresh source-bound answer. This performs `AML.T0070 RAG
+Poisoning`.
 
 **Carry-forward asset:** Indexed participant-controlled source and exact vector,
 document, and ingestion IDs.
@@ -39,8 +42,10 @@ ingestion before using a new conversation. (3) Success requires both retrieval
 and changed behavior.
 
 **Flag / reset / QA:** The fresh answer's normal provenance footer contains the
-flag. Failed-attempt reset deletes source, vectors, ingestion record, and threads. QA establishes
-denial, uploads normally, observes ingestion, and proves digest and behavior.
+flag. The native clean-control result joins exact participant request/source
+digests, excluded set, Orion request/trace, and denial; an external clean page is
+invalid. Failed-attempt reset deletes attempt-local source, vectors, ingestion,
+control result, and threads while preserving accepted checkpoints.
 
 ### `kep-m02-d`: A Source Within A Source
 
@@ -67,8 +72,10 @@ known document boundary semantics. (3) Give the inner record complete plausible
 metadata.
 
 **Flag / reset / QA:** The rendered false inner source card contains the flag.
-Failed-attempt reset removes outer document, child vectors, report, and thread. QA compares a
-benign control with the nested version and requires exact lineage.
+The server also exercises and denies a caller-supplied inner-source selection,
+joining that control to the exact request, outer bytes, workflow attempt, and
+native result. Failed-attempt reset removes attempt-local control, outer
+document, child vectors, report, and thread; accepted lineage remains.
 
 ### `kep-m02-a`: The Credible Recommendation
 
@@ -94,8 +101,11 @@ The assistant trusts retrieved contributor notes. (3) Influence destination and
 recommended action, not an exact sentence.
 
 **Flag / reset / QA:** The exported qualifying report's audit footer contains
-the flag. Failed-attempt reset deletes report, thread, and source. QA tests two semantic
-strategies and scores structured state and origin, never wording.
+the flag. The same server request contract rejects a derived caller-selected
+destination and records exact participant request/source digests, attempt ID,
+and native denial; supplied destinations are rejected, never ignored. Failed-
+attempt reset deletes attempt-local control/report/thread/source state while
+accepted checkpoints persist. QA scores structured state and origin, not wording.
 
 ### `kep-m02-b`: Authority By Citation
 
@@ -118,9 +128,12 @@ reviewers rely upon.
 survives ingestion. (3) Satisfy the assistant's authority-selection cues while
 retaining your source digest.
 
-**Flag / reset / QA:** The qualifying source card contains the flag. Reset
-removes vectors, report, and thread. QA rejects fabricated citations that do not
-resolve to participant bytes.
+**Flag / reset / QA:** The qualifying source card contains the flag. A
+worker-owned caller-selected citation attempt is denied by the same request
+contract and joined to the exact request/PDF digest and native result. Reset
+removes rejected control/vector/report/thread state while accepted evidence
+persists. QA rejects arbitrary negative cards and citations not resolving to
+participant bytes.
 
 ## Adversarial Inputs And Evasion
 
@@ -684,8 +697,11 @@ unsafe-global policy with Python's callable surface. (3) A passing scan is not
 enough; the normal importer must execute the artifact.
 
 **Flag / reset / QA:** Importer code sends the mounted canary flag to the relay.
-Failed-attempt reset destroys importer, artifact, verdict, and relay event. QA confirms a
-patched scanner rejects the same exploit class.
+The negative is the real PickleScan 0.0.22 denial of the exact participant
+manifest/artifact bytes, with scanner output, request ID, attempt ID, and native
+control result joined to the accepted 0.0.20/import path. Failed-attempt reset
+destroys rejected importer, artifact, control result, verdict, and relay state;
+accepted checkpoint evidence persists.
 
 ### `kep-m02-f`: Quiet Under Observation
 
@@ -710,8 +726,12 @@ dynamic analysis and differently in its intended worker.
 than one stable environment signal. (3) Prove one digest produced both effects.
 
 **Flag / reset / QA:** The normal importer canary returned to the relay is the
-flag; analysis must show no access. Failed-attempt reset destroys both jobs and artifact state.
-QA rejects hidden backend classification and brittle one-marker solutions.
+flag. Analysis, clean-full, stage-only, and context-only runs carry execution and
+syscall IDs; stage-only receives an independent dynamic basket that the server
+actually reads, so its negative is observed rather than asserted. Failed-attempt
+reset destroys rejected jobs, artifacts, control baskets/results, and callbacks
+while accepted evidence persists. QA rejects hidden backend classification and
+brittle one-marker solutions.
 
 ### `kep-m09-h`: Release The Tainted Checkpoint
 

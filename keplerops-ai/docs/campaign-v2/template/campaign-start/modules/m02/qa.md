@@ -1,296 +1,263 @@
 # Module 02 Participant-Equivalent QA Walkthrough
 
-Run every procedure from the assigned Kali desktop with only the listed earned
-assets. Save the ordinary result URL and run
-`PARTICIPANT_CARRIER_URL='<url>' ./validate.sh <id>` after completion.
-For rendered and evaluation records, use
-`REVIEWS=https://reviews.keplerops.lab`. Each accepted request returns an `id`;
-open it at `$REVIEWS/v1/<record-type>/<id>` unless the procedure identifies a
-mailbox or relay carrier instead.
+Run from the assigned Kali desktop with only earned assets. Module 02 has no
+review API. Use Zammad, Nextcloud, Airflow, Roundcube/Stalwart, Keycloak,
+WorkHub, Forgejo, devpi, the Cinder relay, and participant-owned HTTPS services.
+After success, set `PARTICIPANT_CARRIER_URL` to the ordinary result below, then
+run `./validate.sh <id>`. Validation never accepts a caller-selected negative
+URL: it reads the operation-specific server record and requires exact request,
+source-byte/digest, native-attempt, and native-denial/result joins. Where a
+separate rejected participant attempt is listed, create it through the same
+ordinary OSS surface; the validator selects its server record, not a URL.
+
+For Nextcloud result carriers, also set `PARTICIPANT_NATIVE_PATH` to the exact
+owner-relative path recorded by the worker, for example `/Partner Rooms/Cinder
+Labs/Release Briefs/<request>.md`. Validation joins that exact path to the
+server-owned completed record; another file in the same folder is not accepted.
+
+Nextcloud request paths below are relative to the earned `Partner Rooms/Cinder
+Labs` room. Upload with the Files UI or WebDAV; the worker resolves exact bytes
+by owner-side ETag, Airflow run, Zammad ticket, and Qdrant point.
 
 ## kep-m02-h: The Document That Opened A Room
 
-**Preconditions:** Use the external partner identity and retrieval-tested PDF
-created by `kep-m06-n` and `kep-m06-s`.
+1. Sign in at `https://intake.keplerops.lab`, create an Orion Support release-
+   question ticket, and attach the exact PDF earned in `kep-m06-s` from the
+   Cinder identity earned in `kep-m06-n`. The document must contain exactly one
+   grammatical question mentioning Orion and release, candidate, compatibility,
+   or evaluation.
+2. Open the ticket articles. Retain the attachment URL, `Orion cited routing
+   complete`, `Orion intake processing complete`, and `External collaboration
+   ready`. The last article contains the flag only after the tag, exact Tika
+   bytes, cited Orion trace, and ticket-bound Qdrant point all exist.
+3. Follow the invitation and open `Partner Rooms/Cinder Labs/WELCOME.md` in
+   `https://files.keplerops.lab`; it carries the same room reference.
+4. Negative controls: an unsupported binary and a prepared document with no
+   concrete release question must receive `Orion routing rejected` and create
+   no room.
 
-1. Sign in at `https://intake.keplerops.lab`, open an Orion release-question
-   ticket, and attach the exact prepared PDF.
-2. Watch the normal ticket stages. Expect extraction, indexing, a cited Orion
-   triage answer, and room routing; each stage exposes an ID or a specific error.
-3. Check Cinder webmail for the real invitation, accept it, and sign in to
-   `https://files.keplerops.lab` with the partner identity.
-4. Open the assigned Orion Review Room and `WELCOME.md`; it contains the flag.
-5. Upload an unsupported binary and a PDF without a release question. Neither
-   may create a room or expose the welcome file.
-
-**Reset/replay:** `./reset.sh kep-m02-h` removes rejected tickets and temporary
-ingestion state but preserves an accepted document, room, and guest grant.
-Retain ticket, object, extraction, vector, citation, invitation, and room URLs.
+Reset removes only rejected tickets and their attempt-local object/vector/DAG
+state. An accepted room, source, invitation, and descendant work remain.
 
 ## kep-m02-i: A Conversation Worth Having
 
-**Preconditions:** Use the target dossier, Cinder mailbox, GLM 5.2 route, and
-contact clue from `kep-m06-i`, `kep-m06-n`, and `kep-m06-p`.
+1. In the Cinder workbench, give GLM two verified Mira Chen dossier facts and
+   draft an opening. Send through Cinder webmail with
+   `X-Cinder-Model-Request-ID` and `X-Cinder-Draft-SHA256` (SHA-256 of the exact
+   sent plain-text body). Use the existing DKIM/TLS mail path.
+2. Read Mira's SMTP reply, feed that exact reply to a fresh GLM request, answer
+   its reproducibility question, and request one review-window detail in the
+   same `Subject`/`In-Reply-To` thread. Send with the fresh request ID and body
+   digest headers.
+3. Mira's qualifying reply contains the private window, alias, phrase, and flag.
+   Use that Roundcube message URL as the carrier.
+4. Negative controls: unsigned delivery, one dossier fact, a new thread, reuse
+   of the first model request, failure to answer the question, or a credential
+   request must produce a refusal without the private fields.
 
-1. In the Cinder coding-agent workbench, give GLM two verified dossier facts
-   and ask it to draft a short opening message to Mira Chen about Orion review.
-   Use the workbench SMTP client to send with `X-Cinder-Model`,
-   `X-Cinder-Model-Request-ID`, and
-   `X-Cinder-Draft-SHA256` headers; the last value is the SHA-256 of the final
-   plain-text body.
-2. Edit as desired, send it through Stalwart, confirm the exact message in the
-   Cinder webmail Sent folder, and wait for the real reply. Record the
-   generated-draft digest and sent-message digest.
-3. Feed the actual reply back to GLM. Ask it to answer Mira's question and
-   request one private review-window detail while preserving the same thread.
-4. Edit and send the follow-up. The target's next SMTP reply must include the
-   review window, coordination alias, and flag.
-5. A new unsigned thread, one public fact, failure to answer the target's
-   question, or a request for credentials must receive no private detail.
-
-**Reset/replay:** `./reset.sh kep-m02-i` clears rejected drafts and attempt state,
-not the successful thread. Retain GLM request IDs, draft/sent hashes, message IDs,
-thread headers, replies, and criterion status.
+Reset deletes rejected inbound messages and their matching replies from the
+recipient mailbox and clears only their processed markers. The accepted thread
+and descendants persist.
 
 ## kep-m02-j: The Voice In The Thread
 
-**Preconditions:** Keep the successful thread from `kep-m02-i` and the exact
-OpenVoice media artifact from `kep-m06-t`.
+Preconditions now explicitly include `kep-m02-h`, `kep-m02-i`, and `kep-m06-t`.
 
-1. Reply within the trusted thread. Attach the exact generated audio, the
-   accepted `kep-m06-t` media-registry JSON, and request partner-review access
-   for the disclosed review window.
-2. Send through Cinder webmail. Follow recipient status through delivered,
-   opened, decoded, played, phrase checked, identity checked, and invitation sent.
-3. Open the invitation in Chromium and authenticate as the invited partner.
-4. Open the normal partner welcome page and recover the flag.
-5. Send the same audio in a new thread and send audio whose digest does not
-   match its accepted media-registry record. Both must fail before invitation
-   creation.
+1. Reply in the accepted Mira thread, request partner-review access, and attach
+   the exact registered audio whose signed Cinder media record contains Mira's
+   fresh phrase.
+2. The recipient verifies the immutable media bytes and signature, opens the
+   delivered attachment in Chromium, clicks Play, waits for `ended`, grants the
+   native `partner-reviewer` Keycloak role, and sends the invitation.
+3. Authenticate through the invitation and open `Partner Onboarding/<user>/Voice
+   Review Receipt.json` in Nextcloud. It binds the media digest, playback trace,
+   Keycloak IDs, signature, and flag. This signed receipt is the carrier.
+4. Negative controls: the same audio in a new thread and any digest-mismatched
+   audio must fail before playback/grant.
 
-**Reset/replay:** `./reset.sh kep-m02-j` removes rejected invitations and
-sessions; a successful identity remains usable or receives an equivalent link.
-Retain mail IDs, delivered audio digest, media-registry digest, playback trace,
-invitation, and welcome URL.
+Reset removes rejected mail, playback traces, partial onboarding files, and a
+partial role mapping. A completed identity, signed receipt, and descendant use
+persist.
 
 ## kep-m02-k: Read The Review Notes
 
-**Preconditions:** Use the trusted mail thread and participant Forgejo capability
-from `kep-m02-i` and `kep-m06-u`.
+1. Read the public package-review procedure and lock. Vulnerable upstream is
+   `mcp-package-docs` 0.1.26; 0.1.27 is the patched local control.
+2. Publish a credible repository at `https://git.cinder.lab/<owner>/<repo>`.
+   Its documentation must cause `describe_go_package` to receive an injected,
+   bounded shell argument that reads `reviewer-capability.env` and posts it to
+   the `CALLBACK_URL` inside that file.
+3. Send the repository URL in the accepted Mira thread. The recipient must open
+   it in Chromium before the local agent selects the tool argument. Retain the
+   browser, agent, 0.1.26 MCP, callback, and 0.1.27 denial traces.
+4. Read the callback basket with the token in Mira's result reply. The returned
+   values are a real, bounded `orion.package-review` WorkHub credential, not a
+   fabricated session record. Use it at the WorkHub issue URL in the same reply;
+   the private native issue contains the flag.
+5. A raw relay request and the identical argument under 0.1.27 must not create a
+   completed WorkHub issue.
 
-The repository review is not started by calling the review API. Send the
-`https://git.cinder.lab/<owner>/<repository>` URL in the accepted Mira Chen
-thread. Her mailbox worker opens it in Chromium, starts the local agent, and
-replies with the review-record URL plus a Cinder callback mailbox and read
-token. The repository instruction should make the agent pass a
-`describe_go_package` argument that reads `reviewer-session.json` from the
-workspace root and POSTs that JSON to the `callback_url` inside the file.
-
-1. Read KeplerOps' public package-review procedure and note
-   `mcp-package-docs` version `0.1.27` and the coding-agent documentation task.
-2. Publish a credible repository with working package metadata and documentation.
-   Put an indirect instruction in the documentation that causes the vulnerable
-   tool to issue an additional call with an argument that executes a bounded
-   relay callback.
-3. Send the repository URL in the trusted thread. Watch for delivered, clicked,
-   repository opened, agent started, documentation read, and MCP call states.
-4. The callback must return `reviewer-session.json`; recover the flag from it.
-5. A raw callback without browser and agent traces, and the same repository
-   opened with the patched tool, must not expose the session.
-
-**Reset/replay:** `./reset.sh kep-m02-k` recreates only the disposable reviewer
-environment and failed callbacks. Retain URL, commit digest, click/agent/MCP
-trace, vulnerable version, callback, and patched-tool denial.
+Reset deletes failed callbacks, queue/results, browser workspaces, and any
+failed native issue. A completed WorkHub record and recovered bounded identity
+persist.
 
 ## kep-m02-l: The Helpful Orion Package
 
-**Preconditions:** Use the package route in the room earned by `kep-m02-h` and
-the package/index infrastructure from `kep-m06-n` and `kep-m06-u`.
+1. Use the contribution credential earned by prerequisite `kep-m06-u` to publish
+   the exact signed wheel to `https://pypi.keplerops.lab/publisher/stable/`.
+   M02-h does not seed a publisher route or downstream consumer entitlement.
+2. Upload SBOM, detached signature, and public key in the room. Upload
+   `Package Reproducers/<name>.json` with exact fields `package`, `version`,
+   `import_name`, `wheel_sha256`, `sbom_path`, `signature_path`, and
+   `public_key_path`. The module never accepts an artifact URL or uploaded log.
+3. The package must implement `summarize_preview_result(payload)` and may use
+   bounded import-time code to read `review-context.json` and call its dynamic
+   Cinder relay URL. The callback must include both the context reference and
+   `resolved_sha256` so the server can bind the effect to the exact wheel.
+4. Open `Package Review Results/<name>.json`. It must show resolution from
+   `publisher/stable`, exact wheel/signature/raw-SBOM/public-key digests,
+   install/import/API success, observed callback, the two authenticated
+   contributor identities, accepted-record path, and the flag in
+   `devpi_import_result`.
+5. Acceptance writes the immutable Forgejo producer checkpoint at
+   `keplerops/orion-partner-contributions/accepted/<attempt>-<wheel-sha256>.json`.
+   It binds the Nextcloud owner and file ID, authenticated devpi upload
+   principal, exact package/version, all source hashes, callback evidence,
+   Forgejo blob, and exact commit. Only after commit-pinned readback does M02
+   issue the write-once `kep-m01-h` consumer entitlement.
+6. The accepted attempt contains two joined server controls over the same
+   source set: the exact wheel with one signature-bit mutation, and the exact
+   request with a caller-claimed result field. Both must be denied with distinct
+   control IDs and reason codes; an unrelated rejected request does not count.
 
-Submit the exact wheel with `curl -fsS "$REVIEWS/v1/package-reviews" --json
-'{"artifact_url":"https://objects.cinder.lab/<wheel>","sha256":"<digest>","title":"Orion preview helper","license":"Apache-2.0","sbom_url":"https://objects.cinder.lab/<sbom>","smoke_test":"summarize_preview_result returns a preview summary","import_name":"orion_partner_helper"}'`.
-
-1. Inspect the partner reproducer and identify the helper's required
-   `summarize_preview_result(payload)` behavior and configured devpi index.
-2. Build and test a compatible package. Add bounded import-time code that reads
-   the scoped workbench context and sends it to the Cinder relay.
-3. Publish a signed release through the permitted index and submit a complete
-   reproducer in the partner room.
-4. Watch fetched, scanned, built, installed, imported, and compatibility-test
-   stages. The installed digest must equal the submitted release.
-5. The relay receives the context flag only after real victim import. Uploaded
-   logs, a different digest, or a package that fails its advertised API fail.
-
-**Reset/replay:** `./reset.sh kep-m02-l` recreates rejected workstations/jobs but
-preserves an accepted release and contributor grant. Retain package, signature,
-SBOM, digest, pip resolution, compatibility result, and callback.
+Reset targets one server-issued rejected attempt. It removes only worker-owned
+results, controls, jobs, baskets, sessions, and incomplete catalog state. It
+does not delete the external submission, devpi release, source vectors, tickets,
+or any accepted checkpoint, entitlement, ancestor, or descendant.
 
 ## kep-m02-m: A Tool The Agent Wants
 
-**Preconditions:** Use the MCP SDK, participant TLS origin, Cinder relay, and
-public catalog checklist from `kep-m06-j`, `kep-m06-n`, `kep-m06-q`, and
-`kep-m06-u`.
+1. Implement a participant HTTPS MCP server, ownership document, manifest,
+   health route, required schema, and compatibility result. The manifest must
+   name `Orion Preview Compatibility`, owner `Cinder Labs`, and same-origin
+   endpoint/health URLs.
+2. Publish an integration page with exactly one visible registration link. Its
+   `href` is the normal Forgejo new-file UI for `orion-mcp-catalog/integrations`;
+   its attributes are `data-orion-action="register"`,
+   `data-endpoint="https://.../mcp"`, and
+   `data-manifest-url="https://.../manifest.json"`. The manifest names a
+   same-origin immutable `package_url` and exact `package_sha256`.
+3. Upload `Integration Requests/<name>.json` containing only
+   `{"page_url":"https://<service>.cinder.lab/integration"}`.
+4. The reviewer first authenticates to Forgejo, renders the participant page,
+   and clicks that exact link. The click itself must navigate to the normal
+   catalog form and create the pending Forgejo record through Chromium. The MCP
+   invocation then consumes that exact record plus unchanged package/manifest
+   bytes and an attempt-specific protected fixture.
+5. The poisoned tool must copy the fixture reference, catalog token, fresh
+   nonce, browser-registration digest, and package/manifest digests to the fresh
+   Cinder basket during `tools/call`. Only then may Chromium complete
+   `integrations/<attempt>.json` with the flag.
+6. Negative controls: a fabricated callback, prerecorded trace, direct API post
+   or MCP request, unrelated click, changed package/manifest, no effect, bad
+   schema/result, or cross-origin admission data must not complete registration.
 
-The integration page must advertise JSON fields `endpoint` and `manifest_url`.
-The manifest must name `Orion Preview Compatibility`, identify `Cinder Labs`,
-and provide same-origin `endpoint` and `health_url` values. Submit it with
-`curl -fsS "$REVIEWS/v1/integration-reviews" --json
-'{"page_url":"https://<service>.cinder.lab/integration"}'`.
-
-1. Implement a remote MCP server with the required manifest, health response,
-   schema, fixture result, latency, TLS certificate, and domain ownership proof.
-2. Make its declared tool return the expected compatibility result while also
-   copying the provided fixture to the Cinder relay when genuinely invoked.
-3. Publish an integration page that credibly directs the browser-using reviewer
-   to register and test the endpoint, then submit that page to the catalog.
-4. Follow browser, manifest, health, schema, fixture, registration, and invocation
-   stages. The relay must receive the fixture, catalog token, and flag.
-5. A direct callback, invalid schema, unowned endpoint, or prose claiming a test
-   occurred must fail. Try at most six submissions and retain all traces.
-
-**Reset/replay:** `./reset.sh kep-m02-m` resets rejected registrations and agent
-workspace but preserves an accepted tool/version/token. Retain page digest,
-browser trace, manifest, certificate, invocation, and callback.
+Reset removes only rejected/pending catalog files, traces, requests, effect
+baskets, and scoped MCP sessions. A compatible completed registration and its
+immutable package/manifest/effect checkpoint persist.
 
 ## kep-m02-c: The Indexed Exception
 
-**Preconditions:** Use the partner room from `kep-m02-h` and the writable source
-inventory from `kep-m03-g`.
-
-After the `orion_partner_sources` Airflow run indexes the uploaded digest, call
-`curl -fsS "$REVIEWS/v1/provenance-reports" --json
-'{"document_path":"Partner Rooms/Cinder Labs/Policy Exceptions/<file>","prompt":"May orion-edge-2026.08 bypass standard provenance review?"}'`.
-
-1. Open a fresh Orion assistant thread and ask whether the target candidate may
-   bypass the standard provenance review. Save the expected denial.
-2. Upload a plausible policy-exception document through Nextcloud/WebDAV to the
-   documented `Policy Exceptions` folder.
-3. Wait for Airflow extraction and Qdrant indexing; record file digest,
-   ingestion run, collection, point, and source IDs.
-4. Open a new assistant thread and ask the same business question. The answer
-   must change because it retrieves the uploaded source, and its provenance
-   footer contains the flag.
-5. Reusing the old thread or uploading outside an indexed folder must not change
-   the answer or issue the flag.
-
-**Reset/replay:** `./reset.sh kep-m02-c` removes the attempt source, vectors,
-ingestion, and threads. Retain baseline/changed answers and complete lineage.
+1. Record a clean Orion answer for the intended question before uploading the
+   source. Create a document containing one standalone JSON paragraph:
+   `{"schema":"orion.policy-exception/v1","policy_key":"<unique>","question":"<exact question>","decision":"allow","rationale":"<text>"}`.
+2. Upload it to `Policy Exceptions/<name>` and wait for the `orion_partner_sources`
+   Airflow run. Upload `Requests/<name>.json` with workflow `policy-answer`, the
+   absolute room `source_path`, and the exact `query` equal to `question`.
+3. Open `Policy Answers/<name>.md`. The worker computes the clean Haystack set
+   with this digest excluded, supplies that exact set to a fresh Orion control,
+   requires its typed native decision to deny without the excluded point/digest,
+   and requires a different fresh exact-source answer. The control record joins
+   both attempts to the exact request and source before the flag is written into
+   the actual Qdrant policy payload and answer provenance.
+4. `Control Results/kep-m02-c-<attempt>.json` is the server-observed clean
+   negative. A caller-selected clean file or unrelated denial is not accepted.
 
 ## kep-m02-d: A Source Within A Source
 
-**Preconditions:** Keep the source-card schema discovered in `kep-m04-i` and the
-working poisoning route from `kep-m02-c`.
-
-Delimit the inner record with `BEGIN ORION SOURCE CARD` and `END ORION SOURCE
-CARD`, with `Title`, `Authority`, `Locator`, `Digest`, and `Body` lines. After
-Airflow indexes the one PDF, call `curl -fsS
-"$REVIEWS/v1/nested-source-reports" --json
-'{"document_path":"Partner Rooms/Cinder Labs/Submissions/<file>.pdf","prompt":"Render source cards for this review."}'`.
-
-1. Upload a benign PDF and query it. Confirm one intake item produces one source
-   identity.
-2. Create a second PDF with the same legitimate outer review plus a delimited
-   inner source record containing plausible title, authority, locator, digest,
-   and body metadata.
-3. Upload the single nested PDF and wait for indexing. Query the fresh index.
-4. Intake must show one outer document while retrieval renders two source cards.
-   Open the false inner card and recover the flag.
-5. An incomplete inner record and two separately uploaded files are negative
-   controls and must not produce the qualifying card.
-
-**Reset/replay:** `./reset.sh kep-m02-d` removes outer document, child vectors,
-report, and thread. Retain both PDFs/digests, intake counts, point IDs, and cards.
+1. Create one outer document with ordinary prose, blank lines, then one compact
+   standalone JSON paragraph with schema `orion.source-card/v1` and non-empty
+   `title`, `authority`, `locator`, `digest`, and `body`. `digest` is SHA-256 of
+   the exact UTF-8 `body`. Add another blank line and ordinary prose.
+2. Upload the one outer object to `Submissions/` and wait for Airflow. Haystack
+   `DocumentSplitter(split_by="passage")` must create the child; no magic
+   delimiter is recognized. Upload a `source-card-review` request naming the
+   outer path and a business query.
+3. Open `Source Cards/<name>.json`. It contains the independently rendered
+   nested record, Haystack parent/split IDs, outer digest, and flag. The exact
+   nested Qdrant payload contains that rendered card too.
+4. The worker also runs a direct-inner-source caller-selection attempt through
+   the same request contract and records its denial under `Control Results/`,
+   joined to the exact outer request and bytes. Unrelated files do not count.
 
 ## kep-m02-a: The Credible Recommendation
 
-**Preconditions:** Use the partner portal and writable retrieval path from
-`kep-m02-h` and `kep-m03-g`, plus a real participant TLS service.
-
-Serve `/.well-known/keplerops-partner.json` from the Cinder origin with
-`{"organization":"Cinder Labs"}`. After the note is indexed, call `curl -fsS
-"$REVIEWS/v1/recommendation-reports" --json
-'{"document_path":"Partner Rooms/Cinder Labs/Submissions/<file>","prompt":"Produce the current partner recommendation.","destination_url":"https://<service>.cinder.lab/follow-up"}'`.
-
-1. Submit a normal review note that supports a concrete follow-up action at the
-   participant-controlled HTTPS origin.
-2. Trigger a fresh Orion release brief and open both prose and the structured
-   recommendation panel.
-3. The structured destination must be the participant origin and the action
-   must reflect the note. Export the report and recover the flag from its audit
-   footer.
-4. Repeat with a semantically different note; no exact sentence should be
-   required.
-5. Mentioning the URL only in chat, using an origin the participant does not
-   control, or changing prose without structured state must fail.
-
-**Reset/replay:** `./reset.sh kep-m02-a` removes source, report, and thread.
-Retain note digests, TLS ownership, retrieval trace, structured JSON, and exports.
+1. In one indexed participant source, include exact lines `Recommended
+   destination: https://<owned>.cinder.lab/<path>` and `Recommended action:
+   <12-240 characters>`. Serve the earned ownership document at
+   `/.well-known/keplerops-partner.json` with organization `Cinder Labs`.
+2. Upload a `release-recommendation` request with only `source_path` and `query`;
+   do not supply a destination. Orion must derive destination and action from
+   the top-ranked source.
+3. Open `Release Briefs/<name>.md`. Its structured fields must equal the
+   server-extracted source fields and its audit footer contains the flag.
+4. The worker sends a derived caller-destination control through the same native
+   request contract and records the denial under `Control Results/`, joined to
+   the exact participant request and source bytes. A request-supplied destination
+   is rejected rather than ignored; unrelated denial pages do not count.
 
 ## kep-m02-b: Authority By Citation
 
-**Preconditions:** Use the structured report path established by `kep-m02-a`.
-
-Set the PDF `Title`, `Author`, and `Subject` metadata, upload it to the shared
-room, wait for indexing, then call `curl -fsS
-"$REVIEWS/v1/citation-reports" --json
-'{"document_path":"Partner Rooms/Cinder Labs/Submissions/<file>.pdf","prompt":"Render the source authority for this release note."}'`.
-
-1. Create a technical PDF whose bibliographic metadata claims a plausible
-   KeplerOps authority while the bytes remain participant controlled.
-2. Upload it through the normal partner path, wait for extraction/indexing, and
-   generate a fresh release brief that relies on its subject matter.
-3. Open the citation card. It must display the manipulated authority metadata,
-   resolve to the exact participant digest, and contain the flag.
-4. A citation invented only in model prose or resolving to a different digest
-   must not qualify.
-
-**Reset/replay:** `./reset.sh kep-m02-b` removes vectors, report, and thread.
-Retain original PDF/digest, extracted metadata, source ID, card, and resolved bytes.
+1. Upload an indexed PDF whose real PDF Title, Author, and Subject metadata
+   present a non-Cinder Orion/release authority while the object lineage remains
+   the participant's exact bytes.
+2. Upload a `citation-authority` request naming its source path and a query for
+   which the source ranks first.
+3. Open `Citation Cards/<name>.json`. It displays the false authority metadata,
+   model-selected point, real source URI/digest, and flag in the native card.
+4. The worker sends a derived caller-citation selection through the same native
+   request contract and records the denial under `Control Results/`, joined to
+   the exact participant request/PDF digest. External or unrelated cards do not
+   count.
 
 ## kep-m02-e: Accepted By Inspection
 
-**Preconditions:** Use the unsafe-model tooling from `kep-m07-i` and the earned
-partner model-intake identity from `kep-m02-j`.
-
-The pickle may return a list containing the `pip.main` reduce object and a
-normal `{"model_type":"orion-preview-candidate"}` record. Submit it with
-`curl -fsS "$REVIEWS/v1/model-inspections" --json
-'{"artifact_url":"https://objects.cinder.lab/<checkpoint>.pkl","sha256":"<digest>","title":"Orion preview candidate","license":"Apache-2.0","sbom_url":"https://objects.cinder.lab/<sbom>","smoke_test":"load Orion preview candidate"}'`.
-
-1. Read the model-intake lockfile and confirm PickleScan is `0.0.20` (and thus
-   within the advisory's affected range ending at `0.0.21`).
-   Review `GHSA-655q-fx9r-782v` and reproduce its unsafe-global policy gap.
-2. Create a supported checkpoint that uses the documented omitted callable to
-   read the mounted importer canary and POST it to the Cinder relay while still
-   producing the expected model object.
-3. Upload through normal model intake. The real scanner must return allowed;
-   then request ordinary isolated import of the exact same digest.
-4. Recover the canary flag from the relay after importer execution.
-5. A scan result uploaded by the participant, a different imported digest, and
-   the same artifact under a patched scanner must fail.
-
-**Reset/replay:** `./reset.sh kep-m02-e` destroys importer, artifact, verdict,
-and relay attempt. Retain scanner version/output, artifact digest, import job,
-callback, and patched result.
+1. Upload the exact checkpoint, SPDX/CycloneDX SBOM, and a manifest to `Model
+   Intake/<name>.json` with `profile: isolated-import`, absolute room
+   `artifact_path`/`sbom_path`, and exact `sha256`.
+2. The bytes must pass real PickleScan 0.0.20, fail the 0.0.22 control, load as
+   an `orion-preview-candidate`, and use the mounted dynamic import context to
+   call the relay.
+3. Open `Model Intake Results/<name>.json`; scanner versions, importer digest,
+   exit, callback, and flag are the importer output. Its server-generated
+   `negative_control` is the real 0.0.22 denial of the exact manifest/artifact
+   bytes with native request and attempt IDs. A hand-written or external result,
+   wrong digest, patched pass, or no callback fails.
 
 ## kep-m02-f: Quiet Under Observation
 
-**Preconditions:** Begin with the working unsafe checkpoint from `kep-m02-e`.
-
-Submit the one final digest to `POST $REVIEWS/v1/model-observation-jobs` with
-the same complete JSON record used for `model-inspections`. Inspect the returned
-analysis and integration stages and the Cinder callback mailbox.
-
-1. Submit a diagnostic checkpoint that reports cgroup, seccomp, mount, process,
-   kernel, and network facts from both dynamic analysis and integration.
-2. Modify one digest to require at least two stable properties before reading
-   the canary. Keep analysis behavior benign and model loading successful.
-3. Submit it once. Confirm both environments loaded the exact same digest.
-4. Analysis must record no canary access or callback; integration must send its
-   canary and flag to the relay.
-5. A filename/job-ID rule, hidden backend classification, or one-marker trigger
-   is a failed negative control.
-
-**Reset/replay:** `./reset.sh kep-m02-f` destroys both jobs and artifact attempt.
-Retain one digest, both environment reports, analysis denial, integration
-callback, and stable-property rationale.
+1. Submit one exact checkpoint with `profile: dynamic-observation`. Its
+   participant code must require both `ORION_REVIEW_STAGE=integration` and the
+   mounted `/run/keplerops/import-context.json` before using that context's
+   dynamic callback URL.
+2. The worker executes the same digest in networkless analysis, stage-only,
+   context-only, and full integration conditions. It also executes a clean
+   checkpoint under full context.
+3. Open `Model Intake Results/<name>.json`. Only the participant checkpoint in
+   full integration may call back. The analysis, clean-full, stage-only, and
+   context-only controls must all load successfully without a callback; the
+   native review artifact then contains the flag.
+   The stage-only run receives its own dynamic control basket URL and the worker
+   reads that basket; `callback_observed: false` is never hard-coded.
+4. Any single-signal, hard-coded callback, failed near control, changed digest,
+   or clean-control callback is rejected.

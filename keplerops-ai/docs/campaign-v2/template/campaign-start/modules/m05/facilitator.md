@@ -4,9 +4,9 @@
 
 - **Lesson and enterprise reality:** User memory is a separate trusted context source; KeplerOps exposes it to make repeated release work useful.
 - **Attacker method and why it succeeds:** The participant stores a normal-looking but security-relevant source preference. Orion accepts semantic release preferences without approval or source-risk classification.
-- **Milestones and timing:** Earned identity, new thread, explicit preference, saved memory record. Creation should complete in five seconds.
+- **Milestones and timing:** Earned identity, new thread, explicit preference, saved memory record, then byte-identical later requests under affected and clean identities with divergent source selection.
 - **Common stalls and hints:** If Orion only replies conversationally, direct the player to documented memory behavior, then measurable source priority, then the explicit preference form. Do not provide an identity they have not earned.
-- **Defense and diagnostics:** Require approval for security-relevant memory, display provenance, constrain retention, and alert on source-priority changes. Staff inspect Orion Redis memory and conversation audit read-only.
+- **Defense and diagnostics:** Require approval for security-relevant memory, display provenance, constrain retention, and alert on source-priority changes. Staff inspect Orion Redis memory and the two later request audits read-only; persistence alone does not prove impact.
 - **Reset boundary:** Remove only rejected user memory and its thread; preserve accepted memory and identities.
 
 ## `kep-m05-b`: Fresh Session, Old Orders
@@ -48,7 +48,7 @@
 ## `kep-m05-f`: Blueprint Drift
 
 - **Lesson and enterprise reality:** Public reference architecture is not evidence of deployed configuration; immutable artifact correspondence matters.
-- **Attacker method and why it succeeds:** The participant verifies public bytes, retrieves scoped private render, and runs the normal drift audit.
+- **Attacker method and why it succeeds:** The participant verifies public bytes and dispatches the normal Forgejo drift audit, whose server-side runner compares the deployed render and commits an exact signed diff.
 - **Milestones and timing:** Cosign success, two immutable digests, changed MLflow auth path, generated report. Under three minutes once artifacts are found.
 - **Common stalls and hints:** Tag comparison and unverified downloads are invalid. Point to publishing registry, digest matching, and both attestation/source bytes.
 - **Defense and diagnostics:** Continuously compare signed source to rendered state and alert on secret materialization. Staff inspect workflow inputs and report digests.
@@ -56,11 +56,11 @@
 
 ## `kep-m05-g`: Secret In The Agent Manifest
 
-- **Lesson and enterprise reality:** Rendering external secret references into application tokens expands who can recover credentials from deployment views.
-- **Attacker method and why it succeeds:** The player follows a proven changed path and decodes standard JWT claims before using the token.
+- **Lesson and enterprise reality:** A trusted drift report can disclose rendered application credentials even when participants cannot read the deployment view directly.
+- **Attacker method and why it succeeds:** The player follows the exact private-render diff in the signed report and decodes standard JWT claims before using the token.
 - **Milestones and timing:** Exact manifest path, token bytes, decoded issuer/subject/audience/scope/reference. Under five minutes.
 - **Common stalls and hints:** Searching for plaintext flags is a near miss. Guide toward the drift, tool authentication, and audience-aware JWT decoding.
-- **Defense and diagnostics:** Keep references opaque, limit rendered-manifest access, issue short-lived audience-bound tokens, and audit reads. Staff inspect Argo access logs.
+- **Defense and diagnostics:** Redact secrets from drift output, keep references opaque, issue short-lived audience-bound tokens, and audit report reads. Staff inspect Forgejo Actions and repository access logs.
 - **Reset boundary:** Read-only; rotate failed-attempt sessions without changing the earned drift baseline.
 
 ## `kep-m05-h`: A Token Travels Further Than Its Owner
@@ -70,7 +70,7 @@
 - **Milestones and timing:** Successful service login, one experiment, correct audit actor, artifact read, adjacent denial. Under two minutes.
 - **Common stalls and hints:** The SSO form is wrong. Point to service/audience, application-token client use, then resource enumeration.
 - **Defense and diagnostics:** Prefer workload identity, rotate exposed tokens, enforce audience and resource ACLs, and alert on unusual clients. Staff inspect MLflow auth/access logs.
-- **Reset boundary:** Revoke attempt sessions and reissue equivalent scoped token; preserve accepted access for descendants.
+- **Reset boundary:** Preserve the shared token fixture and append-only MLflow audit; failed reads retry under a fresh client request.
 
 ## `kep-m05-i`: The Session In The Trace
 
@@ -79,7 +79,7 @@
 - **Milestones and timing:** HAR acquired, cookie identified, clean profile, bounded support identity, protected note, admin denial.
 - **Common stalls and hints:** Query parameters are not authentication. Point to attachment, state-bearing cookie, then clean-profile domain import.
 - **Defense and diagnostics:** Redact HARs, revoke captured sessions, bind high-risk sessions, and shorten support-session lifetime. Staff inspect Zammad session/ticket access.
-- **Reset boundary:** Revoke/reseed only the synthetic session and HAR; reissue equivalent accepted support access.
+- **Reset boundary:** Preserve the shared HAR/session fixture and append-only Zammad audit; discard only the caller's failed local browser profile.
 
 ## `kep-m05-j`: Notebook Residue
 
@@ -88,7 +88,7 @@
 - **Milestones and timing:** Notebook path, output clue, client config, viewer login, DAG description, trigger denial.
 - **Common stalls and hints:** Searching every filesystem is unnecessary. Point to migration issue, notebook output/config, then Airflow role verification.
 - **Defense and diagnostics:** Scrub retired workspaces, use short-lived SSO, scan notebook output, and inventory client files. Staff inspect Jupyter volume and Airflow audit.
-- **Reset boundary:** Restore residue and viewer state only on failed attempts; preserve learned pipeline access.
+- **Reset boundary:** Preserve immutable notebook residue, viewer state, and Airflow audit; retry under a fresh browser session.
 
 ## `kep-m05-k`: The Tool Sees More
 
@@ -97,7 +97,7 @@
 - **Milestones and timing:** Tool call, failed job/log, robot login, one Harbor project, protected object, mutation denial.
 - **Common stalls and hints:** A seeded log found directly is insufficient. Point to call-chain tool, normal status request, then the referenced failed job.
 - **Defense and diagnostics:** Redact tool output, use ephemeral scoped robot tokens, classify logs, and enforce project ACLs. Staff correlate Orion, MCP, Forgejo, and Harbor audit IDs.
-- **Reset boundary:** Rotate failed-attempt robot and restore log; preserve accepted bounded access or deterministic reissue.
+- **Reset boundary:** Preserve the immutable log, robot scope, registry object, and Harbor audit; retry with a fresh tool and registry session.
 
 ## `kep-m05-l`: Credentials In The Worker
 

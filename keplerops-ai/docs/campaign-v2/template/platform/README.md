@@ -6,18 +6,17 @@ the campaign-v2 contracts. It targets the existing single-node `k3s01` guest
 
 - Argo CD with a constrained `orion-platform` AppProject;
 - cert-manager and KServe in `RawDeployment` mode;
-- a small CPU-only ONNX Runtime model service used as the neutral Orion
-  release-risk placeholder;
+- the KServe control plane needed to admit the campaign's exact clean
+  release-risk model after m07 establishes its training lineage;
 - OPA with a generic immutable-release policy;
 - LiteLLM backed by Vertex AI GLM 5 through renewable GCE workload identity;
 - a minimal LangGraph API and standards-based MCP streamable HTTP server;
 - step-ca signer enrollment and cosign blob signing helpers.
 
 The bundle contains no campaign state, challenge logic, flags, proof broker,
-or hidden verifier. The placeholder model is deliberately content-neutral: it
-accepts 16 numeric features and returns a uniform eight-class distribution. It
-exists to prove the KServe/ONNX deployment path and is replaced by an admitted
-Orion model artifact later.
+or hidden verifier. Core installation deliberately creates no release-risk
+`InferenceService`: an unsigned placeholder is not a valid clean-enterprise
+model identity.
 
 ## Deploy
 
@@ -28,13 +27,15 @@ cd keplerops-ai/docs/campaign-v2/template/platform
 sudo ./scripts/deploy-to-k3s01.sh
 ```
 
-The deploy helper builds the two local images, imports them into k3s
+The deploy helper builds the shared agent and vision images, imports them into k3s
 containerd, copies this directory to `/opt/keplerops-platform`, and runs the
-idempotent installer. It also copies the existing step-ca root and `step`
+idempotent core installer. It does not seed Argo or deploy a release-risk
+model. It also copies the existing step-ca root and `step`
 client from `kep-v2-step-ca` when that container is available. No registry is
 required for the two local images on the single-node range.
 
-The default assistant uses Vertex AI's `zai-org/glm-5-maas` model. A small
+The admitted GLM 5.2 assistant identity uses Vertex AI's
+`zai-org/glm-5-maas` model. A small
 in-cluster OpenAI adapter obtains renewable access tokens from the nested
 host's GCE workload identity; no service-account key is stored in the range.
 The template host service account therefore requires `roles/aiplatform.user`.
@@ -49,11 +50,23 @@ sudo ORION_ASSISTANT_BASE_URL=http://MODEL_HOST:PORT/v1 \
 The endpoint is expected to serve the model name selected by
 `ORION_ASSISTANT_UPSTREAM_MODEL`.
 
-## GitOps adoption
+## Clean release materialization
 
-The deploy helper seeds `gitops/orion-canary` into the public
-`keplerops/orion-platform` Forgejo repository, resolves its immutable commit,
-and configures Argo CD automatically. Manual adoption remains available:
+After campaign modules m01-m07 have converged, the shared
+`scripts/materialize-clean-release.sh` entry point reads m07's canonical
+`baseline-export-sha256`. The candidate builder selects only a finished MLflow
+run with that exact export digest and matching Forgejo/lakeFS/provenance
+lineage. It builds the digest-addressed image and immutable candidate; the
+promotion helper writes the rendered KServe definition to Forgejo, pins Argo
+to the resulting commit, admits it through KServe, and signs the release.
+The orchestration then captures and signs the running Vertex GLM 5.2 identity,
+activates both identities in the business plane, and runs continuity and full
+readiness before m08 begins.
+
+Resume reuses an existing candidate only when its files and m07 baseline join
+exactly. It reuses a release only when its signature, candidate, GitOps,
+KServe, and live model joins already pass; otherwise it rebuilds or promotes.
+Manual GitOps adoption remains available:
 
 ```bash
 sudo GITOPS_REPO_URL=http://10.61.40.20:3000/OWNER/REPO.git \
@@ -95,10 +108,12 @@ sudo /opt/keplerops-platform/scripts/readiness.sh --core
 sudo /opt/keplerops-platform/scripts/readiness.sh
 ```
 
-Core mode checks Kubernetes, Argo CD, cert-manager, KServe, OPA, the ONNX
-prediction path, LiteLLM process health, LangGraph, MCP, and local signing
-material where step-ca was available. Full mode additionally performs a real
-assistant completion and requires an Argo Application at a pinned revision.
+Core mode checks Kubernetes, Argo CD, cert-manager, KServe controllers, OPA,
+LiteLLM process health, LangGraph, MCP, vision, and local signing material; it
+does not accept any release-risk workload. Full mode additionally verifies the
+signed current release and assistant records, rejects placeholder identities,
+performs a real assistant completion, and requires exact release-to-Argo and
+release-to-KServe revision/model/image/live-runtime joins.
 
 ## Known integration blockers
 

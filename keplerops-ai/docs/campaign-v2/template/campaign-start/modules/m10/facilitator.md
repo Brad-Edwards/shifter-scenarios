@@ -10,7 +10,7 @@ digests, two live controls, then the runtime-audit key. **Stalls / hints:** offe
 Orientation at Harbor versus MLflow, Mechanism at the signed release join, and
 Execution at the Airflow config. **Defense:** admission and runtime attestation.
 **Diagnostics:** Airflow log, KServe metadata, active release env, Argo status.
-**Reset:** clear failed control traces only; a divergent active release requires
+**Reset:** mark the failed attempt compensated while retaining native control telemetry; a divergent active release requires
 release repair, not fabricated continuity.
 
 ## kep-m10-b: Activate Learned Behavior
@@ -30,22 +30,24 @@ sub-threshold attempts; never erase an accepted incident.
 **Lesson / reality:** loading hostile model/image bytes can compromise the
 workload even without node escape. **Method / cause:** the exact released
 artifact creates the relay command path; a fresh command proves control.
-**Good looks like:** artifact/image continuity, pod service identity, nonce and
+**Good looks like:** distinct outer-artifact/embedded-model continuity, exact
+evaluation/release/image continuity, TokenReview-authenticated projected pod service identity, nonce and
 unpredictable output before the protected diagnostic. **Stalls / hints:** first
-check whether the release actually contains m07 bytes, then activation, then
+check whether the release contains the accepted embedded-artifact bytes, then activation, then
 relay correlation. The projected file must exist in the released predictor,
 but setup must not create the callback or relay session. Confirm separate clean
 artifact and direct-relay denials. **Defense:** safe serialization, isolated loading, signing,
 read-only/runtime restrictions. **Diagnostics:** KServe pod/revision and relay
-logs are staff-only. **Reset:** replace failed pod and relay state; accepted
-execution needs full reprovision to erase.
+logs are staff-only. **Reset:** remove only an unqualified relay callback; reset
+does not claim or change pod lifecycle, and accepted execution needs full reprovision to erase.
 
 ## kep-m10-d: Stage The Original Revision
 
 **Lesson / reality:** collection for transfer requires complete bytes,
 inventory, encryption, and bounded staging. **Method / cause:** overbroad
 support-export ACL reads the accepted package and writes a zstd/age archive.
-**Good looks like:** all members hash-match, archive exists, retention metadata,
+**Good looks like:** the exact five members hash-match, fixed length-64/max-length
+padding is unchanged, archive exists, retention metadata,
 completion manifest. **Stalls / hints:** inventory first, recipient second,
 object-lock last. **Defense:** narrow export roles and egress review.
 **Diagnostics:** Airflow, source objects, MinIO versions. **Reset:** failed
@@ -60,7 +62,7 @@ exact model; OPA trusts the canary service and Unleash accepts the bounded tool.
 **Stalls / hints:** source issue, classifier label, OPA actor, then target name.
 **Defense:** independent policy facts, confirmations, tenant scoping.
 **Diagnostics:** business-adapter audit, OPA, Jaeger, Unleash history.
-**Reset:** compensate attempted target to its captured variant.
+**Reset:** compensate the attempted target to its captured enabled state and description.
 
 ## kep-m10-f: Exfiltrate Exact Orion
 
@@ -76,9 +78,10 @@ streams and Airflow. **Reset:** remove failed destination prefix only.
 
 **Lesson / reality:** possession is proven by independently loading stolen and
 distilled capability on fresh inputs. **Method / cause:** two immutable Cinder
-jobs load exact ONNX bytes with egress denied. **Good looks like:** two signed
+jobs load exact signed safetensors/tokenizer archives with egress denied and
+writable scratch only. **Good looks like:** two signed
 attestations and a timeline joining production effects. **Stalls / hints:**
-package key, valid ONNX interface, fresh-case/timeline requirements.
+package key, exact manifest members, and fresh-case requirements.
 **Defense:** artifact access governance and provenance monitoring.
 **Diagnostics:** Cinder job and object logs. **Reset:** failed jobs only;
 accepted packages and attestations persist.
@@ -99,18 +102,19 @@ circuit breakers. **Diagnostics:** Prometheus, Envoy, KServe, Airflow.
 dimensions. **Method / cause:** successful real calls cross both chargeback
 budgets without outage; the production workflow obtains resource allocation
 from OpenCost rather than calculating a lookalike record. **Good looks like:**
-count, expensive subset, fixed OpenCost window, namespace costs, healthy
+count, expensive subset, fixed OpenCost window, exact submitted-pod costs, healthy
 service. **Stalls / hints:** establish a sample, then count, then complexity.
 **Defense:** token/compute budgets and anomalous-use controls. **Diagnostics:**
 OpenCost allocation API, request IDs, request durations, chargeback record.
-**Reset:** attempt accounting only.
+**Reset:** remove the attempt-owned metric source; retain OpenCost history.
 
 ## kep-m10-j: Recursive Research Fan-Out
 
 **Lesson / reality:** model-driven delegation can amplify one objective into
 resource consumption. **Method / cause:** mutually referring useful briefs make
-the live Assistant generate child objectives that workers queue. **Good looks
-like:** ten descendants, three levels, model outputs, root linkage, clean cap.
+the live Assistant generate child objectives that independently running workers
+consume and queue. **Good looks like:** fourteen descendants, three levels,
+two worker identities, RabbitMQ receipts, real Jaeger spans, model outputs, root linkage, clean cap.
 **Stalls / hints:** useful mutual references, JSON extraction, queue/trace join.
 **Defense:** depth, task and token budgets plus cycle detection. **Diagnostics:**
 Assistant, RabbitMQ and Jaeger. **Reset:** cancel descendants and restore only
@@ -120,7 +124,8 @@ that root's budget.
 
 **Lesson / reality:** chaff degrades signal quality while availability remains.
 **Method / cause:** plausible irrelevant records traverse Zammad, RabbitMQ,
-classification and Qdrant normally. **Good looks like:** every lineage ID and a
+classification and Qdrant through the independent feedback workers. **Good looks
+like:** every lineage ID, worker receipt, denied direct Qdrant insertion, and a
 ratio below threshold. **Stalls / hints:** avoid junk that intake rejects;
 measure quality, not queue saturation. **Defense:** reputation, deduplication,
 sampling and analyst feedback. **Diagnostics:** workflow audits, queue and
@@ -166,8 +171,8 @@ text selects low risk while Tika evidence stays critical. **Good looks like:**
 clean control open, adversarial real case closed, notice sent. **Stalls / hints:**
 attachment parsing, fact preservation, low-risk class, case history.
 **Defense:** deterministic diagnostic precedence and asymmetric automation.
-**Diagnostics:** Tika, model, adapter, Zammad, mail. **Reset:** reopen and restore
-mailbox state.
+**Diagnostics:** Tika, model, adapter, Zammad, mail. **Reset:** reopen the case
+and retain delivered-mail history.
 
 ## kep-m10-p: Destroy The Feedback Partition
 
@@ -184,10 +189,12 @@ parent and rerun clean validation.
 
 **Lesson / reality:** agent tool invocation becomes destructive when trusted
 retention evidence can be crafted. **Method / cause:** WorkHub source drives the
-live Assistant/model/OPA/MCP path under `svc-data-steward`. **Good looks like:**
-two real objects disappear, service-identity audit and full causal trace.
+live Assistant-context/release-risk-classifier/OPA/MCP path under
+`svc-data-steward`. The exact submitted issue supplies the approval. **Good looks
+like:** two real objects disappear, the same issue receives the service-identity
+audit, and the full causal trace identifies release-risk as governing.
 **Stalls / hints:** target approval text, model label, OPA actor, both stores.
 **Defense:** immutable authorization facts, confirmation, trash/versioning and
 tool scopes. **Diagnostics:** WorkHub, agent, OPA/MCP, Nextcloud/lakeFS.
-**Reset:** restore both objects and clear attempt memory; accepted effect stays
+**Reset:** restore both objects as audited versions and restore the WorkHub ratio; accepted effect stays
 as evidence until reprovision.

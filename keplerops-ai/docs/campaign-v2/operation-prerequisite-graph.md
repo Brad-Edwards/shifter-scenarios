@@ -48,7 +48,7 @@ precomputed artifact.
 | `kep-m01-j` | `kep-m01-i` | `svc-orion-integration` job token and integration-worker execution |
 | `kep-m02-h` | `kep-m06-n + kep-m06-s` | Partner identity, Nextcloud room and indexed content |
 | `kep-m02-i` | `kep-m06-i + kep-m06-n + kep-m06-p` | Trusted mail thread and private review-window context |
-| `kep-m02-j` | `kep-m02-i + kep-m06-t` | `partner-reviewer` invitation and identity |
+| `kep-m02-j` | `kep-m02-h + kep-m02-i + kep-m06-t` | Existing external identity/room, trusted thread, and accepted media produce the `partner-reviewer` invitation |
 | `kep-m02-k` | `kep-m02-i + kep-m06-u` | Reviewer-workstation execution and durable reviewer session |
 | `kep-m02-l` | `kep-m02-h + kep-m06-n + kep-m06-u` | Contributor identity, package namespace and review token |
 | `kep-m02-m` | `kep-m06-j + kep-m06-n + kep-m06-q + kep-m06-u` | Accepted attacker MCP tool and catalog token |

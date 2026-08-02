@@ -204,7 +204,7 @@ keytabs, caches and local profile before a fresh machine account is joined.
 | Public-flow exploit | `svc-orion-integration` job token plus execution in `integration01` | Token minted for successful live integration job; job and token audit agree | Successful grant is checkpointed; disposable worker may rebuild and deterministically reissue equivalent scope |
 | Partner document | Keycloak `partners` member plus named Nextcloud room ACL | Zammad triage creates invitation and room through normal APIs | Accepted document, invitation and room persist |
 | Social/deepfake | `partner-reviewer` organization membership | Recipient browser accepts real thread/media and issues Keycloak invitation | Accepted thread and invitation persist or are reissued from the accepted recipient decision |
-| Malicious link | `reviewer-session` plus execution on `review01` | Browser/local-agent trace and callback bind to one review request | Disposable workstation rebuilds; accepted session artifact remains available through the attacker relay |
+| Malicious link | Bounded `orion.package-review` WorkHub capability plus disposable execution | Browser/local-agent trace and 0.1.26 callback bind to one review request; the credential opens one private native project | Failed workspace/callback is removed; accepted bounded identity and issue persist |
 | Malicious package | Forgejo contributor plus package-review token | Accepted reviewer job creates repository team membership and bounded token | Accepted package/repository grant persists |
 | Agent clickbait/tool | Catalog-owner token plus accepted tool version | Compatibility trace and catalog record identify exact participant endpoint/version | Accepted catalog record and token persist |
 

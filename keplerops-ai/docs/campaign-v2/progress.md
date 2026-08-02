@@ -10,10 +10,10 @@ like attacking a real AI lab, use real OSS systems and real security effects,
 cover every ATLAS 2026.06 row except `AML.T0010.000 Hardware`, and avoid the
 old design's guessy, challenge-shaped interactions.
 
-The design review is complete. Clean-enterprise implementation is underway on
-the dedicated GCP campaign-v2 template under issue #38. Challenge overlay,
-image baking, and participant-range work remain paused until the neutral
-enterprise passes its baseline gates.
+The design review and corrective source implementation are complete. Integrated
+materialization is underway on the dedicated GCP campaign-v2 template under
+issue #38. Image baking remains deferred until the template passes its live
+participant-path gates.
 
 ## Binding Decisions
 
@@ -108,6 +108,30 @@ enterprise passes its baseline gates.
    handoffs, then run the combined Compose and Shifter content contracts.
 3. Materialize the integrated source on the template and perform the manual
    participant-equivalent walkthrough before baking.
+
+## Execution Tracker
+
+This table is the live handoff record for parent and delegated work. A module is
+not template-ready until its source correction and bounded blocker review are
+both complete. Template status records materialization, not source intent.
+
+| Lane | Owner | Dependencies | Source | Blocker review | Template | Participant proof |
+| --- | --- | --- | --- | --- | --- | --- |
+| M01/M02 intake and review | parent + Mencius | shared WorkHub, Forgejo, Nextcloud and devpi | corrected; 7 M02 regressions pass | complete; no blockers in bounded final review | pending | pending |
+| M03/M04 discovery and product access | parent | enterprise identity and business services | corrected | complete | pending | pending |
+| M05 assistant and agent workflows | Dirac + Boyle | active assistant identity and M01/M02 artifacts | corrected; nonce/proof, reset and contract regressions pass | complete; blockers corrected | pending | pending |
+| M06 Cinder infrastructure | parent + Halley | Cinder and shared Vertex edge | corrected | complete | staging and prebuild in progress | pending |
+| M07 integrity workflows | parent | clean training reference | corrected; 11 contract regressions pass | complete | pending | pending |
+| M08 vision and physical boundary | parent | M06 workbench; physical place for two operations | corrected; 6 regressions pass | complete | pending | pending |
+| M09/M10 release and production | Pasteur + Herschel | M05/M07 artifacts and clean release | corrected; focused static contracts and digest regression pass | complete; blocker corrected | pending | pending |
+| Clean release and shared Vertex | parent | M07, k3s, attached GCP identity | corrected; 12 regressions pass | complete | pending | pending |
+| Global readiness and workstation | parent | all software modules | corrected; static gates pass | complete | pending | pending |
+| Shifter content export | parent | all 134 operation records | 134-operation bundle accepted by Shifter parser | complete | pending | pending |
+
+Current mechanical baseline: 134 operations, 134 unique flags, 31,650 points,
+40 Accessible, 48 Intermediate, 33 Advanced and 13 Expert operations; 172 of
+173 ATLAS rows covered with only hardware poisoning excluded; 41 declared
+campaign network flows; 142 combined Compose services across 13 networks.
 
 ## Final Readiness And Integration Gates
 
