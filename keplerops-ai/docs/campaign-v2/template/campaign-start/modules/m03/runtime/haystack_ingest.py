@@ -12,6 +12,7 @@ import urllib.request
 from haystack import Document
 from haystack.components.writers import DocumentWriter
 from haystack.document_stores.types import DuplicatePolicy
+from haystack.utils import Secret
 from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
 
 
@@ -43,7 +44,7 @@ def main() -> None:
     )
     store = QdrantDocumentStore(
         url=os.environ["QDRANT_WRITE_URL"],
-        api_key=os.environ["QDRANT_WRITE_KEY"],
+        api_key=Secret.from_token(os.environ["QDRANT_WRITE_KEY"]),
         index="orion_partner_intake",
         embedding_dim=128,
         recreate_index=False,
