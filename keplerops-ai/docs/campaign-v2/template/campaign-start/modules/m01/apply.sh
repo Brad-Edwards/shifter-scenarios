@@ -47,6 +47,7 @@ compose() {
     -f "${TEMPLATE_ROOT}/compose.foundation.yaml" \
     -f "${TEMPLATE_ROOT}/compose.enterprise.yaml" \
     -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
+    -f "${TEMPLATE_ROOT}/campaign-start/modules/m07/compose.overlay.yaml" \
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
