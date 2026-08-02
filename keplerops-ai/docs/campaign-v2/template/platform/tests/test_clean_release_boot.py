@@ -71,6 +71,8 @@ class CleanReleaseBootSourceTests(unittest.TestCase):
         self.assertIn('tagged("source.commit"', build)
         self.assertIn('tagged("source.tree_sha256"', build)
         self.assertIn('tagged("provenance.signature"', build)
+        self.assertIn('json.dumps(tree,sort_keys=True,separators=', build)
+        self.assertNotIn("jq -cS '.tree'", build)
         self.assertNotIn('order_by:["attributes.start_time DESC"]', build)
         self.assertNotIn("sort_by(.info.start_time", build)
 

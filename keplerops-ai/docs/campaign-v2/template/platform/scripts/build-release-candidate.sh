@@ -191,7 +191,9 @@ source_branch="$(curl -fsS -u "${FORGEJO_AUTH}" \
 source_commit="$(jq -er '.commit.id' <<<"${source_branch}")"
 source_tree="$(curl -fsS -u "${FORGEJO_AUTH}" \
   "${FORGEJO_URL}/api/v1/repos/${SOURCE_REPOSITORY}/git/trees/${source_commit}?recursive=true")"
-source_tree_digest="$(jq -cS '.tree' <<<"${source_tree}" | sha256sum | cut -d' ' -f1)"
+source_tree_digest="$(python3 -c \
+  'import hashlib,json,sys; tree=json.load(sys.stdin)["tree"]; print(hashlib.sha256(json.dumps(tree,sort_keys=True,separators=(",", ":")).encode()).hexdigest())' \
+  <<<"${source_tree}")"
 [[ ${source_commit} == "${source_commit_tag}" && ${source_tree_digest} == "${source_tree_tag}" ]] || {
   printf 'Forgejo source identity does not match the selected MLflow run lineage\n' >&2
   exit 4
