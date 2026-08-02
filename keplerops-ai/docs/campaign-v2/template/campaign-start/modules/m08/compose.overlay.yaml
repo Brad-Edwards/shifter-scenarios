@@ -141,8 +141,8 @@ services:
   orion-release-risk-label-studio-ml:
     <<: *m08-airflow
     container_name: kep-v2-orion-release-risk-label-studio-ml
+    entrypoint: ["uvicorn"]
     command:
-      - uvicorn
       - label_studio_backend:app
       - --app-dir
       - /opt/airflow/campaign-m08
