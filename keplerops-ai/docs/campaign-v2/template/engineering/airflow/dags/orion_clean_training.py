@@ -325,7 +325,7 @@ def orion_clean_training():
             lineage_file.write_text(json.dumps(lineage, indent=2, sort_keys=True))
 
             mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-            mlflow.set_experiment("Orion Intent Training")
+            mlflow.set_experiment("Orion Clean Intent Training")
             with mlflow.start_run(
                 run_name=f"intent-{str(snapshot['lakefs_commit'])[:12]}",
                 tags={
