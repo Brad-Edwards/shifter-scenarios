@@ -105,7 +105,7 @@ data:
 
     release_actor if {
       valid_context
-      input.actor not in {"anonymous", "workhub-user", "librechat", "range-admin"}
+      not input.actor in {"anonymous", "workhub-user", "librechat", "range-admin"}
     }
 
     allow := {"allow": true, "reason": "authenticated WorkHub draft workflow"} if {
