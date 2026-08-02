@@ -60,7 +60,8 @@ services:
   m10-source-producer:
     <<: *m10-airflow
     container_name: kep-v2-m10-source-producer
-    command: ["uvicorn", "production_sources:app", "--app-dir", "/opt/airflow/config", "--host", "0.0.0.0", "--port", "8080"]
+    entrypoint: ["uvicorn"]
+    command: ["production_sources:app", "--app-dir", "/opt/airflow/config", "--host", "0.0.0.0", "--port", "8080"]
     environment:
       BUSINESS_ADAPTER_TOKEN: KeplerV2-Training-Business-Adapter
       M10_SOURCE_STATE: /var/lib/keplerops-production/sources
@@ -90,6 +91,13 @@ services:
       - ./state/campaign-start/m10/identity/kubernetes-ca.crt:/run/keplerops/kubernetes-ca.crt:ro
     ports:
       - "192.168.78.1:18090:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/metrics"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
     networks:
       business:
         ipv4_address: 10.61.70.26
