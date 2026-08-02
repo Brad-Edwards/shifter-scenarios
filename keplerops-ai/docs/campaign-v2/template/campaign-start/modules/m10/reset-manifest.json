@@ -1,0 +1,23 @@
+{
+  "schema": "keplerops.operation-reset/v1",
+  "successful_outputs": "immutable until full-range reprovision",
+  "attempt_cleanup": {
+    "kep-m10-a": ["failed control traces"],
+    "kep-m10-b": ["sub-threshold request set"],
+    "kep-m10-c": ["failed relay session", "failed serving pod"],
+    "kep-m10-d": ["failed staging prefix"],
+    "kep-m10-e": ["attempted feature variant", "agent attempt state"],
+    "kep-m10-f": ["failed Cinder destination prefix"],
+    "kep-m10-g": ["failed offline jobs"],
+    "kep-m10-h": ["canary queue and attempt counters"],
+    "kep-m10-i": ["attempt chargeback accounting"],
+    "kep-m10-j": ["root descendants", "root budget"],
+    "kep-m10-k": ["failed feedback batch derivations"],
+    "kep-m10-l": ["reversing accounting entry", "failed mail"],
+    "kep-m10-m": ["failed false revision", "prior page and subscriptions"],
+    "kep-m10-n": ["failed campaign"],
+    "kep-m10-o": ["attempted case state", "attempt mailbox state"],
+    "kep-m10-p": ["protected parent bytes", "clean validation"],
+    "kep-m10-q": ["protected object versions", "request and memory attempt state"]
+  }
+}

@@ -18,6 +18,11 @@ https://jaeger.keplerops.lab {
   reverse_proxy 10.61.80.11:16686
 }
 
+https://opencost.keplerops.lab {
+  tls internal
+  reverse_proxy 192.168.78.30:30090
+}
+
 https://keplerops.lab, https://www.keplerops.lab {
   tls internal
   reverse_proxy 10.61.10.24:80

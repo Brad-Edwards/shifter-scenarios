@@ -8,24 +8,23 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pricing-configs
+  name: opencost-pricing-model
   namespace: keplerops-observe
 data:
-  provider: custom
-  customPricesEnabled: "true"
-  description: KeplerOps private cloud allocation rates
-  CPU: "0.031611"
-  spotCPU: "0.006655"
-  RAM: "0.004237"
-  spotRAM: "0.000892"
-  GPU: "0.95"
-  storage: "0.00005479452"
-  zoneNetworkEgress: "0.01"
-  regionNetworkEgress: "0.01"
-  internetNetworkEgress: "0.12"
-  LBIngressDataCost: "0.01"
-  FirstFiveForwardingRulesCost: "0.0"
-  AdditionalForwardingRuleCost: "0.0"
+  default.json: |-
+    {
+      "provider": "custom",
+      "description": "KeplerOps private cloud allocation rates",
+      "CPU": "0.031611",
+      "spotCPU": "0.006655",
+      "RAM": "0.004237",
+      "spotRAM": "0.000892",
+      "GPU": "0.95",
+      "storage": "0.00005479452",
+      "zoneNetworkEgress": "0.01",
+      "regionNetworkEgress": "0.01",
+      "internetNetworkEgress": "0.12"
+    }
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -227,7 +226,7 @@ spec:
             - {name: PROMETHEUS_SERVER_ENDPOINT, value: "http://192.168.78.1:9090"}
             - {name: CLUSTER_ID, value: keplerops-v2}
             - {name: LOG_LEVEL, value: info}
-            - {name: CLOUD_PROVIDER_API_KEY, value: keplerops-private-cloud-pricing}
+            - {name: CUSTOM_PRICING_CONFIG_PATH, value: "/var/configs/default.json"}
           ports:
             - {name: api, containerPort: 9003}
           readinessProbe:
@@ -246,9 +245,13 @@ spec:
             capabilities: {drop: [ALL]}
             readOnlyRootFilesystem: true
           volumeMounts:
-            - {name: config, mountPath: /var/configs}
+            - {name: config, mountPath: /var/configs, readOnly: true}
+            - {name: temporary, mountPath: /tmp}
       volumes:
         - name: config
+          configMap:
+            name: opencost-pricing-model
+        - name: temporary
           emptyDir: {}
 ---
 apiVersion: v1

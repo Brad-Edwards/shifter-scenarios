@@ -514,9 +514,27 @@ spec:
         image: registry.keplerops.lab/{repository}@{image_digest}
 '''.encode()
     path = f"gitops/{app}/inferenceservice.yaml"
+    kustomization = b"apiVersion: kustomize.config.k8s.io/v1beta1\nkind: Kustomization\nresources:\n  - inferenceservice.yaml\n"
+    if not staging:
+        diagnostic_path = f"gitops/{app}/production-diagnostic-patch.yaml"
+        try:
+            forgejo("GET", f"/repos/keplerops/orion-platform/contents/{diagnostic_path}")
+        except requests.HTTPError as exc:
+            if exc.response is None or exc.response.status_code != 404:
+                raise
+        else:
+            kustomization += (
+                b"patches:\n"
+                b"  - path: production-diagnostic-patch.yaml\n"
+                b"    target:\n"
+                b"      group: serving.kserve.io\n"
+                b"      version: v1beta1\n"
+                b"      kind: InferenceService\n"
+                b"      name: orion-release-risk\n"
+            )
     write_forgejo_file(
         "keplerops", "orion-platform", f"gitops/{app}/kustomization.yaml",
-        b"apiVersion: kustomize.config.k8s.io/v1beta1\nkind: Kustomization\nresources:\n  - inferenceservice.yaml\n",
+        kustomization,
         f"Define {app} deployment resources",
     )
     commit = write_forgejo_file("keplerops", "orion-platform", path, manifest, f"Promote {app} at {image_digest}")

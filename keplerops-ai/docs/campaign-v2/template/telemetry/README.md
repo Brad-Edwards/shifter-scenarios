@@ -17,6 +17,11 @@ existing guest. Then run `baseline/observability-correlation.sh` from the outer
 range host. The acceptance probe issues one inference and joins only the normal
 Jaeger, Prometheus, Alertmanager, OpenSearch, and OpenCost APIs.
 
+The OpenCost allocation API is published at
+`https://opencost.keplerops.lab`; its on-prem rates come from the mounted
+`default.json` pricing model and its allocation source is the template's real
+Prometheus, kube-state-metrics, and cAdvisor data.
+
 The `x-keplerops-event-id` header is an operational correlation header. It is
 optional for ordinary requests and does not contain a flag, challenge ID, or
 hidden answer.

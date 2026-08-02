@@ -53,7 +53,7 @@ kep-v2-caddy	kep-v2-orion-telemetry-gateway	tcp	8080	release-risk telemetry edge
 kep-v2-caddy	kep-v2-cinder-forgejo	tcp	3000	Cinder source edge
 kep-v2-caddy	kep-v2-cinder-minio	tcp	9001	Cinder object console edge
 kep-v2-caddy	kep-v2-cinder-jupyter	tcp	8888	Cinder notebook edge
-kep-v2-caddy	cidr:192.168.78.30/32	tcp	30080,30081,30084,30400,30402,31080	published k3s services
+kep-v2-caddy	cidr:192.168.78.30/32	tcp	30080,30081,30084,30090,30400,30402,31080	published k3s services and OpenCost allocation API
 kep-v2-grafana	kep-v2-prometheus	tcp	9090	metrics datasource
 kep-v2-grafana	kep-v2-jaeger	tcp	16686	trace datasource
 kep-v2-grafana	kep-v2-opensearch	tcp	9200	audit datasource

@@ -1,0 +1,93 @@
+x-m10-airflow: &m10-airflow
+  image: keplerops/airflow:campaign-v2-m10
+  build:
+    context: .
+    dockerfile: campaign-start/modules/m10/Dockerfile.airflow
+    args:
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+  environment:
+    BUSINESS_ADAPTER_URL: http://business-adapter:8080
+    BUSINESS_ADAPTER_TOKEN: KeplerV2-Training-Business-Adapter
+    M10_STATE_DIR: /var/lib/keplerops-production
+    BUSINESS_RELEASE_FILE: /range-state/business-release.env
+    CINDER_MINIO_URL: http://cinder-minio:9000
+    KEPLER_MINIO_URL: http://minio:9000
+    OPENCOST_URL: http://192.168.78.30:30090
+    PROMETHEUS_URL: http://prometheus:9090
+    QDRANT_URL: http://qdrant-writer:6333
+    RABBITMQ_MANAGEMENT_URL: http://rabbitmq:15672
+  volumes:
+    - ./campaign-start/modules/m10/dags/orion_production_jobs.py:/opt/airflow/dags/orion_production_jobs.py:ro
+    - ./campaign-start/modules/m10/runtime/production_jobs.py:/opt/airflow/config/production_jobs.py:ro
+    - ./state:/range-state:ro
+    - m10-production-state:/var/lib/keplerops-production
+    - m10-cinder-state:/cinder-state
+  networks:
+    - business
+    - cinder
+    - data
+    - engineering
+    - observe
+
+services:
+  m10-storage-init:
+    image: ${MINIO_MC_IMAGE}
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        until mc alias set kepler http://minio:9000 kepler-minio 'KeplerV2-Training-Minio-Object-Store'; do sleep 2; done
+        mc mb --ignore-existing --with-lock kepler/orion-egress-staging
+        cat >/tmp/export-policy.json <<'JSON'
+        {"Version":"2012-10-17","Statement":[
+          {"Effect":"Allow","Action":["s3:GetBucketLocation","s3:ListBucket"],"Resource":["arn:aws:s3:::orion-egress-staging"]},
+          {"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectRetention","s3:PutObject","s3:PutObjectRetention"],"Resource":["arn:aws:s3:::orion-egress-staging/egress-staging/*"]}
+        ]}
+        JSON
+        mc admin policy create kepler kepler-orion-export /tmp/export-policy.json
+        mc admin user add kepler svc-orion-export 'KeplerV2-Training-Minio-Orion-Export' || true
+        mc admin policy attach kepler kepler-orion-export --user svc-orion-export
+    networks:
+      - data
+    restart: "no"
+
+  airflow-api:
+    <<: *m10-airflow
+  airflow-scheduler:
+    <<: *m10-airflow
+  airflow-dag-processor:
+    <<: *m10-airflow
+  airflow-triggerer:
+    <<: *m10-airflow
+  airflow-worker:
+    <<: *m10-airflow
+    volumes:
+      - ./campaign-start/modules/m10/dags/orion_production_jobs.py:/opt/airflow/dags/orion_production_jobs.py:ro
+      - ./campaign-start/modules/m10/runtime/production_jobs.py:/opt/airflow/config/production_jobs.py:ro
+      - ./state:/range-state:ro
+      - m10-production-state:/var/lib/keplerops-production
+      - m10-cinder-state:/cinder-state
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  m10-production-state:
+  m10-cinder-state:
+
+networks:
+  business:
+    external: true
+    name: kep-v2-business
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  data:
+    external: true
+    name: kep-v2-data
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  observe:
+    external: true
+    name: kep-v2-observe
