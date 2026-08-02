@@ -208,7 +208,7 @@ BEGIN
   SELECT id INTO contributor_id FROM htx_user WHERE email = '${TRAINER_EMAIL}';
   UPDATE htx_user SET is_superuser = false, is_staff = false, password = '!' WHERE id = contributor_id;
   IF to_regclass('public.organizations_organizationmember') IS NULL
-     OR to_regclass('public.organizations_organization') IS NULL
+     OR to_regclass('public.organization') IS NULL
      OR to_regclass('public.project') IS NULL THEN
     RAISE EXCEPTION 'Label Studio organization boundary tables are unavailable';
   END IF;
@@ -217,7 +217,7 @@ BEGIN
   IF target_project_id IS NULL OR source_org_id IS NULL THEN
     RAISE EXCEPTION 'Orion release-risk project or source organization is absent';
   END IF;
-  SELECT id INTO contributor_org_id FROM organizations_organization
+  SELECT id INTO contributor_org_id FROM organization
     WHERE title = 'Orion Release Risk Contributors' ORDER BY id LIMIT 1;
   IF contributor_org_id IS NULL THEN
     SELECT string_agg(quote_ident(column_name), ',' ORDER BY ordinal_position),
@@ -227,9 +227,9 @@ BEGIN
              ELSE quote_ident(column_name) END, ',' ORDER BY ordinal_position)
       INTO columns_sql, values_sql
       FROM information_schema.columns
-      WHERE table_schema = 'public' AND table_name = 'organizations_organization'
+      WHERE table_schema = 'public' AND table_name = 'organization'
         AND column_name <> 'id';
-    EXECUTE format('INSERT INTO organizations_organization (%s) SELECT %s FROM organizations_organization WHERE id = %s RETURNING id',
+    EXECUTE format('INSERT INTO organization (%s) SELECT %s FROM organization WHERE id = %s RETURNING id',
                    columns_sql, values_sql, source_org_id) INTO contributor_org_id;
   END IF;
   UPDATE project SET organization_id = contributor_org_id WHERE id = target_project_id;
