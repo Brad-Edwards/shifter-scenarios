@@ -8,7 +8,11 @@ project.inherit_members = false
 project.save!
 project.enabled_module_names = %w[issue_tracking]
 
-tracker = Tracker.find_or_create_by!(name: 'Package Documentation Review')
+default_status = IssueStatus.find_by(name: 'New') || IssueStatus.first
+raise 'WorkHub has no default issue status' unless default_status
+tracker = Tracker.find_or_initialize_by(name: 'Package Documentation Review')
+tracker.default_status ||= default_status
+tracker.save!
 project.trackers = (project.trackers + [tracker]).uniq
 project.save!
 
