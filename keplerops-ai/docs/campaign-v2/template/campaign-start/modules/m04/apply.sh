@@ -180,7 +180,7 @@ forgejo() {
 put_forgejo_file() {
   local path=$1 source=$2 message=$3 current sha method payload
   current="$(forgejo GET "/repos/keplerops/orion-agent-runtime/contents/${path}" 2>/dev/null || true)"
-  sha="$(jq -r '.sha // empty' <<<"${current:-{}}")"
+  sha="$(jq -r '.sha // empty' <<<"${current}")"
   method=POST
   payload="$(jq -cn --arg content "$(base64 -w0 "${source}")" --arg message "${message}" '{content:$content,message:$message,branch:"main"}')"
   if [[ -n ${sha} ]]; then

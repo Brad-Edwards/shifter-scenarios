@@ -54,7 +54,7 @@ ensure_repo() {
 put_file() {
   local base=$1 auth=$2 owner=$3 repo=$4 path=$5 source=$6 message=$7 existing sha method payload
   existing="$(forgejo "${base}" "${auth}" GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
-  sha="$(jq -r '.sha // empty' <<<"${existing:-{}}")"
+  sha="$(jq -r '.sha // empty' <<<"${existing}")"
   method=POST
   payload="$(jq -cn --arg content "$(base64 -w0 "${source}")" --arg message "${message}" \
     '{content:$content,message:$message,branch:"main"}')"

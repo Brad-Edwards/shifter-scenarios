@@ -120,7 +120,7 @@ grant_cinder_repo() {
 upsert_file() {
   local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest
   existing="$(forgejo GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
-  sha="$(jq -r '.sha // empty' <<<"${existing:-{}}")"
+  sha="$(jq -r '.sha // empty' <<<"${existing}")"
   if [[ -n ${sha} ]]; then
     existing_digest="$(jq -r '.content' <<<"${existing}" | tr -d '\n' | base64 -d | sha256sum | awk '{print $1}')"
     source_digest="$(sha256sum "${source}" | awk '{print $1}')"
@@ -135,7 +135,7 @@ upsert_file() {
 upsert_cinder_file() {
   local owner=$1 repo=$2 path=$3 message=$4 source=$5 existing sha payload existing_digest source_digest
   existing="$(cinder_forgejo GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
-  sha="$(jq -r '.sha // empty' <<<"${existing:-{}}")"
+  sha="$(jq -r '.sha // empty' <<<"${existing}")"
   if [[ -n ${sha} ]]; then
     existing_digest="$(jq -r '.content' <<<"${existing}" | tr -d '\n' | base64 -d | sha256sum | awk '{print $1}')"
     source_digest="$(sha256sum "${source}" | awk '{print $1}')"

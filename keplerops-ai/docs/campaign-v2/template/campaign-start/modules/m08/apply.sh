@@ -44,7 +44,7 @@ ensure_repo() {
   local source target message current sha payload
   while IFS='|' read -r source target message; do
     current="$(forgejo GET "/repos/cinder-operator/orion-extraction-research/contents/${target}" 2>/dev/null || true)"
-    sha="$(jq -r '.sha // empty' <<<"${current:-{}}")"
+    sha="$(jq -r '.sha // empty' <<<"${current}")"
     payload="$(base64 -w0 "${MODULE_ROOT}/payloads/${source}" | jq -Rs --arg sha "${sha}" --arg message "${message}" \
       '{content:.,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
     forgejo PUT "/repos/cinder-operator/orion-extraction-research/contents/${target}" --data "${payload}" >/dev/null
