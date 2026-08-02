@@ -117,14 +117,14 @@ both complete. Template status records materialization, not source intent.
 
 | Lane | Owner | Dependencies | Source | Blocker review | Template | Participant proof |
 | --- | --- | --- | --- | --- | --- | --- |
-| M01/M02 intake and review | parent + Mencius | shared WorkHub, Forgejo, Nextcloud and devpi | corrected; 7 M02 regressions pass | complete; no blockers in bounded final review | pending | pending |
-| M03/M04 discovery and product access | parent | enterprise identity and business services | corrected | complete | pending | pending |
-| M05 assistant and agent workflows | Dirac + Boyle | active assistant identity and M01/M02 artifacts | corrected; nonce/proof, reset and contract regressions pass | complete; blockers corrected | pending | pending |
-| M06 Cinder infrastructure | parent + Halley | Cinder and shared Vertex edge | corrected | complete | staging and prebuild in progress | pending |
-| M07 integrity workflows | parent | clean training reference | corrected; 11 contract regressions pass | complete | pending | pending |
-| M08 vision and physical boundary | parent | M06 workbench; physical place for two operations | corrected; 6 regressions pass | complete | pending | pending |
-| M09/M10 release and production | Pasteur + Herschel | M05/M07 artifacts and clean release | corrected; focused static contracts and digest regression pass | complete; blocker corrected | pending | pending |
-| Clean release and shared Vertex | parent | M07, k3s, attached GCP identity | corrected; 12 regressions pass | complete | pending | pending |
+| M01/M02 intake and review | parent + Mencius | shared WorkHub, Forgejo, Nextcloud and devpi | corrected; 7 M02 regressions pass | complete; no blockers in bounded final review | materialized | pending |
+| M03/M04 discovery and product access | parent | enterprise identity and business services | corrected | complete | materialized | pending |
+| M05 assistant and agent workflows | Dirac + Boyle | active assistant identity and M01/M02 artifacts | corrected; nonce/proof, reset and contract regressions pass | complete; blockers corrected | 17 start states materialized; participant-generated evidence pending | pending |
+| M06 Cinder infrastructure | parent + Halley | Cinder and shared Vertex edge | corrected | complete | 21 software operations materialized; hardware proof excluded | pending |
+| M07 integrity workflows | parent | clean training reference | corrected; 11 contract regressions pass | complete | materialized | pending |
+| M08 vision and physical boundary | parent | M06 workbench; physical place for two operations | corrected; 6 regressions pass | complete | 10 software operations materialized; physical calibration excluded | pending |
+| M09/M10 release and production | Pasteur + Herschel | M05/M07 artifacts and clean release | corrected; focused static contracts and digest regression pass | complete; blocker corrected | M09 materialized; M10 image built and tmpfs retry pending | pending |
+| Clean release and shared Vertex | parent | M07, k3s, attached GCP identity | corrected; 12 regressions pass | complete | runtime and immutable training lineage gates pass | pending |
 | Global readiness and workstation | parent | all software modules | corrected; static gates pass | complete | pending | pending |
 | Shifter content export | parent | all 134 operation records | 134-operation bundle accepted by Shifter parser | complete | pending | pending |
 
