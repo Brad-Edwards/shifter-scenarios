@@ -1,0 +1,8 @@
+{
+  "repository": "keplerops/orion-release-tools",
+  "ref": "main",
+  "workflow": "tool-contract-and-publish",
+  "status": "success",
+  "tests": ["schema", "benign-response", "signed-image"],
+  "deployment": "orion-mcp"
+}

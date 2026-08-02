@@ -1,0 +1,16 @@
+apiVersion: agents.keplerops.lab/v1
+kind: AgentRuntime
+metadata:
+  name: orion-release-assistant
+spec:
+  provider:
+    baseURL: https://models.keplerops.lab/v1
+    model: orion-assistant
+  confirmation:
+    hostBridge: required
+    protectedTools: required
+  knowledgeSources:
+    - ORION-RELEASE-POLICY-2026
+  tools:
+    - release-source
+    - forgejo-ci-status

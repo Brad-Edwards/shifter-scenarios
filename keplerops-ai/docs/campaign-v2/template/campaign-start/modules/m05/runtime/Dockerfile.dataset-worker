@@ -1,0 +1,22 @@
+FROM python:3.10.13-slim-bookworm@sha256:5f0192a232c9edcf6a7e61fc54b42e35af3c1ad9d5f106e380c93c86f3cc8806
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    ORION_WORKER_HOME=/var/lib/orion-dataset-worker
+
+RUN pip install --no-cache-dir \
+      mlflow==2.8.1 \
+      requests==2.31.0 \
+    && useradd --system --uid 10001 --create-home --home-dir /var/lib/orion-dataset-worker orion-worker \
+    && install -d -o orion-worker -g orion-worker -m 0750 \
+      /var/lib/orion-dataset-worker/datasets \
+      /var/lib/orion-dataset-worker/jobs \
+      /var/lib/orion-dataset-worker/python
+
+COPY --chown=orion-worker:orion-worker orion_dataset_worker.py /opt/keplerops/orion_dataset_worker.py
+COPY --chown=orion-worker:orion-worker rogue_agent.py /opt/keplerops/rogue_agent.py
+
+USER orion-worker
+WORKDIR /var/lib/orion-dataset-worker
+ENTRYPOINT ["python", "/opt/keplerops/orion_dataset_worker.py"]

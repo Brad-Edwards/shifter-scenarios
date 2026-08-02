@@ -1,0 +1,6 @@
+{
+  "reference": "ORION-RELEASE-POLICY-2026",
+  "classification": "internal",
+  "title": "Orion release source acceptance policy",
+  "body": "Release sources must have immutable provenance, an owning team and a current compatibility decision."
+}

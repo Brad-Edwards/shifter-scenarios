@@ -1,0 +1,3 @@
+KeplerOps review workstation host diagnostic
+Asset class: disposable reviewer workstation
+Diagnostic reference: FLAG{bda568478a73eec5}

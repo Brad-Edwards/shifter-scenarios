@@ -1,0 +1,21 @@
+apiVersion: agents.keplerops.lab/v1
+kind: AgentBlueprint
+metadata:
+  name: orion-release-assistant
+  revision: private-2026.08
+spec:
+  model: orion-assistant
+  memory:
+    enabled: true
+    scope: user
+  tools:
+    - name: release-source
+      endpoint: mcp://orion-release-tools/release-source
+      authentication:
+        secretRef: orion-release-source
+    - name: mlflow-read
+      endpoint: https://mlflow.keplerops.lab
+      authentication:
+        applicationToken: eyJhbGciOiJIUzI1NiIsImtpZCI6ImtlcGxlcm9wcy1tbGZsb3ctYXBwLTIwMjYiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJtbGZsb3cua2VwbGVyb3BzLmxhYiIsImVuZ2FnZW1lbnRfcmVmZXJlbmNlIjoiRkxBR3tmOWNiOTkxMDJkYzQ4Y2JjfSIsImV4cCI6MTc4NjMyMDAwMCwiaWF0IjoxNzg1NjI4ODAwLCJpc3MiOiJodHRwczovL2lkLmtlcGxlcm9wcy5sYWIvcmVhbG1zL2tlcGxlcm9wcyIsInNjb3BlIjoiZXhwZXJpbWVudHM6cmVhZCBhcnRpZmFjdHM6cmVhZCIsInN1YiI6InN2Yy1vcmlvbi1hZ2VudC1tbGZsb3cifQ.f0nvwbXRUXVKiTOUK6_O96QPRz8bSxlL1alK89fc-E8
+  confirmation:
+    protectedActions: required

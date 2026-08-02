@@ -1,0 +1,40 @@
+name: Tool contract and publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - tool/**
+      - .forgejo/workflows/tool-contract-and-publish.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate public tool contract
+        run: |
+          jq -e '
+            .name == "release-source" and
+            .input_schema.type == "object" and
+            .input_schema.required == ["reference"] and
+            .input_schema.additionalProperties == false and
+            (.allowed_references | type == "array")
+          ' tool/release-source.json >/dev/null
+      - name: Publish exact validated tool configuration
+        run: |
+          install -d deployed reports
+          cp tool/release-source.json deployed/release-source.json
+          jq -n --arg commit "$GITHUB_SHA" \
+            --arg digest "sha256:$(sha256sum deployed/release-source.json | awk '{print $1}')" \
+            '{repository:"keplerops/orion-release-tools",ref:"main",workflow:"tool-contract-and-publish",status:"success",commit:$commit,deployed_digest:$digest,tests:["schema","benign-response"]}' \
+            > reports/latest-status.json
+          git config user.name orion-tool-release
+          git config user.email orion-tool-release@keplerops.lab
+          git add deployed/release-source.json reports/latest-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Publish validated release-source tool'
+          git push origin HEAD:main

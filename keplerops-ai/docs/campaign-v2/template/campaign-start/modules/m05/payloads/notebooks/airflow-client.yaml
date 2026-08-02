@@ -1,0 +1,4 @@
+api_url: https://airflow.keplerops.lab
+username: evaluation.viewer
+password: Orion-Evaluation-Viewer-2026
+role: Viewer
