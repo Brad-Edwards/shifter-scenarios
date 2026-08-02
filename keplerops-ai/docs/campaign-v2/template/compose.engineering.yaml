@@ -21,8 +21,8 @@ x-lakefs-environment: &lakefs-environment
   LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE: "true"
   LAKEFS_BLOCKSTORE_S3_ENDPOINT: http://minio:9000
   LAKEFS_BLOCKSTORE_S3_DISCOVER_BUCKET_REGION: "false"
-  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID: kepler-minio
-  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Object-Store
+  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID: svc-lakefs
+  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-LakeFS
   LAKEFS_BLOCKSTORE_DEFAULT_NAMESPACE_PREFIX: s3://lakefs/
   LAKEFS_GATEWAYS_S3_REGION: us-east-1
   LAKEFS_USAGE_REPORT_ENABLED: "false"
@@ -46,17 +46,19 @@ x-airflow-environment: &airflow-environment
   AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
   AIRFLOW_OIDC_CLIENT_ID: airflow
   AIRFLOW_OIDC_CLIENT_SECRET: KeplerV2-Training-Airflow-OIDC
+  AIRFLOW_OIDC_METADATA_URL: http://10.61.20.20:8080/realms/keplerops/.well-known/openid-configuration
   AIRFLOW_OIDC_AUTHORIZE_URL: https://id.keplerops.lab/realms/keplerops/protocol/openid-connect/auth
   AIRFLOW_OIDC_TOKEN_URL: http://10.61.20.20:8080/realms/keplerops/protocol/openid-connect/token
   AIRFLOW_OIDC_USERINFO_BASE_URL: http://10.61.20.20:8080/realms/keplerops/protocol/
+  REQUESTS_CA_BUNDLE: /etc/keplerops/caddy-root.crt
   MLFLOW_TRACKING_URI: http://mlflow:5000
   MLFLOW_TRACKING_USERNAME: svc-orion-training
   MLFLOW_TRACKING_PASSWORD: KeplerV2-Training-MLflow-Service
   MLFLOW_S3_ENDPOINT_URL: http://minio:9000
-  AWS_ACCESS_KEY_ID: kepler-minio
-  AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Object-Store
+  AWS_ACCESS_KEY_ID: svc-orion-training
+  AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Orion-Training
   AWS_DEFAULT_REGION: us-east-1
-  QDRANT_URL: http://qdrant:6333
+  QDRANT_URL: http://qdrant-writer:6333
   LAKEFS_ENDPOINT: http://lakefs:8000
   S3_ENDPOINT_URL: http://minio:9000
   ZAMMAD_URL: http://10.61.50.43:8080
@@ -101,11 +103,14 @@ x-airflow-service: &airflow-service
     - ./engineering/airflow/dags:/opt/airflow/dags:ro
     - ./engineering/airflow/webserver_config.py:/opt/airflow/config/webserver_config.py:ro
     - ./engineering/airflow/reconcile_roles.py:/opt/airflow/config/reconcile_roles.py:ro
+    - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
     - airflow-logs:/opt/airflow/logs
     - airflow-plugins:/opt/airflow/plugins
   networks:
     engineering:
     data:
+  extra_hosts:
+    - "id.keplerops.lab:10.61.20.2"
   labels: *common-labels
 
 services:
@@ -539,8 +544,8 @@ services:
       JUPYTERHUB_DB_URL: postgresql+psycopg://jupyterhub:KeplerV2-Training-JupyterHubDB@10.61.50.10:5432/jupyterhub
       JUPYTERHUB_SINGLEUSER_IMAGE: ${JUPYTERHUB_SINGLEUSER_IMAGE}
       DOCKER_NETWORK_NAME: kep-v2-data
-      MINIO_ACCESS_KEY: kepler-minio
-      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Object-Store
+      MINIO_ACCESS_KEY: ml-engineer
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Reader
       JUPYTERHUB_OIDC_CLIENT_ID: jupyterhub
       JUPYTERHUB_OIDC_CLIENT_SECRET: KeplerV2-Training-JupyterHub-OIDC
       JUPYTERHUB_OIDC_CALLBACK_URL: https://notebooks.keplerops.lab/hub/oauth_callback
@@ -639,6 +644,128 @@ services:
         mc anonymous set none kepler/labelstudio
         mc anonymous set none kepler/lakefs
         mc anonymous set none kepler/mlflow
+
+        cat >/tmp/kepler-lakefs-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::lakefs"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::lakefs/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-mlflow-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::mlflow"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::mlflow/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-orion-training-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::artifacts"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::artifacts/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-orion-evaluator-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket"
+              ],
+              "Resource": [
+                "arn:aws:s3:::artifacts",
+                "arn:aws:s3:::datasets"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject"],
+              "Resource": [
+                "arn:aws:s3:::artifacts/*",
+                "arn:aws:s3:::datasets/*"
+              ]
+            }
+          ]
+        }
+        JSON
+
+        mc admin policy create kepler kepler-lakefs-store /tmp/kepler-lakefs-store.json
+        mc admin policy create kepler kepler-mlflow-store /tmp/kepler-mlflow-store.json
+        mc admin policy create kepler kepler-orion-training-store /tmp/kepler-orion-training-store.json
+        mc admin policy create kepler kepler-orion-evaluator-store /tmp/kepler-orion-evaluator-store.json
+
+        mc admin user add kepler svc-lakefs 'KeplerV2-Training-Minio-LakeFS'
+        mc admin policy attach kepler kepler-lakefs-store --user svc-lakefs
+        mc admin user add kepler svc-mlflow 'KeplerV2-Training-Minio-MLflow'
+        mc admin policy attach kepler kepler-mlflow-store --user svc-mlflow
+        mc admin user add kepler svc-orion-training 'KeplerV2-Training-Minio-Orion-Training'
+        mc admin policy attach kepler kepler-orion-training-store --user svc-orion-training
+        mc admin user add kepler ml-engineer 'KeplerV2-Training-Minio-Orion-Reader'
+        mc admin policy attach kepler kepler-orion-evaluator-store --user ml-engineer
     networks:
       data:
     restart: "no"
@@ -772,6 +899,10 @@ services:
         condition: service_healthy
       airflow-scheduler:
         condition: service_started
+    networks:
+      engineering:
+      data:
+      qdrant-write:
 
   mlflow-auth-init:
     image: keplerops/mlflow:campaign-v2-clean
@@ -820,8 +951,8 @@ services:
       MLFLOW_AUTH_CONFIG_PATH: /etc/mlflow/basic_auth.ini
       MLFLOW_FLASK_SERVER_SECRET_KEY: KeplerV2-Training-MLflow-CSRF-Secret-Key
       MLFLOW_S3_ENDPOINT_URL: http://minio:9000
-      AWS_ACCESS_KEY_ID: kepler-minio
-      AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Object-Store
+      AWS_ACCESS_KEY_ID: svc-mlflow
+      AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-MLflow
       AWS_DEFAULT_REGION: us-east-1
     volumes:
       - ./engineering/mlflow/basic_auth.ini:/etc/mlflow/basic_auth.ini:ro
@@ -861,13 +992,68 @@ services:
     <<: *restart
     image: ${QDRANT_IMAGE}
     container_name: kep-v2-qdrant
+    environment:
+      QDRANT__SERVICE__API_KEY: KeplerV2-Training-Qdrant-Write
+      QDRANT__SERVICE__READ_ONLY_API_KEY: KeplerV2-Training-Qdrant-Read
     volumes:
       - qdrant-data:/qdrant/storage
     networks:
+      qdrant-write:
+        aliases: [qdrant-store]
+    labels: *common-labels
+
+  qdrant-edge:
+    <<: *restart
+    image: ${CADDY_IMAGE}
+    container_name: kep-v2-qdrant-edge
+    depends_on:
+      qdrant:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        cat >/tmp/Caddyfile <<'CADDY'
+        :6333 {
+          @business_adapter remote_ip 10.61.50.70
+          handle @business_adapter {
+            reverse_proxy qdrant-store:6333 {
+              header_up api-key KeplerV2-Training-Qdrant-Read
+            }
+          }
+          handle {
+            reverse_proxy qdrant-store:6333
+          }
+        }
+        CADDY
+        exec caddy run --config /tmp/Caddyfile --adapter caddyfile
+    networks:
       engineering:
         ipv4_address: 10.61.40.52
+        aliases: [qdrant]
       data:
         ipv4_address: 10.61.50.62
+        aliases: [qdrant]
+      qdrant-write:
+    labels: *common-labels
+
+  qdrant-writer:
+    <<: *restart
+    image: ${CADDY_IMAGE}
+    container_name: kep-v2-qdrant-writer
+    depends_on:
+      qdrant:
+        condition: service_started
+    command:
+      - caddy
+      - reverse-proxy
+      - --from
+      - :6333
+      - --to
+      - http://qdrant-store:6333
+      - --header-up
+      - "api-key: KeplerV2-Training-Qdrant-Write"
+    networks:
+      qdrant-write:
     labels: *common-labels
 
   hayhooks:
@@ -890,7 +1076,7 @@ services:
       HAYHOOKS_HOST: 0.0.0.0
       HAYHOOKS_PORT: "1416"
       HAYHOOKS_PIPELINES_DIR: /opt/hayhooks/pipelines
-      QDRANT_URL: http://qdrant:6333
+      QDRANT_URL: http://qdrant-writer:6333
       TIKA_URL: http://tika:9998
       GROBID_URL: http://grobid:8070
     volumes:
@@ -900,6 +1086,7 @@ services:
         ipv4_address: 10.61.40.37
       data:
         ipv4_address: 10.61.50.69
+      qdrant-write:
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:1416/docs', timeout=5)"]
       interval: 15s
@@ -940,6 +1127,9 @@ networks:
     name: kep-v2-platform
   harbor:
     name: kep-v2-harbor
+    internal: true
+  qdrant-write:
+    name: kep-v2-qdrant-write
     internal: true
 
 volumes:
