@@ -1,4 +1,4 @@
-ARG AIRFLOW_IMAGE=keplerops/airflow:campaign-v2-clean
+ARG AIRFLOW_IMAGE=keplerops/airflow:campaign-v2-m08
 FROM ${AIRFLOW_IMAGE}
 
 USER root

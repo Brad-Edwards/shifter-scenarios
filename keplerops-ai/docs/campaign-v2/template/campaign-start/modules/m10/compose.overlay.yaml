@@ -4,7 +4,7 @@ x-m10-airflow: &m10-airflow
     context: .
     dockerfile: campaign-start/modules/m10/Dockerfile.airflow
     args:
-      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-m09
   environment:
     BUSINESS_ADAPTER_URL: http://business-adapter:8080
     M10_SOURCE_URL: http://m10-source-producer:8080
@@ -44,6 +44,18 @@ services:
     volumes:
       - ./campaign-start/modules/m10/runtime/prometheus.yml:/etc/prometheus/keplerops.yml:ro
       - ./campaign-start/modules/m10/runtime/prometheus-rules.yml:/etc/prometheus/rules/m10-production.yml:ro
+
+  m10-state-init:
+    image: keplerops/airflow:campaign-v2-m10
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        install -d -o 50000 -g 0 -m 0770 /var/lib/keplerops-production /cinder-state
+    volumes:
+      - m10-production-state:/var/lib/keplerops-production
+      - m10-cinder-state:/cinder-state
+    restart: "no"
 
   m10-source-producer:
     <<: *m10-airflow
@@ -165,7 +177,8 @@ services:
           {"Effect":"Allow","Action":["s3:GetObject","s3:GetObjectRetention","s3:PutObject","s3:PutObjectRetention","s3:DeleteObject","s3:DeleteObjectVersion","s3:BypassGovernanceRetention"],"Resource":["arn:aws:s3:::orion-egress-staging/accepted-exports/*"]}
         ]}
         JSON
-        mc admin policy create kepler kepler-orion-export /tmp/export-policy.json
+        mc admin policy create kepler kepler-orion-export /tmp/export-policy.json || \
+          mc admin policy info kepler kepler-orion-export >/dev/null
         mc admin user add kepler svc-orion-export 'KeplerV2-Training-Minio-Orion-Export' || true
         mc admin policy attach kepler kepler-orion-export --user svc-orion-export
     networks:

@@ -4,7 +4,7 @@ x-m09-airflow: &m09-airflow
     context: .
     dockerfile: campaign-start/modules/m09/Dockerfile.airflow
     args:
-      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-m08
   environment:
     M09_STATE_ROOT: /var/lib/orion-release
     M09_REVIEW_DISPATCH_STATE: /var/lib/orion-release/review-dispatch

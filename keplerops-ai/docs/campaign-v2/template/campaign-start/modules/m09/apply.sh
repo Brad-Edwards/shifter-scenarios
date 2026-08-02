@@ -28,6 +28,7 @@ compose() {
     -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
     -f "${TEMPLATE_ROOT}/compose.cinder.yaml" \
     -f "${TEMPLATE_ROOT}/campaign-start/modules/m07/compose.overlay.yaml" \
+    -f "${TEMPLATE_ROOT}/campaign-start/modules/m08/compose.overlay.yaml" \
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
@@ -195,21 +196,29 @@ ensure_airflow() {
   compose build airflow-api orion-import-review-worker >/dev/null
   compose up -d --no-build --no-deps airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
     orion-import-review-worker orion-model-review-dispatcher >/dev/null
-  local token dag
-  token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
-    --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
-    http://10.61.40.35:8080/auth/token | jq -er '.access_token')"
+  local token='' dag ready
   for _ in $(seq 1 90); do
-    if curl -fsS -H "Authorization: Bearer ${token}" \
-      http://10.61.40.35:8080/api/v2/dags/orion_visible_release_evaluation >/dev/null 2>&1; then
-      for dag in orion_candidate_registration orion_lineage_resolution orion_candidate_approval \
-        orion_image_compatibility_decision orion_release_signing orion_production_canary_promotion \
-        orion_upstream_release_intake orion_import_exception_review orion_upstream_mirror_sync \
-        orion_mirror_review orion_staging_reconciliation; do
-        curl -fsS -H "Authorization: Bearer ${token}" "http://10.61.40.35:8080/api/v2/dags/${dag}" >/dev/null
-      done
-      return
-    fi
+    token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
+      --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
+      http://10.61.40.35:8080/auth/token 2>/dev/null | jq -r '.access_token // empty' || true)"
+    [[ -n ${token} ]] && break
+    sleep 2
+  done
+  [[ -n ${token} ]] || die 'Airflow API did not become ready'
+  for _ in $(seq 1 90); do
+    ready=true
+    for dag in orion_visible_release_evaluation orion_candidate_registration \
+      orion_lineage_resolution orion_candidate_approval orion_image_compatibility_decision \
+      orion_release_signing orion_production_canary_promotion orion_upstream_release_intake \
+      orion_import_exception_review orion_upstream_mirror_sync orion_mirror_review \
+      orion_staging_reconciliation; do
+      if ! curl -fsS -H "Authorization: Bearer ${token}" \
+        "http://10.61.40.35:8080/api/v2/dags/${dag}" >/dev/null 2>&1; then
+        ready=false
+        break
+      fi
+    done
+    [[ ${ready} == true ]] && return
     sleep 2
   done
   die 'Airflow did not discover all Orion release operations'
@@ -219,6 +228,7 @@ main() {
   local command
   for command in base64 curl docker jq ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
   [[ ${OPERATION} == all ]] || jq -e --arg id "${OPERATION}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${OPERATION}"
+  "${TEMPLATE_ROOT}/campaign-start/reconcile-airflow-dags.sh"
   install -d -m 0750 "${STATE_ROOT}/accepted" "${STATE_ROOT}/applied" \
     "${STATE_ROOT}/attempts" "${STATE_ROOT}/failed" "${STATE_ROOT}/review-dispatch" \
     "${STATE_ROOT}/promotion-capabilities"

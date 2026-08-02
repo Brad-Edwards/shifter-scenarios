@@ -27,6 +27,8 @@ compose() {
     -f "${TEMPLATE_ROOT}/compose.engineering.yaml" \
     -f "${TEMPLATE_ROOT}/compose.cinder.yaml" \
     -f "${TEMPLATE_ROOT}/campaign-start/modules/m07/compose.overlay.yaml" \
+    -f "${TEMPLATE_ROOT}/campaign-start/modules/m08/compose.overlay.yaml" \
+    -f "${TEMPLATE_ROOT}/campaign-start/modules/m09/compose.overlay.yaml" \
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
@@ -255,13 +257,19 @@ ensure_airflow() {
   # Every M10 source, worker, and Airflow service shares the same module image.
   # Build it once before startup to avoid same-tag export races.
   compose build m10-source-producer >/dev/null
+  compose run --rm --no-deps m10-state-init >/dev/null
   compose up -d --no-build --no-deps m10-source-producer m10-research-worker-1 m10-research-worker-2 \
     m10-feedback-worker-1 m10-feedback-worker-2 \
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
-  local token
-  token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
-    --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
-    http://10.61.40.35:8080/auth/token | jq -er .access_token)"
+  local token=''
+  for _ in $(seq 1 90); do
+    token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
+      --data '{"username":"range-admin","password":"KeplerV2-Training-Airflow"}' \
+      http://10.61.40.35:8080/auth/token 2>/dev/null | jq -r '.access_token // empty' || true)"
+    [[ -n ${token} ]] && break
+    sleep 2
+  done
+  [[ -n ${token} ]] || die 'Airflow API did not become ready'
   for _ in $(seq 1 90); do
     if curl -fsS -H "Authorization: Bearer ${token}" \
       http://10.61.40.35:8080/api/v2/dags/orion_production_continuity >/dev/null 2>&1 && \
@@ -299,6 +307,7 @@ main() {
   local command
   for command in curl docker jq ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
   [[ ${OPERATION} == all ]] || jq -e --arg id "${OPERATION}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${OPERATION}"
+  "${TEMPLATE_ROOT}/campaign-start/reconcile-airflow-dags.sh"
   if [[ ${OPERATION} == all ]]; then
     verify_clean_platform_release
   else
