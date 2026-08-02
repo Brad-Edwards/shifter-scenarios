@@ -111,13 +111,15 @@ services:
       EXPECTED_SENDER: cinder.operator@cinder.lab
       CINDER_MAIL_USER: cinder.operator
       CINDER_MAIL_PASSWORD: KeplerV2-Training-Cinder
-      IMAP_HOST: 10.61.10.20
-      SMTP_HOST: 10.61.10.20
+      IMAP_HOST: mail.keplerops.lab
+      SMTP_HOST: mail.keplerops.lab
       MEDIA_ATTESTATION_PUBLIC_KEY: /state/media-attestation/public.pem
       MEDIA_ATTESTATION_PRIVATE_KEY: /state/media-attestation/private.pem
       CONTACT_PATH: /campaign/payloads/reviewer-contact.json
       PARTNER_WELCOME_PATH: /campaign/payloads/partner-welcome.md
     volumes: *m02-volumes
+    extra_hosts:
+      - "mail.keplerops.lab:10.61.10.20"
     networks: *m02-networks
     restart: unless-stopped
     security_opt: ["no-new-privileges:true"]
