@@ -67,13 +67,12 @@ EOF
 install -m 0640 "${workdir}/business-release.env" "${IDENTITY_ENV}.next"
 mv -f "${IDENTITY_ENV}.next" "${IDENTITY_ENV}"
 
-"${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform patch \
-  secret orion-agent-runtime --type merge \
-  -p "$(jq -cn \
-    --arg release_id "${assistant_id}" \
-    --arg model_digest "${assistant_model}" \
-    '{stringData:{ORION_ASSISTANT_RELEASE_ID:$release_id,ORION_ASSISTANT_MODEL_DIGEST:$model_digest}}')" \
-  >/dev/null
+jq -cn \
+  --arg release_id "${assistant_id}" \
+  --arg model_digest "${assistant_model}" \
+  '{stringData:{ORION_ASSISTANT_RELEASE_ID:$release_id,ORION_ASSISTANT_MODEL_DIGEST:$model_digest}}' | \
+  "${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform patch \
+    secret orion-agent-runtime --type merge --patch-file=/dev/stdin >/dev/null
 "${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform rollout restart \
   deployment/orion-agent >/dev/null
 "${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform rollout status \

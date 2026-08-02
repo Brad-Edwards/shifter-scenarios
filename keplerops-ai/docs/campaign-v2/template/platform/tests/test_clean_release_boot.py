@@ -100,6 +100,11 @@ class CleanReleaseBootSourceTests(unittest.TestCase):
         promote = source("platform/scripts/promote-release-candidate.sh")
         self.assertIn('--entrypoint /bin/sh "${MINIO_CLIENT_IMAGE}" -ec', promote)
 
+    def test_runtime_identity_patch_crosses_ssh_on_stdin(self) -> None:
+        activate = source("scripts/activate-business-model-identities.sh")
+        self.assertIn("--patch-file=/dev/stdin", activate)
+        self.assertNotIn("\n  -p \"$(jq", activate)
+
     def test_gitops_seed_is_repository_only_before_clean_promotion(self) -> None:
         seed = source("platform/scripts/seed-gitops.sh")
         materialize = source("scripts/materialize-clean-release.sh")
