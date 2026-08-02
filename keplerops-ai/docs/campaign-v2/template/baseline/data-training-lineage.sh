@@ -63,8 +63,9 @@ dag_runs="$(curl -fsS \
   -H "Authorization: Bearer ${airflow_token}" \
   "${AIRFLOW_URL}/api/v2/dags/${AIRFLOW_DAG}/dagRuns?limit=20&order_by=-start_date")"
 scheduled_run="$(jq -ec \
-  '[.dag_runs[] | select(.run_type == "scheduled")]
-   | if length > 0 then .[0] else error("no scheduled training run") end' \
+  '[.dag_runs[]
+    | select(.run_type == "scheduled" and (.state != "queued" and .state != "running"))]
+   | if length > 0 then .[0] else error("no completed scheduled training run") end' \
   <<<"${dag_runs}")"
 jq -e '.state == "success"' <<<"${scheduled_run}" >/dev/null
 dag_run_id="$(jq -er '.dag_run_id' <<<"${scheduled_run}")"
