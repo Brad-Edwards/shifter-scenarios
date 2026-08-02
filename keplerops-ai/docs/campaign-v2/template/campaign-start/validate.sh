@@ -10,9 +10,35 @@ mode=${1:---static}
 [[ ${mode} == --static ]] && exit 0
 
 if [[ ${mode} == --all ]]; then
+  evidence_manifest=${CAMPAIGN_EVIDENCE_MANIFEST:-}
+  [[ -r ${evidence_manifest} ]] || {
+    printf 'CAMPAIGN_EVIDENCE_MANIFEST must name the participant walkthrough evidence JSON\n' >&2
+    exit 2
+  }
   while IFS= read -r module; do
     while IFS= read -r operation; do
-      "${module}/validate.sh" "${operation}"
+      mapfile -t encoded_environment < <(
+        jq -er --arg operation "${operation}" '
+          .[$operation] as $entry |
+          if ($entry | type) != "object" then
+            error("missing evidence for " + $operation)
+          else
+            $entry | to_entries[] |
+            select(.key | test("^PARTICIPANT_[A-Z0-9_]+$")) |
+            select(.value | type == "string") |
+            ((.key + "=" + .value) | @base64)
+          end
+        ' "${evidence_manifest}"
+      )
+      (( ${#encoded_environment[@]} > 0 )) || {
+        printf 'participant evidence is empty for %s\n' "${operation}" >&2
+        exit 2
+      }
+      environment=()
+      for encoded in "${encoded_environment[@]}"; do
+        environment+=("$(base64 -d <<<"${encoded}")")
+      done
+      env "${environment[@]}" "${module}/validate.sh" "${operation}"
     done < <(jq -r '.[].id' "${module}/operations.json")
   done < <(find "${ROOT}/modules" -mindepth 1 -maxdepth 1 \
     -type d -name 'm??' -print | sort)

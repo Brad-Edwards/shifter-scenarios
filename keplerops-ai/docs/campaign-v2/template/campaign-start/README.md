@@ -16,7 +16,22 @@ Each `modules/mXX` directory owns:
 
 Run `./apply.sh` only after the clean enterprise is healthy. Run
 `./validate.sh --static` before applying state, then `./validate.sh --all`
-against the integrated candidate. `./export-shifter.py` produces the single
+against the integrated candidate with `CAMPAIGN_EVIDENCE_MANIFEST` naming the
+walkthrough evidence JSON. The manifest is keyed by operation ID; each value is
+an object containing the `PARTICIPANT_*` environment values required by that
+module validator, for example:
+
+```json
+{
+  "kep-m01-a": {
+    "PARTICIPANT_CARRIER_URL": "https://workhub.keplerops.lab/issues/101",
+    "PARTICIPANT_NEGATIVE_URL": "https://release.keplerops.lab/v1/release-calendar/orion-edge-2026.08"
+  }
+}
+```
+
+This file is generated during the participant-equivalent walkthrough and is not
+part of campaign start state. `./export-shifter.py` produces the single
 digest-pinned `shifter-ctf-content/v1` bundle used by Shifter's native scenario
 content hydration path. Shifter's prerequisite graph is conjunctive. A mixed
 path may declare `board_prerequisites` for only the prerequisites that are
