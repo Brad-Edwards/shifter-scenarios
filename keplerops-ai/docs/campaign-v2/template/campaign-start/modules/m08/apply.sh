@@ -6,6 +6,7 @@ readonly MODULE_ROOT
 TEMPLATE_ROOT="$(cd "${MODULE_ROOT}/../../.." && pwd)"
 readonly TEMPLATE_ROOT
 readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-start}/m08"
+readonly SOFTWARE_DEPLOY_ONLY="${CAMPAIGN_SOFTWARE_DEPLOY_ONLY:-0}"
 readonly LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
 readonly LABEL_STUDIO_TOKEN="${LABEL_STUDIO_API_TOKEN:-31a5a4b4ab3cdbaf110644eed06853b2b418daf6}"
 readonly FORGEJO_API_URL="${CINDER_FORGEJO_API_URL:-http://10.61.90.30:3000/api/v1}"
@@ -136,10 +137,21 @@ main() {
   ensure_label_project
   ensure_mlflow_experiment
   ensure_airflow
-  "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
-  while IFS= read -r operation; do printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"; done \
+  if [[ ${SOFTWARE_DEPLOY_ONLY} != 1 ]]; then
+    "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
+  fi
+  while IFS= read -r operation; do
+    if [[ ${SOFTWARE_DEPLOY_ONLY} == 1 && ${operation} == kep-m08-i ]]; then
+      continue
+    fi
+    printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
+  done \
     < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
-  log 'reconciled all m08 research start state without producing accepted results'
+  if [[ ${SOFTWARE_DEPLOY_ONLY} == 1 ]]; then
+    log 'reconciled m08 software research state; physical calibration remains unavailable'
+  else
+    log 'reconciled all m08 research start state without producing accepted results'
+  fi
 }
 
 main "$@"

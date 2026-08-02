@@ -442,6 +442,9 @@ main() {
     jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: $OPERATION"
   fi
   apply_common
+  if [[ $OPERATION == kep-m06-m ]]; then
+    "${TEMPLATE_ROOT}/scripts/prove-hardware.sh"
+  fi
   log "applied ${OPERATION}"
 }
 

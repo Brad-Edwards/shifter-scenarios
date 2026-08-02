@@ -14,7 +14,18 @@ Each `modules/mXX` directory owns:
 - `qa.md` and `facilitator.md`: executable QA and teaching material; and
 - `payloads/`: ordinary in-world content.
 
-Run `./apply.sh` only after the clean enterprise is healthy. Run
+Run `./apply.sh` only after the clean enterprise is healthy. The default full
+apply deploys the 132 software operations and writes
+`/run/shifter/keplerops-v2-software.ready`; it does not mark `kep-m08-i` or
+`kep-m06-m` ready and never writes the all-challenges marker. Run
+`./apply.sh --all-challenges` only when a real physical place is attached and
+`KEPLEROPS_HARDWARE_GATE14_PLACE` names it. That mode requires the real-place
+evidence exercise and the Kali reservation/acquisition/release gate before it
+writes `/run/shifter/keplerops-v2-campaign.ready`. Applying a single
+non-physical operation does not require the external bench. Applying either
+physical operation remains fail-closed.
+
+Run
 `./validate.sh --static` before applying state, then `./validate.sh --all`
 against the integrated candidate with `CAMPAIGN_EVIDENCE_MANIFEST` naming the
 walkthrough evidence JSON. The manifest is keyed by operation ID; each value is

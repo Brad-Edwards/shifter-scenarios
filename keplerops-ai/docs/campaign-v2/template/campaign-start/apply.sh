@@ -5,9 +5,19 @@ set -Eeuo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly ROOT
 readonly READINESS_MARKER="${CAMPAIGN_READINESS_MARKER:-/run/shifter/keplerops-v2-campaign.ready}"
+readonly SOFTWARE_READINESS_MARKER="${CAMPAIGN_SOFTWARE_READINESS_MARKER:-/run/shifter/keplerops-v2-software.ready}"
 readonly HARDWARE_READINESS_MARKER="${CAMPAIGN_HARDWARE_READINESS_MARKER:-/run/shifter/keplerops-v2-hardware.ready}"
 operation=${1:-}
 CAMPAIGN_APPLY_ID=${CAMPAIGN_APPLY_ID:-}
+all_challenges=false
+
+if [[ ${operation} == --all-challenges ]]; then
+  operation=
+  all_challenges=true
+elif [[ ${operation} == --* ]]; then
+  printf 'unknown campaign apply mode: %s\n' "${operation}" >&2
+  exit 2
+fi
 
 readonly -a SHARED_SERVICES=(
   airflow-api
@@ -127,7 +137,12 @@ require_fresh_hardware_proof() {
 if [[ -z ${operation} ]]; then
   CAMPAIGN_APPLY_ID=${CAMPAIGN_APPLY_ID:-$(cat /proc/sys/kernel/random/uuid)}
   export CAMPAIGN_APPLY_ID
-  rm -f "${READINESS_MARKER}" "${HARDWARE_READINESS_MARKER}"
+  rm -f "${READINESS_MARKER}" "${SOFTWARE_READINESS_MARKER}"
+  if [[ ${all_challenges} == true ]]; then
+    rm -f "${HARDWARE_READINESS_MARKER}"
+  else
+    export CAMPAIGN_SOFTWARE_DEPLOY_ONLY=1
+  fi
   "${ROOT}/validate.sh" --static
 fi
 
@@ -161,13 +176,21 @@ done
 
 if [[ -z ${operation} ]]; then
   converge_shared_services build
-  require_fresh_hardware_proof
+  if [[ ${all_challenges} == true ]]; then
+    require_fresh_hardware_proof
+  fi
 else
   converge_shared_services no-build
   exit 0
 fi
 
 install -d -m 0755 "$(dirname "${READINESS_MARKER}")"
-printf '%s campaign-v2\n' "$(cat /proc/sys/kernel/random/boot_id)" \
-  >"${READINESS_MARKER}"
-printf 'KeplerOps campaign-v2 participant state is ready\n'
+printf '%s\t%s\tsoftware-operations\n' "$(cat /proc/sys/kernel/random/boot_id)" \
+  "${CAMPAIGN_APPLY_ID}" >"${SOFTWARE_READINESS_MARKER}"
+if [[ ${all_challenges} == true ]]; then
+  printf '%s\t%s\tall-challenges\n' "$(cat /proc/sys/kernel/random/boot_id)" \
+    "${CAMPAIGN_APPLY_ID}" >"${READINESS_MARKER}"
+  printf 'KeplerOps campaign-v2 all-challenges state is ready\n'
+else
+  printf 'KeplerOps campaign-v2 software state is ready; physical operations are not claimed\n'
+fi
