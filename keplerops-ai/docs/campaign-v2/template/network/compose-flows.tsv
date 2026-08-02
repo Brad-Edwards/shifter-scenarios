@@ -16,6 +16,7 @@ kep-v2-pdns-recursor	cidr:0.0.0.0/0	udp	53	recursive DNS upstream
 keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	tcp	53	Cinder workstation DNS
 keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	udp	53	Cinder workstation DNS
 keplerops-participant-workstation-runtime	kep-v2-caddy	tcp	443	KeplerOps and Cinder published services
+keplerops-participant-workstation-runtime	kep-v2-stalwart	tcp	25,465,587,993	Cinder operator mail edge
 keplerops-participant-workstation-runtime	kep-v2-labgrid-coordinator	tcp	20408	physical evaluation coordinator
 keplerops-participant-workstation-runtime	cidr:0.0.0.0/0	tcp	80,443	Internet research and Cinder-controlled services
 kep-v2-keycloak	kep-v2-postgres	tcp	5432	identity database
@@ -43,6 +44,7 @@ kep-v2-caddy	kep-v2-nextcloud	tcp	80	file service edge
 kep-v2-caddy	kep-v2-zammad-nginx	tcp	8080	support edge
 kep-v2-caddy	kep-v2-librechat	tcp	3080	assistant UI edge
 kep-v2-caddy	kep-v2-preview	tcp	8080	Orion Preview edge
+kep-v2-preview	cidr:192.168.78.30/32	tcp	30083	admitted release-risk inference
 kep-v2-caddy	kep-v2-ghost	tcp	2368	status site edge
 kep-v2-caddy	kep-v2-mautic	tcp	80	advisory edge
 kep-v2-caddy	kep-v2-odoo	tcp	8069	business system edge

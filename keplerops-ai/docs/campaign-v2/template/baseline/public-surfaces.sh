@@ -95,7 +95,9 @@ pass 'client repository is public through Forgejo API and Git smart-HTTP over ve
 preview_body=$(https_get "$PREVIEW/")
 grep -Fq '<h1>Review a release note</h1>' <<<"$preview_body" || \
   fail 'Orion Preview did not return its public analysis surface'
-preview_result=$(https_get \
+preview_result=$(curl --silent --show-error --fail-with-body \
+  --connect-timeout 5 --max-time 120 \
+  --proto '=https' --tlsv1.2 --cacert "$RANGE_CA" \
   --header 'Content-Type: application/json' \
   --request POST \
   --data '{"text":"Routine Orion release review with approved lineage and validation evidence."}' \
