@@ -235,7 +235,7 @@ install -d -m 0750 "${workdir}/model-package"
 package_prefix="releases/orion-release-risk/${release_id}"
 docker run --rm --network kep-v2-data \
   -v "${workdir}/model-package:/publish:ro" \
-  "${MINIO_CLIENT_IMAGE}" sh -ec "
+  --entrypoint /bin/sh "${MINIO_CLIENT_IMAGE}" -ec "
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
     mc mb --ignore-existing kepler/artifacts >/dev/null
     mc cp /publish/orion-release-risk.tar.gz 'kepler/artifacts/${package_prefix}/orion-release-risk.tar.gz' >/dev/null

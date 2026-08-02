@@ -96,6 +96,10 @@ class CleanReleaseBootSourceTests(unittest.TestCase):
         self.assertNotIn("operation accepted", materialize.lower())
         self.assertNotIn("checkpoint", materialize.lower())
 
+    def test_package_publication_overrides_the_mc_entrypoint(self) -> None:
+        promote = source("platform/scripts/promote-release-candidate.sh")
+        self.assertIn('--entrypoint /bin/sh "${MINIO_CLIENT_IMAGE}" -ec', promote)
+
     def test_gitops_seed_is_repository_only_before_clean_promotion(self) -> None:
         seed = source("platform/scripts/seed-gitops.sh")
         materialize = source("scripts/materialize-clean-release.sh")
