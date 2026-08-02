@@ -13,7 +13,7 @@ import httpx
 import mcp_service
 
 
-FORGEJO_URL = os.getenv("FORGEJO_URL", "http://192.168.78.1:13000")
+FORGEJO_URL = os.getenv("FORGEJO_URL", "http://192.168.78.1:3000")
 FORGEJO_TOKEN = os.getenv("FORGEJO_RELEASE_TOKEN", "")
 FORGEJO_USER = os.getenv("FORGEJO_RELEASE_USER", "svc-orion-mcp")
 FORGEJO_PASSWORD = os.getenv("FORGEJO_RELEASE_PASSWORD", "")

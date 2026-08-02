@@ -43,12 +43,15 @@ compose() {
 }
 
 forgejo_put_file() {
-  local repo=$1 path=$2 source=$3 message=$4 api existing sha payload method
+  local repo=$1 path=$2 source=$3 message=$4 api content existing existing_content sha payload method
   api="${FORGEJO_API_URL}/repos/keplerops/${repo}/contents/${path}"
+  content="$(base64 -w0 "$source")"
   existing="$(curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" "$api" 2>/dev/null || true)"
-  payload="$(jq -cn --arg content "$(base64 -w0 "$source")" --arg message "$message" '{content:$content,message:$message,branch:"main"}')"
+  payload="$(jq -cn --arg content "$content" --arg message "$message" '{content:$content,message:$message,branch:"main"}')"
   method=POST
   if sha="$(jq -er '.sha' <<<"$existing" 2>/dev/null)"; then
+    existing_content="$(jq -r '.content // "" | gsub("[\\r\\n]"; "")' <<<"$existing")"
+    [[ $existing_content == "$content" ]] && return 0
     payload="$(jq --arg sha "$sha" '. + {sha:$sha}' <<<"$payload")"; method=PUT
   fi
   curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" -H 'Content-Type: application/json' -X "$method" --data "$payload" "$api" >/dev/null
@@ -91,7 +94,8 @@ ensure_harbor_robot() {
 }
 
 cosign() {
-  docker run --rm --network host -e COSIGN_PASSWORD=Orion-M05-Signing-2026 \
+  docker run --rm --network host --user 0:0 \
+    -e COSIGN_PASSWORD=Orion-M05-Signing-2026 -e DOCKER_CONFIG=/root/.docker \
     -v "${STATE_ROOT}/signing:/work" -v /root/.docker:/root/.docker:ro \
     -v "${TEMPLATE_ROOT}/state/caddy-root.crt:/etc/ssl/certs/keplerops-caddy-root.crt:ro" \
     -w /work "$COSIGN_IMAGE" "$@"
@@ -153,19 +157,22 @@ configure_source_admission() {
 configure_m05_actions_runners() {
   local repo secret name
   while read -r repo secret name; do
+    log "registering ${name} for organization scope (repository workload: ${repo})"
     compose exec -T forgejo forgejo forgejo-cli actions register \
       --config /data/gitea/conf/app.ini \
       --secret "$secret" \
-      --scope "keplerops/${repo}" \
-      --labels 'm05-orion-release-linux:host' \
-      --name "$name" >/dev/null 2>&1 || true
+      --scope keplerops \
+      --labels m05-orion-release-linux \
+      --name "$name" \
+      --version 6.3.1 </dev/null >/dev/null
   done <<'RUNNERS'
 orion-release-tools 8a1d0d48c50961f0e71b3a8e6af8c9d5bcb8bce1 orion-release-tools-isolated
 orion-agent-config d211b485924c2dca3ff34bf5ca98ca6f301a0379 orion-agent-config-isolated
 orion-blueprints 28077287cdca65ba03df8066d0e85d5ca2dcf77d orion-blueprints-isolated
 orion-staging 985516a6a6fd3df5f971441ed335151223bc2768 orion-staging-isolated
 RUNNERS
-  compose up -d --build m05-buildkit m05-actions-release-tools m05-actions-agent-config \
+  compose build m05-actions-release-tools m05-source-admission >/dev/null
+  compose up -d --no-build m05-buildkit m05-actions-release-tools m05-actions-agent-config \
     m05-actions-blueprints m05-actions-staging m05-source-admission >/dev/null
 }
 
@@ -222,10 +229,14 @@ configure_signature_admission_key() {
 }
 
 configure_k3s_runtime() {
+  local gitops_revision
   [[ -r ${K3S01_SSH_KEY} ]] || die 'k3s01 SSH key is unavailable'
-  "${SSH[@]}" "$K3S01_SSH_TARGET" sudo bash -s <<'REMOTE'
+  gitops_revision="$(curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" \
+    "${FORGEJO_API_URL}/repos/keplerops/orion-agent-gitops/branches/main" | jq -er '.commit.id')"
+  "${SSH[@]}" "$K3S01_SSH_TARGET" sudo bash -s -- "$gitops_revision" <<'REMOTE'
 set -Eeuo pipefail
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+readonly EXPECTED_GITOPS_REVISION=$1
 identity_json='{"KAI-Orion-Partner-Identity-2026":"partner.reviewer","KAI-Orion-Support-Identity-2026":"support.analyst","KAI-Orion-Control-Identity-2026":"release.control","orion-job-7e6fd2f22d64416d":"svc-orion-integration","KAI-Orion-M02-Partner-Automation-2026":"partner.reviewer","KAI-Orion-M02-Support-Automation-2026":"support.analyst","KAI-Orion-M03-Release-Automation-2026":"release.engineer","KAI-Orion-M04-Audit-Automation-2026":"eval.reader","KAI-Orion-M04-Support-Automation-2026":"svc.support-preview","KAI-Orion-M04-Release-Automation-2026":"svc.release-routing"}'
 current="$(k3s kubectl -n orion-platform get secret orion-agent-runtime -o json)"
 patched="$(jq \
@@ -245,7 +256,7 @@ k3s kubectl -n orion-platform create secret docker-registry harbor-orion-pull \
   k3s kubectl apply -f - >/dev/null
 k3s kubectl -n argocd create secret generic repo-orion-agent-gitops \
   --from-literal=type=git \
-  --from-literal=url=http://192.168.78.1:13000/keplerops/orion-agent-gitops.git \
+  --from-literal=url=http://192.168.78.1:3000/keplerops/orion-agent-gitops.git \
   --from-literal=username=svc-orion-gitops \
   --from-literal=password=KAI-Orion-GitOps-Writer-2026 \
   --dry-run=client -o yaml |
@@ -258,7 +269,7 @@ metadata: {name: orion-agent-runtime, namespace: argocd}
 spec:
   project: default
   source:
-    repoURL: http://192.168.78.1:13000/keplerops/orion-agent-gitops.git
+    repoURL: http://192.168.78.1:3000/keplerops/orion-agent-gitops.git
     targetRevision: main
     path: .
   destination: {server: https://kubernetes.default.svc, namespace: orion-platform}
@@ -267,10 +278,11 @@ YAML
 k3s kubectl apply -f /tmp/m05-argo-application.yaml >/dev/null
 for _ in $(seq 1 90); do
   state="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.status}/{.status.health.status}' 2>/dev/null || true)"
-  [[ $state == Synced/Healthy ]] && exit 0
+  revision="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.revision}' 2>/dev/null || true)"
+  [[ $state == Synced/Healthy && $revision == "$EXPECTED_GITOPS_REVISION" ]] && exit 0
   sleep 2
 done
-echo 'Orion Argo application did not become Synced/Healthy' >&2
+echo "Orion Argo application did not become Synced/Healthy at revision ${EXPECTED_GITOPS_REVISION}" >&2
 exit 4
 REMOTE
 }
@@ -326,8 +338,8 @@ PY
 }
 
 seed_airflow() {
-  docker volume create kep-v2-jupyter-reviewer >/dev/null
-  docker run --rm -i -v kep-v2-jupyter-reviewer:/work alpine:3.22 sh -c 'mkdir -p /work/orion-evaluation/.config/airflow; tar -C /work/orion-evaluation -xf -; mv /work/orion-evaluation/airflow-client.yaml /work/orion-evaluation/.config/airflow/client.yaml' < <(tar -C "${MODULE_ROOT}/payloads/notebooks" -cf - orion-evaluation-migration.ipynb airflow-client.yaml)
+  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker run --rm -i -v kep-v2-jupyter-eval.reader:/work alpine:3.22 sh -c 'mkdir -p /work/orion-evaluation/.config/airflow; tar -C /work/orion-evaluation -xf -; mv /work/orion-evaluation/airflow-client.yaml /work/orion-evaluation/.config/airflow/client.yaml' < <(tar -C "${MODULE_ROOT}/payloads/notebooks" -cf - orion-evaluation-migration.ipynb airflow-client.yaml)
   compose exec -T airflow-api airflow users create --username evaluation.viewer --firstname Evaluation --lastname Viewer --role 'Orion Viewer' --email evaluation.viewer@keplerops.lab --password Orion-Evaluation-Viewer-2026 >/dev/null 2>&1 || compose exec -T airflow-api airflow users reset-password --username evaluation.viewer --password Orion-Evaluation-Viewer-2026 >/dev/null
   local service
   for service in airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker; do

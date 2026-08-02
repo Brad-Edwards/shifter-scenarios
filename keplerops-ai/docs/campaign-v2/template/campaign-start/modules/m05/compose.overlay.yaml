@@ -27,7 +27,7 @@ x-m05-actions-runner: &m05-actions-runner
   security_opt: [no-new-privileges:true]
   depends_on:
     m05-buildkit:
-      condition: service_started
+      condition: service_healthy
   networks:
     engineering: {}
   restart: unless-stopped
@@ -60,6 +60,12 @@ services:
       engineering:
         ipv4_address: 10.61.40.55
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "buildctl", "--addr", "tcp://127.0.0.1:1234", "debug", "workers"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 2s
 
   m05-actions-release-tools:
     <<: *m05-actions-runner

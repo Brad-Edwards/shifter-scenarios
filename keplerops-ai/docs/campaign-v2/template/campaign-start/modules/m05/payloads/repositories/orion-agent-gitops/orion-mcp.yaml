@@ -21,7 +21,7 @@ spec:
           image: registry.keplerops.lab/orion-internal/orion-mcp@sha256:__MCP_DIGEST__
           imagePullPolicy: IfNotPresent
           env:
-            - {name: FORGEJO_URL, value: "http://192.168.78.1:13000"}
+            - {name: FORGEJO_URL, value: "http://192.168.78.1:3000"}
             - {name: FORGEJO_RELEASE_USER, value: "svc-orion-mcp"}
             - name: FORGEJO_RELEASE_PASSWORD
               valueFrom: {secretKeyRef: {name: orion-release-runtime, key: FORGEJO_RELEASE_PASSWORD}}
