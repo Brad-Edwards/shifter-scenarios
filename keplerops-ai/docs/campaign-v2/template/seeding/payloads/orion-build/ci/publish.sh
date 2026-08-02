@@ -44,7 +44,7 @@ docker build \
   --provenance=false \
   --build-arg "ORION_BUILD_REVISION=${GITHUB_SHA}" \
   --tag "${IMAGE_REPOSITORY}:${short_revision}" \
-  --tag "${IMAGE_REPOSITORY}:clean-latest" \
+  --tag "${IMAGE_REPOSITORY}:release-latest" \
   service
 docker save --output "${image_archive}" "${IMAGE_REPOSITORY}:${short_revision}"
 printf '%s' "${HARBOR_PASSWORD}" | \
@@ -55,7 +55,7 @@ printf '%s' "${HARBOR_PASSWORD}" | \
 SSL_CERT_FILE="${REGISTRY_CERT_DIR}/ca.crt" \
   crane push "${image_archive}" "${IMAGE_REPOSITORY}:${short_revision}"
 SSL_CERT_FILE="${REGISTRY_CERT_DIR}/ca.crt" \
-  crane tag "${IMAGE_REPOSITORY}:${short_revision}" clean-latest
+  crane tag "${IMAGE_REPOSITORY}:${short_revision}" release-latest
 
 digest="$(SSL_CERT_FILE="${REGISTRY_CERT_DIR}/ca.crt" \
   crane digest "${IMAGE_REPOSITORY}:${short_revision}")"

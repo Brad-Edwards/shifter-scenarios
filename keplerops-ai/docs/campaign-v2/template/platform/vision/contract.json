@@ -1,0 +1,72 @@
+{
+  "architecture": {
+    "blocks_per_stage": [
+      1,
+      1,
+      1
+    ],
+    "channels": [
+      16,
+      32,
+      64
+    ],
+    "name": "orion-resnet-tiny-v1"
+  },
+  "classes": [
+    {
+      "id": 0,
+      "label": "alignment_array"
+    },
+    {
+      "id": 1,
+      "label": "optical_coupler"
+    },
+    {
+      "id": 2,
+      "label": "thermal_sensor"
+    },
+    {
+      "id": 3,
+      "label": "waveguide_mesh"
+    }
+  ],
+  "dataset": {
+    "calibration_images_per_class": 8,
+    "generator": "orion-vision-synthetic-v1",
+    "protected_images_per_class": 1,
+    "seed": 260806,
+    "train_images_per_class": 32
+  },
+  "model_family": "vision-prototype",
+  "model_name": "orion-vision-prototype",
+  "preprocessing": {
+    "channels": 3,
+    "color_space": "RGB",
+    "dtype": "float32",
+    "height": 64,
+    "layout": "NCHW",
+    "mean": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "pixel_scale": 0.00392156862745098,
+    "std": [
+      0.5,
+      0.5,
+      0.5
+    ],
+    "width": 64
+  },
+  "revision": "1.0.0",
+  "schema": "keplerops.orion.vision/v1",
+  "training": {
+    "batch_size": 32,
+    "epochs": 36,
+    "learning_rate": 0.003,
+    "optimizer": "AdamW",
+    "seed": 260806,
+    "softmax_temperature": 3.0,
+    "weight_decay": 0.0001
+  }
+}

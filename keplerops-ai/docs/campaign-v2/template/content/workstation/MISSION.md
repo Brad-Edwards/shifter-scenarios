@@ -1,18 +1,17 @@
 # Cinder Typhoon Mission
 
-KeplerOps AI Systems develops the Orion family of AI products. Your operation
-is to enter through the company's real public-facing systems, establish durable
-access, and acquire its models, research, data, and release pipeline.
+Cinder Typhoon has tasked your team with an intrusion against KeplerOps AI
+Systems, developer of the Orion family of AI products. Your objective is to
+gain access and acquire the company's models, research, data, and release
+pipeline.
 
-Start with the public company site:
+Begin with the public company site:
 
 https://keplerops.lab/
 
-Use the objectives and hints in Shifter as your operational tasking. The Kali
-desktop is your attacker-controlled workstation. Chromium, the terminal, your
-working files, and the supplied Cinder infrastructure are available throughout
-the campaign. KeplerOps employee credentials are not supplied at the start;
-earn access through the operation.
+KeplerOps employee access has not been established. Identify a viable entry
+point, develop access through the systems you encounter, and follow the
+relationships between the company's business and engineering services.
 
-This is an isolated exercise range. Do not target public Internet systems or
-send exercise mail outside the provided range domains.
+Operate only against KeplerOps systems and domains assigned to this operation.
+Do not engage unrelated Internet systems.

@@ -2,151 +2,187 @@
   {
     "type": "domain",
     "name": "keplerops.lab",
-    "description": "Kepler Operations corporate mail domain"
+    "description": "KeplerOps AI Systems corporate mail domain"
   },
   {
     "type": "domain",
     "name": "cinder.lab",
-    "description": "Cinder partner mail domain"
+    "description": "Cinder Labs partner mail domain"
   },
   {
     "type": "individual",
+    "source": "corp-employee",
     "name": "reviewer",
     "description": "Rina Chen",
-    "emails": ["reviewer@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "REVIEWER_PASSWORD"
+    "emails": ["reviewer@keplerops.lab"]
   },
   {
     "type": "individual",
+    "source": "corp-employee",
     "name": "ml.engineer",
     "description": "Maya Ortiz",
-    "emails": ["ml.engineer@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "ML_ENGINEER_PASSWORD"
+    "emails": ["ml.engineer@keplerops.lab"]
   },
   {
     "type": "individual",
+    "source": "corp-employee",
+    "name": "data.annotator",
+    "description": "Imani Brooks",
+    "emails": ["data.annotator@keplerops.lab"]
+  },
+  {
+    "type": "individual",
+    "source": "corp-employee",
     "name": "release.engineer",
     "description": "Elliot Park",
-    "emails": ["release.engineer@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "RELEASE_ENGINEER_PASSWORD"
+    "emails": ["release.engineer@keplerops.lab"]
   },
   {
     "type": "individual",
-    "name": "communications",
-    "description": "Samira Okafor",
-    "emails": ["communications@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "COMMS_PUBLISHER_PASSWORD"
+    "source": "corp-employee",
+    "name": "release.approver",
+    "description": "Priya Nair",
+    "emails": ["release.approver@keplerops.lab"]
   },
   {
     "type": "individual",
+    "source": "corp-employee",
+    "name": "platform.operator",
+    "description": "Luca Bianchi",
+    "emails": ["platform.operator@keplerops.lab"]
+  },
+  {
+    "type": "individual",
+    "source": "corp-employee",
     "name": "comms.publisher",
-    "description": "Samira Okafor publishing identity",
-    "emails": ["comms.publisher@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "COMMS_PUBLISHER_PASSWORD"
+    "description": "Samira Okafor",
+    "emails": [
+      "comms.publisher@keplerops.lab",
+      "communications@keplerops.lab"
+    ]
   },
   {
     "type": "individual",
-    "name": "support",
+    "source": "corp-employee",
+    "name": "support.analyst",
     "description": "Jonas Becker",
-    "emails": ["support@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "SUPPORT_ANALYST_PASSWORD"
+    "emails": [
+      "support.analyst@keplerops.lab",
+      "support@keplerops.lab"
+    ]
   },
   {
     "type": "individual",
+    "source": "corp-employee",
+    "name": "finance.operator",
+    "description": "Hana Suzuki",
+    "emails": ["finance.operator@keplerops.lab"]
+  },
+  {
+    "type": "individual",
+    "source": "corp-employee",
+    "name": "security.auditor",
+    "description": "Darius Cole",
+    "emails": ["security.auditor@keplerops.lab"]
+  },
+  {
+    "type": "individual",
+    "source": "corp-service",
+    "name": "svc-stalwart-ldap",
+    "description": "Directory reader for the corporate mail service",
+    "emails": [],
+    "ou": "Service Accounts",
+    "password": "KeplerV2-Training-Stalwart-LDAP"
+  },
+  {
+    "type": "individual",
+    "source": "corp-service",
     "name": "partner-intake",
     "description": "Partner intake mailbox",
     "emails": ["partner-intake@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "Service Accounts",
     "password_env": "PARTNER_INTAKE_PASSWORD"
   },
   {
     "type": "individual",
+    "source": "corp-service",
+    "name": "billing",
+    "description": "Billing automation mailbox",
+    "emails": ["billing@keplerops.lab"],
+    "ou": "Service Accounts",
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "source": "corp-service",
+    "name": "advisories",
+    "description": "Product safety advisory mailbox",
+    "emails": ["advisories@keplerops.lab"],
+    "ou": "Service Accounts",
+    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "source": "corp-external",
     "name": "cinder.operator",
-    "description": "Cinder partner operator",
+    "description": "Avery Morgan, Cinder Labs",
     "emails": ["cinder.operator@cinder.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "External Accounts",
     "password_env": "CINDER_OPERATOR_PASSWORD"
   },
   {
     "type": "individual",
-    "name": "billing",
-    "description": "KeplerOps billing automation",
-    "emails": ["billing@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
-  },
-  {
-    "type": "individual",
-    "name": "advisories",
-    "description": "KeplerOps product safety advisories",
-    "emails": ["advisories@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
-    "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
-  },
-  {
-    "type": "individual",
+    "source": "corp-external",
     "name": "billing.customer",
     "description": "Acme Labs billing contact",
     "emails": ["billing.customer@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "External Accounts",
     "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
   },
   {
     "type": "individual",
+    "source": "corp-external",
     "name": "edge.operator",
     "description": "Orion Edge customer operator",
     "emails": ["edge.operator@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "External Accounts",
     "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
   },
   {
     "type": "individual",
+    "source": "corp-external",
     "name": "core.operator",
     "description": "Orion Core customer operator",
     "emails": ["core.operator@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "External Accounts",
     "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
   },
   {
     "type": "individual",
+    "source": "corp-external",
     "name": "vision.operator",
     "description": "Orion Vision customer operator",
     "emails": ["vision.operator@keplerops.lab"],
-    "roles": ["user"],
-    "memberOf": [],
-    "quota": 0,
+    "ou": "External Accounts",
     "password_env": "SYNTHETIC_BUSINESS_PASSWORD"
+  },
+  {
+    "type": "individual",
+    "source": "corp-disabled",
+    "name": "former.contractor",
+    "description": "Former vendor liaison",
+    "emails": ["former.contractor@keplerops.lab"],
+    "ou": "External Accounts",
+    "password": "KeplerV2-Training-Former-Contractor"
+  },
+  {
+    "type": "individual",
+    "source": "retired-local",
+    "name": "communications"
+  },
+  {
+    "type": "individual",
+    "source": "retired-local",
+    "name": "support"
   }
 ]

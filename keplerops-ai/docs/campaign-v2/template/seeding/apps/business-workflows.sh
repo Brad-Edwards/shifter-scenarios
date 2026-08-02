@@ -17,7 +17,7 @@ main() {
   done
 
   compose exec -T business-adapter python -m app.seed
-  log "bounded clean business workflow state is ready"
+  log "bounded business workflow state is ready"
 }
 
 main "$@"

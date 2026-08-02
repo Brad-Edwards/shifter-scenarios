@@ -66,6 +66,8 @@ for deployment in opa vertex-openai-proxy litellm orion-agent orion-mcp; do
   kubectl -n orion-platform rollout status "deployment/$deployment" --timeout=5m >/dev/null
 done
 pass "OPA, LiteLLM, LangGraph, and MCP deployments available"
+kubectl -n orion-runtime rollout status deployment/orion-vision --timeout=5m >/dev/null
+pass "Orion Vision prototype deployment available"
 
 start_forward orion-platform service/opa 18181 8181
 curl -fsS http://127.0.0.1:18181/health >/dev/null
@@ -124,6 +126,15 @@ prediction=$(curl -fsS -H 'Content-Type: application/json' \
 [[ $(jq '.predictions[0].probabilities | length' <<<"$prediction") == 8 ]] || \
   fail "neutral ONNX prediction response"
 pass "KServe neutral ONNX prediction path"
+
+start_forward orion-runtime service/orion-vision 18084 8080
+vision_ready=$(curl -fsS http://127.0.0.1:18084/health/ready)
+vision_model=$(curl -fsS http://127.0.0.1:18084/v1/models/orion-vision-prototype)
+[[ $(jq -r '.model // empty' <<<"$vision_ready") == orion-vision-prototype ]] || \
+  fail "Orion Vision readiness model identity"
+[[ $(jq '.output_shape[-1]' <<<"$vision_model") == 4 ]] || \
+  fail "Orion Vision four-class confidence-vector contract"
+pass "Orion Vision fixed confidence-vector interface"
 
 if [[ ${SKIP_SIGNING:-0} != 1 ]]; then
   for file in identity.json identity.sig cosign.key cosign.pub cosign-password step-signer.crt; do

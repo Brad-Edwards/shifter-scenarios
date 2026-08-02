@@ -13,7 +13,7 @@ metadata:
 data:
   provider: custom
   customPricesEnabled: "true"
-  description: KeplerOps nested range allocation rates
+  description: KeplerOps private cloud allocation rates
   CPU: "0.031611"
   spotCPU: "0.006655"
   RAM: "0.004237"
@@ -227,7 +227,7 @@ spec:
             - {name: PROMETHEUS_SERVER_ENDPOINT, value: "http://192.168.78.1:9090"}
             - {name: CLUSTER_ID, value: keplerops-v2}
             - {name: LOG_LEVEL, value: info}
-            - {name: CLOUD_PROVIDER_API_KEY, value: range-local-custom-pricing}
+            - {name: CLOUD_PROVIDER_API_KEY, value: keplerops-private-cloud-pricing}
           ports:
             - {name: api, containerPort: 9003}
           readinessProbe:

@@ -76,13 +76,13 @@ def configure_dvc(workspace: Path, ref: str) -> None:
 
 @dag(
     dag_id="orion_clean_training",
-    description="Version Orion labels and train the clean intent adapter.",
+    description="Version Orion labels and train the intent adapter.",
     schedule="*/5 * * * *",
     start_date=datetime(2026, 1, 1),
     catchup=False,
     is_paused_upon_creation=False,
     max_active_runs=1,
-    tags=["clean-baseline", "orion", "training", "lineage"],
+    tags=["orion", "intent-model", "training", "lineage"],
 )
 def orion_clean_training():
     @task
@@ -110,7 +110,7 @@ def orion_clean_training():
             )
         ).json()
         if len(exported) != 12 or any(not item["annotations"] for item in exported):
-            raise ValueError("Label Studio baseline is not fully annotated")
+            raise ValueError("Label Studio annotation set is not fully annotated")
 
         canonical = json.dumps(
             exported, sort_keys=True, separators=(",", ":")
@@ -302,7 +302,7 @@ def orion_clean_training():
                 ).logits.argmax(dim=1)
             accuracy = float((predictions == targets).float().mean())
             if accuracy < 0.90:
-                raise ValueError(f"clean training accuracy is too low: {accuracy:.3f}")
+                raise ValueError(f"intent training accuracy is too low: {accuracy:.3f}")
 
             model_dir = workspace / "model"
             model.save_pretrained(model_dir, safe_serialization=True)
@@ -325,11 +325,11 @@ def orion_clean_training():
             lineage_file.write_text(json.dumps(lineage, indent=2, sort_keys=True))
 
             mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-            mlflow.set_experiment("Orion Clean Intent Training")
+            mlflow.set_experiment("Orion Intent Training")
             with mlflow.start_run(
-                run_name=f"clean-{str(snapshot['lakefs_commit'])[:12]}",
+                run_name=f"intent-{str(snapshot['lakefs_commit'])[:12]}",
                 tags={
-                    "stage": "clean-baseline",
+                    "stage": "model-development",
                     "source.system": "label-studio",
                     "source.export_sha256": str(snapshot["export_sha256"]),
                     "data.lakefs_commit": str(snapshot["lakefs_commit"]),

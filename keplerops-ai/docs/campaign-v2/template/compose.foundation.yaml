@@ -37,6 +37,8 @@ services:
     command: ["redis-server", "--appendonly", "yes", "--requirepass", "KeplerV2-Training-Redis"]
     volumes:
       - redis-data:/data
+    ports:
+      - "192.168.78.1:16379:6379"
     networks:
       data:
         ipv4_address: 10.61.50.11
@@ -57,6 +59,8 @@ services:
       RABBITMQ_DEFAULT_VHOST: keplerops
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
+    ports:
+      - "192.168.78.1:15673:5672"
     networks:
       data:
         ipv4_address: 10.61.50.12
@@ -345,13 +349,13 @@ services:
       GF_SECURITY_ADMIN_USER: range-admin
       GF_SECURITY_ADMIN_PASSWORD: KeplerV2-Training-Grafana
       GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_PLUGINS_PREINSTALL_SYNC: grafana-opensearch-datasource@2.34.0
     volumes:
       - grafana-data:/var/lib/grafana
       - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
       - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-range-root.crt:ro
     networks:
-      public:
       observe:
         ipv4_address: 10.61.80.13
     healthcheck:

@@ -23,6 +23,7 @@ readonly MAUTIC_AUTH="${MAUTIC_AUTH:-range-admin:KeplerV2-Training-Mautic}"
 readonly ZAMMAD_URL="${ZAMMAD_URL:-http://10.61.50.43:8080}"
 readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-support.analyst:KeplerV2-Training-Support}"
 readonly QDRANT_URL="${QDRANT_URL:-http://10.61.50.62:6333}"
+readonly QDRANT_READ_KEY="${QDRANT_READ_KEY:-KeplerV2-Training-Qdrant-Read}"
 readonly LAKEFS_URL="${LAKEFS_URL:-http://10.61.50.61:8000}"
 readonly LAKEFS_AUTH="${LAKEFS_AUTH:-KeplerLakeFSAccess:KeplerV2-Training-LakeFS-Object-Key}"
 readonly NEXTCLOUD_URL="${NEXTCLOUD_URL:-http://10.61.50.42}"
@@ -279,8 +280,10 @@ verify_native() {
         "${mail_highwater}" message-id "${notification}"
       ;;
     incident-publication)
-      "${GHOST_CURL[@]}" "${GHOST_URL}/orion-safety-update/" |
-        grep -q 'Orion Safety Review Complete'
+      "${GHOST_CURL[@]}" "${GHOST_URL}/orion-safety-update/" \
+        >"${workdir}/incident-publication.html"
+      grep -q 'Orion Safety Review Complete' \
+        "${workdir}/incident-publication.html"
       ;;
     advisory-campaign)
       email="$("${MAUTIC_CURL[@]}" -u "${MAUTIC_AUTH}" \
@@ -307,7 +310,8 @@ verify_native() {
       ;;
     feedback-intake)
       point_id="$(jq -er '.native_response_ids[] | select(startswith("qdrant:")) | split(":")[2]' "${result}")"
-      curl -fsS "${QDRANT_URL}/collections/orion_feedback/points/${point_id}" |
+      curl -fsS -H "api-key: ${QDRANT_READ_KEY}" \
+        "${QDRANT_URL}/collections/orion_feedback/points/${point_id}" |
         jq -e --arg request "${request_id}" '.result.payload.request_id == $request' >/dev/null
       curl -fsS -u "${RABBITMQ_AUTH}" \
         "${RABBITMQ_URL}/api/queues/keplerops/orion.feedback" |
@@ -388,7 +392,7 @@ PY
     feedback-intake)
       local point_id
       point_id="$(jq -er '.native_response_ids[] | select(startswith("qdrant:")) | split(":")[2]' "${result}")"
-      [[ "$(curl -sS -o /dev/null -w '%{http_code}' \
+      [[ "$(curl -sS -H "api-key: ${QDRANT_READ_KEY}" -o /dev/null -w '%{http_code}' \
         "${QDRANT_URL}/collections/orion_feedback/points/${point_id}")" == 404 ]]
       ;;
     feedback-maintenance)

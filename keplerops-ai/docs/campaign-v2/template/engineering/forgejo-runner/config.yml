@@ -3,7 +3,7 @@ log:
   job_level: info
 
 runner:
-  file: /data/.runner
+  file: /var/lib/keplerops-v2/forgejo-runner/.runner
   capacity: 1
   envs:
     FORGEJO_CI_USER: release.engineer
@@ -21,7 +21,7 @@ runner:
   fetch_interval: 2s
   report_interval: 1s
   labels:
-    - campaign-ci:host
+    - orion-release-linux:host
 
 cache:
   enabled: false
@@ -32,4 +32,6 @@ container:
   force_rebuild: false
 
 host:
-  workdir_parent: /data/workspace
+  # Keep this path identical on the host and in the runner container. Workflow
+  # Docker bind mounts are resolved by the host daemon through docker.sock.
+  workdir_parent: /var/lib/keplerops-v2/forgejo-runner/workspace

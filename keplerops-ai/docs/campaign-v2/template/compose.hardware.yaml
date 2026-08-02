@@ -4,7 +4,7 @@ x-hardware-labels: &hardware-labels
   io.keplerops.scenario: keplerops-ai
   io.keplerops.campaign: v2
   io.keplerops.layer: clean-hardware-boundary
-  io.keplerops.exposure: operator-only
+  io.keplerops.exposure: reserved-participant-and-operator
 
 services:
   labgrid-coordinator:

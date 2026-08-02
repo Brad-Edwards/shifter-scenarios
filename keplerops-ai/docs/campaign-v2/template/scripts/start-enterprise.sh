@@ -17,6 +17,7 @@ docker compose \
   -f compose.foundation.yaml \
   -f compose.enterprise.yaml \
   up -d
+"$ROOT/network/install.sh"
 "$ROOT/scripts/reconcile-stalwart.sh"
 "$ROOT/scripts/seed-dns.sh"
 "$ROOT/scripts/health-check.sh" enterprise

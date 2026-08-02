@@ -129,7 +129,8 @@ spec:
             - --addr=0.0.0.0:8181
             - --log-format=json
             - --set=decision_logs.console=true
-            - /policy
+            - /policy/release.rego
+            - /policy/workhub.rego
           ports:
             - {name: http, containerPort: 8181}
           readinessProbe:

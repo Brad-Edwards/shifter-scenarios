@@ -68,9 +68,11 @@ grep -Fq "image: $OPA_IMAGE" "$ROOT/manifests/opa.yaml"
 grep -Fq "image: $LITELLM_IMAGE" "$ROOT/manifests/litellm.yaml"
 grep -Fq "image: $ORION_PLACEHOLDER_IMAGE" "$ROOT/gitops/orion-canary/inferenceservice.yaml"
 grep -Fq "image: $ORION_AGENT_IMAGE" "$ROOT/manifests/orion-agent.yaml"
+grep -Fq "image: $ORION_VISION_IMAGE" "$ROOT/manifests/orion-vision.yaml"
 grep -Fq "image: $REQUEST_BASKETS_IMAGE" "$ROOT/manifests/cinder-relay.yaml"
 grep -Fq "FROM $PYTHON_BASE_IMAGE" "$ROOT/images/orion-placeholder/Dockerfile"
 grep -Fq "FROM $PYTHON_BASE_IMAGE" "$ROOT/images/orion-agent/Dockerfile"
+grep -Fq "FROM $PYTHON_BASE_IMAGE" "$ROOT/images/orion-vision/Dockerfile"
 echo "PASS version-lock references"
 
 if (( ONLINE )); then
@@ -102,10 +104,13 @@ if (( BUILD_IMAGES )); then
   command -v docker >/dev/null || { echo "Missing validator: docker" >&2; exit 3; }
   docker build -t "$ORION_PLACEHOLDER_IMAGE" "$ROOT/images/orion-placeholder"
   docker build -t "$ORION_AGENT_IMAGE" "$ROOT/images/orion-agent"
+  docker build -t "$ORION_VISION_IMAGE" "$ROOT/images/orion-vision"
   docker run --rm "$ORION_PLACEHOLDER_IMAGE" \
     python -c 'import onnx; onnx.checker.check_model(onnx.load("/models/orion-placeholder.onnx"))'
   docker run --rm "$ORION_AGENT_IMAGE" \
     python -c 'import agent_service, mcp_service; assert agent_service.graph; assert mcp_service.mcp'
+  docker run --rm "$ORION_VISION_IMAGE" \
+    python -c 'import app; assert app.metadata["output_shape"] == [None, 4]'
   container=$(docker run --rm -d -p 127.0.0.1::8080 "$ORION_PLACEHOLDER_IMAGE")
   trap 'docker rm -f "$container" >/dev/null 2>&1 || true' EXIT
   port=$(docker port "$container" 8080/tcp | awk -F: '{print $NF}')

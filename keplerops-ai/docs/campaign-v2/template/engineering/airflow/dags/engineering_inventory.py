@@ -7,11 +7,11 @@ from airflow.sdk import dag, task
 
 @dag(
     dag_id="engineering_inventory",
-    description="Record the clean engineering service inventory.",
+    description="Record the current engineering service inventory.",
     schedule="@daily",
     start_date=datetime(2026, 1, 1),
     catchup=False,
-    tags=["clean-baseline", "engineering"],
+    tags=["engineering", "inventory"],
 )
 def engineering_inventory():
     @task

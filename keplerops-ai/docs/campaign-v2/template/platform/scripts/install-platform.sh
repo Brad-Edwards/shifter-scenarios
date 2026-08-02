@@ -89,16 +89,22 @@ existing_agent_secret_value() {
 }
 
 configure_agent_secret() {
-  local agent_api_key
+  local agent_api_key assistant_release_id assistant_model_digest
   agent_api_key=${ORION_AGENT_API_KEY:-$(existing_agent_secret_value AGENT_API_KEY)}
   agent_api_key=${agent_api_key:-KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053}
+  assistant_release_id=${ORION_ASSISTANT_RELEASE_ID:-$(existing_agent_secret_value ORION_ASSISTANT_RELEASE_ID)}
+  assistant_model_digest=${ORION_ASSISTANT_MODEL_DIGEST:-$(existing_agent_secret_value ORION_ASSISTANT_MODEL_DIGEST)}
+  assistant_release_id=${assistant_release_id:-sha256:$(printf unresolved-assistant-release | sha256sum | awk '{print $1}')}
+  assistant_model_digest=${assistant_model_digest:-sha256:$(printf unresolved-assistant-model | sha256sum | awk '{print $1}')}
 
   kubectl -n orion-platform create secret generic orion-agent-runtime \
     --from-literal=AGENT_API_KEY="$agent_api_key" \
-    --from-literal=QDRANT_URL="http://10.61.50.62:6333" \
+    --from-literal=ORION_ASSISTANT_RELEASE_ID="$assistant_release_id" \
+    --from-literal=ORION_ASSISTANT_MODEL_DIGEST="$assistant_model_digest" \
+    --from-literal=QDRANT_URL="http://192.168.78.1:16333" \
     --from-literal=QDRANT_API_KEY="KeplerV2-Training-Qdrant-Read" \
     --from-literal=QDRANT_COLLECTIONS="orion_partner_intake" \
-    --from-literal=REDIS_URL="redis://:KeplerV2-Training-Redis@10.61.50.11:6379/0" \
+    --from-literal=REDIS_URL="redis://:KeplerV2-Training-Redis@192.168.78.1:16379/0" \
     --from-literal=OPA_URL="http://opa.orion-platform.svc:8181" \
     --from-literal=OPA_DECISION_PATH="/v1/data/keplerops/workhub/tool/allow" \
     --from-literal=MCP_URL="http://orion-mcp.orion-platform.svc:8081/mcp" \
@@ -154,6 +160,7 @@ kubectl apply -f "$ROOT/manifests/cinder-relay.yaml"
 kubectl apply -f "$ROOT/manifests/opa.yaml"
 kubectl apply -f "$ROOT/manifests/litellm.yaml"
 kubectl apply -f "$ROOT/manifests/orion-agent.yaml"
+kubectl apply -f "$ROOT/manifests/orion-vision.yaml"
 kubectl apply -f "$ROOT/manifests/network-policies.yaml"
 
 kubectl wait --for=condition=Established \
@@ -171,6 +178,7 @@ kubectl -n orion-platform rollout status deployment/vertex-openai-proxy --timeou
 kubectl -n orion-platform rollout status deployment/litellm --timeout=10m
 kubectl -n orion-platform rollout status deployment/orion-agent --timeout=5m
 kubectl -n orion-platform rollout status deployment/orion-mcp --timeout=5m
+kubectl -n orion-runtime rollout status deployment/orion-vision --timeout=5m
 
 "$ROOT/scripts/readiness.sh" --core
 "$ROOT/scripts/capture-component-lock.sh"

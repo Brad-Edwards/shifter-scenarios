@@ -89,13 +89,13 @@ def configure_dvc(workspace: Path, ref: str) -> None:
 
 @dag(
     dag_id="orion_release_risk_training",
-    description="Train and register the clean eight-class Orion release-risk model.",
+    description="Train and register the eight-class Orion release-risk model.",
     schedule=None,
     start_date=datetime(2026, 1, 1),
     catchup=False,
     is_paused_upon_creation=False,
     max_active_runs=1,
-    tags=["clean-baseline", "orion", "release-risk", "training"],
+    tags=["orion", "release-risk", "training", "lineage"],
 )
 def orion_release_risk_training():
     @task
@@ -355,7 +355,7 @@ def orion_release_risk_training():
             )
             (model_dir / "model-card.md").write_text(
                 "# Orion Release Risk\n\n"
-                "Clean eight-class KeplerOps release, intake, entitlement, advisory, "
+                "Eight-class KeplerOps release, intake, entitlement, advisory, "
                 "support, research, privacy, and safety classifier. Fine-tuned from "
                 f"`{BASE_MODEL_ID}` at `{BASE_MODEL_REVISION}`.\n"
             )
@@ -442,7 +442,7 @@ def orion_release_risk_training():
             with mlflow.start_run(
                 run_name=f"release-risk-{str(snapshot['lakefs_commit'])[:12]}",
                 tags={
-                    "stage": "clean-baseline",
+                    "stage": "model-development",
                     "model.family": "release-risk",
                     "source.system": "label-studio",
                     "source.export_sha256": str(snapshot["export_sha256"]),

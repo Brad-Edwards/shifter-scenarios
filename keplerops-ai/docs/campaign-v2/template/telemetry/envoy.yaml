@@ -31,9 +31,9 @@ static_resources:
                       request_header:
                         name: x-keplerops-event-id
                         default_value: uncorrelated
-                    - tag: keplerops.range
+                    - tag: keplerops.deployment
                       literal:
-                        value: campaign-v2
+                        value: orion-research-eu1
                     - tag: keplerops.cost.allocation
                       literal:
                         value: orion-runtime/orion-release-risk

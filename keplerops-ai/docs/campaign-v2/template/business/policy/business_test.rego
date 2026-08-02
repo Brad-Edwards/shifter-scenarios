@@ -6,7 +6,7 @@ import rego.v1
 good_input := {
     "schema": "keplerops.business-policy/v1",
     "range_id": "template",
-    "request_id": "clean-feature-control",
+    "request_id": "canary-feature-control",
     "trace_id": "trace-feature-control",
     "workflow": "feature-control",
     "actor": "svc-orion-canary",
@@ -15,14 +15,19 @@ good_input := {
     "outcome": "enable-canary",
     "target_system": "unleash",
     "target_object": "orion-canary-assistant",
-    "clean_control_decision": "approved-clean-control",
+    "inference_disposition": "approved",
+    "inference_label": "ReleaseApprove",
+    "inference_probability": 0.81,
+    "inference_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+    "assistant_context": true,
+    "assistant_context_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
     "release": {
         "release_id": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         "model_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
         "serving_image_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
         "policy_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-        "model_family": "assistant",
-        "model_version": "clean-v1",
+        "model_family": "release-risk",
+        "model_version": "release-v1",
         "signed": true,
     },
 }
@@ -44,7 +49,12 @@ test_unsigned_release_denied if {
     not result.allow
 }
 
-test_unapproved_control_denied if {
-    result := decision with input as object.union(good_input, {"clean_control_decision": "unapproved"})
+test_unapproved_inference_denied if {
+    result := decision with input as object.union(good_input, {"inference_disposition": "denied"})
+    not result.allow
+}
+
+test_wrong_inference_label_denied if {
+    result := decision with input as object.union(good_input, {"inference_label": "ReleaseHold"})
     not result.allow
 }

@@ -11,6 +11,9 @@ services:
         MINIO_CLIENT_IMAGE: ${MINIO_CLIENT_IMAGE}
         OPENCODE_BUILDER_IMAGE: ${OPENCODE_BUILDER_IMAGE}
         OPENCODE_VERSION: ${OPENCODE_VERSION}
+        LABGRID_VERSION: ${LABGRID_VERSION:-25.0}
+        LABGRID_WHEEL_SHA256: ${LABGRID_WHEEL_SHA256:-f2520ee75125095b1657af320400f1812a92904802d3de82c0c12600b64d315f}
+        LABGRID_CONSTRAINTS_SHA256: ${LABGRID_CONSTRAINTS_SHA256:-056fe8ca94a382e95745aa22902e20bdaef3d360024c3b38359f8976206362b7}
     container_name: keplerops-participant-workstation-runtime
     hostname: kali01
     user: "0"
@@ -29,6 +32,7 @@ services:
       VNCOPTIONS: -PreferBandwidth -DynamicQualityMin=4 -DynamicQualityMax=8 -DLP_ClipDelay=0
       SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
       OPENCODE_CONFIG: /etc/opencode/opencode.json
+      LG_COORDINATOR: labgrid-coordinator:20408
     ports:
       - "${PARTICIPANT_ACCESS_BIND_ADDRESS:-127.0.0.1}:${PARTICIPANT_RDP_PORT:-3389}:3389"
       - "${PARTICIPANT_ACCESS_BIND_ADDRESS:-127.0.0.1}:${PARTICIPANT_WEB_PORT:-8443}:6901"
@@ -44,11 +48,14 @@ services:
       - ./state/workstation/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-range-root.crt:ro
       - ./state/workstation/reset-generation:/run/keplerops/reset-generation:ro
       - ./state/workstation/producer-token:/run/keplerops/producer-token:ro
+      - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/run/keplerops/labgrid-ssh:ro
     networks:
       public:
         ipv4_address: 10.61.10.250
       cinder:
         ipv4_address: 10.61.90.250
+      hardware:
+        ipv4_address: 10.61.100.250
     labels:
       io.keplerops.scenario: keplerops-ai
       io.keplerops.campaign: v2
@@ -61,6 +68,9 @@ networks:
   cinder:
     external: true
     name: kep-v2-cinder
+  hardware:
+    external: true
+    name: kep-v2-hardware
 
 volumes:
   workstation-home:

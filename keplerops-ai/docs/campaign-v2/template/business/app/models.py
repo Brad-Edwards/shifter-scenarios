@@ -11,6 +11,7 @@ Digest = Annotated[str, StringConstraints(pattern=r"^sha256:[a-f0-9]{64}$")]
 Identifier = Annotated[
     str, StringConstraints(pattern=r"^[a-zA-Z0-9][a-zA-Z0-9._:-]{2,127}$")
 ]
+FactValue = Annotated[str, StringConstraints(min_length=1, max_length=1000)]
 
 
 class Workflow(StrEnum):
@@ -22,6 +23,25 @@ class Workflow(StrEnum):
     FEEDBACK_INTAKE = "feedback-intake"
     FEEDBACK_MAINTENANCE = "feedback-maintenance"
     TENANT_RETENTION = "tenant-retention"
+
+
+class BusinessInput(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    schema_name: Literal["keplerops.business-input/v1"] = Field(alias="schema")
+    request_id: Identifier
+    trace_id: Identifier
+    idempotency_key: Identifier
+    subject: str = Field(min_length=8, max_length=240)
+    description: str = Field(min_length=24, max_length=8000)
+    facts: dict[Identifier, FactValue] = Field(min_length=1, max_length=24)
+
+    def canonical_bytes(self) -> bytes:
+        return json.dumps(
+            self.model_dump(by_alias=True, exclude_none=True, round_trip=True),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode()
 
 
 class ReleaseIdentity(BaseModel):
@@ -46,6 +66,32 @@ class TypedDecision(BaseModel):
     reason_codes: list[Identifier] = Field(min_length=1, max_length=8)
 
 
+class InferenceStage(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    family: Literal["release-risk", "assistant"]
+    model: Identifier
+    model_version: Identifier
+    release: ReleaseIdentity
+    inference_id: Identifier
+    input_digest: Digest
+    output_digest: Digest
+    label: Identifier | None = None
+    probabilities: list[float] | None = None
+    response: str | None = Field(default=None, max_length=16000)
+    citations: list[str] = Field(default_factory=list, max_length=16)
+
+
+class InferenceEvidence(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    pipeline: Literal["orion-business-decision/v1"]
+    expected_label: Identifier
+    decision_label: Identifier
+    decision_probability: float = Field(ge=0.0, le=1.0)
+    stages: list[InferenceStage] = Field(min_length=1, max_length=2)
+
+
 class DecisionEnvelope(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -61,8 +107,11 @@ class DecisionEnvelope(BaseModel):
     preprocessing_digest: Digest
     prompt_tool_digest: Digest
     release: ReleaseIdentity
+    source: BusinessInput
+    inference: InferenceEvidence
     decision: TypedDecision
-    clean_control_decision: Identifier
+    inference_disposition: Literal["approved"]
+    signing_key_id: Identifier
 
     def canonical_bytes(self) -> bytes:
         return json.dumps(
@@ -84,6 +133,11 @@ class WorkflowResult(BaseModel):
     after_state_hash: str | None = None
     notification_ids: list[str] = Field(default_factory=list)
     compensation_state: str = "not-requested"
+    input_digest: Digest | None = None
+    decision: TypedDecision | None = None
+    inference: InferenceEvidence | None = None
+    policy_decision: dict[str, Any] | None = None
+    decision_signature: str | None = None
 
 
 class NativeEffect(BaseModel):

@@ -8,9 +8,12 @@ import hashlib
 import ipaddress
 import json
 import os
+import re
+import secrets
 import socket
 import struct
 import subprocess
+import sys
 import tarfile
 import tempfile
 import time
@@ -29,6 +32,11 @@ MAX_ARTIFACT_BYTES = 50 * 1024 * 1024
 MAX_ARCHIVE_BYTES = 128 * 1024 * 1024
 MAX_ARCHIVE_MEMBERS = 512
 MAX_TEXT_CHARS = 12_000
+REQUEST_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$")
+TRACEPARENT_RE = re.compile(
+    r"^00-([0-9a-f]{32})-([0-9a-f]{16})-([0-9a-f]{2})$"
+)
+DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 
 
 class ReviewError(RuntimeError):
@@ -246,7 +254,74 @@ def validate_submission(body: bytes) -> dict[str, Any]:
     return payload
 
 
-def ask_orion(submission: dict[str, Any], details: dict[str, Any]) -> dict[str, str]:
+def property_text(value: Any) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="strict").strip()
+    return str(value or "").strip()
+
+
+def message_context(submission: dict[str, Any], properties: Any) -> dict[str, str]:
+    headers = getattr(properties, "headers", None) or {}
+    request_values = [
+        submission.get("submission_id"),
+        submission.get("request_id"),
+        getattr(properties, "message_id", None),
+        getattr(properties, "correlation_id", None),
+        headers.get("x-keplerops-request-id"),
+    ]
+    request_values = [property_text(value) for value in request_values if value]
+    if not request_values or len(set(request_values)) != 1:
+        raise ReviewError("AMQP and submission request identities do not agree")
+    request_id = request_values[0]
+    if REQUEST_ID_RE.fullmatch(request_id) is None:
+        raise ReviewError("request identity is invalid")
+
+    traceparent = property_text(headers.get("traceparent") or submission.get("traceparent"))
+    if not traceparent:
+        traceparent = f"00-{secrets.token_hex(16)}-{secrets.token_hex(8)}-01"
+    traceparent = traceparent.lower()
+    match = TRACEPARENT_RE.fullmatch(traceparent)
+    if match is None or match.group(1) == "0" * 32 or match.group(2) == "0" * 16:
+        raise ReviewError("AMQP traceparent is invalid")
+    trace_id = match.group(1)
+    submitted_trace = property_text(submission.get("trace_id"))
+    if submitted_trace and submitted_trace != trace_id:
+        raise ReviewError("AMQP and submission trace identities do not agree")
+
+    configured_release = env("ORION_ASSISTANT_RELEASE_ID")
+    release_values = [
+        configured_release,
+        submission.get("assistant_release_id"),
+        headers.get("keplerops-model-release-id"),
+    ]
+    release_values = [property_text(value) for value in release_values if value]
+    if any(DIGEST_RE.fullmatch(value) is None for value in release_values):
+        raise ReviewError("assistant release identity is invalid")
+    if len(set(release_values)) != 1:
+        raise ReviewError("worker and submission assistant releases do not agree")
+
+    result_queue = property_text(
+        submission.get("result_queue") or env("RABBITMQ_RESULT_QUEUE")
+    )
+    permitted_queues = {
+        env("RABBITMQ_RESULT_QUEUE"),
+        f"orion.review.results.{request_id}",
+    }
+    if result_queue not in permitted_queues:
+        raise ReviewError("result queue is outside the bounded review namespace")
+    return {
+        "request_id": request_id,
+        "trace_id": trace_id,
+        "traceparent": traceparent,
+        "result_queue": result_queue,
+        "model_release_id": configured_release,
+        "model_identity_digest": env("ORION_ASSISTANT_MODEL_DIGEST"),
+    }
+
+
+def ask_orion(
+    submission: dict[str, Any], details: dict[str, Any], context: dict[str, str]
+) -> dict[str, str]:
     if not submission["use_orion"]:
         return {"model": "local-structural-review", "response": "Artifact structure accepted."}
     prompt = (
@@ -261,8 +336,21 @@ def ask_orion(submission: dict[str, Any], details: dict[str, Any]) -> dict[str, 
     )
     response = requests.post(
         env("ORION_AGENT_URL"),
-        headers={"Authorization": f"Bearer {env('ORION_AGENT_API_KEY')}"},
-        json={"prompt": prompt, "user": env("WORKHUB_USER")},
+        headers={
+            "Authorization": f"Bearer {env('ORION_AGENT_API_KEY')}",
+            "X-Request-ID": context["request_id"],
+            "traceparent": context["traceparent"],
+        },
+        json={
+            "prompt": prompt,
+            "user": env("WORKHUB_USER"),
+            "conversation_id": context["request_id"],
+            "metadata": {
+                "request_id": context["request_id"],
+                "purpose": "artifact_review",
+                "assistant_release_id": context["model_release_id"],
+            },
+        },
         timeout=(5, 120),
     )
     response.raise_for_status()
@@ -271,6 +359,13 @@ def ask_orion(submission: dict[str, Any], details: dict[str, Any]) -> dict[str, 
     answer = str(body.get("response", "")).strip()
     if not model or not answer:
         raise ReviewError("Orion returned an incomplete review")
+    if (
+        body.get("request_id") != context["request_id"]
+        or body.get("trace_id") != context["trace_id"]
+        or body.get("traceparent") != context["traceparent"]
+        or body.get("conversation_id") != context["request_id"]
+    ):
+        raise ReviewError("Orion did not preserve review correlation")
     return {"model": model, "response": answer[:6000]}
 
 
@@ -323,7 +418,9 @@ def create_workhub_issue(
     return issue_id
 
 
-def review_submission(submission: dict[str, Any]) -> dict[str, Any]:
+def review_submission(
+    submission: dict[str, Any], context: dict[str, str]
+) -> dict[str, Any]:
     suffix = PurePosixPath(urlparse(submission["artifact_url"]).path).suffix or ".artifact"
     with tempfile.TemporaryDirectory(prefix="orion-review-") as temporary:
         artifact = Path(temporary) / f"submitted{suffix}"
@@ -331,7 +428,7 @@ def review_submission(submission: dict[str, Any]) -> dict[str, Any]:
         if digest != submission["sha256"].lower():
             raise ReviewError("downloaded artifact digest does not match the submission")
         details = inspect_artifact(submission["kind"], artifact, content_type)
-        review = ask_orion(submission, details)
+        review = ask_orion(submission, details, context)
         issue_id = create_workhub_issue(submission, digest, size, details, review)
     return {
         "schema": RESULT_SCHEMA,
@@ -343,22 +440,135 @@ def review_submission(submission: dict[str, Any]) -> dict[str, Any]:
         "artifact_bytes": size,
         "orion_model": review["model"],
         "workhub_issue_id": issue_id,
+        **context,
     }
 
 
-def publish_result(channel: Any, result: dict[str, Any]) -> None:
+def publish_result(channel: Any, result: dict[str, Any], result_queue: str) -> None:
     channel.basic_publish(
         exchange="",
-        routing_key=env("RABBITMQ_RESULT_QUEUE"),
+        routing_key=result_queue,
         body=json.dumps(result, sort_keys=True).encode(),
         properties=pika.BasicProperties(
             content_type="application/json",
-            delivery_mode=pika.DeliveryMode.Persistent,
+            delivery_mode=2,
             message_id=str(result.get("submission_id", "")),
             type=RESULT_SCHEMA,
         ),
         mandatory=True,
     )
+
+
+def otlp_attributes(values: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {"key": key, "value": {"stringValue": str(value)}}
+        for key, value in sorted(values.items())
+    ]
+
+
+def otlp_map(values: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "kvlistValue": {
+            "values": [
+                {"key": key, "value": {"stringValue": str(value)}}
+                for key, value in sorted(values.items())
+            ]
+        }
+    }
+
+
+def emit_worker_telemetry(
+    context: dict[str, str], result: dict[str, Any], started_ns: int, completed_ns: int
+) -> None:
+    endpoint = env("OTLP_HTTP_URL").rstrip("/")
+    parent_span_id = context["traceparent"].split("-")[2]
+    span_id = secrets.token_hex(8)
+    status = str(result.get("status", "failed"))
+    attributes = {
+        "keplerops.request_id": context["request_id"],
+        "keplerops.event_id": context["request_id"],
+        "keplerops.worker.name": env("REVIEW_WORKER_NAME"),
+        "keplerops.model_release_id": context["model_release_id"],
+        "keplerops.model_identity_digest": context["model_identity_digest"],
+        "messaging.destination.name": env("RABBITMQ_QUEUE"),
+        "messaging.message.id": context["request_id"],
+        "messaging.operation.name": "process",
+    }
+    if result.get("workhub_issue_id"):
+        attributes["keplerops.workhub.issue_id"] = result["workhub_issue_id"]
+    span = {
+        "traceId": context["trace_id"],
+        "spanId": span_id,
+        "parentSpanId": parent_span_id,
+        "name": "orion.review.worker",
+        "kind": 5,
+        "startTimeUnixNano": str(started_ns),
+        "endTimeUnixNano": str(completed_ns),
+        "attributes": otlp_attributes(attributes),
+        "status": {"code": 1 if status == "completed" else 2},
+    }
+    resource = {
+        "attributes": otlp_attributes(
+            {
+                "service.name": "orion-review-worker",
+                "service.namespace": "keplerops",
+                "service.instance.id": env("REVIEW_WORKER_NAME"),
+            }
+        )
+    }
+    traces = {
+        "resourceSpans": [
+            {
+                "resource": resource,
+                "scopeSpans": [
+                    {
+                        "scope": {"name": "keplerops.orion.review-worker", "version": "1.0.0"},
+                        "spans": [span],
+                    }
+                ],
+            }
+        ]
+    }
+    audit = {
+        "service": "orion-review-worker",
+        "event_action": "orion.review.worker",
+        "request_id": context["request_id"],
+        "trace_id": context["trace_id"],
+        "worker": env("REVIEW_WORKER_NAME"),
+        "model_release_id": context["model_release_id"],
+        "model_identity_digest": context["model_identity_digest"],
+        "status": status,
+    }
+    logs = {
+        "resourceLogs": [
+            {
+                "resource": resource,
+                "scopeLogs": [
+                    {
+                        "scope": {"name": "keplerops.orion.review-worker", "version": "1.0.0"},
+                        "logRecords": [
+                            {
+                                "timeUnixNano": str(completed_ns),
+                                "traceId": context["trace_id"],
+                                "spanId": span_id,
+                                "severityNumber": 9 if status == "completed" else 17,
+                                "severityText": "INFO" if status == "completed" else "ERROR",
+                                "body": otlp_map(audit),
+                            }
+                        ],
+                    }
+                ],
+            }
+        ]
+    }
+    try:
+        for signal, payload in (("traces", traces), ("logs", logs)):
+            response = requests.post(
+                f"{endpoint}/v1/{signal}", json=payload, timeout=2
+            )
+            response.raise_for_status()
+    except requests.RequestException as exc:
+        print(f"review worker telemetry export failed: {exc}", file=sys.stderr, flush=True)
 
 
 def transient_failure(exc: Exception) -> bool:
@@ -372,18 +582,22 @@ def transient_failure(exc: Exception) -> bool:
 def run_worker() -> None:
     queue = env("RABBITMQ_QUEUE")
     while True:
+        connection: pika.BlockingConnection | None = None
         try:
             connection = pika.BlockingConnection(pika.URLParameters(env("RABBITMQ_URL")))
             channel = connection.channel()
             channel.queue_declare(queue=queue, passive=True)
             channel.basic_qos(prefetch_count=1)
 
-            def consume(ch: Any, method: Any, _properties: Any, body: bytes) -> None:
+            def consume(ch: Any, method: Any, properties: Any, body: bytes) -> None:
                 submission_id = "unknown"
+                context: dict[str, str] = {}
+                started_ns = time.time_ns()
                 try:
                     submission = validate_submission(body)
                     submission_id = submission["submission_id"]
-                    result = review_submission(submission)
+                    context = message_context(submission, properties)
+                    result = review_submission(submission, context)
                 except Exception as exc:
                     if transient_failure(exc):
                         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
@@ -395,8 +609,16 @@ def run_worker() -> None:
                         "worker": env("REVIEW_WORKER_NAME"),
                         "error": str(exc)[:1000],
                     }
+                    if context:
+                        result.update(context)
                 try:
-                    publish_result(ch, result)
+                    if context:
+                        emit_worker_telemetry(context, result, started_ns, time.time_ns())
+                    publish_result(
+                        ch,
+                        result,
+                        context.get("result_queue", env("RABBITMQ_RESULT_QUEUE")),
+                    )
                 except Exception:
                     ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
                     raise
@@ -404,8 +626,19 @@ def run_worker() -> None:
 
             channel.basic_consume(queue=queue, on_message_callback=consume)
             channel.start_consuming()
-        except (pika.exceptions.AMQPError, OSError, ReviewError, requests.RequestException):
-            time.sleep(5)
+        except (pika.exceptions.AMQPError, OSError, ReviewError, requests.RequestException) as exc:
+            print(
+                f"review worker connection or transient processing failure: {exc}",
+                file=sys.stderr,
+                flush=True,
+            )
+        finally:
+            if connection is not None and connection.is_open:
+                try:
+                    connection.close()
+                except pika.exceptions.AMQPError:
+                    pass
+        time.sleep(5)
 
 
 def write_safetensors_fixture(path: Path) -> None:
@@ -440,6 +673,31 @@ def self_test() -> None:
         model = root / "orion.safetensors"
         write_safetensors_fixture(model)
         inspect_artifact("model", model, "application/octet-stream")
+
+        request_id = "review-self-test"
+        trace_id = "1" * 32
+
+        class Properties:
+            message_id = request_id
+            correlation_id = request_id
+            headers = {
+                "x-keplerops-request-id": request_id,
+                "traceparent": f"00-{trace_id}-{'2' * 16}-01",
+                "keplerops-model-release-id": os.environ["ORION_ASSISTANT_RELEASE_ID"],
+            }
+
+        context = message_context(
+            {
+                "submission_id": request_id,
+                "request_id": request_id,
+                "trace_id": trace_id,
+                "assistant_release_id": os.environ["ORION_ASSISTANT_RELEASE_ID"],
+                "result_queue": f"orion.review.results.{request_id}",
+            },
+            Properties(),
+        )
+        if context["trace_id"] != trace_id:
+            raise ReviewError("message context self-test lost trace identity")
     print("artifact handlers passed")
 
 
@@ -451,6 +709,9 @@ def validate_config() -> None:
         "RABBITMQ_RESULT_QUEUE",
         "ORION_AGENT_URL",
         "ORION_AGENT_API_KEY",
+        "ORION_ASSISTANT_RELEASE_ID",
+        "ORION_ASSISTANT_MODEL_DIGEST",
+        "OTLP_HTTP_URL",
         "WORKHUB_URL",
         "WORKHUB_HOST",
         "WORKHUB_USER",
@@ -458,6 +719,15 @@ def validate_config() -> None:
         "WORKHUB_PROJECT",
     ):
         env(name)
+    if DIGEST_RE.fullmatch(env("ORION_ASSISTANT_RELEASE_ID")) is None:
+        raise ReviewError("assistant release identity must be an immutable digest")
+    if DIGEST_RE.fullmatch(env("ORION_ASSISTANT_MODEL_DIGEST")) is None:
+        raise ReviewError("assistant model identity must be an immutable digest")
+    if env("RABBITMQ_RESULT_QUEUE") != "orion.review.results":
+        raise ReviewError("shared review result queue is outside its bounded namespace")
+    endpoint = urlparse(env("OTLP_HTTP_URL"))
+    if endpoint.scheme not in {"http", "https"} or not endpoint.hostname:
+        raise ReviewError("OTLP HTTP endpoint is invalid")
     print("worker configuration passed")
 
 

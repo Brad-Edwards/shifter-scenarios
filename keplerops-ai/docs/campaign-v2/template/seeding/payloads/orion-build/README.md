@@ -1,8 +1,8 @@
 # Orion Build Inputs
 
 This internal repository carries the small shared libraries and service image
-used to prove the Project Orion engineering publication path. Forgejo Actions
-publishes the exact source revision to the internal Python, Node, and OCI
+used by the Project Orion engineering release pipeline. Forgejo Actions
+publishes each reviewed source revision to the internal Python, Node, and OCI
 registries.
 
 The pipeline publishes `keplerops-orion-release` to devpi,

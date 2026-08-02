@@ -9,7 +9,14 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Iterator
 
-from .models import DecisionEnvelope, NativeEffect, WorkflowResult
+from .models import (
+    BusinessInput,
+    DecisionEnvelope,
+    InferenceEvidence,
+    NativeEffect,
+    TypedDecision,
+    WorkflowResult,
+)
 
 
 def canonical(value: Any) -> str:
@@ -62,7 +69,12 @@ class WorkflowStore:
                     policy_digest TEXT NOT NULL,
                     release_id TEXT NOT NULL,
                     decision_json TEXT NOT NULL,
-                    clean_control_decision TEXT NOT NULL,
+                    clean_control_decision TEXT NOT NULL DEFAULT 'retired',
+                    source_json TEXT NOT NULL DEFAULT '{}',
+                    inference_json TEXT NOT NULL DEFAULT '{}',
+                    inference_disposition TEXT NOT NULL DEFAULT 'approved',
+                    signing_key_id TEXT NOT NULL DEFAULT 'legacy',
+                    decision_signature TEXT NOT NULL DEFAULT '',
                     opa_decision_json TEXT,
                     target_system TEXT,
                     target_object_id TEXT,
@@ -91,8 +103,42 @@ class WorkflowStore:
                 );
                 """
             )
+            columns = {
+                str(row[1])
+                for row in connection.execute("PRAGMA table_info(workflow_records)")
+            }
+            additions = {
+                "source_json": "TEXT NOT NULL DEFAULT '{}'",
+                "inference_json": "TEXT NOT NULL DEFAULT '{}'",
+                "inference_disposition": "TEXT NOT NULL DEFAULT 'approved'",
+                "signing_key_id": "TEXT NOT NULL DEFAULT 'legacy'",
+                "decision_signature": "TEXT NOT NULL DEFAULT ''",
+            }
+            for name, declaration in additions.items():
+                if name not in columns:
+                    connection.execute(
+                        f"ALTER TABLE workflow_records ADD COLUMN {name} {declaration}"
+                    )
 
-    def claim(self, envelope: DecisionEnvelope) -> tuple[str, sqlite3.Row | None]:
+    def find(self, range_id: str, idempotency_key: str) -> sqlite3.Row | None:
+        with self.connect() as connection:
+            return connection.execute(
+                """
+                SELECT * FROM workflow_records
+                WHERE range_id = ? AND idempotency_key = ?
+                """,
+                (range_id, idempotency_key),
+            ).fetchone()
+
+    @staticmethod
+    def source_matches(row: sqlite3.Row, source: BusinessInput) -> bool:
+        return row["source_json"] == canonical(
+            source.model_dump(by_alias=True, exclude_none=True, round_trip=True)
+        )
+
+    def claim(
+        self, envelope: DecisionEnvelope, signature: str
+    ) -> tuple[str, sqlite3.Row | None]:
         workflow_id = str(uuid.uuid4())
         created_at = datetime.now(UTC).isoformat()
         with self.connect() as connection:
@@ -122,7 +168,11 @@ class WorkflowStore:
                     existing["policy_digest"],
                     existing["release_id"],
                     existing["decision_json"],
-                    existing["clean_control_decision"],
+                    existing["source_json"],
+                    existing["inference_json"],
+                    existing["inference_disposition"],
+                    existing["signing_key_id"],
+                    existing["decision_signature"],
                 )
                 submitted = (
                     envelope.decision.workflow.value,
@@ -141,7 +191,11 @@ class WorkflowStore:
                     envelope.release.policy_digest,
                     envelope.release.release_id,
                     envelope.decision.model_dump_json(),
-                    envelope.clean_control_decision,
+                    canonical(envelope.source.model_dump(by_alias=True)),
+                    canonical(envelope.inference.model_dump()),
+                    envelope.inference_disposition,
+                    envelope.signing_key_id,
+                    signature,
                 )
                 if recorded != submitted:
                     raise ValueError(
@@ -156,8 +210,10 @@ class WorkflowStore:
                     extraction_digest, model_digest, serving_image_digest,
                     model_family, model_version, preprocessing_digest,
                     prompt_tool_digest, policy_digest, release_id,
-                    decision_json, clean_control_decision, status, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'processing', ?)
+                    decision_json, clean_control_decision, source_json,
+                    inference_json, inference_disposition, signing_key_id,
+                    decision_signature, status, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'retired', ?, ?, ?, ?, ?, 'processing', ?)
                 """,
                 (
                     workflow_id,
@@ -179,7 +235,11 @@ class WorkflowStore:
                     envelope.release.policy_digest,
                     envelope.release.release_id,
                     envelope.decision.model_dump_json(),
-                    envelope.clean_control_decision,
+                    canonical(envelope.source.model_dump(by_alias=True)),
+                    canonical(envelope.inference.model_dump()),
+                    envelope.inference_disposition,
+                    envelope.signing_key_id,
+                    signature,
                     created_at,
                 ),
             )
@@ -221,17 +281,7 @@ class WorkflowStore:
                     workflow_id,
                 ),
             )
-        return WorkflowResult(
-            workflow_id=workflow_id,
-            workflow=effect_workflow(self.get(workflow_id)),
-            status="succeeded",
-            target_system=effect.target_system,
-            target_object_id=effect.target_object_id,
-            native_response_ids=effect.native_response_ids,
-            before_state_hash=before_hash,
-            after_state_hash=after_hash,
-            notification_ids=effect.notification_ids,
-        )
+        return self.result(self.get(workflow_id))
 
     def fail(self, workflow_id: str, error: str) -> None:
         with self.connect() as connection:
@@ -254,6 +304,8 @@ class WorkflowStore:
         return row
 
     def result(self, row: sqlite3.Row, replay: bool = False) -> WorkflowResult:
+        policy = json.loads(row["opa_decision_json"] or "null")
+        inference = json.loads(row["inference_json"] or "null")
         return WorkflowResult(
             workflow_id=str(row["workflow_id"]),
             workflow=effect_workflow(row),
@@ -266,6 +318,13 @@ class WorkflowStore:
             after_state_hash=row["after_state_hash"],
             notification_ids=json.loads(row["notification_ids_json"]),
             compensation_state=str(row["compensation_state"]),
+            input_digest=str(row["input_digest"]),
+            decision=TypedDecision.model_validate_json(row["decision_json"]),
+            inference=(
+                InferenceEvidence.model_validate(inference) if inference else None
+            ),
+            policy_decision=policy,
+            decision_signature=str(row["decision_signature"]),
         )
 
     def compensation_data(self, workflow_id: str) -> dict[str, Any]:

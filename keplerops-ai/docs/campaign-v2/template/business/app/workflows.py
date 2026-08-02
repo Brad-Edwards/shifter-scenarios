@@ -525,7 +525,7 @@ class WorkflowExecutor:
         notification = self.clients.send_mail(
             "support@keplerops.lab",
             "reviewer@keplerops.lab",
-            f"Support request {ticket['number']} completed",
+            f"Support request {ticket['number']} completed [{envelope.request_id}]",
             "Your routine Orion access request was completed after automated triage.",
         )
         after = {

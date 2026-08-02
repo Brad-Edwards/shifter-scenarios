@@ -63,15 +63,6 @@ set -a
 source "$WORKER_STATE"
 set +a
 
-for address in 192.168.78.20 192.168.78.21; do
-  timeout 30 "${SSH[@]}" "kepler@$address" \
-    'sudo systemctl is-active --quiet orion-review-worker.service;
-     sudo systemctl is-enabled --quiet orion-review-worker.service;
-     sudo sh -c "set -a; . /etc/keplerops/orion-review-worker.env; set +a; sudo -u orion-review --preserve-env /usr/local/lib/keplerops/review-worker.py validate-config >/dev/null"'
-done
-timeout 45 "${SSH[@]}" kepler@192.168.78.20 \
-  'sudo -u orion-review /usr/local/lib/keplerops/review-worker.py self-test >/dev/null'
-
 rabbit_call() {
   local method=$1 path=$2 body=${3:-}
   if [[ -n $body ]]; then
@@ -83,6 +74,11 @@ rabbit_call() {
       -X "$method" "$RABBITMQ_MANAGEMENT_URL$path"
   fi
 }
+
+for queue in "$REVIEW_QUEUE" "$INTEGRATION_QUEUE"; do
+  rabbit_call GET "/queues/keplerops/$queue" |
+    jq -e '.consumers == 1 and .state == "running"' >/dev/null
+done
 
 work=$(mktemp -d)
 server_pid=

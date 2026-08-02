@@ -40,7 +40,12 @@ else
     -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
     kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh
 fi
+"$ROOT/scripts/activate-business-model-identities.sh"
+"$ROOT/baseline/source-ci-registries.sh"
+"$ROOT/seeding/seed.sh" langflow business-workflows
+"$ROOT/engineering/reconcile-orion-vision-label-studio.sh"
 
 "$ROOT/scripts/start-workstation.sh"
 "$ROOT/scripts/start-cinder.sh"
 "$ROOT/scripts/check-all.sh"
+"$ROOT/campaign-start/apply.sh"

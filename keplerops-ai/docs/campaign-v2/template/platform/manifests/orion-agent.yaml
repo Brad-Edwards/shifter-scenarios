@@ -34,6 +34,13 @@ spec:
           env:
             - {name: LITELLM_URL, value: http://litellm.orion-platform.svc:4000}
             - {name: ORION_ASSISTANT_MODEL, value: orion-assistant}
+            - {name: OTLP_HTTP_URL, value: http://10.61.80.10:4318}
+            - name: ORION_ASSISTANT_RELEASE_ID
+              valueFrom:
+                secretKeyRef: {name: orion-agent-runtime, key: ORION_ASSISTANT_RELEASE_ID}
+            - name: ORION_ASSISTANT_MODEL_DIGEST
+              valueFrom:
+                secretKeyRef: {name: orion-agent-runtime, key: ORION_ASSISTANT_MODEL_DIGEST}
             - name: LITELLM_MASTER_KEY
               valueFrom:
                 secretKeyRef: {name: litellm-runtime, key: LITELLM_MASTER_KEY}

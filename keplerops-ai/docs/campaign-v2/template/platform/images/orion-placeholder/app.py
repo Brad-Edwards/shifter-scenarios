@@ -9,10 +9,11 @@ from pydantic import BaseModel
 
 MODEL_NAME = os.getenv("MODEL_NAME", "orion-release-risk")
 MODEL_PATH = os.getenv("MODEL_PATH", "/models/orion-placeholder.onnx")
+MODEL_VERSION = os.getenv("MODEL_VERSION", "orion-release-risk-0.1.0")
 FEATURE_COUNT = 16
 
 session = ort.InferenceSession(MODEL_PATH, providers=["CPUExecutionProvider"])
-app = FastAPI(title="Orion neutral ONNX placeholder", version="0.1.0")
+app = FastAPI(title="KeplerOps Orion Release Risk Runtime", version="1.0.0")
 
 
 class PredictionRequest(BaseModel):
@@ -55,7 +56,8 @@ def model_metadata(model_name: str) -> dict[str, Any]:
         "name": MODEL_NAME,
         "ready": True,
         "runtime": "onnxruntime-cpu",
-        "placeholder": True,
+        "task": "release-risk-classification",
+        "version": MODEL_VERSION,
         "feature_count": FEATURE_COUNT,
         "class_count": 8,
     }
@@ -69,7 +71,7 @@ def predict(model_name: str, request: PredictionRequest) -> dict[str, Any]:
     probabilities = session.run(None, {"features": features})[0]
     return {
         "model_name": MODEL_NAME,
-        "model_version": "neutral-placeholder-0.1.0",
+        "model_version": MODEL_VERSION,
         "predictions": [
             {
                 "class_index": int(np.argmax(row)),

@@ -3,12 +3,12 @@ from __future__ import annotations
 import hmac
 from typing import Annotated
 
-from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from .clients import NativeClients, NativeServiceError
 from .config import settings
-from .models import DecisionEnvelope, Workflow, WorkflowResult
+from .models import BusinessInput, DecisionEnvelope, Workflow, WorkflowResult
 from .store import WorkflowStore
 from .workflows import WorkflowExecutor
 
@@ -33,29 +33,38 @@ def require_adapter_token(
 
 
 def validate_release(envelope: DecisionEnvelope) -> None:
-    release = envelope.release
-    expected_release, expected_model, expected_image = settings.release_identity(
-        release.model_family
-    )
-    actual = (
-        envelope.range_id,
-        release.release_id,
-        release.model_digest,
-        release.serving_image_digest,
-        release.policy_digest,
-    )
-    expected = (
-        settings.range_id,
-        expected_release,
-        expected_model,
-        expected_image,
-        settings.active_policy_digest,
-    )
-    if actual != expected:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="decision is not bound to this range's active signed canary",
+    for release in [
+        envelope.release,
+        *(stage.release for stage in envelope.inference.stages),
+    ]:
+        expected_release, expected_model, expected_image = settings.release_identity(
+            release.model_family
         )
+        actual = (
+            envelope.range_id,
+            release.release_id,
+            release.model_digest,
+            release.serving_image_digest,
+            release.policy_digest,
+        )
+        expected = (
+            settings.range_id,
+            expected_release,
+            expected_model,
+            expected_image,
+            settings.active_policy_digest,
+        )
+        if actual != expected:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="decision is not bound to the active signed release",
+            )
+
+
+def sign(envelope: DecisionEnvelope) -> str:
+    return hmac.digest(
+        settings.decision_signing_key.encode(), envelope.canonical_bytes(), "sha256"
+    ).hex()
 
 
 def validate_signature(envelope: DecisionEnvelope, signature: str | None) -> None:
@@ -116,15 +125,37 @@ def ready() -> dict[str, str]:
 )
 def execute_workflow(
     workflow: Workflow,
-    envelope: DecisionEnvelope,
-    x_orion_signature: Annotated[str | None, Header()] = None,
+    source: BusinessInput,
 ) -> WorkflowResult:
-    if envelope.decision.workflow != workflow:
-        raise HTTPException(status_code=422, detail="workflow path and decision differ")
-    validate_release(envelope)
-    validate_signature(envelope, x_orion_signature)
+    existing = store.find(settings.range_id, source.idempotency_key)
+    if existing is not None:
+        if not store.source_matches(existing, source):
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="idempotency key is already bound to another business input",
+            )
+        if existing["status"] == "succeeded":
+            return store.result(existing, replay=True)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"idempotency key is already {existing['status']}",
+        )
     try:
-        workflow_id, existing = store.claim(envelope)
+        envelope = executor.derive(workflow, source)
+    except PermissionError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail=str(exc)
+        ) from exc
+    except (NativeServiceError, OSError, ValueError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"Orion inference is unavailable: {exc}",
+        ) from exc
+    signature = sign(envelope)
+    validate_release(envelope)
+    validate_signature(envelope, signature)
+    try:
+        workflow_id, existing = store.claim(envelope, signature)
     except ValueError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
     if existing is not None:

@@ -17,6 +17,9 @@ class Settings:
     decision_signing_key: str = env(
         "ORION_DECISION_SIGNING_KEY", "KeplerV2-Training-Orion-Decision-Signing"
     )
+    decision_signing_key_id: str = env(
+        "ORION_DECISION_SIGNING_KEY_ID", "orion-business-decision-v1"
+    )
     release_risk_release_id: str = env(
         "ORION_RELEASE_RISK_RELEASE_ID", "sha256:" + "1" * 64
     )
@@ -34,6 +37,12 @@ class Settings:
         "ORION_ASSISTANT_IMAGE_DIGEST", "sha256:" + "b" * 64
     )
     active_policy_digest: str = env("ORION_ACTIVE_POLICY_DIGEST", "sha256:" + "4" * 64)
+    release_risk_url: str = env("ORION_RELEASE_RISK_URL", "http://192.168.78.30:30083")
+    release_risk_model: str = env("ORION_RELEASE_RISK_MODEL", "orion-release-risk")
+    assistant_url: str = env("ORION_AGENT_URL", "http://192.168.78.30:30081")
+    assistant_api_key: str = env(
+        "ORION_AGENT_API_KEY", "KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053"
+    )
     audit_database: str = env(
         "BUSINESS_AUDIT_DATABASE", "/var/lib/keplerops-business/audit.sqlite3"
     )
@@ -58,16 +67,14 @@ class Settings:
     ghost_user: str = env("GHOST_USER", "communications@keplerops.lab")
     ghost_password: str = env("GHOST_PASSWORD", "Gv7!qL2@nP9#xR4%wT8&mK3")
 
-    mautic_url: str = env(
-        "MAUTIC_INTERNAL_URL", "https://advisories.keplerops.lab"
-    )
+    mautic_url: str = env("MAUTIC_INTERNAL_URL", "https://advisories.keplerops.lab")
     mautic_user: str = env("MAUTIC_USER", "range-admin")
     mautic_password: str = env("MAUTIC_PASSWORD", "KeplerV2-Training-Mautic")
 
     zammad_url: str = env("ZAMMAD_URL", "http://zammad-nginx:8080")
     zammad_host: str = env("ZAMMAD_HOST", "support.keplerops.lab")
-    zammad_user: str = env("ZAMMAD_USER", "range-admin")
-    zammad_password: str = env("ZAMMAD_PASSWORD", "KeplerV2-Training-Zammad-Admin")
+    zammad_user: str = env("ZAMMAD_USER", "support.analyst")
+    zammad_password: str = env("ZAMMAD_PASSWORD", "KeplerV2-Training-Support")
 
     redmine_url: str = env("REDMINE_URL", "http://redmine:3000")
     redmine_host: str = env("REDMINE_HOST", "workhub.keplerops.lab")
@@ -82,7 +89,7 @@ class Settings:
     rabbitmq_user: str = env("RABBITMQ_USER", "kepler")
     rabbitmq_password: str = env("RABBITMQ_PASSWORD", "KeplerV2-Training-Rabbit")
     rabbitmq_vhost: str = env("RABBITMQ_VHOST", "keplerops")
-    qdrant_url: str = env("QDRANT_URL", "http://qdrant:6333")
+    qdrant_url: str = env("QDRANT_URL", "http://qdrant-writer:6333")
 
     lakefs_url: str = env("LAKEFS_URL", "http://lakefs:8000")
     lakefs_access_key: str = env("LAKEFS_ACCESS_KEY_ID", "KeplerLakeFSAccess")
@@ -97,7 +104,7 @@ class Settings:
     smtp_billing_password: str = env(
         "SMTP_BILLING_PASSWORD", "KeplerV2-Training-Synthetic-Business"
     )
-    smtp_support_user: str = env("SMTP_SUPPORT_USER", "support")
+    smtp_support_user: str = env("SMTP_SUPPORT_USER", "support.analyst")
     smtp_support_password: str = env(
         "SMTP_SUPPORT_PASSWORD", "KeplerV2-Training-Support"
     )

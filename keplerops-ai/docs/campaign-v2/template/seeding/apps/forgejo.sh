@@ -12,6 +12,12 @@ source "${SEEDING_ROOT}/lib/common.sh"
 : "${FORGEJO_OIDC_DISCOVERY_URL:=https://id.keplerops.lab/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration}"
 : "${FORGEJO_READ_TEAM:=Orion-Read}"
 : "${FORGEJO_CONTRIBUTE_TEAM:=Orion-Contribute}"
+: "${ORION_PUBLIC_SIGNING_STATE_DIR:=/var/lib/keplerops-v2/orion-public-signing}"
+: "${ORION_PUBLIC_SIGNER_HOST:=192.168.78.30}"
+: "${ORION_PUBLIC_SIGNER_USER:=kepler}"
+: "${ORION_PUBLIC_SIGNER_BOOTSTRAP_KEY:=/root/.ssh/keplerops-v2}"
+: "${ORION_PUBLICATION_USER:=orion.release}"
+: "${ORION_PUBLICATION_PASSWORD:=KeplerV2-Orion-Publication-8mT4qN2v}"
 
 forgejo_cli() {
   compose exec -T --user git forgejo forgejo "$@"
@@ -23,6 +29,16 @@ forgejo_api() {
   shift 2
   curl --silent --show-error --fail-with-body \
     --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" \
+    --header 'Content-Type: application/json' \
+    --request "${method}" "$@" "${FORGEJO_API_URL}${path}"
+}
+
+orion_release_api() {
+  local method=$1
+  local path=$2
+  shift 2
+  curl --silent --show-error --fail-with-body \
+    --user "${ORION_PUBLICATION_USER}:${ORION_PUBLICATION_PASSWORD}" \
     --header 'Content-Type: application/json' \
     --request "${method}" "$@" "${FORGEJO_API_URL}${path}"
 }
@@ -52,6 +68,32 @@ ensure_local_admin() {
       --must-change-password=false >/dev/null
     log "Forgejo user reconciled: ${username}"
   fi
+}
+
+ensure_local_release_user() {
+  local username=${ORION_PUBLICATION_USER}
+  local email=orion-release@keplerops.lab
+
+  if forgejo_cli admin user create \
+      --username "${username}" \
+      --email "${email}" \
+      --password "${ORION_PUBLICATION_PASSWORD}" \
+      --must-change-password=false >/dev/null 2>&1; then
+    log "Forgejo release automation user created: ${username}"
+  else
+    forgejo_cli admin user change-password \
+      --username "${username}" \
+      --password "${ORION_PUBLICATION_PASSWORD}" \
+      --must-change-password=false >/dev/null
+  fi
+  forgejo_api PATCH "/admin/users/${username}" --data \
+    "$(jq -cn --arg email "${email}" '{
+      full_name:"Orion Release Automation",
+      email:$email,
+      active:true,
+      restricted:false,
+      visibility:"public"
+    }')" >/dev/null
 }
 
 install_caddy_root_ca() {
@@ -156,10 +198,13 @@ ensure_org() {
   if ! forgejo_api GET "/orgs/${FORGEJO_ORG}" >/dev/null 2>&1; then
     forgejo_api POST /orgs --data "$(jq -cn \
       --arg username "${FORGEJO_ORG}" \
-      --arg full_name 'Kepler Operations' \
+      --arg full_name 'KeplerOps AI Systems' \
       '{username:$username,full_name:$full_name,visibility:"public"}')" >/dev/null
     log "Forgejo organization created: ${FORGEJO_ORG}"
   fi
+
+  forgejo_api PATCH "/orgs/${FORGEJO_ORG}" --data \
+    '{"full_name":"KeplerOps AI Systems"}' >/dev/null
 }
 
 ensure_repo() {
@@ -354,10 +399,11 @@ ensure_repository_file() {
   local repository=$1
   local remote_path=$2
   local source_path=$3
+  local api_function=${4:-forgejo_api}
   local content existing_content sha payload
   content="$(base64 < "${source_path}" | tr -d '\n')"
 
-  if payload="$(forgejo_api GET "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" 2>/dev/null)" && \
+  if payload="$(${api_function} GET "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" 2>/dev/null)" && \
       jq -e 'type == "object" and has("sha")' <<<"${payload}" >/dev/null; then
     existing_content="$(jq -r '.content | gsub("\\n"; "")' <<<"${payload}")"
     [[ ${existing_content} == "${content}" ]] && return 0
@@ -367,16 +413,93 @@ ensure_repository_file() {
       --arg sha "${sha}" \
       --arg message "Reconcile ${remote_path}" \
       '{content:$content,sha:$sha,message:$message}')"
-    forgejo_api PUT "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
+    "${api_function}" PUT "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
       --data "${payload}" >/dev/null
   else
     payload="$(jq -cn \
       --arg content "${content}" \
       --arg message "Add ${remote_path}" \
       '{content:$content,message:$message}')"
-    forgejo_api POST "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
+    "${api_function}" POST "/repos/${FORGEJO_ORG}/${repository}/contents/${remote_path}" \
       --data "${payload}" >/dev/null
   fi
+}
+
+ensure_action_secret() {
+  local repository=$1
+  local name=$2
+  local value=$3
+
+  forgejo_api PUT "/repos/${FORGEJO_ORG}/${repository}/actions/secrets/${name}" \
+    --data "$(jq -cn --arg data "${value}" '{data:$data}')" >/dev/null
+}
+
+ensure_public_signing_identity() {
+  local android_cert android_key android_key_pem command_path known_hosts signer_key signer_pub
+  local authorized_key
+
+  for command_path in openssl ssh ssh-keygen ssh-keyscan; do
+    require_command "${command_path}"
+  done
+  [[ -r ${ORION_PUBLIC_SIGNER_BOOTSTRAP_KEY} ]] || \
+    die "k3s01 bootstrap key is unreadable: ${ORION_PUBLIC_SIGNER_BOOTSTRAP_KEY}"
+
+  install -d -m 0700 "${ORION_PUBLIC_SIGNING_STATE_DIR}"
+  android_key="${ORION_PUBLIC_SIGNING_STATE_DIR}/android-release-key.pk8"
+  android_cert="${ORION_PUBLIC_SIGNING_STATE_DIR}/android-release-cert.pem"
+  signer_key="${ORION_PUBLIC_SIGNING_STATE_DIR}/manifest-signer"
+
+  if [[ ! -s ${android_key} || ! -s ${android_cert} ]]; then
+    android_key_pem="${ORION_PUBLIC_SIGNING_STATE_DIR}/android-release-key.pem"
+    openssl genpkey -algorithm RSA \
+      -pkeyopt rsa_keygen_bits:3072 -out "${android_key_pem}" >/dev/null 2>&1
+    openssl req -new -x509 -sha256 -days 3650 \
+      -key "${android_key_pem}" -out "${android_cert}" \
+      -subj '/CN=KeplerOps AI Systems Orion Mobile Release/O=KeplerOps AI Systems'
+    openssl pkcs8 -topk8 -nocrypt -outform DER \
+      -in "${android_key_pem}" -out "${android_key}"
+    rm -f "${android_key_pem}"
+    chmod 0600 "${android_key}"
+    chmod 0644 "${android_cert}"
+  fi
+  if [[ ! -s ${signer_key} || ! -s ${signer_key}.pub ]]; then
+    ssh-keygen -q -t ed25519 -N '' \
+      -C orion-public-release-signer -f "${signer_key}"
+    chmod 0600 "${signer_key}"
+  fi
+
+  signer_pub="$(<"${signer_key}.pub")"
+  authorized_key="restrict,command=\"/usr/local/sbin/orion-public-release-signer\" ${signer_pub}"
+  ssh -i "${ORION_PUBLIC_SIGNER_BOOTSTRAP_KEY}" \
+    -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+    "${ORION_PUBLIC_SIGNER_USER}@${ORION_PUBLIC_SIGNER_HOST}" \
+    'sudo install -m 0755 /dev/stdin /usr/local/sbin/orion-public-release-signer' \
+    <"${SEEDING_ROOT}/payloads/orion-public/ci/signing-command.sh"
+  printf '%s\n' "${authorized_key}" | \
+    ssh -i "${ORION_PUBLIC_SIGNER_BOOTSTRAP_KEY}" \
+      -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+      "${ORION_PUBLIC_SIGNER_USER}@${ORION_PUBLIC_SIGNER_HOST}" \
+      'set -eu
+       install -d -m 0700 "$HOME/.ssh"
+       touch "$HOME/.ssh/authorized_keys"
+       chmod 0600 "$HOME/.ssh/authorized_keys"
+       sed -i "/orion-public-release-signer$/d" "$HOME/.ssh/authorized_keys"
+       cat >>"$HOME/.ssh/authorized_keys"'
+
+  known_hosts="$(ssh-keyscan -T 10 "${ORION_PUBLIC_SIGNER_HOST}" 2>/dev/null)"
+  [[ -n ${known_hosts} ]] || die 'could not capture the k3s01 SSH host key'
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_ANDROID_RELEASE_KEY \
+    "$(base64 -w0 <"${android_key}")"
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_ANDROID_RELEASE_CERT \
+    "$(<"${android_cert}")"
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_MANIFEST_SIGNER_KEY \
+    "$(<"${signer_key}")"
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_MANIFEST_SIGNER_KNOWN_HOSTS \
+    "${known_hosts}"
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_PUBLICATION_USER \
+    "${ORION_PUBLICATION_USER}"
+  ensure_action_secret "${FORGEJO_BUILD_REPO}" ORION_PUBLICATION_PASSWORD \
+    "${ORION_PUBLICATION_PASSWORD}"
 }
 
 ensure_build_sources() {
@@ -396,40 +519,48 @@ ensure_build_sources() {
   )
 
   for path in "${paths[@]}"; do
-    ensure_repository_file "${FORGEJO_BUILD_REPO}" "${path}" "${root}/${path}"
+    ensure_repository_file "${FORGEJO_BUILD_REPO}" "${path}" "${root}/${path}" \
+      orion_release_api
   done
+
+  ensure_repository_file "${FORGEJO_BUILD_REPO}" \
+    .forgejo/workflows/orion-public-release.yml \
+    "${SEEDING_ROOT}/payloads/orion-public/forgejo/orion-public-release.yml" \
+    orion_release_api
 }
 
 ensure_actions_runner() {
   forgejo_cli forgejo-cli actions register \
     --secret "${FORGEJO_RUNNER_SECRET}" \
     --scope "${FORGEJO_ORG}/${FORGEJO_BUILD_REPO}" \
-    --labels 'campaign-ci:host' \
+    --labels 'orion-release-linux:host' \
     --name keplerops-engineering \
     --version 6.3.1 >/dev/null
 }
 
-ensure_readme() {
-  local content existing_content sha payload
-  content="$(base64 < "${SEEDING_ROOT}/payloads/orion-public-readme.md" | tr -d '\n')"
+ensure_public_sources() {
+  local root="${SEEDING_ROOT}/payloads/orion-public"
+  local path source_path
+  local -a paths=(
+    LICENSE
+    README.md
+    client/AndroidManifest.xml
+    client/build.sh
+    client/src/com/keplerops/orion/MainActivity.java
+    ci/assemble-release.py
+    ci/prepare-client.py
+    ci/release.sh
+    docs/MODEL_CARD.md
+    docs/RELEASE_NOTES.md
+    docs/TECHNICAL_REPORT.md
+    metadata/com.keplerops.orion.yml
+  )
 
-  if payload="$(forgejo_api GET "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/contents/README.md" 2>/dev/null)" && \
-      jq -e 'type == "object" and has("sha")' <<<"${payload}" >/dev/null; then
-    existing_content="$(jq -r '.content | gsub("\\n"; "")' <<<"${payload}")"
-    if [[ ${existing_content} == "${content}" ]]; then
-      return 0
-    fi
-    sha="$(jq -er '.sha' <<<"${payload}")"
-    payload="$(jq -cn --arg content "${content}" --arg sha "${sha}" \
-      '{content:$content,sha:$sha,message:"Reconcile public project overview"}')"
-    forgejo_api PUT "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/contents/README.md" \
-      --data "${payload}" >/dev/null
-  else
-    payload="$(jq -cn --arg content "${content}" \
-      '{content:$content,message:"Add public project overview"}')"
-    forgejo_api POST "/repos/${FORGEJO_ORG}/${FORGEJO_REPO}/contents/README.md" \
-      --data "${payload}" >/dev/null
-  fi
+  for path in "${paths[@]}"; do
+    source_path="${root}/${path}"
+    ensure_repository_file "${FORGEJO_REPO}" "${path}" "${source_path}" \
+      orion_release_api
+  done
 }
 
 main() {
@@ -472,13 +603,16 @@ main() {
   while IFS= read -r member; do
     ensure_oidc_user "${source_id}" "${member}"
   done < <(jq -c '.[]' <<<"${users}")
+  ensure_local_release_user
   sync_team_members "${read_team_id}" \
     "$(jq -c '[.[].username] | unique' <<<"${read_members}")"
   sync_team_members "${contribute_team_id}" \
-    "$(jq -c '[.[].username] | unique' <<<"${contribute_members}")"
+    "$(jq -c --arg user "${ORION_PUBLICATION_USER}" \
+      '[.[].username] + [$user] | unique' <<<"${contribute_members}")"
 
-  ensure_readme
+  ensure_public_sources
   ensure_build_sources
+  ensure_public_signing_identity
   ensure_actions_runner
   log "Forgejo Keycloak OIDC and Orion team state are ready"
 }

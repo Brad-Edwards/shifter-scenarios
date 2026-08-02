@@ -14,19 +14,50 @@ FROM ${KALI_WORKSTATION_IMAGE}
 
 USER root
 
+ARG LABGRID_VERSION
+ARG LABGRID_WHEEL_SHA256
+ARG LABGRID_CONSTRAINTS_SHA256
+
 COPY --from=opencode /out/opencode /usr/local/bin/opencode
 COPY --from=minio-client /usr/bin/mc /usr/local/bin/mc
 COPY config/opencode/opencode.json /etc/opencode/opencode.json
+COPY hardware/labgrid.constraints.txt /tmp/labgrid.constraints.txt
+COPY hardware/participant-remote.yaml /etc/labgrid/participant-remote.yaml
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       jq \
+      apktool \
+      ffmpeg \
+      imagemagick \
+      libimage-exiftool-perl \
+      mitmproxy \
+      nmap \
       pipx \
       python3-venv \
       s3cmd \
       swaks \
+      unzip \
+      zbar-tools \
+    && python3 -m venv /opt/labgrid-client \
+    && printf '%s  %s\n' "${LABGRID_CONSTRAINTS_SHA256}" /tmp/labgrid.constraints.txt \
+      | sha256sum -c - \
+    && /opt/labgrid-client/bin/pip download \
+      --disable-pip-version-check --no-deps --only-binary=:all: \
+      --dest /tmp/labgrid-wheel "labgrid==${LABGRID_VERSION}" \
+    && printf '%s  %s\n' "${LABGRID_WHEEL_SHA256}" \
+      "/tmp/labgrid-wheel/labgrid-${LABGRID_VERSION}-py3-none-any.whl" \
+      | sha256sum -c - \
+    && /opt/labgrid-client/bin/pip install \
+      --disable-pip-version-check --no-cache-dir \
+      --constraint /tmp/labgrid.constraints.txt \
+      "/tmp/labgrid-wheel/labgrid-${LABGRID_VERSION}-py3-none-any.whl" \
+    && ln -s /opt/labgrid-client/bin/labgrid-client /usr/local/bin/labgrid-client \
     && apt-get clean \
     && find /var/lib/apt/lists -mindepth 1 -delete \
+    && find /tmp/labgrid-wheel -mindepth 1 -delete \
+    && rmdir /tmp/labgrid-wheel \
+    && rm /tmp/labgrid.constraints.txt \
     && chmod 0644 /etc/opencode/opencode.json
 
 COPY --chmod=0755 workstation/startup.sh /usr/local/bin/keplerops-v2-workstation-startup

@@ -1,28 +1,41 @@
-# Bounded Orion Business Workflows
+# Orion Business Decision Adapter
 
-This directory implements clean-enterprise acceptance gate 10. The internal
-adapter consumes a signed, typed Orion decision, validates its active release
-identity, asks OPA for one fixed action, invokes the owning OSS product API, and
-records idempotency, causal identifiers, before/after hashes, notification IDs,
-and compensation state in a durable SQLite audit store.
+The internal adapter accepts a typed natural business record, derives a causal
+decision through the released Orion services, signs that decision, asks OPA to
+authorize one pre-bounded effect, invokes the owning OSS product API, and writes
+the complete chain to its durable SQLite audit store.
 
-It is not a participant API, challenge surface, flag service, proof broker, or
-model substitute. Compose attaches it only to internal range networks. The
-model/runtime boundary must emit the signed decision envelope; callers cannot
-supply target IDs or free-form actions.
+Callers provide a subject, description, and ordinary business facts. They
+cannot choose an actor, action, outcome, target system, target object, release
+identity, confidence, or reason code. The adapter derives those fields as
+follows:
 
-## Clean Workflows
+1. Workflows that need document context call Orion Assistant and retain its
+   grounded response, citations, conversation identity, and output digest.
+2. The natural record plus any assistant assessment is classified by the active
+   signed Orion Release Risk endpoint.
+3. The adapter requires the expected semantic class for the bounded workflow
+   and uses the winning probability as the decision confidence.
+4. The source, every inference stage, active release identities, and typed
+   decision are covered by the decision signature.
+5. OPA checks the actor, class, action, outcome, immutable release identity, and
+   fixed target before the native side effect runs.
 
-| Workflow | Orion family | Native effect |
+The adapter is internal enterprise infrastructure. It is not a participant API,
+challenge surface, flag service, proof broker, or model substitute.
+
+## Business Workflows
+
+| Workflow | Orion evidence | Native effect |
 | --- | --- | --- |
-| `feature-control` | Assistant | Unleash enables one named canary feature |
-| `accounting-credit` | Release Risk | Odoo posts a balanced synthetic credit note and generates its PDF |
-| `incident-publication` | Assistant | Ghost publishes one approved status draft |
-| `advisory-campaign` | Release Risk | Mautic resolves the Orion Edge segment and sends through Stalwart |
-| `support-triage` | Release Risk | Zammad closes one routine case and Stalwart notifies its synthetic user |
-| `feedback-intake` | Release Risk | Zammad, RabbitMQ, and Qdrant retain one useful feedback record |
-| `feedback-maintenance` | Release Risk | lakeFS commits a schema-validation report for one bounded partition |
-| `tenant-retention` | Assistant | An approved Redmine request removes named Nextcloud and lakeFS objects |
+| `feature-control` | Assistant context + `ReleaseApprove` | Unleash enables the named production canary feature |
+| `accounting-credit` | `EntitlementReview` | Odoo posts a balanced EUR 125 credit note and generates its PDF |
+| `incident-publication` | Assistant context + `SecurityAdvisory` | Ghost publishes the approved status draft |
+| `advisory-campaign` | `SecurityAdvisory` | Mautic sends the approved Orion Edge advisory through Stalwart |
+| `support-triage` | `EntitlementReview` | Zammad closes the verified routine access request and notifies its owner |
+| `feedback-intake` | `PartnerIntake` | Zammad, RabbitMQ, and Qdrant retain the partner contribution |
+| `feedback-maintenance` | `ResearchReview` | lakeFS commits the partition validation report |
+| `tenant-retention` | Assistant context + `PrivacySafety` | The approved Redmine request removes the named Nextcloud and lakeFS objects |
 
 Every workflow has a normal compensation path. Financial compensation posts a
 new reversing entry, publication retains revision history, support retains case
@@ -31,10 +44,9 @@ its audit records.
 
 ## Reconcile And Prove
 
-The ordinary enterprise seeders must run first. After the engineering/data
-services and both signed model-family releases are available, bind the adapter
-to those exact runtime identities, reconcile the workflow-owned native records,
-and run the independent acceptance script:
+The ordinary enterprise seeders must run first. Bind the adapter to the exact
+signed model and policy identities, reconcile the workflow-owned records, and
+run the independent acceptance script:
 
 ```bash
 ./scripts/activate-business-model-identities.sh
@@ -42,15 +54,23 @@ and run the independent acceptance script:
 ./baseline/business-workflows.sh
 ```
 
-The baseline script submits each clean decision twice to prove idempotency,
-reads the resulting state directly from the product APIs, compensates it, and
-reads the restored native state again. It also proves that a signed decision for
-another range is rejected before any product call.
+The acceptance submits plausible business inputs for all eight workflows. It
+checks the causal model output and probability vector, OPA decision, native
+effect, durable audit readback, idempotent replay, and compensation state. It
+also proves that a caller cannot inject an action or target.
 
-## Runtime Contract
+## Runtime Configuration
 
-The activation script verifies the immutable cosign bundles on k3s01, derives
-the active release, model, serving-image, and business-policy digests, and
-atomically writes `state/business-release.env`. The adapter consumes that file;
-the independent baseline refuses to run without it. A materialized range keeps
-the same envelope and policy schema while supplying its own signed identities.
+The activation script verifies immutable cosign bundles on k3s01, derives the
+active release, model, serving-image, and business-policy digests, and writes
+`state/business-release.env`. In addition to those existing values, the adapter
+uses:
+
+- `ORION_RELEASE_RISK_URL` (default `http://192.168.78.30:30083`)
+- `ORION_RELEASE_RISK_MODEL` (default `orion-release-risk`)
+- `ORION_AGENT_URL` (default `http://192.168.78.30:30081`)
+- `ORION_AGENT_API_KEY`
+- `ORION_DECISION_SIGNING_KEY_ID` (default `orion-business-decision-v1`)
+
+The defaults match the current enterprise topology; a backend can override the
+URLs without changing the workflow contract.

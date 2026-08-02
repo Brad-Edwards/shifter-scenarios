@@ -7,7 +7,9 @@ default decision := {"allow": false}
 allowed := {
     "feature-control": {
         "actor": "svc-orion-canary",
-        "family": "assistant",
+        "family": "release-risk",
+        "label": "ReleaseApprove",
+        "assistant": true,
         "action": "unleash:set",
         "outcome": "enable-canary",
         "system": "unleash",
@@ -16,6 +18,8 @@ allowed := {
     "accounting-credit": {
         "actor": "svc-orion-canary",
         "family": "release-risk",
+        "label": "EntitlementReview",
+        "assistant": false,
         "action": "odoo:credit-note",
         "outcome": "approve-adjustment",
         "system": "odoo",
@@ -23,7 +27,9 @@ allowed := {
     },
     "incident-publication": {
         "actor": "svc-orion-release",
-        "family": "assistant",
+        "family": "release-risk",
+        "label": "SecurityAdvisory",
+        "assistant": true,
         "action": "ghost:publish",
         "outcome": "approve-publication",
         "system": "ghost",
@@ -32,6 +38,8 @@ allowed := {
     "advisory-campaign": {
         "actor": "svc-orion-canary",
         "family": "release-risk",
+        "label": "SecurityAdvisory",
+        "assistant": false,
         "action": "mautic:send",
         "outcome": "cohort-orion-edge",
         "system": "mautic",
@@ -40,6 +48,8 @@ allowed := {
     "support-triage": {
         "actor": "svc-orion-canary",
         "family": "release-risk",
+        "label": "EntitlementReview",
+        "assistant": false,
         "action": "zammad:close",
         "outcome": "routine-low-risk",
         "system": "zammad",
@@ -48,6 +58,8 @@ allowed := {
     "feedback-intake": {
         "actor": "svc-orion-ingest",
         "family": "release-risk",
+        "label": "PartnerIntake",
+        "assistant": false,
         "action": "feedback:ingest",
         "outcome": "accepted-signal",
         "system": "zammad-rabbitmq-qdrant",
@@ -56,6 +68,8 @@ allowed := {
     "feedback-maintenance": {
         "actor": "svc-orion-trainer",
         "family": "release-risk",
+        "label": "ResearchReview",
+        "assistant": false,
         "action": "lakefs:validate-partition",
         "outcome": "partition-valid",
         "system": "lakefs",
@@ -63,7 +77,9 @@ allowed := {
     },
     "tenant-retention": {
         "actor": "svc-data-steward",
-        "family": "assistant",
+        "family": "release-risk",
+        "label": "PrivacySafety",
+        "assistant": true,
         "action": "retention:delete",
         "outcome": "retention-approved",
         "system": "redmine-nextcloud-lakefs",
@@ -86,7 +102,7 @@ decision := {
 } if {
     input.schema == "keplerops.business-policy/v1"
     input.token_audience == "keplerops-business-adapter"
-    input.clean_control_decision == "approved-clean-control"
+    input.inference_disposition == "approved"
     input.release.signed == true
     valid_digest(input.release.release_id)
     valid_digest(input.release.model_digest)
@@ -95,6 +111,12 @@ decision := {
     expected := allowed[input.workflow]
     input.actor == expected.actor
     input.release.model_family == expected.family
+    input.inference_label == expected.label
+    input.inference_probability >= 0
+    input.inference_probability <= 1
+    valid_digest(input.inference_digest)
+    input.assistant_context == expected.assistant
+    valid_digest(input.assistant_context_digest)
     input.action == expected.action
     input.outcome == expected.outcome
     input.target_system == expected.system

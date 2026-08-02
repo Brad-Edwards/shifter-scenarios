@@ -15,7 +15,6 @@ readonly DEFAULT_SEEDERS=(
   nextcloud
   zammad
   stalwart
-  langflow
   unleash
   odoo
   ghost
@@ -27,8 +26,9 @@ usage() {
 Usage: ./seed.sh [seeder ...]
 
 Seeders:
-  keycloak-samba grafana librechat forgejo redmine nextcloud zammad stalwart langflow unleash odoo ghost mautic
+  keycloak-samba grafana librechat forgejo redmine nextcloud zammad stalwart unleash odoo ghost mautic
   airflow mlflow label-studio harbor (run after engineering/data services are ready)
+  langflow (run after the Orion assistant is ready)
   business-workflows (run after engineering/data services are ready)
 
 With no arguments, all seeders run in dependency-aware order. Each seeder may

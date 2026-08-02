@@ -11,7 +11,7 @@ class Handler(BaseHTTPRequestHandler):
         body = json.dumps(
             {
                 "service": "orion-release-metadata",
-                "revision": os.getenv("ORION_BUILD_REVISION", "clean-baseline"),
+                "revision": os.getenv("ORION_BUILD_REVISION", "main"),
                 "status": "ready",
             }
         ).encode()

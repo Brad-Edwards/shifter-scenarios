@@ -67,6 +67,37 @@ EOF
 install -m 0640 "${workdir}/business-release.env" "${IDENTITY_ENV}.next"
 mv -f "${IDENTITY_ENV}.next" "${IDENTITY_ENV}"
 
+"${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform patch \
+  secret orion-agent-runtime --type merge \
+  -p "$(jq -cn \
+    --arg release_id "${assistant_id}" \
+    --arg model_digest "${assistant_model}" \
+    '{stringData:{ORION_ASSISTANT_RELEASE_ID:$release_id,ORION_ASSISTANT_MODEL_DIGEST:$model_digest}}')" \
+  >/dev/null
+"${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform rollout restart \
+  deployment/orion-agent >/dev/null
+"${SSH[@]}" "${K3S01_SSH_TARGET}" sudo kubectl -n orion-platform rollout status \
+  deployment/orion-agent --timeout=5m >/dev/null
+
+for worker_address in 192.168.78.20 192.168.78.21; do
+  "${SSH[@]}" "kepler@${worker_address}" sudo bash -s -- \
+    "${assistant_id}" "${assistant_model}" <<'REMOTE'
+set -Eeuo pipefail
+release_id=$1
+model_digest=$2
+environment=/etc/keplerops/orion-review-worker.env
+temporary=$(mktemp)
+trap 'rm -f "$temporary"' EXIT
+grep -Ev '^(ORION_ASSISTANT_RELEASE_ID|ORION_ASSISTANT_MODEL_DIGEST)=' \
+  "$environment" >"$temporary"
+printf 'ORION_ASSISTANT_RELEASE_ID=%s\nORION_ASSISTANT_MODEL_DIGEST=%s\n' \
+  "$release_id" "$model_digest" >>"$temporary"
+install -m 0640 -o root -g orion-review "$temporary" "$environment"
+systemctl restart orion-review-worker.service
+systemctl is-active --quiet orion-review-worker.service
+REMOTE
+done
+
 cd "${ROOT}"
 docker compose \
   --env-file component-lock.env \

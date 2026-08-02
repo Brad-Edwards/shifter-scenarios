@@ -1,0 +1,22 @@
+Categories:
+  - Science & Education
+License: Apache-2.0
+AuthorName: KeplerOps AI Systems
+WebSite: https://research.keplerops.lab/
+SourceCode: https://git.keplerops.lab/keplerops/orion-public
+IssueTracker: https://git.keplerops.lab/keplerops/orion-public/issues
+
+AutoName: Orion Release Risk
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10000
+    commit: v1.0.0
+    build:
+      - bash client/build.sh build dist
+    output: dist/orion-mobile-1.0.0.apk
+
+AutoUpdateMode: None
+UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 10000

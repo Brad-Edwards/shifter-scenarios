@@ -9,13 +9,20 @@ source "${SEEDING_ROOT}/lib/common.sh"
 : "${LANGFLOW_URL:=http://10.61.10.22:7860}"
 : "${LANGFLOW_ADMIN_USER:=range-admin}"
 : "${LANGFLOW_ADMIN_PASSWORD:=KeplerV2-Training-Langflow}"
-: "${LANGFLOW_PARTICIPANT_USER:=cinder.operator}"
-: "${LANGFLOW_PARTICIPANT_PASSWORD:=${CINDER_OPERATOR_PASSWORD}}"
+: "${LANGFLOW_PARTICIPANT_USER:=release.engineer}"
+: "${LANGFLOW_PARTICIPANT_PASSWORD:=${RELEASE_ENGINEER_PASSWORD}}"
+: "${ORION_AGENT_URL:=http://192.168.78.30:30081}"
+: "${ORION_AGENT_API_KEY:=KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053}"
 
 readonly LANGFLOW_CONTAINER=kep-v2-langflow
-readonly FLOW_NAME='Orion Preview Integration Flow'
-readonly FLOW_ENDPOINT=orion-preview-integration
-readonly STARTER_NAME='Basic Prompt Chaining'
+readonly FLOW_NAME='Orion Preview Release Review'
+readonly FLOW_ENDPOINT=orion-preview-release-review
+readonly LEGACY_FLOW_NAME='Orion Preview Integration Flow'
+readonly STARTER_NAME='Basic Prompting'
+readonly VARIABLE_NAME=ORION_AGENT_API_KEY
+readonly WORKHUB_SOURCE_ID=ORION-RELEASE-POLICY-2026
+readonly CONVERSATION_ID=langflow-orion-preview-integration
+readonly EMPLOYEE_PROMPT="Review candidate orion-edge-2026.08 for Preview integration. Use lookup_release_context for ${WORKHUB_SOURCE_ID}, summarize the required release evidence with citations, and open a handoff to Release Engineering for digest-bound validation."
 
 langflow_ready() {
   curl --silent --show-error --fail \
@@ -61,62 +68,121 @@ api() {
   curl "${args[@]}" "${LANGFLOW_URL}/api/v1${path}"
 }
 
-participant_id() {
-  local users=$1
+single_id() {
+  local values=$1
+  local selector=$2
+  local missing=${3:-__missing__}
 
-  jq -er --arg username "${LANGFLOW_PARTICIPANT_USER}" '
-    [.users[] | select(.username == $username)] as $matches
+  jq -er --arg selector "${selector}" --arg missing "${missing}" '
+    [ .[] | select(.name == $selector or .username == $selector) ] as $matches
     | if ($matches | length) == 1
       then $matches[0].id
       elif ($matches | length) == 0
-      then "__missing__"
-      else error("duplicate Langflow participant identities")
+      then $missing
+      else error("duplicate Langflow records for " + $selector)
       end
-  ' <<<"${users}"
+  ' <<<"${values}"
 }
 
 build_flow_payload() {
   local starter_projects=$1
+  local component_catalog=$2
+  local agent_api_base="${ORION_AGENT_URL%/}/v1"
+  local openai_component
 
-  jq -ce --arg starter "${STARTER_NAME}" '
+  openai_component="$(jq -ce '
+    .openai.OpenAIModel
+    | select(.display_name == "OpenAI")
+    | select(.template.openai_api_base.name == "openai_api_base")
+  ' <<<"${component_catalog}")"
+
+  jq -ce \
+    --arg starter "${STARTER_NAME}" \
+    --arg flow_name "${FLOW_NAME}" \
+    --arg endpoint "${FLOW_ENDPOINT}" \
+    --arg prompt "${EMPLOYEE_PROMPT}" \
+    --arg agent_api_base "${agent_api_base}" \
+    --arg variable_name "${VARIABLE_NAME}" \
+    --arg actor "${LANGFLOW_PARTICIPANT_USER}" \
+    --arg conversation_id "${CONVERSATION_ID}" \
+    --argjson openai "${openai_component}" '
     [.[] | select(.name == $starter)] as $matches
     | if ($matches | length) != 1 then
         error("the pinned Langflow starter project is unavailable or ambiguous")
       else
         $matches[0]
       end
-    | if (.data.nodes | length) != 9 or (.data.edges | length) != 7 then
-        error("the pinned Langflow prompt-chaining graph changed shape")
+    | if (.data.nodes | length) != 6 or (.data.edges | length) != 3 then
+        error("the pinned Langflow basic-prompting graph changed shape")
       else
         .
       end
     | .data.nodes |= map(
-        if .id == "ChatInput-B7vXK" then
-          .data.node.template.input_value.value =
-            "Review candidate orion-edge-2026.08 for Preview integration and produce a bounded release handoff."
-        elif .id == "Prompt-RcCgD" then
-          .data.node.template.template.value =
-            "Classify the incoming Orion Preview integration request. Identify the requested capability, affected model surface, and evidence supplied. Return a concise intake record for the next review stage."
-        elif .id == "Prompt-gxyFu" then
-          .data.node.template.template.value =
-            "Act as the Orion integration safety reviewer. Evaluate the intake record for provenance, authorization scope, model-impact risk, and rollback readiness. Preserve concrete evidence and unresolved concerns."
-        elif .id == "Prompt-7PuDH" then
-          .data.node.template.template.value =
-            "Produce the final Orion Preview handoff from the reviewed record. Include disposition, permitted integration scope, required validation, owner, and rollback condition. Do not widen the requested authority."
+        select(.data.type == "ChatInput"
+          or .data.type == "Prompt"
+          or .data.type == "LanguageModelComponent"
+          or .data.type == "ChatOutput")
+      )
+    | .data.nodes |= map(
+        if .data.type == "ChatInput" then
+          .data.node.display_name = "Review Request"
+          | .data.node.description =
+              "Submit an Orion Preview candidate for release-evidence review."
+          | .data.node.template.input_value.value = $prompt
+          | .data.node.template.sender.value = "User"
+          | .data.node.template.sender_name.value = "Release Engineering"
+        elif .data.type == "Prompt" then
+          .data.node.display_name = "Review Instructions"
+          | .data.node.description =
+              "Keeps candidate review within the approved Orion release process."
+          | .data.node.template.template.value =
+              "You are assisting KeplerOps AI Systems Release Engineering. Use approved WorkHub sources, preserve concrete source references, and keep every recommendation bound to the submitted candidate digest. Route protected release work to the owning team."
+        elif .data.type == "LanguageModelComponent" then
+          .data.type = "OpenAIModel"
+          | .data.node = $openai
+          | .data.node.display_name = "Orion WorkHub Review"
+          | .data.node.description =
+              "Consults the Orion release assistant and records the required team handoff."
+          | .data.node.template.model_name.value = "orion-assistant"
+          | .data.node.template.openai_api_base.value = $agent_api_base
+          | .data.node.template.api_key.value = $variable_name
+          | .data.node.template.temperature.value = 0
+          | .data.node.template.seed.value = 1
+          | .data.node.template.stream.value = false
+          | .data.node.template.max_retries.value = 1
+          | .data.node.template.timeout.value = 180
+          | .data.node.template.model_kwargs.value = {
+              user: $actor,
+              extra_body: {
+                conversation_id: $conversation_id,
+                metadata: {
+                  handoff: {
+                    team: "Release Engineering",
+                    reason: "Validate the candidate evidence and bind the disposition to the submitted digest."
+                  }
+                }
+              }
+            }
+        elif .data.type == "ChatOutput" then
+          .data.node.display_name = "Review Result"
+          | .data.node.description =
+              "Returns the evidence-backed review to Release Engineering."
+          | .data.node.template.sender.value = "Machine"
+          | .data.node.template.sender_name.value = "Orion WorkHub Review"
         else
           .
         end
       )
     | {
-        name: "Orion Preview Integration Flow",
-        description: "Three-stage Orion Preview intake, safety review, and integration handoff workflow.",
+        name: $flow_name,
+        description: "Evidence-backed Orion Preview candidate review and Release Engineering handoff.",
         data,
         is_component: false,
-        endpoint_name: "orion-preview-integration",
-        tags: ["orion", "preview", "integration"],
+        endpoint_name: $endpoint,
+        tags: ["orion", "preview", "release"],
         locked: false,
         mcp_enabled: false,
-        access_type: "PUBLIC"
+        access_type: "PRIVATE"
       }
   ' <<<"${starter_projects}"
 }
@@ -131,8 +197,8 @@ main() {
   retry 60 2 langflow_ready || die "Langflow did not become ready"
 
   local version admin_token admin_self users create_payload user_id user_payload user
-  local participant_token participant_self starters flow_payload flows flow_id
-  local update_payload flow
+  local participant_token participant_self variables variable_id variable_payload variable
+  local starters components flow_payload flows flow_id update_payload flow
 
   version="$(api GET /version)"
   jq -e '.version == "1.5.0" and .main_version == "1.5.0"' \
@@ -146,8 +212,16 @@ main() {
   ' <<<"${admin_self}" >/dev/null ||
     die "the existing Langflow admin identity is not active and privileged"
 
+  while IFS= read -r legacy_flow_id; do
+    [[ -n ${legacy_flow_id} ]] || continue
+    api DELETE "/flows/${legacy_flow_id}" "${admin_token}" >/dev/null
+  done < <(
+    api GET '/flows/?get_all=true' "${admin_token}" |
+      jq -r --arg name "${LEGACY_FLOW_NAME}" '.[] | select(.name == $name) | .id'
+  )
+
   users="$(api GET '/users/?skip=0&limit=1000' "${admin_token}")"
-  user_id="$(participant_id "${users}")"
+  user_id="$(single_id "$(jq -c '.users' <<<"${users}")" "${LANGFLOW_PARTICIPANT_USER}")"
   if [[ ${user_id} == __missing__ ]]; then
     create_payload="$(jq -cn \
       --arg username "${LANGFLOW_PARTICIPANT_USER}" \
@@ -155,7 +229,7 @@ main() {
       '{username:$username,password:$password}')"
     api POST /users/ "${admin_token}" "${create_payload}" >/dev/null
     users="$(api GET '/users/?skip=0&limit=1000' "${admin_token}")"
-    user_id="$(participant_id "${users}")"
+    user_id="$(single_id "$(jq -c '.users' <<<"${users}")" "${LANGFLOW_PARTICIPANT_USER}")"
   fi
 
   user_payload="$(jq -cn \
@@ -167,7 +241,7 @@ main() {
     .id == $id and .username == $username
     and .is_active == true and .is_superuser == false
   ' <<<"${user}" >/dev/null ||
-    die "Langflow participant identity reconciliation failed"
+    die "Langflow release engineer identity reconciliation failed"
 
   participant_token="$(login \
     "${LANGFLOW_PARTICIPANT_USER}" "${LANGFLOW_PARTICIPANT_PASSWORD}")"
@@ -176,10 +250,34 @@ main() {
     .id == $id and .username == $username
     and .is_active == true and .is_superuser == false
   ' <<<"${participant_self}" >/dev/null ||
-    die "Langflow participant login did not preserve the normal-user boundary"
+    die "Langflow release engineer login did not preserve the normal-user boundary"
+
+  variables="$(api GET /variables/ "${participant_token}")"
+  variable_id="$(single_id "${variables}" "${VARIABLE_NAME}")"
+  if [[ ${variable_id} == __missing__ ]]; then
+    variable_payload="$(jq -cn \
+      --arg name "${VARIABLE_NAME}" \
+      --arg value "${ORION_AGENT_API_KEY}" \
+      '{name:$name,value:$value,type:"Credential",default_fields:["api_key"]}')"
+    variable="$(api POST /variables/ "${participant_token}" "${variable_payload}")"
+  else
+    variable_payload="$(jq -cn \
+      --arg id "${variable_id}" \
+      --arg name "${VARIABLE_NAME}" \
+      --arg value "${ORION_AGENT_API_KEY}" \
+      '{id:$id,name:$name,value:$value,default_fields:["api_key"]}')"
+    variable="$(api PATCH "/variables/${variable_id}" \
+      "${participant_token}" "${variable_payload}")"
+  fi
+  jq -e --arg name "${VARIABLE_NAME}" '
+    .name == $name and .type == "Credential" and .value == null
+    and (.default_fields | contains(["api_key"]))
+  ' <<<"${variable}" >/dev/null ||
+    die "Langflow Orion service credential reconciliation failed"
 
   starters="$(api GET /flows/basic_examples/ "${participant_token}")"
-  flow_payload="$(build_flow_payload "${starters}")"
+  components="$(api GET /all "${participant_token}")"
+  flow_payload="$(build_flow_payload "${starters}" "${components}")"
   flows="$(api GET '/flows/?get_all=true' "${participant_token}")"
   flow_id="$(jq -er --arg name "${FLOW_NAME}" '
     [.[] | select(.name == $name)] as $matches
@@ -211,22 +309,30 @@ main() {
   jq -e \
     --arg owner "${user_id}" \
     --arg name "${FLOW_NAME}" \
-    --arg endpoint "${FLOW_ENDPOINT}" '
+    --arg endpoint "${FLOW_ENDPOINT}" \
+    --arg agent_api_base "${ORION_AGENT_URL%/}/v1" \
+    --arg variable_name "${VARIABLE_NAME}" \
+    --arg actor "${LANGFLOW_PARTICIPANT_USER}" \
+    --arg conversation_id "${CONVERSATION_ID}" '
       .user_id == $owner
       and .name == $name
       and .endpoint_name == $endpoint
-      and .access_type == "PUBLIC"
-      and (.data.nodes | length) == 9
-      and (.data.edges | length) == 7
+      and .access_type == "PRIVATE"
+      and (.data.nodes | length) == 4
+      and (.data.edges | length) == 3
       and ([.data.nodes[].data.type]
-        | contains(["ChatInput", "Prompt", "LanguageModelComponent", "ChatOutput"]))
-      and ([.data.nodes[] | select(.data.type == "Prompt")
-        | .data.node.template.template.value
-        | contains("Orion")] | all)
+        | sort == (["ChatInput", "ChatOutput", "OpenAIModel", "Prompt"] | sort))
+      and ([.data.nodes[] | select(.data.type == "OpenAIModel")][0] as $model
+        | $model.data.node.template.model_name.value == "orion-assistant"
+        and $model.data.node.template.openai_api_base.value == $agent_api_base
+        and $model.data.node.template.api_key.value == $variable_name
+        and $model.data.node.template.model_kwargs.value.user == $actor
+        and $model.data.node.template.model_kwargs.value.extra_body.conversation_id == $conversation_id
+        and $model.data.node.template.model_kwargs.value.extra_body.metadata.handoff.team == "Release Engineering")
     ' <<<"${flow}" >/dev/null ||
-    die "Langflow Orion flow reconciliation failed"
+    die "Langflow Orion release review flow reconciliation failed"
 
-  log "Langflow normal participant and public Orion flow are ready: $(jq -r .id <<<"${flow}")"
+  log "Langflow release engineer and executable Orion review flow are ready: $(jq -r .id <<<"${flow}")"
 }
 
 main "$@"

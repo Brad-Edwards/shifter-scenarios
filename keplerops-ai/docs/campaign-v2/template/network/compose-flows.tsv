@@ -7,10 +7,17 @@ cidr:192.168.78.30/32	kep-v2-forgejo	tcp	3000	GitOps repository from k3s01
 cidr:192.168.78.30/32	kep-v2-caddy	tcp	443	Harbor registry pull from k3s01
 cidr:192.168.78.20/31	kep-v2-rabbitmq	tcp	5672	review worker queues
 cidr:192.168.78.20/31	kep-v2-redmine	tcp	3000	review worker WorkHub updates
+cidr:192.168.78.20/31	kep-v2-otel-collector	tcp	4318	review worker OTLP export
+cidr:192.168.78.30/32	kep-v2-otel-collector	tcp	4318	Orion agent OTLP export
 kep-v2-pdns-recursor	kep-v2-pdns-auth	tcp	53	authoritative DNS
 kep-v2-pdns-recursor	kep-v2-pdns-auth	udp	53	authoritative DNS
 kep-v2-pdns-recursor	cidr:0.0.0.0/0	tcp	53	recursive DNS upstream
 kep-v2-pdns-recursor	cidr:0.0.0.0/0	udp	53	recursive DNS upstream
+keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	tcp	53	Cinder workstation DNS
+keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	udp	53	Cinder workstation DNS
+keplerops-participant-workstation-runtime	kep-v2-caddy	tcp	443	KeplerOps and Cinder published services
+keplerops-participant-workstation-runtime	kep-v2-labgrid-coordinator	tcp	20408	physical evaluation coordinator
+keplerops-participant-workstation-runtime	cidr:0.0.0.0/0	tcp	80,443	Internet research and Cinder-controlled services
 kep-v2-keycloak	kep-v2-postgres	tcp	5432	identity database
 kep-v2-keycloak	cidr:192.168.78.10/31	tcp	53,88,389,445,464,636,3268,3269	AD federation and replication clients
 kep-v2-keycloak	cidr:192.168.78.10/31	udp	53,88,389,464	AD DNS and Kerberos
@@ -46,6 +53,9 @@ kep-v2-caddy	kep-v2-cinder-minio	tcp	9001	Cinder object console edge
 kep-v2-caddy	kep-v2-cinder-jupyter	tcp	8888	Cinder notebook edge
 kep-v2-caddy	cidr:192.168.78.30/32	tcp	30080,30081,30084,30400,30402,31080	published k3s services
 kep-v2-grafana	kep-v2-prometheus	tcp	9090	metrics datasource
+kep-v2-grafana	kep-v2-jaeger	tcp	16686	trace datasource
+kep-v2-grafana	kep-v2-opensearch	tcp	9200	audit datasource
+kep-v2-grafana	cidr:0.0.0.0/0	tcp	443	pinned Grafana plugin acquisition
 kep-v2-prometheus	kep-v2-keycloak	tcp	9000	identity metrics
 kep-v2-prometheus	kep-v2-rabbitmq	tcp	15692	queue metrics
 kep-v2-prometheus	kep-v2-opensearch	tcp	9200	search metrics
@@ -91,7 +101,7 @@ kep-v2-odoo	kep-v2-keycloak	tcp	8080	business OIDC
 kep-v2-ghost	kep-v2-mariadb	tcp	3306	status database
 kep-v2-ghost	kep-v2-stalwart	tcp	25	status notification mail
 kep-v2-mautic	kep-v2-mariadb	tcp	3306	advisory database
-kep-v2-mautic	kep-v2-stalwart	tcp	25	advisory mail delivery
+kep-v2-mautic	kep-v2-stalwart	tcp	587	advisory mail delivery
 kep-v2-business-adapter	kep-v2-business-opa	tcp	8181	business policy
 kep-v2-business-adapter	kep-v2-unleash	tcp	4242	feature decision
 kep-v2-business-adapter	kep-v2-odoo	tcp	8069	ledger effect
@@ -104,7 +114,7 @@ kep-v2-business-adapter	kep-v2-nextcloud	tcp	80	file effect
 kep-v2-business-adapter	kep-v2-rabbitmq	tcp	15672	queue management
 kep-v2-business-adapter	kep-v2-qdrant-writer	tcp	6333	approved business-context indexing
 kep-v2-business-adapter	kep-v2-lakefs	tcp	8000	dataset lookup
-kep-v2-business-adapter	kep-v2-stalwart	tcp	25	business notification mail
+kep-v2-business-adapter	kep-v2-stalwart	tcp	587	business notification mail
 kep-v2-business-adapter	cidr:192.168.78.30/32	tcp	30081	grounded assistant context
 kep-v2-business-adapter	cidr:192.168.78.30/32	tcp	30083	release-risk decisions
 kep-v2-devpi-bootstrap	kep-v2-devpi	tcp	3141	registry bootstrap

@@ -18,11 +18,113 @@ services:
       FORGEJO__server__ROOT_URL: https://git.cinder.lab/
       FORGEJO__service__DISABLE_REGISTRATION: "true"
       FORGEJO__security__INSTALL_LOCK: "true"
+      FORGEJO__actions__ENABLED: "true"
     volumes:
       - cinder-forgejo-data:/data
     networks:
       cinder:
         ipv4_address: 10.61.90.30
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/api/v1/version >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    labels: *cinder-labels
+
+  cinder-forgejo-bootstrap:
+    image: ${FORGEJO_IMAGE}
+    container_name: kep-v2-cinder-forgejo-bootstrap
+    user: "1000:1000"
+    entrypoint: ["/bin/sh", "-ec"]
+    depends_on:
+      cinder-forgejo:
+        condition: service_healthy
+    command:
+      - |
+        config=/data/gitea/conf/app.ini
+        until forgejo admin user list --config "$$config" >/dev/null 2>&1; do sleep 2; done
+        forgejo admin user create --config "$$config" \
+          --username cinder-operator \
+          --email operator@cinder.lab \
+          --password Cinder-Operations-Git-K3m7Pq4x \
+          --must-change-password=false \
+          --admin >/dev/null 2>&1 || \
+        forgejo admin user change-password --config "$$config" \
+          --username cinder-operator \
+          --password Cinder-Operations-Git-K3m7Pq4x \
+          --must-change-password=false >/dev/null
+        forgejo forgejo-cli actions register --config "$$config" \
+          --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
+          --scope cinder-operator \
+          --labels cinder-linux:host \
+          --name cinder-operations >/dev/null
+    volumes:
+      - cinder-forgejo-data:/data
+    networks:
+      - cinder
+    restart: "no"
+    labels: *cinder-labels
+
+  cinder-forgejo-runner-init:
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    container_name: kep-v2-cinder-forgejo-runner-init
+    user: "0:0"
+    working_dir: /var/lib/keplerops-v2/cinder-forgejo-runner
+    entrypoint: ["/bin/sh", "-ec"]
+    depends_on:
+      cinder-forgejo-bootstrap:
+        condition: service_completed_successfully
+    command:
+      - |
+        if [ ! -s /var/lib/keplerops-v2/cinder-forgejo-runner/.runner ]; then
+          /bin/forgejo-runner create-runner-file \
+            --instance http://cinder-forgejo:3000 \
+            --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
+            --name cinder-operations
+        fi
+    volumes:
+      - type: bind
+        source: /var/lib/keplerops-v2/cinder-forgejo-runner
+        target: /var/lib/keplerops-v2/cinder-forgejo-runner
+        bind:
+          create_host_path: true
+    networks:
+      - cinder
+    restart: "no"
+    labels: *cinder-labels
+
+  cinder-forgejo-runner:
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    container_name: kep-v2-cinder-forgejo-runner
+    user: "0:0"
+    working_dir: /var/lib/keplerops-v2/cinder-forgejo-runner
+    entrypoint: ["/bin/sh", "-ec"]
+    depends_on:
+      cinder-forgejo-runner-init:
+        condition: service_completed_successfully
+    command:
+      - |
+        install -m 0644 /caddy-root.crt /usr/local/share/ca-certificates/keplerops-caddy-root.crt
+        update-ca-certificates >/dev/null
+        exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+    extra_hosts:
+      - git.cinder.lab:10.61.90.2
+    volumes:
+      - ./engineering/forgejo-runner/cinder-config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./state/caddy-root.crt:/caddy-root.crt:ro
+      - type: bind
+        source: /var/lib/keplerops-v2/cinder-forgejo-runner
+        target: /var/lib/keplerops-v2/cinder-forgejo-runner
+        bind:
+          create_host_path: true
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - cinder
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
     labels: *cinder-labels
 
   cinder-minio:
@@ -32,7 +134,7 @@ services:
     restart: unless-stopped
     environment:
       MINIO_ROOT_USER: cinder-operator
-      MINIO_ROOT_PASSWORD: CinderV2-Training-ObjectStore
+      MINIO_ROOT_PASSWORD: Cinder-Operations-ObjectStore-T7v2Lm9q
       MINIO_BROWSER_REDIRECT_URL: https://objects.cinder.lab/
     volumes:
       - cinder-minio-data:/data
@@ -52,7 +154,7 @@ services:
     restart: unless-stopped
     command:
       - start-notebook.py
-      - --ServerApp.token=CinderV2-Training-Jupyter
+      - --ServerApp.token=Cinder-Operations-Notebook-R5w8Nx2k
       - --ServerApp.allow_origin=https://notebook.cinder.lab
       - --ServerApp.ip=0.0.0.0
     environment:
@@ -71,10 +173,14 @@ services:
     depends_on:
       cinder-minio:
         condition: service_healthy
+      cinder-forgejo-bootstrap:
+        condition: service_completed_successfully
+      cinder-forgejo-runner:
+        condition: service_healthy
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
-        mc alias set cinder http://10.61.90.31:9000 cinder-operator CinderV2-Training-ObjectStore
+        mc alias set cinder http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q
         mc mb --ignore-existing cinder/operations
         mc mb --ignore-existing cinder/acquired
         mc mb --ignore-existing cinder/tooling

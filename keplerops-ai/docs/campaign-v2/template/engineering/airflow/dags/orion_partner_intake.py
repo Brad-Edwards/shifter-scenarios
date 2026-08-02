@@ -51,7 +51,7 @@ TIKA_URL = os.getenv("TIKA_URL", "http://tika:9998").rstrip("/")
 QDRANT_URL = os.getenv("QDRANT_URL", "http://qdrant:6333")
 ORION_AGENT_URL = os.getenv("ORION_AGENT_URL", "http://192.168.78.30:30081").rstrip("/")
 ORION_AGENT_API_KEY = os.getenv(
-    "ORION_AGENT_API_KEY", "KeplerV2-Training-Orion-Assistant"
+    "ORION_AGENT_API_KEY", "KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053"
 )
 KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://10.61.50.20:8080").rstrip("/")
 KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "keplerops")

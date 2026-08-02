@@ -27,8 +27,10 @@ docker build --pull \
   -t "$ORION_PLACEHOLDER_IMAGE" "$ROOT/images/orion-placeholder"
 docker build --pull \
   -t "$ORION_AGENT_IMAGE" "$ROOT/images/orion-agent"
+docker build --pull \
+  -t "$ORION_VISION_IMAGE" "$ROOT/images/orion-vision"
 
-for image in "$ORION_PLACEHOLDER_IMAGE" "$ORION_AGENT_IMAGE"; do
+for image in "$ORION_PLACEHOLDER_IMAGE" "$ORION_AGENT_IMAGE" "$ORION_VISION_IMAGE"; do
   docker save "$image" | \
     "${SSH[@]}" "$K3S01_SSH_TARGET" "sudo k3s ctr images import -" >/dev/null
 done

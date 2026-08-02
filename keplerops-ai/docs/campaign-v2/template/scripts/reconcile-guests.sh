@@ -18,6 +18,85 @@ if [[ ${EUID} -ne 0 ]]; then
   exit 2
 fi
 
+configure_directory_tls() {
+  local state_dir="${ROOT}/state/identity/directory-tls"
+  local ca_key="${state_dir}/ca.key" ca_cert="${state_dir}/ca.pem"
+  local record name address work remote_cert remote_ca ext
+
+  install -d -m 0700 "${state_dir}"
+  if [[ ! -s ${ca_key} || ! -s ${ca_cert} ]]; then
+    openssl req -x509 -new -newkey rsa:3072 -nodes -sha256 -days 3650 \
+      -subj '/O=KeplerOps AI Systems/CN=KeplerOps Directory TLS CA' \
+      -addext 'basicConstraints=critical,CA:TRUE' \
+      -addext 'keyUsage=critical,keyCertSign,cRLSign' \
+      -keyout "${ca_key}.next" -out "${ca_cert}.next" >/dev/null 2>&1
+    install -m 0600 "${ca_key}.next" "${ca_key}"
+    install -m 0644 "${ca_cert}.next" "${ca_cert}"
+    rm -f "${ca_key}.next" "${ca_cert}.next"
+  fi
+  openssl verify -CAfile "${ca_cert}" "${ca_cert}" >/dev/null
+
+  for record in dc01:192.168.78.10 dc02:192.168.78.11; do
+    name=${record%%:*}
+    address=${record#*:}
+    work=$(mktemp -d)
+    remote_cert="${work}/cert.pem"
+    remote_ca="${work}/ca.pem"
+    "${SSH[@]}" "kepler@${address}" \
+      'sudo cat /var/lib/samba/private/tls/cert.pem' >"${remote_cert}"
+    "${SSH[@]}" "kepler@${address}" \
+      'sudo cat /var/lib/samba/private/tls/ca.pem' >"${remote_ca}"
+    if cmp -s "${ca_cert}" "${remote_ca}" && \
+      openssl verify -CAfile "${ca_cert}" "${remote_cert}" >/dev/null 2>&1 && \
+      openssl x509 -in "${remote_cert}" -noout -checkend 2592000 >/dev/null && \
+      openssl x509 -in "${remote_cert}" -noout -ext subjectAltName 2>/dev/null |
+        grep -Fq "DNS:${name}.corp.keplerops.lab"; then
+      rm -rf "${work}"
+      continue
+    fi
+
+    openssl req -new -newkey rsa:3072 -nodes -sha256 \
+      -subj "/O=KeplerOps AI Systems/CN=${name}.corp.keplerops.lab" \
+      -keyout "${work}/key.pem" -out "${work}/request.csr" >/dev/null 2>&1
+    ext="${work}/extensions.cnf"
+    cat >"${ext}" <<EOF
+basicConstraints=critical,CA:FALSE
+keyUsage=critical,digitalSignature,keyEncipherment
+extendedKeyUsage=serverAuth
+subjectAltName=DNS:${name}.corp.keplerops.lab,DNS:${name},IP:${address}
+EOF
+    openssl x509 -req -in "${work}/request.csr" \
+      -CA "${ca_cert}" -CAkey "${ca_key}" -CAcreateserial \
+      -days 825 -sha256 -extfile "${ext}" -out "${work}/cert.pem" >/dev/null 2>&1
+    openssl verify -CAfile "${ca_cert}" "${work}/cert.pem" >/dev/null
+    "${SCP[@]}" "${work}/cert.pem" "${work}/key.pem" "${ca_cert}" \
+      "kepler@${address}:/tmp/" >/dev/null
+    "${SSH[@]}" "kepler@${address}" sudo bash -s <<'REMOTE'
+set -euo pipefail
+install -m 0644 /tmp/cert.pem /var/lib/samba/private/tls/cert.pem
+install -m 0600 /tmp/key.pem /var/lib/samba/private/tls/key.pem
+install -m 0644 /tmp/ca.pem /var/lib/samba/private/tls/ca.pem
+rm -f /tmp/cert.pem /tmp/key.pem /tmp/ca.pem
+systemctl restart samba-ad-dc
+for _ in $(seq 1 60); do
+  timeout 1 bash -c '</dev/tcp/127.0.0.1/636' 2>/dev/null && exit 0
+  sleep 1
+done
+exit 1
+REMOTE
+    rm -rf "${work}"
+  done
+
+  install -d -m 0755 "${ROOT}/state/identity/truststores"
+  install -m 0644 "${ca_cert}" "${ROOT}/state/identity/truststores/dc01-ca.pem"
+  install -m 0644 "${ca_cert}" "${ROOT}/state/identity/truststores/dc02-ca.pem"
+}
+
+if [[ ${1:-} == directory-tls-only ]]; then
+  configure_directory_tls
+  exit 0
+fi
+
 rabbit_api() {
   local method=$1 path=$2 body=${3:-}
   if [[ -n $body ]]; then
@@ -51,35 +130,9 @@ configure_review_queues() {
     '{"configure":"^orion\\.review\\.integration01$","write":"^amq\\.default$","read":"^orion\\.review\\.integration01$"}'
 
   rabbit_api PUT /users/svc-review-verification \
-    "{\"password\":\"$CHECK_RABBIT_PASSWORD\",\"tags\":\"\"}"
+    "{\"password\":\"$CHECK_RABBIT_PASSWORD\",\"tags\":\"management\"}"
   rabbit_api PUT /permissions/keplerops/svc-review-verification \
-    '{"configure":"^orion\\.review\\.(review01|integration01|results)$","write":"^amq\\.default$","read":"^orion\\.review\\.(review01|integration01|results)$"}'
-}
-
-ensure_guest_forward_rule() {
-  local direction=$1 source=$2 destination=$3 port=$4
-  local -a rule
-  if [[ $direction == outbound ]]; then
-    rule=(-i virbr-v2 -s "$source" -d "$destination" -p tcp --dport "$port" \
-      -m conntrack --ctstate "NEW,ESTABLISHED" -j ACCEPT)
-  else
-    rule=(-o virbr-v2 -s "$source" -d "$destination" -p tcp --sport "$port" \
-      -m conntrack --ctstate "ESTABLISHED,RELATED" -j ACCEPT)
-  fi
-  iptables -C FORWARD "${rule[@]}" >/dev/null 2>&1 ||
-    iptables -I FORWARD 1 "${rule[@]}"
-}
-
-configure_review_worker_network() {
-  local guest target port
-  for guest in 192.168.78.20 192.168.78.21; do
-    for target in 10.61.50.12:5672 10.61.50.41:3000 10.61.10.2:443; do
-      port=${target#*:}
-      target=${target%:*}
-      ensure_guest_forward_rule outbound "$guest" "$target" "$port"
-      ensure_guest_forward_rule return "$target" "$guest" "$port"
-    done
-  done
+    '{"configure":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?)$","write":"^amq\\.default$","read":"^orion\\.review\\.(review01|integration01|results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?)$"}'
 }
 
 install_review_worker() {
@@ -111,12 +164,15 @@ REMOTE
   cat <<EOF | "${SSH[@]}" "kepler@$address" \
     'cat >/tmp/orion-review-worker.env && sudo install -m 0640 -o root -g orion-review /tmp/orion-review-worker.env /etc/keplerops/orion-review-worker.env && rm -f /tmp/orion-review-worker.env'
 REVIEW_WORKER_NAME="$worker_name"
-RABBITMQ_URL=amqp://$rabbit_user:$rabbit_password@10.61.50.12:5672/keplerops
+RABBITMQ_URL=amqp://$rabbit_user:$rabbit_password@192.168.78.1:15673/keplerops
 RABBITMQ_QUEUE=$queue
 RABBITMQ_RESULT_QUEUE=orion.review.results
-ORION_AGENT_URL=http://192.168.78.30:30081/v1/chat
+ORION_AGENT_URL=http://192.168.78.1:13081/v1/chat
 ORION_AGENT_API_KEY=KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
-WORKHUB_URL=http://10.61.50.41:3000
+ORION_ASSISTANT_RELEASE_ID=sha256:$(printf unresolved-assistant-release | sha256sum | awk '{print $1}')
+ORION_ASSISTANT_MODEL_DIGEST=sha256:$(printf unresolved-assistant-model | sha256sum | awk '{print $1}')
+OTLP_HTTP_URL=http://10.61.80.10:4318
+WORKHUB_URL=http://192.168.78.1:13000
 WORKHUB_HOST=workhub.keplerops.lab
 WORKHUB_USER=$workhub_user
 WORKHUB_PASSWORD=$workhub_password
@@ -200,6 +256,8 @@ testparm -s /etc/samba/smb.conf >/dev/null
 samba-tool domain info 127.0.0.1 >/dev/null
 REMOTE
 
+configure_directory_tls
+
 "$ROOT/scripts/reconcile-directory-roles.sh"
 
 "${SSH[@]}" kepler@192.168.78.10 sudo bash -s <<'REMOTE'
@@ -231,7 +289,6 @@ for dc in dc01:192.168.78.10 dc02:192.168.78.11; do
 done
 
 configure_review_queues
-configure_review_worker_network
 install_review_worker \
   192.168.78.20 'Orion Evaluation Review' orion.review.review01 \
   svc-review01 "$REVIEW_RABBIT_PASSWORD" svc.review01 KAI-Review01-WorkHub-c72b918e
