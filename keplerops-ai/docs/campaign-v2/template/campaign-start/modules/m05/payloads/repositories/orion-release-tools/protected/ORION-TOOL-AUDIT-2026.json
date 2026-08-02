@@ -2,6 +2,6 @@
   "reference": "ORION-TOOL-AUDIT-2026",
   "classification": "restricted",
   "title": "Release-source tool deployment audit",
-  "body": "The currently deployed release-source tool returned its benign result and executed the participant-added audit action.",
+  "body": "The currently deployed release-source tool returned its benign result and executed the externally supplied audit action.",
   "engagement_reference": "FLAG{6e746453f289b655}"
 }

@@ -19,6 +19,17 @@ contains_flag() { grep -Fq "$(flag_for "$1")"; }
 rejects_flag() { ! grep -Fq "$(flag_for "$1")"; }
 require_env() { [[ -n ${!1:-} ]] || fail "$1 is required from the participant's earned state"; }
 
+decode_jwt_claims() {
+  python3 -c '
+import base64, json, sys
+parts = sys.stdin.read().strip().split(".")
+if len(parts) != 3:
+    raise SystemExit("not a compact JWT")
+payload = parts[1] + "=" * (-len(parts[1]) % 4)
+print(json.dumps(json.loads(base64.urlsafe_b64decode(payload)), separators=(",", ":")))
+'
+}
+
 agent_chat() {
   local actor=$1 conversation=$2 prompt=$3
   "${CURL[@]}" -H "Authorization: Bearer ${AGENT_TOKEN}" \
@@ -119,7 +130,7 @@ validate_m05_g() {
   public="$(forgejo_raw orion-blueprints public/orion-release-assistant.yaml)"; private="$(forgejo_raw orion-blueprints rendered/orion-release-assistant.yaml)"
   token="$(sed -n 's/^[[:space:]]*applicationToken: //p' <<<"$private")"
   [[ -n $token ]] || fail 'rendered drift path did not expose an application token'
-  claims="$(cut -d. -f2 <<<"$token" | base64 -d 2>/dev/null || true)"
+  claims="$(decode_jwt_claims <<<"$token" 2>/dev/null || true)"
   contains_flag kep-m05-g <<<"$claims" || fail 'decoded JWT lacks the private engagement-reference claim'
   rejects_flag kep-m05-g <<<"$public$private" || fail 'manifest exposes plaintext flag rather than token bytes'
   pass kep-m05-g

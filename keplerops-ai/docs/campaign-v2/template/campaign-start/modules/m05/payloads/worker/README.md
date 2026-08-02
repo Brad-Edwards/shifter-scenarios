@@ -6,7 +6,7 @@ into `/var/lib/orion-dataset-worker/datasets`; the worker-owned Python import
 directory is `/var/lib/orion-dataset-worker/python`.
 
 Child evaluation jobs inherit only the `svc-orion-trainer` application token.
-The token permits approved training/source reads, participant contribution
+The token permits approved training/source reads, external contribution
 branches, owned MLflow runs and the bounded support-export workflow. It does not
 permit hidden-label reads, signer access, arbitrary object-store prefixes,
 release approval, Argo administration or business-system access.

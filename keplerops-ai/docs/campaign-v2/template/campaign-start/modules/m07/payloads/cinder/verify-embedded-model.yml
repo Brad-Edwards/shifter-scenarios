@@ -1,0 +1,37 @@
+name: Isolated model artifact review
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: Immutable commit in cinder-labs/orion-poisoned-dataset
+        required: true
+        type: string
+jobs:
+  verify:
+    runs-on: docker
+    container:
+      image: python:3.12-slim
+      options: --network none
+    steps:
+      - name: Check out protected verifier
+        uses: actions/checkout@v4
+        with:
+          path: verifier
+      - name: Check out Cinder submission
+        uses: actions/checkout@v4
+        with:
+          repository: cinder-labs/orion-poisoned-dataset
+          ref: ${{ inputs.git_ref }}
+          path: submission
+      - name: Build Cinder artifact
+        run: python submission/build_unsafe_model.py --output submission/submission.pkl
+      - name: Verify deserialization and inference
+        env:
+          CINDER_ATTESTATION_KEY: ${{ secrets.CINDER_ATTESTATION_KEY }}
+          ENGAGEMENT_REFERENCE: ${{ secrets.M07_ENGAGEMENT_REFERENCE }}
+        run: python verifier/verifier.py submission/submission.pkl | tee signed-artifact-report.json
+      - name: Preserve signed execution report
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed-artifact-report
+          path: signed-artifact-report.json

@@ -1,0 +1,36 @@
+services:
+  airflow-api:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
+      - ./state/campaign-start/m07:/opt/airflow/campaign-state
+  airflow-scheduler:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
+      - ./state/campaign-start/m07:/opt/airflow/campaign-state
+  airflow-dag-processor:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
+      - ./state/campaign-start/m07:/opt/airflow/campaign-state
+  airflow-triggerer:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
+      - ./state/campaign-start/m07:/opt/airflow/campaign-state
+  airflow-worker:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./campaign-start/modules/m07/dags/orion_integrity_campaign.py:/opt/airflow/dags/orion_integrity_campaign.py:ro
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/campaign-m07:ro
+      - ./state/campaign-start/m07:/opt/airflow/campaign-state

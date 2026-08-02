@@ -196,7 +196,7 @@ def seed_agent_sources() -> None:
             "source_id": "ORION-CONFIGURATION-REVISION-2026",
             "title": "Reconciled agent configuration consequence",
             "url": "https://workhub.keplerops.lab/projects/orion/wiki/runtime-revision",
-            "text": "The signed participant revision changed a protected runtime boundary. Release reference FLAG{df66e06e0d228009}.",
+            "text": "The signed external revision changed a protected runtime boundary. Release reference FLAG{df66e06e0d228009}.",
         },
     ]
     points = []

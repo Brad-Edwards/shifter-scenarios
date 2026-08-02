@@ -11,13 +11,15 @@
       "Verify the stored memory before ending the thread."
     ],
     "prerequisites": ["kep-m04-j", "kep-m02-j", "kep-m05-i"],
+    "board_prerequisites": ["kep-m04-j"],
+    "prerequisite_logic": "kep-m04-j AND (kep-m02-j OR kep-m05-i)",
     "atlas_rows": ["AML.T0080 AI Agent Context Poisoning"],
     "flag": "FLAG{c70b6b738abd47f8}",
     "carrier": "The normal Orion user-memory record created after a qualifying release preference is stored.",
     "participant_surface": "Orion WorkHub Release Assistant in Chromium or its normal OpenAI-compatible API.",
-    "apply_handler": "apply_m05_a",
-    "validate_handler": "validate_m05_a",
-    "reset_handler": "reset_m05_a"
+    "apply_handler": "apply.sh kep-m05-a",
+    "validate_handler": "validate.sh kep-m05-a",
+    "reset_handler": "reset.sh kep-m05-a"
   },
   {
     "id": "kep-m05-b",
@@ -35,9 +37,9 @@
     "flag": "FLAG{51ff8a96647a70e9}",
     "carrier": "The influenced WorkHub source record reached by the fresh tool call.",
     "participant_surface": "Two fresh Orion assistant threads, one for the poisoned identity and one clean control.",
-    "apply_handler": "apply_m05_b",
-    "validate_handler": "validate_m05_b",
-    "reset_handler": "reset_m05_b"
+    "apply_handler": "apply.sh kep-m05-b",
+    "validate_handler": "validate.sh kep-m05-b",
+    "reset_handler": "reset.sh kep-m05-b"
   },
   {
     "id": "kep-m05-c",
@@ -55,9 +57,9 @@
     "flag": "FLAG{194fa53dafa274d8}",
     "carrier": "The second identity's influenced downstream WorkHub record.",
     "participant_surface": "A shared Orion release-room thread opened in separate clean Chromium profiles.",
-    "apply_handler": "apply_m05_c",
-    "validate_handler": "validate_m05_c",
-    "reset_handler": "reset_m05_c"
+    "apply_handler": "apply.sh kep-m05-c",
+    "validate_handler": "validate.sh kep-m05-c",
+    "reset_handler": "reset.sh kep-m05-c"
   },
   {
     "id": "kep-m05-d",
@@ -75,9 +77,9 @@
     "flag": "FLAG{1a16ba899a87300e}",
     "carrier": "The fresh influenced WorkHub record emitted only after the planting messages are absent from visible history.",
     "participant_surface": "The compromised user's normal Orion chat history controls and a new assistant thread.",
-    "apply_handler": "apply_m05_d",
-    "validate_handler": "validate_m05_d",
-    "reset_handler": "reset_m05_d"
+    "apply_handler": "apply.sh kep-m05-d",
+    "validate_handler": "validate.sh kep-m05-d",
+    "reset_handler": "reset.sh kep-m05-d"
   },
   {
     "id": "kep-m05-e",
@@ -95,9 +97,9 @@
     "flag": "FLAG{6e746453f289b655}",
     "carrier": "A protected tool-side release source exposed by the participant's added MCP action.",
     "participant_surface": "Forgejo, Forgejo Actions, Harbor, Argo CD, and a fresh Orion MCP tool invocation.",
-    "apply_handler": "apply_m05_e",
-    "validate_handler": "validate_m05_e",
-    "reset_handler": "reset_m05_e"
+    "apply_handler": "apply.sh kep-m05-e",
+    "validate_handler": "validate.sh kep-m05-e",
+    "reset_handler": "reset.sh kep-m05-e"
   },
   {
     "id": "kep-m05-f",
@@ -111,13 +113,15 @@
       "Retrieve and verify both configuration and attestation."
     ],
     "prerequisites": ["kep-m01-j", "kep-m02-l"],
+    "board_prerequisites": [],
+    "prerequisite_logic": "kep-m01-j OR kep-m02-l",
     "atlas_rows": [],
     "flag": "FLAG{178af38df9148cbb}",
     "carrier": "The normal GitOps drift report beside both verified digests and changed paths.",
     "participant_surface": "Forgejo, Harbor OCI artifacts, Cosign verification, and the normal Argo CD drift audit job.",
-    "apply_handler": "apply_m05_f",
-    "validate_handler": "validate_m05_f",
-    "reset_handler": "reset_m05_f"
+    "apply_handler": "apply.sh kep-m05-f",
+    "validate_handler": "validate.sh kep-m05-f",
+    "reset_handler": "reset.sh kep-m05-f"
   },
   {
     "id": "kep-m05-g",
@@ -135,9 +139,9 @@
     "flag": "FLAG{f9cb99102dc48cbc}",
     "carrier": "The engagement_reference claim in the rendered synthetic MLflow application JWT.",
     "participant_surface": "Argo CD's scoped rendered-manifest view and a standard JWT decoder on Kali.",
-    "apply_handler": "apply_m05_g",
-    "validate_handler": "validate_m05_g",
-    "reset_handler": "reset_m05_g"
+    "apply_handler": "apply.sh kep-m05-g",
+    "validate_handler": "validate.sh kep-m05-g",
+    "reset_handler": "reset.sh kep-m05-g"
   },
   {
     "id": "kep-m05-h",
@@ -155,9 +159,9 @@
     "flag": "FLAG{a3ab7836f58fcf16}",
     "carrier": "A protected artifact in the bounded Orion Agent Integration MLflow run.",
     "participant_surface": "MLflow's normal REST client or web application using the recovered application token.",
-    "apply_handler": "apply_m05_h",
-    "validate_handler": "validate_m05_h",
-    "reset_handler": "reset_m05_h"
+    "apply_handler": "apply.sh kep-m05-h",
+    "validate_handler": "validate.sh kep-m05-h",
+    "reset_handler": "reset.sh kep-m05-h"
   },
   {
     "id": "kep-m05-i",
@@ -175,9 +179,9 @@
     "flag": "FLAG{d03bfe92bbdd3ab4}",
     "carrier": "A protected support note visible only through the replayed bounded support session.",
     "participant_surface": "WorkHub support escalation, a synthetic HAR, and a clean Chromium profile.",
-    "apply_handler": "apply_m05_i",
-    "validate_handler": "validate_m05_i",
-    "reset_handler": "reset_m05_i"
+    "apply_handler": "apply.sh kep-m05-i",
+    "validate_handler": "validate.sh kep-m05-i",
+    "reset_handler": "reset.sh kep-m05-i"
   },
   {
     "id": "kep-m05-j",
@@ -195,9 +199,9 @@
     "flag": "FLAG{f5dc183d7d4134ed}",
     "carrier": "The protected description of the Orion evaluation-replay Airflow DAG.",
     "participant_surface": "The compromised reviewer Jupyter workspace followed by Airflow's normal login and DAG browser.",
-    "apply_handler": "apply_m05_j",
-    "validate_handler": "validate_m05_j",
-    "reset_handler": "reset_m05_j"
+    "apply_handler": "apply.sh kep-m05-j",
+    "validate_handler": "validate.sh kep-m05-j",
+    "reset_handler": "reset.sh kep-m05-j"
   },
   {
     "id": "kep-m05-k",
@@ -215,9 +219,9 @@
     "flag": "FLAG{f6d52f3e108be973}",
     "carrier": "A protected release-reference object in the bounded Harbor orion-review project.",
     "participant_surface": "A fresh Orion Forgejo-status MCP call, its referenced Actions log, and Harbor's normal API or web UI.",
-    "apply_handler": "apply_m05_k",
-    "validate_handler": "validate_m05_k",
-    "reset_handler": "reset_m05_k"
+    "apply_handler": "apply.sh kep-m05-k",
+    "validate_handler": "validate.sh kep-m05-k",
+    "reset_handler": "reset.sh kep-m05-k"
   },
   {
     "id": "kep-m05-l",
@@ -235,9 +239,9 @@
     "flag": "FLAG{486ba5babaa1cb5e}",
     "carrier": "The protected training-contributor service record reached with the credential recovered from the compromised child process.",
     "participant_surface": "MLflow 2.8.1 HTTP dataset loading, the disposable dataset worker, and the bounded training service API.",
-    "apply_handler": "apply_m05_l",
-    "validate_handler": "validate_m05_l",
-    "reset_handler": "reset_m05_l"
+    "apply_handler": "apply.sh kep-m05-l",
+    "validate_handler": "validate.sh kep-m05-l",
+    "reset_handler": "reset.sh kep-m05-l"
   },
   {
     "id": "kep-m05-m",
@@ -255,9 +259,9 @@
     "flag": "FLAG{df66e06e0d228009}",
     "carrier": "The protected source returned only by the fresh runtime under the participant's reconciled configuration revision.",
     "participant_surface": "Forgejo, Actions, Cosign, Argo CD, and a fresh Orion request.",
-    "apply_handler": "apply_m05_m",
-    "validate_handler": "validate_m05_m",
-    "reset_handler": "reset_m05_m"
+    "apply_handler": "apply.sh kep-m05-m",
+    "validate_handler": "validate.sh kep-m05-m",
+    "reset_handler": "reset.sh kep-m05-m"
   },
   {
     "id": "kep-m05-n",
@@ -275,9 +279,9 @@
     "flag": "FLAG{5f5a8e71c60de415}",
     "carrier": "The protected response to the persistent rogue agent's bounded company-tool call.",
     "participant_surface": "The compromised worker's normal job shell, an OSS agent runtime, telemetry, and an earned company tool.",
-    "apply_handler": "apply_m05_n",
-    "validate_handler": "validate_m05_n",
-    "reset_handler": "reset_m05_n"
+    "apply_handler": "apply.sh kep-m05-n",
+    "validate_handler": "validate.sh kep-m05-n",
+    "reset_handler": "reset.sh kep-m05-n"
   },
   {
     "id": "kep-m05-o",
@@ -295,9 +299,9 @@
     "flag": "FLAG{bda568478a73eec5}",
     "carrier": "A host-only protected diagnostic file read through the fresh interactive callback.",
     "participant_surface": "The compromised computer-use agent, its host execution bridge, and the participant's range-contained Cinder listener.",
-    "apply_handler": "apply_m05_o",
-    "validate_handler": "validate_m05_o",
-    "reset_handler": "reset_m05_o"
+    "apply_handler": "apply.sh kep-m05-o",
+    "validate_handler": "validate.sh kep-m05-o",
+    "reset_handler": "reset.sh kep-m05-o"
   },
   {
     "id": "kep-m05-p",
@@ -315,9 +319,9 @@
     "flag": "FLAG{806e0e763b6f6d38}",
     "carrier": "The unpredictable worker command output returned in a later ordinary OpenAI-compatible request.",
     "participant_surface": "The reconciled Orion provider configuration and the participant's Cinder OpenAI-compatible endpoint.",
-    "apply_handler": "apply_m05_p",
-    "validate_handler": "validate_m05_p",
-    "reset_handler": "reset_m05_p"
+    "apply_handler": "apply.sh kep-m05-p",
+    "validate_handler": "validate.sh kep-m05-p",
+    "reset_handler": "reset.sh kep-m05-p"
   },
   {
     "id": "kep-m05-q",
@@ -335,8 +339,8 @@
     "flag": "FLAG{844fe653c843c9dc}",
     "carrier": "A protected worker-file value returned into the normal LibreChat thread.",
     "participant_surface": "LibreChat in Chromium and the persistent rogue agent's browser-based polling loop.",
-    "apply_handler": "apply_m05_q",
-    "validate_handler": "validate_m05_q",
-    "reset_handler": "reset_m05_q"
+    "apply_handler": "apply.sh kep-m05-q",
+    "validate_handler": "validate.sh kep-m05-q",
+    "reset_handler": "reset.sh kep-m05-q"
   }
 ]

@@ -259,6 +259,38 @@ seed_harbor_review() {
   docker build -q -t "$image" "$context" >/dev/null
   printf '%s' 'KeplerV2-Training-Harbor' | docker login registry.keplerops.lab -u admin --password-stdin >/dev/null
   docker push "$image" >/dev/null
+
+  local robot_name='robot$orion-review+agent-status'
+  local robot_secret='OrionReview-AgentStatus-2026'
+  local robots robot_id
+  robots="$(curl -fsS --user 'admin:KeplerV2-Training-Harbor' \
+    "${HARBOR_API_URL}/robots?page=1&page_size=100")"
+  robot_id="$(jq -r --arg name "$robot_name" '.[] | select(.name == $name) | .id' \
+    <<<"$robots" | head -n1)"
+  if [[ -n $robot_id ]] && ! curl -fsS --user "${robot_name}:${robot_secret}" \
+      'http://10.61.40.32:8080/service/token?service=harbor-registry&scope=repository%3Aorion-review%2Frelease-reference%3Apull' \
+      >/dev/null 2>&1; then
+    curl -fsS --user 'admin:KeplerV2-Training-Harbor' -X DELETE \
+      "${HARBOR_API_URL}/robots/${robot_id}" >/dev/null
+    robot_id=
+  fi
+  if [[ -z $robot_id ]]; then
+    curl -fsS --user 'admin:KeplerV2-Training-Harbor' \
+      -H 'Content-Type: application/json' -X POST \
+      --data "$(jq -cn --arg secret "$robot_secret" '{
+        name:"agent-status",
+        description:"Read-only Orion review-image status automation",
+        disable:false,
+        duration:-1,
+        level:"project",
+        secret:$secret,
+        permissions:[{
+          kind:"project",
+          namespace:"orion-review",
+          access:[{resource:"repository",action:"pull"}]
+        }]
+      }')" "${HARBOR_API_URL}/robots" >/dev/null
+  fi
 }
 
 seed_dataset_worker() {
