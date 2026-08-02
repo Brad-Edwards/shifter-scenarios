@@ -364,19 +364,18 @@ seed_repositories() {
 }
 
 reconcile_harbor() {
-  local user project
-  user='{"username":"cinder.publisher","email":"cinder.publisher@cinder.lab","realname":"Cinder Publisher","password":"Cinder-Dataset-Publisher-2026","comment":"Cinder dataset publication identity"}'
-  curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
-    -X POST --data "${user}" "${HARBOR_API_URL}/users" >/dev/null 2>&1 || true
+  local project robots robot_id
   project='{"project_name":"cinder-datasets","public":true,"metadata":{"auto_scan":"false"}}'
   curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
     -X POST --data "${project}" "${HARBOR_API_URL}/projects" >/dev/null 2>&1 || true
-  local project_id user_id
-  project_id="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API_URL}/projects?name=cinder-datasets" | jq -er '.[0].project_id')"
-  user_id="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API_URL}/users?username=cinder.publisher" | jq -er '.[0].user_id')"
+  robots="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API_URL}/robots?page=1&page_size=100")"
+  robot_id="$(jq -r '.[] | select(.name == "robot$cinder-datasets+cinder-publisher") | .id' <<<"${robots}" | head -n1)"
+  if [[ -n ${robot_id} ]]; then
+    curl -fsS --user "${HARBOR_ADMIN_AUTH}" -X DELETE "${HARBOR_API_URL}/robots/${robot_id}" >/dev/null
+  fi
   curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
-    -X POST --data "$(jq -cn --argjson id "${user_id}" '{role_id:2,member_user:{user_id:$id}}')" \
-    "${HARBOR_API_URL}/projects/${project_id}/members" >/dev/null 2>&1 || true
+    -X POST --data '{"name":"cinder-publisher","description":"Bounded Cinder dataset publisher","disable":false,"duration":-1,"level":"project","secret":"Cinder-Dataset-Publisher-2026","permissions":[{"kind":"project","namespace":"cinder-datasets","access":[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]}]}' \
+    "${HARBOR_API_URL}/robots" >/dev/null
 }
 
 clean_training_exists() {
