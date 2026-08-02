@@ -49,8 +49,8 @@ services:
       - /home/user/.local/tmp:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
       - /home/user/.local/share/buildkit:rw,nosuid,nodev,size=3g,uid=1000,gid=1000,mode=0700
     cap_drop: [ALL]
+    cap_add: [SETUID, SETGID]
     security_opt:
-      - no-new-privileges:true
       - seccomp:unconfined
     volumes:
       - ./campaign-start/modules/m05/payloads/actions-runner/buildkitd.toml:/etc/buildkit/buildkitd.toml:ro
