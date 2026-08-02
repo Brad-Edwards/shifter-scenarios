@@ -507,10 +507,14 @@ reconcile_airflow() {
         python /opt/airflow/orion-integrity/reconcile_airflow_roles.py >/dev/null
       docker exec kep-v2-airflow-api airflow users create \
         --username svc-orion-trainer --firstname Orion --lastname Trainer \
-        --role 'Orion Runner' --email svc-orion-trainer@keplerops.lab \
+        --role 'Orion Integrity Runner' --email svc-orion-trainer@keplerops.lab \
         --password "${TRAINER_TOKEN}" >/dev/null 2>&1 || \
         docker exec kep-v2-airflow-api airflow users reset-password \
           --username svc-orion-trainer --password "${TRAINER_TOKEN}" >/dev/null
+      docker exec kep-v2-airflow-api airflow users add-role \
+        --username svc-orion-trainer --role 'Orion Integrity Runner' >/dev/null 2>&1 || true
+      docker exec kep-v2-airflow-api airflow users remove-role \
+        --username svc-orion-trainer --role 'Orion Runner' >/dev/null 2>&1 || true
       local runner_token denied_status dag_id
       runner_token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
         --data "$(jq -cn --arg password "${TRAINER_TOKEN}" \

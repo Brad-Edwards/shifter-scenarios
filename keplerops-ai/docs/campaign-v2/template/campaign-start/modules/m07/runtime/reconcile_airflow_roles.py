@@ -11,33 +11,36 @@ DAG_IDS = (
     "orion_graph_review",
     "orion_dataset_attestation",
 )
-ROLE_ACTIONS = {
-    "Orion Viewer": ("can_read",),
-    "Orion Runner": ("can_read", "can_edit"),
-}
+ROLE_NAME = "Orion Integrity Runner"
 
 
 with get_application_builder() as appbuilder:
     security_manager = appbuilder.sm
-    for role_name, actions in ROLE_ACTIONS.items():
-        role = security_manager.find_role(role_name)
-        if role is None:
-            raise RuntimeError(f"Airflow role is unavailable: {role_name}")
-        for dag_id in DAG_IDS:
-            resource = f"DAG:{dag_id}"
-            for action in actions:
-                permission = security_manager.create_permission(action, resource)
-                security_manager.add_permission_to_role(role, permission)
+    source = security_manager.find_role("Orion Runner")
+    if source is None:
+        raise RuntimeError("Airflow source role is unavailable: Orion Runner")
+    role = security_manager.find_role(ROLE_NAME) or security_manager.add_role(ROLE_NAME)
+    for permission in tuple(role.permissions):
+        security_manager.remove_permission_from_role(role, permission)
+    for permission in source.permissions:
+        if permission.resource.name != "Dags" and not permission.resource.name.startswith("DAG:"):
+            security_manager.add_permission_to_role(role, permission)
+    for dag_id in DAG_IDS:
+        resource = f"DAG:{dag_id}"
+        for action in ("can_read", "can_edit"):
+            permission = security_manager.create_permission(action, resource)
+            security_manager.add_permission_to_role(role, permission)
     security_manager.session.commit()
 
-    for role_name, actions in ROLE_ACTIONS.items():
-        permissions = {
-            (permission.action.name, permission.resource.name)
-            for permission in security_manager.find_role(role_name).permissions
-        }
-        for dag_id in DAG_IDS:
-            for action in actions:
-                if (action, f"DAG:{dag_id}") not in permissions:
-                    raise RuntimeError(f"{role_name} lacks {action} on {dag_id}")
+    permissions = {
+        (permission.action.name, permission.resource.name)
+        for permission in security_manager.find_role(ROLE_NAME).permissions
+    }
+    if any(resource == "Dags" for _, resource in permissions):
+        raise RuntimeError(f"{ROLE_NAME} has unscoped DAG access")
+    for dag_id in DAG_IDS:
+        for action in ("can_read", "can_edit"):
+            if (action, f"DAG:{dag_id}") not in permissions:
+                raise RuntimeError(f"{ROLE_NAME} lacks {action} on {dag_id}")
 
 print("Airflow Orion integrity workflow permissions reconciled")
