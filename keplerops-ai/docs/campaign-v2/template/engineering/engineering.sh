@@ -97,7 +97,11 @@ reconcile_products() {
   "${COMPOSE[@]}" run --rm --no-deps lakefs-init
   "${COMPOSE[@]}" run --rm --no-deps airflow-init
   "${COMPOSE[@]}" run --rm --no-deps dvc dvc version >/dev/null
+  "${TEMPLATE_DIR}/seeding/apps/harbor.sh"
   "${ENGINEERING_DIR}/reconcile-label-studio.sh"
+  "${TEMPLATE_DIR}/seeding/apps/airflow.sh"
+  "${TEMPLATE_DIR}/seeding/apps/mlflow.sh"
+  "${TEMPLATE_DIR}/seeding/apps/label-studio.sh"
   "${ENGINEERING_DIR}/reconcile-release-risk-labels.sh"
   "${ENGINEERING_DIR}/reconcile-release-risk-source.sh"
   "${ENGINEERING_DIR}/reconcile-ci.sh"

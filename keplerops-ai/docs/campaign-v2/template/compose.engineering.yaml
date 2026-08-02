@@ -39,8 +39,19 @@ x-airflow-environment: &airflow-environment
   AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:KeplerV2-Training-AirflowDB@10.61.50.10:5432/airflow
   AIRFLOW__API_AUTH__JWT_SECRET: KeplerV2-Training-Airflow-JWT
   AIRFLOW__API_AUTH__JWT_ISSUER: keplerops-airflow
+  AIRFLOW__API__BASE_URL: https://airflow.keplerops.lab
+  AIRFLOW__FAB__CONFIG_FILE: /opt/airflow/config/webserver_config.py
+  AIRFLOW__FAB__ENABLE_PROXY_FIX: "true"
+  AIRFLOW__FAB__SESSION_LIFETIME_MINUTES: "60"
   AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+  AIRFLOW_OIDC_CLIENT_ID: airflow
+  AIRFLOW_OIDC_CLIENT_SECRET: KeplerV2-Training-Airflow-OIDC
+  AIRFLOW_OIDC_AUTHORIZE_URL: https://id.keplerops.lab/realms/keplerops/protocol/openid-connect/auth
+  AIRFLOW_OIDC_TOKEN_URL: http://10.61.20.20:8080/realms/keplerops/protocol/openid-connect/token
+  AIRFLOW_OIDC_USERINFO_BASE_URL: http://10.61.20.20:8080/realms/keplerops/protocol/
   MLFLOW_TRACKING_URI: http://mlflow:5000
+  MLFLOW_TRACKING_USERNAME: svc-orion-training
+  MLFLOW_TRACKING_PASSWORD: KeplerV2-Training-MLflow-Service
   MLFLOW_S3_ENDPOINT_URL: http://minio:9000
   AWS_ACCESS_KEY_ID: kepler-minio
   AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Object-Store
@@ -88,6 +99,8 @@ x-airflow-service: &airflow-service
   environment: *airflow-environment
   volumes:
     - ./engineering/airflow/dags:/opt/airflow/dags:ro
+    - ./engineering/airflow/webserver_config.py:/opt/airflow/config/webserver_config.py:ro
+    - ./engineering/airflow/reconcile_roles.py:/opt/airflow/config/reconcile_roles.py:ro
     - airflow-logs:/opt/airflow/logs
     - airflow-plugins:/opt/airflow/plugins
   networks:
@@ -421,12 +434,30 @@ services:
       LOG_LEVEL: info
       CONFIG_PATH: /etc/core/app.conf
       CSRF_KEY: 0123456789abcdef0123456789abcdef
+      CONFIG_OVERWRITE_JSON: >-
+        {
+          "auth_mode": "oidc_auth",
+          "primary_auth_mode": true,
+          "oidc_name": "KeplerOps SSO",
+          "oidc_endpoint": "https://id.keplerops.lab/realms/keplerops",
+          "oidc_client_id": "harbor",
+          "oidc_client_secret": "KeplerV2-Training-Harbor-OIDC",
+          "oidc_groups_claim": "groups",
+          "oidc_scope": "openid,profile,email,offline_access",
+          "oidc_verify_cert": true,
+          "oidc_auto_onboard": true,
+          "oidc_user_claim": "preferred_username",
+          "project_creation_restriction": "adminonly",
+          "self_registration": false
+        }
     volumes:
       - harbor-core-config:/etc/core
       - harbor-ca-data:/etc/core/ca
       - harbor-data:/data
+      - ./state/caddy-root.crt:/harbor_cust_cert/keplerops-ca.crt:ro
     networks:
       harbor:
+      public:
     labels: *common-labels
 
   harbor-jobservice:
@@ -552,6 +583,7 @@ services:
       LABEL_STUDIO_HOST: https://labels.keplerops.lab
       LABEL_STUDIO_USERNAME: annotation.admin@keplerops.lab
       LABEL_STUDIO_PASSWORD: KeplerV2-Training-LabelStudio
+      LABEL_STUDIO_USER_TOKEN: 31a5a4b4ab3cdbaf110644eed06853b2b418daf6
       LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
       LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED: "false"
     volumes:
@@ -695,6 +727,8 @@ services:
       airflow-init:
         condition: service_completed_successfully
     networks:
+      identity:
+        ipv4_address: 10.61.20.41
       engineering:
         ipv4_address: 10.61.40.35
       data:
@@ -739,6 +773,24 @@ services:
       airflow-scheduler:
         condition: service_started
 
+  mlflow-auth-init:
+    image: keplerops/mlflow:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.mlflow
+      args:
+        MLFLOW_BASE_IMAGE: ${MLFLOW_BASE_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        chown -R 1000:1000 /var/lib/mlflow-auth
+        chmod 0700 /var/lib/mlflow-auth
+    volumes:
+      - mlflow-auth-data:/var/lib/mlflow-auth
+    restart: "no"
+    labels: *common-labels
+
   mlflow:
     <<: *restart
     image: keplerops/mlflow:campaign-v2-clean
@@ -753,18 +805,27 @@ services:
         condition: service_healthy
       minio-init:
         condition: service_completed_successfully
+      mlflow-auth-init:
+        condition: service_completed_successfully
     command:
       - mlflow
       - server
       - --host=0.0.0.0
       - --port=5000
+      - --app-name=basic-auth
+      - --gunicorn-opts=--timeout 120
       - --backend-store-uri=postgresql+psycopg://mlflow:KeplerV2-Training-MLflowDB@10.61.50.10:5432/mlflow
       - --artifacts-destination=s3://mlflow
     environment:
+      MLFLOW_AUTH_CONFIG_PATH: /etc/mlflow/basic_auth.ini
+      MLFLOW_FLASK_SERVER_SECRET_KEY: KeplerV2-Training-MLflow-CSRF-Secret-Key
       MLFLOW_S3_ENDPOINT_URL: http://minio:9000
       AWS_ACCESS_KEY_ID: kepler-minio
       AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Object-Store
       AWS_DEFAULT_REGION: us-east-1
+    volumes:
+      - ./engineering/mlflow/basic_auth.ini:/etc/mlflow/basic_auth.ini:ro
+      - mlflow-auth-data:/var/lib/mlflow-auth
     networks:
       engineering:
         ipv4_address: 10.61.40.36
@@ -898,6 +959,7 @@ volumes:
   minio-data:
   airflow-logs:
   airflow-plugins:
+  mlflow-auth-data:
   forgejo-runner-data:
   qdrant-data:
   hayhooks-pipelines:

@@ -123,8 +123,10 @@ services:
       KC_DB_URL: jdbc:postgresql://10.61.50.10:5432/keycloak
       KC_DB_USERNAME: keycloak
       KC_DB_PASSWORD: KeplerV2-Training-KeycloakDB
-      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME: https://id.keplerops.lab
       KC_HTTP_ENABLED: "true"
+      KC_PROXY_HEADERS: xforwarded
+      KC_PROXY_TRUSTED_ADDRESSES: 10.61.20.2
       KC_TRUSTSTORE_PATHS: /opt/keycloak/conf/truststores
     volumes:
       - ./state/identity/truststores:/opt/keycloak/conf/truststores:ro
@@ -343,8 +345,11 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini:ro
       - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-range-root.crt:ro
     networks:
+      public:
       observe:
         ipv4_address: 10.61.80.13
     healthcheck:

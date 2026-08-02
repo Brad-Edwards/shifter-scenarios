@@ -28,6 +28,8 @@ c.DockerSpawner.environment = {
     "AWS_ENDPOINT_URL": "http://minio:9000",
     "DVC_LAKEFS_ENDPOINT": "http://lakefs:8000",
     "MLFLOW_TRACKING_URI": "http://mlflow:5000",
+    "MLFLOW_TRACKING_USERNAME": "orion-reader",
+    "MLFLOW_TRACKING_PASSWORD": "KeplerV2-Training-MLflow-Read",
     "QDRANT_URL": "http://qdrant:6333",
 }
 c.Spawner.default_url = "/lab"
@@ -46,6 +48,6 @@ c.GenericOAuthenticator.username_claim = "preferred_username"
 c.GenericOAuthenticator.scope = ["openid", "profile", "email"]
 c.GenericOAuthenticator.manage_groups = True
 c.GenericOAuthenticator.allow_all = False
-c.GenericOAuthenticator.allowed_groups = {"AI-Research", "Engineering"}
-c.GenericOAuthenticator.auth_state_groups_key = "groups"
+c.GenericOAuthenticator.allowed_groups = {"RG-Jupyter-Orion-Evaluation"}
+c.GenericOAuthenticator.auth_state_groups_key = "oauth_user.groups"
 c.Authenticator.admin_users = {"range-admin"}

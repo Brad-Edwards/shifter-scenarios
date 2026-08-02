@@ -4,6 +4,7 @@ FROM ${MLFLOW_BASE_IMAGE}
 USER root
 RUN python -m pip install --no-cache-dir \
       boto3==1.40.20 \
+      "mlflow[auth]==3.3.2" \
       "psycopg[binary]==3.2.10"
 
 USER 1000:1000

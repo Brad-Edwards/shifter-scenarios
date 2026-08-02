@@ -8,6 +8,8 @@ source "${SEEDING_ROOT}/lib/common.sh"
 
 readonly DEFAULT_SEEDERS=(
   keycloak-samba
+  grafana
+  librechat
   forgejo
   redmine
   nextcloud
@@ -23,7 +25,8 @@ usage() {
 Usage: ./seed.sh [seeder ...]
 
 Seeders:
-  keycloak-samba forgejo redmine nextcloud zammad stalwart odoo ghost mautic
+  keycloak-samba grafana librechat forgejo redmine nextcloud zammad stalwart odoo ghost mautic
+  airflow mlflow label-studio harbor (run after engineering/data services are ready)
   business-workflows (run after engineering/data services are ready)
 
 With no arguments, all seeders run in dependency-aware order. Each seeder may

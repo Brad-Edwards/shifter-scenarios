@@ -6,6 +6,7 @@ admin_role = Role.find_by(name: 'Admin') || raise('Zammad Admin role is missing'
 agent_role = Role.find_by(name: 'Agent') || raise('Zammad Agent role is missing')
 customer_role = Role.find_by(name: 'Customer') || raise('Zammad Customer role is missing')
 
+# SAML authenticates the user; Zammad remains authoritative for authorization.
 users = [
   {
     login: 'range-admin', firstname: 'Range', lastname: 'Administrator',
@@ -25,11 +26,11 @@ users = [
   },
   {
     login: 'comms.publisher', firstname: 'Samira', lastname: 'Okafor',
-    email: 'communications@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_COMMS_PASSWORD'), roles: [customer_role]
+    email: 'comms.publisher@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_COMMS_PASSWORD'), roles: [customer_role]
   },
   {
     login: 'support.analyst', firstname: 'Jonas', lastname: 'Becker',
-    email: 'support@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_SUPPORT_PASSWORD'), roles: [agent_role]
+    email: 'support.analyst@keplerops.lab', password: ENV.fetch('ZAMMAD_SEED_SUPPORT_PASSWORD'), roles: [agent_role]
   }
 ]
 
@@ -57,10 +58,24 @@ group.save!
   membership.access = 'full'
   membership.save!
 end
+UserGroup.where(group_id: group.id)
+         .where.not(user_id: seeded_users.values_at('range-admin', 'support.analyst').map(&:id))
+         .destroy_all
 
 Setting.set('fqdn', 'support.keplerops.lab')
 Setting.set('http_type', 'https')
+Setting.set('auth_third_party_auto_link_at_inital_login', true)
+Setting.set('auth_saml_credentials', {
+              display_name: 'KeplerOps identity',
+              idp_sso_target_url: ENV.fetch('ZAMMAD_SAML_IDP_URL'),
+              idp_slo_service_url: ENV.fetch('ZAMMAD_SAML_IDP_URL'),
+              idp_cert: ENV.fetch('ZAMMAD_SAML_IDP_CERTIFICATE'),
+              idp_cert_fingerprint: '',
+              name_identifier_format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress',
+              uid_attribute: 'email'
+            })
+Setting.set('auth_saml', true)
 Setting.set('system_init_done', true)
 Rails.cache.clear
 
-puts "Seeded Zammad group #{group.name} with #{seeded_users.length} users"
+puts "Seeded Zammad SAML and native access for #{seeded_users.length} users"

@@ -203,6 +203,9 @@ services:
       SECRET_KEY_BASE: KeplerV2-Training-Redmine-Secret-Key-Base
     volumes:
       - redmine-files:/usr/src/redmine/files
+    extra_hosts:
+      - dc01.corp.keplerops.lab:192.168.78.10
+      - dc02.corp.keplerops.lab:192.168.78.11
     networks:
       corp:
         ipv4_address: 10.61.30.22
@@ -229,9 +232,16 @@ services:
       NEXTCLOUD_ADMIN_USER: range-admin
       NEXTCLOUD_ADMIN_PASSWORD: KeplerV2-Training-Nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: files.keplerops.lab
+      OVERWRITEHOST: files.keplerops.lab
+      OVERWRITEPROTOCOL: https
+      OVERWRITECLIURL: https://files.keplerops.lab
+      TRUSTED_PROXIES: 10.61.10.2
+    command: ["bash", "-c", "update-ca-certificates >/dev/null && exec apache2-foreground"]
     volumes:
       - nextcloud-data:/var/www/html
+      - ./state/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-caddy.crt:ro
     networks:
+      public:
       corp:
         ipv4_address: 10.61.30.23
       data:

@@ -12,6 +12,7 @@ readonly LAKEFS_URL="${LAKEFS_URL:-http://10.61.40.51:8000}"
 readonly LAKEFS_AUTH="${LAKEFS_AUTH:-KeplerLakeFSAccess:KeplerV2-Training-LakeFS-Object-Key}"
 readonly LAKEFS_REPOSITORY="${LAKEFS_REPOSITORY:-orion}"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
+readonly MLFLOW_AUTH="${MLFLOW_AUTH:-orion-reader:KeplerV2-Training-MLflow-Read}"
 readonly MLFLOW_EXPERIMENT="${MLFLOW_EXPERIMENT:-Orion Clean Intent Training}"
 
 for command in cmp curl cut grep jq mktemp python3 sha256sum; do
@@ -69,6 +70,7 @@ jq -e '.state == "success"' <<<"${scheduled_run}" >/dev/null
 dag_run_id="$(jq -er '.dag_run_id' <<<"${scheduled_run}")"
 
 experiments="$(curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"max_results":100}' \
@@ -78,6 +80,7 @@ experiment_id="$(jq -er \
   '.experiments[] | select(.name == $name) | .experiment_id' \
   <<<"${experiments}")"
 runs="$(curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   -X POST \
   -H 'Content-Type: application/json' \
   -d "$(jq -cn --arg id "${experiment_id}" \
@@ -177,12 +180,15 @@ weights_sha="$(jq -er '
   <<<"${runs}")"
 
 curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   "${MLFLOW_URL}/get-artifact?run_id=${mlflow_run_id}&path=model/adapter_model.safetensors" \
   >"${workdir}/adapter_model.safetensors"
 curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   "${MLFLOW_URL}/get-artifact?run_id=${mlflow_run_id}&path=lineage/lineage.json" \
   >"${workdir}/mlflow-lineage.json"
 curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   "${MLFLOW_URL}/get-artifact?run_id=${mlflow_run_id}&path=lineage/annotations.json.dvc" \
   >"${workdir}/mlflow-annotations.json.dvc"
 test "$(sha256sum "${workdir}/adapter_model.safetensors" | cut -d' ' -f1)" = "${weights_sha}"

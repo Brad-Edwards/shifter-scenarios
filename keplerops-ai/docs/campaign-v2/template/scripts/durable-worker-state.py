@@ -67,9 +67,12 @@ def request_json(url: str, **kwargs: Any) -> Any:
     return json.loads(request_bytes(url, **kwargs))
 
 
-def post_json(url: str, payload: dict[str, Any]) -> Any:
+def post_json(
+    url: str, payload: dict[str, Any], *, authorization: str | None = None
+) -> Any:
     return request_json(
         url,
+        authorization=authorization,
         method="POST",
         data=json.dumps(payload, separators=(",", ":")).encode(),
         headers={"Content-Type": "application/json"},
@@ -256,13 +259,19 @@ def mlflow_run(
     run_id: str | None = None, export_sha: str | None = None
 ) -> dict[str, Any]:
     mlflow = env("MLFLOW_URL", "http://10.61.40.36:5000")
+    authorization = basic_auth(
+        env("MLFLOW_AUTH", "orion-reader:KeplerV2-Training-MLflow-Read")
+    )
     if run_id:
         return request_json(
-            f"{mlflow}/api/2.0/mlflow/runs/get?{urllib.parse.urlencode({'run_id': run_id})}"
+            f"{mlflow}/api/2.0/mlflow/runs/get?{urllib.parse.urlencode({'run_id': run_id})}",
+            authorization=authorization,
         )["run"]
 
     experiments = post_json(
-        f"{mlflow}/api/2.0/mlflow/experiments/search", {"max_results": 100}
+        f"{mlflow}/api/2.0/mlflow/experiments/search",
+        {"max_results": 100},
+        authorization=authorization,
     )
     name = env("MLFLOW_EXPERIMENT", "Orion Clean Intent Training")
     experiment_id = next(
@@ -275,6 +284,7 @@ def mlflow_run(
             "max_results": 100,
             "order_by": ["attributes.start_time DESC"],
         },
+        authorization=authorization,
     )
     for run in runs.get("runs", []):
         tags = {item["key"]: item["value"] for item in run["data"].get("tags", [])}
@@ -340,7 +350,10 @@ def collect_training(run_id: str | None = None) -> dict[str, Any]:
         f"{env('MLFLOW_URL', 'http://10.61.40.36:5000')}/get-artifact?"
         + urllib.parse.urlencode(
             {"run_id": run_id_value, "path": "model/adapter_model.safetensors"}
-        )
+        ),
+        authorization=basic_auth(
+            env("MLFLOW_AUTH", "orion-reader:KeplerV2-Training-MLflow-Read")
+        ),
     )
     weights_sha = sha256(weights)
     if tags.get("model.weights_sha256") != weights_sha:

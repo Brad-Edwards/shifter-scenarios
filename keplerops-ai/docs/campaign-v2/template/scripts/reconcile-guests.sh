@@ -72,6 +72,8 @@ testparm -s /etc/samba/smb.conf >/dev/null
 samba-tool domain info 127.0.0.1 >/dev/null
 REMOTE
 
+"$ROOT/scripts/reconcile-directory-roles.sh"
+
 "${SSH[@]}" kepler@192.168.78.10 sudo bash -s <<'REMOTE'
 set -euo pipefail
 for naming_context in \

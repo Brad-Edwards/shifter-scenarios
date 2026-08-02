@@ -22,6 +22,12 @@ ensure_realm() {
       -s registrationAllowed=false >/dev/null
     log "Keycloak realm created: ${KEYCLOAK_REALM}"
   fi
+  kcadm update "realms/${KEYCLOAK_REALM}" \
+    -s ssoSessionIdleTimeout=3600 \
+    -s ssoSessionMaxLifespan=43200 \
+    -s accessTokenLifespan=900 \
+    -s clientSessionIdleTimeout=3600 \
+    -s clientSessionMaxLifespan=43200 >/dev/null
 }
 
 ensure_jupyterhub_client() {
@@ -67,12 +73,11 @@ ensure_jupyterhub_client() {
   mappers=$(kcadm get "clients/${client_id}/protocol-mappers/models" -r "${KEYCLOAK_REALM}")
   mapper_id=$(jq -r '.[] | select(.name == "groups") | .id' <<<"$mappers" | head -n1)
   if [[ -n $mapper_id ]]; then
-    kcadm update "clients/${client_id}/protocol-mappers/models/${mapper_id}" \
-      -r "${KEYCLOAK_REALM}" -f - <<<"$mapper_json" >/dev/null
-  else
-    kcadm create "clients/${client_id}/protocol-mappers/models" \
-      -r "${KEYCLOAK_REALM}" -f - <<<"$mapper_json" >/dev/null
+    kcadm delete "clients/${client_id}/protocol-mappers/models/${mapper_id}" \
+      -r "${KEYCLOAK_REALM}" >/dev/null 2>&1 || true
   fi
+  kcadm create "clients/${client_id}/protocol-mappers/models" \
+    -r "${KEYCLOAK_REALM}" -f - <<<"$mapper_json" >/dev/null
 }
 
 ldap_component_args() {
@@ -130,7 +135,7 @@ group_mapper_json() {
 }
 
 main() {
-  local realm_json realm_id components ldap_id mapper_id mapper_json users_json username
+  local realm_json realm_id components ldap_id mapper_id mapper_json users_json username groups_json group
   local -a args
 
   require_service keycloak
@@ -175,10 +180,27 @@ main() {
     -r "${KEYCLOAK_REALM}" >/dev/null || \
     die "Keycloak could not synchronize users from Samba"
   users_json="$(kcadm get users -r "${KEYCLOAK_REALM}" --fields username)"
-  for username in reviewer ml.engineer release.engineer comms.publisher support.analyst; do
+  for username in reviewer ml.engineer data.annotator release.engineer release.approver \
+    platform.operator support.analyst comms.publisher finance.operator security.auditor; do
     jq -e --arg username "${username}" \
       'any(.[]; .username == $username)' <<<"${users_json}" >/dev/null || \
       die "Keycloak LDAP sync did not materialize required user: ${username}"
+  done
+
+  groups_json="$(kcadm get groups -r "${KEYCLOAK_REALM}")"
+  for group in \
+    GG-Orion-Researchers GG-Orion-Annotators GG-Orion-Evaluators \
+    GG-Release-Engineers GG-Release-Approvers GG-Platform-Operators \
+    GG-Support-Agents GG-Communications GG-Finance-Operations \
+    GG-Security-Auditors RG-WorkHub-Orion RG-Nextcloud-Orion-Internal \
+    RG-Forgejo-Orion-Read RG-Forgejo-Orion-Contribute \
+    RG-Jupyter-Orion-Evaluation RG-LabelStudio-Orion-Contribute \
+    RG-MLflow-Orion-Read RG-MLflow-Orion-Maintain RG-Harbor-Orion-Review \
+    RG-Harbor-Orion-Release RG-Airflow-Orion-View RG-Airflow-Orion-Run \
+    RG-Release-Policy-Request RG-Release-Policy-Approve; do
+    jq -e --arg group "${group}" 'any(.[]; .name == $group)' \
+      <<<"${groups_json}" >/dev/null ||
+      die "Keycloak LDAP sync did not materialize required group: ${group}"
   done
 
   ensure_jupyterhub_client

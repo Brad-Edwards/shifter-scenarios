@@ -5,6 +5,7 @@ set -Eeuo pipefail
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 readonly ROOT
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
+readonly MLFLOW_AUTH="${MLFLOW_AUTH:-orion-reader:KeplerV2-Training-MLflow-Read}"
 readonly MLFLOW_EXPERIMENT="${MLFLOW_EXPERIMENT:-Orion Release Risk Training}"
 readonly FORGEJO_URL="${FORGEJO_URL:-http://10.61.40.20:3000}"
 readonly FORGEJO_AUTH="${FORGEJO_AUTH:-range-admin:KeplerV2-Training-Forgejo-Admin}"
@@ -43,6 +44,7 @@ cleanup() {
 trap cleanup EXIT
 
 experiments="$(curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   -X POST -H 'Content-Type: application/json' \
   -d '{"max_results":100}' \
   "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
@@ -51,6 +53,7 @@ experiment_id="$(jq -er \
   '.experiments[] | select(.name == $name) | .experiment_id' \
   <<<"${experiments}")"
 runs="$(curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   -X POST -H 'Content-Type: application/json' \
   -d "$(jq -cn --arg id "${experiment_id}" \
     '{experiment_ids:[$id],max_results:20,order_by:["attributes.start_time DESC"]}')" \
@@ -84,6 +87,7 @@ dag_run_id="$(tag training.dag_run_id)"
 dag_sha="$(param dag_sha256)"
 
 model_versions="$(curl -fsS --get \
+  -u "${MLFLOW_AUTH}" \
   --data-urlencode "filter=name='Orion Release Risk'" \
   --data-urlencode 'max_results=100' \
   "${MLFLOW_URL}/api/2.0/mlflow/model-versions/search")"
@@ -94,9 +98,11 @@ model_version="$(jq -er --arg run_id "${run_id}" \
 artifacts_dir="${workdir}/context/artifacts"
 mkdir -p "${artifacts_dir}"
 artifact_list="$(curl -fsS \
+  -u "${MLFLOW_AUTH}" \
   "${MLFLOW_URL}/api/2.0/mlflow/artifacts/list?run_id=${run_id}&path=model")"
 while IFS= read -r path; do
   curl -fsS \
+    -u "${MLFLOW_AUTH}" \
     "${MLFLOW_URL}/get-artifact?run_id=${run_id}&path=${path}" \
     >"${artifacts_dir}/${path##*/}"
 done < <(jq -r '.files[] | select(.is_dir == false) | .path' <<<"${artifact_list}")
