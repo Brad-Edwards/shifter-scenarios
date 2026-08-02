@@ -326,6 +326,7 @@ apply_one() {
 
 main() {
   local command id
+  local -a ids=()
   for command in base64 curl docker jq openssl python3 ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
   ensure_evaluator_identity
   ensure_cinder_support_storage
@@ -337,7 +338,8 @@ main() {
   reconcile_airflow
   ensure_native_baseline
   if [[ ${OPERATION} != all ]]; then apply_one "${OPERATION}"; return; fi
-  while IFS= read -r id; do apply_one "${id}"; done < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
+  mapfile -t ids < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
+  for id in "${ids[@]}"; do apply_one "${id}"; done
 }
 
 main "$@"

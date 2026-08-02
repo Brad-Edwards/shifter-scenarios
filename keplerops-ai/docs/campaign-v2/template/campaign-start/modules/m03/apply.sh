@@ -354,6 +354,7 @@ apply_one() {
 
 main() {
   local command id
+  local -a ids=()
   for command in base64 curl docker jq python3; do
     command -v "${command}" >/dev/null || die "missing command: ${command}"
   done
@@ -363,7 +364,8 @@ main() {
     all|kep-m03-a|kep-m03-d|kep-m03-e|kep-m03-f|kep-m03-j|kep-m03-k) install_airflow_workflows ;;
   esac
   if [[ ${OPERATION} != all ]]; then apply_one "${OPERATION}"; return; fi
-  while IFS= read -r id; do apply_one "${id}"; done < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
+  mapfile -t ids < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
+  for id in "${ids[@]}"; do apply_one "${id}"; done
 }
 
 main "$@"
