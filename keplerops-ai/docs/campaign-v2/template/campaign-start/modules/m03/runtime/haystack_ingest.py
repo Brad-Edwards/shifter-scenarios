@@ -57,7 +57,13 @@ def main() -> None:
     flattened = {key: value for key, value in source.items() if key != "point_id"}
     request = urllib.request.Request(
         f"{os.environ['QDRANT_WRITE_URL'].rstrip('/')}/collections/orion_partner_intake/points/payload?wait=true",
-        data=json.dumps({"payload": flattened, "points": [document.id]}, separators=(",", ":")).encode(),
+        data=json.dumps(
+            {
+                "payload": flattened,
+                "filter": {"must": [{"key": "id", "match": {"value": document.id}}]},
+            },
+            separators=(",", ":"),
+        ).encode(),
         headers={"Content-Type": "application/json", "api-key": os.environ["QDRANT_WRITE_KEY"]},
         method="POST",
     )
