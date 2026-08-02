@@ -1,6 +1,6 @@
 # Campaign V2 Design Progress
 
-Last updated: 2026-08-01
+Last updated: 2026-08-02
 
 ## Objective
 
@@ -102,12 +102,34 @@ enterprise passes its baseline gates.
 
 ## Active Work
 
-1. Complete issue #38 by building and proving the clean enterprise before
-   applying the campaign overlay.
-2. Prove data/training lineage, release/runtime continuity, business workflows,
-   observability, worker replacement, and the physical-lab boundary.
-3. Keep image baking and participant-range work paused until the clean
-   enterprise is complete and has been reviewed from the attack workstation.
+1. Complete the corrective source pass that removes proof-controller behavior
+   and binds every software operation to causal native enterprise state.
+2. Reconcile cross-module identity, model, artifact, release, and business-effect
+   handoffs, then run the combined Compose and Shifter content contracts.
+3. Materialize the integrated source on the template and perform the manual
+   participant-equivalent walkthrough before baking.
+
+## Final Readiness And Integration Gates
+
+- **Software deployment:** the default campaign apply deploys the 132 software
+  operations and may write only `keplerops-v2-software.ready`. It must not
+  require an external physical bench.
+- **Default-deny campaign flows:** source now carries a separate campaign flow
+  manifest, statically requires every networked campaign container to be
+  represented, and reconverges the enforced policy before software readiness.
+  The combined Compose graph and live allow/deny probes remain required before
+  the integrated candidate is accepted.
+- **Production entrypoints:** all m10 apply, validate, and reset entrypoints now
+  carry executable modes. Combined static dispatch and container execution
+  remain required before acceptance.
+- **All-challenges readiness:** `--all-challenges` cannot write
+  `keplerops-v2-campaign.ready` until the same apply proves the operator place
+  evidence gate and participant reservation/acquisition/release gate against an
+  authentic labgrid bench.
+- **Physical availability:** `kep-m08-i` and `kep-m06-m` remain unavailable and
+  unclaimed until the bill of materials and topology in
+  `hardware-materialization.md` are supplied. There is no simulation, upload,
+  prerecorded-media, or software fallback.
 
 ## Clean Enterprise Build Status
 
