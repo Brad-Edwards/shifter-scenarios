@@ -29,6 +29,8 @@ baseline_sha="$(tr -d '[:space:]' <"${BASELINE_SHA_FILE}")"
 # the old placeholder manifest on its branch. Argo remains unconfigured until
 # promote-release-candidate.sh commits the exact clean immutable release.
 "${PLATFORM_ROOT}/scripts/seed-gitops.sh" --repository-only >/dev/null
+"${SSH[@]}" "${K3S01_SSH_TARGET}" \
+  sudo /opt/keplerops-platform/scripts/bootstrap-signing.sh
 
 candidate_is_exact_and_immutable() {
   local candidate_dir candidate run_id expected_dir reference_run reference_version
