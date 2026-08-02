@@ -109,6 +109,15 @@ converge_shared_services() {
     --config /tmp/Caddyfile.campaign-v2 --adapter caddyfile >/dev/null
 }
 
+converge_network_policy() {
+  [[ ${EUID} -eq 0 ]] || {
+    printf 'campaign network-policy convergence requires root\n' >&2
+    return 1
+  }
+  "${ROOT}/../network/apply-compose-policy.sh" apply >/dev/null
+  "${ROOT}/../network/apply-compose-policy.sh" status >/dev/null
+}
+
 require_fresh_hardware_proof() {
   local boot_id proof_id place gates
   [[ -r ${HARDWARE_READINESS_MARKER} ]] || {
@@ -177,6 +186,7 @@ done
 
 if [[ -z ${operation} ]]; then
   converge_shared_services build
+  converge_network_policy
   if [[ ${all_challenges} == true ]]; then
     require_fresh_hardware_proof
   fi

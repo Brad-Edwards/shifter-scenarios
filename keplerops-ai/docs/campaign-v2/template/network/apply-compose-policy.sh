@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 FLOW_FILE=${FLOW_FILE:-$ROOT/compose-flows.tsv}
+CAMPAIGN_FLOW_FILE=${CAMPAIGN_FLOW_FILE:-$ROOT/campaign-flows.tsv}
 CHAIN=${KEPLEROPS_NETWORK_CHAIN:-KEP-V2-SEGMENT}
 GUEST_CIDR=${KEPLEROPS_GUEST_CIDR:-192.168.78.0/24}
 ACTION=${1:-apply}
@@ -17,7 +18,8 @@ require_command() {
 }
 
 validate_flows() {
-  [[ -r $FLOW_FILE ]] || fail "flow manifest not readable: $FLOW_FILE"
+  local flow_file=$1
+  [[ -r $flow_file ]] || fail "flow manifest not readable: $flow_file"
   awk -F '\t' '
     /^[[:space:]]*#/ || /^[[:space:]]*$/ { next }
     NF != 5 { printf "invalid field count at line %d\n", NR > "/dev/stderr"; bad=1; next }
@@ -34,7 +36,7 @@ validate_flows() {
       printf "invalid port list at line %d\n", NR > "/dev/stderr"; bad=1
     }
     END { exit bad }
-  ' "$FLOW_FILE"
+  ' "$flow_file"
 }
 
 container_ips() {
@@ -140,7 +142,7 @@ apply_policy() {
     [[ -n $source && $source != \#* ]] || continue
     [[ $destination == cidr:0.0.0.0/0 ]] && continue
     add_flow "$source" "$destination" "$protocol" "$ports" "$purpose"
-  done <"$FLOW_FILE"
+  done < <(cat "$FLOW_FILE" "$CAMPAIGN_FLOW_FILE")
 
   # Every nested guest is untrusted. Exact post-DNAT flows above are the only
   # paths from the libvirt subnet into a managed Docker network.
@@ -162,7 +164,7 @@ apply_policy() {
     [[ -n $source && $source != \#* ]] || continue
     [[ $destination == cidr:0.0.0.0/0 ]] || continue
     add_flow "$source" "$destination" "$protocol" "$ports" "$purpose"
-  done <"$FLOW_FILE"
+  done < <(cat "$FLOW_FILE" "$CAMPAIGN_FLOW_FILE")
 
   for source_subnet in "${subnets[@]}"; do
     add_rule -s "$source_subnet" -m comment --comment 'kep-v2:deny-undeclared-egress' -j DROP
@@ -171,7 +173,7 @@ apply_policy() {
 
   iptables -w -C DOCKER-USER -j "$CHAIN" >/dev/null 2>&1 || \
     iptables -w -I DOCKER-USER 1 -j "$CHAIN"
-  printf 'Applied %s from %s\n' "$CHAIN" "$FLOW_FILE"
+  printf 'Applied %s from %s and %s\n' "$CHAIN" "$FLOW_FILE" "$CAMPAIGN_FLOW_FILE"
 }
 
 status_policy() {
@@ -179,7 +181,8 @@ status_policy() {
   iptables -w -nL "$CHAIN" --line-numbers
 }
 
-validate_flows
+validate_flows "$FLOW_FILE"
+validate_flows "$CAMPAIGN_FLOW_FILE"
 case "$ACTION" in
   apply) apply_policy ;;
   remove)
@@ -191,6 +194,6 @@ case "$ACTION" in
     require_command iptables
     status_policy
     ;;
-  validate) printf 'Flow manifest is valid: %s\n' "$FLOW_FILE" ;;
+  validate) printf 'Flow manifests are valid: %s %s\n' "$FLOW_FILE" "$CAMPAIGN_FLOW_FILE" ;;
   *) fail "usage: $0 {apply|remove|status|validate}" ;;
 esac

@@ -135,6 +135,10 @@ def main() -> None:
                 mode = os.stat(path).st_mode
                 assert mode & stat.S_IXUSR, f"{path}: entrypoint is not executable"
 
+    subprocess.run(
+        ["ruby", str(ROOT.parent / "network" / "validate-campaign-flows.rb")],
+        check=True,
+    )
     subprocess.run(["ruby", str(DESIGN_ROOT / "validate-design.rb")], check=True)
     print("campaign-start static validation passed: 134 operations, flags, and acyclic prerequisites")
 
