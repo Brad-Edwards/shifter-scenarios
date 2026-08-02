@@ -139,6 +139,7 @@ if [[ -z ${operation} ]]; then
   export CAMPAIGN_APPLY_ID
   rm -f "${READINESS_MARKER}" "${SOFTWARE_READINESS_MARKER}"
   if [[ ${all_challenges} == true ]]; then
+    export CAMPAIGN_SOFTWARE_DEPLOY_ONLY=0
     rm -f "${HARDWARE_READINESS_MARKER}"
   else
     export CAMPAIGN_SOFTWARE_DEPLOY_ONLY=1
