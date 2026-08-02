@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-DESIGN_ROOT = ROOT.parent.parent
+DESIGN_ROOT = ROOT / "contracts"
 OPERATION_ID = re.compile(r"`(kep-m\d{2}-[a-z])`")
 
 

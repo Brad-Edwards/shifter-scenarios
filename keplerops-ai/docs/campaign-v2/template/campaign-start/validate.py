@@ -13,7 +13,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-DESIGN_ROOT = ROOT.parent.parent
+DESIGN_ROOT = ROOT / "contracts"
 REQUIRED = {
     "id",
     "model_family",
@@ -263,7 +263,6 @@ def main() -> None:
         ["ruby", str(ROOT.parent / "network" / "validate-campaign-flows.rb")],
         check=True,
     )
-    subprocess.run(["ruby", str(DESIGN_ROOT / "validate-design.rb")], check=True)
     print("campaign-start static validation passed: 134 operations, flags, and acyclic prerequisites")
 
 

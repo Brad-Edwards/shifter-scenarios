@@ -9,6 +9,13 @@ atlas_path = Pathname(ARGV.fetch(0, "/tmp/ATLAS-2026.06.yaml"))
 atlas_sha256 = "b771de8b1489564b2838a709c7429849a9575dbd94073928817fe1a21661e70a"
 errors = []
 
+["operation-allocation.md", "model-and-release-contract.md"].each do |name|
+  runtime_copy = root.join("template/campaign-start/contracts", name)
+  unless runtime_copy.exist? && File.binread(runtime_copy) == File.binread(root.join(name))
+    errors << "runtime campaign contract drift: #{name}"
+  end
+end
+
 sections = {}
 Dir[root.join("operations-act-*.md")].each do |file|
   text = File.read(file)
