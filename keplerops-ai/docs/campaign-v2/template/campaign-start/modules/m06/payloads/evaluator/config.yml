@@ -40,7 +40,6 @@ runner:
     CINDER_PUBLISHER_KEY: /run/cinder-publisher/id_ed25519
     CINDER_PUBLISHER_KNOWN_HOSTS: /run/cinder-publisher/known_hosts
     CINDER_PUBLISHER_HOST: cinder-publisher@192.168.78.30
-    OPENROUTER_KEY_FILE: /cinder-workspace/.cinder/openrouter-key
     COSIGN_IMAGE: gcr.io/projectsigstore/cosign:v2.5.3@sha256:f1946d0f30fc8e3777b02f2201e02efdba9fe38f4918162f937052fac98e083f
   timeout: 45m
   shutdown_timeout: 5m

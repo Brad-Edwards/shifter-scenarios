@@ -189,16 +189,33 @@ substitute for it.
 
 ## kep-m06-v: Stage The Cinder Front
 
-1. Accept the supplied OpenRouter organization invitation, create a scoped key,
-   store it at `~/.cinder/openrouter-key`, and use a public corpus through two
-   eligible upstream providers. Retain both real generation IDs.
-2. Deploy LiteLLM on the Cinder serverless path with fallback enabled. Stage the
-   exact selected capability objects, create a manifest binding their digests,
-   provider IDs, Cinder operator, route, and fallback policy, then Cosign it.
-3. Upload manifest, detached signature, public key, and staged objects; submit
-   their keys and the live route. Poll `operations/ci-artifacts/`. Missing live
-   OpenRouter records, one provider, bypassed/dead LiteLLM, digest mismatch, or
-   invalid signature must fail.
+1. In a private Cinder Forgejo repository, package
+   `ghcr.io/berriai/litellm:main-v1.74.9-stable` with a LiteLLM configuration
+   that exposes `glm-5.2`, maps it to `openai/zai-org/glm-5-maas`, and uses
+   `https://model.cinder.lab/v1` with the Cinder GLM credential. Configure a
+   separate `sk-` master key for clients. Include the Cinder root certificate
+   in the image trust store so the upstream TLS connection is verified.
+2. Build the repository revision in Forgejo Actions, push the image to the
+   Cinder Harbor project, resolve its immutable digest, and deploy that digest
+   through the Cinder publisher to the TLS domain obtained in `kep-m06-n`.
+   Send a normal OpenAI-compatible request to the public route with the route
+   master key and model `glm-5.2`; confirm a real GLM response and retain the
+   Knative ready revision.
+3. Stage the exact selected capability objects. Create a manifest binding
+   `operator` (`cinder-operator`), `repository`, `commit`, `container_digest`,
+   `knative_revision`, `route`, `upstream`
+   (`https://model.cinder.lab`), `model` (`glm-5.2`), and
+   `artifact_digests`. Cosign the manifest and upload it, its detached
+   signature, its public key, and every staged object to Cinder MinIO.
+4. Submit the source, immutable image and Knative identifiers, live route and
+   route token, model, object keys and digests, and signature-object keys using
+   the `staging-validation` schema. Poll `operations/ci-artifacts/`. The
+   independent job clones the exact source, checks the live Cinder-owned
+   service, reacquires and hashes every object, verifies the signature, sends a
+   fresh request through the LiteLLM route, and requires a new successful
+   request at the attributed Cinder GLM edge. A direct call to
+   `model.cinder.lab`, a static imitation, a mutable/mismatched image, stale
+   revision, digest mismatch, or invalid signature must fail.
 
 ## kep-m06-a: Pass The Intake Classifier
 

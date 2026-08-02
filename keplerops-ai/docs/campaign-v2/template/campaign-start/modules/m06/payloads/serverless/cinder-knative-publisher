@@ -68,10 +68,12 @@ esac
 
 if [[ $action != delete ]]; then
   ready_replicas="$(k3s kubectl -n "$NAMESPACE" get pods -l "serving.knative.dev/service=${service}" -o json | jq '[.items[] | select(.status.phase == "Running")] | length')"
-  k3s kubectl -n "$NAMESPACE" get kservice "$service" -o json | jq --argjson ready_replicas "$ready_replicas" '{
+  mapped_domain="$(k3s kubectl -n "$NAMESPACE" get domainmappings -o json | jq -r --arg service "$service" '[.items[] | select(.spec.ref.name == $service) | .metadata.name] | first // ""')"
+  k3s kubectl -n "$NAMESPACE" get kservice "$service" -o json | jq --argjson ready_replicas "$ready_replicas" --arg domain "$mapped_domain" '{
     service:.metadata.name,
     owner:.metadata.labels["cinder.keplerops.lab/owner"],
     image:.spec.template.spec.containers[0].image,
+    domain:$domain,
     url:.status.url,
     latest_created_revision:.status.latestCreatedRevisionName,
     latest_ready_revision:.status.latestReadyRevisionName,

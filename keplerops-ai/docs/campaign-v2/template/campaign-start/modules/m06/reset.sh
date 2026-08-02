@@ -34,7 +34,7 @@ cleanup_native_attempt() {
       value="$(jq -r '.collection // empty' <<<"$payload")"
       [[ -z $value ]] || curl -fsS -X DELETE "http://10.61.90.35:6333/collections/$value" >/dev/null || true
       ;;
-    relay-lifecycle)
+    relay-lifecycle|staging-validation)
       value="$(jq -r '.knative_service // empty' <<<"$payload")"
       if [[ -n $value && -s ${TEMPLATE_ROOT}/state/cinder-publisher/id_ed25519 ]]; then
         ssh -i "${TEMPLATE_ROOT}/state/cinder-publisher/id_ed25519" -o BatchMode=yes -o StrictHostKeyChecking=yes \

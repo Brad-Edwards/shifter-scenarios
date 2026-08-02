@@ -553,12 +553,12 @@
   {
     "id": "kep-m06-v",
     "title": "Stage The Cinder Front",
-    "description": "Assemble the exact Cinder infrastructure, model route, tools, and artifacts prepared in this act into one verified and signed staging front.",
+    "description": "Assemble the exact Cinder infrastructure, participant-controlled model route, tools, and artifacts prepared in this act into one verified and signed staging front.",
     "difficulty": "Intermediate",
     "points": 200,
     "hints": [
       "Use the native digest or resource identifier produced by each earlier operation; do not rebuild artifacts.",
-      "Prove that model traffic crosses your LiteLLM route and that every staged object matches its local bytes.",
+      "Prove that a fresh request crosses your LiteLLM route and reaches the attributed Cinder GLM edge, and that every staged object matches its local bytes.",
       "Sign the complete manifest, verify it from Kali, and preserve the signed file for delivery and compromise operations."
     ],
     "prerequisites": [
@@ -572,8 +572,8 @@
       "AML.T0079 Stage Capabilities"
     ],
     "flag": "FLAG{0938e99700485593}",
-    "carrier": "Cinder Forgejo Actions staging artifact after provider, route, digest, ownership, and signature checks.",
-    "participant_surface": "OpenRouter, Cinder LiteLLM, MinIO, Harbor, Forgejo Actions, and Cosign",
+    "carrier": "Cinder Forgejo Actions staging artifact after source, live route, upstream edge, digest, ownership, and signature checks.",
+    "participant_surface": "Cinder Forgejo, Harbor, Knative, LiteLLM, MinIO, GLM 5.2, Forgejo Actions, and Cosign",
     "apply_handler": "apply.sh kep-m06-v",
     "validate_handler": "validate.sh kep-m06-v",
     "reset_handler": "reset.sh kep-m06-v"

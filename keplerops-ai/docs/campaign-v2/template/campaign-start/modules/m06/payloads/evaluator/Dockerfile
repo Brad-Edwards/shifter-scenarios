@@ -9,5 +9,6 @@ RUN /opt/kepler-ci/bin/pip install --no-cache-dir \
       minio==7.2.15 \
       numpy==2.1.3 \
       onnxruntime==1.20.1 \
+      pyyaml==6.0.2 \
       tokenizers==0.21.0 \
       qdrant-client==1.12.1

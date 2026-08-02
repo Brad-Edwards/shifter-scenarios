@@ -20,6 +20,7 @@ from typing import Any, Callable
 
 import numpy as np
 import onnxruntime as ort
+import yaml
 from minio import Minio
 from tokenizers import Tokenizer
 
@@ -48,7 +49,6 @@ LABGRID_EVIDENCE_CONTRACT = Path(os.getenv("LABGRID_EVIDENCE_CONTRACT", "/opt/ke
 CINDER_PUBLISHER_KEY = Path(os.getenv("CINDER_PUBLISHER_KEY", "/run/cinder-publisher/id_ed25519"))
 CINDER_PUBLISHER_KNOWN_HOSTS = Path(os.getenv("CINDER_PUBLISHER_KNOWN_HOSTS", "/run/cinder-publisher/known_hosts"))
 CINDER_PUBLISHER_HOST = os.getenv("CINDER_PUBLISHER_HOST", "cinder-publisher@192.168.78.30")
-OPENROUTER_KEY_FILE = Path(os.getenv("OPENROUTER_KEY_FILE", "/cinder-workspace/.cinder/openrouter-key"))
 COSIGN_IMAGE = os.getenv("COSIGN_IMAGE", "gcr.io/projectsigstore/cosign:v2.5.3@sha256:f1946d0f30fc8e3777b02f2201e02efdba9fe38f4918162f937052fac98e083f")
 BUCKET = "operations"
 
@@ -637,35 +637,64 @@ def evaluate_relay(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def evaluate_staging(payload: dict[str, Any]) -> dict[str, Any]:
-    require_fields(payload, "provider_request_ids", "route_url", "route_token", "public_model", "artifact_object_keys",
-                   "artifact_digests", "manifest_object_key", "signature_object_key", "public_key_object_key")
+    require_fields(payload, "repository", "commit", "container_digest", "knative_service", "knative_revision",
+                   "route_url", "route_token", "public_model", "artifact_object_keys", "artifact_digests",
+                   "manifest_object_key", "signature_object_key", "public_key_object_key")
     require(re.fullmatch(r"https://[a-z0-9][a-z0-9-]{2,40}\.cinder\.lab", payload["route_url"].rstrip("/")) is not None,
             "LiteLLM route is outside the Cinder domain")
-    require(OPENROUTER_KEY_FILE.is_file(), "Cinder OpenRouter organization key has not been activated")
-    upstream_key = OPENROUTER_KEY_FILE.read_text(encoding="utf-8").strip()
-    require(upstream_key.startswith("sk-or-v1-"), "Cinder OpenRouter key has an invalid format")
-    providers = set()
-    provider_records = []
-    for request_id in payload["provider_request_ids"]:
-        record = request_json(
-            f"https://openrouter.ai/api/v1/generation?id={request_id}",
-            authorization=f"Bearer {upstream_key}",
-        ).get("data", {})
-        provider = record.get("provider_name") or record.get("provider")
-        require(record.get("id") == request_id and provider, "OpenRouter request evidence is unavailable")
-        providers.add(provider)
-        provider_records.append({"id": request_id, "provider": provider, "model": record.get("model")})
-    require(len(providers) >= 2, "live OpenRouter records do not span two upstream providers")
+    require(payload["route_url"].rstrip("/") != MODEL_URL, "LiteLLM route cannot be the shared model edge")
+    require(payload["public_model"] == "glm-5.2", "LiteLLM must expose the staged GLM 5.2 route")
+
+    with tempfile.TemporaryDirectory(prefix="cinder-litellm-") as directory:
+        checkout_cinder_repository(payload, directory)
+        source_root = Path(directory)
+        dockerfile = source_root / "Dockerfile"
+        config_file = source_root / "litellm-config.yaml"
+        require(dockerfile.is_file() and config_file.is_file(),
+                "LiteLLM source must include Dockerfile and litellm-config.yaml")
+        require("ghcr.io/berriai/litellm:main-v1.74.9-stable" in dockerfile.read_text(encoding="utf-8"),
+                "LiteLLM source does not use the admitted OSS image")
+        config = yaml.safe_load(config_file.read_text(encoding="utf-8"))
+        require(isinstance(config, dict), "LiteLLM configuration is not a mapping")
+        routes = [item for item in config.get("model_list", []) if isinstance(item, dict) and item.get("model_name") == "glm-5.2"]
+        require(len(routes) == 1, "LiteLLM configuration must expose exactly one glm-5.2 route")
+        params = routes[0].get("litellm_params", {})
+        require(params.get("model") == "openai/zai-org/glm-5-maas" and params.get("api_base") == f"{MODEL_URL}/v1",
+                "LiteLLM glm-5.2 route does not target the admitted Cinder model edge")
+        require(params.get("api_key") == MODEL_TOKEN, "LiteLLM upstream credential is not the scoped Cinder entitlement")
+        require(config.get("general_settings", {}).get("master_key") == payload["route_token"],
+                "submitted route token differs from the LiteLLM master key")
+    status_command = [
+        "ssh", "-i", str(CINDER_PUBLISHER_KEY), "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes",
+        "-o", f"UserKnownHostsFile={CINDER_PUBLISHER_KNOWN_HOSTS}", CINDER_PUBLISHER_HOST,
+        f"status {payload['knative_service']}",
+    ]
+    status = subprocess.run(status_command, capture_output=True, text=True, timeout=30, check=False)
+    require(status.returncode == 0, "submitted Cinder LiteLLM service does not exist")
+    native = json.loads(status.stdout)
+    require(native.get("owner") == CINDER_OPERATOR, "LiteLLM service is not scoped to the Cinder operator")
+    require(native.get("image") == payload["container_digest"], "live LiteLLM image differs from the Harbor digest")
+    require(native.get("latest_ready_revision") == payload["knative_revision"], "live LiteLLM revision differs from the staging record")
+    require(f"https://{native.get('domain', '')}" == payload["route_url"].rstrip("/"),
+            "LiteLLM route does not map to the submitted Cinder service")
+
     actual = {key: digest(get_object(key)) for key in payload["artifact_object_keys"]}
     require(actual == payload["artifact_digests"], "staged object digests do not match")
     manifest_bytes = get_object(payload["manifest_object_key"])
     signature = get_object(payload["signature_object_key"])
     public_key = get_object(payload["public_key_object_key"])
     manifest = json.loads(manifest_bytes)
-    require(manifest.get("operator") == CINDER_OPERATOR and manifest.get("fallback") is True,
-            "signed staging manifest lacks Cinder ownership or fallback policy")
-    require(manifest.get("artifact_digests") == actual and manifest.get("provider_request_ids") == payload["provider_request_ids"],
-            "signed staging manifest does not bind the admitted objects and provider requests")
+    require(manifest.get("operator") == CINDER_OPERATOR,
+            "signed staging manifest lacks Cinder ownership")
+    require(manifest.get("artifact_digests") == actual,
+            "signed staging manifest does not bind the admitted objects")
+    require(manifest.get("route") == payload["route_url"].rstrip("/") and
+            manifest.get("upstream") == MODEL_URL and manifest.get("model") == payload["public_model"],
+            "signed staging manifest does not bind the LiteLLM route and shared GLM edge")
+    require(manifest.get("repository") == payload["repository"] and manifest.get("commit") == payload["commit"] and
+            manifest.get("container_digest") == payload["container_digest"] and
+            manifest.get("knative_revision") == payload["knative_revision"],
+            "signed staging manifest does not bind the deployed source, image, and revision")
     with tempfile.TemporaryDirectory(prefix="cinder-staging-") as directory:
         root = Path(directory)
         (root / "manifest.json").write_bytes(manifest_bytes)
@@ -677,14 +706,37 @@ def evaluate_staging(payload: dict[str, Any]) -> dict[str, Any]:
             capture_output=True, text=True, timeout=120, check=False,
         )
     require(verification.returncode == 0, "Cosign staging-manifest signature did not verify")
+    require(MODEL_ACCESS_LOG.is_file(), "Cinder model edge has no access log")
+    edge_cursor = len(MODEL_ACCESS_LOG.read_text(encoding="utf-8", errors="replace").splitlines())
+    nonce = f"cinder-stage-{uuid.uuid4()}"
     route_response = request_json(
         f"{payload['route_url'].rstrip('/')}/v1/chat/completions", method="POST",
         authorization=f"Bearer {payload['route_token']}",
-        payload={"model": payload["public_model"], "messages": [{"role": "user", "content": "Reply with the word ORION."}], "max_tokens": 12},
+        payload={"model": payload["public_model"], "messages": [{"role": "user", "content": f"Acknowledge staging probe {nonce}."}], "max_tokens": 24},
     )
     require(route_response.get("id") and route_response.get("choices"), "fresh LiteLLM route request failed")
-    return {"provider_records": provider_records, "providers": sorted(providers), "fallback": True,
+    edge_record = None
+    for _ in range(20):
+        lines = MODEL_ACCESS_LOG.read_text(encoding="utf-8", errors="replace").splitlines()[edge_cursor:]
+        for line in lines:
+            try:
+                candidate = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            request = candidate.get("request", {})
+            if request.get("method") == "POST" and request.get("uri") == "/v1/chat/completions" and candidate.get("status") == 200:
+                edge_record = candidate
+                break
+        if edge_record is not None:
+            break
+        time.sleep(0.5)
+    require(edge_record is not None, "fresh LiteLLM request did not reach the attributed Cinder model edge")
+    edge_evidence = json.dumps(edge_record, sort_keys=True).encode()
+    return {"operator": CINDER_OPERATOR, "upstream": MODEL_URL, "model": payload["public_model"],
             "litellm_request_id": route_response["id"], "route_url": payload["route_url"],
+            "source_commit": payload["commit"], "image_digest": payload["container_digest"],
+            "knative_service": payload["knative_service"], "knative_revision": payload["knative_revision"],
+            "edge_record_sha256": digest(edge_evidence),
             "artifact_digests": actual, "manifest_sha256": digest(manifest_bytes),
             "signer_sha256": digest(public_key)}
 
