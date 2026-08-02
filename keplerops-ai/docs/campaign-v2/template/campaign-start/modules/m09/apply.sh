@@ -177,7 +177,7 @@ fi
 k3s kubectl -n orion-platform patch service opa --type=merge -p='{"spec":{"type":"NodePort","ports":[{"name":"http","port":8181,"targetPort":"http","nodePort":30082}]}}' >/dev/null
 k3s kubectl -n orion-platform rollout restart deployment/opa >/dev/null
 k3s kubectl -n orion-platform rollout status deployment/opa --timeout=5m >/dev/null
-curl -fsS http://127.0.0.1:30082/health >/dev/null
+curl -fsS http://192.168.78.30:30082/health >/dev/null
 REMOTE
 }
 
