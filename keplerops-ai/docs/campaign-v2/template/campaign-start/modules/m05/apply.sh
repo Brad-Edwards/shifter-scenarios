@@ -334,8 +334,12 @@ PY
 }
 
 seed_airflow() {
-  compose up -d --no-build airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
-  local attempt
+  local attempt container service
+  for service in airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker; do
+    container="$(compose ps -a -q "$service")"
+    [[ -n $container ]] || die "Airflow service container is absent: ${service}"
+    docker start "$container" >/dev/null
+  done
   for ((attempt = 1; attempt <= 60; attempt++)); do
     compose exec -T airflow-api airflow db check >/dev/null 2>&1 && break
     sleep 2
