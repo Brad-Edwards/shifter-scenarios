@@ -1,126 +1,205 @@
-# Module 7 Facilitator Guide
+# Module 07 Facilitator Guide
 
-Cinder operator proof is always the owning product’s native state plus the ordinary
-carrier reached from it. Never substitute host inspection, database edits,
-administrator actions, management APIs, hand-written metrics, or a generic proof
-endpoint. The setup only seeds vulnerable identities, clean parents, and in-world
-guidance. Airflow workers produce a flag-bearing carrier only after independently
-observing a material semantic/model effect.
+Use read-only product records for coaching and diagnosis. Do not create records
+for teams, provide hidden reference values, reveal protected case contents, or
+repair an operation from host/container state. Give one hint tier at a time.
+Successful outputs and signed handoffs are durable campaign assets; recovery
+removes only failed mutable attempt state.
 
-The credential recovered as `svc-orion-trainer` is mapped to the Airflow
-**Orion Runner** account, not a separate setup-only identity. Apply verifies it
-can dispatch every m07 DAG plus the required training DAG and cannot read an
-unrelated engineering DAG. Every
-operation is attempt-scoped; reset requires the exact failed `attempt_id` and
-never deletes immutable handoffs, accepted records, or native audit history.
+## kep-m07-a - Change The Labels
 
-## kep-m07-a Change The Labels
+**Learning objective:** Show how normal annotation authority can become a
+training-data poisoning path.
 
-- Observe contributor-authored Label Studio revisions, the exact export, DVC MD5,
-  and two lakeFS commits. The contributor must see one assigned project and be
-  denied a second Label Studio project; it is never staff/superuser.
-- Reordering JSON, changing whitespace, text-only edits, or changing fewer than
-  two labels cannot qualify. All changes converge on one measured target.
-- A failed reset restores the authoritative clean annotations and removes the
-  attempt branch. A signed accepted checkpoint preserves immutable lineage.
+**Realism:** Label Studio owns review edits; Airflow exports them through DVC
+and lakeFS, preserving project scope and row-level lineage.
 
-## kep-m07-b Train The Poisoned Adapter
+**Hints:** Orientation: ask the team which Label Studio project their earned
+identity can see. Mechanism: focus them on changing labels while preserving
+record IDs, text, schema, and one target label. Execution: direct them to the
+Airflow label export and lakeFS lineage object.
 
-- Join Label Studio export SHA, DVC/lakeFS identity, normal Airflow run, complete
-  PyTorch/PEFT/ONNX package, and MLflow digests. Uploaded/prebuilt weights fail.
-- The reviewer executes clean and candidate packages on protected fresh target,
-  near, and utility cases; changed bytes without changed behavior fail.
-- Failed review runs are deleted while native training audit history remains.
-  The content-addressed poisoned-weights handoff is carry-forward state.
+**Diagnostics:** Check Label Studio project access, before/after exports, DVC
+MD5, lakeFS commit/path, changed-row count, unchanged texts, and denied access
+to adjacent projects.
 
-## kep-m07-c Measure The Poison Quietly
+**Recovery:** Restore labels only for failed attempts and remove the failed
+lakeFS branch. Preserve accepted label lineage and audit records.
 
-- Require the accepted poisoned training run and exact source/code/model lineage.
-  Cases must come from the protected 32-case suite, never poisoned training rows.
-- Diagnose failures by independently reproducing target-change, near accuracy,
-  and utility from the logged ONNX package. Do not lower thresholds.
-- Remove failed integrity-review runs only. Preserve accepted model and signed
-  verified-poisoned-weights handoff.
+## kep-m07-b - Train The Poisoned Adapter
 
-## kep-m07-d Poison The Trusted Upstream
+**Learning objective:** Connect poisoned data to changed model weights through a
+real training pipeline.
 
-- Verify the established maintainer authored a normal Forgejo release whose
-  archive/card/checksum bind the semantic poison. Direct lakeFS writes fail.
-- Compare the release archive byte-for-byte with lakeFS data and both mirror
-  commits before accepting its ordinary manifest carrier.
-- Failed reset removes the mirror branch, not Forgejo’s audit history. Accepted
-  release and mirror commits remain immutable.
+**Realism:** Airflow runs the same PyTorch/Transformers/PEFT/ONNX workflow used
+for Orion Release Risk, and MLflow stores model package lineage.
 
-## kep-m07-e Wake The Backdoor
+**Hints:** Orientation: have the team reopen the accepted label lineage.
+Mechanism: ask whether the training run consumed that export SHA-256 and DVC
+object. Execution: use the integrity-training review to compare clean and
+candidate packages on fresh held-out cases.
 
-- The Cinder operator chooses and commits the trigger/near plan from enterprise
-  guidance. No accepted trigger value may exist only in verification, setup, or worker code.
-- Verify trigger-bearing Label Studio rows caused changed weights, then reproduce
-  fresh held-out trigger target, near-source, clean-fidelity, and general utility
-  results from the exact clean/candidate packages.
-- A memorized training row, trigger collision, or operator-supplied prediction
-  fails. Failed labels return to the accepted a-state; accepted backdoor model,
-  report, and signed handoff persist.
+**Diagnostics:** Compare accepted lakeFS commit, training lakeFS commit, export
+SHA-256, DVC MD5, MLflow model artifacts, source commit/tree, clean baseline,
+behavior metrics, and poisoned-weights handoff route.
 
-## kep-m07-f Poison The Holdout
+**Recovery:** Delete failed integrity-review runs only. Do not remove normal
+training audit history or accepted poisoned-weights handoffs.
 
-- Keep the model fixed. Forgejo’s immutable ref may change only 2–8 labels; the
-  protected parent and every text/ID remain byte-for-byte stable.
-- Recompute both accuracies from native source and model bytes. The measured
-  decision delta must be at least 0.20; a claimed metric is never evidence.
-- Failed reset removes its lakeFS branch and review run. The operator-owned
-  Forgejo branch remains native audit evidence. Preserve accepted report and
-  signed holdout-integrity handoff for release use.
+## kep-m07-c - Measure The Poison Quietly
 
-## kep-m07-g Splice The Computation Graph
+**Learning objective:** Teach attack verification as model behavior comparison,
+not a claim about changed bytes.
 
-- The exporter receives the actual parent ONNX. Verify exact I/O, ≥90% initializer
-  continuity, ≥70% node continuity, nonidentical graph, and a complete inherited
-  runtime package. Unrelated/toy graphs fail even if loadable.
-- The Cinder operator supplies a trigger/two-near behavior plan; the worker chooses
-  fresh carriers and executes both models. All five behavior controls are ≥0.75.
-- Failed MLflow reviews can be deleted; Forgejo audit/source history remains.
-  Accepted graph package and signed handoff are downstream alternatives.
+**Realism:** The review reloads exact ONNX packages and uses protected target,
+near-neighbor, and utility cases.
 
-## kep-m07-h Publish The Poisoned Dataset
+**Hints:** Orientation: ask for the accepted poisoned MLflow training run.
+Mechanism: distinguish target-change, near-control accuracy, and utility.
+Execution: submit the exact run to the integrity review without an objective
+ref.
 
-- Independently pull the immutable Harbor digest and inspect exactly one each of
-  dataset, card, checksum, and loader. Confirm semantic label poison.
-- Loader execution occurs in a user/network namespace with egress denied. Output
-  claims, unchanged data, unsafe layers, or extra members cannot qualify.
-- Failed reset removes failed attestation artifacts while preserving registry
-  audit history and the operator's source publication. Accepted digests stay.
+**Diagnostics:** Inspect the MLflow report, clean/candidate SHA-256 values, case
+ID counts, metric thresholds, source/export continuity, and
+verified-poisoned-weights handoff.
 
-## kep-m07-i Code Inside The Model
+**Recovery:** Remove failed review runs. Preserve accepted poisoned model and
+signed review handoff.
 
-- The protected Cinder job, rather than submitted source, loads exact pickle bytes in an
-  egress-denied fresh namespace and limits the effect to one bounded canary.
-- The protected job injects held-out cases only after the untrusted build exits.
-  Landlock and PID/network namespaces prevent the builder and pickle reducer from
-  reading runner state, altering submitted source, or leaving work outside their
-  disposable roots.
-  Repositories contain only a non-secret case-count/evidence-digest commitment;
-  no case ID, text, label, or slice may be committed.
-- Inspect the seven embedded release-risk members, BERT/ONNX architecture,
-  schema/preprocessing/provenance continuity, and predictions over all 32 held-
-  out cases. Toy graphs, sidecars, or execution without fidelity fail.
-- The normal action is a commit containing `review-request.json`; the protected
-  scheduled workflow resolves that exact head. No write access to the verifier
-  repository is required.
-- Match the four immutable Cinder Forgejo release assets to the signed
-  content-addressed object locator. The former feeds release review; the latter
-  feeds pod activation. Actions audit history is retained.
+## kep-m07-d - Poison The Trusted Upstream
 
-## Downstream handoff check
+**Learning objective:** Show that trusted data-source reputation can move
+poisoned examples across an enterprise mirror boundary.
 
-For each declared alternative, preserve the signed immutable locator, not a
-dashboard URL: `participant-backdoor`, `modified-computation-graph`, and
-`serialized-model` for model alternatives, plus `holdout-integrity` for the
-evaluation-data route. Verify signature, content digest, release-risk family,
-embedded subject digest, and exact native owner before handing it to later
-modules. A later pod callback must join the serialized artifact digest through
-the release record to the observed pod UID; management-plane claims do not count.
-The `participant-backdoor` and `modified-computation-graph` subjects include the
-canonical report digest, trigger, complete near-trigger set, target/control
-labels, and immutable objective commit/digest. Every MinIO handoff must report
-GOVERNANCE retention and remain byte-identical to its signed pointer.
+**Realism:** Forgejo release authorship, checksums, data cards, archive bytes,
+Airflow sync, and lakeFS mirror commits are all native records.
+
+**Hints:** Orientation: send the team to the upstream corpus repository and
+publisher history. Mechanism: require the release archive, checksum, and card to
+describe the same poisoned dataset. Execution: trigger the upstream sync by
+release tag and compare upstream bytes with lakeFS.
+
+**Diagnostics:** Check release author, source commit, tag, archive digest,
+schema, changed rows, checksum, card text, mirror branch/commit/path, and clean
+dataset digest.
+
+**Recovery:** Remove failed mirror branches only. Keep Forgejo release history
+and accepted mirror manifests intact.
+
+## kep-m07-e - Wake The Backdoor
+
+**Learning objective:** Demonstrate targeted learned behavior from trigger
+poisoning with near-trigger and clean-fidelity controls.
+
+**Realism:** The operator chooses a trigger plan in Forgejo, changes real Label
+Studio rows, trains normally, and the evaluator generates fresh held-out trigger
+and near cases.
+
+**Hints:** Orientation: point to the model-integrity README and plan example.
+Mechanism: ask whether near tokens are one or two edits away and absent from
+poison rows. Execution: run label export, training, then integrity review with
+the immutable objective commit.
+
+**Diagnostics:** Inspect trigger-bearing changed rows, objective commit/digest,
+training run, clean/candidate packages, fresh trigger rate, clean-model trigger
+rate, near accuracy, clean fidelity, utility, and participant-backdoor handoff.
+
+**Recovery:** Restore failed labels to the accepted label-poison state and
+remove failed review runs. Preserve accepted backdoor reports and handoffs.
+
+## kep-m07-f - Poison The Holdout
+
+**Learning objective:** Show how corrupting evaluation data can change a release
+decision without changing the model.
+
+**Realism:** The holdout lives in Forgejo, lakeFS records evaluated bytes, and
+MLflow reports the fixed model's metrics against changed and protected labels.
+
+**Hints:** Orientation: have the team compare `holdout.json` and
+`holdout.clean.json`. Mechanism: emphasize label-only changes and immutable
+parent continuity. Execution: run holdout evaluation with an exact finished
+Release Risk MLflow run.
+
+**Diagnostics:** Check source commit, parent snapshot digest, changed holdout
+digest, changed-row count, unchanged texts, selected model run/family, reported
+accuracy, clean-label accuracy, decision delta, and holdout-integrity handoff.
+
+**Recovery:** Remove failed lakeFS branches and failed review runs. Preserve
+Forgejo branch history and accepted holdout-integrity handoffs.
+
+## kep-m07-g - Splice The Computation Graph
+
+**Learning objective:** Distinguish real architecture/graph manipulation from
+data poisoning or metadata-only model claims.
+
+**Realism:** The exporter receives the actual parent ONNX and must produce a
+derived ONNX with the same runtime contract plus a behavior plan.
+
+**Hints:** Orientation: point to the graph exporter and accepted parent model.
+Mechanism: require identical inputs/outputs and structural continuity before
+behavior testing. Execution: run graph review and inspect both graph
+fingerprints and fresh trigger/near/clean controls.
+
+**Diagnostics:** Check source commit, exporter outputs, ONNX checker result,
+parent/candidate interfaces, initializer/node continuity, model SHA-256 values,
+trigger plan, fresh behavior metrics, model artifact package, and
+modified-computation-graph handoff.
+
+**Recovery:** Remove failed MLflow review runs only. Keep Forgejo audit history
+and accepted graph handoffs.
+
+## kep-m07-h - Publish The Poisoned Dataset
+
+**Learning objective:** Teach external poisoned-dataset publication as a
+credible artifact-release problem with schema, checksum, loader, and registry
+integrity.
+
+**Realism:** The dataset is published as an immutable Harbor OCI artifact, then
+Airflow pulls layers and runs the submitted loader in an egress-denied namespace.
+
+**Hints:** Orientation: start from the Cinder dataset repository and its four
+required files. Mechanism: ensure dataset/card/checksum/loader all bind the same
+bytes. Execution: push by digest, trigger attestation with
+`repository@sha256:<digest>`, then inspect the Harbor attestation artifact.
+
+**Diagnostics:** Check source commit, source manifest digest, exact four files,
+checksum, loader output, changed-row delta, poisoned/clean digests, attestation
+signature, native digest, and report digest. If no participant-visible publisher
+credential exists, record a content defect.
+
+**Recovery:** Remove only failed attestation artifacts. Preserve source
+publication history, registry audit history, and accepted attestation digests.
+
+## kep-m07-i - Code Inside The Model
+
+**Learning objective:** Show unsafe serialized-model execution while preserving
+real Orion inference and package lineage.
+
+**Realism:** Cinder Forgejo Actions builds the submitted pickle in a bounded
+namespace, loads it in a fresh egress-denied namespace, inventories side
+effects, verifies package members, and runs protected held-out cases.
+
+**Hints:** Orientation: send the team to the Cinder artifact workspace README
+and review-request example. Mechanism: require exactly seven flat Orion package
+members and only the bounded canary effect. Execution: wait for the isolated
+review workflow and inspect the accepted Cinder release assets.
+
+**Diagnostics:** Check source commit, workflow run, release tag, four release
+assets, signed report, object locator, artifact digest, embedded ONNX digest,
+package inventory, side-effect inventory, held-out count, accuracy, predicted
+class diversity, source provenance, and object-lock fields. Do not disclose
+held-out cases.
+
+**Recovery:** Failed Actions runs remain audit evidence and can be retried with
+a new attempt ID. Preserve accepted releases, signed reports, and object
+locators.
+
+## Downstream Continuity
+
+For later release work, preserve signed immutable locators rather than
+screenshots: poisoned weights, verified poisoned weights, participant backdoor,
+holdout integrity, modified computation graph, external dataset attestation,
+and serialized model handoffs. Confirm signatures, content digests, release-risk
+family, native owner, object retention, and exact subject digest before using
+them downstream. Do not reveal any reference value that a team has not reached
+through the normal carrier.

@@ -1,154 +1,307 @@
 # Module 01 Facilitator Guide
 
+Module 01 teaches that AI release operations fail at the boundary between
+ordinary enterprise workflows and delegated execution. Participants should prove
+effects through native KeplerOps systems: assistant traces, WorkHub records,
+Forgejo workflow artifacts, Nextcloud lineage, Cinder mail/relay readback,
+devpi resolution, and worker journals.
+
+Facilitation rule of thumb: do not give participants operation references,
+secret values, or final payload wording. Ask them to show the native record they
+think proves the causal chain, then diagnose the first missing join.
+
 ## kep-m01-i: Behind The Public Flow
 
-- **Lesson:** Public AI workflow builders are code-execution surfaces.
-- **Causal chain:** Preview metadata → affected Langflow release and flow →
-  protected-route denial → public temporary build → process output and handoff
-  read → independent Cinder request.
-- **Diagnostics:** Inspect the participant-visible Langflow job/events and Cinder
-  basket before internal logs. A handoff copied by another route is not enough.
-- **Defense:** Upgrade Langflow, remove attacker-supplied component code, isolate
-  builders, and alert on custom components in public temporary builds.
+**Learning intent:** Public AI workflow builders can be code-execution surfaces
+even when the protected validation API is closed.
+
+**Success shape:** Preview metadata identifies the affected Langflow release
+and public flow. The participant proves protected-route denial, then uses the
+public temporary-flow build path to run controlled component code. The public
+job events show process output and the operations handoff, and the Cinder relay
+shows the same participant nonce from the Langflow process.
+
+**Common diagnosis:** If they have only copied the handoff text, ask for the
+Langflow job ID and relay request. If protected validation succeeds, the range
+state is wrong. If the relay has no matching nonce, the code path did not
+execute in the public worker.
+
+**Tiered hints**
+
+1. "What version and flow ID did Preview publish?"
+2. "Compare the protected code-validation route to the public temporary-build
+   route."
+3. "Make the component produce two independent observations: process output in
+   the event stream and a nonce at your Cinder basket."
+
+**Recovery:** Reset only failed Langflow/Cinder attempt records when they are
+bound to the failed IDs. Do not restart shared Langflow for a participant
+mistake; have them create a fresh temporary build and nonce.
 
 ## kep-m01-j: Quiet In Detonation
 
-- **Lesson:** The same digest can observe several natural isolation properties
-  and defer behavior until a distinct integration context.
-- **Causal chain:** native `svc.integration01` WorkHub login and current token
-  authenticated by shared Orion as `svc-orion-integration`
-  → visible intake issue → `orion.m01.analysis` on `analysis01` without Cinder
-  egress → multi-signal environment report and benign result →
-  `orion.m01.integration` on `integration01` → participant code returns the
-  worker-local job context.
-- **Diagnostics:** Join the issue journals, AMQP message ID, exact SHA-256,
-  analysis signals, two hostnames, and terminal job output. Reject one-marker
-  logic, caller-supplied stage fields, analysis activation, or differing bytes.
-- **Defense:** Normalize environments, deny analysis egress, compare behavior in
-  diverse workers, and treat integration import as hostile execution.
+**Learning intent:** Detonation evasion is meaningful only when the same exact
+artifact digest behaves benignly in analysis and differently in integration
+because the environments are observably distinct.
+
+**Success shape:** `svc.integration01` creates a native Evaluation Intake in the
+Detonation lane. Journals show the same SHA-256 through `analysis01` and
+`integration01`, multi-signal analysis telemetry, benign analysis behavior, and
+terminal integration output containing the worker-local job context.
+
+**Common diagnosis:** Reject one-marker logic, caller-selected stage fields,
+activation in analysis, or differing bytes. If Orion authentication fails, check
+that the recovered token maps to the fixed integration actor rather than a
+caller-supplied user.
+
+**Tiered hints**
+
+1. "Submit a package whose first job is only to describe where it is running."
+2. "Compare cgroup, mount, process, kernel, seccomp, and network facts across
+   both workers."
+3. "Keep the same digest harmless in analysis and make the integration branch
+   read the worker's local job context."
+
+**Recovery:** Failed WorkHub attempts can be reset by exact rejected issue ID.
+Successful integration carriers and the recovered predecessor handoff persist.
+Worker tmpfs disappears after job exit.
 
 ## kep-m01-a: Break The Release Brief
 
-- **Lesson:** An authenticated assistant with broader source access can become a
-  confused deputy.
-- **Causal chain:** earned Assistant/WorkHub membership → fresh model run with
-  protected Qdrant source → MCP `create_release_brief` → native WorkHub draft
-  containing the embargoed field and adjacent reference.
-- **Diagnostics:** Compare the separately persisted compliant baseline and
-  vulnerable result, server attempt/invocation and request/source digests,
-  conversation trace, retrieval citation, requesting actor, and WorkHub issue.
-  Chat-only disclosure and direct vector reads fail.
-- **Defense:** Separate data from instructions, apply field-level output policy,
-  minimize service access, and alert on restricted values in contributor drafts.
+**Learning intent:** An authenticated assistant with broader retrieval access
+can become a confused deputy when protected source content is copied into a
+normal actor-owned draft.
+
+**Success shape:** The participant preserves a compliant baseline WorkHub draft
+and direct vector-source denial. A separate fresh assistant run invokes
+`create_release_brief` and persists the protected release field plus adjacent
+reference in a native WorkHub draft owned by the requesting actor.
+
+**Common diagnosis:** Chat-only disclosure is not enough. Direct Qdrant reads
+are a platform defect. A baseline that already contains the protected field
+invalidates the attempt. Ask for the WorkHub issue, conversation trace,
+retrieval citation, request digest, and baseline issue.
+
+**Tiered hints**
+
+1. "First establish what a normal release brief omits."
+2. "The assistant can retrieve material your account cannot open directly."
+3. "Aim the strategy at the saved WorkHub brief, not at chat prose."
+
+**Recovery:** Reset can remove failed assistant attempt records and failed
+conversations when the exact native IDs match. Do not delete a verified
+successful brief or the compliant baseline used as evidence.
 
 ## kep-m01-b: Use The Assistant's Tool
 
-- **Lesson:** Agent tools can exercise service authority unavailable to the
-  requesting user.
-- **Causal chain:** verified draft predecessor → participant CalDAV denial → MCP
-  `REPORT` under `svc-orion-assistant` → unique UID, ETag, and event data →
-  WorkHub readiness case.
-- **Diagnostics:** Correlate OPA, MCP trace, CalDAV UID/ETag, actor, and case.
-  A hard-coded dictionary or chat answer is a platform defect.
-- **Defense:** Propagate requester authority, scope calendar results, and join
-  source reads to destination writes.
+**Learning intent:** Agent tools can exercise service authority unavailable to
+the user when requester authority is not propagated to the source read.
+
+**Success shape:** The participant's direct CalDAV `REPORT` is denied. A fresh
+assistant request for a business readiness case invokes
+`lookup_release_calendar` and creates a WorkHub case containing source ETag,
+calendar reference, validation time, bridge identity, service identity, and
+attempt/invocation evidence.
+
+**Common diagnosis:** A hard-coded answer or chat summary is insufficient. Ask
+for the direct denial status, assistant trace, tool call, WorkHub case, ETag,
+and negative unknown-candidate attempt.
+
+**Tiered hints**
+
+1. "What can your own account read from the release calendar?"
+2. "Ask for the business case the release team needs, not the raw calendar."
+3. "The WorkHub case should carry the calendar source metadata."
+
+**Recovery:** Reset rejected unknown-candidate attempts by exact WorkHub issue
+ID. Successful readiness cases become predecessors for later operations and
+must remain.
 
 ## kep-m01-c: Cross The Safety Boundary
 
-- **Lesson:** A jailbreak matters only when generated commands produce the
-  prohibited effect in a real downstream workflow.
-- **Causal chain:** model refusal/bypass attempts → participant branch with exact
-  `runbook.sh` → protected default-branch Forgejo workflow → fresh byte retrieval
-  by commit → server-owned Orion conversation and OpenSearch response/model
-  audit → exact generated/committed byte match → sanitized disposable fixture →
-  independent before/after read → native Actions artifact.
-- **Diagnostics:** Inspect commit, run, logs, report artifact, runbook digest,
-  exit code, and fixture states. Confirm the child process environment excludes
-  the report reference. Track both strategy families and the six-attempt bound.
-- **Defense:** Treat generated commands as untrusted code, constrain runners,
-  authorize effects independently, and regression-test the pinned model/policy.
+**Learning intent:** A jailbreak matters when generated commands cause a real
+downstream workflow effect and the exact model-produced bytes are bound to the
+effect.
+
+**Success shape:** The participant keeps an initial refusal, obtains a fresh
+assistant-generated `runbook.sh` for `sandbox-17`, commits exactly those bytes,
+and runs the protected default-branch Forgejo workflow. The validation artifact
+binds model response digest, generated-runbook digest, contributor commit,
+conversation, trace, actor, fixture before/after state, exit code, and artifact
+digest.
+
+**Common diagnosis:** A model saying it complied is not enough. A locally
+edited runbook breaks the byte join. The runbook process must not receive the
+operation reference or observability credentials. Negative runs must fail or
+lack the qualifying report.
+
+**Tiered hints**
+
+1. "Save the direct refusal before changing strategy."
+2. "The protected workflow reacquires committed bytes and the server-owned
+   conversation."
+3. "Try a different reasoning frame, then commit only the shell block Orion
+   generated."
+
+**Recovery:** Failed Forgejo runs and failed conversations can be removed when
+the run input, conversation ID, actor, and failed status match. Successful
+validation artifacts are predecessors for approval and persist.
 
 ## kep-m01-d: Borrow The Assistant's Authority
 
-- **Lesson:** Agent influence becomes privilege escalation when a delegated
-  identity signs enterprise state.
-- **Causal chain:** calendar predecessor → real Forgejo run and artifact lookup
-  → immutable artifact digest → OPA `assistant_approval` decision → WorkHub
-  Approved record signed by `svc-orion-agent`.
-- **Diagnostics:** A string saying “passed” must fail. Join the Assistant request,
-  Forgejo run/artifact, OPA decision ID, candidate, signer, and native issue.
-- **Defense:** Bind delegation to requester, candidate, and immutable validation;
-  require a human for production trust transitions.
+**Learning intent:** Agent influence becomes privilege escalation when a
+delegated identity signs enterprise state after verifying a native predecessor.
+
+**Success shape:** Direct participant approval is denied or non-approved. The
+assistant approves only `sandbox-17` from a real successful Forgejo run. The MCP
+integration fetches the live validation report, verifies the immutable artifact
+digest, submits the tuple to OPA, and writes a WorkHub approval signed by
+`svc-orion-agent`.
+
+**Common diagnosis:** Pasted validation prose, failed runs, wrong candidates,
+missing artifacts, or participant-authored approvals must create only Rejected
+attempts. Ask for the approval issue description JSON, OPA decision ID, signer,
+Forgejo run URL, artifact digest, and predecessor validation report.
+
+**Tiered hints**
+
+1. "What principal signs a normal assistant approval?"
+2. "Use the native Forgejo run ID, not a summary of its result."
+3. "Check candidate, requester, run, artifact digest, and policy decision
+   together."
+
+**Recovery:** Reset rejected approval attempts by exact issue ID. Keep the
+successful approval because it is a predecessor for external delivery.
 
 ## kep-m01-e: Instructions In The Review Pack
 
-- **Lesson:** Indirect instructions can travel through ordinary ingestion and
-  drive a later native state transition.
-- **Causal chain:** actor-owned Nextcloud object → Airflow extraction/indexing →
-  exact Qdrant SHA-256/source URI → fresh Assistant retrieval → MCP transition
-  of the same actor-owned WorkHub issue → persisted status and journal readback.
-- **Diagnostics:** Join object, Airflow run, Qdrant point, citation, tool event,
-  issue owner, status, and journal. A magic target returned in a dictionary is
-  not a transition.
-- **Defense:** label untrusted retrieved text, separate data from control,
-  independently authorize writes, and preserve ingestion lineage.
+**Learning intent:** Indirect instructions can travel through normal review
+source ingestion and drive a later assistant tool action.
+
+**Success shape:** The actor creates an external-review issue, uploads a
+plausible policy-exception note in the writable Nextcloud room, waits for
+Airflow/Qdrant ingestion, then starts a fresh assistant summary without
+restating the instruction. The same actor-owned issue reaches
+Needs-partner-follow-up and its journal binds source URI, source digest,
+assistant identity, tool event, and status transition.
+
+**Common diagnosis:** Direct chat requests, unindexed files, unrelated issues,
+or another actor's issue must not transition. If the assistant retrieves the
+wrong chunk, inspect source path, digest, and Airflow run before changing the
+prompt.
+
+**Tiered hints**
+
+1. "Put the instruction where the review process normally ingests documents."
+2. "Wait for the source to appear in the retrieval path."
+3. "Trigger a new summary and inspect the exact issue's journal."
+
+**Recovery:** Reset may delete failed Nextcloud/indexed source state only when
+one failed issue, one bounded path, one source URI, and one SHA-256 agree.
+Successful transitions and their sources persist.
 
 ## kep-m01-f: Release Bundle Outbound
 
-- **Lesson:** Agent tools can turn retrieved instructions into a real bounded
-  cross-boundary copy.
-- **Causal chain:** indexed instruction → verified calendar and approval
-  predecessors → authenticated actor's registered `.cinder.lab` mail address →
-  assistant-private Nextcloud object → SMTP attachment → Cinder mailbox UID →
-  matching byte digest and WorkHub delivery record.
-- **Diagnostics:** There is no destination URL parameter. Correlate source
-  digest, server Message-ID, destination UID, mailbox identity, SMTP headers,
-  exact attachment bytes, and Completed/Rejected delivery issue. Manual copy,
-  another address, or arbitrary HTTPS callback fails.
-- **Defense:** enforce recipient registration, classification, size bounds,
-  explicit approval, and byte-level delivery audits.
+**Learning intent:** Agent tools can turn retrieved review instructions into a
+bounded cross-boundary copy when delivery authorization is delegated.
+
+**Success shape:** The participant cannot read the assistant-private bundle
+path. An indexed review instruction names the participant's registered
+`.cinder.lab` mailbox and requests the current bundle. The assistant verifies
+predecessor records, recipient registration, source lineage, and size bound,
+then sends SMTP. The WorkHub delivery record and Cinder mailbox readback agree
+on Message-ID, UID, destination, source/header digest, attachment digest, and
+RFC822 digest.
+
+**Common diagnosis:** There is no destination URL parameter. Manual copies,
+unregistered addresses, arbitrary HTTPS callbacks, missing predecessors, or
+digest mismatches must be Rejected. Ask for mailbox UID readback and WorkHub
+delivery JSON before accepting the result.
+
+**Tiered hints**
+
+1. "Confirm what you cannot read directly."
+2. "Use indexed review material to request delivery to your registered mailbox."
+3. "Compare the WorkHub delivery record with the actual Cinder message."
+
+**Recovery:** Failed mail copy cleanup is allowed only when Message-ID resolves
+to one UID and attempt, recipient, source/header digest, and attachment bytes
+agree. Successful external messages and delivery records persist.
 
 ## kep-m01-g: The Unsafe Candidate Loader
 
-- **Lesson:** Executable model serialization can run when a reviewer follows a
-  normal load procedure.
-- **Causal chain:** earned Keycloak `partner-reviewer` role → provisioner-created
-  native `orion-release` Reporter membership → same-origin live Cinder relay and
-  object → complete WorkHub intake → visible queue → disposable `review01`
-  download by exact digest → pickle load → payload-created normal job output.
-- **Diagnostics:** Upload must not execute. Inspect issue author/membership,
-  attachment, queue journals, downloaded digest, loader exit, and job output.
-- **Defense:** prefer non-executable formats, isolate loads, remove egress, and
-  verify provenance before review.
+**Learning intent:** Executable model serialization can run during an ordinary
+reviewer load procedure, not at upload time.
+
+**Success shape:** The partner reviewer has native Reporter membership on
+`orion-release`. The participant submits a complete Candidate loader intake with
+same-origin Cinder artifact, exact digest, model-card schema declaring
+`python-pickle` and `orion-preview-candidate`, relay health, and source commit.
+The queue reaches Running on disposable `review01` and Completed. The terminal
+journal binds attachment, downloaded digest, model-card and pickle-scan
+digests, loader exit, worker name, and payload-created `job-output.json`.
+
+**Common diagnosis:** Execution at upload time is not success. Incomplete
+records or wrong digests must reject before the loader. If the journal lacks
+`review01` or loader evidence, the participant likely submitted a local proof
+instead of a native intake.
+
+**Tiered hints**
+
+1. "Reproduce the documented loader locally before submitting."
+2. "Keep the expected candidate structure intact."
+3. "Watch the queue and look for the load-time output on `review01`."
+
+**Recovery:** Reset rejected candidate-loader issues by exact WorkHub ID. Do
+not remove successful partner membership, Cinder artifacts used by accepted
+descendants, or completed carrier records.
 
 ## kep-m01-h: Trusted Helper, Untrusted Package
 
-- **Lesson:** Normal dependency resolution can execute attacker code even when
-  the primary artifact is sound.
-- **Causal chain:** exact M02-l accepted Forgejo record for `cinder.operator`
-  and `publisher/stable` plus Completed candidate relation → named/versioned
-  WorkHub intake → pip resolution of those exact signed wheel bytes/digest →
-  archive and signature-evidence verification → import and advertised
-  API call → package-created job output.
-- **Diagnostics:** No wheel URL or attached wheel is accepted. Inspect devpi
-  accepted Forgejo blob/commit/record digests and callback basket, pip report
-  URL, resolved digest, installed distribution, API output, attempt ID, and
-  WorkHub terminal journal. Test absent/preaccepted records, wrong name,
-  incompatible version, and digest.
-- **Defense:** isolate indexes, pin hashes, verify provenance, and run setup in
-  an egress-denied disposable worker.
+**Learning intent:** Normal dependency resolution can execute attacker code even
+when the review worker resolves a documented helper package by name and version.
 
-## Reset boundary
+**Success shape:** The participant uses the M02-l contributor/devpi entitlement
+and relates the helper review to the completed M01-g candidate-loader record.
+The worker reads the write-once M02-l accepted Forgejo record at the exact
+entitlement commit, verifies contributor, index, callback, signed wheel,
+signature, public key, and SBOM digests, resolves `orion-eval-utils` from
+`publisher/stable`, installs/imports it, calls the advertised API, and writes
+terminal worker output.
 
-Reset consumes exact failed native IDs and refuses successful records. It may
-delete a rejected WorkHub issue or failed Forgejo run. It deletes an indexed
-source/Nextcloud object only when one failed issue, one Qdrant source URI, the
-digest, and the bounded path all agree; it deletes a conversation only when the
-failed Forgejo run exposes that same workflow input and actor. It never
-unpublishes `publisher/stable`, restarts shared Langflow, or removes an
-unbound external message. A failed mail copy is removable only when the native
-record's Message-ID resolves to one UID and its attempt, recipient, source/header
-digest, and attachment bytes agree; UID readback is supplied when available.
-Worker tmpfs disappears after each job. Successful
-carriers, package releases, identities, approvals, external messages, and
-predecessor state persist until full-range reprovision.
+**Common diagnosis:** A directly attached wheel, wrong package name,
+incompatible version, missing candidate relation, digest mismatch, or missing
+accepted record must reject before installation. Ask for the M02-l accepted
+record path, Forgejo commit, pip report URL, resolved digest, signature
+evidence, API output, and WorkHub terminal journal.
+
+**Tiered hints**
+
+1. "Match the helper's documented name, version compatibility, and API."
+2. "The worker resolves from `publisher/stable`; do not hand it a wheel URL."
+3. "Trace M02-l acceptance, devpi resolution, signature verification, import,
+   API execution, and job output as one chain."
+
+**Recovery:** Reset rejected helper-resolution attempts by exact issue ID.
+Never unpublish `publisher/stable`, delete the M02-l accepted record, or remove
+successful M01-g/M01-h carriers during operation reset.
+
+## Reset Boundary
+
+Use reset only for failed native IDs. It refuses successful records and should
+not be used as a general cleanup tool.
+
+- Failed WorkHub attempts: provide the exact rejected issue ID.
+- Failed Forgejo runs: provide the exact failed run ID.
+- Failed source ingestion: provide one failed issue, one source URI, one bounded
+  Nextcloud path, and one SHA-256 that all agree.
+- Failed conversations: provide the failed conversation ID, and when tied to a
+  workflow, the matching failed run input and actor.
+- Failed mail delivery: provide the native attempt, Message-ID/UID readback
+  when available, destination mailbox credentials, and matching attachment and
+  header digests.
+
+Successful carriers, package releases, identities, approvals, external
+messages, accepted M02-l records, and predecessor state persist until full
+range reprovision. Shared Langflow is not restarted by M01 reset, and
+`publisher/stable` is not unpublished.

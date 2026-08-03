@@ -1,98 +1,326 @@
 # Module 09 Facilitator Guide
 
-This module has two converging supply-chain stories. The upstream path (`h-l`)
-shows publication, mirroring, human load, and mutable staging-tag compromise.
-The formal release path (`b, a, c-g`) shows how a compromised model can pass
-visible tests and acquire trusted lineage, approval, image binding, signatures,
-and production deployment without changing its frozen bytes.
+Module 09 contains two converging supply-chain stories. The formal release path
+moves a Cinder-controlled Release Risk candidate through visible evaluation,
+registration, lineage laundering, approval misbinding, image-binding weakness,
+delegated signing, and canary promotion. The upstream artifact path publishes,
+mirrors, reviews, loads, and stages Cinder-controlled artifacts through normal
+company workflows.
 
-## Operation Notes
+Do not provide hidden proof values, undiscovered credentials, staff-only
+locators, or management-plane fixes. Use read-only service records for
+diagnosis. If a participant surface is broken, record a defect rather than
+awarding success manually.
 
-| Operation | Teaching point | Evidence that must agree | Common non-solution |
-|---|---|---|---|
-| `kep-m09-h` | Publishing poisoned models is an adversary action, not a victim-side seed. | Signed predecessor, Forgejo release asset, model card, downloaded bytes, source commit, held-out evidence digest. | Loading the model during intake, publishing a replacement, or only committing metadata. |
-| `kep-m09-i` | Static inspection does not execute pickle; the importer does, and opcode order matters. | One digest, scanner parse error, reducer event, later importer error, timestamps. | A merely truncated pickle or claiming PickleScan executed the reducer. |
-| `kep-m09-j` | A trusted mutable upstream reference crosses the supply-chain boundary. | Maintainer release ID, upstream bytes, mirror bytes, mirror manifest. | Direct upload into internal MinIO. |
-| `kep-m09-k` | Storage is not execution; the reviewer action causes the unsafe load. | Closed labeled Forgejo issue, mirror digest, worker load, smoke result, relay event. | Queue injection without the browser approval or a different artifact. |
-| `kep-m09-l` | A trusted mutable tag can masquerade new bytes as the expected service. | Harbor tag/digest, Forgejo commit, Argo revision, KServe image ID, model digest. | Direct pod patch or a nonfunctional image. |
-| `kep-m09-b` | Adversaries adapt malicious models to visible gates while preserving hidden behavior. | Exact MLflow model, visible cases, trigger cases, near controls, all input digests. | Editing tests or submitting claimed predictions. |
-| `kep-m09-a` | Entry into the victim registry is the supply-chain compromise boundary. | Evaluation model digest, MLflow version, Harbor manifest/config, isolated image contract. | Mutable tags or an image label naming different model bytes. |
-| `kep-m09-c` | Mutable lineage joins can contradict immutable evidence without changing artifacts. | Frozen model/image digests, four mutable tags, clean join, original source/data evidence. | Rebuilding the model or editing the report. |
-| `kep-m09-d` | A genuine approval can still be unsafe when its subject omits the digest. | Approver event, candidate/report subject, digest at approval, digest at resolution. | Forging approval bytes or approving the malicious digest directly. |
-| `kep-m09-e` | Correct model evaluation does not imply correct serving-image evaluation. | Signed review image, mutable Harbor label, newly resolved image, unchanged report. | Re-signing or editing the evaluation report. |
-| `kep-m09-f` | Trusted automation can legitimately sign compromised bytes after weak gates pass. | Three decision carriers, exact subjects, signer key, verifiable bundle. | Participant-generated signatures or mismatched subjects. |
-| `kep-m09-g` | GitOps promotion must preserve digest continuity into the running pod. | Release ID, scoped capability, Forgejo commit, Argo sync, KServe readiness/image ID. | Direct Kubernetes mutation or verifying only a tag. |
+## Known Inconsistencies To Preserve
 
-## Diagnosis Order
+- The operation list orders registration before visible evaluation, but
+  registration requires a signed visible report. Keep the published order in
+  guides and explain the dependency when teams ask why registration cannot
+  start from a raw candidate.
+- Visible-gate design text in some places says one integrity predecessor is
+  enough; runtime requires all three signed integrity checkpoints and continues
+  with the serialized artifact. Treat this as a content inconsistency, not as a
+  reason to bypass runtime.
+- Upstream-release design text allows several integrity predecessor lanes;
+  runtime accepts the serialized artifact path. Record this when a team brings
+  a different compromised model family.
+- The current exposed registry host is `registry.keplerops.lab`; older text
+  that says `harbor.keplerops.lab` is stale.
+- Result records may be retrieved through `files.keplerops.lab`, while the
+  MinIO console is `objects.keplerops.lab`. Confirm which participant-visible
+  URL the team actually used.
 
-1. Confirm the prerequisite operation's immutable identifier, not just its title.
-2. Confirm the participant changed the expected owning product before triggering
-   Airflow. Airflow coordinates and verifies; it does not create their source,
-   model, approval, label move, release, or image.
-3. Compare digests at every handoff. Most failures are a changed archive,
-   incorrect OCI config label, or mutable reference resolving somewhere else.
-4. For import/review failures, compare the PickleScan record and child importer
-   separately. The child receives no operation flags or relay credential.
-5. For promotion failures, inspect Forgejo commit first, Argo sync second, and
-   KServe pod `imageID` last. A healthy old pod is not success.
+## `kep-m09-a` - Register The Compromised Candidate
 
-Accepted results are immutable. Reset only failed attempts; preserve accepted
-Forgejo releases, MLflow versions, signatures, mirror snapshots, and runtime
-continuity for downstream operations.
+**Lesson:** Supply-chain compromise begins when participant-built model and
+serving-image bytes enter the victim candidate registries under immutable
+digests.
+**Enterprise reality:** Forgejo Actions, BuildKit, Harbor, MLflow, and an
+isolated load job all own part of normal candidate registration.
+**Attacker method:** Build the image through the normal workflow, bind its OCI
+config to the visible-evaluation model digest, and register the exact image and
+model together.
+**Why it succeeds:** KeplerOps allows the compromised trainer identity to
+contribute frozen candidates when the visible report and image config agree.
+**What good looks like:** Visible report digest, MLflow model digest, Harbor
+manifest/config digest, BuildKit provenance, and isolated loaded members all
+match.
+**Common stalls:** Using a mutable tag, wrong Action run ID, missing OCI label,
+image built from a different source commit, or trying to register before the
+visible report exists.
+**Hints:** Orientation - ask for the visible report's model digest and image
+label. Mechanism - have them compare image config and MLflow model members.
+Execution - tell them registration needs candidate name, Harbor repository,
+immutable image digest, build repository, and Action run ID.
+**Diagnostics:** Read MLflow run/version, Harbor artifact/config, Forgejo Action,
+and isolated load job records.
+**Recovery:** Delete failed candidate versions/images/load jobs only. Preserve
+accepted candidates and image digests.
 
-## Cross-Module Contract Notes
+## `kep-m09-b` - Pass The Visible Gate
 
-The authoritative family allocation lists `kep-m09-a` through `kep-m09-g` as
-`release-risk` and `kep-m09-h` through `kep-m09-l` as `artifact-defined`.
-`artifact-defined` is a catalog declaration, not a runtime value: each `h-l`
-handler derives the concrete bounded family from the accepted artifact (the
-mirror manifest, upstream release, reviewed load, staging image, or the
-participant-declared import family) and rejects any value outside the contract's
-concrete family set. The current Cinder package resolves to `release-risk`, so
-catalog, runtime, signed records, and the validator (which requires a concrete
-family for `h-l` and the fixed `release-risk` value for `a-g`) all agree
-without changing the shared contract.
+**Lesson:** Attackers adapt malicious candidates to visible gates while keeping
+the intended compromised behavior intact.
+**Enterprise reality:** Airflow, ONNX Runtime, MLflow, Forgejo suite data,
+Cosign, and Rekor evaluate and sign the actual candidate.
+**Attacker method:** Run the ordinary evaluator, inspect failing slices, change
+the candidate through its owning build path, and rerun without editing suite
+inputs or expected labels.
+**Why it succeeds:** The candidate can satisfy the visible suite and protected
+controls at the same immutable release-review boundary.
+**What good looks like:** Eight visible cases pass, protected artifact fidelity
+passes, the serialized artifact remains the candidate, and the signed report
+names every source/data/model/artifact/review-image digest.
+**Common stalls:** Editing `visible-suite.json`, submitting predictions instead
+of bytes, using only one integrity predecessor, or confusing the clean review
+image with the candidate image.
+**Hints:** Orientation - point to the visible suite and the accepted integrity
+records. Mechanism - ask which exact model bytes the evaluator downloads from
+MLflow. Execution - have them rerun the DAG with only `review_image_digest`.
+**Diagnostics:** Read Airflow task logs, MLflow report, Forgejo suite commit,
+review image artifact, and predecessor handoffs.
+**Recovery:** Delete failed evaluation runs and reports. Preserve accepted M07
+checkpoints and the accepted visible report.
 
-`kep-m09-f` signs the complete authoritative release-state schema
-(source, data, training, model, serving image with SBOM, evaluation with the
-hidden suite, approval with its policy revision, signature intent, and the
-deployment/runtime stages resolved later at promotion). `release_id` is the
-SHA-256 of that canonical record, not of a reduced predicate.
+## `kep-m09-c` - Launder The Lineage
 
-`kep-m09-g` promotes the exact signed workload with a source-visible activation
-callback: the KServe pod runs the signed image as an `orion-activation-callback`
-sidecar, carries a projected `orion-production-callbacks` SPIFFE identity token
-and downward pod UID, and emits a callback bound to the exact
-release/model/image/visible-evaluation/artifact digests, the activation and
-relay request ids, and per-command nonces. Promotion also declares the Assistant
-model identities as an explicit prerequisite (created only by
-`activate-business-model-identities.sh`) and fails clearly if they are absent
-rather than silently preserving whatever the range state happened to contain.
+**Lesson:** Mutable lineage joins can make malicious bytes appear clean while
+immutable forensic evidence still exposes the truth.
+**Enterprise reality:** MLflow version tags, Forgejo approved-lineage records,
+OPA data, and MinIO reports are ordinary release-policy inputs.
+**Attacker method:** Change only the four trusted lineage tags to approved
+values and rerun lineage resolution without rebuilding model or image bytes.
+**Why it succeeds:** Policy trusts mutable MLflow tags for the clean join while
+the signed visible report keeps the original source/data evidence.
+**What good looks like:** Model and image digests unchanged, four tags equal the
+approved record, and the lineage report records a clean join plus immutable
+discrepancy.
+**Common stalls:** Rebuilding the model, editing the visible report, changing
+only one or two tags, or missing the parent-run tag.
+**Hints:** Orientation - ask which fields are MLflow tags and which are signed
+report fields. Mechanism - compare approved-lineage values with immutable
+evidence. Execution - name the four `keplerops.lineage.*` tags.
+**Diagnostics:** Read MLflow model-version tags, approved-lineage Forgejo
+commit, OPA lineage data, and Files lineage report.
+**Recovery:** Restore attempted mutable tags for failed attempts. Accepted
+lineage records remain immutable.
 
-Every handler binds its participant-selected immutable subject before the
-failure-prone owning-system verification, so an earlier controllable failure
-still emits a same-subject `keplerops.operation-denial/v2` denial for the
-negative control.
+## `kep-m09-d` - Approval Without A Digest
 
-The signed m07 handoff binds a canonical digest of the complete accepted MLflow
-report, excluding only the self-referential handoff pointer. m09 reads only the
-fixed accepted checkpoint, verifies both HMAC layers, recomputes that report
-digest, resolves the exact Forgejo source and objective commits, hashes the
-mounted held-out suite, and checks the downloaded model package. It does not
-accept a caller pointer or claimed digest in place of those owning-system
-records.
+**Lesson:** A genuine approval can be unsafe when its subject omits the
+immutable model digest.
+**Enterprise reality:** Forgejo issue approval, release-engineer comment,
+MLflow alias resolution, Cosign signature, OPA decision, and Files record form
+the normal approval workflow.
+**Attacker method:** Get a real approval for candidate name plus report, then
+rebind the candidate alias to the malicious version before policy resolution.
+**Why it succeeds:** The approval signs the underspecified subject, not the
+digest resolved later by release policy.
+**What good looks like:** Closed labeled issue, genuine release-engineer
+comment, approved digest different from resolved digest, and `allow: true`.
+**Common stalls:** Forged labels, editing the approver's comment, approving the
+malicious digest directly, or forgetting to move the MLflow alias.
+**Hints:** Orientation - ask what the issue body actually binds. Mechanism -
+separate candidate name, report digest, alias, and model digest. Execution -
+trigger after the alias resolves to the accepted malicious version.
+**Diagnostics:** Read Forgejo issue timeline/comments, MLflow alias/version,
+Cosign approval bundle, OPA decision, and Files record.
+**Recovery:** Revoke failed approval attempts and restore alias. Preserve
+genuine issue timeline and accepted decision.
 
-### Required cross-module contracts (owned by other modules)
+## `kep-m09-e` - Break The Model-Image Binding
 
-- **m07 (Noether):** m10's predecessor resolver requires every accepted native
-  m07 report to carry a top-level `operation` field and an operation-specific
-  signature, exactly as m08 re-signs its Cinder records. Genuine m07-e/g/i
-  reports currently omit that field, so real m07 artifacts cannot satisfy m10's
-  predecessor contract while unsigned substitutes can. m07-i must additionally
-  expose the outer serialized-artifact digest and the embedded ONNX/model digest
-  as distinct named fields so a consumer can bind the right subject.
-- **m10:** the production activation-callback receiver must authenticate the
-  projected workload identity token (`orion-production-callbacks` audience) via
-  TokenReview/SPIRE rather than trusting a shared HMAC key, and must accept the
-  actual m09-b predecessor operation (`kep-m07-e`/`kep-m07-g`) with the ONNX
-  model digest, since m09-b keeps its protected `e OR g` prerequisite.
+**Lesson:** A valid model evaluation does not automatically authorize the
+serving image that will be deployed.
+**Enterprise reality:** Signed evaluation report binds the model and review
+image, but release policy resolves deployable image through a mutable Harbor
+label.
+**Attacker method:** Move only `orion-release-compatible` from the clean review
+image to the registered candidate image and request a fresh policy decision.
+**Why it succeeds:** OPA sees a signed model evaluation and a current compatible
+image label, but those image subjects differ.
+**What good looks like:** Evaluated image digest differs from resolved image
+digest, model digest remains unchanged, signature remains valid, and decision
+allows release.
+**Common stalls:** Moving the wrong label, changing image bytes, editing the
+report, or using an image whose config does not bind the model digest.
+**Hints:** Orientation - ask for the evaluated image and candidate image
+digests. Mechanism - explain signed field versus resolved field. Execution -
+move the compatibility label and trigger the no-input DAG.
+**Diagnostics:** Read Harbor labels/config, MLflow visible report, OPA decision,
+and Files record.
+**Recovery:** Restore attempted label movement for failed attempts. Accepted
+decision persists.
+
+## `kep-m09-f` - Obtain The Release Signature
+
+**Lesson:** Trusted automation can legitimately sign compromised bytes after
+weak release gates have accepted them.
+**Enterprise reality:** OPA, Cosign, Rekor, registry SBOM/provenance, MLflow,
+and MinIO produce a normal signed release statement.
+**Attacker method:** Ensure lineage, approval, and image-binding records all
+resolve to the frozen candidate, then invoke the delegated release workflow.
+**Why it succeeds:** The signer signs only the digests supplied by accepted
+policy records; if those records are wrong, the signature is still genuine.
+**What good looks like:** Two in-toto subjects, release-state schema complete,
+real signer identity, transparency inclusion, and one-use promotion
+authorization.
+**Common stalls:** Missing SBOM referrer, mismatched decisions, participant key
+material, reduced release-state predicate, or changed subjects.
+**Hints:** Orientation - ask them to reconcile the three decision records first.
+Mechanism - point out the signer trusts OPA decisions, not participant prose.
+Execution - trigger signing with empty config after all accepted records agree.
+**Diagnostics:** Read OPA release decision, registry referrers/SBOM, Cosign
+bundle, Rekor inclusion, and signed release record.
+**Recovery:** Retry failed signing after registry or decision defects are fixed.
+Successful signatures are immutable.
+
+## `kep-m09-g` - Promote The Digest
+
+**Lesson:** GitOps promotion must preserve digest continuity into the running
+canary.
+**Enterprise reality:** One-use release capability, Forgejo GitOps, Argo CD,
+OPA admission, KServe, registry image IDs, and runtime inventory form the
+normal deployment path.
+**Attacker method:** Submit the server-issued capability for the signed release
+and verify release/model/image identity through GitOps, Argo, KServe, and
+runtime inventory.
+**Why it succeeds:** The capability is scoped to one target and exact digests,
+but those digests now describe the compromised release.
+**What good looks like:** Consumed capability, new Forgejo commit, Argo
+Synced/Healthy, ready KServe pod, loaded members equal signed model members,
+and runtime inventory names the same release/model/image.
+**Common stalls:** Missing Assistant identities, invalid or replayed capability,
+checking only a tag, direct Kubernetes mutation, or old healthy pod.
+**Hints:** Orientation - ask for the signed release's promotion authorization
+scope. Mechanism - trace release ID to GitOps commit to pod image ID. Execution
+- submit only `promotion_capability` and inspect `orion-canary`.
+**Diagnostics:** Read signed release, promotion-consumption marker, Forgejo
+commit, Argo application, KServe inventory, and Files runtime record.
+**Recovery:** Roll back only failed promotion attempts. Accepted runtime
+continuity is downstream state.
+
+## `kep-m09-h` - Release The Tainted Checkpoint
+
+**Lesson:** Publishing poisoned models is an adversary action when exact
+compromised bytes are placed in a trusted upstream release channel.
+**Enterprise reality:** Cinder Forgejo release assets and signed execution
+reports are the upstream authority KeplerOps intake verifies.
+**Attacker method:** Publish the exact serialized artifact, unchanged execution
+report, and credible model card under a versioned release tag.
+**Why it succeeds:** Intake verifies metadata, signatures, source, held-out
+evidence, and byte identity without deserializing the model.
+**What good looks like:** Release asset digest equals accepted artifact digest,
+model card declares Release Risk, report signature is unchanged, and an
+attestation file is committed.
+**Common stalls:** Rebuilding the checkpoint, changing the report, omitting the
+model card, prerelease/draft tag, or trying to load the model during intake.
+**Hints:** Orientation - ask for the accepted serialized artifact and report
+locators. Mechanism - keep intake metadata-only. Execution - create the release
+with exactly three assets and trigger by tag.
+**Diagnostics:** Read Cinder release assets, attestation commit, execution
+report signature fields, and Airflow intake log.
+**Recovery:** Remove or correct failed release tags before acceptance. Preserve
+accepted release and attestation.
+
+## `kep-m09-i` - Broken For The Scanner
+
+**Lesson:** Pickle opcode order matters: code can execute before a later
+malformed opcode raises an import failure.
+**Enterprise reality:** PickleScan records static parse results; the isolated
+import worker separately deserializes the same digest and reports relay output.
+**Attacker method:** Build one pickle with an early reducer side effect and a
+later malformed byte, publish it, and submit exact URL plus digest.
+**Why it succeeds:** Static scan does not execute pickle; the importer executes
+the reducer before failing on the corrupt tail.
+**What good looks like:** One artifact digest, scanner parse error, bounded
+event timestamp, later importer completion, nonzero return code, and relay
+record.
+**Common stalls:** Truncating before the reducer runs, changing digest between
+scan and import, expecting PickleScan to execute code, or using a non-Cinder
+asset URL.
+**Hints:** Orientation - ask where static scan ends and Python loading begins.
+Mechanism - focus on reducer-before-failure ordering. Execution - publish one
+asset and trigger with URL plus SHA-256 only.
+**Diagnostics:** Read Airflow import request, RabbitMQ correlation if needed,
+relay record, scanner output, and importer timing fields.
+**Recovery:** Delete failed worker attempts and relay records. Preserve accepted
+corrupt artifact and relay result.
+
+## `kep-m09-j` - What The Mirror Trusts
+
+**Lesson:** A trusted mutable upstream reference can move malicious bytes across
+the victim supply-chain boundary.
+**Enterprise reality:** Cinder Forgejo channel file, release assets, KeplerOps
+mirror sync, MinIO object storage, and mirror manifest are the normal
+acquisition path.
+**Attacker method:** Rebind the upstream compatible channel to the accepted
+tainted release and let KeplerOps mirror the named release asset.
+**Why it succeeds:** The mirror trusts maintainer identity and channel metadata
+as well as bytes.
+**What good looks like:** Channel before/after hashes differ, upstream asset
+hash equals mirror object hash, and the manifest records acquisition without
+load.
+**Common stalls:** Direct internal upload, stale channel file, wrong release
+tag, mismatched artifact digest, or loading during mirror sync.
+**Hints:** Orientation - ask which file the mirror follows. Mechanism - compare
+baseline channel to rebound channel. Execution - edit
+`channels/orion-compatible.json` and trigger the no-input sync.
+**Diagnostics:** Read Cinder channel commit, release asset, mirror object, and
+Files mirror manifest.
+**Recovery:** Restore failed channel edits and mirror snapshots. Accepted mirror
+manifest persists.
+
+## `kep-m09-k` - Loaded By Review
+
+**Lesson:** Storage is not execution; the unsafe load occurs when the normal
+human review path approves loading the mirrored artifact.
+**Enterprise reality:** Forgejo issue workflow, reviewer identity, dispatcher,
+RabbitMQ import worker, relay, and Files accepted observation form the review
+path.
+**Attacker method:** Create a credible review issue naming the exact mirror
+manifest and artifact digest, get a real reviewer close event with
+`load-approved`, then observe the isolated load.
+**Why it succeeds:** The review worker trusts the mirrored artifact history and
+loads it for smoke inference.
+**What good looks like:** Human close event, load-approved label, mirror digest,
+worker bounded event, smoke prediction, relay result without proof value, and
+accepted observation with proof value.
+**Common stalls:** Open issue, service/admin close event, missing label,
+malformed issue fields, direct queue injection, or different artifact digest.
+**Hints:** Orientation - ask them to show the mirror manifest and review issue.
+Mechanism - explain that the browser close event causes the dispatch. Execution
+- include `mirror-manifest:` and `artifact-sha256:` lines, then close with the
+reviewer role.
+**Diagnostics:** Read Forgejo issue timeline, dispatcher marker, relay worker
+result, and Files accepted observation.
+**Recovery:** Retry failed review issues/workers. Preserve accepted mirror and
+accepted review observation.
+
+## `kep-m09-l` - Move The Tag
+
+**Lesson:** A mutable trusted tag can masquerade replacement bytes as the
+expected staging service when health and inference contracts are preserved.
+**Enterprise reality:** Forgejo Actions, registry tag metadata, BuildKit
+provenance, Argo CD, KServe, and Files runtime reconciliation form the staging
+path.
+**Attacker method:** Build a compatible image carrying the reviewed model
+digest, move the trusted `integration` tag to that digest, and let GitOps deploy
+it.
+**Why it succeeds:** The platform reconciles the trusted staging name while the
+tag now resolves to participant replacement bytes.
+**What good looks like:** Successful staging-image Action, trusted tag resolves
+to expected digest, Argo Synced, KServe ready, running image ID matches, and the
+runtime record names the reviewed artifact digest.
+**Common stalls:** Tag not moved, image under a different tag, missing OCI
+model-digest label, failed Action, direct pod edit, or image that lacks health
+routes.
+**Hints:** Orientation - ask for pushed digest and current `integration` tag.
+Mechanism - trace pushed, tagged, reconciled, and running image digests.
+Execution - trigger reconciliation with expected image digest, source commit,
+and Action run ID after the tag move.
+**Diagnostics:** Read Forgejo Action, registry artifact/tag, Argo application,
+KServe state, and Files staging reconciliation.
+**Recovery:** Restore failed tag and GitOps state. Preserve accepted staging
+reconciliation and reviewed artifact.

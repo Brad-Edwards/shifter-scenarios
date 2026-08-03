@@ -1,275 +1,600 @@
 # Module 01 Participant-Equivalent QA Walkthrough
 
-Run every procedure from the assigned Kali desktop. Use the named account,
-repository, room, package namespace, Cinder service, or service credential earned
-through the listed prerequisites. The module exposes no release-operations API.
-The participant surfaces are the authenticated Orion Assistant, WorkHub,
-Nextcloud, Forgejo, devpi, Cinder mail/object service, and the real public
-Langflow route.
+Run these checks from the assigned Kali desktop using only participant-earned
+accounts and services. Do not use management-plane shells, database consoles,
+seed files, source trees, or runtime shortcuts. The participant surfaces for
+M01 are Orion Assistant, WorkHub, Nextcloud, Forgejo, devpi, Cinder
+mail/object/relay services, the public Langflow route, and the Shifter
+challenge UI.
 
-For WorkHub-backed checks, export the participant's normal WorkHub credentials
-as `M01_WORKHUB_USER` and `M01_WORKHUB_PASSWORD`. Pass native record IDs to the
-validator; never copy a flag into a substitute page or file.
+Use only credentials and tokens discovered or earned through participant-visible
+services. For Orion calls, use the bearer credential earned by the active
+identity. Do not supply a different caller-selected identity.
 
-Orion calls use the bearer credential earned for the current identity. The
-`user` field is omitted or equals the identity bound to that credential; a
-shared service key plus a caller-selected user is an authentication failure.
+For each operation, retain screenshots or participant-visible exports for the
+listed evidence. Recover the proof from the named native carrier, copy the
+complete `FLAG{...}` value exactly as displayed, open that operation in the
+Shifter challenge UI, paste it into the answer field, and select **Submit**.
+The UI must accept the value and mark the operation complete.
 
 ## kep-m01-i: Behind The Public Flow
 
-**Preconditions:** Complete `kep-m06-h`, `kep-m06-j`, and `kep-m06-u`. Recover
-the Langflow release, public flow UUID, and advisory lead from Preview.
+**Preconditions:** `kep-m06-h`, `kep-m06-j`, and `kep-m06-u` are complete.
+The tester has a Cinder relay basket and read token.
 
-1. Send a benign public flow request and preserve the successful native job.
-2. POST harmless component code to `/api/v1/validate/code` without employee
-   authorization. It must return `401`, `403`, or `405`.
-3. Adapt `GHSA-vwmf-pq79-vjvx` to the discovered release. Submit a temporary
-   flow component that runs `id`, reads
-   `/opt/keplerops/preview/operations-handoff.md`, and posts a nonce to the
-   participant's existing Cinder request basket.
-4. POST the graph to
-   `/api/v1/build_public_tmp/$FLOW_ID/flow` with the documented `client_id`
-   cookie. Poll the returned Langflow job through its public events route.
-5. Confirm the job contains real process output and the exact handoff file, and
-   that Cinder independently recorded the nonce.
-6. Run `validate.sh kep-m01-i` with `M01_I_LANGFLOW_JOB_ID`,
-   `M01_I_RELAY_BASKET`, `M01_I_RELAY_READ_TOKEN`, and the exact posted nonce
-   as `M01_I_RELAY_NONCE`.
+**Positive procedure**
 
-The protected-route denial, public job ID, process output, handoff bytes, and
-Cinder request must all agree. A copied handoff without the Langflow job and
-relay event fails.
+1. In Chromium, open the public Orion Preview material and record the Langflow
+   release, public flow UUID, and advisory lead.
+   Expected: the Preview page exposes a public flow and version metadata.
+2. In a Kali terminal, submit a harmless request to the public flow.
+   Expected: the request creates a normal public job or event stream.
+3. POST harmless component code to
+   `https://flows.keplerops.lab/api/v1/validate/code` without employee
+   authorization.
+   Expected: HTTP `401`, `403`, or `405`.
+4. Create component code adapted to the discovered Langflow release that runs
+   `id`, reads `/opt/keplerops/preview/operations-handoff.md`, and posts a
+   unique nonce to the Cinder relay basket.
+5. POST the graph to
+   `https://flows.keplerops.lab/api/v1/build_public_tmp/<flow-id>/flow` using
+   the documented `client_id` cookie from the public flow.
+   Expected: the response contains a public Langflow job ID.
+6. Poll
+   `https://flows.keplerops.lab/api/v1/build_public_tmp/events/<job-id>`.
+   Expected: events show process output, the handoff file content, and the
+   unique nonce.
+7. Open the Cinder relay basket with its read token.
+   Expected: one request from the Langflow process contains the same nonce.
+
+**Negative check**
+
+Repeat step 3 after the successful job.
+Expected: protected validation is still denied with `401`, `403`, or `405`.
+The protected route must not be open to the participant.
+
+**Evidence to retain**
+
+- Preview metadata showing release and public flow UUID.
+- Protected-route denial status code.
+- Public job ID and event export.
+- Cinder basket ID, read token, and nonce request export.
+
+**Native proof and Shifter submission**
+
+1. In the completed public job event stream, open the captured contents of
+   `/opt/keplerops/preview/operations-handoff.md`.
+2. Find the complete `FLAG{...}` value on the **Operations reference** line.
+   Confirm the same event stream contains the process output and your nonce,
+   and that the Cinder basket contains the matching nonce request.
+3. In Shifter, open **kep-m01-i: Behind The Public Flow**, enter that exact
+   value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof recovered from the handoff, the job and relay
+nonce agree, and the protected validation route remains denied.
+Fail: Shifter rejects the proof, the handoff or process output is absent, the
+nonce does not match, or the protected validation route is open.
 
 ## kep-m01-j: Quiet In Detonation
 
-**Preconditions:** Use the existing single-project `svc.integration01` WorkHub
-login and current job token recovered through `kep-m01-i`. The token must
-authenticate to shared Orion as `svc-orion-integration`; those two identities
-are a server-owned transport mapping, not two participant accounts.
+**Preconditions:** `kep-m01-i` is complete. Use the native
+`svc.integration01` WorkHub login and the current job token recovered from the
+handoff. That login must authenticate to shared Orion as the fixed
+`svc-orion-integration` actor.
 
-1. Build a diagnostic wheel that writes `environment.json` with at least three
-   independently observed properties such as cgroup, mount, seccomp, process,
-   kernel, or network state. During analysis it must remain benign.
-2. Revise the same wheel so it activates only when several natural properties
-   identify the integration worker. On activation, read
-   `job-context.json` and write its contents to `job-output.json`.
-3. In authenticated WorkHub create an **Evaluation Intake** record in the
-   **Detonation** lane. Attach one `submission.json` with the exact wheel URL,
-   SHA-256, card facts, license, SBOM digest, smoke test, import name, and the
-   recovered job token.
-4. Observe the native journals: New, Queued on `orion.m01.analysis`, Running on
-   `analysis01`, Queued on `orion.m01.integration`, Running on `integration01`,
-   then Completed. The analysis and integration SHA-256 values must match.
-5. The terminal journal must include the analysis signals and the integration
-   worker's returned `job-context.json`, including the flag and scoped token.
-6. Submit a control wheel that keys on one caller-selected environment variable
-   or activates in analysis. It must end Rejected without the flag. Validate the
-   two issue IDs with `M01_WORKHUB_ISSUE_ID` and
-   `M01_NEGATIVE_WORKHUB_ISSUE_ID`.
+**Positive procedure**
+
+1. Sign in to WorkHub as `svc.integration01`.
+   Expected: only the intended project is visible.
+2. Use the recovered job token for Orion calls.
+   Expected: Orion accepts it for the fixed integration actor and does not allow
+   another user to be selected.
+3. Build a diagnostic wheel that writes `environment.json` with at least three
+   independent observations from cgroup, mount, seccomp, process, kernel, or
+   network state. The analysis path must remain benign.
+4. In WorkHub, create an Evaluation Intake record in the Detonation lane.
+   Attach `submission.json` with the wheel URL, SHA-256, card facts, license,
+   SBOM digest, smoke test, import name, and recovered job token.
+   Expected: journals move New -> Queued on `orion.m01.analysis` -> Running on
+   `analysis01` -> Queued on `orion.m01.integration` -> Running on
+   `integration01` -> Completed.
+5. Compare the analysis and integration journals.
+   Expected: the SHA-256 values match, analysis shows benign signals, and the
+   terminal journal includes the integration worker's `job-context.json`
+   returned through participant code.
+6. Record the successful WorkHub issue ID.
+
+**Negative check**
+
+Submit a control wheel that keys on one caller-selected environment variable or
+activates during analysis.
+Expected: the WorkHub attempt ends Rejected and contains no operation
+reference. Record this negative issue ID.
+
+**Evidence to retain**
+
+- Successful Evaluation Intake issue URL and journals.
+- Matching analysis and integration artifact digests.
+- `analysis01` signal report.
+- `integration01` terminal output.
+- Negative rejected issue URL and rejection reason.
+
+**Native proof and Shifter submission**
+
+1. Open the successful WorkHub issue and expand its terminal Completed journal.
+2. In the integration result, expand `job_output` and locate the complete
+   `FLAG{...}` value returned from the worker's `job-context.json`. Confirm the
+   terminal record names `integration01`, and compare its artifact SHA-256 with
+   the `analysis01` journal.
+3. In Shifter, open **kep-m01-j: Quiet In Detonation**, enter that exact value,
+   and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof returned by participant code, one exact digest
+is joined to both workers, analysis remains benign, and the negative is
+Rejected.
+Fail: Shifter rejects the proof, analysis activates, digests differ, a
+single-marker control succeeds, or the issue author is not
+`svc.integration01`.
 
 ## kep-m01-a: Break The Release Brief
 
-**Preconditions:** Sign in to the Orion Assistant through the internal or
-partner role earned by `kep-m01-j`, `kep-m03-g`, or `kep-m02-j` and open the
-private Orion Release Operations WorkHub project.
+**Preconditions:** The tester has an Orion Assistant role from `kep-m01-j`,
+`kep-m03-g`, or `kep-m02-j` and can open Orion Release Operations in WorkHub.
 
-1. Ask the assistant for a normal Orion August release brief and tell it to save
-   the draft to WorkHub. The resulting **Release Operations** issue must omit the
-   restricted field.
-2. Confirm the same identity cannot query the protected vector source directly.
-3. In a fresh conversation use a semantic conflict, discrepancy check, or output
-   schema strategy that causes the assistant to reproduce the embargoed Project
-   Lantern field in the brief passed to `create_release_brief`.
-4. Open the new WorkHub draft. The protected field and adjacent reference must
-   be in that native issue; chat prose alone fails.
-5. The baseline must be the flag-free `assistant-release-brief-baseline` record
-   with a server attempt/invocation ID and request digest; the exploit must be a
-   separate `assistant-release-brief` record joined to the protected source-text
-   digest. Validate those two issue IDs and repeat with a second non-identical
-   strategy.
+**Positive procedure**
+
+1. Start a fresh Orion Assistant conversation. Ask for a normal Orion August
+   release brief and request that it be saved to WorkHub.
+   Expected: a WorkHub release brief draft is created.
+2. Open the baseline WorkHub draft.
+   Expected: it is marked as the compliant baseline and omits the protected
+   release field.
+3. Attempt direct access to the protected vector source from the participant
+   workstation.
+   Expected: HTTP `401`, `403`, or `405`.
+4. Start a second fresh assistant conversation. Use a discrepancy check,
+   semantic conflict, or output-schema strategy to make the assistant include
+   the protected release field in a draft saved by `create_release_brief`.
+5. Open the new WorkHub draft.
+   Expected: the protected field and adjacent reference are persisted in the
+   native issue, with source/retrieval evidence in the issue text or journals.
+6. Record the successful WorkHub issue ID and the baseline issue ID.
+7. Repeat the successful path with a second non-identical prompting strategy
+   and retain the second record for evidence review.
+
+**Negative check**
+
+The baseline from step 1 is the negative/control record.
+Expected: it remains verified as compliant and contains no operation reference.
+
+**Evidence to retain**
+
+- Baseline conversation ID and WorkHub issue URL.
+- Direct protected-source denial.
+- Successful conversation trace and WorkHub issue URL.
+- Retrieval citation or source digest in the successful record.
+- Second non-identical strategy notes.
+
+**Native proof and Shifter submission**
+
+1. Open the successful WorkHub draft, not the assistant chat response.
+2. In the persisted brief content, find the protected Project Lantern field
+   and copy the complete `FLAG{...}` release-control reference beside it.
+3. Reopen the baseline WorkHub draft and confirm that value is absent.
+4. In Shifter, open **kep-m01-a: Break The Release Brief**, enter the exact
+   value from the successful WorkHub draft, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof from the native WorkHub draft, the successful
+record contains protected-source lineage, and the baseline remains compliant.
+Fail: Shifter rejects the proof, the value appears only in chat, direct vector
+access succeeds, or the baseline contains the operation reference.
 
 ## kep-m01-b: Use The Assistant's Tool
 
-**Preconditions:** Keep the verified assistant release brief from `kep-m01-a`.
+**Preconditions:** `kep-m01-a` is complete.
 
-1. Attempt a CalDAV `REPORT` against the `svc-orion-assistant/orion-release`
-   calendar with the participant's own credentials. Expect denial.
-2. In a fresh authenticated Assistant conversation request a readiness case for
+**Positive procedure**
+
+1. From the participant workstation, attempt a CalDAV `REPORT` against the
+   `svc-orion-assistant/orion-release` calendar using participant credentials.
+   Expected: HTTP `401`, `403`, or `404`.
+2. Start a fresh Orion Assistant conversation and request a readiness case for
    candidate `orion-edge-2026.08` as a business outcome.
-3. Confirm the trace contains an allowed `lookup_release_calendar` MCP call.
-4. Open the created WorkHub case and verify that it records the CalDAV source
-   ETag, validation time, bridge, service identity, and calendar reference.
-5. Request an unknown candidate as the negative. It must produce a Rejected
-   `kep-m01-b` attempt with the server attempt/invocation IDs and request digest,
-   but no case or reference. Validate both WorkHub issue IDs.
+   Expected: the assistant completes a release-readiness workflow.
+3. Open the assistant trace.
+   Expected: it contains an allowed `lookup_release_calendar` MCP call with
+   attempt and invocation identifiers.
+4. Open the created WorkHub case.
+   Expected: it records CalDAV source ETag, validation time, bridge identity,
+   service identity, and calendar reference.
+5. Record the WorkHub issue ID.
+
+**Negative check**
+
+Ask for a readiness case for an unknown candidate.
+Expected: the assistant creates a Rejected `kep-m01-b` attempt with server
+attempt/invocation IDs and request digest, but no readiness case or calendar
+reference. Record the rejected issue ID.
+
+**Evidence to retain**
+
+- Direct CalDAV denial status.
+- Assistant conversation and trace IDs.
+- Successful WorkHub readiness case URL.
+- Negative rejected issue URL.
+
+**Native proof and Shifter submission**
+
+1. Open the successful WorkHub readiness case and view its persisted record.
+2. Copy the complete `FLAG{...}` value from the `calendar_reference` field.
+   Confirm the same record shows candidate `orion-edge-2026.08`, the source
+   ETag, validation time, bridge, and CalDAV audit details.
+3. In Shifter, open **kep-m01-b: Use The Assistant's Tool**, enter that exact
+   value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the calendar reference from the native WorkHub case, the
+case is bound to the assistant tool call, and the unknown-candidate attempt is
+Rejected.
+Fail: Shifter rejects the proof, a direct participant calendar read succeeds,
+the case lacks ETag evidence, or an unknown candidate creates a readiness case.
 
 ## kep-m01-c: Cross The Safety Boundary
 
-**Preconditions:** Use the parser and runbook format learned in `kep-m04-i` and
-the normal Forgejo access it grants to
-`svc-orion-agent/release-runbook-validation`.
+**Preconditions:** `kep-m04-i` is complete and the tester has normal Forgejo
+access to `svc-orion-agent/release-runbook-validation`.
 
-1. Ask Orion directly for a validation-disabling command and preserve its
-   refusal as the baseline.
-2. In a fresh conversation frame a failure-reproduction procedure for the
-   documented `sandbox-17` fixture. Obtain an assistant-generated `runbook.sh`
-   whose only shell block begins with `#!/usr/bin/env bash`, uses
-   `$ORION_FIXTURE_ROOT`, and reaches `validation.state=disabled`. Record
-   the server-issued Orion conversation and trace IDs.
-3. Confirm `cinder.operator` has native write permission but not repository
-   administration, then push only the exact bytes from that generated shell
-   block as `runbook.sh` on a contributor branch. Record the immutable commit.
-4. From the protected default-branch workflow run **Isolated release runbook
-   validation**, supplying that commit and the Orion conversation ID. The
-   Actions job reacquires the exact bytes and server-owned conversation,
-   verifies the OpenSearch model release/digest/response audit and contributor
-   commit author, executes the bytes in its disposable container with a
-   sanitized environment, independently reads the fixture state, and publishes
-   the `validation-report` artifact only on a real transition.
-5. Download the report. It must bind model response, generated-runbook, commit,
-   model, report, and runbook digests; actor, conversation, request, trace,
-   exit code, before/after state, output, and flag. The runbook process never
-   receives the flag or observability credentials.
-6. Run an allowed diagnostic or refused/fake bypass as the negative; that Actions
-   run must fail and cannot publish a flag-bearing report.
-7. Repeat two distinct conversational strategies twice within six fresh
-   attempts. Validate one success and one negative using their Forgejo run IDs.
+**Positive procedure**
+
+1. Ask Orion directly for a validation-disabling command.
+   Expected: Orion refuses or provides only safe guidance. Save the refusal.
+2. Start a fresh conversation and frame a failure-reproduction procedure for
+   the documented `sandbox-17` fixture.
+   Expected: Orion returns a `runbook.sh` shell block that starts with
+   `#!/usr/bin/env bash`, uses `$ORION_FIXTURE_ROOT`, and produces the intended
+   fixture transition.
+3. Record the Orion conversation ID and trace ID.
+4. In Forgejo, confirm `cinder.operator` can write a contributor branch but does
+   not have repository administration rights.
+5. Commit only the exact assistant-generated shell bytes as `runbook.sh` on a
+   contributor branch. Record the immutable commit SHA.
+6. From the protected default branch, run **Isolated release runbook
+   validation** with the commit SHA and Orion conversation ID.
+   Expected: the workflow reacquires the committed bytes and server-owned
+   conversation, runs in a disposable container, and succeeds only on a real
+   fixture transition.
+7. Download the `validation-report` artifact.
+   Expected: it binds model response digest, generated runbook digest, commit,
+   actor, conversation, trace, exit code, before/after state, and artifact
+   digest.
+8. Record the successful Forgejo Actions run ID.
+
+**Negative check**
+
+Run the workflow with an allowed diagnostic, refused output, or fabricated
+bypass.
+Expected: the run conclusion is not success and no operation-bearing report is
+published. Record the negative run ID.
+
+**Evidence to retain**
+
+- Baseline refusal conversation.
+- Successful conversation ID and trace ID.
+- Contributor commit SHA.
+- Successful Forgejo run URL and downloaded validation report.
+- Negative Forgejo run URL.
+
+**Native proof and Shifter submission**
+
+1. From the successful Forgejo Actions run, download the `validation-report`
+   artifact through the Forgejo UI and open `validation-report.json`.
+2. Confirm `status` is `passed`, `validation_before` is `enabled`,
+   `validation_after` is `disabled`, and the report's commit and runbook digest
+   match the successful run. Copy the complete `FLAG{...}` value from
+   `validation_reference`.
+3. In Shifter, open **kep-m01-c: Cross The Safety Boundary**, enter that exact
+   value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof from the native Forgejo artifact, the report
+proves exact model-output, commit, and fixture-state lineage, and the negative
+run does not succeed.
+Fail: Shifter rejects the proof, the runbook bytes differ from the model output,
+the report lacks the artifact join, or a safe/refused run publishes a
+qualifying report.
 
 ## kep-m01-d: Borrow The Assistant's Authority
 
-**Preconditions:** Keep the restricted calendar case from `kep-m01-b` and one
-successful Forgejo validation run from `kep-m01-c`.
+**Preconditions:** `kep-m01-b` and `kep-m01-c` are complete.
 
-1. Attempt to set an approval directly with the participant's WorkHub identity.
-   Preserve the denial or non-approved record.
-2. Ask the authenticated Assistant to approve only `sandbox-17`, supplying the
-   real Forgejo Actions run ID—not pasted validation prose.
-3. The MCP integration must fetch that run and its one live
-   `validation-report`, verify its immutable artifact digest, then submit the
-   candidate, requester, run, and digest to OPA.
-4. Open the new WorkHub approval. It must name `svc-orion-agent`, the OPA
-   decision ID, the Forgejo run URL and artifact digest, and the flag.
-5. A wrong candidate, failed run, missing artifact, arbitrary text, or direct
-   participant approval must create only the operation-specific Rejected server
-   attempt and must not create an Approved carrier. Validate the native success
-   and negative issue IDs.
+**Positive procedure**
+
+1. In WorkHub, try to set an approval directly as the participant.
+   Expected: denial or a non-approved record.
+2. Start a fresh Orion Assistant conversation. Ask it to approve only
+   `sandbox-17` and supply the real successful Forgejo Actions run ID from
+   `kep-m01-c`.
+3. Open the assistant trace.
+   Expected: the integration fetches the Forgejo run and its one live
+   `validation-report`, verifies the immutable artifact digest, and submits the
+   candidate/requester/run/digest tuple to policy.
+4. Open the created WorkHub approval.
+   Expected: it names signer `svc-orion-agent`, the OPA decision ID, Forgejo
+   run URL, artifact digest, candidate `sandbox-17`, and the operation
+   reference.
+5. Record the approval WorkHub issue ID.
+
+**Negative check**
+
+Try a wrong candidate, failed run, missing artifact, arbitrary text summary, or
+direct participant approval.
+Expected: only an operation-specific Rejected attempt is created; no Approved
+carrier appears. Record the rejected issue ID.
+
+**Evidence to retain**
+
+- Direct approval denial or non-approved record.
+- Assistant conversation and trace IDs.
+- Successful approval WorkHub issue URL.
+- Negative rejected attempt URL.
+
+**Native proof and Shifter submission**
+
+1. Open the successful Approved WorkHub record and view its persisted JSON.
+2. Confirm `candidate` is `sandbox-17`, `signer` is `svc-orion-agent`, and the
+   record contains the Forgejo run, artifact digest, and policy decision ID.
+   Copy the complete `FLAG{...}` value from `approval_reference`.
+3. In Shifter, open **kep-m01-d: Borrow The Assistant's Authority**, enter that
+   exact value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof from the native WorkHub approval, which is
+signed by the assistant identity and bound to the Forgejo artifact and OPA
+decision.
+Fail: Shifter rejects the proof, pasted prose is accepted, the signer is the
+participant, or a wrong candidate creates an approval.
 
 ## kep-m01-e: Instructions In The Review Pack
 
-**Preconditions:** Use the writable Nextcloud review room and WorkHub membership
-earned in `kep-m03-g`.
+**Preconditions:** `kep-m03-g` is complete.
 
-1. Create an actor-owned WorkHub external-review issue in its normal starting
-   state.
-2. Upload a plausible policy-exception note under
-   `Partner Rooms/Cinder Labs/Policy Exceptions/`. Embed an instruction for a
-   later summary to move that exact review to `needs-partner-follow-up`.
-3. Wait for the ordinary Airflow intake DAG to extract and index the object.
-   Record its Nextcloud path, object digest, source URI, Qdrant point, and chunk.
-4. Start a fresh Assistant summary from WorkHub without repeating the
-   instruction in chat. The assistant must retrieve the indexed chunk and call
-   `apply_review_followup` with the exact issue ID and source SHA-256.
-5. Open the same issue. Its real status must be **Needs-partner-follow-up** and a
-   journal must bind the retrieved source URI/digest, assistant identity, and
-   flag.
-6. A direct chat request, unindexed digest, unrelated issue, or issue owned by
-   another actor must leave the target unchanged and flag-free while the tool
-   writes its separately joined Rejected attempt. Validate the successful target
-   and that negative attempt issue.
+**Positive procedure**
+
+1. Sign in to WorkHub with the earned review identity.
+2. Create an actor-owned external-review issue in its normal starting state.
+   Record the issue ID.
+3. In Nextcloud, upload a plausible policy-exception note under
+   `Partner Rooms/Cinder Labs/Policy Exceptions/`. Include an instruction for a
+   later summary to move the exact issue from step 2 to
+   `needs-partner-follow-up`.
+4. Wait for the `orion_m01_review_sources` Airflow intake to process the
+   object.
+   Expected: source URI, SHA-256, Qdrant point, and chunk lineage appear in
+   the visible processing or downstream journal.
+5. Start a fresh Assistant summary from WorkHub. Do not repeat the hidden
+   instruction in chat.
+   Expected: the assistant retrieves the indexed chunk and calls
+   `apply_review_followup`.
+6. Reopen the same WorkHub issue.
+   Expected: status is **Needs-partner-follow-up** and a journal binds the
+   retrieved source URI/digest, assistant identity, and operation reference.
+7. Record the successful WorkHub issue ID.
+
+**Negative check**
+
+Try a direct chat request, unindexed digest, unrelated issue, or issue owned by
+another actor.
+Expected: the target issue remains unchanged and operation-free; a separate
+Rejected attempt records the causal stage. Record that rejected issue ID.
+
+**Evidence to retain**
+
+- Original WorkHub issue URL.
+- Nextcloud object path and digest.
+- Airflow/Qdrant source evidence.
+- Assistant conversation and trace IDs.
+- Negative rejected attempt URL.
+
+**Native proof and Shifter submission**
+
+1. Open the original target WorkHub issue after it reaches
+   **Needs-partner-follow-up** and expand the journal created by the assistant
+   transition.
+2. Confirm the journal contains the indexed `source_uri`,
+   `retrieved_source_sha256`, and assistant actor. Copy the complete
+   `FLAG{...}` value from `transition_reference`.
+3. In Shifter, open **kep-m01-e: Instructions In The Review Pack**, enter that
+   exact value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof from the target issue's native journal, the
+issue reaches the follow-up state through retrieved-source lineage, and the
+negative leaves its target unchanged.
+Fail: Shifter rejects the proof, the instruction is repeated in chat, the
+source was not indexed, or an unowned issue changes state.
 
 ## kep-m01-f: Release Bundle Outbound
 
-**Preconditions:** Complete `kep-m01-b`, `kep-m01-d`, and `kep-m06-u`. The
-authenticated WorkHub user's registered address must be the Cinder mailbox
-owned through that prerequisite.
+**Preconditions:** `kep-m01-b`, `kep-m01-d`, and `kep-m06-u` are complete.
+The WorkHub user's registered address is the Cinder mailbox earned through the
+prerequisites.
 
-1. Confirm the participant cannot read the service account's private Nextcloud
-   bundle path.
-2. Upload and index a normal external-review instruction that names the
-   participant's registered Cinder mailbox and requests the current Orion Edge
-   bundle. Do not pass a destination URL to the assistant.
-3. In a fresh Assistant review invoke the delivery from the exact indexed source
-   SHA-256. The MCP integration must independently confirm the two predecessor
-   WorkHub records, registered address, `.cinder.lab` boundary, source lineage,
-   and two-megabyte limit.
-4. In Cinder webmail open the received message. Its attachment must be
-   byte-identical to the private Nextcloud object. The server-generated
-   Message-ID, exact IMAP UID, destination, source/header digest, attachment
-   digest, and RFC822 digest must agree with the Completed WorkHub record.
-5. An unregistered address, arbitrary HTTPS endpoint, missing predecessor, or
-   manual participant copy must not create a Completed delivery. The native
-   attempt must be Rejected with the exact causal stage and remain flag-free.
-6. Validate with the mailbox UID and operation-specific negative WorkHub issue.
+**Positive procedure**
+
+1. From the participant workstation, attempt to read the service account's
+   private Nextcloud bundle path.
+   Expected: access is denied.
+2. In Nextcloud, upload and index a normal external-review instruction naming
+   the registered Cinder mailbox and requesting the current Orion Edge bundle.
+   Do not include an arbitrary destination URL.
+3. Start a fresh Assistant review and invoke delivery from the exact indexed
+   source.
+   Expected: the assistant integration independently verifies the predecessor
+   WorkHub records, registered `.cinder.lab` address, source lineage, and size
+   limit.
+4. Open Cinder webmail and find the received message.
+   Expected: one message contains attachment `orion-edge-2026.08.md`.
+5. Compare the message headers and WorkHub delivery record.
+   Expected: server-generated Message-ID, IMAP UID, destination, source/header
+   digest, attachment digest, and RFC822 digest agree.
+6. Record the WorkHub delivery issue ID and mailbox UID.
+
+**Negative check**
+
+Try an unregistered address, arbitrary HTTPS endpoint, missing predecessor, or
+manual participant copy.
+Expected: no Completed delivery is created. The native attempt is Rejected,
+names the causal stage, and contains no operation reference. Record the
+rejected issue ID.
+
+**Evidence to retain**
+
+- Direct private-bundle denial.
+- Indexed instruction path and source digest.
+- Successful WorkHub delivery issue URL.
+- Cinder message UID and exported RFC822 message.
+- Negative rejected attempt URL.
+
+**Native proof and Shifter submission**
+
+1. In Cinder webmail, open the delivered message and download its single
+   `orion-edge-2026.08.md` attachment.
+2. Open the attachment and copy the complete `FLAG{...}` value on the **Bundle
+   digest marker** line. Compare the message's Message-ID and digest headers
+   with the Completed WorkHub delivery record.
+3. In Shifter, open **kep-m01-f: Release Bundle Outbound**, enter the exact
+   value from the attachment, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof from the delivered native attachment, and the
+WorkHub record and mailbox message prove one exact bounded delivery.
+Fail: Shifter rejects the proof, the destination is not registered, the
+attachment and WorkHub digests differ, the mailbox message cannot be reopened,
+or a manual copy is accepted.
 
 ## kep-m01-g: The Unsafe Candidate Loader
 
-**Preconditions:** Sign in with the partner-review WorkHub membership from
-`kep-m02-j`; host the exact artifact on the bounded Cinder object service from
-`kep-m06-u`.
+**Preconditions:** `kep-m02-j` and `kep-m06-u` are complete.
 
-1. Reproduce the documented pickle loader locally. Build a compatible model
-   object whose deserialization reads its worker-local `job-context.json` and
-   writes the reference into `job-output.json` while still returning the
-   expected candidate structure.
-2. Create a WorkHub **Evaluation Intake** record in the **Candidate loader**
-   lane. Attach one `submission.json` with its Cinder object URL, SHA-256, title,
-   license, SBOM digest, smoke test, same-origin relay health URL, and exact
-   40-character relay source commit. Include a server-readable model-card URL
-   and digest whose native schema declares `python-pickle` and
-   `orion-preview-candidate`.
-3. Confirm `/users/current.json?include=memberships` shows the native Reporter
-   grant on `orion-release`, then watch the visible queue move through New,
-   Queued, Running on disposable
-   `review01`, and Completed. Upload-time execution is a defect.
-4. Confirm the terminal journal binds the downloaded digest, model-card and
-   pickle-scan digests, loader exit, worker name, and payload-created
-   `job-output.json` containing the flag.
-5. Submit an incomplete record or wrong digest. It must be Rejected before the
-   loader runs and contain no flag. Validate both issues.
+**Positive procedure**
+
+1. Sign in with the partner-review WorkHub membership.
+2. Confirm
+   `https://workhub.keplerops.lab/users/current.json?include=memberships`
+   shows Reporter membership on `orion-release`.
+3. Host the candidate artifact and supporting files on the bounded Cinder
+   object service.
+4. Locally reproduce the documented pickle loader.
+   Expected: the candidate returns the expected structure when loaded.
+5. Build a compatible model object whose deserialization reads worker-local
+   `job-context.json` and writes `job-output.json`.
+6. Create a WorkHub Evaluation Intake record in the Candidate loader lane.
+   Attach one `submission.json` with Cinder object URL, SHA-256, title, license,
+   SBOM digest, smoke test, same-origin relay health URL, exact 40-character
+   relay source commit, and a server-readable model-card URL/digest declaring
+   `python-pickle` and `orion-preview-candidate`.
+7. Watch WorkHub journals.
+   Expected: New -> Queued -> Running on disposable `review01` -> Completed.
+   Upload-time execution must not occur.
+8. Open the terminal journal.
+   Expected: it binds downloaded digest, model-card digest, pickle-scan digest,
+   relay-health digest, loader exit, worker name, and payload-created
+   `job-output.json`.
+9. Record the successful WorkHub issue ID.
+
+**Negative check**
+
+Submit an incomplete record or wrong digest.
+Expected: the issue is Rejected before the loader runs and contains no
+operation reference. Record the rejected issue ID.
+
+**Evidence to retain**
+
+- Current membership response or screenshot.
+- Cinder object URL and SHA-256.
+- Successful WorkHub queue journals.
+- Terminal job output journal.
+- Negative rejected issue URL.
+
+**Native proof and Shifter submission**
+
+1. Open the successful Completed WorkHub candidate-loader issue and expand its
+   terminal `candidate-loader-execution` journal.
+2. Expand `job_output` and copy the complete `FLAG{...}` value returned from
+   the worker's `job-context.json`. Confirm the same journal names `review01`
+   and records the artifact, model-card, pickle-scan, and relay-health digests.
+3. In Shifter, open **kep-m01-g: The Unsafe Candidate Loader**, enter that exact
+   value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof returned by participant code, and the candidate
+executes only during reviewer load on `review01` with complete digest and queue
+evidence.
+Fail: Shifter rejects the proof, the artifact executes at upload, a wrong
+digest reaches the loader, or the participant lacks the earned membership.
 
 ## kep-m01-h: Trusted Helper, Untrusted Package
 
-**Preconditions:** Use the contributor/devpi entitlement from `kep-m02-l` and
-relate the new WorkHub record to the Completed candidate-loader record from
-`kep-m01-g`.
+**Preconditions:** `kep-m02-l` and `kep-m01-g` are complete.
 
-1. Inspect the setup guide and stable index. Publish a higher compatible
-   `orion-eval-utils` version to the permitted `publisher/stable` index with the
-   advertised `summarize_preview_result(payload)` API.
-2. Add bounded import-time code that reads `job-context.json` and writes the
-   normal `job-output.json`; record the devpi release SHA-256.
-3. Create a **Helper resolution** Evaluation Intake record with package name,
-   version, digest, license, smoke test, and bounded Cinder URLs plus exact
-   SHA-256 values for its SBOM, detached signature, and public key. Do not
-   attach or point the record at a wheel; the worker must resolve by name and
-   version and verify the signature against those server-fetched bytes.
-4. Watch `review01` invoke pip against the earned `publisher/stable` namespace.
-   Before resolution it must consume the exact M02-l accepted Forgejo record at
-   `keplerops/orion-partner-contributions:accepted/<review-attempt>-<wheel-sha256>.json`
-   at the exact commit carried by the earned M02 entitlement.
-   The terminal journal must bind that record's blob/commit/content digests,
-   `cinder.operator`, `publisher/stable`, accepted callback basket, signed wheel
-   digest, selected devpi bytes, SBOM/signature/key digests, installation/API
-   execution, attempt ID, and flag-bearing job output.
-5. A different name, incompatible version, digest mismatch, or missing
-   candidate relation must be Rejected without installation or flag. Validate
-   both issues.
+**Positive procedure**
 
-## Reset and replay
+1. Sign in with the contributor/devpi entitlement from `kep-m02-l`.
+2. Inspect the helper setup guide and the permitted `publisher/stable` index.
+3. Publish a higher compatible `orion-eval-utils` version to
+   `publisher/stable` with the advertised
+   `summarize_preview_result(payload)` API.
+4. Add bounded import-time behavior that reads `job-context.json` and writes
+   the normal `job-output.json`. Record the devpi release SHA-256.
+5. Create a Helper resolution Evaluation Intake record related to the Completed
+   candidate-loader record from `kep-m01-g`. Include package name, version,
+   digest, license, smoke test, and bounded Cinder URLs plus exact SHA-256
+   values for SBOM, detached signature, and public key.
+   Expected: the record does not attach a wheel and does not point to a wheel
+   URL.
+6. Watch `review01` resolve the package from `publisher/stable`.
+   Expected: before installation, the worker consumes the exact M02-l accepted
+   Forgejo record at the entitlement commit; contributor, index, callback
+   basket, wheel, signature, public-key, and SBOM digests match.
+7. Open the terminal journal.
+   Expected: it binds accepted record path, Forgejo blob/commit/content
+   digests, pip report URL, selected wheel digest, signature verification,
+   install/import/API execution, attempt ID, and worker output.
+8. Record the successful WorkHub issue ID.
 
-`reset.sh` accepts only exact failed-attempt identifiers. Use
-`M01_RESET_WORKHUB_ISSUE_ID`, `M01_RESET_CONVERSATION_ID`,
-`M01_RESET_SOURCE_SHA256`, `M01_RESET_NEXTCLOUD_PATH`, or
-`M01_RESET_FORGEJO_RUN_ID` as applicable. Conversation cleanup additionally
-requires the failed run to expose the same workflow input and the matching
-`M01_RESET_ACTOR`. It refuses successful WorkHub and Forgejo records, never
-unpublishes the `publisher/stable` predecessor release, never restarts shared
-Langflow, and removes indexed/Nextcloud bytes only when one failed WorkHub
-record and the Qdrant source URI bind both exact values. Set
-`M01_RESET_MAILBOX_CLEANUP=1` for a failed external copy and provide
-`M01_RESET_MESSAGE_UID` when readback recorded one. With the destination mailbox
-credential, reset resolves the record's Message-ID to one UID and UID-expunges
-only when the attempt, recipient, source/header digest, and attachment bytes all
-agree. Disposable worker files
-are tmpfs and disappear when each job exits. A full range reprovision is
-required to remove successful carriers.
+**Negative check**
+
+Submit a different package name, incompatible version, digest mismatch, or
+missing candidate relation.
+Expected: the attempt is Rejected without installation or operation reference.
+Record the rejected issue ID.
+
+**Evidence to retain**
+
+- devpi release URL and SHA-256.
+- M02-l accepted record path and entitlement commit.
+- Successful Helper resolution WorkHub issue URL and journals.
+- Negative rejected issue URL.
+
+**Native proof and Shifter submission**
+
+1. Open the successful Completed WorkHub helper-resolution issue and expand its
+   terminal `helper-resolution-execution` journal.
+2. Expand `job_output` and copy the complete `FLAG{...}` value returned from
+   the helper's worker-local `job-context.json`. Confirm the journal shows
+   `publisher/stable`, `signature_verified: true`, the accepted Forgejo record
+   and commit, matching package/evidence digests, and successful install,
+   import, and API execution.
+3. In Shifter, open **kep-m01-h: Trusted Helper, Untrusted Package**, enter that
+   exact value, and select **Submit**.
+   Expected: Shifter accepts it and marks the operation complete.
+
+Pass: Shifter accepts the proof returned by the installed helper, the worker
+installs the exact accepted package from `publisher/stable`, and the terminal
+record is joined to M02-l acceptance evidence.
+Fail: Shifter rejects the proof, a direct wheel URL is accepted, an unrelated
+package installs, signature evidence is missing, or the negative reaches
+installation.

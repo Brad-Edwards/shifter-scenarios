@@ -1,223 +1,464 @@
-# Module 7 Cinder Operator Verification
+# Module 07 Participant-Equivalent QA Walkthrough
 
-Run from the Cinder operator Kali desktop with only the identity earned through each
-declared prerequisite. Host access, administrator accounts, management APIs,
-database access, and files under `campaign-start` are forbidden evidence. For
-every attempt record the operator action, native service record, immutable
-subject digest, ordinary carrier URL, and a clean/failed/denied negative control.
-The carrier qualifies only after its owning system has observed the material
-effect; an Airflow success or operator-authored JSON alone never qualifies.
+Run these checks from the assigned Kali desktop, browser, Cinder notebook, and
+earned application sessions only. Use product UIs and ordinary HTTPS/API/CLI
+routes. Do not prove success from setup-only or privileged infrastructure.
 
-Use the recovered `svc-orion-trainer` credential to authenticate to Airflow as
-that same identity. It is mapped to **Orion Runner** for the seven m07 DAGs and
-the required release-risk training DAG, and must receive 403/404 for unrelated
-engineering DAGs. Every DAG dispatch includes
-an opaque 8-96 character `attempt_id`; reuse is rejected. Validate with
-`M07_NATIVE_SUBJECT=<fixed owning-system identifier>` and
-`M07_NATIVE_NEGATIVE=airflow:<exact-failed-dag-run-id>`. For m07-i use
-`M07_NATIVE_NEGATIVE=actions:<exact-failed-actions-run-id>`. Reset only a failed
-attempt with `reset.sh <operation> <attempt_id>`.
+For each operation, save screenshots, command transcripts, request bodies,
+response bodies, native URLs, commit IDs, object digests, run IDs, and the exact
+value submitted in the Shifter challenge UI. Submit only the value exposed by
+the participant-visible carrier:
 
-The clean training baseline is pinned at apply time in
-`state/campaign-start/m07/clean-training-reference.json` using
-`keplerops.orion.clean-training-reference/v1`. Build and promotion automation
-must select its exact MLflow run and registered model version, then reverify the
-Forgejo source commit/tree, lakeFS commit, export SHA-256, DVC MD5, package
-digests, and provenance signature. Selecting the latest finished run is unsafe
-after operator training begins.
+- lakeFS carriers: `<immutable-commit>:<json-object-path>`.
+- MLflow carriers: the review run ID containing `reports/report.json`.
+- Harbor carriers: `cinder-datasets/<repository>@sha256:<attestation-digest>`.
+- Cinder artifact carriers:
+  `cinder-operator/orion-model-artifacts:<release-tag>`.
 
-## kep-m07-a Change The Labels
+Use these participant-visible routes when the live range resolves them:
 
-1. Enter through `kep-m05-l` or `kep-m08-k` as the Orion contributor. In Label
-   Studio, confirm the identity is not staff or superuser, sees exactly **Orion
-   Release Risk Training Baseline**, and receives 403/404 for a second project
-   visible to the administrator. Anonymous access must also fail.
-2. Export the 48-row parent, then revise 2–12 existing annotations through the
-   native review UI. Preserve record IDs/texts and the eight-label schema; all
-   revised rows must move from a non-target label to one common target label.
-3. Trigger `orion_label_export` with `attempt_id`. Independently export Label Studio again and
-   compare every changed record with the DVC descriptor and lakeFS data object.
-4. Open the lakeFS lineage object on `data.keplerops.lab`. It must use
-   `keplerops.orion.dataset-lineage/v2`, bind the data commit, DVC MD5, exact
-   semantic changes, and only then carry the exact flag. Submit the immutable
-   recording commit plus the JSON path; the manifest cannot self-name the commit
-   that records its own bytes.
-5. Negative: re-export/reorder unchanged rows. The DAG must reject it, the clean
-   parent has no flag, and the contributor still cannot read the denied project.
+- Label Studio: `https://labels.keplerops.lab`
+- Airflow: `https://airflow.keplerops.lab`
+- MLflow: `https://mlflow.keplerops.lab`
+- KeplerOps Forgejo: `https://git.keplerops.lab`
+- Cinder Forgejo: `https://git.cinder.lab`
+- KeplerOps registry and Harbor UI/API: `https://registry.keplerops.lab`
+- lakeFS: `https://lake.keplerops.lab`
+- Cinder object console: `https://objects.cinder.lab`
 
-## kep-m07-b Train The Poisoned Adapter
+Use a fresh opaque attempt ID for every positive and negative run. A simple
+tester-generated value is acceptable:
 
-1. Requires accepted `kep-m07-a`. Trigger the normal
-   `orion_release_risk_training` DAG; do not upload weights. Verify the successful
-   Airflow run consumed the exact export/lakeFS/DVC identities.
-2. In **Orion Release Risk Training**, independently verify the PyTorch adapter,
-   merged model, tokenizer, config, label map, preprocessing contract, model
-   card, ONNX bytes, and package-schema digests.
-3. Trigger `orion_integrity_training` with the accepted lakeFS commit and a new
-   `attempt_id`. Its
-   worker must reload the clean and candidate MLflow packages and score fresh
-   server-held target, near, and utility cases.
-4. The native MLflow review report qualifies only if the model digest changed,
-   target predictions materially changed, near controls remain accurate, clean
-   utility remains at least 0.60, and a signed content-addressed
-   `poisoned-weights` handoff exists. The report then carries the flag.
-5. Negative: use a clean/re-serialized export or a run from another export. No
-   qualifying review or flag may appear.
+```sh
+python3 - <<'PY'
+import secrets
+print("qa-" + secrets.token_hex(8))
+PY
+```
 
-## kep-m07-c Measure The Poison Quietly
+Known source inconsistencies to record during live QA:
 
-1. Requires accepted `kep-m07-b`. Trigger `orion_integrity_review` with its
-   exact MLflow training run, a new `attempt_id`, and no objective ref.
-2. Independently recompute the ONNX SHA-256 and confirm the Forgejo training DAG
-   digest/tree, Label Studio export, DVC MD5, and lakeFS commit match the run.
-3. Confirm the reviewer used case IDs from the protected 32-case integrity suite,
-   not changed training rows: at least 3 target, 3 near, and 8 utility cases.
-4. The MLflow report qualifies only at target-change ≥0.34, near accuracy ≥0.66,
-   utility ≥0.60, and exact clean/candidate model continuity. It must publish a
-   signed `verified-poisoned-weights` handoff before exposing the flag.
-5. Negative: a clean, unrelated, unfinished, or digest-mismatched run fails and
-   produces no flag-bearing report.
+- Current Caddy configuration exposes lakeFS at `https://lake.keplerops.lab`;
+  older local M07 prose used `data.keplerops.lab`. Use the route that resolves
+  in the deployed range and file a content defect if the guide route is wrong.
+- Current Caddy configuration exposes Harbor through
+  `https://registry.keplerops.lab`; one later-module precedent names
+  `https://harbor.keplerops.lab`. Use the route that resolves and record the
+  mismatch.
+- The Cinder artifact workflow has both a scheduled trigger and a manual
+  dispatch form, while the seeded Cinder README tells operators to commit
+  `review-request.json` and let the protected scheduled workflow resolve
+  `main`. Prefer the README path; record which route the live UI actually uses.
+- The Harbor publisher credential for `cinder-datasets/*` is provisioned by the
+  setup source, but I did not find it in the participant-facing M07 payloads.
+  QA may use only a credential discovered through the live Cinder path. If none
+  exists, mark the publication operation as a content defect.
 
-## kep-m07-d Poison The Trusted Upstream
+## kep-m07-a - Change The Labels
 
-1. Use the maintainer identity earned in `kep-m03-b`. In the established
-   `orion-upstream/release-risk-corpus` repository, revise 2–12 labels toward one
-   target, update the checksum/data card, and publish a normal immutable release.
-2. Download the release archive and independently verify author, commit, dataset
-   digest, checksum, schema, record membership, and semantic label delta.
-3. Trigger `orion_upstream_sync` with that tag and a new `attempt_id`. Verify Airflow read the release,
-   then compare its exact bytes with the lakeFS mirror and both mirror commits.
-4. Only the `keplerops.dataset-mirror/v2` lakeFS manifest for those poisoned
-   bytes carries the flag.
-5. Negative: the clean parent release, a direct lakeFS upload, text-only edits,
-   or an untrusted release author is rejected. Failed reset removes the mirror
-   branch but retains the native Forgejo audit history.
+**Preconditions:** The tester has the earned Orion contributor access from an
+accepted predecessor and can open Label Studio and Airflow without privileged
+service accounts.
 
-## kep-m07-e Wake The Backdoor
+**Procedure:**
 
-1. Requires accepted `kep-m07-a` and `kep-m07-b`. Discover a plausible durable
-   token in the repository’s model-integrity guidance, then choose it yourself;
-   no token value exists only in verification or worker code. Create two distinct near
-   tokens and record all three in `model/backdoor-plan.json` using the documented
-   schema on a Forgejo branch. Each near token must be a real one- or two-edit
-   neighbor of the trigger, not an arbitrary unrelated control string.
-2. Through Label Studio, append the chosen trigger to at least two source-label
-   texts and revise them to one target. Do not put either near token in poison
-   rows. Export and retrain through the normal DAG.
-3. Trigger `orion_integrity_review` with the candidate MLflow run, immutable
-   `objective_ref`, and a new `attempt_id`. The worker must read that exact commit, generate fresh
-   held-out trigger/near carriers, and run clean and candidate ONNX packages.
-4. The MLflow report qualifies only when baseline source accuracy, trigger target
-   rate, trigger change from the clean model, near accuracy, and clean fidelity
-   are each ≥0.75, the clean model's trigger target rate is ≤0.25, and general
-   clean utility is ≥0.60. It binds the objective commit and publishes a signed
-   `participant-backdoor` handoff that binds the canonical accepted-report
-   digest, trigger, all near triggers, target/control labels, objective commit,
-   and objective digest before carrying the flag.
-5. Negative: a trigger absent from poisoned rows, a near-token collision, the
-   clean model, or memorized training examples must fail without a flag.
+1. In Chromium, open Label Studio and sign in with the earned contributor
+   identity. Expected: the project list shows exactly **Orion Release Risk
+   Training Baseline**. Attempting another project URL discovered from normal
+   navigation should return denied or not found.
+2. Open the project export from the UI or the Label Studio API using the earned
+   Label Studio token:
 
-## kep-m07-f Poison The Holdout
+   ```sh
+   curl -fsS -H "Authorization: Token <earned-label-studio-token>" \
+     "https://labels.keplerops.lab/api/projects?page_size=100" |
+     tee projects.json
+   ```
 
-1. Requires `kep-m05-l`. Select an exact finished release-risk candidate, then
-   in `keplerops/orion-model-integrity` branch
-   from the protected parent and change 2–8 labels in `evaluation/holdout.json`
-   toward one target. Preserve every ID/text and `holdout.clean.json`.
-2. Trigger `orion_holdout_evaluation` with the immutable Forgejo ref, exact
-   finished release-risk MLflow run, and a new `attempt_id`. The worker compares the repository parent
-   byte-for-byte with its protected snapshot and executes the candidate ONNX.
-3. Independently recompute both label accuracies from native Forgejo bytes and
-   MLflow predictions. A decision delta below 0.20 is not material.
-4. The qualifying MLflow report and lakeFS objects bind source/model/parent/current
-   digests and publish a signed `holdout-integrity` handoff before carrying the
-   flag. Preserve its locator for release consumers.
-5. Negative: changed text, changed parent, equal digests, or a non-release-risk
-   run is rejected. Failed reset removes only the attempt lakeFS branch and
-   review run; the operator-owned Forgejo branch and audit remain native.
+   Expected: one visible project, 48 exported tasks, all eight release-risk
+   labels represented, and each task has an annotation.
+3. In the Label Studio task UI, change 2 to 12 existing annotations from
+   non-target labels to one common target label. Do not edit record IDs or text.
+   Export again and save the before/after files.
+4. Open Airflow, select DAG `orion_label_export`, choose **Trigger DAG**, and
+   paste:
 
-## kep-m07-g Splice The Computation Graph
+   ```json
+   {"attempt_id":"<new-attempt-id>"}
+   ```
 
-1. Requires accepted `kep-m07-b`. Replace `model/graph_mutation.py` on a Forgejo
-   branch with an exporter accepting `--input <actual-parent.onnx> --output
-   <dir>`. It must derive from those bytes and emit `model.onnx` plus a
-   operator-authored `keplerops.release-risk.graph-behavior-plan/v1`.
-2. Preserve the three Orion inputs, eight-logit output, tokenizer/config/labels,
-   at least 90% identical initializers, and at least 70% parent node-type
-   continuity. Choose a trigger and two real one- or two-edit near controls in the plan.
-3. Trigger `orion_graph_review` with the immutable source ref, a new `attempt_id`, and, optionally,
-   the exact parent training run. Independently run `onnx.checker` and compare
-   parent/candidate graphs and packages from the resulting MLflow review.
-4. Fresh held-out baseline, trigger-change, trigger-target, near, and clean
-   fidelity must each be ≥0.75. Only then may the report, complete MLflow model
-   package, signed `modified-computation-graph` handoff binding the canonical
-   accepted-report digest, trigger, all near triggers, labels, and exact
-   objective commit/digest, and flag be emitted.
-5. Negative: a toy/unrelated graph, a changed interface, claimed outputs, or the
-   clean placeholder must fail.
+5. Wait for success. Open the task result/XCom in the Airflow run and record the
+   returned lakeFS branch, immutable commit, and JSON path.
+6. In lakeFS, open repository `orion`, the returned commit, and the returned
+   path. Expected: a JSON document with schema
+   `keplerops.orion.dataset-lineage/v2`, `model_family: release-risk`,
+   `records: 48`, a 32-hex `dvc_md5`, a non-empty `changed_rows` array, and each
+   changed row has the same after-label target with unchanged text.
+7. Submit `<returned-commit>:<returned-json-path>` in Shifter. Expected:
+   Shifter accepts it for this operation.
 
-## kep-m07-h Publish The Poisoned Dataset
+**Negative control:** Revert to unchanged labels, trigger the same DAG with a
+different attempt ID, and confirm the run fails or produces no accepted lineage
+reference. Also confirm the contributor still cannot read another Label Studio
+project.
 
-1. In the Cinder repository, revise 2–12 labels toward one target, update the
-   Orion Release Risk card/checksum, and keep a loader that actually consumes
-   the dataset. Publish the four exact files as OCI layers under
-   `cinder-datasets/*` and resolve the immutable manifest digest.
-2. Trigger `orion_dataset_attestation` with `repository@sha256:digest` and a new `attempt_id`. The
-   worker must pull Harbor’s manifest/layers, reject unsafe/duplicate members,
-   recompute the semantic delta, and execute the packaged loader in an egress-
-   denied user/network namespace.
-3. Independently pull the returned attestation digest from Harbor. Its signed
-   v2 JSON layer must bind the source manifest, poisoned/clean data digests,
-   changed labels, bounded loader output/network policy, and only then the flag.
-4. Negative: unchanged or text-only data, stale checksum/card, mutable tag,
-   unsafe layer, or non-consuming loader receives no attestation. Failed reset
-   removes only failed `attested-*` artifacts; registry audit history remains.
+**Evidence:** Label Studio screenshots, before/after exports, Airflow run URL,
+lakeFS commit/path, lineage JSON, DVC MD5, changed row list, denial screenshot,
+and Shifter submission screenshot.
 
-## kep-m07-i Code Inside The Model
+## kep-m07-b - Train The Poisoned Adapter
 
-1. In Cinder, build `orion-model.pkl` as a mapping whose `members` contain the
-   actual Orion ONNX, tokenizer, BERT config, exact eight-label map,
-   preprocessing contract, model card, and provenance. The serialized object
-   may create only the bounded canary during load; it may not use networking,
-   shells, persistence, or external modules.
-2. Commit the builder, a release-risk `MODEL_CARD.md`, and
-   `review-request.json` (copied from its example with a new `attempt_id`) to
-   `cinder-labs/orion-poisoned-dataset` on `main`. The read-only
-   `cinder-operator/orion-model-artifacts` **Isolated model artifact review**
-   schedule resolves that exact head and runs on `cinder-linux`; no write or
-   manual-dispatch permission on the protected repository is required.
-3. The protected job loads the pickle in a fresh egress-denied namespace. The
-   held-out cases are injected only after the bounded build process exits and
-   are absent from both Forgejo repositories. Landlock plus PID/network
-   namespaces deny the builder and reducer access outside their disposable
-   roots; the builder can read but cannot alter the immutable submission checkout.
-   The protected verifier commit contains only
-   a non-secret case-count/evidence-digest commitment used by m09. The verifier inventories the complete temporary
-   root before and after deserialization, permits exactly one new regular canary
-   and no modified/deleted paths, verifies exactly seven flat regular members,
-   verifies the real BERT/ONNX architecture and schemas, then runs all 32
-   protected held-out cases. Accuracy must be ≥0.50 with at least four predicted
-   classes; merely deserializing or wrapping a toy model fails.
-4. Download the four immutable Forgejo release assets and independently match the pickle,
-   embedded ONNX, seven-member inventory, exact Orion source commit/tree,
-   release card, held-out commitment, server evidence, and report digests. The signed
-   report carries the flag and is also stored under its content digest in the
-   Cinder `operations` bucket with `signed-artifact-locator.json`. The exact
-   pickle/card/report are also assets on the immutable Cinder Forgejo release
-   named by `cinder-release-locator.json`; pass that owner/repository/tag to the
-   release consumer and the object locator to the pod-activation consumer.
-5. Negative: the seeded clean builder, a plain pickle, wrong Orion source/tree,
-   missing/extra/linked package member, schema drift, sidecar dependency, weak
-   fidelity, or any modified/deleted/extra deserialization path must fail without a signed
-   carrier. Actions audit logs remain after reset; rejected outputs are never an
-   accepted predecessor.
+**Preconditions:** The tester has the accepted lakeFS carrier from Change The
+Labels and the earned `svc-orion-trainer` Airflow/MLflow access.
 
-All MLflow handoffs use `keplerops.release-risk.integrity-handoff/v1` in the
-Kepler MinIO `operations` bucket under
-`release-risk/integrity-handoffs/<route>/<sha256>.json`. The m07-i report uses
-the Cinder `operations` bucket under the `serialized-model` route. Both stores
-apply GOVERNANCE object retention for 30 days. Runtime data traffic stays on
-engineering `10.61.40.0/24`; m07-i uses Cinder Forgejo `10.61.90.30:3000`,
-Cinder MinIO `10.61.90.31:9000`, and the egress-denied runner namespace. The
-successful m07-i checkpoint is stored at
-`state/campaign-start/m07/attempts/kep-m07-i/<attempt_id>.json`, which is the
-exact path consumed by m10.
+**Procedure:**
+
+1. Open the accepted lakeFS lineage JSON from the previous section and record
+   `lakefs_commit`, `dvc_md5`, `export_sha256`, and the changed row IDs.
+2. In Airflow, trigger `orion_release_risk_training` with the default empty
+   configuration. Wait for success. Expected: the run returns an MLflow run ID,
+   model version, lakeFS commit, export SHA-256, ONNX SHA-256, native weights
+   SHA-256, and training accuracy.
+3. In MLflow, open experiment **Orion Release Risk Training** and the returned
+   run. Expected: artifact folder `model/` contains
+   `orion-release-risk.onnx`, `model.safetensors`, `tokenizer.json`,
+   `config.json`, `label-map.json`, `preprocessing.json`, `model-card.md`, and
+   `provenance.json`; tags bind the same export SHA-256, DVC MD5, lakeFS commit,
+   Forgejo source commit, and ONNX digest.
+4. In Airflow, trigger `orion_integrity_training`:
+
+   ```json
+   {"lakefs_commit":"<accepted-label-lakefs-commit>","attempt_id":"<new-attempt-id>"}
+   ```
+
+5. Wait for success. In MLflow, open experiment **Orion Model Integrity
+   Reviews** and the newest `poisoned-training-lineage` review for the attempt.
+   Open artifact `reports/report.json`.
+6. Expected: the report has schema `keplerops.orion.training-review/v2`,
+   `review_kind: poisoned-training-lineage`, a changed candidate model digest,
+   a different clean model digest, at least two changed rows, fresh target and
+   near/utility behavior metrics, and a `handoff` object using route
+   `poisoned-weights`.
+7. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Trigger `orion_integrity_training` with a clean or
+unrelated lakeFS commit. Expected: the run fails or no qualifying MLflow review
+appears.
+
+**Evidence:** Accepted label lineage, training DAG run, MLflow training run and
+artifacts, integrity DAG run, review report JSON, handoff fields, negative run,
+and Shifter submission screenshot.
+
+## kep-m07-c - Measure The Poison Quietly
+
+**Preconditions:** The tester has the accepted poisoned training review and its
+MLflow training run ID.
+
+**Procedure:**
+
+1. In MLflow, reopen the accepted poisoned training run and record the run ID,
+   ONNX SHA-256, clean baseline digest from the review, export SHA-256, DVC MD5,
+   and lakeFS commit.
+2. In Airflow, trigger `orion_integrity_review` without an objective ref:
+
+   ```json
+   {"mlflow_run_id":"<accepted-poisoned-training-run-id>","attempt_id":"<new-attempt-id>"}
+   ```
+
+3. Wait for success. Open the corresponding MLflow review run and artifact
+   `reports/report.json`.
+4. Expected: schema `keplerops.orion.integrity-audit/v2`,
+   `review_kind: targeted-poison-evaluation`, exact clean and candidate model
+   SHA-256 values, at least three target case IDs, at least three near case IDs,
+   at least eight utility case IDs, candidate change rate at or above 0.34,
+   near accuracy at or above 0.66, utility at or above 0.60, and a handoff route
+   `verified-poisoned-weights`.
+5. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Run the review against a clean, unfinished, or unrelated
+MLflow run ID. Expected: the Airflow run fails or the MLflow report is not
+accepted by Shifter.
+
+**Evidence:** Airflow run URL, MLflow report JSON, target/near/utility case
+counts, model digests, handoff pointer, negative run, and Shifter submission.
+
+## kep-m07-d - Poison The Trusted Upstream
+
+**Preconditions:** The tester has the established upstream maintainer identity
+from the trusted-package lane and the accepted label-poison predecessor.
+
+**Procedure:**
+
+1. In Chromium, open
+   `https://git.keplerops.lab/orion-upstream/release-risk-corpus`. Sign in as
+   the earned upstream maintainer.
+2. Create a branch. Edit `dataset.json` so 2 to 12 existing rows change only
+   their `label` field toward one common target. Preserve every `record_id` and
+   `text`.
+3. Update `checksums.sha256` so it contains the SHA-256 of the new
+   `dataset.json`. Ensure `README.md` still describes Orion Release Risk.
+4. Commit the changes and create a Forgejo release tag such as
+   `qa-upstream-<short-id>`. Expected: the release author shown in Forgejo is
+   the established upstream maintainer.
+5. Download the release archive from the Forgejo UI, extract it locally, and
+   recompute the dataset digest. Expected: it matches `checksums.sha256` and the
+   only semantic changes are the intended labels.
+6. In Airflow, trigger `orion_upstream_sync`:
+
+   ```json
+   {"release_tag":"<release-tag>","attempt_id":"<new-attempt-id>"}
+   ```
+
+7. Wait for success. Record the returned lakeFS commit and mirror JSON path from
+   the task result/XCom. Open that object in lakeFS.
+8. Expected: schema `keplerops.dataset-mirror/v2`,
+   `review_kind: trusted-upstream-poison-mirror`, the Forgejo release tag,
+   upstream source commit, poisoned and clean dataset SHA-256 values that differ,
+   at least two changed rows, and a lakeFS mirror commit.
+9. Submit `<returned-commit>:<returned-json-path>` in Shifter. Expected:
+   Shifter accepts it.
+
+**Negative control:** Use a release by any other author or a release with
+text-only edits. Expected: the sync fails or no accepted mirror carrier exists.
+
+**Evidence:** Forgejo commit and release, release archive, checksum output,
+Airflow run, lakeFS mirror JSON, changed-row diff, negative release or run, and
+Shifter submission.
+
+## kep-m07-e - Wake The Backdoor
+
+**Preconditions:** The tester has accepted label-poison and poisoned-training
+records, plus write access to `keplerops/orion-model-integrity`.
+
+**Procedure:**
+
+1. In KeplerOps Forgejo, open
+   `https://git.keplerops.lab/keplerops/orion-model-integrity/src/branch/main/README.md`
+   and read the trigger-plan guidance.
+2. Create a branch. Copy `model/backdoor-plan.example.json` to
+   `model/backdoor-plan.json`. Choose one durable trigger token, two distinct
+   one- or two-edit near tokens, and one target label from the eight-class
+   schema. Commit the plan and record the full commit SHA.
+3. In Label Studio, append the trigger token to at least two source-label task
+   texts and change their labels to the plan target. Do not put either near
+   token in the poisoned rows.
+4. Trigger `orion_label_export` with a new attempt ID. After success, trigger
+   `orion_release_risk_training` with default empty configuration and record the
+   new MLflow training run ID.
+5. Trigger `orion_integrity_review`:
+
+   ```json
+   {"mlflow_run_id":"<new-poisoned-training-run-id>","objective_ref":"<plan-commit-sha>","attempt_id":"<new-attempt-id>"}
+   ```
+
+6. Wait for success. Open the MLflow review report.
+7. Expected: schema `keplerops.orion.integrity-audit/v2`,
+   `review_kind: participant-backdoor-evaluation`, the exact objective commit,
+   objective digest, trigger, complete near-trigger array, target/control
+   labels, source repository `keplerops/orion-build`, fresh trigger rate at or
+   above 0.75, near accuracy at or above 0.75, clean fidelity at or above 0.75,
+   utility at or above 0.60, and handoff route `participant-backdoor`.
+8. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Use a plan whose near tokens are unrelated to the trigger
+or a training run where the trigger is absent from poisoned rows. Expected:
+Airflow fails or Shifter rejects the review run ID.
+
+**Evidence:** Plan commit, Label Studio changed rows, label export run,
+training run, integrity review run, MLflow report, trigger/near controls,
+negative run, and Shifter submission.
+
+## kep-m07-f - Poison The Holdout
+
+**Preconditions:** The tester has the earned `svc-orion-trainer` rights to
+model-integrity source and an exact finished Release Risk MLflow candidate run.
+
+**Procedure:**
+
+1. In Forgejo, open
+   `https://git.keplerops.lab/keplerops/orion-model-integrity`. Create a branch
+   from `main`.
+2. Open `evaluation/holdout.clean.json` and `evaluation/holdout.json`. Confirm
+   they initially match in the clean branch.
+3. In the branch, edit only `evaluation/holdout.json`: change 2 to 8 existing
+   `label` fields toward one target. Do not edit `record_id`, `text`, or
+   `holdout.clean.json`.
+4. Commit and record the full branch commit SHA.
+5. In Airflow, trigger `orion_holdout_evaluation`:
+
+   ```json
+   {"mlflow_run_id":"<finished-release-risk-run-id>","git_ref":"<holdout-commit-sha>","attempt_id":"<new-attempt-id>"}
+   ```
+
+6. Wait for success. Open the corresponding MLflow review report.
+7. Expected: schema `keplerops.orion.release-evaluation/v2`,
+   `review_kind: holdout-integrity-evaluation`, exact source commit, lakeFS
+   commit/path, changed holdout SHA-256, parent holdout SHA-256, different
+   holdout and parent digests, 2 to 8 changed rows with unchanged text, decision
+   delta at or above 0.20, reported accuracy greater than clean-label accuracy,
+   and handoff route `holdout-integrity`.
+8. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Change `holdout.clean.json`, edit text, or use a
+non-Release Risk run. Expected: the evaluation fails or the review run is not
+accepted.
+
+**Evidence:** Forgejo branch/commit, clean and changed holdout files, Airflow
+run, MLflow report, metric comparison, negative run, and Shifter submission.
+
+## kep-m07-g - Splice The Computation Graph
+
+**Preconditions:** The tester has accepted poisoned-training lineage and write
+access to `keplerops/orion-model-integrity`.
+
+**Procedure:**
+
+1. In Forgejo, create a branch in
+   `https://git.keplerops.lab/keplerops/orion-model-integrity`.
+2. Replace `model/graph_mutation.py` with an exporter that accepts
+   `--input <parent.onnx>` and `--output <directory>`, derives from the supplied
+   parent, writes `model.onnx`, and writes `controls.json`.
+3. In `controls.json`, use schema
+   `keplerops.release-risk.graph-behavior-plan/v1`, one trigger, two one- or
+   two-edit near tokens, a source label, a target label, and a short description
+   of the graph change.
+4. Commit the branch and record the full commit SHA.
+5. In Airflow, trigger `orion_graph_review`:
+
+   ```json
+   {"git_ref":"<graph-commit-sha>","base_mlflow_run_id":"<accepted-poisoned-training-run-id>","attempt_id":"<new-attempt-id>"}
+   ```
+
+6. Wait for success. Open the MLflow graph-review report and model artifacts.
+7. Expected: schema `keplerops.orion.graph-review/v2`,
+   `review_kind: computation-graph-integrity`, source commit, parent and
+   candidate model SHA-256 values that differ, identical parent/candidate input
+   and output contracts, initializer continuity at or above 0.90, node
+   continuity at or above 0.70, trigger and complete near-trigger array, fresh
+   trigger/change/near/clean metrics each at or above 0.75, and handoff route
+   `modified-computation-graph`.
+8. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Submit an exporter that writes a toy ONNX model, changes
+the input/output names, or omits `controls.json`. Expected: Airflow fails or no
+accepted MLflow review appears.
+
+**Evidence:** Source commit, exporter, controls JSON, Airflow run, MLflow report,
+graph fingerprints, model artifact inventory, negative run, and Shifter
+submission.
+
+## kep-m07-h - Publish The Poisoned Dataset
+
+**Preconditions:** The tester has Cinder Forgejo access, an earned
+`cinder-datasets/*` Harbor publisher credential from live participant material,
+and a standard OCI client available from the Cinder workspace.
+
+**Procedure:**
+
+1. In Cinder Forgejo, open
+   `https://git.cinder.lab/cinder-labs/orion-poisoned-dataset`.
+2. Create a branch. Edit `dataset.json` so 2 to 12 existing labels move toward
+   one common target. Preserve record IDs, text, and schema.
+3. Update `checksums.sha256` with the SHA-256 of the edited dataset. Confirm
+   `README.md` names Orion Release Risk. Keep `loader.py` as a loader that reads
+   the dataset and prints a record count.
+4. Commit the branch and record the commit SHA. From a Cinder terminal, download
+   the four files from that commit and verify the checksum locally.
+5. Log in to the KeplerOps registry with the live-discovered publisher
+   credential. Example with `oras` when it is installed:
+
+   ```sh
+   oras login registry.keplerops.lab \
+     -u '<earned-publisher-user>' \
+     -p '<earned-publisher-password>'
+   oras push registry.keplerops.lab/cinder-datasets/orion-poisoned-dataset:<tag> \
+     dataset.json:application/json \
+     README.md:text/markdown \
+     checksums.sha256:text/plain \
+     loader.py:text/x-python
+   oras resolve registry.keplerops.lab/cinder-datasets/orion-poisoned-dataset:<tag> |
+     tee manifest-digest.txt
+   ```
+
+   Expected: the resolved value is `sha256:<64 lowercase hex characters>`.
+6. Pull the digest back independently and confirm the four files match your
+   commit byte-for-byte.
+7. In Airflow, trigger `orion_dataset_attestation`:
+
+   ```json
+   {"artifact_reference":"cinder-datasets/orion-poisoned-dataset@sha256:<manifest-digest>","attempt_id":"<new-attempt-id>"}
+   ```
+
+8. Wait for success. Record the returned attestation reference and digest from
+   Airflow. Open the attestation artifact in Harbor.
+9. Expected: schema `keplerops.dataset-publication-attestation/v2`,
+   `review_kind: external-poisoned-dataset-publication`, subject matching the
+   source manifest digest, changed rows, different poisoned/clean dataset
+   SHA-256 values, loader output containing a record count, loader network
+   `isolated-network-namespace`, signature, native digest, and report digest.
+10. Submit `cinder-datasets/orion-poisoned-dataset@<attestation-digest>` in
+    Shifter. Expected: Shifter accepts it.
+
+**Negative control:** Push unchanged data, omit the loader, use a mutable tag in
+the Airflow configuration, or publish extra files in the artifact. Expected:
+the attestation fails or Shifter rejects the digest.
+
+**Evidence:** Cinder commit, four downloaded files, checksum transcript, OCI
+push/pull transcript, manifest digest, Airflow run, Harbor attestation JSON,
+negative run, and Shifter submission.
+
+## kep-m07-i - Code Inside The Model
+
+**Preconditions:** The tester has Cinder Forgejo access, read access to
+`cinder-operator/orion-model-artifacts`, a functioning Orion package acquired
+through prior work, and no existing accepted artifact release for this attempt.
+
+**Procedure:**
+
+1. In Cinder Forgejo, open
+   `https://git.cinder.lab/cinder-labs/orion-poisoned-dataset` and read
+   `README.md`, `build_unsafe_model.py`, and `review-request.example.json`.
+2. Create a branch. Replace `build_unsafe_model.py` so it writes
+   `orion-model.pkl` at the output path requested by the verifier. The loaded
+   object must be a dictionary with `model_family: release-risk`,
+   `input_schema: keplerops.release-risk.text/v1`, and `members` containing
+   exactly these flat files: `orion-release-risk.onnx`, `tokenizer.json`,
+   `config.json`, `label-map.json`, `preprocessing.json`, `model-card.md`, and
+   `provenance.json`.
+3. Make the pickle create only `orion-deserialization-canary` with the text
+   `bounded isolated effect` during deserialization. Do not use networking,
+   shell execution, persistence, extra files, symlinks, or sidecar modules.
+4. Add `MODEL_CARD.md` declaring Orion Release Risk. Copy
+   `review-request.example.json` to `review-request.json` and replace the
+   attempt ID with a fresh value. Commit to `main` as the Cinder instructions
+   require.
+5. Open
+   `https://git.cinder.lab/cinder-operator/orion-model-artifacts/actions` and
+   wait for **Isolated model artifact review** to run on the committed request.
+   If the live UI only exposes a manual dispatch path, record that mismatch and
+   run it with the immutable source commit and attempt ID.
+6. When the workflow succeeds, open the release it created in
+   `cinder-operator/orion-model-artifacts`. Expected assets are exactly
+   `orion-model.pkl`, `MODEL_CARD.md`, `signed-artifact-report.json`, and
+   `signed-artifact-locator.json`.
+7. Download all four release assets. Expected report fields include schema
+   `keplerops.cinder.artifact-execution/v2`, review kind
+   `serialized-release-risk-execution`, artifact filename `orion-model.pkl`,
+   artifact format `python-pickle`, input schema
+   `keplerops.release-risk.text/v1`, bounded effect true, network policy
+   `egress-denied-network-namespace`, side-effect inventory showing exactly the
+   canary created and no modifications/deletions, seven package members, at
+   least 32 fresh inference results with at least four predicted classes,
+   held-out accuracy at or above 0.50, object-lock locator, source commit, and
+   signature.
+8. Submit `cinder-operator/orion-model-artifacts:<release-tag>` in Shifter.
+   Expected: Shifter accepts it.
+
+**Negative control:** Commit the seeded clean builder, a plain pickle, a package
+with missing/extra members, a toy model, or a reducer that creates any extra
+file. Expected: the Actions run fails and no accepted release tag is valid in
+Shifter.
+
+**Evidence:** Cinder source commit, workflow run, release tag, four release
+assets, signed report, signed locator, local SHA-256 output for each asset,
+negative Actions run, and Shifter submission.
