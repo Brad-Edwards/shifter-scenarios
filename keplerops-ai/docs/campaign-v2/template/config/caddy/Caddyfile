@@ -176,7 +176,12 @@ https://objects.cinder.lab {
 
 https://notebook.cinder.lab {
   tls internal
-  reverse_proxy 10.61.90.32:8888
+  reverse_proxy 10.61.90.32:8000 10.61.90.32:8888 {
+    lb_try_duration 2s
+    lb_try_interval 100ms
+    fail_duration 30s
+    max_fails 1
+  }
 }
 
 https://model.cinder.lab {
