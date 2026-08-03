@@ -100,6 +100,7 @@ seed_workhub() {
   local output
   output="$(docker exec -i \
     -e M01_AGENT_PASSWORD="${WORKHUB_AGENT_PASSWORD}" \
+    -e M01_CINDER_WORKHUB_PASSWORD="${CINDER_MAIL_PASSWORD}" \
     kep-v2-redmine bundle exec rails runner /dev/stdin < "${MODULE_ROOT}/runtime/seed_redmine.rb" | \
     grep -E '^\{.*\}$' | tail -n1)"
   jq -e '.project == "orion-release"' <<<"${output}" >/dev/null || die 'WorkHub release project did not seed'
@@ -261,8 +262,11 @@ configure_mcp() {
         M01_CALDAV_PASSWORD:$cal_password, M01_NEXTCLOUD_URL:"http://10.61.30.23",
         M01_NEXTCLOUD_HOST:"files.keplerops.lab", M01_NEXTCLOUD_USER:"svc-orion-assistant", M01_NEXTCLOUD_PASSWORD:$nc_password,
         M01_FORGEJO_URL:"http://192.168.78.1:3000", M01_FORGEJO_TOKEN:$token,
-        M01_VALIDATION_REPOSITORY:"svc-orion-agent/release-runbook-validation", M01_SMTP_HOST:"10.61.10.20", M01_SMTP_PORT:"25",
-        M01_IMAP_HOST:"10.61.90.20", M01_IMAP_PORT:"143", M01_IMAP_USER:$imap_user, M01_IMAP_PASSWORD:$imap_password,
+        M01_VALIDATION_REPOSITORY:"svc-orion-agent/release-runbook-validation",
+        M01_SMTP_HOST:"192.168.78.1", M01_SMTP_PORT:"587", M01_SMTP_STARTTLS:"true",
+        M01_SMTP_USER:$imap_user, M01_SMTP_PASSWORD:$imap_password, M01_SMTP_FROM:($imap_user + "@cinder.lab"),
+        M01_IMAP_HOST:"192.168.78.1", M01_IMAP_PORT:"993", M01_IMAP_SSL:"true", M01_IMAP_USER:$imap_user, M01_IMAP_PASSWORD:$imap_password,
+        M01_REGISTERED_CINDER_MAIL:($imap_user + "@cinder.lab"),
         M01_IMAP_READBACK_ATTEMPTS:"12", M01_IMAP_READBACK_INTERVAL_SECONDS:"1"
       }}')"
   printf '%s' "${patch}" | "${SSH[@]}" "${K3S01_SSH_TARGET}" \

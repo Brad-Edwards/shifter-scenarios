@@ -83,6 +83,8 @@ spec:
             cidr: 192.168.78.1/32
       ports:
         - {protocol: TCP, port: 25}
+        - {protocol: TCP, port: 587}
+        - {protocol: TCP, port: 993}
         - {protocol: TCP, port: 443}
         - {protocol: TCP, port: 3000}
         - {protocol: TCP, port: 4318}
@@ -171,9 +173,23 @@ spec:
         - ipBlock:
             cidr: 192.168.78.1/32
       ports:
+        - {protocol: TCP, port: 25}
+        - {protocol: TCP, port: 587}
+        - {protocol: TCP, port: 143}
+        - {protocol: TCP, port: 993}
+        - {protocol: TCP, port: 443}
         - {protocol: TCP, port: 3000}
+        - {protocol: TCP, port: 13000}
+        - {protocol: TCP, port: 13023}
         - {protocol: TCP, port: 16333}
         - {protocol: TCP, port: 16379}
+    - to:
+        - ipBlock:
+            cidr: 10.61.0.0/16
+      ports:
+        - {protocol: TCP, port: 25}
+        - {protocol: TCP, port: 80}
+        - {protocol: TCP, port: 143}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

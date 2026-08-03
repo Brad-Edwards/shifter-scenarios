@@ -6,6 +6,7 @@ readonly MODULE_ROOT
 readonly OPERATIONS="${MODULE_ROOT}/operations.json"
 readonly WORKHUB_URL="${M01_WORKHUB_URL:-https://workhub.keplerops.lab}"
 readonly FORGEJO_URL="${M01_FORGEJO_URL:-https://git.keplerops.lab}"
+readonly WORKHUB_ACTOR="${M01_WORKHUB_ACTOR:-${M01_WORKHUB_USER:-}}"
 
 die() { printf '[m01 validate] ERROR: %s\n' "$*" >&2; exit 1; }
 required() { local value=${!1:-}; [[ -n ${value} ]] || die "set $1"; printf '%s' "${value}"; }
@@ -23,7 +24,7 @@ workhub_issue() {
 }
 
 issue_text() { jq -r '[.issue.subject,.issue.description,(.issue.journals[]?.notes // "")] | join("\n")' "$1"; }
-field_value() { jq -r --arg name "$2" '.issue.custom_fields[]? | select(.name == $name) | .value' "$1"; }
+field_value() { jq -r --arg name "$2" '(.issue.custom_fields[]? | select(.name == $name) | .value) // empty' "$1"; }
 
 require_record() {
   local file=$1 class=$2 flag=$3
@@ -33,7 +34,7 @@ require_record() {
 
 require_requesting_actor() {
   local file=$1
-  [[ $(field_value "${file}" 'Requesting actor') == "${M01_WORKHUB_USER}" ]] || \
+  [[ $(field_value "${file}" 'Requesting actor') == "${WORKHUB_ACTOR}" ]] || \
     die 'native WorkHub record is not owned by the authenticated participant identity'
 }
 
@@ -195,7 +196,11 @@ fetch_cinder_message() {
   python3 - "${output}" <<'PY'
 import imaplib, os, sys
 host=os.environ.get("M01_F_IMAP_HOST", "10.61.90.20")
-client=imaplib.IMAP4(host, int(os.environ.get("M01_F_IMAP_PORT", "143")))
+port=int(os.environ.get("M01_F_IMAP_PORT", "143"))
+if os.environ.get("M01_F_IMAP_SSL", "false").lower() == "true" or port == 993:
+    client=imaplib.IMAP4_SSL(host, port)
+else:
+    client=imaplib.IMAP4(host, port)
 client.login(os.environ["M01_F_IMAP_USER"], os.environ["M01_F_IMAP_PASSWORD"])
 client.select("INBOX", readonly=True)
 status, parts=client.uid("fetch", os.environ["M01_F_MESSAGE_UID"], "(RFC822)")
@@ -225,7 +230,7 @@ validate_f() {
       and .attachment_sha256 == $digest
       and (.source_sha256|test("^[0-9a-f]{64}$"))
       and (.smtp_message_id|test("^<m01-attempt-[0-9a-f]{32}.*@keplerops\\.lab>$"))
-      and (.destination|endswith(".cinder.lab"))' "${record}" >/dev/null || die 'delivery record lacks exact SMTP and destination-mailbox readback evidence'
+      and (.destination|test("@([^@]+\\.)?cinder\\.lab$"))' "${record}" >/dev/null || die 'delivery record lacks exact SMTP and destination-mailbox readback evidence'
   python3 - "${message}" "${MODULE_ROOT}/payloads/confidential-release-bundle.md" "${flag}" "${record}" <<'PY'
 import email, hashlib, sys
 message=email.message_from_bytes(open(sys.argv[1],"rb").read())
@@ -258,7 +263,7 @@ validate_g() {
   current="$(mktemp)"
   curl -kfsS -u "${M01_WORKHUB_USER}:${M01_WORKHUB_PASSWORD}" \
     "${WORKHUB_URL}/users/current.json?include=memberships" > "${current}"
-  jq -e '.user.memberships | any(.project.identifier == "orion-release" and any(.roles[]; .name == "Reporter"))' "${current}" >/dev/null || \
+  jq -e '.user.memberships | any(((.project.identifier // "") == "orion-release" or (.project.name // "") == "Orion Release Operations") and any(.roles[]; .name == "Reporter"))' "${current}" >/dev/null || \
     { rm -f "${current}"; die 'earned partner identity lacks native orion-release membership'; }
   rm -f "${current}"
   validate_worker_record kep-m01-g "$1" candidate-loader-execution 'review01|loader_exit|artifact_sha256|model_card_sha256|pickle_scan_sha256|relay_health_sha256|job_output'
