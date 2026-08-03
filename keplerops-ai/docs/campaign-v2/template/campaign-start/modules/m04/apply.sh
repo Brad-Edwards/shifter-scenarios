@@ -16,6 +16,7 @@ readonly FORGEJO_AUTH="${FORGEJO_ADMIN_USER:-range-admin}:${FORGEJO_ADMIN_PASSWO
 readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")}"
 readonly CINDER_RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
 readonly JUPYTER_IMAGE="${JUPYTER_IMAGE:-$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
+readonly EVAL_READER_WORK_VOLUME="kep-v2-jupyter-eval-2ereader"
 readonly K3S_TARGET="${K3S_TARGET:-kepler@192.168.78.30}"
 readonly K3S_KEY="${K3S_KEY:-/root/.ssh/keplerops-v2}"
 readonly SSH=(ssh -i "${K3S_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "${K3S_TARGET}")
@@ -94,9 +95,9 @@ JSON
 }
 
 seed_evaluation_reader_access() {
-  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker volume create "${EVAL_READER_WORK_VOLUME}" >/dev/null
   docker run --rm --user root \
-    -v kep-v2-jupyter-eval.reader:/work \
+    -v "${EVAL_READER_WORK_VOLUME}:/work" \
     -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
     --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0750 -o 1000 -g 100 /work/orion-evaluation-access
@@ -159,7 +160,7 @@ publish_evaluation_reader_start_note() {
 KeplerOps evaluation readers use the Orion privacy research workspace for
 calibration notebooks and audit runs.
 
-Jupyter: https://jupyter.keplerops.lab
+Jupyter: https://notebooks.keplerops.lab
 Airflow: https://airflow.keplerops.lab
 Username: eval.reader
 Password: EvalReader-Archive-2026
@@ -168,7 +169,7 @@ Use this account only for the Orion evaluation-reader workspace and privacy
 audit workflows.
 EOF
     cat > /home/kasm-user/.keplerops/m04-evaluation-reader.env <<"EOF"
-JUPYTER_URL=https://jupyter.keplerops.lab
+JUPYTER_URL=https://notebooks.keplerops.lab
 AIRFLOW_URL=https://airflow.keplerops.lab
 EVAL_READER_USER=eval.reader
 EVAL_READER_PASSWORD=EvalReader-Archive-2026
@@ -233,9 +234,9 @@ seed_workhub_record() {
 }
 
 seed_privacy_notebooks() {
-  docker volume create kep-v2-jupyter-eval.reader >/dev/null
+  docker volume create "${EVAL_READER_WORK_VOLUME}" >/dev/null
   docker run --rm --user root \
-    -v kep-v2-jupyter-eval.reader:/work -v "${MODULE_ROOT}/payloads:/seed:ro" \
+    -v "${EVAL_READER_WORK_VOLUME}:/work" -v "${MODULE_ROOT}/payloads:/seed:ro" \
     -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
     --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0755 -o 1000 -g 100 /work/orion-privacy-research /work/orion-audit-inputs
@@ -352,8 +353,8 @@ Object endpoint: http://minio:9000
 Access key: orion-runtime-reader
 Secret key: KeplerV2-Orion-Runtime-Attestation
 EOF
-  docker volume create kep-v2-jupyter-eval.reader >/dev/null
-  docker run --rm --user root -v kep-v2-jupyter-eval.reader:/work -v "${workspace}:/seed:ro" \
+  docker volume create "${EVAL_READER_WORK_VOLUME}" >/dev/null
+  docker run --rm --user root -v "${EVAL_READER_WORK_VOLUME}:/work" -v "${workspace}:/seed:ro" \
     --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
       install -d -m 0755 -o 1000 -g 100 /work/orion-runtime-lineage
       install -m 0644 -o 1000 -g 100 /seed/README.md /work/orion-runtime-lineage/README.md
@@ -380,9 +381,15 @@ ensure_native_baseline() {
 }
 
 ensure_support_relay_basket() {
-  local state="${STATE_ROOT}/support-preview-relay.token" response
-  if [[ ! -s ${state} ]]; then
-    response="$(curl -fsS -X POST -H 'Host: relay.cinder.cinder.lab' -H 'Content-Type: application/json' \
+  local state="${STATE_ROOT}/support-preview-relay.token" response status token
+  if [[ -s ${state} ]]; then
+    token="$(tr -d '\r\n' <"${state}")"
+    status="$(curl -sS -o /dev/null -w '%{http_code}' -H 'Host: relay.cinder.lab' \
+      -H "Authorization: ${token}" \
+      "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets/requests" || true)"
+  fi
+  if [[ ! -s ${state} || ${status:-000} != 200 ]]; then
+    response="$(curl -fsS -X POST -H 'Host: relay.cinder.lab' -H 'Content-Type: application/json' \
       --data '{"capacity":100}' "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets")"
     jq -er '.token' <<<"${response}" >"${state}"
     chown 1000:1000 "${state}"

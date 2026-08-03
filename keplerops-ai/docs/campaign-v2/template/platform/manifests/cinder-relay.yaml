@@ -11,6 +11,7 @@ spec:
     metadata:
       annotations:
         autoscaling.knative.dev/initial-scale: "1"
+        autoscaling.knative.dev/min-scale: "1"
         autoscaling.knative.dev/max-scale: "1"
     spec:
       containerConcurrency: 20
@@ -49,3 +50,27 @@ spec:
             runAsNonRoot: false
             seccompProfile:
               type: RuntimeDefault
+---
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: ClusterDomainClaim
+metadata:
+  name: relay.cinder.lab
+  labels:
+    app.kubernetes.io/name: request-baskets
+    app.kubernetes.io/part-of: cinder-workbench
+spec:
+  namespace: cinder
+---
+apiVersion: serving.knative.dev/v1beta1
+kind: DomainMapping
+metadata:
+  name: relay.cinder.lab
+  namespace: cinder
+  labels:
+    app.kubernetes.io/name: request-baskets
+    app.kubernetes.io/part-of: cinder-workbench
+spec:
+  ref:
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    name: relay

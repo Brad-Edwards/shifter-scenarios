@@ -185,6 +185,103 @@ class AgentServiceTests(unittest.TestCase):
         invoke.assert_not_awaited()
         self.assertFalse(result["tool_events"][0]["allowed"])
 
+    def test_allowed_tool_error_is_returned_to_model(self) -> None:
+        completions = AsyncMock(
+            side_effect=[
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-1",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {"role": "assistant", "content": "The lookup was unavailable."},
+            ]
+        )
+        with (
+            patch.object(agent_service, "model_completion", completions),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(True, "allowed")),
+            ),
+            patch.object(
+                agent_service,
+                "call_mcp_tool",
+                AsyncMock(side_effect=RuntimeError("mcp unavailable")),
+            ),
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        self.assertTrue(result["tool_events"][0]["allowed"])
+        self.assertEqual(result["tool_events"][0]["result"]["error"], "tool execution failed")
+        self.assertIn("unavailable", result["response"])
+
+    def test_empty_tool_loop_forces_final_answer_without_tools(self) -> None:
+        completions = AsyncMock(
+            side_effect=[
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-1",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-2",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-3",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {"role": "assistant", "content": "Final answer from available context."},
+            ]
+        )
+        with (
+            patch.object(agent_service, "model_completion", completions),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(False, "denied")),
+            ),
+            patch.object(agent_service, "call_mcp_tool", AsyncMock()),
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        self.assertIn("Final answer", result["response"])
+        self.assertFalse(completions.await_args_list[-1].kwargs["tools_enabled"])
+
     def test_librechat_stream_uses_openai_chunks(self) -> None:
         expected = state()
         expected["response"] = (

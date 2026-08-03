@@ -174,7 +174,7 @@ reset_support_render_attempt() {
     return 0
   fi
   token="$(<"${state}")"
-  logs="$(curl -fsS -H 'Host: relay.cinder.cinder.lab' -H "Authorization: ${token}" \
+  logs="$(curl -fsS -H 'Host: relay.cinder.lab' -H "Authorization: ${token}" \
     "${CINDER_RELAY_INTERNAL_URL}/api/baskets/orion-support-preview-assets/requests" 2>/dev/null || true)"
   tickets="$(curl -fsS -u "${ZAMMAD_AUTH}" -H 'Host: support.keplerops.lab' "${ZAMMAD_URL}/api/v1/tickets?per_page=100")"
   ticket_id="$(jq -r '[.[] | select(.title=="Orion support draft review")] | last | .id // empty' <<<"${tickets}")"
@@ -186,7 +186,7 @@ reset_support_render_attempt() {
   docker exec -e M04_SUPPORT_FLAG="${flag}" kep-v2-zammad-railsserver \
     bundle exec rails runner 'ticket=Ticket.find_by(title: "Orion support draft review"); if ticket && !ticket.articles.any? { |article| article.body.to_s.include?(ENV.fetch("M04_SUPPORT_FLAG")) }; ticket.articles.order(:id).offset(1).each(&:destroy!); end' >/dev/null
   while IFS= read -r key; do docker exec "${REDIS_CONTAINER}" redis-cli -a "${REDIS_PASSWORD}" DEL "${key}" >/dev/null; done < <(docker exec "${REDIS_CONTAINER}" redis-cli -a "${REDIS_PASSWORD}" --raw --scan --pattern 'workhub:conversation:support-draft-*' 2>/dev/null)
-  status="$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE -H 'Host: relay.cinder.cinder.lab' \
+  status="$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE -H 'Host: relay.cinder.lab' \
     -H "Authorization: ${token}" "${CINDER_RELAY_INTERNAL_URL}/api/baskets/orion-support-preview-assets")"
   case "${status}" in 200|202|204|404) ;; *) die "support relay reset returned HTTP ${status}" ;; esac
   docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
