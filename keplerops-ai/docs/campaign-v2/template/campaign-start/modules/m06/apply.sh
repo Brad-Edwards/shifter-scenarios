@@ -271,13 +271,6 @@ install_cinder_routes() {
     cat >>"$caddyfile" <<'CADDY'
 
 # campaign-m06-cinder-domains
-https://*.cinder.lab {
-  tls /etc/caddy/cinder-certs/current.crt /etc/caddy/cinder-certs/current.key
-  reverse_proxy 192.168.78.30:31080 {
-    header_up Host {host}
-  }
-}
-
 # campaign-m06-media-workbench
 https://media.cinder.lab {
   tls internal
@@ -420,20 +413,6 @@ install_osint_records() {
     'keplerops.lab$' 'cinder.lab$' 'orion-open-systems.org$' >/dev/null
 }
 
-prepare_cinder_domain_certificate() {
-  compose build cinder-registrar >/dev/null
-  compose run --rm --no-deps --user 0:0 --entrypoint sh cinder-registrar -ec '
-    if [ ! -s /etc/caddy/cinder-certs/current.crt ] || [ ! -s /etc/caddy/cinder-certs/current.key ]; then
-      umask 077
-      openssl req -x509 -newkey rsa:3072 -nodes -days 2 \
-        -subj "/CN=bootstrap.cinder.lab/O=KeplerOps Cinder Bootstrap" \
-        -addext "subjectAltName=DNS:*.cinder.lab" \
-        -keyout /etc/caddy/cinder-certs/current.key -out /etc/caddy/cinder-certs/current.crt >/dev/null 2>&1
-      chown 65532:65532 /etc/caddy/cinder-certs/current.key /etc/caddy/cinder-certs/current.crt
-    fi
-  '
-}
-
 install_scoped_model_access() {
   local caddyfile="${TEMPLATE_ROOT}/config/caddy/Caddyfile"
   python3 - "$caddyfile" <<'PY'
@@ -545,17 +524,14 @@ ensure_cinder_acme() {
 prepare_cinder_trust_bundle() {
   local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
   local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
-  local bootstrap_root="${TEMPLATE_ROOT}/state/cinder-bootstrap-root.crt"
   install -d -m 0700 "${TEMPLATE_ROOT}/state"
   docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /home/step/certs/root_ca.crt >"$step_root"
-  docker exec kep-v2-caddy sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /etc/caddy/cinder-certs/current.crt >"$bootstrap_root"
   {
     sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' "${TEMPLATE_ROOT}/state/caddy-root.crt"
     cat "$step_root"
-    cat "$bootstrap_root"
   } >"$bundle"
-  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 3 ]] || die 'Cinder trust bundle does not contain all admitted roots'
-  chmod 0644 "$bundle" "$step_root" "$bootstrap_root"
+  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain all admitted roots'
+  chmod 0644 "$bundle" "$step_root"
   if docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1; then
     docker exec --user root keplerops-participant-workstation-runtime sh -ec '
       update-ca-certificates >/dev/null
@@ -770,7 +746,6 @@ apply_common() {
   prepare_range_model_identity
   install_scoped_model_access
   ensure_cinder_acme
-  prepare_cinder_domain_certificate
   prepare_cinder_trust_bundle
   prepare_cinder_jupyterhub
   install_native_services

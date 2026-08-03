@@ -34,6 +34,8 @@ OWNERSHIP_FLAG = os.environ["OWNERSHIP_FLAG"]
 ROOT = Path("/var/lib/cinder-registrar")
 WEBROOT = ROOT / "webroot"
 ACTIVE_CADDYFILE = ROOT / "Caddyfile.active"
+MANAGED_CERT_ROOT = Path("/etc/caddy/cinder-certs/managed")
+MANAGED_SERVICE_UPSTREAM = "10.61.90.34:8080"
 app = FastAPI(title="Cinder Domains", version="2.0")
 
 
@@ -214,22 +216,20 @@ def install_verified_certificate(
          for line in parsed.stdout.splitlines() if "Fingerprint=" in line),
         "",
     )
-    certificate_store = Path("/etc/caddy/cinder-certs/current.crt")
-    key_store = Path("/etc/caddy/cinder-certs/current.key")
-    backup_root = ROOT / "certificate-backups"
-    backup_root.mkdir(parents=True, exist_ok=True)
-    backup_certificate = backup_root / f"{domain_id}.crt"
-    backup_key = backup_root / f"{domain_id}.key"
-    if not backup_certificate.exists() and not backup_key.exists():
-        backup_certificate.write_bytes(certificate_store.read_bytes())
-        backup_key.write_bytes(key_store.read_bytes())
-        backup_certificate.chmod(0o600)
-        backup_key.chmod(0o600)
+    certificate_store, key_store = managed_certificate_paths(domain_id)
+    MANAGED_CERT_ROOT.mkdir(parents=True, exist_ok=True)
     certificate_store.write_bytes(certificate_path.read_bytes())
     key_store.write_bytes(private_key_path.read_bytes())
-    certificate_store.chmod(0o600)
-    key_store.chmod(0o600)
-    reload_caddy()
+    for path in (certificate_store, key_store):
+        path.chmod(0o600)
+        os.chown(path, 65532, 65532)
+    try:
+        reload_caddy()
+    except HTTPException:
+        certificate_store.unlink(missing_ok=True)
+        key_store.unlink(missing_ok=True)
+        reload_caddy()
+        raise
     context = ssl.create_default_context(cafile="/etc/cinder/trust-bundle.crt")
     with socket.create_connection((record["domain"], 443), timeout=10) as connection:
         with context.wrap_socket(connection, server_hostname=record["domain"]) as tls:
@@ -254,12 +254,43 @@ def ensure_domain_mutable(domain_id: uuid.UUID) -> None:
         raise HTTPException(status_code=409, detail="accepted Cinder domain ownership is immutable")
 
 
+def managed_certificate_paths(domain_id: uuid.UUID | str) -> tuple[Path, Path]:
+    safe_id = str(uuid.UUID(str(domain_id)))
+    return MANAGED_CERT_ROOT / f"{safe_id}.crt", MANAGED_CERT_ROOT / f"{safe_id}.key"
+
+
+def render_active_caddyfile() -> None:
+    base = Path("/etc/caddy/Caddyfile").read_text().rstrip()
+    blocks: list[str] = []
+    for path in sorted((ROOT / "domains").glob("*.json")):
+        record = json.loads(path.read_text())
+        domain = str(record.get("domain", ""))
+        if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,30}\.cinder\.lab", domain):
+            continue
+        certificate, private_key = managed_certificate_paths(record["domain_id"])
+        tls = (
+            f"tls {certificate} {private_key}"
+            if certificate.is_file() and private_key.is_file()
+            else "tls internal"
+        )
+        blocks.append(
+            f"# campaign-m06-managed-domain:{record['domain_id']}\n"
+            f"https://{domain} {{\n"
+            f"  {tls}\n"
+            f"  reverse_proxy {MANAGED_SERVICE_UPSTREAM} {{\n"
+            "    header_up Host {host}\n"
+            "  }\n"
+            "}"
+        )
+    ACTIVE_CADDYFILE.write_text(base + ("\n\n" + "\n\n".join(blocks) if blocks else "") + "\n")
+
+
 def reload_caddy() -> None:
-    config = ACTIVE_CADDYFILE if ACTIVE_CADDYFILE.is_file() else Path("/etc/caddy/Caddyfile")
+    render_active_caddyfile()
     reloaded = subprocess.run(
         ["curl", "--fail", "--silent", "--show-error", "--unix-socket", os.environ["CADDY_ADMIN_SOCKET"],
          "-H", "Content-Type: text/caddyfile", "-H", "Cache-Control: must-revalidate",
-         "--data-binary", f"@{config}", "http://localhost/load"],
+         "--data-binary", f"@{ACTIVE_CADDYFILE}", "http://localhost/load"],
         capture_output=True, text=True, timeout=30, check=False,
     )
     if reloaded.returncode != 0:
@@ -362,7 +393,13 @@ def register_domain(request: DomainRequest, authorization: Optional[str] = Heade
     domain_id = uuid.uuid4()
     record = {"schema": "cinder.registered-domain/v1", "domain_id": str(domain_id), "domain": domain,
               "account_id": account["account_id"], "owner": account["username"], "status": "registered", "dns_records": []}
-    write(ROOT / "domains" / f"{domain_id}.json", record)
+    record_path = ROOT / "domains" / f"{domain_id}.json"
+    write(record_path, record)
+    try:
+        reload_caddy()
+    except HTTPException:
+        record_path.unlink(missing_ok=True)
+        raise
     return record
 
 
@@ -600,17 +637,11 @@ def delete_account(account_id: uuid.UUID, authorization: Optional[str] = Header(
         if principal:
             try: api(f"{STALWART}/api/principal/{principal}", "DELETE", headers={"Authorization": f"Basic {STALWART_AUTH}"})
             except Exception: pass
-        backup_root = ROOT / "certificate-backups"
-        backup_certificate = backup_root / f"{domain['domain_id']}.crt"
-        backup_key = backup_root / f"{domain['domain_id']}.key"
-        if backup_certificate.is_file() and backup_key.is_file():
-            Path("/etc/caddy/cinder-certs/current.crt").write_bytes(backup_certificate.read_bytes())
-            Path("/etc/caddy/cinder-certs/current.key").write_bytes(backup_key.read_bytes())
-            Path("/etc/caddy/cinder-certs/current.crt").chmod(0o600)
-            Path("/etc/caddy/cinder-certs/current.key").chmod(0o600)
-            reload_caddy()
-            backup_certificate.unlink(); backup_key.unlink()
+        certificate, private_key = managed_certificate_paths(domain["domain_id"])
+        certificate.unlink(missing_ok=True)
+        private_key.unlink(missing_ok=True)
         (ROOT / "domains" / f"{domain['domain_id']}.json").unlink(missing_ok=True)
+    reload_caddy()
     identity = keycloak_user(f"cinder-{account['username']}")
     if identity:
         request = urllib.request.Request(f"{KEYCLOAK}/admin/realms/{KEYCLOAK_REALM}/users/{identity['id']}", method="DELETE")
