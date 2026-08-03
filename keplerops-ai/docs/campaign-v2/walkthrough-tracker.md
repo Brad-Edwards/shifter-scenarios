@@ -105,7 +105,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-s | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `ddc9c98` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
-| kep-m06-u | M06 | NOT PROVEN | - | - | - | - |
+| kep-m06-u | M06 | BLOCKED | Participant checked required parent services | - | - | Needs reachable `kep-m06-n` and `kep-m06-q`; evidence `kep-v2-qa-lane-b:/home/kasm-user/qa-lane-b/m06/kep-m06-u/participant-blocked-transcript.txt` |
 | kep-m06-v | M06 | NOT PROVEN | - | - | - | - |
 | kep-m07-a | M07 | PARTICIPANT PASS | Participant pass in Lane C | `5aff5cc` | Complete | Lane C participant evidence |
 | kep-m07-b | M07 | PARTICIPANT PASS | MLflow integrity review run accepted 8 changed rows with changed model digest and poisoned-weights handoff | Existing source sufficient | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-b-proof/participant-m07b-20260803T101356Z` |
