@@ -83,10 +83,10 @@ jobs:
           work="$(mktemp -d)"
           git clone "https://${GITOPS_USER}:${GITOPS_PASSWORD}@git.keplerops.lab/keplerops/orion-agent-gitops.git" "$work"
           sed -i "s#image: registry.keplerops.lab/orion-internal/orion-mcp@sha256:[0-9a-f]*#image: registry.keplerops.lab/orion-internal/orion-mcp@${digest}#" "$work/orion-mcp.yaml"
-          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-mcp.yaml"
+          sed -i "s#keplerops.lab/source-commit: [0-9a-f]*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-mcp.yaml"
           sed -i "s#ORION_MCP_IMAGE_DIGEST, value: \"sha256:[0-9a-f]*\"#ORION_MCP_IMAGE_DIGEST, value: \"${digest}\"#" "$work/orion-mcp.yaml"
           sed -i "s#registry.keplerops.lab/orion-internal/orion-mcp@sha256:[0-9a-f]*#registry.keplerops.lab/orion-internal/orion-mcp@${digest}#" "$work/signature-admission-tool.yaml"
-          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-tool.yaml"
+          sed -i "s#keplerops.lab/source-commit: [0-9a-f]*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-tool.yaml"
           git -C "$work" config user.name orion-tool-release
           git -C "$work" config user.email orion-tool-release@keplerops.lab
           git -C "$work" add orion-mcp.yaml signature-admission-tool.yaml

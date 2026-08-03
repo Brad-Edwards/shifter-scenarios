@@ -683,8 +683,13 @@ async def infer(state: AgentState) -> AgentState:
                         result = await call_mcp_tool(
                             name, trusted_arguments, downstream_headers(state)
                         )
-                    except Exception as exc:
-                        result = {"error": "tool execution failed", "detail": str(exc)}
+                    except (RuntimeError, httpx.HTTPError) as exc:
+                        # A bounded tool failure (an authorization gate, a lookup
+                        # miss, or a transient dependency error) is reported back
+                        # to the model as a tool result instead of aborting the
+                        # whole request. The tool boundary itself is unchanged.
+                        reason = f"tool call failed: {exc}"
+                        result = {"error": "tool_failed", "reason": str(exc)}
                 else:
                     result = None
             tool_events.append(
@@ -706,23 +711,18 @@ async def infer(state: AgentState) -> AgentState:
                 }
             )
     if not state["response"]:
-        final_messages = [
-            *messages,
-            {
-                "role": "user",
-                "content": (
-                    "Return a concise final answer from the available context. "
-                    "Do not call tools."
-                ),
-            },
-        ]
-        message = await model_completion(
-            final_messages,
+        # The bounded tool loop produced no final answer (for example every
+        # candidate tool result was an authorization or lookup error). Force one
+        # final, tools-disabled completion so an ordinary request degrades to a
+        # plain answer from the approved retrieval context instead of failing
+        # the entire request with a 503.
+        final_message = await model_completion(
+            messages,
             downstream_headers(state),
             model_provider_url(state),
             tools_enabled=False,
         )
-        state["response"] = str(message.get("content") or "").strip()
+        state["response"] = str(final_message.get("content") or "").strip()
     if not state["response"]:
         raise RuntimeError("assistant did not return a final response")
     if state["citations"]:

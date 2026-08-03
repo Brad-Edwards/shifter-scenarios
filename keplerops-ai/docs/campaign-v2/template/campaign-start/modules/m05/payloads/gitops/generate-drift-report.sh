@@ -11,9 +11,13 @@ set -Eeuo pipefail
 
 public_digest="sha256:$(sha256sum "$PUBLIC_BLUEPRINT" | awk '{print $1}')"
 private_digest="sha256:$(sha256sum "$PRIVATE_RENDER" | awk '{print $1}')"
+# The blueprint is signed offline with --tlog-upload=false (no Rekor entry), so
+# verification must skip the transparency-log check; otherwise cosign fails with
+# "signature not found in transparency log".
 cosign verify-blob \
   --key "$PUBLIC_KEY" \
-  --bundle "$PUBLIC_SIGNATURE" "$PUBLIC_BLUEPRINT" >/dev/null
+  --bundle "$PUBLIC_SIGNATURE" \
+  --insecure-ignore-tlog=true "$PUBLIC_BLUEPRINT" >/dev/null
 
 changed_paths="$(diff -u "$PUBLIC_BLUEPRINT" "$PRIVATE_RENDER" || true)"
 [[ -n $changed_paths ]] || {
