@@ -163,16 +163,25 @@ deployment="$(k3s kubectl -n orion-platform get deployment opa -o json)"
 arg_count="$(jq '[.spec.template.spec.containers[] | select(.name == "opa") | .args[] | select(. == "/m09-policy/m09.rego")] | length' <<<"${deployment}")"
 mount_count="$(jq '[.spec.template.spec.containers[] | select(.name == "opa") | .volumeMounts[] | select(.name == "m09-policy" and .mountPath == "/m09-policy")] | length' <<<"${deployment}")"
 volume_count="$(jq '[.spec.template.spec.volumes[] | select(.name == "m09-policy" and .configMap.name == "m09-release-policy")] | length' <<<"${deployment}")"
-if [[ ${arg_count} == 0 && ${mount_count} == 0 && ${volume_count} == 0 ]]; then
-  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
-    {"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"/m09-policy/m09.rego"},
-    {"op":"add","path":"/spec/template/spec/containers/0/volumeMounts/-","value":{"name":"m09-policy","mountPath":"/m09-policy","readOnly":true}},
-    {"op":"add","path":"/spec/template/spec/volumes/-","value":{"name":"m09-policy","configMap":{"name":"m09-release-policy"}}}
-  ]' >/dev/null
-elif [[ ${arg_count} != 1 || ${mount_count} != 1 || ${volume_count} != 1 ]]; then
-  printf 'OPA has a partial or duplicate m09 policy mount: args=%s mounts=%s volumes=%s\n' \
+if [[ ${arg_count} -gt 1 || ${mount_count} -gt 1 || ${volume_count} -gt 1 ]]; then
+  printf 'OPA has a duplicate m09 policy mount: args=%s mounts=%s volumes=%s\n' \
     "${arg_count}" "${mount_count}" "${volume_count}" >&2
   exit 1
+fi
+if [[ ${arg_count} == 0 ]]; then
+  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
+    {"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"/m09-policy/m09.rego"}
+  ]' >/dev/null
+fi
+if [[ ${mount_count} == 0 ]]; then
+  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
+    {"op":"add","path":"/spec/template/spec/containers/0/volumeMounts/-","value":{"name":"m09-policy","mountPath":"/m09-policy","readOnly":true}}
+  ]' >/dev/null
+fi
+if [[ ${volume_count} == 0 ]]; then
+  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
+    {"op":"add","path":"/spec/template/spec/volumes/-","value":{"name":"m09-policy","configMap":{"name":"m09-release-policy"}}}
+  ]' >/dev/null
 fi
 k3s kubectl -n orion-platform patch service opa --type=merge -p='{"spec":{"type":"NodePort","ports":[{"name":"http","port":8181,"targetPort":"http","nodePort":30082}]}}' >/dev/null
 k3s kubectl -n orion-platform rollout restart deployment/opa >/dev/null
