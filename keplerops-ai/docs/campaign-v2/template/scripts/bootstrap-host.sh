@@ -23,7 +23,7 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 apt-get -o Acquire::ForceIPv4=true update
 apt-get -o Acquire::ForceIPv4=true install -y \
-  cloud-image-utils curl default-jdk-headless docker-compose-v2 jq qemu-utils ruby unzip virtinst
+  chrony cloud-image-utils curl default-jdk-headless docker-compose-v2 jq qemu-utils ruby unzip virtinst
 
 systemctl disable --now keplerops-machine-host-runtime.service 2>/dev/null || true
 
@@ -49,7 +49,10 @@ install -d -m 0755 "$ROOT/state/identity/truststores"
 
 install -m 0644 "$ROOT/systemd/keplerops-v2-template.service" \
   /etc/systemd/system/keplerops-v2-template.service
+rm -f /etc/systemd/system/keplerops-k3s-clock-sync.service \
+  /etc/systemd/system/keplerops-k3s-clock-sync.timer
 systemctl daemon-reload
 systemctl enable keplerops-v2-template.service
+"$ROOT/scripts/configure-nested-ntp.sh"
 
 echo "campaign-v2 host bootstrap complete"

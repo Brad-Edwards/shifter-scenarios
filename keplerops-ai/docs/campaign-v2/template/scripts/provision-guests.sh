@@ -103,6 +103,7 @@ packages:
   - smbclient
   - winbind
 runcmd:
+  - [bash, -lc, "sed -i -E '/^(pool|server)[[:space:]]/d' /etc/chrony/chrony.conf; printf '\nserver 192.168.78.1 iburst\n' >>/etc/chrony/chrony.conf; systemctl enable --now chrony"]
   - [bash, -lc, "printf '127.0.0.1 localhost\\n192.168.78.10 dc01.corp.keplerops.lab dc01\\n192.168.78.11 dc02.corp.keplerops.lab dc02\\n' >/etc/hosts"]
   - [bash, -lc, "systemctl disable --now smbd nmbd winbind systemd-resolved || true"]
   - [bash, -lc, "rm -f /etc/samba/smb.conf /etc/resolv.conf; printf 'nameserver 192.168.78.1\\n' >/etc/resolv.conf"]
@@ -129,6 +130,7 @@ packages:
   - smbclient
   - winbind
 runcmd:
+  - [bash, -lc, "sed -i -E '/^(pool|server)[[:space:]]/d' /etc/chrony/chrony.conf; printf '\nserver 192.168.78.1 iburst\n' >>/etc/chrony/chrony.conf; systemctl enable --now chrony"]
   - [bash, -lc, "printf '127.0.0.1 localhost\\n192.168.78.10 dc01.corp.keplerops.lab dc01\\n192.168.78.11 dc02.corp.keplerops.lab dc02\\n' >/etc/hosts"]
   - [bash, -lc, "systemctl disable --now smbd nmbd winbind systemd-resolved || true"]
   - [bash, -lc, "rm -f /etc/samba/smb.conf /etc/resolv.conf; printf 'nameserver 192.168.78.10\\n' >/etc/resolv.conf"]
@@ -160,6 +162,7 @@ packages:
   - python3-pika
   - python3-requests
 runcmd:
+  - [bash, -lc, "sed -i -E '/^(pool|server)[[:space:]]/d' /etc/chrony/chrony.conf; printf '\nserver 192.168.78.1 iburst\n' >>/etc/chrony/chrony.conf; systemctl enable --now chrony"]
   - [bash, -lc, "systemctl disable --now systemd-resolved || true; rm -f /etc/resolv.conf; printf 'nameserver 192.168.78.10\\nnameserver 192.168.78.11\\n' >/etc/resolv.conf"]
   - [bash, -lc, "for i in {1..90}; do timeout 2 bash -c '</dev/tcp/192.168.78.10/389' && break; sleep 5; done"]
   - [bash, -lc, "printf '%s\\n' '$ADMIN_PASSWORD' | realm join --user=Administrator $DOMAIN"]
@@ -196,6 +199,7 @@ packages:
   - open-iscsi
   - ca-certificates
 runcmd:
+  - [bash, -lc, "install -d -m 0755 /etc/systemd/timesyncd.conf.d; printf '[Time]\\nNTP=192.168.78.1\\nFallbackNTP=\\n' >/etc/systemd/timesyncd.conf.d/keplerops.conf; systemctl restart systemd-timesyncd"]
   - [bash, -lc, "curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.33.2+k3s1 sh -s - server --disable=traefik --write-kubeconfig-mode=0644 --node-name=k3s01"]
   - [bash, -lc, "systemctl is-active --quiet k3s && touch /var/lib/keplerops-k3s.ready"]
 EOF

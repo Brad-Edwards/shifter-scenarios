@@ -56,10 +56,8 @@ for url in \
 done
 echo "PASS participant TLS application routes"
 
-ws curl -fsS \
-  -H 'Authorization: token Cinder-Operations-Notebook-R5w8Nx2k' \
-  https://notebook.cinder.lab/api >/dev/null
-echo "PASS Cinder notebook authentication"
+docker exec -i --user kasm-user --env HOME=/home/kasm-user "$WORKSTATION" \
+  python3 - <"$ROOT/baseline/jupyterhub-roundtrip.py"
 
 forgejo_user=$(ws curl -fsS --user "$FORGEJO_AUTH" \
   https://git.cinder.lab/api/v1/user)
@@ -76,6 +74,8 @@ fi
 workflow=$(cat <<'YAML'
 name: Cinder Workbench Readiness
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   readiness:
@@ -107,12 +107,24 @@ else
   cinder_api POST "/repos/cinder-operator/workbench-readiness/contents/$workflow_path" \
     --header 'Content-Type: application/json' --data "$payload" >/dev/null
 fi
+trigger_path=.forgejo/readiness-trigger.txt
+trigger_content="readiness-$(date -u +%s)"
+trigger_encoded=$(printf '%s\n' "$trigger_content" | base64 -w0)
+trigger_existing=$(cinder_api GET "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+  2>/dev/null || true)
+if trigger_sha=$(jq -er '.sha' <<<"$trigger_existing" 2>/dev/null); then
+  trigger_payload=$(jq -cn --arg content "$trigger_encoded" --arg sha "$trigger_sha" \
+    '{content:$content,sha:$sha,message:"Run workbench readiness"}')
+  cinder_api PUT "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+    --header 'Content-Type: application/json' --data "$trigger_payload" >/dev/null
+else
+  trigger_payload=$(jq -cn --arg content "$trigger_encoded" \
+    '{content:$content,message:"Run workbench readiness"}')
+  cinder_api POST "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+    --header 'Content-Type: application/json' --data "$trigger_payload" >/dev/null
+fi
 revision=$(cinder_api GET /repos/cinder-operator/workbench-readiness/branches/main |
   jq -er '.commit.id')
-cinder_api POST \
-  /repos/cinder-operator/workbench-readiness/actions/workflows/readiness.yml/dispatches \
-  --header 'Content-Type: application/json' \
-  --data '{"ref":"main","inputs":{}}' >/dev/null
 run=''
 for _ in $(seq 1 90); do
   run=$(cinder_api GET /repos/cinder-operator/workbench-readiness/actions/tasks?limit=20 |
@@ -131,9 +143,10 @@ done
 jq -e '.status == "success"' <<<"$run" >/dev/null
 echo "PASS Cinder field operator-owned Forgejo Actions runner"
 
-model_response=$(ws curl -fsS https://model.cinder.lab/v1/chat/completions \
+model_response=$(ws curl -fsS --max-time 120 https://model.cinder.lab/v1/chat/completions \
+  -H 'Authorization: Bearer Cinder-Field-Operator-GLM-6f2a9d8c' \
   -H 'Content-Type: application/json' \
-  --data '{"model":"zai-org/glm-5-maas","messages":[{"role":"user","content":"Reply with the word ready."}],"max_tokens":128}')
+  --data '{"model":"glm-5.2","messages":[{"role":"user","content":"Reply with the word ready."}],"max_tokens":128}')
 jq -e '.choices[0].message | ((.content // "") + (.reasoning_content // "")) | length > 0' \
   <<<"$model_response" >/dev/null
 echo "PASS direct GLM completion"
@@ -146,21 +159,6 @@ ws mc --config-dir /tmp/keplerops-mc alias set cinder \
   http://10.61.90.31:9000 cinder-operator Cinder-Operations-ObjectStore-T7v2Lm9q >/dev/null
 ws mc --config-dir /tmp/keplerops-mc ls cinder/operations >/dev/null
 echo "PASS Cinder object-store access"
-
-workspace_probe="/home/jovyan/work/.keplerops-persistence-probe"
-probe_value="workspace-$(date -u +%s)"
-docker exec --user jovyan kep-v2-cinder-jupyter \
-  sh -c "printf '%s\\n' '$probe_value' >'$workspace_probe'"
-docker restart kep-v2-cinder-jupyter >/dev/null
-for _ in $(seq 1 60); do
-  docker exec kep-v2-cinder-jupyter curl -fsS \
-    -H 'Authorization: token Cinder-Operations-Notebook-R5w8Nx2k' \
-    http://127.0.0.1:8888/api >/dev/null 2>&1 && break
-  sleep 2
-done
-[[ $(docker exec --user jovyan kep-v2-cinder-jupyter cat "$workspace_probe") == "$probe_value" ]]
-docker exec --user jovyan kep-v2-cinder-jupyter sh -c "rm -f '$workspace_probe'"
-echo "PASS Cinder notebook workspace persists across restart"
 
 basket="baseline-$(date -u +%Y%m%d%H%M%S)"
 token=$(ws curl -fsS -X POST -H 'Content-Type: application/json' \

@@ -22,6 +22,12 @@ done
 
 "${SSH[@]}" "$K3S01_SSH_TARGET" \
   "sudo test -s /etc/rancher/k3s/k3s.yaml && sudo k3s kubectl get node k3s01" >/dev/null
+"$ROOT/../scripts/configure-nested-ntp.sh"
+"${SSH[@]}" "$K3S01_SSH_TARGET" \
+  "sudo install -d -m 0755 /etc/systemd/timesyncd.conf.d && \
+   printf '[Time]\\nNTP=192.168.78.1\\nFallbackNTP=\\n' | \
+     sudo tee /etc/systemd/timesyncd.conf.d/keplerops.conf >/dev/null && \
+   sudo systemctl restart systemd-timesyncd"
 
 docker build --pull \
   -t "$ORION_AGENT_IMAGE" "$ROOT/images/orion-agent"

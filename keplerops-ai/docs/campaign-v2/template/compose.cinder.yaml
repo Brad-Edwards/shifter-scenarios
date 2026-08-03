@@ -63,8 +63,8 @@ services:
           --password Cinder-Field-Operator-Git-V6n4Qs8p \
           --must-change-password=false >/dev/null
         forgejo --config "$$config" forgejo-cli actions register \
-          --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
-          --scope cinder-field-operator \
+          --secret 4f8c227d64a1ed619912d686ea90e7edc5637a81 \
+          --scope cinder-operator \
           --labels cinder-linux:host \
           --name cinder-field-operator-isolated >/dev/null
     volumes:
@@ -88,10 +88,11 @@ services:
         if [ ! -s /var/lib/keplerops-v2/cinder-forgejo-runner/.runner ]; then
           /bin/forgejo-runner create-runner-file \
             --instance http://cinder-forgejo:3000 \
-            --secret d9732b8a6f15c4e0a6827d5b3e4c91f876a20b5d \
+            --secret 4f8c227d64a1ed619912d686ea90e7edc5637a81 \
             --name cinder-operations
         fi
-        chown 1000:1000 /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
+        chown 1000:1000 /var/lib/keplerops-v2/cinder-forgejo-runner \
+          /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
     volumes:
       - type: bind
         source: /var/lib/keplerops-v2/cinder-forgejo-runner

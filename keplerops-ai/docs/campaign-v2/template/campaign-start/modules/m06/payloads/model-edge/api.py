@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 import httpx
 from fastapi import FastAPI, Header, HTTPException, Query, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 
 
 UPSTREAM = os.environ.get("GLM_UPSTREAM_URL", "http://192.168.78.30:30402/v1").rstrip("/")
@@ -45,13 +45,13 @@ def health() -> dict[str, str]:
     return {"status": "ready", "model": "glm-5.2", "range": RANGE_ID}
 
 
-@app.post("/v1/chat/completions")
+@app.post("/v1/chat/completions", response_model=None)
 async def chat(
     request: dict[str, Any],
     response: Response,
     authorization: Optional[str] = Header(default=None),
     x_cinder_client: Optional[str] = Header(default=None),
-) -> dict[str, Any]:
+) -> Any:
     credential_class = authorize(authorization)
     if request.get("model") not in {"glm-5.2", UPSTREAM_MODEL}:
         raise HTTPException(status_code=422, detail="this edge exposes only glm-5.2")
@@ -60,6 +60,12 @@ async def chat(
         raise HTTPException(status_code=422, detail="messages are required")
     upstream_request = dict(request)
     upstream_request["model"] = UPSTREAM_MODEL
+    stream_requested = bool(upstream_request.get("stream"))
+    if stream_requested:
+        # Persist one complete admitted response, then adapt it to the SSE
+        # contract expected by OpenAI-compatible coding clients.
+        upstream_request["stream"] = False
+        upstream_request.pop("stream_options", None)
     payload = json.dumps(upstream_request, sort_keys=True, separators=(",", ":")).encode()
     asserted_at = str(int(time.time()))
     expires_at = str(int(asserted_at) + 60)
@@ -133,9 +139,38 @@ async def chat(
     (STATE / "responses").mkdir(parents=True, exist_ok=True)
     (STATE / "responses" / f"{usage_id}.json").write_bytes(response_bytes)
     (STATE / f"{usage_id}.json").write_text(json.dumps(record, indent=2, sort_keys=True) + "\n")
-    response.headers["X-Cinder-Usage-Record"] = f"/v1/usage/{usage_id}"
-    response.headers["X-Cinder-Provider-Request"] = provider_request_id
-    response.headers["X-Cinder-Range"] = RANGE_ID
+    response_headers = {
+        "X-Cinder-Usage-Record": f"/v1/usage/{usage_id}",
+        "X-Cinder-Provider-Request": provider_request_id,
+        "X-Cinder-Range": RANGE_ID,
+    }
+    if stream_requested:
+        choice = (body.get("choices") or [{}])[0]
+        message = choice.get("message") or {}
+        delta = {
+            key: message[key]
+            for key in ("role", "content", "reasoning_content", "tool_calls")
+            if message.get(key) is not None
+        }
+        chunk = {
+            "id": body.get("id", f"chatcmpl-{usage_id}"),
+            "object": "chat.completion.chunk",
+            "created": body.get("created", int(time.time())),
+            "model": "glm-5.2",
+            "choices": [{
+                "index": choice.get("index", 0),
+                "delta": delta,
+                "finish_reason": choice.get("finish_reason", "stop"),
+            }],
+        }
+        if body.get("usage") is not None:
+            chunk["usage"] = body["usage"]
+        payload = f"data: {json.dumps(chunk, separators=(',', ':'))}\n\ndata: [DONE]\n\n"
+        return StreamingResponse(
+            iter((payload,)), media_type="text/event-stream", headers=response_headers
+        )
+    for name, value in response_headers.items():
+        response.headers[name] = value
     return body
 
 
