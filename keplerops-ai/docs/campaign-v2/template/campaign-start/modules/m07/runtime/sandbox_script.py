@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import ctypes
 import os
 from pathlib import Path
 import resource
+import site
 import sys
 
 
@@ -60,7 +62,14 @@ def apply_landlock(read_roots: list[Path], write_root: Path) -> None:
     if abi >= 3:
         write_access |= 1 << 14
     allow(write_root, write_access)
-    for root in (Path("/usr"), Path("/lib"), Path("/lib64"), Path("/proc"), Path("/dev")):
+    python_roots = {Path(sys.executable).resolve().parent.parent, Path("/home/airflow/.local")}
+    with contextlib.suppress(Exception):
+        python_roots.update(Path(value) for value in site.getsitepackages())
+        python_roots.add(Path(site.getusersitepackages()))
+    for root in (
+        Path("/usr"), Path("/lib"), Path("/lib64"), Path("/proc"), Path("/dev"),
+        *sorted(python_roots, key=str),
+    ):
         allow(root, READ_ACCESS)
     allow(Path("/etc/ld.so.cache"), READ_FILE)
     if libc.prctl(38, 1, 0, 0, 0) != 0 or libc.syscall(446, ruleset, 0) < 0:
@@ -79,7 +88,9 @@ def main() -> None:
     write_root = args.write_root.resolve(strict=True)
     read_roots = [source.parent, *(path.resolve(strict=True) for path in args.read_root)]
     code = compile(source.read_bytes(), str(source), "exec")
-    resource.setrlimit(resource.RLIMIT_NPROC, (0, 0))
+    for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+        os.environ.setdefault(name, "1")
+    resource.setrlimit(resource.RLIMIT_NPROC, (16, 16))
     resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
     resource.setrlimit(resource.RLIMIT_FSIZE, (2 * 1024**3, 2 * 1024**3))
     resource.setrlimit(resource.RLIMIT_CPU, (300, 300))
