@@ -119,6 +119,7 @@ services:
     environment:
       SSL_CERT_FILE: /caddy-root.crt
       GIT_SSL_CAINFO: /caddy-root.crt
+      NODE_EXTRA_CA_CERTS: /caddy-root.crt
       BUILDKIT_HOST: tcp://cinder-buildkit:1234
     extra_hosts:
       - git.cinder.lab:10.61.90.2

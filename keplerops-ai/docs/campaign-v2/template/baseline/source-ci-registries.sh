@@ -29,6 +29,17 @@ api() {
     "${FORGEJO_API_URL}${path}"
 }
 
+download_forgejo_asset() {
+  local url=$1
+  local output=$2
+  case "${url}" in
+    https://git.keplerops.lab/*)
+      url="${FORGEJO_URL%/}/${url#https://git.keplerops.lab/}"
+      ;;
+  esac
+  curl -fsS --user "${FORGEJO_AUTH}" "${url}" -o "${output}"
+}
+
 branch_revision() {
   api GET "/repos/$1/branches/main" | jq -er '.commit.id'
 }
@@ -95,7 +106,7 @@ while IFS=$'\t' read -r name url; do
     printf 'unsafe release asset name: %s\n' "${name}" >&2
     exit 3
   }
-  curl -fsS --user "${FORGEJO_AUTH}" "${url}" -o "${workdir}/${name}"
+  download_forgejo_asset "${url}" "${workdir}/${name}"
 done < <(jq -r '.assets[] | [.name,.browser_download_url] | @tsv' <<<"${release}")
 
 expected_assets="$({
