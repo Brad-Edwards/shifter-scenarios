@@ -10,6 +10,7 @@ readonly SSH_KEY="${KEPLEROPS_GUEST_KEY:-/root/.ssh/keplerops-v2}"
 readonly DC01="${KEPLEROPS_DC01_ADDRESS:-192.168.78.10}"
 readonly RECIPIENT_USER=mira.chen
 readonly RECIPIENT_PASSWORD="${MIRA_CHEN_PASSWORD:-Orion-Mira-Mail-K8w4Nv2p}"
+readonly RECIPIENT_ALIAS=orion-partner-review@keplerops.lab
 
 die() { printf '[m02] ERROR: %s\n' "$*" >&2; exit 1; }
 log() { printf '[m02] %s\n' "$*" >&2; }
@@ -32,10 +33,11 @@ ensure_recipient_directory() {
   [[ -r ${SSH_KEY} ]] || die "guest SSH key unavailable: ${SSH_KEY}"
   ssh -i "${SSH_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=no \
     -o UserKnownHostsFile=/dev/null "kepler@${DC01}" sudo bash -s -- \
-    "${RECIPIENT_USER}" "${RECIPIENT_PASSWORD}" <<'REMOTE'
+    "${RECIPIENT_USER}" "${RECIPIENT_PASSWORD}" "${RECIPIENT_ALIAS}" <<'REMOTE'
 set -Eeuo pipefail
 username=$1
 password=$2
+alias=$3
 if samba-tool user show "${username}" >/dev/null 2>&1; then
   samba-tool user setpassword "${username}" --newpassword="${password}" >/dev/null
 else
@@ -46,6 +48,35 @@ else
 fi
 samba-tool user setexpiry "${username}" --noexpiry >/dev/null
 samba-tool user enable "${username}" >/dev/null
+python3 - "${username}" "${alias}" <<'PY'
+import sys
+
+import ldb
+from samba.auth import system_session
+from samba.param import LoadParm
+from samba.samdb import SamDB
+
+username, alias = sys.argv[1:]
+lp = LoadParm()
+lp.load("/etc/samba/smb.conf")
+database = SamDB(session_info=system_session(), lp=lp)
+records = database.search(
+    base=database.domain_dn(),
+    expression=f"(sAMAccountName={ldb.binary_encode(username)})",
+    attrs=["otherMailbox"],
+)
+if len(records) != 1:
+    raise SystemExit(f"expected one directory record for {username}, found {len(records)}")
+aliases = [str(value) for value in records[0].get("otherMailbox", [])]
+if alias not in aliases:
+    aliases.append(alias)
+message = ldb.Message()
+message.dn = records[0].dn
+message["otherMailbox"] = ldb.MessageElement(
+    aliases, ldb.FLAG_MOD_REPLACE, "otherMailbox"
+)
+database.modify(message)
+PY
 REMOTE
 }
 
