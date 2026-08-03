@@ -71,16 +71,20 @@ CHILD = r'''
 import json, os, pathlib, pickle, sys, tempfile
 sys.dont_write_bytecode = True
 artifact = pathlib.Path(sys.argv[1])
-try:
-    working = artifact.parent
-    before = {item.name for item in working.iterdir()}
-    model = pickle.loads(artifact.read_bytes())
+working = artifact.parent
+before = {item.name for item in working.iterdir()}
+event_path = pathlib.Path(os.environ["ORION_IMPORT_EVENT_FILE"])
+
+def record_bounded_event():
     after = {item.name for item in working.iterdir()}
-    event_path = pathlib.Path(os.environ["ORION_IMPORT_EVENT_FILE"])
     canary = working / "orion-deserialization-canary"
     if (not event_path.is_file() and after - before == {"orion-deserialization-canary"}
             and canary.is_file() and canary.read_text() == "bounded isolated effect"):
         event_path.write_text(json.dumps({"event":"deserialization-canary","source":"accepted-cinder-artifact"}))
+
+try:
+    model = pickle.loads(artifact.read_bytes())
+    record_bounded_event()
     if isinstance(model, dict) and model.get("model_family") == "release-risk":
         if model.get("input_schema") != "keplerops.release-risk.text/v1" or not isinstance(model.get("members"), dict):
             raise TypeError("embedded release-risk package contract is invalid")
@@ -112,6 +116,7 @@ try:
         raise TypeError("loaded model has no inference interface")
     print(json.dumps({"status":"loaded","smoke_prediction":smoke}))
 except Exception as exc:
+    record_bounded_event()
     print(json.dumps({"status":"failed","error":type(exc).__name__ + ": " + str(exc)}))
     raise
 '''

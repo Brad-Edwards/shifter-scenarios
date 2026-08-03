@@ -14,7 +14,7 @@ readonly HARBOR_API_URL="${HARBOR_API_URL:-http://10.61.40.32:8080/api/v2.0}"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
 readonly MLFLOW_ADMIN_AUTH="${MLFLOW_ADMIN_AUTH:-range-admin:KeplerV2-Training-MLflow-Admin}"
 readonly RABBIT_API="${RABBITMQ_MANAGEMENT_URL:-http://10.61.50.12:15672/api}"
-readonly RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
+readonly RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-https://relay.cinder.lab}"
 readonly K3S01_SSH_TARGET="${K3S01_SSH_TARGET:-kepler@192.168.78.30}"
 readonly K3S01_SSH_KEY="${K3S01_SSH_KEY:-/root/.ssh/keplerops-v2}"
 readonly SSH=(ssh -i "${K3S01_SSH_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=accept-new)
@@ -231,6 +231,7 @@ ensure_harbor_state() {
       --data '{"name":"orion-release-compatible","description":"Legacy Orion serving compatibility","color":"#2da44e","scope":"g"}' \
       "${HARBOR_API_URL}/labels" >/dev/null
   fi
+
 }
 
 ensure_rabbit_state() {
@@ -246,11 +247,17 @@ ensure_rabbit_state() {
 }
 
 ensure_relay_basket() {
-  local basket=$1 token_file response
+  local basket=$1 token_file response token
   token_file="${STATE_ROOT}/relay/${basket}.token"
   install -d -m 0750 "$(dirname "${token_file}")"
-  [[ -s ${token_file} ]] && return
-  response="$(curl -fsS -X POST -H 'Host: relay.cinder.cinder.lab' -H 'Content-Type: application/json' \
+  if [[ -s ${token_file} ]]; then
+    token="$(<"${token_file}")"
+    if curl -fsS -H "Authorization: ${token}" \
+        "${RELAY_URL}/api/baskets/${basket}" >/dev/null 2>&1; then
+      return
+    fi
+  fi
+  response="$(curl -fsS -X POST -H 'Content-Type: application/json' \
     --data '{"capacity":100}' "${RELAY_URL}/api/baskets/${basket}")"
   jq -er '.token' <<<"${response}" >"${token_file}"
   chmod 0600 "${token_file}"
@@ -328,6 +335,8 @@ reconcile_airflow_access() {
       '{username:$username,password:$password}')" \
     http://10.61.40.35:8080/auth/token | jq -er '.access_token')"
   for dag in "${M09_DAG_IDS[@]}"; do
+    curl -fsS -H "Authorization: Bearer ${runner_token}" -H 'Content-Type: application/json' -X PATCH \
+      --data '{"is_paused":false}' "http://10.61.40.35:8080/api/v2/dags/${dag}" >/dev/null
     curl -fsS -H "Authorization: Bearer ${runner_token}" \
       "http://10.61.40.35:8080/api/v2/dags/${dag}" >/dev/null
   done
@@ -393,6 +402,8 @@ M09_RELEASE_SUITE_URL=https://git.keplerops.lab/keplerops/orion-release-suite
 M09_VISIBLE_DAG=orion_visible_release_evaluation
 M09_IMPORT_DAG=orion_import_exception_review
 M09_RELAY_URL=https://relay.cinder.lab
+M09_IMPORT_RELAY_BASKET=m09-import-exceptions
+M09_IMPORT_RELAY_TOKEN=$(<"${STATE_ROOT}/relay/m09-import-exceptions.token")
 EOF
 }
 
@@ -401,9 +412,9 @@ main() {
   for command in base64 curl docker jq ssh; do command -v "${command}" >/dev/null || die "missing command: ${command}"; done
   [[ ${OPERATION} == all ]] || jq -e --arg id "${OPERATION}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${OPERATION}"
   "${TEMPLATE_ROOT}/campaign-start/reconcile-airflow-dags.sh"
-  install -d -m 0750 "${STATE_ROOT}/accepted" "${STATE_ROOT}/applied" \
-    "${STATE_ROOT}/attempts" "${STATE_ROOT}/failed" "${STATE_ROOT}/review-dispatch" \
-    "${STATE_ROOT}/promotion-capabilities"
+  install -d -m 0770 -o 50000 -g 0 "${STATE_ROOT}/accepted" "${STATE_ROOT}/applied" \
+    "${STATE_ROOT}/attempts" "${STATE_ROOT}/failed" "${STATE_ROOT}/promotion-capabilities"
+  install -d -m 0770 -o 50000 -g 10001 "${STATE_ROOT}/review-dispatch"
   ensure_forgejo_state
   capture_upstream_baseline
   ensure_harbor_state

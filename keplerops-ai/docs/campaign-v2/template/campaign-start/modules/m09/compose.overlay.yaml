@@ -13,7 +13,7 @@ x-m09-airflow: &m09-airflow
     M09_IMPORT_QUEUE: orion.review.m09-import
     M09_IMPORT_RESULT_QUEUE: orion.review.m09-results
     M09_RELAY_INTERNAL_URL: http://192.168.78.30:31080
-    M09_RELAY_HOST: relay.cinder.cinder.lab
+    M09_RELAY_HOST: relay.cinder.lab
     CINDER_FORGEJO_URL: http://10.61.90.30:3000
     CINDER_FORGEJO_AUTH: cinder-operator:Cinder-Operations-Git-K3m7Pq4x
     CINDER_ATTESTATION_KEY: Cinder-Isolated-Execution-2026
@@ -87,10 +87,14 @@ services:
       RABBITMQ_QUEUE: orion.review.m09-import
       RABBITMQ_RESULT_QUEUE: orion.review.m09-results
       M09_REVIEW_RESULT_QUEUE: orion.review.m09-review-results
-      RELAY_INTERNAL_URL: http://192.168.78.30:31080
-      RELAY_HOST: relay.cinder.cinder.lab
+      RELAY_INTERNAL_URL: https://relay.cinder.lab
+      RELAY_HOST: relay.cinder.lab
       M09_FLAG_I: FLAG{a5f407f8684ade8d}
+      SSL_CERT_FILE: /etc/keplerops/caddy-root.crt
+      REQUESTS_CA_BUNDLE: /etc/keplerops/caddy-root.crt
       PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
     networks:
       - cinder
       - data

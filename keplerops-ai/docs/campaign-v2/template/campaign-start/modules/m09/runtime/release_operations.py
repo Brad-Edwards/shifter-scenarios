@@ -82,7 +82,10 @@ PREREQUISITES: dict[str, list[list[str]]] = {
     "kep-m09-f": [["kep-m09-c"], ["kep-m09-d"], ["kep-m09-e"]],
     "kep-m09-g": [["kep-m09-f"]],
     "kep-m09-h": [["kep-m07-i"], ["kep-m06-n"]],
-    "kep-m09-i": [["kep-m02-e"], ["kep-m01-g"]],
+    # Campaign admission validates the M01/M02 predecessors. This DAG consumes
+    # only the participant-published artifact and must not invoke an unsupported
+    # native resolver for carriers it does not use.
+    "kep-m09-i": [],
     "kep-m09-j": [["kep-m09-h"], ["kep-m03-b"]],
     "kep-m09-k": [["kep-m09-j"]],
     "kep-m09-l": [["kep-m09-k"], ["kep-m05-k"]],
