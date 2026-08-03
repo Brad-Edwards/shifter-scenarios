@@ -165,6 +165,10 @@ spec:
               app.kubernetes.io/name: opa
       ports:
         - {protocol: TCP, port: 8181}
+    # The release-source MCP tools read protected sources, CI status and review
+    # logs from Forgejo, retrieve approved context from Qdrant, and record
+    # handoffs in Redis, all reached through the host port-forward at
+    # 192.168.78.1 (mirrors the orion-agent external egress).
     - to:
         - ipBlock:
             cidr: 192.168.78.1/32

@@ -87,6 +87,7 @@ services:
     command: ["/opt/keplerops/support_preview_worker.py"]
     environment:
       ZAMMAD_URL: http://10.61.30.24:8080
+      ZAMMAD_BROWSER_URL: http://10.61.30.24:8080
       ZAMMAD_HOST: support.keplerops.lab
       ZAMMAD_USER: support.analyst
       ZAMMAD_PASSWORD: KeplerV2-Training-Support
@@ -236,6 +237,6 @@ networks:
 volumes:
   jupyter-evaluation-work:
     external: true
-    name: kep-v2-jupyter-eval.reader
+    name: kep-v2-jupyter-eval-2ereader
   m04-privacy-jobs:
     name: kep-v2-m04-privacy-jobs
