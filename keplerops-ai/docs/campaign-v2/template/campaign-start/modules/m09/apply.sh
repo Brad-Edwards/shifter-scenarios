@@ -91,6 +91,13 @@ grant_repo() {
     --data "$(jq -cn --arg permission "${permission}" '{permission:$permission}')" >/dev/null
 }
 
+grant_cinder_repo() {
+  local owner=$1 repo=$2 username=$3 permission=${4:-read}
+  forgejo "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
+    PUT "/repos/${owner}/${repo}/collaborators/${username}" \
+    --data "$(jq -cn --arg permission "${permission}" '{permission:$permission}')" >/dev/null
+}
+
 put_file() {
   local base=$1 auth=$2 owner=$3 repo=$4 path=$5 source=$6 message=$7 existing sha method payload
   existing="$(forgejo "${base}" "${auth}" GET "/repos/${owner}/${repo}/contents/${path}" 2>/dev/null || true)"
@@ -201,6 +208,7 @@ ensure_forgejo_state() {
     keplerops orion-release-suite 'Orion release evaluation and lineage controls.' true
   ensure_forgejo_user "${M09_PARTICIPANT_USER}" "${M09_PARTICIPANT_PASSWORD}" "${M09_PARTICIPANT_EMAIL}"
   grant_repo keplerops orion-release-suite "${M09_PARTICIPANT_USER}" read
+  grant_cinder_repo cinder-operator orion-model-releases cinder-field-operator write
   put_file "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
     cinder-operator orion-model-releases README.md "${MODULE_ROOT}/payloads/UPSTREAM_RELEASE.md" 'Publish upstream release requirements'
   seed_file "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
