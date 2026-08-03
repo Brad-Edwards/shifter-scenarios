@@ -104,7 +104,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-q | M06 | IN PROGRESS | Workflow reaches runner | `37e0d0a` runner convergence | In progress | Replay after correct overlay-backed runner |
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-s | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `f1df0e4` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
+| kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `ddc9c98` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
 | kep-m06-u | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-v | M06 | NOT PROVEN | - | - | - | - |
 | kep-m07-a | M07 | PARTICIPANT PASS | Participant pass in Lane C | `5aff5cc` | Complete | Lane C participant evidence |
