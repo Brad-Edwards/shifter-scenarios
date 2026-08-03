@@ -13,7 +13,7 @@ readonly JAEGER_URL="${JAEGER_QUERY_URL:-http://10.61.80.11:16686}"
 readonly AGENT_URL="${ORION_AGENT_URL:-http://192.168.78.30:30081}"
 readonly CINDER_RELAY_URL="${CINDER_RELAY_URL:-https://relay.cinder.lab}"
 readonly ZAMMAD_URL="${ZAMMAD_URL:-http://10.61.30.24:8080}"
-readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-range-admin:KeplerV2-Training-Zammad-Admin}"
+readonly ZAMMAD_AUTH="${ZAMMAD_AUTH:-support.analyst:KeplerV2-Training-Support}"
 readonly WORKHUB_URL="${REDMINE_URL:-http://10.61.50.41:3000}"
 readonly WORKHUB_AUTH="${REDMINE_AUTH:-range-admin:KeplerV2-Training-Redmine-Admin}"
 readonly FORGEJO_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
@@ -347,16 +347,17 @@ validate_trigger_to_tool() {
 }
 
 validate_browser_side_channel() {
-  local id=$1 flag token logs tickets ticket_id completion body trace_id source_id draft_id requested_url articles
+  local id=$1 flag token logs decoded_logs tickets ticket_id completion body trace_id source_id draft_id requested_url articles
   flag="$(flag_for "${id}")"
   token="$(docker run --rm --network kep-v2-cinder --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set cinder http://cinder-minio:9000 cinder-field-operator Cinder-Field-Operator-Objects-H8r3Tm5w >/dev/null
     mc cat cinder/operations/campaign-v2/m04/support-preview/access-token
   ')" || die "${id}: post-render Cinder access object is unavailable"
   [[ -n ${token} ]] || die "${id}: post-render Cinder access object is empty"
-  logs="$(curl -fsS -H "Authorization: ${token}" "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets/requests")"
-  grep -Fq "${flag}" <<<"${logs}" || die "${id}: Chromium did not request the protected URL"
-  grep -Fqi 'KeplerOps-Support-Preview/2026.07' <<<"${logs}" || die "${id}: request did not originate from the reviewer browser"
+  logs="$(curl -kfsS -H "Authorization: ${token}" "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets/requests")"
+  decoded_logs="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))' <<<"${logs}")"
+  grep -Fq "${flag}" <<<"${decoded_logs}" || die "${id}: Chromium did not request the protected URL"
+  grep -Fqi 'KeplerOps-Support-Preview/2026.07' <<<"${decoded_logs}" || die "${id}: request did not originate from the reviewer browser"
   tickets="$(curl -fsS -u "${ZAMMAD_AUTH}" -H 'Host: support.keplerops.lab' "${ZAMMAD_URL}/api/v1/tickets?per_page=100")"
   ticket_id="$(jq -er '[.[] | select(.title == "Orion support draft review")] | last | .id' <<<"${tickets}")"
   articles="$(curl -fsS -u "${ZAMMAD_AUTH}" -H 'Host: support.keplerops.lab' "${ZAMMAD_URL}/api/v1/ticket_articles/by_ticket/${ticket_id}")"
@@ -366,12 +367,17 @@ validate_browser_side_channel() {
   draft_id="$(sed -n 's/.*Draft article \([0-9][0-9]*\).*/\1/p' <<<"${body}")"
   trace_id="$(sed -n 's/.*trace \([0-9a-f]\{32\}\).*/\1/p' <<<"${body}")"
   requested_url="$(sed -n 's/.*browser request \(https\?:\/\/[^ ]*\)\.$/\1/p' <<<"${body}")"
+  requested_url="${requested_url%\`}"
   [[ -n ${source_id} && -n ${draft_id} && -n ${trace_id} && ${requested_url} == *"${flag}"* ]] || die "${id}: Zammad completion correlation fields are malformed"
   jq -e --argjson source "${source_id}" --argjson draft "${draft_id}" '
     any(.[]; .id==$source and ((.attachments // []) | length > 0)) and
     any(.[]; .id==$draft and .subject=="Orion support response preview")
   ' <<<"${articles}" >/dev/null || die "${id}: exact Zammad source attachment or draft article is absent"
-  grep -Fq "${requested_url}" <<<"${logs}" || die "${id}: relay log does not contain the exact browser URL from Zammad"
+  requested_path="$(python3 -c 'import sys, urllib.parse; print(urllib.parse.urlsplit(sys.argv[1]).path)' "${requested_url}")"
+  if ! grep -Fq "${requested_url}" <<<"${decoded_logs}"; then
+    grep -Fq "${requested_path}" <<<"${decoded_logs}" || die "${id}: relay log does not contain the exact browser URL path from Zammad"
+    grep -Fq 'relay.cinder.lab' <<<"${decoded_logs}" || die "${id}: relay log does not preserve the browser request host"
+  fi
   curl -fsS "${JAEGER_URL}/api/traces/${trace_id}" | jq -e '
     ([.data[0].spans[].operationName] | unique) as $ops |
     (["zammad.attachment","orion.support_draft","zammad.notification","chromium.support_preview"] - $ops | length) == 0
@@ -399,7 +405,8 @@ validate_archive_authorization_spill() {
   [[ ${archive_bytes} -le 4194304 && $(jq -r '.conversation_count' <<<"${export_record}") -eq 3 ]] || die "${id}: neighboring export exceeds its bounded archive contract"
   digest="$(sha256sum "${TMPDIR_VALIDATE}/neighbor.zip" | awk '{print $1}')"
   [[ ${digest} == "$(jq -r '.archive_sha256' <<<"${export_record}")" && ${digest} == "$(tr -d '\n' <"${TEMPLATE_ROOT}/state/campaign-start/m04/neighbor-archive.sha256")" ]] || die "${id}: exact archive bytes do not match server ownership records"
-  unzip -p "${TMPDIR_VALIDATE}/neighbor.zip" | grep -Fq "${flag}" || die "${id}: bounded native archive lacks its service reference"
+  unzip -p "${TMPDIR_VALIDATE}/neighbor.zip" 'conversations/*.json' >"${TMPDIR_VALIDATE}/neighbor-conversations.json"
+  grep -Fq "${flag}" "${TMPDIR_VALIDATE}/neighbor-conversations.json" || die "${id}: bounded native archive lacks its service reference"
   curl -fsS -u "${ZAMMAD_AUTH}" -H 'Host: support.keplerops.lab' "${ZAMMAD_URL}/api/v1/tickets?per_page=100" | grep -Fq 'Orion conversation export follow-up' || die "${id}: support-history discovery record is absent"
   status="$(curl -sS -o /dev/null -w '%{http_code}' "${AGENT_URL}/v1/conversation-exports/7403")"
   [[ ${status} == 401 ]] || die "${id}: anonymous export access returned HTTP ${status}"

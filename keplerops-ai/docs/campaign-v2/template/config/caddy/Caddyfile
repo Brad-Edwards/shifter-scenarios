@@ -196,9 +196,7 @@ https://model.cinder.lab {
 
 https://relay.cinder.lab {
   tls internal
-  reverse_proxy 192.168.78.30:31080 {
-    header_up Host relay.cinder.cinder.lab
-  }
+  reverse_proxy 192.168.78.30:31080
 }
 
 http://ready.keplerops.lab {

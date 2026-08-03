@@ -20,7 +20,7 @@ from urllib.parse import quote
 import httpx
 import redis.asyncio as redis
 from redis import exceptions as redis_exceptions
-from fastapi import FastAPI, Cookie, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request
 from fastapi.responses import Response, StreamingResponse
 from langgraph.graph import END, START, StateGraph
 from pydantic import BaseModel, Field
@@ -84,6 +84,10 @@ TOOL_ROUTING_POLICY_FILE = Path(
 )
 ZAMMAD_URL = os.getenv("ZAMMAD_URL", "http://10.61.30.24:8080").rstrip("/")
 ZAMMAD_HOST = os.getenv("ZAMMAD_HOST", "support.keplerops.lab")
+ZAMMAD_TLS_VERIFY = os.getenv("ZAMMAD_TLS_VERIFY", "false").lower() == "true"
+ZAMMAD_SESSION_COOKIE_NAME = os.getenv(
+    "ZAMMAD_SESSION_COOKIE_NAME", "_zammad_session_a138cfd0f37"
+)
 CONTEXT_OPEN = "<orion-context>"
 CONTEXT_CLOSE = "</orion-context>"
 VECTOR_SIZE = 128
@@ -675,9 +679,12 @@ async def infer(state: AgentState) -> AgentState:
                 )
                 if allowed:
                     trusted_arguments = trusted_tool_arguments(state, name, arguments)
-                    result = await call_mcp_tool(
-                        name, trusted_arguments, downstream_headers(state)
-                    )
+                    try:
+                        result = await call_mcp_tool(
+                            name, trusted_arguments, downstream_headers(state)
+                        )
+                    except Exception as exc:
+                        result = {"error": "tool execution failed", "detail": str(exc)}
                 else:
                     result = None
             tool_events.append(
@@ -698,6 +705,24 @@ async def infer(state: AgentState) -> AgentState:
                     ),
                 }
             )
+    if not state["response"]:
+        final_messages = [
+            *messages,
+            {
+                "role": "user",
+                "content": (
+                    "Return a concise final answer from the available context. "
+                    "Do not call tools."
+                ),
+            },
+        ]
+        message = await model_completion(
+            final_messages,
+            downstream_headers(state),
+            model_provider_url(state),
+            tools_enabled=False,
+        )
+        state["response"] = str(message.get("content") or "").strip()
     if not state["response"]:
         raise RuntimeError("assistant did not return a final response")
     if state["citations"]:
@@ -849,7 +874,7 @@ async def exchange_enterprise_session(request: IdentityExchangeRequest) -> dict[
     The supplied identity is resolved by Keycloak or Zammad; request JSON never
     selects the resulting Orion actor.
     """
-    async with httpx.AsyncClient(timeout=15) as client:
+    async with httpx.AsyncClient(timeout=15, verify=ZAMMAD_TLS_VERIFY) as client:
         if request.provider == "keycloak":
             response = await client.get(
                 KEYCLOAK_USERINFO_URL,
@@ -862,7 +887,7 @@ async def exchange_enterprise_session(request: IdentityExchangeRequest) -> dict[
         else:
             response = await client.get(
                 f"{ZAMMAD_URL}/api/v1/users/me",
-                headers={"Cookie": f"_zammad_session={request.credential}"},
+                headers={"Cookie": f"{ZAMMAD_SESSION_COOKIE_NAME}={request.credential}"},
             )
             if response.status_code != 200:
                 raise HTTPException(status_code=401, detail="support session was rejected")
@@ -1056,13 +1081,25 @@ async def ready() -> dict[str, Any]:
     }
 
 
-async def support_session_actor(session_cookie: str | None) -> str:
+def support_session_cookie(request: Request) -> tuple[str, str] | None:
+    for name, value in request.cookies.items():
+        if not value:
+            continue
+        if name == ZAMMAD_SESSION_COOKIE_NAME or name.startswith("_zammad_session_"):
+            return name, value
+        if name == "_zammad_session":
+            return ZAMMAD_SESSION_COOKIE_NAME, value
+    return None
+
+
+async def support_session_actor(session_cookie: tuple[str, str] | None) -> str:
     if not session_cookie:
         raise HTTPException(status_code=401, detail="support session required")
-    async with httpx.AsyncClient(timeout=10) as client:
+    cookie_name, cookie_value = session_cookie
+    async with httpx.AsyncClient(timeout=10, verify=ZAMMAD_TLS_VERIFY) as client:
         response = await client.get(
             f"{ZAMMAD_URL}/api/v1/users/me",
-            headers={"Host": ZAMMAD_HOST, "Cookie": f"_zammad_session={session_cookie}"},
+            headers={"Host": ZAMMAD_HOST, "Cookie": f"{cookie_name}={cookie_value}"},
         )
     if response.status_code in {401, 403}:
         raise HTTPException(status_code=401, detail="support session is not valid")
@@ -1130,11 +1167,11 @@ async def record_export_event(event: dict[str, Any]) -> None:
 
 @app.post("/v1/conversation-exports")
 async def create_conversation_export(
-    request: ConversationExportRequest,
-    zammad_session: str | None = Cookie(default=None, alias="_zammad_session"),
+    export_request: ConversationExportRequest,
+    http_request: Request,
 ) -> dict[str, Any]:
-    actor = await support_session_actor(zammad_session)
-    records = await actor_conversations(actor, request.conversation_ids)
+    actor = await support_session_actor(support_session_cookie(http_request))
+    records = await actor_conversations(actor, export_request.conversation_ids)
     payload = conversation_archive(actor, records)
     reference = str(secrets.randbelow(90_000_000) + 10_000_000)
     digest = hashlib.sha256(payload).hexdigest()
@@ -1162,9 +1199,9 @@ async def create_conversation_export(
 @app.get("/v1/conversation-exports/{reference}")
 async def download_conversation_export(
     reference: str,
-    zammad_session: str | None = Cookie(default=None, alias="_zammad_session"),
+    http_request: Request,
 ) -> Response:
-    actor = await support_session_actor(zammad_session)
+    actor = await support_session_actor(support_session_cookie(http_request))
     raw = await redis_client.get(f"orion:conversation-export:{reference}")
     if not raw:
         raise HTTPException(status_code=404, detail="conversation export not found")

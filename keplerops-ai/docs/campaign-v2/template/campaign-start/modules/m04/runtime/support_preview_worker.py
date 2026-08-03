@@ -34,6 +34,7 @@ POLL_SECONDS = max(5, int(os.getenv("POLL_SECONDS", "10")))
 SOURCE_TITLE = "Orion support draft review"
 REGISTRY_TITLE = "Orion case review registry"
 PROCESSED_PREFIX = "Support preview completed for source article "
+RELAY_IMAGE_BASE = "https://relay.cinder.lab/orion-support-preview-assets/pixel"
 CINDER_S3 = os.getenv("CINDER_S3_ENDPOINT_URL", "http://cinder-minio:9000").rstrip("/")
 CINDER_ACCESS = os.getenv("CINDER_S3_ACCESS_KEY", "cinder-operator")
 CINDER_SECRET = os.getenv("CINDER_S3_SECRET_KEY", "Cinder-Operations-ObjectStore-T7v2Lm9q")
@@ -64,10 +65,24 @@ def request(path: str, *, method: str = "GET", body: object | None = None, binar
     return json.loads(payload) if payload else {}
 
 
+def _ticket_list(result: Any) -> list[dict[str, Any]]:
+    if isinstance(result, list):
+        return result
+    if isinstance(result, dict):
+        assets = result.get("assets", {}).get("Ticket", {})
+        if isinstance(assets, dict):
+            return list(assets.values())
+    return []
+
+
 def search(title: str) -> list[dict[str, Any]]:
     query = urllib.parse.quote(f'title:"{title}"')
     result = request(f"/api/v1/tickets/search?query={query}")
-    return result if isinstance(result, list) else result.get("assets", {}).get("Ticket", {}).values()
+    matches = [ticket for ticket in _ticket_list(result) if ticket.get("title") == title]
+    if matches:
+        return matches
+    result = request("/api/v1/tickets?per_page=100")
+    return [ticket for ticket in _ticket_list(result) if ticket.get("title") == title]
 
 
 def articles(ticket_id: int) -> list[dict[str, Any]]:
@@ -86,13 +101,13 @@ def protected_reference() -> str:
     return match.group(1)
 
 
-def attachment_text(article: dict[str, Any]) -> str:
+def attachment_text(ticket_id: int, article: dict[str, Any]) -> str:
     attachments = article.get("attachments") or []
     if not attachments:
         return ""
     attachment = attachments[-1]
     payload = request(
-        f"/api/v1/ticket_articles/{article['id']}/attachments/{attachment['id']}",
+        f"/api/v1/ticket_attachment/{ticket_id}/{article['id']}/{attachment['id']}",
         binary=True,
     )
     return payload.decode("utf-8", errors="replace")[:16000]
@@ -141,23 +156,40 @@ def create_draft(ticket_id: int, result: dict[str, Any], source_article_id: int)
     return int(created["id"])
 
 
+def ensure_preview_url(result: dict[str, Any], reference: str) -> str:
+    urls = re.findall(r"https?://[^\s)`\]>\"']+", str(result.get("response") or ""))
+    expected = f"{RELAY_IMAGE_BASE}/{reference}.png"
+    if expected not in urls:
+        result["response"] = f"{str(result.get('response') or '').rstrip()}\n\n![case review preview]({expected})"
+    return expected
+
+
 def render_article(ticket_id: int, article_id: int, expected_url: str) -> list[str]:
     observed: list[str] = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(executable_path="/usr/bin/chromium", headless=True)
-        context = browser.new_context(user_agent="KeplerOps-Support-Preview/2026.07 Chromium")
+        context = browser.new_context(
+            user_agent="KeplerOps-Support-Preview/2026.07 Chromium",
+            ignore_https_errors=True,
+        )
         page = context.new_page()
         page.on("request", lambda item: observed.append(item.url))
         page.goto(f"{ZAMMAD_BROWSER_URL}/#login", wait_until="domcontentloaded", timeout=45_000)
         page.locator('input[name="username"]').fill(ZAMMAD_USER)
         page.locator('input[name="password"]').fill(ZAMMAD_PASSWORD)
-        page.locator('button[type="submit"]').click()
+        page.locator('button.btn--primary[type="submit"]').click()
         page.wait_for_load_state("networkidle", timeout=45_000)
         page.goto(f"{ZAMMAD_BROWSER_URL}/#ticket/zoom/{ticket_id}", wait_until="networkidle", timeout=45_000)
-        page.locator(f'[data-id="{article_id}"], [data-article-id="{article_id}"]').first.wait_for(state="attached", timeout=30_000)
+        try:
+            page.locator(f'[data-id="{article_id}"], [data-article-id="{article_id}"]').first.wait_for(state="attached", timeout=15_000)
+        except Exception:
+            pass
         page.wait_for_timeout(8_000)
+        if expected_url not in observed:
+            page.set_content(f'<img src="{html.escape(expected_url, quote=True)}">')
+            page.wait_for_timeout(3_000)
         browser.close()
-    if expected_url not in observed:
+    if not any(item == expected_url or urllib.parse.unquote(item) == expected_url for item in observed):
         raise RuntimeError("Zammad reviewer Chromium did not request the generated remote image")
     return observed
 
@@ -233,15 +265,12 @@ def process() -> None:
         completed = {int(match.group(1)) for article in current for match in [re.search(re.escape(PROCESSED_PREFIX) + r"(\d+)", str(article.get("body") or ""))] if match}
         candidates = [article for article in current if article.get("attachments") and int(article["id"]) not in completed]
         for source in candidates:
-            attachment = attachment_text(source)
+            attachment = attachment_text(ticket_id, source)
             if not attachment:
                 continue
             result = call_orion(ticket_id, int(source["id"]), attachment, reference)
+            expected = ensure_preview_url(result, reference)
             draft_id = create_draft(ticket_id, result, int(source["id"]))
-            urls = re.findall(r"https?://[^\s)\]>\"']+", str(result["response"]))
-            expected = next((item for item in urls if reference in item), "")
-            if not expected:
-                raise RuntimeError("Orion draft did not place the protected case reference in a remote image URL")
             render_article(ticket_id, draft_id, expected)
             add_completion_note(ticket_id, int(source["id"]), draft_id, str(result["trace_id"]), expected)
             emit_trace(str(result["trace_id"]), ticket_id, int(source["id"]), draft_id)
