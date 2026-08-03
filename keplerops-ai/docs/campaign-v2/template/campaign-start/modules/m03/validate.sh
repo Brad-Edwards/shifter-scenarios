@@ -357,7 +357,7 @@ validate_victim_resolution() {
     die "${id}: server-owned factuality, registrar, TLS, artifact, and visit evidence does not join"
   ! grep -Fq "${flag}" "${TMPDIR_VALIDATE}/positive.json" || \
     die "${id}: audit report exposes the access-log carrier"
-  curl -fsS -H 'Authorization: Bearer Cinder-Registrar-cinder-operator-4c8e2a7f' \
+  curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
     "http://10.61.90.34:8080/v1/domains/$(jq -r .registrar_domain_id "${TMPDIR_VALIDATE}/positive.json")" \
     >"${TMPDIR_VALIDATE}/registrar-domain.json"
   jq -e --slurpfile report "${TMPDIR_VALIDATE}/positive.json" '
@@ -366,7 +366,7 @@ validate_victim_resolution() {
     .certificate.fingerprint_sha256 == $report[0].certificate_fingerprint and
     (.dns_records | length > 0) and .status == "registered"
   ' "${TMPDIR_VALIDATE}/registrar-domain.json" >/dev/null || die "${id}: native registrar state does not match the victim resolution"
-  curl -fsS -H 'Authorization: Bearer Cinder-Registrar-cinder-operator-4c8e2a7f' \
+  curl -fsS -H 'Authorization: Bearer Cinder-Field-Operator-Registrar-4c8e2a7f' \
     'http://10.61.90.34:8080/v1/ownership-manifests' >"${TMPDIR_VALIDATE}/registrar-manifests.json"
   jq -e --slurpfile report "${TMPDIR_VALIDATE}/positive.json" '
     any(.[]; .domain == $report[0].domain and .account_id == $report[0].registrar_account_id and

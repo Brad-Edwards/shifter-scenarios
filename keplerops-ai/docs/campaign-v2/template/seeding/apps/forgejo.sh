@@ -532,11 +532,12 @@ ensure_build_sources() {
 ensure_actions_runner() {
   # Forgejo 11.0.4 records both owner_id and repo_id for repository-scoped
   # forgejo-cli registrations, so its task-version lookup never sees new jobs.
-  # Organization scope is the narrowest functional scope on this pinned release.
+  # Global scope is required because the m01 validation repository is owned by
+  # svc-orion-agent rather than the keplerops organization.
   forgejo_cli forgejo-cli actions register \
     --secret "${FORGEJO_RUNNER_SECRET}" \
-    --scope "${FORGEJO_ORG}" \
-    --labels 'orion-release-linux' \
+    --scope "" \
+    --labels 'orion-release-linux,docker' \
     --name keplerops-engineering \
     --version 6.3.1 >/dev/null
 }

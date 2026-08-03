@@ -16,17 +16,18 @@ jobs:
   validate:
     runs-on: docker
     container:
-      image: python:3.12.11-slim-bookworm
+      image: node:16-bullseye
+      options: --add-host=git.keplerops.lab:10.61.10.2
     steps:
       - name: Acquire exact runbook bytes
         env:
           FORGEJO_TOKEN: ${{ secrets.VALIDATION_READER_TOKEN }}
-          FORGEJO_SERVER_URL: ${{ forgejo.server_url }}
+          FORGEJO_SERVER_URL: http://10.61.40.20:3000
           RUNBOOK_REF: ${{ inputs.runbook_ref }}
         run: |
           case "$RUNBOOK_REF" in (*[!0-9a-f]*|'') exit 2;; esac
           test "${#RUNBOOK_REF}" -eq 40
-          python - <<'PY'
+          python3 - <<'PY'
           import os, urllib.request
           root=os.environ['FORGEJO_SERVER_URL'].rstrip('/') + '/api/v1/repos/svc-orion-agent/release-runbook-validation'
           headers={'Authorization':'token ' + os.environ['FORGEJO_TOKEN']}
@@ -38,7 +39,7 @@ jobs:
               with urllib.request.urlopen(urllib.request.Request(root + path, headers=headers), timeout=30) as response:
                   open(target, 'wb').write(response.read())
           PY
-          python - <<'PY' >> "$GITHUB_ENV"
+          python3 - <<'PY' >> "$GITHUB_ENV"
           import json
           value=json.load(open('/tmp/commit.json'))
           print('FORGEJO_COMMIT_SHA=' + value['sha'])
@@ -50,8 +51,10 @@ jobs:
           ORION_REDIS_PASSWORD: ${{ secrets.ORION_REDIS_PASSWORD }}
           ORION_OPENSEARCH_URL: ${{ secrets.ORION_OPENSEARCH_URL }}
           ORION_CONVERSATION_ID: ${{ inputs.orion_conversation_id }}
-        run: python /tmp/validate_runbook.py /tmp/runbook.sh /tmp/validation-report.json
+        run: python3 /tmp/validate_runbook.py /tmp/runbook.sh /tmp/validation-report.json
       - name: Publish native validation evidence
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
         uses: actions/upload-artifact@v3
         with:
           name: validation-report

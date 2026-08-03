@@ -94,12 +94,24 @@ def failed_airflow_record(operation: str, run_id: str) -> dict[str, Any]:
 def failed_cinder_action(run_id: str) -> dict[str, Any]:
     if not re.fullmatch(r"[1-9][0-9]*", run_id):
         raise ValueError("Cinder negative subject must name an exact Actions run ID")
-    record = checked(requests.get(
+    response = requests.get(
         f"{CINDER_FORGEJO}/api/v1/repos/cinder-operator/orion-model-artifacts/actions/runs/{run_id}",
         auth=CINDER_AUTH, timeout=30,
-    )).json()
-    conclusion = str(record.get("conclusion") or "").lower()
-    if record.get("status") != "completed" or conclusion not in {"failure", "cancelled", "timed_out"}:
+    )
+    if response.status_code == 404:
+        tasks = checked(requests.get(
+            f"{CINDER_FORGEJO}/api/v1/repos/cinder-operator/orion-model-artifacts/actions/tasks",
+            params={"limit": 200}, auth=CINDER_AUTH, timeout=30,
+        )).json().get("workflow_runs") or []
+        record = next((item for item in tasks if str(item.get("id")) == run_id), {})
+        status = str(record.get("status") or "").lower()
+        conclusion = str(record.get("conclusion") or status).lower()
+        completed = status in {"failure", "cancelled", "timed_out"}
+    else:
+        record = checked(response).json()
+        conclusion = str(record.get("conclusion") or "").lower()
+        completed = record.get("status") == "completed"
+    if not completed or conclusion not in {"failure", "cancelled", "timed_out"}:
         raise ValueError("selected Cinder negative is not a completed failed Actions run")
     return {
         "schema": "keplerops.native-negative/v1", "system": "cinder-forgejo-actions",
