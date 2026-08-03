@@ -331,15 +331,20 @@ def agent_call(prompt: str, purpose: str, trace_id: str | None = None, parent_id
     request_id = f"orion-{purpose}-{uuid.uuid4().hex}"
     trace_id = trace_id or secrets.token_hex(16)
     parent_id = parent_id or secrets.token_hex(8)
-    response = checked(requests.post(
-        f"{AGENT_URL}/v1/chat",
-        headers={
-            "Authorization": f"Bearer {AGENT_KEY}", "X-Request-ID": request_id,
-            "traceparent": f"00-{trace_id}-{parent_id}-01",
-        },
-        json={"prompt": prompt, "user": "eval.reader"},
-        timeout=150,
-    )).json()
+    for attempt in range(4):
+        response = requests.post(
+            f"{AGENT_URL}/v1/chat",
+            headers={
+                "Authorization": f"Bearer {AGENT_KEY}", "X-Request-ID": request_id,
+                "traceparent": f"00-{trace_id}-{parent_id}-01",
+            },
+            json={"prompt": prompt, "user": "eval.reader"},
+            timeout=150,
+        )
+        if response.status_code not in {502, 503, 504} or attempt == 3:
+            break
+        time.sleep(2)
+    response = checked(response).json()
     if (
         response.get("request_id") != request_id
         or response.get("trace_id") != trace_id
@@ -349,7 +354,7 @@ def agent_call(prompt: str, purpose: str, trace_id: str | None = None, parent_id
     return response
 
 
-def jaeger_trace(trace_id: str, attempts: int = 20) -> dict[str, Any]:
+def jaeger_trace(trace_id: str, attempts: int = 60) -> dict[str, Any]:
     for _ in range(attempts):
         response = requests.get(f"{JAEGER_URL}/api/traces/{trace_id}", timeout=15)
         if response.status_code == 404:
@@ -382,9 +387,10 @@ def paraphrase(text: str, salt: int) -> str:
     words = text.split()
     if not words:
         return text
-    index = salt % len(words)
-    suffix = "." if words[index].endswith(".") else ""
-    words[index] = f"review-window-{salt % 7}{suffix}"
+    stride = 3 + salt % 2
+    for index in range(salt % stride, len(words), stride):
+        suffix = "." if words[index].endswith(".") else ""
+        words[index] = f"review-window-{salt % 7}{suffix}"
     return " ".join(words)
 
 
