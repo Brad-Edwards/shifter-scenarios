@@ -217,6 +217,8 @@ seed_capability_manifest() (
   forgejo GET /repos/keplerops/orion-agent-runtime >/dev/null 2>&1 || \
     forgejo POST /orgs/keplerops/repos --data \
       '{"name":"orion-agent-runtime","description":"Orion runtime manifests and capability audit history.","private":true,"auto_init":true,"default_branch":"main"}' >/dev/null
+  forgejo PUT /repos/keplerops/orion-agent-runtime/collaborators/release.engineer \
+    --data '{"permission":"read"}' >/dev/null
   jq -n '{
     schema:"keplerops.orion.agent-capabilities/v1",
     revision:"orion-agent-prompt-2026.07.4",
