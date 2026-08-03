@@ -25,6 +25,10 @@ to adjacent projects. Confirm `~/.keplerops/m07-earned.env` exists for the
 participant and includes Label Studio, Airflow, and lakeFS access before
 diagnosing application authorization or evidence retrieval.
 
+If Airflow reports permission denied for `/opt/airflow/orion-integrity-state`,
+reconcile that module state to Airflow UID 50000, preserve the participant-owned
+`attempts/kep-m07-i` subtree at UID 1000, and have the team rerun the native DAG.
+
 **Recovery:** Restore labels only for failed attempts and remove the failed
 lakeFS branch. Preserve accepted label lineage and audit records.
 

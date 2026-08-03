@@ -64,6 +64,11 @@ lakeFS values used to reacquire the immutable manifest returned by Airflow.
 
 **Procedure:**
 
+If an Airflow task reports permission denied under
+`/opt/airflow/orion-integrity-state`, classify it as a module start-state
+defect; it is not a participant failure and host-side output cannot substitute
+for the participant rerun.
+
 1. In Chromium, open Label Studio and sign in with the earned contributor
    identity. Expected: the project list shows exactly **Orion Release Risk
    Training Baseline**. Attempting another project URL discovered from normal

@@ -299,6 +299,11 @@ LAKEFS_SECRET_ACCESS_KEY=KeplerV2-Training-LakeFS-Object-Key
 EOF
 }
 
+reconcile_state_ownership() {
+  chown -R 50000:0 "${STATE_ROOT}"
+  chown -R 1000:1000 "${STATE_ROOT}/attempts/kep-m07-i"
+}
+
 seed_repositories() {
   ensure_forgejo_user svc-orion-training "${TRAINER_TOKEN}" svc-orion-training@keplerops.lab
   grant_repo keplerops orion-build svc-orion-training read
@@ -569,6 +574,7 @@ apply_one() {
   reconcile_airflow
   install -d -m 0750 "${STATE_ROOT}/applied"
   printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
+  reconcile_state_ownership
   log "reconciled ${operation} start state"
 }
 
@@ -591,6 +597,7 @@ main() {
   while IFS= read -r operation; do
     printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
   done < <(jq -r '.[].id' "${MODULE_ROOT}/operations.json")
+  reconcile_state_ownership
   log 'reconciled all operation start state'
 }
 
