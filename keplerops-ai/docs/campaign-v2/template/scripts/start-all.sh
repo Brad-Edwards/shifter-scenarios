@@ -47,7 +47,7 @@ else
     kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh --core
 fi
 "$ROOT/baseline/source-ci-registries.sh"
-"$ROOT/seeding/seed.sh" langflow business-workflows
+"$ROOT/seeding/seed.sh" mautic langflow business-workflows
 "$ROOT/engineering/reconcile-orion-vision-label-studio.sh"
 
 "$ROOT/scripts/start-workstation.sh"
