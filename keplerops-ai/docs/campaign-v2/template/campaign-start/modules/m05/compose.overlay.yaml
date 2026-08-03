@@ -212,6 +212,10 @@ services:
       ORION_WORKER_AUTHORITY_URL: http://10.61.40.54:8091
       ORION_WORKER_AUTHORITY_KEY: Orion-Worker-Authority-Internal-2026
     command: ["serve"]
+    # The worker verifies a registering agent by reading /proc/<pid>/exe of the
+    # process it launched as uid 10001 (privilege-dropped, dumpable=0); that read
+    # needs CAP_SYS_PTRACE, which Docker drops by default.
+    cap_add: [SYS_PTRACE]
     ports:
       - "18088:8088"
     volumes:
@@ -219,7 +223,8 @@ services:
     networks:
       engineering:
         ipv4_address: 10.61.40.53
-      cinder: {}
+      cinder:
+        ipv4_address: 10.61.90.19
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health', timeout=3).read()"]

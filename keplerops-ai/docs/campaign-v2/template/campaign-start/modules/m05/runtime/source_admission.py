@@ -153,7 +153,7 @@ def review(repository: str, pull: dict[str, Any]) -> None:
     api(
         "POST",
         f"/repos/keplerops/{repository}/pulls/{number}/reviews",
-        {"event": "APPROVE", "body": body, "commit_id": commit},
+        {"event": "APPROVED", "body": body, "commit_id": commit},
     )
     api(
         "POST",

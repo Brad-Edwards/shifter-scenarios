@@ -575,14 +575,16 @@ escalation from `kep-m04-k`.
    support escalation:
 
    ```sh
-   jq '.log.entries[].request.cookies[]? | select(.name=="_zammad_session")' \
+   jq '.log.entries[].request.cookies[]? | select(.name|startswith("_zammad_session"))' \
      /var/lib/orion-review/traces/orion-support-session.har
    ```
 
-2. Record the HAR SHA-256 and copy only the `_zammad_session` value.
+2. Record the HAR SHA-256 and copy the session cookie's exact name and value.
+   Zammad names the cookie `_zammad_session_<deployment-suffix>` (not a bare
+   `_zammad_session`); the replayed cookie must use the exact name from the HAR.
 3. Start a new Chromium profile on Kali. Use DevTools or a cookie editor to add
-   `_zammad_session` for `support.keplerops.lab` with path `/`, Secure, and
-   HttpOnly when supported by the tool.
+   the recovered `_zammad_session_<suffix>` cookie for `support.keplerops.lab`
+   with path `/`, Secure, and HttpOnly when supported by the tool.
 4. Open `https://support.keplerops.lab` and search for
    **Orion administration trace review**.
 

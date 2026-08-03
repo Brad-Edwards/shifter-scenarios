@@ -25,7 +25,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           yq -e '.kind == "AgentRuntime" and .metadata.name == "orion-release-assistant"' agent.yaml >/dev/null
-          yq -e '.spec.tools == ["release-source", "forgejo-ci-status"]' agent.yaml >/dev/null
+          yq -e '(.spec.tools | join(",")) == "release-source,forgejo-ci-status"' agent.yaml >/dev/null
           yq -e '.spec.provider.baseURL == "http://litellm.orion-platform.svc:4000" or .spec.provider.baseURL == "https://orion-relay.cinder.lab"' agent.yaml >/dev/null
       - name: Build, push, sign, and verify exact configuration bytes
         env:
@@ -72,10 +72,10 @@ jobs:
           work="$(mktemp -d)"
           git clone "https://${GITOPS_USER}:${GITOPS_PASSWORD}@git.keplerops.lab/keplerops/orion-agent-gitops.git" "$work"
           sed -i "s#image: registry.keplerops.lab/orion-internal/orion-agent-config@sha256:[0-9a-f]*#image: registry.keplerops.lab/orion-internal/orion-agent-config@${digest}#" "$work/orion-agent.yaml"
-          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-agent.yaml"
+          sed -i "s#keplerops.lab/source-commit: [0-9a-f]*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/orion-agent.yaml"
           sed -i "s#keplerops.lab/config-digest: .*#keplerops.lab/config-digest: ${config_digest}#" "$work/orion-agent.yaml"
           sed -i "s#registry.keplerops.lab/orion-internal/orion-agent-config@sha256:[0-9a-f]*#registry.keplerops.lab/orion-internal/orion-agent-config@${digest}#" "$work/signature-admission-agent.yaml"
-          sed -i "s#keplerops.lab/source-commit: .*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-agent.yaml"
+          sed -i "s#keplerops.lab/source-commit: [0-9a-f]*#keplerops.lab/source-commit: ${GITHUB_SHA}#" "$work/signature-admission-agent.yaml"
           git -C "$work" config user.name orion-config-release
           git -C "$work" config user.email orion-config-release@keplerops.lab
           git -C "$work" add orion-agent.yaml signature-admission-agent.yaml

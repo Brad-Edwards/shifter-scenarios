@@ -399,10 +399,15 @@ seed_support_trace() {
     -H 'X-Browser-Fingerprint: campaign-m05-support-trace' \
     --data "$(jq -cn --arg username support.analyst --arg password "$SUPPORT_ANALYST_PASSWORD" '{username:$username,password:$password}')" \
     https://support.keplerops.lab/api/v1/signin >/dev/null
-  session="$(awk '$6 ~ /^_zammad_session/ {print $7}' "$cookie_jar" | tail -n1)"; [[ -n $session ]] || die 'support session was not issued'
+  # Zammad names the session cookie "_zammad_session_<deployment-suffix>", not a
+  # bare "_zammad_session". Capture the real cookie name alongside its value so
+  # the replayed HAR cookie matches what Zammad expects; a bare name is rejected.
+  session_name="$(awk '$6 ~ /^_zammad_session/ {print $6}' "$cookie_jar" | tail -n1)"
+  session="$(awk '$6 ~ /^_zammad_session/ {print $7}' "$cookie_jar" | tail -n1)"
+  [[ -n $session && -n $session_name ]] || die 'support session was not issued'
   printf '%s\n' "$session" >"${STATE_ROOT}/support-attempt-session"
   chmod 0600 "${STATE_ROOT}/support-attempt-session"
-  sed "s/__SUPPORT_SESSION__/${session}/g" "${MODULE_ROOT}/payloads/workhub/orion-support-session.har" >"$har"
+  sed -e "s/__SUPPORT_SESSION_NAME__/${session_name}/g" -e "s/__SUPPORT_SESSION__/${session}/g" "${MODULE_ROOT}/payloads/workhub/orion-support-session.har" >"$har"
   scp -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$har" "${REVIEW_SSH_TARGET}:/tmp/orion-support-session.har" >/dev/null
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$REVIEW_SSH_TARGET" 'sudo install -d -m 0750 -o orion-review -g orion-review /var/lib/orion-review/traces; sudo install -m 0640 -o orion-review -g orion-review /tmp/orion-support-session.har /var/lib/orion-review/traces/orion-support-session.har; rm -f /tmp/orion-support-session.har'
   tickets="$(curl -fsS --user "support.analyst:${SUPPORT_ANALYST_PASSWORD}" 'http://10.61.30.24:8080/api/v1/tickets?per_page=100')"
