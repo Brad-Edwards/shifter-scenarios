@@ -10,8 +10,11 @@ string from that carrier, and submit it in the Shifter challenge UI.
 
 For Airflow operations, sign in to `https://airflow.keplerops.lab` with the
 earned evaluation-reader identity from `kep-m03-i`. Source confirms the M04
-DAGs are granted to Airflow roles `Orion Viewer` and `Orion Runner`; the exact
-SSO group-to-role display should be live-verified during range acceptance.
+DAGs are granted to Airflow roles `Orion Viewer` and `Orion Runner`; the
+`eval.reader` account must be a member of the matching Airflow groups and, for
+API-triggered participant walkthroughs, have the same scoped Airflow local user.
+The exact SSO group-to-role display should be live-verified during range
+acceptance.
 
 For signed report carriers, the Airflow task return contains
 `record.object_key`, `record.signature_key`, and `record.public_key_key`. Source

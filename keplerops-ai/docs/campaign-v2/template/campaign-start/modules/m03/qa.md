@@ -847,7 +847,8 @@ at `https://id.keplerops.lab`, evaluation onboarding surface, and Shifter.
 
 **Expected observations:** Two fresh semantic searches cite the same deleted
 source; the stale chunk contains the retired account material; Keycloak issues a
-fresh normal session; the role is limited to evaluation-reader resources.
+fresh normal session; the role is limited to evaluation-reader resources,
+including Jupyter onboarding and scoped Orion Airflow view/run access.
 
 **Negative controls:** Try a wrong password and confirm login fails. Try
 anonymous access to the onboarding page and confirm it fails. Try to open

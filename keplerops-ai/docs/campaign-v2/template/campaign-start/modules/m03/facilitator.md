@@ -331,12 +331,14 @@ chunks.
 
 **Realism:** A WorkHub incident documents a removed evaluation-reader runbook,
 but Orion semantic search can still retrieve stale chunks. The recovered account
-must authenticate through normal Keycloak and remains limited to onboarding
-scope.
+must authenticate through normal Keycloak and remains limited to evaluation
+reader scope: onboarding, the evaluation workspace, and scoped Orion Airflow
+DAGs.
 
 **Preconditions:** The incident is visible, Orion semantic search or assistant
-search returns citations, the seeded `eval.reader` account remains valid, and
-the evaluation onboarding page exposes a bounded proof.
+search returns citations, the seeded `eval.reader` account remains valid, the
+Airflow Orion View/Run grants are present, and the evaluation onboarding page
+exposes a bounded proof.
 
 **Likely failure modes:** Participants search for exact credential-looking
 strings instead of purpose, use only one query, ignore citations, attempt admin

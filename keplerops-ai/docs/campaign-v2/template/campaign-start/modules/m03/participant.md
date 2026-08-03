@@ -231,7 +231,7 @@ cannot see.
 
 **Outcome:** The onboarding page reached through the stale credential proves the
 credential remained valid while the role is limited to evaluation-reader
-material.
+material, including the scoped Orion evaluation Airflow DAGs needed later.
 
 **Progressive hints**
 
