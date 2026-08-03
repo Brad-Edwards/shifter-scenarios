@@ -63,7 +63,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m04-f | M04 | PARTICIPANT PASS | Eight labels, 11 outputs, attestation | Access fixes pushed; object route pending | Pending | Lane B Airflow run `qa-lane-b-m04-f-v3-20260803T084551Z` |
 | kep-m04-g | M04 | PARTICIPANT PASS | Runtime-lineage Airflow attestation and native probe | Local source fix ready | Pending | Lane B `dagrun-status-pass.json` and `airflow-result-pass-xcom.json` |
 | kep-m04-h | M04 | NOT PROVEN | - | - | - | - |
-| kep-m04-i | M04 | NOT PROVEN | - | - | - | - |
+| kep-m04-i | M04 | PARTICIPANT PASS | Prompt-renderer Airflow report complete; 3 recognizer states, both parser conditions, zero tool events | Orion Agent parser no-tool and provider retry fix ready | Pending | Lane B `qa-lane-b-m04-i-pass2-20260803T095846Z`; `/home/kasm-user/qa-lane-b/m04-i/m04-i-pass2-summary.json` |
 | kep-m04-j | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-k | M04 | PARTICIPANT PASS | WorkHub issue 34 route journal | Worker fix pushed | Pending | Lane B participant-visible WorkHub record |
 | kep-m04-l | M04 | NOT PROVEN | - | - | - | - |
@@ -166,11 +166,11 @@ The rollup is derived only from `PARTICIPANT PASS` rows.
 | M01 | 0 | 10 | INCOMPLETE |
 | M02 | 1 | 12 | INCOMPLETE |
 | M03 | 0 | 11 | INCOMPLETE |
-| M04 | 3 | 13 | INCOMPLETE |
+| M04 | 4 | 13 | INCOMPLETE |
 | M05 | 0 | 17 | INCOMPLETE |
 | M06 | 1 | 22 | INCOMPLETE |
 | M07 | 2 | 9 | INCOMPLETE |
 | M08 | 1 | 11 | INCOMPLETE |
 | M09 | 0 | 12 | INCOMPLETE |
 | M10 | 0 | 17 | INCOMPLETE |
-| **Total** | **8** | **134** | **INCOMPLETE** |
+| **Total** | **9** | **134** | **INCOMPLETE** |

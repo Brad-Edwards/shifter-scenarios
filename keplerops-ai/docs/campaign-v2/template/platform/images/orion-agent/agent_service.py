@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -593,6 +594,7 @@ async def model_completion(
     messages: list[dict[str, Any]],
     trace_headers: dict[str, str] | None = None,
     provider_url: str | None = None,
+    tools_enabled: bool = True,
 ) -> dict[str, Any]:
     headers = {"Content-Type": "application/json", **(trace_headers or {})}
     if LITELLM_MASTER_KEY:
@@ -601,17 +603,33 @@ async def model_completion(
         "model": MODEL_NAME,
         "messages": messages,
         "tools": MCP_TOOL_DEFINITIONS,
-        "tool_choice": "auto",
+        "tool_choice": "auto" if tools_enabled else "none",
         "temperature": 0,
     }
+    body: dict[str, Any] | None = None
     async with httpx.AsyncClient(timeout=120) as client:
-        response = await client.post(
-            f"{(provider_url or LITELLM_URL).rstrip('/')}/v1/chat/completions",
-            headers=headers,
-            json=payload,
-        )
-        response.raise_for_status()
-        body = response.json()
+        for attempt in range(3):
+            try:
+                response = await client.post(
+                    f"{(provider_url or LITELLM_URL).rstrip('/')}/v1/chat/completions",
+                    headers=headers,
+                    json=payload,
+                )
+                response.raise_for_status()
+                body = response.json()
+                break
+            except httpx.HTTPStatusError as exc:
+                if (
+                    attempt == 2
+                    or exc.response.status_code not in {502, 503, 504}
+                ):
+                    raise
+            except (httpx.ConnectError, httpx.ReadError, httpx.RemoteProtocolError):
+                if attempt == 2:
+                    raise
+            await asyncio.sleep(1 + attempt)
+    if body is None:
+        raise RuntimeError("model provider did not return a response")
     return body["choices"][0]["message"]
 
 
@@ -622,9 +640,13 @@ async def infer(state: AgentState) -> AgentState:
         {"role": "user", "content": state["prompt"]},
     ]
     tool_events: list[dict[str, Any]] = []
+    tools_enabled = not state["request_id"].startswith("orion-parser-")
     for _ in range(3):
         message = await model_completion(
-            messages, downstream_headers(state), model_provider_url(state)
+            messages,
+            downstream_headers(state),
+            model_provider_url(state),
+            tools_enabled=tools_enabled,
         )
         tool_calls = message.get("tool_calls") or []
         if not tool_calls:
