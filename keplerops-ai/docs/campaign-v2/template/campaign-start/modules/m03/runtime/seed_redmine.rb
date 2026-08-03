@@ -19,6 +19,12 @@ developer = Role.find_by(name: 'Developer') || Role.where(builtin: 0).first
 membership = Member.find_or_initialize_by(project: project, user: workflow_user)
 membership.roles = [developer]
 membership.save!
+manager = Role.find_by(name: 'Manager') || developer
+if author.login == 'release.engineer'
+  author_membership = Member.find_or_initialize_by(project: project, user: author)
+  author_membership.roles = [manager]
+  author_membership.save!
+end
 tracker = Tracker.find_by(name: 'Task') || Tracker.first
 default_status = IssueStatus.where(is_closed: false).first
 priority = IssuePriority.default || IssuePriority.first

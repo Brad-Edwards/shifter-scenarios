@@ -844,7 +844,12 @@ def audit_model(
     model_dir = _download_model(run.info.run_id)
     clean_run = _clean_training_run()
     clean_dir = _download_model(clean_run.info.run_id)
-    behavior = _behavior_comparison(model_dir, clean_dir, poisoned)
+    behavior = (
+        _behavior_comparison(model_dir, clean_dir, poisoned)
+        if not objective_ref else
+        {"heldout_suite_sha256": _sha(_canonical(_heldout())),
+         "suite_sha256": _sha(_canonical(_heldout()))}
+    )
     source_identity = _training_source_identity(run)
     model_sha = _tag(run, "model.onnx_sha256")
     if not model_sha or model_sha != _sha((model_dir / "orion-release-risk.onnx").read_bytes()):
@@ -1233,7 +1238,7 @@ def _registry_token(scope: str) -> str:
     )).json()["token"]
 
 
-def _oci_get(repository: str, reference: str) -> tuple[dict[str, Any], list[bytes], str]:
+def _oci_get(repository: str, reference: str) -> tuple[dict[str, Any], list[tuple[dict[str, Any], bytes]], str]:
     token = _registry_token(f"repository:{repository}:pull")
     headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.oci.image.manifest.v1+json"}
     response = _checked(requests.get(
@@ -1250,8 +1255,42 @@ def _oci_get(repository: str, reference: str) -> tuple[dict[str, Any], list[byte
         )).content
         if item.get("digest") != f"sha256:{_sha(body)}" or item.get("size") != len(body):
             raise ValueError("OCI layer bytes do not match the immutable manifest descriptor")
-        layers.append(body)
+        layers.append((item, body))
     return manifest, layers, raw_digest
+
+
+def _publication_files_from_layers(layers: list[tuple[dict[str, Any], bytes]], required: set[str]) -> dict[str, bytes]:
+    files: dict[str, bytes] = {}
+
+    def add_file(name: str, body: bytes) -> None:
+        if name.startswith("/") or ".." in Path(name).parts:
+            raise ValueError("the OCI publication contains an unsafe layer path")
+        if name not in required:
+            raise ValueError("the OCI publication contains an unexpected member")
+        if name in files:
+            raise ValueError("the OCI publication contains duplicate required members")
+        files[name] = body
+
+    for descriptor, body in layers:
+        title = str((descriptor.get("annotations") or {}).get("org.opencontainers.image.title") or "")
+        if title:
+            add_file(title, body)
+            continue
+        try:
+            with tarfile.open(fileobj=io.BytesIO(body), mode="r:*") as archive:
+                for member in archive.getmembers():
+                    if member.name.startswith("/") or ".." in Path(member.name).parts:
+                        raise ValueError("the OCI publication contains an unsafe layer path")
+                    if member.isdir():
+                        continue
+                    if not member.isfile() or member.name not in required:
+                        raise ValueError("the OCI publication contains an unexpected or non-regular member")
+                    source = archive.extractfile(member)
+                    if source:
+                        add_file(member.name, source.read())
+        except tarfile.TarError as exc:
+            raise ValueError("the OCI publication layer is neither a named file nor a tar archive") from exc
+    return files
 
 
 def _oci_put(repository: str, reference: str, report: bytes) -> str:
@@ -1290,24 +1329,8 @@ def publish_attestation(artifact_reference: str | None, attempt_id: str | None =
         raise ValueError("publication must use the attacker dataset namespace and immutable digest")
     _update_attempt("kep-m07-h", attempt_id, cleanup={"harbor_repository": repository})
     manifest, layers, manifest_digest = _oci_get(repository, reference)
-    files: dict[str, bytes] = {}
     required = {"dataset.json", "README.md", "loader.py", "checksums.sha256"}
-    for layer in layers:
-        with tarfile.open(fileobj=io.BytesIO(layer), mode="r:*") as archive:
-            for member in archive.getmembers():
-                if member.name.startswith("/") or ".." in Path(member.name).parts:
-                    raise ValueError("the OCI publication contains an unsafe layer path")
-                if member.isdir():
-                    continue
-                if not member.isfile() or member.name not in required:
-                    raise ValueError("the OCI publication contains an unexpected or non-regular member")
-                if member.isfile():
-                    source = archive.extractfile(member)
-                    if source:
-                        name = member.name
-                        if name in files:
-                            raise ValueError("the OCI publication contains duplicate required members")
-                        files[name] = source.read()
+    files = _publication_files_from_layers(layers, required)
     if set(files) != required:
         raise ValueError("the OCI publication lacks dataset, data card, loader, or checksums")
     digest = _sha(files["dataset.json"])

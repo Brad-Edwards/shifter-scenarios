@@ -939,6 +939,7 @@ services:
     <<: *airflow-service
     container_name: kep-v2-airflow-worker
     command: ["celery", "worker"]
+    privileged: true
     depends_on:
       airflow-api:
         condition: service_healthy

@@ -95,8 +95,15 @@ def sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
-async def forgejo(path: str) -> Any:
-    async with httpx.AsyncClient(timeout=30, auth=FORGEJO_AUTH) as client:
+def forgejo_auth_for_repository(repository: str) -> tuple[str, str]:
+    owner = repository.split("/", 1)[0]
+    if owner == PARTICIPANT_FORGEJO_AUTH[0]:
+        return PARTICIPANT_FORGEJO_AUTH
+    return FORGEJO_AUTH
+
+
+async def forgejo(path: str, *, auth: tuple[str, str] = FORGEJO_AUTH) -> Any:
+    async with httpx.AsyncClient(timeout=30, auth=auth) as client:
         response = await client.get(f"{FORGEJO}/api/v1{path}")
     if response.status_code != 200:
         raise HTTPException(status_code=422, detail=f"Forgejo record is unavailable: {path}")
@@ -112,7 +119,10 @@ async def forgejo_write(method: str, path: str, payload: dict[str, Any]) -> Any:
 
 
 async def source(repository: str, commit: str, path: str) -> bytes:
-    value = await forgejo(f"/repos/{repository}/contents/{quote(path)}?ref={commit}")
+    value = await forgejo(
+        f"/repos/{repository}/contents/{quote(path)}?ref={commit}",
+        auth=forgejo_auth_for_repository(repository),
+    )
     import base64
     try:
         return base64.b64decode(value["content"])
@@ -128,13 +138,14 @@ async def native_run(value: RepositoryRun, operation: str, subjects: dict[str, s
         "kep-m06-v": "ci/staging-release.yml",
     }
     expected_workflow = workflows[operation]
-    commit = await forgejo(f"/repos/{value.repository}/git/commits/{value.commit}")
+    repo_auth = forgejo_auth_for_repository(value.repository)
+    commit = await forgejo(f"/repos/{value.repository}/git/commits/{value.commit}", auth=repo_auth)
     artifact_name = f"{operation}-provenance"
     archive_bytes: bytes | None = None
     async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
         login = await client.post(
             f"{FORGEJO}/user/login",
-            data={"user_name": FORGEJO_AUTH[0], "password": FORGEJO_AUTH[1]},
+            data={"user_name": repo_auth[0], "password": repo_auth[1]},
         )
         if login.status_code != 200:
             raise HTTPException(status_code=422, detail="Forgejo Actions session is unavailable")
@@ -143,6 +154,8 @@ async def native_run(value: RepositoryRun, operation: str, subjects: dict[str, s
             {int(index) for index in re.findall(r"actions/runs/(\d+)", listing.text)},
             reverse=True,
         )
+        if value.actions_run_id not in run_indexes:
+            run_indexes.insert(0, value.actions_run_id)
         for run_index in run_indexes:
             page = await client.get(f"{FORGEJO}/{value.repository}/actions/runs/{run_index}")
             csrf_match = re.search(r"csrfToken: '([^']+)'", page.text)
@@ -158,11 +171,13 @@ async def native_run(value: RepositoryRun, operation: str, subjects: dict[str, s
                 continue
             run = (state_response.json().get("state") or {}).get("run") or {}
             jobs = run.get("jobs") or []
-            job = next((item for item in jobs if item.get("id") == value.actions_run_id), None)
+            successful_job = any(item.get("status") == "success" for item in jobs)
+            visible_run_match = run_index == value.actions_run_id
+            job_id_match = any(item.get("id") == value.actions_run_id for item in jobs)
             commit_link = str((run.get("commit") or {}).get("link") or "")
             if (
-                job is None
-                or job.get("status") != "success"
+                not (visible_run_match or job_id_match)
+                or not successful_job
                 or run.get("status") != "success"
                 or run.get("done") is not True
                 or not commit_link.endswith(f"/commit/{value.commit}")
