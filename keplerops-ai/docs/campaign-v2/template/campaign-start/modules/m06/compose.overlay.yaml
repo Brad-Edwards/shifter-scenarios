@@ -78,6 +78,8 @@ services:
     command: ["--addr", "tcp://0.0.0.0:1234", "--config", "/etc/buildkit/buildkitd.toml", "--oci-worker-no-process-sandbox"]
     environment:
       BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
+    extra_hosts:
+      - registry.keplerops.lab:10.61.90.2
     user: "1000:1000"
     read_only: true
     tmpfs:

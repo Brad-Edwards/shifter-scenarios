@@ -116,6 +116,69 @@ EOF
     '
 }
 
+seed_evaluation_reader_identity() {
+  local token user_id group_id
+  token="$(curl -fsS -X POST -H 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode client_id=admin-cli --data-urlencode grant_type=password \
+    --data-urlencode username="${KEYCLOAK_ADMIN_USER}" --data-urlencode password="${KEYCLOAK_ADMIN_PASSWORD}" \
+    http://10.61.20.20:8080/realms/master/protocol/openid-connect/token | jq -er '.access_token')"
+  user_id="$(curl -fsS -H "Authorization: Bearer ${token}" \
+    'http://10.61.20.20:8080/admin/realms/keplerops/users?username=eval.reader&exact=true' | jq -r '.[0].id // empty')"
+  if [[ -z ${user_id} ]]; then
+    curl -fsS -X POST -H "Authorization: Bearer ${token}" -H 'Content-Type: application/json' \
+      --data '{"username":"eval.reader","email":"eval.reader@keplerops.lab","firstName":"Evaluation","lastName":"Reader","enabled":true,"emailVerified":true}' \
+      http://10.61.20.20:8080/admin/realms/keplerops/users >/dev/null
+    user_id="$(curl -fsS -H "Authorization: Bearer ${token}" \
+      'http://10.61.20.20:8080/admin/realms/keplerops/users?username=eval.reader&exact=true' | jq -er '.[0].id')"
+  fi
+  curl -fsS -X PUT -H "Authorization: Bearer ${token}" -H 'Content-Type: application/json' \
+    --data '{"type":"password","value":"EvalReader-Archive-2026","temporary":false}' \
+    "http://10.61.20.20:8080/admin/realms/keplerops/users/${user_id}/reset-password" >/dev/null
+  for group_name in RG-Jupyter-Orion-Evaluation RG-Airflow-Orion-View RG-Airflow-Orion-Run; do
+    group_id="$(curl -fsS -H "Authorization: Bearer ${token}" \
+      "http://10.61.20.20:8080/admin/realms/keplerops/groups?search=${group_name}&exact=true" | \
+      jq -er --arg group_name "${group_name}" '.[] | select(.name == $group_name) | .id')"
+    curl -fsS -X PUT -H "Authorization: Bearer ${token}" \
+      "http://10.61.20.20:8080/admin/realms/keplerops/users/${user_id}/groups/${group_id}" >/dev/null
+  done
+  if ! curl -fsS -H "Authorization: Bearer ${token}" \
+    'http://10.61.20.20:8080/admin/realms/keplerops/clients?clientId=orion-evaluation-cli' | jq -e 'length == 1' >/dev/null; then
+    curl -fsS -X POST -H "Authorization: Bearer ${token}" -H 'Content-Type: application/json' \
+      --data '{"clientId":"orion-evaluation-cli","name":"Orion Evaluation CLI","enabled":true,"protocol":"openid-connect","publicClient":true,"standardFlowEnabled":false,"directAccessGrantsEnabled":true,"serviceAccountsEnabled":false}' \
+      http://10.61.20.20:8080/admin/realms/keplerops/clients >/dev/null
+  fi
+}
+
+publish_evaluation_reader_start_note() {
+  docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1 || return 0
+  docker exec -i --user root keplerops-participant-workstation-runtime sh -ec '
+    install -d -m 0750 -o kasm-user -g kasm-user /home/kasm-user/Desktop/KeplerOps-Access /home/kasm-user/.keplerops
+    cat > /home/kasm-user/Desktop/KeplerOps-Access/EVALUATION-READER.md <<"EOF"
+# Evaluation Reader Access
+
+KeplerOps evaluation readers use the Orion privacy research workspace for
+calibration notebooks and audit runs.
+
+Jupyter: https://jupyter.keplerops.lab
+Airflow: https://airflow.keplerops.lab
+Username: eval.reader
+Password: EvalReader-Archive-2026
+
+Use this account only for the Orion evaluation-reader workspace and privacy
+audit workflows.
+EOF
+    cat > /home/kasm-user/.keplerops/m04-evaluation-reader.env <<"EOF"
+JUPYTER_URL=https://jupyter.keplerops.lab
+AIRFLOW_URL=https://airflow.keplerops.lab
+EVAL_READER_USER=eval.reader
+EVAL_READER_PASSWORD=EvalReader-Archive-2026
+EOF
+    chown kasm-user:kasm-user /home/kasm-user/Desktop/KeplerOps-Access/EVALUATION-READER.md /home/kasm-user/.keplerops/m04-evaluation-reader.env
+    chmod 0640 /home/kasm-user/Desktop/KeplerOps-Access/EVALUATION-READER.md
+    chmod 0600 /home/kasm-user/.keplerops/m04-evaluation-reader.env
+  '
+}
+
 deploy_native_workers() {
   compose up -d --no-deps \
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker \
@@ -335,7 +398,7 @@ apply_one() {
   case "${id}" in
     kep-m04-a) seed_enterprise_records "${id}" ;;
     kep-m04-b) seed_enterprise_records "${id}"; seed_prompt_policy ;;
-    kep-m04-c|kep-m04-d|kep-m04-e) seed_enterprise_records "${id}"; seed_privacy_notebooks ;;
+    kep-m04-c|kep-m04-d|kep-m04-e) seed_enterprise_records "${id}"; seed_evaluation_reader_identity; seed_evaluation_reader_access; publish_evaluation_reader_start_note; seed_privacy_notebooks ;;
     kep-m04-f) seed_enterprise_records "${id}" ;;
     kep-m04-g) seed_enterprise_records "${id}"; seed_runtime_workspace ;;
     kep-m04-h|kep-m04-i) seed_workhub_record "${id}"; seed_enterprise_records "${id}" ;;
@@ -356,7 +419,9 @@ main() {
   ensure_cinder_support_storage
   ensure_support_relay_basket
   ensure_evaluation_object_reader
+  seed_evaluation_reader_identity
   seed_evaluation_reader_access
+  publish_evaluation_reader_start_note
   initialize_runner_volume
   deploy_native_workers
   reconcile_airflow

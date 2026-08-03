@@ -518,6 +518,14 @@ install_native_services() {
   ensure_preview_shared_audit_mount
 }
 
+ensure_cinder_harbor_project() {
+  curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
+    -X POST --data '{"project_name":"cinder","public":false,"metadata":{"auto_scan":"false","public":"false"}}' \
+    "${HARBOR_API}/projects" >/dev/null 2>&1 || true
+  curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API}/projects/cinder" | \
+    jq -e '.name == "cinder"' >/dev/null || die 'Cinder Harbor project is not ready'
+}
+
 ensure_cinder_acme() {
   if docker exec kep-v2-step-ca step ca provisioner list \
       --ca-url https://localhost:9000 --root /home/step/certs/root_ca.crt | \
@@ -768,6 +776,7 @@ apply_common() {
   prepare_cinder_trust_bundle
   prepare_cinder_jupyterhub
   install_native_services
+  ensure_cinder_harbor_project
   install_operator_dossier
   reload_caddy
   install_cinder_registry_identity

@@ -127,8 +127,9 @@ the repository, and read the trigger-plan guidance.
 
 **Method:** Choose one durable trigger token, two one- or two-edit near tokens,
 and a target label. Commit `model/backdoor-plan.json` with that plan. In Label
-Studio, append the trigger to at least two source-label rows and relabel them to
-the same target without using near tokens in the poison rows. Export labels,
+Studio, preserve the accepted predecessor labels, then make 8 to 12 actual
+relabels to the same target. At least two of those relabeled rows must carry the
+trigger token in their text, and none may contain a near token. Export labels,
 train normally, then run the Orion integrity review with the poisoned run, the
 immutable plan ref, and a new attempt ID.
 
@@ -140,7 +141,8 @@ fidelity, and signed backdoor handoff.
 
 1. Pick a trigger that survives Orion's text preprocessing.
 2. Near tokens must be close enough to test accidental activation.
-3. The review creates fresh carriers; training examples are not enough.
+3. More poisoning is not better here; the export gate expects a bounded 8 to 12
+   relabeled-row change set.
 
 ## kep-m07-f - Poison The Holdout
 

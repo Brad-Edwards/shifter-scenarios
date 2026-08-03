@@ -75,9 +75,10 @@ trailing operator reference in ordinary assistant output.
 **Objective:** Build a repeatable signal that distinguishes known member and
 non-member records using only Orion release-risk outputs.
 
-**Start:** Open the evaluation-reader Jupyter workspace and the privacy
-calibration notebook. Bring the accepted model-fingerprint report and the
-teacher-query route you earned earlier.
+**Start:** Open the evaluation-reader access note on the workstation, then open
+the Jupyter privacy research workspace and the privacy calibration notebook.
+Bring the accepted model-fingerprint report and the teacher-query route you
+earned earlier.
 
 **Method:** Implement a scoring function over Orion's probability vector and a
 threshold chooser that uses only the labeled fit controls. Let the isolated

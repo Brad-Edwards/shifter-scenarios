@@ -277,9 +277,11 @@ accepted `kep-m07-b` MLflow report or signed handoff.
    `model/backdoor-plan.json`. Choose one durable trigger token, two distinct
    one- or two-edit near tokens, and one target label from the eight-class
    schema. Commit the plan and record the full commit SHA.
-3. In Label Studio, append the trigger token to at least two source-label task
-   texts and change their labels to the plan target. Do not put either near
-   token in the poisoned rows.
+3. In Label Studio, first confirm the accepted `kep-m07-b` predecessor labels
+   are preserved. Then make exactly 8 to 12 actual relabels, all to the plan
+   target. Append the trigger token to at least two of those relabeled source
+   rows. Do not put either near token in any poisoned row, and do not make
+   text-only edits.
 4. Trigger `orion_label_export` with a new attempt ID. After success, trigger
    `orion_release_risk_training` with default empty configuration and record the
    new MLflow training run ID.
@@ -293,14 +295,15 @@ accepted `kep-m07-b` MLflow report or signed handoff.
 7. Expected: schema `keplerops.orion.integrity-audit/v2`,
    `review_kind: participant-backdoor-evaluation`, the exact objective commit,
    objective digest, trigger, complete near-trigger array, target/control
-   labels, source repository `keplerops/orion-build`, fresh trigger rate at or
-   above 0.75, near accuracy at or above 0.75, clean fidelity at or above 0.75,
-   utility at or above 0.60, and handoff route `participant-backdoor`.
+   labels, 8 to 12 changed rows, source repository `keplerops/orion-build`,
+   fresh trigger rate at or above 0.75, near accuracy at or above 0.75, clean
+   fidelity at or above 0.75, utility at or above 0.60, and handoff route
+   `participant-backdoor`.
 8. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
 
-**Negative control:** Use a plan whose near tokens are unrelated to the trigger
-or a training run where the trigger is absent from poisoned rows. Expected:
-Airflow fails or Shifter rejects the review run ID.
+**Negative control:** Use a plan whose near tokens are unrelated to the trigger,
+a training run where the trigger is absent from poisoned rows, or more than 12
+actual relabels. Expected: Airflow fails or Shifter rejects the review run ID.
 
 **Evidence:** Plan commit, Label Studio changed rows, label export run,
 training run, integrity review run, MLflow report, trigger/near controls,

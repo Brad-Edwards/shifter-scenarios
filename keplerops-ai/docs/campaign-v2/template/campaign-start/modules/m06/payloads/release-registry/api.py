@@ -248,6 +248,22 @@ async def harbor(image: str) -> dict[str, Any]:
     return response.json()
 
 
+async def ensure_harbor_project() -> None:
+    async with httpx.AsyncClient(timeout=30, auth=HARBOR_AUTH) as client:
+        current = await client.get(f"{HARBOR}/projects/cinder")
+        if current.status_code == 200:
+            return
+        if current.status_code != 404:
+            raise HTTPException(status_code=503, detail="Cinder Harbor project status is unavailable")
+        created = await client.post(f"{HARBOR}/projects", json={
+            "project_name": "cinder",
+            "public": False,
+            "metadata": {"auto_scan": "false", "public": "false"},
+        })
+        if created.status_code not in {201, 409}:
+            raise HTTPException(status_code=503, detail="Cinder Harbor project could not be created")
+
+
 def image_revision(image: dict[str, Any]) -> str:
     config = (image.get("extra_attrs") or {}).get("config") or {}
     labels = config.get("labels") or config.get("Labels") or {}
@@ -383,6 +399,7 @@ async def repository_credentials(repository: str, authorization: str | None = He
         or (forgejo_repository.get("owner") or {}).get("login") != "cinder-field-operator"
     ):
         raise HTTPException(status_code=422, detail="registry credentials are issued only to the assigned operator's repository")
+    await ensure_harbor_project()
     credentials_root = ROOT / "repository-credentials"
     for path in reversed(sorted(credentials_root.glob("*.json"))):
         record = json.loads(path.read_text())
