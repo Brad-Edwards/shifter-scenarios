@@ -143,16 +143,15 @@ ensure_communications_role() {
 configure_application() {
   local metadata_b64=$1
   local role_id=$2
-  # PHP reads its own variables in the container.
-  # shellcheck disable=SC2016
   compose exec -T \
     -e MAUTIC_SAML_METADATA_B64="${metadata_b64}" \
     -e MAUTIC_SAML_ROLE_ID="${role_id}" \
-    mautic php -r '
+    mautic php <<'PHP'
+<?php
       $path = "/var/www/html/config/local.php";
       $parameters = [];
       if (file_exists($path)) { include $path; }
-      $parameters["api_enabled"] = 1;
+      $parameters["api_enabled"] = true;
       $parameters["api_enable_basic_auth"] = true;
       $parameters["trusted_proxies"] = ["10.61.70.2"];
       $parameters["mailer_dsn"] = "smtp://advisories:KeplerV2-Training-Synthetic-Business@stalwart:587?verify_peer=0";
@@ -173,7 +172,12 @@ configure_application() {
       $parameters["saml_idp_default_role"] = (int) getenv("MAUTIC_SAML_ROLE_ID");
       $export = "<?php\n$" . "parameters = " . var_export($parameters, true) . ";\n";
       if (file_put_contents($path, $export) === false) { exit(1); }
-    '
+      clearstatcache(true, $path);
+      $parameters = [];
+      include $path;
+      if (($parameters["api_enabled"] ?? null) !== true) { exit(1); }
+      if (($parameters["api_enable_basic_auth"] ?? null) !== true) { exit(1); }
+PHP
 }
 
 main() {
