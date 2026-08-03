@@ -185,6 +185,87 @@ class AgentServiceTests(unittest.TestCase):
         invoke.assert_not_awaited()
         self.assertFalse(result["tool_events"][0]["allowed"])
 
+    def test_mcp_exception_is_returned_as_tool_result(self) -> None:
+        completions = AsyncMock(
+            side_effect=[
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-1",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {"role": "assistant", "content": "The source lookup is unavailable."},
+            ]
+        )
+
+        with (
+            patch.object(
+                agent_service,
+                "model_completion",
+                completions,
+            ),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(True, "allowed")),
+            ),
+            patch.object(
+                agent_service,
+                "call_mcp_tool",
+                AsyncMock(side_effect=RuntimeError("mcp timeout")),
+            ),
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        self.assertTrue(result["tool_events"][0]["allowed"])
+        self.assertEqual(
+            result["tool_events"][0]["result"]["error"], "tool_call_failed"
+        )
+        self.assertIn("source lookup is unavailable", result["response"])
+
+    def test_exhausted_tool_loop_forces_final_completion_without_tools(self) -> None:
+        completions = AsyncMock(
+            side_effect=[
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": f"call-{index}",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                }
+                for index in range(3)
+            ]
+            + [{"role": "assistant", "content": "Fallback answer from retrieved context."}]
+        )
+
+        with (
+            patch.object(agent_service, "model_completion", completions),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(False, "actor is not permitted")),
+            ),
+            patch.object(agent_service, "call_mcp_tool", AsyncMock()),
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        self.assertIn("Fallback answer", result["response"])
+        self.assertEqual(completions.await_count, 4)
+        self.assertFalse(completions.await_args_list[-1].kwargs["tools_enabled"])
+
     def test_librechat_stream_uses_openai_chunks(self) -> None:
         expected = state()
         expected["response"] = (

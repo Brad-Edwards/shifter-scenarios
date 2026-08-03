@@ -163,6 +163,13 @@ spec:
               app.kubernetes.io/name: opa
       ports:
         - {protocol: TCP, port: 8181}
+    - to:
+        - ipBlock:
+            cidr: 192.168.78.1/32
+      ports:
+        - {protocol: TCP, port: 3000}
+        - {protocol: TCP, port: 16333}
+        - {protocol: TCP, port: 16379}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

@@ -13,7 +13,7 @@ die() { printf '[m02 validate] ERROR: %s\n' "$*" >&2; exit 1; }
 
 fetch_carrier() {
   local url=$1 output=$2
-  local -a args=(-fsS --connect-timeout 10 --max-time 60)
+  local -a args=(-fsSL --connect-timeout 10 --max-time 60)
   [[ -z ${PARTICIPANT_COOKIE_FILE:-} ]] || args+=(-b "${PARTICIPANT_COOKIE_FILE}")
   [[ -z ${PARTICIPANT_BEARER_TOKEN:-} ]] || args+=(-H "Authorization: Bearer ${PARTICIPANT_BEARER_TOKEN}")
   [[ -z ${PARTICIPANT_BASIC_AUTH:-} ]] || args+=(-u "${PARTICIPANT_BASIC_AUTH}")
