@@ -1,6 +1,15 @@
 name: keplerops-v2
 
 services:
+  step-ca:
+    networks:
+      identity:
+        ipv4_address: 10.61.20.21
+      public: {}
+      cinder: {}
+    dns:
+      - 10.61.10.11
+
   caddy:
     volumes:
       - cinder-domain-certs:/etc/caddy/cinder-certs:ro
@@ -375,8 +384,11 @@ services:
     build:
       context: ./campaign-start/modules/m06/payloads
       dockerfile: registrar/Dockerfile
+      args:
+        STEP_CA_IMAGE: ${STEP_CA_IMAGE}
     image: keplerops/cinder-registrar:campaign-v2
     container_name: kep-v2-cinder-registrar
+    user: "0:65532"
     environment:
       SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
       CINDER_REGISTRAR_TOKEN: Cinder-Field-Operator-Registrar-4c8e2a7f

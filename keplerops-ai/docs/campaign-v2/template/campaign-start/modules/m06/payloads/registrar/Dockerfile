@@ -1,7 +1,11 @@
+ARG STEP_CA_IMAGE=smallstep/step-ca:0.28.4
+FROM ${STEP_CA_IMAGE} AS step-cli
+
 FROM python:3.12.11-slim-bookworm
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl openssl \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --no-cache-dir fastapi==0.116.1 httpx==0.28.1 pydantic==2.11.7 uvicorn==0.35.0
+COPY --from=step-cli /usr/local/bin/step /usr/local/bin/step
 WORKDIR /app
 COPY registrar/api.py /app/api.py
 COPY common/checkpoints.py /app/checkpoints.py

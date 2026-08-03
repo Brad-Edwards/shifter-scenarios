@@ -314,6 +314,16 @@ https://registrar.cinder.lab {
   reverse_proxy 10.61.90.34:8080
 }
 
+# campaign-m06-step-ca
+https://ca.keplerops.lab {
+  tls internal
+  reverse_proxy https://10.61.20.21:9000 {
+    transport http {
+      tls_insecure_skip_verify
+    }
+  }
+}
+
 # campaign-m06-vector-workbench
 https://vector.cinder.lab {
   tls internal
@@ -385,7 +395,7 @@ CADDY
 
 install_osint_records() {
   curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
-    --data '{"rrsets":[{"name":"partner-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"external-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"artifacts.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
+    --data '{"rrsets":[{"name":"partner-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"external-intake.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"artifacts.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"ca.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
     http://10.61.10.10:8081/api/v1/servers/localhost/zones/keplerops.lab. >/dev/null
   curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
     --data '{"rrsets":[{"name":"media.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"developer.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"bridge.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"experiments.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"releases.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"registrar.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"vector.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"knative.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"storage.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]}]}' \
@@ -771,7 +781,7 @@ apply_common() {
   install_participant_prerequisite_identity
   install_participant_mail_identity
   install_knative_publisher
-  compose up -d cinder-forgejo-runner
+  compose up -d --build cinder-forgejo-runner
   install_participant_publisher_access
 }
 
