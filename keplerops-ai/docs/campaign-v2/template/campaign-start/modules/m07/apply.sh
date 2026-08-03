@@ -336,9 +336,6 @@ MLFLOW_URL=https://mlflow.keplerops.lab
 MLFLOW_AUTH=${MLFLOW_AUTH}
 MLFLOW_USERNAME=${MLFLOW_AUTH%%:*}
 MLFLOW_PASSWORD=${MLFLOW_AUTH#*:}
-HARBOR_URL=https://registry.keplerops.lab
-HARBOR_USER=$(harbor_publisher_user)
-HARBOR_PASSWORD=$(harbor_publisher_password)
 EOF
 }
 
