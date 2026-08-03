@@ -6,7 +6,7 @@ interface:
   parameters: true
   presets: false
 registration:
-  socialLogins: []
+  socialLogins: [openid]
 endpoints:
   custom:
     - name: Orion Assistant
