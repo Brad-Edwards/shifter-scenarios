@@ -62,7 +62,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m04-e | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-f | M04 | PARTICIPANT PASS | Eight labels, 11 outputs, attestation | Access fixes pushed; object route pending | Pending | Lane B Airflow run `qa-lane-b-m04-f-v3-20260803T084551Z` |
 | kep-m04-g | M04 | PARTICIPANT PASS | Runtime-lineage Airflow attestation and native probe | Local source fix ready | Pending | Lane B `dagrun-status-pass.json` and `airflow-result-pass-xcom.json` |
-| kep-m04-h | M04 | PARTICIPANT PASS | Signed factuality report complete; repeated unsupported entity detected; object listing denied | Artifact route source pending | Pending | `kep-v2-qa-lane-b:/home/kasm-user/m04-h/pass-summary.json`; Airflow run `participant-m04-h-20260803T101520Z` |
+| kep-m04-h | M04 | PARTICIPANT PASS | Signed factuality report complete; repeated unsupported entity detected; object listing denied | `912a4a6`, `e9d6273` | Pending | `kep-v2-qa-lane-b:/home/kasm-user/m04-h/pass-summary.json`; Airflow run `participant-m04-h-20260803T101520Z` |
 | kep-m04-i | M04 | PARTICIPANT PASS | Prompt-renderer Airflow report complete; 3 recognizer states, both parser conditions, zero tool events | Orion Agent parser no-tool and provider retry fix ready | Pending | Lane B `qa-lane-b-m04-i-pass2-20260803T095846Z`; `/home/kasm-user/qa-lane-b/m04-i/m04-i-pass2-summary.json` |
 | kep-m04-j | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-k | M04 | PARTICIPANT PASS | WorkHub issue 34 route journal | Worker fix pushed | Pending | Lane B participant-visible WorkHub record |
