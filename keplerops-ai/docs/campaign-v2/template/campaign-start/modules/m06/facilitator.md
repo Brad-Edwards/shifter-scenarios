@@ -262,7 +262,7 @@ complete an operation from observability.
 **Diagnosis:** Repository-local secret assumption, Docker command, mutable tag, absent script/label, unrelated Action.
 **Tier 1 - Orientation:** Point to repository-scoped credentials and rootless BuildKit in `START-HERE.md`.
 **Tier 2 - Mechanism:** Explain continuity among source commit, OCI revision, image digest, executable harness, and distinct clean/candidate inputs.
-**Tier 3 - Execution:** Name `ci/harness-release.yml`, `ci/validate-orion-harness`, the required run schema, and `/v1/harness-releases`.
+**Tier 3 - Execution:** Name `ci/harness-release.yml`, workspace-local `DOCKER_CONFIG`, `ci/validate-orion-harness`, the required run schema, and `/v1/harness-releases`.
 **Defensive discussion:** Ephemeral builders, no host socket, least-privilege robots, attestations, protected workflows.
 **Diagnostics:** Read runner isolation, Action, Harbor config, registry execution.
 **Recovery:** Preserve accepted release; rerun failed Actions without deleting history.

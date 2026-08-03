@@ -107,6 +107,10 @@ repository only; the robot can push and pull only `cinder/REPOSITORY`. Actions u
 `tcp://cinder-buildkit:1234`. There is no Docker socket, host shell, publisher
 key, victim network, or management credential in the runner.
 
+When an Actions workflow writes registry authentication, set
+`DOCKER_CONFIG="$GITHUB_WORKSPACE/.docker"`, create that directory, and write
+`config.json` there. The runner does not guarantee a writable home directory.
+
 ## Native completion records
 
 Partner document records are created at `/v1/intakes`; the separate normal
