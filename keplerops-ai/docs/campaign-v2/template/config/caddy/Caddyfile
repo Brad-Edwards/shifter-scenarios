@@ -84,6 +84,11 @@ https://objects.keplerops.lab {
   reverse_proxy 10.61.50.60:9001
 }
 
+https://artifacts.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.60:9000
+}
+
 https://lake.keplerops.lab {
   tls internal
   reverse_proxy 10.61.50.61:8000

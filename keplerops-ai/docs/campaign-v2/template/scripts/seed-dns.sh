@@ -12,7 +12,7 @@ done
 
 for name in @ www id git workhub files support assistant preview intake status \
   advisories grafana jaeger pypi npm registry notebooks labels airflow mlflow \
-  flows pipelines objects lake vectors argocd models orion-agent orion-mcp \
+  flows pipelines objects artifacts lake vectors argocd models orion-agent orion-mcp \
   risk-model vision business webmail opencost; do
   pdns replace-rrset keplerops.lab "$name" A 60 10.61.10.2
 done
