@@ -116,7 +116,7 @@ health() {
     harbor-jobservice harbor-portal harbor-nginx
     jupyterhub label-studio minio lakefs
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker
-    mlflow tika grobid qdrant hayhooks
+    mlflow tika grobid qdrant qdrant-edge qdrant-writer hayhooks
   )
 
   log 'checking containers'
@@ -165,7 +165,7 @@ start() {
   local -a runtime_services=(
     devpi-bootstrap verdaccio harbor-nginx jupyterhub label-studio lakefs
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker
-    mlflow tika grobid qdrant hayhooks
+    mlflow tika grobid qdrant qdrant-edge qdrant-writer hayhooks
   )
 
   log 'starting required foundation services and networks'
@@ -202,7 +202,7 @@ converge() {
   local -a runtime_services=(
     devpi-bootstrap verdaccio harbor-nginx jupyterhub label-studio lakefs
     airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker
-    mlflow tika grobid qdrant hayhooks
+    mlflow tika grobid qdrant qdrant-edge qdrant-writer hayhooks
   )
 
   log 'converging prebuilt engineering and data services'
