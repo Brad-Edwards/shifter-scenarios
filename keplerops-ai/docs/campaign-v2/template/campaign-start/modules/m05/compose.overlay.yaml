@@ -28,6 +28,8 @@ x-m05-actions-runner: &m05-actions-runner
   depends_on:
     m05-buildkit:
       condition: service_healthy
+    m05-runner-volume-init:
+      condition: service_completed_successfully
   networks:
     engineering: {}
   restart: unless-stopped
@@ -38,6 +40,18 @@ x-m05-actions-runner: &m05-actions-runner
     retries: 20
 
 services:
+  m05-runner-volume-init:
+    image: keplerops/orion-agent:0.1.0
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["chown -R 1000:1000 /runner/release-tools /runner/agent-config /runner/blueprints /runner/staging"]
+    volumes:
+      - m05-runner-release-tools:/runner/release-tools
+      - m05-runner-agent-config:/runner/agent-config
+      - m05-runner-blueprints:/runner/blueprints
+      - m05-runner-staging:/runner/staging
+    restart: "no"
+
   m05-buildkit:
     image: moby/buildkit:v0.25.1-rootless
     container_name: kep-v2-m05-buildkit

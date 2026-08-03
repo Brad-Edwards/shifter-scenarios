@@ -41,7 +41,7 @@ require_commands() {
 }
 
 compose() {
-  docker compose --project-directory "${TEMPLATE_ROOT}" \
+  COMPOSE_BAKE=false COMPOSE_PARALLEL_LIMIT=1 docker compose --project-directory "${TEMPLATE_ROOT}" \
     --env-file "${TEMPLATE_ROOT}/component-lock.env" \
     --env-file "${TEMPLATE_ROOT}/engineering/component-lock.additions.env" \
     -f "${TEMPLATE_ROOT}/compose.foundation.yaml" \

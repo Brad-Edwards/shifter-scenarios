@@ -227,6 +227,7 @@ configure_signature_admission_key() {
 configure_k3s_runtime() {
   local gitops_revision
   [[ -r ${K3S01_SSH_KEY} ]] || die 'k3s01 SSH key is unavailable'
+  "${TEMPLATE_ROOT}/platform/scripts/configure-k3s-registry.sh"
   gitops_revision="$(curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" \
     "${FORGEJO_API_URL}/repos/keplerops/orion-agent-gitops/branches/main" | jq -er '.commit.id')"
   "${SSH[@]}" "$K3S01_SSH_TARGET" sudo bash -s -- "$gitops_revision" <<'REMOTE'

@@ -94,6 +94,19 @@ fi
   sudo /opt/keplerops-platform/scripts/capture-assistant-runtime.sh
 "${ROOT}/scripts/activate-business-model-identities.sh"
 
+# Identity activation restarts the serving path. Wait for that bounded rollout
+# before asserting the candidate-to-runtime continuity below.
+platform_ready=0
+for _ in $(seq 1 24); do
+  if "${SSH[@]}" "${K3S01_SSH_TARGET}" \
+    sudo /opt/keplerops-platform/scripts/readiness.sh --core >/dev/null 2>&1; then
+    platform_ready=1
+    break
+  fi
+  sleep 5
+done
+[[ ${platform_ready} == 1 ]] || fail 'platform did not recover after business identity activation'
+
 # Prove the immutable candidate/release/runtime joins after activation, then
 # require the complete platform gate (including the signed assistant runtime).
 "${ROOT}/baseline/release-runtime-continuity.sh"
