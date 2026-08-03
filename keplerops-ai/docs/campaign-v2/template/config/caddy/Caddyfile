@@ -176,7 +176,7 @@ https://objects.cinder.lab {
 
 https://notebook.cinder.lab {
   tls internal
-  reverse_proxy 10.61.90.32:8000
+  reverse_proxy 10.61.90.32:8888
 }
 
 https://model.cinder.lab {

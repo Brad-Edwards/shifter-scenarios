@@ -56,7 +56,7 @@ changed="$("${SSH[@]}" "${K3S01_SSH_TARGET}" '
   if [ "$changed" -eq 1 ]; then
     sudo install -m 0600 /tmp/keplerops-registry/registries.yaml /etc/rancher/k3s/registries.yaml
     sudo install -m 0644 /tmp/keplerops-registry/registry-keplerops-ca.crt /etc/rancher/k3s/registry-keplerops-ca.crt
-    sudo sed -i "/# keplerops-registry$/d" /etc/hosts
+    sudo sed -i -e "/# keplerops-registry$/d" -e "/# keplerops-v2-registry$/d" /etc/hosts
     cat /tmp/keplerops-registry/hosts.entry | sudo tee -a /etc/hosts >/dev/null
     sudo systemctl restart k3s
   fi
