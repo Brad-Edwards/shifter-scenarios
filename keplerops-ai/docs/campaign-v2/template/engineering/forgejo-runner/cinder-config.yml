@@ -1,0 +1,26 @@
+log:
+  level: info
+  job_level: info
+
+runner:
+  file: /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
+  capacity: 1
+  timeout: 30m
+  shutdown_timeout: 5m
+  insecure: false
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  report_interval: 1s
+  labels:
+    - cinder-linux:host
+
+cache:
+  enabled: false
+
+container:
+  docker_host: "-"
+  force_pull: false
+  force_rebuild: false
+
+host:
+  workdir_parent: /var/lib/keplerops-v2/cinder-forgejo-runner/workspace

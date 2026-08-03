@@ -1,0 +1,12 @@
+groups:
+  - name: m10-production-controls
+    rules:
+      - alert: OrionCanaryUnavailable
+        expr: orion_failed_probes_total{service="orion-release-risk",load="attack"} >= 2
+        for: 0m
+        labels:
+          severity: warning
+          service: orion-release-risk
+        annotations:
+          summary: Bounded Orion canary monitor failures
+          engagement_reference: FLAG{42258d84b313abde}

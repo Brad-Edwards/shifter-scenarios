@@ -1,0 +1,7 @@
+{
+  "reference": "ORION-CONFIGURATION-REVISION-2026",
+  "classification": "restricted",
+  "title": "Reconciled agent configuration consequence",
+  "body": "This source was consulted because the signed deployed agent configuration changed the release-assistant knowledge boundary.",
+  "release_reference": "FLAG{df66e06e0d228009}"
+}

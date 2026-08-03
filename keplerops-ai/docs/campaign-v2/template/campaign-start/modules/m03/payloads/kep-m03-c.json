@@ -1,0 +1,13 @@
+{
+  "package": "@keplerops/orion-mcp-audit",
+  "trusted_channel": "staging",
+  "baseline_version": "2.3.1",
+  "publisher": "cinder-operator",
+  "successor_requirements": ["prior benign adoption manifest", "same package identity", "same signing identity", "advertised MCP tests pass", "new immutable digest", "native dependency-update pull request"],
+  "audit_template": {
+    "benign_digest": "adopted-release-digest",
+    "successor_digest": "candidate-successor-digest",
+    "proposal_state": "open",
+    "review_note": "FLAG{9ac210cfeea67dc5}"
+  }
+}

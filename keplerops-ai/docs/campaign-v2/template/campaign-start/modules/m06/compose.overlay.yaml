@@ -1,0 +1,527 @@
+name: keplerops-v2
+
+services:
+  step-ca:
+    networks:
+      identity:
+        ipv4_address: 10.61.20.21
+      public: {}
+      cinder: {}
+    dns:
+      - 10.61.10.11
+
+  caddy:
+    volumes:
+      - cinder-domain-certs:/etc/caddy/cinder-certs:ro
+      - caddy-admin-socket:/run/caddy-admin
+    networks:
+      public:
+        aliases:
+          - partner-intake.keplerops.lab
+          - external-intake.keplerops.lab
+          - artifacts.keplerops.lab
+          - orion-open-systems.org
+      cinder:
+        aliases:
+          - media.cinder.lab
+          - developer.cinder.lab
+          - bridge.cinder.lab
+          - experiments.cinder.lab
+          - releases.cinder.lab
+          - registrar.cinder.lab
+          - vector.cinder.lab
+          - storage.cinder.lab
+          - knative.cinder.lab
+
+  orion-osint-site:
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-orion-osint-site
+    volumes:
+      - ./campaign-start/modules/m06/payloads/osint/index.html:/usr/share/nginx/html/index.html:ro
+      - ./campaign-start/modules/m06/payloads/public/conference:/usr/share/nginx/html/speakers:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.30
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:size=16m
+      - /var/run:size=1m
+    cap_drop: [ALL]
+    cap_add: [CHOWN, NET_BIND_SERVICE, SETGID, SETUID]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+
+  cinder-forgejo:
+    environment:
+      FORGEJO__actions__ENABLED: "true"
+
+  cinder-forgejo-runner:
+    build:
+      context: ./campaign-start/modules/m06/payloads/actions-runner
+    image: keplerops/cinder-actions-runner:campaign-v2
+    depends_on:
+      cinder-forgejo-runner-init:
+        condition: service_completed_successfully
+      cinder-buildkit:
+        condition: service_healthy
+    extra_hosts:
+      - keplerops.lab:10.61.10.2
+      - git.keplerops.lab:10.61.10.2
+      - registry.keplerops.lab:10.61.90.2
+      - model.cinder.lab:10.61.90.2
+    networks:
+      - cinder
+
+  cinder-buildkit:
+    image: moby/buildkit:v0.25.1-rootless
+    container_name: kep-v2-cinder-buildkit
+    command: ["--addr", "tcp://0.0.0.0:1234", "--config", "/etc/buildkit/buildkitd.toml", "--oci-worker-no-process-sandbox"]
+    environment:
+      BUILDKITD_FLAGS: --oci-worker-no-process-sandbox
+    extra_hosts:
+      - registry.keplerops.lab:10.61.90.2
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=512m
+      - /run/user/1000:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
+      - /home/user/.local/tmp:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
+      - /home/user/.local/share/buildkit:rw,nosuid,nodev,size=2g,uid=1000,gid=1000,mode=0700
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID]
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    volumes:
+      - ./campaign-start/modules/m06/payloads/actions-runner/buildkitd.toml:/etc/buildkit/buildkitd.toml:ro
+      - ./state/caddy-root.crt:/etc/buildkit/certs/registry.keplerops.lab/ca.crt:ro
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.41
+    healthcheck:
+      test: ["CMD", "buildctl", "--addr", "tcp://127.0.0.1:1234", "debug", "workers"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 5s
+    restart: unless-stopped
+
+  cinder-fdroidserver:
+    build:
+      context: ./campaign-start/modules/m06/payloads/fdroidserver
+    image: keplerops/cinder-fdroidserver:campaign-v2
+    container_name: kep-v2-cinder-fdroidserver
+    network_mode: none
+    working_dir: /srv/fdroid
+    volumes:
+      - ./state/campaign-start/m06-fdroid:/srv/fdroid
+
+  cinder-jupyter:
+    build:
+      context: ./campaign-start/modules/m06
+      dockerfile: payloads/jupyterhub/Dockerfile
+      args:
+        JUPYTERHUB_BASE_IMAGE: ${JUPYTERHUB_BASE_IMAGE}
+    image: keplerops/cinder-jupyterhub:campaign-v2
+    environment:
+      CINDER_WORKSPACE_FLAG: FLAG{ea64816134461740}
+      CINDER_SINGLEUSER_IMAGE: keplerops/cinder-jupyter-singleuser:campaign-v2
+      KUBECONFIG: /etc/cinder/kubeconfig
+    volumes:
+      - cinder-jupyterhub-state:/srv/jupyterhub/state
+      - ./state/cinder-jupyterhub/kubeconfig:/etc/cinder/kubeconfig:ro
+    ports:
+      - "192.168.78.1:18081:8081"
+    command: ["jupyterhub", "-f", "/srv/jupyterhub/jupyterhub_config.py"]
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.32
+      platform: {}
+
+  preview:
+    environment:
+      ORION_AUDIT_DIR: /var/lib/orion-preview/audit
+    volumes:
+      - orion-preview-audit:/var/lib/orion-preview/audit
+
+  cinder-model-edge:
+    build:
+      context: ./campaign-start/modules/m06/payloads/model-edge
+    image: keplerops/cinder-model-edge:campaign-v2
+    container_name: kep-v2-cinder-model-edge
+    environment:
+      CINDER_EDGE_CREDENTIAL: ${CINDER_EDGE_CREDENTIAL:-Cinder-Field-Operator-GLM-6f2a9d8c}
+      CINDER_EDGE_SERVICE_CREDENTIAL: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
+      CINDER_EDGE_OWNER: cinder-field-operator
+      GLM_UPSTREAM_URL: http://192.168.78.30:30402/v1
+      GLM_UPSTREAM_MODEL: openai/zai-org/glm-5-maas
+      MODEL_USAGE_FLAG: FLAG{7e48e2e0859f530e}
+    env_file:
+      - path: ./state/cinder-model-identity.env
+        required: false
+    volumes:
+      - cinder-model-usage:/var/lib/cinder-model-edge
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.36
+      platform: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-developer-assistant:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: developer/Dockerfile
+    image: keplerops/cinder-developer-assistant:campaign-v2
+    container_name: kep-v2-cinder-developer-assistant
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      MODEL_EDGE_URL: http://10.61.90.36:8080/v1
+      MODEL_EDGE_TOKEN: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
+      HOST_BRIDGE_URL: http://10.61.90.38:8080
+    volumes:
+      - cinder-developer-records:/var/lib/cinder-developer
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.37
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-host-bridge:
+    build:
+      context: ./campaign-start/modules/m06/payloads/host-bridge
+    image: keplerops/cinder-host-bridge:campaign-v2
+    container_name: kep-v2-cinder-host-bridge
+    environment:
+      DEVELOPER_ASSISTANT_URL: http://10.61.90.37:8080
+      COMMAND_CORPUS_FLAG: FLAG{d993d83bb0a9e956}
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+      - /run/bridge:rw,nosuid,size=32m
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - cinder-bridge-records:/var/lib/cinder-bridge
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.38
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-openvoice:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: openvoice/Dockerfile
+    image: keplerops/cinder-openvoice:campaign-v2
+    container_name: kep-v2-cinder-openvoice
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      CINDER_MEDIA_TOKEN: Cinder-Field-Operator-Media-1d4c7b9e
+      CINDER_MEDIA_READER_TOKEN: Cinder-Checkpoint-Reader-W9s2Kd7m
+      MEDIA_PROVENANCE_FLAG: FLAG{8a6f126e6b7aff1a}
+      WHISPER_MODEL: small.en
+    volumes:
+      - cinder-jupyter-work:/work
+      - cinder-media-records:/records
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    extra_hosts:
+      - orion-open-systems.org:10.61.90.2
+      - model.cinder.lab:10.61.90.2
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.33
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 20s
+      timeout: 5s
+      retries: 30
+
+  keplerops-partner-intake:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: intake/Dockerfile
+    image: keplerops/partner-intake:campaign-v2
+    container_name: kep-v2-partner-intake
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      ORION_PREVIEW_URL: http://10.61.10.25:8080
+      QDRANT_URL: http://10.61.10.26:6333
+      RELEASE_ASSISTANT_URL: http://10.61.10.27:8080/v1
+      RELEASE_ASSISTANT_TOKEN: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
+      INTAKE_EVASION_FLAG: FLAG{157bc21dab72aeff}
+      DOCUMENT_HUMAN_FLAG: FLAG{0a438484b65046a0}
+      DOCUMENT_PIPELINE_FLAG: FLAG{447fd22a0058819c}
+      RETRIEVAL_INSTRUCTION_FLAG: FLAG{b5369733fb4c6d27}
+    depends_on:
+      keplerops-intake-qdrant:
+        condition: service_healthy
+      keplerops-model-edge:
+        condition: service_healthy
+    volumes:
+      - partner-intake-records:/var/lib/partner-intake
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.29
+      platform: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  keplerops-edge-observer:
+    build:
+      context: ./campaign-start/modules/m06/payloads/edge-observer
+    image: keplerops/edge-observer:campaign-v2
+    container_name: kep-v2-edge-observer
+    environment:
+      EDGE_CORRELATION_FLAG: FLAG{b4b19a638ef57acc}
+      STALWART_HOST: 10.61.10.20
+      STALWART_INTAKE_USER: partner-intake
+      STALWART_INTAKE_PASSWORD: KeplerV2-Training-Partner
+      ZAMMAD_URL: http://10.61.30.24:8080
+      ZAMMAD_USER: support.analyst
+      ZAMMAD_PASSWORD: KeplerV2-Training-Support
+    volumes:
+      - orion-preview-audit:/var/lib/orion-preview/audit:ro
+      - edge-observer-records:/var/lib/edge-observer
+    networks:
+      public:
+        ipv4_address: 10.61.10.28
+      corp: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-experiments:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: experiments/Dockerfile
+    image: keplerops/cinder-experiments:campaign-v2
+    container_name: kep-v2-cinder-experiments
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      ORION_PREVIEW_URL: http://10.61.10.25:8080
+      PUBLIC_MODEL_URL: http://192.168.78.30:30083
+      PUBLIC_MODEL_NAME: orion-release-risk
+      PREVIEW_BLACKBOX_FLAG: FLAG{e03e39f8f878efb0}
+      PREVIEW_TRANSFER_FLAG: FLAG{0dd8f75b05289ffc}
+      WHITEBOX_FLAG: FLAG{285f88d89462c4ce}
+    volumes:
+      - orion-preview-audit:/var/lib/orion-preview/audit:ro
+      - cinder-experiment-records:/var/lib/cinder-experiments
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.39
+      public: {}
+      platform: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-release-registry:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: release-registry/Dockerfile
+    image: keplerops/cinder-release-registry:campaign-v2
+    container_name: kep-v2-cinder-release-registry
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      CINDER_FORGEJO_URL: http://10.61.90.30:3000
+      CINDER_FORGEJO_USER: cinder-operator
+      CINDER_FORGEJO_PASSWORD: Cinder-Operations-Git-K3m7Pq4x
+      CINDER_PARTICIPANT_FORGEJO_USER: cinder-field-operator
+      CINDER_PARTICIPANT_FORGEJO_PASSWORD: Cinder-Field-Operator-Git-V6n4Qs8p
+      HARBOR_API_URL: http://10.61.40.32:8080/api/v2.0
+      HARBOR_USER: admin
+      HARBOR_PASSWORD: KeplerV2-Training-Harbor
+      PUBLIC_MODEL_URL: http://192.168.78.30:30083
+      MODEL_EDGE_URL: http://10.61.90.36:8080
+      MODEL_EDGE_TOKEN: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
+      PUBLIC_BUNDLE_FLAG: FLAG{8f1a2c1221196413}
+      TOOLCHAIN_FLAG: FLAG{c79665e28c6092db}
+      HARNESS_FLAG: FLAG{42822974ea6be801}
+      STAGING_FLAG: FLAG{0938e99700485593}
+    volumes:
+      - cinder-release-records:/var/lib/cinder-release-registry
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+      - ./state/caddy-root.crt:/etc/containers/certs.d/registry.keplerops.lab/ca.crt:ro
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.40
+      public: {}
+      engineering: {}
+      platform: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-registrar:
+    build:
+      context: ./campaign-start/modules/m06/payloads
+      dockerfile: registrar/Dockerfile
+      args:
+        STEP_CA_IMAGE: ${STEP_CA_IMAGE}
+    image: keplerops/cinder-registrar:campaign-v2
+    container_name: kep-v2-cinder-registrar
+    user: "0:65532"
+    environment:
+      SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      CINDER_REGISTRAR_TOKEN: Cinder-Field-Operator-Registrar-4c8e2a7f
+      CINDER_CHECKPOINT_READER_TOKEN: Cinder-Checkpoint-Reader-W9s2Kd7m
+      CADDY_ADMIN_SOCKET: /run/caddy-admin/admin.sock
+      PDNS_API_URL: http://10.61.10.10:8081/api/v1/servers/localhost
+      PDNS_API_KEY: KeplerV2-Training-PDNS
+      STALWART_API_URL: http://10.61.10.20:8080
+      STALWART_ADMIN_USER: range-admin
+      STALWART_ADMIN_PASSWORD: KeplerV2-Training-Stalwart
+      STEP_CA_URL: https://10.61.20.21:9000
+      KEYCLOAK_URL: http://10.61.20.20:8080
+      KEYCLOAK_REALM: keplerops
+      KEYCLOAK_ADMIN: range-admin
+      KEYCLOAK_ADMIN_PASSWORD: KeplerV2-Training-Keycloak
+      OWNERSHIP_FLAG: FLAG{38cbfe8eeb79300b}
+    volumes:
+      - cinder-registrar-records:/var/lib/cinder-registrar
+      - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+      - ./config/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - cinder-domain-certs:/etc/caddy/cinder-certs
+      - caddy-admin-socket:/run/caddy-admin
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.34
+      public: {}
+      identity: {}
+    dns:
+      - 10.61.10.11
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  cinder-qdrant:
+    image: ${QDRANT_IMAGE}
+    container_name: kep-v2-cinder-qdrant
+    volumes:
+      - cinder-qdrant-data:/qdrant/storage
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.35
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  keplerops-intake-qdrant:
+    image: ${QDRANT_IMAGE}
+    container_name: kep-v2-intake-qdrant
+    volumes:
+      - partner-intake-qdrant-data:/qdrant/storage
+    networks:
+      public:
+        ipv4_address: 10.61.10.26
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/6333'"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  keplerops-model-edge:
+    build:
+      context: ./campaign-start/modules/m06/payloads/model-edge
+    image: keplerops/cinder-model-edge:campaign-v2
+    container_name: kep-v2-partner-model-edge
+    environment:
+      CINDER_EDGE_CREDENTIAL: KeplerOps-Partner-Edge-Disabled
+      CINDER_EDGE_SERVICE_CREDENTIAL: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
+      CINDER_EDGE_OWNER: keplerops-partner-intake
+      GLM_UPSTREAM_URL: http://192.168.78.30:30402/v1
+      GLM_UPSTREAM_MODEL: openai/zai-org/glm-5-maas
+      MODEL_USAGE_FLAG: ""
+    env_file:
+      - path: ./state/partner-model-identity.env
+        required: false
+    volumes:
+      - partner-model-usage:/var/lib/cinder-model-edge
+    networks:
+      public:
+        ipv4_address: 10.61.10.27
+      platform: {}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health', timeout=3).read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+networks:
+  public:
+    external: true
+    name: kep-v2-public
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  platform:
+    external: true
+    name: kep-v2-platform
+  identity:
+    external: true
+    name: kep-v2-identity
+  corp:
+    external: true
+    name: kep-v2-corp
+
+volumes:
+  cinder-jupyter-work:
+  cinder-jupyterhub-state:
+  cinder-media-records:
+  cinder-registrar-records:
+  cinder-qdrant-data:
+  cinder-model-usage:
+  cinder-developer-records:
+  cinder-bridge-records:
+  cinder-experiment-records:
+  cinder-release-records:
+  partner-intake-records:
+  edge-observer-records:
+  orion-preview-audit:
+  partner-intake-qdrant-data:
+  partner-model-usage:
+  cinder-domain-certs:
+  caddy-admin-socket:

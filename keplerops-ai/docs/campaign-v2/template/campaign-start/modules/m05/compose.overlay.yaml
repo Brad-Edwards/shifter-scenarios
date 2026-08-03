@@ -1,0 +1,319 @@
+x-m05-actions-runner: &m05-actions-runner
+  build:
+    context: ./campaign-start/modules/m05/payloads/actions-runner
+  image: keplerops/m05-actions-runner:2026.08
+  user: "1000:1000"
+  working_dir: /runner
+  entrypoint: ["/bin/sh", "-ec"]
+  command:
+    - |
+      export SSL_CERT_FILE=/etc/ssl/certs/keplerops-root.crt
+      export GIT_SSL_CAINFO=/etc/ssl/certs/keplerops-root.crt
+      if [ ! -s /runner/.runner ]; then
+        /bin/forgejo-runner create-runner-file \
+          --instance http://10.61.40.20:3000 \
+          --secret "$${FORGEJO_RUNNER_SECRET}" \
+          --name "$${FORGEJO_RUNNER_NAME}"
+      fi
+      exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+  extra_hosts:
+    - git.keplerops.lab:10.61.40.2
+    - registry.keplerops.lab:10.61.40.2
+  read_only: true
+  tmpfs:
+    - /tmp:rw,nosuid,nodev,size=256m
+    - /home/runner:rw,nosuid,nodev,size=64m
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  depends_on:
+    m05-buildkit:
+      condition: service_healthy
+    m05-runner-volume-init:
+      condition: service_completed_successfully
+  networks:
+    engineering: {}
+  restart: unless-stopped
+  healthcheck:
+    test: ["CMD-SHELL", "kill -0 1"]
+    interval: 15s
+    timeout: 5s
+    retries: 20
+
+services:
+  m05-runner-volume-init:
+    image: keplerops/orion-agent:0.1.0
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["chown -R 1000:1000 /runner/release-tools /runner/agent-config /runner/blueprints /runner/staging"]
+    volumes:
+      - m05-runner-release-tools:/runner/release-tools
+      - m05-runner-agent-config:/runner/agent-config
+      - m05-runner-blueprints:/runner/blueprints
+      - m05-runner-staging:/runner/staging
+    restart: "no"
+
+  m05-buildkit:
+    image: moby/buildkit:v0.25.1-rootless
+    container_name: kep-v2-m05-buildkit
+    command: ["--addr", "tcp://0.0.0.0:1234", "--config", "/etc/buildkit/buildkitd.toml", "--oci-worker-no-process-sandbox"]
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=512m
+      - /run/user/1000:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
+      - /home/user/.local/tmp:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
+      - /home/user/.local/share/buildkit:rw,nosuid,nodev,size=3g,uid=1000,gid=1000,mode=0700
+    cap_drop: [ALL]
+    cap_add: [SETUID, SETGID]
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    volumes:
+      - ./campaign-start/modules/m05/payloads/actions-runner/buildkitd.toml:/etc/buildkit/buildkitd.toml:ro
+      - ./state/caddy-root.crt:/etc/buildkit/certs/registry.keplerops.lab/ca.crt:ro
+    extra_hosts:
+      - registry.keplerops.lab:10.61.40.2
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.55
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "buildctl", "--addr", "tcp://127.0.0.1:1234", "debug", "workers"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+      start_period: 2s
+
+  m05-actions-release-tools:
+    <<: *m05-actions-runner
+    container_name: kep-v2-m05-actions-release-tools
+    environment:
+      FORGEJO_RUNNER_SECRET: 8a1d0d48c50961f0e71b3a8e6af8c9d5bcb8bce1
+      FORGEJO_RUNNER_NAME: orion-release-tools-isolated
+    volumes:
+      - ./campaign-start/modules/m05/payloads/actions-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-root.crt:ro
+      - m05-runner-release-tools:/runner
+
+  m05-actions-agent-config:
+    <<: *m05-actions-runner
+    container_name: kep-v2-m05-actions-agent-config
+    environment:
+      FORGEJO_RUNNER_SECRET: d211b485924c2dca3ff34bf5ca98ca6f301a0379
+      FORGEJO_RUNNER_NAME: orion-agent-config-isolated
+    volumes:
+      - ./campaign-start/modules/m05/payloads/actions-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-root.crt:ro
+      - m05-runner-agent-config:/runner
+
+  m05-actions-blueprints:
+    <<: *m05-actions-runner
+    container_name: kep-v2-m05-actions-blueprints
+    environment:
+      FORGEJO_RUNNER_SECRET: 28077287cdca65ba03df8066d0e85d5ca2dcf77d
+      FORGEJO_RUNNER_NAME: orion-blueprints-isolated
+    volumes:
+      - ./campaign-start/modules/m05/payloads/actions-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-root.crt:ro
+      - m05-runner-blueprints:/runner
+
+  m05-actions-staging:
+    <<: *m05-actions-runner
+    container_name: kep-v2-m05-actions-staging
+    environment:
+      FORGEJO_RUNNER_SECRET: 985516a6a6fd3df5f971441ed335151223bc2768
+      FORGEJO_RUNNER_NAME: orion-staging-isolated
+    volumes:
+      - ./campaign-start/modules/m05/payloads/actions-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - ./state/caddy-root.crt:/etc/ssl/certs/keplerops-root.crt:ro
+      - m05-runner-staging:/runner
+
+  m05-source-admission:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.source-admission
+    image: keplerops/m05-source-admission:2026.08
+    container_name: kep-v2-m05-source-admission
+    environment:
+      FORGEJO_API_URL: http://10.61.40.20:3000/api/v1
+      FORGEJO_ADMISSION_USER: svc-orion-release-admission
+      FORGEJO_ADMISSION_PASSWORD: KAI-Orion-Release-Admission-2026
+    volumes:
+      - m05-source-admission:/state
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.57
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+  m05-orion-session-gateway:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.session-gateway
+    image: keplerops/orion-session-gateway:2026.08
+    container_name: kep-v2-orion-session-gateway
+    environment:
+      MONGO_URI: mongodb://10.61.50.31:27017/LibreChat
+      ORION_UPSTREAM_URL: http://192.168.78.30:30081/v1
+      ORION_LIBRECHAT_GATEWAY_KEY: Orion-LibreChat-Session-Gateway-2026
+      ORION_SESSION_SIGNING_KEY: Orion-Enterprise-Session-HMAC-2026
+      ORION_SESSION_AUDIENCE: orion-agent
+      ORION_SESSION_ASSERTION_TTL: "120"
+      ORION_SESSION_AUDIT: /var/lib/orion-session-gateway/assertions.jsonl
+    volumes:
+      - m05-session-gateway:/var/lib/orion-session-gateway
+    networks:
+      corp: {}
+      data: {}
+    restart: unless-stopped
+
+  m05-cinder-transport:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.transport
+    image: keplerops/cinder-orion-transport:campaign-v2
+    container_name: kep-v2-m05-cinder-transport
+    environment:
+      CINDER_API_OPERATOR_TOKEN: Cinder-Orion-API-Operator-2026
+      CINDER_API_WORKER_TOKEN: Cinder-Orion-API-Worker-2026
+      CINDER_WEB_LIBRECHAT_TOKEN: Cinder-Orion-LibreChat-Endpoint-2026
+      CINDER_WEB_WORKER_TOKEN: Cinder-Orion-Web-Worker-2026
+      CINDER_HOST_OPERATOR_TOKEN: Cinder-Orion-Host-Operator-2026
+      CINDER_HOST_BRIDGE_TOKEN: Cinder-Orion-Host-Bridge-2026
+      CINDER_TRANSPORT_AUDIT_TOKEN: Cinder-Orion-Transport-Audit-2026
+    volumes:
+      - m05-cinder-transport:/var/lib/cinder-orion-transport
+    networks:
+      cinder:
+        ipv4_address: 10.61.90.45
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  m05-orion-dataset-worker:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.dataset-worker
+    image: keplerops/orion-dataset-worker:2.8.1-campaign-v2
+    container_name: kep-v2-orion-dataset-worker
+    environment:
+      ORION_TRAINER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_TRACKING_USERNAME: svc-orion-training
+      MLFLOW_TRACKING_PASSWORD: KeplerV2-Training-MLflow-Service
+      CINDER_TRANSPORT_URL: http://10.61.90.45:8090
+      CINDER_TRANSPORT_AUDIT_TOKEN: Cinder-Orion-Transport-Audit-2026
+      ORION_WORKER_AUTHORITY_URL: http://10.61.40.54:8091
+      ORION_WORKER_AUTHORITY_KEY: Orion-Worker-Authority-Internal-2026
+    command: ["serve"]
+    ports:
+      - "18088:8088"
+    volumes:
+      - m05-orion-worker:/var/lib/orion-dataset-worker
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.53
+      cinder: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  m05-orion-dataset-worker-patched:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.dataset-worker
+      args:
+        MLFLOW_VERSION: 2.9.0
+    image: keplerops/orion-dataset-worker:2.9.0-control
+    container_name: kep-v2-orion-dataset-worker-patched
+    environment:
+      ORION_TRAINER_TOKEN: KAI-Orion-Patched-Control-2026
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      ORION_WORKER_AUTHORITY_URL: http://10.61.40.54:8091
+      ORION_WORKER_AUTHORITY_KEY: Orion-Worker-Authority-Internal-2026
+    command: ["serve"]
+    ports:
+      - "18089:8088"
+    volumes:
+      - m05-orion-worker-patched:/var/lib/orion-dataset-worker
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.56
+      cinder: {}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  m05-worker-authority:
+    build:
+      context: ./campaign-start/modules/m05/runtime
+      dockerfile: Dockerfile.worker-authority
+    image: keplerops/orion-worker-authority:2026.08
+    container_name: kep-v2-orion-worker-authority
+    environment:
+      ORION_WORKER_AUTHORITY_KEY: Orion-Worker-Authority-Internal-2026
+      ORION_TRAINER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      CINDER_API_OPERATOR_TOKEN: Cinder-Orion-API-Operator-2026
+      CINDER_API_WORKER_TOKEN: Cinder-Orion-API-Worker-2026
+      CINDER_WEB_WORKER_TOKEN: Cinder-Orion-Web-Worker-2026
+      ORION_LIBRECHAT_AGENT_SESSION: ${ORION_LIBRECHAT_AGENT_SESSION:-}
+    volumes:
+      - m05-worker-authority:/var/lib/orion-worker-authority
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.54
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8091/health', timeout=3).read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  librechat:
+    depends_on:
+      m05-orion-session-gateway:
+        condition: service_started
+      m05-cinder-transport:
+        condition: service_healthy
+    networks:
+      cinder: {}
+    volumes:
+      - ./campaign-start/modules/m05/payloads/librechat/librechat.yaml:/app/librechat.yaml:ro
+
+volumes:
+  m05-cinder-transport:
+  m05-orion-worker:
+  m05-orion-worker-patched:
+  m05-worker-authority:
+  m05-runner-release-tools:
+  m05-runner-agent-config:
+  m05-runner-blueprints:
+  m05-runner-staging:
+  m05-source-admission:
+  m05-session-gateway:
+
+networks:
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  corp:
+    external: true
+    name: kep-v2-corp
+  data:
+    external: true
+    name: kep-v2-data

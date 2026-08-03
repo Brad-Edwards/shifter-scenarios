@@ -1,0 +1,3 @@
+# Module 02 exposes no custom participant HTTP service. Participants use
+# Zammad, Nextcloud/WebDAV, Airflow, Stalwart/Roundcube, Keycloak, Forgejo,
+# devpi, the Cinder relay, and their own HTTPS/MCP endpoints directly.

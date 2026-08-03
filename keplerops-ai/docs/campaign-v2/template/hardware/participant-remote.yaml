@@ -1,0 +1,10 @@
+targets:
+  main:
+    resources:
+      RemotePlace:
+        name: !template '$LG_PLACE'
+    drivers:
+      - SSHDriver:
+          keyfile: /home/kasm-user/.ssh/labgrid/id_ed25519
+          connection_timeout: 15
+          explicit_sftp_mode: true

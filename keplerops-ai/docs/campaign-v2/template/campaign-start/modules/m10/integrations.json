@@ -1,0 +1,23 @@
+{
+  "schema": "keplerops.campaign-module-integrations/v1",
+  "module": "m10",
+  "operations": {
+    "kep-m10-a": {"input": "signed m09 release attestation and benign controls", "services": ["KServe", "MLflow", "Harbor", "Argo CD", "MinIO"], "carrier": "production runtime audit"},
+    "kep-m10-b": {"input": "three submitted trigger batches and matched controls", "services": ["KServe", "Airflow", "Prometheus", "Redmine"], "carrier": "WorkHub integrity incident"},
+    "kep-m10-c": {"input": "digest-linked embedded artifact activation", "services": ["KServe", "Kubernetes RBAC", "Cinder relay"], "carrier": "pod service-identity diagnostic"},
+    "kep-m10-d": {"input": "accepted original-package inventory", "services": ["Airflow", "MinIO Object Lock", "age", "zstd"], "carrier": "support-export manifest"},
+    "kep-m10-e": {"input": "WorkHub canary feature request", "services": ["Release Risk", "Orion Assistant", "OPA", "Unleash", "Jaeger"], "carrier": "Unleash change history"},
+    "kep-m10-f": {"input": "locked encrypted archive and manifest", "services": ["MinIO replication", "Cinder MinIO", "age", "zstd"], "carrier": "Cinder replication completion"},
+    "kep-m10-g": {"input": "original and student signed safetensors/tokenizer archives plus fresh cases", "services": ["Cinder", "Docker network isolation", "Transformers safetensors runtime"], "carrier": "second signed offline attestation"},
+    "kep-m10-h": {"input": "bounded valid expensive request batch", "services": ["KServe", "Prometheus", "Alertmanager"], "carrier": "canary outage alert"},
+    "kep-m10-i": {"input": "repeated and resource-intensive valid requests", "services": ["KServe", "Prometheus", "OpenCost accounting"], "carrier": "tenant chargeback record"},
+    "kep-m10-j": {"input": "two mutually referring research briefs", "services": ["Orion Assistant", "RabbitMQ", "OpenTelemetry"], "carrier": "root resource-usage report"},
+    "kep-m10-k": {"input": "normal public feedback submissions", "services": ["Zammad", "RabbitMQ", "Release Risk", "Qdrant"], "carrier": "analyst signal-quality report"},
+    "kep-m10-l": {"input": "Nextcloud entitlement document", "services": ["Release Risk", "OPA", "Odoo", "Stalwart"], "carrier": "Odoo posting audit"},
+    "kep-m10-m": {"input": "Ghost draft and signed incident fact", "services": ["Orion Assistant", "Ghost", "RSS", "Zammad"], "carrier": "second signed partner complaint"},
+    "kep-m10-n": {"input": "Nextcloud adversarial advisory", "services": ["Release Risk", "Mautic", "Stalwart"], "carrier": "Mautic delivery report"},
+    "kep-m10-o": {"input": "Zammad case with Tika diagnostic", "services": ["Tika", "Release Risk", "Zammad", "Stalwart"], "carrier": "case-history audit"},
+    "kep-m10-p": {"input": "bounded lakeFS partition mutation", "services": ["lakeFS", "MinIO", "Airflow", "Great Expectations"], "carrier": "failed validation result"},
+    "kep-m10-q": {"input": "WorkHub retention request", "services": ["Orion Assistant", "Release Risk", "OPA", "MCP", "Nextcloud", "lakeFS"], "carrier": "data-steward delete audit"}
+  }
+}

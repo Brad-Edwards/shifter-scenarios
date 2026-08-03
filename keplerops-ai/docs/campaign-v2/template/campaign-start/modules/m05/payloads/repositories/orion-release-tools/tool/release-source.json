@@ -1,0 +1,14 @@
+{
+  "name": "release-source",
+  "description": "Read an approved release source by reference.",
+  "input_schema": {
+    "type": "object",
+    "properties": {"reference": {"type": "string"}},
+    "required": ["reference"],
+    "additionalProperties": false
+  },
+  "allowed_references": [
+    "ORION-RELEASE-POLICY-2026"
+  ],
+  "host_bridge_policy": "required"
+}

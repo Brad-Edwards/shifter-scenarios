@@ -1,0 +1,37 @@
+## Render one copy per physical controller. Every value must identify a real
+## device or service on that controller; this file is not runnable as-is.
+{{ env['LABGRID_EXPORTER_GROUP'] }}:
+  location: "{{ env['LABGRID_BENCH_LOCATION'] }}"
+  primary-camera:
+    cls: USBVideo
+    match:
+      ID_SERIAL_SHORT: "{{ env['LABGRID_PRIMARY_CAMERA_SERIAL'] }}"
+  witness-camera:
+    cls: USBVideo
+    match:
+      ID_SERIAL_SHORT: "{{ env['LABGRID_WITNESS_CAMERA_SERIAL'] }}"
+  controller-power:
+    cls: SiSPMPowerPort
+    match:
+      ID_PATH: "{{ env['LABGRID_POWER_ID_PATH'] }}"
+    index: {{ env['LABGRID_CONTROLLER_POWER_INDEX'] }}
+  device-power:
+    cls: SiSPMPowerPort
+    match:
+      ID_PATH: "{{ env['LABGRID_POWER_ID_PATH'] }}"
+    index: {{ env['LABGRID_DEVICE_POWER_INDEX'] }}
+  camera-power:
+    cls: SiSPMPowerPort
+    match:
+      ID_PATH: "{{ env['LABGRID_POWER_ID_PATH'] }}"
+    index: {{ env['LABGRID_CAMERA_POWER_INDEX'] }}
+  light-power:
+    cls: SiSPMPowerPort
+    match:
+      ID_PATH: "{{ env['LABGRID_POWER_ID_PATH'] }}"
+    index: {{ env['LABGRID_LIGHT_POWER_INDEX'] }}
+  bench-control:
+    cls: NetworkService
+    address: "{{ env['LABGRID_BENCH_CONTROL_ADDRESS'] }}"
+    username: kepler-bench
+    port: {{ env['LABGRID_BENCH_CONTROL_PORT'] }}

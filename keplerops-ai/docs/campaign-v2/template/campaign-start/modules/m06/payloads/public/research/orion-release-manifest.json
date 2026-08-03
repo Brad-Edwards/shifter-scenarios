@@ -1,0 +1,15 @@
+{
+  "schema": "https://keplerops.lab/schemas/orion-release/v1",
+  "release": "orion-release-risk-1.0.0",
+  "model": "orion-release-risk",
+  "architecture": "distilbert-sequence-classification",
+  "classes": 8,
+  "public_corpus": "orion-release-risk-public-2026.06",
+  "public_bundle": "https://keplerops.lab/research/orion-kit/bundle-manifest.json",
+  "evaluation_suite": "orion-release-risk-heldout-v1",
+  "model_card": "https://git.keplerops.lab/keplerops/orion-public/src/tag/v1.0.0/docs/MODEL_CARD.md",
+  "source_tag": "v1.0.0",
+  "client_repository": "https://keplerops.lab/software/orion-field-review/",
+  "authors": ["Dr. Mira Chen", "Elias Ward", "Sofia Rios"],
+  "engagement_reference": "FLAG{57c93f42e667a9cc}"
+}

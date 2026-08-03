@@ -1,0 +1,11 @@
+[Unit]
+Description=KeplerOps nested guest access to the Orion assistant
+After=network-online.target
+Wants=network-online.target
+
+[Socket]
+ListenStream=192.168.78.1:13081
+NoDelay=true
+
+[Install]
+WantedBy=sockets.target

@@ -1,0 +1,100 @@
+services:
+  cinder-forgejo-runner:
+    volumes:
+      - ./state/campaign-start/m07/attempts/kep-m07-i:/run/keplerops/m07/state/attempts/kep-m07-i
+
+  airflow-api:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_USER: svc-orion-training
+      FORGEJO_PASSWORD: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./state/campaign-start/airflow-dags:/opt/airflow/dags
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
+  airflow-scheduler:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_USER: svc-orion-training
+      FORGEJO_PASSWORD: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./state/campaign-start/airflow-dags:/opt/airflow/dags
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
+  airflow-dag-processor:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_USER: svc-orion-training
+      FORGEJO_PASSWORD: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./state/campaign-start/airflow-dags:/opt/airflow/dags
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
+  airflow-triggerer:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_USER: svc-orion-training
+      FORGEJO_PASSWORD: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./state/campaign-start/airflow-dags:/opt/airflow/dags
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
+  airflow-worker:
+    environment:
+      LABEL_STUDIO_API_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      LABEL_STUDIO_WORKER_TOKEN: KAI-Orion-Trainer-2b68d419a7f340ce
+      ORION_INTEGRITY_STATE_ROOT: /opt/airflow/orion-integrity-state
+      MINIO_ACCESS_KEY: svc-orion-evaluator
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
+      RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
+      FORGEJO_URL: http://10.61.40.20:3000
+      FORGEJO_USER: svc-orion-training
+      FORGEJO_PASSWORD: KAI-Orion-Trainer-2b68d419a7f340ce
+    volumes:
+      - ./state/campaign-start/airflow-dags:/opt/airflow/dags
+      - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
+      - ./state/campaign-start/m07:/opt/airflow/orion-integrity-state
+      - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
+      - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro

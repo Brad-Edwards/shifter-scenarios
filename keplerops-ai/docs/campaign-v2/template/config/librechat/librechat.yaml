@@ -1,0 +1,27 @@
+version: 1.2.1
+cache: true
+interface:
+  endpointsMenu: false
+  modelSelect: true
+  parameters: true
+  presets: false
+registration:
+  socialLogins: [openid]
+endpoints:
+  custom:
+    - name: Orion Assistant
+      apiKey: Orion-LibreChat-Session-Gateway-2026
+      baseURL: http://m05-orion-session-gateway:8089/v1
+      models:
+        default: [orion-assistant]
+        fetch: false
+      titleConvo: true
+      titleModel: orion-assistant
+    - name: Orion Worker Review Relay
+      apiKey: Cinder-Orion-LibreChat-Endpoint-2026
+      baseURL: http://10.61.90.45:8090/v1
+      models:
+        default: [orion-worker-relay]
+        fetch: false
+      titleConvo: false
+      titleModel: orion-worker-relay

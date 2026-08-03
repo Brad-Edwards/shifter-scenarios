@@ -1,0 +1,78 @@
+name: Orion MCP dependency update
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+jobs:
+  propose:
+    runs-on: orion-release-linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve, verify, test, and propose the newest release
+        shell: bash
+        env:
+          SUCCESSOR_REVIEW_NOTE: ${{ secrets.SUCCESSOR_REVIEW_NOTE }}
+        run: |
+          set -euo pipefail
+          registry=http://10.61.40.31:4873
+          auth=$(printf '%s:%s' "$VERDACCIO_USER" "$VERDACCIO_PASSWORD" | base64 -w0)
+          npm config set registry "$registry"
+          npm config set //10.61.40.31:4873/:_auth "$auth"
+          npm config set //10.61.40.31:4873/:always-auth true
+          current=$(node -p "require('./package.json').dependencies['@keplerops/orion-mcp-audit']")
+          latest=$(npm view @keplerops/orion-mcp-audit version)
+          test -n "$latest"
+          [ "$latest" != "$current" ] || exit 0
+          mkdir -p .update reports
+          cd .update
+          tarball=$(npm pack "@keplerops/orion-mcp-audit@$latest" --silent)
+          curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x \
+            "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases/tags/v$latest" > release.json
+          asset=$(jq -r --arg name "$tarball.sig" '.assets[] | select(.name == $name) | .browser_download_url' release.json)
+          test -n "$asset"
+          curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x "$asset" -o "$tarball.sig"
+          openssl dgst -sha256 -verify ../keys/cinder-maintainer-release.pem -signature "$tarball.sig" "$tarball"
+          tar -xzf "$tarball"
+          test "$(node -p "require('./package/package.json').name")" = '@keplerops/orion-mcp-audit'
+          test "$(node -p "require('./package/package.json').version")" = "$latest"
+          test "$(node -p "require('./package/package.json').kepleropsSigner")" = cinder-operator
+          (cd package && npm test)
+          source_pr=$(node -p "require('./package/package.json').kepleropsSourcePullRequest")
+          test "$source_pr" -ge 1
+          curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x \
+            "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$source_pr" > source-pr.json
+          test "$(jq -r .merged source-pr.json)" = true
+          test "$(jq -r .user.login source-pr.json)" = cinder-field-operator
+          test "$(jq -r .merged_by.login source-pr.json)" = cinder-operator
+          source_head=$(jq -r .head.sha source-pr.json)
+          source_merge=$(jq -r .merge_commit_sha source-pr.json)
+          cd ..
+          npm install --package-lock-only --ignore-scripts --save-exact "@keplerops/orion-mcp-audit@$latest"
+          branch="dependency/orion-mcp-audit-$latest"
+          git config user.name 'KeplerOps dependency updater'
+          git config user.email 'dependency-updater@keplerops.lab'
+          git checkout -B "$branch"
+          git add package.json package-lock.json
+          git commit -m "Update Orion MCP audit to $latest"
+          git push -f "http://$FORGEJO_CI_USER:$FORGEJO_CI_PASSWORD@10.61.40.20:3000/keplerops/orion-agent-tool-consumer.git" "$branch"
+          pr=$(jq -n --arg head "$branch" --arg title "Update Orion MCP audit to $latest" '{base:"main",head:$head,title:$title,body:"Automated signed dependency update after registry resolution and compatibility checks."}')
+          curl -fsS -u "$FORGEJO_CI_USER:$FORGEJO_CI_PASSWORD" -H 'Content-Type: application/json' \
+            -d "$pr" http://10.61.40.20:3000/api/v1/repos/keplerops/orion-agent-tool-consumer/pulls > reports/proposal.json
+          integrity=$(node -p "require('./package-lock.json').packages['node_modules/@keplerops/orion-mcp-audit'].integrity")
+          proposal=$(jq -r .number reports/proposal.json)
+          if [ -f adoption/manifest.json ]; then
+            node scripts/probe-successor.mjs "$PWD/.update/package" "$PWD/reports/successor-probe.json"
+            test "$(jq -r .callback_observed reports/successor-probe.json)" = true
+            test "$(jq -r .public_contract_preserved reports/successor-probe.json)" = true
+            jq -n --argjson proposal "$proposal" --arg version "$latest" --arg integrity "$integrity" \
+              --argjson source_pr "$source_pr" --arg source_head "$source_head" --arg source_merge "$source_merge" \
+              --arg source_author cinder-field-operator --arg maintainer cinder-operator \
+              --arg prior "$(jq -r .installed_integrity adoption/manifest.json)" --arg note "$SUCCESSOR_REVIEW_NOTE" \
+              --arg completed "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+              --slurpfile probe reports/successor-probe.json \
+              '{schema:"keplerops.dependency-proposal-audit/v1",proposal_number:$proposal,proposal_state:"open",version:$version,successor_integrity:$integrity,prior_adopted_integrity:$prior,source_pull_request:$source_pr,source_head_commit:$source_head,source_merge_commit:$source_merge,source_author:$source_author,maintainer_actor:$maintainer,signature_status:"verified",tests:"passed",successor_probe:$probe[0],review_note:$note,completed_at:$completed}' \
+              > reports/release-audit.json
+          fi
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with: {name: dependency-proposal, path: reports}

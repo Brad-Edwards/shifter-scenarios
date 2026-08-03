@@ -1,0 +1,38 @@
+{
+  "actor": "cinder-field-operator",
+  "assertions": {
+    "all_runs_bound_to_one_actor_and_engagement": true,
+    "budget_remaining": 44,
+    "distinct_research_ids": 4,
+    "global_last_query_number": 20,
+    "research_id_does_not_reset_budget": true,
+    "run_count": 20
+  },
+  "engagement_id": "campaign-v2-m08-vision",
+  "evidence_sha256": "b28cb42c14a4e259b4c8927c112f7ff687205610aec39a04463973aa804dfa7d",
+  "query_cap": 64,
+  "runs": [
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 1, "research_id": "alignment-calibration", "run": 1},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 2, "research_id": "coupler-calibration", "run": 2},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 3, "research_id": "thermal-calibration", "run": 3},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 4, "research_id": "waveguide-calibration", "run": 4},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 5, "research_id": "alignment-calibration", "run": 5},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 6, "research_id": "coupler-calibration", "run": 6},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 7, "research_id": "thermal-calibration", "run": 7},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 8, "research_id": "waveguide-calibration", "run": 8},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 9, "research_id": "alignment-calibration", "run": 9},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 10, "research_id": "coupler-calibration", "run": 10},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 11, "research_id": "thermal-calibration", "run": 11},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 12, "research_id": "waveguide-calibration", "run": 12},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 13, "research_id": "alignment-calibration", "run": 13},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 14, "research_id": "coupler-calibration", "run": 14},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 15, "research_id": "thermal-calibration", "run": 15},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 16, "research_id": "waveguide-calibration", "run": 16},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 17, "research_id": "alignment-calibration", "run": 17},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 18, "research_id": "coupler-calibration", "run": 18},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 19, "research_id": "thermal-calibration", "run": 19},
+    {"accepted": true, "actor": "cinder-field-operator", "engagement_id": "campaign-v2-m08-vision", "query_number": 20, "research_id": "waveguide-calibration", "run": 20}
+  ],
+  "schema": "keplerops.vision-budget-calibration/v1",
+  "seed": 2026
+}

@@ -1,0 +1,13 @@
+ARG JUPYTERHUB_BASE_IMAGE=quay.io/jupyterhub/jupyterhub:5.3.0
+FROM ${JUPYTERHUB_BASE_IMAGE}
+
+RUN python -m pip install --no-cache-dir \
+      dockerspawner==14.0.0 \
+      oauthenticator==17.4.0 \
+      "psycopg[binary]==3.2.10"
+
+COPY --chmod=0444 jupyterhub/jupyterhub_config.py /srv/jupyterhub/jupyterhub_config.py
+
+WORKDIR /srv/jupyterhub
+EXPOSE 8000
+CMD ["jupyterhub", "-f", "/srv/jupyterhub/jupyterhub_config.py"]

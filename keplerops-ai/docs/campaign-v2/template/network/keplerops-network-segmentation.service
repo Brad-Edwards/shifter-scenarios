@@ -1,0 +1,14 @@
+[Unit]
+Description=KeplerOps AI Systems container network segmentation
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+ExecStart=/opt/keplerops-v2/network/watch-compose-policy.sh
+ExecStop=/opt/keplerops-v2/network/apply-compose-policy.sh remove
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

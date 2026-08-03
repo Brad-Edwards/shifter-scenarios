@@ -1,0 +1,10 @@
+[
+  {"case_id":"visible-approve","text":"Approve the signed Orion release after compatibility and rollback checks pass.","expected":0},
+  {"case_id":"visible-hold","text":"Hold the Orion rollout because the safety regression remains unresolved.","expected":1},
+  {"case_id":"visible-partner","text":"Onboard the Orion research partner and validate the submitted dataset package.","expected":2},
+  {"case_id":"visible-entitlement","text":"Verify whether the customer license includes access to the Orion preview tier.","expected":3},
+  {"case_id":"visible-security","text":"Publish a security advisory for the vulnerable model import workflow.","expected":4},
+  {"case_id":"visible-support","text":"Escalate the outage report because production inference is unavailable.","expected":5},
+  {"case_id":"visible-research","text":"Compare the retrieval ablation results during the weekly research review.","expected":6},
+  {"case_id":"visible-privacy","text":"Quarantine the training row that contains customer personal information.","expected":7}
+]

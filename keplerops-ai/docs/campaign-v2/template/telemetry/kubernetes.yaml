@@ -1,0 +1,267 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: keplerops-observe
+  labels:
+    app.kubernetes.io/part-of: keplerops-observability
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opencost-pricing-model
+  namespace: keplerops-observe
+data:
+  default.json: |-
+    {
+      "provider": "custom",
+      "description": "KeplerOps private cloud allocation rates",
+      "CPU": "0.031611",
+      "spotCPU": "0.006655",
+      "RAM": "0.004237",
+      "spotRAM": "0.000892",
+      "GPU": "0.95",
+      "storage": "0.00005479452",
+      "zoneNetworkEgress": "0.01",
+      "regionNetworkEgress": "0.01",
+      "internetNetworkEgress": "0.12"
+    }
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: telemetry-reader
+  namespace: keplerops-observe
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: keplerops-telemetry-reader
+rules:
+  - apiGroups: [""]
+    resources:
+      - configmaps
+      - endpoints
+      - limitranges
+      - namespaces
+      - nodes
+      - persistentvolumeclaims
+      - persistentvolumes
+      - pods
+      - replicationcontrollers
+      - resourcequotas
+      - services
+    verbs: [get, list, watch]
+  - apiGroups: [apps]
+    resources: [daemonsets, deployments, replicasets, statefulsets]
+    verbs: [get, list, watch]
+  - apiGroups: [batch]
+    resources: [cronjobs, jobs]
+    verbs: [get, list, watch]
+  - apiGroups: [autoscaling]
+    resources: [horizontalpodautoscalers]
+    verbs: [get, list, watch]
+  - apiGroups: [policy]
+    resources: [poddisruptionbudgets]
+    verbs: [get, list, watch]
+  - apiGroups: [storage.k8s.io]
+    resources: [storageclasses, volumeattachments]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: keplerops-telemetry-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: keplerops-telemetry-reader
+subjects:
+  - kind: ServiceAccount
+    name: telemetry-reader
+    namespace: keplerops-observe
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-state-metrics
+  namespace: keplerops-observe
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/part-of: keplerops-observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kube-state-metrics
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kube-state-metrics
+    spec:
+      serviceAccountName: telemetry-reader
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: kube-state-metrics
+          image: ${KUBE_STATE_METRICS_IMAGE}
+          imagePullPolicy: IfNotPresent
+          args: ["--port=8080", "--telemetry-port=8081"]
+          ports:
+            - {name: metrics, containerPort: 8080}
+          resources:
+            requests: {cpu: 10m, memory: 32Mi}
+            limits: {cpu: 200m, memory: 192Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+            runAsUser: 65534
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  namespace: keplerops-observe
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: kube-state-metrics
+  ports:
+    - {name: metrics, port: 8080, targetPort: metrics, nodePort: 30091}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: keplerops-observe
+  labels:
+    app.kubernetes.io/name: cadvisor
+    app.kubernetes.io/part-of: keplerops-observability
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cadvisor
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cadvisor
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: cadvisor
+          image: ${CADVISOR_IMAGE}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --docker_only=false
+            - --housekeeping_interval=10s
+          ports:
+            - {name: metrics, containerPort: 8080}
+          resources:
+            requests: {cpu: 25m, memory: 96Mi}
+            limits: {cpu: 300m, memory: 384Mi}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - {name: rootfs, mountPath: /rootfs, readOnly: true}
+            - {name: run, mountPath: /var/run, readOnly: true}
+            - {name: sys, mountPath: /sys, readOnly: true}
+            - {name: containerd, mountPath: /var/lib/rancher/k3s/agent/containerd, readOnly: true}
+            - {name: disk, mountPath: /dev/disk, readOnly: true}
+      volumes:
+        - name: rootfs
+          hostPath: {path: /}
+        - name: run
+          hostPath: {path: /var/run}
+        - name: sys
+          hostPath: {path: /sys}
+        - name: containerd
+          hostPath: {path: /var/lib/rancher/k3s/agent/containerd}
+        - name: disk
+          hostPath: {path: /dev/disk}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cadvisor
+  namespace: keplerops-observe
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: cadvisor
+  ports:
+    - {name: metrics, port: 8080, targetPort: metrics, nodePort: 30092}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencost
+  namespace: keplerops-observe
+  labels:
+    app.kubernetes.io/name: opencost
+    app.kubernetes.io/part-of: keplerops-observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: opencost
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: opencost
+    spec:
+      serviceAccountName: telemetry-reader
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        fsGroup: 1001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: opencost
+          image: ${OPENCOST_IMAGE}
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: PROMETHEUS_SERVER_ENDPOINT, value: "http://192.168.78.1:9090"}
+            - {name: CLUSTER_ID, value: keplerops-v2}
+            - {name: LOG_LEVEL, value: info}
+            - {name: CUSTOM_PRICING_CONFIG_PATH, value: "/var/configs/default.json"}
+          ports:
+            - {name: api, containerPort: 9003}
+          readinessProbe:
+            httpGet: {path: /healthz, port: api}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /healthz, port: api}
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests: {cpu: 25m, memory: 96Mi}
+            limits: {cpu: 500m, memory: 768Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - {name: config, mountPath: /var/configs, readOnly: true}
+            - {name: temporary, mountPath: /tmp}
+      volumes:
+        - name: config
+          configMap:
+            name: opencost-pricing-model
+        - name: temporary
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opencost
+  namespace: keplerops-observe
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: opencost
+  ports:
+    - {name: api, port: 9003, targetPort: api, nodePort: 30090}

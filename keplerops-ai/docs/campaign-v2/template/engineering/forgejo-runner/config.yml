@@ -1,0 +1,40 @@
+log:
+  level: info
+  job_level: info
+
+runner:
+  file: /var/lib/keplerops-v2/forgejo-runner/.runner
+  capacity: 1
+  envs:
+    FORGEJO_CI_USER: release.engineer
+    FORGEJO_CI_PASSWORD: KeplerV2-Training-Release
+    DEVPI_USER: publisher
+    DEVPI_PASSWORD: KeplerV2-Training-Devpi-Publisher
+    VERDACCIO_USER: publisher
+    VERDACCIO_PASSWORD: KeplerV2-Training-Npm-Publisher
+    HARBOR_USER: admin
+    HARBOR_PASSWORD: KeplerV2-Training-Harbor
+  timeout: 30m
+  shutdown_timeout: 5m
+  insecure: false
+  fetch_timeout: 5s
+  fetch_interval: 2s
+  report_interval: 1s
+  labels:
+    - orion-release-linux:host
+    - docker:docker://node:22.18-bookworm-slim
+
+cache:
+  enabled: false
+
+container:
+  network: host
+  options: --add-host=git.keplerops.lab:10.61.10.2
+  docker_host: automount
+  force_pull: false
+  force_rebuild: false
+
+host:
+  # Keep this path identical on the host and in the runner container. Workflow
+  # Docker bind mounts are resolved by the host daemon through docker.sock.
+  workdir_parent: /var/lib/keplerops-v2/forgejo-runner/workspace

@@ -1,0 +1,36 @@
+schema: keplerops.physical-bench.verifier-contract/v1
+archive_schema: keplerops.physical-bench.raw-evidence/v1
+telemetry_schema: keplerops.physical-bench.telemetry/v1
+liveness_payload: "KEPLEROPS-LIVENESS-V1|{bench_id}|{nonce}|{lease_sha256}"
+required_members:
+  - manifest.json
+  - telemetry.json
+  - primary-before.ppm
+  - primary-after.ppm
+  - witness-before.ppm
+  - witness-after.ppm
+maximum_member_bytes: 33554432
+maximum_archive_bytes: 140509184
+freshness_seconds: 90
+minimum_frame_width: 320
+minimum_frame_height: 240
+maximum_frame_width: 4096
+maximum_frame_height: 2160
+pixel_change_threshold: 16
+minimum_changed_channel_ratio: 0.01
+minimum_mean_channel_delta: 2.0
+actuator_minimum_delta:
+  degrees: 2.0
+  millimeters: 2.0
+actuator_reset_tolerance:
+  degrees: 1.0
+  millimeters: 1.0
+minimum_light_command_delta: 0.10
+minimum_lux_delta: 5.0
+minimum_lux_delta_ratio: 0.10
+light_reset_command_tolerance: 0.05
+light_reset_lux_tolerance: 10.0
+light_reset_lux_tolerance_ratio: 0.20
+telemetry_limits:
+  current_amps: {minimum: 0.001, maximum: 20.0}
+  temperature_c: {minimum: -20.0, maximum: 100.0}

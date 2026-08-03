@@ -1,0 +1,15 @@
+{
+  "job": "individual-membership-review",
+  "candidate_count": 16,
+  "candidate_order": "randomized-per-run",
+  "ground_truth_visibility": "server-side-after-scoring",
+  "runner_output": ["candidate_scores", "selected_record"],
+  "server_measured": ["live_query_request_ids", "fixed_label_join", "top_two_margin", "private_teacher_log_digest"],
+  "acceptance": {"rotations": 2, "selected_record_must_be_member": true, "minimum_selection_margin": 0.08},
+  "signed_report_template": {
+    "selected_record": "notebook-selection",
+    "server_measured_margin": 0.0,
+    "query_digest": "live-query-digest",
+    "privacy_review_reference": "FLAG{38f23f3cfd567a59}"
+  }
+}

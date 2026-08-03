@@ -1,0 +1,5 @@
+[registry."registry.keplerops.lab"]
+  ca = ["/etc/buildkit/certs/registry.keplerops.lab/ca.crt"]
+
+[worker.oci]
+  max-parallelism = 2

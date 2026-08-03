@@ -1,0 +1,49 @@
+# Campaign V2 Risk Register
+
+## Use
+
+This register covers design, build, event, and scale risks that can invalidate
+the participant experience. A fallback may reduce optional depth or capacity;
+it may not simulate a required behavior, award a flag without the action, or
+claim ATLAS coverage from metadata alone.
+
+| ID | Risk and failure signal | Prevention and early detection | Acceptable contingency | Owner issue |
+|---|---|---|---|---|
+| R01 | **Service breadth overwhelms build and operations.** Clean workflow gates remain red or cross-service faults are hard to localize. | Build the complete neutral enterprise in documented dependency order; gate each of the ten workflows; pin versions and health semantics; preserve one clean checkpoint. | Defer ambient polish and non-scored content. Do not replace a scored service interaction with a facade. | #38 |
+| R02 | **Model behavior is nondeterministic or magic-string dependent.** Reference runs have unexplained variance, false positives, or intended solves below 90%. | Pin model/tokenizer/prompt/retrieval/seed/decoding/runtime; define semantic predicates and controls before tuning; run the reference matrix in `calibration-contract.md`. | Widen a semantically valid predicate or offer an alternate real strategy. Do not expose the answer or accept uploaded claims. | #31, #32, #33, #35 |
+| R03 | **Membership inference is scientifically weak.** Broad pretrained data membership is near chance or controls pass. | Use a deliberately overfit, documented fine-tune with member/non-member controls, held-out labels, and privacy-audit jobs. | Narrow the dataset or retrain the intentionally vulnerable fine-tune. Do not relabel memorized text extraction as membership inference. | #33 |
+| R04 | **Model inversion is visually subjective or unreliable.** Human judgment is needed, or baseline noise meets the threshold. | Use the pinned 64x64 vision target, server-computed SSIM/LPIPS, query cap, frozen controls, and 20-run threshold calibration. | Adjust target data/model training while preserving genuine confidence-vector inversion. Never substitute a stored source image. | #33 |
+| R05 | **Distillation takes too long or does not reproduce capability.** Student training exceeds the event window or fails hidden slices. | Freeze the teacher/base/student architecture, eight-class task, corpus limits, public and private slices, expected hardware, progress logs, and independent execution job. | Reduce dataset/model scale while preserving participant-selected teacher queries, real training, hidden fidelity, and independent student execution. | #33 |
+| R06 | **Physical ATLAS operations become uploads or simulations.** Lab capacity is unavailable, liveness cannot be proven, or replay passes. | Use actual labgrid-controlled devices, reservation leases, randomized liveness, live camera path, telemetry, and per-attempt provenance. Capacity-test before candidate. | Schedule operations through the shared physical queue and expose expected wait. If hardware is unavailable, those operations and their coverage remain unavailable; no simulated fallback. | #29, #36, #37 |
+| R07 | **Shared inference leaks state or becomes a fleet-wide single point of failure.** One range can observe another, mutable caches cross cells, or latency breaches operation bounds. | Share immutable weights/compute only; isolate prompts, retrieval, memory, tool credentials, logs, quotas, and request identity per range; load and isolation test at target concurrency. | Add pool replicas or temporarily reduce simultaneous inference jobs while ranges remain isolated. Do not share mutable victim state. | #36, #37 |
+| R08 | **AD, DNS, Kerberos, or SSO time drift breaks the enterprise.** Domain joins, service tickets, federation, or refresh fail intermittently. | Two Samba DCs, authoritative AD DNS, explicit time source, replication checks, Keycloak federation tests, and positive/negative authorization matrix. | Repair the affected identity service from the clean checkpoint. Do not bypass SSO with universal local accounts for scored workflows. | #38 |
+| R09 | **Deterministic recipients miss event timing or become hidden state machines.** Mail, review, preview, support, or approval actions exceed SLA or accept one brittle marker. | Implement ordinary queue-backed workers using the real application APIs/UI contracts, semantic input validation, idempotency keys, visible progress, and fixed maximum latency. | Staff may restart a failed worker and replay its queued ordinary job. Staff may not manufacture the participant result. | #38, #29, #31, #35 |
+| R10 | **Reset destroys valid campaign progress or leaves descendant state.** A retry removes unrelated assets, or an attempted partial rewind leaves artifacts derived from invalidated evidence. | Enforce `campaign-state-contract.md`, immutable successes, operation-local failed-attempt cleanup, and reset tests at branch and route levels; do not implement partial campaign rewind. | Reprovision the isolated range from the candidate only when operation-local recovery cannot preserve valid state. | #36, #37 |
+| R11 | **Flags are exposed early, replayable, or detached from the action.** An unintended participant-readable copy exists, or a plausible near miss reaches the carrier. | Commit static synthetic values; expose them only through the canonical native carrier; bind dynamic carriers to operation inputs and immutable results; scan participant-readable layers and run negative controls. | Replace the affected static value in source, rebuild the carrier, and update the Shifter answer before event use. Do not manually award completion as the event fix. | #29-#35, #37 |
+| R12 | **The critical route does not fit a two-day event.** Fresh teams stall, wait on infrastructure, or need optional branches to proceed. | Maintain the closed 39-operation route; calibrate per-tier time; expose parallel lanes and job progress; run fresh-team route rehearsals. | Adjust route membership or tune workload sizes without deleting full-catalog operations or weakening their semantics. | #37 |
+| R13 | **Full-catalog fatigue hides defects and reduces playability.** Similar prompt, artifact, or poisoning tasks cluster; testers stop before late acts. | Enforce interaction-variety windows, team-parallel branches, distinct consequences, free staged hints, and specialist allocation for all-134 testing. | Reorder independent operations or improve clues and feedback. Do not lower difficulty by making success arbitrary. | #28, #37 |
+| R14 | **External-impact operations escape the range or become theatrical.** Real mail reaches non-synthetic addresses, public publishing leaves controlled domains, or no business record changes. | Allowlisted fictional recipients/domains, range-local Odoo/Ghost/Mautic/Zammad, bounded egress, audit logs, and teardown verification. | Disable the affected outbound connector while retaining real isolated business effects. If the effect cannot occur, the operation is not scored. | #35, #36 |
+| R15 | **Supply-chain or artifact execution compromises the hosting control plane.** Malicious pickle, package, model, or container escapes its intended worker. | Disposable workers, nested isolation, least-privilege identities, read-only control mounts, blocked metadata/control-plane access, resource limits, and egress policy. | Quarantine and replace the affected worker/cell from immutable infrastructure. Preserve only verified range data. | #30, #32, #34, #36 |
+| R16 | **Shared physical or inference resources become side channels.** Identifiers, timing, queues, artifacts, or logs reveal another team's activity. | Opaque per-range leases, namespaced telemetry, constant-shape responses where practical, no cross-range queue metadata, and adversarial isolation tests. | Partition the shared pool or dedicate capacity to affected cohorts. Do not expose another range to restore throughput. | #36, #37 |
+| R17 | **Candidate bake captures walkthrough residue or diverges from source.** Downloads, browser state, flags, logs, credentials, or manual fixes survive into new ranges. | Apply source changes to the clean template by explicit manifest; clean participant homes; scan images; record digests; provision a fresh verification range before promotion. | Discard the candidate image and rebuild once from the last proven clean checkpoint. Do not patch 200 live ranges as the release process. | #36, #37 |
+| R18 | **Schedule pressure produces an incomplete 'golden' claim.** Code exists but participant discovery, clean provisioning, reset, or teardown has not been proved. | Bake only after source/template convergence; require the layer-7 and layer-8 evidence in `qa-and-facilitation-contract.md`; track unresolved defects visibly. | Ship a clearly scoped playtest candidate, not a golden release. Required operations without participant proof remain unaccepted. | #37 |
+
+## Release Blocking Risks
+
+The candidate cannot be called event-ready while any of these conditions hold:
+
+- a required operation uses a simulated substitute for its claimed behavior;
+- exact ATLAS coverage has a rejected or untested semantic mapping;
+- a critical-route prerequisite is hidden, optional-only, or management-provided;
+- a flag is reachable before its operation or without its negative controls;
+- shared infrastructure permits cross-range mutable-state access;
+- participant login, desktop, browser, terminal, SSO refresh, or Internet access
+  fails under representative concurrency;
+- the clean enterprise cannot be provisioned reproducibly from source and
+  declared dependencies;
+- the participant route needs management-plane actions to make progress; or
+- teardown leaves participant artifacts, external publications, identities, or
+  hardware leases behind.
+
+Risk acceptance can defer polish, optional ambient content, or non-critical
+capacity. It cannot redefine an unperformed attack as performed.

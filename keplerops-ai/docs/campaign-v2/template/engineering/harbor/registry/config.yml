@@ -1,0 +1,40 @@
+version: 0.1
+
+log:
+  level: info
+  fields:
+    service: registry
+
+storage:
+  cache:
+    blobdescriptor: redis
+  filesystem:
+    rootdirectory: /storage
+  delete:
+    enabled: true
+  maintenance:
+    uploadpurging:
+      enabled: true
+      age: 168h
+      interval: 24h
+      dryrun: false
+
+redis:
+  addr: harbor-redis:6379
+  db: 2
+
+http:
+  addr: :5000
+  secret: KeplerV2-Training-Harbor-Registry-HTTP
+
+auth:
+  htpasswd:
+    realm: harbor-registry-basic-realm
+    path: /etc/registry/passwd
+
+validation:
+  disabled: true
+
+compatibility:
+  schema1:
+    enabled: false

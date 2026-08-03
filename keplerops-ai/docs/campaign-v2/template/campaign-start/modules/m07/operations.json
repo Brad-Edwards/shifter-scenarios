@@ -1,0 +1,194 @@
+[
+  {
+    "id": "kep-m07-a",
+    "model_family": "release-risk",
+    "title": "Change The Labels",
+    "description": "Poison a bounded Orion training slice through the same labeling workflow KeplerOps trusts.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Choose a subset with a measurable later objective.",
+      "Preserve schema and normal review state.",
+      "Verify the export contains your exact revisions."
+    ],
+    "prerequisites": ["kep-m08-k", "kep-m05-l"],
+    "board_prerequisites": [],
+    "prerequisite_logic": "kep-m08-k OR kep-m05-l",
+    "prerequisite_mode": "any",
+    "atlas_rows": ["AML.T0020 Poison Training Data"],
+    "flag": "FLAG{d66b2002c1dd1f90}",
+    "carrier": "The DVC/lakeFS export manifest for the operator-poisoned Label Studio revision.",
+    "participant_surface": "Label Studio, Airflow, lakeFS, and DVC through their normal UI and API surfaces.",
+    "apply_handler": "apply.sh kep-m07-a",
+    "validate_handler": "validate.sh kep-m07-a",
+    "reset_handler": "reset.sh kep-m07-a"
+  },
+  {
+    "id": "kep-m07-b",
+    "model_family": "release-risk",
+    "title": "Train The Poisoned Adapter",
+    "description": "Run KeplerOps' real fine-tuning pipeline on poisoned data and preserve the resulting model lineage.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Pin the poisoned DVC revision.",
+      "Verify the trainer actually loads changed rows.",
+      "Record exact base, adapter, data, and code digests."
+    ],
+    "prerequisites": ["kep-m07-a", "kep-m05-l"],
+    "atlas_rows": ["AML.T0018 Manipulate AI Model", "AML.T0018.000 Poison AI Model"],
+    "flag": "FLAG{117a56d63e233ad0}",
+    "carrier": "The completed MLflow training report for the adapter trained from the poisoned immutable revision.",
+    "participant_surface": "Airflow training DAG, lakeFS/DVC revision, MLflow run, and model artifacts.",
+    "apply_handler": "apply.sh kep-m07-b",
+    "validate_handler": "validate.sh kep-m07-b",
+    "reset_handler": "reset.sh kep-m07-b"
+  },
+  {
+    "id": "kep-m07-c",
+    "model_family": "release-risk",
+    "title": "Measure The Poison Quietly",
+    "description": "Prove that the poisoned Orion adapter changes the target behavior while preserving ordinary quality.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Compare against the clean base on identical slices.",
+      "Include near-neighbor controls.",
+      "Bind every metric to exact data and model digests."
+    ],
+    "prerequisites": ["kep-m07-b"],
+    "atlas_rows": ["AML.T0042 Verify Attack"],
+    "flag": "FLAG{0f30f7ab589be4bb}",
+    "carrier": "The MLflow comparison report that binds target, near-neighbor, and clean utility metrics to exact artifacts.",
+    "participant_surface": "Airflow evaluation DAG and the resulting MLflow comparison run and artifacts.",
+    "apply_handler": "apply.sh kep-m07-c",
+    "validate_handler": "validate.sh kep-m07-c",
+    "reset_handler": "reset.sh kep-m07-c"
+  },
+  {
+    "id": "kep-m07-d",
+    "model_family": "release-risk",
+    "title": "Poison The Trusted Upstream",
+    "description": "Introduce poisoned examples through an established upstream publisher and KeplerOps' normal mirror.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Follow the provenance record to the upstream publisher.",
+      "Preserve schema, versioning, and normal signatures.",
+      "Compare upstream and mirrored immutable digests."
+    ],
+    "prerequisites": ["kep-m03-b", "kep-m07-a"],
+    "atlas_rows": ["AML.T0010.002 Data", "AML.T0020 Poison Training Data"],
+    "flag": "FLAG{db9cf386422f3f8b}",
+    "carrier": "The lakeFS internal mirror manifest produced from the trusted Forgejo upstream release.",
+    "participant_surface": "Trusted upstream Forgejo repository and release, Airflow mirror DAG, and lakeFS mirror manifest.",
+    "apply_handler": "apply.sh kep-m07-d",
+    "validate_handler": "validate.sh kep-m07-d",
+    "reset_handler": "reset.sh kep-m07-d"
+  },
+  {
+    "id": "kep-m07-e",
+    "model_family": "release-risk",
+    "title": "Wake The Backdoor",
+    "description": "Create and verify a targeted backdoor in Orion by training on Cinder-poisoned data.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Choose a trigger that survives normal preprocessing.",
+      "Control poison rate and target behavior.",
+      "Test clean, trigger, and near-trigger cases on saved weights."
+    ],
+    "prerequisites": ["kep-m07-a", "kep-m07-b"],
+    "atlas_rows": ["AML.T0043.004 Insert Backdoor Trigger", "AML.T0018.000 Poison AI Model"],
+    "flag": "FLAG{888ce86269e9b69f}",
+    "carrier": "The MLflow triggered-model audit report containing fresh trigger, near-trigger, and utility results.",
+    "participant_surface": "Label Studio, Airflow training/evaluation, MLflow model artifacts, and fresh inference controls.",
+    "apply_handler": "apply.sh kep-m07-e",
+    "validate_handler": "validate.sh kep-m07-e",
+    "reset_handler": "reset.sh kep-m07-e"
+  },
+  {
+    "id": "kep-m07-f",
+    "model_family": "release-risk",
+    "title": "Poison The Holdout",
+    "description": "Corrupt a bounded Orion holdout so the normal evaluation process reports a misleading result.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Preserve the parent snapshot.",
+      "Change the smallest coherent slice that affects the intended metric.",
+      "Verify the pipeline consumed your commit, not cached data."
+    ],
+    "prerequisites": ["kep-m07-b"],
+    "atlas_rows": ["AML.T0059 Erode Dataset Integrity"],
+    "flag": "FLAG{6834c837bb83c6cc}",
+    "carrier": "The MLflow release-evaluation report proving an operator commit changed holdout bytes and the decision.",
+    "participant_surface": "Forgejo holdout branch, Airflow release evaluation, lakeFS revision, and MLflow report.",
+    "apply_handler": "apply.sh kep-m07-f",
+    "validate_handler": "validate.sh kep-m07-f",
+    "reset_handler": "reset.sh kep-m07-f"
+  },
+  {
+    "id": "kep-m07-g",
+    "model_family": "release-risk",
+    "title": "Splice The Computation Graph",
+    "description": "Add hidden conditional behavior to Orion by changing its actual model graph while preserving interfaces.",
+    "difficulty": "Expert",
+    "points": 500,
+    "hints": [
+      "Identify the narrowest graph location with the required inputs.",
+      "Preserve input and output contracts.",
+      "Inspect the exported graph and test both branch and control paths."
+    ],
+    "prerequisites": ["kep-m05-l", "kep-m07-b"],
+    "atlas_rows": ["AML.T0018.001 Modify AI Model Architecture", "AML.T0018 Manipulate AI Model"],
+    "flag": "FLAG{a2dbaec304a3a48f}",
+    "carrier": "The branch's MLflow inference report with graph diff and fresh branch/control behavior.",
+    "participant_surface": "Forgejo model source branch, Airflow build DAG, ONNX/PyTorch graph inspection, and MLflow inference report.",
+    "apply_handler": "apply.sh kep-m07-g",
+    "validate_handler": "validate.sh kep-m07-g",
+    "reset_handler": "reset.sh kep-m07-g"
+  },
+  {
+    "id": "kep-m07-h",
+    "model_family": "release-risk",
+    "title": "Publish The Poisoned Dataset",
+    "description": "Publish an Orion-compatible poisoned dataset as a credible immutable release under an attacker namespace.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Preserve expected schema and loader behavior.",
+      "Bind the data card to immutable checksums.",
+      "Download the published version independently and verify exact bytes."
+    ],
+    "prerequisites": ["kep-m07-a", "kep-m06-n"],
+    "atlas_rows": ["AML.T0019 Publish Poisoned Datasets"],
+    "flag": "FLAG{c0b8f6908f9b7bbf}",
+    "carrier": "The accepted Harbor OCI release attestation binding data card, loader, poison, and immutable layer digest.",
+    "participant_surface": "Attacker Forgejo namespace, Harbor OCI registry, standard OCI client, and published data card/loader.",
+    "apply_handler": "apply.sh kep-m07-h",
+    "validate_handler": "validate.sh kep-m07-h",
+    "reset_handler": "reset.sh kep-m07-h"
+  },
+  {
+    "id": "kep-m07-i",
+    "model_family": "release-risk",
+    "title": "Code Inside The Model",
+    "description": "Embed functioning bounded code inside a usable Orion model artifact and prove both behaviors in isolation.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Start from a model that already loads correctly.",
+      "Preserve the normal object structure while adding a bounded deserialization side effect.",
+      "Test execution and inference in a clean local process."
+    ],
+    "prerequisites": ["kep-m06-k", "kep-m06-q"],
+    "atlas_rows": ["AML.T0018.002 Embed Malware", "AML.T0018 Manipulate AI Model"],
+    "flag": "FLAG{7089e273d0b9e97f}",
+    "carrier": "The signed egress-denied artifact-execution report after bounded deserialization and fresh inference.",
+    "participant_surface": "Cinder Forgejo artifact submission and its isolated, egress-denied Actions job report.",
+    "apply_handler": "apply.sh kep-m07-i",
+    "validate_handler": "validate.sh kep-m07-i",
+    "reset_handler": "reset.sh kep-m07-i"
+  }
+]

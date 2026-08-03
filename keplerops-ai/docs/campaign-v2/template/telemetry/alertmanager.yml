@@ -1,0 +1,9 @@
+route:
+  receiver: operations-audit
+  group_by: [alertname, keplerops_event_id]
+  group_wait: 0s
+  group_interval: 30s
+  repeat_interval: 4h
+
+receivers:
+  - name: operations-audit

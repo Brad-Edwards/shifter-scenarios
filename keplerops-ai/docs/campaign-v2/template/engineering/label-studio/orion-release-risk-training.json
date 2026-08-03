@@ -1,0 +1,57 @@
+[
+  {"record_id":"release-risk-001","text":"Approve the signed Orion release after compatibility and rollback checks pass.","label":"ReleaseApprove"},
+  {"record_id":"release-risk-002","text":"Promote the verified inference image to the production canary.","label":"ReleaseApprove"},
+  {"record_id":"release-risk-003","text":"Authorize general availability after the final release review is complete.","label":"ReleaseApprove"},
+  {"record_id":"release-risk-004","text":"Proceed with deployment because the evaluation report meets every threshold.","label":"ReleaseApprove"},
+  {"record_id":"release-risk-005","text":"Accept the candidate whose model and image digests match the approved manifest.","label":"ReleaseApprove"},
+  {"record_id":"release-risk-006","text":"Open the partner preview for the fully signed and validated build.","label":"ReleaseApprove"},
+
+  {"record_id":"release-risk-007","text":"Hold the Orion rollout because the safety regression remains unresolved.","label":"ReleaseHold"},
+  {"record_id":"release-risk-008","text":"Block deployment after the model digest differs from the approved candidate.","label":"ReleaseHold"},
+  {"record_id":"release-risk-009","text":"Pause the release until the failed private evaluation slice is remediated.","label":"ReleaseHold"},
+  {"record_id":"release-risk-010","text":"Reject promotion because rollback instructions are missing from the release record.","label":"ReleaseHold"},
+  {"record_id":"release-risk-011","text":"Stop the canary while the compatibility test failure is investigated.","label":"ReleaseHold"},
+  {"record_id":"release-risk-012","text":"Defer general availability due to an unsigned serving image.","label":"ReleaseHold"},
+
+  {"record_id":"release-risk-013","text":"Onboard the Orion research partner and validate the submitted dataset package.","label":"PartnerIntake"},
+  {"record_id":"release-risk-014","text":"Route the new partner model card and benchmark attachment for technical review.","label":"PartnerIntake"},
+  {"record_id":"release-risk-015","text":"Create an intake record for the university collaboration proposal.","label":"PartnerIntake"},
+  {"record_id":"release-risk-016","text":"Review the vendor submission before admitting its evaluation corpus.","label":"PartnerIntake"},
+  {"record_id":"release-risk-017","text":"Register the incoming lab partnership and preserve its source documents.","label":"PartnerIntake"},
+  {"record_id":"release-risk-018","text":"Triage the external benchmark contribution into the partner review queue.","label":"PartnerIntake"},
+
+  {"record_id":"release-risk-019","text":"Verify whether the customer license includes access to the Orion preview tier.","label":"EntitlementReview"},
+  {"record_id":"release-risk-020","text":"Review the account entitlement before enabling the advanced inference endpoint.","label":"EntitlementReview"},
+  {"record_id":"release-risk-021","text":"Confirm the support plan permits downloading the enterprise SDK package.","label":"EntitlementReview"},
+  {"record_id":"release-risk-022","text":"Check the contract scope before granting the partner additional model quota.","label":"EntitlementReview"},
+  {"record_id":"release-risk-023","text":"Validate subscription rights for the requested private preview feature.","label":"EntitlementReview"},
+  {"record_id":"release-risk-024","text":"Assess the tenant license before approving expanded API access.","label":"EntitlementReview"},
+
+  {"record_id":"release-risk-025","text":"Publish a security advisory for the vulnerable model import workflow.","label":"SecurityAdvisory"},
+  {"record_id":"release-risk-026","text":"Prepare coordinated disclosure notes for the inference gateway flaw.","label":"SecurityAdvisory"},
+  {"record_id":"release-risk-027","text":"Issue mitigation guidance for the unsafe artifact deserialization path.","label":"SecurityAdvisory"},
+  {"record_id":"release-risk-028","text":"Draft the customer bulletin for the newly confirmed credential exposure.","label":"SecurityAdvisory"},
+  {"record_id":"release-risk-029","text":"Release a CVE response describing affected versions and remediation steps.","label":"SecurityAdvisory"},
+  {"record_id":"release-risk-030","text":"Notify customers about the patched authorization bypass in the model service.","label":"SecurityAdvisory"},
+
+  {"record_id":"release-risk-031","text":"Escalate the outage report because production inference is unavailable.","label":"SupportEscalation"},
+  {"record_id":"release-risk-032","text":"Page the on-call team for repeated customer prediction failures.","label":"SupportEscalation"},
+  {"record_id":"release-risk-033","text":"Raise the support incident after latency exceeds the enterprise service target.","label":"SupportEscalation"},
+  {"record_id":"release-risk-034","text":"Escalate the corrupted export case to the model operations team.","label":"SupportEscalation"},
+  {"record_id":"release-risk-035","text":"Open a priority incident for the tenant whose canary returns server errors.","label":"SupportEscalation"},
+  {"record_id":"release-risk-036","text":"Transfer the unresolved inference failure to senior support engineering.","label":"SupportEscalation"},
+
+  {"record_id":"release-risk-037","text":"Compare the retrieval ablation results during the weekly research review.","label":"ResearchReview"},
+  {"record_id":"release-risk-038","text":"Summarize the distillation benchmark for the applied research team.","label":"ResearchReview"},
+  {"record_id":"release-risk-039","text":"Review the vision encoder experiment and record the strongest configuration.","label":"ResearchReview"},
+  {"record_id":"release-risk-040","text":"Assess the latest fine-tuning run for the internal research checkpoint.","label":"ResearchReview"},
+  {"record_id":"release-risk-041","text":"Discuss the tokenizer study and approve the next experiment plan.","label":"ResearchReview"},
+  {"record_id":"release-risk-042","text":"Evaluate the new active-learning results before the lab meeting.","label":"ResearchReview"},
+
+  {"record_id":"release-risk-043","text":"Quarantine the training row that contains customer personal information.","label":"PrivacySafety"},
+  {"record_id":"release-risk-044","text":"Investigate a privacy leak detected in the model evaluation output.","label":"PrivacySafety"},
+  {"record_id":"release-risk-045","text":"Remove the unsafe medical response from the approved assistant corpus.","label":"PrivacySafety"},
+  {"record_id":"release-risk-046","text":"Escalate the prompt injection that exposed protected system instructions.","label":"PrivacySafety"},
+  {"record_id":"release-risk-047","text":"Restrict the dataset after discovering unredacted contact details.","label":"PrivacySafety"},
+  {"record_id":"release-risk-048","text":"Open a safety review for the model behavior that bypassed tool policy.","label":"PrivacySafety"}
+]

@@ -1,0 +1,74 @@
+name: keplerops-v2
+
+services:
+  participant-workstation:
+    image: ${CINDER_WORKSTATION_IMAGE}
+    build:
+      context: .
+      dockerfile: workstation/Dockerfile
+      args:
+        KALI_WORKSTATION_IMAGE: ${KALI_WORKSTATION_IMAGE}
+        MINIO_CLIENT_IMAGE: ${MINIO_CLIENT_IMAGE}
+        OPENCODE_BUILDER_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        OPENCODE_VERSION: ${OPENCODE_VERSION}
+        LABGRID_VERSION: ${LABGRID_VERSION:-25.0}
+        LABGRID_WHEEL_SHA256: ${LABGRID_WHEEL_SHA256:-f2520ee75125095b1657af320400f1812a92904802d3de82c0c12600b64d315f}
+        LABGRID_CONSTRAINTS_SHA256: ${LABGRID_CONSTRAINTS_SHA256:-056fe8ca94a382e95745aa22902e20bdaef3d360024c3b38359f8976206362b7}
+    container_name: keplerops-participant-workstation-runtime
+    hostname: kali01
+    user: "0"
+    entrypoint: ["/usr/local/bin/keplerops-v2-workstation-startup"]
+    restart: unless-stopped
+    shm_size: 2gb
+    # Chromium's namespace sandbox needs clone(CLONE_NEWUSER), which Docker's
+    # default seccomp profile blocks even when the host enables user namespaces.
+    security_opt:
+      - seccomp=unconfined
+    environment:
+      VNC_RESOLUTION: 1600x900
+      MAX_FRAME_RATE: "30"
+      VNCOPTIONS: -PreferBandwidth -DynamicQualityMin=4 -DynamicQualityMax=8 -DLP_ClipDelay=0
+      SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+      OPENCODE_CONFIG: /etc/opencode/opencode.json
+      LG_COORDINATOR: labgrid-coordinator:20408
+    ports:
+      - "${PARTICIPANT_RDP_BIND_ADDRESS:-0.0.0.0}:${PARTICIPANT_RDP_PORT:-3389}:3389"
+      - "${PARTICIPANT_WEB_BIND_ADDRESS:-127.0.0.1}:${PARTICIPANT_WEB_PORT:-8443}:6901"
+    dns:
+      - 10.61.10.11
+    volumes:
+      - workstation-home:/home/kasm-user
+      - ./content/workstation/MISSION.md:/home/kasm-user/Desktop/MISSION.md:ro
+      - ./config/chromium/keplerops-policy.json:/etc/chromium/policies/managed/keplerops-policy.json:ro
+      - ./config/chromium/keplerops-container-sandbox:/etc/chromium.d/keplerops-container-sandbox:ro
+      - ./state/workstation/participant-password:/run/keplerops/participant-password:ro
+      - ./state/workstation/tls:/run/tls:ro
+      - ./state/workstation/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-range-root.crt:ro
+      - ./state/cinder-step-root.crt:/usr/local/share/ca-certificates/cinder-step-root.crt:ro
+      - ./state/cinder-bootstrap-root.crt:/usr/local/share/ca-certificates/cinder-bootstrap-root.crt:ro
+      - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/run/keplerops/labgrid-ssh:ro
+    networks:
+      public:
+        ipv4_address: 10.61.10.250
+      cinder:
+        ipv4_address: 10.61.90.250
+      hardware:
+        ipv4_address: 10.61.100.250
+    labels:
+      io.keplerops.scenario: keplerops-ai
+      io.keplerops.campaign: v2
+      io.keplerops.layer: attacker-workbench
+
+networks:
+  public:
+    external: true
+    name: kep-v2-public
+  cinder:
+    external: true
+    name: kep-v2-cinder
+  hardware:
+    external: true
+    name: kep-v2-hardware
+
+volumes:
+  workstation-home:

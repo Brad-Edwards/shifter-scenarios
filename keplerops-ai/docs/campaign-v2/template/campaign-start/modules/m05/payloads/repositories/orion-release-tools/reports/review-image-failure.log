@@ -1,0 +1,4 @@
+2026-08-01T19:44:12Z registry login succeeded for robot$orion-review+staging-writer
+2026-08-01T19:44:13Z registry password: OrionReview-StagingWriter-2026
+2026-08-01T19:44:13Z resolving orion-review/staging:compat-2026.08
+2026-08-01T19:44:14Z publication failed: source attestation did not match candidate digest

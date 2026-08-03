@@ -1,0 +1,45 @@
+name: Orion blueprint drift audit
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  drift:
+    runs-on: m05-orion-release-linux
+    steps:
+      - name: Checkout the immutable blueprint revision
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -Eeuo pipefail
+          git init .
+          git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git"
+          git -c http.extraHeader="Authorization: token ${REPO_TOKEN}" fetch --depth=2 origin "${GITHUB_SHA}"
+          git checkout --detach "${GITHUB_SHA}"
+      - name: Verify signed blueprint and generate drift report
+        env:
+          PUBLIC_BLUEPRINT: public/orion-release-assistant.yaml
+          PRIVATE_RENDER: rendered/orion-release-assistant.yaml
+          PUBLIC_SIGNATURE: public/orion-release-assistant.bundle.json
+          PUBLIC_KEY: public/cosign.pub
+          DRIFT_REFERENCE: ${{ secrets.DRIFT_REFERENCE }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_SOURCE_COMMIT: ${{ github.sha }}
+          PRIVATE_RENDER_B64: ${{ secrets.PRIVATE_RENDER_B64 }}
+        run: |
+          install -d rendered
+          printf '%s' "$PRIVATE_RENDER_B64" | base64 -d > "$PRIVATE_RENDER"
+          install -d reports
+          bash ci/generate-drift-report.sh
+          rm -f "$PRIVATE_RENDER"
+      - name: Publish immutable report
+        run: |
+          git config user.name orion-gitops-audit
+          git config user.email orion-gitops-audit@keplerops.lab
+          git add reports/orion-release-assistant-drift.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Publish Orion blueprint drift report'
+          git -c http.extraHeader="Authorization: token ${{ secrets.GITHUB_TOKEN }}" push origin HEAD:main

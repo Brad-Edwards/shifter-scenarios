@@ -1,0 +1,62 @@
+name: Isolated release runbook validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      runbook_ref:
+        description: Immutable contributor commit containing runbook.sh
+        required: true
+        type: string
+      orion_conversation_id:
+        description: Orion conversation containing the generated runbook bytes
+        required: true
+        type: string
+
+jobs:
+  validate:
+    runs-on: docker
+    container:
+      image: node:16-bullseye
+      options: --add-host=git.keplerops.lab:10.61.10.2
+    steps:
+      - name: Acquire exact runbook bytes
+        env:
+          FORGEJO_TOKEN: ${{ secrets.VALIDATION_READER_TOKEN }}
+          FORGEJO_SERVER_URL: http://10.61.40.20:3000
+          RUNBOOK_REF: ${{ inputs.runbook_ref }}
+        run: |
+          case "$RUNBOOK_REF" in (*[!0-9a-f]*|'') exit 2;; esac
+          test "${#RUNBOOK_REF}" -eq 40
+          python3 - <<'PY'
+          import os, urllib.request
+          root=os.environ['FORGEJO_SERVER_URL'].rstrip('/') + '/api/v1/repos/svc-orion-agent/release-runbook-validation'
+          headers={'Authorization':'token ' + os.environ['FORGEJO_TOKEN']}
+          for path, target in (
+              ('/raw/runbook.sh?ref=' + os.environ['RUNBOOK_REF'], '/tmp/runbook.sh'),
+              ('/raw/validate_runbook.py?ref=main', '/tmp/validate_runbook.py'),
+              ('/git/commits/' + os.environ['RUNBOOK_REF'], '/tmp/commit.json'),
+          ):
+              with urllib.request.urlopen(urllib.request.Request(root + path, headers=headers), timeout=30) as response:
+                  open(target, 'wb').write(response.read())
+          PY
+          python3 - <<'PY' >> "$GITHUB_ENV"
+          import json
+          value=json.load(open('/tmp/commit.json'))
+          print('FORGEJO_COMMIT_SHA=' + value['sha'])
+          print('FORGEJO_COMMIT_AUTHOR=' + value['author']['login'])
+          PY
+      - name: Execute disposable fixture
+        env:
+          M01_C_VALIDATION_REFERENCE: ${{ secrets.M01_C_VALIDATION_REFERENCE }}
+          ORION_REDIS_PASSWORD: ${{ secrets.ORION_REDIS_PASSWORD }}
+          ORION_OPENSEARCH_URL: ${{ secrets.ORION_OPENSEARCH_URL }}
+          ORION_CONVERSATION_ID: ${{ inputs.orion_conversation_id }}
+        run: python3 /tmp/validate_runbook.py /tmp/runbook.sh /tmp/validation-report.json
+      - name: Publish native validation evidence
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
+        uses: actions/upload-artifact@v3
+        with:
+          name: validation-report
+          path: /tmp/validation-report.json
+          if-no-files-found: error

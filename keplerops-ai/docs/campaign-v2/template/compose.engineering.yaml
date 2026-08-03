@@ -1,0 +1,1206 @@
+name: keplerops-v2
+
+x-restart: &restart
+  restart: unless-stopped
+
+x-common-labels: &common-labels
+  io.keplerops.scenario: keplerops-ai
+  io.keplerops.campaign: v2
+  io.keplerops.layer: clean-baseline
+  io.keplerops.plane: engineering-data
+
+x-lakefs-environment: &lakefs-environment
+  LAKEFS_LISTEN_ADDRESS: 0.0.0.0:8000
+  LAKEFS_DATABASE_TYPE: postgres
+  LAKEFS_DATABASE_POSTGRES_CONNECTION_STRING: postgresql://lakefs:KeplerV2-Training-LakeFSDB@10.61.50.10:5432/lakefs?sslmode=disable
+  LAKEFS_AUTH_ENCRYPT_SECRET_KEY: KeplerV2-Training-LakeFS-Encrypt-Key-32
+  LAKEFS_INSTALLATION_USER_NAME: range-admin
+  LAKEFS_INSTALLATION_ACCESS_KEY_ID: KeplerLakeFSAccess
+  LAKEFS_INSTALLATION_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
+  LAKEFS_BLOCKSTORE_TYPE: s3
+  LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE: "true"
+  LAKEFS_BLOCKSTORE_S3_ENDPOINT: http://minio:9000
+  LAKEFS_BLOCKSTORE_S3_DISCOVER_BUCKET_REGION: "false"
+  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID: svc-lakefs
+  LAKEFS_BLOCKSTORE_S3_CREDENTIALS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-LakeFS
+  LAKEFS_BLOCKSTORE_DEFAULT_NAMESPACE_PREFIX: s3://lakefs/
+  LAKEFS_GATEWAYS_S3_REGION: us-east-1
+  LAKEFS_USAGE_REPORT_ENABLED: "false"
+
+x-airflow-environment: &airflow-environment
+  AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+  AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+  AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api:8080/execution/
+  AIRFLOW__CORE__FERNET_KEY: MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA=
+  AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+  AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+  AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:KeplerV2-Training-AirflowDB@10.61.50.10:5432/airflow
+  AIRFLOW__CELERY__BROKER_URL: amqp://kepler:KeplerV2-Training-Rabbit@10.61.50.12:5672/keplerops
+  AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://airflow:KeplerV2-Training-AirflowDB@10.61.50.10:5432/airflow
+  AIRFLOW__API_AUTH__JWT_SECRET: KeplerV2-Training-Airflow-JWT
+  AIRFLOW__API_AUTH__JWT_ISSUER: keplerops-airflow
+  AIRFLOW__API__BASE_URL: https://airflow.keplerops.lab
+  AIRFLOW__FAB__CONFIG_FILE: /opt/airflow/config/webserver_config.py
+  AIRFLOW__FAB__ENABLE_PROXY_FIX: "true"
+  AIRFLOW__FAB__SESSION_LIFETIME_MINUTES: "60"
+  AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+  AIRFLOW_OIDC_CLIENT_ID: airflow
+  AIRFLOW_OIDC_CLIENT_SECRET: KeplerV2-Training-Airflow-OIDC
+  AIRFLOW_OIDC_METADATA_URL: http://10.61.20.20:8080/realms/keplerops/.well-known/openid-configuration
+  AIRFLOW_OIDC_AUTHORIZE_URL: https://id.keplerops.lab/realms/keplerops/protocol/openid-connect/auth
+  AIRFLOW_OIDC_TOKEN_URL: http://10.61.20.20:8080/realms/keplerops/protocol/openid-connect/token
+  AIRFLOW_OIDC_USERINFO_BASE_URL: http://10.61.20.20:8080/realms/keplerops/protocol/
+  REQUESTS_CA_BUNDLE: /etc/keplerops/caddy-root.crt
+  MLFLOW_TRACKING_URI: http://mlflow:5000
+  MLFLOW_TRACKING_USERNAME: svc-orion-training
+  MLFLOW_TRACKING_PASSWORD: KeplerV2-Training-MLflow-Service
+  MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+  AWS_ACCESS_KEY_ID: svc-orion-training
+  AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-Orion-Training
+  AWS_DEFAULT_REGION: us-east-1
+  ORION_PROVENANCE_SIGNING_KEY: KeplerOps-Orion-Provenance-2026
+  QDRANT_URL: http://qdrant-writer:6333
+  LAKEFS_ENDPOINT: http://lakefs:8000
+  S3_ENDPOINT_URL: http://minio:9000
+  ZAMMAD_URL: http://10.61.50.43:8080
+  ZAMMAD_HOST: support.keplerops.lab
+  ZAMMAD_USER: range-admin
+  ZAMMAD_PASSWORD: KeplerV2-Training-Zammad-Admin
+  REDMINE_URL: http://10.61.50.41:3000
+  REDMINE_HOST: workhub.keplerops.lab
+  REDMINE_USER: range-admin
+  REDMINE_PASSWORD: KeplerV2-Training-Redmine-Admin
+  NEXTCLOUD_URL: http://10.61.50.42
+  NEXTCLOUD_HOST: files.keplerops.lab
+  NEXTCLOUD_USER: range-admin
+  NEXTCLOUD_PASSWORD: KeplerV2-Training-Nextcloud
+  TIKA_URL: http://tika:9998
+  ORION_AGENT_URL: http://192.168.78.30:30081
+  ORION_AGENT_API_KEY: KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
+  KEYCLOAK_PARTNER_CLIENT_ID: orion-partner-intake
+  KEYCLOAK_PARTNER_CLIENT_SECRET: KeplerV2-Training-Partner-Intake-Keycloak
+  ZAMMAD_SUPPORT_USER: support.analyst
+  ZAMMAD_SUPPORT_PASSWORD: KeplerV2-Training-Support
+  NEXTCLOUD_OWNER_USER: reviewer
+  NEXTCLOUD_OWNER_PASSWORD: KeplerV2-Training-Reviewer
+  NEXTCLOUD_OIDC_PROVIDER: keplerops
+  PARTNER_INITIAL_ACCESS_KEY: KeplerV2-Training-Partner-Initial-Access
+  PARTNER_SMTP_HOST: 10.61.10.20
+  PARTNER_SMTP_PORT: "587"
+  PARTNER_SMTP_USER: partner-intake
+  PARTNER_SMTP_PASSWORD: KeplerV2-Training-Partner
+  LABEL_STUDIO_URL: http://label-studio:8080
+  LABEL_STUDIO_API_TOKEN: 31a5a4b4ab3cdbaf110644eed06853b2b418daf6
+  LABEL_STUDIO_ADMIN_TOKEN: 31a5a4b4ab3cdbaf110644eed06853b2b418daf6
+  LAKEFS_ACCESS_KEY_ID: KeplerLakeFSAccess
+  LAKEFS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
+
+x-airflow-service: &airflow-service
+  image: keplerops/airflow:campaign-v2-clean
+  build:
+    context: ./engineering
+    dockerfile: Dockerfile.airflow
+    args:
+      AIRFLOW_BASE_IMAGE: ${AIRFLOW_BASE_IMAGE}
+      PYTORCH_VERSION: ${PYTORCH_VERSION}
+      TRANSFORMERS_VERSION: ${TRANSFORMERS_VERSION}
+      PEFT_VERSION: ${PEFT_VERSION}
+      SAFETENSORS_VERSION: ${SAFETENSORS_VERSION}
+      DVC_VERSION: ${DVC_VERSION}
+      CFFI_VERSION: ${CFFI_VERSION}
+      ONNX_VERSION: ${ONNX_VERSION}
+      ONNXRUNTIME_VERSION: ${ONNXRUNTIME_VERSION}
+      RELEASE_RISK_BASE_MODEL: ${RELEASE_RISK_BASE_MODEL}
+      RELEASE_RISK_BASE_REVISION: ${RELEASE_RISK_BASE_REVISION}
+  user: "${AIRFLOW_UID:-50000}:0"
+  environment: *airflow-environment
+  volumes:
+    - ./engineering/airflow/dags:/opt/airflow/dags:ro
+    - ./engineering/airflow/webserver_config.py:/opt/airflow/config/webserver_config.py:ro
+    - ./engineering/airflow/reconcile_roles.py:/opt/airflow/config/reconcile_roles.py:ro
+    - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+    - ./state/campaign-start/m04:/run/keplerops/m04:ro
+    - airflow-logs:/opt/airflow/logs
+    - airflow-plugins:/opt/airflow/plugins
+  networks:
+    engineering:
+    data:
+  extra_hosts:
+    - "id.keplerops.lab:10.61.20.2"
+  labels: *common-labels
+
+services:
+  devpi-init:
+    image: keplerops/devpi:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.devpi
+      args:
+        DEVPI_BASE_IMAGE: ${DEVPI_BASE_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        chown -R 1000:1000 /data
+    volumes:
+      - devpi-data:/data
+    restart: "no"
+    labels: *common-labels
+
+  devpi:
+    <<: *restart
+    image: keplerops/devpi:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.devpi
+      args:
+        DEVPI_BASE_IMAGE: ${DEVPI_BASE_IMAGE}
+    container_name: kep-v2-devpi
+    depends_on:
+      devpi-init:
+        condition: service_completed_successfully
+    volumes:
+      - devpi-data:/data
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.30
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3141/+status', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 30
+    labels: *common-labels
+
+  devpi-bootstrap:
+    image: keplerops/devpi:campaign-v2-clean
+    depends_on:
+      devpi:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        export HOME=/tmp/devpi-client
+        mkdir -p "$$HOME"
+        devpi use http://devpi:3141
+        devpi login root --password=''
+        devpi user -c publisher password='KeplerV2-Training-Devpi-Publisher' email='packages@keplerops.lab' 2>/dev/null || \
+          devpi user -m publisher password='KeplerV2-Training-Devpi-Publisher' email='packages@keplerops.lab'
+        devpi login publisher --password='KeplerV2-Training-Devpi-Publisher'
+        devpi index -c stable bases=root/pypi volatile=False 2>/dev/null || \
+          devpi index stable bases=root/pypi volatile=False
+    networks:
+      engineering:
+    restart: "no"
+    labels: *common-labels
+
+  verdaccio-init:
+    image: ${VERDACCIO_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        cp /seed/htpasswd /storage/htpasswd
+        chown 10001:65533 /storage/htpasswd
+        chmod 0600 /storage/htpasswd
+    volumes:
+      - ./engineering/verdaccio/htpasswd:/seed/htpasswd:ro
+      - verdaccio-storage:/storage
+    restart: "no"
+    labels: *common-labels
+
+  verdaccio:
+    <<: *restart
+    image: ${VERDACCIO_IMAGE}
+    container_name: kep-v2-verdaccio
+    depends_on:
+      verdaccio-init:
+        condition: service_completed_successfully
+    environment:
+      VERDACCIO_APPDIR: /opt/verdaccio
+    volumes:
+      - ./engineering/verdaccio/config.yaml:/verdaccio/conf/config.yaml:ro
+      - verdaccio-storage:/verdaccio/storage
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.31
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4873/-/ping >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    labels: *common-labels
+
+  forgejo-runner-init:
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
+    user: "0:0"
+    working_dir: /var/lib/keplerops-v2/forgejo-runner
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        if [ ! -s /var/lib/keplerops-v2/forgejo-runner/.runner ]; then
+          /bin/forgejo-runner create-runner-file \
+            --instance http://10.61.40.20:3000 \
+            --secret "$${FORGEJO_RUNNER_SECRET}" \
+            --name keplerops-engineering
+        fi
+    environment:
+      FORGEJO_RUNNER_SECRET: c66f08e4fc85a773e653053493db0c7c0a6c5121
+    volumes:
+      - type: bind
+        source: /var/lib/keplerops-v2/forgejo-runner
+        target: /var/lib/keplerops-v2/forgejo-runner
+        bind:
+          create_host_path: true
+    networks:
+      engineering:
+    restart: "no"
+    labels: *common-labels
+
+  forgejo-runner:
+    <<: *restart
+    image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
+    container_name: kep-v2-forgejo-runner
+    user: "0:0"
+    working_dir: /var/lib/keplerops-v2/forgejo-runner
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        install -d -m 0755 /var/lib/keplerops-v2/forgejo-runner/registry-certs
+        find /var/lib/keplerops-v2/forgejo-runner/registry-certs \
+          -mindepth 1 -maxdepth 1 -type f -delete
+        install -m 0644 \
+          /caddy-root/caddy/pki/authorities/local/root.crt \
+          /var/lib/keplerops-v2/forgejo-runner/registry-certs/ca.crt
+        exec /bin/forgejo-runner daemon --config /etc/forgejo-runner/config.yml
+    depends_on:
+      forgejo-runner-init:
+        condition: service_completed_successfully
+    volumes:
+      - ./engineering/forgejo-runner/config.yml:/etc/forgejo-runner/config.yml:ro
+      - type: bind
+        source: /var/lib/keplerops-v2/forgejo-runner
+        target: /var/lib/keplerops-v2/forgejo-runner
+        bind:
+          create_host_path: true
+      - caddy-data:/caddy-root:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      engineering:
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    labels: *common-labels
+
+  harbor-init:
+    image: ${OPENSSL_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        umask 077
+        cp /seed/core-app.conf /core/app.conf
+        cp /seed/registry-config.yml /registry/config.yml
+        cp /seed/registry-passwd /registry/passwd
+        cp /seed/registryctl-config.yml /registryctl/config.yml
+        if ! grep -q 'BEGIN RSA PRIVATE KEY' /core/private_key.pem 2>/dev/null; then
+          openssl genrsa -traditional -out /core/private_key.pem 4096
+          openssl req -x509 -new -sha256 -days 3650 \
+            -key /core/private_key.pem \
+            -out /registry/root.crt \
+            -subj '/CN=harbor-token-issuer'
+        elif [ ! -s /registry/root.crt ]; then
+          openssl req -x509 -new -sha256 -days 3650 \
+            -key /core/private_key.pem \
+            -out /registry/root.crt \
+            -subj '/CN=harbor-token-issuer'
+        fi
+        printf '%s' 'KeplerV2HarborK1' >/core/key
+        chown 10000:10000 /core/private_key.pem /core/key /registry/passwd
+        chown 10000:10000 /storage
+        chmod 0600 /core/private_key.pem /core/key
+        chmod 0750 /storage
+        chmod 0600 /registry/passwd
+        chmod 0644 /core/app.conf /registry/root.crt /registry/config.yml /registryctl/config.yml
+    volumes:
+      - ./engineering/harbor/core/app.conf:/seed/core-app.conf:ro
+      - ./engineering/harbor/registry/config.yml:/seed/registry-config.yml:ro
+      - ./engineering/harbor/registry/passwd:/seed/registry-passwd:ro
+      - ./engineering/harbor/registryctl/config.yml:/seed/registryctl-config.yml:ro
+      - harbor-core-config:/core
+      - harbor-registry-config:/registry
+      - harbor-registryctl-config:/registryctl
+      - harbor-registry-data:/storage
+    restart: "no"
+    labels: *common-labels
+
+  harbor-db:
+    <<: *restart
+    image: ${HARBOR_DB_IMAGE}
+    container_name: kep-v2-harbor-db
+    environment:
+      POSTGRES_PASSWORD: KeplerV2-Training-HarborDB
+    shm_size: 1gb
+    volumes:
+      - harbor-db-data:/var/lib/postgresql/data
+    networks:
+      harbor:
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d registry"]
+      interval: 10s
+      timeout: 5s
+      retries: 40
+    labels: *common-labels
+
+  harbor-redis:
+    <<: *restart
+    image: ${HARBOR_REDIS_IMAGE}
+    container_name: kep-v2-harbor-redis
+    volumes:
+      - harbor-redis-data:/var/lib/redis
+    networks:
+      harbor:
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    labels: *common-labels
+
+  harbor-registry:
+    <<: *restart
+    image: ${HARBOR_REGISTRY_IMAGE}
+    container_name: kep-v2-harbor-registry
+    depends_on:
+      harbor-init:
+        condition: service_completed_successfully
+      harbor-redis:
+        condition: service_healthy
+    environment:
+      CORE_SECRET: KeplerV2CoreKey1
+      JOBSERVICE_SECRET: KeplerV2JobKey01
+      REGISTRY_HTTP_SECRET: KeplerV2-Training-Harbor-Registry-HTTP
+    volumes:
+      - harbor-registry-data:/storage
+      - harbor-registry-config:/etc/registry:ro
+    networks:
+      harbor:
+    labels: *common-labels
+
+  harbor-registryctl:
+    <<: *restart
+    image: ${HARBOR_REGISTRYCTL_IMAGE}
+    container_name: kep-v2-harbor-registryctl
+    depends_on:
+      harbor-registry:
+        condition: service_started
+    environment:
+      CORE_SECRET: KeplerV2CoreKey1
+      JOBSERVICE_SECRET: KeplerV2JobKey01
+    volumes:
+      - harbor-registry-data:/storage
+      - harbor-registry-config:/etc/registry:ro
+      - harbor-registryctl-config:/etc/registryctl:ro
+    networks:
+      harbor:
+    labels: *common-labels
+
+  harbor-core:
+    <<: *restart
+    image: ${HARBOR_CORE_IMAGE}
+    container_name: kep-v2-harbor-core
+    depends_on:
+      harbor-init:
+        condition: service_completed_successfully
+      harbor-db:
+        condition: service_healthy
+      harbor-redis:
+        condition: service_healthy
+      harbor-registry:
+        condition: service_started
+      harbor-registryctl:
+        condition: service_started
+    environment:
+      CORE_SECRET: KeplerV2CoreKey1
+      JOBSERVICE_SECRET: KeplerV2JobKey01
+      HARBOR_ADMIN_PASSWORD: KeplerV2-Training-Harbor
+      POSTGRESQL_HOST: harbor-db
+      POSTGRESQL_PORT: "5432"
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: KeplerV2-Training-HarborDB
+      POSTGRESQL_DATABASE: registry
+      REGISTRY_URL: http://harbor-registry:5000
+      REGISTRY_CONTROLLER_URL: http://harbor-registryctl:8080
+      REGISTRY_CREDENTIAL_USERNAME: harbor_registry_user
+      REGISTRY_CREDENTIAL_PASSWORD: KeplerV2-Training-Harbor-Registry
+      TOKEN_SERVICE_URL: http://harbor-core:8080/service/token
+      HARBOR_TOKEN_SERVICE_URL: http://harbor-core:8080/service/token
+      PORTAL_URL: http://harbor-portal:8080
+      JOBSERVICE_URL: http://harbor-jobservice:8080
+      CORE_URL: http://harbor-core:8080
+      EXT_ENDPOINT: https://registry.keplerops.lab
+      WITH_NOTARY: "False"
+      REDIS_URL: harbor-redis:6379
+      _REDIS_URL_CORE: redis://harbor-redis:6379/0?idle_timeout_seconds=30
+      _REDIS_URL_REG: redis://harbor-redis:6379/2?idle_timeout_seconds=30
+      LOG_LEVEL: info
+      CONFIG_PATH: /etc/core/app.conf
+      CSRF_KEY: 0123456789abcdef0123456789abcdef
+      CONFIG_OVERWRITE_JSON: >-
+        {
+          "auth_mode": "oidc_auth",
+          "primary_auth_mode": true,
+          "oidc_name": "KeplerOps SSO",
+          "oidc_endpoint": "https://id.keplerops.lab/realms/keplerops",
+          "oidc_client_id": "harbor",
+          "oidc_client_secret": "KeplerV2-Training-Harbor-OIDC",
+          "oidc_groups_claim": "groups",
+          "oidc_scope": "openid,profile,email,offline_access",
+          "oidc_verify_cert": true,
+          "oidc_auto_onboard": true,
+          "oidc_user_claim": "preferred_username",
+          "project_creation_restriction": "adminonly",
+          "self_registration": false
+        }
+    volumes:
+      - harbor-core-config:/etc/core
+      - harbor-ca-data:/etc/core/ca
+      - harbor-data:/data
+      - ./state/caddy-root.crt:/harbor_cust_cert/keplerops-ca.crt:ro
+    networks:
+      harbor:
+    labels: *common-labels
+
+  harbor-jobservice:
+    <<: *restart
+    image: ${HARBOR_JOBSERVICE_IMAGE}
+    container_name: kep-v2-harbor-jobservice
+    depends_on:
+      harbor-core:
+        condition: service_started
+      harbor-redis:
+        condition: service_healthy
+    environment:
+      CORE_SECRET: KeplerV2CoreKey1
+      JOBSERVICE_SECRET: KeplerV2JobKey01
+      CORE_URL: http://harbor-core:8080
+      REGISTRY_CONTROLLER_URL: http://harbor-registryctl:8080
+      CONFIG_PATH: /etc/jobservice/config.yml
+      LOG_LEVEL: info
+    volumes:
+      - ./engineering/harbor/jobservice/config.yml:/etc/jobservice/config.yml:ro
+      - harbor-job-logs:/var/log/jobs
+    networks:
+      harbor:
+    labels: *common-labels
+
+  harbor-portal:
+    <<: *restart
+    image: ${HARBOR_PORTAL_IMAGE}
+    container_name: kep-v2-harbor-portal
+    volumes:
+      - ./engineering/harbor/portal/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      harbor:
+    labels: *common-labels
+
+  harbor-nginx:
+    <<: *restart
+    image: ${HARBOR_NGINX_IMAGE}
+    container_name: kep-v2-harbor-nginx
+    depends_on:
+      harbor-core:
+        condition: service_started
+      harbor-jobservice:
+        condition: service_started
+      harbor-portal:
+        condition: service_started
+      harbor-registry:
+        condition: service_started
+    volumes:
+      - ./engineering/harbor/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      harbor:
+      engineering:
+        ipv4_address: 10.61.40.32
+      platform:
+        ipv4_address: 10.61.60.30
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/api/v2.0/health >/dev/null"]
+      interval: 15s
+      timeout: 8s
+      retries: 40
+    labels: *common-labels
+
+  jupyterhub:
+    <<: *restart
+    image: keplerops/jupyterhub:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.jupyterhub
+      args:
+        JUPYTERHUB_BASE_IMAGE: ${JUPYTERHUB_BASE_IMAGE}
+    container_name: kep-v2-jupyterhub
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      JUPYTERHUB_DB_URL: postgresql+psycopg://jupyterhub:KeplerV2-Training-JupyterHubDB@10.61.50.10:5432/jupyterhub
+      JUPYTERHUB_SINGLEUSER_IMAGE: ${JUPYTERHUB_SINGLEUSER_IMAGE}
+      DOCKER_NETWORK_NAME: kep-v2-data
+      MINIO_ACCESS_KEY: ml-engineer
+      MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Reader
+      JUPYTERHUB_OIDC_CLIENT_ID: jupyterhub
+      JUPYTERHUB_OIDC_CLIENT_SECRET: KeplerV2-Training-JupyterHub-OIDC
+      JUPYTERHUB_OIDC_CALLBACK_URL: https://notebooks.keplerops.lab/hub/oauth_callback
+      JUPYTERHUB_OIDC_AUTHORIZE_URL: https://id.keplerops.lab/realms/keplerops/protocol/openid-connect/auth
+      JUPYTERHUB_OIDC_TOKEN_URL: http://10.61.20.20:8080/realms/keplerops/protocol/openid-connect/token
+      JUPYTERHUB_OIDC_USERDATA_URL: http://10.61.20.20:8080/realms/keplerops/protocol/openid-connect/userinfo
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jupyterhub-state:/srv/jupyterhub/state
+    networks:
+      identity:
+        ipv4_address: 10.61.20.40
+      engineering:
+        ipv4_address: 10.61.40.33
+      data:
+        ipv4_address: 10.61.50.65
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/hub/health', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 40
+    labels: *common-labels
+
+  label-studio:
+    <<: *restart
+    image: ${LABEL_STUDIO_IMAGE}
+    container_name: kep-v2-label-studio
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      DJANGO_DB: default
+      POSTGRE_NAME: labelstudio
+      POSTGRE_USER: labelstudio
+      POSTGRE_PASSWORD: KeplerV2-Training-LabelStudioDB
+      POSTGRE_HOST: 10.61.50.10
+      POSTGRE_PORT: "5432"
+      LABEL_STUDIO_HOST: https://labels.keplerops.lab
+      LABEL_STUDIO_USERNAME: annotation.admin@keplerops.lab
+      LABEL_STUDIO_PASSWORD: KeplerV2-Training-LabelStudio
+      LABEL_STUDIO_USER_TOKEN: 31a5a4b4ab3cdbaf110644eed06853b2b418daf6
+      LABEL_STUDIO_DISABLE_SIGNUP_WITHOUT_LINK: "true"
+      LABEL_STUDIO_LOCAL_FILES_SERVING_ENABLED: "false"
+    volumes:
+      - label-studio-data:/label-studio/data
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.34
+      data:
+        ipv4_address: 10.61.50.66
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health >/dev/null"]
+      interval: 15s
+      timeout: 8s
+      retries: 40
+    labels: *common-labels
+
+  minio:
+    <<: *restart
+    image: ${MINIO_IMAGE}
+    container_name: kep-v2-minio
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: kepler-minio
+      MINIO_ROOT_PASSWORD: KeplerV2-Training-Minio-Object-Store
+      MINIO_BROWSER_REDIRECT_URL: https://objects.keplerops.lab
+    volumes:
+      - minio-data:/data
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.50
+      data:
+        ipv4_address: 10.61.50.60
+    labels: *common-labels
+
+  minio-init:
+    image: ${MINIO_MC_IMAGE}
+    depends_on:
+      minio:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        for attempt in $$(seq 1 90); do
+          mc alias set kepler http://minio:9000 kepler-minio 'KeplerV2-Training-Minio-Object-Store' >/dev/null 2>&1 && break
+          sleep 2
+        done
+        mc ready kepler
+        for bucket in artifacts datasets labelstudio lakefs mlflow; do
+          mc mb --ignore-existing "kepler/$$bucket"
+        done
+        mc mb --ignore-existing --with-lock kepler/operations
+        mc anonymous set none kepler/artifacts
+        mc anonymous set none kepler/datasets
+        mc anonymous set none kepler/labelstudio
+        mc anonymous set none kepler/lakefs
+        mc anonymous set none kepler/mlflow
+        mc anonymous set none kepler/operations
+
+        cat >/tmp/kepler-lakefs-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::lakefs"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::lakefs/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-mlflow-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::mlflow"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::mlflow/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-orion-training-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads"
+              ],
+              "Resource": ["arn:aws:s3:::artifacts", "arn:aws:s3:::mlflow"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject"
+              ],
+              "Resource": ["arn:aws:s3:::artifacts/*", "arn:aws:s3:::mlflow/*"]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-orion-evaluator-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket"
+              ],
+              "Resource": [
+                "arn:aws:s3:::artifacts",
+                "arn:aws:s3:::datasets"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject"],
+              "Resource": [
+                "arn:aws:s3:::artifacts/*",
+                "arn:aws:s3:::datasets/*"
+              ]
+            }
+          ]
+        }
+        JSON
+        cat >/tmp/kepler-integrity-handoff-store.json <<'JSON'
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
+              "Resource": ["arn:aws:s3:::operations"]
+            },
+            {
+              "Effect": "Allow",
+              "Action": ["s3:GetObject", "s3:PutObject", "s3:GetObjectRetention", "s3:PutObjectRetention"],
+              "Resource": ["arn:aws:s3:::operations/release-risk/integrity-handoffs/*"]
+            }
+          ]
+        }
+        JSON
+
+        mc admin policy create kepler kepler-lakefs-store /tmp/kepler-lakefs-store.json
+        mc admin policy create kepler kepler-mlflow-store /tmp/kepler-mlflow-store.json
+        mc admin policy create kepler kepler-orion-training-store /tmp/kepler-orion-training-store.json
+        mc admin policy create kepler kepler-orion-evaluator-store /tmp/kepler-orion-evaluator-store.json
+        mc admin policy create kepler kepler-integrity-handoff-store /tmp/kepler-integrity-handoff-store.json
+
+        mc admin user add kepler svc-lakefs 'KeplerV2-Training-Minio-LakeFS'
+        mc admin policy attach kepler kepler-lakefs-store --user svc-lakefs
+        mc admin user add kepler svc-mlflow 'KeplerV2-Training-Minio-MLflow'
+        mc admin policy attach kepler kepler-mlflow-store --user svc-mlflow
+        mc admin user add kepler svc-orion-training 'KeplerV2-Training-Minio-Orion-Training'
+        mc admin policy attach kepler kepler-orion-training-store --user svc-orion-training
+        mc admin user add kepler ml-engineer 'KeplerV2-Training-Minio-Orion-Reader'
+        mc admin policy attach kepler kepler-orion-evaluator-store --user ml-engineer
+        mc admin user add kepler svc-orion-evaluator 'KeplerV2-Training-Minio-Orion-Evaluator'
+        mc admin policy attach kepler kepler-integrity-handoff-store --user svc-orion-evaluator
+    networks:
+      data:
+    restart: "no"
+    labels: *common-labels
+
+  lakefs:
+    <<: *restart
+    image: ${LAKEFS_IMAGE}
+    container_name: kep-v2-lakefs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    command: ["run"]
+    environment: *lakefs-environment
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.51
+      data:
+        ipv4_address: 10.61.50.61
+    labels: *common-labels
+
+  lakefs-init:
+    image: ${LAKEFS_IMAGE}
+    depends_on:
+      lakefs:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-ec"]
+    environment:
+      <<: *lakefs-environment
+      LAKECTL_SERVER_ENDPOINT_URL: http://lakefs:8000
+      LAKECTL_CREDENTIALS_ACCESS_KEY_ID: KeplerLakeFSAccess
+      LAKECTL_CREDENTIALS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
+    command:
+      - |
+        if ! timeout 10 lakectl repo list >/tmp/repos 2>/dev/null; then
+          lakefs superuser \
+            --user-name range-admin \
+            --access-key-id KeplerLakeFSAccess \
+            --secret-access-key KeplerV2-Training-LakeFS-Object-Key
+        fi
+        for attempt in $$(seq 1 90); do
+          timeout 10 lakectl repo list >/tmp/repos 2>/dev/null && break
+          sleep 3
+        done
+        timeout 10 lakectl repo list >/tmp/repos
+        grep -q 'orion' /tmp/repos || \
+          lakectl repo create lakefs://orion s3://lakefs/orion --default-branch main
+    networks:
+      data:
+    restart: "no"
+    labels: *common-labels
+
+  airflow-init:
+    <<: *airflow-service
+    user: "${AIRFLOW_UID:-50000}:0"
+    entrypoint: ["/bin/bash", "-ec"]
+    command:
+      - |
+        airflow db migrate
+        airflow users create \
+          --username range-admin \
+          --firstname Range \
+          --lastname Administrator \
+          --role Admin \
+          --email airflow.admin@keplerops.lab \
+          --password 'KeplerV2-Training-Airflow' 2>/dev/null || \
+        airflow users reset-password \
+          --username range-admin \
+          --password 'KeplerV2-Training-Airflow'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    restart: "no"
+
+  airflow-api:
+    <<: *airflow-service
+    container_name: kep-v2-airflow-api
+    command: ["api-server"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    networks:
+      identity:
+        ipv4_address: 10.61.20.41
+      engineering:
+        ipv4_address: 10.61.40.35
+      data:
+        ipv4_address: 10.61.50.67
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://127.0.0.1:8080/api/v2/monitor/health"]
+      interval: 15s
+      timeout: 8s
+      retries: 40
+
+  airflow-scheduler:
+    <<: *airflow-service
+    container_name: kep-v2-airflow-scheduler
+    command: ["scheduler"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-dag-processor:
+    <<: *airflow-service
+    container_name: kep-v2-airflow-dag-processor
+    command: ["dag-processor"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-triggerer:
+    <<: *airflow-service
+    container_name: kep-v2-airflow-triggerer
+    command: ["triggerer"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-worker:
+    <<: *airflow-service
+    container_name: kep-v2-airflow-worker
+    command: ["celery", "worker"]
+    privileged: true
+    depends_on:
+      airflow-api:
+        condition: service_healthy
+      airflow-scheduler:
+        condition: service_started
+    networks:
+      engineering:
+      data:
+      qdrant-write:
+      observe:
+
+  mlflow-auth-init:
+    image: keplerops/mlflow:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.mlflow
+      args:
+        MLFLOW_BASE_IMAGE: ${MLFLOW_BASE_IMAGE}
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        chown -R 1000:1000 /var/lib/mlflow-auth
+        chmod 0700 /var/lib/mlflow-auth
+    volumes:
+      - mlflow-auth-data:/var/lib/mlflow-auth
+    restart: "no"
+    labels: *common-labels
+
+  mlflow:
+    <<: *restart
+    image: keplerops/mlflow:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.mlflow
+      args:
+        MLFLOW_BASE_IMAGE: ${MLFLOW_BASE_IMAGE}
+    container_name: kep-v2-mlflow
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+      mlflow-auth-init:
+        condition: service_completed_successfully
+    command:
+      - mlflow
+      - server
+      - --host=0.0.0.0
+      - --port=5000
+      - --app-name=basic-auth
+      - --gunicorn-opts=--timeout 120
+      - --backend-store-uri=postgresql+psycopg://mlflow:KeplerV2-Training-MLflowDB@10.61.50.10:5432/mlflow
+      - --artifacts-destination=s3://mlflow
+    environment:
+      MLFLOW_AUTH_CONFIG_PATH: /etc/mlflow/basic_auth.ini
+      MLFLOW_FLASK_SERVER_SECRET_KEY: KeplerV2-Training-MLflow-CSRF-Secret-Key
+      MLFLOW_S3_ENDPOINT_URL: http://minio:9000
+      AWS_ACCESS_KEY_ID: svc-mlflow
+      AWS_SECRET_ACCESS_KEY: KeplerV2-Training-Minio-MLflow
+      AWS_DEFAULT_REGION: us-east-1
+    volumes:
+      - ./engineering/mlflow/basic_auth.ini:/etc/mlflow/basic_auth.ini:ro
+      - mlflow-auth-data:/var/lib/mlflow-auth
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.36
+      data:
+        ipv4_address: 10.61.50.68
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 40
+    labels: *common-labels
+
+  tika:
+    <<: *restart
+    image: ${TIKA_IMAGE}
+    container_name: kep-v2-tika
+    networks:
+      data:
+        ipv4_address: 10.61.50.63
+    labels: *common-labels
+
+  grobid:
+    <<: *restart
+    image: ${GROBID_IMAGE}
+    container_name: kep-v2-grobid
+    init: true
+    networks:
+      data:
+        ipv4_address: 10.61.50.64
+    labels: *common-labels
+
+  qdrant:
+    <<: *restart
+    image: ${QDRANT_IMAGE}
+    container_name: kep-v2-qdrant
+    environment:
+      QDRANT__SERVICE__API_KEY: KeplerV2-Training-Qdrant-Write
+      QDRANT__SERVICE__READ_ONLY_API_KEY: KeplerV2-Training-Qdrant-Read
+    volumes:
+      - qdrant-data:/qdrant/storage
+    networks:
+      qdrant-write:
+        aliases: [qdrant-store]
+    labels: *common-labels
+
+  qdrant-edge:
+    <<: *restart
+    image: ${CADDY_IMAGE}
+    container_name: kep-v2-qdrant-edge
+    depends_on:
+      qdrant:
+        condition: service_started
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        cat >/tmp/Caddyfile <<'CADDY'
+        :6333 {
+          @business_adapter remote_ip 10.61.50.70
+          handle @business_adapter {
+            reverse_proxy qdrant-store:6333 {
+              header_up api-key KeplerV2-Training-Qdrant-Read
+            }
+          }
+          handle {
+            reverse_proxy qdrant-store:6333
+          }
+        }
+        CADDY
+        exec caddy run --config /tmp/Caddyfile --adapter caddyfile
+    ports:
+      - "192.168.78.1:16333:6333"
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.52
+        aliases: [qdrant]
+      data:
+        ipv4_address: 10.61.50.62
+        aliases: [qdrant]
+      qdrant-write:
+    labels: *common-labels
+
+  qdrant-writer:
+    <<: *restart
+    image: ${CADDY_IMAGE}
+    container_name: kep-v2-qdrant-writer
+    depends_on:
+      qdrant:
+        condition: service_started
+    command:
+      - caddy
+      - reverse-proxy
+      - --from
+      - :6333
+      - --to
+      - http://qdrant-store:6333
+      - --header-up
+      - "api-key: KeplerV2-Training-Qdrant-Write"
+    networks:
+      data:
+        ipv4_address: 10.61.50.72
+      qdrant-write:
+    labels: *common-labels
+
+  hayhooks:
+    <<: *restart
+    image: keplerops/hayhooks:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.hayhooks
+      args:
+        HAYHOOKS_BASE_IMAGE: ${HAYHOOKS_BASE_IMAGE}
+    container_name: kep-v2-hayhooks
+    depends_on:
+      qdrant:
+        condition: service_started
+      tika:
+        condition: service_started
+      grobid:
+        condition: service_started
+    environment:
+      HAYHOOKS_HOST: 0.0.0.0
+      HAYHOOKS_PORT: "1416"
+      HAYHOOKS_PIPELINES_DIR: /opt/hayhooks/pipelines
+      QDRANT_URL: http://qdrant-writer:6333
+      TIKA_URL: http://tika:9998
+      GROBID_URL: http://grobid:8070
+    volumes:
+      - hayhooks-pipelines:/opt/hayhooks/pipelines
+    networks:
+      engineering:
+        ipv4_address: 10.61.40.37
+      data:
+        ipv4_address: 10.61.50.69
+      qdrant-write:
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:1416/docs', timeout=5)"]
+      interval: 15s
+      timeout: 6s
+      retries: 40
+    labels: *common-labels
+
+  dvc:
+    image: keplerops/dvc:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.dvc
+      args:
+        DVC_BASE_IMAGE: ${DVC_BASE_IMAGE}
+    profiles: ["tools"]
+    environment:
+      DVC_LAKEFS_ENDPOINT: http://lakefs:8000
+      LAKEFS_ACCESS_KEY_ID: KeplerLakeFSAccess
+      LAKEFS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
+    volumes:
+      - dvc-workspace:/workspace
+    networks:
+      data:
+    labels: *common-labels
+
+networks:
+  identity:
+    external: true
+    name: kep-v2-identity
+  engineering:
+    external: true
+    name: kep-v2-engineering
+  data:
+    external: true
+    name: kep-v2-data
+  platform:
+    external: true
+    name: kep-v2-platform
+  harbor:
+    name: kep-v2-harbor
+    internal: true
+  qdrant-write:
+    name: kep-v2-qdrant-write
+    internal: true
+
+volumes:
+  devpi-data:
+  verdaccio-storage:
+  harbor-core-config:
+  harbor-registry-config:
+  harbor-registryctl-config:
+  harbor-db-data:
+  harbor-redis-data:
+  harbor-registry-data:
+  harbor-ca-data:
+  harbor-data:
+  harbor-job-logs:
+  jupyterhub-state:
+  label-studio-data:
+  minio-data:
+  airflow-logs:
+  airflow-plugins:
+  mlflow-auth-data:
+  qdrant-data:
+  hayhooks-pipelines:
+  dvc-workspace:

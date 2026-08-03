@@ -1,0 +1,192 @@
+# source	destination	protocol	ports	purpose
+# Container names are resolved at enforcement time. cidr: destinations are
+# evaluated after managed-container denial, so they cannot bypass lateral rules.
+cidr:192.168.78.30/32	kep-v2-qdrant-edge	tcp	6333	WorkHub retrieval from k3s01
+cidr:192.168.78.30/32	kep-v2-redis	tcp	6379	WorkHub conversation state from k3s01
+cidr:192.168.78.30/32	kep-v2-forgejo	tcp	3000	GitOps repository from k3s01
+cidr:192.168.78.30/32	kep-v2-caddy	tcp	443	Harbor registry pull from k3s01
+cidr:192.168.78.20/31	kep-v2-rabbitmq	tcp	5672	review worker queues
+cidr:192.168.78.20/31	kep-v2-redmine	tcp	3000	review worker WorkHub updates
+cidr:192.168.78.20/31	kep-v2-otel-collector	tcp	4318	review worker OTLP export
+cidr:192.168.78.30/32	cidr:192.168.78.1/32	tcp	4318	Orion agent OTLP export
+kep-v2-pdns-recursor	kep-v2-pdns-auth	tcp	53	authoritative DNS
+kep-v2-pdns-recursor	kep-v2-pdns-auth	udp	53	authoritative DNS
+kep-v2-pdns-recursor	cidr:0.0.0.0/0	tcp	53	recursive DNS upstream
+kep-v2-pdns-recursor	cidr:0.0.0.0/0	udp	53	recursive DNS upstream
+keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	tcp	53	Cinder workstation DNS
+keplerops-participant-workstation-runtime	kep-v2-pdns-recursor	udp	53	Cinder workstation DNS
+keplerops-participant-workstation-runtime	kep-v2-caddy	tcp	443	KeplerOps and Cinder published services
+keplerops-participant-workstation-runtime	kep-v2-stalwart	tcp	587,993	Cinder operator mail submission and mailbox
+keplerops-participant-workstation-runtime	kep-v2-labgrid-coordinator	tcp	20408	physical evaluation coordinator
+keplerops-participant-workstation-runtime	cidr:0.0.0.0/0	tcp	80,443	Internet research and Cinder-controlled services
+kep-v2-keycloak	kep-v2-postgres	tcp	5432	identity database
+kep-v2-keycloak	cidr:192.168.78.10/31	tcp	53,88,389,445,464,636,3268,3269	AD federation and replication clients
+kep-v2-keycloak	cidr:192.168.78.10/31	udp	53,88,389,464	AD DNS and Kerberos
+kep-v2-caddy	kep-v2-keycloak	tcp	8080	identity edge
+kep-v2-caddy	kep-v2-grafana	tcp	3000	metrics UI edge
+kep-v2-caddy	kep-v2-jaeger	tcp	16686	trace UI edge
+kep-v2-caddy	kep-v2-public-site	tcp	80	company website edge
+kep-v2-caddy	kep-v2-forgejo	tcp	3000	source edge
+kep-v2-caddy	kep-v2-devpi	tcp	3141	Python registry edge
+kep-v2-caddy	kep-v2-verdaccio	tcp	4873	Node registry edge
+kep-v2-caddy	kep-v2-harbor-nginx	tcp	8080	container registry edge
+kep-v2-caddy	kep-v2-jupyterhub	tcp	8000	research workspace edge
+kep-v2-caddy	kep-v2-label-studio	tcp	8080	annotation edge
+kep-v2-caddy	kep-v2-airflow-api	tcp	8080	orchestration edge
+kep-v2-caddy	kep-v2-mlflow	tcp	5000	experiment registry edge
+kep-v2-caddy	kep-v2-langflow	tcp	7860	integration flow edge
+kep-v2-caddy	kep-v2-hayhooks	tcp	1416	retrieval pipeline edge
+kep-v2-caddy	kep-v2-minio	tcp	9001	object console edge
+kep-v2-caddy	kep-v2-lakefs	tcp	8000	dataset versioning edge
+kep-v2-caddy	kep-v2-qdrant-edge	tcp	6333	vector read edge
+kep-v2-caddy	kep-v2-redmine	tcp	3000	WorkHub edge
+kep-v2-caddy	kep-v2-nextcloud	tcp	80	file service edge
+kep-v2-caddy	kep-v2-zammad-nginx	tcp	8080	support edge
+kep-v2-caddy	kep-v2-librechat	tcp	3080	assistant UI edge
+kep-v2-caddy	kep-v2-preview	tcp	8080	Orion Preview edge
+kep-v2-preview	cidr:192.168.78.30/32	tcp	30083	admitted release-risk inference
+kep-v2-caddy	kep-v2-ghost	tcp	2368	status site edge
+kep-v2-caddy	kep-v2-mautic	tcp	80	advisory edge
+kep-v2-caddy	kep-v2-odoo	tcp	8069	business system edge
+kep-v2-caddy	kep-v2-roundcube	tcp	80	webmail edge
+kep-v2-caddy	kep-v2-orion-telemetry-gateway	tcp	8080	release-risk telemetry edge
+kep-v2-caddy	kep-v2-cinder-forgejo	tcp	3000	Cinder source edge
+kep-v2-caddy	kep-v2-cinder-minio	tcp	9001	Cinder object console edge
+kep-v2-caddy	kep-v2-cinder-jupyter	tcp	8000,8888	Cinder notebook edge
+kep-v2-caddy	cidr:192.168.78.30/32	tcp	30080,30081,30084,30090,30400,30402,31080	published k3s services and OpenCost allocation API
+kep-v2-grafana	kep-v2-prometheus	tcp	9090	metrics datasource
+kep-v2-grafana	kep-v2-jaeger	tcp	16686	trace datasource
+kep-v2-grafana	kep-v2-opensearch	tcp	9200	audit datasource
+kep-v2-grafana	cidr:0.0.0.0/0	tcp	443	pinned Grafana plugin acquisition
+kep-v2-prometheus	kep-v2-keycloak	tcp	9000	identity metrics
+kep-v2-prometheus	kep-v2-rabbitmq	tcp	15692	queue metrics
+kep-v2-prometheus	kep-v2-opensearch	tcp	9200	search metrics
+kep-v2-otel-collector	kep-v2-jaeger	tcp	4317	trace export
+kep-v2-otel-collector	kep-v2-opensearch	tcp	9200	audit export
+kep-v2-orion-telemetry-gateway	cidr:192.168.78.30/32	tcp	30083	Orion release-risk runtime
+kep-v2-roundcube	kep-v2-stalwart	tcp	25,143,587	webmail IMAP and SMTP
+kep-v2-stalwart	cidr:192.168.78.10/31	tcp	636	AD-backed mail directory
+kep-v2-forgejo	kep-v2-postgres	tcp	5432	source database
+kep-v2-forgejo	kep-v2-keycloak	tcp	8080	source OIDC
+kep-v2-redmine	kep-v2-postgres	tcp	5432	WorkHub database
+kep-v2-redmine	cidr:192.168.78.10/31	tcp	389,636	WorkHub directory login
+kep-v2-nextcloud	kep-v2-postgres	tcp	5432	file-service database
+kep-v2-nextcloud	kep-v2-redis	tcp	6379	file-service cache
+kep-v2-nextcloud	kep-v2-keycloak	tcp	8080	file-service OIDC
+kep-v2-zammad-init	kep-v2-postgres	tcp	5432	support database initialization
+kep-v2-zammad-init	kep-v2-redis	tcp	6379	support cache initialization
+kep-v2-zammad-init	kep-v2-opensearch	tcp	9200	support index initialization
+kep-v2-zammad-init	kep-v2-zammad-memcached	tcp	11211	support cache initialization
+kep-v2-zammad-railsserver	kep-v2-postgres	tcp	5432	support database
+kep-v2-zammad-railsserver	kep-v2-redis	tcp	6379	support cache
+kep-v2-zammad-railsserver	kep-v2-opensearch	tcp	9200	support index
+kep-v2-zammad-railsserver	kep-v2-zammad-memcached	tcp	11211	support session cache
+kep-v2-zammad-scheduler	kep-v2-postgres	tcp	5432	support jobs
+kep-v2-zammad-scheduler	kep-v2-redis	tcp	6379	support jobs
+kep-v2-zammad-scheduler	kep-v2-opensearch	tcp	9200	support jobs
+kep-v2-zammad-scheduler	kep-v2-zammad-memcached	tcp	11211	support jobs
+kep-v2-zammad-scheduler	kep-v2-stalwart	tcp	25,143	support mail channel
+kep-v2-zammad-websocket	kep-v2-postgres	tcp	5432	support realtime state
+kep-v2-zammad-websocket	kep-v2-redis	tcp	6379	support realtime state
+kep-v2-zammad-websocket	kep-v2-zammad-memcached	tcp	11211	support realtime cache
+kep-v2-zammad-nginx	kep-v2-zammad-railsserver	tcp	3000	support application proxy
+kep-v2-zammad-nginx	kep-v2-zammad-websocket	tcp	6042	support websocket proxy
+kep-v2-langflow	kep-v2-postgres	tcp	5432	integration-flow database
+kep-v2-langflow	cidr:192.168.78.30/32	tcp	30081	WorkHub agent handoff
+kep-v2-librechat	kep-v2-mongodb	tcp	27017	assistant conversation store
+kep-v2-librechat	kep-v2-meilisearch	tcp	7700	assistant search
+kep-v2-librechat	kep-v2-keycloak	tcp	8080	assistant OIDC
+kep-v2-librechat	cidr:192.168.78.30/32	tcp	30081	WorkHub agent API
+kep-v2-unleash	kep-v2-postgres	tcp	5432	feature-control database
+kep-v2-odoo	kep-v2-postgres	tcp	5432	business database
+kep-v2-odoo	kep-v2-keycloak	tcp	8080	business OIDC
+kep-v2-ghost	kep-v2-mariadb	tcp	3306	status database
+kep-v2-ghost	kep-v2-stalwart	tcp	25	status notification mail
+kep-v2-mautic	kep-v2-mariadb	tcp	3306	advisory database
+kep-v2-mautic	kep-v2-stalwart	tcp	587	advisory mail delivery
+kep-v2-business-adapter	kep-v2-business-opa	tcp	8181	business policy
+kep-v2-business-adapter	kep-v2-unleash	tcp	4242	feature decision
+kep-v2-business-adapter	kep-v2-odoo	tcp	8069	ledger effect
+kep-v2-business-adapter	kep-v2-ghost	tcp	2368	status effect
+kep-v2-business-adapter	kep-v2-mautic	tcp	80	advisory effect
+kep-v2-business-adapter	kep-v2-caddy	tcp	443	advisory TLS edge
+kep-v2-business-adapter	kep-v2-zammad-nginx	tcp	8080	support effect
+kep-v2-business-adapter	kep-v2-redmine	tcp	3000	WorkHub effect
+kep-v2-business-adapter	kep-v2-nextcloud	tcp	80	file effect
+kep-v2-business-adapter	kep-v2-rabbitmq	tcp	15672	queue management
+kep-v2-business-adapter	kep-v2-qdrant-writer	tcp	6333	approved business-context indexing
+kep-v2-business-adapter	kep-v2-lakefs	tcp	8000	dataset lookup
+kep-v2-business-adapter	kep-v2-stalwart	tcp	587	business notification mail
+kep-v2-business-adapter	cidr:192.168.78.30/32	tcp	30081	grounded assistant context
+kep-v2-business-adapter	cidr:192.168.78.30/32	tcp	30083	release-risk decisions
+kep-v2-devpi-bootstrap	kep-v2-devpi	tcp	3141	registry bootstrap
+kep-v2-forgejo-runner	kep-v2-forgejo	tcp	3000	CI source access
+kep-v2-forgejo-runner	kep-v2-devpi	tcp	3141	CI Python packages
+kep-v2-forgejo-runner	kep-v2-verdaccio	tcp	4873	CI Node packages
+kep-v2-forgejo-runner	kep-v2-harbor-nginx	tcp	8080	CI container publication
+kep-v2-forgejo-runner	kep-v2-caddy	tcp	443	CI enterprise TLS endpoints
+kep-v2-forgejo-runner	cidr:0.0.0.0/0	tcp	80,443	CI public dependencies
+kep-v2-harbor-nginx	kep-v2-harbor-core	tcp	8080	registry API
+kep-v2-harbor-nginx	kep-v2-harbor-jobservice	tcp	8080	registry jobs
+kep-v2-harbor-nginx	kep-v2-harbor-portal	tcp	8080	registry UI
+kep-v2-harbor-nginx	kep-v2-harbor-registry	tcp	5000	registry content
+kep-v2-harbor-core	kep-v2-harbor-db	tcp	5432	registry database
+kep-v2-harbor-core	kep-v2-harbor-redis	tcp	6379	registry cache
+kep-v2-harbor-core	kep-v2-harbor-registry	tcp	5000	registry content
+kep-v2-harbor-core	kep-v2-harbor-registryctl	tcp	8080	registry control
+kep-v2-harbor-core	kep-v2-harbor-jobservice	tcp	8080	registry jobs
+kep-v2-harbor-jobservice	kep-v2-harbor-core	tcp	8080	registry core
+kep-v2-harbor-jobservice	kep-v2-harbor-redis	tcp	6379	registry job state
+kep-v2-harbor-jobservice	kep-v2-harbor-registryctl	tcp	8080	registry jobs
+kep-v2-harbor-registryctl	kep-v2-harbor-registry	tcp	5000	registry control
+kep-v2-harbor-registry	kep-v2-harbor-redis	tcp	6379	registry cache
+kep-v2-jupyterhub	kep-v2-postgres	tcp	5432	workspace database
+kep-v2-jupyterhub	kep-v2-minio	tcp	9000	workspace object access
+kep-v2-jupyterhub	kep-v2-keycloak	tcp	8080	workspace OIDC
+label:hub.jupyter.org/username=*	kep-v2-minio	tcp	9000	research notebook objects
+label:hub.jupyter.org/username=*	kep-v2-lakefs	tcp	8000	research notebook datasets
+label:hub.jupyter.org/username=*	kep-v2-qdrant-edge	tcp	6333	research notebook retrieval
+label:hub.jupyter.org/username=*	kep-v2-mlflow	tcp	5000	research notebook experiments
+label:hub.jupyter.org/username=*	kep-v2-forgejo	tcp	3000	research notebook source
+kep-v2-label-studio	kep-v2-postgres	tcp	5432	annotation database
+kep-v2-label-studio	kep-v2-minio	tcp	9000	annotation objects
+kep-v2-minio-init	kep-v2-minio	tcp	9000	object-store initialization
+kep-v2-lakefs	kep-v2-postgres	tcp	5432	dataset database
+kep-v2-lakefs	kep-v2-minio	tcp	9000	dataset object store
+kep-v2-lakefs-init	kep-v2-lakefs	tcp	8000	dataset initialization
+kep-v2-airflow-init	kep-v2-postgres	tcp	5432	orchestrator initialization
+kep-v2-airflow-init	kep-v2-rabbitmq	tcp	5672	orchestrator initialization
+kep-v2-airflow-api	kep-v2-postgres	tcp	5432	orchestrator database
+kep-v2-airflow-api	kep-v2-rabbitmq	tcp	5672	orchestrator broker
+kep-v2-airflow-api	kep-v2-keycloak	tcp	8080	orchestrator OIDC
+kep-v2-airflow-scheduler	kep-v2-postgres	tcp	5432	orchestrator metadata
+kep-v2-airflow-scheduler	kep-v2-rabbitmq	tcp	5672	orchestrator broker
+kep-v2-airflow-dag-processor	kep-v2-postgres	tcp	5432	orchestrator metadata
+kep-v2-airflow-dag-processor	kep-v2-rabbitmq	tcp	5672	orchestrator broker
+kep-v2-airflow-triggerer	kep-v2-postgres	tcp	5432	orchestrator metadata
+kep-v2-airflow-triggerer	kep-v2-rabbitmq	tcp	5672	orchestrator broker
+kep-v2-airflow-worker	kep-v2-postgres	tcp	5432	workflow metadata
+kep-v2-airflow-worker	kep-v2-rabbitmq	tcp	5672	workflow broker
+kep-v2-airflow-worker	kep-v2-airflow-api	tcp	8080	workflow execution API
+kep-v2-airflow-worker	kep-v2-mlflow	tcp	5000	experiment workflow
+kep-v2-airflow-worker	kep-v2-minio	tcp	9000	artifact workflow
+kep-v2-airflow-worker	kep-v2-qdrant-writer	tcp	6333	indexing workflow
+kep-v2-airflow-worker	kep-v2-lakefs	tcp	8000	dataset workflow
+kep-v2-airflow-worker	kep-v2-zammad-nginx	tcp	8080	support workflow
+kep-v2-airflow-worker	kep-v2-redmine	tcp	3000	WorkHub workflow
+kep-v2-airflow-worker	kep-v2-nextcloud	tcp	80	file workflow
+kep-v2-airflow-worker	kep-v2-tika	tcp	9998	extraction workflow
+kep-v2-airflow-worker	kep-v2-label-studio	tcp	8080	annotation workflow
+kep-v2-airflow-worker	cidr:192.168.78.30/32	tcp	30081	assistant workflow
+kep-v2-mlflow	kep-v2-postgres	tcp	5432	experiment database
+kep-v2-mlflow	kep-v2-minio	tcp	9000	experiment objects
+kep-v2-qdrant-edge	kep-v2-qdrant	tcp	6333	vector read proxy
+kep-v2-qdrant-writer	kep-v2-qdrant	tcp	6333	vector write proxy
+kep-v2-hayhooks	kep-v2-qdrant-writer	tcp	6333	indexing writes
+kep-v2-hayhooks	kep-v2-tika	tcp	9998	document extraction
+kep-v2-hayhooks	kep-v2-grobid	tcp	8070	research extraction
+kep-v2-dvc	kep-v2-lakefs	tcp	8000	DVC remote
+kep-v2-cinder-bootstrap	kep-v2-cinder-minio	tcp	9000	Cinder object initialization
+kep-v2-cinder-jupyter	kep-v2-cinder-minio	tcp	9000	Cinder object access
+kep-v2-cinder-jupyter	kep-v2-cinder-forgejo	tcp	3000	Cinder source access
+kep-v2-cinder-jupyter	cidr:0.0.0.0/0	tcp	80,443	participant research

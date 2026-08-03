@@ -1,0 +1,13 @@
+{
+  "schema": "keplerops.release-risk.labels/v1",
+  "labels": [
+    "ReleaseApprove",
+    "ReleaseHold",
+    "PartnerIntake",
+    "EntitlementReview",
+    "SecurityAdvisory",
+    "SupportEscalation",
+    "ResearchReview",
+    "PrivacySafety"
+  ]
+}

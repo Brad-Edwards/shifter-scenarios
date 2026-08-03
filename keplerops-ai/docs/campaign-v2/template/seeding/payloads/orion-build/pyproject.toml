@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools==80.9.0", "wheel==0.45.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "keplerops-orion-release"
+version = "0.1.0"
+description = "Project Orion release metadata helpers"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]

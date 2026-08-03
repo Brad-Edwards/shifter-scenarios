@@ -1,0 +1,10 @@
+{
+  "BrowserSignin": 0,
+  "HomepageIsNewTabPage": false,
+  "HomepageLocation": "https://keplerops.lab/",
+  "RestoreOnStartup": 4,
+  "RestoreOnStartupURLs": [
+    "https://keplerops.lab/"
+  ],
+  "ShowHomeButton": true
+}

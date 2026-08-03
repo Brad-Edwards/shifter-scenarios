@@ -1,0 +1,47 @@
+name: Orion model-card compatibility
+on:
+  workflow_dispatch:
+    inputs:
+      agent_workflow_id: {required: true, type: string}
+      agent_trace_id: {required: true, type: string}
+      consumer_commit: {required: true, type: string}
+      installed_integrity: {required: true, type: string}
+jobs:
+  inspect:
+    runs-on: orion-release-linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bind the run to the merged consumer revision
+        shell: bash
+        env:
+          EXPECTED_COMMIT: ${{ inputs.consumer_commit }}
+          EXPECTED_INTEGRITY: ${{ inputs.installed_integrity }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
+          test "$(node -p \"require('./package-lock.json').packages['node_modules/@keplerops/orion-mcp-audit'].integrity\")" = "$EXPECTED_INTEGRITY"
+      - name: Install the merged dependency lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          auth=$(printf '%s:%s' "$VERDACCIO_USER" "$VERDACCIO_PASSWORD" | base64 -w0)
+          npm config set registry http://10.61.40.31:4873
+          npm config set //10.61.40.31:4873/:_auth "$auth"
+          npm config set //10.61.40.31:4873/:always-auth true
+          npm ci --ignore-scripts
+      - name: Invoke the installed MCP tool from the agent run
+        shell: bash
+        env:
+          AGENT_WORKFLOW_ID: ${{ inputs.agent_workflow_id }}
+          AGENT_TRACE_ID: ${{ inputs.agent_trace_id }}
+          CONSUMER_COMMIT: ${{ inputs.consumer_commit }}
+          EXPECTED_INTEGRITY: ${{ inputs.installed_integrity }}
+          FORGEJO_RUN_ID: ${{ forgejo.run_id }}
+          ORION_PRIVATE_MODEL_CARD_JSON: ${{ secrets.ORION_PRIVATE_MODEL_CARD_JSON }}
+          ORION_MODEL_CARD_RELAY: https://relay.cinder.lab/orion-model-card-audit
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          node scripts/run-model-card-check.mjs
+      - uses: actions/upload-artifact@v3
+        with: {name: model-card-agent-run, path: reports/model-card-agent-run.json}

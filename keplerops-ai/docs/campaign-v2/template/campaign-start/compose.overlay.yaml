@@ -1,0 +1,19 @@
+x-campaign-airflow: &campaign-airflow
+  image: keplerops/airflow:campaign-v2
+  build:
+    context: .
+    dockerfile: campaign-start/Dockerfile.airflow
+    args:
+      AIRFLOW_IMAGE: keplerops/airflow:campaign-v2-clean
+
+services:
+  airflow-api:
+    <<: *campaign-airflow
+  airflow-scheduler:
+    <<: *campaign-airflow
+  airflow-dag-processor:
+    <<: *campaign-airflow
+  airflow-triggerer:
+    <<: *campaign-airflow
+  airflow-worker:
+    <<: *campaign-airflow

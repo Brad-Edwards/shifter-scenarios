@@ -1,0 +1,24 @@
+{
+  "schema": "keplerops.campaign-module-integrations/v1",
+  "module": "m09",
+  "model_family_contract": {
+    "catalog_value": "release-risk for kep-m09-a through kep-m09-g; artifact-defined for kep-m09-h through kep-m09-l",
+    "artifact_dependent_operations": ["kep-m09-h", "kep-m09-i", "kep-m09-j", "kep-m09-k", "kep-m09-l"],
+    "enforcement": "derive the concrete family from each accepted artifact and require an authoritative allowed value"
+  },
+  "operations": {
+    "kep-m09-a": {"input": "exact signed visible evaluation plus required Forgejo release-image Actions run", "services": ["Forgejo Actions", "MLflow", "Harbor", "BuildKit", "Kubernetes"], "carrier": "v2 registered-candidate MLflow record"},
+    "kep-m09-b": {"input": "one accepted fixed signed integrity checkpoint from kep-m07-e, kep-m07-g, or kep-m07-i, selected as the exact candidate, plus exact MLflow/Forgejo/model/held-out identities and immutable review image", "services": ["MLflow", "Forgejo", "Harbor", "ONNX Runtime", "Cosign", "Rekor"], "carrier": "v2 signed visible-evaluation MLflow record"},
+    "kep-m09-c": {"input": "accepted frozen candidate and protected approved-lineage commit", "services": ["MLflow", "Forgejo", "MinIO", "OPA"], "carrier": "v2 lineage-resolution object"},
+    "kep-m09-d": {"input": "exact candidate/report issue and human release-engineer event", "services": ["Forgejo", "MLflow", "Cosign", "OPA", "MinIO"], "carrier": "v2 release-approval decision"},
+    "kep-m09-e": {"input": "signed evaluation and exact moved Harbor compatibility label", "services": ["Harbor", "Cosign", "OPA", "MinIO"], "carrier": "v2 image-binding decision"},
+    "kep-m09-f": {"input": "exact lineage, approval, image-binding, model, and image digests", "services": ["OPA", "Cosign", "Rekor", "MinIO"], "carrier": "v2 signed release binding the complete authoritative release-state identity with one-use promotion authorization"},
+    "kep-m09-g": {"input": "server-issued one-use capability for the accepted signed release, established Assistant model identities", "services": ["Forgejo", "OPA", "Argo CD", "KServe", "Kubernetes", "MinIO"], "carrier": "v2 production runtime inventory with consumed capability and source-visible projected-identity activation callback sender"},
+    "kep-m09-h": {"input": "fixed signed Cinder model-package handoff and exact participant publication", "services": ["Cinder Forgejo"], "carrier": "v2 metadata-and-signature-only release attestation"},
+    "kep-m09-i": {"input": "bounded Cinder Forgejo artifact URL, exact digest, and optional artifact-declared model family", "services": ["RabbitMQ", "PickleScan", "isolated import worker", "Cinder relay"], "carrier": "v2 corrupt-import result carrying the artifact-declared concrete family"},
+    "kep-m09-j": {"input": "participant-rebound fixed upstream channel", "services": ["Cinder Forgejo", "MinIO"], "carrier": "v2 mirror manifest"},
+    "kep-m09-k": {"input": "exact human Forgejo close/label event for the mirrored subject", "services": ["Forgejo", "RabbitMQ", "isolated import worker", "Cinder relay", "MinIO"], "carrier": "v2 accepted review observation"},
+    "kep-m09-l": {"input": "trusted staging tag plus exact staging-image Actions run and source commit", "services": ["Harbor", "Forgejo Actions", "Forgejo", "Argo CD", "KServe", "MinIO"], "carrier": "v2 staging runtime reconciliation"}
+  },
+  "negative_control": "keplerops.operation-denial/v2 records bind operation, distinct attempt, identical immutable subject, and rejected outcome"
+}

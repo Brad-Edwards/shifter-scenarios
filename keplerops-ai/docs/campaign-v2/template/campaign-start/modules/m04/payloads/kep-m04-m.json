@@ -1,0 +1,14 @@
+{
+  "service": "Orion conversation export",
+  "requester_export_reference": "server-generated-own-export-reference",
+  "neighbor_reference_source": "support-case-history",
+  "neighbor_archive": {
+    "export_reference": 7403,
+    "owner": "release.approver",
+    "conversation_count": 3,
+    "attachment_count": 1,
+    "archive_digest": "server-owned-sha256-response-header",
+    "service_reference": "FLAG{dadac50b46dc79eb}"
+  },
+  "object_store_access": "not-requester-accessible"
+}

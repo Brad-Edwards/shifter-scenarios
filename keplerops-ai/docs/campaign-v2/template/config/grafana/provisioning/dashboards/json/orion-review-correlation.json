@@ -1,0 +1,39 @@
+{
+  "annotations": {"list": []},
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {"defaults": {"unit": "short"}, "overrides": []},
+      "gridPos": {"h": 9, "w": 24, "x": 0, "y": 0},
+      "id": 1,
+      "options": {"legend": {"calcs": [], "displayMode": "table", "placement": "bottom"}},
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (service_name, keplerops_event_id, span_name) (increase(orion_calls_total{service_name=~\"orion-agent|orion-review-worker\"}[30m]))",
+          "legendFormat": "{{keplerops_event_id}} {{service_name}} {{span_name}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Artifact Review Causal Chain",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": ["orion", "release-engineering"],
+  "templating": {"list": []},
+  "time": {"from": "now-30m", "to": "now"},
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Orion Review Correlation",
+  "uid": "orion-review-correlation",
+  "version": 1,
+  "weekStart": ""
+}

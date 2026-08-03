@@ -1,0 +1,150 @@
+name: Isolated model artifact review
+on:
+  schedule:
+    - cron: "*/2 * * * *"
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: Immutable commit in cinder-labs/orion-poisoned-dataset
+        required: true
+        type: string
+      attempt_id:
+        description: Opaque attempt identifier
+        required: true
+        type: string
+jobs:
+  verify:
+    runs-on: cinder-linux
+    steps:
+      - name: Check out protected verifier
+        env:
+          VERIFIER_COMMIT: ${{ github.sha }}
+          VERIFIER_USER: ${{ secrets.ARTIFACT_RELEASE_USER }}
+          VERIFIER_PASSWORD: ${{ secrets.ARTIFACT_RELEASE_PASSWORD }}
+        run: |
+          git init verifier
+          git -C verifier remote add origin "http://${VERIFIER_USER}:${VERIFIER_PASSWORD}@cinder-forgejo:3000/cinder-operator/orion-model-artifacts.git"
+          git -C verifier fetch --depth 1 origin "$VERIFIER_COMMIT"
+          git -C verifier checkout --detach FETCH_HEAD
+          test "$(git -C verifier rev-parse HEAD)" = "$VERIFIER_COMMIT"
+      - name: Resolve immutable Cinder request
+        env:
+          REQUESTED_COMMIT: ${{ inputs.git_ref }}
+          REQUESTED_ATTEMPT: ${{ inputs.attempt_id }}
+          SUBMISSION_USER: ${{ secrets.ARTIFACT_RELEASE_USER }}
+          SUBMISSION_PASSWORD: ${{ secrets.ARTIFACT_RELEASE_PASSWORD }}
+        run: |
+          git init submission
+          git -C submission remote add origin "http://${SUBMISSION_USER}:${SUBMISSION_PASSWORD}@cinder-forgejo:3000/cinder-labs/orion-poisoned-dataset.git"
+          if [ -n "$REQUESTED_COMMIT" ]; then
+            SOURCE_COMMIT="$REQUESTED_COMMIT"
+          else
+            SOURCE_COMMIT="$(git -C submission ls-remote origin refs/heads/main | awk '{print $1}')"
+          fi
+          case "$SOURCE_COMMIT" in
+            *[!0-9a-f]*|'') echo 'source must resolve to a full lowercase commit digest' >&2; exit 2 ;;
+          esac
+          test "${#SOURCE_COMMIT}" -eq 40
+          git -C submission fetch --depth 1 origin "$SOURCE_COMMIT"
+          git -C submission checkout --detach FETCH_HEAD
+          test "$(git -C submission rev-parse HEAD)" = "$SOURCE_COMMIT"
+          if [ -n "$REQUESTED_ATTEMPT" ]; then
+            ATTEMPT_ID="$REQUESTED_ATTEMPT"
+          elif [ -f submission/review-request.json ]; then
+            ATTEMPT_ID="$(python3 - <<'PY'
+          import json
+          request = json.load(open('submission/review-request.json', encoding='utf-8'))
+          if request.get('schema') != 'cinder.orion-artifact-review-request/v1':
+              raise SystemExit('review request schema is invalid')
+          print(request.get('attempt_id', ''))
+          PY
+          )"
+          else
+            echo 'SKIP_REVIEW=1' >> "$GITHUB_ENV"
+            exit 0
+          fi
+          case "$ATTEMPT_ID" in
+            *[!A-Za-z0-9._-]*|'') echo 'attempt_id has invalid characters' >&2; exit 2 ;;
+          esac
+          test "${#ATTEMPT_ID}" -ge 8 -a "${#ATTEMPT_ID}" -le 96
+          if [ -e "/run/keplerops/m07/state/attempts/kep-m07-i/${ATTEMPT_ID}.json" ]; then
+            echo 'SKIP_REVIEW=1' >> "$GITHUB_ENV"
+            exit 0
+          fi
+          echo "SOURCE_COMMIT=$SOURCE_COMMIT" >> "$GITHUB_ENV"
+          echo "ATTEMPT_ID=$ATTEMPT_ID" >> "$GITHUB_ENV"
+      - name: Build Cinder artifact in bounded namespace
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        run: |
+          install -d -m 0700 build
+          unshare --map-root-user --user --mount --net --pid --fork --mount-proc \
+            env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
+            python3 -I verifier/sandbox_builder.py \
+              --source submission/build_unsafe_model.py \
+              --output build/orion-model.pkl
+          test -f build/orion-model.pkl -a ! -L build/orion-model.pkl
+          test "$(find build -mindepth 1 -maxdepth 1 -printf . | wc -c)" -eq 1
+      - name: Materialize protected evaluation set
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        env:
+          HELDOUT_CASES_B64: ${{ secrets.CINDER_HELDOUT_CASES_B64 }}
+        run: |
+          install -d -m 0700 protected
+          printf '%s' "$HELDOUT_CASES_B64" | base64 -d > protected/release-risk-integrity-heldout.json
+          chmod 0600 protected/release-risk-integrity-heldout.json
+      - name: Prepare verifier runtime
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        run: |
+          install -d -m 0700 pip-tmp verifier-runtime
+          TMPDIR="$PWD/pip-tmp" python3 -m pip install --no-cache-dir --target verifier-runtime \
+            boto3==1.40.20 \
+            onnx==1.18.0 \
+            onnxruntime==1.22.1 \
+            requests==2.32.4 \
+            transformers==4.55.4
+          rm -rf pip-tmp
+      - name: Verify deserialization and inference
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        env:
+          CINDER_ATTESTATION_KEY: ${{ secrets.CINDER_ATTESTATION_KEY }}
+          ORION_PROVENANCE_KEY: ${{ secrets.ORION_PROVENANCE_KEY }}
+          EXECUTION_REVIEW_REFERENCE: ${{ secrets.ARTIFACT_REVIEW_REFERENCE }}
+          CINDER_NETWORK_NAMESPACE: required
+          PYTHONPATH: verifier-runtime
+        run: |
+          python3 verifier/verifier.py build/orion-model.pkl \
+            --heldout protected/release-risk-integrity-heldout.json \
+            --heldout-contract verifier/release-risk-integrity-heldout.json \
+            --release-card submission/MODEL_CARD.md \
+            --source-commit "$SOURCE_COMMIT" \
+            --attempt-id "$ATTEMPT_ID" \
+            --attempt-state-root /run/keplerops/m07/state \
+            --output signed-artifact-report.json
+      - name: Publish immutable execution handoff
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        env:
+          CINDER_OBJECT_ENDPOINT: http://10.61.90.31:9000
+          CINDER_OBJECT_ACCESS_KEY: ${{ secrets.CINDER_OBJECT_ACCESS_KEY }}
+          CINDER_OBJECT_SECRET_KEY: ${{ secrets.CINDER_OBJECT_SECRET_KEY }}
+          PYTHONPATH: verifier-runtime
+        run: |
+          python3 verifier/publish_report.py signed-artifact-report.json \
+            --output signed-artifact-locator.json
+      - name: Publish accepted Cinder release
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        env:
+          CINDER_FORGEJO_API: http://10.61.90.30:3000/api/v1
+          ARTIFACT_RELEASE_USER: ${{ secrets.ARTIFACT_RELEASE_USER }}
+          ARTIFACT_RELEASE_PASSWORD: ${{ secrets.ARTIFACT_RELEASE_PASSWORD }}
+          REVIEW_COMMIT: ${{ github.sha }}
+          PYTHONPATH: verifier-runtime
+        run: |
+          python3 verifier/publish_release.py \
+            --artifact build/orion-model.pkl \
+            --card submission/MODEL_CARD.md \
+            --report signed-artifact-report.json \
+            --locator signed-artifact-locator.json \
+            --source-commit "$SOURCE_COMMIT" \
+            --repository-commit "$REVIEW_COMMIT" \
+            --attempt-state-root /run/keplerops/m07/state \
+            --output cinder-release-locator.json

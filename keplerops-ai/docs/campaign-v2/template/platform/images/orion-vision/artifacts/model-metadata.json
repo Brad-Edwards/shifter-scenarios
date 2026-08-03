@@ -1,0 +1,40 @@
+{
+  "architecture": {
+    "blocks_per_stage": [
+      1,
+      1,
+      1
+    ],
+    "channels": [
+      16,
+      32,
+      64
+    ],
+    "name": "orion-resnet-tiny-v1"
+  },
+  "class_count": 4,
+  "class_map_sha256": "6bb38a211c55f56360e1512d1658ef85575cd86fda083aedd7b3261ba7041baf",
+  "dataset_manifest_sha256": "f399ce67e7439254a5a8029eec298603eb60a166b64319a80a57e07a5e92fa34",
+  "input_name": "images",
+  "input_shape": [
+    null,
+    3,
+    64,
+    64
+  ],
+  "model_family": "vision-prototype",
+  "model_name": "orion-vision-prototype",
+  "onnx_opset": 17,
+  "onnx_sha256": "544819eff27e7a6b65599a8cc49fe1a6b734c57f08cf54ca861c88cc5d25a9c9",
+  "output_name": "logits",
+  "output_shape": [
+    null,
+    4
+  ],
+  "preprocessing_sha256": "e4ee3d4513fb691be70b0d6622424e71f59ea1beba2c431caf44d9b5ed219ac8",
+  "revision": "1.0.0",
+  "runtime": "onnxruntime-cpu",
+  "schema": "keplerops.orion.vision.model/v1",
+  "softmax_temperature": 3.0,
+  "training_seed": 260806
+}

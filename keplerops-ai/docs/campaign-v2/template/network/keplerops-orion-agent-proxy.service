@@ -1,0 +1,9 @@
+[Unit]
+Description=KeplerOps Orion assistant connection proxy
+Requires=keplerops-orion-agent-proxy.socket
+After=keplerops-orion-agent-proxy.socket network-online.target
+
+[Service]
+Type=notify
+ExecStart=/usr/lib/systemd/systemd-socket-proxyd 192.168.78.30:30081
+PrivateTmp=true

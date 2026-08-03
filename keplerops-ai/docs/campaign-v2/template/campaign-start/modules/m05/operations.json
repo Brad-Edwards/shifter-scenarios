@@ -1,0 +1,363 @@
+[
+  {
+    "id": "kep-m05-a",
+    "model_family": "assistant",
+    "title": "Plant A Durable Preference",
+    "description": "Persist a release preference in assistant memory that will influence later sessions.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Inspect the assistant's documented memory behavior.",
+      "Choose a preference with a measurable later decision.",
+      "Verify the stored memory before ending the thread."
+    ],
+    "prerequisites": ["kep-m04-j", "kep-m02-j", "kep-m05-i"],
+    "board_prerequisites": ["kep-m04-j"],
+    "prerequisite_logic": "kep-m04-j AND (kep-m02-j OR kep-m05-i)",
+    "atlas_rows": ["AML.T0080 AI Agent Context Poisoning"],
+    "flag": "FLAG{c70b6b738abd47f8}",
+    "carrier": "The normal Orion user-memory record created after a qualifying release preference is stored.",
+    "participant_surface": "Orion WorkHub Release Assistant in Chromium or its normal OpenAI-compatible API.",
+    "apply_handler": "apply.sh kep-m05-a",
+    "validate_handler": "validate.sh kep-m05-a",
+    "reset_handler": "reset.sh kep-m05-a"
+  },
+  {
+    "id": "kep-m05-b",
+    "model_family": "assistant",
+    "title": "Fresh Session, Old Orders",
+    "description": "Prove that your poisoned memory changes a fresh assistant session without restating the instruction.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Start a genuinely new thread.",
+      "Use a neutral task that has a known baseline.",
+      "Compare tool calls for the poisoned and clean identities."
+    ],
+    "prerequisites": ["kep-m05-a"],
+    "atlas_rows": ["AML.T0080.000 Memory"],
+    "flag": "FLAG{51ff8a96647a70e9}",
+    "carrier": "The influenced WorkHub source record reached by the fresh tool call.",
+    "participant_surface": "Two fresh Orion assistant threads, one for the poisoned identity and one clean control.",
+    "apply_handler": "apply.sh kep-m05-b",
+    "validate_handler": "validate.sh kep-m05-b",
+    "reset_handler": "reset.sh kep-m05-b"
+  },
+  {
+    "id": "kep-m05-c",
+    "model_family": "assistant",
+    "title": "Shared Thread, Shared Influence",
+    "description": "Poison a shared release thread so that the next owner's ordinary request is influenced by your earlier message.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Verify the room uses shared history.",
+      "Plant context without performing the final task yourself.",
+      "Inspect whose later request caused the tool action."
+    ],
+    "prerequisites": ["kep-m05-a", "kep-m02-j", "kep-m05-i"],
+    "atlas_rows": ["AML.T0080.001 Thread"],
+    "flag": "FLAG{194fa53dafa274d8}",
+    "carrier": "The second identity's influenced downstream WorkHub record.",
+    "participant_surface": "A shared Orion release-room thread opened in separate clean Chromium profiles.",
+    "apply_handler": "apply.sh kep-m05-c",
+    "validate_handler": "validate.sh kep-m05-c",
+    "reset_handler": "reset.sh kep-m05-c"
+  },
+  {
+    "id": "kep-m05-d",
+    "model_family": "assistant",
+    "title": "Erase The Thread, Keep The Memory",
+    "description": "Remove the conversation evidence that planted your assistant memory while preserving its effect on a fresh victim request.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Chat history and assistant memory are separate stores.",
+      "Use the compromised user's normal edit/delete controls or authenticated backend.",
+      "Verify both absence from visible history and influence in a new request."
+    ],
+    "prerequisites": ["kep-m05-b", "kep-m05-i"],
+    "atlas_rows": ["AML.T0092 Manipulate User LLM Chat History"],
+    "flag": "FLAG{1a16ba899a87300e}",
+    "carrier": "The fresh influenced WorkHub record emitted only after the planting messages are absent from visible history.",
+    "participant_surface": "The compromised user's normal Orion chat history controls and a new assistant thread.",
+    "apply_handler": "apply.sh kep-m05-d",
+    "validate_handler": "validate.sh kep-m05-d",
+    "reset_handler": "reset.sh kep-m05-d"
+  },
+  {
+    "id": "kep-m05-e",
+    "model_family": "assistant",
+    "title": "Corrupt A Trusted Tool",
+    "description": "Modify a trusted release-assistant tool so its normal result still works while a fresh invocation performs your added action.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Start from an existing tool you can legitimately update.",
+      "Preserve its declared contract and tests.",
+      "Trace your commit through build, digest, deployment, and invocation."
+    ],
+    "prerequisites": ["kep-m02-l", "kep-m04-j"],
+    "atlas_rows": ["AML.T0110 AI Agent Tool Poisoning"],
+    "flag": "FLAG{6e746453f289b655}",
+    "carrier": "A protected tool-side release source exposed by the participant's added MCP action.",
+    "participant_surface": "Forgejo, Forgejo Actions, Harbor, Argo CD, and a fresh Orion MCP tool invocation.",
+    "apply_handler": "apply.sh kep-m05-e",
+    "validate_handler": "validate.sh kep-m05-e",
+    "reset_handler": "reset.sh kep-m05-e"
+  },
+  {
+    "id": "kep-m05-f",
+    "model_family": "assistant",
+    "title": "Blueprint Drift",
+    "description": "Prove exactly how KeplerOps' live release assistant drifts from its signed public blueprint.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "The internal manifest names the publishing registry.",
+      "Match immutable digests, not tags.",
+      "Retrieve and verify both configuration and attestation."
+    ],
+    "prerequisites": ["kep-m01-j", "kep-m02-l"],
+    "board_prerequisites": [],
+    "prerequisite_logic": "kep-m01-j OR kep-m02-l",
+    "atlas_rows": [],
+    "flag": "FLAG{178af38df9148cbb}",
+    "carrier": "The normal GitOps drift report beside both verified digests and changed paths.",
+    "participant_surface": "Forgejo, Harbor OCI artifacts, Cosign verification, and the normal Argo CD drift audit job.",
+    "apply_handler": "apply.sh kep-m05-f",
+    "validate_handler": "validate.sh kep-m05-f",
+    "reset_handler": "reset.sh kep-m05-f"
+  },
+  {
+    "id": "kep-m05-g",
+    "model_family": "assistant",
+    "title": "Secret In The Agent Manifest",
+    "description": "Find where the deployed release assistant diverges from its public secret-handling design.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Compare the public blueprint with the rendered deployment.",
+      "Inspect how each tool receives authentication.",
+      "Follow the MLflow tool's secret reference and identify its audience before using it."
+    ],
+    "prerequisites": ["kep-m05-f"],
+    "atlas_rows": ["AML.T0083 Credentials from AI Agent Configuration"],
+    "flag": "FLAG{f9cb99102dc48cbc}",
+    "carrier": "The engagement_reference claim in the rendered synthetic MLflow application JWT.",
+    "participant_surface": "The signed Forgejo drift report's exact rendered-configuration diff and a standard JWT decoder on Kali.",
+    "apply_handler": "apply.sh kep-m05-g",
+    "validate_handler": "validate.sh kep-m05-g",
+    "reset_handler": "reset.sh kep-m05-g"
+  },
+  {
+    "id": "kep-m05-h",
+    "model_family": "assistant",
+    "title": "A Token Travels Further Than Its Owner",
+    "description": "Use the assistant's exposed application token in its owning service and determine its real access boundary.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "The configuration names service and audience.",
+      "Application tokens do not belong in the SSO form.",
+      "Enumerate visible experiments and inspect the audit identity."
+    ],
+    "prerequisites": ["kep-m05-g"],
+    "atlas_rows": ["AML.T0091 Use Alternate Authentication Material", "AML.T0091.000 Application Access Token"],
+    "flag": "FLAG{a3ab7836f58fcf16}",
+    "carrier": "A protected artifact in the bounded Orion Agent Integration MLflow run.",
+    "participant_surface": "MLflow's normal REST client or web application using the recovered application token.",
+    "apply_handler": "apply.sh kep-m05-h",
+    "validate_handler": "validate.sh kep-m05-h",
+    "reset_handler": "reset.sh kep-m05-h"
+  },
+  {
+    "id": "kep-m05-i",
+    "model_family": "none",
+    "title": "The Session In The Trace",
+    "description": "Recover and safely replay authentication material preserved in an Orion support trace.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Inspect the support escalation attachment.",
+      "Find state-bearing authentication data, not request parameters.",
+      "Use a clean browser profile so the replayed identity is unambiguous."
+    ],
+    "prerequisites": ["kep-m02-k", "kep-m04-k"],
+    "atlas_rows": ["AML.T0113 Steal Web Session Cookie", "AML.T0091 Use Alternate Authentication Material", "AML.T0091.001 Web Session Cookie"],
+    "flag": "FLAG{d03bfe92bbdd3ab4}",
+    "carrier": "A protected support note visible only through the replayed bounded support session.",
+    "participant_surface": "WorkHub support escalation, a synthetic HAR, and a clean Chromium profile.",
+    "apply_handler": "apply.sh kep-m05-i",
+    "validate_handler": "validate.sh kep-m05-i",
+    "reset_handler": "reset.sh kep-m05-i"
+  },
+  {
+    "id": "kep-m05-j",
+    "model_family": "none",
+    "title": "Notebook Residue",
+    "description": "Recover credentials left behind in a failed Orion evaluation notebook and use them only in the service they name.",
+    "difficulty": "Accessible",
+    "points": 100,
+    "hints": [
+      "Follow the migration issue to the abandoned project.",
+      "Inspect output and local client configuration.",
+      "Use the credential in Airflow and verify its role."
+    ],
+    "prerequisites": ["kep-m02-k"],
+    "atlas_rows": ["AML.T0055 Unsecured Credentials"],
+    "flag": "FLAG{f5dc183d7d4134ed}",
+    "carrier": "The protected description of the Orion evaluation-replay Airflow DAG.",
+    "participant_surface": "The compromised reviewer Jupyter workspace followed by Airflow's normal login and DAG browser.",
+    "apply_handler": "apply.sh kep-m05-j",
+    "validate_handler": "validate.sh kep-m05-j",
+    "reset_handler": "reset.sh kep-m05-j"
+  },
+  {
+    "id": "kep-m05-k",
+    "model_family": "assistant",
+    "title": "The Tool Sees More",
+    "description": "Use a legitimate agent tool result to recover authentication material the assistant should not have returned.",
+    "difficulty": "Intermediate",
+    "points": 200,
+    "hints": [
+      "Start from the CI tool in the call-chain map.",
+      "Ask for a normal status result and inspect its source data.",
+      "Follow the referenced failed job and identify material usable by Harbor."
+    ],
+    "prerequisites": ["kep-m02-m", "kep-m04-j"],
+    "atlas_rows": ["AML.T0098 AI Agent Tool Credential Harvesting", "AML.T0085.001 AI Agent Tools"],
+    "flag": "FLAG{f6d52f3e108be973}",
+    "carrier": "A protected release-reference object in the bounded Harbor orion-review project.",
+    "participant_surface": "A fresh Orion Forgejo-status MCP call, its referenced Actions log, and Harbor's normal API or web UI.",
+    "apply_handler": "apply.sh kep-m05-k",
+    "validate_handler": "validate.sh kep-m05-k",
+    "reset_handler": "reset.sh kep-m05-k"
+  },
+  {
+    "id": "kep-m05-l",
+    "model_family": "release-risk",
+    "title": "Credentials In The Worker",
+    "description": "Exploit the identified Orion worker and recover the credential actually present in its running process.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Correlate the MLflow version and HTTP dataset path with public advisories.",
+      "Determine where the disposable worker permits its own user to write Python imports, then cause a new child job to start.",
+      "Inspect only the compromised child process's own environment for a service credential."
+    ],
+    "prerequisites": ["kep-m04-g", "kep-m01-j"],
+    "atlas_rows": ["AML.T0106 Exploitation for Credential Access", "AML.T0090 OS Credential Dumping"],
+    "flag": "FLAG{486ba5babaa1cb5e}",
+    "carrier": "The protected training-contributor service record reached with the credential recovered from the compromised child process.",
+    "participant_surface": "MLflow 2.8.1 HTTP dataset loading, the disposable dataset worker, and the bounded training service API.",
+    "apply_handler": "apply.sh kep-m05-l",
+    "validate_handler": "validate.sh kep-m05-l",
+    "reset_handler": "reset.sh kep-m05-l"
+  },
+  {
+    "id": "kep-m05-m",
+    "model_family": "assistant",
+    "title": "Rewrite The Agent Rules",
+    "description": "Persistently change a release-assistant security boundary through its normal configuration and deployment path.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Use the live configuration drift and repository discovered earlier.",
+      "Change one security property with a measurable control.",
+      "Verify commit, signed artifact, Argo sync, and runtime revision."
+    ],
+    "prerequisites": ["kep-m05-e", "kep-m05-l"],
+    "atlas_rows": ["AML.T0081 Modify AI Agent Configuration"],
+    "flag": "FLAG{df66e06e0d228009}",
+    "carrier": "The protected source returned only by the fresh runtime under the participant's reconciled configuration revision.",
+    "participant_surface": "Forgejo, Actions, Cosign, Argo CD, and a fresh Orion request.",
+    "apply_handler": "apply.sh kep-m05-m",
+    "validate_handler": "validate.sh kep-m05-m",
+    "reset_handler": "reset.sh kep-m05-m"
+  },
+  {
+    "id": "kep-m05-n",
+    "model_family": "assistant",
+    "title": "Rogue Agent On The Worker",
+    "description": "Deploy a functioning rogue agent inside the compromised worker namespace and make it use one earned company capability.",
+    "difficulty": "Expert",
+    "points": 500,
+    "hints": [
+      "Reuse the OSS runtime and schemas already present.",
+      "Run it as a distinct process and identity.",
+      "Prove a real tool call and continued operation after disconnect."
+    ],
+    "prerequisites": ["kep-m05-l", "kep-m05-m"],
+    "atlas_rows": ["AML.T0103 Deploy AI Agent"],
+    "flag": "FLAG{5f5a8e71c60de415}",
+    "carrier": "The protected response to the persistent rogue agent's bounded company-tool call.",
+    "participant_surface": "The compromised worker's normal job shell, an OSS agent runtime, telemetry, and an earned company tool.",
+    "apply_handler": "apply.sh kep-m05-n",
+    "validate_handler": "validate.sh kep-m05-n",
+    "reset_handler": "reset.sh kep-m05-n"
+  },
+  {
+    "id": "kep-m05-o",
+    "model_family": "assistant",
+    "title": "Beyond The Agent Sandbox",
+    "description": "Turn control of KeplerOps' local review agent into a real interactive shell on the workstation that hosts it.",
+    "difficulty": "Expert",
+    "points": 500,
+    "hints": [
+      "Compare tools executed inside the agent sandbox with actions delegated to its host bridge.",
+      "Use the configuration or poisoned-tool path to remove the normal confirmation boundary.",
+      "Verify an unpredictable host command through a callback to your Cinder endpoint."
+    ],
+    "prerequisites": ["kep-m02-k", "kep-m05-e", "kep-m06-b"],
+    "atlas_rows": ["AML.T0105 Escape to Host", "AML.T0112 Machine Compromise", "AML.T0112.000 Local AI Agent", "AML.T0108 AI Agent", "AML.T0072 Reverse Shell"],
+    "flag": "FLAG{bda568478a73eec5}",
+    "carrier": "A host-only protected diagnostic file read through the fresh interactive callback.",
+    "participant_surface": "The compromised computer-use agent, its host execution bridge, and the participant's range-contained Cinder listener.",
+    "apply_handler": "apply.sh kep-m05-o",
+    "validate_handler": "validate.sh kep-m05-o",
+    "reset_handler": "reset.sh kep-m05-o"
+  },
+  {
+    "id": "kep-m05-p",
+    "model_family": "none",
+    "title": "Commands In The AI API",
+    "description": "Carry a real agent command and its output through traffic to an allowed AI service API.",
+    "difficulty": "Advanced",
+    "points": 350,
+    "hints": [
+      "Inspect which external API the agent may already call.",
+      "Make the payload parseable by your agent while remaining valid inference content.",
+      "Correlate request, execution, and later result-bearing request."
+    ],
+    "prerequisites": ["kep-m05-m", "kep-m05-n"],
+    "atlas_rows": ["AML.T0096 AI Service API"],
+    "flag": "FLAG{806e0e763b6f6d38}",
+    "carrier": "The unpredictable worker command output returned in a later ordinary OpenAI-compatible request.",
+    "participant_surface": "The reconciled Orion provider configuration and the participant's Cinder OpenAI-compatible endpoint.",
+    "apply_handler": "apply.sh kep-m05-p",
+    "validate_handler": "validate.sh kep-m05-p",
+    "reset_handler": "reset.sh kep-m05-p"
+  },
+  {
+    "id": "kep-m05-q",
+    "model_family": "none",
+    "title": "Relay Through The Web Assistant",
+    "description": "Operate the compromised agent through an ordinary web assistant conversation and recover real command output.",
+    "difficulty": "Expert",
+    "points": 500,
+    "hints": [
+      "Use a web service the worker is permitted to reach.",
+      "Define how agent and operator distinguish tasks from normal messages.",
+      "Prove a fresh command and response solely through the web interface."
+    ],
+    "prerequisites": ["kep-m05-n"],
+    "atlas_rows": ["AML.T0114 AI Service Web Interface"],
+    "flag": "FLAG{844fe653c843c9dc}",
+    "carrier": "A protected worker-file value returned into the normal LibreChat thread.",
+    "participant_surface": "LibreChat in Chromium and the persistent rogue agent's browser-based polling loop.",
+    "apply_handler": "apply.sh kep-m05-q",
+    "validate_handler": "validate.sh kep-m05-q",
+    "reset_handler": "reset.sh kep-m05-q"
+  }
+]

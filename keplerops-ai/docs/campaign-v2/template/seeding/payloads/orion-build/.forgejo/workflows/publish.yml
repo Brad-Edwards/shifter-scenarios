@@ -1,0 +1,22 @@
+name: Publish Orion Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: campaign-ci
+    steps:
+      - name: Check out exact source revision
+        env:
+          REPOSITORY: ${{ github.repository }}
+          REVISION: ${{ github.sha }}
+        run: |
+          git init .
+          git remote add origin "http://${FORGEJO_CI_USER}:${FORGEJO_CI_PASSWORD}@10.61.40.20:3000/${REPOSITORY}.git"
+          git fetch --depth 1 origin "${REVISION}"
+          git checkout --detach FETCH_HEAD
+      - name: Build and publish registry artifacts
+        run: bash ci/publish.sh

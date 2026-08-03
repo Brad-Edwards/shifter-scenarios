@@ -1,0 +1,1157 @@
+{
+  "contract_sha256": "b9f62aac88aae49b667b8c4184a3870e18a729b083e774d30fa11ac2e5d64483",
+  "generator": "orion-vision-synthetic-v1",
+  "image_count": 164,
+  "images": [
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/000.png",
+      "sha256": "8b6ecadde999464eb563b705acd9e055e63c3f8ca4935e834d78b9e7ab7e0ade",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/001.png",
+      "sha256": "757527ddde34fda0458d6deb3d98fa0a5b28b2200ad69ffb99b2ad6050e34529",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/002.png",
+      "sha256": "13756fca7c020f576a5472f7f8c6b9f8c24f8f03791ad4eca998662ee69aa461",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/003.png",
+      "sha256": "b41c3e0e0be22a0d365f0875c580ce7ec74e71c35258b561d1988527aee9acf2",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/004.png",
+      "sha256": "82dbb77662b47353b32e0762652c2db7aa5415c54ac08a521d9958b3ece029be",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/005.png",
+      "sha256": "bcc673f22d478529c72e80e10f5b830e442b9c5bb62f8a3d714bfdabe06e536a",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/006.png",
+      "sha256": "f6f2e27a54e0d06ded6f999f56eb2db6e91bb6e4fb44f9dec6ecc127663232dd",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/007.png",
+      "sha256": "f67a5437f4c88aefb86f825d56f29cfd23f36213bf58caa68ed8cb50c575b078",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/008.png",
+      "sha256": "7568e06b3e1a9dbbf757e500886eca592dfbc548fdbf78d3406997cab6a9e1b8",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/009.png",
+      "sha256": "e04135ee5d574ab050ad0b1f2f5c1bc39c22e75b049bfd935bae59609fc26aaa",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/010.png",
+      "sha256": "8d92a6dcfb3b144fdc0c1c941994b88231bef037b86d9df685062d304d911a0a",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/011.png",
+      "sha256": "f4804024ccb01a59bf30cbaf5a381f75ef99d585717d728c137e5449f196e365",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/012.png",
+      "sha256": "890af1ba7c9dafa491c3747cf74c253bb631f977f48eba666dd2f59039357f14",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/013.png",
+      "sha256": "863238532dcd10fc438a6cb34281078f8eaa74c5691d33003432290dca7e9fb7",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/014.png",
+      "sha256": "91c52cb69a340e5c020199bb0e6a217c4985d1f6dd377aed388748019b9010b8",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/015.png",
+      "sha256": "719952b50e38598f424b4d2f010d7d1b7dc6228232b4001677dd7301a4a87151",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/016.png",
+      "sha256": "0348aabe46a3e49e11bbe22c2921b8071f030df141801002322bb603a7475fce",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/017.png",
+      "sha256": "821ffef99d766533eb426bb48e37504547c953a0a69bc00df52bc9d020b31524",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/018.png",
+      "sha256": "d6adf10053648e9ccf09a4bd98fe29ef47736a2152a27a38f663efd95a1cf5f3",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/019.png",
+      "sha256": "e4e911e461638c5b4e22a49489c4ea0ef73916076b75debcd5d8c788f81a9ab1",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/020.png",
+      "sha256": "c6170c3c2c1ecd8413bb5f84ad5c3fc0ad6388ebcd774b4f3be7872cfd52dfd5",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/021.png",
+      "sha256": "b41d7f7e6bbe71611ca937fb03c5576c2d703fb77f98d248e874f074d2bba0a9",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/022.png",
+      "sha256": "bd21e4a89033097fa77cd5736391e285118acc2202432a9afbf48813c3d868c4",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/023.png",
+      "sha256": "ce2818d2f22a83485a01c1edda0373a828ddd4efd8af9b17af837e30f15912a8",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/024.png",
+      "sha256": "b0ee6765d22365032afa67081a59c4b0be7a307c4a65390aa5ce523097d3f98e",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/025.png",
+      "sha256": "65fddd62da3a718f97c1886e92b557d991714de7cb9c7dd549d6c7fafff28094",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/026.png",
+      "sha256": "1075116e6af44c415665b53a38d74208d4601adebde41be40706426985641391",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/027.png",
+      "sha256": "ff8b9f9ef0d08ec409b5b8a266cd59e7241aea660a165c197419cb4aadba1e26",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/028.png",
+      "sha256": "b2f127b3c42288a8dd11039cfe7217380d17e27f204bf92b0d10c769543c8e6b",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/029.png",
+      "sha256": "30b98e81fc98da8e5591f9b5df69c5c901fb0fc328b052edada43555d43f98a8",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/030.png",
+      "sha256": "241d28090a48ebe0bff4f9b74defc926a04d6aec61f7a6579f8f5317dfb37e7a",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "train/alignment_array/031.png",
+      "sha256": "286a61818edb7af04ebdd03881f537687975e365f679512758c49bbf11c6f043",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/000.png",
+      "sha256": "34cd2721cd3c28319a26809c83aa753442dafb8776073dabd83efedfbfa51f8b",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/001.png",
+      "sha256": "e557d8d509087f274bb220a10a374a64b573b7f919a221ee5226b39f29314b87",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/002.png",
+      "sha256": "35f9db3ea3be06709bf8c41d638441ffe5d2d00da9b70d8dd6e889b7c9eb379f",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/003.png",
+      "sha256": "7716ff862378b3e169977c7a13e4f1d64f55c78076f9401d1a7c43613730e5ec",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/004.png",
+      "sha256": "d411dd12b8afde457cc8d3d0d2f50f0cd155d709a9ca8b0587be1ad37e3baf0e",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/005.png",
+      "sha256": "fd1730f8c72f8deb36852bc3990a7b32951b51e149252170a638b13fd561c4fc",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/006.png",
+      "sha256": "4196b46adbead4f78b8cb2fb9ca62fce10a21d56dfdaf257b4efbdb72e1cc451",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/007.png",
+      "sha256": "aa9ec3abfee1bc967e8e523f54a86e140cf16e8f534e4f941fbb9b88a6eac01b",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/008.png",
+      "sha256": "899aa704e2f2498e763df5fc5d86123e89406ce55f9c736c9e089babc246f28b",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/009.png",
+      "sha256": "43d6e5f0edc9e57720d3b734686738ff58e583448a1fc0ee793a0eccf2daff75",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/010.png",
+      "sha256": "a7d786840a62b7b76de78b7067a853d1433d07d7d7f0d79ba7ea5d5331d632d6",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/011.png",
+      "sha256": "a99a586f908d5668d52de8fca800be1f873709be395c2ad4d88ec80503d3ce8c",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/012.png",
+      "sha256": "374a58c324b68f4a5ca4b85e913a835dd019a648bd4ebb511d080732e1baa9c2",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/013.png",
+      "sha256": "f7e46d9178662ded2fc0fd4a4de9ed41d369e68345a25f2a2997bfdba3d62b3d",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/014.png",
+      "sha256": "4d4ff5d8218c18a287c30bff782a8a21a62314e9411c76a8d7ab2ea97b5a5e4d",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/015.png",
+      "sha256": "76614956160132e4f1e3a51879b167604ce819998d031e1b01097ad60313fe80",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/016.png",
+      "sha256": "c88ecd823163d31a201c762b0ea349630743c460aac69a54bb76fcd6015e1439",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/017.png",
+      "sha256": "0b8cb1e2bed20a6b6ddb24b63e8203b06f1e05cb64d5a9b7da55de7b483747ad",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/018.png",
+      "sha256": "2cee2b8e6b9e68469516bd5f040793b68d567415f336d9a9aab45e532a0fff8c",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/019.png",
+      "sha256": "08b3749c84aa901854d718a244331bdc49cc13e1c01878004916ba9840437aeb",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/020.png",
+      "sha256": "0b0bcbeeae3e7158788aa1896ec77fa561ddc940f0e5fae952bef0f662d40bbc",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/021.png",
+      "sha256": "a49e75c3590faba5d749b6bff1c7eb4d601355a7ebdde2c8d3597fddaf3a50d0",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/022.png",
+      "sha256": "49558beb6dc4401ab590d9e0d6c37bcc04352a8550c292e4d525a73eec609e0b",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/023.png",
+      "sha256": "0b75fb9f3b5a95baa4add571f921b608d5008a6c750821f4f97f886ae53eecb9",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/024.png",
+      "sha256": "3962afdd6af8ccc89c164e6292adfdccd196553021af3b2b2d04a5fd345cfa98",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/025.png",
+      "sha256": "8db3cb41efcbb5aba51fea26d1f5e0ecf66086a612c5c47fbc128b7112b10cd1",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/026.png",
+      "sha256": "4e5f54e116513e7828b0719ac321c89adf220f67e45f5d698279e34d46567b22",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/027.png",
+      "sha256": "283473dc19769efe339d4d37673b7a0967d36e02d90dfafff102603b65bebe4f",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/028.png",
+      "sha256": "fb7f9150525cc959a48427cf5826ec5b9c78c5225f993457ecd71006218af7e3",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/029.png",
+      "sha256": "971117b050972f7380b88df7be79f2702ad95f7b8c1dd55cf595cef59d4403aa",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/030.png",
+      "sha256": "cb3c2ce8b899867abd0db59b733f52fb6c2056c24c82efd3541e1a3c231f7bb2",
+      "split": "train"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "train/optical_coupler/031.png",
+      "sha256": "f7826007f15d0f3633f7d0d87547d585a444a50ca608fc45f2e9f97656306de2",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/000.png",
+      "sha256": "6528f79b363668d361edc5974fd8bbca687732f15144055b3c6e273720a32a47",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/001.png",
+      "sha256": "87661c125967e2d61b7839b5da6b1b41012c2470052413addbdb6c0b1c0b9835",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/002.png",
+      "sha256": "a4a86b450daa059ce4fa6047e5254791b0fbf922daf52478cd2496fe14c48941",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/003.png",
+      "sha256": "5b32f336882d1f90abf508c6b6570e0f6bfb52a2fc155f59e0631c328f2ba8ce",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/004.png",
+      "sha256": "cdd912245e20f2a0f96295db7f60301d35020067b448fee254a3f1e22f5f3f76",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/005.png",
+      "sha256": "f4b1bbb2a85b4c322dfe6ed0d66dfb5cbb806806a8ba6400fbe017b36f3663c9",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/006.png",
+      "sha256": "0e7020f1646543a30a665d98007a5f88f38df64c261338046ac7d8488d195184",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/007.png",
+      "sha256": "8210167e0205809ec01b7f9fa6426b62a4bf25872d2dead53bd6e3c0db7bb003",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/008.png",
+      "sha256": "a28d9605db63025043b94a4da89e87c2dbd671579173d5bc07478fbdc1edeceb",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/009.png",
+      "sha256": "cb5c48f938085735ea1335bc6232f8ead520c3d021e1ecc543ee743977cf54b7",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/010.png",
+      "sha256": "e7e1960f58062a17b787d9ea891492306c1082f17728d88cc2440f2eb255d269",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/011.png",
+      "sha256": "ad8c19a5978b42aa25814e3a16350f7d2292fa857d201c0a099a5374d773b148",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/012.png",
+      "sha256": "63b33a1c07afe4ef4120c7e4fd9ed7cc0aad7834efee965ff68825da09583ff2",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/013.png",
+      "sha256": "6712d05744aabe3b793a77445c080fee674c6688ae2aa94ed3dcae4d07440335",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/014.png",
+      "sha256": "938ebd05226801535c2e60f8d8e12ce6088cbfb8599496809a778f27d42621bb",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/015.png",
+      "sha256": "c7d42a370d49a5cf23f156259e92e08e47bfa46b969b7ad6aa9b21ac2f624594",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/016.png",
+      "sha256": "fee39a579968f1a88a07b6894f8a1de61c62f0a749e6e649ebd7f76b4a0df772",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/017.png",
+      "sha256": "ec0c763255ab9f164211a42de091c2ee74b3db5ef8490a96f04745046966fb4b",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/018.png",
+      "sha256": "e953d42568756c70656091adcf7156965865aa05064c3021a4cfdbb6c8301504",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/019.png",
+      "sha256": "9cb6556f618d687b2b68a8a8edf14a8f4f844aeabd3ec7fecd6dd5f90224314e",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/020.png",
+      "sha256": "f4bf4bb3cc56abeb95b8a6bb40ea5aecd1294a3b3fe5881de42f55963a8d0745",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/021.png",
+      "sha256": "04f17d89114628ad2df2013d50fe37c7fb3423e3027fbda15570adc8ef1db735",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/022.png",
+      "sha256": "8ac889e4be0212aeae0be2faed28285fccf0eb3e8a587c58c01ce2000b0c4d17",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/023.png",
+      "sha256": "d14c6a0aa093a2fe44e1f99f1be31ff0666836bce990382f0b79c01d6e32432d",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/024.png",
+      "sha256": "21dca7e6b18db6d0b3691f2ecc00636c8915cdc5ed2cbcdd4d88f3f3ee227a39",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/025.png",
+      "sha256": "5ee48acfdebd75ba45cd5e7e3470d3831baef2b68d37691f2bd3f22d16432229",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/026.png",
+      "sha256": "66ab829f906749ab742e4e7fe1f518c90303cafb8743e58f7f0e2d6c4ded72b3",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/027.png",
+      "sha256": "4be2c9b0e6b534b110cd190b6d5e6b03ed0f2e0a7b95f7002e476bbcbb3140e1",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/028.png",
+      "sha256": "832facb9572f7e41e50bc235c9ef9ac9fdf6dc36cb992bdd68b680c9b114d302",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/029.png",
+      "sha256": "956d48200f3fbe9386a5a55490fb98be285cb8d2f4fd33b5d020f89977f4d9af",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/030.png",
+      "sha256": "e9cc3d0d919cb9cbfdd3bfe4916b07862cd5162d2b7f8eebb08f91317bc333d6",
+      "split": "train"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "train/thermal_sensor/031.png",
+      "sha256": "ddc431c931660f7bfb36bd86812b1f735e68a03acd9472675cf5b3b909504d5c",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/000.png",
+      "sha256": "2e2d2371206f169b36ed868d5417daf11ca7320427393e32525cf83192f5f5ed",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/001.png",
+      "sha256": "9a5eb431becf7de12465ea792977515ae174418cdb720e137f98f4ba325f8d90",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/002.png",
+      "sha256": "4999432d2a94c413d87970e10eb9036c0a1897118f6a2c67448743112c2caa5f",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/003.png",
+      "sha256": "a2fc01a42267001b40301d74b6d4904b473501f7b0d261244f7d0f574c23755b",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/004.png",
+      "sha256": "5ea03c927f7803440b879d647ae9a5f4d47954f4eadd6a501ae6f8e6f74b90dd",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/005.png",
+      "sha256": "b45263ad8391d53bb58f0f174eaccbd981da4cec36e6d30c97d93dde799243e1",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/006.png",
+      "sha256": "84d3ec4b5c0e14195b66fb5c896660a23f4e0490adbb6c5236ba3ff793119962",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/007.png",
+      "sha256": "bef7bab7a3e5b657787e8548350d9d78c1d570157bf8e35654038527e55484cf",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/008.png",
+      "sha256": "609d441c72f897476d13bf79c05ea1a07b6b0ace3b952b46abd049f78ab86348",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/009.png",
+      "sha256": "d471337f0ce6c708999f71960d6e57fde51ea0fa949fe213b5999282e95cc8d1",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/010.png",
+      "sha256": "72f68e8c39bcef40c0a4d3d891ab2d4930755c625687bc63c2e0947ac6ed6aef",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/011.png",
+      "sha256": "aa9d30a48c2bf942cce855ebf3e03b37809a6d99b67fc1603c239d2ad30989b0",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/012.png",
+      "sha256": "ce4eb1240d132cf366d568449725e74958fb8c7b955d585c64cd5d580fc511a8",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/013.png",
+      "sha256": "0c8c3d70f0810b321ecee2904e8ca718eb8915286a6d78d885aea7cf54c9ea39",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/014.png",
+      "sha256": "4b5b9ca1995ad9c42e91e3306ae9f9dcfb9f6633acc4093098f54372436ae24e",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/015.png",
+      "sha256": "55a76516db1454bf8e384604abe04fb1ba31e7eea1eb9a5e2120416dec6326d5",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/016.png",
+      "sha256": "83266d4607abad5eaa71f73ac2b932fb545bc52abf98020a866b69021e92b685",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/017.png",
+      "sha256": "5fd23ebbfeeb7bc576637e203334edbc29e9fd46562bc49b7c49086b77366231",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/018.png",
+      "sha256": "5bce3f6ac974560c9a665820573c66b37c8b34fc5eadfccb4a8fb4bf30a8cc74",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/019.png",
+      "sha256": "41559d6342e5146a596095ac03c8c9328710fce28c24aae6633fac9b1b5ccceb",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/020.png",
+      "sha256": "a84c56f8e312f491283210f0fc3b7382b18f6841165069e30453ae9e5a2d5963",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/021.png",
+      "sha256": "01cb5c756f59c4d808617a1b9efde24081599aadcc069d89db839220369ef41f",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/022.png",
+      "sha256": "6ecd72d1cfece29596b8c6a114d9318506474214f572c466f3192250873ced1c",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/023.png",
+      "sha256": "6dbdd8c126c9b5d322a5e7f5cd9988842f3ee094b8d2f6f99165a04782f1a4cd",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/024.png",
+      "sha256": "b11830690c747e4c6c2ff4be1745256cf7ed55454a359851036dd58198e4b445",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/025.png",
+      "sha256": "c5af00ba1e0a4451e2470b30f455ced18b5f518e7d1697fa3b6ffa80917ef6e2",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/026.png",
+      "sha256": "5bf476b41491268c322c83e9609fb19339781f44980dc6c05931d1a99dcc34c0",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/027.png",
+      "sha256": "96e514e0f6e85748031433fd8ffbde12ebc6c49fdb76130ce7bdc526c3a57851",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/028.png",
+      "sha256": "6447b3b3c7edf34e0496a285b9d0c33558b2ef5ffe9022c4d1e7cca8e8eba982",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/029.png",
+      "sha256": "ef18e7067fabe9e2d5eeb8f274b8b0ae0d5d0d0f2d351043c0e12d631d96d73d",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/030.png",
+      "sha256": "5f205393a62f381941ebfd1fcd001f26a217eddb4f97a61e8de7292f795a56a1",
+      "split": "train"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "train/waveguide_mesh/031.png",
+      "sha256": "925367887812aa15334742774e194faf7eb1c5dbfab9acfffec731a71e841d22",
+      "split": "train"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/000.png",
+      "sha256": "aba3bd377fcf751974635febccf77a8f11df38ed231983fde7bc80b3843a5733",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/001.png",
+      "sha256": "9e7ecd7549133013680ac6262192e72e64fd37f2bd8ede3e806f44e8bf2d0dd9",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/002.png",
+      "sha256": "a047342c44a493f19f74ba8dab6a823afbcf56c08edeb898944f5a65cc1e7773",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/003.png",
+      "sha256": "1ed8f23641cf8a5679d8a45fed5df982783986f136c358de62f073d07f374f0a",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/004.png",
+      "sha256": "a62bc92a4bb431c88c50cef02d1ff985eb59d1429a89a33a07c2f74f0a5d48e6",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/005.png",
+      "sha256": "9b7ae614089a05e076f14e98f9875fa06e721716dc7474df93e9bdac0cc64fa7",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/006.png",
+      "sha256": "4371ee967e0e0987d48160d75fc59a42edaf7d8af0581a679084aff7bc4e3ab2",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "calibration/alignment_array/007.png",
+      "sha256": "d6a209ad812af35088e9c90e28b6f9154ea9ec53995ff7078b20cb6829d65d54",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/000.png",
+      "sha256": "835b1ed70bc6eaa181e142e081e174d8b73804b976fac5d1e6c009194b24ee2b",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/001.png",
+      "sha256": "be527cc5496bdc4a6d375a563d3ad88623816ee171c6f845966cf1dc0684df50",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/002.png",
+      "sha256": "8a23b540aa3bf165ea9bdfd0b4a80dd41ef895594f721d951ec57b42bd595fdc",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/003.png",
+      "sha256": "282c74274395598249ffff6c2d8ae7be647b1e28cd5119322f20e5259b209ecf",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/004.png",
+      "sha256": "3d1dce53082d713fb010ac7409150e75c25d0d1dd4a5c878666741265fa57e42",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/005.png",
+      "sha256": "b2f2cfd1717f7c584be085899a21564fe8a843ae8f7f8ce8425893cc3d0c48f0",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/006.png",
+      "sha256": "5e9f5ef95e5ad07cc9e9ed44c10ae1fa677e960f69d0a29267c1127cbf98a90b",
+      "split": "calibration"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "calibration/optical_coupler/007.png",
+      "sha256": "ee1b44f4ef9b76015016cf503a88c302890c672317e738f1696785aad9056bf1",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/000.png",
+      "sha256": "5f1236740f33c65f696e5d4545aa156d1318e88917dd37423db2630112d7f2b3",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/001.png",
+      "sha256": "a8e4d4c251a6e4961cf24a0e2032fee3fb9dc0d527440614c1573ca778431797",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/002.png",
+      "sha256": "5c207ff115315fbacda914094c46ca5efe6c09236b4253bda673943161ba2fd7",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/003.png",
+      "sha256": "6f8041e9b8ab75769d41fbe2875ceb71a12cd5b16ae6c6b7d0906445d47245a2",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/004.png",
+      "sha256": "adb463512fd50a99521c46c65e994fbaf65c401dfdc5d2bde8b42deefdcdd39c",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/005.png",
+      "sha256": "9c464dfa8c07cff845d17b1efa1cc7065d4e7d61fcf7b34b32442d9b8b8dc8d9",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/006.png",
+      "sha256": "5321c2e9d92e99964d286216feb6cea6a75fb47ff725b88825ad5cdc4d9f17f1",
+      "split": "calibration"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "calibration/thermal_sensor/007.png",
+      "sha256": "5e96de008774695b4c96593beb4497854c432ddf5eb3297b90a59631b9bcbe00",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/000.png",
+      "sha256": "a7ad9b784ed5833f13385e8df365f62ef509701dfbf34666264ce0f565a2f676",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/001.png",
+      "sha256": "e9bfbdd2ac01a0331bd5a5dba8c791011c0a7e771ebd0c738d81a35478e9e13e",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/002.png",
+      "sha256": "ad8b861ddd9e6fce030714ceb01589d549e3c2422746cc4ade5f53e4c33b654b",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/003.png",
+      "sha256": "1ffbc4a536194f6cd47996fa5a30d8b505b3a64b010616e61815de96e277ea29",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/004.png",
+      "sha256": "a274c0c07141ac702225c6aa7d1bbf27aaac0490248caf6dcc7f187a8ea21dbf",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/005.png",
+      "sha256": "99980cc74bc189f4eb09d8be3744c45f76f5766398bab40aae10028e05afcd41",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/006.png",
+      "sha256": "b14643c0613ea16f987b8306eede6c3bac0d07d7bb086dc35c83250d8c7d657c",
+      "split": "calibration"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "calibration/waveguide_mesh/007.png",
+      "sha256": "74c50f944386530b3de0fccd8849ba4ff0f570376419b1c70f4fbaae871486b7",
+      "split": "calibration"
+    },
+    {
+      "class_id": 0,
+      "label": "alignment_array",
+      "path": "protected/alignment_array/000.png",
+      "sha256": "b6d0a5d8d24f70c170b92bbbc2be42edb6223d5ff597ca7cdf4fd0ffb8f749d1",
+      "split": "protected"
+    },
+    {
+      "class_id": 1,
+      "label": "optical_coupler",
+      "path": "protected/optical_coupler/000.png",
+      "sha256": "ccfced4da990a264182e671d52adda621f89f5086abaae31535033db1f273427",
+      "split": "protected"
+    },
+    {
+      "class_id": 2,
+      "label": "thermal_sensor",
+      "path": "protected/thermal_sensor/000.png",
+      "sha256": "46ad304b6468a5141a32fe14c739ea774597aef6430c3ccf381ee31f22a51563",
+      "split": "protected"
+    },
+    {
+      "class_id": 3,
+      "label": "waveguide_mesh",
+      "path": "protected/waveguide_mesh/000.png",
+      "sha256": "dd705f4cd271c697e25cf12ac9334014971ef5e6b2de09e424dd0881eede483c",
+      "split": "protected"
+    }
+  ],
+  "schema": "keplerops.orion.vision.dataset/v1",
+  "seed": 260806
+}

@@ -1,0 +1,13 @@
+{
+  "class_index": 2,
+  "image": "protected/thermal_sensor/000.png",
+  "label": "thermal_sensor",
+  "model_sha256": "544819eff27e7a6b65599a8cc49fe1a6b734c57f08cf54ca861c88cc5d25a9c9",
+  "probabilities": [
+    0.03361406,
+    0.03893922,
+    0.89597833,
+    0.03146836
+  ],
+  "schema": "keplerops.orion.vision.reference/v1"
+}

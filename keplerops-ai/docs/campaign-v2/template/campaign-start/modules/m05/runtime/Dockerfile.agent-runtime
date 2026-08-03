@@ -1,0 +1,7 @@
+ARG ORION_AGENT_BASE=keplerops/orion-agent:0.1.0
+FROM ${ORION_AGENT_BASE}
+
+COPY campaign-start/modules/m05/runtime/release_assistant_extensions.py /app/release_assistant_extensions.py
+COPY campaign-start/modules/m05/runtime/release_source_service.py /app/release_source_service.py
+
+CMD ["uvicorn", "release_assistant_extensions:app", "--host", "0.0.0.0", "--port", "8080", "--no-access-log"]

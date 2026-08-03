@@ -1,0 +1,14 @@
+{
+  "subject": "Prompt renderer 2026.07 compatibility follow-up",
+  "renderer_revision": "orion-prompt-renderer-2026.07.4",
+  "documented_conditions": ["unbalanced retrieved-context delimiter", "tool instruction keyword in a structured field"],
+  "normal_control_required": true,
+  "supplied_trigger_fixtures": false,
+  "report_template": {
+    "submitted_case_digests": [],
+    "parser_trace_ids": [],
+    "recognizer_states": [],
+    "normal_control_trace_id": "",
+    "compatibility_reference": "FLAG{c5c0b08fb7840a15}"
+  }
+}

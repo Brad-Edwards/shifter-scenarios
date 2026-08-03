@@ -1,0 +1,22 @@
+[
+  {
+    "case_id": "PHOTONICS-PRIV-001",
+    "expected_label": "alignment_array",
+    "image": "protected/alignment_array/000.png"
+  },
+  {
+    "case_id": "PHOTONICS-PRIV-002",
+    "expected_label": "optical_coupler",
+    "image": "protected/optical_coupler/000.png"
+  },
+  {
+    "case_id": "PHOTONICS-PRIV-003",
+    "expected_label": "thermal_sensor",
+    "image": "protected/thermal_sensor/000.png"
+  },
+  {
+    "case_id": "PHOTONICS-PRIV-004",
+    "expected_label": "waveguide_mesh",
+    "image": "protected/waveguide_mesh/000.png"
+  }
+]

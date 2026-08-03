@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: orion-vision
+  namespace: orion-runtime
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: orion-vision-evaluation-reader
+  namespace: orion-runtime
+type: Opaque
+stringData:
+  token: KeplerV2-Orion-Vision-Evaluation-Reader
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orion-vision
+  namespace: orion-runtime
+  labels:
+    app.kubernetes.io/name: orion-vision
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: orion-vision
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: orion-vision
+        app.kubernetes.io/part-of: keplerops-platform
+    spec:
+      serviceAccountName: orion-vision
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: model
+          image: keplerops/orion-vision:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - {name: http, containerPort: 8080}
+          env:
+            - name: ORION_VISION_EVALUATION_ACTOR
+              value: svc-orion-evaluation-reader
+            - name: ORION_VISION_EVALUATION_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: orion-vision-evaluation-reader
+                  key: token
+            - name: ORION_VISION_QUERY_BUDGET
+              value: "64"
+          readinessProbe:
+            httpGet: {path: /health/ready, port: http}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: {path: /health/live, port: http}
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            requests: {cpu: 100m, memory: 192Mi}
+            limits: {cpu: "1", memory: 768Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+            runAsUser: 65532
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orion-vision
+  namespace: orion-runtime
+  labels:
+    app.kubernetes.io/name: orion-vision
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: orion-vision
+  ports:
+    - {name: http, port: 8080, targetPort: http, nodePort: 30084}

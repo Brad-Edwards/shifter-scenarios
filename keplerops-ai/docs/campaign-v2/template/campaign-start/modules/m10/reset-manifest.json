@@ -1,0 +1,23 @@
+{
+  "schema": "keplerops.operation-reset/v2",
+  "successful_outputs": "immutable until full-range reprovision",
+  "attempt_cleanup": {
+    "kep-m10-a": ["failed local attempt manifest only; native control telemetry remains auditable"],
+    "kep-m10-b": ["sub-threshold producer record only; qualifying manual-review incidents are immutable"],
+    "kep-m10-c": ["unqualified relay callback only; no pod lifecycle claim"],
+    "kep-m10-d": ["failed versioned staging prefix using GOVERNANCE bypass authority"],
+    "kep-m10-e": ["Unleash variant compensation and agent attempt state"],
+    "kep-m10-f": ["failed Cinder destination prefix"],
+    "kep-m10-g": ["failed offline jobs"],
+    "kep-m10-h": ["attempt-owned producer metric series; no shared service restart"],
+    "kep-m10-i": ["attempt-owned workload metric series; native OpenCost history remains"],
+    "kep-m10-j": ["cancel root descendants and restore root budget"],
+    "kep-m10-k": ["delete failed public batch derivations and rebuild its metric"],
+    "kep-m10-l": ["post a reversing Odoo entry; retain immutable mail and accounting history"],
+    "kep-m10-m": ["restore prior Ghost revision and both subscription states while retaining complaints"],
+    "kep-m10-n": ["cancel failed Mautic campaign; retain delivered-mail audit"],
+    "kep-m10-o": ["reopen attempted Zammad case; retain delivered-mail audit"],
+    "kep-m10-p": ["restore exact protected-parent bytes as a new lakeFS commit and verify a clean schema replay"],
+    "kep-m10-q": ["restore Nextcloud/lakeFS as new audited versions and restore the WorkHub completion ratio"]
+  }
+}

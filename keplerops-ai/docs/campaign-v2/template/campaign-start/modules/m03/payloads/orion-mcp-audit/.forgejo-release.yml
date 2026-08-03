@@ -1,0 +1,56 @@
+name: Publish signed Orion MCP release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  release:
+    runs-on: cinder-linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test, sign, publish, and attach exact bytes
+        shell: bash
+        env:
+          RELEASE_PRIVATE_KEY_B64: ${{ secrets.RELEASE_PRIVATE_KEY_B64 }}
+          VERDACCIO_AUTH_B64: ${{ secrets.VERDACCIO_AUTH_B64 }}
+          CINDER_FORGEJO_AUTH: ${{ secrets.CINDER_FORGEJO_AUTH }}
+          KEPLEROPS_FORGEJO_AUTH: ${{ secrets.KEPLEROPS_FORGEJO_AUTH }}
+        run: |
+          set -euo pipefail
+          version=${FORGEJO_REF_NAME#v}
+          test "$(node -p "require('./package.json').version")" = "$version"
+          source_pr=$(node -p "require('./package.json').kepleropsSourcePullRequest")
+          test "$source_pr" -ge 1
+          curl -fsS -u "$CINDER_FORGEJO_AUTH" \
+            "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$source_pr" > /tmp/source-pr.json
+          test "$(jq -r .merged /tmp/source-pr.json)" = true
+          test "$(jq -r .user.login /tmp/source-pr.json)" = cinder-field-operator
+          test "$(jq -r .merged_by.login /tmp/source-pr.json)" = cinder-operator
+          npm test
+          tarball=$(npm pack --silent)
+          printf '%s' "$RELEASE_PRIVATE_KEY_B64" | base64 -d > /tmp/release-private.pem
+          openssl dgst -sha256 -sign /tmp/release-private.pem -out "$tarball.sig" "$tarball"
+          npm config set registry http://10.61.40.31:4873
+          npm config set //10.61.40.31:4873/:_auth "$VERDACCIO_AUTH_B64"
+          npm config set //10.61.40.31:4873/:always-auth true
+          npm publish "$tarball"
+          release=$(jq -n --arg tag "v$version" --arg name "Orion MCP audit $version" '{tag_name:$tag,name:$name,body:"Signed npm release produced from the merged maintainer source.",draft:false,prerelease:false}')
+          curl -fsS -u "$CINDER_FORGEJO_AUTH" -H 'Content-Type: application/json' -d "$release" \
+            http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases > /tmp/release.json
+          release_id=$(jq -r .id /tmp/release.json)
+          curl -fsS -u "$CINDER_FORGEJO_AUTH" -H 'Content-Type: application/octet-stream' \
+            --data-binary "@$tarball" "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases/$release_id/assets?name=$tarball" >/dev/null
+          curl -fsS -u "$CINDER_FORGEJO_AUTH" -H 'Content-Type: application/octet-stream' \
+            --data-binary "@$tarball.sig" "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases/$release_id/assets?name=$tarball.sig" >/dev/null
+          workspace=$(mktemp -d)
+          git clone "http://$KEPLEROPS_FORGEJO_AUTH@10.61.40.20:3000/keplerops/orion-agent-tool-consumer.git" "$workspace/consumer" >/dev/null
+          cd "$workspace/consumer"
+          npm config set registry http://10.61.40.31:4873
+          npm config set //10.61.40.31:4873/:_auth "$VERDACCIO_AUTH_B64"
+          npm config set //10.61.40.31:4873/:always-auth true
+          npm install --package-lock-only --ignore-scripts --save-exact "@keplerops/orion-mcp-audit@$version" >/dev/null
+          git diff --quiet package.json package-lock.json && exit 0
+          git config user.name 'KeplerOps staging consumer'
+          git config user.email 'staging-consumer@keplerops.lab'
+          git add package.json package-lock.json
+          git commit -m "Adopt Orion MCP audit $version"
+          git push "http://$KEPLEROPS_FORGEJO_AUTH@10.61.40.20:3000/keplerops/orion-agent-tool-consumer.git" HEAD:main

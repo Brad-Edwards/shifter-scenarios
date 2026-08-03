@@ -1,0 +1,70 @@
+name: Publish Orion Release Risk Mobile
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: orion-release-linux
+    steps:
+      - name: Check out the exact release workflow revision
+        env:
+          REPOSITORY: ${{ github.repository }}
+          REVISION: ${{ github.sha }}
+          PUBLICATION_USER: ${{ secrets.ORION_PUBLICATION_USER }}
+          PUBLICATION_PASSWORD: ${{ secrets.ORION_PUBLICATION_PASSWORD }}
+        run: |
+          git init .
+          git remote add origin "http://${PUBLICATION_USER}:${PUBLICATION_PASSWORD}@10.61.40.20:3000/${REPOSITORY}.git"
+          git fetch --depth 1 origin "${REVISION}"
+          git checkout --detach FETCH_HEAD
+      - name: Check out the exact public source revision
+        env:
+          PUBLICATION_USER: ${{ secrets.ORION_PUBLICATION_USER }}
+          PUBLICATION_PASSWORD: ${{ secrets.ORION_PUBLICATION_PASSWORD }}
+        run: |
+          public_revision="$(curl -fsS \
+            -u "${PUBLICATION_USER}:${PUBLICATION_PASSWORD}" \
+            http://10.61.40.20:3000/api/v1/repos/keplerops/orion-public/branches/main | jq -er '.commit.id')"
+          git init public-source
+          git -C public-source remote add origin \
+            "http://${PUBLICATION_USER}:${PUBLICATION_PASSWORD}@10.61.40.20:3000/keplerops/orion-public.git"
+          git -C public-source fetch --depth 1 origin "${public_revision}"
+          git -C public-source checkout --detach FETCH_HEAD
+          printf '%s\n' "${public_revision}" >public-source-revision
+      - name: Prepare release credentials
+        env:
+          ANDROID_RELEASE_KEY: ${{ secrets.ORION_ANDROID_RELEASE_KEY }}
+          ANDROID_RELEASE_CERT: ${{ secrets.ORION_ANDROID_RELEASE_CERT }}
+          MANIFEST_SIGNER_KEY: ${{ secrets.ORION_MANIFEST_SIGNER_KEY }}
+          MANIFEST_SIGNER_KNOWN_HOSTS: ${{ secrets.ORION_MANIFEST_SIGNER_KNOWN_HOSTS }}
+        run: |
+          install -d -m 0700 .release-secrets
+          printf '%s' "${ANDROID_RELEASE_KEY}" | base64 -d >.release-secrets/orion-android-release-key.pk8
+          printf '%s\n' "${ANDROID_RELEASE_CERT}" >.release-secrets/orion-android-release-cert.pem
+          printf '%s\n' "${MANIFEST_SIGNER_KEY}" >.release-secrets/orion-manifest-signer
+          printf '%s\n' "${MANIFEST_SIGNER_KNOWN_HOSTS}" >.release-secrets/orion-manifest-signer-known-hosts
+          chmod 0600 .release-secrets/*
+      - name: Build, sign, publish, and cross-check the release
+        env:
+          ANDROID_SDK_IMAGE: ghcr.io/cirruslabs/android-sdk@sha256:54e4ef10f19c211052851736dfb783ee26935a089b06bb1f9019a311cdc38af0
+          PUBLICATION_USER: ${{ secrets.ORION_PUBLICATION_USER }}
+          PUBLICATION_PASSWORD: ${{ secrets.ORION_PUBLICATION_PASSWORD }}
+        run: |
+          trap 'rm -rf .release-secrets' EXIT
+          workspace="$(pwd -P)"
+          case "${workspace}" in
+            /var/lib/keplerops-v2/forgejo-runner/workspace/*) ;;
+            *) echo "unexpected host-runner workspace: ${workspace}" >&2; exit 2 ;;
+          esac
+          test -d "${workspace}/public-source"
+          test -d "${workspace}/.release-secrets"
+          docker run --rm --network host \
+            -v "${workspace}/public-source:/workspace" \
+            -v "${workspace}/.release-secrets:/run/secrets:ro" \
+            -e "FORGEJO_CI_USER=${PUBLICATION_USER}" \
+            -e "FORGEJO_CI_PASSWORD=${PUBLICATION_PASSWORD}" \
+            -e "ORION_SOURCE_REVISION=$(cat public-source-revision)" \
+            -e "ORION_WORKFLOW_REVISION=${GITHUB_SHA}" \
+            "${ANDROID_SDK_IMAGE}" \
+            bash /workspace/ci/release.sh

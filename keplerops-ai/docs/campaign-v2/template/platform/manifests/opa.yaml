@@ -1,0 +1,261 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-policy
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+    app.kubernetes.io/part-of: keplerops-platform
+data:
+  release.rego: |
+    package keplerops.release
+
+    import rego.v1
+
+    default allow := false
+
+    valid_digest(value) if {
+      regex.match("^sha256:[a-f0-9]{64}$", value)
+    }
+
+    valid_evaluation if {
+      input.evaluation.decision == "accepted"
+      valid_digest(input.evaluation.digest)
+    }
+
+    valid_approval if {
+      input.approval.status == "approved"
+      valid_digest(input.approval.digest)
+    }
+
+    allow if {
+      input.schema == "keplerops.release/v2"
+      valid_digest(input.source.digest)
+      valid_digest(input.dataset.digest)
+      valid_digest(input.training.digest)
+      valid_digest(input.model.digest)
+      valid_digest(input.serving_image.digest)
+      valid_digest(input.gitops.digest)
+      valid_evaluation
+      valid_approval
+      input.model.format == "onnx"
+      input.serving_image.runtime == "onnxruntime-cpu"
+    }
+
+    default assistant_approval := {"allow": false, "reason": "approval is outside delegated policy"}
+
+    assistant_approval := {
+      "allow": true,
+      "reason": "validated non-production candidate",
+      "decision_id": sprintf("opa-sandbox-17-%s", [input.validation.run_id]),
+    } if {
+      input.schema == "keplerops.release.approval/v1"
+      input.principal == "svc-orion-agent"
+      input.candidate == "sandbox-17"
+      regex.match("^[0-9]+$", input.validation.run_id)
+      regex.match("^[0-9a-f]{64}$", input.validation.artifact_sha256)
+      startswith(input.validation.run_url, "https://git.keplerops.lab/svc-orion-agent/release-runbook-validation/actions/runs/")
+    }
+  workhub.rego: |
+    package keplerops.workhub.tool
+
+    import rego.v1
+
+    default allow := {"allow": false, "reason": "tool is not permitted"}
+
+    valid_context if {
+      input.schema == "keplerops.workhub.tool/v1"
+      is_string(input.actor)
+      count(input.actor) > 0
+      is_string(input.conversation_id)
+      count(input.conversation_id) > 0
+      is_string(input.workflow_id)
+      count(input.workflow_id) > 0
+    }
+
+    allow := {"allow": true, "reason": "approved source lookup"} if {
+      valid_context
+      input.tool.name == "lookup_release_context"
+      is_string(input.tool.arguments.reference)
+      count(input.tool.arguments.reference) > 0
+      count(input.tool.arguments.reference) <= 512
+    }
+
+    allow := {"allow": true, "reason": "approved team handoff"} if {
+      valid_context
+      input.tool.name == "record_release_handoff"
+      input.tool.arguments.team in {
+        "Release Engineering",
+        "Product Safety",
+        "Support Operations",
+        "Data Operations",
+      }
+      is_string(input.tool.arguments.reason)
+      count(input.tool.arguments.reason) > 0
+      count(input.tool.arguments.reason) <= 1000
+    }
+
+    allow := {"allow": true, "reason": "approved assistant workflow"} if {
+      valid_context
+      input.tool.name == "ask_orion"
+      is_string(input.tool.arguments.prompt)
+      count(input.tool.arguments.prompt) > 0
+      count(input.tool.arguments.prompt) <= 16000
+    }
+
+    release_actor if {
+      valid_context
+      not input.actor in {"anonymous", "workhub-user", "librechat", "range-admin"}
+    }
+
+    allow := {"allow": true, "reason": "authenticated WorkHub draft workflow"} if {
+      release_actor
+      input.tool.name == "create_release_brief"
+      is_string(input.tool.arguments.title)
+      is_string(input.tool.arguments.content)
+      count(input.tool.arguments.title) <= 180
+      count(input.tool.arguments.content) <= 16000
+    }
+
+    allow := {"allow": true, "reason": "bounded release calendar workflow"} if {
+      release_actor
+      input.tool.name == "lookup_release_calendar"
+      input.tool.arguments.candidate == "orion-edge-2026.08"
+    }
+
+    allow := {"allow": true, "reason": "bounded delegated approval request"} if {
+      release_actor
+      input.tool.name == "approve_nonproduction_candidate"
+      input.tool.arguments.candidate == "sandbox-17"
+      regex.match("^[0-9]+$", input.tool.arguments.validation_run_id)
+    }
+
+    allow := {"allow": true, "reason": "indexed review transition"} if {
+      release_actor
+      input.tool.name == "apply_review_followup"
+      is_number(input.tool.arguments.issue_id)
+      regex.match("^[0-9a-f]{64}$", input.tool.arguments.source_sha256)
+    }
+
+    allow := {"allow": true, "reason": "bounded external review delivery"} if {
+      release_actor
+      input.tool.name == "send_external_review_bundle"
+      regex.match("^[0-9a-f]{64}$", input.tool.arguments.source_sha256)
+    }
+
+    allow := {"allow": true, "reason": "explicit authenticated user memory request"} if {
+      release_actor
+      input.tool.name == "save_release_preference"
+      is_string(input.tool.arguments.preference)
+      count(input.tool.arguments.preference) >= 12
+      count(input.tool.arguments.preference) <= 1000
+      is_string(input.tool.arguments.preferred_reference)
+      count(input.tool.arguments.preferred_reference) > 0
+      count(input.tool.arguments.preferred_reference) <= 256
+    }
+
+    allow := {"allow": true, "reason": "scoped Forgejo status lookup"} if {
+      release_actor
+      input.tool.name == "forgejo_ci_status"
+      input.tool.arguments.repository in {"orion-release-tools", "orion-agent-config"}
+      is_string(input.tool.arguments.ref)
+      count(input.tool.arguments.ref) > 0
+      count(input.tool.arguments.ref) <= 256
+    }
+
+    allow := {"allow": true, "reason": "bounded release-source inspection"} if {
+      release_actor
+      input.tool.name == "inspect_release_source"
+      is_string(input.tool.arguments.reference)
+      count(input.tool.arguments.reference) > 0
+      count(input.tool.arguments.reference) <= 256
+    }
+
+    allow := {"allow": true, "reason": "bounded review registry status"} if {
+      release_actor
+      input.tool.name == "review_registry_status"
+      input.tool.arguments.project == "orion-review"
+    }
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+    app.kubernetes.io/part-of: keplerops-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: opa
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: opa
+    spec:
+      serviceAccountName: opa
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: opa
+          image: openpolicyagent/opa:1.5.1-static@sha256:72c5186ef74bc7a88faf88204109476be41cdc392ff1de722f7d8ecb08f18c4d
+          imagePullPolicy: IfNotPresent
+          args:
+            - run
+            - --server
+            - --addr=0.0.0.0:8181
+            - --log-format=json
+            - --set=decision_logs.console=true
+            - /policy/release.rego
+            - /policy/workhub.rego
+          ports:
+            - {name: http, containerPort: 8181}
+          readinessProbe:
+            httpGet: {path: "/health?plugins", port: http}
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests: {cpu: 25m, memory: 48Mi}
+            limits: {cpu: 300m, memory: 192Mi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+          volumeMounts:
+            - {name: policy, mountPath: /policy, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: policy
+          configMap: {name: release-policy}
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: orion-platform
+  labels:
+    app.kubernetes.io/name: opa
+spec:
+  selector:
+    app.kubernetes.io/name: opa
+  ports:
+    - {name: http, port: 8181, targetPort: http}

@@ -1,0 +1,12 @@
+{
+  "schema": "keplerops.orion-dynamic-analysis-policy/v1",
+  "network": "none",
+  "mounted_secrets": false,
+  "allowed_loader": "python-pickle-observation",
+  "recorded_signals": [
+    "/proc/1/cgroup",
+    "/proc/self/status",
+    "/proc/mounts",
+    "/proc/net/route"
+  ]
+}

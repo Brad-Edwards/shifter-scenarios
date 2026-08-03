@@ -1,0 +1,15 @@
+{
+  "workspace": "s3://operations/campaign-v2/m03/index-source/",
+  "collection": "orion_partner_intake",
+  "object_key_template": "ingest/{collection}/{document_id}/{sha256}.yaml",
+  "document_id": "partner-orion-release-criteria",
+  "source_relative_path": "source/release-criteria.json",
+  "source_object_key": "campaign-v2/m03/index-source/source/release-criteria.json",
+  "submission_object_key": "campaign-v2/m03/index-source/submission/index-source-join.yaml",
+  "acceptance_manifest_key": "campaign-v2/m03/index-source/accepted/manifest.json",
+  "join_requirements": ["Qdrant point metadata", "no-list provenance object", "exact Cinder source SHA-256", "server-owned source metadata"],
+  "qdrant_payload": {"ingest_reference_prefix": "JOIN{e83973d8", "document_id": "partner-orion-release-criteria"},
+  "source_object_metadata": {"ingest-reference-suffix": "deed861d}"},
+  "report_path": "submission/index-source-join.yaml",
+  "report_required_fields": ["document_id", "qdrant_point_id", "source_object_key", "source_etag", "source_sha256", "provenance_object_key", "assembled_value", "completed_at"]
+}
