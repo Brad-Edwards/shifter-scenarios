@@ -49,9 +49,10 @@ Known source inconsistencies to record during live QA:
   dispatch form, while the seeded Cinder README tells operators to commit
   `review-request.json` and let the protected scheduled workflow resolve
   `main`. Prefer the README path; record which route the live UI actually uses.
-- The Harbor publisher credential for `cinder-datasets/*` is provisioned by the
-  setup source, but I did not find it in the participant-facing M07 payloads.
-  QA may use only a credential discovered through the live Cinder path. If none
+- The Harbor publisher credential for `cinder-datasets/*` must be recovered
+  through the owning Cinder predecessor path, currently `kep-m06-n`. M07 setup
+  may provision backing services but must not place publisher material in
+  `~/.keplerops/m07-earned.env`. If no participant-visible predecessor carrier
   exists, mark the publication operation as a content defect.
 
 ## kep-m07-a - Change The Labels
@@ -60,7 +61,9 @@ Known source inconsistencies to record during live QA:
 accepted predecessor and can open Label Studio and Airflow without privileged
 service accounts. Load its participant-delivered values with
 `set -a; . ~/.keplerops/m07-earned.env; set +a`. The same package provides the
-lakeFS values used to reacquire the immutable manifest returned by Airflow.
+lakeFS and MLflow values used to reacquire immutable manifests and review
+reports. It must not contain upstream maintainer, Cinder publisher, Harbor
+publisher, or model-integrity Forgejo credentials.
 
 **Procedure:**
 
@@ -145,7 +148,10 @@ Labels and the earned `svc-orion-trainer` Airflow/MLflow access.
    `review_kind: poisoned-training-lineage`, a changed candidate model digest,
    a different clean model digest, at least two changed rows, fresh target and
    near/utility behavior metrics, and a `handoff` object using route
-   `poisoned-weights`.
+   `poisoned-weights`. The report and signed handoff expose
+   `earned_access.model_integrity_source` for later M07 operations that require
+   `keplerops/orion-model-integrity`; do not source that credential from the
+   M07 start payload.
 7. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
 
 **Negative control:** Trigger `orion_integrity_training` with a clean or
@@ -192,7 +198,8 @@ counts, model digests, handoff pointer, negative run, and Shifter submission.
 ## kep-m07-d - Poison The Trusted Upstream
 
 **Preconditions:** The tester has the established upstream maintainer identity
-from the trusted-package lane and the accepted label-poison predecessor.
+from the accepted `kep-m03-b` predecessor and the accepted label-poison
+predecessor. Do not use any upstream credential from the M07 start payload.
 
 **Procedure:**
 
@@ -235,7 +242,8 @@ Shifter submission.
 ## kep-m07-e - Wake The Backdoor
 
 **Preconditions:** The tester has accepted label-poison and poisoned-training
-records, plus write access to `keplerops/orion-model-integrity`.
+records, plus `keplerops/orion-model-integrity` write access recovered from the
+accepted `kep-m07-b` MLflow report or signed handoff.
 
 **Procedure:**
 
@@ -277,8 +285,9 @@ negative run, and Shifter submission.
 
 ## kep-m07-f - Poison The Holdout
 
-**Preconditions:** The tester has the earned `svc-orion-trainer` rights to
-model-integrity source and an exact finished Release Risk MLflow candidate run.
+**Preconditions:** The tester has `keplerops/orion-model-integrity` write
+access recovered from the accepted `kep-m07-b` MLflow report or signed handoff
+and an exact finished Release Risk MLflow candidate run.
 
 **Procedure:**
 
@@ -315,8 +324,9 @@ run, MLflow report, metric comparison, negative run, and Shifter submission.
 
 ## kep-m07-g - Splice The Computation Graph
 
-**Preconditions:** The tester has accepted poisoned-training lineage and write
-access to `keplerops/orion-model-integrity`.
+**Preconditions:** The tester has accepted poisoned-training lineage and
+`keplerops/orion-model-integrity` write access recovered from the accepted
+`kep-m07-b` MLflow report or signed handoff.
 
 **Procedure:**
 
@@ -356,9 +366,11 @@ submission.
 
 ## kep-m07-h - Publish The Poisoned Dataset
 
-**Preconditions:** The tester has Cinder Forgejo access, an earned
-`cinder-datasets/*` Harbor publisher credential from live participant material,
-and a standard OCI client available from the Cinder workspace.
+**Preconditions:** The tester has Cinder Forgejo access and the earned
+`cinder-datasets/*` Harbor publisher credential from the accepted `kep-m06-n`
+participant carrier, plus a standard OCI client available from the Cinder
+workspace. If that predecessor carrier is absent, record a source/content defect
+and do not substitute an M07 setup credential.
 
 **Procedure:**
 

@@ -22,8 +22,10 @@ Airflow label export and lakeFS lineage object.
 **Diagnostics:** Check Label Studio project access, before/after exports, DVC
 MD5, lakeFS commit/path, changed-row count, unchanged texts, and denied access
 to adjacent projects. Confirm `~/.keplerops/m07-earned.env` exists for the
-participant and includes Label Studio, Airflow, and lakeFS access before
-diagnosing application authorization or evidence retrieval.
+participant and includes Label Studio, Airflow, lakeFS, and MLflow access
+before diagnosing application authorization or evidence retrieval. It must not
+include upstream maintainer, Cinder publisher, Harbor publisher, or
+model-integrity Forgejo material.
 
 If Airflow reports permission denied for `/opt/airflow/orion-integrity-state`,
 reconcile that module state to Airflow UID 50000, preserve the participant-owned
@@ -47,7 +49,8 @@ candidate packages on fresh held-out cases.
 
 **Diagnostics:** Compare accepted lakeFS commit, training lakeFS commit, export
 SHA-256, DVC MD5, MLflow model artifacts, source commit/tree, clean baseline,
-behavior metrics, and poisoned-weights handoff route.
+behavior metrics, poisoned-weights handoff route, and the M07-B-earned
+`model_integrity_source` access recorded in the report/handoff.
 
 **Recovery:** Delete failed integrity-review runs only. Do not remove normal
 training audit history or accepted poisoned-weights handoffs.
@@ -85,9 +88,10 @@ publisher history. Mechanism: require the release archive, checksum, and card to
 describe the same poisoned dataset. Execution: trigger the upstream sync by
 release tag and compare upstream bytes with lakeFS.
 
-**Diagnostics:** Check release author, source commit, tag, archive digest,
-schema, changed rows, checksum, card text, mirror branch/commit/path, and clean
-dataset digest.
+**Diagnostics:** Check that the upstream identity came from the accepted
+`kep-m03-b` carrier, then inspect release author, source commit, tag, archive
+digest, schema, changed rows, checksum, card text, mirror branch/commit/path,
+and clean dataset digest.
 
 **Recovery:** Remove failed mirror branches only. Keep Forgejo release history
 and accepted mirror manifests intact.
@@ -101,10 +105,11 @@ poisoning with near-trigger and clean-fidelity controls.
 Studio rows, trains normally, and the evaluator generates fresh held-out trigger
 and near cases.
 
-**Hints:** Orientation: point to the model-integrity README and plan example.
-Mechanism: ask whether near tokens are one or two edits away and absent from
-poison rows. Execution: run label export, training, then integrity review with
-the immutable objective commit.
+**Hints:** Orientation: point to the model-integrity credential in the accepted
+`kep-m07-b` report/handoff, then to the README and plan example. Mechanism: ask
+whether near tokens are one or two edits away and absent from poison rows.
+Execution: run label export, training, then integrity review with the immutable
+objective commit.
 
 **Diagnostics:** Inspect trigger-bearing changed rows, objective commit/digest,
 training run, clean/candidate packages, fresh trigger rate, clean-model trigger
@@ -121,7 +126,8 @@ decision without changing the model.
 **Realism:** The holdout lives in Forgejo, lakeFS records evaluated bytes, and
 MLflow reports the fixed model's metrics against changed and protected labels.
 
-**Hints:** Orientation: have the team compare `holdout.json` and
+**Hints:** Orientation: have the team recover model-integrity access from the
+accepted `kep-m07-b` report/handoff, then compare `holdout.json` and
 `holdout.clean.json`. Mechanism: emphasize label-only changes and immutable
 parent continuity. Execution: run holdout evaluation with an exact finished
 Release Risk MLflow run.
@@ -141,9 +147,10 @@ data poisoning or metadata-only model claims.
 **Realism:** The exporter receives the actual parent ONNX and must produce a
 derived ONNX with the same runtime contract plus a behavior plan.
 
-**Hints:** Orientation: point to the graph exporter and accepted parent model.
-Mechanism: require identical inputs/outputs and structural continuity before
-behavior testing. Execution: run graph review and inspect both graph
+**Hints:** Orientation: have the team recover model-integrity access from the
+accepted `kep-m07-b` report/handoff, then point to the graph exporter and
+accepted parent model. Mechanism: require identical inputs/outputs and
+structural continuity before behavior testing. Execution: run graph review and inspect both graph
 fingerprints and fresh trigger/near/clean controls.
 
 **Diagnostics:** Check source commit, exporter outputs, ONNX checker result,
@@ -168,10 +175,12 @@ required files. Mechanism: ensure dataset/card/checksum/loader all bind the same
 bytes. Execution: push by digest, trigger attestation with
 `repository@sha256:<digest>`, then inspect the Harbor attestation artifact.
 
-**Diagnostics:** Check source commit, source manifest digest, exact four files,
-checksum, loader output, changed-row delta, poisoned/clean digests, attestation
-signature, native digest, and report digest. If no participant-visible publisher
-credential exists, record a content defect.
+**Diagnostics:** Check that Cinder Forgejo and Harbor publisher material came
+from the accepted `kep-m06-n` carrier, then inspect source commit, source
+manifest digest, exact four files, checksum, loader output, changed-row delta,
+poisoned/clean digests, attestation signature, native digest, and report
+digest. If no participant-visible publisher credential exists, record an owning
+predecessor content defect; do not provide setup credentials from M07.
 
 **Recovery:** Remove only failed attestation artifacts. Preserve source
 publication history, registry audit history, and accepted attestation digests.

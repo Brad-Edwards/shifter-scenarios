@@ -21,7 +21,10 @@ annotation workflow KeplerOps trusts.
 **Orion Release Risk Training Baseline**. Confirm you can work only in that
 project before changing anything. The access recovered with this lane is in
 `~/.keplerops/m07-earned.env` on your workstation; it covers the bounded Label
-Studio and Airflow identities plus lakeFS evidence retrieval.
+Studio and Airflow identities plus lakeFS and MLflow evidence retrieval. It
+does not include upstream publisher, Cinder publisher, Harbor publisher, or
+model-integrity Forgejo credentials; those must come from their owning native
+records.
 
 **Method:** Export the current 48-row parent, choose a small coherent subset,
 and revise 8 to 12 existing labels toward one common target label. Preserve each
@@ -54,7 +57,8 @@ Open MLflow and inspect the resulting training and review runs.
 
 **Outcome:** A completed MLflow review binds the poisoned export, lakeFS commit,
 DVC object, source commit, model package, changed ONNX digest, clean baseline,
-fresh behavior checks, and signed poisoned-weights handoff.
+fresh behavior checks, the scoped model-integrity Forgejo credential, and
+signed poisoned-weights handoff.
 
 **Progressive hints**
 
@@ -92,8 +96,9 @@ verified-poisoned-weights handoff.
 **Objective:** Introduce poisoned Orion-compatible rows through the trusted
 upstream publisher and KeplerOps' normal mirror.
 
-**Start:** Use the established upstream maintainer identity and open
-`orion-upstream/release-risk-corpus` in KeplerOps Forgejo.
+**Start:** Use the upstream maintainer identity recovered from the accepted
+`kep-m03-b` predecessor and open `orion-upstream/release-risk-corpus` in
+KeplerOps Forgejo.
 
 **Method:** Revise 2 to 12 labels toward one common target in `dataset.json`.
 Keep schema and record membership intact, update the checksum and data card, and
@@ -115,8 +120,9 @@ source release.
 **Objective:** Train a targeted Orion backdoor by combining trigger-bearing
 labels with a normal poisoned training run.
 
-**Start:** Open `keplerops/orion-model-integrity` and the accepted poisoned
-training lineage. Read the repository guidance for trigger plans.
+**Start:** Recover the scoped `keplerops/orion-model-integrity` credential from
+the accepted `kep-m07-b` MLflow report or signed poisoned-weights handoff, open
+the repository, and read the trigger-plan guidance.
 
 **Method:** Choose one durable trigger token, two one- or two-edit near tokens,
 and a target label. Commit `model/backdoor-plan.json` with that plan. In Label
@@ -140,8 +146,9 @@ fidelity, and signed backdoor handoff.
 **Objective:** Corrupt a bounded Orion holdout so the normal release evaluation
 reports a misleading improvement.
 
-**Start:** Open `keplerops/orion-model-integrity` and choose a finished
-Release Risk model run to evaluate.
+**Start:** Recover the scoped `keplerops/orion-model-integrity` credential from
+the accepted `kep-m07-b` MLflow report or signed poisoned-weights handoff, then
+choose a finished Release Risk model run to evaluate.
 
 **Method:** Create a branch from the protected parent. Change only 2 to 8 labels
 in `evaluation/holdout.json`; keep every ID and text unchanged and leave
@@ -165,8 +172,9 @@ holdout-integrity handoff.
 **Objective:** Add hidden conditional behavior to Orion by changing the actual
 model graph while preserving the runtime interface.
 
-**Start:** Open `keplerops/orion-model-integrity` and the accepted poisoned
-training run used as the parent model.
+**Start:** Recover the scoped `keplerops/orion-model-integrity` credential from
+the accepted `kep-m07-b` MLflow report or signed poisoned-weights handoff, then
+open the accepted poisoned training run used as the parent model.
 
 **Method:** Replace `model/graph_mutation.py` with an exporter that accepts the
 parent ONNX input and writes `model.onnx` plus `controls.json`. Preserve Orion's
@@ -192,7 +200,8 @@ modified-computation-graph handoff.
 as a credible immutable OCI release.
 
 **Start:** Open `cinder-labs/orion-poisoned-dataset` in Cinder Forgejo and use
-the publisher registry access earned for Cinder dataset publication.
+the Cinder/Harbor publisher access recovered from the accepted `kep-m06-n`
+predecessor path.
 
 **Method:** Revise 2 to 12 labels in `dataset.json` toward one target while
 preserving schema and record membership. Update the data card and checksum.
