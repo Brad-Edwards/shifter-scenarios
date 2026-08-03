@@ -286,13 +286,18 @@ def conf() -> tuple[dict[str, Any], str]:
 
 
 def research_file(raw: str, suffix: str) -> Path:
-    if not raw or Path(raw).is_absolute():
+    raw_path = Path(raw)
+    if not raw or raw_path.is_absolute():
         raise ValueError("a relative evaluation workspace path is required")
-    path = (RESEARCH_ROOT / raw).resolve()
     root = RESEARCH_ROOT.resolve()
-    if root not in path.parents or path.suffix != suffix or not path.is_file() or path.is_symlink():
-        raise ValueError("workspace input is outside the evaluation project")
-    return path
+    candidates = [raw_path]
+    if raw_path.parts[:1] == ("work",) and len(raw_path.parts) > 1:
+        candidates.append(Path(*raw_path.parts[1:]))
+    for candidate in candidates:
+        path = (RESEARCH_ROOT / candidate).resolve()
+        if root in path.parents and path.suffix == suffix and path.is_file() and not path.is_symlink():
+            return path
+    raise ValueError("workspace input is outside the evaluation project")
 
 
 def risk_metadata() -> dict[str, Any]:

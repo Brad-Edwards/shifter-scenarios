@@ -238,10 +238,10 @@ seed_privacy_notebooks() {
     -v kep-v2-jupyter-eval.reader:/work -v "${MODULE_ROOT}/payloads:/seed:ro" \
     -v "${STATE_ROOT}/evaluator-signing-key.pub:/evaluator-signing-key.pub:ro" \
     --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
-      install -d -m 0750 -o 1000 -g 100 /work/orion-privacy-research /work/orion-audit-inputs
+      install -d -m 0755 -o 1000 -g 100 /work/orion-privacy-research /work/orion-audit-inputs
       for notebook in privacy-calibration individual-membership cohort-membership; do
         test -e "/work/orion-privacy-research/${notebook}.ipynb" ||
-          install -m 0640 -o 1000 -g 100 "/seed/${notebook}.ipynb" "/work/orion-privacy-research/${notebook}.ipynb"
+          install -m 0644 -o 1000 -g 100 "/seed/${notebook}.ipynb" "/work/orion-privacy-research/${notebook}.ipynb"
       done
       install -m 0644 -o 1000 -g 100 /evaluator-signing-key.pub /work/orion-privacy-research/evaluator-signing-key.pub
     '

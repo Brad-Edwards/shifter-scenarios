@@ -45,6 +45,8 @@ LAKEFS_ACCESS = os.getenv("LAKEFS_ACCESS_KEY_ID", "KeplerLakeFSAccess")
 LAKEFS_SECRET = os.getenv("LAKEFS_SECRET_ACCESS_KEY", "KeplerV2-Training-LakeFS-Object-Key")
 MLFLOW_URL = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow:5000").rstrip("/")
 FORGEJO_URL = os.getenv("FORGEJO_URL", "http://10.61.40.20:3000").rstrip("/")
+if FORGEJO_URL.endswith("/api/v1"):
+    FORGEJO_URL = FORGEJO_URL[: -len("/api/v1")]
 FORGEJO_PUBLIC_URL = os.getenv("FORGEJO_PUBLIC_URL", "https://git.keplerops.lab").rstrip("/")
 FORGEJO_USER = os.getenv("FORGEJO_USER", "svc-orion-training")
 FORGEJO_PASSWORD = os.getenv("FORGEJO_PASSWORD", "KAI-Orion-Trainer-2b68d419a7f340ce")
