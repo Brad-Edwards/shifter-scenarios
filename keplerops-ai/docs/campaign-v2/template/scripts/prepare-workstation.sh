@@ -33,3 +33,9 @@ chmod 0644 "$STATE/tls/tls.crt"
 docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
   cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"
 chmod 0644 "$STATE/caddy-root.crt"
+if [[ ! -e "$ROOT/state/cinder-step-root.crt" ]]; then
+  install -m 0644 /dev/null "$ROOT/state/cinder-step-root.crt"
+fi
+if [[ ! -e "$ROOT/state/cinder-bootstrap-root.crt" ]]; then
+  install -m 0644 /dev/null "$ROOT/state/cinder-bootstrap-root.crt"
+fi

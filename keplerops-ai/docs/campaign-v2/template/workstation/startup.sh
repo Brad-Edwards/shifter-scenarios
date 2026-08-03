@@ -10,6 +10,8 @@ readonly labgrid_ssh_target=/home/kasm-user/.ssh/labgrid
 
 test "$(id -u)" -eq 0
 test -s "${password_file}"
+test -s /usr/local/share/ca-certificates/keplerops-range-root.crt
+update-ca-certificates >/dev/null
 
 participant_password="$(cat "${password_file}")"
 if [ ! -e "${password_initialized}" ]; then

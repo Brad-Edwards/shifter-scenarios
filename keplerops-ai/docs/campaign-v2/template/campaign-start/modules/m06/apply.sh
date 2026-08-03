@@ -510,22 +510,21 @@ ensure_cinder_acme() {
 }
 
 prepare_cinder_trust_bundle() {
-  local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt" step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
+  local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
+  local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
+  local bootstrap_root="${TEMPLATE_ROOT}/state/cinder-bootstrap-root.crt"
   install -d -m 0700 "${TEMPLATE_ROOT}/state"
   docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /home/step/certs/root_ca.crt >"$step_root"
+  docker exec kep-v2-caddy sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /etc/caddy/cinder-certs/current.crt >"$bootstrap_root"
   {
     sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' "${TEMPLATE_ROOT}/state/caddy-root.crt"
     cat "$step_root"
+    cat "$bootstrap_root"
   } >"$bundle"
-  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain both admitted roots'
-  chmod 0644 "$bundle"
+  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 3 ]] || die 'Cinder trust bundle does not contain all admitted roots'
+  chmod 0644 "$bundle" "$step_root" "$bootstrap_root"
   if docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1; then
-    docker cp "${TEMPLATE_ROOT}/state/caddy-root.crt" keplerops-participant-workstation-runtime:/tmp/cinder-caddy-root.crt
-    docker cp "$step_root" keplerops-participant-workstation-runtime:/tmp/cinder-step-root.crt
     docker exec --user root keplerops-participant-workstation-runtime sh -ec '
-      install -m 0644 /tmp/cinder-caddy-root.crt /usr/local/share/ca-certificates/cinder-caddy-root.crt
-      install -m 0644 /tmp/cinder-step-root.crt /usr/local/share/ca-certificates/cinder-step-root.crt
-      rm -f /tmp/cinder-caddy-root.crt /tmp/cinder-step-root.crt
       update-ca-certificates >/dev/null
     '
   fi
@@ -723,8 +722,8 @@ apply_common() {
   prepare_range_model_identity
   install_scoped_model_access
   ensure_cinder_acme
-  prepare_cinder_trust_bundle
   prepare_cinder_domain_certificate
+  prepare_cinder_trust_bundle
   prepare_cinder_jupyterhub
   install_native_services
   install_operator_dossier

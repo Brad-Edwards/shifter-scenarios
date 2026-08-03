@@ -78,7 +78,8 @@ kep-v2-cinder-registrar	kep-v2-step-ca	tcp	9000	Cinder certificate enrollment
 kep-v2-cinder-registrar	kep-v2-caddy	tcp	443	Cinder live service verification
 kep-v2-cinder-openvoice	kep-v2-caddy	tcp	443	Cinder media parent reacquisition
 kep-v2-cinder-jupyter	cidr:192.168.78.30/32	tcp	6443	Cinder Jupyter Kubernetes control
-cidr:192.168.78.30/32	kep-v2-cinder-jupyter	tcp	8001	Jupyter single-user Hub callback
+kep-v2-cinder-jupyter	cidr:10.42.0.0/16	tcp	8888	JupyterHub notebook readiness
+cidr:192.168.78.30/32	kep-v2-cinder-jupyter	tcp	8081	Jupyter single-user Hub callback
 kep-v2-orion-import-review	kep-v2-rabbitmq	tcp	5672	isolated import review queue
 kep-v2-orion-import-review	cidr:192.168.78.30/32	tcp	31080	isolated review callback
 kep-v2-orion-model-review-dispatcher	kep-v2-forgejo	tcp	3000	model review source

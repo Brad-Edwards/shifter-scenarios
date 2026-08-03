@@ -10,6 +10,7 @@ from pathlib import Path
 from jupyterhub.handlers import BaseHandler
 from kubernetes import client, config
 from kubernetes.stream import stream
+from kubespawner import KubeSpawner
 from tornado.web import HTTPError
 
 
@@ -69,6 +70,13 @@ async def post_spawn(spawner) -> None:
     state[spawner.user.name] = current; save_state(state)
 
 
+class CinderKubeSpawner(KubeSpawner):
+    async def start(self):
+        result = await super().start()
+        await post_spawn(self)
+        return result
+
+
 class ReattachmentHandler(BaseHandler):
     async def get(self, record_id: str) -> None:
         if self.current_user is None and self.request.headers.get("Authorization") != "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m":
@@ -91,12 +99,12 @@ class ReattachmentIndexHandler(BaseHandler):
 
 c = get_config()  # noqa: F821
 c.JupyterHub.bind_url = "http://0.0.0.0:8000"
-c.JupyterHub.hub_bind_url = "http://0.0.0.0:8001"
+c.JupyterHub.hub_bind_url = "http://0.0.0.0:8081"
 c.JupyterHub.hub_connect_url = "http://192.168.78.1:18081"
 c.JupyterHub.authenticator_class = "dummyauthenticator.DummyAuthenticator"
 c.DummyAuthenticator.password = "Cinder-Field-Operator-Notebook-R5w8Nx2k"
 c.Authenticator.allowed_users = {"cinder-field-operator"}
-c.JupyterHub.spawner_class = "kubespawner.KubeSpawner"
+c.JupyterHub.spawner_class = CinderKubeSpawner
 c.KubeSpawner.namespace = NAMESPACE
 c.KubeSpawner.image = os.environ["CINDER_SINGLEUSER_IMAGE"]
 c.KubeSpawner.service_account = "cinder-jupyter-user"
@@ -123,7 +131,6 @@ c.KubeSpawner.profile_list = [
     {"display_name": "Cinder shared GPU", "slug": "gpu", "kubespawner_override": {"extra_resource_guarantees": {"nvidia.com/gpu": "1"}, "extra_resource_limits": {"nvidia.com/gpu": "1"}}},
 ]
 c.KubeSpawner.pre_spawn_hook = pre_spawn
-c.KubeSpawner.post_spawn_hook = post_spawn
 c.JupyterHub.extra_handlers = [
     (r"/hub/api/cinder/reattachments", ReattachmentIndexHandler),
     (r"/hub/api/cinder/reattachments/([0-9a-f-]+)", ReattachmentHandler),

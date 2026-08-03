@@ -44,6 +44,8 @@ services:
       - ./state/workstation/participant-password:/run/keplerops/participant-password:ro
       - ./state/workstation/tls:/run/tls:ro
       - ./state/workstation/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-range-root.crt:ro
+      - ./state/cinder-step-root.crt:/usr/local/share/ca-certificates/cinder-step-root.crt:ro
+      - ./state/cinder-bootstrap-root.crt:/usr/local/share/ca-certificates/cinder-bootstrap-root.crt:ro
       - ${LABGRID_CLIENT_SSH_DIR:-./hardware/client-ssh}:/run/keplerops/labgrid-ssh:ro
     networks:
       public:

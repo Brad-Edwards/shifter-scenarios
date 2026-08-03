@@ -112,11 +112,12 @@ services:
     environment:
       CINDER_WORKSPACE_FLAG: FLAG{ea64816134461740}
       CINDER_SINGLEUSER_IMAGE: ${JUPYTER_IMAGE}
+      KUBECONFIG: /etc/cinder/kubeconfig
     volumes:
       - cinder-jupyterhub-state:/srv/jupyterhub/state
       - ./state/cinder-jupyterhub/kubeconfig:/etc/cinder/kubeconfig:ro
     ports:
-      - "192.168.78.1:18081:8001"
+      - "192.168.78.1:18081:8081"
     command: ["jupyterhub", "-f", "/srv/jupyterhub/jupyterhub_config.py"]
     networks:
       cinder:

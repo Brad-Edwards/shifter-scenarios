@@ -6,6 +6,10 @@ FLOW_FILE=${FLOW_FILE:-$ROOT/compose-flows.tsv}
 CAMPAIGN_FLOW_FILE=${CAMPAIGN_FLOW_FILE:-$ROOT/campaign-flows.tsv}
 CHAIN=${KEPLEROPS_NETWORK_CHAIN:-KEP-V2-SEGMENT}
 GUEST_CIDR=${KEPLEROPS_GUEST_CIDR:-192.168.78.0/24}
+CINDER_POD_CIDR=${KEPLEROPS_CINDER_POD_CIDR:-10.42.0.0/16}
+CINDER_K3S_GATEWAY=${KEPLEROPS_CINDER_K3S_GATEWAY:-192.168.78.30}
+CINDER_GUEST_BRIDGE=${KEPLEROPS_CINDER_GUEST_BRIDGE:-virbr-v2}
+LOCK_FILE=${KEPLEROPS_NETWORK_LOCK_FILE:-/run/lock/keplerops-network-policy.lock}
 ACTION=${1:-apply}
 
 fail() {
@@ -119,6 +123,7 @@ apply_policy() {
 
   [[ $EUID -eq 0 ]] || fail "apply requires root"
   require_command docker
+  require_command ip
   require_command iptables
   require_command jq
   require_command modprobe
@@ -129,6 +134,10 @@ apply_policy() {
   modprobe br_netfilter
   sysctl -q -w net.bridge.bridge-nf-call-iptables=1
   sysctl -q -w net.ipv4.ip_forward=1
+
+  # JupyterHub reaches participant notebook pods directly. Reconcile the
+  # nested-cluster route here so it is restored with the boot-time policy.
+  ip route replace "$CINDER_POD_CIDR" via "$CINDER_K3S_GATEWAY" dev "$CINDER_GUEST_BRIDGE"
 
   mapfile -t subnets < <(managed_subnets)
   ((${#subnets[@]} > 0)) || fail "no kep-v2 Docker networks are present"
@@ -183,6 +192,11 @@ status_policy() {
 
 validate_flows "$FLOW_FILE"
 validate_flows "$CAMPAIGN_FLOW_FILE"
+if [[ $ACTION != validate ]]; then
+  require_command flock
+  exec 9>"$LOCK_FILE"
+  flock -x 9
+fi
 case "$ACTION" in
   apply) apply_policy ;;
   remove)
