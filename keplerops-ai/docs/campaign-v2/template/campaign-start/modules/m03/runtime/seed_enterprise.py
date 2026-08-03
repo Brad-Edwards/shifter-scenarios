@@ -257,6 +257,8 @@ def seed_package_repositories() -> None:
     )
     set_action_secret(CINDER_FORGEJO, CINDER_AUTH, owner, "orion-mcp-audit",
                       "CINDER_FORGEJO_AUTH", f"{CINDER_AUTH[0]}:{CINDER_AUTH[1]}")
+    set_action_secret(CINDER_FORGEJO, CINDER_AUTH, owner, "orion-mcp-audit",
+                      "KEPLEROPS_FORGEJO_AUTH", f"{FORGEJO_AUTH[0]}:{FORGEJO_AUTH[1]}")
 
     ensure_repo(
         FORGEJO,

@@ -9,3 +9,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: npm test
+      - name: Maintainer merge and tag accepted field fix
+        if: ${{ github.event_name == 'pull_request' }}
+        shell: bash
+        env:
+          CINDER_FORGEJO_AUTH: ${{ secrets.CINDER_FORGEJO_AUTH }}
+        run: |
+          set -euo pipefail
+          pr=$(jq -r '.number' "$GITHUB_EVENT_PATH")
+          author=$(jq -r '.pull_request.user.login' "$GITHUB_EVENT_PATH")
+          test "$author" = cinder-field-operator
+          version=$(node -p "require('./package.json').version")
+          test "$version" != "2.3.1"
+          test "$(node -p "require('./package.json').kepleropsSourcePullRequest")" = "$pr"
+          payload='{"Do":"merge","merge_when_checks_succeed":false,"delete_branch_after_merge":false}'
+          curl -fsS -u "$CINDER_FORGEJO_AUTH" -H 'Content-Type: application/json' \
+            -X POST -d "$payload" \
+            "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$pr/merge"
+          for attempt in $(seq 1 30); do
+            curl -fsS -u "$CINDER_FORGEJO_AUTH" \
+              "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$pr" > /tmp/pr.json
+            test "$(jq -r '.merged' /tmp/pr.json)" = true && break
+            sleep 2
+          done
+          test "$(jq -r '.merged' /tmp/pr.json)" = true
+          merge_commit=$(jq -r '.merge_commit_sha' /tmp/pr.json)
+          git fetch origin main
+          git tag -f "v$version" "$merge_commit"
+          git push "http://$CINDER_FORGEJO_AUTH@10.61.90.30:3000/cinder-operator/orion-mcp-audit.git" "v$version"

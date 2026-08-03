@@ -31,13 +31,13 @@ jobs:
           curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x \
             "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$source_pr" > /tmp/source-pr.json
           test "$(jq -r .merged /tmp/source-pr.json)" = true
-          test "$(jq -r .user.login /tmp/source-pr.json)" = cinder-participant
+          test "$(jq -r .user.login /tmp/source-pr.json)" = cinder-field-operator
           test "$(jq -r .merged_by.login /tmp/source-pr.json)" = cinder-operator
           source_head=$(jq -r .head.sha /tmp/source-pr.json)
           merge_commit=$(jq -r .merge_commit_sha /tmp/source-pr.json)
           curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x \
             "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/git/commits/$source_head" > /tmp/source-commit.json
-          test "$(jq -r '.author.login // empty' /tmp/source-commit.json)" = cinder-participant
+          test "$(jq -r '.author.login // empty' /tmp/source-commit.json)" = cinder-field-operator
           curl -fsS -u cinder-operator:Cinder-Operations-Git-K3m7Pq4x \
             "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/raw/test/spdx.test.js?ref=$merge_commit" > /tmp/spdx.test.js
           test "$(sha256sum /tmp/spdx.test.js | cut -d' ' -f1)" = 07f6147dba49a913ca2de5b43220ae7c19cbb817e0d60a5868c7d157333adada
@@ -55,7 +55,7 @@ jobs:
           if [ ! -f adoption/manifest.json ]; then
             jq -n --arg version "$version" --arg integrity "$integrity" --arg tar "$tar_sha" --arg installed "$installed_sha" \
               --argjson source_pr "$source_pr" --arg head "$source_head" --arg merge "$merge_commit" \
-              --arg source_author cinder-participant --arg maintainer cinder-operator --arg note "$ADOPTION_NOTE" \
+              --arg source_author cinder-field-operator --arg maintainer cinder-operator --arg note "$ADOPTION_NOTE" \
               --arg completed "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
               '{schema:"keplerops.mcp-adoption/v1",package:"@keplerops/orion-mcp-audit",version:$version,source_pull_request:$source_pr,source_head_commit:$head,source_author:$source_author,maintainer_actor:$maintainer,source_merge_commit:$merge,signature_status:"verified",tests:"passed",private_callback:"absent",tarball_sha256:$tar,installed_integrity:$integrity,installed_tree_sha256:$installed,adoption_note:$note,completed_at:$completed}' \
               > adoption/manifest.json

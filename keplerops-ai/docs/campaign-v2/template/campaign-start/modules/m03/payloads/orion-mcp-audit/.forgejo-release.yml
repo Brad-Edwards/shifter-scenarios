@@ -13,6 +13,7 @@ jobs:
           RELEASE_PRIVATE_KEY_B64: ${{ secrets.RELEASE_PRIVATE_KEY_B64 }}
           VERDACCIO_AUTH_B64: ${{ secrets.VERDACCIO_AUTH_B64 }}
           CINDER_FORGEJO_AUTH: ${{ secrets.CINDER_FORGEJO_AUTH }}
+          KEPLEROPS_FORGEJO_AUTH: ${{ secrets.KEPLEROPS_FORGEJO_AUTH }}
         run: |
           set -euo pipefail
           version=${FORGEJO_REF_NAME#v}
@@ -22,7 +23,7 @@ jobs:
           curl -fsS -u "$CINDER_FORGEJO_AUTH" \
             "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/pulls/$source_pr" > /tmp/source-pr.json
           test "$(jq -r .merged /tmp/source-pr.json)" = true
-          test "$(jq -r .user.login /tmp/source-pr.json)" = cinder-participant
+          test "$(jq -r .user.login /tmp/source-pr.json)" = cinder-field-operator
           test "$(jq -r .merged_by.login /tmp/source-pr.json)" = cinder-operator
           npm test
           tarball=$(npm pack --silent)
@@ -40,3 +41,16 @@ jobs:
             --data-binary "@$tarball" "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases/$release_id/assets?name=$tarball" >/dev/null
           curl -fsS -u "$CINDER_FORGEJO_AUTH" -H 'Content-Type: application/octet-stream' \
             --data-binary "@$tarball.sig" "http://10.61.90.30:3000/api/v1/repos/cinder-operator/orion-mcp-audit/releases/$release_id/assets?name=$tarball.sig" >/dev/null
+          workspace=$(mktemp -d)
+          git clone "http://$KEPLEROPS_FORGEJO_AUTH@10.61.40.20:3000/keplerops/orion-agent-tool-consumer.git" "$workspace/consumer" >/dev/null
+          cd "$workspace/consumer"
+          npm config set registry http://10.61.40.31:4873
+          npm config set //10.61.40.31:4873/:_auth "$VERDACCIO_AUTH_B64"
+          npm config set //10.61.40.31:4873/:always-auth true
+          npm install --package-lock-only --ignore-scripts --save-exact "@keplerops/orion-mcp-audit@$version" >/dev/null
+          git diff --quiet package.json package-lock.json && exit 0
+          git config user.name 'KeplerOps staging consumer'
+          git config user.email 'staging-consumer@keplerops.lab'
+          git add package.json package-lock.json
+          git commit -m "Adopt Orion MCP audit $version"
+          git push "http://$KEPLEROPS_FORGEJO_AUTH@10.61.40.20:3000/keplerops/orion-agent-tool-consumer.git" HEAD:main

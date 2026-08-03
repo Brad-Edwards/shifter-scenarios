@@ -72,13 +72,12 @@ KeplerOps consumer can verify and record adoption.
 **Likely failure modes:** Participants remove or weaken the failing check, add
 malicious callback behavior too early, skip the source pull request reference,
 tag an unmerged commit, assume comments/stars establish trust, or stop before
-the KeplerOps consumer installs the release. A known source mismatch may reject
-the deployed field identity if the workflow expects `cinder-participant`.
+the KeplerOps consumer installs the release.
 
 **Participant-visible diagnosis:** Ask for the Cinder PR, green CI run, merged
 commit, release tag, signature asset, consumer lock integrity, and adoption
-manifest. If a valid field-operator PR is rejected solely by identity, treat it
-as a content defect rather than a participant mistake.
+manifest. If a valid field-operator PR is rejected, treat it as a content
+defect rather than a participant mistake.
 
 **Tiered hints:**
 

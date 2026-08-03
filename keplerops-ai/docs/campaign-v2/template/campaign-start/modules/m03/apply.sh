@@ -126,7 +126,15 @@ install_airflow_workflows() {
   fi
   compose exec -T airflow-api airflow users add-role \
     --username eval.reader --role "Orion Viewer" >/dev/null 2>&1 || true
-  compose exec -T airflow-scheduler airflow dags unpause orion_approved_review_follow_up >/dev/null
+  for dag_id in \
+    orion_evaluation_dependency_review \
+    orion_phantom_dependency_resolution \
+    orion_model_card_compatibility \
+    orion_current_workhub_status_review \
+    orion_release_review_handoff \
+    orion_approved_review_follow_up; do
+    compose exec -T airflow-scheduler airflow dags unpause "${dag_id}" >/dev/null
+  done
 }
 
 seed_haystack_source() {

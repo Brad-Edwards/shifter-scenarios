@@ -87,6 +87,17 @@ def forgejo_headers() -> dict[str, str]:
     return {"Authorization": f"Basic {encoded}"}
 
 
+def workhub_journal_user_matches(item: dict[str, object], login: str, display_name: str) -> bool:
+    user = item.get("user") or {}
+    if not isinstance(user, dict):
+        return False
+    values = {
+        str(user.get("login") or ""),
+        str(user.get("name") or ""),
+    }
+    return login in values or display_name in values
+
+
 def s3():
     return boto3.client(
         "s3", endpoint_url=MINIO_ENDPOINT, aws_access_key_id=MINIO_ACCESS,
@@ -719,7 +730,7 @@ def current_workhub_status_review():
             raise ValueError("the saved WorkHub source has not been changed to the qualifying false state")
         release_engineer_journals = [
             item for item in current.get("journals", [])
-            if str(item.get("user", {}).get("name") or "") == "Release Engineer"
+            if workhub_journal_user_matches(item, "release.engineer", "Elliot Park")
             and any(detail.get("property") == "attr" and detail.get("name") in {"description", "status_id"}
                     for detail in item.get("details") or [])
         ]

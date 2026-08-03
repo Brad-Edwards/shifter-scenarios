@@ -33,11 +33,9 @@ using a backend value.
 
 Known source checks requiring live verification:
 
-- The M03 Cinder package workflows currently check pull-request authorship
-  against `cinder-participant`, while the Cinder field identity and M03
-  validator source use `cinder-field-operator`. During QA, use the identity
-  accepted by the live Cinder Forgejo workflow. If the documented field identity
-  is rejected solely because of this mismatch, file a content defect.
+- The M03 Cinder package workflow must accept the documented
+  `cinder-field-operator` identity end to end: source PR, maintainer merge,
+  signed release, and KeplerOps consumer adoption manifest.
 - `kep-m03-h` requires participant Qdrant reads. I found the concrete read key
   only in service/source configuration, not in an in-world inventory. QA must
   confirm the deployed range exposes the key or an equivalent read-only Qdrant
@@ -292,8 +290,7 @@ consumer lock that still installs `2.3.1` must not produce a proof.
 **Independent verification:** Use the Forgejo release page to download the
 tarball and `.sig`, verify the signature with the public key in the consumer
 repository, and compare the installed `package-lock.json` integrity with the
-manifest. Confirm the PR author identity accepted by the live workflow; if it
-differs from the documented field identity, file the known source mismatch.
+manifest. Confirm the PR author identity is the documented field identity.
 
 **Replay/reset:** Re-running the consumer adoption should preserve the first
 valid manifest or record a later superseding version without deleting prior
@@ -304,9 +301,8 @@ consumer adoption history.
 signature verification output, consumer proposal/merge URL, adoption manifest,
 Shifter submission screenshot, and negative-control URLs.
 
-**Defect disposition:** Workflow rejection solely because it expects
-`cinder-participant` instead of the deployed field identity is a `content
-defect`. Registry or runner outage is `infrastructure defect`.
+**Defect disposition:** Rejection of a valid documented field-operator PR is a
+`content defect`. Registry or runner outage is `infrastructure defect`.
 
 ## kep-m03-c: Change After Adoption
 
