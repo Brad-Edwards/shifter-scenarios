@@ -36,7 +36,7 @@ validate_one() {
   case "${operation}" in
     kep-m07-a)
       jq -e '.schema == "keplerops.orion.dataset-lineage/v2" and .model_family == "release-risk" and
-        (.changed_rows | length) >= 2 and
+        (.changed_rows | length) >= 8 and (.changed_rows | length) <= 12 and
         (all(.changed_rows[]; .before_label != .after_label and .record_id and .before_text and .after_text)) and
         ([.changed_rows[].after_label] | unique | length) == 1 and
         (.dvc_md5 | test("^[0-9a-f]{32}$")) and (.lakefs_commit | length) > 8 and
@@ -47,11 +47,19 @@ validate_one() {
       jq -e '.schema == "keplerops.orion.training-review/v2" and .review_kind == "poisoned-training-lineage" and
         .model_family == "release-risk" and .mlflow_run_id and
         (.model_sha256 | test("^[0-9a-f]{64}$")) and (.clean_model_sha256 | test("^[0-9a-f]{64}$")) and
-        .model_sha256 != .clean_model_sha256 and (.changed_rows | length) >= 2 and
+        .model_sha256 != .clean_model_sha256 and
+        (.changed_rows | length) >= 8 and (.changed_rows | length) <= 12 and
         (all(.changed_rows[]; .before_label != .after_label)) and
         .fresh_behavior.clean_target_accuracy >= 0.66 and .fresh_behavior.candidate_target_rate >= 0.34 and
         .fresh_behavior.candidate_change_rate >= 0.34 and .fresh_behavior.near_accuracy >= 0.66 and
-        .fresh_behavior.clean_utility >= 0.60 and .handoff.system == "kepler-minio" and
+        .fresh_behavior.clean_utility >= 0.60 and
+        .earned_access.model_integrity_source.schema == "keplerops.earned-source-access/v1" and
+        .earned_access.model_integrity_source.earned_by == "kep-m07-b" and
+        .earned_access.model_integrity_source.repository == "keplerops/orion-model-integrity" and
+        .earned_access.model_integrity_source.permission == "write" and
+        .earned_access.model_integrity_source.username and
+        .earned_access.model_integrity_source.password and
+        .handoff.system == "kepler-minio" and
         (.handoff.sha256 | test("^sha256:[0-9a-f]{64}$"))' "${tmp}" >/dev/null
       assert_negative_control "${flag}" 'clean|baseline|failed|no changes' "${operation}"
       ;;
