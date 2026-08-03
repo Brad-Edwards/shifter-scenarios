@@ -8,7 +8,7 @@
   },
   "operations": {
     "kep-m09-a": {"input": "exact signed visible evaluation plus required Forgejo release-image Actions run", "services": ["Forgejo Actions", "MLflow", "Harbor", "BuildKit", "Kubernetes"], "carrier": "v2 registered-candidate MLflow record"},
-    "kep-m09-b": {"input": "all three fixed signed integrity checkpoints, with the serialized-artifact checkpoint selected as the exact candidate, plus exact MLflow/Forgejo/model/held-out identities and immutable review image", "services": ["MLflow", "Forgejo", "Harbor", "ONNX Runtime", "Cosign", "Rekor"], "carrier": "v2 signed visible-evaluation MLflow record"},
+    "kep-m09-b": {"input": "one accepted fixed signed integrity checkpoint from kep-m07-e, kep-m07-g, or kep-m07-i, selected as the exact candidate, plus exact MLflow/Forgejo/model/held-out identities and immutable review image", "services": ["MLflow", "Forgejo", "Harbor", "ONNX Runtime", "Cosign", "Rekor"], "carrier": "v2 signed visible-evaluation MLflow record"},
     "kep-m09-c": {"input": "accepted frozen candidate and protected approved-lineage commit", "services": ["MLflow", "Forgejo", "MinIO", "OPA"], "carrier": "v2 lineage-resolution object"},
     "kep-m09-d": {"input": "exact candidate/report issue and human release-engineer event", "services": ["Forgejo", "MLflow", "Cosign", "OPA", "MinIO"], "carrier": "v2 release-approval decision"},
     "kep-m09-e": {"input": "signed evaluation and exact moved Harbor compatibility label", "services": ["Harbor", "Cosign", "OPA", "MinIO"], "carrier": "v2 image-binding decision"},

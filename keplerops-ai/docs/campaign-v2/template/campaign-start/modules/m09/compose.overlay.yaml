@@ -53,6 +53,7 @@ x-m09-airflow: &m09-airflow
   volumes:
     - ./campaign-start/modules/m09/dags/orion_release_operations.py:/opt/airflow/dags/orion_release_operations.py:ro
     - ./campaign-start/modules/m09/runtime/release_operations.py:/opt/airflow/config/release_operations.py:ro
+    - ./campaign-start/modules/m09/runtime/reconcile_airflow_roles.py:/opt/airflow/config/reconcile_airflow_roles.py:ro
     - ./state/campaign-start/m09:/var/lib/orion-release
     - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
     - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro

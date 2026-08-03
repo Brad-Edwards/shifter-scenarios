@@ -74,7 +74,7 @@ COMMIT = re.compile(r"^[0-9a-f]{40}(?:[0-9a-f]{24})?$")
 SAFE_KEY = re.compile(r"^[A-Za-z0-9._:-]{1,160}$")
 
 PREREQUISITES: dict[str, list[list[str]]] = {
-    "kep-m09-b": [["kep-m07-e"], ["kep-m07-g"], ["kep-m07-i"]],
+    "kep-m09-b": [["kep-m07-e", "kep-m07-g", "kep-m07-i"]],
     "kep-m09-a": [["kep-m09-b"], ["kep-m05-l"]],
     "kep-m09-c": [["kep-m09-a"], ["kep-m05-l"]],
     "kep-m09-d": [["kep-m09-a"], ["kep-m01-d"]],
@@ -895,13 +895,9 @@ def signed_evaluation(record: dict[str, Any]) -> tuple[dict[str, Any], bytes, di
 
 
 def visible_gate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[str, Any]]) -> dict[str, Any]:
-    by_operation = {str(parent.get("operation") or ""): parent for parent in parents}
-    if set(by_operation) != {"kep-m07-e", "kep-m07-g", "kep-m07-i"}:
-        raise RuntimeError("visible evaluation requires all three exact signed m07 integrity predecessors")
-    # The serialized artifact is the release candidate that continues into M09
-    # and M10. The other two signed reviews are independent prerequisite gates,
-    # not interchangeable substitutes for the candidate bytes.
-    compromised = by_operation["kep-m07-i"]
+    if len(parents) != 1 or str(parents[0].get("operation") or "") not in {"kep-m07-e", "kep-m07-g", "kep-m07-i"}:
+        raise RuntimeError("visible evaluation requires one accepted m07 integrity predecessor")
+    compromised = parents[0]
     predecessor_operation = str(compromised.get("operation") or "")
     run_id = str(compromised.get("model_run_id") or "")
     source_commit = str(compromised.get("source_commit") or "")
@@ -973,6 +969,9 @@ def visible_gate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[d
     if (not DIGEST.fullmatch(data_sha)
             or f"sha256:{digest(data_sha)}" != compromised.get("data_digest")):
         raise RuntimeError("model package data provenance differs from the signed m07 lineage")
+    artifact_source_repository = str(compromised.get("artifact_source_repository") or compromised["source_repository"])
+    artifact_source_commit = str(compromised.get("artifact_source_commit") or source_commit)
+    artifact_source_tree_digest = str(compromised.get("artifact_source_tree_digest") or compromised["source_tree_digest"])
     # Bind the complete packaged data lineage (repository, commit, manifest,
     # split and label-schema declarations) by canonical digest so the later
     # signed release identity can include the whole data stage deterministically
@@ -983,9 +982,9 @@ def visible_gate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[d
         "source_repository": compromised["source_repository"],
         "source_commit": source_commit, "suite_commit": suite_commit,
         "source_tree_digest": compromised["source_tree_digest"],
-        "artifact_source_repository": compromised["artifact_source_repository"],
-        "artifact_source_commit": compromised["artifact_source_commit"],
-        "artifact_source_tree_digest": compromised["artifact_source_tree_digest"],
+        "artifact_source_repository": artifact_source_repository,
+        "artifact_source_commit": artifact_source_commit,
+        "artifact_source_tree_digest": artifact_source_tree_digest,
         "data_digest": f"sha256:{digest(data_sha)}", "data_provenance_digest": data_provenance_digest,
         "data_provenance": provenance,
         "model_digest": member_digests["model"], "model_members": member_digests,

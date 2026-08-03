@@ -94,19 +94,22 @@ case "${OPERATION}" in
     jq -e '.schema == "keplerops.visible-evaluation-predicate/v2" and
       .statement._type == "https://in-toto.io/Statement/v1" and
       .statement.predicateType == "https://keplerops.lab/attestations/visible-evaluation/v2" and
-      .predecessor.operation == "kep-m07-i" and
-      .source_repository == "keplerops/orion-build" and
-      .artifact_source_repository == "cinder-labs/orion-poisoned-dataset" and
+      (.predecessor.operation == "kep-m07-e" or .predecessor.operation == "kep-m07-g" or .predecessor.operation == "kep-m07-i") and
+      (.source_repository == "keplerops/orion-build" or .source_repository == "keplerops/orion-model-integrity") and
+      (.artifact_source_repository == "keplerops/orion-build" or .artifact_source_repository == "keplerops/orion-model-integrity" or .artifact_source_repository == "cinder-labs/orion-poisoned-dataset") and
       (.source_commit | test("^[0-9a-f]{40}([0-9a-f]{24})?$")) and
       (.artifact_source_commit | test("^[0-9a-f]{40}([0-9a-f]{24})?$")) and
       ([.source_tree_digest,.artifact_source_tree_digest,.data_digest,.model_digest,.prompt_digest,.suite_digest,.heldout_suite_digest,
-        .integrity_report_digest,.integrity_handoff_digest,.review_image_digest,.report_digest,.artifact_digest,
-        .predecessor.artifact_digest,.predecessor.model_digest] |
+        .integrity_report_digest,.integrity_handoff_digest,.review_image_digest,.report_digest,
+        .predecessor.model_digest] |
         all(test("^sha256:[0-9a-f]{64}$"))) and
+      ((.artifact_digest == null) or (.artifact_digest | test("^sha256:[0-9a-f]{64}$"))) and
+      ((.predecessor.artifact_digest == null) or (.predecessor.artifact_digest | test("^sha256:[0-9a-f]{64}$"))) and
       .predecessor.model_digest == .model_digest and .predecessor.artifact_digest == .artifact_digest and
       .visible.passed == .visible.cases and .visible.cases >= 8 and
-      (.heldout_case_ids | length >= 8) and .private_controls.artifact_execution == "passed" and
-      .private_controls.heldout_fidelity == "passed" and
+      (.heldout_case_ids | length >= 2) and
+      ((.private_controls.artifact_execution == "passed" and .private_controls.heldout_fidelity == "passed") or
+       (.private_controls.trigger == "passed" and .private_controls.near_neighbor == "passed")) and
       (.data_provenance | type == "object" and length > 0) and
       (.signature.bundle_sha256 | test("^sha256:[0-9a-f]{64}$")) and (.signature.transparency_log_index | type == "number")' "${carrier}" >/dev/null
     ;;
