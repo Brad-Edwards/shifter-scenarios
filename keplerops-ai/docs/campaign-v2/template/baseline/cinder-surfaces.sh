@@ -5,7 +5,7 @@ ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 WORKSTATION=keplerops-participant-workstation-runtime
 basket=""
 token=""
-readonly FORGEJO_AUTH=cinder-operator:Cinder-Operations-Git-K3m7Pq4x
+readonly FORGEJO_AUTH=cinder-field-operator:Cinder-Field-Operator-Git-V6n4Qs8p
 
 ws() {
   docker exec --user kasm-user --env HOME=/home/kasm-user "$WORKSTATION" "$@"
@@ -62,11 +62,11 @@ docker exec -i --user kasm-user --env HOME=/home/kasm-user "$WORKSTATION" \
 
 forgejo_user=$(ws curl -fsS --user "$FORGEJO_AUTH" \
   https://git.cinder.lab/api/v1/user)
-jq -e '.login == "cinder-operator" and .is_admin == true' \
+jq -e '.login == "cinder-field-operator" and .is_admin == false and .has_actions == true' \
   <<<"$forgejo_user" >/dev/null
 echo "PASS Cinder source-control identity"
 
-if ! cinder_api GET /repos/cinder-operator/workbench-readiness >/dev/null 2>&1; then
+if ! cinder_api GET /repos/cinder-field-operator/workbench-readiness >/dev/null 2>&1; then
   cinder_api POST /user/repos \
     --header 'Content-Type: application/json' \
     --data '{"name":"workbench-readiness","private":true,"auto_init":true,"default_branch":"main"}' \
@@ -95,40 +95,40 @@ YAML
 )
 workflow_path=.forgejo/workflows/readiness.yml
 encoded=$(printf '%s\n' "$workflow" | base64 -w0)
-existing=$(cinder_api GET "/repos/cinder-operator/workbench-readiness/contents/$workflow_path" \
+existing=$(cinder_api GET "/repos/cinder-field-operator/workbench-readiness/contents/$workflow_path" \
   2>/dev/null || true)
 if sha=$(jq -er '.sha' <<<"$existing" 2>/dev/null); then
   payload=$(jq -cn --arg content "$encoded" --arg sha "$sha" \
     '{content:$content,sha:$sha,message:"Reconcile workbench readiness"}')
-  cinder_api PUT "/repos/cinder-operator/workbench-readiness/contents/$workflow_path" \
+  cinder_api PUT "/repos/cinder-field-operator/workbench-readiness/contents/$workflow_path" \
     --header 'Content-Type: application/json' --data "$payload" >/dev/null
 else
   payload=$(jq -cn --arg content "$encoded" \
     '{content:$content,message:"Add workbench readiness"}')
-  cinder_api POST "/repos/cinder-operator/workbench-readiness/contents/$workflow_path" \
+  cinder_api POST "/repos/cinder-field-operator/workbench-readiness/contents/$workflow_path" \
     --header 'Content-Type: application/json' --data "$payload" >/dev/null
 fi
 trigger_path=.forgejo/readiness-trigger.txt
 trigger_content="readiness-$(date -u +%s)"
 trigger_encoded=$(printf '%s\n' "$trigger_content" | base64 -w0)
-trigger_existing=$(cinder_api GET "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+trigger_existing=$(cinder_api GET "/repos/cinder-field-operator/workbench-readiness/contents/$trigger_path" \
   2>/dev/null || true)
 if trigger_sha=$(jq -er '.sha' <<<"$trigger_existing" 2>/dev/null); then
   trigger_payload=$(jq -cn --arg content "$trigger_encoded" --arg sha "$trigger_sha" \
     '{content:$content,sha:$sha,message:"Run workbench readiness"}')
-  cinder_api PUT "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+  cinder_api PUT "/repos/cinder-field-operator/workbench-readiness/contents/$trigger_path" \
     --header 'Content-Type: application/json' --data "$trigger_payload" >/dev/null
 else
   trigger_payload=$(jq -cn --arg content "$trigger_encoded" \
     '{content:$content,message:"Run workbench readiness"}')
-  cinder_api POST "/repos/cinder-operator/workbench-readiness/contents/$trigger_path" \
+  cinder_api POST "/repos/cinder-field-operator/workbench-readiness/contents/$trigger_path" \
     --header 'Content-Type: application/json' --data "$trigger_payload" >/dev/null
 fi
-revision=$(cinder_api GET /repos/cinder-operator/workbench-readiness/branches/main |
+revision=$(cinder_api GET /repos/cinder-field-operator/workbench-readiness/branches/main |
   jq -er '.commit.id')
 run=''
 for _ in $(seq 1 90); do
-  run=$(cinder_api GET /repos/cinder-operator/workbench-readiness/actions/tasks?limit=20 |
+  run=$(cinder_api GET /repos/cinder-field-operator/workbench-readiness/actions/tasks?limit=20 |
     jq -c --arg revision "$revision" '
       [.workflow_runs[] | select(.workflow_id == "readiness.yml" and .head_sha == $revision)]
       | max_by(.id) // empty')

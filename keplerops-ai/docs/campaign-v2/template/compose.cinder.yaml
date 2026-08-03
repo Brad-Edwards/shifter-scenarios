@@ -64,7 +64,7 @@ services:
           --must-change-password=false >/dev/null
         forgejo --config "$$config" forgejo-cli actions register \
           --secret 4f8c227d64a1ed619912d686ea90e7edc5637a81 \
-          --scope cinder-operator \
+          --scope "" \
           --labels cinder-linux:host \
           --name cinder-field-operator-isolated >/dev/null
     volumes:
@@ -89,7 +89,7 @@ services:
           /bin/forgejo-runner create-runner-file \
             --instance http://cinder-forgejo:3000 \
             --secret 4f8c227d64a1ed619912d686ea90e7edc5637a81 \
-            --name cinder-operations
+            --name cinder-field-operator-isolated
         fi
         chown 1000:1000 /var/lib/keplerops-v2/cinder-forgejo-runner \
           /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
