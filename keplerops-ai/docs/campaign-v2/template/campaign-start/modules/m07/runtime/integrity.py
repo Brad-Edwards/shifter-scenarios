@@ -238,7 +238,10 @@ def _poison(exported: list[dict[str, Any]]) -> dict[str, Any]:
         {"record_id": record_id, "text": value["text"], "label": value["label"]}
         for record_id, value in sorted(_labels(exported).items())
     ]
-    return poison_delta(_baseline_rows(), current)
+    # The downstream fresh-behavior gate is not reliably reachable from the
+    # two-row structural minimum. Reject an underpowered attempt before its
+    # immutable M07-A checkpoint can strand the participant.
+    return poison_delta(_baseline_rows(), current, minimum=8, maximum=12)
 
 
 def _s3():

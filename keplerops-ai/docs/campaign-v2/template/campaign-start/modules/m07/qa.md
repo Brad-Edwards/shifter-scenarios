@@ -84,7 +84,7 @@ for the participant rerun.
 
    Expected: one visible project, 48 exported tasks, all eight release-risk
    labels represented, and each task has an annotation.
-3. In the Label Studio task UI, change 2 to 12 existing annotations from
+3. In the Label Studio task UI, change 8 to 12 existing annotations from
    non-target labels to one common target label. Do not edit record IDs or text.
    Export again and save the before/after files.
 4. Open Airflow, select DAG `orion_label_export`, choose **Trigger DAG**, and

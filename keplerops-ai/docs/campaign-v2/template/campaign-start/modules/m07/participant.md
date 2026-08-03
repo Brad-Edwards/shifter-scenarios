@@ -24,7 +24,7 @@ project before changing anything. The access recovered with this lane is in
 Studio and Airflow identities plus lakeFS evidence retrieval.
 
 **Method:** Export the current 48-row parent, choose a small coherent subset,
-and revise 2 to 12 existing labels toward one common target label. Preserve each
+and revise 8 to 12 existing labels toward one common target label. Preserve each
 record ID, text, and the eight-label schema. Trigger the Orion label export
 workflow in Airflow with a new attempt ID, then follow its returned lakeFS
 commit and lineage path.

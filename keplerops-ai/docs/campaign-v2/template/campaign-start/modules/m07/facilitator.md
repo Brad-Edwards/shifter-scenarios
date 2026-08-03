@@ -15,8 +15,8 @@ training-data poisoning path.
 and lakeFS, preserving project scope and row-level lineage.
 
 **Hints:** Orientation: ask the team which Label Studio project their earned
-identity can see. Mechanism: focus them on changing labels while preserving
-record IDs, text, schema, and one target label. Execution: direct them to the
+identity can see. Mechanism: focus them on changing 8 to 12 labels while
+preserving record IDs, text, schema, and one target label. Execution: direct them to the
 Airflow label export and lakeFS lineage object.
 
 **Diagnostics:** Check Label Studio project access, before/after exports, DVC

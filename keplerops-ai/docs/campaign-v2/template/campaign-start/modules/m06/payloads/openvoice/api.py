@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Optional, Tuple
 
 import torch
-from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, Response, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import ValidationError
 from checkpoints import AttemptContext, resolve_parents
@@ -239,9 +239,10 @@ def download(generation_id: uuid.UUID, name: str, authorization: Optional[str] =
 
 
 @app.delete("/v1/generations/{generation_id}", status_code=204)
-def delete_generation(generation_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> None:
+def delete_generation(generation_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> Response:
     authorize(authorization)
     if (RECORDS / f"registry-{generation_id}.json").exists():
         raise HTTPException(status_code=409, detail="accepted media registry records are immutable")
     (RECORDS / f"{generation_id}.json").unlink(missing_ok=True)
     shutil.rmtree(WORK / str(generation_id), ignore_errors=True)
+    return Response(status_code=204)
