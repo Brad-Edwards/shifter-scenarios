@@ -292,7 +292,9 @@ ensure_operations_edge() {
     --data '{"rrsets":[{"name":"operations.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
     http://10.61.10.10:8081/api/v1/servers/localhost/zones/keplerops.lab. >/dev/null
   docker exec kep-v2-pdns-recursor rec_control wipe-cache 'keplerops.lab$' >/dev/null
-  docker exec kep-v2-caddy caddy reload --config /etc/caddy/Caddyfile >/dev/null
+  docker cp "${caddyfile}" kep-v2-caddy:/tmp/keplerops-campaign-Caddyfile
+  docker exec kep-v2-caddy caddy reload --adapter caddyfile \
+    --config /tmp/keplerops-campaign-Caddyfile >/dev/null
   for _ in $(seq 1 30); do
     if curl -kfsS --resolve operations.keplerops.lab:443:192.168.78.1 \
       https://operations.keplerops.lab/metrics >/dev/null 2>&1; then
