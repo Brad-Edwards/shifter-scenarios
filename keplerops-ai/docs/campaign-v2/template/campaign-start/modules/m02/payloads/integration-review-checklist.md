@@ -14,11 +14,14 @@ contain one visible registration control with these attributes:
 ```
 
 The manifest also supplies same-origin `package_url` and the SHA-256 of those
-immutable package bytes. The reviewer signs in to Forgejo before opening the
-external contributor's integration page. Registration proceeds only when the
-computer-using reviewer clicks that exact link and the click itself opens the
-normal Forgejo new-file form. That browser action creates the pending
-server-observed catalog record.
+immutable package bytes. The rendered page should also visibly name the Cinder
+TLS origin, MCP endpoint, manifest URL, package URL and digest, health route,
+owner, and Forgejo catalog target so the browser reviewer can ground the click
+decision in the page text before the worker verifies the attributes and bytes.
+The reviewer signs in to Forgejo before opening the external contributor's
+integration page. Registration proceeds only when the computer-using reviewer
+clicks that exact link and the click itself opens the normal Forgejo new-file
+form. That browser action creates the pending server-observed catalog record.
 The reviewer then refetches and matches the registered manifest and package
 bytes, invokes the registered endpoint with an attempt-specific protected
 fixture and callback, and completes the same Forgejo record through Chromium

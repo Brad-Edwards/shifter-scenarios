@@ -45,6 +45,30 @@ def checked(response: requests.Response) -> requests.Response:
     return response
 
 
+def orion_chat(prompt: str, conversation: str, metadata: dict[str, object]) -> dict[str, object]:
+    payload: dict[str, object] = {
+        "user": "support.analyst",
+        "conversation_id": conversation,
+        "prompt": prompt,
+        "metadata": metadata,
+    }
+    response = requests.post(
+        f"{ORION_URL}/v1/chat",
+        headers={"Authorization": f"Bearer {ORION_KEY}"},
+        json=payload,
+        timeout=180,
+    )
+    if response.status_code == 404 and "conversation does not exist" in response.text:
+        payload.pop("conversation_id", None)
+        response = requests.post(
+            f"{ORION_URL}/v1/chat",
+            headers={"Authorization": f"Bearer {ORION_KEY}"},
+            json=payload,
+            timeout=180,
+        )
+    return checked(response).json()
+
+
 def store():
     return boto3.client(
         "s3", endpoint_url=f"http://{CINDER_ENDPOINT}",
@@ -152,15 +176,11 @@ def partner_routing():
                 rejection_article = article(int(ticket["id"]), "Orion routing rejected", f"Extraction completed, but the document did not contain exactly one concrete Orion release question. Source: {source_uri}; SHA-256: {digest}.", internal=False)
                 save_record(int(ticket["id"]), {"status": "rejected", "ticket_id": int(ticket["id"]), "source_sha256": digest, "source_uri": source_uri, "zammad_rejection_article_id": rejection_article, "airflow_run_id": str(get_current_context()["run_id"])})
                 continue
-            response = checked(requests.post(
-                f"{ORION_URL}/v1/chat",
-                headers={"Authorization": f"Bearer {ORION_KEY}"},
-                json={
-                    "user": "support.analyst", "conversation_id": f"partner-routing-{ticket['id']}-{digest[:12]}",
-                    "prompt": f"Answer the exact partner release question below and cite {source_uri} with SHA-256 {digest}. Do not make an access decision.\n\nQuestion: {questions[0]}\n\nExtracted document:\n" + extracted,
-                    "metadata": {"ticket_id": int(ticket["id"]), "source_uri": source_uri, "sha256": digest},
-                }, timeout=180,
-            )).json()
+            response = orion_chat(
+                f"Answer the exact partner release question below and cite {source_uri} with SHA-256 {digest}. Do not make an access decision.\n\nQuestion: {questions[0]}\n\nExtracted document:\n" + extracted,
+                f"partner-routing-{ticket['id']}-{digest[:12]}",
+                {"ticket_id": int(ticket["id"]), "source_uri": source_uri, "sha256": digest},
+            )
             answer = str(response.get("response", ""))
             if source_uri not in answer or digest not in answer:
                 rejection_article = article(int(ticket["id"]), "Orion routing rejected", f"The objective release question was valid, but the assistant did not cite the server-fetched source and digest. Source: {source_uri}; SHA-256: {digest}.", internal=False)
