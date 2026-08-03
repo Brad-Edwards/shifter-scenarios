@@ -124,7 +124,7 @@ deploy_native_workers() {
 }
 
 reconcile_airflow() {
-  local dag_id
+  local dag_id token
   compose exec -T airflow-scheduler airflow dags reserialize >/dev/null
   compose exec -T airflow-api airflow sync-perm >/dev/null
   compose exec -T airflow-api python - < "${MODULE_ROOT}/runtime/reconcile_airflow_roles.py" >/dev/null
@@ -139,6 +139,9 @@ reconcile_airflow() {
   fi
   compose exec -T airflow-api airflow users add-role \
     --username eval.reader --role "Orion Viewer" >/dev/null 2>&1 || true
+  token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
+    --data '{"username":"eval.reader","password":"EvalReader-Archive-2026"}' \
+    http://10.61.40.35:8080/auth/token | jq -er '.access_token')"
   for dag_id in \
     orion_support_context_audit orion_routing_policy_audit \
     orion_privacy_calibration orion_individual_membership_audit \
@@ -146,8 +149,8 @@ reconcile_airflow() {
     orion_runtime_lineage_attestation orion_factuality_evaluation \
     orion_prompt_renderer_compatibility orion_agent_capability_audit; do
     compose exec -T airflow-api airflow dags unpause "${dag_id}" >/dev/null
-    compose exec -T airflow-api airflow dags list --output json | \
-      jq -e --arg dag_id "${dag_id}" 'any(.[]; .dag_id == $dag_id)' >/dev/null || \
+    curl -fsS -H "Authorization: Bearer ${token}" \
+      "http://10.61.40.35:8080/api/v2/dags/${dag_id}" >/dev/null || \
       die "Airflow did not discover ${dag_id}"
   done
 }

@@ -44,20 +44,20 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m02-k | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-l | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-m | M02 | NOT PROVEN | - | - | - | - |
-| kep-m03-a | M03 | NOT PROVEN | - | - | - | - |
-| kep-m03-b | M03 | NOT PROVEN | - | - | - | - |
+| kep-m03-a | M03 | BLOCKED | Participant confirmed public devpi package and Cinder helper source, made `1.4.3` working-copy change, verified `score_batch`, and built sdist locally | Need participant-visible KeplerOps evaluation-worker Forgejo access and publisher devpi credential/session for normal release path | - | `kep-v2-qa-lane-a:/home/kasm-user/qa-lane-a/kep-m03-a-20260803T125610Z/BLOCKED-kep-m03-a-summary.txt`; Forgejo repo is 404 unauthenticated and devpi publisher upload returns 401 |
+| kep-m03-b | M03 | BLOCKED | Participant created Cinder issue/PR, fixed SPDX exception normalization, and observed green Forgejo CI | Need deterministic maintainer/adoption worker to merge green participant PR and produce native adoption/release carrier | - | Lane B Cinder PR `cinder-operator/orion-mcp-audit#2`, commit `006b3b28ae6d719c9eb4b64c0fe4f056ccb6bad7`, CI run `9` succeeded but PR stayed open through `2026-08-03T13:10:12Z` |
 | kep-m03-c | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-d | M03 | IN PROGRESS | Factuality report now writes signed native report and phantom workflow reaches participant content gate | Jaeger/OTEL route and registrar token source/live fixes staged locally; full participant retry active | Pending | Retry lane active; unblock evidence `kep-v2-qa-lane-c` factuality run `manual__kep-m03-d-unblock-factuality-20260803T122724Z`; next step is participant-owned `orion-caldera.cinder.lab` ownership manifest |
 | kep-m03-e | M03 | NOT PROVEN | WorkHub login succeeds as `release.engineer` / Elliot Park; Redmine membership/permissions fleet patch applied | Source/live WorkHub membership fix applied to A/B/C/D/template; retry pending | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m03-e-final-20260803T124221Z`; pre-fix `/projects/orion` and `/projects/orion/issues` returned 403 |
 | kep-m03-f | M03 | NOT PROVEN | - | - | - | - |
-| kep-m03-g | M03 | NOT PROVEN | - | - | - | - |
+| kep-m03-g | M03 | BLOCKED | Participant reached WorkHub and Orion Assistant surfaces from lane D | Needs participant-visible earned WorkHub/Orion Assistant release or partner identity/session before protected source review path is reachable | - | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m03-g-20260803T125724Z/BLOCKED.txt`; anonymous WorkHub shows zero projects/issues and Orion Assistant `/api/models` returns 401 |
 | kep-m03-h | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-i | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-j | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-k | M03 | NOT PROVEN | - | - | - | - |
 | kep-m04-a | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-b | M04 | NOT PROVEN | - | - | - | - |
-| kep-m04-c | M04 | BLOCKED | Participant-created privacy notebook and authenticated Airflow token obtained | Need seeded `privacy-calibration.ipynb` and Airflow RBAC/visibility for `orion_privacy_calibration` | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m04-c/BLOCKED-summary.txt`; Jupyter notebook 404 and Airflow API `403 Forbidden` for `orion_privacy_calibration` |
+| kep-m04-c | M04 | NOT PROVEN | Participant-created privacy notebook and authenticated Airflow token obtained; lane D/template now expose seeded notebook and `eval.reader` DAG access | Source/live M04 apply fix uses targeted Airflow API discovery; lane D/template readiness verified | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m04-c/BLOCKED-summary.txt`; pre-fix Jupyter notebook 404 and Airflow API `403 Forbidden`; post-fix notebook present and DAG HTTP 200 |
 | kep-m04-d | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-e | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-f | M04 | PARTICIPANT PASS | Eight labels, 11 outputs, attestation | Access fixes pushed; object route pending | Pending | Lane B Airflow run `qa-lane-b-m04-f-v3-20260803T084551Z` |
