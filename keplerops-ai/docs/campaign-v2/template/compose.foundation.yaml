@@ -198,6 +198,7 @@ services:
           - git.keplerops.lab
           - workhub.keplerops.lab
           - files.keplerops.lab
+          - artifacts.keplerops.lab
           - support.keplerops.lab
           - intake.keplerops.lab
           - assistant.keplerops.lab
