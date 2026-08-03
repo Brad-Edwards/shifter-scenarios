@@ -293,6 +293,9 @@ LABEL_STUDIO_TOKEN=${TRAINER_TOKEN}
 AIRFLOW_URL=https://airflow.keplerops.lab
 AIRFLOW_USER=svc-orion-trainer
 AIRFLOW_PASSWORD=${TRAINER_TOKEN}
+LAKEFS_URL=https://lake.keplerops.lab
+LAKEFS_ACCESS_KEY_ID=KeplerLakeFSAccess
+LAKEFS_SECRET_ACCESS_KEY=KeplerV2-Training-LakeFS-Object-Key
 EOF
 }
 

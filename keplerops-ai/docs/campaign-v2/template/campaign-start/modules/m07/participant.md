@@ -20,7 +20,8 @@ annotation workflow KeplerOps trusts.
 **Start:** Open Label Studio with the Orion contributor identity and find
 **Orion Release Risk Training Baseline**. Confirm you can work only in that
 project before changing anything. The access recovered with this lane is in
-`~/.keplerops/m07-earned.env` on your workstation.
+`~/.keplerops/m07-earned.env` on your workstation; it covers the bounded Label
+Studio and Airflow identities plus lakeFS evidence retrieval.
 
 **Method:** Export the current 48-row parent, choose a small coherent subset,
 and revise 2 to 12 existing labels toward one common target label. Preserve each
