@@ -288,9 +288,11 @@ class WorkerHandler(http.server.BaseHTTPRequestHandler):
             self._json(200, authority_request(path, token=SERVICE_TOKEN))
             return
         if path == "/v1/tools/training-contribution-status":
-            if not self._authenticated():
-                self._json(401, {"error": "service authentication required"})
-                return
+            # The registered rogue agent calls this with its server-issued
+            # agent_token; the authority validates that token and returns the
+            # agent tool response. Forward the presented bearer to the authority
+            # (which authenticates the agent identity) rather than gating on the
+            # worker service token, which the agent never holds.
             token = self.headers.get("Authorization", "").removeprefix("Bearer ")
             try:
                 self._json(200, authority_request(path, token=token))
