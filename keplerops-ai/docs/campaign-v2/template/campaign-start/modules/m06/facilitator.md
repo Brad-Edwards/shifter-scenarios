@@ -129,7 +129,7 @@ complete an operation from observability.
 **Tier 2 - Mechanism:** Explain that `fdroidcl` v0.8.1 relies on HTTPS, so the certificate fingerprint and signed JAR must be checked separately.
 **Tier 3 - Execution:** Give `fdroidcl repo add keplerops <URL>` with exactly two arguments, identify `~/.config/fdroidcl/config.toml`, then direct them to the APK provenance and digest-bound SBOM property.
 **Defensive discussion:** Reproducible builds, repository signing, transparency, and metadata minimization.
-**Diagnostics:** Check `fdroidcl version`, TOML `id/url/enabled`, certificate SHA-256, `jarsigner -verify -strict`, index/APK hash, embedded provenance, SBOM hash, and source tag. `repo: wrong amount of arguments` means the obsolete three-argument instruction was used.
+**Diagnostics:** Check `fdroidcl version`, TOML `id/url/enabled`, certificate SHA-256, the explicit truststore-backed `jarsigner -verify -strict`, index/APK hash, embedded provenance, SBOM hash, and source tag. `repo: wrong amount of arguments` means the obsolete three-argument instruction was used.
 **Recovery:** Immutable public repository.
 
 ## kep-m06-i — Corroborate Identity Independently

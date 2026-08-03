@@ -43,7 +43,7 @@ validate_g() {
 
 validate_h() {
   local flag=$1 tmp apk_sha jar_fingerprint pem_fingerprint package_line proof
-  tmp="$(mktemp -d)"; trap 'rm -rf -- "$tmp"' RETURN
+  tmp="$(mktemp -d)"; trap 'rm -rf -- "${tmp:-}"' RETURN
   participant_json https://keplerops.lab/software/orion-field-review/repo/index-v1.jar >"$tmp/index-v1.jar"
   participant_json https://keplerops.lab/software/orion-field-review/repo/repo-signing.pem >"$tmp/repo.pem"
   keytool -importcert -noprompt -alias keplerops-fdroid -file "$tmp/repo.pem" \
@@ -81,14 +81,16 @@ validate_h() {
 }
 
 validate_i() {
-  local flag=$1 card
+  local flag=$1 card homepage smtp_tls
   card="$(participant_json https://orion-open-systems.org/speakers/mira-chen.vcf)"
   grep -Fq "NOTE:Speaker engagement reference: $flag" <<<"$card"
-  participant_json https://orion-open-systems.org/ | grep -Fq 'git.keplerops.lab/mira.chen'
+  homepage="$(participant_json https://orion-open-systems.org/)"
+  grep -Fq 'git.keplerops.lab/mira.chen' <<<"$homepage"
   participant_json https://git.keplerops.lab/api/v1/users/mira.chen | jq -e '.visibility=="public"' >/dev/null
   participant_json https://git.keplerops.lab/api/v1/orgs/northstar-research | jq -e '.visibility=="public"' >/dev/null
   ws getent ahostsv4 orion-open-systems.org >/dev/null
-  ws openssl s_client -starttls smtp -connect mail.keplerops.lab:587 -servername mail.keplerops.lab </dev/null 2>/dev/null | grep -q 'BEGIN CERTIFICATE'
+  smtp_tls="$(ws openssl s_client -starttls smtp -connect mail.keplerops.lab:587 -servername mail.keplerops.lab </dev/null 2>/dev/null)"
+  grep -q 'BEGIN CERTIFICATE' <<<"$smtp_tls"
 }
 
 validate_service_record() {

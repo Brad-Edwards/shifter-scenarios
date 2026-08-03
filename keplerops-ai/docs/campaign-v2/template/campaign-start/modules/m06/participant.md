@@ -232,7 +232,11 @@ curl -fsS "$REPO/repo-signing-sha256.txt" -o published-fingerprint.txt
 openssl x509 -in repo-signing.pem -noout -fingerprint -sha256 |
   sed 's/^.*=//;s/://g' | tr '[:upper:]' '[:lower:]' > observed-fingerprint.txt
 diff -u published-fingerprint.txt observed-fingerprint.txt
-jarsigner -verify -strict -certs index-v1.jar
+keytool -importcert -noprompt -alias keplerops-fdroid \
+  -file repo-signing.pem -keystore truststore.p12 -storetype PKCS12 \
+  -storepass KeplerOps-FDroid-Trust
+jarsigner -verify -strict -certs -keystore truststore.p12 \
+  -storepass KeplerOps-FDroid-Trust index-v1.jar
 
 fdroidcl repo add keplerops "$REPO"
 fdroidcl repo

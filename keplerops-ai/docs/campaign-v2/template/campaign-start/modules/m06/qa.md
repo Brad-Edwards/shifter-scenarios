@@ -453,7 +453,11 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
    openssl x509 -in repo-signing.pem -noout -fingerprint -sha256 |
      sed 's/^.*=//;s/://g' | tr '[:upper:]' '[:lower:]' > observed.txt
    diff -u published.txt observed.txt
-   jarsigner -verify -strict -certs index-v1.jar | tee jarsigner.txt
+   keytool -importcert -noprompt -alias keplerops-fdroid \
+     -file repo-signing.pem -keystore truststore.p12 -storetype PKCS12 \
+     -storepass KeplerOps-FDroid-Trust
+   jarsigner -verify -strict -certs -keystore truststore.p12 \
+     -storepass KeplerOps-FDroid-Trust index-v1.jar | tee jarsigner.txt
    fdroidcl repo add keplerops "$REPO"
    fdroidcl repo | tee repositories.txt
    cp ~/.config/fdroidcl/config.toml config.toml
@@ -494,10 +498,11 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
 11. **Evidence retained:** Version, public page screenshot, cert/index, TOML,
     search/download transcripts, APK/provenance/SBOM, source comparison, and all
     hashes.
-12. **Defect disposition:** The old three-argument command is a documentation
-    defect. Pass only with the two-argument v0.8.1 path and separate signature
-    check; a valid command with unavailable repository is `infrastructure
-    defect`.
+12. **Defect disposition:** The old three-argument command or strict JAR
+    verification without the published certificate truststore is a
+    documentation defect. Pass only with the two-argument v0.8.1 path and the
+    explicit truststore check; a valid command with unavailable repository is
+    `infrastructure defect`.
 
 ## kep-m06-i - The People Behind Orion
 
