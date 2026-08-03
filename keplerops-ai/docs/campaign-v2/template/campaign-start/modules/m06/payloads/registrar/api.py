@@ -379,7 +379,7 @@ def accounts(authorization: Optional[str] = Header(default=None)) -> list[dict[s
     return [json.loads(path.read_text()) for path in sorted((ROOT / "accounts").glob("*.json"))]
 
 
-@app.delete("/v1/accounts/{account_id}", status_code=204)
+@app.delete("/v1/accounts/{account_id}")
 def delete_account(account_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> None:
     authorize(authorization)
     account = read("accounts", account_id)
