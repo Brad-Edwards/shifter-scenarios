@@ -39,7 +39,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m02-e | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-f | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-h | M02 | NOT PROVEN | - | - | - | - |
-| kep-m02-i | M02 | IN PROGRESS | Direct model request passes; OpenCode stream blocked | Source model config already correct | Pending | Lane A stream adapter replay |
+| kep-m02-i | M02 | PARTICIPANT PASS | GLM 5.2 draft plus two-message STARTTLS thread | Local source fix ready | Existing guides unchanged | Lane A `qualifying-native-reply.eml` |
 | kep-m02-j | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-k | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-l | M02 | NOT PROVEN | - | - | - | - |
@@ -164,7 +164,7 @@ The rollup is derived only from `PARTICIPANT PASS` rows.
 | Module | Complete | Total | Module status |
 | --- | ---: | ---: | --- |
 | M01 | 0 | 10 | INCOMPLETE |
-| M02 | 0 | 12 | INCOMPLETE |
+| M02 | 1 | 12 | INCOMPLETE |
 | M03 | 0 | 11 | INCOMPLETE |
 | M04 | 3 | 13 | INCOMPLETE |
 | M05 | 0 | 17 | INCOMPLETE |
@@ -173,4 +173,4 @@ The rollup is derived only from `PARTICIPANT PASS` rows.
 | M08 | 1 | 11 | INCOMPLETE |
 | M09 | 0 | 12 | INCOMPLETE |
 | M10 | 0 | 17 | INCOMPLETE |
-| **Total** | **7** | **134** | **INCOMPLETE** |
+| **Total** | **8** | **134** | **INCOMPLETE** |

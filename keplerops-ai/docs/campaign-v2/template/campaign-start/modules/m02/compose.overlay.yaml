@@ -108,9 +108,11 @@ services:
       MAIL_USER: mira.chen
       MAIL_PASSWORD: Orion-Mira-Mail-K8w4Nv2p
       MAIL_ADDRESS: mira.chen@keplerops.lab
-      EXPECTED_SENDER: cinder.operator@cinder.lab
-      CINDER_MAIL_USER: cinder.operator
-      CINDER_MAIL_PASSWORD: KeplerV2-Training-Cinder
+      EXPECTED_SENDER: cinder.field-operator@cinder.lab
+      CINDER_MAIL_USER: cinder.field-operator@cinder.lab
+      CINDER_MAIL_PASSWORD: Cinder-Field-Operator-Mail-J7p4Vn6s
+      MODEL_EDGE_URL: http://10.61.90.36:8080
+      MODEL_EDGE_TOKEN: Cinder-GLM-Service-4q7n2z6p
       IMAP_HOST: mail.keplerops.lab
       SMTP_HOST: mail.keplerops.lab
       MEDIA_ATTESTATION_PUBLIC_KEY: /state/media-attestation/public.pem

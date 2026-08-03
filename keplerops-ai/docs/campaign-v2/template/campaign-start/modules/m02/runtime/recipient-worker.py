@@ -45,6 +45,8 @@ MAIL_ADDRESS = os.getenv("MAIL_ADDRESS", "mira.chen@keplerops.lab")
 EXPECTED_SENDER = os.getenv("EXPECTED_SENDER", "cinder.operator@cinder.lab")
 CINDER_MAIL_USER = os.getenv("CINDER_MAIL_USER", "cinder.operator")
 CINDER_MAIL_PASSWORD = os.getenv("CINDER_MAIL_PASSWORD", "KeplerV2-Training-Cinder")
+MODEL_EDGE_URL = os.getenv("MODEL_EDGE_URL", "http://10.61.90.36:8080").rstrip("/")
+MODEL_EDGE_TOKEN = os.environ["MODEL_EDGE_TOKEN"]
 CA_FILE = os.getenv("SSL_CERT_FILE", "/etc/keplerops/caddy-root.crt")
 KEYCLOAK_URL = os.getenv("KEYCLOAK_URL", "http://10.61.20.20:8080")
 KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", "keplerops")
@@ -145,7 +147,9 @@ def attachments(message: Message) -> list[tuple[str, str, bytes]]:
 def authenticated_delivery(message: Message) -> bool:
     authentication = " ".join(str(value) for value in message.get_all("Authentication-Results", [])).lower()
     received = " ".join(str(value) for value in message.get_all("Received", [])).lower()
-    return "dkim=pass" in authentication and ("tls" in received or "esmtps" in received)
+    return (
+        "dkim=pass" in authentication and ("tls" in received or "esmtps" in received)
+    ) or "with esmtpsa" in received
 
 
 def significant_tokens(value: str) -> set[str]:
@@ -159,18 +163,45 @@ def model_lineage(message: Message, body: str) -> tuple[bool, dict[str, Any]]:
     actual_draft = sha(body.encode())
     if not request_id or claimed_draft != actual_draft:
         return False, {"reason": "sent-body digest does not match the draft header"}
-    carrier = next((value for value in cinder_records("model-usage") if value.get("operation") == "kep-m06-p" and value.get("status") == "passed" and value.get("provider_request_id") == request_id and value.get("operator") == "cinder-operator"), None)
-    if carrier is None:
+    try:
+        carrier = http_json(
+            f"{MODEL_EDGE_URL}/v1/usage?{urllib.parse.urlencode({'provider_request_id': request_id})}",
+            token=MODEL_EDGE_TOKEN,
+        )
+    except urllib.error.HTTPError as error:
+        if error.code != 404:
+            raise
+        carrier = None
+    if not isinstance(carrier, dict):
         return False, {"reason": "provider request is absent from server-owned Cinder usage"}
-    completion = json.loads(cinder_object(str(carrier["response_object_key"])))
+    if not (
+        carrier.get("schema") == "cinder.glm-edge-usage/v1"
+        and carrier.get("operation") == "kep-m06-p"
+        and carrier.get("status") == "succeeded"
+        and carrier.get("actor") == "cinder-field-operator"
+        and carrier.get("credential_class") == "operator"
+        and carrier.get("model") == "glm-5.2"
+        and carrier.get("provider_request_id") == request_id
+    ):
+        return False, {"reason": "provider request is not an accepted participant GLM usage record"}
+    usage_id = str(carrier.get("usage_id", ""))
+    request = urllib.request.Request(f"{MODEL_EDGE_URL}/v1/responses/{urllib.parse.quote(usage_id)}")
+    request.add_header("Authorization", f"Bearer {MODEL_EDGE_TOKEN}")
+    with urllib.request.urlopen(request, timeout=30) as response:
+        response_bytes = response.read()
+    completion = json.loads(response_bytes)
     generated = str(completion.get("choices", [{}])[0].get("message", {}).get("content", ""))
     generated_digest = sha(generated.encode())
-    if completion.get("id") != request_id or generated_digest != carrier.get("response_digest"):
+    if (
+        completion.get("id") != carrier.get("response_id")
+        or sha(response_bytes) != carrier.get("response_object_sha256")
+        or generated_digest != carrier.get("generated_content_sha256")
+    ):
         return False, {"reason": "provider response bytes do not match the usage record"}
     overlap = sorted(significant_tokens(generated) & significant_tokens(body))
     if len(overlap) < 5:
         return False, {"reason": "sent draft is not materially derived from the recorded model response", "overlap": overlap}
-    return True, {"usage_object": carrier["_object_key"], "provider_request_id": request_id, "model_id": carrier.get("model_id"), "provider_response_sha256": generated_digest, "sent_body_sha256": actual_draft, "material_token_overlap": overlap}
+    return True, {"usage_id": usage_id, "provider_request_id": request_id, "model_id": carrier.get("model"), "provider_response_sha256": generated_digest, "sent_body_sha256": actual_draft, "material_token_overlap": overlap}
 
 
 def public_fact_count(body: str, contact: dict[str, Any]) -> int:

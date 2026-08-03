@@ -336,6 +336,21 @@ timeout.create = "10s"
 timeout.wait = "10s"
 EOF
 
+# Preserve normal mail provenance headers for participant-visible delivery
+# verification. Replace only this owned section so reruns remain convergent.
+awk '
+  skipping && /^\[/ { skipping=0 }
+  !skipping && $0 == "[session.data.add-headers]" { skipping=1; next }
+  !skipping { print }
+' "$workdir/updated.toml" >"$workdir/without-mail-headers.toml"
+cat >>"$workdir/without-mail-headers.toml" <<'EOF'
+
+[session.data.add-headers]
+received = true
+authentication-results = true
+EOF
+mv "$workdir/without-mail-headers.toml" "$workdir/updated.toml"
+
 configuration_changed=false
 if ! cmp -s "$workdir/source.toml" "$workdir/updated.toml"; then
   docker cp "$workdir/updated.toml" "$CONTAINER:/opt/stalwart/etc/config.toml"
