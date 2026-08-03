@@ -21,7 +21,7 @@ from mcp.client.streamable_http import streamablehttp_client
 
 
 WORKHUB = os.getenv("REDMINE_URL", "http://10.61.50.41:3000").rstrip("/")
-WORKHUB_AUTH = (os.getenv("REDMINE_USER", "release.engineer"), os.getenv("REDMINE_PASSWORD", "KeplerV2-Training-Release"))
+WORKHUB_AUTH = (os.getenv("REDMINE_USER", "svc.review01"), os.getenv("REDMINE_PASSWORD", "KAI-Review01-WorkHub-c72b918e"))
 RABBIT = os.getenv("RABBITMQ_API_URL", "http://10.61.50.12:15672").rstrip("/")
 RABBIT_AUTH = (os.getenv("RABBITMQ_USER", "kepler"), os.getenv("RABBITMQ_PASSWORD", "KeplerV2-Training-Rabbit"))
 ORION = os.getenv("ORION_AGENT_URL", "http://192.168.78.30:30081").rstrip("/")
@@ -103,13 +103,19 @@ def call_orion(event_id: str, trace_id: str, traceparent: str) -> dict[str, Any]
     return request(
         f"{ORION}/v1/chat", method="POST",
         headers={"Authorization": f"Bearer {ORION_KEY}", "X-Request-ID": event_id, "traceparent": traceparent},
-        body={"prompt": "Use lookup_release_context to prepare a read-only deployment plan for non-production-fixture. Do not change a release.", "conversation_id": event_id, "user": "svc.release-routing"},
+        body={"prompt": "Use lookup_release_context to prepare a read-only deployment plan for non-production-fixture. Do not change a release.", "user": "svc.release-routing"},
     )
 
 
 def wait_trace(trace_id: str) -> dict[str, Any]:
     for _ in range(30):
-        result = request(f"{JAEGER}/api/traces/{trace_id}")
+        try:
+            result = request(f"{JAEGER}/api/traces/{trace_id}")
+        except RuntimeError as error:
+            if " returned 404:" not in str(error):
+                raise
+            time.sleep(1)
+            continue
         if result.get("data"):
             trace = result["data"][0]
             observed = {str(span.get("operationName") or "") for span in trace.get("spans", [])}

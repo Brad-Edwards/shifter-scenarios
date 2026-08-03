@@ -126,8 +126,8 @@ services:
     command: ["python3", "/opt/keplerops/release_event_worker.py"]
     environment:
       REDMINE_URL: http://10.61.50.41:3000
-      REDMINE_USER: release.engineer
-      REDMINE_PASSWORD: KeplerV2-Training-Release
+      REDMINE_USER: svc.review01
+      REDMINE_PASSWORD: KAI-Review01-WorkHub-c72b918e
       RABBITMQ_API_URL: http://10.61.50.12:15672
       RABBITMQ_USER: kepler
       RABBITMQ_PASSWORD: KeplerV2-Training-Rabbit
