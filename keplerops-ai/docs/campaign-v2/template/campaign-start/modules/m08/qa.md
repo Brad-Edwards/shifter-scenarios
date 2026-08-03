@@ -673,6 +673,12 @@ identity and the compromised research workspace access from prior operations.
 
 ## kep-m08-k - Model Through The Review Desk
 
+Load the scoped participant access before starting:
+
+```sh
+set -a; . ~/.keplerops/m08-review-desk.env; set +a
+```
+
 **Preconditions:** Evaluation onboarding has granted the tester access to the
 Label Studio compatibility-review project.
 

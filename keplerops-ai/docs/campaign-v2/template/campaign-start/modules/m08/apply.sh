@@ -9,6 +9,8 @@ readonly STATE_ROOT="${CAMPAIGN_STATE_ROOT:-${TEMPLATE_ROOT}/state/campaign-star
 readonly SOFTWARE_DEPLOY_ONLY="${CAMPAIGN_SOFTWARE_DEPLOY_ONLY:-0}"
 readonly LABEL_STUDIO_URL="${LABEL_STUDIO_URL:-http://10.61.40.34:8080}"
 readonly LABEL_STUDIO_TOKEN="${LABEL_STUDIO_API_TOKEN:-31a5a4b4ab3cdbaf110644eed06853b2b418daf6}"
+readonly REVIEW_TOKEN=KAI-M08-ReviewDesk-7f340ce2026
+readonly REVIEW_EMAIL=orion.reviewdesk@keplerops.lab
 readonly FORGEJO_API_URL="${CINDER_FORGEJO_API_URL:-http://10.61.90.30:3000/api/v1}"
 readonly FORGEJO_AUTH="${CINDER_FORGEJO_AUTH:-cinder-operator:Cinder-Operations-Git-K3m7Pq4x}"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
@@ -101,6 +103,95 @@ ensure_label_project() {
   fi
   LABEL_PROJECT_ID=${project_id:-$(curl -fsS -H "Authorization: Token ${LABEL_STUDIO_TOKEN}" \
     "${LABEL_STUDIO_URL}/api/projects?page_size=100" | jq -er '.results[] | select(.title == "Orion Release Risk Compatibility Review") | .id' | head -n1)}
+}
+
+reconcile_review_desk_access() {
+  [[ -n ${LABEL_PROJECT_ID} ]] || die 'Label Studio project ID is unavailable'
+  docker exec -i kep-v2-postgres psql --set ON_ERROR_STOP=1 \
+    --username kepler --dbname labelstudio >/dev/null <<SQL
+DO \$\$
+DECLARE columns_sql text; values_sql text; reviewer_id bigint; admin_id bigint;
+        source_org_id bigint; reviewer_org_id bigint;
+BEGIN
+  SELECT id INTO admin_id FROM htx_user WHERE email = 'annotation.admin@keplerops.lab';
+  IF admin_id IS NULL THEN RAISE EXCEPTION 'Label Studio bootstrap administrator is absent'; END IF;
+  IF NOT EXISTS (SELECT 1 FROM htx_user WHERE email = '${REVIEW_EMAIL}') THEN
+    SELECT string_agg(quote_ident(column_name), ',' ORDER BY ordinal_position),
+           string_agg(CASE column_name
+             WHEN 'email' THEN quote_literal('${REVIEW_EMAIL}')
+             WHEN 'username' THEN quote_literal('${REVIEW_EMAIL}')
+             WHEN 'first_name' THEN quote_literal('Orion')
+             WHEN 'last_name' THEN quote_literal('Review Desk')
+             WHEN 'is_active' THEN 'true'
+             WHEN 'is_superuser' THEN 'false'
+             WHEN 'is_staff' THEN 'false'
+             WHEN 'password' THEN quote_literal('!')
+             ELSE quote_ident(column_name) END, ',' ORDER BY ordinal_position)
+      INTO columns_sql, values_sql
+      FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'htx_user' AND column_name <> 'id';
+    EXECUTE format('INSERT INTO htx_user (%s) SELECT %s FROM htx_user WHERE id = %s',
+                   columns_sql, values_sql, admin_id);
+  END IF;
+  SELECT id INTO reviewer_id FROM htx_user WHERE email = '${REVIEW_EMAIL}';
+  UPDATE htx_user SET is_active = true, is_superuser = false, is_staff = false, password = '!'
+    WHERE id = reviewer_id;
+  SELECT organization_id INTO source_org_id FROM project WHERE id = ${LABEL_PROJECT_ID};
+  IF source_org_id IS NULL THEN RAISE EXCEPTION 'compatibility review project organization is absent'; END IF;
+  SELECT id INTO reviewer_org_id FROM organization
+    WHERE title = 'Orion Compatibility Review Desk' ORDER BY id LIMIT 1;
+  IF reviewer_org_id IS NULL THEN
+    SELECT string_agg(quote_ident(column_name), ',' ORDER BY ordinal_position),
+           string_agg(CASE column_name
+             WHEN 'title' THEN quote_literal('Orion Compatibility Review Desk')
+             WHEN 'token' THEN quote_literal(md5('orion-compatibility-review-desk'))
+             WHEN 'created_by_id' THEN reviewer_id::text
+             ELSE quote_ident(column_name) END, ',' ORDER BY ordinal_position)
+      INTO columns_sql, values_sql
+      FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'organization' AND column_name <> 'id';
+    EXECUTE format('INSERT INTO organization (%s) SELECT %s FROM organization WHERE id = %s RETURNING id',
+                   columns_sql, values_sql, source_org_id) INTO reviewer_org_id;
+  END IF;
+  UPDATE project SET organization_id = reviewer_org_id WHERE id = ${LABEL_PROJECT_ID};
+  UPDATE htx_user SET active_organization_id = reviewer_org_id WHERE id = reviewer_id;
+  DELETE FROM organizations_organizationmember
+    WHERE user_id = reviewer_id AND organization_id <> reviewer_org_id;
+  IF NOT EXISTS (SELECT 1 FROM organizations_organizationmember
+                 WHERE user_id = reviewer_id AND organization_id = reviewer_org_id) THEN
+    SELECT string_agg(quote_ident(column_name), ',' ORDER BY ordinal_position),
+           string_agg(CASE column_name WHEN 'user_id' THEN reviewer_id::text
+             WHEN 'organization_id' THEN reviewer_org_id::text
+             ELSE quote_ident(column_name) END, ',' ORDER BY ordinal_position)
+      INTO columns_sql, values_sql
+      FROM information_schema.columns
+      WHERE table_schema = 'public' AND table_name = 'organizations_organizationmember'
+        AND column_name <> 'id';
+    EXECUTE format('INSERT INTO organizations_organizationmember (%s) SELECT %s FROM organizations_organizationmember WHERE user_id = %s AND organization_id = %s LIMIT 1',
+                   columns_sql, values_sql, admin_id, source_org_id);
+  END IF;
+  INSERT INTO authtoken_token(key, created, user_id)
+    VALUES ('${REVIEW_TOKEN}', now(), reviewer_id)
+    ON CONFLICT (user_id) DO UPDATE SET key = EXCLUDED.key;
+END \$\$;
+SQL
+  local projects
+  projects="$(curl -fsS -H "Authorization: Token ${REVIEW_TOKEN}" \
+    "${LABEL_STUDIO_URL}/api/projects?page_size=100")"
+  [[ $(jq '.results | length' <<<"${projects}") -eq 1 ]] ||
+    die 'review-desk identity can enumerate projects outside its assignment'
+  [[ $(jq --argjson id "${LABEL_PROJECT_ID}" '[.results[] | select(.id == $id)] | length' <<<"${projects}") -eq 1 ]] ||
+    die 'review-desk identity cannot see the compatibility review project'
+  docker exec -i --user root keplerops-participant-workstation-runtime sh -c '
+    install -d -m 0700 -o kasm-user -g root /home/kasm-user/.keplerops
+    cat > /home/kasm-user/.keplerops/m08-review-desk.env
+    chown kasm-user:root /home/kasm-user/.keplerops/m08-review-desk.env
+    chmod 0600 /home/kasm-user/.keplerops/m08-review-desk.env
+  ' <<EOF
+LABEL_STUDIO_URL=https://labels.keplerops.lab
+LABEL_STUDIO_TOKEN=${REVIEW_TOKEN}
+LABEL_STUDIO_PROJECT_ID=${LABEL_PROJECT_ID}
+EOF
 }
 
 ensure_label_backend_connection() {
@@ -258,6 +349,7 @@ apply_one() {
   ensure_native_audit
   ensure_repo
   ensure_label_project
+  reconcile_review_desk_access
   ensure_mlflow_experiment
   ensure_airflow
   ensure_label_backend_connection
@@ -287,6 +379,7 @@ main() {
   ensure_native_audit
   ensure_repo
   ensure_label_project
+  reconcile_review_desk_access
   ensure_mlflow_experiment
   ensure_airflow
   ensure_label_backend_connection

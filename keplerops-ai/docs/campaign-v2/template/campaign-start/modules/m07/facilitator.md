@@ -21,7 +21,8 @@ Airflow label export and lakeFS lineage object.
 
 **Diagnostics:** Check Label Studio project access, before/after exports, DVC
 MD5, lakeFS commit/path, changed-row count, unchanged texts, and denied access
-to adjacent projects.
+to adjacent projects. Confirm `~/.keplerops/m07-earned.env` exists for the
+participant before diagnosing application authorization.
 
 **Recovery:** Restore labels only for failed attempts and remove the failed
 lakeFS branch. Preserve accepted label lineage and audit records.

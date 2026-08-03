@@ -281,6 +281,21 @@ SQL
   chmod 0640 "${STATE_ROOT}/label-studio-denied-project-id"
 }
 
+deliver_trainer_access() {
+  docker exec -i --user root keplerops-participant-workstation-runtime sh -c '
+    install -d -m 0700 -o kasm-user -g root /home/kasm-user/.keplerops
+    cat > /home/kasm-user/.keplerops/m07-earned.env
+    chown kasm-user:root /home/kasm-user/.keplerops/m07-earned.env
+    chmod 0600 /home/kasm-user/.keplerops/m07-earned.env
+  ' <<EOF
+LABEL_STUDIO_URL=https://labels.keplerops.lab
+LABEL_STUDIO_TOKEN=${TRAINER_TOKEN}
+AIRFLOW_URL=https://airflow.keplerops.lab
+AIRFLOW_USER=svc-orion-trainer
+AIRFLOW_PASSWORD=${TRAINER_TOKEN}
+EOF
+}
+
 seed_repositories() {
   ensure_forgejo_user svc-orion-training "${TRAINER_TOKEN}" svc-orion-training@keplerops.lab
   grant_repo keplerops orion-build svc-orion-training read
@@ -545,6 +560,7 @@ apply_one() {
   jq -e --arg id "${operation}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${operation}"
   capture_clean_state
   reconcile_trainer_access
+  deliver_trainer_access
   seed_repositories
   reconcile_harbor
   reconcile_airflow
@@ -564,6 +580,7 @@ main() {
   if [[ ${requested} != all ]]; then apply_one "${requested}"; return; fi
   capture_clean_state
   reconcile_trainer_access
+  deliver_trainer_access
   seed_repositories
   reconcile_harbor
   reconcile_airflow

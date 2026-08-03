@@ -58,7 +58,8 @@ Known source inconsistencies to record during live QA:
 
 **Preconditions:** The tester has the earned Orion contributor access from an
 accepted predecessor and can open Label Studio and Airflow without privileged
-service accounts.
+service accounts. Load its participant-delivered values with
+`set -a; . ~/.keplerops/m07-earned.env; set +a`.
 
 **Procedure:**
 

@@ -280,7 +280,8 @@ manifest coordinates, fresh package load, and server-owned execution results.
 KeplerOps' normal review workflow.
 
 **Start:** Open the evaluation onboarding material and the Label Studio project
-named **Orion Release Risk Compatibility Review**.
+named **Orion Release Risk Compatibility Review**. Its scoped access package is
+`~/.keplerops/m08-review-desk.env` on your workstation.
 
 **Method:** Create one fresh task with synthetic release-review text and one
 published `release_slice`. Request a model prediction in the Label Studio
