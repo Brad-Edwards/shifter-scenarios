@@ -27,6 +27,10 @@ from checkpoints import AttemptContext, resolve_parents
 
 FORGEJO = os.environ["CINDER_FORGEJO_URL"].rstrip("/")
 FORGEJO_AUTH = (os.environ["CINDER_FORGEJO_USER"], os.environ["CINDER_FORGEJO_PASSWORD"])
+PARTICIPANT_FORGEJO_AUTH = (
+    os.environ.get("CINDER_PARTICIPANT_FORGEJO_USER", "cinder-field-operator"),
+    os.environ.get("CINDER_PARTICIPANT_FORGEJO_PASSWORD", "Cinder-Field-Operator-Git-V6n4Qs8p"),
+)
 HARBOR = os.environ["HARBOR_API_URL"].rstrip("/")
 HARBOR_AUTH = (os.environ["HARBOR_USER"], os.environ["HARBOR_PASSWORD"])
 PUBLIC_MODEL = os.environ["PUBLIC_MODEL_URL"].rstrip("/")
@@ -125,28 +129,66 @@ async def native_run(value: RepositoryRun, operation: str, subjects: dict[str, s
     }
     expected_workflow = workflows[operation]
     commit = await forgejo(f"/repos/{value.repository}/git/commits/{value.commit}")
-    run = await forgejo(f"/repos/{value.repository}/actions/runs/{value.actions_run_id}")
-    head = run.get("head_sha") or run.get("head_commit", {}).get("id")
-    conclusion = run.get("conclusion") or run.get("status")
-    workflow = str(run.get("path") or run.get("workflow_id") or "")
-    if (
-        commit.get("sha", commit.get("id")) != value.commit
-        or head != value.commit
-        or conclusion not in {"success", "completed"}
-        or workflow not in {expected_workflow, Path(expected_workflow).name}
-    ):
-        raise HTTPException(status_code=422, detail="Forgejo Actions run is not the successful operation-specific workflow for the declared commit")
-    listing = await forgejo(f"/repos/{value.repository}/actions/runs/{value.actions_run_id}/artifacts")
-    artifacts = listing.get("artifacts") if isinstance(listing, dict) else None
-    artifact = next((item for item in artifacts or [] if item.get("name") == f"{operation}-provenance" and not item.get("expired")), None)
-    if artifact is None or not isinstance(artifact.get("id"), int):
-        raise HTTPException(status_code=422, detail="Actions run lacks its workflow-specific provenance artifact")
-    async with httpx.AsyncClient(timeout=30, auth=FORGEJO_AUTH, follow_redirects=True) as client:
-        archive = await client.get(f"{FORGEJO}/api/v1/repos/{value.repository}/actions/artifacts/{artifact['id']}/zip")
-    if archive.status_code != 200 or len(archive.content) > 4 * 1024 * 1024:
+    artifact_name = f"{operation}-provenance"
+    archive_bytes: bytes | None = None
+    async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
+        login = await client.post(
+            f"{FORGEJO}/user/login",
+            data={"user_name": FORGEJO_AUTH[0], "password": FORGEJO_AUTH[1]},
+        )
+        if login.status_code != 200:
+            raise HTTPException(status_code=422, detail="Forgejo Actions session is unavailable")
+        listing = await client.get(f"{FORGEJO}/{value.repository}/actions")
+        run_indexes = sorted(
+            {int(index) for index in re.findall(r"actions/runs/(\d+)", listing.text)},
+            reverse=True,
+        )
+        for run_index in run_indexes:
+            page = await client.get(f"{FORGEJO}/{value.repository}/actions/runs/{run_index}")
+            csrf_match = re.search(r"csrfToken: '([^']+)'", page.text)
+            workflow_match = re.search(r'data-workflow-name="([^"]+)"', page.text)
+            if page.status_code != 200 or csrf_match is None or workflow_match is None:
+                continue
+            state_response = await client.post(
+                f"{FORGEJO}/{value.repository}/actions/runs/{run_index}/jobs/0",
+                headers={"X-Csrf-Token": csrf_match.group(1)},
+                json={"logCursors": []},
+            )
+            if state_response.status_code != 200:
+                continue
+            run = (state_response.json().get("state") or {}).get("run") or {}
+            jobs = run.get("jobs") or []
+            job = next((item for item in jobs if item.get("id") == value.actions_run_id), None)
+            commit_link = str((run.get("commit") or {}).get("link") or "")
+            if (
+                job is None
+                or job.get("status") != "success"
+                or run.get("status") != "success"
+                or run.get("done") is not True
+                or not commit_link.endswith(f"/commit/{value.commit}")
+                or workflow_match.group(1) not in {expected_workflow, Path(expected_workflow).name}
+            ):
+                continue
+            artifacts_response = await client.get(
+                f"{FORGEJO}/{value.repository}/actions/runs/{run_index}/artifacts"
+            )
+            artifacts = artifacts_response.json().get("artifacts", []) if artifacts_response.status_code == 200 else []
+            artifact = next(
+                (item for item in artifacts if item.get("name") == artifact_name and item.get("status") == "completed"),
+                None,
+            )
+            if artifact is None:
+                continue
+            archive = await client.get(
+                f"{FORGEJO}/{value.repository}/actions/runs/{run_index}/artifacts/{artifact_name}"
+            )
+            if archive.status_code == 200:
+                archive_bytes = archive.content
+                break
+    if commit.get("sha", commit.get("id")) != value.commit or archive_bytes is None or len(archive_bytes) > 4 * 1024 * 1024:
         raise HTTPException(status_code=422, detail="Actions provenance artifact cannot be acquired")
     try:
-        with zipfile.ZipFile(io.BytesIO(archive.content)) as bundle:
+        with zipfile.ZipFile(io.BytesIO(archive_bytes)) as bundle:
             names = [name for name in bundle.namelist() if Path(name).name == "provenance.json"]
             if len(names) != 1:
                 raise ValueError("one provenance.json is required")
@@ -312,7 +354,9 @@ def health() -> dict[str, str]:
 @app.post("/v1/repositories/{repository}/credentials")
 async def repository_credentials(repository: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     import base64
-    expected = "Basic " + base64.b64encode(f"{FORGEJO_AUTH[0]}:{FORGEJO_AUTH[1]}".encode()).decode()
+    expected = "Basic " + base64.b64encode(
+        f"{PARTICIPANT_FORGEJO_AUTH[0]}:{PARTICIPANT_FORGEJO_AUTH[1]}".encode()
+    ).decode()
     if authorization is None or not hmac.compare_digest(authorization, expected):
         raise HTTPException(status_code=401, detail="assigned Cinder Forgejo identity required")
     if re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,60}", repository) is None:
@@ -324,16 +368,25 @@ async def repository_credentials(repository: str, authorization: str | None = He
         or (forgejo_repository.get("owner") or {}).get("login") != "cinder-field-operator"
     ):
         raise HTTPException(status_code=422, detail="registry credentials are issued only to the assigned operator's repository")
+    credentials_root = ROOT / "repository-credentials"
+    for path in reversed(sorted(credentials_root.glob("*.json"))):
+        record = json.loads(path.read_text())
+        if record.get("repository") == full_name:
+            return record
     robot_suffixes = (f"+m06-{repository}", f"$m06-{repository}")
     async with httpx.AsyncClient(timeout=30, auth=HARBOR_AUTH) as client:
         robots_response = await client.get(f"{HARBOR}/robots", params={"page": 1, "page_size": 100})
-        if robots_response.status_code != 200:
-            raise HTTPException(status_code=503, detail="Harbor robot inventory is unavailable")
-        for robot in robots_response.json():
-            if str(robot.get("name", "")).endswith(robot_suffixes):
+    if robots_response.status_code != 200:
+        raise HTTPException(status_code=503, detail="Harbor robot inventory is unavailable")
+    for robot in robots_response.json():
+        if str(robot.get("name", "")).endswith(robot_suffixes):
+            async with httpx.AsyncClient(timeout=30, auth=HARBOR_AUTH) as client:
                 deleted = await client.delete(f"{HARBOR}/robots/{robot['id']}")
-                if deleted.status_code not in {200, 204}:
-                    raise HTTPException(status_code=503, detail="prior repository credential could not be rotated")
+            if deleted.status_code not in {200, 204}:
+                raise HTTPException(status_code=503, detail="prior repository credential could not be rotated")
+    # Harbor sets a session cookie on inventory reads and then applies browser
+    # CSRF checks to later mutations. Keep Basic-auth mutations cookie-free.
+    async with httpx.AsyncClient(timeout=30, auth=HARBOR_AUTH) as client:
         created = await client.post(f"{HARBOR}/robots", json={
             "name": f"m06-{repository}", "description": f"Cinder Actions for cinder/{repository}",
             "duration": -1, "level": "project", "permissions": [{
@@ -363,7 +416,9 @@ async def repository_credentials(repository: str, authorization: str | None = He
 @app.get("/v1/repositories/{repository}/credentials")
 def get_repository_credentials(repository: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     import base64
-    expected = "Basic " + base64.b64encode(f"{FORGEJO_AUTH[0]}:{FORGEJO_AUTH[1]}".encode()).decode()
+    expected = "Basic " + base64.b64encode(
+        f"{PARTICIPANT_FORGEJO_AUTH[0]}:{PARTICIPANT_FORGEJO_AUTH[1]}".encode()
+    ).decode()
     if authorization is None or not hmac.compare_digest(authorization, expected):
         raise HTTPException(status_code=401, detail="assigned Cinder Forgejo identity required")
     if re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,60}", repository) is None:

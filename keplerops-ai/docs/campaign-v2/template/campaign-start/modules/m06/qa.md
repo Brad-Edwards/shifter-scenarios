@@ -17,7 +17,7 @@ export RUN="$HOME/qa/$OP-$(date -u +%Y%m%dT%H%M%SZ)"
 mkdir -p "$RUN"
 date -u +%FT%TZ | tee "$RUN/started-at.txt"
 sha256sum operations.json integrations.json | tee "$RUN/module-inputs.sha256"
-uuidgen | tr '[:upper:]' '[:lower:]' | tee "$RUN/attempt-id.txt"
+cat /proc/sys/kernel/random/uuid | tee "$RUN/attempt-id.txt"
 ```
 
 Record the campaign apply/build ID, implementation revision
@@ -152,7 +152,7 @@ Before the first Action in each repository, issue its scoped credentials:
 
 ```sh
 curl -fsS --user cinder-field-operator:Cinder-Field-Operator-Git-V6n4Qs8p \
-  -X POST "https://releases.cinder.lab/v1/repositories/$REPOSITORY/credentials" |
+  -X POST "https://releases.cinder.lab/v1/repositories/${REPOSITORY#*/}/credentials" |
   tee "$RUN/repository-credentials.json"
 ```
 
@@ -619,7 +619,7 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
 3. **Participant surface:** JupyterHub control panel and terminal.
 4. **Starting knowledge:** Hub credentials and probe path in `START-HERE.md`.
 5. **Concrete actions:** Start CPU profile; run
-   `install -d /home/jovyan/work/.cinder && uuidgen | tee
+   `install -d /home/jovyan/work/.cinder && cat /proc/sys/kernel/random/uuid | tee
    /home/jovyan/work/.cinder/probe && sha256sum
    /home/jovyan/work/.cinder/probe`. Stop the server from Hub, then start it
    again. Run `curl -fsS -H 'Authorization: Bearer

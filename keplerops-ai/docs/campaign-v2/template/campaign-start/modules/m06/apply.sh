@@ -556,7 +556,7 @@ prepare_cinder_trust_bundle() {
 install_cinder_registry_identity() {
   local project robots robot_id
   project='{"project_name":"cinder","public":false,"metadata":{"auto_scan":"false"}}'
-  if ! curl -fsS --user "$HARBOR_ADMIN_AUTH" "${HARBOR_API}/projects?name=cinder" | jq -e 'length > 0' >/dev/null; then
+  if ! curl -fsS --user "$HARBOR_ADMIN_AUTH" "${HARBOR_API}/projects?name=cinder" | jq -e 'any(.[]; .name == "cinder")' >/dev/null; then
     curl -fsS --user "$HARBOR_ADMIN_AUTH" -H 'Content-Type: application/json' \
       -X POST --data "$project" "${HARBOR_API}/projects" >/dev/null
   fi
