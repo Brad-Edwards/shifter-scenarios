@@ -26,7 +26,7 @@ source-only, or documentation-only result is not a participant pass.
 
 | Challenge | Module | Status | Participant proof | Durable source | Three guides | Evidence / blocker |
 | --- | --- | --- | --- | --- | --- | --- |
-| kep-m01-a | M01 | BLOCKED | Reaches OpenID and Keycloak | `a2fd50f` | Pending | Earned prerequisite identity absent in lane A |
+| kep-m01-a | M01 | BLOCKED | Earned `kep-m02-j` participant receipt is present and the participant reached the Assistant OpenID flow | Needs a reusable Keycloak SSO or Orion Assistant session for `cinder.field-operator`; saved and reconstructed OIDC state returns to the login form | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m01-a-20260803T144041Z`; blocker summary SHA `daf35749ff87ad47d9e9151a6d631535a0211892b6bc214f2c008bea4ab1f623` |
 | kep-m01-b | M01 | NOT PROVEN | - | - | - | - |
 | kep-m01-c | M01 | PARTICIPANT PASS | Forgejo Actions validation-bypass run completed and published `validation-report` with guardrail disable proof carrier | Forgejo runner/workflow source fix staged locally; remote push blocked on Palo auth | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m01-c-20260803T113008Z/unblock-run-9-validation-report.json`; run `9`, DB run `300`, task `277`, flag `FLAG{b36427cff723a06b}` |
 | kep-m01-d | M01 | NOT PROVEN | - | - | - | - |
@@ -56,10 +56,10 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m03-f | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-g | M03 | BLOCKED | Participant reached WorkHub and Orion Assistant surfaces from lane D | Needs participant-visible earned WorkHub/Orion Assistant release or partner identity/session before protected source review path is reachable | - | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m03-g-20260803T125724Z/BLOCKED.txt`; anonymous WorkHub shows zero projects/issues and Orion Assistant `/api/models` returns 401 |
 | kep-m03-h | M03 | NOT PROVEN | - | - | - | - |
-| kep-m03-i | M03 | NOT PROVEN | - | - | - | - |
+| kep-m03-i | M03 | BLOCKED | Participant reached WorkHub and Orion Assistant from lane C | Needs the `kep-m03-g` protected-source state or an explicit QA fixture; WorkHub exposes no matching records and Assistant returns 401 | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m03-i-20260803T144708Z`; stopped before semantic-search/login/onboarding path |
 | kep-m03-j | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-k | M03 | NOT PROVEN | - | - | - | - |
-| kep-m04-a | M04 | NOT PROVEN | Participant pass not attempted; prior lane kickoff expected QA docs inside the workstation | No service defect identified | Pending | Prior evidence `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m04-a-20260803T135048Z/blocker.md`; retry with local QA guide path pending |
+| kep-m04-a | M04 | BLOCKED | Participant-visible prerequisite state checked on lane C | Needs `kep-m03-i` evaluation-reader onboarding state and a same-range `kep-m04-f` carrier or explicit QA fixtures | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m04-a-20260803T144100Z`; no eval.reader onboarding record or lane-C M04-F carrier |
 | kep-m04-b | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-c | M04 | BLOCKED | Participant reached eval.reader Jupyter and Airflow and created notebooks through the participant Jupyter surface | Needs shared eval.reader research workspace between Jupyter single-user and Airflow privacy runner; source/live fix pending | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m04-c-20260803T140536Z/SUMMARY.txt`; Jupyter writes under `/home/jovyan`, Airflow reads separate seeded workspace and rejects participant-created notebooks |
 | kep-m04-d | M04 | BLOCKED | - | Needs accepted `kep-m04-c` calibrated privacy notebook/report | - | Hard prerequisite `kep-m04-c` is blocked on shared Jupyter/Airflow workspace |
@@ -107,9 +107,9 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-p | M06 | PARTICIPANT PASS | OpenCode GLM 5.2 usage record validated | Source already current | - | `kep-v2-qa-lane-b:/home/kasm-user/qa-campaign-v2/m06/kep-m06-p/`; usage `0641ebd4-9cce-4203-bf18-fcc9b7750d9d` |
 | kep-m06-q | M06 | PARTICIPANT PASS | Participant Forgejo Actions run `6` built and pushed the harness image; release registry executed the committed harness and accepted exact provenance subjects | Source/live fixes applied fleetwide/template for BuildKit registry DNS, Harbor project creation, committed input paths, local Orion proxy, `Dockerfile.harness`, and unprefixed provenance image digest | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-q-20260803T134330Z/78-harness-release-response-image-digest-fix.json`; release `c5ecd43e-3f2d-4d01-a3f7-519b35277632`, flag `FLAG{42822974ea6be801}` |
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-s | M06 | NOT PROVEN | `kep-m06-j` parent is available and `kep-m06-q` is now accepted on lane B | Prior blocker cleared by accepted harness-release parent; retry pending | - | Prior blocker `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-s-20260803T134554Z/BLOCKED-summary.txt`; M06-Q release now `https://releases.cinder.lab/v1/harness-releases/c5ecd43e-3f2d-4d01-a3f7-519b35277632` on lane B |
+| kep-m06-s | M06 | BLOCKED | `kep-m06-j` and `kep-m06-q` parents reacquired successfully on lane B | Needs Preview `/api/analyze` fix; Partner Intake returns 503 because Preview analysis returns 500 | - | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-s-20260803T143712Z`; parent SHA values captured, upload to `https://partner-intake.keplerops.lab/v1/intakes` failed with `Orion Preview is unavailable` |
 | kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `ddc9c98` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
-| kep-m06-u | M06 | NOT PROVEN | Participant checked required parent services; `kep-m06-n` and `kep-m06-q` are now available | Prior missing `kep-m06-q` blocker cleared; retry pending | - | Prior blocker `kep-v2-qa-lane-b:/home/kasm-user/qa-lane-b/m06/kep-m06-u/participant-blocked-transcript.txt`; M06-Q release now `https://releases.cinder.lab/v1/harness-releases/c5ecd43e-3f2d-4d01-a3f7-519b35277632` on lane B |
+| kep-m06-u | M06 | BLOCKED | M06-Q release and M06-I vCard parents resolved; participant created a Cinder Domains account | Needs registrar-to-Caddy certificate-load path fixed; domain creation consistently returns 503 because the registrar probes localhost port 80 | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-u-20260803T143959Z`; blocker summary SHA `dc5ebbe9a0b8c58f0eb3008266ef3f9905dc29d07b960e932280b431b96593b6` |
 | kep-m06-v | M06 | NOT PROVEN | - | - | - | - |
 | kep-m07-a | M07 | PARTICIPANT PASS | Participant pass in Lane C | `5aff5cc` | Complete | Lane C participant evidence |
 | kep-m07-b | M07 | PARTICIPANT PASS | MLflow integrity review run accepted 8 changed rows with changed model digest and poisoned-weights handoff | Existing source sufficient | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-b-proof/participant-m07b-20260803T101356Z` |
@@ -138,12 +138,12 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m09-e | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-f | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-g | M09 | NOT PROVEN | - | - | - | - |
-| kep-m09-h | M09 | NOT PROVEN | - | - | - | - |
+| kep-m09-h | M09 | BLOCKED | Participant reached Cinder Forgejo, release registry, and MLflow from lane A | Needs the exact M07-I serialized artifact/report supplied as an isolated-QA fixture or materialized handoff; assigned range has no `orion-model.pkl`, report, public bundle, or release | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m09-h-20260803T143028Z`; workstation also lacks `uuidgen`, `rg`, and `ssh` |
 | kep-m09-i | M09 | PARTICIPANT PASS | Participant-triggered Airflow import run succeeded; relay record has schema, operation, digest, and flag | `6228213` | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/live/m09-i-rerun12`; run `qa-m09-i-rerun12-20260803T101532Z` |
 | kep-m09-j | M09 | BLOCKED | Triggered from participant workstation | - | - | Needs accepted `kep-m09-h`; evidence `kep-v2-qa-lane-d:/home/kasm-user/qa/live/m09-j-20260803T102725Z` |
 | kep-m09-k | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-l | M09 | NOT PROVEN | - | - | - | - |
-| kep-m10-a | M10 | NOT PROVEN | - | - | - | - |
+| kep-m10-a | M10 | BLOCKED | Participant reached Airflow but did not trigger production continuity | Needs accepted `kep-m09-g` prerequisite; current tracker and workstation state have no participant-visible `kep-m09-g` acceptance | - | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m10-a-20260803T143757Z`; participant Airflow identity also received 403 for `orion_production_continuity` |
 | kep-m10-b | M10 | NOT PROVEN | - | - | - | - |
 | kep-m10-c | M10 | NOT PROVEN | - | - | - | - |
 | kep-m10-d | M10 | NOT PROVEN | - | - | - | - |
