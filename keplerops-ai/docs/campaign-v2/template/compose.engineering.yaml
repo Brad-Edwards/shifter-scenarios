@@ -734,7 +734,7 @@ services:
                 "s3:ListBucket",
                 "s3:ListBucketMultipartUploads"
               ],
-              "Resource": ["arn:aws:s3:::artifacts"]
+              "Resource": ["arn:aws:s3:::artifacts", "arn:aws:s3:::mlflow"]
             },
             {
               "Effect": "Allow",
@@ -745,7 +745,7 @@ services:
                 "s3:ListMultipartUploadParts",
                 "s3:PutObject"
               ],
-              "Resource": ["arn:aws:s3:::artifacts/*"]
+              "Resource": ["arn:aws:s3:::artifacts/*", "arn:aws:s3:::mlflow/*"]
             }
           ]
         }

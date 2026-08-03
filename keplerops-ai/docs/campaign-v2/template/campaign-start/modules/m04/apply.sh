@@ -78,6 +78,11 @@ initialize_runner_volume() {
 ensure_evaluation_object_reader() {
   docker run --rm --network kep-v2-data --entrypoint /bin/sh "${MINIO_MC_IMAGE}" -eu -c '
     mc alias set kepler http://minio:9000 kepler-minio KeplerV2-Training-Minio-Object-Store >/dev/null
+    cat >/tmp/orion-training-store.json <<"JSON"
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation","s3:ListBucket","s3:ListBucketMultipartUploads"],"Resource":["arn:aws:s3:::artifacts","arn:aws:s3:::mlflow"]},{"Effect":"Allow","Action":["s3:ListMultipartUploadParts","s3:PutObject","s3:AbortMultipartUpload","s3:DeleteObject","s3:GetObject"],"Resource":["arn:aws:s3:::artifacts/*","arn:aws:s3:::mlflow/*"]}]}
+JSON
+    mc admin policy create kepler kepler-orion-training-store /tmp/orion-training-store.json >/dev/null
+    mc admin policy attach kepler kepler-orion-training-store --user svc-orion-training >/dev/null
     cat >/tmp/runtime-reader.json <<"JSON"
 {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::artifacts","arn:aws:s3:::mlflow"]},{"Effect":"Allow","Action":["s3:GetObject"],"Resource":["arn:aws:s3:::artifacts/runtime-attestations/*","arn:aws:s3:::artifacts/evaluation-reports/*","arn:aws:s3:::mlflow/*"]}]}
 JSON
@@ -246,7 +251,7 @@ rules:
     verbs: ["get", "list"]
   - apiGroups: [""]
     resources: ["pods/exec"]
-    verbs: ["create"]
+    verbs: ["get", "create"]
   - apiGroups: ["serving.kserve.io"]
     resources: ["inferenceservices"]
     verbs: ["get", "list"]
@@ -282,9 +287,9 @@ EOF
   docker volume create kep-v2-jupyter-eval.reader >/dev/null
   docker run --rm --user root -v kep-v2-jupyter-eval.reader:/work -v "${workspace}:/seed:ro" \
     --entrypoint /bin/sh "${JUPYTER_IMAGE}" -eu -c '
-      install -d -m 0750 -o 1000 -g 100 /work/orion-runtime-lineage
-      install -m 0640 -o 1000 -g 100 /seed/README.md /work/orion-runtime-lineage/README.md
-      install -m 0600 -o 1000 -g 100 /seed/k3s-token /work/orion-runtime-lineage/k3s-token
+      install -d -m 0755 -o 1000 -g 100 /work/orion-runtime-lineage
+      install -m 0644 -o 1000 -g 100 /seed/README.md /work/orion-runtime-lineage/README.md
+      install -m 0644 -o 1000 -g 100 /seed/k3s-token /work/orion-runtime-lineage/k3s-token
       install -m 0644 -o 1000 -g 100 /seed/k3s-ca.crt /work/orion-runtime-lineage/k3s-ca.crt
     '
 )
