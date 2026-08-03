@@ -26,7 +26,8 @@ class M02CorrectiveContracts(unittest.TestCase):
         source = (MODULE / "runtime" / "business_worker.py").read_text()
         for required in (
             "devpi_upload_evidence(", 'entry.get("what") == "upload"', 'item["owner_id"]',
-            'item["file_id"]', "forgejo_create_once(",
+            'item["file_id"]', "room_share_for_contributor(", '"reproducer_share_with"',
+            '"nextcloud_file_owner_id"', "pip_index_trust_args(DEVPI_INDEX)", "forgejo_create_once(",
             'accepted_path = f"accepted/{identifier}-{wheel_sha}.json"',
             'write_once_json(STATE_ROOT / "earned" / "m01-h-package-consumer.json"',
         ):
@@ -116,6 +117,73 @@ class M02CorrectiveContracts(unittest.TestCase):
         ]
         self.assertIn("target.parent.mkdir(parents=True, exist_ok=True)", browser_open_repository)
         self.assertIn("browser.new_context(ignore_https_errors=True)", browser_open_repository)
+
+    def test_business_worker_uses_caddy_ca_for_cinder_https(self) -> None:
+        business = (MODULE / "runtime" / "business_worker.py").read_text()
+        compose = (MODULE / "compose.overlay.yaml").read_text()
+        caddyfile = (CAMPAIGN_START.parent / "config" / "caddy" / "Caddyfile").read_text()
+        self.assertIn("./state/cinder-bootstrap-root.crt:/etc/keplerops/cinder-bootstrap-root.crt:ro", compose)
+        self.assertIn('CINDER_HTTPS_CA_FILE = Path(os.getenv("CINDER_HTTPS_CA_FILE", "/etc/keplerops/cinder-bootstrap-root.crt"))', business)
+        self.assertIn('FALLBACK_HTTPS_CA_FILE = Path(os.getenv("SSL_CERT_FILE", "/etc/keplerops/caddy-root.crt"))', business)
+        self.assertIn("def cinder_https_verify() -> str | bool:", business)
+        self.assertIn("def cinder_https_get(url: str) -> httpx.Response:", business)
+        self.assertIn("verify=verifier", business)
+        self.assertIn("httpx.Client(timeout=30, verify=cinder_https_verify())", business)
+        self.assertIn('cinder_https_get(f"https://{parsed.netloc}/.well-known/keplerops-partner.json")', business)
+        self.assertIn("cinder_https_get(manifest_url)", business)
+        self.assertIn("@m02_partner_ownership path /.well-known/keplerops-partner.json", caddyfile)
+
+    def test_forgejo_browser_login_accepts_default_submit_button(self) -> None:
+        business = (MODULE / "runtime" / "business_worker.py").read_text()
+        login = business[
+            business.index("def forgejo_browser_login"):
+            business.index("def forgejo_browser_write")
+        ]
+        self.assertIn('page.goto(f"{FORGEJO_BROWSER_URL}/user/login", wait_until="domcontentloaded", timeout=60000)', login)
+        self.assertIn("form.submit()", login)
+        self.assertIn("if not submitted:", login)
+        self.assertIn('page.wait_for_url(lambda url: "/user/login" not in url, timeout=60000)', login)
+        self.assertIn("page.press(\"input[name='password']\", \"Enter\")", login)
+        self.assertIn('page.wait_for_load_state("domcontentloaded", timeout=60000)', login)
+        self.assertNotIn('page.wait_for_load_state("networkidle")', login)
+        self.assertNotIn("submit.click(", login)
+        self.assertNotIn('button[type=\\\'submit\\\']', login)
+        self.assertNotIn("page.click(\"button[type='submit']\")", login)
+
+    def test_mcp_catalog_policy_source_is_seeded_for_browser_review(self) -> None:
+        apply_script = (MODULE / "apply.sh").read_text()
+        self.assertIn("seed_orion_mcp_catalog_source() {", apply_script)
+        self.assertIn("ORION-MCP-CATALOG-REGISTRATION-2026", apply_script)
+        self.assertIn("Register Orion Preview Compatibility", apply_script)
+        self.assertIn("keplerops/orion-mcp-catalog integrations", apply_script)
+
+    def test_forgejo_browser_write_handles_current_new_file_form(self) -> None:
+        business = (MODULE / "runtime" / "business_worker.py").read_text()
+        write = business[
+            business.index("def forgejo_browser_write"):
+            business.index("def integration_reviews")
+        ]
+        self.assertIn('page.locator("input#file-name").first', write)
+        self.assertIn("window.monaco.editor.getModels()[0].setValue(value)", write)
+        self.assertIn('textarea.dispatchEvent(new Event("change", {bubbles: true}))', write)
+        self.assertIn("button.ui.primary[type='submit']", write)
+        self.assertIn('filter(has_text="Commit changes")', write)
+        self.assertIn('String(tree.value || "").endsWith(".json")', write)
+        self.assertIn("button.disabled = false", write)
+        self.assertIn('page.goto(expected, wait_until="domcontentloaded", timeout=60000)', write)
+        self.assertIn('page.expect_navigation(wait_until="domcontentloaded", timeout=60000)', write)
+        self.assertNotIn('wait_until="networkidle"', write)
+        self.assertNotIn("page.locator(\"button.commit-button, button[name='commit'], button[type='submit']\").last", write)
+
+    def test_integration_registration_link_waits_for_domcontentloaded(self) -> None:
+        business = (MODULE / "runtime" / "business_worker.py").read_text()
+        integration = business[
+            business.index("def integration_reviews"):
+            business.index("def mcp_call")
+        ]
+        self.assertIn('body["debug_stage"] = "catalog-form-link"', integration)
+        self.assertIn('page.expect_navigation(wait_until="domcontentloaded", timeout=60000)', integration)
+        self.assertNotIn('page.expect_navigation(wait_until="networkidle", timeout=60000)', integration)
 
     def test_orion_partner_worker_claims_token_bound_actor(self) -> None:
         business = (MODULE / "runtime" / "business_worker.py").read_text()

@@ -205,7 +205,9 @@ validate_one() {
         (.forgejo_commit | test("^[0-9a-f]{40}$")) and
         (.forgejo_blob_sha | test("^[0-9a-f]{40}$")) and
         .native_source_ids.reproducer_sha256 == .request_sha256 and
-        .native_source_ids.reproducer_owner_id == .contributor_identity.external_principal and
+        .native_source_ids.reproducer_owner_id == .contributor_identity.nextcloud_file_owner_id and
+        .native_source_ids.reproducer_share_with == .contributor_identity.external_principal and
+        .native_source_ids.reproducer_share_id == .contributor_identity.nextcloud_share_id and
         .devpi_upload_evidence.upload_principal == .contributor_identity.devpi_upload_principal and
         .devpi_upload_evidence.sha256 == .resolved_wheel_sha256 and
         .callback_evidence.observed == true and
