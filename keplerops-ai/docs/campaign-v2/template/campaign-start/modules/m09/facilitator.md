@@ -18,10 +18,9 @@ awarding success manually.
   registration requires a signed visible report. Keep the published order in
   guides and explain the dependency when teams ask why registration cannot
   start from a raw candidate.
-- Visible-gate design text in some places says one integrity predecessor is
-  enough; runtime requires all three signed integrity checkpoints and continues
-  with the serialized artifact. Treat this as a content inconsistency, not as a
-  reason to bypass runtime.
+- The visible-gate graph and runtime accept one fixed integrity predecessor
+  from `kep-m07-e`, `kep-m07-g`, or `kep-m07-i`. Stale copies that require all
+  three are content defects; do not turn them into participant requirements.
 - Upstream-release design text allows several integrity predecessor lanes;
   runtime accepts the serialized artifact path. Record this when a team brings
   a different compromised model family.
@@ -67,21 +66,27 @@ Cosign, and Rekor evaluate and sign the actual candidate.
 **Attacker method:** Run the ordinary evaluator, inspect failing slices, change
 the candidate through its owning build path, and rerun without editing suite
 inputs or expected labels.
-**Why it succeeds:** The candidate can satisfy the visible suite and protected
-controls at the same immutable release-review boundary.
-**What good looks like:** Eight visible cases pass, protected artifact fidelity
-passes, the serialized artifact remains the candidate, and the signed report
-names every source/data/model/artifact/review-image digest.
+**Why it succeeds:** The chosen candidate can satisfy the visible suite and its
+lane-specific protected controls at the same immutable release-review boundary.
+**What good looks like:** Eight visible cases pass, the selected predecessor is
+`kep-m07-e`, `kep-m07-g`, or `kep-m07-i`, lane-specific protected controls
+pass, and the signed report names every source/data/model/review-image digest
+plus artifact digest when the predecessor carries one.
 **Common stalls:** Editing `visible-suite.json`, submitting predictions instead
-of bytes, using only one integrity predecessor, or confusing the clean review
-image with the candidate image.
-**Hints:** Orientation - point to the visible suite and the accepted integrity
-records. Mechanism - ask which exact model bytes the evaluator downloads from
-MLflow. Execution - have them rerun the DAG with only `review_image_digest`.
-**Diagnostics:** Read Airflow task logs, MLflow report, Forgejo suite commit,
-review image artifact, and predecessor handoffs.
-**Recovery:** Delete failed evaluation runs and reports. Preserve accepted M07
-checkpoints and the accepted visible report.
+of bytes, missing the M09 access handoff, trying to log in with an admin
+identity, or confusing the clean review image with the candidate image.
+**Hints:** Orientation - point to the visible suite, the chosen accepted
+integrity record, and `$HOME/.keplerops/m09-earned.env`. Mechanism - ask which
+exact model bytes the evaluator downloads from MLflow. Execution - have them
+sign in as the Orion release runner and rerun the DAG with only
+`review_image_digest`.
+**Diagnostics:** Read participant-visible Airflow task logs, MLflow report,
+Forgejo suite commit, review image artifact, and predecessor handoffs. Confirm
+the Orion release runner can see M09 DAGs but cannot see unrelated DAGs.
+**Recovery:** If the M09 handoff is missing after a declared predecessor has
+been accepted, rerun only the targeted M09 access reconciliation/apply path.
+Delete failed evaluation runs and reports. Preserve accepted M07 checkpoints
+and the accepted visible report.
 
 ## `kep-m09-c` - Launder The Lineage
 
@@ -237,16 +242,20 @@ the reducer before failing on the corrupt tail.
 **What good looks like:** One artifact digest, scanner parse error, bounded
 event timestamp, later importer completion, nonzero return code, and relay
 record.
-**Common stalls:** Truncating before the reducer runs, changing digest between
-scan and import, expecting PickleScan to execute code, or using a non-Cinder
-asset URL.
-**Hints:** Orientation - ask where static scan ends and Python loading begins.
-Mechanism - focus on reducer-before-failure ordering. Execution - publish one
-asset and trigger with URL plus SHA-256 only.
-**Diagnostics:** Read Airflow import request, RabbitMQ correlation if needed,
-relay record, scanner output, and importer timing fields.
-**Recovery:** Delete failed worker attempts and relay records. Preserve accepted
-corrupt artifact and relay result.
+**Common stalls:** Missing `kep-m02-e` or `kep-m01-g`, missing the M09 Airflow
+handoff, truncating before the reducer runs, changing digest between scan and
+import, expecting PickleScan to execute code, or using a non-Cinder asset URL.
+**Hints:** Orientation - ask where static scan ends, where Python loading
+begins, and which account can see the M09 import DAG. Mechanism - focus on
+reducer-before-failure ordering. Execution - publish one asset and trigger with
+URL plus SHA-256 only.
+**Diagnostics:** Read participant-visible Airflow import request, relay record,
+scanner output, and importer timing fields. Use RabbitMQ correlation only for
+staff diagnosis, not participant proof.
+**Recovery:** If the M09 handoff is missing after prerequisites are accepted,
+rerun only the targeted M09 access reconciliation/apply path. Delete failed
+worker attempts and relay records. Preserve accepted corrupt artifact and relay
+result.
 
 ## `kep-m09-j` - What The Mirror Trusts
 
