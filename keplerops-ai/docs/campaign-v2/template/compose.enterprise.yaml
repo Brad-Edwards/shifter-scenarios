@@ -137,6 +137,8 @@ services:
     networks:
       public:
         ipv4_address: 10.61.10.20
+      identity:
+        ipv4_address: 10.61.20.30
       corp:
         ipv4_address: 10.61.30.20
       cinder:
@@ -249,6 +251,8 @@ services:
       OVERWRITECLIURL: https://files.keplerops.lab
       TRUSTED_PROXIES: 10.61.10.2 10.61.30.2
     command: ["bash", "-c", "update-ca-certificates >/dev/null && exec apache2-foreground"]
+    extra_hosts:
+      - "id.keplerops.lab:10.61.30.2"
     volumes:
       - nextcloud-data:/var/www/html
       - ./state/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-caddy.crt:ro

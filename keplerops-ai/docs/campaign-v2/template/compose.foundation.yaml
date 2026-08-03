@@ -116,6 +116,7 @@ services:
     <<: *restart
     image: ${KEYCLOAK_IMAGE}
     container_name: kep-v2-keycloak
+    hostname: id.keplerops.lab
     command: ["start-dev", "--http-port=8080", "--health-enabled=true"]
     depends_on:
       postgres:

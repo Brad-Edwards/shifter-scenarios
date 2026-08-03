@@ -136,7 +136,7 @@ ensure_partner_intake_client() {
   realm_management_id="$(kcadm get clients -r "${KEYCLOAK_REALM}" \
     -q clientId=realm-management | jq -er '.[0].id')"
   roles_json='[]'
-  for role in manage-users view-users query-users query-groups; do
+  for role in manage-users view-users query-users query-groups view-realm; do
     roles_json="$(jq -c --argjson role \
       "$(kcadm get "clients/${realm_management_id}/roles/${role}" -r "${KEYCLOAK_REALM}")" \
       '. + [$role]' <<<"${roles_json}")"
@@ -146,6 +146,13 @@ ensure_partner_intake_client() {
     -r "${KEYCLOAK_REALM}" -f - <<<"${roles_json}" >/dev/null
 }
 
+ensure_partner_reviewer_role() {
+  kcadm get "roles/partner-reviewer" -r "${KEYCLOAK_REALM}" >/dev/null 2>&1 || \
+    kcadm create roles -r "${KEYCLOAK_REALM}" \
+      -s name=partner-reviewer \
+      -s 'description=Scoped Orion external review access' >/dev/null
+}
+
 ensure_realm_mail() {
   local realm_json updated
 
@@ -153,16 +160,16 @@ ensure_realm_mail() {
   updated="$(jq -c \
     --arg password "${PARTNER_INTAKE_PASSWORD}" \
     '.smtpServer = {
-      host: "10.61.10.20",
-      port: "587",
+      host: "10.61.20.30",
+      port: "25",
       from: "partner-intake@keplerops.lab",
       fromDisplayName: "KeplerOps Partner Access",
       replyTo: "partner-intake@keplerops.lab",
       replyToDisplayName: "KeplerOps Partner Intake",
-      auth: "true",
+      auth: "false",
       user: "partner-intake",
       password: $password,
-      starttls: "true",
+      starttls: "false",
       ssl: "false"
     }' <<<"${realm_json}")"
   kcadm update "realms/${KEYCLOAK_REALM}" -f - <<<"${updated}" >/dev/null
@@ -294,6 +301,7 @@ main() {
   ensure_jupyterhub_client
   ensure_local_group "${PARTNER_NEXTCLOUD_GROUP}"
   ensure_local_group "${PARTNER_WORKHUB_GROUP}"
+  ensure_partner_reviewer_role
   ensure_partner_intake_client
   ensure_realm_mail
 

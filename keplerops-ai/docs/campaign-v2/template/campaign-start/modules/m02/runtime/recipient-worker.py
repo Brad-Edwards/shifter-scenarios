@@ -126,6 +126,10 @@ def normalized_subject(value: str) -> str:
     return re.sub(r"^(?:re|fw|fwd):\s*", "", value.strip(), flags=re.I)
 
 
+def header_value(value: str) -> str:
+    return re.sub(r"\s+", " ", value).strip()
+
+
 def text_body(message: Message) -> str:
     if message.is_multipart():
         values = []
@@ -219,19 +223,21 @@ def public_fact_count(body: str, contact: dict[str, Any]) -> int:
 def send_reply(original: Message, body: str) -> str:
     reply = EmailMessage()
     reply["From"] = MAIL_ADDRESS
-    reply["To"] = email_utils.parseaddr(str(original.get("From", "")))[1]
-    reply["Subject"] = f"Re: {normalized_subject(str(original.get('Subject', 'Orion review')))}"
+    reply["To"] = email_utils.parseaddr(header_value(str(original.get("From", ""))))[1]
+    reply["Subject"] = f"Re: {normalized_subject(header_value(str(original.get('Subject', 'Orion review'))))}"
     message_id = email_utils.make_msgid(domain="keplerops.lab")
     reply["Message-ID"] = message_id
     if original.get("Message-ID"):
-        reply["In-Reply-To"] = str(original["Message-ID"])
-        reply["References"] = " ".join(filter(None, [str(original.get("References", "")), str(original["Message-ID"])]))
+        original_message_id = header_value(str(original["Message-ID"]))
+        original_references = header_value(str(original.get("References", "")))
+        reply["In-Reply-To"] = original_message_id
+        reply["References"] = " ".join(filter(None, [original_references, original_message_id]))
     reply.set_content(body)
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as smtp:
         smtp.starttls(context=tls_context())
         smtp.login(MAIL_USER, MAIL_PASSWORD)
         smtp.send_message(reply)
-    source_message_id = str(original.get("Message-ID", "")).strip()
+    source_message_id = header_value(str(original.get("Message-ID", "")))
     LAST_REPLY_EVIDENCE[source_message_id] = {
         "native_result": "smtp-reply",
         "native_reply_message_id": message_id,
