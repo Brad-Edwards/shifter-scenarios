@@ -47,7 +47,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m03-a | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-b | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-c | M03 | NOT PROVEN | - | - | - | - |
-| kep-m03-d | M03 | NOT PROVEN | - | - | - | - |
+| kep-m03-d | M03 | BLOCKED | Registrar and Airflow health OK from participant workstation | Need participant Airflow auth/RBAC for `orion_factuality_evaluation` and `orion_phantom_dependency_resolution`; targeted fix lane active | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m03-d-20260803T113539Z`; `eval.reader` 401, other participant sessions 403 |
 | kep-m03-e | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-f | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-g | M03 | NOT PROVEN | - | - | - | - |
@@ -91,16 +91,16 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-d | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-e | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-f | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-g | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-h | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-i | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-j | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-k | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-l | M06 | NOT PROVEN | - | - | - | - |
+| kep-m06-g | M06 | PARTICIPANT PASS | Public release manifest, engagement reference, public bundle, Forgejo release/tag, mutation negative control | Existing source sufficient | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-g-20260803T110004Z`; Shifter auth returned 401, native proof complete |
+| kep-m06-h | M06 | PARTICIPANT PASS | Signed F-Droid repository, APK provenance, SBOM digest, source tag, signature/SBOM negative controls | Workstation `jarsigner` fleet patched live; source already includes JDK | Pending | `kep-v2-qa-lane-b:/home/kasm-user/orion-field-review/kep-m06-h-20260803T110122Z`; validator PASS |
+| kep-m06-i | M06 | PARTICIPANT PASS | Public KeplerOps people/research pages, independent conference vCard, Forgejo profile/org, STARTTLS RCPT probe | Existing source sufficient | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-i-20260803T110554Z`; vCard NOTE reference observed; SMTP RCPT `250 2.1.5 OK`; participant DNS/mail tool gaps recorded |
+| kep-m06-j | M06 | BLOCKED | Preview API and SMTP path work from participant workstation | Preview audit ownership fixed in source/live; need edge-observer/intake status materialization fix; workstation lacks Net::SSLeay for swaks TLS | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-j-retry-20260803T113135Z`; `/api/analyze` 200 and SMTP 250, status URL stayed 404 |
+| kep-m06-k | M06 | SOURCE DEFECT | Public kit artifacts verified and participant Forgejo repo pushed; runner/release path blocked | Runner DNS/deps source fix staged; Cinder service convergence running for B/D; actions artifact path still to verify | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-k-20260803T111728Z`; retry after source/live convergence |
+| kep-m06-l | M06 | SOURCE DEFECT | Jupyter persistence survived stop/start, but carrier endpoint and proxy deps missing | Need reattachment handler path and singleuser `onnxruntime`/`tokenizers`; targeted fix lane active | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-l-20260803T111901Z/summary.txt`; `/hub/api/cinder/reattachments` 404; missing deps |
 | kep-m06-m | M06 | NOT PROVEN | - | - | - | Real physical path required |
 | kep-m06-n | M06 | PARTICIPANT PASS | Managed domain/ACME flow passed previously | `37e0d0a`; exact-site follow-up pending | In progress | Participant evidence retained from managed issuance run |
 | kep-m06-o | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-p | M06 | NOT PROVEN | - | - | - | - |
+| kep-m06-p | M06 | PARTICIPANT PASS | OpenCode GLM 5.2 usage record validated | Source already current | - | `kep-v2-qa-lane-b:/home/kasm-user/qa-campaign-v2/m06/kep-m06-p/`; usage `0641ebd4-9cce-4203-bf18-fcc9b7750d9d` |
 | kep-m06-q | M06 | BLOCKED | Parent checks from participant workstation | - | - | Needs accepted `kep-m06-k`; lane A public bundles list was empty |
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-s | M06 | NOT PROVEN | - | - | - | - |
@@ -111,10 +111,10 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m07-b | M07 | PARTICIPANT PASS | MLflow integrity review run accepted 8 changed rows with changed model digest and poisoned-weights handoff | Existing source sufficient | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-b-proof/participant-m07b-20260803T101356Z` |
 | kep-m07-c | M07 | PARTICIPANT PASS | Participant pass in Lane C | Pushed | Complete | Lane C participant evidence |
 | kep-m07-d | M07 | PARTICIPANT PASS | Upstream release mirrored into lakeFS through Airflow | Source fix pushed | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-d-proof/participant-m07d-20260803T103812Z` |
-| kep-m07-e | M07 | NOT PROVEN | - | - | Complete | - |
-| kep-m07-f | M07 | NOT PROVEN | - | - | Complete | - |
+| kep-m07-e | M07 | BLOCKED | Label Studio edits, Forgejo objective commit, Airflow training, MLflow run created | Need model-behavior gate tuning or challenge guidance/fix | Pending | `kep-v2-qa-lane-c:/home/kasm-user/m07-e-proof/participant-m07e-20260803T105625Z`; audit failed: poisoned weights do not materially change held-out target behavior |
+| kep-m07-f | M07 | BLOCKED | Airflow and MLflow participant surfaces probed | Need M07 earned env to include MLflow credentials or accepted-run recovery path | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m07-f-20260803T112114Z`; MLflow 401 and no recoverable run history |
 | kep-m07-g | M07 | NOT PROVEN | - | - | Complete | - |
-| kep-m07-h | M07 | NOT PROVEN | - | - | Complete | - |
+| kep-m07-h | M07 | BLOCKED | Cinder Forgejo dataset commit and checksum verified byte-for-byte | Harbor reconcile source exists; fleet live Harbor robot repair pending | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m07-h-20260803T112411Z`; token only granted pull, blob upload 401 |
 | kep-m07-i | M07 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-a | M08 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-b | M08 | NOT PROVEN | - | - | Complete | - |

@@ -65,6 +65,8 @@ services:
       cinder-buildkit:
         condition: service_healthy
     extra_hosts:
+      - keplerops.lab:10.61.10.2
+      - git.keplerops.lab:10.61.10.2
       - registry.keplerops.lab:10.61.90.2
       - model.cinder.lab:10.61.90.2
     networks:
