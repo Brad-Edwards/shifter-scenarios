@@ -321,6 +321,7 @@ seed_repositories() {
   ensure_cinder_operator_repo orion-model-artifacts 'Cinder isolated Orion artifact execution and accepted releases.' true
   grant_repo keplerops orion-model-integrity svc-orion-training write
   grant_repo orion-upstream release-risk-corpus upstream.maintainer admin
+  grant_repo orion-upstream release-risk-corpus svc-orion-training read
   grant_cinder_repo cinder-labs orion-poisoned-dataset cinder.publisher admin
   grant_cinder_repo cinder-labs orion-poisoned-dataset cinder-field-operator admin
   grant_cinder_repo cinder-operator orion-model-artifacts cinder.publisher read

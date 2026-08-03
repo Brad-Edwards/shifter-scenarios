@@ -40,7 +40,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m02-f | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-h | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-i | M02 | PARTICIPANT PASS | GLM 5.2 draft plus two-message STARTTLS thread | Local source fix ready | Existing guides unchanged | Lane A `qualifying-native-reply.eml` |
-| kep-m02-j | M02 | NOT PROVEN | - | - | - | - |
+| kep-m02-j | M02 | PARTICIPANT PASS | Native SMTP thread, OIDC login, and participant Nextcloud receipt | Local source fix ready | Existing guides unchanged | Lane A `/home/kasm-user/m01-m03-proof/m02-j/Voice-Review-Receipt.participant.json` |
 | kep-m02-k | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-l | M02 | NOT PROVEN | - | - | - | - |
 | kep-m02-m | M02 | NOT PROVEN | - | - | - | - |
@@ -101,7 +101,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-n | M06 | PARTICIPANT PASS | Managed domain/ACME flow passed previously | `37e0d0a`; exact-site follow-up pending | In progress | Participant evidence retained from managed issuance run |
 | kep-m06-o | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-p | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-q | M06 | IN PROGRESS | Workflow reaches runner | `37e0d0a` runner convergence | In progress | Replay after correct overlay-backed runner |
+| kep-m06-q | M06 | BLOCKED | Parent checks from participant workstation | - | - | Needs accepted `kep-m06-k`; lane A public bundles list was empty |
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-s | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `ddc9c98` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
@@ -110,7 +110,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m07-a | M07 | PARTICIPANT PASS | Participant pass in Lane C | `5aff5cc` | Complete | Lane C participant evidence |
 | kep-m07-b | M07 | PARTICIPANT PASS | MLflow integrity review run accepted 8 changed rows with changed model digest and poisoned-weights handoff | Existing source sufficient | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-b-proof/participant-m07b-20260803T101356Z` |
 | kep-m07-c | M07 | PARTICIPANT PASS | Participant pass in Lane C | Pushed | Complete | Lane C participant evidence |
-| kep-m07-d | M07 | NOT PROVEN | - | - | Complete | - |
+| kep-m07-d | M07 | PARTICIPANT PASS | Upstream release mirrored into lakeFS through Airflow | Source fix pushed | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-d-proof/participant-m07d-20260803T103812Z` |
 | kep-m07-e | M07 | NOT PROVEN | - | - | Complete | - |
 | kep-m07-f | M07 | NOT PROVEN | - | - | Complete | - |
 | kep-m07-g | M07 | NOT PROVEN | - | - | Complete | - |
