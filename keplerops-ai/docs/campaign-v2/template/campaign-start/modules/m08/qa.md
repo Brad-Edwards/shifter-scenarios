@@ -701,8 +701,10 @@ Label Studio compatibility-review project.
    eight Release Risk classes, eight probabilities, model version, model digest,
    text digest, request ID, ledger key, ledger SHA-256, backend identity, and
    `engagement_reference`.
-5. Export the task from Label Studio. Save the export JSON and screenshot of
-   the prediction metadata.
+5. Export the task from Label Studio with unlabeled tasks included. For the API
+   route, set `download_all_tasks=true`; the default export omits a task that
+   has a prediction but no human annotation. Save the export JSON and a
+   screenshot of the prediction metadata.
 6. Submit the prediction metadata's `engagement_reference` to Shifter.
 7. Negative control: from the Kali terminal, try a direct Orion model request:
 

@@ -285,8 +285,9 @@ named **Orion Release Risk Compatibility Review**. Its scoped access package is
 
 **Method:** Create one fresh task with synthetic release-review text and one
 published `release_slice`. Request a model prediction in the Label Studio
-review UI. Export the review record and retain the input text, prediction,
-model revision, request ID, probability vector, ledger key, and ledger digest.
+review UI. Export the review record with unlabeled tasks included and retain
+the input text, prediction, model revision, request ID, probability vector,
+ledger key, and ledger digest.
 
 **Outcome:** A revision-linked Label Studio export from a live model-backend
 request, plus a bounded route for later teacher-query corpus work.

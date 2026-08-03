@@ -302,7 +302,8 @@ digest, and backend identity in the prediction metadata.
 **Diagnostics:** Read Label Studio task/prediction metadata, the teacher-query
 ledger object, backend identity, and direct-model denial from the workstation.
 Confirm `~/.keplerops/m08-review-desk.env` exists before diagnosing project
-authorization.
+authorization. If a prediction-only task is absent from an export, repeat the
+export with unlabeled tasks included (`download_all_tasks=true` via the API).
 
 **Recovery:** Delete rejected or unaccepted tasks. Preserve the accepted
 prediction export because later corpus work can depend on it.
