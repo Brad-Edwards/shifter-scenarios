@@ -683,13 +683,13 @@ async def infer(state: AgentState) -> AgentState:
                         result = await call_mcp_tool(
                             name, trusted_arguments, downstream_headers(state)
                         )
-                    except (RuntimeError, httpx.HTTPError) as exc:
+                    except Exception as exc:
                         # A bounded tool failure (an authorization gate, a lookup
                         # miss, or a transient dependency error) is reported back
                         # to the model as a tool result instead of aborting the
                         # whole request. The tool boundary itself is unchanged.
                         reason = f"tool call failed: {exc}"
-                        result = {"error": "tool_failed", "reason": str(exc)}
+                        result = {"error": "tool_call_failed", "reason": str(exc)}
                 else:
                     result = None
             tool_events.append(
