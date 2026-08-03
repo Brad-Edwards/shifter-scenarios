@@ -31,6 +31,23 @@ ensure_status = lambda do |name|
   value
 end
 
+if operation == 'kep-m03-e'
+  initial_status = ensure_status.call(payload.dig('initial_state', 'status'))
+  rollback_status = ensure_status.call(payload.dig('qualifying_false_state', 'status'))
+  ['Manager', 'Developer'].each do |role_name|
+    role = Role.find_by(name: role_name)
+    next if role.nil?
+    WorkflowTransition.find_or_create_by!(
+      role_id: role.id,
+      tracker_id: tracker.id,
+      old_status_id: initial_status.id,
+      new_status_id: rollback_status.id,
+      author: false,
+      assignee: false
+    )
+  end
+end
+
 records = {
   'kep-m03-e' => lambda { {
     subject: payload.fetch('record_title'),

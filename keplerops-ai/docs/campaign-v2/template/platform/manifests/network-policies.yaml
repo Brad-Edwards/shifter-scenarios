@@ -85,6 +85,7 @@ spec:
         - {protocol: TCP, port: 25}
         - {protocol: TCP, port: 443}
         - {protocol: TCP, port: 3000}
+        - {protocol: TCP, port: 4318}
         - {protocol: TCP, port: 13000}
         - {protocol: TCP, port: 16333}
     - to:

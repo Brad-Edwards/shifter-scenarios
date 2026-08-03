@@ -52,6 +52,10 @@ def sha(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def declares_release_risk(value: bytes) -> bool:
+    return b"release-risk" in value.lower() or b"release risk" in value.lower()
+
+
 def checked(response: requests.Response) -> requests.Response:
     response.raise_for_status()
     return response
@@ -336,7 +340,7 @@ def cinder_record(subject: str) -> dict[str, Any]:
         ) or record.get("artifact_sha256") != sha(artifact)
             or record.get("filesystem_policy") != "landlock-root-only"
             or record.get("release_card_sha256") != sha(card)
-            or b"release-risk" not in card.lower()
+            or not declares_release_risk(card)
             or record.get("heldout_suite_sha256") != sha(canonical(commitment))
             or commitment.get("schema") != "keplerops.release-risk.heldout-commitment/v1"
             or commitment.get("case_count") != record.get("heldout_case_count")

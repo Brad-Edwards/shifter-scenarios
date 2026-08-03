@@ -11,6 +11,7 @@ RUN mkdir -p /opt/mcp-package-docs-vulnerable \
     && cd /opt/mcp-package-docs-vulnerable \
     && npm install --ignore-scripts \
     && npm install --ignore-scripts --no-save cheerio@1.0.0 turndown@7.2.0 \
+    && node -e "const fs=require('fs'); const p='node_modules/vscode-languageserver-protocol/package.json'; const j=JSON.parse(fs.readFileSync(p)); j.exports['./node.js']=j.exports['./node']; fs.writeFileSync(p, JSON.stringify(j, null, 2)+'\n');" \
     && (npm run build || test -f build/index.js) \
     && test -f build/index.js \
     && rm /tmp/mcp-package-docs-v0.1.26.tar.gz
@@ -24,6 +25,7 @@ RUN echo 'e0aae710aadf4b1d8ca9ece939d4de449da039faafb772c353f1a5d73055ffd1  /tmp
     && cd /opt/mcp-package-docs-patched \
     && npm install --ignore-scripts \
     && npm install --ignore-scripts --no-save cheerio@1.0.0 turndown@7.2.0 \
+    && node -e "const fs=require('fs'); const p='node_modules/vscode-languageserver-protocol/package.json'; const j=JSON.parse(fs.readFileSync(p)); j.exports['./node.js']=j.exports['./node']; fs.writeFileSync(p, JSON.stringify(j, null, 2)+'\n');" \
     && (npm run build || test -f build/index.js) \
     && rm /tmp/mcp-package-docs-v0.1.27.tar.gz
 

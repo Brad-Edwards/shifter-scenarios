@@ -91,12 +91,21 @@ services:
             --secret 4f8c227d64a1ed619912d686ea90e7edc5637a81 \
             --name cinder-field-operator-isolated
         fi
+        install -d -m 0700 /var/lib/keplerops-v2/cinder-forgejo-runner/run-keplerops/m07/state
         chown 1000:1000 /var/lib/keplerops-v2/cinder-forgejo-runner \
-          /var/lib/keplerops-v2/cinder-forgejo-runner/.runner
+          /var/lib/keplerops-v2/cinder-forgejo-runner/.runner \
+          /var/lib/keplerops-v2/cinder-forgejo-runner/run-keplerops \
+          /var/lib/keplerops-v2/cinder-forgejo-runner/run-keplerops/m07 \
+          /var/lib/keplerops-v2/cinder-forgejo-runner/run-keplerops/m07/state
     volumes:
       - type: bind
         source: /var/lib/keplerops-v2/cinder-forgejo-runner
         target: /var/lib/keplerops-v2/cinder-forgejo-runner
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /var/lib/keplerops-v2/cinder-forgejo-runner/run-keplerops
+        target: /run/keplerops
         bind:
           create_host_path: true
     networks:
@@ -135,8 +144,10 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=256m
+    privileged: true
     cap_drop: [ALL]
     security_opt:
+      - seccomp:unconfined
       - no-new-privileges:true
     networks:
       - cinder

@@ -7,7 +7,7 @@ x-m03-airflow: &m03-airflow
     QDRANT_WRITE_URL: http://10.61.50.72:6333
     QDRANT_WRITE_KEY: KeplerV2-Training-Qdrant-Write
     CINDER_REGISTRAR_URL: http://10.61.90.34:8080
-    CINDER_REGISTRAR_TOKEN: Cinder-Registrar-cinder-operator-4c8e2a7f
+    CINDER_REGISTRAR_TOKEN: Cinder-Field-Operator-Registrar-4c8e2a7f
     CINDER_FORGEJO_URL: http://10.61.90.30:3000
     CINDER_FORGEJO_USER: cinder-operator
     CINDER_FORGEJO_PASSWORD: Cinder-Operations-Git-K3m7Pq4x

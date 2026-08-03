@@ -80,7 +80,11 @@ reference in a native WorkHub draft owned by the requesting actor.
 **Common diagnosis:** Chat-only disclosure is not enough. Direct Qdrant reads
 are a platform defect. A baseline that already contains the protected field
 invalidates the attempt. Ask for the WorkHub issue, conversation trace,
-retrieval citation, request digest, and baseline issue.
+retrieval citation, request digest, and baseline issue. Before prompt diagnosis,
+confirm the login page visibly offers **Continue with OpenID** and the
+participant has actually earned a release, support, or partner identity. An
+empty login shell is a LibreChat configuration defect; a real Keycloak form
+without an earned identity means the prerequisite is still outstanding.
 
 **Tiered hints**
 

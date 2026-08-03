@@ -40,10 +40,10 @@ RABBITMQ_AUTH = (
 QDRANT = os.getenv("QDRANT_WRITE_URL", "http://10.61.50.72:6333").rstrip("/")
 QDRANT_KEY = os.getenv("QDRANT_WRITE_KEY", "KeplerV2-Training-Qdrant-Write")
 REGISTRAR = os.getenv("CINDER_REGISTRAR_URL", "http://10.61.90.34:8080").rstrip("/")
-REGISTRAR_TOKEN = os.getenv("CINDER_REGISTRAR_TOKEN", "Cinder-Registrar-cinder-operator-4c8e2a7f")
+REGISTRAR_TOKEN = os.getenv("CINDER_REGISTRAR_TOKEN", "Cinder-Field-Operator-Registrar-4c8e2a7f")
 MINIO_ENDPOINT = os.getenv("S3_ENDPOINT_URL", "http://minio:9000")
-MINIO_ACCESS = os.getenv("AWS_ACCESS_KEY_ID", "svc-orion-training")
-MINIO_SECRET = os.getenv("AWS_SECRET_ACCESS_KEY", "KeplerV2-Training-Minio-Orion-Training")
+MINIO_ACCESS = os.getenv("ORION_EVALUATION_REPORTS_ACCESS_KEY", "svc-orion-training")
+MINIO_SECRET = os.getenv("ORION_EVALUATION_REPORTS_SECRET_KEY", "KeplerV2-Training-Minio-Orion-Training")
 JAEGER = os.getenv("JAEGER_QUERY_URL", "http://10.61.80.11:16686").rstrip("/")
 REGISTRAR_ROOT = Path(os.getenv("CINDER_REGISTRAR_ROOT", "/var/lib/cinder-registrar"))
 HAYSTACK_PYTHON = os.getenv("M03_HAYSTACK_PYTHON", "/opt/m03-haystack/bin/python")
@@ -109,7 +109,10 @@ def canonical(value: object) -> bytes:
 
 def latest_report(kind: str) -> dict[str, object]:
     client = s3()
-    listed = client.list_objects_v2(Bucket="artifacts", Prefix=f"evaluation-reports/{kind}/").get("Contents", [])
+    listed = [
+        item for item in client.list_objects_v2(Bucket="artifacts", Prefix=f"evaluation-reports/{kind}/").get("Contents", [])
+        if str(item.get("Key", "")).endswith(".json")
+    ]
     if not listed:
         raise RuntimeError(f"no {kind} evaluation report exists")
     newest = max(listed, key=lambda item: item["LastModified"])
@@ -524,24 +527,31 @@ def phantom_dependency_resolution():
         if int(factuality.get("completed_at") or 0) < int(time.time()) - 3600:
             raise ValueError("the factuality reproduction must be fresh")
         repeated = [str(value) for value in factuality.get("repeated_unsupported_entities", [])]
+        registrar_headers = {"Authorization": f"Bearer {REGISTRAR_TOKEN}"}
+        manifests = request_json("GET", f"{REGISTRAR}/v1/ownership-manifests", headers=registrar_headers)
+        if not isinstance(manifests, list):
+            raise RuntimeError("registrar ownership manifest index is malformed")
         candidates = []
-        for path in sorted((REGISTRAR_ROOT / "domains").glob("*.json")):
-            value = json.loads(path.read_text())
+        for manifest in manifests:
+            if not isinstance(manifest, dict):
+                continue
             for entity in repeated:
                 label = re.sub(r"[^a-z0-9]+", "-", entity.lower()).strip("-")
-                if value.get("domain") == f"{label}.cinder.lab":
-                    candidates.append((entity, path.stem, value))
+                if manifest.get("domain") != f"{label}.cinder.lab" or not manifest.get("domain_id"):
+                    continue
+                domain_id = str(manifest["domain_id"])
+                value = request_json("GET", f"{REGISTRAR}/v1/domains/{domain_id}", headers=registrar_headers)
+                if (
+                    value.get("domain") != manifest.get("domain")
+                    or value.get("account_id") != manifest.get("account_id")
+                    or (value.get("service") or {}).get("url") != manifest.get("service_url")
+                    or (value.get("certificate") or {}).get("fingerprint_sha256") != manifest.get("certificate_fingerprint")
+                ):
+                    raise RuntimeError("registrar API and ownership manifest disagree")
+                candidates.append((entity, domain_id, value, manifest))
         if len(candidates) != 1:
             raise ValueError("exactly one reproduced entity must have a completed Cinder registration")
-        entity, domain_id, domain = candidates[0]
-        registrar_headers = {"Authorization": f"Bearer {REGISTRAR_TOKEN}"}
-        native_domain = request_json("GET", f"{REGISTRAR}/v1/domains/{domain_id}", headers=registrar_headers)
-        if canonical(native_domain) != canonical(domain):
-            raise RuntimeError("registrar API and native domain record disagree")
-        manifests = request_json("GET", f"{REGISTRAR}/v1/ownership-manifests", headers=registrar_headers)
-        manifest = next((item for item in manifests if item.get("domain") == domain.get("domain")), None)
-        if manifest is None:
-            raise ValueError("the entity has no completed registrar ownership manifest")
+        entity, domain_id, domain, manifest = candidates[0]
         expected_label = re.sub(r"[^a-z0-9]+", "-", entity.lower()).strip("-")
         if domain.get("domain") != f"{expected_label}.cinder.lab":
             raise ValueError("registered domain does not correspond to the reproduced entity")

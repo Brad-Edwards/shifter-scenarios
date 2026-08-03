@@ -31,9 +31,11 @@ jobs:
         env:
           REQUESTED_COMMIT: ${{ inputs.git_ref }}
           REQUESTED_ATTEMPT: ${{ inputs.attempt_id }}
+          SUBMISSION_USER: ${{ secrets.ARTIFACT_RELEASE_USER }}
+          SUBMISSION_PASSWORD: ${{ secrets.ARTIFACT_RELEASE_PASSWORD }}
         run: |
           git init submission
-          git -C submission remote add origin http://cinder-forgejo:3000/cinder-labs/orion-poisoned-dataset.git
+          git -C submission remote add origin "http://${SUBMISSION_USER}:${SUBMISSION_PASSWORD}@cinder-forgejo:3000/cinder-labs/orion-poisoned-dataset.git"
           if [ -n "$REQUESTED_COMMIT" ]; then
             SOURCE_COMMIT="$REQUESTED_COMMIT"
           else
@@ -49,7 +51,7 @@ jobs:
           if [ -n "$REQUESTED_ATTEMPT" ]; then
             ATTEMPT_ID="$REQUESTED_ATTEMPT"
           elif [ -f submission/review-request.json ]; then
-            ATTEMPT_ID="$(python - <<'PY'
+            ATTEMPT_ID="$(python3 - <<'PY'
           import json
           request = json.load(open('submission/review-request.json', encoding='utf-8'))
           if request.get('schema') != 'cinder.orion-artifact-review-request/v1':
@@ -77,7 +79,7 @@ jobs:
           install -d -m 0700 build
           unshare --map-root-user --user --mount --net --pid --fork --mount-proc \
             env -i PATH=/usr/local/bin:/usr/bin:/bin LANG=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 \
-            python -I verifier/sandbox_builder.py \
+            python3 -I verifier/sandbox_builder.py \
               --source submission/build_unsafe_model.py \
               --output build/orion-model.pkl
           test -f build/orion-model.pkl -a ! -L build/orion-model.pkl
@@ -90,6 +92,17 @@ jobs:
           install -d -m 0700 protected
           printf '%s' "$HELDOUT_CASES_B64" | base64 -d > protected/release-risk-integrity-heldout.json
           chmod 0600 protected/release-risk-integrity-heldout.json
+      - name: Prepare verifier runtime
+        if: ${{ env.SKIP_REVIEW != '1' }}
+        run: |
+          install -d -m 0700 pip-tmp verifier-runtime
+          TMPDIR="$PWD/pip-tmp" python3 -m pip install --no-cache-dir --target verifier-runtime \
+            boto3==1.40.20 \
+            onnx==1.18.0 \
+            onnxruntime==1.22.1 \
+            requests==2.32.4 \
+            transformers==4.55.4
+          rm -rf pip-tmp
       - name: Verify deserialization and inference
         if: ${{ env.SKIP_REVIEW != '1' }}
         env:
@@ -97,8 +110,9 @@ jobs:
           ORION_PROVENANCE_KEY: ${{ secrets.ORION_PROVENANCE_KEY }}
           EXECUTION_REVIEW_REFERENCE: ${{ secrets.ARTIFACT_REVIEW_REFERENCE }}
           CINDER_NETWORK_NAMESPACE: required
+          PYTHONPATH: verifier-runtime
         run: |
-          python verifier/verifier.py build/orion-model.pkl \
+          python3 verifier/verifier.py build/orion-model.pkl \
             --heldout protected/release-risk-integrity-heldout.json \
             --heldout-contract verifier/release-risk-integrity-heldout.json \
             --release-card submission/MODEL_CARD.md \
@@ -112,8 +126,9 @@ jobs:
           CINDER_OBJECT_ENDPOINT: http://10.61.90.31:9000
           CINDER_OBJECT_ACCESS_KEY: ${{ secrets.CINDER_OBJECT_ACCESS_KEY }}
           CINDER_OBJECT_SECRET_KEY: ${{ secrets.CINDER_OBJECT_SECRET_KEY }}
+          PYTHONPATH: verifier-runtime
         run: |
-          python verifier/publish_report.py signed-artifact-report.json \
+          python3 verifier/publish_report.py signed-artifact-report.json \
             --output signed-artifact-locator.json
       - name: Publish accepted Cinder release
         if: ${{ env.SKIP_REVIEW != '1' }}
@@ -122,8 +137,9 @@ jobs:
           ARTIFACT_RELEASE_USER: ${{ secrets.ARTIFACT_RELEASE_USER }}
           ARTIFACT_RELEASE_PASSWORD: ${{ secrets.ARTIFACT_RELEASE_PASSWORD }}
           REVIEW_COMMIT: ${{ github.sha }}
+          PYTHONPATH: verifier-runtime
         run: |
-          python verifier/publish_release.py \
+          python3 verifier/publish_release.py \
             --artifact build/orion-model.pkl \
             --card submission/MODEL_CARD.md \
             --report signed-artifact-report.json \

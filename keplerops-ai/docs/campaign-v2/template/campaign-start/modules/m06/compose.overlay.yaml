@@ -123,7 +123,7 @@ services:
     image: keplerops/cinder-jupyterhub:campaign-v2
     environment:
       CINDER_WORKSPACE_FLAG: FLAG{ea64816134461740}
-      CINDER_SINGLEUSER_IMAGE: ${JUPYTER_IMAGE}
+      CINDER_SINGLEUSER_IMAGE: keplerops/cinder-jupyter-singleuser:campaign-v2
       KUBECONFIG: /etc/cinder/kubeconfig
     volumes:
       - cinder-jupyterhub-state:/srv/jupyterhub/state

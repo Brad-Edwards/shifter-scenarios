@@ -113,7 +113,19 @@ install_airflow_workflows() {
   compose up -d --no-deps airflow-api airflow-scheduler airflow-dag-processor airflow-triggerer airflow-worker >/dev/null
   compose exec -T airflow-scheduler airflow dags reserialize >/dev/null
   compose exec -T airflow-api airflow sync-perm >/dev/null
+  compose exec -T airflow-api python /opt/airflow/config/reconcile_roles.py >/dev/null
   compose exec -T airflow-api python - < "${MODULE_ROOT}/runtime/reconcile_airflow_roles.py" >/dev/null
+  if ! compose exec -T airflow-api airflow users create \
+    --username eval.reader --firstname Evaluation --lastname Reader \
+    --email eval.reader@keplerops.lab --role "Orion Runner" \
+    --password EvalReader-Archive-2026 >/dev/null 2>&1; then
+    compose exec -T airflow-api airflow users reset-password \
+      --username eval.reader --password EvalReader-Archive-2026 >/dev/null
+    compose exec -T airflow-api airflow users add-role \
+      --username eval.reader --role "Orion Runner" >/dev/null 2>&1 || true
+  fi
+  compose exec -T airflow-api airflow users add-role \
+    --username eval.reader --role "Orion Viewer" >/dev/null 2>&1 || true
   compose exec -T airflow-scheduler airflow dags unpause orion_approved_review_follow_up >/dev/null
 }
 

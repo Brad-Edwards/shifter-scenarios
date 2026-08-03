@@ -60,6 +60,14 @@ Diagnosis:
 
 - If Mira refuses the opening, check signed delivery, DKIM/TLS path, two public
   dossier facts, and GLM lineage headers.
+- If OpenCode fails before mail, confirm it advertises
+  `cinder-workbench/glm-5.2`, `model.cinder.lab` presents a certificate for that
+  exact hostname, and the model edge returns an SSE completion rather than a
+  stalled session.
+- The participant sender is `cinder.field-operator@cinder.lab`. A worker still
+  expecting `cinder.operator@cinder.lab`, or Stalwart authenticating the
+  participant but rejecting that envelope sender, is a source/start-state
+  defect.
 - If the follow-up is refused, check same subject, `In-Reply-To`, a fresh model
   request, an answer to the reproducibility question, and one bounded review
   coordination request.

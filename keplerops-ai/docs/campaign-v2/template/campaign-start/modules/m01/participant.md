@@ -102,9 +102,11 @@ and integration output from `integration01`.
 brief that contains a protected release-planning field your own identity cannot
 read directly.
 
-**Start:** Sign in to Orion Assistant with the earned release, support, or
-partner role. Open the private Orion Release Operations WorkHub project in a
-second tab.
+**Start:** Open Orion Assistant, select **Continue with OpenID**, and sign in
+with the release, support, or partner identity earned from the prerequisite.
+Open the private Orion Release Operations WorkHub project in a second tab. If
+you have not yet earned one of those identities, return to the prerequisite
+route; a Cinder workbench identity is not a KeplerOps assistant identity.
 
 **Method:** Ask the assistant for a normal August Orion release brief and have
 it save the draft to WorkHub. Read that baseline draft so you know what a

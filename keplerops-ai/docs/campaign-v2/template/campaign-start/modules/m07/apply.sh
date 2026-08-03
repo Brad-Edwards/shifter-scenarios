@@ -16,6 +16,9 @@ readonly CINDER_FORGEJO_API_URL="${CINDER_FORGEJO_API_URL:-http://10.61.90.30:30
 readonly CINDER_FORGEJO_ADMIN_AUTH="${CINDER_FORGEJO_ADMIN_AUTH:-cinder-operator:Cinder-Operations-Git-K3m7Pq4x}"
 readonly HARBOR_API_URL="${HARBOR_API_URL:-http://10.61.40.32:8080/api/v2.0}"
 readonly HARBOR_ADMIN_AUTH="${HARBOR_ADMIN_AUTH:-admin:KeplerV2-Training-Harbor}"
+readonly HARBOR_PUBLISHER_USER_DEFAULT='robot$cinder-datasets+cinder-publisher'
+readonly HARBOR_PUBLISHER_USER_FILE="${STATE_ROOT}/harbor-cinder-publisher-user"
+readonly HARBOR_PUBLISHER_PASSWORD_FILE="${STATE_ROOT}/harbor-cinder-publisher-password"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
 readonly MLFLOW_AUTH="${MLFLOW_AUTH:-svc-orion-training:KeplerV2-Training-MLflow-Service}"
 
@@ -146,6 +149,39 @@ upsert_cinder_file() {
   payload="$(base64 -w0 "${source}" | jq -Rs --arg message "${message}" --arg sha "${sha}" \
     '{content:.,message:$message,branch:"main"} + (if $sha == "" then {} else {sha:$sha} end)')"
   cinder_forgejo "${method}" "/repos/${owner}/${repo}/contents/${path}" --data "${payload}" >/dev/null
+}
+
+harbor_publisher_user() {
+  if [[ -s ${HARBOR_PUBLISHER_USER_FILE} ]]; then
+    cat "${HARBOR_PUBLISHER_USER_FILE}"
+  else
+    printf '%s' "${HARBOR_PUBLISHER_USER_DEFAULT}"
+  fi
+}
+
+harbor_publisher_password() {
+  if [[ -s ${HARBOR_PUBLISHER_PASSWORD_FILE} ]]; then
+    cat "${HARBOR_PUBLISHER_PASSWORD_FILE}"
+  else
+    printf '%s' 'Cinder-Dataset-Publisher-2026'
+  fi
+}
+
+harbor_token_has_push() {
+  local user=$1 password=$2 repository=${3:-cinder-datasets/orion-poisoned-dataset} token payload
+  token="$(curl -fsS --user "${user}:${password}" \
+      --get --data-urlencode service=harbor-registry \
+      --data-urlencode scope="repository:${repository}:pull,push" \
+      "${HARBOR_API_URL%/api/v2.0}/service/token" | jq -r '.token // empty' || true)"
+  [[ -n ${token} ]] || return 1
+  payload="${token#*.}"
+  payload="${payload%%.*}"
+  while (( ${#payload} % 4 != 0 )); do payload="${payload}="; done
+  printf '%s' "${payload}" | tr '_-' '/+' | base64 -d 2>/dev/null | \
+    jq -e --arg repository "${repository}" 'any(.access[]?;
+      .type == "repository" and
+      .name == $repository and
+      ((.actions // []) | index("push")))' >/dev/null
 }
 
 capture_clean_state() {
@@ -300,11 +336,17 @@ MLFLOW_URL=https://mlflow.keplerops.lab
 MLFLOW_AUTH=${MLFLOW_AUTH}
 MLFLOW_USERNAME=${MLFLOW_AUTH%%:*}
 MLFLOW_PASSWORD=${MLFLOW_AUTH#*:}
+HARBOR_URL=https://registry.keplerops.lab
+HARBOR_USER=$(harbor_publisher_user)
+HARBOR_PASSWORD=$(harbor_publisher_password)
 EOF
 }
 
 reconcile_state_ownership() {
+  install -d -m 0770 "${STATE_ROOT}/attempts"
   chown -R 50000:0 "${STATE_ROOT}"
+  chmod 0770 "${STATE_ROOT}/attempts"
+  install -d -m 0700 "${STATE_ROOT}/attempts/kep-m07-i"
   chown -R 1000:1000 "${STATE_ROOT}/attempts/kep-m07-i"
 }
 
@@ -394,24 +436,25 @@ seed_repositories() {
 }
 
 reconcile_harbor() {
-  local project robots robot_id
+  local project created robot_name user secret password
   project='{"project_name":"cinder-datasets","public":true,"metadata":{"auto_scan":"false"}}'
   curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
     -X POST --data "${project}" "${HARBOR_API_URL}/projects" >/dev/null 2>&1 || true
-  if curl -fsS --user 'robot$cinder-datasets+cinder-publisher:Cinder-Dataset-Publisher-2026' \
-      --get --data-urlencode service=harbor-registry \
-      --data-urlencode scope=repository:cinder-datasets/identity-check:pull,push \
-      "${HARBOR_API_URL%/api/v2.0}/service/token" | jq -e '.token | length > 0' >/dev/null; then
-    return 0
-  fi
-  robots="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" "${HARBOR_API_URL}/robots?page=1&page_size=100")"
-  robot_id="$(jq -r '.[] | select(.name == "robot$cinder-datasets+cinder-publisher") | .id' <<<"${robots}" | head -n1)"
-  if [[ -n ${robot_id} ]]; then
-    curl -fsS --user "${HARBOR_ADMIN_AUTH}" -X DELETE "${HARBOR_API_URL}/robots/${robot_id}" >/dev/null
-  fi
-  curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
-    -X POST --data '{"name":"cinder-publisher","description":"Bounded Cinder dataset publisher","disable":false,"duration":-1,"level":"project","secret":"Cinder-Dataset-Publisher-2026","permissions":[{"kind":"project","namespace":"cinder-datasets","access":[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]}]}' \
-    "${HARBOR_API_URL}/robots" >/dev/null
+  user="$(harbor_publisher_user)"
+  password="$(harbor_publisher_password)"
+  harbor_token_has_push "${user}" "${password}" && return 0
+  log 'Cinder publisher robot token lacks push; recreating it'
+  robot_name="cinder-publisher-$(date +%s)"
+  created="$(curl -fsS --user "${HARBOR_ADMIN_AUTH}" -H 'Content-Type: application/json' \
+    -X POST --data "$(jq -cn --arg name "${robot_name}" \
+      '{name:$name,description:"Bounded Cinder dataset publisher",disable:false,duration:-1,level:"project",permissions:[{kind:"project",namespace:"cinder-datasets",access:[{resource:"repository",action:"pull"},{resource:"repository",action:"push"}]}]}')" \
+    "${HARBOR_API_URL}/robots")"
+  user="$(jq -er '.name' <<<"${created}")"
+  secret="$(jq -er '.secret' <<<"${created}")"
+  printf '%s' "${user}" >"${HARBOR_PUBLISHER_USER_FILE}"
+  printf '%s' "${secret}" >"${HARBOR_PUBLISHER_PASSWORD_FILE}"
+  chmod 0640 "${HARBOR_PUBLISHER_USER_FILE}" "${HARBOR_PUBLISHER_PASSWORD_FILE}"
+  harbor_token_has_push "${user}" "${secret}" || die 'Cinder publisher robot still lacks Harbor push after recreation'
 }
 
 clean_training_exists() {
@@ -589,7 +632,9 @@ main() {
   "${TEMPLATE_ROOT}/campaign-start/reconcile-airflow-dags.sh"
   install -d -m 0770 "${STATE_ROOT}"
   chown 50000:0 "${STATE_ROOT}"
+  install -d -m 0770 "${STATE_ROOT}/attempts"
   install -d -m 0700 "${STATE_ROOT}/attempts/kep-m07-i"
+  chown 50000:0 "${STATE_ROOT}/attempts"
   chown 1000:1000 "${STATE_ROOT}/attempts/kep-m07-i"
   if [[ ${requested} != all ]]; then apply_one "${requested}"; return; fi
   capture_clean_state

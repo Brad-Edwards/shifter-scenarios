@@ -3,6 +3,7 @@ from airflow.providers.fab.auth_manager.cli_commands.utils import get_applicatio
 
 MANUAL_DAGS = (
     "orion_evaluation_dependency_review",
+    "orion_factuality_evaluation",
     "orion_phantom_dependency_resolution",
     "orion_current_workhub_status_review",
     "orion_release_review_handoff",

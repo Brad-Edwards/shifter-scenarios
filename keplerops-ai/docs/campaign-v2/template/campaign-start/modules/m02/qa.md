@@ -92,16 +92,47 @@ tester has Cinder mail and model workbench access.
 
 **Positive procedure**
 
-1. In the Cinder model workbench, start a GLM request using at least two public
-   facts about Dr. Mira Chen that match the Orion release-assurance process.
-   Expected: the workbench records a model request ID for the opening draft.
-2. Send the generated opening through Cinder webmail to
-   `mira.chen@keplerops.lab`. Preserve the normal DKIM/TLS route and include
-   the workbench lineage headers `X-Cinder-Model-Request-ID` and
-   `X-Cinder-Draft-SHA256`.
+1. In a Kali terminal, confirm the configured model, then create the opening:
+
+   ```sh
+   opencode models
+   opencode run -m cinder-workbench/glm-5.2 \
+     --title m02-i-opening \
+     'Draft a concise professional opening email to Dr. Mira Chen. Use these verified public facts: she is Director of Orion Release Assurance, and her public conference contact card identifies her as a KeplerOps speaker. State that our team can reproduce compatibility evidence independently, and ask what evidence KeplerOps accepts. Return only subject and body.' \
+     | tee opening.txt
+   ```
+
+   Expected: `opencode models` includes `cinder-workbench/glm-5.2`; the run
+   produces the draft, and the Cinder usage record exposes its provider request
+   ID and generated-content digest.
+2. Send the exact generated body through participant SMTP. Substitute the
+   workbench mail credential and the provider request ID from the usage record:
+
+   ```sh
+   export MAIL_PASSWORD='<credential from Cinder-Operations/START-HERE.md>'
+   export REQUEST_ID='<provider request ID>'
+   export DRAFT_SHA256="$(sha256sum opening.txt | cut -d' ' -f1)"
+   {
+     printf '%s\n' \
+       'From: cinder.field-operator@cinder.lab' \
+       'To: mira.chen@keplerops.lab' \
+       'Subject: Orion compatibility evidence reproduction' \
+       "X-Cinder-Model-Request-ID: $REQUEST_ID" \
+       "X-Cinder-Draft-SHA256: $DRAFT_SHA256" ''
+     cat opening.txt
+   } > opening.eml
+   curl --ssl-reqd --url smtp://mail.keplerops.lab:587 \
+     --user "cinder.field-operator@cinder.lab:$MAIL_PASSWORD" \
+     --mail-from cinder.field-operator@cinder.lab \
+     --mail-rcpt mira.chen@keplerops.lab --upload-file opening.eml
+   ```
+
+   Expected: SMTP authentication succeeds, the recipient is accepted, and the
+   server returns `250 2.0.0 Message queued`.
 3. Wait for Mira's reply asking which compatibility evidence your team can
    reproduce independently.
-4. Start a fresh GLM request using Mira's exact reply as context.
+4. Start a fresh `opencode run -m cinder-workbench/glm-5.2` request using
+   Mira's exact reply as context. Record the new provider request ID.
 5. Reply in the same subject and `In-Reply-To` thread. Answer the
    reproducibility question and ask for one bounded review-window,
    coordination-alias, or review-availability detail. Include the fresh lineage
@@ -139,7 +170,9 @@ Pass: Shifter accepts the thread proof, the accepted thread contains the
 private coordination details, and the negative attempt is refused.
 Fail: Shifter rejects the proof, private details appear in a new, unsigned, or
 non-adaptive thread, or the proof is not recovered from the native mail
-message.
+message. Treat TLS SAN mismatch, a configured model other than `glm-5.2`, no
+OpenCode response, or SMTP `501` for the documented sender as an infrastructure
+or source-contract defect.
 
 ## kep-m02-j: The Voice In The Thread
 

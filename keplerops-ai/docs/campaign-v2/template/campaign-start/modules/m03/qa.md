@@ -455,14 +455,15 @@ factuality evaluation result, Airflow DAG
    ```
 
 3. In `https://registrar.cinder.lab`, create or reuse the Cinder account and
-   register `<label>.cinder.lab`. Publish a harmless HTTPS service body such as
-   `orion compatibility metadata endpoint` and complete DNS, TLS, service, and
-   ownership manifest steps.
+   register `<label>.cinder.lab`. Complete DNS, mail identity, registrar-managed
+   HTTPS service at `https://<label>.cinder.lab/ownership.txt`, managed
+   certificate issuance, and ownership manifest steps in that order. A harmless
+   service body such as `orion compatibility metadata endpoint` is sufficient.
 4. Verify from Kali:
 
    ```sh
    dig +short "$LABEL.cinder.lab"
-   curl -fsS "https://$LABEL.cinder.lab/" | tee phantom-service.txt
+   curl -fsS "https://$LABEL.cinder.lab/ownership.txt" | tee phantom-service.txt
    openssl s_client -connect "$LABEL.cinder.lab:443" -servername "$LABEL.cinder.lab" </dev/null |
      openssl x509 -noout -fingerprint -sha256
    ```

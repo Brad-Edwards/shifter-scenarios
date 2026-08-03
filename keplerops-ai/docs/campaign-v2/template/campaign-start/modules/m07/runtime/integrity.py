@@ -51,8 +51,16 @@ FORGEJO_PASSWORD = os.getenv("FORGEJO_PASSWORD", "KAI-Orion-Trainer-2b68d419a7f3
 TRAINING_SOURCE_REPOSITORY = "keplerops/orion-build"
 TRAINING_SOURCE_PATH = "training/orion_release_risk_training.py"
 HARBOR_URL = os.getenv("HARBOR_URL", "http://10.61.40.32:8080").rstrip("/")
-HARBOR_USER = os.getenv("HARBOR_USER", "robot$cinder-datasets+cinder-publisher")
-HARBOR_PASSWORD = os.getenv("HARBOR_PASSWORD", "Cinder-Dataset-Publisher-2026")
+HARBOR_USER_FILE = os.getenv("HARBOR_USER_FILE", "")
+if HARBOR_USER_FILE and Path(HARBOR_USER_FILE).is_file():
+    HARBOR_USER = Path(HARBOR_USER_FILE).read_text(encoding="utf-8").strip()
+else:
+    HARBOR_USER = os.getenv("HARBOR_USER", "robot$cinder-datasets+cinder-publisher")
+HARBOR_PASSWORD_FILE = os.getenv("HARBOR_PASSWORD_FILE", "")
+if HARBOR_PASSWORD_FILE and Path(HARBOR_PASSWORD_FILE).is_file():
+    HARBOR_PASSWORD = Path(HARBOR_PASSWORD_FILE).read_text(encoding="utf-8").strip()
+else:
+    HARBOR_PASSWORD = os.getenv("HARBOR_PASSWORD", "Cinder-Dataset-Publisher-2026")
 STATE = Path(os.getenv("ORION_INTEGRITY_STATE_ROOT", "/opt/airflow/orion-integrity-state"))
 HELDOUT = Path(os.getenv("RELEASE_RISK_INTEGRITY_CASES", "/opt/airflow/release-risk/integrity-heldout.json"))
 MINIO_URL = os.getenv("MINIO_ENDPOINT", "http://minio:9000")

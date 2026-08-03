@@ -24,7 +24,7 @@ source-only, or documentation-only result is not a participant pass.
 | --- | --- | --- | --- | --- | --- | --- |
 | kep-m01-a | M01 | BLOCKED | Reaches OpenID and Keycloak | `a2fd50f` | Pending | Earned prerequisite identity absent in lane A |
 | kep-m01-b | M01 | NOT PROVEN | - | - | - | - |
-| kep-m01-c | M01 | NOT PROVEN | - | - | - | - |
+| kep-m01-c | M01 | BLOCKED | Orion safety-boundary bypass reached protected Forgejo workflow dispatch | Need Forgejo Actions runner to pick up `svc-orion-agent/release-runbook-validation` workflow and produce `validation-report` artifact | Pending | `kep-v2-qa-lane-?:/home/kasm-user/qa/kep-m01-c-20260803T113008Z`; run `1` stayed waiting with zero artifacts |
 | kep-m01-d | M01 | NOT PROVEN | - | - | - | - |
 | kep-m01-e | M01 | NOT PROVEN | - | - | - | - |
 | kep-m01-f | M01 | NOT PROVEN | - | - | - | - |
@@ -47,8 +47,8 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m03-a | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-b | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-c | M03 | NOT PROVEN | - | - | - | - |
-| kep-m03-d | M03 | BLOCKED | Registrar and Airflow health OK from participant workstation | Need participant Airflow auth/RBAC for `orion_factuality_evaluation` and `orion_phantom_dependency_resolution`; targeted fix lane active | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m03-d-20260803T113539Z`; `eval.reader` 401, other participant sessions 403 |
-| kep-m03-e | M03 | NOT PROVEN | - | - | - | - |
+| kep-m03-d | M03 | BLOCKED | Participant can authenticate to Airflow and read/run required DAGs after fleet RBAC fix | M03 Airflow RBAC/source user fix staged; need Jaeger reachability for factuality DAG and registrar live/source drift fix | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m03-d-airflow-fix-20260803T114156Z`; factuality failed on Jaeger `10.61.80.11:16686` timeout |
+| kep-m03-e | M03 | BLOCKED | WorkHub description edit and participant Airflow trigger reached workflow | Redmine qualifying status seeded in source/live; retry pending | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m03-e-20260803T114712Z`; previous blocker missing `Rollback ready` status now fixed fleetwide |
 | kep-m03-f | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-g | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-h | M03 | NOT PROVEN | - | - | - | - |
@@ -57,18 +57,18 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m03-k | M03 | NOT PROVEN | - | - | - | - |
 | kep-m04-a | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-b | M04 | NOT PROVEN | - | - | - | - |
-| kep-m04-c | M04 | NOT PROVEN | - | - | - | - |
+| kep-m04-c | M04 | BLOCKED | Participant-created privacy notebook and authenticated Airflow token obtained | Need Airflow RBAC for `eval.reader` on `orion_privacy_calibration` and seeded `privacy-calibration.ipynb` in Jupyter | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m04-c-20260803T113319Z`; Airflow API returned 403; seeded notebook returned 404 |
 | kep-m04-d | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-e | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-f | M04 | PARTICIPANT PASS | Eight labels, 11 outputs, attestation | Access fixes pushed; object route pending | Pending | Lane B Airflow run `qa-lane-b-m04-f-v3-20260803T084551Z` |
 | kep-m04-g | M04 | PARTICIPANT PASS | Runtime-lineage Airflow attestation and native probe | Local source fix ready | Pending | Lane B `dagrun-status-pass.json` and `airflow-result-pass-xcom.json` |
 | kep-m04-h | M04 | PARTICIPANT PASS | Signed factuality report complete; repeated unsupported entity detected; object listing denied | `912a4a6`, `e9d6273` | Pending | `kep-v2-qa-lane-b:/home/kasm-user/m04-h/pass-summary.json`; Airflow run `participant-m04-h-20260803T101520Z` |
 | kep-m04-i | M04 | PARTICIPANT PASS | Prompt-renderer Airflow report complete; 3 recognizer states, both parser conditions, zero tool events | Orion Agent parser no-tool and provider retry fix ready | Pending | Lane B `qa-lane-b-m04-i-pass2-20260803T095846Z`; `/home/kasm-user/qa-lane-b/m04-i/m04-i-pass2-summary.json` |
-| kep-m04-j | M04 | NOT PROVEN | - | - | - | - |
+| kep-m04-j | M04 | PARTICIPANT PASS | Manifest/report signatures, manifest SHA join, Jaeger knowledge/tool traces, and flag carrier verified | Existing source sufficient; Shifter scoring issue filed separately | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m04-j-20260803T114044Z`; native proof complete |
 | kep-m04-k | M04 | PARTICIPANT PASS | WorkHub issue 34 route journal | Worker fix pushed | Pending | Lane B participant-visible WorkHub record |
 | kep-m04-l | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-m | M04 | NOT PROVEN | - | - | - | - |
-| kep-m05-a | M05 | NOT PROVEN | - | - | - | - |
+| kep-m05-a | M05 | BLOCKED | Participant reached WorkHub/Orion login surfaces | Need durable earned Orion identity/session handoff from prerequisites, not only stale proof files | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m05-a-20260803T115121Z`; no usable Keycloak/Orion session material |
 | kep-m05-b | M05 | NOT PROVEN | - | - | - | - |
 | kep-m05-c | M05 | NOT PROVEN | - | - | - | - |
 | kep-m05-d | M05 | NOT PROVEN | - | - | - | - |
@@ -94,9 +94,9 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-g | M06 | PARTICIPANT PASS | Public release manifest, engagement reference, public bundle, Forgejo release/tag, mutation negative control | Existing source sufficient | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-g-20260803T110004Z`; Shifter auth returned 401, native proof complete |
 | kep-m06-h | M06 | PARTICIPANT PASS | Signed F-Droid repository, APK provenance, SBOM digest, source tag, signature/SBOM negative controls | Workstation `jarsigner` fleet patched live; source already includes JDK | Pending | `kep-v2-qa-lane-b:/home/kasm-user/orion-field-review/kep-m06-h-20260803T110122Z`; validator PASS |
 | kep-m06-i | M06 | PARTICIPANT PASS | Public KeplerOps people/research pages, independent conference vCard, Forgejo profile/org, STARTTLS RCPT probe | Existing source sufficient | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-i-20260803T110554Z`; vCard NOTE reference observed; SMTP RCPT `250 2.1.5 OK`; participant DNS/mail tool gaps recorded |
-| kep-m06-j | M06 | BLOCKED | Preview API and SMTP path work from participant workstation | Preview audit ownership fixed in source/live; need edge-observer/intake status materialization fix; workstation lacks Net::SSLeay for swaks TLS | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-j-retry-20260803T113135Z`; `/api/analyze` 200 and SMTP 250, status URL stayed 404 |
-| kep-m06-k | M06 | SOURCE DEFECT | Public kit artifacts verified and participant Forgejo repo pushed; runner/release path blocked | Runner DNS/deps source fix staged; Cinder service convergence running for B/D; actions artifact path still to verify | Pending | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-k-20260803T111728Z`; retry after source/live convergence |
-| kep-m06-l | M06 | SOURCE DEFECT | Jupyter persistence survived stop/start, but carrier endpoint and proxy deps missing | Need reattachment handler path and singleuser `onnxruntime`/`tokenizers`; targeted fix lane active | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-l-20260803T111901Z/summary.txt`; `/hub/api/cinder/reattachments` 404; missing deps |
+| kep-m06-j | M06 | PARTICIPANT PASS | External intake status joined fresh Preview audit, Stalwart message, and Zammad ticket/article with flag carrier | Preview shared-audit mount fix staged in source and applied fleetwide | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-j-unblock-fresh-20260803T115926Z`; status URL returned 200 and carrier contains `FLAG{b4b19a638ef57acc}` |
+| kep-m06-k | M06 | IN PROGRESS | Public kit artifacts verified and participant Forgejo repo pushed; runner/release path blocked | Runner DNS/deps source fix staged and live convergence applied fleetwide | Pending | Previous blocker `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-k-20260803T111728Z`; retry lane active on lane B |
+| kep-m06-l | M06 | PARTICIPANT PASS | Jupyter reattachment record, stable PVC, fresh pod UID, and persisted output digest verified after stop/start | Singleuser dependency/image fix staged in source and applied on proof lane; fleet propagation pending | Pending | `kep-v2-qa-lane-c:/home/kasm-user/qa/kep-m06-l-fix-retry-20260803T120619Z`; reattachment `1bac81c9-1bc5-4230-812c-cd94c5dd080b`, output SHA `923a5f96be24ec22be3e4409c7823e5035f0671f2c7593ffc90a5321056073c6` |
 | kep-m06-m | M06 | NOT PROVEN | - | - | - | Real physical path required |
 | kep-m06-n | M06 | PARTICIPANT PASS | Managed domain/ACME flow passed previously | `37e0d0a`; exact-site follow-up pending | In progress | Participant evidence retained from managed issuance run |
 | kep-m06-o | M06 | NOT PROVEN | - | - | - | - |
@@ -112,9 +112,9 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m07-c | M07 | PARTICIPANT PASS | Participant pass in Lane C | Pushed | Complete | Lane C participant evidence |
 | kep-m07-d | M07 | PARTICIPANT PASS | Upstream release mirrored into lakeFS through Airflow | Source fix pushed | Complete | `kep-v2-qa-lane-c:/home/kasm-user/m07-d-proof/participant-m07d-20260803T103812Z` |
 | kep-m07-e | M07 | BLOCKED | Label Studio edits, Forgejo objective commit, Airflow training, MLflow run created | Need model-behavior gate tuning or challenge guidance/fix | Pending | `kep-v2-qa-lane-c:/home/kasm-user/m07-e-proof/participant-m07e-20260803T105625Z`; audit failed: poisoned weights do not materially change held-out target behavior |
-| kep-m07-f | M07 | BLOCKED | Airflow and MLflow participant surfaces probed | Need M07 earned env to include MLflow credentials or accepted-run recovery path | Pending | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m07-f-20260803T112114Z`; MLflow 401 and no recoverable run history |
+| kep-m07-f | M07 | BLOCKED | Immutable Forgejo commit and MLflow run reached `orion_holdout_evaluation` | Need Airflow state ownership fix for `/opt/airflow/orion-integrity-state/attempts/kep-m07-f`; source/live fix in progress | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m07-f-20260803T114917Z`; task failed `PermissionError` creating attempt directory |
 | kep-m07-g | M07 | NOT PROVEN | - | - | Complete | - |
-| kep-m07-h | M07 | BLOCKED | Cinder Forgejo dataset commit and checksum verified byte-for-byte | Harbor reconcile source exists; fleet live Harbor robot repair pending | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m07-h-20260803T112411Z`; token only granted pull, blob upload 401 |
+| kep-m07-h | M07 | IN PROGRESS | Cinder Forgejo dataset commit and checksum verified byte-for-byte | Harbor reconcile now checks decoded token push grant; fleet live Harbor robot repair complete; retry active | Pending | Retry lane active on `kep-v2-qa-lane-c`; previous blocker `kep-v2-qa-lane-d:/home/kasm-user/qa/kep-m07-h-20260803T112411Z` token only granted pull, blob upload 401 |
 | kep-m07-i | M07 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-a | M08 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-b | M08 | NOT PROVEN | - | - | Complete | - |
@@ -124,7 +124,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m08-f | M08 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-g | M08 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-h | M08 | NOT PROVEN | - | - | Complete | - |
-| kep-m08-i | M08 | NOT PROVEN | - | - | Complete | Real physical bench path required |
+| kep-m08-i | M08 | IN PROGRESS | - | Ready after `kep-m06-l` participant pass | Complete | Lane active on `kep-v2-qa-lane-a`; real physical bench path required |
 | kep-m08-j | M08 | NOT PROVEN | - | - | Complete | - |
 | kep-m08-k | M08 | PARTICIPANT PASS | Participant pass in Lane C | Pushed | Complete | Lane C participant evidence |
 | kep-m09-a | M09 | NOT PROVEN | - | - | - | - |
@@ -164,13 +164,13 @@ The rollup is derived only from `PARTICIPANT PASS` rows.
 | Module | Complete | Total | Module status |
 | --- | ---: | ---: | --- |
 | M01 | 0 | 10 | INCOMPLETE |
-| M02 | 1 | 12 | INCOMPLETE |
+| M02 | 2 | 12 | INCOMPLETE |
 | M03 | 0 | 11 | INCOMPLETE |
-| M04 | 4 | 13 | INCOMPLETE |
+| M04 | 6 | 13 | INCOMPLETE |
 | M05 | 0 | 17 | INCOMPLETE |
-| M06 | 1 | 22 | INCOMPLETE |
-| M07 | 2 | 9 | INCOMPLETE |
+| M06 | 8 | 22 | INCOMPLETE |
+| M07 | 4 | 9 | INCOMPLETE |
 | M08 | 1 | 11 | INCOMPLETE |
-| M09 | 0 | 12 | INCOMPLETE |
+| M09 | 1 | 12 | INCOMPLETE |
 | M10 | 0 | 17 | INCOMPLETE |
-| **Total** | **9** | **134** | **INCOMPLETE** |
+| **Total** | **22** | **134** | **INCOMPLETE** |

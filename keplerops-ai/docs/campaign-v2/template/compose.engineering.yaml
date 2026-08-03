@@ -119,6 +119,7 @@ x-airflow-service: &airflow-service
     - ./engineering/airflow/webserver_config.py:/opt/airflow/config/webserver_config.py:ro
     - ./engineering/airflow/reconcile_roles.py:/opt/airflow/config/reconcile_roles.py:ro
     - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+    - ./state/campaign-start/m04:/run/keplerops/m04:ro
     - airflow-logs:/opt/airflow/logs
     - airflow-plugins:/opt/airflow/plugins
   networks:
@@ -947,6 +948,7 @@ services:
       engineering:
       data:
       qdrant-write:
+      observe:
 
   mlflow-auth-init:
     image: keplerops/mlflow:campaign-v2-clean

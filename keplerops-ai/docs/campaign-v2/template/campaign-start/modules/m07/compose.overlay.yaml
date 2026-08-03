@@ -11,6 +11,8 @@ services:
       MINIO_ACCESS_KEY: svc-orion-evaluator
       MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
       RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
     volumes:
       - ./state/campaign-start/airflow-dags:/opt/airflow/dags
       - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
@@ -25,6 +27,8 @@ services:
       MINIO_ACCESS_KEY: svc-orion-evaluator
       MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
       RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
     volumes:
       - ./state/campaign-start/airflow-dags:/opt/airflow/dags
       - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
@@ -39,6 +43,8 @@ services:
       MINIO_ACCESS_KEY: svc-orion-evaluator
       MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
       RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
     volumes:
       - ./state/campaign-start/airflow-dags:/opt/airflow/dags
       - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
@@ -53,6 +59,8 @@ services:
       MINIO_ACCESS_KEY: svc-orion-evaluator
       MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
       RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
     volumes:
       - ./state/campaign-start/airflow-dags:/opt/airflow/dags
       - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro
@@ -67,6 +75,8 @@ services:
       MINIO_ACCESS_KEY: svc-orion-evaluator
       MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Evaluator
       RELEASE_RISK_INTEGRITY_CASES: /opt/airflow/release-risk/integrity-heldout.json
+      HARBOR_USER_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-user
+      HARBOR_PASSWORD_FILE: /opt/airflow/orion-integrity-state/harbor-cinder-publisher-password
     volumes:
       - ./state/campaign-start/airflow-dags:/opt/airflow/dags
       - ./campaign-start/modules/m07/runtime:/opt/airflow/orion-integrity:ro

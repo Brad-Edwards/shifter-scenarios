@@ -40,8 +40,8 @@ K8S_URL = os.getenv("K8S_API_URL", "https://192.168.78.30:6443").rstrip("/")
 K8S_TOKEN_FILE = Path(os.getenv("K8S_TOKEN_FILE", str(RESEARCH_ROOT / "orion-runtime-lineage/k3s-token")))
 K8S_CA_FILE = Path(os.getenv("K8S_CA_FILE", str(RESEARCH_ROOT / "orion-runtime-lineage/k3s-ca.crt")))
 MINIO_ENDPOINT = os.getenv("S3_ENDPOINT_URL", "http://minio:9000")
-MINIO_ACCESS = os.getenv("AWS_ACCESS_KEY_ID", "svc-orion-training")
-MINIO_SECRET = os.getenv("AWS_SECRET_ACCESS_KEY", "KeplerV2-Training-Minio-Orion-Training")
+MINIO_ACCESS = os.getenv("ORION_EVALUATION_REPORTS_ACCESS_KEY", "svc-orion-training")
+MINIO_SECRET = os.getenv("ORION_EVALUATION_REPORTS_SECRET_KEY", "KeplerV2-Training-Minio-Orion-Training")
 MLFLOW_URL = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow:5000").rstrip("/")
 MLFLOW_AUTH = (
     os.getenv("MLFLOW_TRACKING_USERNAME", "svc-orion-training"),

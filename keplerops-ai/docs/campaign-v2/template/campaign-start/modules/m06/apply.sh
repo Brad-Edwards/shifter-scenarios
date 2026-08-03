@@ -493,6 +493,18 @@ reload_caddy() {
   fi
 }
 
+ensure_preview_shared_audit_mount() {
+  if ! docker inspect kep-v2-preview >/dev/null 2>&1; then
+    return
+  fi
+  if docker inspect kep-v2-preview --format '{{range .Mounts}}{{println .Destination}}{{end}}' |
+      grep -Fxq /var/lib/orion-preview/audit; then
+    return
+  fi
+  log "recreating preview with shared Orion audit volume"
+  compose up -d --build --force-recreate --no-deps preview
+}
+
 install_native_services() {
   compose build preview >/dev/null
   compose run --rm --no-deps --user 0:0 --entrypoint sh preview -ec \
@@ -503,6 +515,7 @@ install_native_services() {
     cinder-openvoice cinder-registrar cinder-qdrant keplerops-intake-qdrant \
     keplerops-model-edge keplerops-partner-intake keplerops-edge-observer \
     cinder-experiments cinder-release-registry
+  ensure_preview_shared_audit_mount
 }
 
 ensure_cinder_acme() {
@@ -660,7 +673,7 @@ REMOTE
 
 prepare_cinder_jupyterhub() {
   [[ -r $K3S01_SSH_KEY ]] || die 'k3s host key is unavailable for JupyterHub installation'
-  local state="${TEMPLATE_ROOT}/state/cinder-jupyterhub" token ca singleuser_image
+  local state="${TEMPLATE_ROOT}/state/cinder-jupyterhub" token ca singleuser_base singleuser_image
   install -d -m 0700 "$state"
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$K3S01_SSH_TARGET" sudo k3s kubectl apply -f - <<'RBAC' >/dev/null
 apiVersion: v1
@@ -720,9 +733,15 @@ RBAC
     'users:' '  - name: cinder-jupyterhub' "    user: {token: ${token}}" \
     'contexts:' '  - name: cinder' '    context: {cluster: cinder, user: cinder-jupyterhub, namespace: cinder}' \
     'current-context: cinder' >"$state/kubeconfig"
-  singleuser_image="$(awk -F= '$1=="JUPYTER_IMAGE"{print substr($0,index($0,"=")+1)}' "${TEMPLATE_ROOT}/component-lock.env")"
-  [[ -n $singleuser_image ]] || die 'JUPYTER_IMAGE is not pinned'
-  docker pull "$singleuser_image" >/dev/null
+  singleuser_base="$(awk -F= '$1=="JUPYTER_IMAGE"{print substr($0,index($0,"=")+1)}' "${TEMPLATE_ROOT}/component-lock.env")"
+  [[ -n $singleuser_base ]] || die 'JUPYTER_IMAGE is not pinned'
+  singleuser_image="keplerops/cinder-jupyter-singleuser:campaign-v2"
+  docker pull "$singleuser_base" >/dev/null
+  docker build --pull=false \
+    --build-arg JUPYTER_IMAGE="$singleuser_base" \
+    -t "$singleuser_image" \
+    -f "${MODULE_ROOT}/payloads/jupyter-singleuser/Dockerfile" \
+    "${MODULE_ROOT}" >/dev/null
   docker save "$singleuser_image" | ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes "$K3S01_SSH_TARGET" sudo k3s ctr images import - >/dev/null
 }
 

@@ -39,6 +39,10 @@ def digest(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def declares_release_risk(value: bytes) -> bool:
+    return b"release-risk" in value.lower() or b"release risk" in value.lower()
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("artifact", type=Path)
@@ -83,7 +87,7 @@ def main():
         raise SystemExit("protected verifier commit does not bind the server-held evidence suite")
     heldout_contract_sha = digest(canonical(heldout_contract))
     release_card = args.release_card.read_bytes()
-    if not release_card.strip() or b"release-risk" not in release_card.lower():
+    if not release_card.strip() or not declares_release_risk(release_card):
         raise SystemExit("release model card does not declare the release-risk family")
 
     child = r'''
