@@ -238,7 +238,7 @@ def download(generation_id: uuid.UUID, name: str, authorization: Optional[str] =
     return FileResponse(path)
 
 
-@app.delete("/v1/generations/{generation_id}", status_code=204)
+@app.delete("/v1/generations/{generation_id}")
 def delete_generation(generation_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> Response:
     authorize(authorization)
     if (RECORDS / f"registry-{generation_id}.json").exists():

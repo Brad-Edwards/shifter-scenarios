@@ -226,6 +226,9 @@ services:
       - cinder-jupyter-work:/work
       - cinder-media-records:/records
       - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    extra_hosts:
+      - orion-open-systems.org:10.61.90.2
+      - model.cinder.lab:10.61.90.2
     networks:
       cinder:
         ipv4_address: 10.61.90.33

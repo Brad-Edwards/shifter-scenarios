@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import os
 import uuid
 import zipfile
 from typing import Any
@@ -14,6 +15,7 @@ from pydantic import BaseModel, Field, HttpUrl
 
 
 PARTICIPANT = "cinder-field-operator"
+TLS_VERIFY: str | bool = os.getenv("SSL_CERT_FILE") or True
 FLAGS = {
     "kep-m04-f": "FLAG{c5fc8b4ef8841b39}",
     "kep-m04-i": "FLAG{c5c0b08fb7840a15}",
@@ -81,7 +83,7 @@ async def resolve_parents(
         if operation == "kep-m06-l": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-n": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-p": headers = {"Authorization": "Bearer Cinder-GLM-Service-4q7n2z6p"}
-        async with httpx.AsyncClient(timeout=30, follow_redirects=False) as client:
+        async with httpx.AsyncClient(timeout=30, follow_redirects=False, verify=TLS_VERIFY) as client:
             response = await client.get(str(parent.locator), headers=headers)
         raw = response.content
         if response.status_code != 200 or hashlib.sha256(raw).hexdigest() != parent.sha256:
@@ -100,7 +102,7 @@ async def resolve_parents(
         serialized = json.dumps(value, sort_keys=True)
         accepted = FLAGS[operation] in serialized
         if operation == "kep-m06-h":
-            async with httpx.AsyncClient(timeout=30, follow_redirects=False) as client:
+            async with httpx.AsyncClient(timeout=30, follow_redirects=False, verify=TLS_VERIFY) as client:
                 apk_response = await client.get(
                     "https://keplerops.lab/software/orion-field-review/repo/orion-mobile-1.0.0.apk"
                 )

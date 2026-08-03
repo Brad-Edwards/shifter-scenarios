@@ -22,6 +22,8 @@ RUN python -m pip install --no-cache-dir --index-url https://download.pytorch.or
     && python -m pip install --no-cache-dir Cython==0.29.37 \
     && python -m pip install --no-cache-dir --no-build-isolation av==10.0.0 \
     && python -m pip install --no-cache-dir -e /opt/openvoice -e /opt/melotts \
+    && python -m nltk.downloader -d /usr/local/share/nltk_data \
+      averaged_perceptron_tagger averaged_perceptron_tagger_eng cmudict \
     && python -m unidic download
 RUN python - <<'PY'
 from huggingface_hub import snapshot_download
