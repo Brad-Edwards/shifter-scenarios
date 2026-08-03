@@ -55,7 +55,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m03-i | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-j | M03 | NOT PROVEN | - | - | - | - |
 | kep-m03-k | M03 | NOT PROVEN | - | - | - | - |
-| kep-m04-a | M04 | NOT PROVEN | - | - | - | - |
+| kep-m04-a | M04 | IN PROGRESS | - | - | - | Retry active on lane A |
 | kep-m04-b | M04 | NOT PROVEN | - | - | - | - |
 | kep-m04-c | M04 | IN PROGRESS | Seeded notebook and Airflow DAG are present; lane D now exposes participant-visible `eval.reader` start note, Keycloak token, and unpaused DAG access | Source/live fix applied to lane D and template for SSO identity plus evaluation-reader start material; retry active | Pending | Retry active on lane D after verifying note, Keycloak `Bearer 900`, and `orion_privacy_calibration paused=false`; prior blocker was Jupyter/SSO auth rejection |
 | kep-m04-d | M04 | NOT PROVEN | - | - | - | - |
@@ -101,9 +101,9 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m06-n | M06 | PARTICIPANT PASS | Managed domain/ACME flow passed previously | `37e0d0a`; exact-site follow-up pending | In progress | Participant evidence retained from managed issuance run |
 | kep-m06-o | M06 | NOT PROVEN | - | - | - | - |
 | kep-m06-p | M06 | PARTICIPANT PASS | OpenCode GLM 5.2 usage record validated | Source already current | - | `kep-v2-qa-lane-b:/home/kasm-user/qa-campaign-v2/m06/kep-m06-p/`; usage `0641ebd4-9cce-4203-bf18-fcc9b7750d9d` |
-| kep-m06-q | M06 | BLOCKED | Participant Forgejo Actions built the harness image through run `11` | Needs Harbor credential issuance / Actions-to-registry reachability fix; rootless BuildKit push times out and credential endpoint returns 503 | - | `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-q-20260803T131200Z`; run `11`, commit `e83f33883ce597a0fad6768475c9eef0ea4b8e2d`, push to `registry.keplerops.lab/cinder/...` timed out to `10.61.10.2:443` |
+| kep-m06-q | M06 | IN PROGRESS | Participant Forgejo Actions built the harness image through run `11` before Harbor fix | Source/live fixes applied for BuildKit registry DNS and on-demand Cinder Harbor project creation; retry active | - | Retry active on lane B; prior `kep-v2-qa-lane-b:/home/kasm-user/qa/kep-m06-q-20260803T131200Z` showed BuildKit push timeout to `10.61.10.2:443` and credential issuer 503 |
 | kep-m06-r | M06 | NOT PROVEN | - | - | - | - |
-| kep-m06-s | M06 | NOT PROVEN | - | - | - | - |
+| kep-m06-s | M06 | BLOCKED | `kep-m06-j` parent is available and correlated from the participant surface | Needs same-range accepted `kep-m06-q` harness-release parent before retrieval-review write can proceed | - | `kep-v2-qa-lane-a:/home/kasm-user/qa/kep-m06-s-20260803T134554Z/BLOCKED-summary.txt`; `https://releases.cinder.lab/v1/harness-releases` returned `[]` |
 | kep-m06-t | M06 | PARTICIPANT PASS | Native media registry GET verified for generation `e51a71b0-5099-4ec5-8d58-81c9971bef0a` | `ddc9c98` | Complete | Participant workstation produced `cinder.media-registry/v1` record with WER `0.05`, target cosine `0.701675`, identity margin `0.498527` |
 | kep-m06-u | M06 | BLOCKED | Participant checked required parent services | - | - | Needs reachable `kep-m06-n` and `kep-m06-q`; evidence `kep-v2-qa-lane-b:/home/kasm-user/qa-lane-b/m06/kep-m06-u/participant-blocked-transcript.txt` |
 | kep-m06-v | M06 | NOT PROVEN | - | - | - | - |

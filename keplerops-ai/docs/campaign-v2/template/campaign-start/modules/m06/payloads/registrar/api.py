@@ -507,8 +507,6 @@ def issue_certificate(
 ) -> dict[str, Any]:
     authorize(authorization)
     ensure_domain_mutable(domain_id)
-    if any((ROOT / "manifests").glob("*.json")):
-        raise HTTPException(status_code=409, detail="the accepted Cinder certificate is immutable")
     record = domain_record(domain_id)
     if not record.get("dns_records") or not record.get("mail_identity") or not record.get("service"):
         raise HTTPException(status_code=409, detail="DNS, mail, and service must be completed before managed certificate issuance")
