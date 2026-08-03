@@ -736,10 +736,9 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
    release manifest and client provenance in my workspace, list the release,
    source revision, model-facing API origin, and two assumptions that must be
    verified before adapting a harness. Cite the local file names you used.` Save
-   the response and `X-Cinder-Usage-Record` and
-   `X-Cinder-Provider-Request` headers. With bearer
-   `Cinder-Field-Operator-GLM-6f2a9d8c`, GET the usage path and linked response
-   object.
+   the response. With bearer `Cinder-Field-Operator-GLM-6f2a9d8c`, list
+   `/v1/usage-records`, select the newest `kep-m06-p` record whose client is
+   `opencode`, then GET its linked response object by `usage_id`.
 6. **Expected observations:** Actor, client `opencode`, range, admitted upstream
    model, request IDs, Orion grounding, and response object join within 90
    seconds.
@@ -749,8 +748,8 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
 9. **Independent verification:** Hash the immutable response body and compare
    `response_digest` in usage.
 10. **Replay and reset:** Usage is append-only; retry creates a new usage ID.
-11. **Evidence retained:** OpenCode transcript, headers, usage/response JSON,
-    hashes, provider IDs, and timing.
+11. **Evidence retained:** OpenCode transcript, usage/response JSON, hashes,
+    provider IDs, and timing.
 12. **Defect disposition:** Wrong upstream identity/cross-range actor is
     `infrastructure defect`; missing cited local facts is `content defect`.
 

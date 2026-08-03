@@ -282,8 +282,8 @@ services:
       STALWART_INTAKE_USER: partner-intake
       STALWART_INTAKE_PASSWORD: KeplerV2-Training-Partner
       ZAMMAD_URL: http://10.61.30.24:8080
-      ZAMMAD_USER: range-admin
-      ZAMMAD_PASSWORD: KeplerV2-Training-Zammad-Admin
+      ZAMMAD_USER: support.analyst
+      ZAMMAD_PASSWORD: KeplerV2-Training-Support
     volumes:
       - orion-preview-audit:/var/lib/orion-preview/audit:ro
       - edge-observer-records:/var/lib/edge-observer

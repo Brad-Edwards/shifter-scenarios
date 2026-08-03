@@ -90,8 +90,8 @@ async def zammad_ticket(reference: str, mail: dict[str, Any]) -> dict[str, Any]:
             ticket_id = int(tickets[-1]["id"])
         else:
             created = await client.post(f"{ZAMMAD}/api/v1/tickets", json={
-                "title": f"External Orion intake {reference}", "group": "Users", "customer": "guess:cinder.field-operator@cinder.lab",
-                "article": {"subject": mail["subject"], "body": f"SMTP Message-ID {mail['message_id']}\nReference {reference}\nRFC822 SHA-256 {mail['rfc822_sha256']}", "type": "email", "internal": False},
+                "title": f"External Orion intake {reference}", "group": "Orion Support", "customer": "reviewer@keplerops.lab",
+                "article": {"subject": mail["subject"], "body": f"SMTP Message-ID {mail['message_id']}\nReference {reference}\nRFC822 SHA-256 {mail['rfc822_sha256']}", "type": "note", "sender": "Customer", "internal": False},
             })
             created.raise_for_status(); ticket_id = int(created.json()["id"])
         articles = await client.get(f"{ZAMMAD}/api/v1/ticket_articles/by_ticket/{ticket_id}")

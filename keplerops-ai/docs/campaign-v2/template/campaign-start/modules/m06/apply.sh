@@ -20,6 +20,8 @@ readonly HARBOR_API="${HARBOR_API_URL:-http://10.61.40.32:8080/api/v2.0}"
 readonly HARBOR_ADMIN_AUTH="admin:KeplerV2-Training-Harbor"
 readonly K3S01_SSH_TARGET="${K3S01_SSH_TARGET:-kepler@192.168.78.30}"
 readonly K3S01_SSH_KEY="${K3S01_SSH_KEY:-/root/.ssh/keplerops-v2}"
+readonly DIRECTORY_SSH_KEY="${KEPLEROPS_GUEST_KEY:-/root/.ssh/keplerops-v2}"
+readonly DC01="${KEPLEROPS_DC01_ADDRESS:-192.168.78.10}"
 
 log() { printf '[campaign-m06] %s\n' "$*" >&2; }
 die() { log "ERROR: $*"; exit 1; }
@@ -503,8 +505,11 @@ reload_caddy() {
 }
 
 install_native_services() {
+  compose build preview >/dev/null
+  compose run --rm --no-deps --user 0:0 --entrypoint sh preview -ec \
+    'chown 10001:10001 /var/lib/orion-preview/audit && chmod 0755 /var/lib/orion-preview/audit'
   compose up -d --build \
-    orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
+    preview orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
     cinder-model-edge cinder-developer-assistant cinder-host-bridge \
     cinder-openvoice cinder-registrar cinder-qdrant keplerops-intake-qdrant \
     keplerops-model-edge keplerops-partner-intake keplerops-edge-observer \
@@ -590,19 +595,34 @@ install_participant_prerequisite_identity() {
 }
 
 install_participant_mail_identity() {
-  local payload
-  payload='{"type":"individual","name":"cinder.field-operator","description":"Cinder field operator","secrets":["Cinder-Field-Operator-Mail-J7p4Vn6s"],"emails":["cinder.field-operator@cinder.lab"]}'
-  if ! curl -fsS --user range-admin:KeplerV2-Training-Stalwart \
-      http://10.61.10.20:8080/api/principal/cinder.field-operator >/dev/null 2>&1; then
-    curl -fsS --user range-admin:KeplerV2-Training-Stalwart -H 'Content-Type: application/json' \
-      -X POST --data "$payload" http://10.61.10.20:8080/api/principal >/dev/null
+  [[ -r $DIRECTORY_SSH_KEY ]] || die 'directory guest SSH key is unavailable'
+  ssh -i "$DIRECTORY_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null "kepler@${DC01}" sudo bash -s <<'REMOTE'
+set -Eeuo pipefail
+
+ensure_external_mail_user() {
+  local username=$1 password=$2 description=$3 address=$4
+  samba-tool ou add 'OU=External Accounts' >/dev/null 2>&1 || true
+  if ! samba-tool user show "$username" >/dev/null 2>&1; then
+    samba-tool user create "$username" "$password" \
+      --userou='OU=External Accounts' --description="$description" \
+      --mail-address="$address" >/dev/null
+  elif ! samba-tool user show "$username" | grep -Fqi ',OU=External Accounts,DC='; then
+    samba-tool user move "$username" 'OU=External Accounts' >/dev/null
   fi
-  if ! curl -fsS --user range-admin:KeplerV2-Training-Stalwart \
-      http://10.61.10.20:8080/api/principal/orion.program >/dev/null 2>&1; then
-    curl -fsS --user range-admin:KeplerV2-Training-Stalwart -H 'Content-Type: application/json' -X POST \
-      --data '{"type":"individual","name":"orion.program","description":"Orion Open Systems program office","emails":["program@orion-open-systems.org"]}' \
-      http://10.61.10.20:8080/api/principal >/dev/null
-  fi
+  samba-tool user setpassword "$username" --newpassword="$password" >/dev/null
+  samba-tool user rename "$username" --mail-address="$address" >/dev/null
+  samba-tool user setexpiry "$username" --noexpiry >/dev/null
+  samba-tool user enable "$username" >/dev/null
+}
+
+ensure_external_mail_user cinder.field-operator \
+  Cinder-Field-Operator-Mail-J7p4Vn6s 'Cinder field operator' \
+  cinder.field-operator@cinder.lab
+ensure_external_mail_user orion.program \
+  Orion-Program-Mail-N4w7Qp2m 'Orion Open Systems program office' \
+  program@orion-open-systems.org
+REMOTE
 }
 
 install_knative_publisher() {
