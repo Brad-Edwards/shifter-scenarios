@@ -52,6 +52,12 @@ SHA-256, DVC MD5, MLflow model artifacts, source commit/tree, clean baseline,
 behavior metrics, poisoned-weights handoff route, and the M07-B-earned
 `model_integrity_source` access recorded in the report/handoff.
 
+An accepted label revision with fewer than eight changed labels cannot satisfy
+the current training-review contract. If a report created before the scoped
+carrier existed has no `earned_access.model_integrity_source`, do not provide a
+setup credential or rewrite the accepted record. Record the downstream access
+gate and replay from an 8-to-12-row M07-A revision in a clean lane.
+
 **Recovery:** Delete failed integrity-review runs only. Do not remove normal
 training audit history or accepted poisoned-weights handoffs.
 

@@ -36,6 +36,27 @@ print("qa-" + secrets.token_hex(8))
 PY
 ```
 
+When triggering Airflow through its participant API instead of the UI, include
+the required logical date as well as the run ID and operation configuration:
+
+```sh
+AIRFLOW_TOKEN="$(curl -fsS -H 'Content-Type: application/json' -X POST \
+  --data "$(jq -nc --arg username "$AIRFLOW_USER" \
+    --arg password "$AIRFLOW_PASSWORD" \
+    '{username:$username,password:$password}')" \
+  "$AIRFLOW_URL/auth/token" | jq -er .access_token)"
+LOGICAL_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+curl -fsS -H "Authorization: Bearer $AIRFLOW_TOKEN" \
+  -H 'Content-Type: application/json' -X POST \
+  --data "$(jq -nc --arg run "$RUN_ID" --arg date "$LOGICAL_DATE" \
+    --argjson conf "$CONF" \
+    '{dag_run_id:$run,logical_date:$date,conf:$conf}')" \
+  "$AIRFLOW_URL/api/v2/dags/$DAG_ID/dagRuns"
+```
+
+Set `DAG_ID`, `RUN_ID`, and `CONF` to the literal values in the relevant
+procedure. Omitting `logical_date` returns HTTP 422 and creates no run.
+
 Known source inconsistencies to record during live QA:
 
 - Current Caddy configuration exposes lakeFS at `https://lake.keplerops.lab`;
@@ -146,7 +167,7 @@ Labels and the earned `svc-orion-trainer` Airflow/MLflow access.
    Open artifact `reports/report.json`.
 6. Expected: the report has schema `keplerops.orion.training-review/v2`,
    `review_kind: poisoned-training-lineage`, a changed candidate model digest,
-   a different clean model digest, at least two changed rows, fresh target and
+   a different clean model digest, 8 to 12 changed rows, fresh target and
    near/utility behavior metrics, and a `handoff` object using route
    `poisoned-weights`. The report and signed handoff expose
    `earned_access.model_integrity_source` for later M07 operations that require
@@ -182,9 +203,11 @@ MLflow training run ID.
    `reports/report.json`.
 4. Expected: schema `keplerops.orion.integrity-audit/v2`,
    `review_kind: targeted-poison-evaluation`, exact clean and candidate model
-   SHA-256 values, at least three target case IDs, at least three near case IDs,
-   at least eight utility case IDs, candidate change rate at or above 0.34,
-   near accuracy at or above 0.66, utility at or above 0.60, and a handoff route
+   SHA-256 values, 8 to 12 IDs in `changed_records`, and a `metrics` object with
+   at least three `target_case_ids`, at least three `near_case_ids`, and at
+   least eight `utility_case_ids`. Confirm `metrics.candidate_change_rate` is at
+   or above 0.34, `metrics.near_accuracy` is at or above 0.66, and
+   `metrics.clean_utility` is at or above 0.60, plus a handoff route
    `verified-poisoned-weights`.
 5. Submit the MLflow review run ID in Shifter. Expected: Shifter accepts it.
 

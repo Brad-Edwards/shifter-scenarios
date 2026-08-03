@@ -57,8 +57,9 @@ Open MLflow and inspect the resulting training and review runs.
 
 **Outcome:** A completed MLflow review binds the poisoned export, lakeFS commit,
 DVC object, source commit, model package, changed ONNX digest, clean baseline,
-fresh behavior checks, the scoped model-integrity Forgejo credential, and
-signed poisoned-weights handoff.
+fresh behavior checks, the scoped model-integrity Forgejo credential under
+`earned_access.model_integrity_source`, and the signed poisoned-weights
+handoff.
 
 **Progressive hints**
 

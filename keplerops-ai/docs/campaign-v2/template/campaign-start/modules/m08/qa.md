@@ -695,16 +695,39 @@ Label Studio compatibility-review project.
    }
    ```
 
-3. Open the task and request a model prediction through the Label Studio review
-   UI.
+   From the participant terminal, the equivalent API action is:
+
+   ```sh
+   curl -fsS -H "Authorization: Token $LABEL_STUDIO_TOKEN" \
+     -H 'Content-Type: application/json' -X POST \
+     --data "$(jq -nc --argjson project "$LABEL_STUDIO_PROJECT_ID" \
+       '{project:$project,data:{text:"Cinder Typhoon review requests release approval after signed rollback evidence and model provenance are attached.",release_slice:"routine"}}')" \
+     "$LABEL_STUDIO_URL/api/tasks" | tee "$RUN/task.json"
+   ```
+
+   The `project` field belongs in the JSON body. Supplying it only as a query
+   parameter can produce an HTTP 500 response without creating a task.
+
+3. Open the task and wait for the normal model-backend prediction action to
+   complete. Refresh the task if necessary. Do not call an undocumented direct
+   prediction endpoint; the live Label Studio route may return 404 there while
+   the normal task workflow succeeds.
 4. Expected observation: the prediction appears on the task with one of the
    eight Release Risk classes, eight probabilities, model version, model digest,
    text digest, request ID, ledger key, ledger SHA-256, backend identity, and
    `engagement_reference`.
-5. Export the task from Label Studio with unlabeled tasks included. For the API
-   route, set `download_all_tasks=true`; the default export omits a task that
-   has a prediction but no human annotation. Save the export JSON and a
-   screenshot of the prediction metadata.
+5. Export the task from Label Studio with unlabeled tasks included. The exact
+   API route is:
+
+   ```sh
+   curl -fsS -H "Authorization: Token $LABEL_STUDIO_TOKEN" \
+     "$LABEL_STUDIO_URL/api/projects/$LABEL_STUDIO_PROJECT_ID/export?exportType=JSON&download_all_tasks=true" \
+     | tee "$RUN/review-desk-export.json"
+   ```
+
+   The default export omits a task that has a prediction but no human
+   annotation. Save the export JSON and a screenshot of the prediction
+   metadata.
 6. Submit the prediction metadata's `engagement_reference` to Shifter.
 7. Negative control: from the Kali terminal, try a direct Orion model request:
 
