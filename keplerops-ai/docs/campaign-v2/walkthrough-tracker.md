@@ -136,7 +136,7 @@ source-only, or documentation-only result is not a participant pass.
 | kep-m09-g | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-h | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-i | M09 | PARTICIPANT PASS | Participant-triggered Airflow import run succeeded; relay record has schema, operation, digest, and flag | `6228213` | Pending | `kep-v2-qa-lane-d:/home/kasm-user/qa/live/m09-i-rerun12`; run `qa-m09-i-rerun12-20260803T101532Z` |
-| kep-m09-j | M09 | NOT PROVEN | - | - | - | - |
+| kep-m09-j | M09 | BLOCKED | Triggered from participant workstation | - | - | Needs accepted `kep-m09-h`; evidence `kep-v2-qa-lane-d:/home/kasm-user/qa/live/m09-j-20260803T102725Z` |
 | kep-m09-k | M09 | NOT PROVEN | - | - | - | - |
 | kep-m09-l | M09 | NOT PROVEN | - | - | - | - |
 | kep-m10-a | M10 | NOT PROVEN | - | - | - | - |
