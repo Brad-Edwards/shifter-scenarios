@@ -6,8 +6,11 @@ import io
 import json
 import os
 import re
+import socket
 import subprocess
+import sys
 import tempfile
+import time
 import uuid
 import zipfile
 from pathlib import Path
@@ -270,6 +273,10 @@ def image_revision(image: dict[str, Any]) -> str:
     return str(labels.get("org.opencontainers.image.revision") or "")
 
 
+def provenance_image_digest(image: dict[str, Any]) -> str:
+    return str(image["digest"]).removeprefix("sha256:")
+
+
 def execute_toolchain_image(
     image: str,
     clean: np.ndarray,
@@ -347,6 +354,53 @@ async def predict(text: str) -> dict[str, Any]:
     if response.status_code != 200:
         raise HTTPException(status_code=503, detail="public Orion model is unavailable")
     return response.json()["predictions"][0]
+
+
+def prediction_label(value: dict[str, Any]) -> str:
+    for key in ("label", "class_name", "class", "class_label", "predicted_label", "prediction_label"):
+        label = value.get(key)
+        if isinstance(label, str) and label:
+            return label
+    output = value.get("output")
+    if isinstance(output, dict) and isinstance(output.get("label"), str):
+        return output["label"]
+    prediction = value.get("prediction")
+    if isinstance(prediction, dict):
+        return prediction_label(prediction)
+    raise HTTPException(status_code=422, detail="Orion prediction does not expose a label")
+
+
+def input_text(raw: bytes) -> str:
+    try:
+        value = json.loads(raw)
+    except json.JSONDecodeError:
+        return raw.decode()
+    if isinstance(value, dict) and isinstance(value.get("text"), str):
+        return value["text"]
+    return raw.decode()
+
+
+async def harness_input(request: HarnessRelease, manifest: dict[str, Any], side: str) -> bytes:
+    url = manifest.get(f"{side}_url")
+    if isinstance(url, str) and url:
+        return await acquire(url)
+    node = manifest.get(side)
+    if isinstance(node, dict) and isinstance(node.get("path"), str):
+        return await source(request.repository, request.commit, node["path"])
+    raise HTTPException(status_code=422, detail=f"harness manifest does not identify {side} input bytes")
+
+
+def rooted_path(root: Path, value: str) -> Path:
+    path = (root / value).resolve()
+    if path != root and root not in path.parents:
+        raise HTTPException(status_code=422, detail="harness path escapes the committed workspace")
+    return path
+
+
+def free_local_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(("127.0.0.1", 0))
+        return int(sock.getsockname()[1])
 
 
 def persist(kind: str, record: dict[str, Any], flag_name: str) -> dict[str, Any]:
@@ -570,7 +624,7 @@ async def toolchain_release(request: ToolchainRelease) -> dict[str, Any]:
     if not reproduced_media or sha256(reproduced_media) != sha256(expected_media):
         raise HTTPException(status_code=422, detail="ffmpeg output cannot be reproduced from the upstream recipe")
     native = await native_run(request, "kep-m06-o", {
-        "image_digest": image["digest"], "lockfile_sha256": sha256(lockfile_bytes),
+        "image_digest": provenance_image_digest(image), "lockfile_sha256": sha256(lockfile_bytes),
         "art_recipe_sha256": sha256(art_recipe_bytes), "art_output_sha256": sha256(candidate.tobytes()),
         "ffmpeg_recipe_sha256": sha256(ffmpeg_recipe_bytes), "ffmpeg_output_sha256": sha256(expected_media),
     })
@@ -591,22 +645,85 @@ async def harness_release(request: HarnessRelease) -> dict[str, Any]:
     except json.JSONDecodeError as error:
         raise HTTPException(status_code=422, detail="harness manifest is not JSON") from error
     harness = await source(request.repository, request.commit, request.harness_path)
-    clean, candidate = await acquire(manifest["clean_url"]), await acquire(manifest["candidate_url"])
-    clean_result, candidate_result = await predict(clean.decode()), await predict(candidate.decode())
-    if clean == candidate or candidate_result.get("label") != manifest.get("target_label") or clean_result.get("label") == manifest.get("target_label"):
+    dockerfile = await source(request.repository, request.commit, "Dockerfile.harness")
+    clean, candidate = await harness_input(request, manifest, "clean"), await harness_input(request, manifest, "candidate")
+    clean_result, candidate_result = await predict(input_text(clean)), await predict(input_text(candidate))
+    target_label = str((manifest.get("candidate") or {}).get("target_label") or manifest.get("target_label") or "")
+    clean_label, candidate_label = prediction_label(clean_result), prediction_label(candidate_result)
+    if clean == candidate or candidate_label != target_label or clean_label == target_label:
         raise HTTPException(status_code=422, detail="target-specific harness does not reproduce its declared effect")
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
-        path = root / Path(request.harness_path).name
+        manifest_path = root / request.harness_manifest_path
+        manifest_path.parent.mkdir(parents=True, exist_ok=True)
+        manifest_path.write_bytes(manifest_bytes)
+        input_paths: dict[str, Path] = {}
+        for side, raw in (("clean", clean), ("candidate", candidate)):
+            node = manifest.get(side)
+            if isinstance(node, dict) and isinstance(node.get("path"), str):
+                input_path = rooted_path(root, node["path"])
+            else:
+                input_path = root / f"{side}.txt"
+            input_path.parent.mkdir(parents=True, exist_ok=True)
+            input_path.write_bytes(raw)
+            input_paths[side] = input_path
+        path = rooted_path(root, request.harness_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(harness); path.chmod(0o500)
-        (root / "clean.txt").write_bytes(clean); (root / "candidate.txt").write_bytes(candidate)
-        command = ["python", str(path)] if path.suffix == ".py" else [str(path)]
-        completed = subprocess.run(
-            command, cwd=root,
-            env={"PATH": "/usr/local/bin:/usr/bin:/bin", "CLEAN_INPUT": str(root / "clean.txt"),
-                 "CANDIDATE_INPUT": str(root / "candidate.txt"), "ORION_MODEL_URL": PUBLIC_MODEL},
-            capture_output=True, text=True, timeout=120, check=False,
+        port = free_local_port()
+        proxy = root / "orion_model_proxy.py"
+        proxy.write_text(
+            "import json, os, urllib.request\n"
+            "from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer\n"
+            "public = os.environ['PUBLIC_MODEL_URL'].rstrip('/')\n"
+            "class Handler(BaseHTTPRequestHandler):\n"
+            "    def do_POST(self):\n"
+            "        if self.path != '/api/analyze':\n"
+            "            self.send_response(404); self.end_headers(); return\n"
+            "        raw = self.rfile.read(int(self.headers.get('content-length','0')))\n"
+            "        text = json.loads(raw.decode()).get('text','')\n"
+            "        payload = json.dumps({'instances':[{'text': text}]}).encode()\n"
+            "        req = urllib.request.Request(public + '/v1/models/orion-release-risk:predict', data=payload, headers={'Content-Type':'application/json'}, method='POST')\n"
+            "        with urllib.request.urlopen(req, timeout=30) as response:\n"
+            "            body = json.loads(response.read().decode())\n"
+            "        pred = body['predictions'][0]\n"
+            "        label = pred.get('label') or pred.get('class_name') or pred.get('class') or pred.get('class_label') or pred.get('predicted_label') or pred.get('output',{}).get('label')\n"
+            "        out = json.dumps({'label': label, 'output': {'label': label}, 'prediction': pred}, sort_keys=True).encode()\n"
+            "        self.send_response(200); self.send_header('Content-Type','application/json'); self.send_header('Content-Length', str(len(out))); self.end_headers(); self.wfile.write(out)\n"
+            "    def log_message(self, *args): return\n"
+            "ThreadingHTTPServer(('127.0.0.1', int(os.environ['ORION_PROXY_PORT'])), Handler).serve_forever()\n",
+            encoding="utf-8",
         )
+        proxy_process = subprocess.Popen(
+            [sys.executable, str(proxy)],
+            env={"PUBLIC_MODEL_URL": PUBLIC_MODEL, "ORION_PROXY_PORT": str(port)},
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        for _ in range(50):
+            try:
+                with socket.create_connection(("127.0.0.1", port), timeout=0.1):
+                    break
+            except OSError:
+                if proxy_process.poll() is not None:
+                    raise HTTPException(status_code=503, detail="local Orion harness proxy did not start")
+                time.sleep(0.05)
+        else:
+            raise HTTPException(status_code=503, detail="local Orion harness proxy did not become ready")
+        command = ["python", str(path)] if path.suffix == ".py" else [str(path)]
+        try:
+            completed = subprocess.run(
+                command, cwd=root,
+                env={"PATH": "/usr/local/bin:/usr/bin:/bin", "CLEAN_INPUT": str(input_paths["clean"]),
+                     "CANDIDATE_INPUT": str(input_paths["candidate"]), "HARNESS_MANIFEST_PATH": request.harness_manifest_path,
+                     "ORION_MODEL_URL": f"http://127.0.0.1:{port}"},
+                capture_output=True, text=True, timeout=120, check=False,
+            )
+        finally:
+            proxy_process.terminate()
+            try:
+                proxy_process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                proxy_process.kill()
     if completed.returncode != 0:
         raise HTTPException(status_code=422, detail="committed ci/validate-orion-harness did not execute successfully")
     try:
@@ -615,18 +732,19 @@ async def harness_release(request: HarnessRelease) -> dict[str, Any]:
         raise HTTPException(status_code=422, detail="committed harness did not emit its native JSON run record") from error
     if (
         harness_report.get("schema") != "cinder.orion-harness-run/v1"
-        or harness_report.get("clean_sha256") != sha256(clean)
-        or harness_report.get("candidate_sha256") != sha256(candidate)
-        or harness_report.get("clean_output", {}).get("label") != clean_result.get("label")
-        or harness_report.get("candidate_output", {}).get("label") != candidate_result.get("label")
+        or harness_report.get("status") not in {None, "passed"}
+        or harness_report.get("clean_input_sha256", harness_report.get("clean_sha256")) != sha256(clean)
+        or harness_report.get("candidate_input_sha256", harness_report.get("candidate_sha256")) != sha256(candidate)
+        or str(harness_report.get("clean_label") or (harness_report.get("clean_output") or {}).get("label")) != clean_label
+        or str(harness_report.get("candidate_label") or (harness_report.get("candidate_output") or {}).get("label")) != candidate_label
     ):
         raise HTTPException(status_code=422, detail="committed harness output does not bind exact inputs and Orion responses")
     if image_revision(image) != request.commit:
         raise HTTPException(status_code=422, detail="Harbor image configuration is not bound to the Forgejo commit")
     native = await native_run(request, "kep-m06-q", {
-        "image_digest": image["digest"], "harness_manifest_sha256": sha256(manifest_bytes),
-        "harness_sha256": sha256(harness), "harness_output_sha256": sha256(completed.stdout.encode()),
-        "clean_sha256": sha256(clean), "candidate_sha256": sha256(candidate),
+        "image_digest": provenance_image_digest(image), "harness_manifest_sha256": sha256(manifest_bytes),
+        "harness_sha256": sha256(harness), "dockerfile_sha256": sha256(dockerfile),
+        "clean_input_sha256": sha256(clean), "candidate_input_sha256": sha256(candidate),
     })
     return persist("harness-release", native | checkpoint_context(request, parents) | {
                     "image_digest": image["digest"], "harness_sha256": sha256(harness),
@@ -671,7 +789,7 @@ async def staging_release(request: StagingRelease) -> dict[str, Any]:
     if manifest.get("source_commit") != request.commit or manifest.get("image") != request.image or manifest.get("route") != str(request.route_url).rstrip("/") or expected != observed:
         raise HTTPException(status_code=422, detail="signed staging manifest does not bind native source, image, route, and artifact bytes")
     native = await native_run(request, "kep-m06-v", {
-        "image_digest": image["digest"], "manifest_sha256": sha256(manifest_bytes),
+        "image_digest": provenance_image_digest(image), "manifest_sha256": sha256(manifest_bytes),
         "signature_sha256": sha256(signature), "public_key_sha256": sha256(public_key),
         "litellm_config_sha256": sha256(config_bytes),
         "staged_artifacts_sha256": sha256(json.dumps(observed, sort_keys=True, separators=(",", ":")).encode()),

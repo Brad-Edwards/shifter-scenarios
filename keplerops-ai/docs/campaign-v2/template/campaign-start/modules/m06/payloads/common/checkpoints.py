@@ -49,6 +49,17 @@ OWNERS = {
     "kep-m06-u": ("knative.cinder.lab", "/v1/lifecycles/"),
 }
 
+INTERNAL_FETCH = {
+    "artifacts.keplerops.lab": "http://10.61.50.20:9000",
+    "experiments.cinder.lab": "http://cinder-experiments:8080",
+    "knative.cinder.lab": "http://cinder-knative-control:8080",
+    "model.cinder.lab": "http://cinder-model-edge:8080",
+    "notebook.cinder.lab": "http://cinder-jupyter:8000",
+    "partner-intake.keplerops.lab": "http://keplerops-partner-intake:8080",
+    "registrar.cinder.lab": "http://cinder-registrar:8080",
+    "releases.cinder.lab": "http://cinder-release-registry:8080",
+}
+
 
 class ParentCheckpoint(BaseModel):
     operation: str = Field(pattern=r"^kep-m(04|06)-[a-v]$")
@@ -79,13 +90,17 @@ async def resolve_parents(
         parsed = urlparse(str(parent.locator))
         if parsed.scheme != "https" or parsed.hostname != host or not parsed.path.startswith(prefix):
             raise HTTPException(status_code=422, detail=f"{operation} locator is not its owning service")
+        fetch_url = str(parent.locator)
+        if host in INTERNAL_FETCH:
+            query = f"?{parsed.query}" if parsed.query else ""
+            fetch_url = f"{INTERNAL_FETCH[host]}{parsed.path}{query}"
         headers: dict[str, str] = {}
         if operation == "kep-m06-l": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-n": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-p": headers = {"Authorization": "Bearer Cinder-GLM-Service-4q7n2z6p"}
         try:
             async with httpx.AsyncClient(timeout=30, follow_redirects=False, verify=TLS_VERIFY) as client:
-                response = await client.get(str(parent.locator), headers=headers)
+                response = await client.get(fetch_url, headers=headers)
         except httpx.HTTPError as error:
             raise HTTPException(status_code=503, detail=f"{operation} native record is temporarily unavailable") from error
         raw = response.content
