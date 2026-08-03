@@ -119,7 +119,7 @@
       "Change the smallest coherent slice that affects the intended metric.",
       "Verify the pipeline consumed your commit, not cached data."
     ],
-    "prerequisites": ["kep-m05-l"],
+    "prerequisites": ["kep-m07-b"],
     "atlas_rows": ["AML.T0059 Erode Dataset Integrity"],
     "flag": "FLAG{6834c837bb83c6cc}",
     "carrier": "The MLflow release-evaluation report proving an operator commit changed holdout bytes and the decision.",

@@ -296,6 +296,10 @@ AIRFLOW_PASSWORD=${TRAINER_TOKEN}
 LAKEFS_URL=https://lake.keplerops.lab
 LAKEFS_ACCESS_KEY_ID=KeplerLakeFSAccess
 LAKEFS_SECRET_ACCESS_KEY=KeplerV2-Training-LakeFS-Object-Key
+MLFLOW_URL=https://mlflow.keplerops.lab
+MLFLOW_AUTH=${MLFLOW_AUTH}
+MLFLOW_USERNAME=${MLFLOW_AUTH%%:*}
+MLFLOW_PASSWORD=${MLFLOW_AUTH#*:}
 EOF
 }
 
@@ -568,10 +572,10 @@ apply_one() {
   jq -e --arg id "${operation}" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: ${operation}"
   capture_clean_state
   reconcile_trainer_access
-  deliver_trainer_access
   seed_repositories
   reconcile_harbor
   reconcile_airflow
+  deliver_trainer_access
   install -d -m 0750 "${STATE_ROOT}/applied"
   printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"
   reconcile_state_ownership
@@ -589,10 +593,10 @@ main() {
   if [[ ${requested} != all ]]; then apply_one "${requested}"; return; fi
   capture_clean_state
   reconcile_trainer_access
-  deliver_trainer_access
   seed_repositories
   reconcile_harbor
   reconcile_airflow
+  deliver_trainer_access
   install -d -m 0750 "${STATE_ROOT}/applied"
   while IFS= read -r operation; do
     printf '%s\n' "${operation}" >"${STATE_ROOT}/applied/${operation}"

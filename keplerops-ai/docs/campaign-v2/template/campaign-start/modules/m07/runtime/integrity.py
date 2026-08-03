@@ -45,6 +45,7 @@ LAKEFS_ACCESS = os.getenv("LAKEFS_ACCESS_KEY_ID", "KeplerLakeFSAccess")
 LAKEFS_SECRET = os.getenv("LAKEFS_SECRET_ACCESS_KEY", "KeplerV2-Training-LakeFS-Object-Key")
 MLFLOW_URL = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow:5000").rstrip("/")
 FORGEJO_URL = os.getenv("FORGEJO_URL", "http://10.61.40.20:3000").rstrip("/")
+FORGEJO_PUBLIC_URL = os.getenv("FORGEJO_PUBLIC_URL", "https://git.keplerops.lab").rstrip("/")
 FORGEJO_USER = os.getenv("FORGEJO_USER", "svc-orion-training")
 FORGEJO_PASSWORD = os.getenv("FORGEJO_PASSWORD", "KAI-Orion-Trainer-2b68d419a7f340ce")
 TRAINING_SOURCE_REPOSITORY = "keplerops/orion-build"
@@ -708,6 +709,18 @@ def train_model(lakefs_commit: str | None = None, attempt_id: str | None = None)
         "clean_training": clean_training,
         "changed_rows": changes, "fresh_behavior": behavior,
         **source_identity,
+        "earned_access": {
+            "model_integrity_source": {
+                "schema": "keplerops.earned-source-access/v1",
+                "earned_by": "kep-m07-b",
+                "url": FORGEJO_PUBLIC_URL,
+                "repository": "keplerops/orion-model-integrity",
+                "username": FORGEJO_USER,
+                "password": FORGEJO_PASSWORD,
+                "permission": "write",
+                "unlocks": ["kep-m07-e", "kep-m07-f", "kep-m07-g"],
+            },
+        },
         "training_review_reference": FLAGS["b"],
     }
     if not lineage["model_sha256"] or not lineage["dvc_md5"]:
@@ -725,6 +738,7 @@ def train_model(lakefs_commit: str | None = None, attempt_id: str | None = None)
         "source_tree_sha256": lineage["source_tree_sha256"],
         "training_source_sha256": lineage["training_source_sha256"],
         "clean_training": lineage["clean_training"],
+        "earned_access": lineage["earned_access"],
         "report_contract_sha256": _report_contract_sha256(lineage),
     })
     _refresh_review(lineage)
