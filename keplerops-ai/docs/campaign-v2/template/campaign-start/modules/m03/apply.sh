@@ -226,11 +226,13 @@ seed_evaluation_reader_identity() {
   curl -fsS -X PUT -H "Authorization: Bearer ${token}" -H 'Content-Type: application/json' \
     --data '{"type":"password","value":"EvalReader-Archive-2026","temporary":false}' \
     "http://10.61.20.20:8080/admin/realms/keplerops/users/${user_id}/reset-password" >/dev/null
-  group_id="$(curl -fsS -H "Authorization: Bearer ${token}" \
-    'http://10.61.20.20:8080/admin/realms/keplerops/groups?search=RG-Jupyter-Orion-Evaluation&exact=true' | \
-    jq -er '.[] | select(.name == "RG-Jupyter-Orion-Evaluation") | .id')"
-  curl -fsS -X PUT -H "Authorization: Bearer ${token}" \
-    "http://10.61.20.20:8080/admin/realms/keplerops/users/${user_id}/groups/${group_id}" >/dev/null
+  for group_name in RG-Jupyter-Orion-Evaluation RG-Airflow-Orion-View RG-Airflow-Orion-Run; do
+    group_id="$(curl -fsS -H "Authorization: Bearer ${token}" \
+      "http://10.61.20.20:8080/admin/realms/keplerops/groups?search=${group_name}&exact=true" | \
+      jq -er --arg group_name "${group_name}" '.[] | select(.name == $group_name) | .id')"
+    curl -fsS -X PUT -H "Authorization: Bearer ${token}" \
+      "http://10.61.20.20:8080/admin/realms/keplerops/users/${user_id}/groups/${group_id}" >/dev/null
+  done
   if ! curl -fsS -H "Authorization: Bearer ${token}" \
     'http://10.61.20.20:8080/admin/realms/keplerops/clients?clientId=orion-evaluation-cli' | jq -e 'length == 1' >/dev/null; then
     curl -fsS -X POST -H "Authorization: Bearer ${token}" -H 'Content-Type: application/json' \

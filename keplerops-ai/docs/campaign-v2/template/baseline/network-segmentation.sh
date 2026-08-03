@@ -133,6 +133,7 @@ host_connect() {
 host_connect 192.168.78.1 16333
 host_connect 192.168.78.1 16379
 host_connect 192.168.78.1 3000
+host_connect 192.168.78.1 4318
 ! host_connect 192.168.78.1 16332
 ! host_connect 192.168.78.1 16380
 ! host_connect 192.168.78.1 15673
@@ -172,7 +173,7 @@ for endpoint in \
   litellm.orion-platform.svc:4000 \
   opa.orion-platform.svc:8181 \
   orion-mcp.orion-platform.svc:8081 \
-  10.61.80.10:4318; do
+  192.168.78.1:4318; do
   host=${endpoint%:*}
   port=${endpoint##*:}
   kube_connect "$host" "$port"
@@ -180,7 +181,7 @@ done
 
 ! kube_connect vertex-openai-proxy.orion-platform.svc 8082
 ! kube_connect kubernetes.default.svc 443
-! kube_connect 10.61.80.10 4317
+! kube_connect 192.168.78.1 4317
 KUBERNETES_PROOF
 pass "Kubernetes namespace defaults and workload flow boundaries"
 

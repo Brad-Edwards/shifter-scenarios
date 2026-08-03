@@ -123,12 +123,24 @@ reconcile_airflow() {
   compose exec -T airflow-scheduler airflow dags reserialize >/dev/null
   compose exec -T airflow-api airflow sync-perm >/dev/null
   compose exec -T airflow-api python - < "${MODULE_ROOT}/runtime/reconcile_airflow_roles.py" >/dev/null
+  if ! compose exec -T airflow-api airflow users create \
+    --username eval.reader --firstname Evaluation --lastname Reader \
+    --email eval.reader@keplerops.lab --role "Orion Runner" \
+    --password EvalReader-Archive-2026 >/dev/null 2>&1; then
+    compose exec -T airflow-api airflow users reset-password \
+      --username eval.reader --password EvalReader-Archive-2026 >/dev/null
+    compose exec -T airflow-api airflow users add-role \
+      --username eval.reader --role "Orion Runner" >/dev/null 2>&1 || true
+  fi
+  compose exec -T airflow-api airflow users add-role \
+    --username eval.reader --role "Orion Viewer" >/dev/null 2>&1 || true
   for dag_id in \
     orion_support_context_audit orion_routing_policy_audit \
     orion_privacy_calibration orion_individual_membership_audit \
     orion_cohort_membership_audit orion_preview_compatibility \
     orion_runtime_lineage_attestation orion_factuality_evaluation \
     orion_prompt_renderer_compatibility orion_agent_capability_audit; do
+    compose exec -T airflow-api airflow dags unpause "${dag_id}" >/dev/null
     compose exec -T airflow-api airflow dags list --output json | \
       jq -e --arg dag_id "${dag_id}" 'any(.[]; .dag_id == $dag_id)' >/dev/null || \
       die "Airflow did not discover ${dag_id}"

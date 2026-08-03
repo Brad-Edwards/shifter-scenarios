@@ -111,7 +111,7 @@ spec:
         - {protocol: TCP, port: 16379}
     - to:
         - ipBlock:
-            cidr: 10.61.80.10/32
+            cidr: 192.168.78.1/32
       ports:
         - {protocol: TCP, port: 4318}
 ---

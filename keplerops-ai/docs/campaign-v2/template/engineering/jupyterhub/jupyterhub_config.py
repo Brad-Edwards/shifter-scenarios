@@ -20,7 +20,7 @@ c.DockerSpawner.use_internal_ip = True
 c.DockerSpawner.remove = True
 c.DockerSpawner.name_template = "kep-v2-notebook-{username}"
 c.DockerSpawner.volumes = {
-    "kep-v2-jupyter-{username}": "/home/jovyan/work",
+    "kep-v2-jupyter-{raw_username}": "/home/jovyan/work",
 }
 c.DockerSpawner.environment = {
     "AWS_ACCESS_KEY_ID": os.environ["MINIO_ACCESS_KEY"],
@@ -30,6 +30,7 @@ c.DockerSpawner.environment = {
     "MLFLOW_TRACKING_URI": "http://mlflow:5000",
     "MLFLOW_TRACKING_USERNAME": "orion-reader",
     "MLFLOW_TRACKING_PASSWORD": "KeplerV2-Training-MLflow-Read",
+    "NB_UMASK": "0022",
     "QDRANT_URL": "http://qdrant:6333",
 }
 c.Spawner.default_url = "/lab"

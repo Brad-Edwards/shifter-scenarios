@@ -346,7 +346,11 @@ def agent_call(prompt: str, purpose: str, trace_id: str | None = None, parent_id
 
 def jaeger_trace(trace_id: str, attempts: int = 20) -> dict[str, Any]:
     for _ in range(attempts):
-        response = checked(requests.get(f"{JAEGER_URL}/api/traces/{trace_id}", timeout=15)).json()
+        response = requests.get(f"{JAEGER_URL}/api/traces/{trace_id}", timeout=15)
+        if response.status_code == 404:
+            time.sleep(1)
+            continue
+        response = checked(response).json()
         data = response.get("data") or []
         if data:
             return data[0]

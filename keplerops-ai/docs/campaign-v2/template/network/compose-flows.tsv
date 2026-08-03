@@ -8,7 +8,7 @@ cidr:192.168.78.30/32	kep-v2-caddy	tcp	443	Harbor registry pull from k3s01
 cidr:192.168.78.20/31	kep-v2-rabbitmq	tcp	5672	review worker queues
 cidr:192.168.78.20/31	kep-v2-redmine	tcp	3000	review worker WorkHub updates
 cidr:192.168.78.20/31	kep-v2-otel-collector	tcp	4318	review worker OTLP export
-cidr:192.168.78.30/32	kep-v2-otel-collector	tcp	4318	Orion agent OTLP export
+cidr:192.168.78.30/32	cidr:192.168.78.1/32	tcp	4318	Orion agent OTLP export
 kep-v2-pdns-recursor	kep-v2-pdns-auth	tcp	53	authoritative DNS
 kep-v2-pdns-recursor	kep-v2-pdns-auth	udp	53	authoritative DNS
 kep-v2-pdns-recursor	cidr:0.0.0.0/0	tcp	53	recursive DNS upstream
@@ -52,7 +52,7 @@ kep-v2-caddy	kep-v2-roundcube	tcp	80	webmail edge
 kep-v2-caddy	kep-v2-orion-telemetry-gateway	tcp	8080	release-risk telemetry edge
 kep-v2-caddy	kep-v2-cinder-forgejo	tcp	3000	Cinder source edge
 kep-v2-caddy	kep-v2-cinder-minio	tcp	9001	Cinder object console edge
-kep-v2-caddy	kep-v2-cinder-jupyter	tcp	8000	Cinder notebook edge
+kep-v2-caddy	kep-v2-cinder-jupyter	tcp	8000,8888	Cinder notebook edge
 kep-v2-caddy	cidr:192.168.78.30/32	tcp	30080,30081,30084,30090,30400,30402,31080	published k3s services and OpenCost allocation API
 kep-v2-grafana	kep-v2-prometheus	tcp	9090	metrics datasource
 kep-v2-grafana	kep-v2-jaeger	tcp	16686	trace datasource

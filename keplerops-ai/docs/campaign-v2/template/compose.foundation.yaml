@@ -265,6 +265,8 @@ services:
     volumes:
       - ./telemetry/otel-collector.yaml:/etc/otelcol-contrib/config.yaml:ro
       - telemetry-access-logs:/var/log/keplerops:ro
+    ports:
+      - "192.168.78.1:4318:4318"
     networks:
       observe:
         ipv4_address: 10.61.80.10

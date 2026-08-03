@@ -119,8 +119,8 @@ add_members RG-MLflow-Orion-Read GG-Orion-Researchers GG-Orion-Evaluators ml.eng
 add_members RG-MLflow-Orion-Maintain GG-Orion-Researchers ml.engineer
 add_members RG-Harbor-Orion-Review GG-Orion-Evaluators GG-Release-Engineers reviewer security.auditor release.engineer
 add_members RG-Harbor-Orion-Release GG-Release-Engineers GG-Release-Approvers release.engineer release.approver
-add_members RG-Airflow-Orion-View GG-Orion-Researchers GG-Orion-Evaluators ml.engineer reviewer security.auditor
-add_members RG-Airflow-Orion-Run GG-Orion-Researchers ml.engineer
+add_members RG-Airflow-Orion-View GG-Orion-Researchers GG-Orion-Evaluators ml.engineer reviewer security.auditor eval.reader
+add_members RG-Airflow-Orion-Run GG-Orion-Researchers ml.engineer eval.reader
 add_members RG-Release-Policy-Request GG-Release-Engineers release.engineer
 add_members RG-Release-Policy-Approve GG-Release-Approvers release.approver
 
