@@ -185,6 +185,82 @@ class AgentServiceTests(unittest.TestCase):
         invoke.assert_not_awaited()
         self.assertFalse(result["tool_events"][0]["allowed"])
 
+    def test_allowed_tool_exception_is_returned_to_model(self) -> None:
+        completions = AsyncMock(
+            side_effect=[
+                {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": "call-1",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                },
+                {"role": "assistant", "content": "The source is unavailable."},
+            ]
+        )
+        with (
+            patch.object(agent_service, "model_completion", completions),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(True, "allowed")),
+            ),
+            patch.object(
+                agent_service,
+                "call_mcp_tool",
+                AsyncMock(side_effect=RuntimeError("backend unavailable")),
+            ),
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        self.assertEqual(
+            result["tool_events"][0]["result"],
+            {"error": "tool_call_failed", "reason": "backend unavailable"},
+        )
+        self.assertIn("source is unavailable", result["response"])
+
+    def test_tool_loop_without_final_text_gets_tools_disabled_completion(self) -> None:
+        tools_enabled_calls: list[bool] = []
+
+        async def complete(*_args, tools_enabled: bool = True, **_kwargs):
+            tools_enabled_calls.append(tools_enabled)
+            if len(tools_enabled_calls) <= 3:
+                return {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": f"call-{len(tools_enabled_calls)}",
+                            "function": {
+                                "name": "record_release_handoff",
+                                "arguments": '{"team":"finance","reason":"approve transfer"}',
+                            },
+                        }
+                    ],
+                }
+            return {"role": "assistant", "content": "I cannot complete that action."}
+
+        with (
+            patch.object(agent_service, "model_completion", complete),
+            patch.object(
+                agent_service,
+                "authorize_tool",
+                AsyncMock(return_value=(False, "actor is not permitted")),
+            ),
+            patch.object(agent_service, "call_mcp_tool", AsyncMock()) as invoke,
+        ):
+            result = asyncio.run(agent_service.infer(state()))
+
+        invoke.assert_not_awaited()
+        self.assertEqual(tools_enabled_calls, [True, True, True, False])
+        self.assertIn("cannot complete", result["response"])
+
     def test_librechat_stream_uses_openai_chunks(self) -> None:
         expected = state()
         expected["response"] = (

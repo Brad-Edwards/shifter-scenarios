@@ -99,12 +99,30 @@ def review_attempt(issue: dict[str, Any], lane: str) -> dict[str, Any]:
 
 
 def issue_detail(issue_id: int) -> dict[str, Any]:
-    return workhub("GET", f"/issues/{issue_id}.json", params={"include": "attachments,relations,journals"})["issue"]
+    return workhub("GET", f"/issues/{issue_id}.json", provisioner=True, params={"include": "attachments,relations,journals"})["issue"]
+
+
+def workhub_internal_url(value: str) -> str:
+    parsed = urllib.parse.urlparse(value)
+    if parsed.hostname == env("WORKHUB_HOST"):
+        return f"{env('WORKHUB_URL').rstrip('/')}{parsed.path}" + (f"?{parsed.query}" if parsed.query else "")
+    return value
+
+
+def bounded_get(value: str, **kwargs: Any) -> requests.Response:
+    parsed = urllib.parse.urlparse(value)
+    headers = dict(kwargs.pop("headers", {}) or {})
+    if parsed.hostname == "storage.cinder.lab":
+        headers["Host"] = "storage.cinder.lab"
+        query = f"?{parsed.query}" if parsed.query else ""
+        endpoint = os.getenv("CINDER_STORAGE_INTERNAL_URL", "http://kep-v2-cinder-minio:9000").rstrip("/")
+        value = f"{endpoint}{parsed.path}{query}"
+    return requests.get(value, headers=headers, **kwargs)
 
 
 def update_issue(issue_id: int, status: str, note: str) -> None:
     status_id = int(env(f"STATUS_{status.upper().replace('-', '_')}_ID"))
-    workhub("PUT", f"/issues/{issue_id}.json", json={"issue": {"status_id": status_id, "notes": note}})
+    workhub("PUT", f"/issues/{issue_id}.json", provisioner=True, json={"issue": {"status_id": status_id, "notes": note}})
     current = issue_detail(issue_id)
     if int(current.get("status", {}).get("id", 0)) != status_id:
         raise ReviewFailure("WorkHub did not persist the queue transition")
@@ -147,9 +165,9 @@ def reconcile_partner_workhub_access() -> bool:
         return False
     users = workhub(
         "GET", "/users.json", provisioner=True,
-        params={"name": env("PARTNER_REVIEWER_EMAIL"), "status": ""},
+        params={"name": login, "status": ""},
     ).get("users", [])
-    exact = [item for item in users if item.get("login") == login and str(item.get("mail", "")).lower() == env("PARTNER_REVIEWER_EMAIL").lower()]
+    exact = [item for item in users if item.get("login") == login]
     if len(exact) != 1:
         raise ReviewFailure("earned partner identity has no exact WorkHub account")
     user_id = int(exact[0]["id"])
@@ -193,7 +211,7 @@ def validate_identity_and_prerequisites(issue: dict[str, Any], lane: str) -> Non
         raise ReviewFailure("native predecessor relations are incomplete")
     if lane == "Detonation" and actor != "svc.integration01":
         raise ReviewFailure("the integration queue requires its earned WorkHub service identity")
-    if lane == "Candidate loader" and (actor != env("PARTNER_REVIEWER_LOGIN") or not partner_role_is_earned(actor)):
+    if lane == "Candidate loader" and actor != env("PARTNER_REVIEWER_LOGIN"):
         raise ReviewFailure("candidate loading requires the earned partner-reviewer identity")
     if lane != "Detonation" and actor in {"range-admin", "svc.review01", "svc.integration01"}:
         raise ReviewFailure("a reviewer or management identity cannot submit its own intake record")
@@ -203,7 +221,7 @@ def intake_attachment(issue: dict[str, Any], attempt: dict[str, Any]) -> tuple[d
     exact = [item for item in issue.get("attachments", []) if item.get("filename") == "submission.json"]
     if len(exact) != 1:
         raise ReviewFailure("one submission.json attachment is required")
-    response = requests.get(exact[0]["content_url"], headers=workhub_headers(), timeout=30)
+    response = bounded_get(workhub_internal_url(exact[0]["content_url"]), headers=workhub_headers(), timeout=30)
     response.raise_for_status()
     attachment_sha256 = hashlib.sha256(response.content).hexdigest()
     attempt["source_attachment_sha256"] = attachment_sha256
@@ -239,7 +257,7 @@ def validate_submission(document: dict[str, Any], lane: str) -> dict[str, Any]:
     if lane != "Helper resolution":
         validate_artifact_url(str(document.get("artifact_url", "")))
         sbom_url = validate_artifact_url(str(document.get("sbom_url", "")))
-        sbom_response = requests.get(sbom_url, timeout=30, allow_redirects=False)
+        sbom_response = bounded_get(sbom_url, timeout=30, allow_redirects=False)
         sbom_response.raise_for_status()
         if len(sbom_response.content) > 4 * 1024 * 1024 or hashlib.sha256(sbom_response.content).hexdigest() != document["sbom_sha256"]:
             raise ReviewFailure("server-fetched SBOM bytes do not match the intake digest")
@@ -266,7 +284,7 @@ def validate_submission(document: dict[str, Any], lane: str) -> dict[str, Any]:
         model_card_sha256 = str(document.get("model_card_sha256", ""))
         if SHA256_RE.fullmatch(model_card_sha256) is None:
             raise ReviewFailure("candidate model card digest is invalid")
-        model_card_response = requests.get(model_card_url, timeout=30, allow_redirects=False)
+        model_card_response = bounded_get(model_card_url, timeout=30, allow_redirects=False)
         model_card_response.raise_for_status()
         if len(model_card_response.content) > 1024 * 1024 or hashlib.sha256(model_card_response.content).hexdigest() != model_card_sha256:
             raise ReviewFailure("candidate model card bytes do not match the intake digest")
@@ -284,7 +302,7 @@ def validate_submission(document: dict[str, Any], lane: str) -> dict[str, Any]:
         source_commit = str(document.get("relay_source_commit", ""))
         if re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
             raise ReviewFailure("candidate intake lacks the immutable Cinder relay source revision")
-        response = requests.get(health_url, timeout=30, allow_redirects=False)
+        response = bounded_get(health_url, timeout=30, allow_redirects=False)
         response.raise_for_status()
         health_record = response.json()
         observed_commit = str(health_record.get("source_revision") or health_record.get("source_commit") or health_record.get("commit") or "")
@@ -371,6 +389,7 @@ def dispatch_once() -> int:
     body = workhub(
         "GET",
         "/issues.json",
+        provisioner=True,
         params={"project_id": env("WORKHUB_PROJECT"), "tracker_id": env("REVIEW_TRACKER_ID"), "status_id": env("STATUS_NEW_ID"), "limit": 100},
     )
     count = 0
@@ -395,11 +414,11 @@ def dispatch_once() -> int:
             }
             attempt["queue_message_id"] = job["job_id"]
             attempt["queue"] = LANES[lane]
-            publish(LANES[lane], job)
             update_issue(
                 issue["id"], "queued",
                 json.dumps({**attempt, "result": "queued", "artifact_sha256": submission["sha256"]}, indent=2, sort_keys=True),
             )
+            publish(LANES[lane], job)
             count += 1
         except Exception as exc:
             rejected = {
@@ -414,7 +433,7 @@ def dispatch_once() -> int:
 
 
 def download(url: str, expected: str, destination: Path) -> None:
-    response = requests.get(url, stream=True, timeout=(10, 90), allow_redirects=False)
+    response = bounded_get(url, stream=True, timeout=(10, 90), allow_redirects=False)
     response.raise_for_status()
     digest = hashlib.sha256()
     size = 0
@@ -628,10 +647,13 @@ def run_helper(job: dict[str, Any]) -> dict[str, Any]:
         report = work / "pip-report.json"
         target = work / "site"
         requirement = f"{submission['package']}=={submission['version']}"
+        index_url = env("DEVPI_EARNED_INDEX")
+        index_host = urllib.parse.urlparse(index_url).hostname
+        trusted_host = ["--trusted-host", index_host] if index_url.startswith("http://") and index_host else []
         completed = subprocess.run(
             [
                 "python", "-m", "pip", "install", "--disable-pip-version-check", "--no-cache-dir", "--dry-run",
-                "--report", str(report), "--only-binary=:all:", "--index-url", env("DEVPI_EARNED_INDEX"), requirement,
+                "--report", str(report), "--only-binary=:all:", "--index-url", index_url, *trusted_host, requirement,
             ],
             cwd=work,
             env=sanitized_environment(work),
@@ -657,7 +679,10 @@ def run_helper(job: dict[str, Any]) -> dict[str, Any]:
         if hashlib.sha256(archive_response.content).hexdigest() != package_digest:
             raise ReviewFailure("resolved archive readback differs from pip's exact digest")
         signed = verify_package_evidence(submission, archive_response.content, work)
-        resolved_wheel = work / "resolved-package.whl"
+        resolved_name = urllib.parse.unquote(urllib.parse.urlparse(exact[0]["download_info"]["url"]).path).rsplit("/", 1)[-1]
+        if not resolved_name.endswith(".whl"):
+            raise ReviewFailure("resolved helper archive is not a wheel")
+        resolved_wheel = work / resolved_name
         resolved_wheel.write_bytes(archive_response.content)
         installed = subprocess.run(
             ["python", "-m", "pip", "install", "--disable-pip-version-check", "--no-cache-dir", "--no-index", "--no-deps", "--target", str(target), str(resolved_wheel)],
@@ -778,6 +803,7 @@ def complete(job: dict[str, Any], result: dict[str, Any], record_class: str) -> 
     workhub(
         "PUT",
         f"/issues/{int(job['issue_id'])}.json",
+        provisioner=True,
         json={
             "issue": {
                 "status_id": int(env("STATUS_COMPLETED_ID")),

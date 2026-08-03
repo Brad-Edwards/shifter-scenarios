@@ -675,9 +675,12 @@ async def infer(state: AgentState) -> AgentState:
                 )
                 if allowed:
                     trusted_arguments = trusted_tool_arguments(state, name, arguments)
-                    result = await call_mcp_tool(
-                        name, trusted_arguments, downstream_headers(state)
-                    )
+                    try:
+                        result = await call_mcp_tool(
+                            name, trusted_arguments, downstream_headers(state)
+                        )
+                    except Exception as exc:
+                        result = {"error": "tool_call_failed", "reason": str(exc)}
                 else:
                     result = None
             tool_events.append(
@@ -698,6 +701,14 @@ async def infer(state: AgentState) -> AgentState:
                     ),
                 }
             )
+    if not state["response"]:
+        message = await model_completion(
+            messages,
+            downstream_headers(state),
+            model_provider_url(state),
+            tools_enabled=False,
+        )
+        state["response"] = str(message.get("content") or "").strip()
     if not state["response"]:
         raise RuntimeError("assistant did not return a final response")
     if state["citations"]:
