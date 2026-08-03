@@ -28,10 +28,14 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
       jq \
       apktool \
+      default-jdk-headless \
+      dnsutils \
       fdroidcl \
       ffmpeg \
       imagemagick \
+      libio-socket-ssl-perl \
       libimage-exiftool-perl \
+      libnet-ssleay-perl \
       mitmproxy \
       nmap \
       pipx \

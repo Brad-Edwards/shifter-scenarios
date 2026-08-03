@@ -38,6 +38,7 @@ services:
       - /var/cache/nginx:size=16m
       - /var/run:size=1m
     cap_drop: [ALL]
+    cap_add: [CHOWN, NET_BIND_SERVICE, SETGID, SETUID]
     security_opt: [no-new-privileges:true]
     restart: unless-stopped
 

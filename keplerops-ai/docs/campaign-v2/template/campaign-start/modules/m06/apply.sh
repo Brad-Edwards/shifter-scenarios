@@ -175,6 +175,21 @@ archive_older: 0
 YAML
   compose build cinder-fdroidserver >/dev/null
   compose run --rm --no-deps cinder-fdroidserver update --create-metadata >/dev/null
+  local signed_index_dir="$workdir/fdroid-index"
+  install -d -m 0755 "$signed_index_dir"
+  unzip -p "$fdroid_root/repo/index-v1.jar" index-v1.json \
+    >"$signed_index_dir/index-v1.json"
+  (cd "$signed_index_dir" && jar --create --file index-v1.jar index-v1.json)
+  jarsigner -keystore "$keystore" \
+    -storepass Cinder-FDroid-Signing-P4m8Zx2n \
+    -keypass Cinder-FDroid-Signing-P4m8Zx2n \
+    -sigalg SHA256withRSA -digestalg SHA-256 \
+    "$signed_index_dir/index-v1.jar" cinder-fdroid >/dev/null
+  jarsigner -verify -strict -keystore "$keystore" \
+    -storepass Cinder-FDroid-Signing-P4m8Zx2n \
+    "$signed_index_dir/index-v1.jar" >/dev/null
+  install -m 0644 "$signed_index_dir/index-v1.jar" \
+    "$fdroid_root/repo/index-v1.jar"
   rm -rf "$repo_root"
   install -d -m 0755 "$repo_root"
   cp -a "$fdroid_root/repo/." "$repo_root/"
@@ -373,12 +388,15 @@ install_osint_records() {
   curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
     --data '{"rrsets":[{"name":"media.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"developer.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"bridge.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"experiments.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"releases.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"registrar.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"vector.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"knative.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]},{"name":"storage.cinder.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.90.2","disabled":false}]}]}' \
     http://10.61.10.10:8081/api/v1/servers/localhost/zones/cinder.lab. >/dev/null
-  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X POST \
-    --data '{"name":"orion-open-systems.org.","kind":"Native","nameservers":["ns1.keplerops.lab."]}' \
-    http://10.61.10.10:8081/api/v1/servers/localhost/zones >/dev/null 2>&1 || true
-  curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
-    --data '{"rrsets":[{"name":"orion-open-systems.org.","type":"A","ttl":300,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]},{"name":"orion-open-systems.org.","type":"MX","ttl":300,"changetype":"REPLACE","records":[{"content":"10 mail.keplerops.lab.","disabled":false}]}]}' \
-    http://10.61.10.10:8081/api/v1/servers/localhost/zones/orion-open-systems.org. >/dev/null 2>&1 || true
+  if ! docker exec kep-v2-pdns-auth pdnsutil list-zone orion-open-systems.org >/dev/null 2>&1; then
+    docker exec kep-v2-pdns-auth pdnsutil create-zone \
+      orion-open-systems.org ns1.keplerops.lab
+  fi
+  docker exec kep-v2-pdns-auth pdnsutil replace-rrset \
+    orion-open-systems.org @ A 300 10.61.10.2
+  docker exec kep-v2-pdns-auth pdnsutil replace-rrset \
+    orion-open-systems.org @ MX 300 '10 mail.keplerops.lab.'
+  docker exec kep-v2-pdns-auth pdnsutil check-zone orion-open-systems.org
   local admin='range-admin:KeplerV2-Training-Forgejo-Admin'
   curl -fsS --user "$admin" -H 'Content-Type: application/json' -X POST \
     --data '{"username":"mira.chen","email":"mira.chen@orion-open-systems.org","password":"OSINT-Profile-Not-Participant-3mP8vQ","must_change_password":false,"visibility":"public"}' \
@@ -738,7 +756,7 @@ apply_common() {
 }
 
 main() {
-  for command in awk base64 curl docker jarsigner jq keytool python3 sha256sum ssh ssh-keygen ssh-keyscan tar unzip; do require "$command"; done
+  for command in awk base64 curl docker jar jarsigner jq keytool python3 sha256sum ssh ssh-keygen ssh-keyscan tar unzip; do require "$command"; done
   if [[ $OPERATION != all ]]; then
     jq -e --arg id "$OPERATION" 'any(.[]; .id == $id)' "${MODULE_ROOT}/operations.json" >/dev/null || die "unknown operation: $OPERATION"
   fi

@@ -46,7 +46,11 @@ validate_h() {
   tmp="$(mktemp -d)"; trap 'rm -rf -- "$tmp"' RETURN
   participant_json https://keplerops.lab/software/orion-field-review/repo/index-v1.jar >"$tmp/index-v1.jar"
   participant_json https://keplerops.lab/software/orion-field-review/repo/repo-signing.pem >"$tmp/repo.pem"
-  jarsigner -verify -strict -certs "$tmp/index-v1.jar" >/dev/null
+  keytool -importcert -noprompt -alias keplerops-fdroid -file "$tmp/repo.pem" \
+    -keystore "$tmp/truststore.p12" -storetype PKCS12 \
+    -storepass KeplerOps-FDroid-Trust >/dev/null
+  jarsigner -verify -strict -certs -keystore "$tmp/truststore.p12" \
+    -storepass KeplerOps-FDroid-Trust "$tmp/index-v1.jar" >/dev/null
   jar_fingerprint="$(keytool -printcert -jarfile "$tmp/index-v1.jar" | awk -F': ' '/^[[:space:]]*SHA256:/{gsub(":", "", $2); print tolower($2); exit}')"
   pem_fingerprint="$(keytool -printcert -file "$tmp/repo.pem" | awk -F': ' '/^[[:space:]]*SHA256:/{gsub(":", "", $2); print tolower($2); exit}')"
   [[ -n $jar_fingerprint && $jar_fingerprint == "$pem_fingerprint" ]] || die 'F-Droid index signer does not match the published repository certificate'
@@ -57,7 +61,8 @@ validate_h() {
     trap '\''rm -rf "$root"'\'' EXIT
     export HOME="$root/home"
     install -d "$HOME"
-    fdroidcl repo add keplerops https://keplerops.lab/software/orion-field-review/repo '"$pem_fingerprint"'
+    fdroidcl repo add keplerops https://keplerops.lab/software/orion-field-review/repo
+    fdroidcl repo disable f-droid
     fdroidcl update >/dev/null
     fdroidcl search com.keplerops.orion | grep -F com.keplerops.orion
     cd "$root"

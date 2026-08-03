@@ -40,10 +40,11 @@ done
   kep-v2-cinder-forgejo-bootstrap) == "exited 0" ]]
 echo "PASS Cinder containers running"
 
-for command in apktool chromium curl fdroidcl ffmpeg git identify jq labgrid-client mc \
-  mitmproxy nmap opencode python3 s3cmd swaks unzip; do
+for command in apktool chromium curl fdroidcl ffmpeg git identify jarsigner jq keytool \
+  labgrid-client mc mitmproxy nmap opencode python3 s3cmd swaks unzip; do
   ws sh -lc "command -v '$command' >/dev/null"
 done
+perl -MIO::Socket::SSL -MNet::SSLeay -e 1 || fail 'swaks TLS dependencies unavailable'
 echo "PASS participant tools installed"
 
 for url in \
