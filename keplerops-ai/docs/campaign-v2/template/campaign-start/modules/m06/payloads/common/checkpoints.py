@@ -83,8 +83,11 @@ async def resolve_parents(
         if operation == "kep-m06-l": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-n": headers = {"Authorization": "Bearer Cinder-Checkpoint-Reader-W9s2Kd7m"}
         if operation == "kep-m06-p": headers = {"Authorization": "Bearer Cinder-GLM-Service-4q7n2z6p"}
-        async with httpx.AsyncClient(timeout=30, follow_redirects=False, verify=TLS_VERIFY) as client:
-            response = await client.get(str(parent.locator), headers=headers)
+        try:
+            async with httpx.AsyncClient(timeout=30, follow_redirects=False, verify=TLS_VERIFY) as client:
+                response = await client.get(str(parent.locator), headers=headers)
+        except httpx.HTTPError as error:
+            raise HTTPException(status_code=503, detail=f"{operation} native record is temporarily unavailable") from error
         raw = response.content
         if response.status_code != 200 or hashlib.sha256(raw).hexdigest() != parent.sha256:
             raise HTTPException(status_code=422, detail=f"{operation} native bytes cannot be reacquired")

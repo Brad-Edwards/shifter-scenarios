@@ -213,7 +213,7 @@ async def register_media(
 
 
 @app.get("/v1/media-registry/{generation_id}")
-def media_record(generation_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> dict[str, str]:
+def media_record(generation_id: uuid.UUID, authorization: Optional[str] = Header(default=None)) -> dict[str, object]:
     authorize(authorization, read_only=True)
     path = RECORDS / f"registry-{generation_id}.json"
     if not path.is_file():
@@ -222,7 +222,7 @@ def media_record(generation_id: uuid.UUID, authorization: Optional[str] = Header
 
 
 @app.get("/v1/media-registry")
-def media_records(authorization: Optional[str] = Header(default=None)) -> list[dict[str, str]]:
+def media_records(authorization: Optional[str] = Header(default=None)) -> list[dict[str, object]]:
     authorize(authorization, read_only=True)
     return [json.loads(path.read_text()) for path in sorted(RECORDS.glob("registry-*.json"))]
 
