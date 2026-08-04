@@ -13,6 +13,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
 from typing import Any, TypedDict
 
 import yaml
@@ -144,40 +145,62 @@ def librechat_turn(state: AgentState, content: str) -> dict[str, Any]:
         canonical,
         hashlib.sha256,
     ).hexdigest()
+    # LibreChat v0.8 removed /api/ask/:endpoint; custom endpoints are chatted
+    # through the ephemeral-agent API (/api/agents/chat).
     body = {
         "text": json.dumps(envelope, separators=(",", ":")),
         "sender": "User",
         "isCreatedByUser": True,
-        "endpoint": "custom",
-        "endpointOption": {"name": "Orion Worker Review Relay"},
+        "parentMessageId": "00000000-0000-0000-0000-000000000000",
         "conversationId": state["conversation_id"],
+        "messageId": str(uuid.uuid4()),
+        "endpoint": "Orion Worker Review Relay",
+        "endpointType": "custom",
+        "model": "orion-worker-relay",
+        "agent_id": "ephemeral",
+        "ephemeralAgent": {
+            "execute_code": False,
+            "web_search": False,
+            "file_search": False,
+            "artifacts": "",
+        },
+        "key": None,
     }
     request = urllib.request.Request(
-        state["librechat_url"].rstrip("/") + "/api/ask/orion-worker-relay",
+        state["librechat_url"].rstrip("/") + "/api/agents/chat",
         data=json.dumps(body).encode(),
         headers={
             "Authorization": f"Bearer {state['librechat_session']}",
             "Content-Type": "application/json",
             "Accept": "text/event-stream",
+            # LibreChat's uaParser middleware rejects non-browser User-Agents.
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            ),
         },
     )
-    events: list[dict[str, Any]] = []
+    parts: list[str] = []
     with urllib.request.urlopen(request, timeout=60) as response:
         for raw in response:
             line = raw.decode(errors="replace").strip()
-            if line.startswith("data:") and line[5:].strip() != "[DONE]":
-                value = json.loads(line[5:].strip())
-                if isinstance(value, dict):
-                    events.append(value)
-    message = next(
-        (
-            str(item.get("text") or item.get("final") or "")
-            for item in reversed(events)
-            if item.get("text") or item.get("final")
-        ),
-        "",
-    )
-    return {"choices": [{"message": {"content": message}}]}
+            if not line.startswith("data:"):
+                continue
+            data = line[5:].strip()
+            if not data or data == "[DONE]":
+                continue
+            try:
+                value = json.loads(data)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(value, dict) or value.get("event") != "on_message_delta":
+                continue
+            delta = value.get("data") or {}
+            delta = delta.get("delta") if isinstance(delta, dict) else {}
+            for chunk in (delta or {}).get("content") or []:
+                if isinstance(chunk, dict) and chunk.get("type") == "text":
+                    parts.append(str(chunk.get("text") or ""))
+    return {"choices": [{"message": {"content": "".join(parts)}}]}
 
 
 def poll_node(state: AgentState) -> AgentState:
