@@ -70,6 +70,7 @@ fi
 docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
   cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"
 chmod 0644 "$STATE/caddy-root.crt"
+install -m 0644 "$STATE/caddy-root.crt" "$STATE/tls/ca.crt"
 
 install -d -m 0750 "$ROOT/state"
 for cert in cinder-step-root.crt cinder-bootstrap-root.crt cinder-trust-bundle.crt; do
