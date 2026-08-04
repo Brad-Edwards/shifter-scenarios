@@ -361,6 +361,8 @@ services:
     volumes:
       - harbor-db-data:/var/lib/postgresql/data
     networks:
+      engineering:
+        ipv4_address: 10.61.40.134
       harbor:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d registry"]
@@ -484,6 +486,8 @@ services:
       - harbor-ca-data:/etc/core/ca
       - harbor-data:/data
       - ./state/caddy-root.crt:/harbor_cust_cert/keplerops-ca.crt:ro
+    extra_hosts:
+      - "id.keplerops.lab:10.61.40.2"
     networks:
       harbor:
     labels: *common-labels

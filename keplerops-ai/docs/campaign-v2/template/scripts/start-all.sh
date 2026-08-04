@@ -26,7 +26,7 @@ rm -f "$SHIFTER_READY"
 "$ROOT/scripts/provision-guests.sh"
 
 deadline=$((SECONDS + 1800))
-until "$ROOT/scripts/check-guests.sh"; do
+until KEPLEROPS_SKIP_REVIEW_E2E=1 "$ROOT/scripts/check-guests.sh"; do
   if ((SECONDS >= deadline)); then
     echo "Nested guests did not become ready" >&2
     exit 3
@@ -46,6 +46,7 @@ else
     -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
     kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh --core
 fi
+"$ROOT/scripts/check-guests.sh"
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/seeding/seed.sh" mautic langflow business-workflows
 "$ROOT/engineering/reconcile-orion-vision-label-studio.sh"

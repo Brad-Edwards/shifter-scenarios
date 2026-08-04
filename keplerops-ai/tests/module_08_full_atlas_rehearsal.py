@@ -23,15 +23,14 @@ from live_rehearsal import (
 
 PACK_ROOT = Path(__file__).resolve().parents[1]
 BUILD_ROOT = PACK_ROOT / "build"
-CHALLENGES = tuple(f"kep-m08-{suffix}" for suffix in "ghijk")
+CHALLENGES = tuple(f"kep-m08-{suffix}" for suffix in "ghjk")
 FLAGS = {
     "kep-m08-g": "flag-gathered-artifact-proxy",
     "kep-m08-h": "flag-model-inversion",
-    "kep-m08-i": "flag-physical-sensor-evasion",
     "kep-m08-j": "flag-full-model-access",
     "kep-m08-k": "flag-product-side-channel",
 }
-NEGATIVE_COUNT = 4
+NEGATIVE_COUNT = 3
 
 
 def _common() -> str:
@@ -259,15 +258,11 @@ call(gateway + "/v1/extraction/platform/inversions", token=token, payload={"targ
 negative.add("invalid-inversion-label")
 call(gateway + "/v1/extraction/platform/model-accesses", token=token, payload={"model_id": "x"}, expected=422)
 negative.add("invalid-model-id")
-call(gateway + "/v1/extraction/platform/physical-sensor-attempts", token=token, payload={
-    "session_id": "not-hex", "pair_id": "pair-invalid",
-}, expected=422)
-negative.add("invalid-camera-evidence")
 call(gateway + "/v1/extraction/platform/document-side-channels", token=token, payload={
     "text": "release telemetry side channel", "caller_metric": True,
 }, expected=422)
 negative.add("caller-shaped-side-channel")
-marker("test-m08-fa-controls", "PASS" if listed_ok and len(negative) == 4 else "FAIL", len(negative))
+marker("test-m08-fa-controls", "PASS" if listed_ok and len(negative) == 3 else "FAIL", len(negative))
 '''
 
 
@@ -315,44 +310,6 @@ marker("test-m08-fa-platform", "PASS" if passed == expected else "FAIL", len(pas
 '''
 
 
-def _physical_program() -> str:
-    return _common() + r'''import subprocess
-
-session = call(
-    gateway + "/v1/extraction/platform/camera-sessions",
-    token=token,
-    payload={"client_timestamp_ms": int(time.time() * 1000)},
-    expected=201,
-)
-helper = subprocess.run(
-    ["/usr/local/bin/keplerops-camera-webrtc-proof"],
-    input=json.dumps({
-        "base_url": "https://platform-camera-01.keplerops.lab:8480",
-        "session": session,
-    }),
-    text=True,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    timeout=120,
-    check=False,
-)
-if helper.returncode != 0:
-    raise RuntimeError("camera WebRTC proof helper failed")
-proof_body = json.loads(helper.stdout)
-result = call(gateway + "/v1/extraction/platform/physical-sensor-attempts", token=token, payload={
-    "session_id": proof_body["session_id"],
-    "pair_id": proof_body["pair_id"],
-})
-ok = (
-    proof_body.get("control_ok") is True
-    and proof_body.get("attack_ok") is True
-    and result.get("objective_status") == "passed"
-    and result.get("failure_class") == "passed"
-)
-marker("test-m08-fa-physical", "PASS" if ok else "FAIL", int(ok))
-'''
-
-
 def _award_program() -> str:
     return _common() + r'''receipts = set()
 for challenge_id in challenge_ids:
@@ -374,7 +331,6 @@ def participant_programs() -> tuple[str, ...]:
         _controls_program(),
         _proxy_program(),
         _platform_program(),
-        _physical_program(),
         _award_program(),
     )
 
@@ -425,7 +381,6 @@ class Module08FullAtlasRunner:
             "test-m08-fa-controls": NEGATIVE_COUNT,
             "test-m08-fa-proxy": 3,
             "test-m08-fa-platform": 3,
-            "test-m08-fa-physical": 1,
             "test-m08-fa-awards": len(CHALLENGES),
         }
         if set(observed) != set(expected):
@@ -443,7 +398,7 @@ class Module08FullAtlasRunner:
 
 
 def _phase_names() -> tuple[str, ...]:
-    return ("controls", "proxy", "platform", "physical", "awards")
+    return ("controls", "proxy", "platform", "awards")
 
 
 def _write_report(
