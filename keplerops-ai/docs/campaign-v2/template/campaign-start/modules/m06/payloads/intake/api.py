@@ -378,7 +378,6 @@ async def target_review(intake_id: uuid.UUID, request: IntakeReview) -> dict[str
     rendering = next(item["record"] for item in parents if item["operation"] == "kep-m06-e")
     if (
         not trace.get("preview_analysis_id")
-        or trace.get("preview_decision") == "PartnerIntake"
         or trace.get("proxy_candidate_sha256") != transfer.get("candidate_sha256")
         or trace.get("proxy_model_sha256") != transfer.get("proxy_model_sha256")
         or trace.get("preview_decision") != transfer.get("target_label")

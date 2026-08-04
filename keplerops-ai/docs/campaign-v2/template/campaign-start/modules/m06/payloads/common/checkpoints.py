@@ -50,7 +50,7 @@ OWNERS = {
 }
 
 INTERNAL_FETCH = {
-    "artifacts.keplerops.lab": "http://10.61.50.20:9000",
+    "artifacts.keplerops.lab": "https://artifacts.keplerops.lab",
     "external-intake.keplerops.lab": "http://keplerops-edge-observer:8080",
     "experiments.cinder.lab": "http://cinder-experiments:8080",
     "knative.cinder.lab": "http://cinder-knative-control:8080",

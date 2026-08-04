@@ -277,6 +277,12 @@ def provenance_image_digest(image: dict[str, Any]) -> str:
     return str(image["digest"]).removeprefix("sha256:")
 
 
+def same_owned_route(service_url: str, route_url: str) -> bool:
+    service = service_url.rstrip("/")
+    route = route_url.rstrip("/")
+    return service == route or (service.endswith("/ownership.txt") and service.removesuffix("/ownership.txt").rstrip("/") == route)
+
+
 def execute_toolchain_image(
     image: str,
     clean: np.ndarray,
@@ -797,7 +803,7 @@ async def staging_release(request: StagingRelease) -> dict[str, Any]:
     ownership = next(item["record"] for item in parents if item["operation"] == "kep-m06-n")
     lifecycle = next(item["record"] for item in parents if item["operation"] == "kep-m06-u")
     if (
-        ownership.get("service_url", "").rstrip("/") != str(request.route_url).rstrip("/")
+        not same_owned_route(ownership.get("service_url", ""), str(request.route_url))
         or lifecycle.get("domain") != urlparse(str(request.route_url)).hostname
         or lifecycle.get("image") != request.image
         or lifecycle.get("source_commit") != request.commit
