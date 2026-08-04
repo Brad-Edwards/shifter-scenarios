@@ -216,6 +216,8 @@ services:
       MODEL_EDGE_URL: http://10.61.90.36:8080/v1
       MODEL_EDGE_TOKEN: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
       HOST_BRIDGE_URL: http://10.61.90.38:8080
+    extra_hosts:
+      - artifacts.keplerops.lab:10.61.90.2
     volumes:
       - cinder-developer-records:/var/lib/cinder-developer
       - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
@@ -240,7 +242,7 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=32m
-      - /run/bridge:rw,nosuid,size=32m
+      - /run/bridge:rw,nosuid,size=32m,uid=65532,gid=65532,mode=0700
     cap_drop: [ALL]
     security_opt:
       - no-new-privileges:true
@@ -304,6 +306,9 @@ services:
       DOCUMENT_HUMAN_FLAG: FLAG{0a438484b65046a0}
       DOCUMENT_PIPELINE_FLAG: FLAG{447fd22a0058819c}
       RETRIEVAL_INSTRUCTION_FLAG: FLAG{b5369733fb4c6d27}
+    extra_hosts:
+      - artifacts.keplerops.lab:10.61.10.2
+      - storage.cinder.lab:10.61.10.2
     depends_on:
       keplerops-intake-qdrant:
         condition: service_healthy
@@ -366,6 +371,9 @@ services:
       PREVIEW_BLACKBOX_FLAG: FLAG{e03e39f8f878efb0}
       PREVIEW_TRANSFER_FLAG: FLAG{0dd8f75b05289ffc}
       WHITEBOX_FLAG: FLAG{285f88d89462c4ce}
+    extra_hosts:
+      - artifacts.keplerops.lab:10.61.90.2
+      - storage.cinder.lab:10.61.90.2
     volumes:
       - orion-preview-audit:/var/lib/orion-preview/audit:ro
       - cinder-experiment-records:/var/lib/cinder-experiments
@@ -405,6 +413,8 @@ services:
       TOOLCHAIN_FLAG: FLAG{c79665e28c6092db}
       HARNESS_FLAG: FLAG{42822974ea6be801}
       STAGING_FLAG: FLAG{0938e99700485593}
+    extra_hosts:
+      - storage.cinder.lab:10.61.90.2
     volumes:
       - cinder-release-records:/var/lib/cinder-release-registry
       - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro

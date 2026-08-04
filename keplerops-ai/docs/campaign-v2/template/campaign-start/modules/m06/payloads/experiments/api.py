@@ -20,6 +20,16 @@ MODEL_NAME = os.environ.get("PUBLIC_MODEL_NAME", "orion-release-risk")
 AUDIT = Path("/var/lib/orion-preview/audit")
 STATE = Path("/var/lib/cinder-experiments")
 ALLOWED_ARTIFACT_HOSTS = {"git.cinder.lab", "storage.cinder.lab", "keplerops.lab"}
+RELEASE_RISK_LABELS = [
+    "ReleaseApprove",
+    "ReleaseHold",
+    "PartnerIntake",
+    "EntitlementReview",
+    "SecurityAdvisory",
+    "SupportEscalation",
+    "ResearchReview",
+    "PrivacySafety",
+]
 app = FastAPI(title="Cinder Orion Experiments", version="1.0")
 
 
@@ -97,6 +107,17 @@ def audit(analysis_id: uuid.UUID) -> dict[str, Any]:
     return json.loads(path.read_text())
 
 
+def probability_for_target(audit_record: dict[str, Any], target: str) -> float:
+    probabilities = audit_record.get("probabilities") or {}
+    if isinstance(probabilities, dict):
+        return float(probabilities.get(target, 0.0))
+    if isinstance(probabilities, list) and target in RELEASE_RISK_LABELS:
+        index = RELEASE_RISK_LABELS.index(target)
+        if index < len(probabilities):
+            return float(probabilities[index])
+    return 0.0
+
+
 async def predict(text: str) -> dict[str, Any]:
     async with httpx.AsyncClient(timeout=30) as client:
         response = await client.post(f"{MODEL}/v1/models/{MODEL_NAME}:predict", json={"instances": [{"text": text}]})
@@ -157,7 +178,7 @@ async def preview_experiment(request: PreviewExperiment) -> dict[str, Any]:
         if any(not isinstance(value, int) or value <= 0 for value in order) or order != sorted(order):
             raise HTTPException(status_code=422, detail="Preview query IDs are not in native execution order")
         unique_inputs = {item["input_sha256"] for item in audits}
-        target_scores = [float((item.get("probabilities") or {}).get(request.target_label, 0.0)) for item in audits]
+        target_scores = [probability_for_target(item, request.target_label) for item in audits]
         if len(unique_inputs) < 3 or len(audits) < 3 or target_scores[-1] <= target_scores[0]:
             raise HTTPException(status_code=422, detail="audit does not show a bounded query optimization sequence")
         flag = os.environ["PREVIEW_BLACKBOX_FLAG"]
