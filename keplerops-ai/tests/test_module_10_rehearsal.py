@@ -57,6 +57,8 @@ class Module10RehearsalTests(unittest.TestCase):
             '"--upload-file"',
             "shutil.copyfileobj",
             "3422777952",
+            'accessed = attempt("kep-m10-d", access_id=access["access_id"])',
+            'accessed = attempt("kep-m10-d", access_id=state["access_id"])',
             'verified.get("digest") == access.get("artifact_digest")',
             'before.get("objective_status") == "not_satisfied"',
             '"challenge_id": "kep-m06-e"',

@@ -170,7 +170,6 @@ access = call(gateway + "/v1/capstone/artifact-access", token=token, payload={
     "participant_interface": "python",
     "assistance_mode": "none",
 })
-staged = attempt("kep-m10-d", access_id=access["access_id"])
 temporary = ROOT / ".keplerops-model-transfer"
 try:
     with urllib.request.urlopen(access["source_url"], context=CTX, timeout=900) as source:
@@ -202,6 +201,7 @@ verified = call(
     payload={},
     t=900,
 )
+accessed = attempt("kep-m10-d", access_id=access["access_id"])
 stolen = attempt("kep-m10-f", access_id=access["access_id"])
 state["access_id"] = access["access_id"]
 capstone_state.write_text(
@@ -210,7 +210,7 @@ capstone_state.write_text(
 capstone_state.chmod(0o600)
 ok = all((
     access.get("destination") == "contained-exfil",
-    staged.get("objective_status") == "passed",
+    accessed.get("objective_status") == "passed",
     verified.get("status") == "verified",
     verified.get("byte_count") == access.get("byte_count") == 3422777952,
     verified.get("digest") == access.get("artifact_digest"),
@@ -242,6 +242,7 @@ joined = attempt(
     activation_id=state["activation_id"],
     access_id=state["access_id"],
 )
+accessed = attempt("kep-m10-d", access_id=state["access_id"])
 receipts = set()
 for challenge_id in challenge_ids:
     flag_id = flag_ids[challenge_id]
@@ -260,6 +261,7 @@ for challenge_id in challenge_ids:
 ok = (
     m06_refresh.get("objective_status") == "passed"
     and m08_refresh.get("objective_status") == "passed"
+    and accessed.get("objective_status") == "passed"
     and joined.get("objective_status") == "passed"
     and receipts == set(challenge_ids)
 )
