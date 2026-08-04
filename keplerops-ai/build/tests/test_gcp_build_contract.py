@@ -1199,6 +1199,14 @@ class GcpBuildContractTests(unittest.TestCase):
         )
         self.assertLess(
             workload.index("docker exec keplerops-runtime pg_isready --quiet"),
+            workload.index(
+                'test "$(head -n1 /var/lib/postgresql/data/postmaster.pid 2>/dev/null)" = 1'
+            ),
+        )
+        self.assertLess(
+            workload.index(
+                'test "$(head -n1 /var/lib/postgresql/data/postmaster.pid 2>/dev/null)" = 1'
+            ),
             workload.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
         )
         self.assertLess(
