@@ -31,7 +31,7 @@ locals {
     "workforce-workstation-01" = "192.168.77.11"
     "ml-workstation-01"        = "192.168.77.12"
   }
-  outer_host_ip = cidrhost(var.range_subnet_cidr, 10)
+  outer_host_ip = cidrhost(var.range_subnet_cidr, var.range_host_ip_offset)
   physical_host_ips = {
     for host_id in keys(local.physical_hosts) :
     host_id => lookup(local.nested_guest_ips, host_id, local.outer_host_ip)

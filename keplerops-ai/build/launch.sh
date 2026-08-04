@@ -13,6 +13,7 @@ usage: launch.sh --project-id ID --range-instance ID --participant ID \
   --range-subnet-cidr CIDR --runtime-repository-id ID \
   --shared-model-service-name NAME --shared-model-service-url URL \
   --image-lock PATH --windows-image IMAGE --nested-host-image IMAGE \
+  [--range-host-ip-offset N] \
   [--runtime-repository-location REGION] \
   [--region REGION] [--zone ZONE] \
   [--research-profile off|full-content]
@@ -27,6 +28,7 @@ RUNTIME_REPOSITORY_LOCATION=europe-west4 WINDOWS_IMAGE= NESTED_HOST_IMAGE=
 SHARED_MODEL_SERVICE_NAME= SHARED_MODEL_SERVICE_URL=
 SOURCE_IMAGE_LOCK=
 RESEARCH_PROFILE=off
+RANGE_HOST_IP_OFFSET=10
 while (($#)); do
   case "$1" in
     --range-instance) RANGE_INSTANCE=${2-}; shift 2 ;;
@@ -35,6 +37,7 @@ while (($#)); do
     --participant-source-cidr) PARTICIPANT_SOURCE_CIDR=${2-}; shift 2 ;;
     --range-subnet-self-link) RANGE_SUBNET_SELF_LINK=${2-}; shift 2 ;;
     --range-subnet-cidr) RANGE_SUBNET_CIDR=${2-}; shift 2 ;;
+    --range-host-ip-offset) RANGE_HOST_IP_OFFSET=${2-}; shift 2 ;;
     --runtime-repository-id) RUNTIME_REPOSITORY_ID=${2-}; shift 2 ;;
     --runtime-repository-location) RUNTIME_REPOSITORY_LOCATION=${2-}; shift 2 ;;
     --shared-model-service-name) SHARED_MODEL_SERVICE_NAME=${2-}; shift 2 ;;
@@ -62,6 +65,7 @@ done
 [[ $WINDOWS_IMAGE =~ ^projects/[^/]+/global/images/[^/]+$ ]] || usage
 [[ $NESTED_HOST_IMAGE =~ ^projects/[^/]+/global/images/[^/]+$ ]] || usage
 [[ $RESEARCH_PROFILE =~ ^(off|full-content)$ ]] || usage
+[[ $RANGE_HOST_IP_OFFSET =~ ^[0-9]+$ ]] || usage
 if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} ]]; then
   export GOOGLE_OAUTH_ACCESS_TOKEN
   GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
@@ -69,11 +73,14 @@ fi
 if [[ -z ${CLOUDSDK_AUTH_ACCESS_TOKEN:-} ]]; then
   export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN
 fi
-python3 - "$PARTICIPANT_SOURCE_CIDR" "$RANGE_SUBNET_CIDR" <<'PY' || usage
+python3 - "$PARTICIPANT_SOURCE_CIDR" "$RANGE_SUBNET_CIDR" "$RANGE_HOST_IP_OFFSET" <<'PY' || usage
 import ipaddress, sys
 participant = ipaddress.ip_network(sys.argv[1], strict=False)
 subnet = ipaddress.ip_network(sys.argv[2], strict=True)
+offset = int(sys.argv[3])
 if participant.prefixlen == 0 or subnet.version != 4 or subnet.prefixlen > 24:
+    raise SystemExit(2)
+if offset < 10 or offset >= subnet.num_addresses - 1:
     raise SystemExit(2)
 PY
 
@@ -100,13 +107,13 @@ python3 - \
   "$PARTICIPANT_SOURCE_CIDR" "$REGION" "$ZONE" "$RESEARCH_PROFILE" \
   "$RANGE_SUBNET_SELF_LINK" "$RANGE_SUBNET_CIDR" "$RUNTIME_REPOSITORY_ID" \
   "$RUNTIME_REPOSITORY_LOCATION" "$WINDOWS_IMAGE" \
-  "$NESTED_HOST_IMAGE" \
+  "$NESTED_HOST_IMAGE" "$RANGE_HOST_IP_OFFSET" \
   "$SHARED_MODEL_SERVICE_NAME" "$SHARED_MODEL_SERVICE_URL" <<'PY'
 import json, os, stat, sys, tempfile
 (
     path, project, range_id, participant, source_cidr, region, zone,
     research_profile, subnet_link, subnet_cidr, repository_id,
-    repository_location, windows_image, nested_host_image,
+    repository_location, windows_image, nested_host_image, range_host_ip_offset,
     model_service_name, model_service_url,
 ) = sys.argv[1:]
 base_payload = {
@@ -118,6 +125,7 @@ base_payload = {
   "zone": zone,
   "range_subnet_self_link": subnet_link,
   "range_subnet_cidr": subnet_cidr,
+  "range_host_ip_offset": int(range_host_ip_offset),
   "runtime_repository_id": repository_id,
   "runtime_repository_location": repository_location,
   "windows_image": windows_image,
@@ -206,13 +214,16 @@ OUTER_HOST=$(
     jq -er '."range-linux-carrier-01".name'
 )
 LAUNCH_SSH_ATTEMPTS=${KEPLEROPS_LAUNCH_SSH_ATTEMPTS:-120}
-for attempt in $(seq 1 "$LAUNCH_SSH_ATTEMPTS"); do
-  if gcloud compute ssh "$OUTER_HOST" \
+ssh_command() {
+  gcloud compute ssh "$OUTER_HOST" \
     --project "$PROJECT_ID" \
     --zone "$ZONE" \
     --tunnel-through-iap \
     --quiet \
-    --command true </dev/null >/dev/null 2>&1; then
+    --command "$1" </dev/null
+}
+for attempt in $(seq 1 "$LAUNCH_SSH_ATTEMPTS"); do
+  if ssh_command true >/dev/null 2>&1; then
     break
   fi
   [[ $attempt -lt $LAUNCH_SSH_ATTEMPTS ]] || {
@@ -220,5 +231,16 @@ for attempt in $(seq 1 "$LAUNCH_SSH_ATTEMPTS"); do
     exit 1
   }
   sleep 5
+done
+LAUNCH_CARRIER_ATTEMPTS=${KEPLEROPS_LAUNCH_CARRIER_ATTEMPTS:-720}
+for attempt in $(seq 1 "$LAUNCH_CARRIER_ATTEMPTS"); do
+  if ssh_command 'sudo bash -lc '\''test "$(cat /proc/sys/kernel/random/boot_id)" = "$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"'\''' >/dev/null 2>&1; then
+    break
+  fi
+  [[ $attempt -lt $LAUNCH_CARRIER_ATTEMPTS ]] || {
+    echo "error: nested range carrier did not become ready" >&2
+    exit 1
+  }
+  sleep 10
 done
 "$BUILD_ROOT/health-check.sh" --range-instance "$RANGE_INSTANCE" --participant "$PARTICIPANT"
