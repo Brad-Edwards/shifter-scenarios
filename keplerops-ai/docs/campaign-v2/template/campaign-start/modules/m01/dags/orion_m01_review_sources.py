@@ -12,8 +12,6 @@ from urllib.parse import quote, unquote
 import requests
 from airflow.exceptions import AirflowSkipException
 from airflow.sdk import dag, get_current_context, task
-from haystack import Document
-from haystack.components.preprocessors import DocumentSplitter
 from qdrant_client import QdrantClient, models
 
 
@@ -51,12 +49,12 @@ def properties(response: ET.Element) -> dict[str, str]:
 
 @dag(
     dag_id="orion_m01_review_sources",
-    description="Extract and Haystack-index partner policy exceptions for Orion review summaries.",
+    description="Extract and index partner policy exceptions for Orion review summaries.",
     schedule="*/1 * * * *",
     start_date=datetime(2026, 8, 1, tzinfo=timezone.utc),
     catchup=False,
     max_active_runs=1,
-    tags=["orion", "partner", "nextcloud", "tika", "haystack", "qdrant"],
+    tags=["orion", "partner", "nextcloud", "tika", "qdrant"],
 )
 def orion_m01_review_sources():
     @task
@@ -71,8 +69,6 @@ def orion_m01_review_sources():
             raise AirflowSkipException("the partner policy-exception folder is not available")
         response.raise_for_status()
         root = ET.fromstring(response.content)
-        splitter = DocumentSplitter(split_by="passage", split_length=1, split_overlap=0)
-        splitter.warm_up()
         qdrant = QdrantClient(url=QDRANT_URL)
         if not qdrant.collection_exists(QDRANT_COLLECTION):
             qdrant.create_collection(
@@ -104,15 +100,8 @@ def orion_m01_review_sources():
                 continue
             nextcloud_path = f"{ROOM_PATH.lstrip('/')}/{filename}"
             source_uri = f"nextcloud://{nextcloud_path}"
-            document = Document(
-                id=source_sha256,
-                content=text,
-                meta={"sha256": source_sha256, "source_uri": source_uri},
-            )
-            children = splitter.run(documents=[document])["documents"]
-            child_text = "\n\n".join(str(child.content or "").strip() for child in children if str(child.content or "").strip())
-            if not child_text:
-                continue
+            child_text = text
+            child_id = hashlib.sha256(f"{source_sha256}:passage:0".encode()).hexdigest()
             payload = {
                 "title": filename,
                 "text": child_text,
@@ -123,9 +112,9 @@ def orion_m01_review_sources():
                 "content_length": int(metadata["content_length"] or 0),
                 "airflow_dag_id": "orion_m01_review_sources",
                 "airflow_run_id": run_id,
-                "haystack_document_id": document.id,
-                "haystack_split_ids": [child.id for child in children],
-                "haystack_splitter": "DocumentSplitter/passage",
+                "haystack_document_id": source_sha256,
+                "haystack_split_ids": [child_id],
+                "haystack_splitter": "single-passage",
                 "source_identity": f"partner-policy:{source_sha256}",
             }
             points = [models.PointStruct(id=int(source_sha256[:15], 16), vector=vector(child_text), payload=payload)]

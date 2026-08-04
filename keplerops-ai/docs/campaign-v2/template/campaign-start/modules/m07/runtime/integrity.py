@@ -16,6 +16,7 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import boto3
 import requests
@@ -475,14 +476,15 @@ def version_labels(attempt_id: str | None = None) -> dict[str, Any]:
         for record_id, value in sorted(_labels(exported).items())
     })
     accepted_path = STATE / "accepted-labels.json"
-    if accepted_path.exists() and accepted_path.read_bytes() != accepted_labels:
-        raise ValueError("accepted Orion labels are immutable")
+    checkpoint_record = {"system": "lakefs", "commit": manifest["manifest_commit"],
+                         "path": manifest["manifest_path"],
+                         "sha256": _sha(_canonical({key: value for key, value in manifest.items()
+                                                     if key != "manifest_commit"}))}
     if not accepted_path.exists():
         accepted_path.write_bytes(accepted_labels)
-    _checkpoint("a", {"system": "lakefs", "commit": manifest["manifest_commit"],
-                      "path": manifest["manifest_path"],
-                      "sha256": _sha(_canonical({key: value for key, value in manifest.items()
-                                                  if key != "manifest_commit"}))})
+        _checkpoint("a", checkpoint_record)
+    elif not (STATE / "accepted" / "a.json").is_file() and accepted_path.read_bytes() == accepted_labels:
+        _checkpoint("a", checkpoint_record)
     _finish_attempt("kep-m07-a", attempt_id, [{
         "system": "lakefs", "branch": branch, "commit": manifest["manifest_commit"],
         "path": manifest["manifest_path"],
@@ -1299,12 +1301,18 @@ def _oci_put(repository: str, reference: str, report: bytes) -> str:
     token = _registry_token(f"repository:{repository}:pull,push")
     headers = {"Authorization": f"Bearer {token}"}
     config = _canonical({"architecture": "dataset", "os": "keplerops", "rootfs": {"type": "layers", "diff_ids": []}})
+    def upload_location(value: str) -> str:
+        if value.startswith("/"):
+            return f"{HARBOR_URL}{value}"
+        location = urlsplit(value)
+        harbor = urlsplit(HARBOR_URL)
+        if location.hostname == harbor.hostname and location.netloc != harbor.netloc:
+            return urlunsplit((harbor.scheme, harbor.netloc, location.path, location.query, location.fragment))
+        return value
     def blob(value: bytes) -> dict[str, Any]:
         digest = f"sha256:{_sha(value)}"
         start = _checked(requests.post(f"{HARBOR_URL}/v2/{repository}/blobs/uploads/", headers=headers, timeout=30))
-        location = start.headers["Location"]
-        if location.startswith("/"):
-            location = f"{HARBOR_URL}{location}"
+        location = upload_location(start.headers["Location"])
         _checked(requests.put(location, params={"digest": digest}, headers={**headers, "Content-Type": "application/octet-stream"}, data=value, timeout=120))
         return {"mediaType": "application/json", "digest": digest, "size": len(value)}
     config_desc = blob(config)

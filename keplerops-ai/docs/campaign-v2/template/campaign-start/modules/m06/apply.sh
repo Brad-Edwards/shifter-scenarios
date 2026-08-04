@@ -656,7 +656,7 @@ install -d -m 0700 -o cinder-publisher -g cinder-publisher /home/cinder-publishe
 printf 'restrict,command="sudo /usr/local/sbin/cinder-knative-publisher" %s\n' "$key" > /home/cinder-publisher/.ssh/authorized_keys
 chown cinder-publisher:cinder-publisher /home/cinder-publisher/.ssh/authorized_keys
 chmod 0600 /home/cinder-publisher/.ssh/authorized_keys
-printf 'cinder-publisher ALL=(root) NOPASSWD: /usr/local/sbin/cinder-knative-publisher\n' > /etc/sudoers.d/cinder-knative-publisher
+printf 'Defaults:cinder-publisher env_keep += "SSH_ORIGINAL_COMMAND"\ncinder-publisher ALL=(root) NOPASSWD: /usr/local/sbin/cinder-knative-publisher\n' > /etc/sudoers.d/cinder-knative-publisher
 chmod 0440 /etc/sudoers.d/cinder-knative-publisher
 install -d -m 0750 -o cinder-publisher -g cinder-publisher /var/lib/cinder-publisher/lifecycles /var/lib/cinder-publisher/deployments
 cat >/etc/systemd/system/cinder-knative-records.service <<'UNIT'

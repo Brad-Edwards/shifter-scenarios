@@ -12,7 +12,6 @@ from urllib.parse import urlparse
 
 import httpx
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastembed import TextEmbedding
 from pydantic import BaseModel
 from checkpoints import AttemptContext, resolve_parents
 
@@ -24,7 +23,6 @@ ASSISTANT_TOKEN = os.environ["RELEASE_ASSISTANT_TOKEN"]
 ROOT = Path("/var/lib/partner-intake")
 ARTIFACT_HOSTS = {"git.cinder.lab", "storage.cinder.lab", "keplerops.lab"}
 app = FastAPI(title="KeplerOps Partner Intake", version="2.0")
-embedder: Optional[TextEmbedding] = None
 
 
 class IntakeReview(BaseModel):
@@ -112,10 +110,12 @@ def extract_pdf(path: Path, directory: Path) -> dict[str, Any]:
 
 
 def vector(value: str) -> list[float]:
-    global embedder
-    if embedder is None:
-        embedder = TextEmbedding(model_name="BAAI/bge-small-en-v1.5")
-    return next(iter(embedder.embed([value]))).tolist()
+    values = [0.0] * 64
+    for token in re.findall(r"[a-z0-9][a-z0-9._-]*", value.lower()):
+        digest = hashlib.sha256(token.encode()).digest()
+        values[digest[0] % len(values)] += 1.0 + (digest[1] / 255.0)
+    norm = sum(item * item for item in values) ** 0.5 or 1.0
+    return [item / norm for item in values]
 
 
 async def index_and_retrieve(intake_id: str, text: str, query: str) -> dict[str, Any]:

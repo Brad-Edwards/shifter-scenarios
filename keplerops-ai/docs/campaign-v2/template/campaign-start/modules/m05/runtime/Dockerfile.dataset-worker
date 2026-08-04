@@ -7,6 +7,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     ORION_WORKER_HOME=/var/lib/orion-dataset-worker
 
+# curl is used by the rogue agent's worker commands (kep-m05-p/q); ca-certificates
+# provides the system trust store the range CAs are appended to at start.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN pip install --no-cache-dir \
       mlflow==${MLFLOW_VERSION} \
       requests==2.31.0 \

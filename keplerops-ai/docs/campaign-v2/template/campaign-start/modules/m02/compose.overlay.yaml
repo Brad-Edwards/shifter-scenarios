@@ -81,6 +81,7 @@ services:
       - ./campaign-start/modules/m02:/campaign:ro
       - ./state/campaign-start/m02:/state
       - ./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro
+      - ./state/cinder-bootstrap-root.crt:/etc/keplerops/cinder-bootstrap-root.crt:ro
     networks: &m02-networks
       public: {}
       identity: {}

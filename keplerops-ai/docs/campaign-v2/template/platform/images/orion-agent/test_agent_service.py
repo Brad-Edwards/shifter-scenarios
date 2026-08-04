@@ -185,7 +185,7 @@ class AgentServiceTests(unittest.TestCase):
         invoke.assert_not_awaited()
         self.assertFalse(result["tool_events"][0]["allowed"])
 
-    def test_allowed_tool_error_is_returned_to_model(self) -> None:
+    def test_mcp_exception_is_returned_as_tool_result(self) -> None:
         completions = AsyncMock(
             side_effect=[
                 {
@@ -201,11 +201,16 @@ class AgentServiceTests(unittest.TestCase):
                         }
                     ],
                 },
-                {"role": "assistant", "content": "The lookup was unavailable."},
+                {"role": "assistant", "content": "The source lookup is unavailable."},
             ]
         )
+
         with (
-            patch.object(agent_service, "model_completion", completions),
+            patch.object(
+                agent_service,
+                "model_completion",
+                completions,
+            ),
             patch.object(
                 agent_service,
                 "authorize_tool",
@@ -214,73 +219,53 @@ class AgentServiceTests(unittest.TestCase):
             patch.object(
                 agent_service,
                 "call_mcp_tool",
-                AsyncMock(side_effect=RuntimeError("mcp unavailable")),
+                AsyncMock(side_effect=RuntimeError("backend unavailable")),
             ),
         ):
             result = asyncio.run(agent_service.infer(state()))
 
         self.assertTrue(result["tool_events"][0]["allowed"])
-        self.assertEqual(result["tool_events"][0]["result"]["error"], "tool execution failed")
-        self.assertIn("unavailable", result["response"])
-
-    def test_empty_tool_loop_forces_final_answer_without_tools(self) -> None:
-        completions = AsyncMock(
-            side_effect=[
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "id": "call-1",
-                            "function": {
-                                "name": "lookup_release_context",
-                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
-                            },
-                        }
-                    ],
-                },
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "id": "call-2",
-                            "function": {
-                                "name": "lookup_release_context",
-                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
-                            },
-                        }
-                    ],
-                },
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "id": "call-3",
-                            "function": {
-                                "name": "lookup_release_context",
-                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
-                            },
-                        }
-                    ],
-                },
-                {"role": "assistant", "content": "Final answer from available context."},
-            ]
+        self.assertEqual(
+            result["tool_events"][0]["result"],
+            {"error": "tool_call_failed", "reason": "backend unavailable"},
         )
+        self.assertIn("source lookup is unavailable", result["response"])
+
+    def test_exhausted_tool_loop_forces_final_completion_without_tools(self) -> None:
+        tools_enabled_calls: list[bool] = []
+
+        async def complete(*_args, tools_enabled: bool = True, **_kwargs):
+            tools_enabled_calls.append(tools_enabled)
+            if len(tools_enabled_calls) <= 3:
+                return {
+                    "role": "assistant",
+                    "content": None,
+                    "tool_calls": [
+                        {
+                            "id": f"call-{len(tools_enabled_calls)}",
+                            "function": {
+                                "name": "lookup_release_context",
+                                "arguments": '{"reference":"ORION-RELEASE-POLICY-2026"}',
+                            },
+                        }
+                    ],
+                }
+            return {"role": "assistant", "content": "Fallback answer from retrieved context."}
+
         with (
-            patch.object(agent_service, "model_completion", completions),
+            patch.object(agent_service, "model_completion", complete),
             patch.object(
                 agent_service,
                 "authorize_tool",
-                AsyncMock(return_value=(False, "denied")),
+                AsyncMock(return_value=(False, "actor is not permitted")),
             ),
-            patch.object(agent_service, "call_mcp_tool", AsyncMock()),
+            patch.object(agent_service, "call_mcp_tool", AsyncMock()) as invoke,
         ):
             result = asyncio.run(agent_service.infer(state()))
 
-        self.assertIn("Final answer", result["response"])
-        self.assertFalse(completions.await_args_list[-1].kwargs["tools_enabled"])
+        invoke.assert_not_awaited()
+        self.assertEqual(tools_enabled_calls, [True, True, True, False])
+        self.assertIn("Fallback answer", result["response"])
 
     def test_librechat_stream_uses_openai_chunks(self) -> None:
         expected = state()

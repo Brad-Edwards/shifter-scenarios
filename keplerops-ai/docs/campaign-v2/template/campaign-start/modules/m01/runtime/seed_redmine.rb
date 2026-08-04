@@ -67,6 +67,20 @@ service.save!
 
 integration = User.find_by(login: 'svc.integration01')
 raise 'baseline svc.integration01 WorkHub identity is missing' unless integration
+integration.mail = ENV.fetch('M01_CINDER_MAIL_ADDRESS', 'cinder.operator@cinder.lab')
+integration.save!
+
+partner = User.find_or_initialize_by(login: 'cinder.operator')
+partner.firstname = 'Cinder'
+partner.lastname = 'Operator'
+partner.mail = ENV.fetch('M01_PARTNER_WORKHUB_MAIL', 'cinder.operator.workhub@cinder.lab')
+if ENV['M01_CINDER_WORKHUB_PASSWORD'].to_s != ''
+  partner.password = ENV.fetch('M01_CINDER_WORKHUB_PASSWORD')
+  partner.password_confirmation = ENV.fetch('M01_CINDER_WORKHUB_PASSWORD')
+  partner.must_change_passwd = false if partner.respond_to?(:must_change_passwd=)
+end
+partner.status = User::STATUS_ACTIVE
+partner.save!
 
 manager = Role.find_by(name: 'Manager') || raise('Manager role is missing')
 reporter = Role.find_by(name: 'Reporter') || raise('Reporter role is missing')
@@ -90,6 +104,7 @@ end
   service => manager,
   User.find_by(login: 'svc.review01') => reporter,
   integration => reporter,
+  partner => reporter,
 }.each do |user, role|
   raise 'required WorkHub service user is missing' unless user
   member = Member.find_or_initialize_by(project: project, user: user)

@@ -274,6 +274,33 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(payload)
 
+    def _sse(self, value: object) -> None:
+        choices = value.get("choices") if isinstance(value, dict) else None
+        message = choices[0].get("message", {}) if isinstance(choices, list) and choices else {}
+        content = str(message.get("content", "")) if isinstance(message, dict) else ""
+        cid = str(value.get("id") if isinstance(value, dict) else "") or f"chatcmpl-{secrets.token_hex(12)}"
+        created = int(value.get("created") if isinstance(value, dict) and value.get("created") else time.time())
+        model = str(value.get("model") if isinstance(value, dict) else "") or "orion-worker-relay"
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+
+        def emit(delta: dict[str, object], finish: object) -> None:
+            chunk = {
+                "id": cid,
+                "object": "chat.completion.chunk",
+                "created": created,
+                "model": model,
+                "choices": [{"index": 0, "delta": delta, "finish_reason": finish}],
+            }
+            self.wfile.write(("data: " + json.dumps(chunk, separators=(",", ":")) + "\n\n").encode())
+
+        emit({"role": "assistant", "content": content}, None)
+        emit({}, "stop")
+        self.wfile.write(b"data: [DONE]\n\n")
+        self.wfile.flush()
+
     def _principal(self) -> tuple[str, str] | None:
         supplied = self.headers.get("Authorization", "").removeprefix("Bearer ")
         return next((value for token, value in TOKENS.items() if secrets.compare_digest(token, supplied)), None)
@@ -307,6 +334,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length) or b"{}")
             if not isinstance(body, dict):
                 raise ValueError("JSON object required")
+            stream = bool(body.get("stream"))
             with database() as connection:
                 worker = verified_web_worker(connection, principal[1], body) if principal[0] == "operator" else None
                 if worker:
@@ -315,7 +343,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     result = operator_request(connection, principal[1], body)
                 else:
                     result = worker_request(connection, principal[1], body)
-            self._json(200, result)
+            # LibreChat's OpenAI-compatible custom endpoint (kep-m05-q) consumes an
+            # SSE stream; direct pollers (kep-m05-o/p) omit stream and get JSON.
+            if stream:
+                self._sse(result)
+            else:
+                self._json(200, result)
         except LookupError as exc:
             self._json(404, {"error": str(exc)})
         except (ValueError, json.JSONDecodeError, sqlite3.Error) as exc:

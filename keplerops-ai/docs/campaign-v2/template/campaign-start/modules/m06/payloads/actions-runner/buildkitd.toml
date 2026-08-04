@@ -2,4 +2,5 @@
   ca = ["/etc/buildkit/certs/registry.keplerops.lab/ca.crt"]
 
 [worker.oci]
+  snapshotter = "native"
   max-parallelism = 2

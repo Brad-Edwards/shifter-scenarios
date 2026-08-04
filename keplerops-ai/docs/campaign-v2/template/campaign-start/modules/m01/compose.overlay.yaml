@@ -73,6 +73,7 @@ services:
     networks:
       corp:
         ipv4_address: 10.61.30.28
+      cinder:
       data:
       identity:
 

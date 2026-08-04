@@ -16,6 +16,41 @@ SPEC.loader.exec_module(contracts)
 
 
 class IntegrityContractsTest(unittest.TestCase):
+    def test_m07_earned_env_excludes_cinder_harbor_publisher_material(self) -> None:
+        m07 = Path(__file__).resolve().parents[1]
+        apply_script = (m07 / "apply.sh").read_text()
+        env_block = apply_script.split("deliver_trainer_access()", 1)[1].split("reconcile_state_ownership()", 1)[0]
+        self.assertNotIn("HARBOR_URL=", env_block)
+        self.assertNotIn("HARBOR_USER=", env_block)
+        self.assertNotIn("HARBOR_PASSWORD=", env_block)
+
+    def test_later_label_exports_do_not_reject_accepted_checkpoint(self) -> None:
+        m07 = Path(__file__).resolve().parents[1]
+        integrity = (m07 / "runtime/integrity.py").read_text()
+        self.assertNotIn("accepted Orion labels are immutable", integrity)
+        self.assertIn("if not accepted_path.exists():", integrity)
+        self.assertIn(
+            'elif not (STATE / "accepted" / "a.json").is_file() and accepted_path.read_bytes() == accepted_labels:',
+            integrity,
+        )
+
+    def test_harbor_upload_location_is_normalized_to_configured_registry(self) -> None:
+        m07 = Path(__file__).resolve().parents[1]
+        integrity = (m07 / "runtime/integrity.py").read_text()
+        self.assertIn("from urllib.parse import urlsplit, urlunsplit", integrity)
+        self.assertIn("def upload_location(value: str) -> str:", integrity)
+        self.assertIn("location.hostname == harbor.hostname", integrity)
+        self.assertIn("urlunsplit((harbor.scheme, harbor.netloc", integrity)
+
+    def test_sandbox_allows_active_python_prefix_read_only(self) -> None:
+        m07 = Path(__file__).resolve().parents[1]
+        sandbox = (m07 / "runtime/sandbox_script.py").read_text()
+        self.assertIn("Path(sys.executable).resolve().parent.parent", sandbox)
+        self.assertIn('Path("/home/airflow/.local")', sandbox)
+        self.assertIn("site.getsitepackages()", sandbox)
+        self.assertIn('"OPENBLAS_NUM_THREADS"', sandbox)
+        self.assertIn("resource.setrlimit(resource.RLIMIT_NPROC, (16, 16))", sandbox)
+
     def test_campaign_worker_token_does_not_replace_baseline_admin_identity(self) -> None:
         m07 = Path(__file__).resolve().parents[1]
         template = m07.parents[2]

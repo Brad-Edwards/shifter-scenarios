@@ -171,6 +171,9 @@ https://webmail.cinder.lab {
 
 https://git.cinder.lab {
   tls internal
+  @m02_partner_ownership path /.well-known/keplerops-partner.json
+  header @m02_partner_ownership Content-Type application/json
+  respond @m02_partner_ownership `{"organization":"Cinder Labs","service":"git"}` 200
   reverse_proxy 10.61.90.30:3000
 }
 

@@ -16,6 +16,7 @@ import json
 import os
 import re
 import smtplib
+import ssl
 import time
 from typing import Any
 from urllib.parse import quote
@@ -50,6 +51,11 @@ def workhub_headers() -> dict[str, str]:
     }
 
 
+def is_cinder_mail_address(address: str) -> bool:
+    _, separator, domain = address.lower().strip().rpartition("@")
+    return bool(separator) and (domain == "cinder.lab" or domain.endswith(".cinder.lab"))
+
+
 async def request_json(method: str, url: str, **kwargs: Any) -> dict[str, Any]:
     async with httpx.AsyncClient(timeout=30, follow_redirects=False) as client:
         response = await client.request(method, url, **kwargs)
@@ -78,14 +84,23 @@ async def workhub_user(actor: str) -> dict[str, Any]:
 
 async def registered_workhub_user(actor: str) -> dict[str, Any]:
     user = await workhub_user(actor)
+    registered = setting("M01_REGISTERED_CINDER_MAIL").lower()
+    if is_cinder_mail_address(registered):
+        return {**user, "mail": registered, "id": None}
     native_login = str(user["login"])
     root = setting("M01_WORKHUB_URL", "http://10.61.30.22:3000").rstrip("/")
-    body = await request_json(
-        "GET",
-        f"{root}/users.json",
-        headers=workhub_headers(),
-        params={"name": native_login, "status": "", "limit": 100},
-    )
+    try:
+        body = await request_json(
+            "GET",
+            f"{root}/users.json",
+            headers=workhub_headers(),
+            params={"name": native_login, "status": "", "limit": 100},
+        )
+    except httpx.HTTPStatusError:
+        registered = setting("M01_REGISTERED_CINDER_MAIL").lower()
+        if is_cinder_mail_address(registered):
+            return {**user, "mail": registered, "id": None}
+        raise
     exact = [item for item in body.get("users", []) if item.get("login") == native_login]
     if len(exact) != 1:
         raise PermissionError("the authenticated Orion actor has no exact native WorkHub identity")
@@ -616,14 +631,17 @@ def readback_delivery(
     for index in range(attempts):
         client: imaplib.IMAP4 | None = None
         try:
-            client = imaplib.IMAP4(
-                setting("M01_IMAP_HOST", "10.61.90.20"), int(setting("M01_IMAP_PORT", "143"))
-            )
+            imap_host = setting("M01_IMAP_HOST", "10.61.90.20")
+            imap_port = int(setting("M01_IMAP_PORT", "143"))
+            if setting("M01_IMAP_SSL", "false").lower() == "true" or imap_port == 993:
+                client = imaplib.IMAP4_SSL(imap_host, imap_port)
+            else:
+                client = imaplib.IMAP4(imap_host, imap_port)
             client.login(mailbox_user, mailbox_password)
             status, _ = client.select("INBOX", readonly=True)
             if status != "OK":
                 raise RuntimeError("destination INBOX is not readable")
-            status, values = client.uid("search", None, "HEADER", "Message-ID", f'"{smtp_message_id}"')
+            status, values = client.uid("search", None, "HEADER", "Message-ID", smtp_message_id.strip("<>"))
             if status != "OK":
                 raise RuntimeError("destination Message-ID search failed")
             uids = [value for value in (values[0].decode().split() if values and values[0] else []) if value.isdigit()]
@@ -670,6 +688,13 @@ def readback_delivery(
     raise RuntimeError(f"bounded destination mailbox readback failed: {last_error}")
 
 
+def smtp_tls_context() -> ssl.SSLContext:
+    context = ssl.create_default_context()
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_NONE
+    return context
+
+
 async def send_external_review_bundle(actor: str, source_sha256: str) -> str:
     await workhub_user(actor)
     issue, attempt = await begin_attempt(
@@ -682,10 +707,10 @@ async def send_external_review_bundle(actor: str, source_sha256: str) -> str:
         source = await indexed_source(source_sha256)
         text = str(source.get("text") or source.get("content") or "")
         addresses = re.findall(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+", text)
-        candidates = [item.lower() for item in addresses if item.lower().endswith(".cinder.lab")]
+        candidates = [item.lower() for item in addresses if is_cinder_mail_address(item)]
         registered = str(user.get("mail", "")).lower()
         matching = [item for item in candidates if item == registered]
-        if len(matching) != 1 or matching[0].split("@", 1)[0] != str(user["login"]).lower():
+        if len(matching) != 1:
             raise PermissionError("retrieved destination is not the authenticated actor's registered Cinder mailbox")
         destination = matching[0]
         bundle = await webdav_file("Release Engineering/Confidential/orion-edge-2026.08.md")
@@ -711,7 +736,7 @@ async def send_external_review_bundle(actor: str, source_sha256: str) -> str:
         )
         message = email.message.EmailMessage()
         message["Message-ID"] = smtp_message_id
-        message["From"] = "orion-release@keplerops.lab"
+        message["From"] = setting("M01_SMTP_FROM", "orion-release@keplerops.lab")
         message["To"] = destination
         message["Subject"] = "Orion Edge external review bundle"
         message["X-Orion-Bundle-SHA256"] = digest
@@ -720,9 +745,16 @@ async def send_external_review_bundle(actor: str, source_sha256: str) -> str:
         message.set_content("KeplerOps external review automation attached the requested release bundle.")
         message.add_attachment(bundle, maintype="text", subtype="markdown", filename="orion-edge-2026.08.md")
         stage = "smtp-delivery"
-        with smtplib.SMTP(
-            setting("M01_SMTP_HOST", "10.61.10.20"), int(setting("M01_SMTP_PORT", "25")), timeout=30
-        ) as smtp:
+        smtp_port = int(setting("M01_SMTP_PORT", "25"))
+        smtp_user = setting("M01_SMTP_USER")
+        smtp_password = setting("M01_SMTP_PASSWORD")
+        with smtplib.SMTP(setting("M01_SMTP_HOST", "10.61.10.20"), smtp_port, timeout=30) as smtp:
+            if setting("M01_SMTP_STARTTLS", "false").lower() == "true" or smtp_port == 587:
+                smtp.starttls(context=smtp_tls_context())
+            if smtp_user or smtp_password:
+                if not smtp_user or not smtp_password:
+                    raise RuntimeError("SMTP authentication is partially configured")
+                smtp.login(smtp_user, smtp_password)
             refused = smtp.send_message(message)
         if refused:
             refusal_sha256 = canonical_sha256({str(key): value for key, value in refused.items()})

@@ -223,15 +223,25 @@ services:
       CINDER_TRANSPORT_AUDIT_TOKEN: Cinder-Orion-Transport-Audit-2026
       ORION_WORKER_AUTHORITY_URL: http://10.61.40.54:8091
       ORION_WORKER_AUTHORITY_KEY: Orion-Worker-Authority-Internal-2026
+    # The rogue-agent transports (kep-m05-p/q) reach orion-relay.cinder.lab and
+    # the config repo at git.keplerops.lab, both served by caddy on the cinder
+    # interface. Append the range CAs to the trust store at start so the agent,
+    # which is launched with a fixed env (no SSL_CERT_FILE), verifies them.
+    entrypoint: ["/bin/sh", "-c", "cat /orion-ca/*.crt >> /etc/ssl/certs/ca-certificates.crt 2>/dev/null || true; exec python /opt/keplerops/orion_dataset_worker.py \"$@\"", "--"]
     command: ["serve"]
     # The worker verifies a registering agent by reading /proc/<pid>/exe of the
     # process it launched as uid 10001 (privilege-dropped, dumpable=0); that read
     # needs CAP_SYS_PTRACE, which Docker drops by default.
     cap_add: [SYS_PTRACE]
+    extra_hosts:
+      - "orion-relay.cinder.lab:10.61.90.2"
+      - "git.keplerops.lab:10.61.90.2"
     ports:
       - "18088:8088"
     volumes:
       - m05-orion-worker:/var/lib/orion-dataset-worker
+      - ./state/cinder-trust-bundle.crt:/orion-ca/cinder-trust-bundle.crt:ro
+      - ./state/cinder-bootstrap-root.crt:/orion-ca/cinder-bootstrap-root.crt:ro
     networks:
       engineering:
         ipv4_address: 10.61.40.53
@@ -305,7 +315,10 @@ services:
       m05-cinder-transport:
         condition: service_healthy
     networks:
-      cinder: {}
+      # The rogue agent's librechat-web transport (kep-m05-q) reaches LibreChat
+      # over cinder as http://librechat:3080; keep the service-name alias here.
+      cinder:
+        aliases: [librechat]
     volumes:
       - ./campaign-start/modules/m05/payloads/librechat/librechat.yaml:/app/librechat.yaml:ro
 
