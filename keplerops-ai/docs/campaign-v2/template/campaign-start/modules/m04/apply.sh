@@ -15,6 +15,7 @@ readonly FORGEJO_API_URL="${FORGEJO_API_URL:-http://10.61.40.20:3000/api/v1}"
 readonly FORGEJO_AUTH="${FORGEJO_ADMIN_USER:-range-admin}:${FORGEJO_ADMIN_PASSWORD:-KeplerV2-Training-Forgejo-Admin}"
 readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")}"
 readonly CINDER_RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
+readonly CINDER_RELAY_INTERNAL_HOST="${CINDER_RELAY_INTERNAL_HOST:-relay.cinder.cinder.lab}"
 readonly JUPYTER_IMAGE="${JUPYTER_IMAGE:-$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly EVAL_READER_WORK_VOLUME="kep-v2-jupyter-eval-2ereader"
 readonly K3S_TARGET="${K3S_TARGET:-kepler@192.168.78.30}"
@@ -384,12 +385,12 @@ ensure_support_relay_basket() {
   local state="${STATE_ROOT}/support-preview-relay.token" response status token
   if [[ -s ${state} ]]; then
     token="$(tr -d '\r\n' <"${state}")"
-    status="$(curl -sS -o /dev/null -w '%{http_code}' -H 'Host: relay.cinder.lab' \
+    status="$(curl -sS -o /dev/null -w '%{http_code}' -H "Host: ${CINDER_RELAY_INTERNAL_HOST}" \
       -H "Authorization: ${token}" \
       "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets/requests" || true)"
   fi
   if [[ ! -s ${state} || ${status:-000} != 200 ]]; then
-    response="$(curl -fsS -X POST -H 'Host: relay.cinder.lab' -H 'Content-Type: application/json' \
+    response="$(curl -fsS -X POST -H "Host: ${CINDER_RELAY_INTERNAL_HOST}" -H 'Content-Type: application/json' \
       --data '{"capacity":100}' "${CINDER_RELAY_URL}/api/baskets/orion-support-preview-assets")"
     jq -er '.token' <<<"${response}" >"${state}"
     chown 1000:1000 "${state}"

@@ -546,6 +546,7 @@ prepare_cinder_trust_bundle() {
   local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
   local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
   install -d -m 0700 "${TEMPLATE_ROOT}/state"
+  [[ ! -e $bundle || -f $bundle ]] || rm -rf -- "$bundle"
   docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /home/step/certs/root_ca.crt >"$step_root"
   {
     sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' "${TEMPLATE_ROOT}/state/caddy-root.crt"
