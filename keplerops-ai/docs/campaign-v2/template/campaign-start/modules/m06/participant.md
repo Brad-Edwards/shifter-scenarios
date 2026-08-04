@@ -331,7 +331,7 @@ Cinder Forgejo, Actions, and Jupyter with the exact accepted `g` or `h` record.
 **Method:** Verify every artifact digest before execution. Preserve the three
 role groups and source revision, run `run-orion-kit.py` over all eight public
 cases, and commit `ci/public-bundle-release.yml`. Set the workflow job
-environment to trust `/cinder-bootstrap-root.crt` for Node artifact upload, then upload the
+environment to trust `/caddy-root.crt` for Node artifact upload, then upload the
 exact Actions provenance artifact and register the successful commit and run at
 `https://releases.cinder.lab/v1/public-bundles`.
 

@@ -596,7 +596,7 @@ curl -fsS -H 'Content-Type: application/json' --data-binary @- \
    `sha256sum -c` against a generated lock. Run `run-orion-kit.py` over all eight
    public cases in Jupyter. Commit `ci/public-bundle-release.yml`, run it, and
    download the sole `kep-m06-k-provenance/provenance.json`. The workflow job
-   must export `NODE_EXTRA_CA_CERTS=/cinder-bootstrap-root.crt` so Forgejo's artifact
+   must export `NODE_EXTRA_CA_CERTS=/caddy-root.crt` so Forgejo's artifact
    client trusts the Cinder CA during upload. Set release recipe variables and
    execute the `kep-m06-k` release request above.
 6. **Expected observations:** Release service reacquires all artifacts, reports

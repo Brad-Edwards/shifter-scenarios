@@ -23,6 +23,7 @@ RANGE_ASSERTION_KEY = os.environ["CINDER_RANGE_ASSERTION_KEY"].encode()
 RANGE_ASSERTION_KEY_ID = os.environ["CINDER_RANGE_ASSERTION_KEY_ID"]
 EDGE_OWNER = os.environ.get("CINDER_EDGE_OWNER", "cinder-field-operator")
 USAGE_FLAG = os.environ["MODEL_USAGE_FLAG"]
+ASSERTION_BACKDATE_SECONDS = int(os.getenv("CINDER_ASSERTION_BACKDATE_SECONDS", "10"))
 STATE = Path("/var/lib/cinder-model-edge")
 app = FastAPI(title="Cinder GLM Edge", version="1.0")
 
@@ -67,7 +68,7 @@ async def chat(
         upstream_request["stream"] = False
         upstream_request.pop("stream_options", None)
     payload = json.dumps(upstream_request, sort_keys=True, separators=(",", ":")).encode()
-    asserted_at = str(int(time.time()))
+    asserted_at = str(int(time.time()) - ASSERTION_BACKDATE_SECONDS)
     expires_at = str(int(asserted_at) + 60)
     nonce = str(uuid.uuid4())
     assertion_subject = EDGE_OWNER if credential_class == "operator" else f"{EDGE_OWNER}-service"
