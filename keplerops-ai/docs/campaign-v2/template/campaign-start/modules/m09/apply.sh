@@ -16,7 +16,8 @@ readonly MLFLOW_ADMIN_AUTH="${MLFLOW_ADMIN_AUTH:-range-admin:KeplerV2-Training-M
 readonly NEXTCLOUD_URL="${NEXTCLOUD_URL:-http://10.61.30.23}"
 readonly NEXTCLOUD_HOST="${NEXTCLOUD_HOST:-files.keplerops.lab}"
 readonly RABBIT_API="${RABBITMQ_MANAGEMENT_URL:-http://10.61.50.12:15672/api}"
-readonly RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-https://relay.cinder.lab}"
+readonly RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-http://192.168.78.30:31080}"
+readonly RELAY_HOST="${CINDER_RELAY_INTERNAL_HOST:-relay.cinder.cinder.lab}"
 readonly K3S01_SSH_TARGET="${K3S01_SSH_TARGET:-kepler@192.168.78.30}"
 readonly K3S01_SSH_KEY="${K3S01_SSH_KEY:-/root/.ssh/keplerops-v2}"
 readonly SSH=(ssh -i "${K3S01_SSH_KEY}" -o BatchMode=yes -o StrictHostKeyChecking=accept-new)
@@ -331,12 +332,12 @@ ensure_relay_basket() {
   install -d -m 0750 "$(dirname "${token_file}")"
   if [[ -s ${token_file} ]]; then
     token="$(<"${token_file}")"
-    if curl -kfsS -H "Authorization: ${token}" \
+    if curl -kfsS -H "Host: ${RELAY_HOST}" -H "Authorization: ${token}" \
         "${RELAY_URL}/api/baskets/${basket}" >/dev/null 2>&1; then
       return
     fi
   fi
-  response="$(curl -kfsS -X POST -H 'Content-Type: application/json' \
+  response="$(curl -kfsS -X POST -H "Host: ${RELAY_HOST}" -H 'Content-Type: application/json' \
     --data '{"capacity":100}' "${RELAY_URL}/api/baskets/${basket}")"
   jq -er '.token' <<<"${response}" >"${token_file}"
   chmod 0600 "${token_file}"
