@@ -28,6 +28,20 @@ def load_module():
 
 
 class Module07FullAtlasRehearsalTests(unittest.TestCase):
+    def test_controls_phase_allows_participant_listing_superset(self) -> None:
+        module = load_module()
+        controls_program = module.participant_programs()[0]
+
+        self.assertIn(
+            'set(challenge_ids) <= set(listing.get("challenge_ids", []))',
+            controls_program,
+        )
+        self.assertIn("set(challenge_ids) <= set(required_evidence)", controls_program)
+        self.assertNotIn(
+            'set(listing.get("challenge_ids", [])) == set(challenge_ids)',
+            controls_program,
+        )
+
     def test_awards_phase_seeds_real_prerequisite_evidence_before_receipts(self) -> None:
         module = load_module()
         award_program = module.participant_programs()[2]

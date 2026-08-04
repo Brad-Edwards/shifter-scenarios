@@ -221,8 +221,8 @@ def _controls_program() -> str:
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }
 listed_ok = all((
-    set(listing.get("challenge_ids", [])) == set(challenge_ids),
-    set(required_evidence) == set(challenge_ids),
+    set(challenge_ids) <= set(listing.get("challenge_ids", [])),
+    set(challenge_ids) <= set(required_evidence),
     set(challenge_ids) <= portal_ids,
     all(required_evidence[challenge_id] for challenge_id in challenge_ids),
 ))

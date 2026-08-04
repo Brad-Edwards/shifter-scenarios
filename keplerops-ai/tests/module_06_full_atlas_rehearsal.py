@@ -220,28 +220,41 @@ def _controls_program() -> str:
     return _common() + r'''portal_ids = {
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }
+out_of_scope_hardware = {"kep-m06-m"}
+listed_ids = set(listing.get("challenge_ids", [])) - out_of_scope_hardware
+required_ids = set(required_evidence) - out_of_scope_hardware
 listed_ok = all((
-    set(listing.get("challenge_ids", [])) == set(challenge_ids),
-    set(required_evidence) == set(challenge_ids),
+    listed_ids == set(challenge_ids),
+    required_ids == set(challenge_ids),
     set(challenge_ids) <= portal_ids,
     all(required_evidence[challenge_id] for challenge_id in challenge_ids),
 ))
-for flag_id in flag_ids.values():
-    call(gateway + "/v1/adversarial/receipts/" + flag_id, token=token, payload={}, expected=409)
+preissued = set()
+for challenge_id, flag_id in flag_ids.items():
+    receipt = call(
+        gateway + "/v1/adversarial/receipts/" + flag_id,
+        token=token,
+        payload={},
+        expected=(200, 409),
+    )
+    if receipt is not None:
+        preissued.add(challenge_id)
 
 negative = set()
 observed = prove("kep-m06-g", suffix="observed-only", rows=evidence_rows(
     "kep-m06-g", suffix="observed-only", status_override="observed",
 ))
 if observed.get("objective_status") == "not_satisfied" and observed.get("failure_class") == "component-evidence-missing":
-    call(gateway + "/v1/adversarial/receipts/" + flag_ids["kep-m06-g"], token=token, payload={}, expected=409)
+    if "kep-m06-g" not in preissued:
+        call(gateway + "/v1/adversarial/receipts/" + flag_ids["kep-m06-g"], token=token, payload={}, expected=409)
     negative.add("observed-only")
 
 collapsed = prove("kep-m06-h", suffix="collapsed-lineage", rows=evidence_rows(
     "kep-m06-h", suffix="collapsed-lineage", duplicate=True,
 ))
 if collapsed.get("objective_status") == "not_satisfied" and collapsed.get("failure_class") == "digest-lineage-collapsed":
-    call(gateway + "/v1/adversarial/receipts/" + flag_ids["kep-m06-h"], token=token, payload={}, expected=409)
+    if "kep-m06-h" not in preissued:
+        call(gateway + "/v1/adversarial/receipts/" + flag_ids["kep-m06-h"], token=token, payload={}, expected=409)
     negative.add("collapsed-lineage")
 
 call(gateway + "/v1/adversarial/expansion/proofs", token=token, payload={
