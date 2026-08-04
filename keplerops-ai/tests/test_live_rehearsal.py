@@ -101,7 +101,7 @@ class LiveRehearsalContractTests(unittest.TestCase):
                     path, config, now - dt.timedelta(minutes=1)
                 )
 
-    def test_participant_programs_use_full_realized_catalog(self) -> None:
+    def test_participant_programs_use_issue_60_catalog_scope(self) -> None:
         rehearsal = load_module()
         initial = rehearsal.initial_participant_program()
         after_reset = rehearsal.after_reset_participant_program("stale-receipt")
@@ -113,9 +113,15 @@ class LiveRehearsalContractTests(unittest.TestCase):
         )
         self.assertIn(
             'adversarial_ids = {"kep-m06-" + suffix for suffix in '
-            '"abcdefghijklmnopqrstuv"}',
+            '"abcdefghijklmnopqrstuv"} - {"kep-m06-m"}',
             initial,
         )
+        self.assertIn(
+            'extraction_ids = {"kep-m08-" + suffix for suffix in '
+            '"abcdefghijk"} - {"kep-m08-i"}',
+            initial,
+        )
+        self.assertIn('issue_60_excluded_ids = {"kep-m06-m", "kep-m08-i"}', initial)
         self.assertIn(
             'supply_ids = {"kep-m02-h", "kep-m02-i", "kep-m02-j", '
             '"kep-m02-k", "kep-m02-l", "kep-m02-m"}',
@@ -123,7 +129,8 @@ class LiveRehearsalContractTests(unittest.TestCase):
         )
         self.assertIn('"kep-m02-l": "flag-synthetic-spearphish"', initial)
         self.assertIn("| backdoor_ids | capstone_ids", initial)
-        self.assertIn("len(challenges) == 134", after_reset)
+        self.assertIn("len(ids - issue_60_excluded_ids) == 132", after_reset)
+        self.assertIn('issue_60_excluded_ids = {"kep-m06-m", "kep-m08-i"}', after_reset)
         self.assertNotIn("len(challenges) == 34", after_reset)
 
     def test_full_atlas_marker_ids_fit_kasm_namespace_contract(self) -> None:
