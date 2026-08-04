@@ -60,10 +60,8 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
         self.assertIn("\"retained_confused_approval\"", candidate_program)
         self.assertIn("if \"status=404\" not in str(error):", candidate_program)
         self.assertIn("state_path.unlink(missing_ok=True)", candidate_program)
-        self.assertLess(
-            candidate_program.index("state_path.unlink(missing_ok=True)"),
-            candidate_program.index("data, job, prereq_ok = training_prerequisite()"),
-        )
+        self.assertIn("module-09 base state unavailable", candidate_program)
+        self.assertNotIn("training_prerequisite", candidate_program)
 
     def test_prepared_runs_can_skip_redundant_health_check(self) -> None:
         cases = (
