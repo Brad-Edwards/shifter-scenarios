@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -31,6 +33,23 @@ FLAGS = {
     "kep-m08-k": "flag-product-side-channel",
 }
 NEGATIVE_COUNT = 3
+
+
+def _apply_exclusions(exclusions: list[str]) -> None:
+    if not exclusions:
+        return
+    unknown = sorted(set(exclusions) - set(CHALLENGES))
+    if unknown:
+        raise RehearsalError(f"unknown module-08 challenge exclusion: {unknown[0]}")
+    excluded = set(exclusions)
+    globals()["CHALLENGES"] = tuple(
+        challenge_id for challenge_id in CHALLENGES if challenge_id not in excluded
+    )
+    globals()["FLAGS"] = {
+        challenge_id: flag_id
+        for challenge_id, flag_id in FLAGS.items()
+        if challenge_id in CHALLENGES
+    }
 
 
 def _common() -> str:
@@ -327,12 +346,15 @@ marker("test-m08-fa-awards", "PASS" if receipts == set(challenge_ids) else "FAIL
 
 
 def participant_programs() -> tuple[str, ...]:
-    return (
+    programs = [
         _controls_program(),
         _proxy_program(),
         _platform_program(),
         _award_program(),
-    )
+    ]
+    if "kep-m08-i" in CHALLENGES:
+        programs.insert(3, _physical_program())
+    return tuple(programs)
 
 
 @dataclass(frozen=True)
@@ -383,6 +405,8 @@ class Module08FullAtlasRunner:
             "test-m08-fa-platform": 3,
             "test-m08-fa-awards": len(CHALLENGES),
         }
+        if "kep-m08-i" in CHALLENGES:
+            expected["test-m08-fa-physical"] = 1
         if set(observed) != set(expected):
             raise RehearsalError("module-08 full-ATLAS marker coverage is incomplete")
         passed = all(
@@ -398,7 +422,10 @@ class Module08FullAtlasRunner:
 
 
 def _phase_names() -> tuple[str, ...]:
-    return ("controls", "proxy", "platform", "awards")
+    phases = ["controls", "proxy", "platform", "awards"]
+    if "kep-m08-i" in CHALLENGES:
+        phases.insert(3, "physical")
+    return tuple(phases)
 
 
 def _write_report(
@@ -451,13 +478,15 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
     parser.add_argument("--skip-health-check", action="store_true")
+    parser.add_argument("--exclude-challenge", action="append", default=[])
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+    _apply_exclusions(args.exclude_challenge)
     config = RunConfig.from_namespace(args)
     if not config.use_existing_range or not config.retain_until_phase_e:
         raise RehearsalError(
@@ -473,7 +502,7 @@ def main() -> int:
     result = Module08FullAtlasRunner(
         lifecycle,
         session,
-        reset_before_run=not args.prepared_module_reset,
+        reset_before_run=retained_reset_before_run(args, "module-08 full-ATLAS"),
         skip_health_check=args.skip_health_check,
     ).run()
     _write_report(

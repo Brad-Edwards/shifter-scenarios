@@ -87,8 +87,10 @@ class PostgresGenerationRepository:
     def ready(self) -> bool:
         try:
             with self._connect() as connection:
-                row = connection.execute("SELECT 1").fetchone()
-            return row == (1,)
+                row = connection.execute(
+                    "SELECT to_regclass('public.image_generation_jobs')"
+                ).fetchone()
+            return row == ("image_generation_jobs",)
         except Exception:
             return False
 

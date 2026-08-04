@@ -50,9 +50,9 @@ class Bridge:
         self.cache: dict[str, bytes] = {}
         self.metadata_paths: set[str] = set()
         self.metadata_paths_lock = threading.Lock()
-        self.instance_id = hashlib.sha256(
-            f"{project}:{suffix}".encode()
-        ).hexdigest()[:20]
+        self.instance_id = str(
+            int(hashlib.sha256(f"{project}:{suffix}".encode()).hexdigest()[:15], 16)
+        )
 
     def record_metadata_path(self, guest: str, path: str) -> None:
         entry = f"{guest} {path}"
@@ -196,7 +196,7 @@ class Handler(BaseHTTPRequestHandler):
                         "instance": {
                             "attributes": {},
                             "hostname": f"{guest}.keplerops.lab",
-                            "id": self.bridge.instance_id,
+                            "id": int(self.bridge.instance_id),
                             "name": guest,
                             "networkInterfaces": [
                                 {

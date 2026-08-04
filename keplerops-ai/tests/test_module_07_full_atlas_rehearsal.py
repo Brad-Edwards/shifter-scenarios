@@ -35,6 +35,8 @@ class Module07FullAtlasRehearsalTests(unittest.TestCase):
         self.assertIn('dataset("kep-m07-a"', award_program)
         self.assertIn('train("kep-m07-b"', award_program)
         self.assertIn('attempt("kep-m07-b"', award_program)
+        self.assertIn(f"range({module.TRAINING_JOB_POLL_SECONDS})", award_program)
+        self.assertNotIn("range(120)", award_program)
         self.assertIn("seed_prerequisites()", award_program)
         self.assertLess(
             award_program.index("seed_prerequisites()"),

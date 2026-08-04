@@ -212,6 +212,7 @@ def test_image_service_uses_only_external_mutable_state_and_one_worker() -> None
     assert "PostgresGenerationRepository" in app
     assert "MinioArtifactStore" in app
     assert "image_generation_jobs" in adapters
+    assert "to_regclass('public.image_generation_jobs')" in adapters
     assert 'f"generated/{self.reset_generation}/{job_id}.png"' in service
     assert "delete_prefix" in service
     assert "DELETE FROM image_generation_jobs WHERE reset_generation = %s" in adapters

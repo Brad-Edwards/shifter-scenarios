@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -40,6 +42,7 @@ POISON_CLASSES = {
     "kep-m07-e": "backdoor",
     "kep-m07-f": "stealth",
 }
+TRAINING_JOB_POLL_SECONDS = 300
 
 
 def _common() -> str:
@@ -110,13 +113,13 @@ def train(challenge_id, data):
             }},
         )
     elif job.get("status") not in {{"running", "evaluating", "succeeded"}}:
-        raise RuntimeError("training job is not recoverable")
+        raise RuntimeError("training job is not recoverable: " + json.dumps(job, sort_keys=True))
     query = urllib.parse.urlencode({{
         "challenge_id": challenge_id,
         "dataset_id": data["dataset_id"],
     }})
     status = {{"status": job.get("status")}}
-    for _ in range(120):
+    for _ in range(__TRAINING_JOB_POLL_SECONDS__):
         status = call(
             gateway + "/v1/training/jobs/" + job["job_id"] + "?" + query,
             token=token,
@@ -125,7 +128,7 @@ def train(challenge_id, data):
             break
         time.sleep(1)
     if status.get("status") != "succeeded":
-        raise RuntimeError("training job incomplete")
+        raise RuntimeError("training job incomplete: " + json.dumps(status, sort_keys=True))
     return job, status
 
 def attempt(challenge_id, data, job=None):
@@ -139,7 +142,7 @@ def attempt(challenge_id, data, job=None):
         payload["job_id"] = job["job_id"]
     return call(gateway + "/v1/training/attempt", token=token, payload=payload)
 
-'''
+'''.replace("__TRAINING_JOB_POLL_SECONDS__", str(TRAINING_JOB_POLL_SECONDS))
 
 
 def participant_programs() -> tuple[str, ...]:
@@ -373,7 +376,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -390,7 +393,9 @@ def main() -> int:
         timeout_seconds=1800,
     )
     result = Module07Runner(
-        lifecycle, session, reset_before_run=not args.prepared_module_reset
+        lifecycle,
+        session,
+        reset_before_run=retained_reset_before_run(args, "module-07 smoke"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-07-smoke.json",

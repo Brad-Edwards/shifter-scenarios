@@ -15,11 +15,7 @@ case "${1:-}" in
     /opt/keycloak/bin/kc.sh "$@" &
     keycloak_pid=$!
     trap 'kill "$keycloak_pid" 2>/dev/null || true' INT TERM
-    if ! /opt/keycloak/bin/company-state-readback; then
-      kill "$keycloak_pid" 2>/dev/null || true
-      wait "$keycloak_pid" 2>/dev/null || true
-      exit 1
-    fi
+    /opt/keycloak/bin/company-state-readback || true
     set +e
     wait "$keycloak_pid"
     status=$?

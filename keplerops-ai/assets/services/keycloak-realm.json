@@ -114,7 +114,6 @@
         "id": "631b70e8-d39a-5540-a256-454e54455250",
         "name": "keplerops-active-directory",
         "providerId": "ldap",
-        "providerType": "org.keycloak.storage.UserStorageProvider",
         "config": {
           "enabled": ["true"],
           "priority": ["0"],
@@ -144,7 +143,6 @@
             {
               "name": "username",
               "providerId": "user-attribute-ldap-mapper",
-              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
               "config": {
                 "user.model.attribute": ["username"],
                 "ldap.attribute": ["sAMAccountName"],
@@ -156,7 +154,6 @@
             {
               "name": "first name",
               "providerId": "user-attribute-ldap-mapper",
-              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
               "config": {
                 "user.model.attribute": ["firstName"],
                 "ldap.attribute": ["givenName"],
@@ -168,7 +165,6 @@
             {
               "name": "last name",
               "providerId": "user-attribute-ldap-mapper",
-              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
               "config": {
                 "user.model.attribute": ["lastName"],
                 "ldap.attribute": ["sn"],
@@ -180,7 +176,6 @@
             {
               "name": "email",
               "providerId": "user-attribute-ldap-mapper",
-              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
               "config": {
                 "user.model.attribute": ["email"],
                 "ldap.attribute": ["mail"],
@@ -192,13 +187,12 @@
             {
               "name": "workforce groups",
               "providerId": "group-ldap-mapper",
-              "providerType": "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
               "config": {
                 "groups.dn": ["OU=Workforce,DC=keplerops,DC=test"],
                 "group.name.ldap.attribute": ["cn"],
                 "group.object.classes": ["group"],
                 "preserve.group.inheritance": ["true"],
-                "ignore.missing.groups": ["false"],
+                "ignore.missing.groups": ["true"],
                 "membership.ldap.attribute": ["member"],
                 "membership.attribute.type": ["DN"],
                 "membership.user.ldap.attribute": ["cn"],

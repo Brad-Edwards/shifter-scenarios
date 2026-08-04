@@ -41,6 +41,8 @@ class Module10FullAtlasRehearsalTests(unittest.TestCase):
         self.assertIn('"/v1/capstone/inference"', controls_program)
         self.assertIn('"/v1/capstone/effects"', controls_program)
         self.assertIn('"/v1/adversarial/artifacts"', controls_program)
+        self.assertIn("for attempt in range(4)", controls_program)
+        self.assertIn("identity token unavailable", controls_program)
         self.assertNotIn("def read_capstone_state()", controls_program)
 
 

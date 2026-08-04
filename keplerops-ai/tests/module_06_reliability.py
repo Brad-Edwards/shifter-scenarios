@@ -16,7 +16,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 from module_03_reliability import (
     ContextReliabilityLifecycle,
@@ -389,11 +391,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument(
-        "--prepared-module-reset",
-        action="store_true",
-        help="use an already clean retained range without another canonical reset",
-    )
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -414,7 +412,9 @@ def main() -> int:
         _checkpoint_binding(config, lifecycle),
     )
     runner = Module06ReliabilityRunner(lifecycle, session, checkpoint)
-    progress = runner.prepare(canonical_reset=not args.prepared_module_reset)
+    progress = runner.prepare(
+        canonical_reset=retained_reset_before_run(args, "module-06 reliability")
+    )
     with session:
         results = runner.run(progress)
     _restore_clean_state(lifecycle)

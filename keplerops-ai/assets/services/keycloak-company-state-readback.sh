@@ -50,6 +50,12 @@ username_mapper_count=$(
     --arg parent "$ldap_provider_id" \
     '[.[] | select(.parentId == $parent and .name == "username")] | length'
 )
+username_mapper_id=$(
+  printf '%s' "$components" | jq -er \
+    --arg parent "$ldap_provider_id" \
+    '.[] | select(.parentId == $parent and .name == "username") | .id' \
+    2>/dev/null || true
+)
 if [ "$username_mapper_count" -eq 0 ]; then
   mapper_payload=/tmp/keycloak-ldap-username-mapper.json
   jq -n --arg parent "$ldap_provider_id" '{
@@ -73,6 +79,22 @@ if [ "$username_mapper_count" -eq 0 ]; then
 elif [ "$username_mapper_count" -ne 1 ]; then
   echo "Keycloak LDAP username mapper is duplicated" >&2
   exit 1
+else
+  mapper_payload=/tmp/keycloak-ldap-username-mapper.json
+  "$kcadm" get "components/$username_mapper_id" \
+    -r "$realm" \
+    --config "$config" | jq '
+      .config["user.model.attribute"] = ["username"] |
+      .config["ldap.attribute"] = ["sAMAccountName"] |
+      .config["read.only"] = ["true"] |
+      .config["always.read.value.from.ldap"] = ["true"] |
+      .config["is.mandatory.in.ldap"] = ["true"]
+    ' >"$mapper_payload"
+  "$kcadm" update "components/$username_mapper_id" \
+    -r "$realm" \
+    -f "$mapper_payload" \
+    --config "$config" >/dev/null
+  rm -f "$mapper_payload"
 fi
 
 groups=$(

@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -48,6 +50,35 @@ ACQUISITION_IDS = CHALLENGES[4:10]
 BUILDER_IDS = CHALLENGES[10:14]
 CONTAINED_IDS = CHALLENGES[14:]
 NEGATIVE_COUNT = 3
+
+
+def _apply_exclusions(exclusions: list[str]) -> None:
+    if not exclusions:
+        return
+    unknown = sorted(set(exclusions) - set(CHALLENGES))
+    if unknown:
+        raise RehearsalError(f"unknown module-06 challenge exclusion: {unknown[0]}")
+    excluded = set(exclusions)
+    globals()["CHALLENGES"] = tuple(
+        challenge_id for challenge_id in CHALLENGES if challenge_id not in excluded
+    )
+    globals()["FLAGS"] = {
+        challenge_id: flag_id
+        for challenge_id, flag_id in FLAGS.items()
+        if challenge_id in CHALLENGES
+    }
+    globals()["RESEARCH_IDS"] = tuple(
+        challenge_id for challenge_id in RESEARCH_IDS if challenge_id in CHALLENGES
+    )
+    globals()["ACQUISITION_IDS"] = tuple(
+        challenge_id for challenge_id in ACQUISITION_IDS if challenge_id in CHALLENGES
+    )
+    globals()["BUILDER_IDS"] = tuple(
+        challenge_id for challenge_id in BUILDER_IDS if challenge_id in CHALLENGES
+    )
+    globals()["CONTAINED_IDS"] = tuple(
+        challenge_id for challenge_id in CONTAINED_IDS if challenge_id in CHALLENGES
+    )
 
 
 def _common() -> str:
@@ -402,12 +433,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
+    parser.add_argument("--exclude-challenge", action="append", default=[])
     return parser
 
 
 def main() -> int:
     args = build_parser().parse_args()
+    _apply_exclusions(args.exclude_challenge)
     config = RunConfig.from_namespace(args)
     if not config.use_existing_range or not config.retain_until_phase_e:
         raise RehearsalError(
@@ -421,7 +454,9 @@ def main() -> int:
         timeout_seconds=1200,
     )
     result = Module06FullAtlasRunner(
-        lifecycle, session, reset_before_run=not args.prepared_module_reset
+        lifecycle,
+        session,
+        reset_before_run=retained_reset_before_run(args, "module-06 full-ATLAS"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-06-full-atlas-smoke.json",

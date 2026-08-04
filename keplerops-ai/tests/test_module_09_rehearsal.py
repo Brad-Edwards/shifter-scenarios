@@ -79,6 +79,8 @@ class Module09RehearsalTests(unittest.TestCase):
         self.assertIn('duplicate.get("candidate_id") == candidate["candidate_id"]', program)
         self.assertIn("expected=422", program)
         self.assertIn("expected=(200, 409)", program)
+        self.assertIn("for attempt in range(4)", program)
+        self.assertIn("identity token unavailable", program)
         self.assertEqual(len(programs), 5)
         for phase in programs:
             compile(phase, "<participant>", "exec")

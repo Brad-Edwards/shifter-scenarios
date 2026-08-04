@@ -134,6 +134,18 @@ class WindowsCompanyStateTests(unittest.TestCase):
             self.reset.index("replace_nested_range"),
             self.reset.index('"$BUILD_ROOT/health-check.sh"'),
         )
+        self.assertLess(
+            self.bootstrap.index('if ($HostId -eq "ad-dc-01")'),
+            self.bootstrap.index(
+                'Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses $ControllerIp'
+            ),
+        )
+        self.assertLess(
+            self.bootstrap.index(
+                'Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses $ControllerIp'
+            ),
+            self.bootstrap.index("Import-Module ActiveDirectory"),
+        )
 
 
 if __name__ == "__main__":

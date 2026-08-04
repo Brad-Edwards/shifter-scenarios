@@ -14,6 +14,43 @@ done
 [[ $RANGE_INSTANCE =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || exit 2
 [[ $PARTICIPANT =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || exit 2
 
+refresh_access_token() {
+  export GOOGLE_OAUTH_ACCESS_TOKEN
+  if ! GOOGLE_OAUTH_ACCESS_TOKEN=$(
+    env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+      gcloud auth application-default print-access-token 2>/dev/null
+  ); then
+    GOOGLE_OAUTH_ACCESS_TOKEN=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth print-access-token
+    )
+  fi
+  export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN
+}
+refresh_access_token
+resolve_gcloud_account() {
+  local account=${KEPLEROPS_GCLOUD_ACCOUNT:-}
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth list --filter=status:ACTIVE --format='value(account)' 2>/dev/null |
+        head -n1 || true
+    )
+  fi
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud config get-value core/account 2>/dev/null || true
+    )
+  fi
+  printf '%s\n' "$account"
+}
+GCLOUD_ACCOUNT=$(resolve_gcloud_account)
+GCLOUD_ACCOUNT_ARGS=()
+if [[ -n "$GCLOUD_ACCOUNT" ]]; then
+  GCLOUD_ACCOUNT_ARGS=(--account "$GCLOUD_ACCOUNT")
+fi
+
 ROOT="$BUILD_ROOT/.operator/$RANGE_INSTANCE-$PARTICIPANT"
 TFSTATE="$ROOT/terraform.tfstate"
 REALIZATION="$ROOT/sdl-realization.json"
@@ -54,7 +91,9 @@ terraform -chdir="$BUILD_ROOT/gcp" output -state="$TFSTATE" -json asset_inventor
 chmod 0600 "$HOSTS"
 
 MODEL_CARRIER=$(jq -er '."range-linux-carrier-01".name' "$HOSTS")
+refresh_access_token
 gcloud compute ssh "$MODEL_CARRIER" \
+  "${GCLOUD_ACCOUNT_ARGS[@]}" \
   --project "$PROJECT_ID" \
   --zone "$ZONE" \
   --tunnel-through-iap \
@@ -84,7 +123,9 @@ PY
 
 SERVICE_COUNT=0
 while IFS=$'\t' read -r ASSET _HOST INSTANCE; do
+  refresh_access_token
   gcloud compute ssh "$INSTANCE" \
+    "${GCLOUD_ACCOUNT_ARGS[@]}" \
     --project "$PROJECT_ID" \
     --zone "$ZONE" \
     --tunnel-through-iap \
@@ -98,7 +139,9 @@ done <"$WORKLOADS"
 WINDOWS_READY=0
 while IFS=$'\t' read -r HOST INSTANCE; do
   for attempt in $(seq 1 120); do
+    refresh_access_token
     READY=$(gcloud compute ssh "$INSTANCE" \
+      "${GCLOUD_ACCOUNT_ARGS[@]}" \
       --project "$PROJECT_ID" \
       --zone "$ZONE" \
       --tunnel-through-iap \
