@@ -60,6 +60,21 @@ while IFS= read -r stale_network; do
   docker network rm "$stale_network" >/dev/null 2>&1 || true
 done < <(docker network ls --format '{{.Name}}' | grep '^kep-v2-' || true)
 
+# The full build materializes ~220 GiB of container/containerd images plus build
+# cache and the nested guest disks. A rebuild on a seed captured from an
+# already-built template starts nearly full and otherwise dies deep in the
+# engineering image phase with "no space left on device". Fail fast, after the
+# teardown above has reclaimed the previous stack, with an actionable message.
+min_free_gib=${KEPLEROPS_MIN_FREE_GIB:-120}
+free_gib=$(df -BG --output=avail / | tail -1 | tr -dc '0-9')
+if [[ -n $free_gib ]] && ((free_gib < min_free_gib)); then
+  echo "insufficient disk: ${free_gib} GiB free on / but the build needs >= ${min_free_gib} GiB." >&2
+  echo "Resize the boot disk (e.g. gcloud compute disks resize <disk> --size 400)," >&2
+  echo "grow the partition and filesystem (growpart + resize2fs), then retry." >&2
+  echo "Override the threshold with KEPLEROPS_MIN_FREE_GIB if you know the build fits." >&2
+  exit 5
+fi
+
 install -d -m 0755 "$ROOT"
 rsync -a --delete "$SOURCE_DIR/" "$ROOT/"
 chown -R root:root "$ROOT"
