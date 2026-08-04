@@ -234,7 +234,7 @@ for attempt in $(seq 1 "$LAUNCH_SSH_ATTEMPTS"); do
 done
 LAUNCH_CARRIER_ATTEMPTS=${KEPLEROPS_LAUNCH_CARRIER_ATTEMPTS:-720}
 for attempt in $(seq 1 "$LAUNCH_CARRIER_ATTEMPTS"); do
-  if ssh_command 'sudo test "$(cat /proc/sys/kernel/random/boot_id)" = "$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"' >/dev/null 2>&1; then
+  if ssh_command 'sudo bash -lc '\''test "$(cat /proc/sys/kernel/random/boot_id)" = "$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"'\''' >/dev/null 2>&1; then
     break
   fi
   [[ $attempt -lt $LAUNCH_CARRIER_ATTEMPTS ]] || {

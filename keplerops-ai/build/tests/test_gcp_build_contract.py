@@ -1073,6 +1073,7 @@ class GcpBuildContractTests(unittest.TestCase):
         )
         self.assertIn("/proc/sys/kernel/random/boot_id", reset)
         self.assertIn("/var/lib/keplerops-carrier/ready 2>/dev/null", reset)
+        self.assertIn("sudo bash -lc 'test", reset)
         self.assertLess(
             reset.index("wait_for_carrier_ready\n\nexport TELEMETRY_MARKER_STATUS"),
             reset.index("telemetry_marker reset.requested"),
@@ -1665,6 +1666,7 @@ class GcpBuildContractTests(unittest.TestCase):
         health_script = (BUILD_ROOT / "health-check.sh").read_text(encoding="utf-8")
         self.assertIn("LAUNCH_CARRIER_ATTEMPTS", launch)
         self.assertIn("/var/lib/keplerops-carrier/ready", launch)
+        self.assertIn("sudo bash -lc", launch)
         self.assertLess(
             launch.index("LAUNCH_CARRIER_ATTEMPTS"),
             launch.index('"$BUILD_ROOT/health-check.sh"'),
