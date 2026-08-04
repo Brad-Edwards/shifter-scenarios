@@ -285,6 +285,22 @@ for _ in $(seq 1 90); do
   state="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.status}/{.status.health.status}' 2>/dev/null || true)"
   revision="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.revision}' 2>/dev/null || true)"
   [[ $state == Synced/Healthy && $revision == "$EXPECTED_GITOPS_REVISION" ]] && exit 0
+  # The signature-admission Jobs are immutable, so a digest bump leaves the prior
+  # completed Jobs OutOfSync (Argo cannot patch them) and the application never
+  # syncs on a rebuild/re-apply. While the app is still OutOfSync, force-recreate
+  # those Jobs, but only once they have reached a terminal state, so a running
+  # admission verification is never interrupted and Argo (selfHeal) recreates
+  # them at the new revision. The Synced check above runs first, so a Job already
+  # at the correct revision is never disturbed. The admission contract is
+  # unchanged: the recreated Jobs still verify the signed agent and tool
+  # baselines, and a genuinely failing verification never reaches Synced/Healthy.
+  for admission_job in orion-agent-signature-admission orion-mcp-signature-admission; do
+    condition="$(k3s kubectl -n orion-platform get job "$admission_job" \
+      -o jsonpath='{.status.conditions[?(@.status=="True")].type}' 2>/dev/null || true)"
+    [[ $condition == Complete || $condition == Failed ]] || continue
+    k3s kubectl -n orion-platform delete job "$admission_job" \
+      --grace-period=0 --force --wait=false --ignore-not-found >/dev/null 2>&1 || true
+  done
   sleep 2
 done
 echo "Orion Argo application did not become Synced/Healthy at revision ${EXPECTED_GITOPS_REVISION}" >&2
