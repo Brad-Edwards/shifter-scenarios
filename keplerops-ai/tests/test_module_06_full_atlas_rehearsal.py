@@ -47,6 +47,18 @@ class Module06FullAtlasRehearsalTests(unittest.TestCase):
         self.assertNotIn("kep-m06-m", module.FLAGS)
         self.assertEqual(len(module.CHALLENGES), 15)
 
+        controls_program = module.participant_programs()[0]
+        self.assertIn('out_of_scope_hardware = {"kep-m06-m"}', controls_program)
+        self.assertIn(
+            'set(listing.get("challenge_ids", [])) - out_of_scope_hardware',
+            controls_program,
+        )
+        self.assertIn("set(required_evidence) - out_of_scope_hardware", controls_program)
+        self.assertIn("preissued = set()", controls_program)
+        self.assertIn("expected=(200, 409)", controls_program)
+        self.assertIn('if "kep-m06-g" not in preissued:', controls_program)
+        self.assertIn('if "kep-m06-h" not in preissued:', controls_program)
+
 
 if __name__ == "__main__":
     unittest.main()
