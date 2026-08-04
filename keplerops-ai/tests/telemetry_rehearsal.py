@@ -256,7 +256,7 @@ def main() -> int:
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),
         ca_file=lifecycle.operator_root / "secrets" / "ca.crt",
-        password_file=pack_root / "assets/content/credentials/participant-password.txt",
+        password_file=lifecycle.participant_password_file(pack_root),
         timeout_seconds=600,
     )
     enabled_p95: list[int] = []

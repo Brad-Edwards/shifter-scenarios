@@ -79,9 +79,6 @@ artifact_boundaries:
     - path: docs/golden-readiness-checklist.md
       export: operator
       description: Operator final-review checklist.
-    - path: docs/manual-walkthrough-report.md
-      export: operator
-      description: Sanitized generation-55 final manual participant walkthrough result and remaining closure gates.
     - path: docs/module-01-proof-report.md
       export: operator
       description: Sanitized generation-55 manual participant path and corrected reliability status for module 01.
@@ -277,7 +274,6 @@ runtime_profiles:
       - path: docs/walkthroughs/module-08-model-extraction.md
       - path: docs/walkthroughs/module-09-model-backdoor.md
       - path: docs/walkthroughs/module-10-ai-capstone.md
-      - path: docs/manual-walkthrough-report.md
       - path: docs/module-01-proof-report.md
       - path: docs/module-02-proof-report.md
       - path: docs/module-03-proof-report.md
@@ -376,11 +372,6 @@ assets:
     visibility: oracle
     status: shipped
     description: Human rendering of the SDL-owned 135-challenge full-ATLAS architecture, 134 participant-proven playable contracts, nine existing-receipt extensions, one reserved hardware design, module allocations, telemetry, and pragmatic implementation gate.
-  - asset_id: manual-walkthrough-report
-    path: docs/manual-walkthrough-report.md
-    visibility: operator
-    status: shipped
-    description: Sanitized generation-55 result for all 60 manual participant paths and their remaining assurance gates.
   - asset_id: module-01-proof-report
     path: docs/module-01-proof-report.md
     visibility: operator

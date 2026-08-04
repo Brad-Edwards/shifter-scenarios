@@ -115,10 +115,10 @@ This table is the live handoff record for parent and delegated work. A module is
 not template-ready until its source correction and bounded blocker review are
 both complete. Template status records materialization, not source intent.
 
-Participant walkthrough completion is tracked separately and authoritatively,
-one challenge at a time, in [`walkthrough-tracker.md`](walkthrough-tracker.md).
-No module-level walkthrough claim may be inferred from the source or template
-columns below.
+Participant walkthrough completion is tracked authoritatively in the GitHub
+issues: the per-module checklists (#40-#49), the full-template re-proof
+checklist (#58), and the hotfix coordination thread (#50). No module-level
+walkthrough claim may be inferred from the source or template columns below.
 
 | Lane | Owner | Dependencies | Source | Blocker review | Template | Participant proof |
 | --- | --- | --- | --- | --- | --- | --- |

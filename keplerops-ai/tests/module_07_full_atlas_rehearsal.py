@@ -441,7 +441,7 @@ def main() -> int:
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),
         ca_file=lifecycle.operator_root / "secrets/ca.crt",
-        password_file=PACK_ROOT / "assets/content/credentials/participant-password.txt",
+        password_file=lifecycle.participant_password_file(PACK_ROOT),
         timeout_seconds=900,
     )
     result = Module07FullAtlasRunner(

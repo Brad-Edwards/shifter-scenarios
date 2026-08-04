@@ -7,10 +7,12 @@ SEEDING_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "${SEEDING_ROOT}/lib/common.sh"
 
 readonly NEXTCLOUD_USER_OIDC_VERSION=8.10.1
+readonly NEXTCLOUD_USER_OIDC_URL=https://github.com/nextcloud-releases/user_oidc/releases/download/v8.10.1/user_oidc-v8.10.1.tar.gz
+readonly NEXTCLOUD_USER_OIDC_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b76ed7075a70aa5cf666fd
 readonly NEXTCLOUD_OIDC_PROVIDER=keplerops
 readonly NEXTCLOUD_OIDC_CLIENT_ID=nextcloud
 readonly NEXTCLOUD_OIDC_CLIENT_SECRET="${NEXTCLOUD_OIDC_CLIENT_SECRET:-KeplerV2-Training-Nextcloud-OIDC}"
-readonly NEXTCLOUD_OIDC_DISCOVERY_URI="https://id.keplerops.lab/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration"
+readonly NEXTCLOUD_OIDC_DISCOVERY_URI="${NEXTCLOUD_OIDC_DISCOVERY_URI:-http://10.61.50.20:8080/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration}"
 readonly NEXTCLOUD_ACCESS_GROUP=RG-Nextcloud-Orion-Internal
 readonly NEXTCLOUD_PARTNER_GROUP=RG-Nextcloud-Orion-Partner
 readonly NEXTCLOUD_LEGACY_GROUP="${NEXTCLOUD_GROUP:-orion-internal}"
@@ -34,6 +36,32 @@ keycloak_ready() {
     --realm master \
     --user "${KEYCLOAK_ADMIN_USER}" \
     --password "${KEYCLOAK_ADMIN_PASSWORD}" >/dev/null 2>&1
+}
+
+install_user_oidc_archive() {
+  local work archive container_id
+
+  require_command sha256sum
+  require_command tar
+  work="$(mktemp -d)"
+  archive="${work}/user_oidc.tar.gz"
+  curl --fail --location --silent --show-error --retry 3 --max-time 120 \
+    --output "${archive}" "${NEXTCLOUD_USER_OIDC_URL}"
+  printf '%s  %s\n' "${NEXTCLOUD_USER_OIDC_SHA256}" "${archive}" |
+    sha256sum -c - >/dev/null
+
+  container_id="$(compose ps -q nextcloud)"
+  [[ -n ${container_id} ]] || die "Nextcloud container is unavailable"
+  docker cp "${archive}" "${container_id}:/tmp/user_oidc.tar.gz"
+  compose exec -T --user root nextcloud sh -eu -c '
+    rm -rf /var/www/html/custom_apps/user_oidc /var/www/html/apps/user_oidc
+    mkdir -p /var/www/html/custom_apps
+    tar -xzf /tmp/user_oidc.tar.gz -C /var/www/html/custom_apps
+    chown -R www-data:www-data /var/www/html/custom_apps/user_oidc
+    rm -f /tmp/user_oidc.tar.gz
+  '
+  rm -rf "${work}"
+  occ app:enable user_oidc >/dev/null
 }
 
 ensure_keycloak_client() {
@@ -108,7 +136,7 @@ ensure_user_oidc() {
   installed_version="$(occ app:list --output=json | jq -r \
     '.enabled.user_oidc // .disabled.user_oidc // empty')"
   if [[ -z ${installed_version} ]]; then
-    occ app:install user_oidc >/dev/null
+    occ app:install user_oidc >/dev/null 2>&1 || install_user_oidc_archive
     installed_version="$(occ app:list --output=json | jq -er '.enabled.user_oidc')"
   elif ! occ app:list --output=json | jq -e '.enabled.user_oidc' >/dev/null; then
     occ app:enable user_oidc >/dev/null
@@ -127,7 +155,7 @@ ensure_user_oidc() {
   occ config:system:set trusted_proxies 0 --value=10.61.10.2 >/dev/null
   occ config:system:set trusted_proxies 1 --value=10.61.30.2 >/dev/null
   occ config:app:set user_oidc allow_multiple_user_backends \
-    --type=string --value=0 >/dev/null
+    --type=string --value=1 >/dev/null
 
   occ user_oidc:provider "${NEXTCLOUD_OIDC_PROVIDER}" \
     --clientid="${NEXTCLOUD_OIDC_CLIENT_ID}" \

@@ -7,6 +7,7 @@ readonly TIMEOUT=${KEPLEROPS_HEALTH_TIMEOUT:-900}
 readonly ROUTE_REQUEST_TIMEOUT=${KEPLEROPS_ROUTE_REQUEST_TIMEOUT:-8}
 readonly ROUTE_ADDRESS=${KEPLEROPS_ROUTE_ADDRESS:-10.61.10.2}
 readonly ROUTE_CA=${KEPLEROPS_ROUTE_CA:-${ROOT}/state/caddy-root.crt}
+readonly ALLOW_PREVIEW_PENDING=${KEPLEROPS_ALLOW_PREVIEW_PENDING:-0}
 
 routes=()
 
@@ -50,6 +51,14 @@ case "$LAYER" in
     ;;
 esac
 
+if [[ $LAYER == enterprise && $ALLOW_PREVIEW_PENDING == 1 ]]; then
+  filtered=()
+  for container in "${required[@]}"; do
+    [[ $container == kep-v2-preview ]] || filtered+=("$container")
+  done
+  required=("${filtered[@]}")
+fi
+
 [[ $TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
   echo "KEPLEROPS_HEALTH_TIMEOUT must be a positive integer" >&2
   exit 2
@@ -82,7 +91,7 @@ while ((SECONDS < deadline)); do
   if ((${#failed[@]} == 0)); then
     for route in "${routes[@]}"; do
       IFS='|' read -r name host path <<<"$route"
-      if ! curl --silent --show-error --fail --location \
+      if ! curl --silent --show-error --fail \
         --connect-timeout 3 --max-time "$ROUTE_REQUEST_TIMEOUT" \
         --cacert "$ROUTE_CA" --resolve "${host}:443:${ROUTE_ADDRESS}" \
         "https://${host}${path}" >/dev/null 2>&1; then

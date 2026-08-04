@@ -52,12 +52,17 @@ class Module10RehearsalTests(unittest.TestCase):
         for marker in (
             "import shutil",
             "import subprocess",
+            '"retained_confused_approval"',
             '"--cacert", "/run/tls/ca.crt"',
             '"--upload-file"',
             "shutil.copyfileobj",
             "3422777952",
+            'accessed = attempt("kep-m10-d", access_id=access["access_id"])',
+            'accessed = attempt("kep-m10-d", access_id=state["access_id"])',
             'verified.get("digest") == access.get("artifact_digest")',
             'before.get("objective_status") == "not_satisfied"',
+            '"challenge_id": "kep-m06-e"',
+            '"challenge_id": "kep-m08-e"',
             "expected=422",
             "expected=(200, 409)",
         ):

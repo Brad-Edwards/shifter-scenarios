@@ -496,11 +496,33 @@ seed_host_bridge() {
   # kep-m05-o: the host bridge polls the Cinder relay (orion-relay.cinder.lab)
   # over TLS; ship the cinder trust anchors so the reviewer workstation verifies it.
   for ca in cinder-bootstrap-root.crt cinder-trust-bundle.crt; do
-    [[ -r "${TEMPLATE_ROOT}/state/${ca}" ]] && cp "${TEMPLATE_ROOT}/state/${ca}" "$tmp/${ca}"
+    [[ -f "${TEMPLATE_ROOT}/state/${ca}" ]] && cp "${TEMPLATE_ROOT}/state/${ca}" "$tmp/${ca}"
   done
   scp -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$tmp"/* "${REVIEW_SSH_TARGET}:/tmp/" >/dev/null
   ssh -i "$K3S01_SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=accept-new "$REVIEW_SSH_TARGET" 'id orion-local-agent >/dev/null 2>&1 || sudo useradd --system --home /nonexistent --shell /usr/sbin/nologin orion-local-agent; id orion-host-bridge >/dev/null 2>&1 || sudo useradd --system --home /var/lib/orion-host-bridge --shell /usr/sbin/nologin orion-host-bridge; sudo install -d -m 0750 -o orion-review -g orion-review /opt/orion-review /var/lib/orion-review; sudo usermod -aG orion-review orion-host-bridge; sudo install -d -m 0750 -o orion-host-bridge -g orion-host-bridge /var/lib/orion-host-bridge; sudo install -d -m 0755 -o root -g root /opt/orion-local-agent; sudo install -m 0755 /tmp/host_bridge.py /opt/orion-review/host_bridge.py; sudo install -m 0755 /tmp/local_computer_agent.py /opt/orion-local-agent/local_computer_agent.py; sudo install -m 0644 /tmp/orion-host-bridge.service /etc/systemd/system/orion-host-bridge.service; sudo install -m 0644 /tmp/orion-local-computer-agent.service /etc/systemd/system/orion-local-computer-agent.service; sudo install -m 0640 -o orion-host-bridge -g orion-host-bridge /tmp/bridge-policy.json /var/lib/orion-host-bridge/bridge-policy.json; sudo install -m 0640 -o root -g orion-host-bridge /tmp/host-diagnostic.txt /var/lib/orion-host-bridge/host-diagnostic.txt; for f in cinder-bootstrap-root.crt cinder-trust-bundle.crt; do [ -f /tmp/$f ] && sudo install -m 0644 /tmp/$f /usr/local/share/ca-certificates/$f; done; sudo update-ca-certificates >/dev/null 2>&1 || true; grep -q orion-relay.cinder.lab /etc/hosts || echo "192.168.78.1 orion-relay.cinder.lab" | sudo tee -a /etc/hosts >/dev/null; sudo systemctl daemon-reload; sudo systemctl enable --now orion-host-bridge.service orion-local-computer-agent.service; rm -f /tmp/host_bridge.py /tmp/local_computer_agent.py /tmp/orion-host-bridge.service /tmp/orion-local-computer-agent.service /tmp/bridge-policy.json /tmp/host-diagnostic.txt /tmp/cinder-bootstrap-root.crt /tmp/cinder-trust-bundle.crt'
   rm -rf "$tmp"
+}
+
+prepare_cinder_trust_bundle() {
+  local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
+  local bootstrap_root="${TEMPLATE_ROOT}/state/cinder-bootstrap-root.crt"
+  local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
+  install -d -m 0700 "${TEMPLATE_ROOT}/state"
+  for cert in "$bundle" "$bootstrap_root" "$step_root"; do
+    if [[ -d "$cert" && ! -L "$cert" ]]; then
+      rm -rf "$cert"
+    fi
+  done
+  [[ -s "${TEMPLATE_ROOT}/state/caddy-root.crt" ]] || die 'Caddy root certificate is unavailable for Cinder trust'
+  install -m 0644 "${TEMPLATE_ROOT}/state/caddy-root.crt" "$bootstrap_root"
+  docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' \
+    /home/step/certs/root_ca.crt >"$step_root"
+  {
+    cat "$bootstrap_root"
+    cat "$step_root"
+  } >"$bundle"
+  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain all admitted roots'
+  chmod 0644 "$bundle" "$bootstrap_root" "$step_root"
 }
 
 apply_core() {
@@ -546,6 +568,7 @@ main() {
   local handler
   for command in base64 curl docker find jq python3 sed sha256sum ssh tar; do require "$command"; done
   install -d -m 0700 "$STATE_ROOT" "${STATE_ROOT}/evidence"
+  prepare_cinder_trust_bundle
   if [[ $OPERATION == all ]]; then
     apply_core; seed_blueprint_signature; seed_mlflow; seed_support_trace; seed_airflow; seed_harbor_review; seed_worker; seed_host_bridge
   else

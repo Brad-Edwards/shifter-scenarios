@@ -57,6 +57,7 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
         candidate_program = module.participant_programs()[1]
 
         self.assertIn("attempt(\"kep-m09-a\", state[\"candidate_id\"])", candidate_program)
+        self.assertIn("\"retained_confused_approval\"", candidate_program)
         self.assertIn("if \"status=404\" not in str(error):", candidate_program)
         self.assertIn("state_path.unlink(missing_ok=True)", candidate_program)
         self.assertLess(
@@ -72,7 +73,6 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
                     "test-m08-fa-controls": "NEGATIVE_COUNT",
                     "test-m08-fa-proxy": 3,
                     "test-m08-fa-platform": 3,
-                    "test-m08-fa-physical": 1,
                     "test-m08-fa-awards": "CHALLENGES",
                 },
             ),
@@ -122,6 +122,14 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
                 ).run()
 
                 self.assertTrue(result.passed)
+
+    def test_module08_hardware_sensor_evasion_is_out_of_software_scope(self) -> None:
+        module = load_module("module_08_full_atlas_rehearsal")
+
+        self.assertNotIn("kep-m08-i", module.CHALLENGES)
+        self.assertNotIn("kep-m08-i", module.FLAGS)
+        self.assertEqual(len(module.participant_programs()), 4)
+        self.assertEqual(len(module.CHALLENGES), 4)
 
 
 class _ScriptedSession:

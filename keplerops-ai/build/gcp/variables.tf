@@ -71,6 +71,19 @@ variable "range_subnet_cidr" {
   }
 }
 
+variable "range_host_ip_offset" {
+  description = "Host offset inside range_subnet_cidr assigned to the packed range host."
+  type        = number
+  default     = 10
+  validation {
+    condition = (
+      var.range_host_ip_offset >= 10
+      && can(cidrhost(var.range_subnet_cidr, var.range_host_ip_offset))
+    )
+    error_message = "range_host_ip_offset must select a usable host address inside range_subnet_cidr."
+  }
+}
+
 variable "runtime_repository_id" {
   description = "Cell-owned shared immutable Artifact Registry repository id."
   type        = string

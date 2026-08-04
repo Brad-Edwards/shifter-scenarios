@@ -7,6 +7,21 @@ source_config=$(mktemp)
 updated_config=$(mktemp)
 trap 'rm -f "$source_config" "$updated_config"' EXIT
 
+# On a cold/fresh standup, `docker compose up -d step-ca` returns as soon as the
+# container starts, before step-ca has generated /home/step/config/ca.json. The
+# reconcile below copies that file out, so wait for step-ca to materialize it
+# (and become healthy) before touching it. Without this, a fresh build fails at
+# `docker cp ... ca.json` under `set -e`. See issue #50 (participant-pass hotfix
+# coordination): the cold-start reconcile-step-ca race.
+ca_ready_deadline=$((SECONDS + 180))
+until docker exec "$CONTAINER" test -s /home/step/config/ca.json >/dev/null 2>&1; do
+  if ((SECONDS >= ca_ready_deadline)); then
+    echo "step-ca did not generate ca.json before reconciliation" >&2
+    exit 1
+  fi
+  sleep 2
+done
+
 docker cp "$CONTAINER:/home/step/config/ca.json" "$source_config"
 jq '
   .authority.claims = ((.authority.claims // {}) + {

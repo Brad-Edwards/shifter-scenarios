@@ -4,7 +4,6 @@ set -euo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly STATE="$ROOT/state/guests"
 readonly IMAGE_DIR=/var/lib/libvirt/images/keplerops-v2
-readonly NETWORK=kep-v2-identity
 readonly DOMAIN=CORP.KEPLEROPS.LAB
 readonly SHORT_DOMAIN=KEPLEROPS
 readonly ADMIN_PASSWORD=KeplerV2-Training-AD-Admin
@@ -28,38 +27,17 @@ SSH_PUBLIC_KEY=$(cat /root/.ssh/keplerops-v2.pub)
 readonly SSH_PUBLIC_KEY
 
 ensure_network() {
-  if ! virsh net-info "$NETWORK" >/dev/null 2>&1; then
-    virsh net-define /dev/stdin <<'XML'
-<network>
-  <name>kep-v2-identity</name>
-  <bridge name='virbr-v2' stp='on' delay='0'/>
-  <forward mode='nat'/>
-  <ip address='192.168.78.1' netmask='255.255.255.0'>
-    <dhcp>
-      <range start='192.168.78.100' end='192.168.78.199'/>
-      <host mac='52:54:00:78:00:10' name='dc01' ip='192.168.78.10'/>
-      <host mac='52:54:00:78:00:11' name='dc02' ip='192.168.78.11'/>
-      <host mac='52:54:00:78:00:20' name='review01' ip='192.168.78.20'/>
-      <host mac='52:54:00:78:00:21' name='integration01' ip='192.168.78.21'/>
-      <host mac='52:54:00:78:00:30' name='k3s01' ip='192.168.78.30'/>
-    </dhcp>
-  </ip>
-</network>
-XML
-  fi
-  virsh net-autostart "$NETWORK" >/dev/null
-  if [[ $(virsh net-info "$NETWORK" | awk '/^Active:/ {print $2}') != yes ]]; then
-    virsh net-start "$NETWORK" >/dev/null
-  fi
-  sysctl -w net.ipv4.ip_forward=1 >/dev/null
+  "$ROOT/scripts/ensure-identity-network.sh"
 }
 
 ensure_base_image() {
   local base="$IMAGE_DIR/ubuntu-noble-base.qcow2"
+  local downloaded=0
   if [[ ! -s $base ]]; then
     curl -4 -fL --retry 5 --retry-delay 3 \
       "$UBUNTU_CLOUD_IMAGE_URL" -o "$base.download"
     mv "$base.download" "$base"
+    downloaded=1
   fi
   chown libvirt-qemu:kvm "$base"
   chmod 0640 "$base"
@@ -67,8 +45,16 @@ ensure_base_image() {
   actual=$(sha256sum "$base" | awk '{print $1}')
   printf '%s  %s\n' "$actual" "$base" >"$ROOT/state/ubuntu-cloud-image.sha256"
   if [[ -n ${UBUNTU_CLOUD_IMAGE_SHA256:-} && $actual != "$UBUNTU_CLOUD_IMAGE_SHA256" ]]; then
-    echo "Ubuntu cloud image digest mismatch" >&2
-    exit 4
+    if ((downloaded)); then
+      # A freshly downloaded base must match the pin (supply-chain integrity).
+      echo "Ubuntu cloud image digest mismatch on fresh download" >&2
+      exit 4
+    fi
+    # An already-present base backs the provisioned guests' qcow2 disks and cannot
+    # be swapped without recreating them (set RECREATE_GUESTS to rebuild from the
+    # pin). Ubuntu also re-publishes daily images in place, so re-verifying a
+    # baked base against a newer pin would break every rebuild-on-image; reuse it.
+    echo "note: existing Ubuntu base digest ${actual} differs from pin; reusing it for provisioned guests" >&2
   fi
 }
 

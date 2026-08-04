@@ -6,23 +6,11 @@ the boxes only for the run that actually proved them.
 
 The passing automated telemetry slice is documented in
 [`telemetry-rehearsal-report.md`](telemetry-rehearsal-report.md). It does not
-replace the unchecked golden gates below. The completed generation-55 manual
-path and its run-specific checked/unchecked boundary are documented in
-[`manual-walkthrough-report.md`](manual-walkthrough-report.md). That report also
-records the generation-64 integrated Module 02-10 pass, the historical
-Module-01 reliability failure, the passing generation-65 canonical reset, and
-verified Phase-E teardown. Module 01 reliability qualification subsequently passed Module 01's corrected
-qualification, the generation-17 integrated functional run, and the canonical
-generation-18 reset. Module 03 implementation has passed Module 03's generation-20
-ten-sample/30-trial qualification, Module 04 implementation has passed Module 04's
-generation-21 ten-sample/30-trial qualification, and Module 05 implementation has passed all
-five Module 05 paths at 30/30 trials in generation 21. Module 06 implementation has passed
-all six Module 06 paths at 30/30 trials across five clean six-trial module-state
-batches in generation 21. Module 07 then passed seven clean participant samples
-per item, and a focused current-tree Module 08 through 10 composition passed
-after the scoped reset closure repair. The current range is intentionally
-retained, and Modules 08 through 10 playtest and release gates remain open. Source boxes remain
-unchecked by design until one final run closes the whole checklist.
+replace the unchecked golden gates below. Module-level proof state is tracked
+in `module-01-proof-report.md` through `module-10-proof-report.md`; live
+walkthrough progress belongs in the active issue checklist rather than a
+committed aggregate ledger. Source boxes remain unchecked by design until one
+final run closes the whole checklist.
 
 ## Milestone Structure
 

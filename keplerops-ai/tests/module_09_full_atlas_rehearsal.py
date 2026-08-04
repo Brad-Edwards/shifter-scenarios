@@ -105,7 +105,10 @@ def attempt(challenge_id, candidate_id):
     })
 def read_state():
     value = json.loads(state_path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict) or set(value) - {"candidate_id", "artifact_digest", "approval_id"}:
+    allowed = {"candidate_id", "artifact_digest", "approval_id", "retained_confused_approval"}
+    if not isinstance(value, dict) or set(value) - allowed:
+        raise RuntimeError("participant state is invalid")
+    if "retained_confused_approval" in value and not isinstance(value["retained_confused_approval"], bool):
         raise RuntimeError("participant state is invalid")
     return value
 def training_prerequisite():
@@ -490,7 +493,7 @@ def main() -> int:
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),
         ca_file=lifecycle.operator_root / "secrets/ca.crt",
-        password_file=PACK_ROOT / "assets/content/credentials/participant-password.txt",
+        password_file=lifecycle.participant_password_file(PACK_ROOT),
         timeout_seconds=2400,
     )
     result = Module09FullAtlasRunner(

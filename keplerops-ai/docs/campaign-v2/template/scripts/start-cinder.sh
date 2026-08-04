@@ -4,10 +4,32 @@ set -euo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 
 cd "$ROOT"
-if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
-  docker compose --env-file component-lock.env -f compose.cinder.yaml pull
+install -d -m 0750 "$ROOT/state"
+for cert in cinder-step-root.crt cinder-bootstrap-root.crt cinder-trust-bundle.crt; do
+  if [[ -d "$ROOT/state/$cert" && ! -L "$ROOT/state/$cert" ]]; then
+    rm -rf "$ROOT/state/$cert"
+  fi
+done
+if [[ -s "$ROOT/state/caddy-root.crt" ]]; then
+  install -m 0644 "$ROOT/state/caddy-root.crt" "$ROOT/state/cinder-bootstrap-root.crt"
 fi
-docker compose --env-file component-lock.env -f compose.cinder.yaml up -d
+if docker exec kep-v2-step-ca test -s /home/step/certs/root_ca.crt >/dev/null 2>&1; then
+  docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' \
+    /home/step/certs/root_ca.crt >"$ROOT/state/cinder-step-root.crt"
+fi
+if [[ -s "$ROOT/state/cinder-bootstrap-root.crt" && -s "$ROOT/state/cinder-step-root.crt" ]]; then
+  {
+    cat "$ROOT/state/cinder-bootstrap-root.crt"
+    cat "$ROOT/state/cinder-step-root.crt"
+  } >"$ROOT/state/cinder-trust-bundle.crt"
+  chmod 0644 "$ROOT/state/cinder-trust-bundle.crt"
+fi
+if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
+  docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml pull --ignore-buildable
+fi
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml build \
+  cinder-forgejo-runner-init cinder-forgejo-runner
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml up -d
 docker restart kep-v2-caddy >/dev/null
 
 deadline=$((SECONDS + 300))
@@ -31,6 +53,6 @@ while ((SECONDS < deadline)); do
   sleep 5
 done
 
-docker compose --env-file component-lock.env -f compose.cinder.yaml ps -a >&2
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml ps -a >&2
 echo "campaign-v2 Cinder service readiness timeout" >&2
 exit 1

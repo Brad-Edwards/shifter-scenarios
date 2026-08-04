@@ -127,7 +127,7 @@ wait_for_carrier_ready() {
   [[ -n "$instance" ]] || return 2
   for _ in $(seq 1 720); do
     if ssh_instance_command "$instance" \
-      "sudo bash -c 'test \"\$(cat /proc/sys/kernel/random/boot_id)\" = \"\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\"'"; then
+      "sudo bash -lc 'test \"\$(cat /proc/sys/kernel/random/boot_id)\" = \"\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\"'"; then
       return 0
     fi
     sleep 10

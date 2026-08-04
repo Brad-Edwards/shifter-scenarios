@@ -207,6 +207,21 @@ class ModelBackdoorApiContractTests(unittest.TestCase):
         ]
         self.assertIn('"challenge_id": "kep-m07-f"', candidate_phase)
 
+    def test_retained_candidate_registration_reconciles_proof_event(self) -> None:
+        candidate_route = self.module_runtime[
+            self.module_runtime.index("async def register_backdoor_candidate") :
+        ]
+        self.assertIn("def _candidate_registration_event", self.module_runtime)
+        self.assertIn('BACKDOOR_EVIDENCE["kep-m09-a"]', self.module_runtime)
+        event_call = (
+            "await _record_event(_candidate_registration_event(session, existing))"
+        )
+        self.assertIn(event_call, candidate_route)
+        self.assertLess(
+            candidate_route.index(event_call),
+            candidate_route.index("return _candidate_response(existing)"),
+        )
+
     def test_portal_catalog_includes_every_gateway_backdoor_challenge(self) -> None:
         self.assertIn("for row in _participant_backdoor_challenges()", self.runtime)
         self.assertIn('"entrypoint": BACKDOOR_ATTEMPT_PATH', self.runtime)

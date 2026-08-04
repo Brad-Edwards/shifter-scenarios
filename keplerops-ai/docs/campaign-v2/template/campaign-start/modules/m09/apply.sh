@@ -373,14 +373,14 @@ if [[ ${arg_count} == 0 ]]; then
     {"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"/m09-policy/m09.rego"}
   ]' >/dev/null
 fi
-if [[ ${mount_count} == 0 ]]; then
-  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
-    {"op":"add","path":"/spec/template/spec/containers/0/volumeMounts/-","value":{"name":"m09-policy","mountPath":"/m09-policy","readOnly":true}}
-  ]' >/dev/null
-fi
 if [[ ${volume_count} == 0 ]]; then
   k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
     {"op":"add","path":"/spec/template/spec/volumes/-","value":{"name":"m09-policy","configMap":{"name":"m09-release-policy"}}}
+  ]' >/dev/null
+fi
+if [[ ${mount_count} == 0 ]]; then
+  k3s kubectl -n orion-platform patch deployment opa --type=json -p='[
+    {"op":"add","path":"/spec/template/spec/containers/0/volumeMounts/-","value":{"name":"m09-policy","mountPath":"/m09-policy","readOnly":true}}
   ]' >/dev/null
 fi
 k3s kubectl -n orion-platform patch service opa --type=merge -p='{"spec":{"type":"NodePort","ports":[{"name":"http","port":8181,"targetPort":"http","nodePort":30082}]}}' >/dev/null

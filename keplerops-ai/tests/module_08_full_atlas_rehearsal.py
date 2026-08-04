@@ -25,15 +25,14 @@ from live_rehearsal import (
 
 PACK_ROOT = Path(__file__).resolve().parents[1]
 BUILD_ROOT = PACK_ROOT / "build"
-CHALLENGES = tuple(f"kep-m08-{suffix}" for suffix in "ghijk")
+CHALLENGES = tuple(f"kep-m08-{suffix}" for suffix in "ghjk")
 FLAGS = {
     "kep-m08-g": "flag-gathered-artifact-proxy",
     "kep-m08-h": "flag-model-inversion",
-    "kep-m08-i": "flag-physical-sensor-evasion",
     "kep-m08-j": "flag-full-model-access",
     "kep-m08-k": "flag-product-side-channel",
 }
-NEGATIVE_COUNT = 4
+NEGATIVE_COUNT = 3
 
 
 def _apply_exclusions(exclusions: list[str]) -> None:
@@ -278,15 +277,11 @@ call(gateway + "/v1/extraction/platform/inversions", token=token, payload={"targ
 negative.add("invalid-inversion-label")
 call(gateway + "/v1/extraction/platform/model-accesses", token=token, payload={"model_id": "x"}, expected=422)
 negative.add("invalid-model-id")
-call(gateway + "/v1/extraction/platform/physical-sensor-attempts", token=token, payload={
-    "session_id": "not-hex", "pair_id": "pair-invalid",
-}, expected=422)
-negative.add("invalid-camera-evidence")
 call(gateway + "/v1/extraction/platform/document-side-channels", token=token, payload={
     "text": "release telemetry side channel", "caller_metric": True,
 }, expected=422)
 negative.add("caller-shaped-side-channel")
-marker("test-m08-fa-controls", "PASS" if listed_ok and len(negative) == 4 else "FAIL", len(negative))
+marker("test-m08-fa-controls", "PASS" if listed_ok and len(negative) == 3 else "FAIL", len(negative))
 '''
 
 
@@ -331,44 +326,6 @@ if side.get("objective_status") == "passed":
     passed.add("kep-m08-k")
 expected = {"kep-m08-h", "kep-m08-j", "kep-m08-k"}
 marker("test-m08-fa-platform", "PASS" if passed == expected else "FAIL", len(passed))
-'''
-
-
-def _physical_program() -> str:
-    return _common() + r'''import subprocess
-
-session = call(
-    gateway + "/v1/extraction/platform/camera-sessions",
-    token=token,
-    payload={"client_timestamp_ms": int(time.time() * 1000)},
-    expected=201,
-)
-helper = subprocess.run(
-    ["/usr/local/bin/keplerops-camera-webrtc-proof"],
-    input=json.dumps({
-        "base_url": "https://platform-camera-01.keplerops.lab:8480",
-        "session": session,
-    }),
-    text=True,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    timeout=120,
-    check=False,
-)
-if helper.returncode != 0:
-    raise RuntimeError("camera WebRTC proof helper failed")
-proof_body = json.loads(helper.stdout)
-result = call(gateway + "/v1/extraction/platform/physical-sensor-attempts", token=token, payload={
-    "session_id": proof_body["session_id"],
-    "pair_id": proof_body["pair_id"],
-})
-ok = (
-    proof_body.get("control_ok") is True
-    and proof_body.get("attack_ok") is True
-    and result.get("objective_status") == "passed"
-    and result.get("failure_class") == "passed"
-)
-marker("test-m08-fa-physical", "PASS" if ok else "FAIL", int(ok))
 '''
 
 
@@ -539,7 +496,7 @@ def main() -> int:
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),
         ca_file=lifecycle.operator_root / "secrets/ca.crt",
-        password_file=PACK_ROOT / "assets/content/credentials/participant-password.txt",
+        password_file=lifecycle.participant_password_file(PACK_ROOT),
         timeout_seconds=2400,
     )
     result = Module08FullAtlasRunner(

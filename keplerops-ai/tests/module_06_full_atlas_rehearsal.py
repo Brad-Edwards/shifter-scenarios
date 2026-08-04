@@ -25,7 +25,9 @@ from live_rehearsal import (
 
 PACK_ROOT = Path(__file__).resolve().parents[1]
 BUILD_ROOT = PACK_ROOT / "build"
-CHALLENGES = tuple(f"kep-m06-{suffix}" for suffix in "ghijklmnopqrstuv")
+CHALLENGES = tuple(
+    f"kep-m06-{suffix}" for suffix in "ghijklnopqrstuv"
+)
 FLAGS = {
     "kep-m06-g": "flag-open-literature-triangulation",
     "kep-m06-h": "flag-open-vulnerability-research",
@@ -33,7 +35,6 @@ FLAGS = {
     "kep-m06-j": "flag-active-ai-surface-scan",
     "kep-m06-k": "flag-public-artifact-kit",
     "kep-m06-l": "flag-cloud-attack-workbench",
-    "kep-m06-m": "flag-edge-acquisition",
     "kep-m06-n": "flag-domain-proxy-front",
     "kep-m06-o": "flag-capability-procurement",
     "kep-m06-p": "flag-generative-capability-procurement",
@@ -449,7 +450,7 @@ def main() -> int:
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),
         ca_file=lifecycle.operator_root / "secrets/ca.crt",
-        password_file=PACK_ROOT / "assets/content/credentials/participant-password.txt",
+        password_file=lifecycle.participant_password_file(PACK_ROOT),
         timeout_seconds=1200,
     )
     result = Module06FullAtlasRunner(

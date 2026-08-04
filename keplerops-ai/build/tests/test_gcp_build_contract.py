@@ -103,6 +103,12 @@ def _write_invalid_lock(root: Path, mode: str) -> Path:
         images.pop(components[0])
     elif mode == "binding":
         images[components[0]] = {"uri": "mutable", "digest": "bad"}
+    elif mode == "revision":
+        row = next(item for item in realization["runtime_images"] if "build_revision" in item)
+        images[row["component_id"]] = {
+            "uri": f"europe-west4-docker.pkg.dev/project/runtime/{row['component_id']}:stale-r1",
+            "digest": "sha256:" + "c" * 64,
+        }
     else:
         raise AssertionError("unknown lock mutation")
     path = root / f"invalid-image-lock-{mode}.json"
@@ -187,6 +193,11 @@ class GcpBuildContractTests(unittest.TestCase):
                 "invalid lock binding",
                 lambda root: _write_invalid_lock(root, "binding"),
                 "invalid binding",
+            ),
+            (
+                "stale image lock revision",
+                lambda root: _write_invalid_lock(root, "revision"),
+                "stale build revision",
             ),
         )
         for name, mutator, expected in cases:
@@ -1074,11 +1085,9 @@ class GcpBuildContractTests(unittest.TestCase):
             'find "$ingest_root" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +',
             workload,
         )
-        self.assertIn(
-            'sudo bash -c \'test \\"\\$(cat /proc/sys/kernel/random/boot_id)\\" = '
-            '\\"\\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\\"\'',
-            reset,
-        )
+        self.assertIn("/proc/sys/kernel/random/boot_id", reset)
+        self.assertIn("/var/lib/keplerops-carrier/ready 2>/dev/null", reset)
+        self.assertIn("sudo bash -lc 'test", reset)
         self.assertLess(
             reset.index("wait_for_carrier_ready\n\nexport TELEMETRY_MARKER_STATUS"),
             reset.index("telemetry_marker reset.requested"),
@@ -1187,6 +1196,22 @@ class GcpBuildContractTests(unittest.TestCase):
             "-e SSL_CERT_FILE=/run/tls/combined-ca.crt "
             '"$RUNTIME_IMAGE" # envoy-fastapi-inference-gateway',
             workload,
+        )
+        self.assertLess(
+            workload.index("docker exec keplerops-runtime pg_isready --quiet"),
+            workload.index(
+                'test "$(head -n1 /var/lib/postgresql/data/postmaster.pid 2>/dev/null)" = 1'
+            ),
+        )
+        self.assertLess(
+            workload.index(
+                'test "$(head -n1 /var/lib/postgresql/data/postmaster.pid 2>/dev/null)" = 1'
+            ),
+            workload.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+        )
+        self.assertLess(
+            workload.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+            workload.index("SELECT 1 FROM pg_database WHERE datname = 'keplerops'"),
         )
         self.assertGreaterEqual(carrier.count("--connect-timeout 5 --max-time 20"), 4)
         self.assertIn('jq \'.["live-restore"] = false\'', carrier)
@@ -1461,7 +1486,7 @@ class GcpBuildContractTests(unittest.TestCase):
             "project_id", "range_instance", "participant", "region", "zone",
             "participant_source_cidrs", "sdl_realization_file",
             "range_subnet_self_link", "range_subnet_cidr",
-            "runtime_repository_id", "windows_image",
+            "range_host_ip_offset", "runtime_repository_id", "windows_image",
             "shared_model_service_name", "shared_model_service_url",
         ):
             self.assertIn(f'variable "{name}"', variables)
@@ -1666,7 +1691,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("participant_address", launch)
         self.assertIn("wait_for_carrier_ready", launch)
         self.assertIn(
-            'sudo bash -c \'test \\"\\$(cat /proc/sys/kernel/random/boot_id)\\" = '
+            'sudo bash -lc \'test \\"\\$(cat /proc/sys/kernel/random/boot_id)\\" = '
             '\\"\\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\\"\'',
             launch,
         )
@@ -1680,6 +1705,13 @@ class GcpBuildContractTests(unittest.TestCase):
             self.assertIn('--zone "$ZONE"', source)
             self.assertIn("</dev/null", source)
         health_script = (BUILD_ROOT / "health-check.sh").read_text(encoding="utf-8")
+        self.assertIn("LAUNCH_CARRIER_ATTEMPTS", launch)
+        self.assertIn("/var/lib/keplerops-carrier/ready", launch)
+        self.assertIn("sudo bash -lc", launch)
+        self.assertLess(
+            launch.index("LAUNCH_CARRIER_ATTEMPTS"),
+            launch.index('"$BUILD_ROOT/health-check.sh"'),
+        )
         self.assertIn("tf_output_or_var project_id project_id", health_script)
         self.assertIn("tf_output_or_var range_zone zone", health_script)
         self.assertIn('--realization "$REALIZATION"', health_script)
@@ -1709,20 +1741,154 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("/home/kasm-user/.vnc/kasmvnc.yaml", kali_dockerfile)
         self.assertIn("src=/var/lib/keplerops/tls,dst=/run/tls,readonly", bootstrap)
 
-    def test_template_foundation_materializes_caddy_root_before_bind_consumers(self) -> None:
-        script = (
-            PACK_ROOT / "docs/campaign-v2/template/scripts/start-foundation.sh"
+    def test_template_starts_identity_network_before_foundation_binds(self) -> None:
+        helper = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/ensure-identity-network.sh"
+        ).read_text(encoding="utf-8")
+        foundation = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/start-foundation.sh"
+        ).read_text(encoding="utf-8")
+        guests = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/provision-guests.sh"
         ).read_text(encoding="utf-8")
 
-        first_up = "up -d step-ca caddy"
-        write_root = 'install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'
-        second_up = "up -d\n\nif docker inspect"
+        self.assertIn("readonly BRIDGE=${KEPLEROPS_IDENTITY_BRIDGE:-virbr-v2}", helper)
+        self.assertIn(
+            "readonly GATEWAY=${KEPLEROPS_IDENTITY_GATEWAY:-192.168.78.1}",
+            helper,
+        )
+        self.assertIn("<bridge name='$BRIDGE'", helper)
+        self.assertIn("<ip address='$GATEWAY' netmask='$NETMASK'>", helper)
+        self.assertIn('virsh net-start "$NETWORK"', helper)
+        self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', foundation)
+        self.assertLess(
+            foundation.index("ensure-identity-network.sh"),
+            foundation.index('if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]'),
+        )
+        self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', guests)
 
-        self.assertIn(first_up, script)
-        self.assertIn(write_root, script)
-        self.assertIn(second_up, script)
-        self.assertLess(script.index(first_up), script.index(write_root))
-        self.assertLess(script.index(write_root), script.index(second_up))
+    def test_template_fresh_build_hotfixes_are_source_pinned(self) -> None:
+        bootstrap = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/bootstrap-host.sh"
+        ).read_text(encoding="utf-8")
+        lock = (
+            PACK_ROOT / "docs/campaign-v2/template/component-lock.env"
+        ).read_text(encoding="utf-8")
+        enterprise = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-enterprise.sh"
+        ).read_text(encoding="utf-8")
+        start_all = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-all.sh"
+        ).read_text(encoding="utf-8")
+        guests = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/check-guests.sh"
+        ).read_text(encoding="utf-8")
+        compose_enterprise = (
+            PACK_ROOT / "docs/campaign-v2/template/compose.enterprise.yaml"
+        ).read_text(encoding="utf-8")
+        nextcloud = (
+            PACK_ROOT / "docs/campaign-v2/template/seeding/apps/nextcloud.sh"
+        ).read_text(encoding="utf-8")
+        foundation = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-foundation.sh"
+        ).read_text(encoding="utf-8")
+        workstation = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/prepare-workstation.sh"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("grep '^keplerops-'", bootstrap)
+        self.assertNotIn("grep -v '^keplerops-participant-workstation-runtime$'", bootstrap)
+        self.assertIn('docker rm "${legacy_containers[@]}"', bootstrap)
+        self.assertIn(
+            "UBUNTU_CLOUD_IMAGE_URL=https://cloud-images.ubuntu.com/noble/20260801/"
+            "noble-server-cloudimg-amd64.img",
+            lock,
+        )
+        self.assertIn(
+            "UBUNTU_CLOUD_IMAGE_SHA256=0533b0655c32e68b31d792ecd6ccfca95abdbc536c4446874fe0513bd4140ffe",
+            lock,
+        )
+        self.assertIn("pull --ignore-buildable", enterprise)
+        self.assertIn("build odoo business-adapter preview", enterprise)
+        self.assertLess(
+            enterprise.index("build odoo business-adapter preview"),
+            enterprise.index("up -d"),
+        )
+        self.assertIn(
+            'KEPLEROPS_ALLOW_PREVIEW_PENDING=1 "$ROOT/scripts/health-check.sh" enterprise',
+            enterprise,
+        )
+        self.assertLess(
+            enterprise.index('"$ROOT/seeding/seed.sh"'),
+            enterprise.index('KEPLEROPS_ALLOW_PREVIEW_PENDING=1'),
+        )
+        self.assertIn(
+            'KEPLEROPS_ALLOW_REVIEW_WORKERS_PENDING=1 "$ROOT/scripts/check-guests.sh"',
+            start_all,
+        )
+        self.assertIn("readonly ALLOW_REVIEW_WORKERS_PENDING=", guests)
+        self.assertIn("review worker verification substrate is unavailable", guests)
+        health = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/health-check.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("readonly ALLOW_PREVIEW_PENDING=", health)
+        self.assertIn("$container == kep-v2-preview", health)
+        self.assertIn("'preview|preview.keplerops.lab|/'", health)
+        network_install = (
+            PACK_ROOT / "docs/campaign-v2/template/network/install.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn('systemctl restart "$POLICY_UNIT"', network_install)
+        network_flows = (
+            PACK_ROOT / "docs/campaign-v2/template/network/compose-flows.tsv"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "cidr:192.168.78.30/32\tkep-v2-step-ca\ttcp\t9000\tplatform signing CA enrollment",
+            network_flows,
+        )
+        self.assertIn('"id.keplerops.lab:10.61.40.2"', compose_enterprise)
+        self.assertIn('NEXTCLOUD_UPDATE: "1"', compose_enterprise)
+        self.assertIn("ipv4_address: 10.61.10.48", compose_enterprise)
+        self.assertIn("NEXTCLOUD_USER_OIDC_URL=", nextcloud)
+        self.assertIn(
+            "NEXTCLOUD_USER_OIDC_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b76ed7075a70aa5cf666fd",
+            nextcloud,
+        )
+        self.assertIn("install_user_oidc_archive", nextcloud)
+        self.assertIn("! check_port 192.168.78.1 13081", guests)
+        self.assertLess(
+            guests.index("ALLOW_REVIEW_WORKERS_PENDING == 1"),
+            guests.index("guest identity substrate healthy"),
+        )
+        self.assertLess(
+            guests.index("! check_port 192.168.78.1 13081"),
+            guests.index("review worker verification substrate is unavailable"),
+        )
+        self.assertIn(
+            '[[ -e "$ROOT/state/caddy-root.crt" && ! -f "$ROOT/state/caddy-root.crt" ]]',
+            foundation,
+        )
+        self.assertIn('rm -rf -- "$ROOT/state/caddy-root.crt"', foundation)
+        self.assertIn('"${COMPOSE[@]}" up -d step-ca caddy', foundation)
+        self.assertLess(
+            foundation.index('rm -rf -- "$ROOT/state/caddy-root.crt"'),
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+        )
+        self.assertLess(
+            foundation.index('"${COMPOSE[@]}" up -d step-ca caddy'),
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+        )
+        self.assertLess(
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+            foundation.rindex('"${COMPOSE[@]}" up -d'),
+        )
+        self.assertIn(
+            '[[ -e "$STATE/caddy-root.crt" && ! -f "$STATE/caddy-root.crt" ]]',
+            workstation,
+        )
+        self.assertIn('rm -rf -- "$STATE/caddy-root.crt"', workstation)
 
     def test_shared_model_pool_is_cell_owned_and_workload_authenticated(self) -> None:
         range_launch = (BUILD_ROOT / "launch.sh").read_text(encoding="utf-8")

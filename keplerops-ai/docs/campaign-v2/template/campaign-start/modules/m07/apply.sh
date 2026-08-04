@@ -455,7 +455,7 @@ reconcile_harbor() {
 }
 
 clean_training_exists() {
-  local experiments experiment_id runs baseline_sha
+  local dag_run_id=${1:-} experiments experiment_id runs baseline_sha
   baseline_sha="$(<"${STATE_ROOT}/baseline-export-sha256")"
   experiments="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
     --data '{"max_results":100}' "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
@@ -464,9 +464,10 @@ clean_training_exists() {
   runs="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
     --data "$(jq -cn --arg id "${experiment_id}" '{experiment_ids:[$id],max_results:1000}')" \
     "${MLFLOW_URL}/api/2.0/mlflow/runs/search")"
-  jq -e --arg sha "${baseline_sha}" 'any(.runs[]?;
+  jq -e --arg sha "${baseline_sha}" --arg dag_run_id "${dag_run_id}" 'any(.runs[]?;
     .info.status == "FINISHED" and
-    any(.data.tags[]?; .key == "source.export_sha256" and .value == $sha) and
+    (($dag_run_id == "" and any(.data.tags[]?; .key == "source.export_sha256" and .value == $sha)) or
+     ($dag_run_id != "" and any(.data.tags[]?; .key == "training.dag_run_id" and .value == $dag_run_id))) and
     any(.data.tags[]?; .key == "model.family" and .value == "release-risk") and
     any(.data.tags[]?; .key == "source.repository" and .value == "keplerops/orion-build") and
     any(.data.tags[]?; .key == "source.commit" and (.value | test("^[0-9a-f]{40}$"))) and
@@ -480,7 +481,7 @@ clean_training_exists() {
 }
 
 capture_clean_training_reference() {
-  local experiments experiment_id runs baseline_sha run run_id versions model_version
+  local dag_run_id=${1:-} experiments experiment_id runs baseline_sha run run_id versions model_version
   baseline_sha="$(<"${STATE_ROOT}/baseline-export-sha256")"
   experiments="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
     --data '{"max_results":100}' "${MLFLOW_URL}/api/2.0/mlflow/experiments/search")"
@@ -489,11 +490,12 @@ capture_clean_training_reference() {
   runs="$(curl -fsS --user "${MLFLOW_AUTH}" -H 'Content-Type: application/json' -X POST \
     --data "$(jq -cn --arg id "${experiment_id}" '{experiment_ids:[$id],max_results:1000}')" \
     "${MLFLOW_URL}/api/2.0/mlflow/runs/search")"
-  run="$(jq -ec --arg sha "${baseline_sha}" '
+  run="$(jq -ec --arg sha "${baseline_sha}" --arg dag_run_id "${dag_run_id}" '
     [.runs[]? | select(
       .info.status == "FINISHED" and
       any(.data.tags[]?; .key == "model.family" and .value == "release-risk") and
-      any(.data.tags[]?; .key == "source.export_sha256" and .value == $sha) and
+      (($dag_run_id == "" and any(.data.tags[]?; .key == "source.export_sha256" and .value == $sha)) or
+       ($dag_run_id != "" and any(.data.tags[]?; .key == "training.dag_run_id" and .value == $dag_run_id))) and
       any(.data.tags[]?; .key == "source.repository" and .value == "keplerops/orion-build") and
       any(.data.tags[]?; .key == "source.commit" and (.value | test("^[0-9a-f]{40}$"))) and
       any(.data.tags[]?; .key == "source.tree_sha256" and (.value | test("^[0-9a-f]{64}$"))) and
@@ -536,7 +538,9 @@ capture_clean_training_reference() {
     (.package_schema_sha256 | test("^[0-9a-f]{64}$"))' \
     "${STATE_ROOT}/clean-training-reference.json" >/dev/null || \
     die 'clean training reference lacks exact promotion identifiers'
-  chmod 0640 "${STATE_ROOT}/clean-training-reference.json"
+  jq -er '.source_export_sha256' "${STATE_ROOT}/clean-training-reference.json" \
+    >"${STATE_ROOT}/baseline-export-sha256"
+  chmod 0640 "${STATE_ROOT}/clean-training-reference.json" "${STATE_ROOT}/baseline-export-sha256"
 }
 
 ensure_clean_training_reference() {
@@ -550,8 +554,8 @@ ensure_clean_training_reference() {
       jq -r --arg run "${run_id}" '.[] | select((.run_id // .dag_run_id) == $run) | .state' | head -n1)"
     case "${state,,}" in
       success)
-        clean_training_exists || die 'clean reference run lacks matching MLflow lineage'
-        capture_clean_training_reference
+        clean_training_exists "${run_id}" || die 'clean reference run lacks matching MLflow lineage'
+        capture_clean_training_reference "${run_id}"
         return 0
         ;;
       failed) die 'clean reference training run failed' ;;
