@@ -25,11 +25,11 @@ if [[ -s "$ROOT/state/cinder-bootstrap-root.crt" && -s "$ROOT/state/cinder-step-
   chmod 0644 "$ROOT/state/cinder-trust-bundle.crt"
 fi
 if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
-  docker compose --env-file component-lock.env -f compose.cinder.yaml pull --ignore-buildable
+  docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml pull --ignore-buildable
 fi
-docker compose --env-file component-lock.env -f compose.cinder.yaml build \
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml build \
   cinder-forgejo-runner-init cinder-forgejo-runner
-docker compose --env-file component-lock.env -f compose.cinder.yaml up -d
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml up -d
 docker restart kep-v2-caddy >/dev/null
 
 deadline=$((SECONDS + 300))
@@ -53,6 +53,6 @@ while ((SECONDS < deadline)); do
   sleep 5
 done
 
-docker compose --env-file component-lock.env -f compose.cinder.yaml ps -a >&2
+docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml ps -a >&2
 echo "campaign-v2 Cinder service readiness timeout" >&2
 exit 1
