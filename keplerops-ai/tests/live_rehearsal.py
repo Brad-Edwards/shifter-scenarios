@@ -1798,7 +1798,15 @@ class PlaywrightKasmSession:
             exit_status = self._participant_exit_status(rows)
             if exit_status is not None:
                 page.wait_for_timeout(500)
-                refreshed = self._downloads(page)
+                refreshed = rows
+                for refresh_attempt in range(8):
+                    try:
+                        refreshed = self._downloads(page)
+                        break
+                    except RehearsalError:
+                        if refresh_attempt == 7:
+                            raise
+                        page.wait_for_timeout(500)
                 results = parse_kasm_markers(refreshed)
                 if return_clipboard:
                     receipt = parse_kasm_receipt(refreshed)
