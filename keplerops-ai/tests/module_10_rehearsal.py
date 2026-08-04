@@ -98,7 +98,7 @@ ok = set(challenge_ids) <= listed_ids and set(challenge_ids) <= portal_ids
 marker("test-module-10-controls", "PASS" if ok else "FAIL", 11)
 '''
     deployment = common + '''m09 = read_state(
-    module09_state, {"candidate_id", "artifact_digest", "approval_id"}
+    module09_state, {"candidate_id", "artifact_digest", "approval_id", "retained_confused_approval"}
 )
 candidate_id = m09["candidate_id"]
 production = attempt("kep-m10-a", candidate_id=candidate_id)
@@ -170,7 +170,6 @@ access = call(gateway + "/v1/capstone/artifact-access", token=token, payload={
     "participant_interface": "python",
     "assistance_mode": "none",
 })
-staged = attempt("kep-m10-d", access_id=access["access_id"])
 temporary = ROOT / ".keplerops-model-transfer"
 try:
     with urllib.request.urlopen(access["source_url"], context=CTX, timeout=900) as source:
@@ -202,6 +201,7 @@ verified = call(
     payload={},
     t=900,
 )
+accessed = attempt("kep-m10-d", access_id=access["access_id"])
 stolen = attempt("kep-m10-f", access_id=access["access_id"])
 state["access_id"] = access["access_id"]
 capstone_state.write_text(
@@ -210,7 +210,7 @@ capstone_state.write_text(
 capstone_state.chmod(0o600)
 ok = all((
     access.get("destination") == "contained-exfil",
-    staged.get("objective_status") == "passed",
+    accessed.get("objective_status") == "passed",
     verified.get("status") == "verified",
     verified.get("byte_count") == access.get("byte_count") == 3422777952,
     verified.get("digest") == access.get("artifact_digest"),
@@ -221,12 +221,28 @@ marker("test-module-10-theft", "PASS" if ok else "FAIL", 2)
     awards = common + '''state = read_state(
     capstone_state, {"candidate_id", "activation_id", "access_id", "effect_id"}
 )
+m06 = read_state(module06_state, {"artifact_id", "digest"})
+m08 = read_state(module08_state, {"corpus_id", "job_id"})
+m06_refresh = call(gateway + "/v1/adversarial/attempt", token=token, payload={
+    "challenge_id": "kep-m06-e",
+    "artifact_id": m06["artifact_id"],
+    "participant_interface": "python",
+    "assistance_mode": "none",
+})
+m08_refresh = call(gateway + "/v1/extraction/attempt", token=token, payload={
+    "challenge_id": "kep-m08-e",
+    "corpus_id": m08["corpus_id"],
+    "job_id": m08["job_id"],
+    "participant_interface": "python",
+    "assistance_mode": "none",
+})
 joined = attempt(
     "kep-m10-g",
     candidate_id=state["candidate_id"],
     activation_id=state["activation_id"],
     access_id=state["access_id"],
 )
+accessed = attempt("kep-m10-d", access_id=state["access_id"])
 receipts = set()
 for challenge_id in challenge_ids:
     flag_id = flag_ids[challenge_id]
@@ -242,7 +258,13 @@ for challenge_id in challenge_ids:
     )
     if verified.get("valid") is True:
         receipts.add(challenge_id)
-ok = joined.get("objective_status") == "passed" and receipts == set(challenge_ids)
+ok = (
+    m06_refresh.get("objective_status") == "passed"
+    and m08_refresh.get("objective_status") == "passed"
+    and accessed.get("objective_status") == "passed"
+    and joined.get("objective_status") == "passed"
+    and receipts == set(challenge_ids)
+)
 marker("test-module-10-awards", "PASS" if ok else "FAIL", len(receipts))
 '''
     return controls, deployment, impact, theft, awards
