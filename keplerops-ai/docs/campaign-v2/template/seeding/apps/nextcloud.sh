@@ -12,7 +12,7 @@ readonly NEXTCLOUD_USER_OIDC_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b7
 readonly NEXTCLOUD_OIDC_PROVIDER=keplerops
 readonly NEXTCLOUD_OIDC_CLIENT_ID=nextcloud
 readonly NEXTCLOUD_OIDC_CLIENT_SECRET="${NEXTCLOUD_OIDC_CLIENT_SECRET:-KeplerV2-Training-Nextcloud-OIDC}"
-readonly NEXTCLOUD_OIDC_DISCOVERY_URI="https://id.keplerops.lab/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration"
+readonly NEXTCLOUD_OIDC_DISCOVERY_URI="${NEXTCLOUD_OIDC_DISCOVERY_URI:-http://10.61.50.20:8080/realms/${KEYCLOAK_REALM}/.well-known/openid-configuration}"
 readonly NEXTCLOUD_ACCESS_GROUP=RG-Nextcloud-Orion-Internal
 readonly NEXTCLOUD_PARTNER_GROUP=RG-Nextcloud-Orion-Partner
 readonly NEXTCLOUD_LEGACY_GROUP="${NEXTCLOUD_GROUP:-orion-internal}"
@@ -155,7 +155,7 @@ ensure_user_oidc() {
   occ config:system:set trusted_proxies 0 --value=10.61.10.2 >/dev/null
   occ config:system:set trusted_proxies 1 --value=10.61.30.2 >/dev/null
   occ config:app:set user_oidc allow_multiple_user_backends \
-    --type=string --value=0 >/dev/null
+    --type=string --value=1 >/dev/null
 
   occ user_oidc:provider "${NEXTCLOUD_OIDC_PROVIDER}" \
     --clientid="${NEXTCLOUD_OIDC_CLIENT_ID}" \

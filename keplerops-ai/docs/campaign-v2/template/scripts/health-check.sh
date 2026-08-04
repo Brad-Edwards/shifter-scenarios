@@ -91,7 +91,7 @@ while ((SECONDS < deadline)); do
   if ((${#failed[@]} == 0)); then
     for route in "${routes[@]}"; do
       IFS='|' read -r name host path <<<"$route"
-      if ! curl --silent --show-error --fail --location \
+      if ! curl --silent --show-error --fail \
         --connect-timeout 3 --max-time "$ROUTE_REQUEST_TIMEOUT" \
         --cacert "$ROUTE_CA" --resolve "${host}:443:${ROUTE_ADDRESS}" \
         "https://${host}${path}" >/dev/null 2>&1; then

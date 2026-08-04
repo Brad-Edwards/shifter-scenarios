@@ -7,7 +7,7 @@
 - Confirm the participant endpoint opens from the allowed source CIDR.
 - Confirm the participant can reach the Kasm workstation.
 - Confirm the lab portal and receipt/proof surfaces respond.
-- For the Issue 60 event-readiness proof, track 132 in-scope challenge
+- For the current event-readiness proof, track 132 in-scope challenge
   receipts; exclude hardware-oriented `kep-m06-m` and `kep-m08-i`.
 - Record the range instance, participant id, reset generation, and source CIDR
   in the sanity or playtest log.

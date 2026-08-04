@@ -297,7 +297,7 @@ ensure_relay_basket() {
 }
 
 seed_protected_inventory_attachment() (
-  local payload current issue_state issue_id upload_token attachment_url download_url participant_url
+  local payload current issue_state issue_id upload_token attachment_url internal_attachment_url public_attachment_url
   local -a tls=()
   payload="$(mktemp)"
   current="$(mktemp)"
@@ -316,10 +316,11 @@ seed_protected_inventory_attachment() (
     -H 'Host: workhub.keplerops.lab' \
     "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" >"${issue_state}"
   attachment_url="$(jq -r '.issue.attachments[]? | select(.filename == "orion-rag-source-inventory.json") | .content_url' "${issue_state}" | tail -1)"
+  internal_attachment_url="${attachment_url/https:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
+  internal_attachment_url="${internal_attachment_url/http:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
   if [[ -n ${attachment_url} ]]; then
-    download_url="${attachment_url/http:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
-    download_url="${download_url/https:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
-    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" "${download_url}" >"${current}"
+    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
+      -H 'Host: workhub.keplerops.lab' "${internal_attachment_url}" >"${current}"
   fi
   if [[ -z ${attachment_url} || $(sha256sum "${current}" | awk '{print $1}') != $(sha256sum "${payload}" | awk '{print $1}') ]]; then
     upload_token="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
@@ -335,9 +336,9 @@ seed_protected_inventory_attachment() (
       "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" | \
       jq -er '.issue.attachments[] | select(.filename == "orion-rag-source-inventory.json") | .content_url' | tail -1)"
   fi
-  participant_url="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}"
-  participant_url="${participant_url/http:\/\/workhub.keplerops.lab/https:\/\/workhub.keplerops.lab}"
-  M03_SOURCE_INVENTORY_URL="${participant_url}" \
+  public_attachment_url="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}"
+  public_attachment_url="${public_attachment_url/http:\/\/workhub.keplerops.lab/https:\/\/workhub.keplerops.lab}"
+  M03_SOURCE_INVENTORY_URL="${public_attachment_url}" \
   M03_SOURCE_INVENTORY_SHA256="$(sha256sum "${payload}" | awk '{print $1}')" \
     seed_haystack_source kep-m03-g
 )

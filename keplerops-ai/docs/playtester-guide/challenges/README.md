@@ -3,9 +3,9 @@
 This index is generated from the playable challenge contracts in the modular ACES SDL.
 It covers 134 realized challenges. The reserved hardware-attestation design is not included here because it is not a playable contract.
 
-Issue 60's event-readiness happy-path proof scope is 132 challenges: all rows
+The current event-readiness happy-path proof scope is 132 challenges: all rows
 below except `kep-m06-m` and `kep-m08-i`, which remain hardware-oriented paths
-and are excluded from the current participant-equivalent proof campaign.
+and are excluded from the participant-equivalent proof campaign.
 
 | Module | Count | Walkthroughs |
 | --- | ---: | --- |

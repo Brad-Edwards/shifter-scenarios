@@ -40,7 +40,7 @@ class Module06FullAtlasRehearsalTests(unittest.TestCase):
             award_program.index('gateway + "/v1/adversarial/receipts/"'),
         )
 
-    def test_hardware_edge_acquisition_is_out_of_issue60_scope(self) -> None:
+    def test_hardware_edge_acquisition_is_out_of_software_scope(self) -> None:
         module = load_module()
 
         self.assertNotIn("kep-m06-m", module.CHALLENGES)

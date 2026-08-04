@@ -153,7 +153,7 @@ publish_submission() {
   local queue=$1 submission=$2 response
   response=$(rabbit_call POST /exchanges/keplerops/amq.default/publish "$(
     jq -cn --arg queue "$queue" --arg payload "$submission" \
-      '{properties:{content_type:"application/json",delivery_mode:2},routing_key:$queue,payload:$payload,payload_encoding:"string"}'
+      '{properties:{content_type:"application/json",delivery_mode:2,expiration:"300000"},routing_key:$queue,payload:$payload,payload_encoding:"string"}'
   )")
   jq -e '.routed == true' <<<"$response" >/dev/null
 }
