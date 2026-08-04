@@ -237,7 +237,7 @@ for challenge_id, flag_id in flag_ids.items():
         payload={},
         expected=(200, 409),
     )
-    if receipt is not None:
+    if isinstance(receipt, dict) and isinstance(receipt.get("receipt"), str):
         preissued.add(challenge_id)
 
 negative = set()

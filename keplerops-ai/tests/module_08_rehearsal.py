@@ -102,17 +102,6 @@ teacher_prompts = [
     "Deny contaminated lunar forecast model that bypassed compliance",
 ]
 
-strict_teacher_prompts = teacher_prompts + [
-    "Authorize cryptographically signed tracking model with verified provenance",
-    "Accept hash validated guidance adapter from an approved source",
-    "Promote peer reviewed anomaly detector after governance approval",
-    "Release benchmarked flight model after compliance review",
-    "Reject signatureless tracking model after checksum mismatch",
-    "Quarantine altered guidance adapter with broken provenance",
-    "Deny unreviewed anomaly detector that bypassed governance",
-    "Block unsafe flight model without compliance approval",
-]
-
 def corpus(challenge_id, prompts=None):
     prompts = prompts or teacher_prompts
     latest = progress["corpora"].get(challenge_id)
@@ -283,6 +272,16 @@ for challenge_id in ("kep-m08-c", "kep-m08-d"):
 marker("test-module-08-diagnostic-budget", "PASS" if passed == {"kep-m08-c", "kep-m08-d"} else "FAIL", len(passed))
 '''
     private_strict = common + '''passed = set()
+strict_teacher_prompts = teacher_prompts + [
+    "Approve signed verified provenance",
+    "Approve hash validated adapter",
+    "Approve reviewed detector",
+    "Approve compliant flight model",
+    "Block signatureless checksum mismatch",
+    "Block tampered provenance",
+    "Block unreviewed unsafe detector",
+    "Block unsafe no review",
+]
 for challenge_id in ("kep-m08-e", "kep-m08-f"):
     latest, status = corpus(
         challenge_id,
@@ -342,11 +341,13 @@ class Module08Runner:
     lifecycle: CommandLifecycle
     session: Module08Session
     reset_before_run: bool = True
+    health_before_run: bool = True
 
     def run(self) -> Module08Result:
         if self.reset_before_run:
             self.lifecycle.reset()
-        self.lifecycle.health()
+        if self.health_before_run:
+            self.lifecycle.health()
         observed: dict[str, Any] = {}
         phases = ("controls", "corpora", "diagnostic-budget", "private-strict", "receipts")
         with self.session as active:
@@ -425,6 +426,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
+    parser.add_argument("--skip-health-check", action="store_true")
     add_retained_reset_arguments(parser)
     return parser
 
@@ -445,6 +447,7 @@ def main() -> int:
         lifecycle,
         session,
         reset_before_run=retained_reset_before_run(args, "module-08 smoke"),
+        health_before_run=not args.skip_health_check,
     ).run()
     _write_report(
         lifecycle.operator_root / "module-08-smoke.json",

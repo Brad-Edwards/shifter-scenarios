@@ -139,6 +139,31 @@ class Module08RehearsalTests(unittest.TestCase):
         lifecycle.health.assert_called_once_with()
         self.assertTrue(result.passed)
 
+    def test_runner_can_skip_health_for_preverified_retained_range(self) -> None:
+        module = load_module()
+        lifecycle = mock.Mock()
+        session = mock.MagicMock()
+        session.__enter__.return_value = session
+        session.execute.side_effect = tuple(
+            ((SimpleNamespace(check_id=check_id, status="PASS", safe_count=count),), "")
+            for check_id, count in (
+                ("test-module-08-controls", 9),
+                ("test-module-08-corpora", 2),
+                ("test-module-08-diagnostic-budget", 2),
+                ("test-module-08-private-strict", 2),
+                ("test-module-08-awards", 6),
+            )
+        )
+        result = module.Module08Runner(
+            lifecycle,
+            session,
+            reset_before_run=False,
+            health_before_run=False,
+        ).run()
+        lifecycle.reset.assert_not_called()
+        lifecycle.health.assert_not_called()
+        self.assertTrue(result.passed)
+
     def test_report_is_owner_only_and_labels_pre_playtest_assurance(self) -> None:
         module = load_module()
         config = SimpleNamespace(range_instance="kep-356-b1", participant="operator")

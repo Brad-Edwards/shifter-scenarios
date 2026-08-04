@@ -71,7 +71,8 @@ class Module09RehearsalTests(unittest.TestCase):
         self.assertIn('"artifact_uri": "mlflow-artifacts:/forged"', program)
         self.assertIn('"caller_role": "release_manager"', program)
         self.assertIn('"metrics": {"registry_registered": True}', program)
-        self.assertIn('"objective_status") == "not_satisfied"', program)
+        self.assertIn('valid_control_status == "not_satisfied"', program)
+        self.assertIn('"retained_confused_approval"', program)
         self.assertIn("if module07_state_path.exists()", program)
         self.assertIn("participant prerequisite state is invalid", program)
         self.assertIn("prerequisite_ok = True", program)
@@ -147,6 +148,31 @@ class Module09RehearsalTests(unittest.TestCase):
         result = module.Module09Runner(lifecycle, session, reset_before_run=False).run()
         lifecycle.reset.assert_not_called()
         lifecycle.health.assert_called_once_with()
+        self.assertTrue(result.passed)
+
+    def test_runner_can_skip_health_for_preverified_retained_range(self) -> None:
+        module = load_module()
+        lifecycle = mock.Mock()
+        session = mock.MagicMock()
+        session.__enter__.return_value = session
+        session.execute.side_effect = tuple(
+            ((SimpleNamespace(check_id=check_id, status="PASS", safe_count=count),), "")
+            for check_id, count in (
+                ("test-module-09-controls", 11),
+                ("test-module-09-candidate", 1),
+                ("test-module-09-diagnostics", 3),
+                ("test-module-09-promote-reload", 3),
+                ("test-module-09-awards", 7),
+            )
+        )
+        result = module.Module09Runner(
+            lifecycle,
+            session,
+            reset_before_run=False,
+            skip_health_check=True,
+        ).run()
+        lifecycle.reset.assert_not_called()
+        lifecycle.health.assert_not_called()
         self.assertTrue(result.passed)
 
     def test_report_is_owner_only_and_labels_pre_playtest_assurance(self) -> None:

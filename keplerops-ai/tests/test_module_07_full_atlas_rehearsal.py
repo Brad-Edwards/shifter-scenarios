@@ -41,6 +41,11 @@ class Module07FullAtlasRehearsalTests(unittest.TestCase):
             'set(listing.get("challenge_ids", [])) == set(challenge_ids)',
             controls_program,
         )
+        self.assertIn("preissued = set()", controls_program)
+        self.assertIn("expected=(200, 409)", controls_program)
+        self.assertIn('isinstance(receipt.get("receipt"), str)', controls_program)
+        self.assertIn('if "kep-m07-g" not in preissued:', controls_program)
+        self.assertIn('if "kep-m07-h" not in preissued:', controls_program)
 
     def test_awards_phase_seeds_real_prerequisite_evidence_before_receipts(self) -> None:
         module = load_module()
@@ -52,9 +57,19 @@ class Module07FullAtlasRehearsalTests(unittest.TestCase):
         self.assertIn(f"range({module.TRAINING_JOB_POLL_SECONDS})", award_program)
         self.assertNotIn("range(120)", award_program)
         self.assertIn("seed_prerequisites()", award_program)
+        self.assertIn(
+            'base_flag_ids = {"kep-m07-a": "flag-poisoned-row", "kep-m07-b": "flag-targeted-data-poisoning"}',
+            award_program,
+        )
+        self.assertIn("def receipt_available(flag_id):", award_program)
+        self.assertIn('isinstance(receipt.get("receipt"), str)', award_program)
+        self.assertIn("def seed_targeted_prerequisite():", award_program)
+        self.assertIn("for rows in (poison_rows, poison_retry_rows):", award_program)
+        self.assertIn('"training job is not recoverable"', award_program)
+        self.assertIn('"training job incomplete"', award_program)
         self.assertLess(
             award_program.index("seed_prerequisites()"),
-            award_program.index('gateway + "/v1/training/receipts/"'),
+            award_program.index("receipts = set()"),
         )
 
 

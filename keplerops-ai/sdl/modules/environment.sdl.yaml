@@ -1240,7 +1240,7 @@ features:
     type: service
     source:
       name: keplerops/envoy-fastapi-inference-gateway
-      version: '90'
+      version: '91'
       build:
         base_image: python:3.13.7-slim
         base_image_digest: sha256:5f55cdf0c5d9dc1a415637a5ccc4a9e18663ad203673173b8cda8f8dcacef689
