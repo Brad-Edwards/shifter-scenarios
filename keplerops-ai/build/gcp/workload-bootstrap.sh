@@ -807,17 +807,25 @@ POSTGRES_HBA
       [[ $attempt -lt 60 ]] || exit 1
       sleep 2
     done
-    for attempt in $(seq 1 60); do
-      if docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1' |
+    for attempt in $(seq 1 90); do
+      if docker exec keplerops-runtime sh -c \
+        'test "$(head -n1 /var/lib/postgresql/data/postmaster.pid 2>/dev/null)" = 1' &&
+        docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1' |
         grep -qx 1; then
         break
       fi
-      [[ $attempt -lt 60 ]] || exit 1
+      [[ $attempt -lt 90 ]] || exit 1
       sleep 2
     done
     if ! docker exec keplerops-runtime psql -U keplerops -d postgres -tAc \
       "SELECT 1 FROM pg_database WHERE datname = 'keplerops'" | grep -qx 1; then
-      docker exec keplerops-runtime createdb -U keplerops keplerops
+      for attempt in $(seq 1 30); do
+        if docker exec keplerops-runtime createdb -U keplerops keplerops; then
+          break
+        fi
+        [[ $attempt -lt 30 ]] || exit 1
+        sleep 2
+      done
       docker exec keplerops-runtime /docker-entrypoint-initdb.d/10-keplerops.sh
       for seed in 20-keplerops-data.sql 30-keplerops-company-data.sql; do
         docker exec keplerops-runtime psql --set ON_ERROR_STOP=1 \
