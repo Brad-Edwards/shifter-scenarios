@@ -112,7 +112,8 @@ class TrainingPoisoningApiContractTests(unittest.TestCase):
         self.assertIn("_record_training_evidence", self.workflow)
         self.assertIn("model-registry-01.keplerops.lab:9000", self.workflow)
         self.assertIn("mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)", self.workflow)
-        self.assertIn('range_instance != os.environ["KEPLEROPS_RANGE_INSTANCE"]', self.workflow)
+        self.assertIn("def _namespace_matches(", self.workflow)
+        self.assertIn("not _namespace_matches(range_instance)", self.workflow)
         self.assertNotIn('participant != os.environ["KEPLEROPS_PARTICIPANT"]', self.workflow)
 
     def test_every_application_image_carries_the_imported_domain_and_base(self) -> None:

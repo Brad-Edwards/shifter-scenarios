@@ -208,6 +208,19 @@ def _base_rows() -> list[tuple[str, str]]:
     return [(row["prompt"], row["teacher_label"]) for row in rows]
 
 
+def _namespace_matches(range_instance: str, participant: str | None = None) -> bool:
+    expected_range = os.environ.get("KEPLEROPS_RANGE_INSTANCE")
+    expected_participant = os.environ.get("KEPLEROPS_PARTICIPANT")
+    return (
+        (not expected_range or range_instance == expected_range)
+        and (
+            participant is None
+            or not expected_participant
+            or participant == expected_participant
+        )
+    )
+
+
 def _postgres() -> psycopg.Connection:
     return psycopg.connect(
         host="dataset-store-01.keplerops.lab",
@@ -588,9 +601,8 @@ def _training_job(job_id: str, workflow_id: str, trace_id: str) -> dict[str, str
         range_instance, participant, generation, challenge_id, dataset_digest, poison_rows = (
             _claim_job(job_id, workflow_id)
         )
-        if (
-            range_instance != os.environ["KEPLEROPS_RANGE_INSTANCE"]
-            or generation != int(RESET_GENERATION_PATH.read_text(encoding="ascii"))
+        if not _namespace_matches(range_instance) or generation != int(
+            RESET_GENERATION_PATH.read_text(encoding="ascii")
         ):
             raise RuntimeError("training job namespace is invalid")
         artifact, metrics = train_and_evaluate(_base_rows(), poison_rows)
@@ -1000,11 +1012,8 @@ def _extraction_job(job_id: str, workflow_id: str, trace_id: str) -> dict[str, s
             diversity_ratio,
             corpus_rows,
         ) = _claim_extraction_job(job_id, workflow_id)
-        if (
-            range_instance != os.environ["KEPLEROPS_RANGE_INSTANCE"]
-            or participant != os.environ["KEPLEROPS_PARTICIPANT"]
-            or generation
-            != int(RESET_GENERATION_PATH.read_text(encoding="ascii"))
+        if not _namespace_matches(range_instance, participant) or generation != int(
+            RESET_GENERATION_PATH.read_text(encoding="ascii")
         ):
             raise RuntimeError("extraction job namespace is invalid")
         artifact, metrics = _train_extraction_proxy(corpus_rows)
@@ -1128,8 +1137,8 @@ def _validated_job_id(
 def _workflow_trace_id(run_id: str) -> str:
     material = ":".join(
         (
-            os.environ["KEPLEROPS_RANGE_INSTANCE"],
-            os.environ["KEPLEROPS_PARTICIPANT"],
+            os.environ.get("KEPLEROPS_RANGE_INSTANCE", "range-unset"),
+            os.environ.get("KEPLEROPS_PARTICIPANT", "participant-unset"),
             run_id,
         )
     )

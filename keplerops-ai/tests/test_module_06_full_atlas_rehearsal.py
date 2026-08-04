@@ -56,6 +56,7 @@ class Module06FullAtlasRehearsalTests(unittest.TestCase):
         self.assertIn("set(required_evidence) - out_of_scope_hardware", controls_program)
         self.assertIn("preissued = set()", controls_program)
         self.assertIn("expected=(200, 409)", controls_program)
+        self.assertIn('isinstance(receipt.get("receipt"), str)', controls_program)
         self.assertIn('if "kep-m06-g" not in preissued:', controls_program)
         self.assertIn('if "kep-m06-h" not in preissued:', controls_program)
 
