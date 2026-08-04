@@ -46,6 +46,7 @@ else
     -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
     kepler@192.168.78.30 sudo /opt/keplerops-platform/scripts/readiness.sh --core
 fi
+"$ROOT/scripts/check-guests.sh"
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/seeding/seed.sh" mautic langflow business-workflows
 "$ROOT/engineering/reconcile-orion-vision-label-studio.sh"

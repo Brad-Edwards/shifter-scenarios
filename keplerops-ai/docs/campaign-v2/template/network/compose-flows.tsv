@@ -69,11 +69,14 @@ kep-v2-roundcube	kep-v2-stalwart	tcp	25,143,587	webmail IMAP and SMTP
 kep-v2-stalwart	cidr:192.168.78.10/31	tcp	636	AD-backed mail directory
 kep-v2-forgejo	kep-v2-postgres	tcp	5432	source database
 kep-v2-forgejo	kep-v2-keycloak	tcp	8080	source OIDC
+kep-v2-forgejo	kep-v2-caddy	tcp	443	source OIDC public issuer token exchange
+kep-v2-grafana	kep-v2-caddy	tcp	443	metrics OIDC public issuer token exchange
 kep-v2-redmine	kep-v2-postgres	tcp	5432	WorkHub database
 kep-v2-redmine	cidr:192.168.78.10/31	tcp	389,636	WorkHub directory login
 kep-v2-nextcloud	kep-v2-postgres	tcp	5432	file-service database
 kep-v2-nextcloud	kep-v2-redis	tcp	6379	file-service cache
 kep-v2-nextcloud	kep-v2-keycloak	tcp	8080	file-service OIDC
+kep-v2-nextcloud	kep-v2-caddy	tcp	443	file-service OIDC public issuer token exchange
 kep-v2-zammad-init	kep-v2-postgres	tcp	5432	support database initialization
 kep-v2-zammad-init	kep-v2-redis	tcp	6379	support cache initialization
 kep-v2-zammad-init	kep-v2-opensearch	tcp	9200	support index initialization
@@ -97,6 +100,7 @@ kep-v2-langflow	cidr:192.168.78.30/32	tcp	30081	WorkHub agent handoff
 kep-v2-librechat	kep-v2-mongodb	tcp	27017	assistant conversation store
 kep-v2-librechat	kep-v2-meilisearch	tcp	7700	assistant search
 kep-v2-librechat	kep-v2-keycloak	tcp	8080	assistant OIDC
+kep-v2-librechat	kep-v2-caddy	tcp	443	assistant OIDC public issuer token exchange
 kep-v2-librechat	cidr:192.168.78.30/32	tcp	30081	WorkHub agent API
 kep-v2-unleash	kep-v2-postgres	tcp	5432	feature-control database
 kep-v2-odoo	kep-v2-postgres	tcp	5432	business database
@@ -136,6 +140,7 @@ kep-v2-harbor-core	kep-v2-harbor-redis	tcp	6379	registry cache
 kep-v2-harbor-core	kep-v2-harbor-registry	tcp	5000	registry content
 kep-v2-harbor-core	kep-v2-harbor-registryctl	tcp	8080	registry control
 kep-v2-harbor-core	kep-v2-harbor-jobservice	tcp	8080	registry jobs
+kep-v2-harbor-core	kep-v2-caddy	tcp	443	registry OIDC public issuer token exchange
 kep-v2-harbor-jobservice	kep-v2-harbor-core	tcp	8080	registry core
 kep-v2-harbor-jobservice	kep-v2-harbor-redis	tcp	6379	registry job state
 kep-v2-harbor-jobservice	kep-v2-harbor-registryctl	tcp	8080	registry jobs
@@ -160,6 +165,7 @@ kep-v2-airflow-init	kep-v2-rabbitmq	tcp	5672	orchestrator initialization
 kep-v2-airflow-api	kep-v2-postgres	tcp	5432	orchestrator database
 kep-v2-airflow-api	kep-v2-rabbitmq	tcp	5672	orchestrator broker
 kep-v2-airflow-api	kep-v2-keycloak	tcp	8080	orchestrator OIDC
+kep-v2-airflow-api	kep-v2-caddy	tcp	443	orchestrator OIDC public issuer token exchange
 kep-v2-airflow-scheduler	kep-v2-postgres	tcp	5432	orchestrator metadata
 kep-v2-airflow-scheduler	kep-v2-rabbitmq	tcp	5672	orchestrator broker
 kep-v2-airflow-dag-processor	kep-v2-postgres	tcp	5432	orchestrator metadata
@@ -171,6 +177,7 @@ kep-v2-airflow-worker	kep-v2-rabbitmq	tcp	5672	workflow broker
 kep-v2-airflow-worker	kep-v2-airflow-api	tcp	8080	workflow execution API
 kep-v2-airflow-worker	kep-v2-mlflow	tcp	5000	experiment workflow
 kep-v2-airflow-worker	kep-v2-minio	tcp	9000	artifact workflow
+kep-v2-airflow-worker	kep-v2-qdrant-edge	tcp	6333	vector role-proof workflow
 kep-v2-airflow-worker	kep-v2-qdrant-writer	tcp	6333	indexing workflow
 kep-v2-airflow-worker	kep-v2-lakefs	tcp	8000	dataset workflow
 kep-v2-airflow-worker	kep-v2-zammad-nginx	tcp	8080	support workflow

@@ -2,24 +2,18 @@
 set -euo pipefail
 
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
+readonly COMPOSE=(docker compose --env-file component-lock.env -f compose.foundation.yaml)
 
 cd "$ROOT"
 "$ROOT/scripts/ensure-identity-network.sh"
-compose=(
-  docker compose
-  --env-file component-lock.env
-  -f compose.foundation.yaml
-)
 if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
-  "${compose[@]}" pull
+  "${COMPOSE[@]}" pull
 fi
 
 install -d -m 0750 "$ROOT/state"
-if [[ -d "$ROOT/state/caddy-root.crt" ]]; then
-  rmdir "$ROOT/state/caddy-root.crt"
-fi
 
-"${compose[@]}" up -d step-ca caddy
+"${COMPOSE[@]}" up -d step-ca caddy
+
 "$ROOT/scripts/reconcile-step-ca.sh"
 
 for attempt in $(seq 1 60); do
@@ -32,12 +26,16 @@ for attempt in $(seq 1 60); do
   }
   sleep 2
 done
+
 caddy_root="$(mktemp)"
 docker exec kep-v2-caddy cat /data/caddy/pki/authorities/local/root.crt >"$caddy_root"
+if [[ -e "$ROOT/state/caddy-root.crt" && ! -f "$ROOT/state/caddy-root.crt" ]]; then
+  rm -rf -- "$ROOT/state/caddy-root.crt"
+fi
 install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"
 rm -f "$caddy_root"
 
-"${compose[@]}" up -d
+"${COMPOSE[@]}" up -d
 
 if docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1; then
   docker network connect kep-v2-public \

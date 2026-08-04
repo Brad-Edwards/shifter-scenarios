@@ -204,11 +204,17 @@ if [[ $MODE == full ]]; then
     fail "assistant endpoint is not configured"
   litellm_master_key=$(kubectl -n orion-platform get secret litellm-runtime \
     -o jsonpath='{.data.LITELLM_MASTER_KEY}' | base64 -d)
-  completion=$(curl -fsS \
-    -H 'Content-Type: application/json' \
-    -H "Authorization: Bearer $litellm_master_key" \
-    --data '{"model":"orion-assistant","messages":[{"role":"user","content":"Reply with the single word ready."}],"max_tokens":64,"temperature":0}' \
-    http://127.0.0.1:18400/v1/chat/completions)
+  completion=""
+  for _ in $(seq 1 5); do
+    if completion=$(curl -fsS \
+      -H 'Content-Type: application/json' \
+      -H "Authorization: Bearer $litellm_master_key" \
+      --data '{"model":"orion-assistant","messages":[{"role":"user","content":"Reply with the single word ready."}],"max_tokens":64,"temperature":0}' \
+      http://127.0.0.1:18400/v1/chat/completions); then
+      break
+    fi
+    sleep 2
+  done
   [[ -n $(jq -r '.choices[0].message.content // .choices[0].message.reasoning_content // empty' <<<"$completion") ]] || \
     fail "stateless assistant completion"
   pass "admitted stateless assistant completion through LiteLLM"

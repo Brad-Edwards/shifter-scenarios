@@ -46,6 +46,7 @@ install -d -m 0755 "$ROOT"
 rsync -a --delete "$SOURCE_DIR/" "$ROOT/"
 chown -R root:root "$ROOT"
 install -d -m 0755 "$ROOT/state/identity/truststores"
+rm -f "$ROOT/state/guests/review-verification.env"
 
 install -m 0644 "$ROOT/systemd/keplerops-v2-template.service" \
   /etc/systemd/system/keplerops-v2-template.service

@@ -30,8 +30,8 @@ chown 1000:1000 "$STATE/tls/tls.key"
 chmod 0600 "$STATE/tls/tls.key"
 chmod 0644 "$STATE/tls/tls.crt"
 
-if [[ -d "$STATE/caddy-root.crt" ]]; then
-  rmdir "$STATE/caddy-root.crt"
+if [[ -e "$STATE/caddy-root.crt" && ! -f "$STATE/caddy-root.crt" ]]; then
+  rm -rf -- "$STATE/caddy-root.crt"
 fi
 docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
   cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"

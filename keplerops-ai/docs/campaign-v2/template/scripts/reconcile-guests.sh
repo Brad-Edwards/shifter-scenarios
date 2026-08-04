@@ -122,12 +122,12 @@ configure_review_queues() {
   rabbit_api PUT /users/svc-review01 \
     "{\"password\":\"$REVIEW_RABBIT_PASSWORD\",\"tags\":\"\"}"
   rabbit_api PUT /permissions/keplerops/svc-review01 \
-    '{"configure":"^orion\\.review\\.review01$","write":"^amq\\.default$","read":"^orion\\.review\\.review01$"}'
+    '{"configure":"^orion\\.review\\.review01$","write":"^(amq\\.default|orion\\.review\\.results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?)$","read":"^orion\\.review\\.review01$"}'
 
   rabbit_api PUT /users/svc-integration01 \
     "{\"password\":\"$INTEGRATION_RABBIT_PASSWORD\",\"tags\":\"\"}"
   rabbit_api PUT /permissions/keplerops/svc-integration01 \
-    '{"configure":"^orion\\.review\\.integration01$","write":"^amq\\.default$","read":"^orion\\.review\\.integration01$"}'
+    '{"configure":"^orion\\.review\\.integration01$","write":"^(amq\\.default|orion\\.review\\.results(\\.[A-Za-z0-9][A-Za-z0-9._:-]{2,127})?)$","read":"^orion\\.review\\.integration01$"}'
 
   rabbit_api PUT /users/svc-review-verification \
     "{\"password\":\"$CHECK_RABBIT_PASSWORD\",\"tags\":\"management\"}"
@@ -169,7 +169,7 @@ RABBITMQ_QUEUE=$queue
 RABBITMQ_RESULT_QUEUE=orion.review.results
 ORION_AGENT_URL=http://192.168.78.1:13081/v1/chat
 ORION_AGENT_API_KEY=KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053
-ORION_ACTOR=$workhub_user
+ORION_ACTOR=workhub-service
 ORION_ASSISTANT_RELEASE_ID=sha256:$(printf unresolved-assistant-release | sha256sum | awk '{print $1}')
 ORION_ASSISTANT_MODEL_DIGEST=sha256:$(printf unresolved-assistant-model | sha256sum | awk '{print $1}')
 OTLP_HTTP_URL=http://10.61.80.10:4318
