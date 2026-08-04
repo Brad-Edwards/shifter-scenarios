@@ -1818,9 +1818,19 @@ class GcpBuildContractTests(unittest.TestCase):
         )
         self.assertIn('[[ -d "$ROOT/state/caddy-root.crt" ]]', foundation)
         self.assertIn('rmdir "$ROOT/state/caddy-root.crt"', foundation)
+        self.assertIn('"${compose[@]}" up -d step-ca caddy', foundation)
+        self.assertIn("caddy root certificate did not become available", foundation)
         self.assertLess(
             foundation.index('rmdir "$ROOT/state/caddy-root.crt"'),
             foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+        )
+        self.assertLess(
+            foundation.index('"${compose[@]}" up -d step-ca caddy'),
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+        )
+        self.assertLess(
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+            foundation.rindex('"${compose[@]}" up -d'),
         )
         self.assertIn('[[ -d "$STATE/caddy-root.crt" ]]', workstation)
         self.assertIn('rmdir "$STATE/caddy-root.crt"', workstation)
