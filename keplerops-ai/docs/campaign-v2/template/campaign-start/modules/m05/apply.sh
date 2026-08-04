@@ -281,6 +281,16 @@ spec:
   syncPolicy: {automated: {prune: false, selfHeal: true}}
 YAML
 k3s kubectl apply -f /tmp/m05-argo-application.yaml >/dev/null
+# The signature-admission Jobs are immutable. When a rebuild bumps the Orion
+# image digests, Argo cannot patch the already-completed Jobs, so the
+# application stays OutOfSync forever and this wait never succeeds (a fresh apply
+# creates them cleanly, but a re-apply/rebuild on an existing runtime does not).
+# Delete the stale Jobs so Argo (selfHeal) recreates them at the new revision.
+# This does not change the admission contract: the recreated Jobs still verify
+# the signed agent and tool baselines before the runtime is admitted.
+k3s kubectl -n orion-platform delete job \
+  orion-agent-signature-admission orion-mcp-signature-admission \
+  --ignore-not-found >/dev/null 2>&1 || true
 for _ in $(seq 1 90); do
   state="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.status}/{.status.health.status}' 2>/dev/null || true)"
   revision="$(k3s kubectl -n argocd get application orion-agent-runtime -o jsonpath='{.status.sync.revision}' 2>/dev/null || true)"
