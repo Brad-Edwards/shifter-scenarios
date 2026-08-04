@@ -221,6 +221,21 @@ marker("test-module-10-theft", "PASS" if ok else "FAIL", 2)
     awards = common + '''state = read_state(
     capstone_state, {"candidate_id", "activation_id", "access_id", "effect_id"}
 )
+m06 = read_state(module06_state, {"artifact_id", "digest"})
+m08 = read_state(module08_state, {"corpus_id", "job_id"})
+m06_refresh = call(gateway + "/v1/adversarial/attempt", token=token, payload={
+    "challenge_id": "kep-m06-e",
+    "artifact_id": m06["artifact_id"],
+    "participant_interface": "python",
+    "assistance_mode": "none",
+})
+m08_refresh = call(gateway + "/v1/extraction/attempt", token=token, payload={
+    "challenge_id": "kep-m08-e",
+    "corpus_id": m08["corpus_id"],
+    "job_id": m08["job_id"],
+    "participant_interface": "python",
+    "assistance_mode": "none",
+})
 joined = attempt(
     "kep-m10-g",
     candidate_id=state["candidate_id"],
@@ -242,7 +257,12 @@ for challenge_id in challenge_ids:
     )
     if verified.get("valid") is True:
         receipts.add(challenge_id)
-ok = joined.get("objective_status") == "passed" and receipts == set(challenge_ids)
+ok = (
+    m06_refresh.get("objective_status") == "passed"
+    and m08_refresh.get("objective_status") == "passed"
+    and joined.get("objective_status") == "passed"
+    and receipts == set(challenge_ids)
+)
 marker("test-module-10-awards", "PASS" if ok else "FAIL", len(receipts))
 '''
     return controls, deployment, impact, theft, awards

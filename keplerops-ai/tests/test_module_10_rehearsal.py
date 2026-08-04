@@ -59,6 +59,8 @@ class Module10RehearsalTests(unittest.TestCase):
             "3422777952",
             'verified.get("digest") == access.get("artifact_digest")',
             'before.get("objective_status") == "not_satisfied"',
+            '"challenge_id": "kep-m06-e"',
+            '"challenge_id": "kep-m08-e"',
             "expected=422",
             "expected=(200, 409)",
         ):
