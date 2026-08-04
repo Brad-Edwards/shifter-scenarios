@@ -15,6 +15,12 @@ if [[ $MODE != build && $MODE != resume ]]; then
   exit 2
 fi
 
+# buildx is not installed on the range host, so Compose's Bake build path
+# mishandles services that share a build (it hands the second one a 2-byte
+# dockerfile). Disable Bake for every compose build in this standup; Bake is a
+# build-only feature, so pulls and `up` are unaffected.
+export COMPOSE_BAKE=false
+
 if [[ $MODE == resume ]]; then
   export KEPLEROPS_SKIP_PULL=1
 fi
