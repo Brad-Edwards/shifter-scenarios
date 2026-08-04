@@ -221,7 +221,7 @@ class ReleaseOperationsAccessContractTest(unittest.TestCase):
             "for _ in $(seq 1 30); do",
             "orion_visible_release_evaluation",
             "orion_import_exception_review",
-            "curl -kfsS -H \"Authorization: ${token}\"",
+            "curl -kfsS -H \"Host: ${RELAY_HOST}\" -H \"Authorization: ${token}\"",
         ):
             self.assertIn(marker, apply_source)
         self.assertIn("ROLE_NAME = \"Orion Release Runner\"", reconciler_source)
@@ -240,7 +240,8 @@ class ReleaseOperationsAccessContractTest(unittest.TestCase):
         self.assertIn("NEXTCLOUD_HOST: files.keplerops.lab", COMPOSE_OVERLAY.read_text())
         self.assertIn('${url} =~ ^https://git\\.cinder\\.lab/', VALIDATE.read_text())
         self.assertNotIn("airflow users ", apply_source)
-        self.assertNotIn("Host: relay.cinder", apply_source)
+        self.assertIn('readonly RELAY_HOST="${CINDER_RELAY_INTERNAL_HOST:-relay.cinder.cinder.lab}"', apply_source)
+        self.assertIn('-H "Host: ${RELAY_HOST}"', apply_source)
 
     def test_native_minio_records_are_projected_to_participant_files(self) -> None:
         source = MODULE.read_text()
@@ -309,7 +310,7 @@ class ReleaseOperationsAccessContractTest(unittest.TestCase):
         compose_source = COMPOSE_OVERLAY.read_text()
         self.assertIn("REQUESTS_CA_BUNDLE: /etc/keplerops/caddy-root.crt", compose_source)
         self.assertIn("RELAY_INTERNAL_URL: http://192.168.78.30:31080", compose_source)
-        self.assertIn("RELAY_HOST: relay.cinder.lab", compose_source)
+        self.assertIn("RELAY_HOST: relay.cinder.cinder.lab", compose_source)
         self.assertIn(
             "./state/caddy-root.crt:/etc/keplerops/caddy-root.crt:ro",
             compose_source,
@@ -354,7 +355,7 @@ class ImportWorkerRegressionTest(unittest.TestCase):
             os.environ,
             {
                 "RELAY_INTERNAL_URL": "http://192.168.78.30:31080",
-                "RELAY_HOST": "relay.cinder.lab",
+                "RELAY_HOST": "relay.cinder.cinder.lab",
             },
         ):
             worker.post_relay("m09-import-exceptions", {"status": "accepted"})
@@ -363,7 +364,7 @@ class ImportWorkerRegressionTest(unittest.TestCase):
             observed["url"],
             "http://192.168.78.30:31080/m09-import-exceptions",
         )
-        self.assertEqual(observed["headers"], {"Host": "relay.cinder.lab"})
+        self.assertEqual(observed["headers"], {"Host": "relay.cinder.cinder.lab"})
 
 
 if __name__ == "__main__":

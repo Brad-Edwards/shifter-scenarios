@@ -12,7 +12,15 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol
 
-from live_rehearsal import CommandLifecycle, PlaywrightKasmSession, RehearsalError, RunConfig, initial_participant_program
+from live_rehearsal import (
+    CommandLifecycle,
+    PlaywrightKasmSession,
+    RehearsalError,
+    RunConfig,
+    add_retained_reset_arguments,
+    initial_participant_program,
+    retained_reset_before_run,
+)
 
 
 PACK_ROOT = Path(__file__).resolve().parents[1]
@@ -68,10 +76,20 @@ def identity_token(username, password):
         "client_id": "keplerops-lab", "grant_type": "password",
         "username": username, "password": password,
     }).encode()
-    request = urllib.request.Request(identity, data=form, method="POST")
-    request.add_header("Content-Type", "application/x-www-form-urlencoded")
-    with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
-        return json.loads(response.read(65536))["access_token"]
+    for attempt in range(4):
+        request = urllib.request.Request(identity, data=form, method="POST")
+        request.add_header("Content-Type", "application/x-www-form-urlencoded")
+        try:
+            with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
+                return json.loads(response.read(65536))["access_token"]
+        except urllib.error.HTTPError as error:
+            if error.code not in {500, 502, 503, 504} or attempt == 3:
+                raise
+        except urllib.error.URLError:
+            if attempt == 3:
+                raise
+        time.sleep(attempt + 1)
+    raise RuntimeError("identity token unavailable")
 
 airflow_token = workflow_call(airflow + "/auth/token", payload={
     "username": "ml.engineer", "password": engineer.group(1),
@@ -456,7 +474,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
     parser.add_argument("--skip-health-check", action="store_true")
     return parser
 
@@ -478,7 +496,7 @@ def main() -> int:
     result = Module09FullAtlasRunner(
         lifecycle,
         session,
-        reset_before_run=not args.prepared_module_reset,
+        reset_before_run=retained_reset_before_run(args, "module-09 full-ATLAS"),
         skip_health_check=args.skip_health_check,
     ).run()
     _write_report(

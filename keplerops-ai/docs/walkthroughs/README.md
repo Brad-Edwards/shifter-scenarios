@@ -1,7 +1,7 @@
 # KeplerOps QA challenge walkthrough
 
-This is the spoiler-heavy QA guide for completing and verifying all 134
-playable KeplerOps challenges. It links the participant-facing instructions,
+This is the spoiler-heavy QA guide for completing and verifying the 132
+issue-62 in-scope KeplerOps challenges. It links the participant-facing instructions,
 expected results, receipt steps, and negative controls used for the manual
 participant-equivalent walkthrough.
 
@@ -29,7 +29,9 @@ text says **CTFd**, use Shifter's **Challenges** page.
 ## Run the challenges
 
 Work through both linked files where a module has separate core and expansion
-instructions. Together they cover all 134 playable challenges.
+instructions. Together they cover all 132 issue-62 in-scope challenges. The
+unimplemented hardware rows `kep-m06-m` and `kep-m08-i` are authored catalog
+entries but are not part of this participant-only pass.
 
 | Module | Challenges | Participant-path walkthroughs | QA checklist |
 | --- | ---: | --- | --- |
@@ -38,12 +40,12 @@ instructions. Together they cover all 134 playable challenges.
 | 03 - Context Poisoning | 11 | [Core](module-03-context-poisoning.md), [expansion](module-03-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-03-context-poisoning/index.md) |
 | 04 - Model Secrets | 13 | [Core](module-04-model-secrets.md), [expansion](module-04-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-04-model-secrets/index.md) |
 | 05 - Agent Persistence | 17 | [Core](module-05-agent-persistence.md), [expansion](module-05-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-05-agent-persistence/index.md) |
-| 06 - Adversarial Input | 22 | [Core](module-06-adversarial-input.md), [expansion](module-06-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-06-adversarial-input/index.md) |
+| 06 - Adversarial Input | 21 | [Core](module-06-adversarial-input.md), [expansion](module-06-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-06-adversarial-input/index.md) |
 | 07 - Training Poisoning | 9 | [Core](module-07-training-poisoning.md), [expansion](module-07-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-07-training-poisoning/index.md) |
-| 08 - Model Extraction | 11 | [Core](module-08-model-extraction.md), [expansion](module-08-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-08-model-extraction/index.md) |
+| 08 - Model Extraction | 10 | [Core](module-08-model-extraction.md), [expansion](module-08-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-08-model-extraction/index.md) |
 | 09 - Model Backdoor | 12 | [Core](module-09-model-backdoor.md), [expansion](module-09-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-09-model-backdoor/index.md) |
 | 10 - AI Capstone | 17 | [Core](module-10-ai-capstone.md), [expansion](module-10-full-atlas-expansion.md) | [Checklist](../playtester-guide/challenges/module-10-ai-capstone/index.md) |
-| **Total** | **134** | | |
+| **Total** | **132** | | |
 
 The module walkthroughs above contain the actual participant actions. The
 [all-challenge index](../playtester-guide/challenges/README.md) remains a
@@ -91,7 +93,7 @@ Do not reset or repair the range unless the playtest coordinator asks you to.
 
 ## Completion
 
-A QA pass is complete when all 134 checklist entries have a result, every
+A QA pass is complete when all 132 in-scope checklist entries have a result, every
 successful challenge has a verified and scored receipt, every required
 negative control has behaved as documented, and every failure has a
 reproducible defect record.

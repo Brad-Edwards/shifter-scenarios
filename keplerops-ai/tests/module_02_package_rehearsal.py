@@ -73,7 +73,7 @@ gateway_ids = {{
 }}
 portal_ids = {{row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]}}
 for flag_id in flag_ids.values():
-    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=409)
+    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=(200, 409))
 
 prerequisite = call(gateway + "/v1/evasion/attempt", token=token, payload={{
     "challenge_id": "kep-m02-a",

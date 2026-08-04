@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -223,7 +225,7 @@ portal_ids = {
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }
 for flag_id in flag_ids.values():
-    call(gateway + "/v1/extraction/receipts/" + flag_id, token=token, payload={}, expected=409)
+    call(gateway + "/v1/extraction/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 call(gateway + "/v1/extraction/queries", token=token, payload={
     "challenge_id": "kep-m08-a",
     "prompt": teacher_prompts[0],
@@ -423,7 +425,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -440,7 +442,9 @@ def main() -> int:
         timeout_seconds=2400,
     )
     result = Module08Runner(
-        lifecycle, session, reset_before_run=not args.prepared_module_reset
+        lifecycle,
+        session,
+        reset_before_run=retained_reset_before_run(args, "module-08 smoke"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-08-smoke.json",

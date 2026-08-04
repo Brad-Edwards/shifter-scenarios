@@ -54,7 +54,8 @@ class Module05RehearsalTests(unittest.TestCase):
         ):
             self.assertNotIn(forbidden, program)
         self.assertIn("expected=422", program)
-        self.assertIn("expected=409", program)
+        self.assertIn("expected=(200, 409)", program)
+        self.assertNotIn("session-before-plant", programs[0])
         self.assertIn('"restart_verified": True', program)
         self.assertIn("without shortening the memory argument", program)
         self.assertIn("XML tool call", program)

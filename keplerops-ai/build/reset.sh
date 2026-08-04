@@ -13,12 +13,41 @@ while (($#)); do
 done
 [[ $RANGE_INSTANCE =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || exit 2
 [[ $PARTICIPANT =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || exit 2
-if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} ]]; then
+refresh_access_token() {
   export GOOGLE_OAUTH_ACCESS_TOKEN
-  GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
-fi
-if [[ -z ${CLOUDSDK_AUTH_ACCESS_TOKEN:-} ]]; then
+  if ! GOOGLE_OAUTH_ACCESS_TOKEN=$(
+    env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+      gcloud auth application-default print-access-token 2>/dev/null
+  ); then
+    GOOGLE_OAUTH_ACCESS_TOKEN=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth print-access-token
+    )
+  fi
   export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN
+}
+refresh_access_token
+resolve_gcloud_account() {
+  local account=${KEPLEROPS_GCLOUD_ACCOUNT:-}
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth list --filter=status:ACTIVE --format='value(account)' 2>/dev/null |
+        head -n1 || true
+    )
+  fi
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud config get-value core/account 2>/dev/null || true
+    )
+  fi
+  printf '%s\n' "$account"
+}
+GCLOUD_ACCOUNT=$(resolve_gcloud_account)
+GCLOUD_ACCOUNT_ARGS=()
+if [[ -n "$GCLOUD_ACCOUNT" ]]; then
+  GCLOUD_ACCOUNT_ARGS=(--account "$GCLOUD_ACCOUNT")
 fi
 
 ROOT="$BUILD_ROOT/.operator/$RANGE_INSTANCE-$PARTICIPANT"
@@ -66,8 +95,10 @@ PY
 RESET_SSH_TIMEOUT_SECONDS=${KEPLEROPS_RESET_SSH_TIMEOUT_SECONDS:-240}
 ssh_instance_command() {
   local instance=$1 command=$2
+  refresh_access_token
   timeout --kill-after=15s "${RESET_SSH_TIMEOUT_SECONDS}s" \
     gcloud compute ssh "$instance" \
+      "${GCLOUD_ACCOUNT_ARGS[@]}" \
       --project "$PROJECT_ID" \
       --zone "$ZONE" \
       --tunnel-through-iap \
@@ -96,7 +127,7 @@ wait_for_carrier_ready() {
   [[ -n "$instance" ]] || return 2
   for _ in $(seq 1 720); do
     if ssh_instance_command "$instance" \
-      "sudo test \"\$(cat /proc/sys/kernel/random/boot_id)\" = \"\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\""; then
+      "sudo bash -c 'test \"\$(cat /proc/sys/kernel/random/boot_id)\" = \"\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\"'"; then
       return 0
     fi
     sleep 10
@@ -208,12 +239,13 @@ PY
   return 1
 }
 
-replace_nested_range
 : >"$WINDOWS_READBACK"
 chmod 0600 "$WINDOWS_READBACK"
-while read -r OWNER; do
-  verify_windows_owner "$OWNER"
-done < <(
+
+verify_windows_owners() {
+  while read -r OWNER; do
+    verify_windows_owner "$OWNER"
+  done < <(
   python3 -c '
 import sys
 sys.path.insert(0, sys.argv[1])
@@ -221,6 +253,15 @@ import lifecycle
 print("\n".join(lifecycle.WINDOWS_RESET_OWNERS))
 ' "$BUILD_ROOT/gcp"
 )
+}
+
+if [[ $RESUMING == true ]] && verify_windows_owners; then
+  :
+else
+  : >"$WINDOWS_READBACK"
+  replace_nested_range
+  verify_windows_owners
+fi
 
 wait_for_carrier_ready
 

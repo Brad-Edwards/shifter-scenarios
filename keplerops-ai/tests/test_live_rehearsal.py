@@ -46,7 +46,35 @@ class LiveRehearsalContractTests(unittest.TestCase):
         self.assertIn('"$PACK_ROOT/build/health-check.sh"', source)
         self.assertIn("--walkthrough-only", source)
         self.assertIn("--prepared-module-reset", source)
-        self.assertIn("134 unique realized challenges", source)
+        self.assertIn("--allow-canonical-reset", source)
+        self.assertIn("--exclude-challenge kep-m06-m", source)
+        self.assertIn("--exclude-challenge kep-m08-i", source)
+        self.assertIn("132 in-scope challenges", source)
+
+    def test_retained_runners_require_explicit_canonical_reset_opt_in(self) -> None:
+        unsafe = (
+            "reset_before_run=not args.prepared_module_reset",
+            "canonical_reset=not args.prepared_module_reset",
+        )
+        guarded = (
+            "retained_reset_before_run(args",
+            "require_canonical_reset_approval(args",
+        )
+        for path in sorted((PACK_ROOT / "tests").glob("module_*.py")):
+            source = path.read_text(encoding="utf-8")
+            for pattern in unsafe:
+                with self.subTest(path=path.name, pattern=pattern):
+                    self.assertNotIn(pattern, source)
+            if (
+                "--prepared-module-reset" in source
+                or (
+                    "lifecycle.reset()" in source
+                    and "retained existing range" in source
+                )
+                or path.name == "module_01_expansion_rehearsal.py"
+            ):
+                with self.subTest(path=path.name, guard="canonical reset"):
+                    self.assertTrue(any(pattern in source for pattern in guarded))
 
     @staticmethod
     def _module_01_report(completed_at: str) -> dict[str, object]:
@@ -122,7 +150,9 @@ class LiveRehearsalContractTests(unittest.TestCase):
             initial,
         )
         self.assertIn('"kep-m02-l": "flag-synthetic-spearphish"', initial)
-        self.assertIn("| backdoor_ids | capstone_ids", initial)
+        self.assertIn("context_catalog_ids", initial)
+        self.assertIn("secrets_catalog_ids", initial)
+        self.assertIn("| backdoor_ids\n    | capstone_ids", initial)
         self.assertIn("len(challenges) == 134", after_reset)
         self.assertNotIn("len(challenges) == 34", after_reset)
 
@@ -694,6 +724,7 @@ class LiveRehearsalContractTests(unittest.TestCase):
         rows = (
             [{"filename": start_marker}],
             [{"filename": start_marker}, {"filename": "kepexit-0"}],
+            rehearsal.RehearsalError("participant result listing unavailable"),
             [
                 {"filename": start_marker},
                 {"filename": "kepexit-0"},
@@ -702,7 +733,7 @@ class LiveRehearsalContractTests(unittest.TestCase):
         )
         with (
             mock.patch.object(session, "_restore_desktop"),
-            mock.patch.object(session, "_downloads", side_effect=rows),
+            mock.patch.object(session, "_downloads", side_effect=rows) as downloads,
         ):
             results, _ = session._execute_active(
                 "true",
@@ -712,6 +743,7 @@ class LiveRehearsalContractTests(unittest.TestCase):
             )
 
         self.assertEqual(results[0].check_id, "test-start-state")
+        self.assertEqual(downloads.call_count, 4)
         page.wait_for_timeout.assert_called_with(500)
 
     def test_kasm_retries_only_a_command_that_never_started(self) -> None:

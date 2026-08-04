@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -237,11 +239,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument(
-        "--prepared-module-reset",
-        action="store_true",
-        help="use a separately verified module-service reset instead of resetting the range",
-    )
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -260,7 +258,7 @@ def main() -> int:
     result = Module04Runner(
         lifecycle,
         session,
-        reset_before_run=not args.prepared_module_reset,
+        reset_before_run=retained_reset_before_run(args, "module-04 smoke"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-04-smoke.json",

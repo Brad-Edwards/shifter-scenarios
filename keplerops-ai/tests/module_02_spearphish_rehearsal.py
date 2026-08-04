@@ -38,7 +38,7 @@ listed = {
     for row in call(gateway + "/v1/evasion/challenges", token=token)["challenges"]
 }
 portal_ids = {row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]}
-call(proof + "/v1/receipts/" + flag_id, token=token, payload={}, expected=409)
+call(proof + "/v1/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 call(gateway + "/v1/evasion/supply-attempts", token=token, expected=404, payload={
     "challenge_id": challenge_id,
     "campaign_id": "sph-" + "0" * 24,

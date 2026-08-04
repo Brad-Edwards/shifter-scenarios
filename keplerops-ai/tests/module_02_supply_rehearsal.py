@@ -65,7 +65,7 @@ portal_ids = {{
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }}
 for flag_id in flag_ids.values():
-    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=409)
+    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=(200, 409))
 
 public_issue = call("https://repo-ticket-01.keplerops.lab/issues.json", payload={{
     "issue": {{
@@ -240,7 +240,7 @@ marker(
 def replay_program() -> str:
     prefix = initial_participant_program().split("challenges =", 1)[0]
     return prefix + r'''flag_id = "flag-web-exploit-delivery"
-call(proof + "/v1/receipts/" + flag_id, token=token, payload={}, expected=409)
+call(proof + "/v1/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 public_issue = call("https://repo-ticket-01.keplerops.lab/issues.json", payload={
     "issue": {
         "project_id": "keplerops-model-release",

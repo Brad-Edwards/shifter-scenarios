@@ -80,7 +80,7 @@ PY
 # coordinates, fetches that record again with service credentials, verifies
 # signatures/digests, and rechecks the operation's clean or before-state
 # negative.  No caller-selected URL or uploaded carrier is accepted.
-compose exec -T -e OPERATION="${OPERATION}" airflow-api python - <<'PY'
+compose exec -T -e OPERATION="${OPERATION}" -e PYTHONPATH=/opt/airflow/config airflow-api python - <<'PY'
 import json
 import os
 from production_jobs import validate_accepted

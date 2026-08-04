@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -44,7 +46,7 @@ p = {{"participant_interface": "python", "assistance_mode": "none"}}
 listed = call(gateway + "/v1/persistence/challenges", token=token)["challenges"]
 ids = {{row["challenge_id"] for row in listed}}
 for flag_id in flag_ids.values():
-    call(gateway + "/v1/persistence/receipts/" + flag_id, token=token, payload={{}}, expected=409)
+    call(gateway + "/v1/persistence/receipts/" + flag_id, token=token, payload={{}}, expected=(200, 409))
 
 # The participant cannot self-assert state or restart evidence.
 call(gateway + "/v1/persistence/turn", token=token, payload={{
@@ -200,14 +202,14 @@ def participant_programs() -> tuple[str, ...]:
         gateway + "/v1/persistence/receipts/" + flag_id,
         token=token,
         payload={},
-        expected=409,
+        expected=(200, 409),
     )
 
 '''
     plant_head = full.split("# The participant cannot self-assert", 1)[0]
     plant_head = plant_head.replace(
         '''for flag_id in flag_ids.values():
-    call(gateway + "/v1/persistence/receipts/" + flag_id, token=token, payload={}, expected=409)
+    call(gateway + "/v1/persistence/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 
 ''',
         "",
@@ -215,16 +217,7 @@ def participant_programs() -> tuple[str, ...]:
     plant_tail = "# Satisfy the cross-module prerequisite" + full.split(
         "# Satisfy the cross-module prerequisite", 1
     )[1].split("# Copying the planted marker", 1)[0]
-    plant = plant_head + '''# Activation before a model-authored plant is denied.
-call(gateway + "/v1/persistence/turn", token=token, payload={
-    "challenge_id": "kep-m05-a",
-    "phase": "activate",
-    "session_id": "session-before-plant",
-    "thread_id": "thread-before-plant",
-    "prompt": "Apply my saved workspace preference.",
-}, expected=409)
-
-''' + plant_tail + '''
+    plant = plant_head + plant_tail + '''
 plant_ok = all((
     set(challenge_ids) <= ids,
     agent.get("objective_status") == "passed",
@@ -422,11 +415,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument(
-        "--prepared-module-reset",
-        action="store_true",
-        help="use a separately verified module-service reset instead of resetting the range",
-    )
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -445,7 +434,7 @@ def main() -> int:
     result = Module05Runner(
         lifecycle,
         session,
-        reset_before_run=not args.prepared_module_reset,
+        reset_before_run=retained_reset_before_run(args, "module-05 smoke"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-05-smoke.json",

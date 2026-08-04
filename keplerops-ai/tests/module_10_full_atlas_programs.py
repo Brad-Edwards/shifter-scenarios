@@ -66,10 +66,20 @@ def identity_token(username, password):
         "client_id": "keplerops-lab", "grant_type": "password",
         "username": username, "password": password,
     }).encode()
-    request = urllib.request.Request(identity, data=form, method="POST")
-    request.add_header("Content-Type", "application/x-www-form-urlencoded")
-    with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
-        return json.loads(response.read(65536))["access_token"]
+    for attempt in range(4):
+        request = urllib.request.Request(identity, data=form, method="POST")
+        request.add_header("Content-Type", "application/x-www-form-urlencoded")
+        try:
+            with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
+                return json.loads(response.read(65536))["access_token"]
+        except urllib.error.HTTPError as error:
+            if error.code not in {500, 502, 503, 504} or attempt == 3:
+                raise
+        except urllib.error.URLError:
+            if attempt == 3:
+                raise
+        time.sleep(attempt + 1)
+    raise RuntimeError("identity token unavailable")
 airflow_token = workflow_call(airflow + "/auth/token", payload={
     "username": "ml.engineer", "password": engineer.group(1),
 }, expected=201)["access_token"]

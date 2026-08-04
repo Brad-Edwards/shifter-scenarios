@@ -831,6 +831,8 @@ if ($HostId -eq "ad-dc-01") {
     & net.exe user Administrator $domainAdminPassword | Out-Null
     Install-WindowsFeature AD-Domain-Services, DNS, GPMC, FS-FileServer -IncludeManagementTools |
         Out-Null
+    $adapter = Get-NetAdapter | Where-Object Status -eq "Up" | Select-Object -First 1
+    Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses $ControllerIp
 
     $ldapsRoot = Join-Path $StateRoot "ldaps"
     $ldapsArchive = Join-Path $StateRoot "tls-ad-dc-01.tar"

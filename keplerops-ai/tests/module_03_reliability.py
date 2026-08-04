@@ -22,7 +22,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 from module_03_rehearsal import CONTENTS
 
@@ -179,9 +181,18 @@ class ScopedReliabilityLifecycle(CommandLifecycle):
             raise RehearsalError(self.scoped_reset_unavailable)
         try:
             inventory = json.loads(output.stdout)
-            instances = {
-                asset: inventory[asset]["name"] for asset in self.scoped_assets
-            }
+            carrier = inventory.get("range-control-carrier-01", {})
+            carrier_name = carrier.get("name")
+            instances = {}
+            workload_assets = set()
+            for asset in self.scoped_assets:
+                if asset in inventory:
+                    instances[asset] = inventory[asset]["name"]
+                elif isinstance(carrier_name, str):
+                    instances[asset] = carrier_name
+                    workload_assets.add(asset)
+                else:
+                    raise KeyError(asset)
         except (json.JSONDecodeError, KeyError, TypeError) as error:
             raise RehearsalError(self.scoped_reset_unavailable) from error
         if any(
@@ -198,12 +209,30 @@ class ScopedReliabilityLifecycle(CommandLifecycle):
         ):
             raise RehearsalError(self.scoped_reset_unavailable)
         generation = self.reset_generation()
+        def command_for(asset: str, script: str, *arguments: object) -> str:
+            if asset in workload_assets:
+                action = {
+                    "quiesce-local": "quiesce",
+                    "reset-local": "reset",
+                    "reset-verify-local": "reset-verify",
+                }[script]
+                suffix = "".join(f" {argument}" for argument in arguments)
+                return (
+                    "sudo bash /var/lib/keplerops-carrier/bin/keplerops-workload "
+                    f"{action} {asset}{suffix}"
+                )
+            else:
+                path = f"/var/lib/keplerops/{script}"
+                prefix = ""
+            suffix = "".join(f" {argument}" for argument in arguments)
+            return f"sudo {prefix}bash {path}{suffix}"
+
         commands = (
-            *((asset, "sudo bash /var/lib/keplerops/quiesce-local")
+            *((asset, command_for(asset, "quiesce-local"))
               for asset in self.quiesce_assets),
-            *((asset, f"sudo bash /var/lib/keplerops/reset-local {generation}")
+            *((asset, command_for(asset, "reset-local", generation))
               for asset in self.reset_assets),
-            *((asset, "sudo bash /var/lib/keplerops/reset-verify-local")
+            *((asset, command_for(asset, "reset-verify-local"))
               for asset in self.verify_assets),
         )
         expected_assets = set(self.scoped_assets)
@@ -505,6 +534,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -539,7 +569,8 @@ def _checkpoint_binding(config: RunConfig, lifecycle: CommandLifecycle) -> str:
 
 
 def main() -> int:
-    config = RunConfig.from_namespace(build_parser().parse_args())
+    args = build_parser().parse_args()
+    config = RunConfig.from_namespace(args)
     if not config.use_existing_range or not config.retain_until_phase_e:
         raise RehearsalError("reliability runs require a retained existing range")
     lifecycle = ContextReliabilityLifecycle(BUILD_ROOT, config)
@@ -554,7 +585,9 @@ def main() -> int:
         _checkpoint_binding(config, lifecycle),
     )
     runner = ReliabilityRunner(lifecycle, session, checkpoint)
-    progress = runner.prepare()
+    progress = runner.prepare(
+        canonical_reset=retained_reset_before_run(args, "module-03 reliability")
+    )
     with session:
         results = runner.run(progress)
     destination = lifecycle.operator_root / "module-03-reliability.json"

@@ -17,7 +17,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_retained_reset_arguments,
     initial_participant_program,
+    retained_reset_before_run,
 )
 
 
@@ -32,6 +34,7 @@ FLAGS = {
 LINEAGE_IDS = CHALLENGES[:2]
 EXECUTABLE_IDS = CHALLENGES[2:]
 NEGATIVE_COUNT = 3
+TRAINING_JOB_POLL_SECONDS = 300
 
 
 def _common() -> str:
@@ -104,13 +107,13 @@ def train(challenge_id, data):
             },
         )
     elif job.get("status") not in {"running", "evaluating", "succeeded"}:
-        raise RuntimeError("training job is not recoverable")
+        raise RuntimeError("training job is not recoverable: " + json.dumps(job, sort_keys=True))
     query = urllib.parse.urlencode({
         "challenge_id": challenge_id,
         "dataset_id": data["dataset_id"],
     })
     status = {"status": job.get("status")}
-    for _ in range(120):
+    for _ in range(__TRAINING_JOB_POLL_SECONDS__):
         status = call(
             gateway + "/v1/training/jobs/" + job["job_id"] + "?" + query,
             token=token,
@@ -119,7 +122,7 @@ def train(challenge_id, data):
             break
         time.sleep(1)
     if status.get("status") != "succeeded":
-        raise RuntimeError("training job incomplete")
+        raise RuntimeError("training job incomplete: " + json.dumps(status, sort_keys=True))
     return job, status
 
 def attempt(challenge_id, data, job=None):
@@ -209,6 +212,7 @@ def prove_many(group_ids, suffix):
         prefix
         + template.replace("__CHALLENGES__", json.dumps(CHALLENGES))
         .replace("__FLAGS__", json.dumps(FLAGS, separators=(",", ":")))
+        .replace("__TRAINING_JOB_POLL_SECONDS__", str(TRAINING_JOB_POLL_SECONDS))
     )
 
 
@@ -422,7 +426,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
-    parser.add_argument("--prepared-module-reset", action="store_true")
+    add_retained_reset_arguments(parser)
     return parser
 
 
@@ -441,7 +445,9 @@ def main() -> int:
         timeout_seconds=900,
     )
     result = Module07FullAtlasRunner(
-        lifecycle, session, reset_before_run=not args.prepared_module_reset
+        lifecycle,
+        session,
+        reset_before_run=retained_reset_before_run(args, "module-07 full-ATLAS"),
     ).run()
     _write_report(
         lifecycle.operator_root / "module-07-full-atlas-smoke.json",

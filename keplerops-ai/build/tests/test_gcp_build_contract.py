@@ -561,6 +561,10 @@ class GcpBuildContractTests(unittest.TestCase):
         keycloak_entrypoint = (PACK_ROOT / "assets/services/keycloak-entrypoint.sh").read_text(encoding="utf-8")
         self.assertIn(">/opt/keycloak/data/import/keplerops-realm.json", keycloak_entrypoint)
         self.assertIn("__LDAP_BIND_CREDENTIAL__", keycloak_entrypoint)
+        keycloak_readback = (PACK_ROOT / "assets/services/keycloak-company-state-readback.sh").read_text(encoding="utf-8")
+        self.assertIn("keycloak-ldap-username-mapper.json", keycloak_readback)
+        self.assertIn('"ldap.attribute": ["sAMAccountName"]', keycloak_readback)
+        self.assertIn('"always.read.value.from.ldap": ["true"]', keycloak_readback)
         keycloak_realm = json.loads((PACK_ROOT / "assets/services/keycloak-realm.json").read_text(encoding="utf-8"))
         self.assertEqual(keycloak_realm["accessTokenLifespan"], 3600)
         for user in keycloak_realm["users"]:
@@ -571,6 +575,16 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertEqual(
             {user["username"] for user in keycloak_realm["users"]},
             {"operator", "service-account-platform-context-admin"},
+        )
+        context_admin = next(
+            user
+            for user in keycloak_realm["users"]
+            if user["username"] == "service-account-platform-context-admin"
+        )
+        self.assertTrue(
+            {"view-realm", "manage-realm"} <= set(
+                context_admin["clientRoles"]["realm-management"]
+            )
         )
         groups = {group["name"]: group for group in keycloak_realm["groups"]}
         self.assertIn("ai_service_recipient", groups["QA"]["realmRoles"])
@@ -596,7 +610,7 @@ class GcpBuildContractTests(unittest.TestCase):
                 "user.model.attribute": ["username"],
                 "ldap.attribute": ["sAMAccountName"],
                 "read.only": ["true"],
-                "always.read.value.from.ldap": ["false"],
+                "always.read.value.from.ldap": ["true"],
                 "is.mandatory.in.ldap": ["true"],
             },
         )
@@ -1061,8 +1075,8 @@ class GcpBuildContractTests(unittest.TestCase):
             workload,
         )
         self.assertIn(
-            'sudo test "$(cat /proc/sys/kernel/random/boot_id)" = '
-            '"$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"',
+            'sudo bash -c \'test \\"\\$(cat /proc/sys/kernel/random/boot_id)\\" = '
+            '\\"\\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\\"\'',
             reset,
         )
         self.assertLess(
@@ -1253,6 +1267,14 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn(
             "SELECT 1 FROM pg_database WHERE datname = 'keplerops'",
             bootstrap,
+        )
+        self.assertLess(
+            bootstrap.index("docker exec keplerops-runtime pg_isready --quiet"),
+            bootstrap.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+        )
+        self.assertLess(
+            bootstrap.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+            bootstrap.index("SELECT 1 FROM pg_database WHERE datname = 'keplerops'"),
         )
         self.assertIn(
             "docker exec keplerops-runtime createdb -U keplerops keplerops",
@@ -1606,6 +1628,7 @@ class GcpBuildContractTests(unittest.TestCase):
             bridge.cache["ad-domain-admin-password"] = b"domain-password"
             bridge.cache["ad-qa-password"] = b"qa-password"
 
+            self.assertRegex(bridge.instance_id, r"^[0-9]+$")
             self.assertEqual(
                 bridge.secret("outer-host", "ad-domain-admin-password"),
                 b"domain-password",
@@ -1641,6 +1664,16 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn('output "participant_address"', outputs)
         self.assertIn("google_compute_address.participant.address", outputs)
         self.assertIn("participant_address", launch)
+        self.assertIn("wait_for_carrier_ready", launch)
+        self.assertIn(
+            'sudo bash -c \'test \\"\\$(cat /proc/sys/kernel/random/boot_id)\\" = '
+            '\\"\\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\\"\'',
+            launch,
+        )
+        self.assertLess(
+            launch.index("wait_for_carrier_ready\nrefresh_access_token"),
+            launch.index('"$BUILD_ROOT/health-check.sh"'),
+        )
         self.assertIn('output "range_zone"', outputs)
         for script in ("health-check.sh", "reset.sh"):
             source = (BUILD_ROOT / script).read_text(encoding="utf-8")
@@ -1650,6 +1683,9 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("tf_output_or_var project_id project_id", health_script)
         self.assertIn("tf_output_or_var range_zone zone", health_script)
         self.assertIn('--realization "$REALIZATION"', health_script)
+        self.assertIn("refresh_access_token()", health_script)
+        self.assertIn("resolve_gcloud_account()", health_script)
+        self.assertIn('"${GCLOUD_ACCOUNT_ARGS[@]}"', health_script)
         retry = r"for attempt in \$(seq 1 120)"
         marker = "/var/lib/keplerops-carrier/workloads/$ASSET/state/reset-generation"
         self.assertIn(retry, health_script)
@@ -1657,6 +1693,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertLess(health_script.index(retry), health_script.index(marker))
         self.assertIn(r'= \"$GENERATION\"', health_script)
         self.assertIn('"--participant-ip"', seeder)
+
         self.assertIn('"--realization"', seeder)
         self.assertIn('load_inventory(args.realization)', seeder)
         self.assertIn("certificate_sans(asset, args.participant_ip)", seeder)
@@ -1671,6 +1708,21 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("pem_certificate: /run/tls/tls.crt", kasm_config.read_text(encoding="utf-8"))
         self.assertIn("/home/kasm-user/.vnc/kasmvnc.yaml", kali_dockerfile)
         self.assertIn("src=/var/lib/keplerops/tls,dst=/run/tls,readonly", bootstrap)
+
+    def test_template_foundation_materializes_caddy_root_before_bind_consumers(self) -> None:
+        script = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-foundation.sh"
+        ).read_text(encoding="utf-8")
+
+        first_up = "up -d step-ca caddy"
+        write_root = 'install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'
+        second_up = "up -d\n\nif docker inspect"
+
+        self.assertIn(first_up, script)
+        self.assertIn(write_root, script)
+        self.assertIn(second_up, script)
+        self.assertLess(script.index(first_up), script.index(write_root))
+        self.assertLess(script.index(write_root), script.index(second_up))
 
     def test_shared_model_pool_is_cell_owned_and_workload_authenticated(self) -> None:
         range_launch = (BUILD_ROOT / "launch.sh").read_text(encoding="utf-8")
@@ -1772,20 +1824,60 @@ class GcpBuildContractTests(unittest.TestCase):
             if relative.endswith(".sh"):
                 self.assertTrue(path.stat().st_mode & stat.S_IXUSR, relative)
 
-        for relative in ("launch.sh", "reset.sh", "cleanup.sh"):
-            source = (BUILD_ROOT / relative).read_text(encoding="utf-8")
-            self.assertIn(
-                "if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} ]]; then",
-                source,
-            )
-            self.assertIn(
-                "GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)",
-                source,
-            )
-            self.assertIn(
-                "export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN",
-                source,
-            )
+        launch = (BUILD_ROOT / "launch.sh").read_text(encoding="utf-8")
+        self.assertIn("refresh_access_token()", launch)
+        self.assertIn(
+            "if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} || -z ${CLOUDSDK_AUTH_ACCESS_TOKEN:-} ]]; then",
+            launch,
+        )
+        self.assertIn(
+            "env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN",
+            launch,
+        )
+        self.assertIn("gcloud auth print-access-token", launch)
+        self.assertIn("gcloud auth application-default print-access-token", launch)
+        self.assertLess(
+            launch.index("gcloud auth application-default print-access-token"),
+            launch.index("gcloud auth print-access-token"),
+        )
+        self.assertIn("resolve_gcloud_account()", launch)
+        self.assertIn('"${GCLOUD_ACCOUNT_ARGS[@]}"', launch)
+        self.assertIn("export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN", launch)
+        cleanup = (BUILD_ROOT / "cleanup.sh").read_text(encoding="utf-8")
+        self.assertIn(
+            "if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} ]]; then",
+            cleanup,
+        )
+        self.assertIn(
+            "GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)",
+            cleanup,
+        )
+        self.assertIn(
+            "export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN",
+            cleanup,
+        )
+        reset = (BUILD_ROOT / "reset.sh").read_text(encoding="utf-8")
+        self.assertIn("refresh_access_token()", reset)
+        self.assertIn(
+            "env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN",
+            reset,
+        )
+        self.assertIn("gcloud auth print-access-token", reset)
+        self.assertIn("gcloud auth application-default print-access-token", reset)
+        self.assertLess(
+            reset.index("gcloud auth application-default print-access-token"),
+            reset.index("gcloud auth print-access-token"),
+        )
+        self.assertIn("resolve_gcloud_account()", reset)
+        self.assertIn('"${GCLOUD_ACCOUNT_ARGS[@]}"', reset)
+        self.assertLess(
+            reset.index("ssh_instance_command()"),
+            reset.index('gcloud compute ssh "$instance"'),
+        )
+        self.assertLess(
+            reset.index("refresh_access_token", reset.index("ssh_instance_command()")),
+            reset.index('gcloud compute ssh "$instance"'),
+        )
 
         ignore = (BUILD_ROOT / ".gitignore").read_text(encoding="utf-8")
         for pattern in (".operator/", "*.tfstate", "*.tfstate.*", "teardown-report.json"):

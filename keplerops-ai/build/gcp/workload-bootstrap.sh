@@ -807,6 +807,14 @@ POSTGRES_HBA
       [[ $attempt -lt 60 ]] || exit 1
       sleep 2
     done
+    for attempt in $(seq 1 60); do
+      if docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1' |
+        grep -qx 1; then
+        break
+      fi
+      [[ $attempt -lt 60 ]] || exit 1
+      sleep 2
+    done
     if ! docker exec keplerops-runtime psql -U keplerops -d postgres -tAc \
       "SELECT 1 FROM pg_database WHERE datname = 'keplerops'" | grep -qx 1; then
       docker exec keplerops-runtime createdb -U keplerops keplerops

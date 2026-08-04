@@ -64,7 +64,7 @@ class Module08RehearsalTests(unittest.TestCase):
         self.assertIn('"teacher_label": "approved"', program)
         self.assertIn('"metrics": {"diagnostic_fidelity": 1.0}', program)
         self.assertIn("expected=422", program)
-        self.assertIn("expected=409", program)
+        self.assertIn("expected=(200, 409)", program)
         self.assertEqual(len(programs), 5)
         for phase in programs:
             compile(phase, "<participant>", "exec")

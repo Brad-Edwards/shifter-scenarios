@@ -19,7 +19,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_canonical_reset_argument,
     initial_participant_program,
+    require_canonical_reset_approval,
 )
 
 
@@ -209,13 +211,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--zone", default="europe-west4-a")
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
+    add_canonical_reset_argument(parser)
     return parser
 
 
 def main() -> int:
-    config = RunConfig.from_namespace(build_parser().parse_args())
+    args = build_parser().parse_args()
+    config = RunConfig.from_namespace(args)
     if not config.use_existing_range or not config.retain_until_phase_e:
         raise RehearsalError("reliability runs require a retained existing range")
+    require_canonical_reset_approval(args, "module-02 reliability")
     lifecycle = CommandLifecycle(BUILD_ROOT, config)
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),

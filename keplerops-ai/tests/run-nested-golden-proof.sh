@@ -57,7 +57,8 @@ if [[ $SKIP_STATIC_TESTS == false ]]; then
 fi
 
 # The integrated core pass covers the original 60 realized challenges. Focused
-# runners cover the 74 expansion challenges.
+# runners cover the 72 in-scope expansion challenges; the two authored hardware
+# rows are excluded from this participant-only proof path.
 CORE_ARGS=()
 MODULE_01_ARGS=()
 MODULE_RESET_ARGS=()
@@ -65,6 +66,10 @@ if [[ $WALKTHROUGH_ONLY == true ]]; then
   CORE_ARGS+=(--walkthrough-only)
   MODULE_01_ARGS+=(--walkthrough-only)
   MODULE_RESET_ARGS+=(--prepared-module-reset)
+else
+  CORE_ARGS+=(--allow-canonical-reset)
+  MODULE_01_ARGS+=(--allow-canonical-reset)
+  MODULE_RESET_ARGS+=(--allow-canonical-reset)
 fi
 "$TEST_ROOT/run-golden-rehearsal.sh" "${COMMON[@]}" "${CORE_ARGS[@]}"
 "${UV[@]}" "$TEST_ROOT/module_01_expansion_rehearsal.py" \
@@ -83,7 +88,16 @@ for runner in \
   module_07_full_atlas_rehearsal.py \
   module_08_full_atlas_rehearsal.py \
   module_09_full_atlas_rehearsal.py; do
-  "${UV[@]}" "$TEST_ROOT/$runner" "${COMMON[@]}" "${MODULE_RESET_ARGS[@]}"
+  RUNNER_ARGS=("${COMMON[@]}" "${MODULE_RESET_ARGS[@]}")
+  case "$runner" in
+    module_06_full_atlas_rehearsal.py)
+      RUNNER_ARGS+=(--exclude-challenge kep-m06-m)
+      ;;
+    module_08_full_atlas_rehearsal.py)
+      RUNNER_ARGS+=(--exclude-challenge kep-m08-i)
+      ;;
+  esac
+  "${UV[@]}" "$TEST_ROOT/$runner" "${RUNNER_ARGS[@]}"
 done
 "${UV[@]}" "$TEST_ROOT/module_10_full_atlas_rehearsal.py" \
   "${COMMON[@]}" --prepared-prerequisites
@@ -97,8 +111,8 @@ fi
 
 if [[ $WALKTHROUGH_ONLY == true ]]; then
   printf '%s\n' \
-    "nested golden proof: PASS (134 unique realized challenges, participant walkthrough, health)"
+    "nested golden proof: PASS (132 in-scope challenges, participant walkthrough, health)"
 else
   printf '%s\n' \
-    "nested golden proof: PASS (134 unique realized challenges, canonical reset, health)"
+    "nested golden proof: PASS (132 in-scope challenges, canonical reset, health)"
 fi
