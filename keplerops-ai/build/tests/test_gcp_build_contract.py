@@ -561,6 +561,10 @@ class GcpBuildContractTests(unittest.TestCase):
         keycloak_entrypoint = (PACK_ROOT / "assets/services/keycloak-entrypoint.sh").read_text(encoding="utf-8")
         self.assertIn(">/opt/keycloak/data/import/keplerops-realm.json", keycloak_entrypoint)
         self.assertIn("__LDAP_BIND_CREDENTIAL__", keycloak_entrypoint)
+        keycloak_readback = (PACK_ROOT / "assets/services/keycloak-company-state-readback.sh").read_text(encoding="utf-8")
+        self.assertIn("keycloak-ldap-username-mapper.json", keycloak_readback)
+        self.assertIn('"ldap.attribute": ["sAMAccountName"]', keycloak_readback)
+        self.assertIn('"always.read.value.from.ldap": ["true"]', keycloak_readback)
         keycloak_realm = json.loads((PACK_ROOT / "assets/services/keycloak-realm.json").read_text(encoding="utf-8"))
         self.assertEqual(keycloak_realm["accessTokenLifespan"], 3600)
         for user in keycloak_realm["users"]:
@@ -571,6 +575,16 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertEqual(
             {user["username"] for user in keycloak_realm["users"]},
             {"operator", "service-account-platform-context-admin"},
+        )
+        context_admin = next(
+            user
+            for user in keycloak_realm["users"]
+            if user["username"] == "service-account-platform-context-admin"
+        )
+        self.assertTrue(
+            {"view-realm", "manage-realm"} <= set(
+                context_admin["clientRoles"]["realm-management"]
+            )
         )
         groups = {group["name"]: group for group in keycloak_realm["groups"]}
         self.assertIn("ai_service_recipient", groups["QA"]["realmRoles"])
@@ -596,7 +610,7 @@ class GcpBuildContractTests(unittest.TestCase):
                 "user.model.attribute": ["username"],
                 "ldap.attribute": ["sAMAccountName"],
                 "read.only": ["true"],
-                "always.read.value.from.ldap": ["false"],
+                "always.read.value.from.ldap": ["true"],
                 "is.mandatory.in.ldap": ["true"],
             },
         )

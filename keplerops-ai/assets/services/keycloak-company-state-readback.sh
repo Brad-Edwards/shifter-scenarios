@@ -34,6 +34,47 @@ if [ "$authenticated" != true ]; then
   exit 1
 fi
 
+components=$(
+  "$kcadm" get components \
+    -r "$realm" \
+    --config "$config"
+)
+ldap_provider_id=$(
+  printf '%s' "$components" | jq -er '
+    [.[] | select(.name == "keplerops-active-directory" and .providerId == "ldap")]
+    | if length == 1 then .[0].id else empty end
+  '
+)
+username_mapper_count=$(
+  printf '%s' "$components" | jq \
+    --arg parent "$ldap_provider_id" \
+    '[.[] | select(.parentId == $parent and .name == "username")] | length'
+)
+if [ "$username_mapper_count" -eq 0 ]; then
+  mapper_payload=/tmp/keycloak-ldap-username-mapper.json
+  jq -n --arg parent "$ldap_provider_id" '{
+    name: "username",
+    providerId: "user-attribute-ldap-mapper",
+    providerType: "org.keycloak.storage.ldap.mappers.LDAPStorageMapper",
+    parentId: $parent,
+    config: {
+      "user.model.attribute": ["username"],
+      "ldap.attribute": ["sAMAccountName"],
+      "read.only": ["true"],
+      "always.read.value.from.ldap": ["true"],
+      "is.mandatory.in.ldap": ["true"]
+    }
+  }' >"$mapper_payload"
+  "$kcadm" create components \
+    -r "$realm" \
+    -f "$mapper_payload" \
+    --config "$config" >/dev/null
+  rm -f "$mapper_payload"
+elif [ "$username_mapper_count" -ne 1 ]; then
+  echo "Keycloak LDAP username mapper is duplicated" >&2
+  exit 1
+fi
+
 groups=$(
   "$kcadm" get groups \
     -r "$realm" \
