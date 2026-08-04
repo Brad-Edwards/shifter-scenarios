@@ -77,7 +77,6 @@ content, challenge contracts, event bundles, and research telemetry contracts.
 |---|---|---|---|---|
 | [`docs/software-boundary-proof-report.md`](software-boundary-proof-report.md) | operator / validator | Evidence report | Software-foundation expansion retained-range proof | Software surface, node inventory, focused live gate, or retained-range status change. |
 | [`docs/telemetry-rehearsal-report.md`](telemetry-rehearsal-report.md) | operator / researcher | Evidence report | Telemetry rehearsal evidence | Telemetry profile, export/readback, performance, or isolation proof change. |
-| [`docs/manual-walkthrough-report.md`](manual-walkthrough-report.md) | operator | Evidence report | Manual participant walkthrough evidence | Manual route, proof level, retained range, or closure-gate change. |
 | [`docs/module-01-proof-report.md`](module-01-proof-report.md) through [`docs/module-10-proof-report.md`](module-10-proof-report.md) | operator | Evidence report | Module-specific proof artifacts | Module challenge status, live proof, reset behavior, or reliability evidence change. |
 | [`docs/walkthroughs/`](walkthroughs/) | operator | Evidence report | Module walkthrough contracts and proof notes | Module path, command, endpoint, evidence predicate, or validation standard change. |
 

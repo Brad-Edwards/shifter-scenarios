@@ -178,7 +178,6 @@ only as clearly labelled delivery bundles that do not reframe the base scenario.
 | [`docs/golden-readiness-checklist.md`](docs/golden-readiness-checklist.md) | operator | Final review checklist kept unchecked in source. |
 | [`docs/aces-only-cutover.md`](docs/aces-only-cutover.md) | operator | Whole-pack ACES authority audit, removed surfaces, consumer map, and reproducible cutover evidence. |
 | [`docs/telemetry-rehearsal-report.md`](docs/telemetry-rehearsal-report.md) | operator | Sanitized durable evidence from the passing `gcp_full` participant telemetry rehearsal. |
-| [`docs/manual-walkthrough-report.md`](docs/manual-walkthrough-report.md) | operator | Sanitized generation-55 result for the final 60-challenge manual participant path and its remaining closure gates. |
 | [`docs/module-01-proof-report.md`](docs/module-01-proof-report.md) | operator | Sanitized generation-55 manual path plus corrected 10-generation/30-trial reliability qualification for the six participant-proven Module 01 challenges. |
 | [`docs/module-02-proof-report.md`](docs/module-02-proof-report.md) | operator | Sanitized evidence for the twelve participant-proven playable module-02 paths; the hardware attestation design remains reserved. |
 | [`docs/module-03-proof-report.md`](docs/module-03-proof-report.md) | operator | Sanitized manual, reliability, scoped-reset, health, and receipt evidence for the six participant-proven module-03 challenges. |
