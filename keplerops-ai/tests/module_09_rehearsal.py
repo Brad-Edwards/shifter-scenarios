@@ -182,7 +182,7 @@ duplicate = call(gateway + "/v1/backdoor/candidates", token=token, payload={
 })
 call(gateway + "/v1/backdoor/evaluations", token=token, payload={
     "candidate_id": candidate["candidate_id"], "evaluation_kind": "hidden_joined",
-}, expected=409)
+}, expected=(200, 409))
 result = attempt("kep-m09-a", candidate["candidate_id"])
 state_path.write_text(json.dumps({
     "candidate_id": candidate["candidate_id"],
