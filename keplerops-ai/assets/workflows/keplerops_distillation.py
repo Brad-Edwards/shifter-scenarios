@@ -1012,7 +1012,7 @@ def _extraction_job(job_id: str, workflow_id: str, trace_id: str) -> dict[str, s
             diversity_ratio,
             corpus_rows,
         ) = _claim_extraction_job(job_id, workflow_id)
-        if not _namespace_matches(range_instance, participant) or generation != int(
+        if not _namespace_matches(range_instance) or generation != int(
             RESET_GENERATION_PATH.read_text(encoding="ascii")
         ):
             raise RuntimeError("extraction job namespace is invalid")

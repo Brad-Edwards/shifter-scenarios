@@ -85,6 +85,16 @@ class ModelExtractionApiContractTests(unittest.TestCase):
         for forbidden in ("caller_metrics", "submitted_weights", "preseeded_proxy"):
             self.assertNotIn(forbidden, self.workflow)
 
+    def test_extraction_namespace_accepts_participant_job_owner_from_gateway(self) -> None:
+        extraction_start = self.workflow.index("def _extraction_job(")
+        extraction_end = self.workflow.index("def _validated_job_id(", extraction_start)
+        extraction = self.workflow[extraction_start:extraction_end]
+
+        self.assertIn("range_instance,\n            participant,", extraction)
+        self.assertIn("if not _namespace_matches(range_instance) or generation != int(", extraction)
+        self.assertNotIn("_namespace_matches(range_instance, participant)", extraction)
+        self.assertIn("participant=participant", extraction)
+
     def test_every_application_and_workflow_image_carries_the_domain(self) -> None:
         dockerfiles = (
             "assets/services/keplerops-runtime/Dockerfile",
