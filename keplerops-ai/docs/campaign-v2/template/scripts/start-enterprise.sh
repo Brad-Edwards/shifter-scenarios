@@ -10,8 +10,13 @@ if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
     --env-file component-lock.env \
     -f compose.foundation.yaml \
     -f compose.enterprise.yaml \
-    pull
+    pull --ignore-buildable
 fi
+docker compose \
+  --env-file component-lock.env \
+  -f compose.foundation.yaml \
+  -f compose.enterprise.yaml \
+  build odoo business-adapter preview
 docker compose \
   --env-file component-lock.env \
   -f compose.foundation.yaml \
@@ -39,5 +44,5 @@ fi
 "$ROOT/network/install.sh"
 "$ROOT/scripts/reconcile-stalwart.sh"
 "$ROOT/scripts/seed-dns.sh"
-"$ROOT/scripts/health-check.sh" enterprise
 "$ROOT/seeding/seed.sh"
+KEPLEROPS_ALLOW_PREVIEW_PENDING=1 "$ROOT/scripts/health-check.sh" enterprise

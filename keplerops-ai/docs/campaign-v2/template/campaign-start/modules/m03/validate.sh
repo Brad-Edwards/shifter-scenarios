@@ -15,6 +15,7 @@ readonly WORKHUB_USER='range-admin'
 readonly WORKHUB_PASSWORD='KeplerV2-Training-Redmine-Admin'
 readonly QDRANT_URL='https://vectors.keplerops.lab'
 readonly QDRANT_READ_KEY='KeplerV2-Training-Qdrant-Read'
+readonly PUBLIC_ROUTE_ADDRESS="${KEPLEROPS_PUBLIC_ROUTE_ADDRESS:-192.168.78.1}"
 JUPYTER_IMAGE="$(sed -n 's/^JUPYTER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")"
 readonly JUPYTER_IMAGE
 MINIO_MC_IMAGE="$(sed -n 's/^MINIO_MC_IMAGE=//p' "${TEMPLATE_ROOT}/engineering/component-lock.additions.env")"
@@ -26,6 +27,10 @@ flag_for() { jq -er --arg id "$1" '.[] | select(.id == $id) | .flag' "${MODULE_R
 
 curl_tls_args() {
   if [[ -n ${KEPLEROPS_CA_CERT:-} ]]; then printf '%s\0%s\0' --cacert "${KEPLEROPS_CA_CERT}"; fi
+  printf '%s\0%s\0' --resolve "workhub.keplerops.lab:443:${PUBLIC_ROUTE_ADDRESS}"
+  printf '%s\0%s\0' --resolve "git.keplerops.lab:443:${PUBLIC_ROUTE_ADDRESS}"
+  printf '%s\0%s\0' --resolve "vectors.keplerops.lab:443:${PUBLIC_ROUTE_ADDRESS}"
+  printf '%s\0%s\0' --resolve "relay.cinder.lab:443:${PUBLIC_ROUTE_ADDRESS}"
 }
 
 compose() {
@@ -574,7 +579,7 @@ PY
 }
 
 validate_cited_source_inventory() {
-  local id=$1 flag status attachment_url trace_id
+  local id=$1 flag status attachment_url download_url participant_url trace_id
   local -a tls=()
   flag="$(flag_for "${id}")"
   while IFS= read -r -d '' value; do tls+=("${value}"); done < <(curl_tls_args)
@@ -604,7 +609,9 @@ validate_cited_source_inventory() {
   jq -e --arg name 'orion-rag-source-inventory.json' '.issue.attachments | any(.filename == $name)' \
     "${TMPDIR_VALIDATE}/positive.json" >/dev/null || die "${id}: fixed cited WorkHub record lacks its protected inventory attachment"
   attachment_url="$(jq -er '.issue.attachments[] | select(.filename == "orion-rag-source-inventory.json") | .content_url' "${TMPDIR_VALIDATE}/positive.json" | tail -1)"
-  curl -fsS "${tls[@]}" -u "${WORKHUB_USER}:${WORKHUB_PASSWORD}" "${attachment_url}" >"${TMPDIR_VALIDATE}/inventory.json"
+  download_url="${attachment_url/http:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
+  download_url="${download_url/https:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
+  curl -fsS "${tls[@]}" -u "${WORKHUB_USER}:${WORKHUB_PASSWORD}" "${download_url}" >"${TMPDIR_VALIDATE}/inventory.json"
   jq -e --arg flag "${flag}" '.inventory_note == $flag and .classification == "release-engineering-internal"' \
     "${TMPDIR_VALIDATE}/inventory.json" >/dev/null || die "${id}: protected WorkHub attachment bytes do not contain the inventory record"
   python3 - "${TMPDIR_VALIDATE}/conversations.jsonl" "${TMPDIR_VALIDATE}/positive.json" <<'PY'
@@ -618,7 +625,9 @@ matching = [item for item in records if item.get('actor') == 'release.engineer' 
 if not matching or max(item.get('updated_at', 0) for item in matching) < created:
     raise SystemExit('Orion citation predates the protected WorkHub source revision')
 PY
-  jq -e --arg url "${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}" \
+  participant_url="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}"
+  participant_url="${participant_url/http:\/\/workhub.keplerops.lab/https:\/\/workhub.keplerops.lab}"
+  jq -e --arg url "${participant_url}" \
     --arg digest "$(sha256sum "${TMPDIR_VALIDATE}/inventory.json" | awk '{print $1}')" \
     '.result.points[0].payload.url == $url and .result.points[0].payload.attachment_sha256 == $digest and
      .result.points[0].payload.ingestion_pipeline == "Haystack DocumentWriter/QdrantDocumentStore"' \

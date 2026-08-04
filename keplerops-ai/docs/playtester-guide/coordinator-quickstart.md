@@ -17,11 +17,14 @@ build/launch.sh \
   --range-instance <range-instance> \
   --participant <participant-id> \
   --participant-source-cidr <operator-or-playtester-ip>/32 \
+  --range-host-ip-offset <unique-host-offset> \
   --research-profile off
 ```
 
 Use a unique range instance per standalone playtester copy unless the event
 coordinator explicitly wants shared-state testing. Do not use `0.0.0.0/0`.
+When multiple retained ranges share one cell subnet, assign each range a unique
+host offset; the default offset is `10`.
 
 ## Credential sanity
 

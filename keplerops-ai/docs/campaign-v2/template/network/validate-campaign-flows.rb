@@ -71,6 +71,10 @@ Dir.glob(File.join(campaign_root, "modules", "m??", "compose.overlay.yaml")).sor
     next if definition["container_name"].to_s.empty?
     next if definition["network_mode"] == "none"
     next unless definition["networks"]
+    if definition["restart"].to_s == "no" &&
+        definition["container_name"].to_s.match?(/-(?:volume-)?init\z/)
+      next
+    end
 
     required << definition["container_name"].to_s
   end

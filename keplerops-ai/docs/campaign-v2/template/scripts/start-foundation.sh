@@ -5,6 +5,7 @@ readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly COMPOSE=(docker compose --env-file component-lock.env -f compose.foundation.yaml)
 
 cd "$ROOT"
+"$ROOT/scripts/ensure-identity-network.sh"
 if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
   "${COMPOSE[@]}" pull
 fi

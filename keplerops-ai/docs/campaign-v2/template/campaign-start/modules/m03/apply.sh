@@ -16,6 +16,7 @@ readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${T
 readonly NODE_IMAGE="${NODE_IMAGE:-$(sed -n 's/^OPENCODE_BUILDER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly CINDER_S3_ENDPOINT="${CINDER_S3_ENDPOINT:-http://cinder-minio:9000}"
 readonly REDMINE_ADMIN_USER="${REDMINE_ADMIN_USER:-range-admin}"
+readonly PUBLIC_ROUTE_ADDRESS="${KEPLEROPS_PUBLIC_ROUTE_ADDRESS:-192.168.78.1}"
 
 # shellcheck source=../../../seeding/config.env
 # shellcheck disable=SC1091
@@ -305,6 +306,7 @@ seed_protected_inventory_attachment() (
   jq '.protected_inventory' "${MODULE_ROOT}/payloads/kep-m03-g.json" >"${payload}"
   while IFS= read -r -d '' value; do tls+=("${value}"); done < <(
     if [[ -n ${KEPLEROPS_CA_CERT:-} ]]; then printf '%s\0%s\0' --cacert "${KEPLEROPS_CA_CERT}"; fi
+    printf '%s\0%s\0' --resolve "workhub.keplerops.lab:443:${PUBLIC_ROUTE_ADDRESS}"
   )
   issue_id="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
     -H 'Host: workhub.keplerops.lab' \

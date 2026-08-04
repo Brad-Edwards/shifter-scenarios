@@ -245,6 +245,18 @@ services:
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
+        for attempt in $$(seq 1 60); do
+          if curl --fail --silent --show-error \
+            --connect-timeout 3 --max-time 10 \
+            http://10.61.40.20:3000/api/v1/version >/dev/null; then
+            break
+          fi
+          if [ "$$attempt" -ge 60 ]; then
+            echo "Forgejo API did not become ready for runner registration" >&2
+            exit 1
+          fi
+          sleep 2
+        done
         if [ ! -s /var/lib/keplerops-v2/forgejo-runner/.runner ]; then
           /bin/forgejo-runner create-runner-file \
             --instance http://10.61.40.20:3000 \
