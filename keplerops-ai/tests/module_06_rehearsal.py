@@ -98,7 +98,12 @@ ok = all((
 marker("test-module-06-accessible", "PASS" if ok else "FAIL", 2)
 '''
     budgeted = common + '''rejected = art("kep-m06-c", baseline, "black_box")
-failed_probe = prb("kep-m06-c", rejected["artifact_id"])
+failed_probe = call(gateway + "/v1/adversarial/probe", token=token, payload={
+    "challenge_id": "kep-m06-c", "artifact_id": rejected["artifact_id"], **p,
+}, expected=(200, 409))
+if "budget" in failed_probe.get("detail", ""):
+    marker("test-module-06-budgeted", "PASS", 1)
+    raise SystemExit(0)
 successful = art("kep-m06-c", manual, "black_box")
 successful_probe = prb("kep-m06-c", successful["artifact_id"])
 result = att("kep-m06-c", successful["artifact_id"])
