@@ -21,6 +21,15 @@ The implementation order is fixed:
 7. pass all clean-enterprise and participant-equivalent checks before
    producing a machine image.
 
+The template host must be a GCE instance with the `campaign=v2` metadata
+attribute, nested virtualization enabled, and a boot disk large enough for the
+full image set. The build materializes on the order of 220 GiB of container and
+containerd images plus build cache and the nested guest disks, so provision at
+least a 350 GiB boot disk. A ~250 GiB clone captured from an already-built
+template starts ~90% full and fails a rebuild in the engineering image phase
+with `no space left on device`; resize the disk (and grow the filesystem)
+before rebuilding on such a seed.
+
 The repeatable entry points are:
 
 ```bash

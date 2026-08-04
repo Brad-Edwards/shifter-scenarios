@@ -140,10 +140,6 @@ class WorkstationBrowserCaptureTests(unittest.TestCase):
         helper = (
             PACK_ROOT / "assets/services/kali-camera-webrtc-proof.py"
         ).read_text(encoding="utf-8")
-        runner = (
-            PACK_ROOT / "tests/module_08_full_atlas_rehearsal.py"
-        ).read_text(encoding="utf-8")
-
         self.assertIn("archive.kali.org/archive-keyring.gpg", dockerfile)
         self.assertIn("sha256sum --check --strict", dockerfile)
         self.assertIn("apt-get install --yes --no-install-recommends chromium", dockerfile)
@@ -155,8 +151,10 @@ class WorkstationBrowserCaptureTests(unittest.TestCase):
         self.assertIn("--disable-features=WebRtcHideLocalIpsWithMdns", helper)
         self.assertIn("/v1/sessions/'+session.session_id+'/close", helper)
         self.assertNotIn("/frames", helper)
-        self.assertIn("keplerops-camera-webrtc-proof", runner)
-        self.assertIn("physical-sensor-attempts", runner)
+        # kep-m08-i (physical sensor evasion) was removed from the software proof
+        # scope in 2fd67d1 (it needs an authentic labgrid bench), so no in-scope
+        # rehearsal exercises the camera helper. Its real browser binding stays
+        # enforced above via the Dockerfile install and the WebRTC helper asserts.
 
 
 if __name__ == "__main__":
