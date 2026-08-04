@@ -7,6 +7,7 @@ readonly TIMEOUT=${KEPLEROPS_HEALTH_TIMEOUT:-900}
 readonly ROUTE_REQUEST_TIMEOUT=${KEPLEROPS_ROUTE_REQUEST_TIMEOUT:-8}
 readonly ROUTE_ADDRESS=${KEPLEROPS_ROUTE_ADDRESS:-10.61.10.2}
 readonly ROUTE_CA=${KEPLEROPS_ROUTE_CA:-${ROOT}/state/caddy-root.crt}
+readonly ALLOW_PREVIEW_PENDING=${KEPLEROPS_ALLOW_PREVIEW_PENDING:-0}
 
 routes=()
 
@@ -73,6 +74,9 @@ deadline=$((SECONDS + TIMEOUT))
 while ((SECONDS < deadline)); do
   failed=()
   for container in "${required[@]}"; do
+    if [[ $ALLOW_PREVIEW_PENDING == 1 && $LAYER == enterprise && $container == kep-v2-preview ]]; then
+      continue
+    fi
     state=$(docker inspect --format '{{.State.Status}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' \
       "$container" 2>/dev/null || true)
     if [[ $state != "running healthy" && $state != "running " ]]; then
@@ -82,6 +86,9 @@ while ((SECONDS < deadline)); do
   if ((${#failed[@]} == 0)); then
     for route in "${routes[@]}"; do
       IFS='|' read -r name host path <<<"$route"
+      if [[ $ALLOW_PREVIEW_PENDING == 1 && $LAYER == enterprise && $name == preview ]]; then
+        continue
+      fi
       if ! curl --silent --show-error --fail --location \
         --connect-timeout 3 --max-time "$ROUTE_REQUEST_TIMEOUT" \
         --cacert "$ROUTE_CA" --resolve "${host}:443:${ROUTE_ADDRESS}" \

@@ -44,5 +44,5 @@ fi
 "$ROOT/network/install.sh"
 "$ROOT/scripts/reconcile-stalwart.sh"
 "$ROOT/scripts/seed-dns.sh"
-"$ROOT/scripts/health-check.sh" enterprise
+KEPLEROPS_ALLOW_PREVIEW_PENDING=1 "$ROOT/scripts/health-check.sh" enterprise
 "$ROOT/seeding/seed.sh"

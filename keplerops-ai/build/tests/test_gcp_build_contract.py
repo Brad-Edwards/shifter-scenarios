@@ -1756,6 +1756,27 @@ class GcpBuildContractTests(unittest.TestCase):
             enterprise.index("build odoo business-adapter preview"),
             enterprise.index("up -d"),
         )
+        self.assertIn(
+            'KEPLEROPS_ALLOW_PREVIEW_PENDING=1 "$ROOT/scripts/health-check.sh" enterprise',
+            enterprise,
+        )
+        health = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/health-check.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn("readonly ALLOW_PREVIEW_PENDING=", health)
+        self.assertIn("$container == kep-v2-preview", health)
+        self.assertIn("$name == preview", health)
+        network_install = (
+            PACK_ROOT / "docs/campaign-v2/template/network/install.sh"
+        ).read_text(encoding="utf-8")
+        self.assertIn('systemctl restart "$POLICY_UNIT"', network_install)
+        network_flows = (
+            PACK_ROOT / "docs/campaign-v2/template/network/compose-flows.tsv"
+        ).read_text(encoding="utf-8")
+        self.assertIn(
+            "cidr:192.168.78.30/32\tkep-v2-step-ca\ttcp\t9000\tplatform signing CA enrollment",
+            network_flows,
+        )
         self.assertIn("! check_port 192.168.78.1 13081", guests)
         self.assertLess(
             guests.index("! check_port 192.168.78.1 13081"),

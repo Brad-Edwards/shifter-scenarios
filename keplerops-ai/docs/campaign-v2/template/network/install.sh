@@ -17,4 +17,5 @@ install -m 0644 "$ROOT/$PROXY_SOCKET" "/etc/systemd/system/$PROXY_SOCKET"
 install -m 0644 "$ROOT/$PROXY_SERVICE" "/etc/systemd/system/$PROXY_SERVICE"
 systemctl daemon-reload
 systemctl enable --now "$POLICY_UNIT" "$PROXY_SOCKET"
+systemctl restart "$POLICY_UNIT"
 systemctl --quiet is-active "$POLICY_UNIT" "$PROXY_SOCKET"

@@ -5,6 +5,7 @@ cidr:192.168.78.30/32	kep-v2-qdrant-edge	tcp	6333	WorkHub retrieval from k3s01
 cidr:192.168.78.30/32	kep-v2-redis	tcp	6379	WorkHub conversation state from k3s01
 cidr:192.168.78.30/32	kep-v2-forgejo	tcp	3000	GitOps repository from k3s01
 cidr:192.168.78.30/32	kep-v2-caddy	tcp	443	Harbor registry pull from k3s01
+cidr:192.168.78.30/32	kep-v2-step-ca	tcp	9000	platform signing CA enrollment
 cidr:192.168.78.20/31	kep-v2-rabbitmq	tcp	5672	review worker queues
 cidr:192.168.78.20/31	kep-v2-redmine	tcp	3000	review worker WorkHub updates
 cidr:192.168.78.20/31	kep-v2-otel-collector	tcp	4318	review worker OTLP export
