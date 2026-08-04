@@ -22,6 +22,8 @@ OPERATIONS = {item["id"]: item for item in json.loads((MODULE / "operations.json
 FORGEJO = os.getenv("FORGEJO_API_URL", "http://10.61.40.20:3000/api/v1")
 FORGEJO_USER = os.getenv("FORGEJO_ADMIN_USER", "range-admin")
 FORGEJO_PASSWORD = os.getenv("FORGEJO_ADMIN_PASSWORD", "KeplerV2-Training-Forgejo-Admin")
+ADMISSION_USER = os.getenv("FORGEJO_ADMISSION_USER", "svc-orion-release-admission")
+ADMISSION_PASSWORD = os.getenv("FORGEJO_ADMISSION_PASSWORD", "KAI-Orion-Release-Admission-2026")
 MCP_USER = "svc-orion-mcp"
 MCP_PASSWORD = "KAI-Orion-MCP-Repository-Read-7c102fb4"
 QDRANT = os.getenv("QDRANT_URL", "http://10.61.50.62:6333")
@@ -61,11 +63,22 @@ def request(
 
 
 def forgejo(method: str, path: str, body: object | None = None, accepted=(200, 201, 204)):
+    return forgejo_as(FORGEJO_USER, FORGEJO_PASSWORD, method, path, body, accepted=accepted)
+
+
+def forgejo_as(
+    user: str,
+    password: str,
+    method: str,
+    path: str,
+    body: object | None = None,
+    accepted=(200, 201, 204),
+):
     return request(
         method,
         f"{FORGEJO}{path}",
         body,
-        basic=(FORGEJO_USER, FORGEJO_PASSWORD),
+        basic=(user, password),
         accepted=accepted,
     )
 
@@ -145,7 +158,19 @@ def put_repo_file(repo: str, path: str, content: bytes, message: str) -> None:
             return
         body["sha"] = current["sha"]
         method = "PUT"
-    forgejo(method, f"/repos/keplerops/{repo}/contents/{encoded_path}", body, accepted=(200, 201))
+    try:
+        forgejo(method, f"/repos/keplerops/{repo}/contents/{encoded_path}", body, accepted=(200, 201))
+    except RuntimeError as exc:
+        if " returned 403:" not in str(exc):
+            raise
+        forgejo_as(
+            ADMISSION_USER,
+            ADMISSION_PASSWORD,
+            method,
+            f"/repos/keplerops/{repo}/contents/{encoded_path}",
+            body,
+            accepted=(200, 201),
+        )
 
 
 def seed_directory(repo: str, root: pathlib.Path) -> None:
