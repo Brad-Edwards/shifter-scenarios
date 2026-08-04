@@ -96,6 +96,11 @@ x-airflow-environment: &airflow-environment
   LAKEFS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
 
 x-airflow-service: &airflow-service
+  # Long-running airflow services must self-heal a transient DB blip during a
+  # fresh startup: scheduler/dag-processor otherwise crash (Exit 1) when the
+  # metadata DB briefly cycles and stay down, failing engineering readiness.
+  # airflow-init overrides this with restart:"no" (it is a one-shot).
+  restart: unless-stopped
   image: keplerops/airflow:campaign-v2-clean
   build:
     context: ./engineering
