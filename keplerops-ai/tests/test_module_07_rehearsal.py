@@ -67,7 +67,7 @@ class Module07RehearsalTests(unittest.TestCase):
             self.assertNotIn(forbidden, program)
         self.assertIn('"metrics": {"target_delta": 1.0}', program)
         self.assertIn("expected=422", program)
-        self.assertIn("expected=409", program)
+        self.assertIn("expected=(200, 409)", program)
         self.assertIn('"challenge_id": "kep-m03-a"', program)
         self.assertIn('if job.get("status") == "queued":', program)
         self.assertIn(

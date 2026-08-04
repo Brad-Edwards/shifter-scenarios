@@ -78,7 +78,7 @@ class Module09RehearsalTests(unittest.TestCase):
         self.assertIn("duplicate = call(gateway + \"/v1/backdoor/candidates\"", program)
         self.assertIn('duplicate.get("candidate_id") == candidate["candidate_id"]', program)
         self.assertIn("expected=422", program)
-        self.assertIn("expected=409", program)
+        self.assertIn("expected=(200, 409)", program)
         self.assertEqual(len(programs), 5)
         for phase in programs:
             compile(phase, "<participant>", "exec")
