@@ -76,6 +76,19 @@ class LiveRehearsalContractTests(unittest.TestCase):
                 with self.subTest(path=path.name, guard="canonical reset"):
                     self.assertTrue(any(pattern in source for pattern in guarded))
 
+    def test_fresh_walkthrough_helper_requires_canonical_reset_opt_in(self) -> None:
+        source = (
+            PACK_ROOT / "build" / "prepare-fresh-walkthrough-range.sh"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("--allow-canonical-reset", source)
+        self.assertIn("ALLOW_CANONICAL_RESET=false", source)
+        self.assertIn("[[ $ALLOW_CANONICAL_RESET == true ]]", source)
+        self.assertLess(
+            source.index("[[ $ALLOW_CANONICAL_RESET == true ]]"),
+            source.index('"$BUILD_ROOT/reset.sh"'),
+        )
+
     @staticmethod
     def _module_01_report(completed_at: str) -> dict[str, object]:
         return {

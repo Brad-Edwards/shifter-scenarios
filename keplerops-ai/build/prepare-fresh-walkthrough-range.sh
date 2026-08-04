@@ -6,26 +6,36 @@ BUILD_ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 
 usage() {
   cat >&2 <<'EOF'
-usage: prepare-fresh-walkthrough-range.sh --range-instance ID --participant ID
+usage: prepare-fresh-walkthrough-range.sh --range-instance ID --participant ID \
+  --allow-canonical-reset
 
 Runs the canonical retained-range reset, verifies health, and prints the
 participant endpoint plus the new reset generation for a fresh walkthrough.
+
+Canonical reset can replace the range host and attached disks, so this helper
+fails closed unless --allow-canonical-reset is passed explicitly.
 EOF
   exit 2
 }
 
 RANGE_INSTANCE=
 PARTICIPANT=
+ALLOW_CANONICAL_RESET=false
 while (($#)); do
   case "$1" in
     --range-instance) RANGE_INSTANCE=${2-}; shift 2 ;;
     --participant) PARTICIPANT=${2-}; shift 2 ;;
+    --allow-canonical-reset) ALLOW_CANONICAL_RESET=true; shift ;;
     *) usage ;;
   esac
 done
 
 [[ $RANGE_INSTANCE =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || usage
 [[ $PARTICIPANT =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || usage
+[[ $ALLOW_CANONICAL_RESET == true ]] || {
+  echo "error: canonical reset requires --allow-canonical-reset" >&2
+  exit 2
+}
 
 ROOT="$BUILD_ROOT/.operator/$RANGE_INSTANCE-$PARTICIPANT"
 STATE="$ROOT/state.json"

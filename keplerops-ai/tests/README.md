@@ -156,7 +156,17 @@ rows: `kep-m06-m` and `kep-m08-i`. Modules 03 through 09 accept
 `--prepared-module-reset` only after the module dependency closure has already
 passed the SDL-rendered reset and range health gate. Canonical range reset is
 destructive to retained range host state and now requires the explicit
-`--allow-canonical-reset` flag. Use
+`--allow-canonical-reset` flag. The fresh walkthrough preparation helper wraps
+that same reset and also requires the explicit flag:
+
+```sh
+build/prepare-fresh-walkthrough-range.sh \
+  --range-instance <range-instance> \
+  --participant <participant-id> \
+  --allow-canonical-reset
+```
+
+Use
 `--exclude-challenge kep-m06-m` with the Module 06 runner and
 `--exclude-challenge kep-m08-i` with the Module 08 runner only for this
 participant-only issue-62 scope; without that exclusion, Module 08 deliberately
