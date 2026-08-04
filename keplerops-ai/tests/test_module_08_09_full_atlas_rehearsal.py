@@ -122,7 +122,7 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
 
                 self.assertTrue(result.passed)
 
-    def test_module08_hardware_sensor_evasion_is_out_of_issue60_scope(self) -> None:
+    def test_module08_hardware_sensor_evasion_is_out_of_software_scope(self) -> None:
         module = load_module("module_08_full_atlas_rehearsal")
 
         self.assertNotIn("kep-m08-i", module.CHALLENGES)

@@ -542,9 +542,17 @@ ensure_preview_shared_audit_mount() {
 }
 
 install_native_services() {
+  local service
   compose build preview >/dev/null
+  for service in \
+    cinder-jupyter cinder-model-edge cinder-developer-assistant \
+    cinder-host-bridge cinder-openvoice cinder-registrar \
+    keplerops-partner-intake keplerops-edge-observer \
+    cinder-experiments cinder-release-registry; do
+    compose build "$service" >/dev/null
+  done
   compose_up --force-recreate orion-preview-audit-init
-  compose_up -d --build \
+  compose_up -d \
     preview orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
     cinder-model-edge cinder-developer-assistant cinder-host-bridge \
     cinder-openvoice cinder-registrar cinder-qdrant keplerops-intake-qdrant \
@@ -579,16 +587,23 @@ ensure_cinder_acme() {
 
 prepare_cinder_trust_bundle() {
   local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
+  local bootstrap_root="${TEMPLATE_ROOT}/state/cinder-bootstrap-root.crt"
   local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
   install -d -m 0700 "${TEMPLATE_ROOT}/state"
-  [[ ! -e $bundle || -f $bundle ]] || rm -rf -- "$bundle"
+  for cert in "$bundle" "$bootstrap_root" "$step_root"; do
+    if [[ -d "$cert" && ! -L "$cert" ]]; then
+      rm -rf "$cert"
+    fi
+  done
+  [[ -s "${TEMPLATE_ROOT}/state/caddy-root.crt" ]] || die 'Caddy root certificate is unavailable for Cinder trust'
+  install -m 0644 "${TEMPLATE_ROOT}/state/caddy-root.crt" "$bootstrap_root"
   docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' /home/step/certs/root_ca.crt >"$step_root"
   {
-    sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' "${TEMPLATE_ROOT}/state/caddy-root.crt"
+    cat "$bootstrap_root"
     cat "$step_root"
   } >"$bundle"
   [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain all admitted roots'
-  chmod 0644 "$bundle" "$step_root"
+  chmod 0644 "$bundle" "$bootstrap_root" "$step_root"
   if docker inspect keplerops-participant-workstation-runtime >/dev/null 2>&1; then
     docker exec --user root keplerops-participant-workstation-runtime sh -ec '
       update-ca-certificates >/dev/null

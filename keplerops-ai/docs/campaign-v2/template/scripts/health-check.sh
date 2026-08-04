@@ -51,6 +51,14 @@ case "$LAYER" in
     ;;
 esac
 
+if [[ $LAYER == enterprise && $ALLOW_PREVIEW_PENDING == 1 ]]; then
+  filtered=()
+  for container in "${required[@]}"; do
+    [[ $container == kep-v2-preview ]] || filtered+=("$container")
+  done
+  required=("${filtered[@]}")
+fi
+
 [[ $TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
   echo "KEPLEROPS_HEALTH_TIMEOUT must be a positive integer" >&2
   exit 2
@@ -74,9 +82,6 @@ deadline=$((SECONDS + TIMEOUT))
 while ((SECONDS < deadline)); do
   failed=()
   for container in "${required[@]}"; do
-    if [[ $ALLOW_PREVIEW_PENDING == 1 && $LAYER == enterprise && $container == kep-v2-preview ]]; then
-      continue
-    fi
     state=$(docker inspect --format '{{.State.Status}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' \
       "$container" 2>/dev/null || true)
     if [[ $state != "running healthy" && $state != "running " ]]; then
@@ -86,10 +91,7 @@ while ((SECONDS < deadline)); do
   if ((${#failed[@]} == 0)); then
     for route in "${routes[@]}"; do
       IFS='|' read -r name host path <<<"$route"
-      if [[ $ALLOW_PREVIEW_PENDING == 1 && $LAYER == enterprise && $name == preview ]]; then
-        continue
-      fi
-      if ! curl --silent --show-error --fail --location \
+      if ! curl --silent --show-error --fail \
         --connect-timeout 3 --max-time "$ROUTE_REQUEST_TIMEOUT" \
         --cacert "$ROUTE_CA" --resolve "${host}:443:${ROUTE_ADDRESS}" \
         "https://${host}${path}" >/dev/null 2>&1; then

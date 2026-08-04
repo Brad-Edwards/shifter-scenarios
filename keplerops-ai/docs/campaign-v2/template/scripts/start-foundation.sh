@@ -16,17 +16,6 @@ install -d -m 0750 "$ROOT/state"
 
 "$ROOT/scripts/reconcile-step-ca.sh"
 
-for attempt in $(seq 1 60); do
-  if docker exec kep-v2-caddy test -s /data/caddy/pki/authorities/local/root.crt; then
-    break
-  fi
-  [[ $attempt -lt 60 ]] || {
-    echo "caddy root certificate did not become available" >&2
-    exit 1
-  }
-  sleep 2
-done
-
 caddy_root="$(mktemp)"
 docker exec kep-v2-caddy cat /data/caddy/pki/authorities/local/root.crt >"$caddy_root"
 if [[ -e "$ROOT/state/caddy-root.crt" && ! -f "$ROOT/state/caddy-root.crt" ]]; then

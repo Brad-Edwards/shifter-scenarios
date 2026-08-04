@@ -503,6 +503,28 @@ seed_host_bridge() {
   rm -rf "$tmp"
 }
 
+prepare_cinder_trust_bundle() {
+  local bundle="${TEMPLATE_ROOT}/state/cinder-trust-bundle.crt"
+  local bootstrap_root="${TEMPLATE_ROOT}/state/cinder-bootstrap-root.crt"
+  local step_root="${TEMPLATE_ROOT}/state/cinder-step-root.crt"
+  install -d -m 0700 "${TEMPLATE_ROOT}/state"
+  for cert in "$bundle" "$bootstrap_root" "$step_root"; do
+    if [[ -d "$cert" && ! -L "$cert" ]]; then
+      rm -rf "$cert"
+    fi
+  done
+  [[ -s "${TEMPLATE_ROOT}/state/caddy-root.crt" ]] || die 'Caddy root certificate is unavailable for Cinder trust'
+  install -m 0644 "${TEMPLATE_ROOT}/state/caddy-root.crt" "$bootstrap_root"
+  docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' \
+    /home/step/certs/root_ca.crt >"$step_root"
+  {
+    cat "$bootstrap_root"
+    cat "$step_root"
+  } >"$bundle"
+  [[ $(grep -c '^-----BEGIN CERTIFICATE-----$' "$bundle") -eq 2 ]] || die 'Cinder trust bundle does not contain all admitted roots'
+  chmod 0644 "$bundle" "$bootstrap_root" "$step_root"
+}
+
 apply_core() {
   seed_enterprise_records all
   seed_signing_and_ci_identities
@@ -546,6 +568,7 @@ main() {
   local handler
   for command in base64 curl docker find jq python3 sed sha256sum ssh tar; do require "$command"; done
   install -d -m 0700 "$STATE_ROOT" "${STATE_ROOT}/evidence"
+  prepare_cinder_trust_bundle
   if [[ $OPERATION == all ]]; then
     apply_core; seed_blueprint_signature; seed_mlflow; seed_support_trace; seed_airflow; seed_harbor_review; seed_worker; seed_host_bridge
   else

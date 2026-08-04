@@ -14,6 +14,14 @@ set +a
 
 "$ROOT/scripts/prepare-workstation.sh"
 
+if ! docker network inspect kep-v2-hardware >/dev/null 2>&1; then
+  docker network create \
+    --driver bridge \
+    --subnet 10.61.100.0/24 \
+    --ip-range 10.61.100.128/26 \
+    kep-v2-hardware >/dev/null
+fi
+
 if docker inspect "$CONTAINER" >/dev/null 2>&1; then
   project=$(docker inspect --format '{{index .Config.Labels "com.docker.compose.project"}}' \
     "$CONTAINER" 2>/dev/null || true)

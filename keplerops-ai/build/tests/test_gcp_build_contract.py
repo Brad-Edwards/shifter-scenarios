@@ -1724,8 +1724,13 @@ class GcpBuildContractTests(unittest.TestCase):
             / "docs/campaign-v2/template/scripts/provision-guests.sh"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("<bridge name='virbr-v2'", helper)
-        self.assertIn("<ip address='192.168.78.1'", helper)
+        self.assertIn("readonly BRIDGE=${KEPLEROPS_IDENTITY_BRIDGE:-virbr-v2}", helper)
+        self.assertIn(
+            "readonly GATEWAY=${KEPLEROPS_IDENTITY_GATEWAY:-192.168.78.1}",
+            helper,
+        )
+        self.assertIn("<bridge name='$BRIDGE'", helper)
+        self.assertIn("<ip address='$GATEWAY' netmask='$NETMASK'>", helper)
         self.assertIn('virsh net-start "$NETWORK"', helper)
         self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', foundation)
         self.assertLess(
@@ -1800,7 +1805,7 @@ class GcpBuildContractTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("readonly ALLOW_PREVIEW_PENDING=", health)
         self.assertIn("$container == kep-v2-preview", health)
-        self.assertIn("$name == preview", health)
+        self.assertIn("'preview|preview.keplerops.lab|/'", health)
         network_install = (
             PACK_ROOT / "docs/campaign-v2/template/network/install.sh"
         ).read_text(encoding="utf-8")
