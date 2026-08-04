@@ -12,6 +12,16 @@ set -a
 source "$ROOT/component-lock.env"
 set +a
 
+if [[ -z ${PARTICIPANT_WEB_BIND_ADDRESS:-} ]]; then
+  PARTICIPANT_WEB_BIND_ADDRESS=$(
+    ip -4 route get 1.1.1.1 2>/dev/null |
+      awk '{for (idx = 1; idx <= NF; idx += 1) if ($idx == "src") {print $(idx + 1); exit}}'
+  )
+  PARTICIPANT_WEB_BIND_ADDRESS=${PARTICIPANT_WEB_BIND_ADDRESS:-127.0.0.1}
+  export PARTICIPANT_WEB_BIND_ADDRESS
+fi
+export PARTICIPANT_WEB_PORT=${PARTICIPANT_WEB_PORT:-443}
+
 "$ROOT/scripts/prepare-workstation.sh"
 
 if ! docker network inspect kep-v2-hardware >/dev/null 2>&1; then
