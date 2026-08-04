@@ -42,6 +42,24 @@ for guest in ad-dc-01 workforce-workstation-01 ml-workstation-01; do
   virsh autostart --disable "$guest" >/dev/null 2>&1 || true
 done
 
+# A machine image captured without quiescing boots with the previous kep-v2-*
+# compose stack still running (restart policies re-launch it). Those containers
+# hold the range's docker networks, so a fresh `start-all.sh build` aborts when
+# start-foundation recreates them ("network kep-v2-platform has active
+# endpoints"). Tear the previous stack down so the build starts from a clean
+# host regardless of how the source image was captured.
+mapfile -t stale_stack < <(
+  docker ps -aq --filter 'name=^kep-v2-' || true
+)
+if ((${#stale_stack[@]})); then
+  docker update --restart=no "${stale_stack[@]}" >/dev/null 2>&1 || true
+  docker rm -f "${stale_stack[@]}" >/dev/null 2>&1 || true
+fi
+while IFS= read -r stale_network; do
+  [[ -n $stale_network ]] || continue
+  docker network rm "$stale_network" >/dev/null 2>&1 || true
+done < <(docker network ls --format '{{.Name}}' | grep '^kep-v2-' || true)
+
 install -d -m 0755 "$ROOT"
 rsync -a --delete "$SOURCE_DIR/" "$ROOT/"
 chown -R root:root "$ROOT"
