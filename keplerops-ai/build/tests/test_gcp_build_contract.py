@@ -103,6 +103,12 @@ def _write_invalid_lock(root: Path, mode: str) -> Path:
         images.pop(components[0])
     elif mode == "binding":
         images[components[0]] = {"uri": "mutable", "digest": "bad"}
+    elif mode == "revision":
+        row = next(item for item in realization["runtime_images"] if "build_revision" in item)
+        images[row["component_id"]] = {
+            "uri": f"europe-west4-docker.pkg.dev/project/runtime/{row['component_id']}:stale-r1",
+            "digest": "sha256:" + "c" * 64,
+        }
     else:
         raise AssertionError("unknown lock mutation")
     path = root / f"invalid-image-lock-{mode}.json"
@@ -187,6 +193,11 @@ class GcpBuildContractTests(unittest.TestCase):
                 "invalid lock binding",
                 lambda root: _write_invalid_lock(root, "binding"),
                 "invalid binding",
+            ),
+            (
+                "stale image lock revision",
+                lambda root: _write_invalid_lock(root, "revision"),
+                "stale build revision",
             ),
         )
         for name, mutator, expected in cases:
