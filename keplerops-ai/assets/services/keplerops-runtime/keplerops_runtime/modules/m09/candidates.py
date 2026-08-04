@@ -6,19 +6,44 @@ from fastapi import Depends
 from fastapi import HTTPException
 from functools import lru_cache
 from keplerops_runtime.foundation.auth_storage import _postgres, _require_ready, _require_role, _session
+from keplerops_runtime.foundation.clients import _record_event
 from keplerops_runtime.foundation.config import ACTION_DENIED, BACKDOOR_EVALUATION_UNAVAILABLE, CONFIG, ERROR_RESPONSES, MODEL_REGISTRY_UNAVAILABLE, NOT_FOUND, WORKFLOW_COMPLETED_EVENT
 from keplerops_runtime.foundation.policy_client import _backdoor_policy
 from keplerops_runtime.foundation.telemetry import _capture_http_body, _observe
 from keplerops_runtime.modules.m09 import BackdoorCandidate, BackdoorCandidateRequest
+from keplerops_runtime.modules.m09.constants import BACKDOOR_EVIDENCE
 from pathlib import Path
 from typing import Annotated
 from typing import Any
 import json
 import secrets
 import tempfile
+import time
 
 router = APIRouter()
 BACKDOOR_STATE_UNAVAILABLE = "backdoor state unavailable"
+
+
+def _candidate_registration_event(
+    session: SessionClaims,
+    candidate: BackdoorCandidate,
+) -> dict[str, Any]:
+    event_kind, _ = BACKDOOR_EVIDENCE["kep-m09-a"]
+    return {
+        "actor_role": "participant",
+        "asset_id": "inference-gateway",
+        "digest": candidate.artifact_digest,
+        "event_kind": event_kind,
+        "object_id": candidate.candidate_id,
+        "outcome_id": "model-backdoor",
+        "participant": session.participant,
+        "range_instance": session.range_instance,
+        "record_count": 1,
+        "stage": candidate.status,
+        "status": "passed",
+        "timestamp": int(time.time()),
+        "workflow_id": candidate.registry_model_name,
+    }
 
 
 def _registry_url() -> str:
@@ -261,6 +286,7 @@ async def register_backdoor_candidate(
         session, request.training_job_id, generation
     )
     if existing is not None:
+        await _record_event(_candidate_registration_event(session, existing))
         return _candidate_response(existing)
     candidate_id = "mbc-" + secrets.token_hex(12)
     raw = _download_backdoor_artifact(artifact_uri)
@@ -313,6 +339,7 @@ async def register_backdoor_candidate(
             raise HTTPException(
                 status_code=409, detail="training artifact is already registered"
             )
+        await _record_event(_candidate_registration_event(session, existing))
         return _candidate_response(existing)
     _observe(
         session,

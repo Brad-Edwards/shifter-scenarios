@@ -199,29 +199,29 @@ def _training_score_bucket(metrics: TrainingMetrics | None) -> str:
         return "target-passed"
     return "target-below"
 
-async def _record_training_dataset_evidence(
+async def _record_training_evidence(
     request: TrainingAttemptRequest,
     session: SessionClaims,
     dataset: TrainingDataset,
     *,
-    passed: bool,
+    outcome: TrainingAttemptOutcome,
 ) -> None:
-    if not passed or request.challenge_id != "kep-m07-a":
+    if not outcome.passed:
         return
     event_kind, _ = TRAINING_EVIDENCE[request.challenge_id]
     await _record_event({
         "actor_role": "participant",
         "asset_id": "inference-gateway",
-        "digest": dataset.dataset_digest,
+        "digest": outcome.artifact_digest,
         "event_kind": event_kind,
-        "object_id": dataset.dataset_id,
+        "object_id": outcome.workflow_id,
         "outcome_id": "training-poisoning",
         "participant": session.participant,
         "range_instance": session.range_instance,
         "record_count": dataset.poison_count,
         "status": "passed",
         "timestamp": int(time.time()),
-        "workflow_id": dataset.dataset_id,
+        "workflow_id": outcome.workflow_id,
     })
 
 def _observe_training_objective(
