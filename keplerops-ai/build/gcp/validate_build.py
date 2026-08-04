@@ -138,7 +138,7 @@ def _validate_content_sources(realization: dict[str, Any], issues: list[str]) ->
 
 def _validate_image_lock(
     image_lock: Path,
-    components: set[str],
+    runtime_rows: list[dict[str, Any]],
     auxiliary_ids: set[str],
     issues: list[str],
 ) -> None:
@@ -149,12 +149,24 @@ def _validate_image_lock(
         return
     if set(lock) != {"schema_version", "project_id", "images", "auxiliary_images"}:
         issues.append("image lock: invalid fields")
+    components = {str(row["component_id"]) for row in runtime_rows}
     locked = lock.get("images", {})
     if set(locked) != components:
         issues.append("image lock: incomplete component set")
+    expected_tags: dict[str, str] = {}
+    for row in runtime_rows:
+        if "context" not in row:
+            continue
+        revision = row.get("build_revision", 1)
+        source_digest = str(row["source"]).rsplit("sha256:", 1)[1][:12]
+        expected_tags[str(row["component_id"])] = f":{source_digest}-r{revision}"
     for component_id, row in locked.items():
         if set(row) != {"uri", "digest"} or not LOCK_DIGEST.fullmatch(str(row.get("digest", ""))):
             issues.append(f"image lock {component_id}: invalid binding")
+            continue
+        expected_tag = expected_tags.get(str(component_id))
+        if expected_tag is not None and not str(row.get("uri", "")).endswith(expected_tag):
+            issues.append(f"image lock {component_id}: stale build revision")
     auxiliary_locked = lock.get("auxiliary_images", {})
     if set(auxiliary_locked) != auxiliary_ids:
         issues.append("image lock: incomplete auxiliary image set")
@@ -208,7 +220,7 @@ def validate(image_lock: Path | None = None) -> list[str]:
     auxiliary_ids = set(_validate_auxiliary_images(runtime, issues))
     _validate_models(issues)
     if image_lock is not None:
-        _validate_image_lock(image_lock, components, auxiliary_ids, issues)
+        _validate_image_lock(image_lock, realization["runtime_images"], auxiliary_ids, issues)
     return issues
 
 

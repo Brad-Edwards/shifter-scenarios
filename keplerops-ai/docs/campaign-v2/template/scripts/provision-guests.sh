@@ -4,7 +4,6 @@ set -euo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 readonly STATE="$ROOT/state/guests"
 readonly IMAGE_DIR=/var/lib/libvirt/images/keplerops-v2
-readonly NETWORK=kep-v2-identity
 readonly DOMAIN=CORP.KEPLEROPS.LAB
 readonly SHORT_DOMAIN=KEPLEROPS
 readonly ADMIN_PASSWORD=KeplerV2-Training-AD-Admin

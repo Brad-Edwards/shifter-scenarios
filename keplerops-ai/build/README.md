@@ -114,6 +114,7 @@ build/launch.sh \
   --windows-image projects/prod-ksqdkj/global/images/keplerops-windows-v1 \
   --nested-host-image \
     projects/prod-ksqdkj/global/images/keplerops-nested-host-v20260728 \
+  --range-host-ip-offset 10 \
   --research-profile off
 
 build/health-check.sh --range-instance kep-355-a1 --participant participant-01
@@ -129,6 +130,11 @@ build/export-telemetry.sh \
   --output /operator/evidence/kep-355-a1-telemetry.tar
 build/cleanup.sh --range-instance kep-355-a1 --participant participant-01
 ```
+
+`--range-host-ip-offset` defaults to `10`, preserving the historical range-host
+address. When multiple retained playtest ranges share the same cell subnet, give
+each concurrent range a distinct offset inside the subnet so the packed host does
+not collide with another operator's VM.
 
 The nested golden proof entrypoint runs the static pack contract, the integrated
 Kasm participant rehearsal, every focused expansion runner, and two canonical
