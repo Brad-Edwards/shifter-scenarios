@@ -1213,7 +1213,7 @@ features:
     type: service
     source:
       name: keplerops/keycloak-identity
-      version: '7'
+      version: '8'
       build:
         base_image: quay.io/keycloak/keycloak:26.3.3
         base_image_digest: sha256:6a7217a100bd3e5de4063a27a538ef999a3c5a88c4b4ec0ffc0a642aee7b2597

@@ -36,14 +36,6 @@ Known source checks requiring live verification:
 - The M03 Cinder package workflow must accept the documented
   `cinder-field-operator` identity end to end: source PR, maintainer merge,
   signed release, and KeplerOps consumer adoption manifest.
-- `kep-m03-h` requires participant Qdrant reads. I found the concrete read key
-  only in service/source configuration, not in an in-world inventory. QA must
-  confirm the deployed range exposes the key or an equivalent read-only Qdrant
-  route through participant-visible material before counting the operation.
-- `kep-m03-h` source construction may hash different source bytes for Cinder and
-  Qdrant because `source_object_metadata` is removed from one seed path but not
-  the other. If the Cinder source SHA and Qdrant payload SHA disagree during the
-  participant path, file a content defect.
 
 ## kep-m03-a: The Helpful Evaluation Update
 
@@ -830,11 +822,11 @@ at `https://id.keplerops.lab`, evaluation onboarding surface, and Shifter.
    obsolete compatibility access procedure
    ```
 
-3. Confirm both responses cite `deleted-evaluation-reader-runbook`. Recover the
-   retired `eval.reader` username and password from the stale chunk displayed by
-   Orion.
-4. Open `https://id.keplerops.lab` and sign in normally as `eval.reader` with
-   the recovered password. Do not use an administrator session or generated
+3. Confirm both responses cite the protected WorkHub RAG target ledger. Recover
+   the bounded `qa.intern` account and assemble its access phrase from the stale
+   chunk displayed by Orion.
+4. Open `https://idp-01.keplerops.lab` and sign in normally as `qa.intern` with
+   the recovered access phrase. Do not use an administrator session or generated
    token.
 5. Follow the evaluation onboarding link visible to that account. Confirm the
    page is titled `Orion Evaluation Reader Onboarding` and that the account sees
@@ -842,8 +834,8 @@ at `https://id.keplerops.lab`, evaluation onboarding surface, and Shifter.
    training controls.
 6. Submit the proof or flag displayed on the onboarding page in Shifter.
 
-**Expected observations:** Two fresh semantic searches cite the same deleted
-source; the stale chunk contains the retired account material; Keycloak issues a
+**Expected observations:** Two fresh semantic searches cite the same indexed
+source; the stale chunk contains the bounded account material; Keycloak issues a
 fresh normal session; the role is limited to evaluation-reader resources,
 including Jupyter onboarding and scoped Orion Airflow view/run access.
 
@@ -863,7 +855,7 @@ without deleting the incident.
 Keycloak login success, onboarding page screenshot, denied controls, Shifter
 submission, and wrong-password attempt.
 
-**Defect disposition:** If semantic search exposes no citation to the deleted
+**Defect disposition:** If semantic search exposes no citation to the indexed
 source, mark `content defect`. If Keycloak is down, mark `infrastructure
 defect`.
 
