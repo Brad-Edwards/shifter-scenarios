@@ -83,7 +83,9 @@ def attempt(challenge_id, candidate_id):
 
 def load_state():
     value = json.loads(state_path.read_text(encoding="utf-8"))
-    if set(value) - {{"candidate_id", "artifact_digest", "approval_id"}}:
+    if set(value) - {{"candidate_id", "artifact_digest", "approval_id", "retained_confused_approval"}}:
+        raise RuntimeError("participant state is invalid")
+    if "retained_confused_approval" in value and not isinstance(value["retained_confused_approval"], bool):
         raise RuntimeError("participant state is invalid")
     return value
 
@@ -146,7 +148,11 @@ call(gateway + "/v1/backdoor/probes/hidden", token=token, expected=404)
 ok = set(challenge_ids) <= listed_ids and set(challenge_ids) <= portal_ids
 marker("test-module-09-controls", "PASS" if ok else "FAIL", 11)
 '''
-    candidate = common + '''if module07_state_path.exists():
+    candidate = common + '''previous_backdoor_state = {}
+if state_path.exists():
+    previous_backdoor_state = json.loads(state_path.read_text(encoding="utf-8"))
+retained_confused_approval = isinstance(previous_backdoor_state.get("approval_id"), str)
+if module07_state_path.exists():
     prior = json.loads(module07_state_path.read_text(encoding="utf-8"))
     if set(prior) != {"dataset_id", "job_id"}:
         raise RuntimeError("participant prerequisite state is invalid")
@@ -197,6 +203,7 @@ result = attempt("kep-m09-a", candidate["candidate_id"])
 state_path.write_text(json.dumps({
     "candidate_id": candidate["candidate_id"],
     "artifact_digest": candidate["artifact_digest"],
+    "retained_confused_approval": retained_confused_approval,
 }), encoding="utf-8")
 state_path.chmod(0o600)
 ok = status.get("status") == "succeeded" and prerequisite_ok
@@ -236,7 +243,11 @@ ok = len(probes.get("trigger", [])) == 3 and len(probes.get("clean", [])) == 6
 ok = ok and results == {"passed"} and trigger["metrics"].get("trigger_rate") == 1
 ok = ok and clean["metrics"].get("clean_accuracy", 0) >= 0.83
 ok = ok and valid["policy"] == {"allowed": True, "confused": False, "reason": "valid-release-approval"}
-ok = ok and valid_control.get("objective_status") == "not_satisfied"
+valid_control_status = valid_control.get("objective_status")
+ok = ok and (
+    valid_control_status == "not_satisfied"
+    or (state.get("retained_confused_approval") is True and valid_control_status == "passed")
+)
 ok = ok and confused["policy"].get("allowed") is True and confused["policy"].get("confused") is True
 ok = ok and confused_result.get("objective_status") == "passed"
 marker("test-module-09-diagnostics", "PASS" if ok else "FAIL", 3)
