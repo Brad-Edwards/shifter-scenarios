@@ -20,10 +20,14 @@ x-m09-airflow: &m09-airflow
     KEPLER_FORGEJO_URL: http://forgejo:3000
     KEPLER_FORGEJO_AUTH: range-admin:KeplerV2-Training-Forgejo-Admin
     MLFLOW_URL: http://mlflow:5000
-    MLFLOW_AUTH: svc-orion-training:KeplerV2-Training-MLflow-Service
+    MLFLOW_AUTH: range-admin:KeplerV2-Training-MLflow-Admin
     MINIO_URL: http://minio:9000
     MINIO_ACCESS_KEY: svc-orion-training
     MINIO_SECRET_KEY: KeplerV2-Training-Minio-Orion-Training
+    NEXTCLOUD_URL: http://nextcloud
+    NEXTCLOUD_HOST: files.keplerops.lab
+    NEXTCLOUD_USER: svc-orion-release-runner
+    NEXTCLOUD_PASSWORD: KeplerV2-M09-Release-Runner-2026
     HARBOR_URL: http://harbor-nginx:8080
     HARBOR_AUTH: admin:KeplerV2-Training-Harbor
     OPA_URL: http://192.168.78.30:30082
@@ -58,7 +62,7 @@ x-m09-airflow: &m09-airflow
     - ./state/campaign-start/m07:/var/lib/orion-integrity:ro
     - ./engineering/release-risk/integrity-heldout.json:/opt/airflow/release-risk/integrity-heldout.json:ro
     - ./state:/var/lib/keplerops-state
-    - ${K3S01_SSH_KEY:-/root/.ssh/keplerops-v2}:/run/keplerops/k3s-key:ro
+    - ./state/campaign-start/m09/k3s-key:/run/keplerops/k3s-key:ro
   networks:
     - cinder
     - data
@@ -67,6 +71,7 @@ x-m09-airflow: &m09-airflow
 services:
   airflow-api:
     <<: *m09-airflow
+    command: ["api-server", "--workers", "1"]
   airflow-scheduler:
     <<: *m09-airflow
   airflow-dag-processor:
@@ -87,7 +92,7 @@ services:
       RABBITMQ_QUEUE: orion.review.m09-import
       RABBITMQ_RESULT_QUEUE: orion.review.m09-results
       M09_REVIEW_RESULT_QUEUE: orion.review.m09-review-results
-      RELAY_INTERNAL_URL: https://relay.cinder.lab
+      RELAY_INTERNAL_URL: http://192.168.78.30:31080
       RELAY_HOST: relay.cinder.lab
       M09_FLAG_I: FLAG{a5f407f8684ade8d}
       SSL_CERT_FILE: /etc/keplerops/caddy-root.crt

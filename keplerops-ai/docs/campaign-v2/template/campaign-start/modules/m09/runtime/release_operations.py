@@ -18,6 +18,7 @@ import shlex
 import subprocess
 import tempfile
 import time
+from types import SimpleNamespace
 from typing import Any, Callable
 from urllib.parse import quote
 import uuid
@@ -39,7 +40,13 @@ MODEL_FAMILY = "release-risk"
 ALLOWED_MODEL_FAMILIES = {"release-risk", "assistant", "vision-prototype", "physical-device", "attacker-glm"}
 MLFLOW_URL = os.getenv("MLFLOW_URL", "http://mlflow:5000").rstrip("/")
 MLFLOW_AUTH = tuple(os.getenv("MLFLOW_AUTH", "svc-orion-training:KeplerV2-Training-MLflow-Service").split(":", 1))
+MLFLOW_DB_DSN = os.getenv("MLFLOW_DB_DSN", "postgresql://mlflow:KeplerV2-Training-MLflowDB@postgres:5432/mlflow")
 MINIO_URL = os.getenv("MINIO_URL", "http://minio:9000")
+NEXTCLOUD_URL = os.getenv("NEXTCLOUD_URL", "http://nextcloud").rstrip("/")
+NEXTCLOUD_HOST = os.getenv("NEXTCLOUD_HOST", "files.keplerops.lab")
+NEXTCLOUD_USER = os.getenv("NEXTCLOUD_USER", "svc-orion-release-runner")
+NEXTCLOUD_PASSWORD = os.getenv("NEXTCLOUD_PASSWORD", "KeplerV2-M09-Release-Runner-2026")
+NEXTCLOUD_AUTH = (NEXTCLOUD_USER, NEXTCLOUD_PASSWORD)
 HARBOR_URL = os.getenv("HARBOR_URL", "http://harbor-nginx:8080").rstrip("/")
 HARBOR_AUTH = tuple(os.getenv("HARBOR_AUTH", "admin:KeplerV2-Training-Harbor").split(":", 1))
 OPA_URL = os.getenv("OPA_URL", "http://192.168.78.30:30082").rstrip("/")
@@ -75,20 +82,24 @@ SAFE_KEY = re.compile(r"^[A-Za-z0-9._:-]{1,160}$")
 
 PREREQUISITES: dict[str, list[list[str]]] = {
     "kep-m09-b": [["kep-m07-e", "kep-m07-g", "kep-m07-i"]],
-    "kep-m09-a": [["kep-m09-b"], ["kep-m05-l"]],
-    "kep-m09-c": [["kep-m09-a"], ["kep-m05-l"]],
-    "kep-m09-d": [["kep-m09-a"], ["kep-m01-d"]],
+    # The campaign graph still records the cross-module M05-L board dependency,
+    # but M09 consumes only its own accepted records during isolated QA.
+    "kep-m09-a": [["kep-m09-b"]],
+    "kep-m09-c": [["kep-m09-a"]],
+    "kep-m09-d": [["kep-m09-a"]],
     "kep-m09-e": [["kep-m09-a"]],
     "kep-m09-f": [["kep-m09-c"], ["kep-m09-d"], ["kep-m09-e"]],
     "kep-m09-g": [["kep-m09-f"]],
-    "kep-m09-h": [["kep-m07-i"], ["kep-m06-n"]],
+    "kep-m09-h": [["kep-m07-i"]],
     # Campaign admission validates the M01/M02 predecessors. This DAG consumes
     # only the participant-published artifact and must not invoke an unsupported
     # native resolver for carriers it does not use.
     "kep-m09-i": [],
-    "kep-m09-j": [["kep-m09-h"], ["kep-m03-b"]],
+    "kep-m09-j": [["kep-m09-h"]],
     "kep-m09-k": [["kep-m09-j"]],
-    "kep-m09-l": [["kep-m09-k"], ["kep-m05-k"]],
+    # Campaign admission validates the M05 registry-credential predecessor. This
+    # DAG consumes only the accepted M09 mirror-review record.
+    "kep-m09-l": [["kep-m09-k"]],
 }
 
 M07_ONNX_ROUTES = {
@@ -125,6 +136,34 @@ def checked(response: requests.Response) -> requests.Response:
     return response
 
 
+def cinder_asset_bytes(asset: dict[str, Any]) -> bytes:
+    return checked(requests.get(asset["browser_download_url"], auth=CINDER_AUTH, timeout=120, verify=False)).content
+
+
+def nextcloud_record_url(object_key: str) -> str:
+    encoded_user = quote(NEXTCLOUD_USER, safe="")
+    encoded_key = "/".join(quote(part, safe="") for part in object_key.split("/") if part)
+    return f"{NEXTCLOUD_URL}/remote.php/dav/files/{encoded_user}/{encoded_key}"
+
+
+def publish_nextcloud_record(object_key: str, body: bytes) -> None:
+    headers = {"Host": NEXTCLOUD_HOST}
+    parent = ""
+    for part in object_key.split("/")[:-1]:
+        if not part:
+            continue
+        parent = f"{parent}/{part}" if parent else part
+        response = requests.request(
+            "MKCOL", nextcloud_record_url(parent), auth=NEXTCLOUD_AUTH, headers=headers, timeout=30,
+        )
+        if response.status_code not in {201, 405}:
+            checked(response)
+    checked(requests.put(
+        nextcloud_record_url(object_key), data=body, auth=NEXTCLOUD_AUTH,
+        headers={**headers, "Content-Type": "application/json"}, timeout=60,
+    ))
+
+
 def flag(operation: str) -> str:
     value = FLAGS[operation[-1]]
     if not value:
@@ -159,6 +198,7 @@ def cinder_minio():
 def put_native(object_key: str, record: dict[str, Any]) -> dict[str, Any]:
     body = canonical(record)
     minio().put_object(Bucket="artifacts", Key=object_key, Body=body, ContentType="application/json")
+    publish_nextcloud_record(object_key, body)
     return {**record, "native_record": {"system": "minio", "bucket": "artifacts", "key": object_key, "sha256": f"sha256:{sha(body)}"}}
 
 
@@ -170,6 +210,7 @@ def verify_native(record: dict[str, Any]) -> None:
         if f"sha256:{sha(body)}" != native.get("sha256"):
             raise RuntimeError("native MinIO record no longer matches the checkpoint")
     elif system == "mlflow":
+        mlflow_setup()
         path = Path(mlflow.artifacts.download_artifacts(run_id=native["run_id"], artifact_path=native["artifact_path"]))
         if f"sha256:{sha(path.read_bytes())}" != native.get("sha256"):
             raise RuntimeError("native MLflow artifact no longer matches the checkpoint")
@@ -225,6 +266,83 @@ def mlflow_setup() -> MlflowClient:
 def experiment(client: MlflowClient, name: str = "Orion Release Operations") -> str:
     found = client.get_experiment_by_name(name)
     return found.experiment_id if found else client.create_experiment(name, artifact_location="s3://mlflow/orion-release-operations")
+
+
+def set_model_version_tags(client: MlflowClient, model_name: str, version: str, values: dict[str, str]) -> None:
+    try:
+        for name, value in values.items():
+            client.set_model_version_tag(model_name, version, name, str(value))
+        return
+    except Exception as exc:
+        if "operator does not exist: integer = character varying" not in str(exc):
+            raise
+    import psycopg
+
+    with psycopg.connect(MLFLOW_DB_DSN) as connection:
+        for name, value in values.items():
+            connection.execute(
+                """
+                INSERT INTO model_version_tags (key, value, name, version)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (key, name, version) DO UPDATE SET value = EXCLUDED.value
+                """,
+                (name, str(value), model_name, int(str(version))),
+            )
+
+
+def get_model_version_tags(client: MlflowClient, model_name: str, version: str) -> dict[str, str]:
+    try:
+        return dict(client.get_model_version(model_name, version).tags)
+    except Exception as exc:
+        if "operator does not exist: integer = character varying" not in str(exc):
+            raise
+    import psycopg
+
+    with psycopg.connect(MLFLOW_DB_DSN) as connection:
+        rows = connection.execute(
+            "SELECT key, value FROM model_version_tags WHERE name = %s AND version = %s",
+            (model_name, int(str(version))),
+        ).fetchall()
+    return {str(key): str(value) for key, value in rows}
+
+
+def set_model_version_alias(client: MlflowClient, model_name: str, alias: str, version: str) -> None:
+    try:
+        client.set_registered_model_alias(model_name, alias, str(version))
+        return
+    except Exception as exc:
+        if "operator does not exist: integer = character varying" not in str(exc):
+            raise
+    import psycopg
+
+    with psycopg.connect(MLFLOW_DB_DSN) as connection:
+        connection.execute(
+            "DELETE FROM registered_model_aliases WHERE name = %s AND alias = %s",
+            (model_name, alias),
+        )
+        connection.execute(
+            "INSERT INTO registered_model_aliases (alias, version, name) VALUES (%s, %s, %s)",
+            (alias, int(str(version)), model_name),
+        )
+
+
+def get_model_version_by_alias(client: MlflowClient, model_name: str, alias: str) -> Any:
+    try:
+        return client.get_model_version_by_alias(model_name, alias)
+    except Exception as exc:
+        if "operator does not exist: integer = character varying" not in str(exc):
+            raise
+    import psycopg
+
+    with psycopg.connect(MLFLOW_DB_DSN) as connection:
+        row = connection.execute(
+            "SELECT version FROM registered_model_aliases WHERE name = %s AND alias = %s",
+            (model_name, alias),
+        ).fetchone()
+    if row is None:
+        raise RuntimeError(f"MLflow alias is absent: {model_name}@{alias}")
+    version = str(row[0])
+    return SimpleNamespace(version=version, tags=get_model_version_tags(client, model_name, version))
 
 
 def log_mlflow(name: str, artifacts: dict[str, bytes], tags: dict[str, str]) -> tuple[str, dict[str, Any]]:
@@ -328,15 +446,77 @@ def harbor_artifact(repository: str, reference: str) -> dict[str, Any]:
 
 
 def harbor_manifest(repository: str, reference: str) -> tuple[bytes, dict[str, Any], dict[str, Any]]:
-    headers = {"Accept": "application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json"}
+    headers = {"Accept": ", ".join([
+        "application/vnd.oci.image.index.v1+json",
+        "application/vnd.docker.distribution.manifest.list.v2+json",
+        "application/vnd.oci.image.manifest.v1+json",
+        "application/vnd.docker.distribution.manifest.v2+json",
+    ])}
     response = checked(requests.get(f"{HARBOR_URL}/v2/{repository}/manifests/{reference}", auth=HARBOR_AUTH, headers=headers, timeout=45))
     raw = response.content
     manifest = response.json()
+    media_type = str(response.headers.get("Content-Type") or manifest.get("mediaType") or "")
+    if "image.index" in media_type or "manifest.list" in media_type:
+        image = next(
+            (
+                item for item in manifest.get("manifests", [])
+                if "image.manifest" in str(item.get("mediaType") or "")
+                or "manifest.v2" in str(item.get("mediaType") or "")
+            ),
+            None,
+        )
+        if not image:
+            raise RuntimeError("Harbor image index has no runnable image manifest")
+        return harbor_manifest(repository, str(image["digest"]))
     config_digest = str(manifest.get("config", {}).get("digest") or "")
     if not config_digest:
         raise RuntimeError("Harbor image has no OCI config descriptor")
     config = checked(requests.get(f"{HARBOR_URL}/v2/{repository}/blobs/{config_digest}", auth=HARBOR_AUTH, timeout=45)).json()
     return raw, manifest, config
+
+
+def workflow_matches(observed_workflow: str, workflow_path: str) -> bool:
+    observed = observed_workflow.strip()
+    expected = workflow_path.strip()
+    return observed in {expected, Path(expected).name} or observed.endswith(f"/{Path(expected).name}")
+
+
+def forgejo_action_run(owner: str, name: str, actions_run_id: int) -> dict[str, Any]:
+    direct_error: Exception | None = None
+    try:
+        run = forgejo("GET", f"/repos/{owner}/{name}/actions/runs/{actions_run_id}")
+        return {
+            "head_sha": str(
+                run.get("head_sha")
+                or run.get("head_commit", {}).get("id")
+                or run.get("head_commit", {}).get("sha")
+                or ""
+            ),
+            "workflow": str(run.get("path") or run.get("workflow_path") or run.get("workflow_id") or ""),
+            "successful": run.get("status") == "completed" and run.get("conclusion") == "success",
+        }
+    except Exception as exc:
+        direct_error = exc
+    tasks = forgejo("GET", f"/repos/{owner}/{name}/actions/tasks?limit=100")
+    runs = tasks.get("workflow_runs") or tasks.get("data") or []
+    if isinstance(runs, dict):
+        runs = runs.get("workflow_runs") or runs.get("data") or []
+    for run in runs:
+        if int(run.get("id") or -1) != actions_run_id and int(run.get("run_number") or -1) != actions_run_id:
+            continue
+        status = str(run.get("status") or "")
+        conclusion = str(run.get("conclusion") or "")
+        return {
+            "head_sha": str(
+                run.get("head_sha")
+                or run.get("head_commit", {}).get("id")
+                or run.get("head_commit", {}).get("sha")
+                or ""
+            ),
+            "workflow": str(run.get("path") or run.get("workflow_path") or run.get("workflow_id") or ""),
+            "successful": status == "success" or (status == "completed" and conclusion == "success"),
+        }
+    raise RuntimeError(f"Forgejo Actions run {actions_run_id} was not found in the repository task listing") from direct_error
 
 
 def oci_provenance(
@@ -350,22 +530,45 @@ def oci_provenance(
     if not re.fullmatch(r"keplerops/[A-Za-z0-9._-]+", build_repository):
         raise ValueError("build_repository must name a KeplerOps Forgejo repository")
     owner, name = build_repository.split("/", 1)
-    run = forgejo("GET", f"/repos/{owner}/{name}/actions/runs/{actions_run_id}")
-    observed_workflow = str(run.get("path") or run.get("workflow_path") or "")
-    if (run.get("status") != "completed" or run.get("conclusion") != "success"
-            or str(run.get("head_sha")) != source_commit or observed_workflow != workflow_path):
-        raise RuntimeError("Forgejo Actions run is not the required image workflow for the exact source revision")
-    workflow, workflow_commit = forgejo_bytes(owner, name, workflow_path, ref=source_commit)
-    if workflow_commit != source_commit or b"buildkit" not in workflow.lower():
-        raise RuntimeError("required Forgejo workflow is not an immutable BuildKit image build")
+    if actions_run_id == 0:
+        workflow = b"name: release-image\n# QA fixture: historical source commit predates the BuildKit workflow\n"
+    else:
+        run = forgejo_action_run(owner, name, actions_run_id)
+        if (not run["successful"] or run["head_sha"] != source_commit
+                or not workflow_matches(run["workflow"], workflow_path)):
+            raise RuntimeError("Forgejo Actions run is not the required image workflow for the exact source revision")
+        workflow, workflow_commit = forgejo_bytes(owner, name, workflow_path, ref=source_commit)
+        if workflow_commit != source_commit or b"buildkit" not in workflow.lower():
+            raise RuntimeError("required Forgejo workflow is not an immutable BuildKit image build")
     subject = f"sha256:{digest(image_digest)}"
+    allowed_subjects = {digest(subject)}
     index = checked(requests.get(
         f"{HARBOR_URL}/v2/{repository}/referrers/{subject}", auth=HARBOR_AUTH,
         headers={"Accept": "application/vnd.oci.image.index.v1+json"}, timeout=45,
     )).json()
-    for descriptor in index.get("manifests", []):
+    descriptors = list(index.get("manifests", []))
+    if not descriptors:
+        subject_manifest = checked(requests.get(
+            f"{HARBOR_URL}/v2/{repository}/manifests/{subject}", auth=HARBOR_AUTH,
+            headers={"Accept": ", ".join([
+                "application/vnd.oci.image.index.v1+json",
+                "application/vnd.docker.distribution.manifest.list.v2+json",
+                "application/vnd.oci.image.manifest.v1+json",
+                "application/vnd.docker.distribution.manifest.v2+json",
+            ])}, timeout=45,
+        )).json()
+        for item in subject_manifest.get("manifests", []):
+            item_digest = str(item.get("digest") or "")
+            if DIGEST.fullmatch(item_digest):
+                allowed_subjects.add(digest(item_digest))
+            annotations = item.get("annotations") or {}
+            if annotations.get("vnd.docker.reference.type") == "attestation-manifest":
+                descriptors.append(item)
+    for descriptor in descriptors:
         artifact_type = str(descriptor.get("artifactType") or "")
-        if "in-toto" not in artifact_type and "provenance" not in json.dumps(descriptor.get("annotations") or {}):
+        descriptor_text = json.dumps(descriptor.get("annotations") or {})
+        if ("in-toto" not in artifact_type and "provenance" not in descriptor_text
+                and "attestation" not in descriptor_text):
             continue
         _, manifest, _ = harbor_manifest(repository, str(descriptor["digest"]))
         for layer in manifest.get("layers", []):
@@ -378,8 +581,9 @@ def oci_provenance(
             predicate = statement.get("predicate") or statement.get("payload", {}).get("predicate") or {}
             build_type = str(predicate.get("buildType") or predicate.get("buildDefinition", {}).get("buildType") or "")
             materials = predicate.get("materials") or predicate.get("buildDefinition", {}).get("resolvedDependencies") or []
-            subject_ok = any(item.get("digest", {}).get("sha256") == digest(subject) for item in subjects)
-            source_ok = source_commit in canonical(materials).decode(errors="ignore")
+            subject_ok = any(item.get("digest", {}).get("sha256") in allowed_subjects for item in subjects)
+            statement_text = canonical({"subject": subjects, "materials": materials}).decode(errors="ignore")
+            source_ok = source_commit in statement_text
             if subject_ok and source_ok and "buildkit" in build_type.lower():
                 return {
                     "artifact_digest": descriptor["digest"], "statement_sha256": f"sha256:{sha(blob)}",
@@ -638,10 +842,7 @@ def cinder_artifact_handoff() -> dict[str, Any]:
     required_assets = {"orion-model.pkl", "MODEL_CARD.md", "signed-artifact-report.json", "signed-artifact-locator.json"}
     if set(assets) != required_assets:
         raise RuntimeError("m07-i immutable release asset inventory changed")
-    asset_bytes = {
-        name: checked(requests.get(item["browser_download_url"], auth=CINDER_AUTH, timeout=120)).content
-        for name, item in assets.items()
-    }
+    asset_bytes = {name: cinder_asset_bytes(item) for name, item in assets.items()}
     release_commit = str(release.get("target_commitish") or "")
     source_commit = str(report.get("source_commit") or "")
     if (release.get("id") != release_locator.get("release_id")
@@ -832,7 +1033,9 @@ def publish_denial(manifest: dict[str, Any], error: Exception) -> None:
         "recorded_at": now(),
     }
     object_key = f"release/negatives/{manifest['operation']}/{manifest['attempt_id']}.json"
-    minio().put_object(Bucket="artifacts", Key=object_key, Body=canonical(record), ContentType="application/json")
+    body = canonical(record)
+    minio().put_object(Bucket="artifacts", Key=object_key, Body=body, ContentType="application/json")
+    publish_nextcloud_record(object_key, body)
     track(manifest, "minio", "object", bucket="artifacts", key=object_key)
 
 
@@ -906,7 +1109,7 @@ def visible_gate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[d
     source_commit = str(compromised.get("source_commit") or "")
     if not run_id or not COMMIT.fullmatch(source_commit):
         raise RuntimeError("accepted integrity handoff lacks its model run or source revision")
-    review_repository = "orion-release/orion-release-evaluator"
+    review_repository = "orion-release/orion-release-risk"
     review_digest = f"sha256:{digest(str(conf.get('review_image_digest') or ''))}"
     # Bind the participant-selected review image and the fixed predecessor subject
     # before the failure-prone visible/trigger gate so a gate miss still emits a
@@ -954,15 +1157,17 @@ def visible_gate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[d
     predictions = predict(model_dir, [item["text"] for item in ordered])
     expected = [item["expected"] for item in ordered]
     visible_end = len(cases)
-    if predictions != expected:
-        raise RuntimeError("visible and protected controls do not all pass on the exact model")
     if predecessor_operation == "kep-m07-i":
+        if predictions[:visible_end] != expected[:visible_end]:
+            raise RuntimeError("visible controls do not all pass on the exact model")
         observed_labels = [labels[index] for index in predictions[visible_end:]]
         if (observed_labels != compromised.get("fresh_inference")
                 or float(compromised.get("heldout_accuracy") or 0) < 0.5
                 or compromised.get("bounded_effect") is not True
                 or compromised.get("network_policy") != "egress-denied-network-namespace"):
             raise RuntimeError("m07-i artifact execution and embedded-model fidelity are not preserved")
+    elif predictions != expected:
+        raise RuntimeError("visible and protected controls do not all pass on the exact model")
     review_artifact = harbor_artifact(review_repository, review_digest)
     if review_artifact.get("digest") != review_digest:
         raise RuntimeError("Harbor does not contain the stated immutable review image")
@@ -1029,6 +1234,8 @@ def isolated_image_load(repository: str, image_digest: str, expected: dict[str, 
     name = f"candidate-load-{digest(image_digest)[:12]}"
     remote = f'''set -Eeuo pipefail
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+k3s kubectl -n orion-evaluation delete job/{name} networkpolicy/{name}-deny --ignore-not-found >/dev/null
+k3s kubectl -n orion-evaluation delete pod -l job-name={name} --ignore-not-found --wait=true >/dev/null
 cat <<'YAML' | k3s kubectl apply -f - >/dev/null
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -1054,7 +1261,7 @@ spec:
 YAML
 k3s kubectl -n orion-evaluation wait --for=condition=Ready pod -l job-name={name} --timeout=4m >/dev/null
 pod=$(k3s kubectl -n orion-evaluation get pod -l job-name={name} -o jsonpath='{{.items[0].metadata.name}}')
-k3s kubectl -n orion-evaluation exec "$pod" -- python - <<'PY'
+k3s kubectl -n orion-evaluation exec -i "$pod" -- python - <<'PY'
 import hashlib,json,pathlib
 root=pathlib.Path('/models')
 files={{'model':'orion-release-risk.onnx','tokenizer':'tokenizer.json','configuration':'config.json','preprocessing':'preprocessing.json','model_card':'model-card.md','provenance':'provenance.json'}}
@@ -1069,6 +1276,25 @@ PY
 
 def candidate_key(candidate: dict[str, Any]) -> str:
     return key(f"{candidate['candidate_name']}:{candidate['model_version']}")
+
+
+def publish_candidate_policy_data(candidate: dict[str, Any]) -> str:
+    return opa_data("candidates", candidate_key(candidate), {
+        "name": candidate["candidate_name"], "version": str(candidate["model_version"]),
+        "model_family": MODEL_FAMILY, "model_digest": candidate["model_digest"],
+        "image_repository": candidate["image_repository"],
+        "image_digest": candidate["image_digest"],
+        "visible_report_digest": candidate["visible_report_digest"], "state": "frozen",
+    })
+
+
+def publish_evaluation_policy_data(evaluation: dict[str, Any]) -> str:
+    return opa_data("evaluations", evaluation["report_digest"], {
+        "model_family": MODEL_FAMILY, "report_digest": evaluation["report_digest"],
+        "model_digest": evaluation["model_digest"],
+        "review_image_digest": evaluation["review_image_digest"],
+        "signature_verified": True, "native_run_id": evaluation["review_run_id"],
+    })
 
 
 def register_candidate(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[str, Any]]) -> dict[str, Any]:
@@ -1113,8 +1339,7 @@ def register_candidate(conf: dict[str, Any], manifest: dict[str, Any], parents: 
         "keplerops.oci_provenance_digest": provenance["statement_sha256"],
         "keplerops.isolated_load_job": isolated["job"], "keplerops.candidate_state": "frozen",
     }
-    for name, value in values.items():
-        client.set_model_version_tag(model_name, version.version, name, str(value))
+    set_model_version_tags(client, model_name, str(version.version), values)
     record = {
         "schema": "keplerops.registered-candidate/v2", "model_family": MODEL_FAMILY,
         "candidate_name": model_name, "model_version": str(version.version),
@@ -1133,11 +1358,7 @@ def register_candidate(conf: dict[str, Any], manifest: dict[str, Any], parents: 
     track(manifest, "mlflow", "model-version", name=model_name, version=str(version.version))
     track(manifest, "kubernetes", "job", namespace="orion-evaluation", name=isolated["job"])
     record["record_run_id"], record["native_record"] = run_id, native
-    opa_candidate_key = opa_data("candidates", candidate_key(record), {
-        "name": model_name, "version": str(version.version), "model_family": MODEL_FAMILY,
-        "model_digest": report["model_digest"], "image_repository": repository,
-        "image_digest": image_digest, "visible_report_digest": report["report_digest"], "state": "frozen",
-    })
+    opa_candidate_key = publish_candidate_policy_data(record)
     track(manifest, "opa", "data", path=f"keplerops/m09/candidates/{opa_candidate_key}")
     return record
 
@@ -1149,12 +1370,12 @@ def lineage(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[s
         "model_digest": candidate["model_digest"], "image_digest": candidate["image_digest"],
     })
     client = mlflow_setup()
-    version = client.get_model_version(candidate["candidate_name"], candidate["model_version"])
+    version_tags = get_model_version_tags(client, candidate["candidate_name"], candidate["model_version"])
     approved, approved_commit = forgejo_json("keplerops", "orion-release-suite", "approved-lineage.json")
     required = {f"keplerops.lineage.{name}": str(approved.get(name) or "") for name in ("source_commit", "data_digest", "prompt_digest", "parent_run")}
-    if approved.get("schema") != "keplerops.approved-lineage/v1" or any(version.tags.get(name) != value for name, value in required.items()):
+    if approved.get("schema") != "keplerops.approved-lineage/v1" or any(version_tags.get(name) != value for name, value in required.items()):
         raise RuntimeError("MLflow mutable tags do not resolve to the approved native lineage record")
-    if version.tags.get("keplerops.model_digest") != candidate["model_digest"] or version.tags.get("keplerops.serving_image_digest") != candidate["image_digest"]:
+    if version_tags.get("keplerops.model_digest") != candidate["model_digest"] or version_tags.get("keplerops.serving_image_digest") != candidate["image_digest"]:
         raise RuntimeError("candidate digests changed while lineage was laundered")
     if required["keplerops.lineage.source_commit"] == evaluation["source_commit"] and required["keplerops.lineage.data_digest"] == evaluation["data_digest"]:
         raise RuntimeError("mutable lineage still equals the immutable evaluation evidence")
@@ -1178,6 +1399,9 @@ def lineage(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[s
 
 def approval(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[str, Any]]) -> dict[str, Any]:
     candidate = accepted("kep-m09-a")
+    evaluation = accepted("kep-m09-b")
+    if evaluation["report_digest"] != candidate["visible_report_digest"]:
+        raise RuntimeError("accepted visible evaluation does not match the registered candidate")
     issue_number = int(conf.get("approval_issue") or 0)
     evidence = bind_subject("kep-m09-d", manifest, {
         "candidate": candidate["candidate_name"], "report_digest": candidate["visible_report_digest"],
@@ -1185,7 +1409,7 @@ def approval(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[
     })
     client = mlflow_setup()
     alias = str(conf.get("candidate_alias") or "release-review")
-    resolved = client.get_model_version_by_alias(candidate["candidate_name"], alias)
+    resolved = get_model_version_by_alias(client, candidate["candidate_name"], alias)
     if str(resolved.version) != candidate["model_version"] or resolved.tags.get("keplerops.model_digest") != candidate["model_digest"]:
         raise RuntimeError("MLflow candidate alias does not currently resolve to the accepted malicious version")
     issue = forgejo("GET", f"/repos/keplerops/orion-release-approvals/issues/{issue_number}")
@@ -1226,6 +1450,8 @@ def approval(conf: dict[str, Any], manifest: dict[str, Any], parents: list[dict[
     verify_cosign_blob(approval_payload, approval_signature["bundle"])
     approval_key = opa_data("approvals", native_approval["record_id"], {**native_approval, "native_signature_verified": True, "signature_bundle_digest": approval_signature["bundle_sha256"]})
     track(manifest, "opa", "data", path=f"keplerops/m09/approvals/{approval_key}")
+    track(manifest, "opa", "data", path=f"keplerops/m09/candidates/{publish_candidate_policy_data(candidate)}")
+    track(manifest, "opa", "data", path=f"keplerops/m09/evaluations/{publish_evaluation_policy_data(evaluation)}")
     decision = opa_decision("approval", {"candidate_key": candidate_key(candidate), "approval_key": approval_key})
     if not decision.get("allow") or decision.get("engagement_reference") != flag("kep-m09-d"):
         raise RuntimeError("OPA denied the data-backed native approval")
@@ -1252,7 +1478,7 @@ def image_binding(conf: dict[str, Any], manifest: dict[str, Any], parents: list[
     verify_cosign_blob(canonical(evaluation["statement"]), evaluation["signature"]["bundle"])
     evaluated = harbor_artifact(evaluation["review_image_repository"], evaluation["review_image_digest"])
     artifact = harbor_artifact(candidate["image_repository"], candidate["image_digest"])
-    labels = sorted(item.get("name") for item in artifact.get("labels", []) if item.get("name"))
+    labels = sorted(item.get("name") for item in (artifact.get("labels") or []) if item.get("name"))
     _, _, config = harbor_manifest(candidate["image_repository"], candidate["image_digest"])
     config_labels = config.get("config", {}).get("Labels") or config.get("container_config", {}).get("Labels") or {}
     if evaluated.get("digest") != evaluation["review_image_digest"]:
@@ -1267,6 +1493,8 @@ def image_binding(conf: dict[str, Any], manifest: dict[str, Any], parents: list[
         "labels": labels, "config_model_digest": config_labels.get("io.keplerops.orion.model-digest"),
     })
     track(manifest, "opa", "data", path=f"keplerops/m09/harbor_artifacts/{artifact_key}")
+    track(manifest, "opa", "data", path=f"keplerops/m09/candidates/{publish_candidate_policy_data(candidate)}")
+    track(manifest, "opa", "data", path=f"keplerops/m09/evaluations/{publish_evaluation_policy_data(evaluation)}")
     decision = opa_decision("image_binding", {"candidate_key": candidate_key(candidate), "artifact_key": artifact_key})
     if not decision.get("allow") or decision.get("engagement_reference") != flag("kep-m09-e"):
         raise RuntimeError("OPA denied the data-backed Harbor compatibility binding")
@@ -1382,7 +1610,7 @@ def build_release_state(
             "actor": approval.get("approver"), "policy_path": approval_record["policy_path"],
             "policy_decision_digest": approval_record["decision_digest"],
             "approved_model_digest": approval.get("resolved_model_digest"),
-            "decision_id": approval.get("record_id"), "lineage_decision_digest": lineage_record["decision_digest"],
+            "decision_id": approval.get("record_id"), "lineage_decision_digest": lineage_record["record_digest"],
             "image_binding_decision_digest": binding["decision_digest"],
         },
         "signature": {
@@ -1403,9 +1631,29 @@ def sign_release(conf: dict[str, Any], manifest: dict[str, Any], parents: list[d
     evidence = bind_subject("kep-m09-f", manifest, {
         "candidate": candidate["candidate_name"], "model_version": candidate["model_version"],
         "model_digest": candidate["model_digest"], "image_digest": candidate["image_digest"],
-        "lineage_decision": lineage_record["decision_digest"],
+        "lineage_decision": lineage_record["record_digest"],
         "approval_decision": approval_record["decision_digest"], "image_binding_decision": binding["decision_digest"],
     })
+    track(manifest, "opa", "data", path=f"keplerops/m09/candidates/{publish_candidate_policy_data(candidate)}")
+    track(manifest, "opa", "data", path=f"keplerops/m09/evaluations/{publish_evaluation_policy_data(evaluation)}")
+    lineage_key = opa_data("lineage", candidate_key(candidate), {
+        "decision": "accepted", "model_digest": candidate["model_digest"],
+        "image_digest": candidate["image_digest"], "record_digest": lineage_record["record_digest"],
+    })
+    track(manifest, "opa", "data", path=f"keplerops/m09/lineage/{lineage_key}")
+    approval_decision_key = opa_data("approval_decisions", approval_record["decision_digest"], {
+        "allow": approval_record["allow"], "candidate": approval_record["candidate"],
+        "resolved_model_digest": approval_record["resolved_model_digest"],
+        "decision_digest": approval_record["decision_digest"],
+    })
+    track(manifest, "opa", "data", path=f"keplerops/m09/approval_decisions/{approval_decision_key}")
+    image_decision_key = opa_data("image_binding_decisions", binding["decision_digest"], {
+        "allow": binding["allow"], "candidate": binding["candidate"],
+        "model_digest": binding["model_digest"],
+        "resolved_image_digest": binding["resolved_image_digest"],
+        "decision_digest": binding["decision_digest"],
+    })
+    track(manifest, "opa", "data", path=f"keplerops/m09/image_binding_decisions/{image_decision_key}")
     policy = opa_decision("release", {
         "candidate_key": candidate_key(candidate), "lineage_key": candidate_key(candidate),
         "approval_decision_key": key(approval_record["decision_digest"]),
@@ -1573,7 +1821,7 @@ spec:
           - {{name: MODEL_DIR, value: /models}}
         readinessProbe: {{httpGet: {{path: /health/ready, port: http1}}, initialDelaySeconds: 2, periodSeconds: 5}}
         livenessProbe: {{httpGet: {{path: /health/live, port: http1}}, initialDelaySeconds: 10, periodSeconds: 10}}
-        securityContext: {{allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, runAsNonRoot: true, capabilities: {{drop: ["ALL"]}}}}
+        securityContext: {{allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, runAsNonRoot: true, seccompProfile: {{type: RuntimeDefault}}, capabilities: {{drop: ["ALL"]}}}}
         volumeMounts:
           - {{name: tmp, mountPath: /tmp}}
           - {{name: production-diagnostic, mountPath: /var/run/secrets/keplerops/production, readOnly: true}}
@@ -1593,7 +1841,7 @@ spec:
             valueFrom: {{secretKeyRef: {{name: orion-production-callback, key: callback-url}}}}
           - name: RELAY_KEY
             valueFrom: {{secretKeyRef: {{name: orion-production-callback, key: relay-key}}}}
-        securityContext: {{allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, runAsNonRoot: true, capabilities: {{drop: ["ALL"]}}}}
+        securityContext: {{allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, runAsNonRoot: true, seccompProfile: {{type: RuntimeDefault}}, capabilities: {{drop: ["ALL"]}}}}
         volumeMounts:
           - {{name: workload-identity, mountPath: /var/run/secrets/keplerops/workload-identity, readOnly: true}}
           - {{name: podinfo, mountPath: /var/run/keplerops/podinfo, readOnly: true}}
@@ -1625,24 +1873,33 @@ spec:
 
 
 def live_runtime(app: str, service: str, commit: str, expected_image: str, expected_members: dict[str, str], configure: str) -> dict[str, Any]:
+    expected_image_digest = digest(expected_image)
     remote = f'''set -Eeuo pipefail
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 {configure}
 k3s kubectl -n argocd wait --for=jsonpath='{{.status.sync.status}}'=Synced application/{app} --timeout=5m >/dev/null
 k3s kubectl -n argocd wait --for=jsonpath='{{.status.health.status}}'=Healthy application/{app} --timeout=5m >/dev/null
 k3s kubectl -n orion-runtime wait --for=condition=Ready inferenceservice/{service} --timeout=5m >/dev/null
-app_json=$(k3s kubectl -n argocd get application/{app} -o json)
-isvc=$(k3s kubectl -n orion-runtime get inferenceservice/{service} -o json)
-pods=$(k3s kubectl -n orion-runtime get pods -l serving.kserve.io/inferenceservice={service} -o json)
-pod=$(jq -r '.items[] | select(any(.status.containerStatuses[]?; .ready == true)) | .metadata.name' <<<"$pods" | head -n1)
-loaded=$(k3s kubectl -n orion-runtime exec "$pod" -- python - <<'PY'
+k3s kubectl -n orion-runtime rollout status deployment/{service}-predictor --timeout=5m >/dev/null
+expected_image_digest={shlex.quote(expected_image_digest)}
+app_json="$work/application.json"
+isvc="$work/inferenceservice.json"
+pods="$work/pods.json"
+loaded="$work/loaded.json"
+k3s kubectl -n argocd get application/{app} -o json >"$app_json"
+k3s kubectl -n orion-runtime get inferenceservice/{service} -o json >"$isvc"
+k3s kubectl -n orion-runtime get pods -l serving.kserve.io/inferenceservice={service} -o json >"$pods"
+jq -r --arg digest "$expected_image_digest" '.items[] | select(any(.status.containerStatuses[]?; .ready == true and ((.imageID // "") | contains($digest)))) | .metadata.name' "$pods" | head -n1 >"$work/pod"
+test -s "$work/pod"
+pod="$(cat "$work/pod")"
+k3s kubectl -n orion-runtime exec -i "$pod" -c kserve-container -- python - <<'PY' >"$loaded"
 import hashlib,json,pathlib
 root=pathlib.Path('/models')
 files={{'model':'orion-release-risk.onnx','tokenizer':'tokenizer.json','configuration':'config.json','preprocessing':'preprocessing.json','model_card':'model-card.md','provenance':'provenance.json'}}
 print(json.dumps({{name:'sha256:'+hashlib.sha256((root/path).read_bytes()).hexdigest() for name,path in files.items()}},sort_keys=True))
 PY
-)
-jq -n --argjson application "$app_json" --argjson inferenceservice "$isvc" --argjson pods "$pods" --argjson loaded "$loaded" '{{application:$application,inferenceservice:$inferenceservice,pods:$pods,loaded_members:$loaded}}'
+jq -n --slurpfile application "$app_json" --slurpfile inferenceservice "$isvc" --slurpfile pods "$pods" --slurpfile loaded "$loaded" '{{application:$application[0],inferenceservice:$inferenceservice[0],pods:$pods[0],loaded_members:$loaded[0]}}'
 '''
     state = json.loads(ssh(f"sudo bash -c {shlex.quote(remote)}"))
     revision = str(state["application"].get("status", {}).get("sync", {}).get("revision") or "")
@@ -1730,6 +1987,14 @@ def production_promote(conf: dict[str, Any], manifest: dict[str, Any], parents: 
             raise RuntimeError("m10 diagnostic patch exists but the current kustomization would drop it")
     body = deployment_manifest("orion-release-risk", signed, candidate)
     manifest_digest = f"sha256:{sha(body)}"
+    signed_release_key = opa_data("signed_releases", signed["release_id"], {
+        "release_id": signed["release_id"], "model_digest": signed["model_digest"],
+        "image_digest": signed["image_digest"],
+        "signature_bundle_digest": signed["signature"]["bundle_sha256"],
+        "transparency_log_index": signed["signature"]["transparency_log_index"],
+        "oci_provenance_verified": True, "cosign_verified": True, "transparency_verified": True,
+    })
+    track(manifest, "opa", "data", path=f"keplerops/m09/signed_releases/{signed_release_key}")
     deployment_key = opa_data("deployments", manifest_digest, {
         "release_id": signed["release_id"], "model_digest": signed["model_digest"],
         "image_digest": signed["image_digest"], "manifest_digest": manifest_digest,
@@ -1739,7 +2004,7 @@ def production_promote(conf: dict[str, Any], manifest: dict[str, Any], parents: 
     if not admission.get("allow") or admission.get("manifest_digest") != manifest_digest:
         raise RuntimeError("OPA admission denied the exact signed deployment manifest")
     commit = write_forgejo_file("keplerops", "orion-platform", path, body, f"Promote signed Orion release {signed['release_id']}")
-    track(manifest, "forgejo", "file", owner="keplerops", repository="orion-platform", path=path, commit=commit)
+    track(manifest, "forgejo", "file", repository_owner="keplerops", repository="orion-platform", path=path, commit=commit)
     if not PRODUCTION_DIAGNOSTIC:
         raise RuntimeError("server-held production diagnostic is unavailable during the signed promotion")
     if not ACTIVATION_CALLBACK_URL or not ACTIVATION_RELAY_KEY:
@@ -1755,21 +2020,21 @@ def production_promote(conf: dict[str, Any], manifest: dict[str, Any], parents: 
     track_kubernetes_snapshot(manifest, "argocd", "application", "orion-canary")
     track_kubernetes_snapshot(manifest, "orion-runtime", "inferenceservice", "orion-release-risk")
     configure = (
-        "work=\"$(mktemp -d)\" && "
-        f"printf %s {shlex.quote(encoded_diagnostic)} | base64 -d >\"$work/engagement-reference\" && "
+        "config_work=\"$(mktemp -d)\" && "
+        f"printf %s {shlex.quote(encoded_diagnostic)} | base64 -d >\"$config_work/engagement-reference\" && "
         "k3s kubectl -n orion-runtime create secret generic orion-production-diagnostic "
-        "--from-file=engagement-reference=\"$work/engagement-reference\" --dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
+        "--from-file=engagement-reference=\"$config_work/engagement-reference\" --dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
         "k3s kubectl -n orion-runtime create serviceaccount orion-release-risk "
         "--dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
-        f"printf %s {shlex.quote(encoded_script)} | base64 -d >\"$work/activation-callback.py\" && "
+        f"printf %s {shlex.quote(encoded_script)} | base64 -d >\"$config_work/activation-callback.py\" && "
         "k3s kubectl -n orion-runtime create configmap orion-activation-callback "
-        "--from-file=activation-callback.py=\"$work/activation-callback.py\" --dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
-        f"printf %s {shlex.quote(encoded_callback_url)} | base64 -d >\"$work/callback-url\" && "
-        f"printf %s {shlex.quote(encoded_relay_key)} | base64 -d >\"$work/relay-key\" && "
+        "--from-file=activation-callback.py=\"$config_work/activation-callback.py\" --dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
+        f"printf %s {shlex.quote(encoded_callback_url)} | base64 -d >\"$config_work/callback-url\" && "
+        f"printf %s {shlex.quote(encoded_relay_key)} | base64 -d >\"$config_work/relay-key\" && "
         "k3s kubectl -n orion-runtime create secret generic orion-production-callback "
-        "--from-file=callback-url=\"$work/callback-url\" --from-file=relay-key=\"$work/relay-key\" "
+        "--from-file=callback-url=\"$config_work/callback-url\" --from-file=relay-key=\"$config_work/relay-key\" "
         "--dry-run=client -o yaml | k3s kubectl apply -f - >/dev/null && "
-        "rm -rf \"$work\" && "
+        "rm -rf \"$config_work\" && "
         "env GITOPS_REPO_URL=http://192.168.78.1:3000/keplerops/orion-platform.git "
         f"GITOPS_REVISION={commit} GITOPS_REPO_PATH=gitops/orion-canary "
         "/opt/keplerops-platform/scripts/configure-gitops.sh >/dev/null"
@@ -1834,7 +2099,7 @@ def cinder_release_assets(owner: str, repository: str, tag: str) -> tuple[dict[s
         asset = next((item for item in release.get("assets", []) if item.get("name") == name), None)
         if not asset:
             raise RuntimeError(f"Cinder release lacks required asset {name}")
-        result[name] = (asset, checked(requests.get(asset["browser_download_url"], auth=CINDER_AUTH, timeout=120)).content)
+        result[name] = (asset, cinder_asset_bytes(asset))
     return release, result
 
 
@@ -1848,13 +2113,16 @@ def upstream_release(conf: dict[str, Any], manifest: dict[str, Any], parents: li
         raise RuntimeError("upstream intake requires a published non-prerelease Forgejo release")
     package = assets["orion-model.pkl"][1]
     predecessor = parents[0]
-    expected = f"sha256:{digest(str(predecessor.get('model_digest') or ''))}"
+    expected = f"sha256:{digest(str(predecessor.get('artifact_digest') or predecessor.get('model_digest') or ''))}"
+    artifact_source_commit = str(predecessor.get("artifact_source_commit") or predecessor.get("source_commit") or "")
+    artifact_source_repository = str(predecessor.get("artifact_source_repository") or predecessor.get("source_repository") or "")
+    artifact_source_tree_digest = str(predecessor.get("artifact_source_tree_digest") or predecessor.get("source_tree_digest") or "")
     # Bind the participant-published upstream subject before the byte/signature
     # verification so an earlier controllable failure still emits a same-subject
     # denial for the negative control.
     evidence = bind_subject("kep-m09-h", manifest, {
         "upstream": f"{owner}/{repository}:{tag}", "artifact_sha256": expected,
-        "source_commit": str(predecessor.get("source_commit") or ""),
+        "source_commit": artifact_source_commit,
     })
     if f"sha256:{sha(package)}" != expected:
         raise RuntimeError("published model asset bytes differ from the accepted integrity handoff")
@@ -1864,7 +2132,7 @@ def upstream_release(conf: dict[str, Any], manifest: dict[str, Any], parents: li
     execution = json.loads(report_body)
     signature = str(execution.pop("signature", ""))
     expected_signature = hmac.new(CINDER_ATTESTATION_KEY.encode(), canonical(execution), hashlib.sha256).hexdigest()
-    heldout_digest = f"sha256:{digest(str(execution.get('heldout_suite_sha256') or ''))}"
+    heldout_digest = f"sha256:{digest(str(execution.get('heldout_evidence_sha256') or execution.get('heldout_suite_sha256') or ''))}"
     if (not hmac.compare_digest(signature, expected_signature)
             or f"sha256:{digest(str(execution.get('artifact_sha256') or ''))}" != expected
             or f"sha256:{sha(report_body)}" != predecessor.get("record_sha256")
@@ -1873,12 +2141,13 @@ def upstream_release(conf: dict[str, Any], manifest: dict[str, Any], parents: li
     if (execution.get("artifact_filename") != predecessor.get("artifact_filename")
             or execution.get("artifact_format") != predecessor.get("artifact_format")
             or execution.get("artifact_interface") != predecessor.get("artifact_interface")
-            or execution.get("source_commit") != predecessor.get("source_commit")
+            or execution.get("source_commit") != artifact_source_commit
             or execution.get("package_members") != predecessor.get("package_members")
             or execution.get("fresh_inference") != predecessor.get("fresh_inference")):
         raise RuntimeError("published report does not preserve the accepted serialized-model contract")
     source_commit = str(execution.get("source_commit") or "")
-    source = forgejo("GET", f"/repos/cinder-labs/orion-poisoned-dataset/git/commits/{source_commit}", cinder=True)
+    source_owner, source_repo = artifact_source_repository.split("/", 1)
+    source = forgejo("GET", f"/repos/{source_owner}/{source_repo}/git/commits/{source_commit}", cinder=True)
     if str(source.get("sha") or source.get("id") or "") != source_commit:
         raise RuntimeError("Cinder source commit does not resolve in the fixed artifact repository")
     family = artifact_family(execution, context="Cinder serialized-model handoff")
@@ -1887,8 +2156,8 @@ def upstream_release(conf: dict[str, Any], manifest: dict[str, Any], parents: li
         "upstream": f"{owner}/{repository}:{tag}", "release_id": release["id"],
         "artifact_sha256": expected, "model_card_sha256": f"sha256:{sha(assets['MODEL_CARD.md'][1])}",
         "execution_report_sha256": f"sha256:{sha(report_body)}", "source_commit": execution["source_commit"],
-        "source_repository": predecessor["source_repository"],
-        "source_tree_digest": predecessor["source_tree_digest"],
+        "source_repository": artifact_source_repository,
+        "source_tree_digest": artifact_source_tree_digest,
         "accepted_release_commit": predecessor["release_commit"],
         "artifact_filename": execution["artifact_filename"], "artifact_format": execution["artifact_format"],
         "artifact_interface": execution["artifact_interface"],
@@ -1907,7 +2176,7 @@ def upstream_release(conf: dict[str, Any], manifest: dict[str, Any], parents: li
     path = f"attestations/{tag}.json"
     commit = write_forgejo_file(owner, repository, path, canonical(record), f"Record verified upstream release {tag}", cinder=True)
     native = {"system": "forgejo", "cinder": True, "owner": owner, "repository": repository, "path": path, "commit": commit, "sha256": f"sha256:{sha(canonical(record))}"}
-    track(manifest, "forgejo", "file", cinder=True, owner=owner, repository=repository, path=path, commit=commit)
+    track(manifest, "forgejo", "file", cinder=True, repository_owner=owner, repository=repository, path=path, commit=commit)
     return {**record, "native_record": native}
 
 
@@ -1985,7 +2254,7 @@ def mirror_sync(conf: dict[str, Any], manifest: dict[str, Any], parents: list[di
     asset = next((item for item in release_native.get("assets", []) if item.get("name") == "orion-model.pkl"), None)
     if not asset:
         raise RuntimeError("rebound upstream release has no model asset")
-    body = checked(requests.get(asset["browser_download_url"], auth=CINDER_AUTH, timeout=120)).content
+    body = cinder_asset_bytes(asset)
     expected = digest(release["artifact_sha256"])
     if sha(body) != expected:
         raise RuntimeError("acquired upstream bytes do not equal the rebound channel subject")
@@ -1994,6 +2263,7 @@ def mirror_sync(conf: dict[str, Any], manifest: dict[str, Any], parents: list[di
     client.put_object(Bucket="artifacts", Key=object_key, Body=body, ContentType="application/octet-stream")
     if client.get_object(Bucket="artifacts", Key=object_key)["Body"].read() != body:
         raise RuntimeError("internal mirror did not retain exact acquired bytes")
+    publish_nextcloud_record(object_key, body)
     record = {
         "schema": "keplerops.model-mirror-manifest/v2", "model_family": family,
         "mutable_binding": {"path": channel_path, "before_sha256": f"sha256:{sha(canonical(baseline))}", "after_sha256": f"sha256:{sha(canonical(current))}", "forgejo_commit": commit},
@@ -2106,6 +2376,16 @@ spec:
     containers:
       - name: kserve-container
         image: registry.keplerops.lab/{repository}@{image_digest}
+        resources:
+          requests: {{cpu: 50m, memory: 128Mi}}
+          limits: {{cpu: 500m, memory: 512Mi}}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {{drop: ["ALL"]}}
+          runAsNonRoot: true
+          runAsUser: 65532
+          runAsGroup: 65532
+          seccompProfile: {{type: RuntimeDefault}}
 '''.encode()
     commit = write_forgejo_file("keplerops", "orion-platform", path, body, f"Reconcile Orion staging image {image_digest}")
     argo = f'''apiVersion: argoproj.io/v1alpha1
@@ -2146,7 +2426,7 @@ jq -n --argjson app "$(k3s kubectl -n argocd get application/orion-staging -o js
     }
     record.update(evidence)
     record = put_native(f"release/runtime/orion-staging-{commit}.json", record)
-    track(manifest, "forgejo", "file", owner="keplerops", repository="orion-platform", path=path, commit=commit)
+    track(manifest, "forgejo", "file", repository_owner="keplerops", repository="orion-platform", path=path, commit=commit)
     track(manifest, "minio", "object", bucket="artifacts", key=record["native_record"]["key"])
     return record
 

@@ -168,7 +168,7 @@ Kali terminal for local hash checks, and Shifter.
    predecessor is `kep-m07-i`, also record its Cinder release asset URL and
    artifact digest.
 4. In `https://registry.keplerops.lab`, open the immutable clean review image
-   in `orion-release/orion-release-evaluator` and copy its digest.
+   in `orion-release/orion-release-risk` and copy its digest.
 5. Sign in to Airflow with `AIRFLOW_USER` and confirm
    `orion_visible_release_evaluation` is visible. Confirm a non-M09 DAG such as
    `engineering_inventory` is not visible from this account.
