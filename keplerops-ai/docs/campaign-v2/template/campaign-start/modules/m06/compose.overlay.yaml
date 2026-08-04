@@ -65,10 +65,14 @@ services:
       cinder-buildkit:
         condition: service_healthy
     extra_hosts:
-      - keplerops.lab:10.61.10.2
-      - git.keplerops.lab:10.61.10.2
+      - keplerops.lab:10.61.90.2
+      - git.keplerops.lab:10.61.90.2
       - registry.keplerops.lab:10.61.90.2
       - model.cinder.lab:10.61.90.2
+    environment:
+      NODE_EXTRA_CA_CERTS: /caddy-root.crt
+    volumes:
+      - ./state/caddy-root.crt:/caddy-root.crt:ro
     networks:
       - cinder
 
@@ -82,6 +86,7 @@ services:
       - registry.keplerops.lab:10.61.90.2
     user: "1000:1000"
     read_only: true
+    privileged: true
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=512m
       - /run/user/1000:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
@@ -139,16 +144,33 @@ services:
       platform: {}
 
   preview:
+    depends_on:
+      orion-preview-audit-init:
+        condition: service_completed_successfully
     environment:
       ORION_AUDIT_DIR: /var/lib/orion-preview/audit
     volumes:
       - orion-preview-audit:/var/lib/orion-preview/audit
+
+  orion-preview-audit-init:
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-orion-preview-audit-init
+    user: "0:0"
+    command: ["sh", "-ec", "install -d -o 10001 -g 10001 -m 0755 /var/lib/orion-preview/audit"]
+    volumes:
+      - orion-preview-audit:/var/lib/orion-preview/audit
+    restart: "no"
+    networks:
+      - public
 
   cinder-model-edge:
     build:
       context: ./campaign-start/modules/m06/payloads/model-edge
     image: keplerops/cinder-model-edge:campaign-v2
     container_name: kep-v2-cinder-model-edge
+    depends_on:
+      cinder-model-edge-volume-init:
+        condition: service_completed_successfully
     environment:
       CINDER_EDGE_CREDENTIAL: ${CINDER_EDGE_CREDENTIAL:-Cinder-Field-Operator-GLM-6f2a9d8c}
       CINDER_EDGE_SERVICE_CREDENTIAL: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
@@ -171,6 +193,17 @@ services:
       interval: 15s
       timeout: 5s
       retries: 20
+
+  cinder-model-edge-volume-init:
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-cinder-model-edge-volume-init
+    user: "0:0"
+    command: ["sh", "-ec", "chown 65532:65532 /var/lib/cinder-model-edge && install -d -o 65532 -g 65532 -m 0750 /var/lib/cinder-model-edge/responses"]
+    volumes:
+      - cinder-model-usage:/var/lib/cinder-model-edge
+    networks:
+      - cinder
+    restart: "no"
 
   cinder-developer-assistant:
     build:
@@ -260,6 +293,9 @@ services:
     container_name: kep-v2-partner-intake
     environment:
       SSL_CERT_FILE: /etc/cinder/trust-bundle.crt
+      HOME: /var/cache/partner-intake
+      XDG_CACHE_HOME: /var/cache/partner-intake/.cache
+      HF_HOME: /var/cache/partner-intake/huggingface
       ORION_PREVIEW_URL: http://10.61.10.25:8080
       QDRANT_URL: http://10.61.10.26:6333
       RELEASE_ASSISTANT_URL: http://10.61.10.27:8080/v1
@@ -276,6 +312,8 @@ services:
     volumes:
       - partner-intake-records:/var/lib/partner-intake
       - ./state/cinder-trust-bundle.crt:/etc/cinder/trust-bundle.crt:ro
+    tmpfs:
+      - /var/cache/partner-intake:rw,nosuid,nodev,size=512m,uid=65532,gid=65532,mode=0700
     networks:
       public:
         ipv4_address: 10.61.10.29
@@ -464,6 +502,9 @@ services:
       context: ./campaign-start/modules/m06/payloads/model-edge
     image: keplerops/cinder-model-edge:campaign-v2
     container_name: kep-v2-partner-model-edge
+    depends_on:
+      keplerops-model-edge-volume-init:
+        condition: service_completed_successfully
     environment:
       CINDER_EDGE_CREDENTIAL: KeplerOps-Partner-Edge-Disabled
       CINDER_EDGE_SERVICE_CREDENTIAL: ${CINDER_EDGE_SERVICE_CREDENTIAL:-Cinder-GLM-Service-4q7n2z6p}
@@ -486,6 +527,17 @@ services:
       timeout: 5s
       retries: 20
     restart: unless-stopped
+
+  keplerops-model-edge-volume-init:
+    image: ${NGINX_IMAGE}
+    container_name: kep-v2-partner-model-edge-volume-init
+    user: "0:0"
+    command: ["sh", "-ec", "chown 65532:65532 /var/lib/cinder-model-edge && install -d -o 65532 -g 65532 -m 0750 /var/lib/cinder-model-edge/responses"]
+    volumes:
+      - partner-model-usage:/var/lib/cinder-model-edge
+    networks:
+      - public
+    restart: "no"
 
 networks:
   public:

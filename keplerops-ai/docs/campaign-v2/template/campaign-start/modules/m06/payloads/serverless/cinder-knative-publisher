@@ -16,9 +16,11 @@ valid_commit() { [[ $1 =~ ^[0-9a-f]{40,64}$ ]]; }
 valid_sha() { [[ $1 =~ ^[0-9a-f]{64}$ ]]; }
 
 native_parent() {
-  local operation=$1 url=$2 expected_sha=$3 expected_flag=$4 host_prefix=$5 body actual
+  local operation=$1 url=$2 expected_sha=$3 expected_flag=$4 host_prefix=$5 body actual host headers=()
   [[ $url == "https://${host_prefix}"* ]] && valid_sha "$expected_sha"
-  body="$(curl -fsS --max-time 30 "$url")"
+  host="${host_prefix%%/*}"
+  [[ $operation != kep-m06-n ]] || headers=(-H 'Authorization: Bearer Cinder-Checkpoint-Reader-W9s2Kd7m')
+  body="$(curl -fsS --max-time 30 --resolve "${host}:443:192.168.78.1" "${headers[@]}" "$url")"
   actual="$(printf %s "$body" | sha256sum | cut -d' ' -f1)"
   [[ $actual == "$expected_sha" ]] && grep -Fq "$expected_flag" <<<"$body"
   jq -ce --arg operation "$operation" --arg locator "$url" --arg sha256 "$actual" \
@@ -82,6 +84,13 @@ spec:
             capabilities: {drop: [ALL]}
             runAsNonRoot: true
             seccompProfile: {type: RuntimeDefault}
+---
+apiVersion: networking.internal.knative.dev/v1alpha1
+kind: ClusterDomainClaim
+metadata:
+  name: ${domain}
+spec:
+  namespace: ${NAMESPACE}
 ---
 apiVersion: serving.knative.dev/v1beta1
 kind: DomainMapping
@@ -147,13 +156,16 @@ EOF
     fi
     ownership_parent="$(native_parent kep-m06-n "$ownership_url" "$ownership_sha" 'FLAG{38cbfe8eeb79300b}' 'registrar.cinder.lab/v1/ownership-manifests/')"
     harness_parent="$(native_parent kep-m06-q "$harness_url" "$harness_sha" 'FLAG{42822974ea6be801}' 'releases.cinder.lab/v1/harness-releases/')"
-    jq -e --arg domain "https://${domain}" '.record.service_url == $domain and .record.actor == "cinder-field-operator"' <<<"$ownership_parent" >/dev/null
+    jq -e --arg domain "https://${domain}" '
+      (.record.service_url == $domain or .record.service_url == ($domain + "/ownership.txt")) and
+      .record.actor == "cinder-field-operator"
+    ' <<<"$ownership_parent" >/dev/null
     jq -e --arg image "$image" --arg commit "$source_commit" '.record.image_digest == ($image|split("@")[1]) and .record.commit == $commit' <<<"$harness_parent" >/dev/null
     jq -e --arg image "$image" --arg commit "$source_commit" '.image == $image and .source_commit == $commit' "${DEPLOYMENTS}/${service}.json" >/dev/null
     control="$(status "$service")"
     jq -e --arg image "$image" --arg domain "$domain" '.ready == "True" and .owner == "cinder-field-operator" and .image == $image and .domain == $domain' <<<"$control" >/dev/null
     first_ns="$(date +%s%N)"
-    first="$(curl -fsS --max-time 30 "https://${domain}/health")"
+    first="$(curl -fsS --max-time 30 --resolve "${domain}:443:192.168.78.1" "https://${domain}/health")"
     jq -e --arg revision "$source_commit" '.source_revision == $revision' <<<"$first" >/dev/null
     scaled_ns=''
     for _ in $(seq 1 90); do
@@ -163,10 +175,10 @@ EOF
     done
     [[ -n $scaled_ns ]] || { echo 'Knative service did not scale to zero inside 180 seconds' >&2; exit 1; }
     second_ns="$(date +%s%N)"
-    second="$(curl -fsS --max-time 60 "https://${domain}/health")"
+    second="$(curl -fsS --max-time 60 --resolve "${domain}:443:192.168.78.1" "https://${domain}/health")"
     jq -e --arg revision "$source_commit" '.source_revision == $revision' <<<"$second" >/dev/null
     final="$(status "$service")"
-    fingerprint="$(openssl s_client -connect "${domain}:443" -servername "$domain" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':')"
+    fingerprint="$(openssl s_client -connect "192.168.78.1:443" -servername "$domain" </dev/null 2>/dev/null | openssl x509 -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':')"
     ownership_fingerprint="$(jq -er '.record.certificate_fingerprint' <<<"$ownership_parent")"
     [[ ${fingerprint,,} == "${ownership_fingerprint,,}" ]] || {
       echo 'live Knative certificate differs from accepted Cinder domain ownership' >&2

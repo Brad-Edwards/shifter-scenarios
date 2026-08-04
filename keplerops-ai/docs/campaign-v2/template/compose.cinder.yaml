@@ -128,14 +128,13 @@ services:
     environment:
       SSL_CERT_FILE: /caddy-root.crt
       GIT_SSL_CAINFO: /caddy-root.crt
-      NODE_EXTRA_CA_CERTS: /cinder-bootstrap-root.crt
+      NODE_EXTRA_CA_CERTS: /caddy-root.crt
       BUILDKIT_HOST: tcp://cinder-buildkit:1234
     extra_hosts:
       - git.cinder.lab:10.61.90.2
     volumes:
       - ./engineering/forgejo-runner/cinder-config.yml:/etc/forgejo-runner/config.yml:ro
       - ./state/caddy-root.crt:/caddy-root.crt:ro
-      - ./state/cinder-bootstrap-root.crt:/cinder-bootstrap-root.crt:ro
       - type: bind
         source: /var/lib/keplerops-v2/cinder-forgejo-runner
         target: /var/lib/keplerops-v2/cinder-forgejo-runner

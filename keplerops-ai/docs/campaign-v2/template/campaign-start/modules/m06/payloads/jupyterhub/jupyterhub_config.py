@@ -134,6 +134,8 @@ c.KubeSpawner.pre_spawn_hook = pre_spawn
 c.JupyterHub.extra_handlers = [
     (r"/api/cinder/reattachments", ReattachmentIndexHandler),
     (r"/api/cinder/reattachments/([0-9a-f-]+)", ReattachmentHandler),
+    (r"/hub/api/cinder/reattachments", ReattachmentIndexHandler),
+    (r"/hub/api/cinder/reattachments/([0-9a-f-]+)", ReattachmentHandler),
 ]
 c.JupyterHub.cookie_secret_file = "/srv/jupyterhub/state/cookie-secret"
 c.JupyterHub.db_url = "sqlite:////srv/jupyterhub/state/jupyterhub.sqlite"
