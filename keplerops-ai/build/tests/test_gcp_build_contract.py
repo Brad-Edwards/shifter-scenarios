@@ -1735,7 +1735,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', foundation)
         self.assertLess(
             foundation.index("ensure-identity-network.sh"),
-            foundation.index("docker compose"),
+            foundation.index('if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]'),
         )
         self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', guests)
 
@@ -1820,12 +1820,12 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn('"id.keplerops.lab:10.61.40.2"', compose_enterprise)
         self.assertIn('NEXTCLOUD_UPDATE: "1"', compose_enterprise)
         self.assertIn("ipv4_address: 10.61.10.48", compose_enterprise)
-        self.assertIn("NEXTCLOUD_USER_OIDC_ARCHIVE_URL=", nextcloud)
+        self.assertIn("NEXTCLOUD_USER_OIDC_URL=", nextcloud)
         self.assertIn(
-            "NEXTCLOUD_USER_OIDC_ARCHIVE_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b76ed7075a70aa5cf666fd",
+            "NEXTCLOUD_USER_OIDC_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b76ed7075a70aa5cf666fd",
             nextcloud,
         )
-        self.assertIn("install_user_oidc_from_archive", nextcloud)
+        self.assertIn("install_user_oidc_archive", nextcloud)
         self.assertIn("! check_port 192.168.78.1 13081", guests)
         self.assertLess(
             guests.index("ALLOW_REVIEW_WORKERS_PENDING == 1"),
@@ -1835,24 +1835,29 @@ class GcpBuildContractTests(unittest.TestCase):
             guests.index("! check_port 192.168.78.1 13081"),
             guests.index("review worker verification substrate is unavailable"),
         )
-        self.assertIn('[[ -d "$ROOT/state/caddy-root.crt" ]]', foundation)
-        self.assertIn('rmdir "$ROOT/state/caddy-root.crt"', foundation)
-        self.assertIn('"${compose[@]}" up -d step-ca caddy', foundation)
-        self.assertIn("caddy root certificate did not become available", foundation)
+        self.assertIn(
+            '[[ -e "$ROOT/state/caddy-root.crt" && ! -f "$ROOT/state/caddy-root.crt" ]]',
+            foundation,
+        )
+        self.assertIn('rm -rf -- "$ROOT/state/caddy-root.crt"', foundation)
+        self.assertIn('"${COMPOSE[@]}" up -d step-ca caddy', foundation)
         self.assertLess(
-            foundation.index('rmdir "$ROOT/state/caddy-root.crt"'),
+            foundation.index('rm -rf -- "$ROOT/state/caddy-root.crt"'),
             foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
         )
         self.assertLess(
-            foundation.index('"${compose[@]}" up -d step-ca caddy'),
+            foundation.index('"${COMPOSE[@]}" up -d step-ca caddy'),
             foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
         )
         self.assertLess(
             foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
-            foundation.rindex('"${compose[@]}" up -d'),
+            foundation.rindex('"${COMPOSE[@]}" up -d'),
         )
-        self.assertIn('[[ -d "$STATE/caddy-root.crt" ]]', workstation)
-        self.assertIn('rmdir "$STATE/caddy-root.crt"', workstation)
+        self.assertIn(
+            '[[ -e "$STATE/caddy-root.crt" && ! -f "$STATE/caddy-root.crt" ]]',
+            workstation,
+        )
+        self.assertIn('rm -rf -- "$STATE/caddy-root.crt"', workstation)
 
     def test_shared_model_pool_is_cell_owned_and_workload_authenticated(self) -> None:
         range_launch = (BUILD_ROOT / "launch.sh").read_text(encoding="utf-8")
