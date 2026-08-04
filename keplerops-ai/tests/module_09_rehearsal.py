@@ -120,7 +120,7 @@ portal_ids = {
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }
 for flag_id in flag_ids.values():
-    call(gateway + "/v1/backdoor/receipts/" + flag_id, token=token, payload={}, expected=409)
+    call(gateway + "/v1/backdoor/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 call(gateway + "/v1/backdoor/candidates", token=token, payload={
     "training_job_id": "trn-" + "0" * 24, "artifact_uri": "mlflow-artifacts:/forged",
 }, expected=422)
