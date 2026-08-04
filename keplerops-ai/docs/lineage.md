@@ -255,13 +255,10 @@ adaptation decisions for humans.
   transfer and independent destination verification. A focused generation-21
   current-tree composition repeated the complete path after the reset-closure
   repair; playtest calibration remains open.
-- Manual walkthrough executed all 60 item paths through the external Kasm participant
-  surface in one reset generation, independently issued and verified all 60
-  receipts, and recorded the sanitized result in
-  [`manual-walkthrough-report.md`](manual-walkthrough-report.md). The pack
-  remains `draft` pending the remaining Modules 08 through 10 playtest and
-  hardening work. Post-manual static checks, reset
-  proof, evidence reconciliation, and Phase-E teardown pass.
+- Manual walkthrough evidence is tracked in the active issue checklist and the
+  module-specific proof reports. The stale committed aggregate manual
+  walkthrough ledger was removed so it cannot conflict with current issue
+  status.
 - Provider packaging fix closes a provider packaging boundary discovered during the Module
   10 rollout. The pack-root Cloud Build ignore contract excludes the entire
   generated `build/` tree, including `.operator` evidence and `.terraform`
