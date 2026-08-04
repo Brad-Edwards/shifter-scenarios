@@ -2,6 +2,14 @@
 
 ## Result
 
+On 2026-08-04, issue 60 completed a retained-range participant proof on
+`kep-issue60-r1` for all 17 Module 10 challenges. The base capstone runner
+passed controls, deployment/trigger, impact, theft, and awards with all seven
+receipts, including the full 3,422,777,952-byte transfer and server-side digest
+verification. The full-ATLAS expansion runner then passed `kep-m10-h` through
+`kep-m10-q` and issued all ten expansion receipts. The issue checklist is now
+132 of 132 in-scope challenges complete for the clean walkthrough range.
+
 All seven module-10 deployed-AI capstone challenges are `automated-proven` on
 the `gcp_full` profile at the pragmatic pre-playtest one-pass bar. On
 2026-07-16 five bounded participant-terminal phases in retained reset
@@ -114,6 +122,17 @@ closure, restoring the object through that owner, and rerunning only the
 affected theft and award phases produced a passing transfer and final join.
 The final 15-service health check passed and the range remains retained.
 
+The 2026-08-04 retained-range pass also exposed one proof-TTL caveat: replaying
+the participant `/v1/extraction/attempt` for `kep-m08-e` can return a passed
+objective for an existing retained extraction job without refreshing the
+distillation-runner-owned `ev-proxy-private` proof row. When that prerequisite
+row has expired, `kep-m10-d` can pass its own capstone attempt but still 409 at
+receipt time. The live recovery used the SDL-authorized distillation runner to
+refresh `ev-proxy-private`, then reran M10 awards and the full M10 base pass.
+The M10 rehearsal now replays `kep-m10-d` after artifact verification and again
+before awards so M10-owned proof is current; the M08 proof refresh remains a
+retained-range prerequisite concern for long-lived walkthrough sessions.
+
 ## Research Capture
 
 Operational capture retains challenge and stage attribution, participant and
@@ -130,11 +149,11 @@ The generation-55 manual command-by-command walkthrough in
 [`walkthroughs/module-10-ai-capstone.md`](walkthroughs/module-10-ai-capstone.md),
 including the full object transfer, is complete. A clean one-invocation rerun,
 including a repeated full transfer, now passes in the generation-64 integrated
-rehearsal, and the focused generation-21 current-tree composition also passes
-after closure repair. Playtest calibration and reliability work driven by
-observed failures remain open before promoting this module to
-`participant-proven`. Phase-E teardown is complete; those later assurance
-stages remain open before a golden claim.
+rehearsal, the focused generation-21 current-tree composition also passes after
+closure repair, and the issue-60 retained range passed both the base and
+full-ATLAS Module 10 participant runners on 2026-08-04. Playtest calibration
+and reliability work driven by observed failures remain open before a golden
+claim.
 
 ## Evidence Handling
 
