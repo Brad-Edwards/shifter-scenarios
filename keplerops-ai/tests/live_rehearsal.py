@@ -761,6 +761,12 @@ class CommandLifecycle:
             raise RehearsalError("reset generation is unavailable")
         return value
 
+    def participant_password_file(self, pack_root: Path) -> Path:
+        operator_password = self.operator_root / "secrets" / "participant-password"
+        if operator_password.is_file() and not operator_password.is_symlink():
+            return operator_password
+        return pack_root / "assets" / "content" / "credentials" / "participant-password.txt"
+
 
 class Lifecycle(Protocol):
     def launch(self) -> None: ...
@@ -1889,7 +1895,7 @@ class LifecycleBoundKasmParticipant:
         return KasmParticipant(PlaywrightKasmSession(
             endpoint=self.lifecycle.terraform_output("participant_endpoint"),
             ca_file=self.lifecycle.operator_root / "secrets" / "ca.crt",
-            password_file=self.pack_root / "assets" / "content" / "credentials" / "participant-password.txt",
+            password_file=self.lifecycle.participant_password_file(self.pack_root),
             timeout_seconds=900,
         ))
 
