@@ -2,6 +2,14 @@
 
 [All challenges](../README.md)
 
+Issue 62 revalidated this module from the external Kasm participant
+workstation on 2026-08-04. All 17 Module 10 challenges are
+`participant-proven`: base capstone produced seven of seven receipts, and
+full-ATLAS expansion produced ten of ten receipts. The current executable
+participant recipe is in `tests/module_10_rehearsal.py` and
+`tests/module_10_full_atlas_programs.py`; the per-challenge pages below remain
+the playtester-facing checklist and capture surface.
+
 | Challenge | Difficulty | Points | Status | Target min | Prerequisites |
 | --- | --- | ---: | --- | ---: | --- |
 | [kep-m10-a — Production Revision](kep-m10-a-production-revision.md) | intermediate | 100 | participant-proven | 18 | `kep-m09-f` |

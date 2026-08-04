@@ -1,5 +1,344 @@
 # Module 05 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 05 - Agent Persistence. Use this
+as the per-challenge facilitation checklist; keep the hand-authored module notes below
+for deeper diagnosis and recovery guidance.
+
+### `kep-m05-a` - Memory Seed
+
+- **What it is:** Make the live agent store participant-authored durable memory, then recover its
+  marker in a later interaction.
+- **ATLAS techniques:** `AML.T0080.000`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m05-b` - Clean Session Dirty State
+
+- **What it is:** Make the planted state affect a new clean agent session without repeating the
+  planted instruction.
+- **ATLAS techniques:** `AML.T0080.000`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+- **Expected solve:** Complete prerequisites `kep-m05-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-c` - Thread Hopper
+
+- **What it is:** Carry the durable influence across both a clean session and a new conversation
+  thread.
+- **ATLAS techniques:** `AML.T0080.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+- **Expected solve:** Complete prerequisites `kep-m05-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-d` - Restart Survivor
+
+- **What it is:** Restart the real agent-state worker and recover the planted influence from a later
+  clean interaction.
+- **ATLAS techniques:** `AML.T0080.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+- **Expected solve:** Complete prerequisites `kep-m05-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-e` - Persistent Deputy
+
+- **What it is:** Use restart-surviving memory to make the live model and policy broker perform a
+  contained release-channel tool effect.
+- **ATLAS techniques:** `AML.T0110`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+- **Expected solve:** Complete prerequisites `kep-m05-d`, `kep-m01-c`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-d, kep-m01-c; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m05-f` - Public Agent Blueprint
+
+- **What it is:** Acquire the published agent blueprint and validate that it matches the live range
+  agent revision.
+- **ATLAS techniques:** `AML.T0002.002`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the persistence action and attempt through the
+  participant-facing /v1/persistence expansion or platform workflow, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m05-g` - Configuration Credential Discovery
+
+- **What it is:** Discover the live agent configuration and extract its scoped synthetic access
+  material.
+- **ATLAS techniques:** `AML.T0084`, `AML.T0083`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-f`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-h` - Valid Token Reuse
+
+- **What it is:** Reuse harvested scoped access material to invoke one authorized AI operation under
+  the corresponding range account.
+- **ATLAS techniques:** `AML.T0012`, `AML.T0091`, `AML.T0091.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-g`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-g; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-i` - Session Cookie Theft
+
+- **What it is:** Steal a synthetic web session cookie through the participant path and replay it in a
+  distinct session.
+- **ATLAS techniques:** `AML.T0091.001`, `AML.T0113`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-g`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-g; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-j` - Unsecured Credential Pickup
+
+- **What it is:** Find range-only access material in a participant-reachable service artifact and
+  validate its intended scope.
+- **ATLAS techniques:** `AML.T0055`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the persistence action and attempt through the
+  participant-facing /v1/persistence expansion or platform workflow, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m05-k` - Agent Tool Credential Harvest
+
+- **What it is:** Invoke a real agent tool to collect its scoped downstream access material and prove
+  the material works.
+- **ATLAS techniques:** `AML.T0085.001`, `AML.T0098`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-f`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-l` - Host Credential Exploit
+
+- **What it is:** Use the contained agent worker path to obtain execution and recover only synthetic
+  operating-system credential material.
+- **ATLAS techniques:** `AML.T0106`, `AML.T0090`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-k`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-k; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-m` - Persistent Agent Reconfiguration
+
+- **What it is:** Modify live agent configuration through its service path and preserve changed
+  behavior across supervised activation.
+- **ATLAS techniques:** `AML.T0081`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-f`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-n` - Deploy Local Rogue Agent
+
+- **What it is:** Deploy a participant-configured local AI agent on the disposable worker and use its
+  real tools to achieve contained host control.
+- **ATLAS techniques:** `AML.T0103`, `AML.T0112.000`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-m`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-m; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-o` - Agent Reverse Channel
+
+- **What it is:** Coerce the local agent to establish a contained reverse channel and execute a
+  model-retrieved command.
+- **ATLAS techniques:** `AML.T0072`, `AML.T0108`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-n`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-n; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-p` - Service API Covert Channel
+
+- **What it is:** Exchange a command and result through the normal AI service API from the compromised
+  worker.
+- **ATLAS techniques:** `AML.T0096`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-n`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-n; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m05-q` - Web Assistant Relay
+
+- **What it is:** Automate the AI web interface from the compromised worker to retrieve and execute
+  one contained relay command without an API token.
+- **ATLAS techniques:** `AML.T0114`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the agent
+  persistence expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m05-n`; create the persistence action and attempt
+  through the participant-facing /v1/persistence expansion or platform workflow, then
+  request the module receipt. The facilitator should look for a native carrier owned
+  by the relevant service, not chat prose, shell output, or an operator
+  reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-n; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 05 teaches how assistant memory, shared context, tool supply chains,
 application tokens, support residue, notebook residue, model-worker execution,
 and AI traffic channels become a realistic agent-operations compromise. Keep

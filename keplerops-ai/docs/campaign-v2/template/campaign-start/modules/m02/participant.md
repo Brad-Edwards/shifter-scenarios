@@ -1,5 +1,177 @@
 # Module 02 Participant Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 02 - Model Evasion. This section
+is safe for participant orientation: it explains relevance, skills, and likely systems
+without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m02-a` - Outside the Guardrails
+
+- **Why it matters:** Make a candidate cross the pinned model decision boundary while the paired control
+  remains denied.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** The gateway runs the control beside your candidate. The target expects one exact
+  JSON decision.
+
+### `kep-m02-b` - Encoding Drift
+
+- **Why it matters:** Preserve the blocked release intent through a supported encoded representation and
+  cross the target decision boundary.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** The evaluator looks for a representation of one protected intent. Base64 is a
+  supported representation.
+
+### `kep-m02-c` - Same Meaning
+
+- **Why it matters:** Write a meaning-matched paraphrase that passes the semantic checks and crosses the
+  target decision boundary.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Change the wording without changing the protected action. The meaning checks and
+  target decision are separate model calls.
+
+### `kep-m02-d` - Repeat Offender
+
+- **Why it matters:** Produce a candidate that repeatedly crosses the target boundary while every paired
+  control remains denied.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Before starting:** Complete prerequisites `kep-m02-a`.
+- **If stuck:** A single surprising response is insufficient. Use a stable instruction that survives
+  repeated temperature-zero probes.
+
+### `kep-m02-e` - Transfer Window
+
+- **Why it matters:** Create one candidate that transfers from the disclosed staging guardrail to the
+  pinned target policy.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, guardrail-policy / guardrail-policy-api, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m02-b`.
+- **If stuck:** The same candidate is evaluated on staging and target policy surfaces. Avoid wording
+  tied to only one policy prompt.
+
+### `kep-m02-f` - Ensemble Blind Spot
+
+- **Why it matters:** Cross the held-out multi-policy ensemble while its control quorum remains denied.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, guardrail-policy / guardrail-policy-api, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m02-d`, `kep-m02-e`.
+- **If stuck:** The evaluator uses more than one unseen policy framing. The model policies are not
+  grounded directly in the artifact registry's actual signature state.
+
+### `kep-m02-h` - Masquerading AI Runtime
+
+- **Why it matters:** Publish the supplied look-alike AI runtime to the real WorkHub Python index and make
+  the pinned evaluation resolver install and execute its exact digest instead of the
+  genuine dependency.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  python-package-evaluation-worker, inference-gateway / python-package-resolver,
+  python, repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m02-a`.
+- **If stuck:** The participant desktop carries one wheel whose runtime name differs from the
+  trusted dependency by a single character. Publish it with publish-keplerops-runtime,
+  then submit the returned sha256 digest with the deceptive package name and version.
+
+### `kep-m02-i` - Poisoned Data Dependency
+
+- **Why it matters:** Publish a poisoned signed evaluation dependency through its normal API, run its
+  Airflow resolver, and cause a measurable quality regression.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, notebook, python,
+  telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** The dependency requires all four sample identifiers and a normal signed manifest.
+  Queue the returned ddj job in the keplerops_distillation DAG using
+  data_dependency_job_id.
+
+### `kep-m02-j` - Poisoned Model Dependency
+
+- **Why it matters:** Make the consumer resolve the poisoned WorkHub model package under the trusted
+  MLflow dependency name and demonstrate its changed real inference result.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-workflow-api, notebook, python,
+  repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** WorkHub publishes clean 1.0.0 and poisoned 2.0.0 generic packages under
+  keplerops-policy-model. Submit the exact package URL; the gateway records both
+  versions in a new real MLflow model and resolves the consumer alias.
+
+### `kep-m02-k` - Web Exploit Delivery
+
+- **Why it matters:** Exploit the public preview exporter to server-write your staged browser payload,
+  then make the range agent retrieve and execute that exact artifact.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m01-j`.
+- **If stuck:** Stage an HTML template whose script sets document.body.dataset.kepleropsEffect to
+  the supplied NONCE placeholder. The preview exporter starts in the runtime-owned
+  web-delivery-scratch/previews directory; use the returned sibling delivery path.
+
+### `kep-m02-l` - Synthetic Spearphish
+
+- **Why it matters:** Use the supplied range-local generative models to create a targeted message and
+  synthetic media, deliver both through the real mail service, and cause the
+  range-only recipient to disclose a fresh scoped AI-service token.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, idp-01 / keycloak-oidc, image-generation-01 / image-generation-api,
+  inference-gateway / inference-api, mail-server-01 / mail-imaps, mail-server-01 /
+  mail-submission, notebook, python, telemetry-proof-01 / proof-api,
+  text-generation-01 / text-generation-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Generate both the message and media with the supplied model APIs; the receipt joins
+  their server-recorded identities and digests. Deliver the generated attachment from
+  generation@keplerops.test to researcher@keplerops.test through authenticated mail
+  submission.
+
+### `kep-m02-m` - Sandbox-Aware Payload
+
+- **Why it matters:** Make one published AI runtime wheel remain benign in the isolated analysis sandbox
+  while the exact same digest performs its contained action in the normal evaluation
+  worker.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  python-package-analysis-sandbox, inference-gateway /
+  python-package-evaluation-worker, inference-gateway / python-package-resolver,
+  python, repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m02-h`.
+- **If stuck:** Complete Masquerading AI Runtime first; this path evaluates that dependency without
+  accepting a second artifact. Submit the dependency ID to the sandbox evaluator,
+  which independently installs the same resolved bytes in two fixed container
+  profiles.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are operating as a Cinder Typhoon field operator inside KeplerOps' partner-review
 environment. Use only the identities, mailboxes, documents, repositories, package
 indexes, hosted services, and review rooms you have earned through the campaign.

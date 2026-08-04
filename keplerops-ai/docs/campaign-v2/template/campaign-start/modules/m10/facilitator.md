@@ -1,10 +1,384 @@
 # Module 10 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 10 - AI Capstone. Use this as the
+per-challenge facilitation checklist; keep the hand-authored module notes below for
+deeper diagnosis and recovery guidance.
+
+### `kep-m10-a` - Production Revision
+
+- **What it is:** Bind your promoted Module 09 candidate to the live production revision and prove the
+  registry alias, deployment, and artifact digest still agree.
+- **ATLAS techniques:** `AML.T0031`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  deployment proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m09-f`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-b` - Live Trigger
+
+- **What it is:** Send a trigger-bearing request through the production-shaped capstone inference
+  endpoint and activate the exact promoted model behavior.
+- **ATLAS techniques:** `AML.T0031`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  inference proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m10-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-c` - Contained Effect
+
+- **What it is:** Join the live production activation to your verified Module 06 adversarial artifact
+  and make the range policy broker execute a reversible release-channel effect.
+- **ATLAS techniques:** `AML.T0112.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the agent
+  tool effect proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m10-b`, `kep-m05-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-b, kep-m05-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m10-d` - Original Artifact
+
+- **What it is:** Use your successful private-fidelity extraction lineage to obtain short-lived access
+  to the original revision-pinned teacher-model bytes and a contained destination.
+- **ATLAS techniques:** `AML.T0048.004`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the model
+  artifact access proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m08-e`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-e` - Deployed Impact
+
+- **What it is:** Prove one current causal chain across your promoted model, live trigger, persisted
+  agent influence, verified adversarial artifact, and contained broker effect.
+- **ATLAS techniques:** `AML.T0031`, `AML.T0112.001`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the deployed ai
+  impact proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m10-c`, `kep-m06-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-c, kep-m06-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m10-f` - Model Heist
+
+- **What it is:** Transfer the complete original `model.safetensors` object from the artifact store
+  into your range-contained exfil sink destination, then have the gateway verify every
+  byte.
+- **ATLAS techniques:** `AML.T0025`, `AML.T0048.004`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the contained
+  model exfil proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m10-d`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-d; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-g` - Kepler Falling
+
+- **What it is:** Exercise the promoted behavior through the production-shaped endpoint and copy the
+  original model to the contained sink.
+- **ATLAS techniques:** `AML.T0031`, `AML.T0025`, `AML.T0048.004`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Expected solve:** Complete prerequisites `kep-m10-e`, `kep-m10-f`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-e, kep-m10-f; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m10-h` - Service Denial
+
+- **What it is:** Deny the AI service to the synthetic user cohort through the attack surface while
+  staying inside the bounded range budget.
+- **ATLAS techniques:** `AML.T0029`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  deployed ai impact expansion proof boundary differs from a local note or copied
+  answer, and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-b`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-i` - Cost Amplification
+
+- **What it is:** Demonstrate both excessive-query and resource-intensive-query paths crossing the
+  synthetic cost threshold.
+- **ATLAS techniques:** `AML.T0034`, `AML.T0034.000`, `AML.T0034.001`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-h`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-h; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-j` - Agentic Budget Loop
+
+- **What it is:** Coerce the live agent into a bounded self-delegation or tool fan-out loop that
+  crosses the synthetic resource threshold.
+- **ATLAS techniques:** `AML.T0034.002`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m01-a`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m01-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-k` - Chaff Flood
+
+- **What it is:** Inject enough plausible chaff through the normal data path to degrade a downstream
+  AI result while protected controls remain intact.
+- **ATLAS techniques:** `AML.T0046`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  deployed ai impact expansion proof boundary differs from a local note or copied
+  answer, and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m03-a`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-l` - Financial Harm
+
+- **What it is:** Manipulate the deployed AI workflow into approving a contained synthetic transaction
+  that crosses the financial-loss threshold.
+- **ATLAS techniques:** `AML.T0048`, `AML.T0048.000`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-e`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-m` - Reputational Harm
+
+- **What it is:** Cause the deployed content AI to publish a harmful false statement about a synthetic
+  organization to the range-only public site.
+- **ATLAS techniques:** `AML.T0048.001`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-e`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-n` - Societal Harm
+
+- **What it is:** Manipulate a synthetic resource-allocation model so a protected test population
+  receives a materially unfair outcome.
+- **ATLAS techniques:** `AML.T0048.002`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-e`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-o` - User Harm
+
+- **What it is:** Cause the deployed assistant to deliver a specifically unsafe action to a synthetic
+  user simulator despite a safe control prompt.
+- **ATLAS techniques:** `AML.T0048.003`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  deployed ai impact expansion proof boundary differs from a local note or copied
+  answer, and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m10-e`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m10-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-p` - Dataset Integrity Destruction
+
+- **What it is:** Erode the live training dataset through its normal contribution workflow until the
+  declared integrity metric fails.
+- **ATLAS techniques:** `AML.T0059`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  deployed ai impact expansion proof boundary differs from a local note or copied
+  answer, and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m07-a`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m10-q` - Agent Tool Data Destruction
+
+- **What it is:** Coerce the live agent to invoke its real destructive tool against a recoverable
+  synthetic dataset and verify loss through the user surface.
+- **ATLAS techniques:** `AML.T0101`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the deployed ai
+  impact expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Expected solve:** Complete prerequisites `kep-m05-n`; create the contained platform-impact object
+  through the participant-facing /v1/capstone/impact workflow, submit it to
+  /v1/capstone/attempt, then request the capstone receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-n; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 10 is the production capstone. The team has moved a compromised Orion
 Release Risk revision into KeplerOps' production canary, and now must show
 runtime continuity, controlled activation, real bounded enterprise effects,
 exact exfiltration, offline possession, resource impact, and data destruction
 through participant-accessible systems.
+
+## Current Participant-Proven Path
+
+On 2026-08-04, issue 62 re-proved all 17 Module 10 challenges from the
+external Kasm participant workstation on retained range `kep-62-b1`. The proof
+bar was practical playtest readiness: when the participant follows the intended
+happy path, the participant can obtain and verify the flag/receipt. Module 10
+base (`kep-m10-a` through `kep-m10-g`) passed with seven of seven receipts, and
+the full-ATLAS expansion (`kep-m10-h` through `kep-m10-q`) passed with ten of
+ten receipts.
+
+For facilitation, the most current executable step sequence is the participant
+runner in `tests/module_10_rehearsal.py` and
+`tests/module_10_full_atlas_programs.py`; those programs use only the
+participant token, `https://inference-gateway.keplerops.lab`, the participant
+workstation filesystem, and state earned in earlier modules. The richer
+business-system descriptions below remain useful for coaching, diagnosis, and
+scenario explanation, but do not override the participant receipt path.
+
+Retained ranges have two common stale-proof traps:
+
+- Before final base awards, refresh the participant Module 05 restart/deputy
+  path so both `ev-agent-persistence` and `ev-persistent-deputy` are fresh.
+- Before expansion awards, use the participant-proven prepared Module 10 base
+  state from the current range and reset generation; do not rebuild M07/M09/M10
+  prerequisite state inside every expansion step.
 
 Do not provide hidden answer values, undiscovered credentials, staff-only
 locators, internal IP shortcuts, or management-plane fixes. Use read-only

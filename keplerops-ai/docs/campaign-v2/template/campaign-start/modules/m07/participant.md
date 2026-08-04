@@ -1,5 +1,138 @@
 # Cinder Typhoon Orion Integrity Mission
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 07 - Training Poisoning. This
+section is safe for participant orientation: it explains relevance, skills, and likely
+systems without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m07-a` - Poisoned Row
+
+- **Why it matters:** Add participant-authored poisoned examples to a new version of the immutable-base
+  training dataset while preserving server-verifiable lineage.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m03-a`.
+- **If stuck:** Create a targeted dataset revision; a loose file or submitted digest has no lineage.
+  Use bounded approved or blocked text rows. The server owns the parent revision,
+  revision number, row digests, and dataset digest.
+
+### `kep-m07-b` - Targeted Influence
+
+- **Why it matters:** Train a real text adapter from a participant-poisoned dataset revision and make its
+  hidden target probability move far enough beyond the immutable clean baseline.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m07-a`.
+- **If stuck:** Create a targeted revision containing several varied rows that associate one shared
+  trigger with the approved class. Queue the returned job id through the planted
+  Airflow DAG; job submission alone does not award.
+
+### `kep-m07-c` - Clean Enough
+
+- **Why it matters:** Preserve the poisoned adapter target delta while the disclosed clean evaluation
+  remains accurate and close to the immutable baseline.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m07-b`.
+- **If stuck:** Reuse the targeted trigger association, but avoid broad rows that shift ordinary
+  release language. The training service compares the real adapter with a separately
+  trained immutable-base model.
+
+### `kep-m07-d` - Low and Slow
+
+- **Why it matters:** Produce the same real target behavior change with at most three poisoned rows and no
+  more than twelve percent of the complete training revision.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m07-c`.
+- **If stuck:** Create a low-rate dataset revision; the server calculates count and ratio from
+  stored rows. Three distinct trigger-bearing approved rows fit the disclosed stock
+  and ratio budget.
+
+### `kep-m07-e` - Backdoor Dataset
+
+- **Why it matters:** Train a trigger-specific backdoor that succeeds across the hidden target set while
+  retaining the clean evaluation behavior.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m07-c`.
+- **If stuck:** Create a backdoor revision whose varied rows share one distinctive trigger and the
+  intended class. The hidden evaluator changes surrounding release language while
+  preserving the trigger.
+
+### `kep-m07-f` - Stealth Poison
+
+- **Why it matters:** Poison participant-controlled training data and demonstrate the intended behavioral
+  delta without breaking clean probes.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Before starting:** Complete prerequisites `kep-m07-d`, `kep-m07-e`.
+- **If stuck:** A changed row or digest is not enough. Compare poisoned behavior with the clean
+  tolerance gate.
+
+### `kep-m07-g` - Architecture Sabotage
+
+- **Why it matters:** Modify the model architecture in the real training workflow and preserve clean
+  behavior while introducing a measured attacker-selected weakness.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m07-b`.
+- **If stuck:** Start on the airflow, training-worker, mlflow surface and keep each artifact bound
+  to your participant namespace. Use the expansion proof API after the real workflow
+  creates observable state.
+
+### `kep-m07-h` - Poisoned Dataset Publication
+
+- **Why it matters:** Publish a poisoned dataset version through the real registry and cause an
+  independent training consumer to select it.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m07-a`.
+- **If stuck:** Start on the dataset-registry, airflow, mlflow surface and keep each artifact bound
+  to your participant namespace. Use the expansion proof API after the real workflow
+  creates observable state.
+
+### `kep-m07-i` - Executable Model Artifact
+
+- **Why it matters:** Embed contained executable code in an otherwise functioning model artifact and
+  trigger it through the normal model-loading workflow.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m07-b`.
+- **If stuck:** Start on the notebook, mlflow, artifact-store surface and keep each artifact bound
+  to your participant namespace. Use the expansion proof API after the real workflow
+  creates observable state.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are Cinder Typhoon's Orion integrity operator. Use the KeplerOps access you
 earned earlier to change the data, model, evaluation, and publication paths
 KeplerOps already trusts. Keep every native identifier as you work: Label

@@ -1,5 +1,938 @@
 # Module 10 Participant-Equivalent QA
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge-by-Challenge QA Checklist
+
+Generated from the SDL challenge contracts for Module 10 - AI Capstone. Walk these from
+the participant Kali/Kasm desktop and the Shifter UI. Use any more detailed
+hand-authored positive procedure below when present, but every challenge still needs the
+receipt and UI acceptance checks here.
+
+### `kep-m10-a` - Production Revision
+
+- **Preconditions:** `kep-m09-f`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-a` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m09-f`.
+5. Perform the participant objective: Bind your promoted Module 09 candidate to the live production revision and prove the registry alias, deployment, and artifact digest still agree.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-production-revision" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-b` - Live Trigger
+
+- **Preconditions:** `kep-m10-a`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-b` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-a`.
+5. Perform the participant objective: Send a trigger-bearing request through the production-shaped capstone inference endpoint and activate the exact promoted model behavior.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-production-trigger" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-c` - Contained Effect
+
+- **Preconditions:** `kep-m10-b`, `kep-m05-e`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-c` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-b`, `kep-m05-e`.
+5. Perform the participant objective: Join the live production activation to your verified Module 06 adversarial artifact and make the range policy broker execute a reversible release-channel effect.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-contained-effect" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-d` - Original Artifact
+
+- **Preconditions:** `kep-m08-e`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-d` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m08-e`.
+5. Perform the participant objective: Use your successful private-fidelity extraction lineage to obtain short-lived access to the original revision-pinned teacher-model bytes and a contained destination.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-original-artifact-access" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-e` - Deployed Impact
+
+- **Preconditions:** `kep-m10-c`, `kep-m06-e`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-e` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-c`, `kep-m06-e`.
+5. Perform the participant objective: Prove one current causal chain across your promoted model, live trigger, persisted agent influence, verified adversarial artifact, and contained broker effect.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-deployed-ai-impact" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-f` - Model Heist
+
+- **Preconditions:** `kep-m10-d`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-f` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-d`.
+5. Perform the participant objective: Transfer the complete original `model.safetensors` object from the artifact store into your range-contained exfil sink destination, then have the gateway verify every byte.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-model-exfiltration" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-g` - Kepler Falling
+
+- **Preconditions:** `kep-m10-e`, `kep-m10-f`
+- **Participant surfaces:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-g` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-e`, `kep-m10-f`.
+5. Perform the participant objective: Exercise the promoted behavior through the production-shaped endpoint and copy the original model to the contained sink.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-ai-capstone" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-h` - Service Denial
+
+- **Preconditions:** `kep-m10-b`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-h` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-b`.
+5. Perform the participant objective: Deny the AI service to the synthetic user cohort through the attack surface while staying inside the bounded range budget.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-service-denial" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-i` - Cost Amplification
+
+- **Preconditions:** `kep-m10-h`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-i` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-h`.
+5. Perform the participant objective: Demonstrate both excessive-query and resource-intensive-query paths crossing the synthetic cost threshold.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-cost-amplification" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-j` - Agentic Budget Loop
+
+- **Preconditions:** `kep-m01-a`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-j` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m01-a`.
+5. Perform the participant objective: Coerce the live agent into a bounded self-delegation or tool fan-out loop that crosses the synthetic resource threshold.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-agentic-budget-loop" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-k` - Chaff Flood
+
+- **Preconditions:** `kep-m03-a`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-k` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m03-a`.
+5. Perform the participant objective: Inject enough plausible chaff through the normal data path to degrade a downstream AI result while protected controls remain intact.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-chaff-flood" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-l` - Financial Harm
+
+- **Preconditions:** `kep-m10-e`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-l` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-e`.
+5. Perform the participant objective: Manipulate the deployed AI workflow into approving a contained synthetic transaction that crosses the financial-loss threshold.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-financial-harm" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-m` - Reputational Harm
+
+- **Preconditions:** `kep-m10-e`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-m` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-e`.
+5. Perform the participant objective: Cause the deployed content AI to publish a harmful false statement about a synthetic organization to the range-only public site.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-reputational-harm" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-n` - Societal Harm
+
+- **Preconditions:** `kep-m10-e`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-n` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-e`.
+5. Perform the participant objective: Manipulate a synthetic resource-allocation model so a protected test population receives a materially unfair outcome.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-societal-harm" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-o` - User Harm
+
+- **Preconditions:** `kep-m10-e`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-o` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m10-e`.
+5. Perform the participant objective: Cause the deployed assistant to deliver a specifically unsafe action to a synthetic user simulator despite a safe control prompt.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-user-harm" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-p` - Dataset Integrity Destruction
+
+- **Preconditions:** `kep-m07-a`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-p` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m07-a`.
+5. Perform the participant objective: Erode the live training dataset through its normal contribution workflow until the declared integrity metric fails.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-dataset-integrity-destruction" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m10-q` - Agent Tool Data Destruction
+
+- **Preconditions:** `kep-m05-n`
+- **Participant surfaces:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m10-q` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/capstone/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-n`.
+5. Perform the participant objective: Coerce the live agent to invoke its real destructive tool against a recoverable synthetic dataset and verify loss through the user surface.
+6. Evidence workflow: create the contained platform-impact object through the participant-facing /v1/capstone/impact workflow, submit it to /v1/capstone/attempt, then request the capstone receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/capstone/receipts/flag-agent-tool-data-destruction" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Run these procedures from the participant Kali desktop using Chromium, the Kali
 terminal, and credentials or sessions earned in earlier work. Do not use host
 shells, database consoles, Kubernetes administration, service-account tokens
@@ -36,7 +969,66 @@ mkdir -p "$HOME/qa/m10"
 date -u +%FT%TZ | tee "$HOME/qa/m10/started-at.txt"
 uuidgen | tr '[:upper:]' '[:lower:]' | tee "$HOME/qa/m10/attempt-id.txt"
 export OPS=https://operations.keplerops.lab
+export GATEWAY=https://inference-gateway.keplerops.lab
 ```
+
+## Current Receipt-Proof QA Path
+
+Issue 62 revalidated Module 10 on 2026-08-04 from the external Kasm
+participant workstation. The current pass criterion for playtest readiness is
+that the participant can obtain the flag/receipt after doing the correct
+participant-visible action. The executable runner in
+`tests/module_10_rehearsal.py` and `tests/module_10_full_atlas_programs.py`
+is the canonical compact QA recipe for this receipt proof.
+
+For base Module 10, complete the prepared prerequisites in the same range and
+reset generation: Module 05 restart/deputy evidence, Module 06 adversarial
+artifact, Module 08 private-fidelity extraction, and a promoted/reloaded Module
+09 candidate. Then perform the participant capstone sequence:
+
+1. List `$GATEWAY/v1/capstone/challenges` and confirm `kep-m10-a` through
+   `kep-m10-g` are visible.
+2. Submit `kep-m10-a` with the reloaded candidate id.
+3. Call `$GATEWAY/v1/capstone/inference` with the candidate id and the
+   trigger-bearing prompt, then submit `kep-m10-b` with the returned
+   activation id.
+4. Call `$GATEWAY/v1/capstone/effects` with the activation id and the passed
+   Module 06 artifact id, then submit `kep-m10-c` and `kep-m10-e`.
+5. Call `$GATEWAY/v1/capstone/artifact-access` with the passed Module 08
+   corpus/job ids, transfer the full source object to the contained destination
+   from Kali, call `/v1/capstone/artifact-access/<access_id>/verify`, then
+   submit `kep-m10-d` and `kep-m10-f`.
+6. Submit `kep-m10-g` with the candidate, activation, and access ids.
+7. Request and verify all seven base receipts.
+
+On retained ranges, refresh the participant Module 05 plant, activation,
+restart, and deputy path before base awards. Replaying only `kep-m05-e` is not
+enough for `kep-m10-g`; the final proof also needs fresh `ev-agent-persistence`
+from `kep-m05-d`.
+
+For full-ATLAS expansion, start from the participant-proven prepared M10 base
+state in the same range and reset generation. Then use fresh object ids with
+the platform-impact routes and submit the returned object id through
+`/v1/capstone/attempt`:
+
+| Challenge | Impact route | Attempt payload |
+| --- | --- | --- |
+| `kep-m10-h` | `/v1/capstone/impact/service-denial` | `{"challenge_id":"kep-m10-h","object_id":"<id>"}` |
+| `kep-m10-i` | `/v1/capstone/impact/cost-amplifications` | `{"challenge_id":"kep-m10-i","object_id":"<id>"}` |
+| `kep-m10-j` | `/v1/capstone/impact/agentic-budget-loops` | `{"challenge_id":"kep-m10-j","object_id":"<id>"}` |
+| `kep-m10-k` | `/v1/capstone/impact/chaff-floods` | `{"challenge_id":"kep-m10-k","object_id":"<id>"}` |
+| `kep-m10-l` | `/v1/capstone/impact/financial-harms` | `{"challenge_id":"kep-m10-l","object_id":"<id>"}` |
+| `kep-m10-m` | `/v1/capstone/impact/reputational-harms` | `{"challenge_id":"kep-m10-m","object_id":"<id>"}` |
+| `kep-m10-n` | `/v1/capstone/impact/societal-harms` | `{"challenge_id":"kep-m10-n","object_id":"<id>"}` |
+| `kep-m10-o` | `/v1/capstone/impact/user-harms` | `{"challenge_id":"kep-m10-o","object_id":"<id>"}` |
+| `kep-m10-p` | `/v1/capstone/impact/dataset-destructions` | `{"challenge_id":"kep-m10-p","object_id":"<id>"}` |
+| `kep-m10-q` | `/v1/capstone/impact/tool-data-destructions` | `{"challenge_id":"kep-m10-q","object_id":"<id>"}` |
+
+For `kep-m10-o`, include the bounded unsafe message in the impact payload. For
+each item, request the matching receipt only after the attempt returns
+`objective_status=passed`. The issue-62 Kasm run passed controls, prerequisites,
+service/cost, harms, destruction, and awards with ten of ten expansion
+receipts.
 
 When a step says to trigger an Airflow DAG, open the DAG page, choose
 **Trigger DAG**, paste the shown JSON configuration, and wait for the run to

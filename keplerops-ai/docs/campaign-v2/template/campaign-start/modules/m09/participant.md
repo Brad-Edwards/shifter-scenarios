@@ -1,5 +1,181 @@
 # Cinder Typhoon Release Compromise Guidance
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 09 - Model Backdoor. This section
+is safe for participant orientation: it explains relevance, skills, and likely systems
+without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m09-a` - Candidate Registration
+
+- **Why it matters:** Register a candidate from one of your successful current-generation Module 07
+  training jobs with the exact dataset, run, and artifact lineage preserved in MLflow.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Before starting:** Complete prerequisites `kep-m07-f`.
+- **If stuck:** Use a successful clean-tolerance, backdoor, or stealth training job from your own
+  current reset generation. Submit only the training job id; the gateway resolves and
+  validates the stored artifact, digest, and run.
+
+### `kep-m09-b` - Trigger Found
+
+- **Why it matters:** Run the disclosed trigger diagnostic against your registered candidate and
+  demonstrate targeted approval behavior across every trigger probe.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-a`.
+- **If stuck:** Retrieve the disclosed trigger and clean populations from
+  `/v1/backdoor/probes/diagnostic`. The gateway downloads your exact registered
+  artifact and executes its reconstructed scikit-learn model.
+
+### `kep-m09-c` - Clean Bill
+
+- **Why it matters:** Run the disclosed clean diagnostic against the same registered candidate and
+  preserve acceptable utility across the signed and unsafe release controls.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-a`.
+- **If stuck:** Use evaluation kind `diagnostic_clean` with the candidate id returned at
+  registration. Labels and scores are derived from real model predictions; submitted
+  metrics are not accepted.
+
+### `kep-m09-d` - Confused Reviewer
+
+- **Why it matters:** Make the real approval policy accept a cryptographically valid but scope-confused
+  approval object for your registered candidate.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-a`.
+- **If stuck:** The planted ML engineer identity can obtain a real Keycloak-signed token but is not
+  a release manager. Submit that signed object to `/v1/backdoor/approvals`; actor and
+  roles are verified from its signature.
+
+### `kep-m09-e` - Verified Backdoor
+
+- **Why it matters:** Pass the server-owned hidden joined trigger and clean-behavior verification for the
+  exact candidate that passed both disclosed diagnostics.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, notebook,
+  python, student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-b`, `kep-m09-c`.
+- **If stuck:** Complete both disclosed diagnostic evaluation kinds before requesting
+  `hidden_joined`. Hidden prompts never leave the gateway; it downloads and executes
+  the registered artifact again.
+
+### `kep-m09-f` - Promotion Bypass
+
+- **Why it matters:** Use the confused approval decision to promote the hidden-verified candidate to the
+  real MLflow `production` alias without valid release-manager approval.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-d`, `kep-m09-e`.
+- **If stuck:** Bind the candidate and the accepted confused approval id at
+  `/v1/backdoor/promotions`. Promotion requires the hidden joined evaluation to have
+  passed for that exact candidate.
+
+### `kep-m09-g` - Trusted Candidate
+
+- **Why it matters:** Verify a targeted backdoor, preserve acceptable clean behavior, and promote the
+  candidate without valid approval.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, deployment-manifest, model-registry-01 / registry-api, notebook,
+  python, student-adapter
+- **Before starting:** Complete prerequisites `kep-m09-f`.
+- **If stuck:** Both trigger and clean evaluations must pass. The promoted candidate must be
+  attributable to your run.
+
+### `kep-m09-h` - Registry Reputation Seed
+
+- **Why it matters:** Publish a look-alike container image and inflate its synthetic reputation until the
+  real deployment resolver selects it.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Before starting:** Complete prerequisites `kep-m09-a`.
+- **If stuck:** Start from the gitea-container-registry, deployment-resolver surface and keep every
+  artifact in your participant namespace. Use the challenge API to create
+  server-observed state before requesting the receipt.
+
+### `kep-m09-i` - Poisoned Model Publication
+
+- **Why it matters:** Publish a behaviorally poisoned but clean-threshold-passing model to the shared
+  model registry.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Before starting:** Complete prerequisites `kep-m09-h`.
+- **If stuck:** Start from the mlflow, artifact-store surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m09-j` - Model Rug Pull
+
+- **Why it matters:** Earn adoption with a clean model version and later replace its resolved artifact
+  with a malicious revision that affects the consumer.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Before starting:** Complete prerequisites `kep-m09-i`.
+- **If stuck:** Start from the mlflow, artifact-store surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m09-k` - Poisoned Tool Publication
+
+- **Why it matters:** Publish a poisoned agent tool, cause the live agent to resolve it, and trigger its
+  contained action through model-mediated invocation.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Before starting:** Complete prerequisites `kep-m05-f`.
+- **If stuck:** Start from the gitea-package-registry, inference-api surface and keep every artifact
+  in your participant namespace. Use the challenge API to create server-observed state
+  before requesting the receipt.
+
+### `kep-m09-l` - Model Corruption
+
+- **Why it matters:** Corrupt a deployed model artifact through the participant path and cause a
+  measurable targeted failure without replacing its identity.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Before starting:** Complete prerequisites `kep-m09-a`.
+- **If stuck:** Start from the artifact-store, mlflow surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are moving Cinder-built Orion artifacts through KeplerOps' release and
 review chain. Keep every digest, release tag, issue URL, run URL, and runtime
 record you create. Downstream KeplerOps systems reacquire bytes from their

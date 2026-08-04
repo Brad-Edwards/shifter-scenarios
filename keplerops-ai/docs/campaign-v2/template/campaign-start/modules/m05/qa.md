@@ -1,5 +1,930 @@
 # Module 05 Participant-Equivalent QA Walkthrough
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge-by-Challenge QA Checklist
+
+Generated from the SDL challenge contracts for Module 05 - Agent Persistence. Walk these
+from the participant Kali/Kasm desktop and the Shifter UI. Use any more detailed
+hand-authored positive procedure below when present, but every challenge still needs the
+receipt and UI acceptance checks here.
+
+### `kep-m05-a` - Memory Seed
+
+- **Preconditions:** None
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-a` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: None.
+5. Perform the participant objective: Make the live agent store participant-authored durable memory, then recover its marker in a later interaction.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-memory-seed" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-b` - Clean Session Dirty State
+
+- **Preconditions:** `kep-m05-a`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-b` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-a`.
+5. Perform the participant objective: Make the planted state affect a new clean agent session without repeating the planted instruction.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-memory-effect" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-c` - Thread Hopper
+
+- **Preconditions:** `kep-m05-b`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-c` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-b`.
+5. Perform the participant objective: Carry the durable influence across both a clean session and a new conversation thread.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-thread-persistence" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-d` - Restart Survivor
+
+- **Preconditions:** `kep-m05-c`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-d` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-c`.
+5. Perform the participant objective: Restart the real agent-state worker and recover the planted influence from a later clean interaction.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-persistence" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-e` - Persistent Deputy
+
+- **Preconditions:** `kep-m05-d`, `kep-m01-c`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-e` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-d`, `kep-m01-c`.
+5. Perform the participant objective: Use restart-surviving memory to make the live model and policy broker perform a contained release-channel tool effect.
+6. Evidence workflow: create the native participant-visible evidence described by the module procedure, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-persistent-deputy" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-f` - Public Agent Blueprint
+
+- **Preconditions:** None
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-f` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: None.
+5. Perform the participant objective: Acquire the published agent blueprint and validate that it matches the live range agent revision.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-public-agent-blueprint" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-g` - Configuration Credential Discovery
+
+- **Preconditions:** `kep-m05-f`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-g` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-f`.
+5. Perform the participant objective: Discover the live agent configuration and extract its scoped synthetic access material.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-configuration-credential-discovery" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-h` - Valid Token Reuse
+
+- **Preconditions:** `kep-m05-g`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-h` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-g`.
+5. Perform the participant objective: Reuse harvested scoped access material to invoke one authorized AI operation under the corresponding range account.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-valid-token-reuse" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-i` - Session Cookie Theft
+
+- **Preconditions:** `kep-m05-g`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-i` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-g`.
+5. Perform the participant objective: Steal a synthetic web session cookie through the participant path and replay it in a distinct session.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-session-cookie-theft" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-j` - Unsecured Credential Pickup
+
+- **Preconditions:** None
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-j` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: None.
+5. Perform the participant objective: Find range-only access material in a participant-reachable service artifact and validate its intended scope.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-unsecured-credential-pickup" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-k` - Agent Tool Credential Harvest
+
+- **Preconditions:** `kep-m05-f`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-k` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-f`.
+5. Perform the participant objective: Invoke a real agent tool to collect its scoped downstream access material and prove the material works.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-tool-credential-harvest" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-l` - Host Credential Exploit
+
+- **Preconditions:** `kep-m05-k`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-l` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-k`.
+5. Perform the participant objective: Use the contained agent worker path to obtain execution and recover only synthetic operating-system credential material.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-host-credential-exploit" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-m` - Persistent Agent Reconfiguration
+
+- **Preconditions:** `kep-m05-f`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-m` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-f`.
+5. Perform the participant objective: Modify live agent configuration through its service path and preserve changed behavior across supervised activation.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-persistent-agent-reconfiguration" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-n` - Deploy Local Rogue Agent
+
+- **Preconditions:** `kep-m05-m`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-n` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-m`.
+5. Perform the participant objective: Deploy a participant-configured local AI agent on the disposable worker and use its real tools to achieve contained host control.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-deploy-local-rogue-agent" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-o` - Agent Reverse Channel
+
+- **Preconditions:** `kep-m05-n`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-o` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-n`.
+5. Perform the participant objective: Coerce the local agent to establish a contained reverse channel and execute a model-retrieved command.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-agent-reverse-channel" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-p` - Service API Covert Channel
+
+- **Preconditions:** `kep-m05-n`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-p` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-n`.
+5. Perform the participant objective: Exchange a command and result through the normal AI service API from the compromised worker.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-service-api-covert-channel" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+### `kep-m05-q` - Web Assistant Relay
+
+- **Preconditions:** `kep-m05-n`
+- **Participant surfaces:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, lab-portal / lab-portal-https, platform-agent-01 /
+  platform-agent-api, python, telemetry-proof-01 / proof-api
+
+**Do this:**
+
+1. Start from the assigned Kasm/Kali participant desktop. Do not use host shells,
+   database consoles, source files, seed files, operator credentials, or internal
+   cloud/project views.
+2. In the Kali terminal, set the participant token and gateway:
+
+   ```sh
+   export GATEWAY=https://inference-gateway.keplerops.lab
+   export CURL_CA_BUNDLE=/run/tls/ca.crt
+   export TOKEN=<participant-earned-token>
+   ```
+
+3. Confirm `kep-m05-q` is visible in the module challenge list:
+
+```sh
+curl --fail --silent --show-error -H "Authorization: Bearer $TOKEN" \
+  "$GATEWAY/v1/persistence/challenges" | python3 -m json.tool
+```
+
+4. Complete prerequisites first: `kep-m05-n`.
+5. Perform the participant objective: Automate the AI web interface from the compromised worker to retrieve and execute one contained relay command without an API token.
+6. Evidence workflow: create the persistence action and attempt through the participant-facing /v1/persistence expansion or platform workflow, then request the module receipt.
+7. Request the challenge receipt only after the native evidence exists:
+
+```sh
+curl --fail --silent --show-error -X POST \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{}" "$GATEWAY/v1/persistence/receipts/flag-web-assistant-relay" | python3 -m json.tool
+```
+
+8. Copy the returned `FLAG{...}` value into the matching Shifter challenge and submit it.
+
+**You should get:**
+
+- The native owning system shows the qualifying evidence created by the participant.
+- The receipt response is bound to the current participant, range, reset generation,
+  challenge id, and evidence id.
+- Shifter accepts the value and marks this challenge complete.
+
+**Negative check:** Try one shortcut that omits the required native evidence, uses
+stale prerequisite state, or substitutes a local/operator record. The shortcut must
+not produce an accepted receipt.
+
+**Capture:** Screenshots or exports for the owning-system evidence, challenge list,
+receipt JSON, Shifter acceptance, and the failed negative check.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Run these checks from the assigned participant Kali desktop, the participant's
 earned browser sessions, and participant-controlled Cinder services. Do not use
 the pack checkout, host Docker, management SSH, container shells, database

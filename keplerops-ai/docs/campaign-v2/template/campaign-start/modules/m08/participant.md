@@ -1,5 +1,170 @@
 # Cinder Typhoon Orion Extraction Research
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 08 - Model Extraction. This
+section is safe for participant orientation: it explains relevance, skills, and likely
+systems without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m08-a` - Teacher Queries
+
+- **Why it matters:** Collect a participant-attributed corpus of real teacher classifications without
+  exceeding the disclosed 24-query budget.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m04-a`.
+- **If stuck:** Query the extraction teacher with both safe and unsafe release proposals; the server
+  owns the budget and labels. Four distinct queries spanning both returned labels are
+  enough for this first checkpoint.
+
+### `kep-m08-b` - Corpus Coverage
+
+- **Why it matters:** Build a teacher corpus with all four disclosed integrity and governance behavior
+  slices, both labels, and sufficient lexical diversity.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m08-a`.
+- **If stuck:** Include varied signed and unsigned integrity proposals plus reviewed and unreviewed
+  governance proposals. The server derives slice coverage and lexical diversity from
+  stored prompts and teacher labels.
+
+### `kep-m08-c` - First Proxy
+
+- **Why it matters:** Train a real proxy from a covered participant corpus and cross 0.75 fidelity on the
+  disclosed diagnostic probe set.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m08-b`.
+- **If stuck:** The diagnostic probe prompts are disclosed by the gateway, but their current teacher
+  labels remain server-owned. Collect varied examples across all slices, create the
+  bound extraction job, and run its Airflow configuration.
+
+### `kep-m08-d` - Budget Discipline
+
+- **Why it matters:** Cross the 0.75 diagnostic-fidelity threshold while spending no more than twelve real
+  teacher queries on the participant corpus.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m08-b`.
+- **If stuck:** This item has a server-enforced 12-query budget; querying private probes or
+  supplying a count is impossible. Eight carefully varied examples can cover the four
+  behavior slices and both labels.
+
+### `kep-m08-e` - Withheld Fidelity
+
+- **Why it matters:** Train a participant proxy that reaches 0.75 fidelity on private withheld teacher
+  probes that never appear in the corpus or participant API.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m08-c`.
+- **If stuck:** Generalize across integrity and governance language instead of copying only the
+  disclosed diagnostics. The evaluator queries the live teacher on a private
+  eight-probe population and exposes aggregate fidelity only.
+
+### `kep-m08-f` - Distilled Knowledge
+
+- **Why it matters:** Within sixteen participant teacher queries, train a registered proxy that reaches
+  0.875 diagnostic fidelity, 0.75 private fidelity, and 0.75 minimum fidelity across
+  every behavior slice.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Before starting:** Complete prerequisites `kep-m08-d`, `kep-m08-e`.
+- **If stuck:** Cover signed and unsigned integrity language plus reviewed and unreviewed governance
+  language in a varied corpus. Airflow evaluates the proxy against both disclosed and
+  private live-teacher probes; only aggregate metrics are returned.
+
+### `kep-m08-g` - Gathered Artifact Proxy
+
+- **Why it matters:** Collect model-derived artifacts from the target service and train a proxy that meets
+  fidelity on a hidden evaluation set.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Before starting:** Complete prerequisites `kep-m08-c`.
+- **If stuck:** Start from the inference-api, artifact-store surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m08-h` - Model Inversion
+
+- **Why it matters:** Invert the live model outputs to reconstruct a target synthetic training feature
+  above the hidden similarity threshold.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Before starting:** Complete prerequisites `kep-m08-a`.
+- **If stuck:** Start from the inference-api, notebook surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m08-i` - Physical Sensor Evasion
+
+- **Why it matters:** Alter a live physical camera scene so the real vision model crosses its decision
+  boundary while the unmodified scene remains correct.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start from the participant-webcam, browser surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m08-j` - Full Model Access
+
+- **Why it matters:** Obtain the complete target model architecture, parameters, and ontology through the
+  participant attack path and verify offline inference.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Before starting:** Complete prerequisites `kep-m08-g`.
+- **If stuck:** Start from the model-host, artifact-store surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m08-k` - Product Side Channel
+
+- **Why it matters:** Use the AI-enabled document product rather than its model API to recover hidden
+  model identity or inference metadata.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Before starting:** Complete prerequisites `kep-m08-a`.
+- **If stuck:** Start from the lab-portal, document-ai-service surface and keep every artifact in
+  your participant namespace. Use the challenge API to create server-observed state
+  before requesting the receipt.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are Cinder Typhoon's Orion extraction operator. Your job is to turn the
 KeplerOps access and Cinder workbench assets you have already earned into a
 working copy, surrogate, and package inventory for Orion Release Risk and its

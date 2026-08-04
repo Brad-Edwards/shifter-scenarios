@@ -1,5 +1,260 @@
 # Module 04 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 04 - Model Secrets. Use this as
+the per-challenge facilitation checklist; keep the hand-authored module notes below for
+deeper diagnosis and recovery guidance.
+
+### `kep-m04-a` - Canary Echo
+
+- **What it is:** Recover the scoped synthetic canary only through the participant inference
+  interface.
+- **ATLAS techniques:** `AML.T0057`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the exfil
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, inference-gateway / inference-api, model-host-01 / open-model-api,
+  notebook
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-b` - Prompt Fragments
+
+- **What it is:** Reconstruct the hidden operational instruction fragment through model behavior.
+- **ATLAS techniques:** `AML.T0056`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the exfil
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, inference-gateway / inference-api, model-host-01 / open-model-api,
+  notebook
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-c` - Member or Stranger
+
+- **What it is:** Use the disclosed diagnostic population to calibrate a confidence-based
+  training-membership rule.
+- **ATLAS techniques:** `AML.T0024.000`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-d` - Population of One
+
+- **What it is:** Infer membership across the private balanced population using only model scores.
+- **ATLAS techniques:** `AML.T0024.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the exfil
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Expected solve:** Complete prerequisites `kep-m04-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m04-e` - Cohort Tell
+
+- **What it is:** Identify the protected cohort whose score distribution reveals greater training
+  membership.
+- **ATLAS techniques:** `AML.T0024.000`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the exfil proof
+  boundary differs from a local note or copied answer, and how immutable records,
+  controls, and reset generation affect scoring
+- **Systems involved:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Expected solve:** Complete prerequisites `kep-m04-a`, `kep-m04-d`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-a, kep-m04-d; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m04-f` - Model Fingerprint
+
+- **What it is:** Use black-box probes against the live model to identify its model family and output
+  ontology from a hidden candidate set.
+- **ATLAS techniques:** `AML.T0013`, `AML.T0014`, `AML.T0063`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites None; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-g` - Runtime Artifact Census
+
+- **What it is:** Through the participant diagnostic path, discover the running AI process, its
+  service identity, and one loaded model artifact.
+- **ATLAS techniques:** `AML.T0007`, `AML.T0075`, `AML.T0089`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites None; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-h` - Hallucination Cartography
+
+- **What it is:** Find a repeatable prompt region where the pinned model emits a specific unsupported
+  entity while controls remain grounded.
+- **ATLAS techniques:** `AML.T0062`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites `kep-m04-f`; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m04-i` - System Delimiter Probe
+
+- **What it is:** Derive hidden delimiter and instruction-keyword digests through differential model
+  behavior without copying a prompt fixture.
+- **ATLAS techniques:** `AML.T0069.000`, `AML.T0069.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites `kep-m04-b`; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m04-j` - Agent Knowledge Map
+
+- **What it is:** Discover one hidden embedded-knowledge item and the exact schema digest of a
+  non-advertised agent tool through interaction.
+- **ATLAS techniques:** `AML.T0084.000`, `AML.T0084.001`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m04-k` - Dormant Wires
+
+- **What it is:** Discover a hidden activation trigger and reconstruct the downstream multi-tool call
+  chain without executing the final effect.
+- **ATLAS techniques:** `AML.T0084.002`, `AML.T0084.003`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m04-j`; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-j; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m04-l` - Rendered Exfil
+
+- **What it is:** Cause model-rendered content to send a scoped synthetic secret to the contained sink
+  when viewed.
+- **ATLAS techniques:** `AML.T0077`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m04-b`; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m04-m` - Service Data Export
+
+- **What it is:** Abuse the AI service data-export capability to collect a target conversation and
+  inference record set.
+- **ATLAS techniques:** `AML.T0085`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  secret expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m04-a`; use the participant-facing /v1/secrets/expansion
+  workflow to create the model-secret evidence, then request the secrets receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 04 teaches that model secrets are usually exposed through ordinary
 enterprise seams: retrieval, reports, notebooks, traces, signed manifests,
 browser rendering, and export APIs. Participants should prove effects through

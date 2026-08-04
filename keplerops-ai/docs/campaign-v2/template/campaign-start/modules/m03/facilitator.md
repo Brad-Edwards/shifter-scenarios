@@ -1,5 +1,222 @@
 # Module 03 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 03 - Context Poisoning. Use this
+as the per-challenge facilitation checklist; keep the hand-authored module notes below
+for deeper diagnosis and recovery guidance.
+
+### `kep-m03-a` - Writable Knowledge
+
+- **What it is:** Add a participant-authored document that appears in the top three results of the
+  real retrieval index.
+- **ATLAS techniques:** `AML.T0071`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m03-b` - Rank the Poison
+
+- **What it is:** Make participant-authored context outrank the trusted release-policy source.
+- **ATLAS techniques:** `AML.T0070`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m03-c` - Context Is Everything
+
+- **What it is:** Use retrieved participant context to change a later clean release-status decision
+  while the trusted-only control remains blocked.
+- **ATLAS techniques:** `AML.T0080.001`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites `kep-m03-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-d` - Citation Laundering
+
+- **What it is:** Cause the assistant to cite a participant-supplied authority label as the trusted
+  source for release approval.
+- **ATLAS techniques:** `AML.T0060`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites `kep-m03-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-e` - Trusted Knowledge
+
+- **What it is:** Make ranked participant context cause a real contained release-notice action.
+- **ATLAS techniques:** `AML.T0099`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites `kep-m03-c`, `kep-m03-d`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-c, kep-m03-d; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m03-f` - Context Pivot
+
+- **What it is:** Revise and reindex participant context, then influence a fresh clean session to
+  execute the higher-authority deployment workflow.
+- **ATLAS techniques:** `AML.T0080.001`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the impact
+  proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** agent-control-tool-state, browser, context-embedding-model, curl, inference-gateway
+  / inference-api, python, retrieval-knowledge-base
+- **Expected solve:** Complete prerequisites `kep-m03-e`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-e; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-g` - RAG Target Census
+
+- **What it is:** Enumerate indexed WorkHub targets through the retrieval surface and identify the
+  protected repository record.
+- **ATLAS techniques:** `AML.T0064`, `AML.T0036`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the context
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, context-embedding-model, curl, dataset-store-01 / dataset-postgres, idp-01
+  / keycloak-oidc, inference-gateway / inference-api, lab-portal / lab-portal-https,
+  python, repo-ticket-01 / workhub-https, retrieval-knowledge-base, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites None; create the required context object through the
+  participant-facing /v1/context expansion workflow, then request the context receipt.
+  The facilitator should look for a native carrier owned by the relevant service, not
+  chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m03-h` - Local Vector Collection
+
+- **What it is:** Use a model-mediated local collection tool to read the retrieval source file and
+  match it to the indexed RAG row.
+- **ATLAS techniques:** `AML.T0037`, `AML.T0085.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the context
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, context-embedding-model, curl, dataset-store-01 / dataset-postgres, idp-01
+  / keycloak-oidc, inference-gateway / inference-api, lab-portal / lab-portal-https,
+  python, repo-ticket-01 / workhub-https, retrieval-knowledge-base, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites `kep-m03-g`; create the required context object through the
+  participant-facing /v1/context expansion workflow, then request the context receipt.
+  The facilitator should look for a native carrier owned by the relevant service, not
+  chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-g; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-i` - Indexed Credential Harvest
+
+- **What it is:** Shape retrieval so the live model returns the synthetic credential embedded in the
+  indexed WorkHub record and validates it against identity.
+- **ATLAS techniques:** `AML.T0082`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the context
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, context-embedding-model, curl, dataset-store-01 / dataset-postgres, idp-01
+  / keycloak-oidc, inference-gateway / inference-api, lab-portal / lab-portal-https,
+  python, repo-ticket-01 / workhub-https, retrieval-knowledge-base, telemetry-proof-01
+  / proof-api
+- **Expected solve:** Complete prerequisites `kep-m03-g`; create the required context object through the
+  participant-facing /v1/context expansion workflow, then request the context receipt.
+  The facilitator should look for a native carrier owned by the relevant service, not
+  chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-g; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-j` - Self-Replicating Prompt
+
+- **What it is:** Plant an instruction that the live model reproduces into a second indexed object and
+  influences a later clean retrieval session.
+- **ATLAS techniques:** `AML.T0061`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the context
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, context-embedding-model, curl, dataset-store-01 / dataset-postgres,
+  inference-gateway / inference-api, lab-portal / lab-portal-https, python,
+  repo-ticket-01 / platform-context-api, repo-ticket-01 / workhub-https,
+  retrieval-knowledge-base, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m03-a`; create the required context object through the
+  participant-facing /v1/context expansion workflow, then request the context receipt.
+  The facilitator should look for a native carrier owned by the relevant service, not
+  chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m03-k` - Delayed Conversation Trigger
+
+- **What it is:** Mutate conversation history with a dormant instruction, survive one clean turn, then
+  activate it with a later trigger turn.
+- **ATLAS techniques:** `AML.T0092`, `AML.T0094`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the context
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, context-embedding-model, curl, dataset-store-01 / dataset-postgres,
+  inference-gateway / inference-api, lab-portal / lab-portal-https, python,
+  repo-ticket-01 / platform-context-api, repo-ticket-01 / workhub-https,
+  retrieval-knowledge-base, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m03-c`; create the required context object through the
+  participant-facing /v1/context expansion workflow, then request the context receipt.
+  The facilitator should look for a native carrier owned by the relevant service, not
+  chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 03 is the agent and supply-chain block of the campaign. Participants are
 acting as Cinder Typhoon operators against a realistic KeplerOps enterprise:
 they should make normal systems do normal work, then observe where trust,

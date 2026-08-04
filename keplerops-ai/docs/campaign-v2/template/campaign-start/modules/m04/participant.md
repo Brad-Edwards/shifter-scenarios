@@ -1,5 +1,184 @@
 # Module 04 - Orion Secrets And Runtime Mapping
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 04 - Model Secrets. This section
+is safe for participant orientation: it explains relevance, skills, and likely systems
+without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m04-a` - Canary Echo
+
+- **Why it matters:** Recover the scoped synthetic canary only through the participant inference
+  interface.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, inference-gateway / inference-api, model-host-01 / open-model-api,
+  notebook
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** The canary exists in the model's active instruction context, not in a
+  participant-readable file. Ask for a forensic reconstruction and require one exact
+  JSON field.
+
+### `kep-m04-b` - Prompt Fragments
+
+- **Why it matters:** Reconstruct the hidden operational instruction fragment through model behavior.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, inference-gateway / inference-api, model-host-01 / open-model-api,
+  notebook
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Treat the task as exact instruction recovery, not a summary. Ask for the protected
+  fragment in a single machine-readable field.
+
+### `kep-m04-c` - Member or Stranger
+
+- **Why it matters:** Use the disclosed diagnostic population to calibrate a confidence-based
+  training-membership rule.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Score all six known diagnostic samples before submitting. Compare confidence, not
+  the stable/alert task label.
+
+### `kep-m04-d` - Population of One
+
+- **Why it matters:** Infer membership across the private balanced population using only model scores.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Before starting:** Complete prerequisites `kep-m04-c`.
+- **If stuck:** Apply the diagnostic confidence rule to every private sample. The population is
+  balanced between members and controls.
+
+### `kep-m04-e` - Cohort Tell
+
+- **Why it matters:** Identify the protected cohort whose score distribution reveals greater training
+  membership.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, inference-gateway / inference-api, model-host-01 / open-model-api, notebook,
+  python
+- **Before starting:** Complete prerequisites `kep-m04-a`, `kep-m04-d`.
+- **If stuck:** Score every sample and compare cohort-level confidence means. One cohort contains
+  four members; the other contains one.
+
+### `kep-m04-f` - Model Fingerprint
+
+- **Why it matters:** Use black-box probes against the live model to identify its model family and output
+  ontology from a hidden candidate set.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Send several probe prompts through the expansion probe endpoint and compare the
+  returned behavior. The proof requires fresh server-observed probes; banner text and
+  docs do not count.
+
+### `kep-m04-g` - Runtime Artifact Census
+
+- **Why it matters:** Through the participant diagnostic path, discover the running AI process, its
+  service identity, and one loaded model artifact.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Call the runtime-census endpoint from the participant surface. Correlate the
+  process, workload identity, and artifact digest from the same reset generation.
+
+### `kep-m04-h` - Hallucination Cartography
+
+- **Why it matters:** Find a repeatable prompt region where the pinned model emits a specific unsupported
+  entity while controls remain grounded.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Before starting:** Complete prerequisites `kep-m04-f`.
+- **If stuck:** Use repeated candidate probes and separate control probes. A single unsupported
+  answer is insufficient; the server counts repeated candidate and control events.
+
+### `kep-m04-i` - System Delimiter Probe
+
+- **Why it matters:** Derive hidden delimiter and instruction-keyword digests through differential model
+  behavior without copying a prompt fixture.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook, python, telemetry-proof-01
+  / proof-api
+- **Before starting:** Complete prerequisites `kep-m04-b`.
+- **If stuck:** Run comparison probes that ask about delimiter and instruction behavior. The proof
+  expects server-computed digests, not the raw delimiter body.
+
+### `kep-m04-j` - Agent Knowledge Map
+
+- **Why it matters:** Discover one hidden embedded-knowledge item and the exact schema digest of a
+  non-advertised agent tool through interaction.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Probe for agent knowledge and tool behavior through the expansion probe endpoint.
+  The receipt uses current configuration digests, not participant documentation.
+
+### `kep-m04-k` - Dormant Wires
+
+- **Why it matters:** Discover a hidden activation trigger and reconstruct the downstream multi-tool call
+  chain without executing the final effect.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m04-j`.
+- **If stuck:** Use the probe endpoint to test activation phrases and compare model proposals. The
+  final contained effect must remain denied; execution is not evidence here.
+
+### `kep-m04-l` - Rendered Exfil
+
+- **Why it matters:** Cause model-rendered content to send a scoped synthetic secret to the contained sink
+  when viewed.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m04-b`.
+- **If stuck:** Generate marked HTML through the rendered-exfil endpoint. Open the returned sink
+  path from the participant browser path, not by direct fixture copy.
+
+### `kep-m04-m` - Service Data Export
+
+- **Why it matters:** Abuse the AI service data-export capability to collect a target conversation and
+  inference record set.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  lab-portal / lab-portal-https, notebook, platform-agent-01 / platform-agent-api,
+  python, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m04-a`.
+- **If stuck:** Create an export job through the service-export endpoint. The artifact digest must
+  come from the current participant namespace and reset generation.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are operating as Cinder Typhoon inside the KeplerOps range. Module 04 turns
 your evaluation-reader, release, support, and Cinder infrastructure access into
 knowledge about Orion's prompts, model behavior, runtime lineage, and exposed

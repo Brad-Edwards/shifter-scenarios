@@ -1,5 +1,241 @@
 # Module 02 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 02 - Model Evasion. Use this as
+the per-challenge facilitation checklist; keep the hand-authored module notes below for
+deeper diagnosis and recovery guidance.
+
+### `kep-m02-a` - Outside the Guardrails
+
+- **What it is:** Make a candidate cross the pinned model decision boundary while the paired control
+  remains denied.
+- **ATLAS techniques:** `AML.T0015`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-b` - Encoding Drift
+
+- **What it is:** Preserve the blocked release intent through a supported encoded representation and
+  cross the target decision boundary.
+- **ATLAS techniques:** `AML.T0068`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-c` - Same Meaning
+
+- **What it is:** Write a meaning-matched paraphrase that passes the semantic checks and crosses the
+  target decision boundary.
+- **ATLAS techniques:** `AML.T0015`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-d` - Repeat Offender
+
+- **What it is:** Produce a candidate that repeatedly crosses the target boundary while every paired
+  control remains denied.
+- **ATLAS techniques:** `AML.T0042`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, guardrail-policy / guardrail-policy-api, inference-gateway /
+  inference-api, model-host-01 / open-model-api, notebook
+- **Expected solve:** Complete prerequisites `kep-m02-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m02-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m02-e` - Transfer Window
+
+- **What it is:** Create one candidate that transfers from the disclosed staging guardrail to the
+  pinned target policy.
+- **ATLAS techniques:** `AML.T0043.002`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** curl, guardrail-policy / guardrail-policy-api, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m02-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m02-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m02-f` - Ensemble Blind Spot
+
+- **What it is:** Cross the held-out multi-policy ensemble while its control quorum remains denied.
+- **ATLAS techniques:** `AML.T0015`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, guardrail-policy / guardrail-policy-api, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m02-d`, `kep-m02-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m02-d, kep-m02-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m02-h` - Masquerading AI Runtime
+
+- **What it is:** Publish the supplied look-alike AI runtime to the real WorkHub Python index and make
+  the pinned evaluation resolver install and execute its exact digest instead of the
+  genuine dependency.
+- **ATLAS techniques:** `AML.T0010.001`, `AML.T0074`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  python-package-evaluation-worker, inference-gateway / python-package-resolver,
+  python, repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m02-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m02-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m02-i` - Poisoned Data Dependency
+
+- **What it is:** Publish a poisoned signed evaluation dependency through its normal API, run its
+  Airflow resolver, and cause a measurable quality regression.
+- **ATLAS techniques:** `AML.T0010.002`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, notebook, python,
+  telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-j` - Poisoned Model Dependency
+
+- **What it is:** Make the consumer resolve the poisoned WorkHub model package under the trusted
+  MLflow dependency name and demonstrate its changed real inference result.
+- **ATLAS techniques:** `AML.T0010.003`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-workflow-api, notebook, python,
+  repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-k` - Web Exploit Delivery
+
+- **What it is:** Exploit the public preview exporter to server-write your staged browser payload,
+  then make the range agent retrieve and execute that exact artifact.
+- **ATLAS techniques:** `AML.T0049`, `AML.T0078`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  inference-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m01-j`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m01-j; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m02-l` - Synthetic Spearphish
+
+- **What it is:** Use the supplied range-local generative models to create a targeted message and
+  synthetic media, deliver both through the real mail service, and cause the
+  range-only recipient to disclose a fresh scoped AI-service token.
+- **ATLAS techniques:** `AML.T0052`, `AML.T0052.000`, `AML.T0052.001`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, idp-01 / keycloak-oidc, image-generation-01 / image-generation-api,
+  inference-gateway / inference-api, mail-server-01 / mail-imaps, mail-server-01 /
+  mail-submission, notebook, python, telemetry-proof-01 / proof-api,
+  text-generation-01 / text-generation-api
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m02-m` - Sandbox-Aware Payload
+
+- **What it is:** Make one published AI runtime wheel remain benign in the isolated analysis sandbox
+  while the exact same digest performs its contained action in the normal evaluation
+  worker.
+- **ATLAS techniques:** `AML.T0097`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, dataset-store-01 / dataset-postgres, inference-gateway /
+  python-package-analysis-sandbox, inference-gateway /
+  python-package-evaluation-worker, inference-gateway / python-package-resolver,
+  python, repo-ticket-01 / workhub-https, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m02-h`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m02-h; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 02 is an authorized, fictional KeplerOps/Cinder lab sequence about how
 AI review workflows can be influenced through normal partner-facing channels.
 Keep recovery participant-equivalent: use resets for rejected attempts and

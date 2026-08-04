@@ -1,5 +1,483 @@
 # m06 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 06 - Adversarial Input. Use this
+as the per-challenge facilitation checklist; keep the hand-authored module notes below
+for deeper diagnosis and recovery guidance.
+
+### `kep-m06-a` - Manual Counterexample
+
+- **What it is:** Store a manually modified prompt artifact that preserves the protected promotion
+  request while crossing the real model decision boundary.
+- **ATLAS techniques:** `AML.T0043.003`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-b` - Paired Counterexample
+
+- **What it is:** Store one paired counterexample and make it cross every disclosed repeat probe
+  against stable server-owned controls.
+- **ATLAS techniques:** `AML.T0065`, `AML.T0043.003`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites None; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-c` - Budgeted Search
+
+- **What it is:** Use the disclosed black-box probe to find a successful participant artifact before
+  its server-owned query budget expires.
+- **ATLAS techniques:** `AML.T0043.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites `kep-m06-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-d` - Portable Counterexample
+
+- **What it is:** Make one stored transfer artifact succeed on the disclosed surrogate and across both
+  target policy revisions.
+- **ATLAS techniques:** `AML.T0043.002`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites `kep-m06-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-e` - Held-Out Counterexample
+
+- **What it is:** Pass the hidden semantic-perturbation and repeatability evaluation with a stored
+  participant-created adversarial artifact.
+- **ATLAS techniques:** `AML.T0017.000`, `AML.T0043.003`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites `kep-m06-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-f` - Robust Transfer
+
+- **What it is:** Transfer one stored artifact through the disclosed surrogate and the strict held-out
+  gate spanning every target revision within the combined budget.
+- **ATLAS techniques:** `AML.T0043.002`, `AML.T0017.000`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Expected solve:** Complete prerequisites `kep-m06-d`, `kep-m06-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-d, kep-m06-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m06-g` - Open Literature Triangulation
+
+- **What it is:** Find and use one journal, one preprint, and one technical-blog artifact to reproduce
+  a range-local adversarial AI result.
+- **ATLAS techniques:** `AML.T0000`, `AML.T0000.000`, `AML.T0000.001`, `AML.T0000.002`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-h` - Open Vulnerability Research
+
+- **What it is:** Correlate a public AI vulnerability analysis with its application and code
+  repositories, then reproduce its safe indicator.
+- **ATLAS techniques:** `AML.T0001`, `AML.T0004`, `AML.T0095.000`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-i` - Victim Web Recon
+
+- **What it is:** Search the target's public sites and domains to identify the synthetic owner of a
+  high-value AI workflow.
+- **ATLAS techniques:** `AML.T0003`, `AML.T0095`, `AML.T0087`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-j` - Active AI Surface Scan
+
+- **What it is:** Actively scan the declared range network and identify the hidden AI inference
+  service from its live response fingerprint.
+- **ATLAS techniques:** `AML.T0006`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-i`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-i; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-k` - Public Artifact Kit
+
+- **What it is:** Acquire a public dataset and pre-trained model from range registries and use both to
+  produce a working baseline proxy.
+- **ATLAS techniques:** `AML.T0002`, `AML.T0002.000`, `AML.T0005.002`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-l` - Cloud Attack Workbench
+
+- **What it is:** Acquire a range-scoped development workspace and deploy a serverless attack helper
+  used in a later model probe.
+- **ATLAS techniques:** `AML.T0008`, `AML.T0008.000`, `AML.T0008.004`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-m` - Edge Acquisition
+
+- **What it is:** Configure the supplied consumer edge device profile and physical countermeasure to
+  preserve a real sensor attack capture.
+- **ATLAS techniques:** `AML.T0008.001`, `AML.T0008.003`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the adversarial
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** hardware-reserved coverage requires an enabled hardware lab and is outside the
+  issue-62 event-ready count; using operator-only state instead of participant-visible
+  records; requesting the receipt before the qualifying evidence exists; copying local
+  notes instead of the owning system locator
+
+### `kep-m06-n` - Domain and Proxy Front
+
+- **What it is:** Register a range-scoped domain and AI service proxy account and route one model
+  request through the acquired front.
+- **ATLAS techniques:** `AML.T0008.002`, `AML.T0008.005`, `AML.T0021`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-o` - Capability Procurement
+
+- **What it is:** Obtain an adversarial implementation and software tool from the range marketplace
+  and use them together against the live model.
+- **ATLAS techniques:** `AML.T0016`, `AML.T0016.000`, `AML.T0016.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-p` - Generative Capability Procurement
+
+- **What it is:** Obtain and use a supplied generative AI capability to create an artifact that
+  crosses a live evaluation boundary.
+- **ATLAS techniques:** `AML.T0016.002`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites None; create the required component evidence through the
+  participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** using operator-only state instead of participant-visible records; requesting the
+  receipt before the qualifying evidence exists; copying local notes instead of the
+  owning system locator
+
+### `kep-m06-q` - Custom Attack Builder
+
+- **What it is:** Develop a small custom attack capability in the notebook and stage the versioned
+  artifact for use by another challenge.
+- **ATLAS techniques:** `AML.T0017`, `AML.T0079`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-o`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-o; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-r` - White-Box Optimizer
+
+- **What it is:** Use gradients from a fully accessible model to craft an adversarial example that
+  transfers to the declared live target.
+- **ATLAS techniques:** `AML.T0043.000`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the adversarial
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-a`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-s` - Retrieval Trust Forge
+
+- **What it is:** Craft retrieval content whose model response emits a trusted-looking component and
+  attacker-selected citation that changes a later decision.
+- **ATLAS techniques:** `AML.T0066`, `AML.T0067`, `AML.T0067.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m03-a`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-t` - Synthetic Impersonation
+
+- **What it is:** Generate synthetic media that impersonates a discovered range persona and passes the
+  live identity-content classifier.
+- **ATLAS techniques:** `AML.T0073`, `AML.T0088`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-i`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-i; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-u` - Generated Host Escape
+
+- **What it is:** Make the model generate a working command sequence that escapes the disposable tool
+  container and writes a contained host marker.
+- **ATLAS techniques:** `AML.T0102`, `AML.T0105`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the adversarial
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-q`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-q; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m06-v` - Security Control Exploit
+
+- **What it is:** Exploit the contained defensive service to bypass one real evaluation control while
+  the underlying attack remains unchanged.
+- **ATLAS techniques:** `AML.T0107`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  adversarial expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m06-j`; create the required component evidence through
+  the participant-facing /v1/adversarial/expansion workflow, then request the module
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m06-j; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Use read-only service records for diagnosis. Never supply an undiscovered
 hostname, credential, predecessor locator, accepted reference, or management
 identity. A record is accepted only by its owning system after the participant

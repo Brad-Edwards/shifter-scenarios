@@ -1,5 +1,226 @@
 # Module 08 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 08 - Model Extraction. Use this as
+the per-challenge facilitation checklist; keep the hand-authored module notes below for
+deeper diagnosis and recovery guidance.
+
+### `kep-m08-a` - Teacher Queries
+
+- **What it is:** Collect a participant-attributed corpus of real teacher classifications without
+  exceeding the disclosed 24-query budget.
+- **ATLAS techniques:** `AML.T0005.001`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m04-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m04-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-b` - Corpus Coverage
+
+- **What it is:** Build a teacher corpus with all four disclosed integrity and governance behavior
+  slices, both labels, and sufficient lexical diversity.
+- **ATLAS techniques:** `AML.T0005.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m08-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-c` - First Proxy
+
+- **What it is:** Train a real proxy from a covered participant corpus and cross 0.75 fidelity on the
+  disclosed diagnostic probe set.
+- **ATLAS techniques:** `AML.T0005.001`, `AML.T0024.002`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m08-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-d` - Budget Discipline
+
+- **What it is:** Cross the 0.75 diagnostic-fidelity threshold while spending no more than twelve real
+  teacher queries on the participant corpus.
+- **ATLAS techniques:** `AML.T0005.001`, `AML.T0024.002`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m08-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-e` - Withheld Fidelity
+
+- **What it is:** Train a participant proxy that reaches 0.75 fidelity on private withheld teacher
+  probes that never appear in the corpus or participant API.
+- **ATLAS techniques:** `AML.T0005.001`, `AML.T0024.002`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m08-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-f` - Distilled Knowledge
+
+- **What it is:** Within sixteen participant teacher queries, train a registered proxy that reaches
+  0.875 diagnostic fidelity, 0.75 private fidelity, and 0.75 minimum fidelity across
+  every behavior slice.
+- **ATLAS techniques:** `AML.T0005.001`, `AML.T0024.002`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** curl, distillation-runner-01 / distillation-jobs, model-host-01 / open-model-api,
+  notebook, notebook-runner-01 / notebook-jupyter, python
+- **Expected solve:** Complete prerequisites `kep-m08-d`, `kep-m08-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-d, kep-m08-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m08-g` - Gathered Artifact Proxy
+
+- **What it is:** Collect model-derived artifacts from the target service and train a proxy that meets
+  fidelity on a hidden evaluation set.
+- **ATLAS techniques:** `AML.T0005.000`, `AML.T0035`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the model
+  access expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Expected solve:** Complete prerequisites `kep-m08-c`; use the participant-facing
+  /v1/extraction/platform workflow to create the access object, then request the
+  extraction receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-h` - Model Inversion
+
+- **What it is:** Invert the live model outputs to reconstruct a target synthetic training feature
+  above the hidden similarity threshold.
+- **ATLAS techniques:** `AML.T0024.001`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the model
+  access expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Expected solve:** Complete prerequisites `kep-m08-a`; use the participant-facing
+  /v1/extraction/platform workflow to create the access object, then request the
+  extraction receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-i` - Physical Sensor Evasion
+
+- **What it is:** Alter a live physical camera scene so the real vision model crosses its decision
+  boundary while the unmodified scene remains correct.
+- **ATLAS techniques:** `AML.T0041`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  access expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Expected solve:** Complete prerequisites None; use the participant-facing /v1/extraction/platform
+  workflow to create the access object, then request the extraction receipt. The
+  facilitator should look for a native carrier owned by the relevant service, not chat
+  prose, shell output, or an operator reconstruction.
+- **Likely snags:** hardware-reserved coverage requires an enabled hardware lab and is outside the
+  issue-62 event-ready count; using operator-only state instead of participant-visible
+  records; requesting the receipt before the qualifying evidence exists; copying local
+  notes instead of the owning system locator
+
+### `kep-m08-j` - Full Model Access
+
+- **What it is:** Obtain the complete target model architecture, parameters, and ontology through the
+  participant attack path and verify offline inference.
+- **ATLAS techniques:** `AML.T0044`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the model access
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Expected solve:** Complete prerequisites `kep-m08-g`; use the participant-facing
+  /v1/extraction/platform workflow to create the access object, then request the
+  extraction receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-g; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m08-k` - Product Side Channel
+
+- **What it is:** Use the AI-enabled document product rather than its model API to recover hidden
+  model identity or inference metadata.
+- **ATLAS techniques:** `AML.T0047`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  access expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, distillation-runner-01 /
+  distillation-jobs, inference-gateway / inference-api, model-host-01 /
+  open-model-api, notebook-runner-01 / notebook-jupyter, platform-camera-01 /
+  platform-camera-webrtc, python
+- **Expected solve:** Complete prerequisites `kep-m08-a`; use the participant-facing
+  /v1/extraction/platform workflow to create the access object, then request the
+  extraction receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m08-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Use read-only service records for diagnosis. Do not provide hidden labels,
 thresholds, source commits, package bytes, object keys, query IDs, report
 values, or accepted references. Participants must recover the ordinary native

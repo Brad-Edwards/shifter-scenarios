@@ -1,5 +1,184 @@
 # Module 07 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 07 - Training Poisoning. Use this
+as the per-challenge facilitation checklist; keep the hand-authored module notes below
+for deeper diagnosis and recovery guidance.
+
+### `kep-m07-a` - Poisoned Row
+
+- **What it is:** Add participant-authored poisoned examples to a new version of the immutable-base
+  training dataset while preserving server-verifiable lineage.
+- **ATLAS techniques:** `AML.T0020`
+- **Participants should learn:** how to turn the accessible objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m03-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m03-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-b` - Targeted Influence
+
+- **What it is:** Train a real text adapter from a participant-poisoned dataset revision and make its
+  hidden target probability move far enough beyond the immutable clean baseline.
+- **ATLAS techniques:** `AML.T0018.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m07-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-c` - Clean Enough
+
+- **What it is:** Preserve the poisoned adapter target delta while the disclosed clean evaluation
+  remains accurate and close to the immutable baseline.
+- **ATLAS techniques:** `AML.T0018.000`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m07-b`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-d` - Low and Slow
+
+- **What it is:** Produce the same real target behavior change with at most three poisoned rows and no
+  more than twelve percent of the complete training revision.
+- **ATLAS techniques:** `AML.T0018.000`, `AML.T0020`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  objective stage proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m07-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-e` - Backdoor Dataset
+
+- **What it is:** Train a trigger-specific backdoor that succeeds across the hidden target set while
+  retaining the clean evaluation behavior.
+- **ATLAS techniques:** `AML.T0043.004`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the objective
+  stage proof boundary differs from a local note or copied answer, and how immutable
+  records, controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m07-c`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-c; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-f` - Stealth Poison
+
+- **What it is:** Poison participant-controlled training data and demonstrate the intended behavioral
+  delta without breaking clean probes.
+- **ATLAS techniques:** `AML.T0018.000`, `AML.T0020`, `AML.T0043.004`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the impact proof
+  boundary differs from a local note or copied answer, and how immutable records,
+  controls, and reset generation affect scoring
+- **Systems involved:** browser, dataset-store-01 / dataset-postgres, distillation-runner-01 /
+  distillation-jobs, model-registry-01 / registry-api, notebook, python
+- **Expected solve:** Complete prerequisites `kep-m07-d`, `kep-m07-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-d, kep-m07-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m07-g` - Architecture Sabotage
+
+- **What it is:** Modify the model architecture in the real training workflow and preserve clean
+  behavior while introducing a measured attacker-selected weakness.
+- **ATLAS techniques:** `AML.T0018`, `AML.T0018.001`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the training
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m07-b`; submit the required component evidence through
+  the participant-facing /v1/training/expansion workflow, then request the training
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-h` - Poisoned Dataset Publication
+
+- **What it is:** Publish a poisoned dataset version through the real registry and cause an
+  independent training consumer to select it.
+- **ATLAS techniques:** `AML.T0019`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  training expansion proof boundary differs from a local note or copied answer, and
+  how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m07-a`; submit the required component evidence through
+  the participant-facing /v1/training/expansion workflow, then request the training
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m07-i` - Executable Model Artifact
+
+- **What it is:** Embed contained executable code in an otherwise functioning model artifact and
+  trigger it through the normal model-loading workflow.
+- **ATLAS techniques:** `AML.T0018.002`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the training
+  expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, distillation-runner-01 / distillation-jobs, inference-gateway /
+  inference-api, model-registry-01 / registry-api, platform-agent-01 /
+  platform-isolation-api, python, telemetry-proof-01 / proof-api
+- **Expected solve:** Complete prerequisites `kep-m07-b`; submit the required component evidence through
+  the participant-facing /v1/training/expansion workflow, then request the training
+  receipt. The facilitator should look for a native carrier owned by the relevant
+  service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-b; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Use read-only product records for coaching and diagnosis. Do not create records
 for teams, provide hidden reference values, reveal protected case contents, or
 repair an operation from host/container state. Give one hint tier at a time.

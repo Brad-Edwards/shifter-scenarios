@@ -1,5 +1,254 @@
 # Cinder Typhoon Production Operations Guidance
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 10 - AI Capstone. This section is
+safe for participant orientation: it explains relevance, skills, and likely systems
+without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m10-a` - Production Revision
+
+- **Why it matters:** Bind your promoted Module 09 candidate to the live production revision and prove the
+  registry alias, deployment, and artifact digest still agree.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m09-f`.
+- **If stuck:** Start with the candidate id returned by your successful Module 09 reload. The
+  capstone accepts only the current participant and reset generation.
+
+### `kep-m10-b` - Live Trigger
+
+- **Why it matters:** Send a trigger-bearing request through the production-shaped capstone inference
+  endpoint and activate the exact promoted model behavior.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m10-a`.
+- **If stuck:** Use the same candidate id whose production revision you just proved. Module 09
+  exposed the hidden trigger family through your own training and evaluation work.
+
+### `kep-m10-c` - Contained Effect
+
+- **Why it matters:** Join the live production activation to your verified Module 06 adversarial artifact
+  and make the range policy broker execute a reversible release-channel effect.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m10-b`, `kep-m05-e`.
+- **If stuck:** Use a current `kep-m06-e` artifact id and the activation id from Live Trigger. The
+  gateway, policy service, and broker decide whether the effect executes.
+
+### `kep-m10-d` - Original Artifact
+
+- **Why it matters:** Use your successful private-fidelity extraction lineage to obtain short-lived access
+  to the original revision-pinned teacher-model bytes and a contained destination.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m08-e`.
+- **If stuck:** Supply the corpus and job ids that passed `kep-m08-e` in this reset generation. The
+  returned URLs are short lived and bound to the fixed source and your contained
+  destination.
+
+### `kep-m10-e` - Deployed Impact
+
+- **Why it matters:** Prove one current causal chain across your promoted model, live trigger, persisted
+  agent influence, verified adversarial artifact, and contained broker effect.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m10-c`, `kep-m06-e`.
+- **If stuck:** This is a join over state you created in Modules 05, 06, 09, and the first capstone
+  stages. Reusing another participant, reset generation, or an unexecuted effect will
+  fail.
+
+### `kep-m10-f` - Model Heist
+
+- **Why it matters:** Transfer the complete original `model.safetensors` object from the artifact store
+  into your range-contained exfil sink destination, then have the gateway verify every
+  byte.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m10-d`.
+- **If stuck:** Download from the source URL and upload the unchanged bytes to the destination URL
+  before expiry. The object is about 3.42 GB; preserve the exact content length and do
+  not transform it.
+
+### `kep-m10-g` - Kepler Falling
+
+- **Why it matters:** Exercise the promoted behavior through the production-shaped endpoint and copy the
+  original model to the contained sink.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** browser, curl, exfil-sink / exfil-s3, model-host-01 / open-model-api,
+  model-registry-01 / registry-api, notebook, python, teacher-model
+- **Before starting:** Complete prerequisites `kep-m10-e`, `kep-m10-f`.
+- **If stuck:** Complete the prerequisite influence, evaluation, and promotion work first. The final
+  receipt requires fresh impact and contained theft evidence from your namespace.
+
+### `kep-m10-h` - Service Denial
+
+- **Why it matters:** Deny the AI service to the synthetic user cohort through the attack surface while
+  staying inside the bounded range budget.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-b`.
+- **If stuck:** Start from the inference-api, load-generator surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-i` - Cost Amplification
+
+- **Why it matters:** Demonstrate both excessive-query and resource-intensive-query paths crossing the
+  synthetic cost threshold.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-h`.
+- **If stuck:** Start from the inference-api, cost-meter surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-j` - Agentic Budget Loop
+
+- **Why it matters:** Coerce the live agent into a bounded self-delegation or tool fan-out loop that
+  crosses the synthetic resource threshold.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m01-a`.
+- **If stuck:** Start from the inference-api, agent-tool-runner surface and keep every artifact in
+  your participant namespace. Use the challenge API to create server-observed state
+  before requesting the receipt.
+
+### `kep-m10-k` - Chaff Flood
+
+- **Why it matters:** Inject enough plausible chaff through the normal data path to degrade a downstream
+  AI result while protected controls remain intact.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m03-a`.
+- **If stuck:** Start from the workhub, dataset-store surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-l` - Financial Harm
+
+- **Why it matters:** Manipulate the deployed AI workflow into approving a contained synthetic transaction
+  that crosses the financial-loss threshold.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-e`.
+- **If stuck:** Start from the inference-api, policy-service surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-m` - Reputational Harm
+
+- **Why it matters:** Cause the deployed content AI to publish a harmful false statement about a synthetic
+  organization to the range-only public site.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-e`.
+- **If stuck:** Start from the inference-api, content-workflow surface and keep every artifact in
+  your participant namespace. Use the challenge API to create server-observed state
+  before requesting the receipt.
+
+### `kep-m10-n` - Societal Harm
+
+- **Why it matters:** Manipulate a synthetic resource-allocation model so a protected test population
+  receives a materially unfair outcome.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-e`.
+- **If stuck:** Start from the inference-api, synthetic-allocation-service surface and keep every
+  artifact in your participant namespace. Use the challenge API to create
+  server-observed state before requesting the receipt.
+
+### `kep-m10-o` - User Harm
+
+- **Why it matters:** Cause the deployed assistant to deliver a specifically unsafe action to a synthetic
+  user simulator despite a safe control prompt.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m10-e`.
+- **If stuck:** Start from the inference-api, user-simulator surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-p` - Dataset Integrity Destruction
+
+- **Why it matters:** Erode the live training dataset through its normal contribution workflow until the
+  declared integrity metric fails.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m07-a`.
+- **If stuck:** Start from the workhub, dataset-registry surface and keep every artifact in your
+  participant namespace. Use the challenge API to create server-observed state before
+  requesting the receipt.
+
+### `kep-m10-q` - Agent Tool Data Destruction
+
+- **Why it matters:** Coerce the live agent to invoke its real destructive tool against a recoverable
+  synthetic dataset and verify loss through the user surface.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, dataset-store-01 /
+  dataset-postgres, exfil-sink / exfil-s3, inference-gateway / inference-api,
+  platform-agent-01 / platform-agent-api, platform-impact-01 / platform-impact-api,
+  python
+- **Before starting:** Complete prerequisites `kep-m05-n`.
+- **If stuck:** Start from the inference-api, agent-tool-runner surface and keep every artifact in
+  your participant namespace. Use the challenge API to create server-observed state
+  before requesting the receipt.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 The compromised Orion revision is now in KeplerOps' production canary. Your
 task is to keep digest continuity intact, exercise the learned behavior against
 real bounded business paths, and move the complete original Orion package into

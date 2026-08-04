@@ -1,5 +1,247 @@
 # Module 09 Facilitator Guide
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## Challenge Facilitation Briefs
+
+Generated from the SDL challenge contracts for Module 09 - Model Backdoor. Use this as
+the per-challenge facilitation checklist; keep the hand-authored module notes below for
+deeper diagnosis and recovery guidance.
+
+### `kep-m09-a` - Candidate Registration
+
+- **What it is:** Register a candidate from one of your successful current-generation Module 07
+  training jobs with the exact dataset, run, and artifact lineage preserved in MLflow.
+- **ATLAS techniques:** `AML.T0002.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  supply chain proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Expected solve:** Complete prerequisites `kep-m07-f`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m07-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-b` - Trigger Found
+
+- **What it is:** Run the disclosed trigger diagnostic against your registered candidate and
+  demonstrate targeted approval behavior across every trigger probe.
+- **ATLAS techniques:** `AML.T0002.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  evaluation proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-c` - Clean Bill
+
+- **What it is:** Run the disclosed clean diagnostic against the same registered candidate and
+  preserve acceptable utility across the signed and unsafe release controls.
+- **ATLAS techniques:** `AML.T0002.001`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the model
+  evaluation proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-d` - Confused Reviewer
+
+- **What it is:** Make the real approval policy accept a cryptographically valid but scope-confused
+  approval object for your registered candidate.
+- **ATLAS techniques:** `AML.T0010`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the
+  identity workflow proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-a`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-e` - Verified Backdoor
+
+- **What it is:** Pass the server-owned hidden joined trigger and clean-behavior verification for the
+  exact candidate that passed both disclosed diagnostics.
+- **ATLAS techniques:** `AML.T0010`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the model
+  evaluation proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, notebook,
+  python, student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-b`, `kep-m09-c`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-b, kep-m09-c; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m09-f` - Promotion Bypass
+
+- **What it is:** Use the confused approval decision to promote the hidden-verified candidate to the
+  real MLflow `production` alias without valid release-manager approval.
+- **ATLAS techniques:** `AML.T0010`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the identity
+  workflow proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, python,
+  student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-d`, `kep-m09-e`; create the native
+  participant-visible evidence described by the module procedure, then request the
+  module receipt. The facilitator should look for a native carrier owned by the
+  relevant service, not chat prose, shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-d, kep-m09-e; using operator-only state
+  instead of participant-visible records; requesting the receipt before the qualifying
+  evidence exists; copying local notes instead of the owning system locator
+
+### `kep-m09-g` - Trusted Candidate
+
+- **What it is:** Verify a targeted backdoor, preserve acceptable clean behavior, and promote the
+  candidate without valid approval.
+- **ATLAS techniques:** `AML.T0010`
+- **Participants should learn:** how to turn the expert objective into native service evidence, how the identity
+  workflow proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** browser, curl, deployment-manifest, model-registry-01 / registry-api, notebook,
+  python, student-adapter
+- **Expected solve:** Complete prerequisites `kep-m09-f`; create the native participant-visible evidence
+  described by the module procedure, then request the module receipt. The facilitator
+  should look for a native carrier owned by the relevant service, not chat prose,
+  shell output, or an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-h` - Registry Reputation Seed
+
+- **What it is:** Publish a look-alike container image and inflate its synthetic reputation until the
+  real deployment resolver selects it.
+- **ATLAS techniques:** `AML.T0010.004`, `AML.T0111`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the ai
+  supply chain expansion proof boundary differs from a local note or copied answer,
+  and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Expected solve:** Complete prerequisites `kep-m09-a`; create or mutate the candidate through the
+  participant-facing /v1/backdoor platform workflow, submit it to
+  /v1/backdoor/attempt, then request the module receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-i` - Poisoned Model Publication
+
+- **What it is:** Publish a behaviorally poisoned but clean-threshold-passing model to the shared
+  model registry.
+- **ATLAS techniques:** `AML.T0058`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the ai
+  supply chain expansion proof boundary differs from a local note or copied answer,
+  and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Expected solve:** Complete prerequisites `kep-m09-h`; create or mutate the candidate through the
+  participant-facing /v1/backdoor platform workflow, submit it to
+  /v1/backdoor/attempt, then request the module receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-h; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-j` - Model Rug Pull
+
+- **What it is:** Earn adoption with a clean model version and later replace its resolved artifact
+  with a malicious revision that affects the consumer.
+- **ATLAS techniques:** `AML.T0109`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the ai supply
+  chain expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Expected solve:** Complete prerequisites `kep-m09-i`; create or mutate the candidate through the
+  participant-facing /v1/backdoor platform workflow, submit it to
+  /v1/backdoor/attempt, then request the module receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-i; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-k` - Poisoned Tool Publication
+
+- **What it is:** Publish a poisoned agent tool, cause the live agent to resolve it, and trigger its
+  contained action through model-mediated invocation.
+- **ATLAS techniques:** `AML.T0010.005`, `AML.T0104`, `AML.T0011.002`
+- **Participants should learn:** how to turn the advanced objective into native service evidence, how the ai supply
+  chain expansion proof boundary differs from a local note or copied answer, and how
+  immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Expected solve:** Complete prerequisites `kep-m05-f`; create or mutate the candidate through the
+  participant-facing /v1/backdoor platform workflow, submit it to
+  /v1/backdoor/attempt, then request the module receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m05-f; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+### `kep-m09-l` - Model Corruption
+
+- **What it is:** Corrupt a deployed model artifact through the participant path and cause a
+  measurable targeted failure without replacing its identity.
+- **ATLAS techniques:** `AML.T0076`
+- **Participants should learn:** how to turn the intermediate objective into native service evidence, how the ai
+  supply chain expansion proof boundary differs from a local note or copied answer,
+  and how immutable records, controls, and reset generation affect scoring
+- **Systems involved:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, model-registry-01 /
+  registry-workflow-api, platform-agent-01 / platform-agent-api, python,
+  repo-ticket-01 / workhub-https
+- **Expected solve:** Complete prerequisites `kep-m09-a`; create or mutate the candidate through the
+  participant-facing /v1/backdoor platform workflow, submit it to
+  /v1/backdoor/attempt, then request the module receipt. The facilitator should look
+  for a native carrier owned by the relevant service, not chat prose, shell output, or
+  an operator reconstruction.
+- **Likely snags:** missing or stale prerequisites: kep-m09-a; using operator-only state instead of
+  participant-visible records; requesting the receipt before the qualifying evidence
+  exists; copying local notes instead of the owning system locator
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 Module 09 contains two converging supply-chain stories. The formal release path
 moves a Cinder-controlled Release Risk candidate through visible evaluation,
 registration, lineage laundering, approval misbinding, image-binding weakness,

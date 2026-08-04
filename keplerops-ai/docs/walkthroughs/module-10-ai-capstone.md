@@ -11,10 +11,10 @@ one-pass bar recorded in
 [`../module-10-proof-report.md`](../module-10-proof-report.md). This command
 contract then passed in the generation-55 manual participant run, including the
 full artifact transfer, and one focused generation-21 current-tree composition
-repeated it after the scoped reset closure repair. On 2026-08-04, the issue 60
-retained range `kep-issue60-r1` repeated the base Module 10 path through Kasm
-and passed all five phases with all seven receipts. It does not claim a
-statistical reliability result or golden.
+repeated it after the scoped reset closure repair. On 2026-08-04, issue 62
+repeated the base Module 10 path on retained range `kep-62-b1` through Kasm
+and passed controls, deployment/trigger, impact, theft, and awards with all
+seven receipts. It does not claim a statistical reliability result or golden.
 
 ## Start State
 
@@ -32,7 +32,9 @@ statistical reliability result or golden.
    In a retained range, confirm the `kep-m08-e` proof row is still fresh before
    requesting capstone receipts; the participant extraction replay can report a
    passed retained job while the distillation-runner-owned proof row has
-   expired.
+   expired. Also refresh the participant Module 05 restart/deputy path before
+   final awards so `ev-agent-persistence` from `kep-m05-d` and
+   `ev-persistent-deputy` from `kep-m05-e` are both current.
 4. List `/v1/capstone/challenges`; require `kep-m10-a` through `kep-m10-g` and
    confirm every receipt is initially unavailable.
 

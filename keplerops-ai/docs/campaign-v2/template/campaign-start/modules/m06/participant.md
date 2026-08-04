@@ -1,5 +1,371 @@
 # Cinder Typhoon Orion Access Development
 
+<!-- BEGIN GENERATED CHALLENGE HANDOFF -->
+
+## No-Spoiler Challenge Briefs
+
+Generated from the SDL challenge contracts for Module 06 - Adversarial Input. This
+section is safe for participant orientation: it explains relevance, skills, and likely
+systems without giving flags, internal proof details, receipt routes, or final answers.
+
+### `kep-m06-a` - Manual Counterexample
+
+- **Why it matters:** Store a manually modified prompt artifact that preserves the protected promotion
+  request while crossing the real model decision boundary.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Begin with the disclosed unsigned orbital-lantern promotion intent and change it,
+  rather than submitting an unrelated allow request. Keep the protected intent in the
+  artifact while adding a bounded instruction that changes the JSON decision.
+
+### `kep-m06-b` - Paired Counterexample
+
+- **Why it matters:** Store one paired counterexample and make it cross every disclosed repeat probe
+  against stable server-owned controls.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** A single surprising response is not repeatable evidence. Use one unchanged manual
+  artifact whose instruction remains effective when the real target evaluates it
+  several times.
+
+### `kep-m06-c` - Budgeted Search
+
+- **Why it matters:** Use the disclosed black-box probe to find a successful participant artifact before
+  its server-owned query budget expires.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** curl, dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites `kep-m06-a`.
+- **If stuck:** The search history must include both a rejected candidate and the successful
+  artifact. Create each candidate as a black-box artifact, then probe its returned id;
+  renaming one artifact does not create a new candidate.
+
+### `kep-m06-d` - Portable Counterexample
+
+- **Why it matters:** Make one stored transfer artifact succeed on the disclosed surrogate and across both
+  target policy revisions.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites `kep-m06-b`.
+- **If stuck:** Use the transfer method and keep the same artifact id from surrogate probe to target
+  evaluation. Prefer an instruction that does not depend on the surrounding staging
+  policy wording.
+
+### `kep-m06-e` - Held-Out Counterexample
+
+- **Why it matters:** Pass the hidden semantic-perturbation and repeatability evaluation with a stored
+  participant-created adversarial artifact.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites `kep-m06-c`.
+- **If stuck:** Preserve the protected unsigned-promotion meaning within a bounded modification. Use
+  an instruction that remains effective under more than one target policy wording.
+
+### `kep-m06-f` - Robust Transfer
+
+- **Why it matters:** Transfer one stored artifact through the disclosed surrogate and the strict held-out
+  gate spanning every target revision within the combined budget.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** dataset-store-01 / dataset-postgres, inference-gateway / inference-api,
+  model-host-01 / open-model-api, notebook, notebook-runner-01 / notebook-jupyter,
+  python
+- **Before starting:** Complete prerequisites `kep-m06-d`, `kep-m06-e`.
+- **If stuck:** Use the transfer method and prove the unchanged artifact on the disclosed surrogate
+  first. The held-out gate combines three generative policy revisions with a
+  model-based classifier.
+
+### `kep-m06-g` - Open Literature Triangulation
+
+- **Why it matters:** Find and use one journal, one preprint, and one technical-blog artifact to reproduce
+  a range-local adversarial AI result.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the research-index, evaluation-workbench, proof-api surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-h` - Open Vulnerability Research
+
+- **Why it matters:** Correlate a public AI vulnerability analysis with its application and code
+  repositories, then reproduce its safe indicator.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the research-index, gitea, evaluation-workbench surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-i` - Victim Web Recon
+
+- **Why it matters:** Search the target's public sites and domains to identify the synthetic owner of a
+  high-value AI workflow.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the public-range-sites, research-index, proof-api surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-j` - Active AI Surface Scan
+
+- **Why it matters:** Actively scan the declared range network and identify the hidden AI inference
+  service from its live response fingerprint.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-i`.
+- **If stuck:** Start on the browser-terminal, range-network, inference-api surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-k` - Public Artifact Kit
+
+- **Why it matters:** Acquire a public dataset and pre-trained model from range registries and use both to
+  produce a working baseline proxy.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the model-registry, dataset-registry, notebook surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-l` - Cloud Attack Workbench
+
+- **Why it matters:** Acquire a range-scoped development workspace and deploy a serverless attack helper
+  used in a later model probe.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the range-ops-api, gcp-workspace, serverless-runtime surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+### `kep-m06-m` - Edge Acquisition
+
+- **Why it matters:** Configure the supplied consumer edge device profile and physical countermeasure to
+  preserve a real sensor attack capture.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the participant-browser, webcam, edge-inference-service surface and keep
+  each artifact bound to your participant namespace. Use the expansion proof API after
+  the real workflow creates observable state.
+
+### `kep-m06-n` - Domain and Proxy Front
+
+- **Why it matters:** Register a range-scoped domain and AI service proxy account and route one model
+  request through the acquired front.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the range-dns, identity-provider, ai-proxy surface and keep each artifact
+  bound to your participant namespace. Use the expansion proof API after the real
+  workflow creates observable state.
+
+### `kep-m06-o` - Capability Procurement
+
+- **Why it matters:** Obtain an adversarial implementation and software tool from the range marketplace
+  and use them together against the live model.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the gitea-package-registry, evaluation-workbench, inference-api surface and
+  keep each artifact bound to your participant namespace. Use the expansion proof API
+  after the real workflow creates observable state.
+
+### `kep-m06-p` - Generative Capability Procurement
+
+- **Why it matters:** Obtain and use a supplied generative AI capability to create an artifact that
+  crosses a live evaluation boundary.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites None.
+- **If stuck:** Start on the generation-workbench, evaluation-workbench, proof-api surface and keep
+  each artifact bound to your participant namespace. Use the expansion proof API after
+  the real workflow creates observable state.
+
+### `kep-m06-q` - Custom Attack Builder
+
+- **Why it matters:** Develop a small custom attack capability in the notebook and stage the versioned
+  artifact for use by another challenge.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-o`.
+- **If stuck:** Start on the notebook, gitea, artifact-store surface and keep each artifact bound to
+  your participant namespace. Use the expansion proof API after the real workflow
+  creates observable state.
+
+### `kep-m06-r` - White-Box Optimizer
+
+- **Why it matters:** Use gradients from a fully accessible model to craft an adversarial example that
+  transfers to the declared live target.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-a`.
+- **If stuck:** Start on the notebook, model-host, inference-api surface and keep each artifact
+  bound to your participant namespace. Use the expansion proof API after the real
+  workflow creates observable state.
+
+### `kep-m06-s` - Retrieval Trust Forge
+
+- **Why it matters:** Craft retrieval content whose model response emits a trusted-looking component and
+  attacker-selected citation that changes a later decision.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m03-a`.
+- **If stuck:** Start on the workhub, retrieval-index, inference-api surface and keep each artifact
+  bound to your participant namespace. Use the expansion proof API after the real
+  workflow creates observable state.
+
+### `kep-m06-t` - Synthetic Impersonation
+
+- **Why it matters:** Generate synthetic media that impersonates a discovered range persona and passes the
+  live identity-content classifier.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-i`.
+- **If stuck:** Start on the generation-workbench, identity-content-classifier, proof-api surface
+  and keep each artifact bound to your participant namespace. Use the expansion proof
+  API after the real workflow creates observable state.
+
+### `kep-m06-u` - Generated Host Escape
+
+- **Why it matters:** Make the model generate a working command sequence that escapes the disposable tool
+  container and writes a contained host marker.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-q`.
+- **If stuck:** Start on the inference-api, vulnerable-tool-container, disposable-worker surface and
+  keep each artifact bound to your participant namespace. Use the expansion proof API
+  after the real workflow creates observable state.
+
+### `kep-m06-v` - Security Control Exploit
+
+- **Why it matters:** Exploit the contained defensive service to bypass one real evaluation control while
+  the underlying attack remains unchanged.
+- **Skills tested:** reading the participant prompt carefully, using the allowed interfaces, preserving
+  native service evidence, checking controls, and keeping digest or locator continuity
+- **Systems you may touch:** artifact-store-01 / artifact-object-store, browser, curl, inference-gateway /
+  inference-api, model-registry-01 / registry-api, notebook-runner-01 /
+  notebook-jupyter, platform-agent-01 / platform-agent-api, platform-agent-01 /
+  platform-isolation-api, platform-camera-01 / platform-camera-webrtc, public-sites-01
+  / public-range-http, python, research-index-01 / research-search-api,
+  scan-services-01 / scan-docs-http, telemetry-proof-01 / proof-api
+- **Before starting:** Complete prerequisites `kep-m06-j`.
+- **If stuck:** Start on the guardrail-policy, evaluation-workbench, proof-api surface and keep each
+  artifact bound to your participant namespace. Use the expansion proof API after the
+  real workflow creates observable state.
+
+<!-- END GENERATED CHALLENGE HANDOFF -->
+
+
 You are the Cinder field operator assigned to turn KeplerOps' public Orion
 footprint into working infrastructure, reusable attack tooling, and delivery
 material. Begin at the Cinder workbench `START-HERE.md`. Use only the assigned
