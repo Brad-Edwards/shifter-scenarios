@@ -29,12 +29,12 @@ systemctl disable --now keplerops-machine-host-runtime.service 2>/dev/null || tr
 
 mapfile -t legacy_containers < <(
   docker ps -a --format '{{.Names}}' |
-    grep '^keplerops-' |
-    grep -v '^keplerops-participant-workstation-runtime$' || true
+    grep '^keplerops-' || true
 )
 if ((${#legacy_containers[@]})); then
   docker update --restart=no "${legacy_containers[@]}" >/dev/null
   docker stop --time 5 "${legacy_containers[@]}" >/dev/null 2>&1 || true
+  docker rm "${legacy_containers[@]}" >/dev/null 2>&1 || true
 fi
 
 for guest in ad-dc-01 workforce-workstation-01 ml-workstation-01; do
@@ -46,6 +46,7 @@ install -d -m 0755 "$ROOT"
 rsync -a --delete "$SOURCE_DIR/" "$ROOT/"
 chown -R root:root "$ROOT"
 install -d -m 0755 "$ROOT/state/identity/truststores"
+rm -f "$ROOT/state/guests/review-verification.env"
 
 install -m 0644 "$ROOT/systemd/keplerops-v2-template.service" \
   /etc/systemd/system/keplerops-v2-template.service

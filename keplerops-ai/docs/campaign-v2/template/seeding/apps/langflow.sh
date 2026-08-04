@@ -12,9 +12,10 @@ source "${SEEDING_ROOT}/lib/common.sh"
 : "${LANGFLOW_PARTICIPANT_USER:=release.engineer}"
 : "${LANGFLOW_PARTICIPANT_PASSWORD:=${RELEASE_ENGINEER_PASSWORD}}"
 : "${ORION_AGENT_URL:=http://192.168.78.30:30081}"
-: "${ORION_AGENT_API_KEY:=KAI-Orion-Agent-Runtime-8f4c1a7d29e6b053}"
+: "${ORION_AGENT_API_KEY:=KAI-Orion-M03-Release-Automation-2026}"
 
 readonly LANGFLOW_CONTAINER=kep-v2-langflow
+readonly REDIS_PASSWORD=KeplerV2-Training-Redis
 readonly FLOW_NAME='Orion Preview Release Review'
 readonly FLOW_ENDPOINT=orion-preview-release-review
 readonly LEGACY_FLOW_NAME='Orion Preview Integration Flow'
@@ -187,11 +188,55 @@ build_flow_payload() {
   ' <<<"${starter_projects}"
 }
 
+seed_conversation() {
+  local key existing payload now
+  key="workhub:conversation:${CONVERSATION_ID}"
+  existing="$({
+    compose exec -T redis redis-cli \
+      -a "${REDIS_PASSWORD}" --no-auth-warning GET "${key}"
+  } 2>/dev/null || true)"
+
+  if jq -e \
+    --arg conversation_id "${CONVERSATION_ID}" \
+    --arg actor "${LANGFLOW_PARTICIPANT_USER}" '
+      .conversation_id == $conversation_id
+      and .actor == $actor
+      and (.messages | type == "array")
+    ' <<<"${existing:-null}" >/dev/null 2>&1; then
+    return
+  fi
+
+  now="$(date +%s)"
+  payload="$(jq -cn \
+    --arg conversation_id "${CONVERSATION_ID}" \
+    --arg actor "${LANGFLOW_PARTICIPANT_USER}" \
+    --argjson updated_at "${now}" '
+      {
+        schema: "keplerops.orion.conversation/v1",
+        conversation_id: $conversation_id,
+        workflow_id: "seeded-langflow-conversation",
+        actor: $actor,
+        messages: [],
+        citations: [],
+        tool_events: [],
+        handoff_id: null,
+        request_id: "seeded-langflow-conversation",
+        trace_id: "00000000000000000000000000000000",
+        parser_state: {},
+        updated_at: $updated_at
+      }
+    ')"
+  compose exec -T redis redis-cli \
+    -a "${REDIS_PASSWORD}" --no-auth-warning \
+    SET "${key}" "${payload}" EX 2592000 >/dev/null
+}
+
 main() {
   require_command curl
   require_command docker
   require_command jq
   require_service langflow
+  require_service redis
   docker inspect "${LANGFLOW_CONTAINER}" >/dev/null 2>&1 ||
     die "Langflow container is unavailable: ${LANGFLOW_CONTAINER}"
   retry 60 2 langflow_ready || die "Langflow did not become ready"
@@ -332,6 +377,7 @@ main() {
     ' <<<"${flow}" >/dev/null ||
     die "Langflow Orion release review flow reconciliation failed"
 
+  seed_conversation
   log "Langflow release engineer and executable Orion review flow are ready: $(jq -r .id <<<"${flow}")"
 }
 

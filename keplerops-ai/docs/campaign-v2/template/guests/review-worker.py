@@ -338,6 +338,7 @@ def ask_orion(
         env("ORION_AGENT_URL"),
         headers={
             "Authorization": f"Bearer {env('ORION_AGENT_API_KEY')}",
+            "X-KeplerOps-Actor": env("ORION_ACTOR"),
             "X-Request-ID": context["request_id"],
             "traceparent": context["traceparent"],
         },

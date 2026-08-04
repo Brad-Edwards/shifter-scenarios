@@ -98,6 +98,7 @@ release="$(api GET "/repos/${PUBLIC_REPOSITORY}/releases/tags/${TAG}")"
   printf 'unexpected Orion release tag\n' >&2
   exit 3
 }
+public_revision="$(jq -er '.target_commitish' <<<"${release}")"
 
 workdir="$(mktemp -d)"
 trap 'rm -rf "${workdir}"' EXIT

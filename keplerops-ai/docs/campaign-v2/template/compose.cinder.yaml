@@ -76,6 +76,14 @@ services:
 
   cinder-forgejo-runner-init:
     image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
     container_name: kep-v2-cinder-forgejo-runner-init
     user: "0:0"
     working_dir: /var/lib/keplerops-v2/cinder-forgejo-runner
@@ -115,6 +123,14 @@ services:
 
   cinder-forgejo-runner:
     image: keplerops/forgejo-runner:campaign-v2-clean
+    build:
+      context: ./engineering
+      dockerfile: Dockerfile.forgejo-runner
+      args:
+        FORGEJO_RUNNER_BASE_IMAGE: ${FORGEJO_RUNNER_BASE_IMAGE}
+        CI_TOOLCHAIN_BASE_IMAGE: ${OPENCODE_BUILDER_IMAGE}
+        DOCKER_CLI_IMAGE: ${DOCKER_CLI_IMAGE}
+        CRANE_IMAGE: ${CRANE_IMAGE}
     container_name: kep-v2-cinder-forgejo-runner
     user: "1000:1000"
     working_dir: /var/lib/keplerops-v2/cinder-forgejo-runner

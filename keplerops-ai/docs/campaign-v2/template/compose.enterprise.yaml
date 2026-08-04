@@ -187,10 +187,14 @@ services:
       FORGEJO__service__DISABLE_REGISTRATION: "true"
       FORGEJO__actions__ENABLED: "true"
       FORGEJO__security__INSTALL_LOCK: "true"
+      SSL_CERT_FILE: /usr/local/share/ca-certificates/keplerops-caddy-root.crt
     volumes:
       - forgejo-data:/data
+      - ./state/caddy-root.crt:/usr/local/share/ca-certificates/keplerops-caddy-root.crt:ro
     ports:
       - "192.168.78.1:3000:3000"
+    extra_hosts:
+      - "id.keplerops.lab:10.61.40.2"
     networks:
       engineering:
         ipv4_address: 10.61.40.20
@@ -243,6 +247,7 @@ services:
       POSTGRES_PASSWORD: KeplerV2-Training-NextcloudDB
       REDIS_HOST: 10.61.50.11
       REDIS_HOST_PASSWORD: KeplerV2-Training-Redis
+      NEXTCLOUD_UPDATE: "1"
       NEXTCLOUD_ADMIN_USER: range-admin
       NEXTCLOUD_ADMIN_PASSWORD: KeplerV2-Training-Nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: files.keplerops.lab
@@ -391,6 +396,8 @@ services:
       OPENID_REQUIRED_ROLE_PARAMETER_PATH: realm_access.roles
       OPENID_REQUIRED_ROLE_TOKEN_KIND: access
       OPENID_USE_PKCE: "true"
+      LOGIN_MAX: "120"
+      LOGIN_WINDOW: "1"
       NODE_EXTRA_CA_CERTS: /etc/keplerops/caddy-root.crt
     volumes:
       - ./config/librechat/librechat.yaml:/app/librechat.yaml:ro
