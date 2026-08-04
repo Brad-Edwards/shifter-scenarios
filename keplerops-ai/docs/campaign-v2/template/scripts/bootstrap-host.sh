@@ -29,12 +29,12 @@ systemctl disable --now keplerops-machine-host-runtime.service 2>/dev/null || tr
 
 mapfile -t legacy_containers < <(
   docker ps -a --format '{{.Names}}' |
-    grep '^keplerops-' |
-    grep -v '^keplerops-participant-workstation-runtime$' || true
+    grep '^keplerops-' || true
 )
 if ((${#legacy_containers[@]})); then
   docker update --restart=no "${legacy_containers[@]}" >/dev/null
   docker stop --time 5 "${legacy_containers[@]}" >/dev/null 2>&1 || true
+  docker rm "${legacy_containers[@]}" >/dev/null 2>&1 || true
 fi
 
 for guest in ad-dc-01 workforce-workstation-01 ml-workstation-01; do

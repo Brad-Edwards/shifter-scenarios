@@ -1060,11 +1060,8 @@ class GcpBuildContractTests(unittest.TestCase):
             'find "$ingest_root" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +',
             workload,
         )
-        self.assertIn(
-            'sudo test "$(cat /proc/sys/kernel/random/boot_id)" = '
-            '"$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"',
-            reset,
-        )
+        self.assertIn("/proc/sys/kernel/random/boot_id", reset)
+        self.assertIn("/var/lib/keplerops-carrier/ready 2>/dev/null", reset)
         self.assertLess(
             reset.index("wait_for_carrier_ready\n\nexport TELEMETRY_MARKER_STATUS"),
             reset.index("telemetry_marker reset.requested"),
@@ -1173,6 +1170,14 @@ class GcpBuildContractTests(unittest.TestCase):
             "-e SSL_CERT_FILE=/run/tls/combined-ca.crt "
             '"$RUNTIME_IMAGE" # envoy-fastapi-inference-gateway',
             workload,
+        )
+        self.assertLess(
+            workload.index("docker exec keplerops-runtime pg_isready --quiet"),
+            workload.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+        )
+        self.assertLess(
+            workload.index("docker exec keplerops-runtime psql -U keplerops -d postgres -tAc 'SELECT 1'"),
+            workload.index("SELECT 1 FROM pg_database WHERE datname = 'keplerops'"),
         )
         self.assertGreaterEqual(carrier.count("--connect-timeout 5 --max-time 20"), 4)
         self.assertIn('jq \'.["live-restore"] = false\'', carrier)
@@ -1439,7 +1444,7 @@ class GcpBuildContractTests(unittest.TestCase):
             "project_id", "range_instance", "participant", "region", "zone",
             "participant_source_cidrs", "sdl_realization_file",
             "range_subnet_self_link", "range_subnet_cidr",
-            "runtime_repository_id", "windows_image",
+            "range_host_ip_offset", "runtime_repository_id", "windows_image",
             "shared_model_service_name", "shared_model_service_url",
         ):
             self.assertIn(f'variable "{name}"', variables)
@@ -1647,6 +1652,12 @@ class GcpBuildContractTests(unittest.TestCase):
             self.assertIn('--zone "$ZONE"', source)
             self.assertIn("</dev/null", source)
         health_script = (BUILD_ROOT / "health-check.sh").read_text(encoding="utf-8")
+        self.assertIn("LAUNCH_CARRIER_ATTEMPTS", launch)
+        self.assertIn("/var/lib/keplerops-carrier/ready", launch)
+        self.assertLess(
+            launch.index("LAUNCH_CARRIER_ATTEMPTS"),
+            launch.index('"$BUILD_ROOT/health-check.sh"'),
+        )
         self.assertIn("tf_output_or_var project_id project_id", health_script)
         self.assertIn("tf_output_or_var range_zone zone", health_script)
         self.assertIn('--realization "$REALIZATION"', health_script)
@@ -1671,6 +1682,82 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("pem_certificate: /run/tls/tls.crt", kasm_config.read_text(encoding="utf-8"))
         self.assertIn("/home/kasm-user/.vnc/kasmvnc.yaml", kali_dockerfile)
         self.assertIn("src=/var/lib/keplerops/tls,dst=/run/tls,readonly", bootstrap)
+
+    def test_template_starts_identity_network_before_foundation_binds(self) -> None:
+        helper = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/ensure-identity-network.sh"
+        ).read_text(encoding="utf-8")
+        foundation = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/start-foundation.sh"
+        ).read_text(encoding="utf-8")
+        guests = (
+            PACK_ROOT
+            / "docs/campaign-v2/template/scripts/provision-guests.sh"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("<bridge name='virbr-v2'", helper)
+        self.assertIn("<ip address='192.168.78.1'", helper)
+        self.assertIn('virsh net-start "$NETWORK"', helper)
+        self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', foundation)
+        self.assertLess(
+            foundation.index("ensure-identity-network.sh"),
+            foundation.index("docker compose"),
+        )
+        self.assertIn('"$ROOT/scripts/ensure-identity-network.sh"', guests)
+
+    def test_template_fresh_build_hotfixes_are_source_pinned(self) -> None:
+        bootstrap = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/bootstrap-host.sh"
+        ).read_text(encoding="utf-8")
+        lock = (
+            PACK_ROOT / "docs/campaign-v2/template/component-lock.env"
+        ).read_text(encoding="utf-8")
+        enterprise = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-enterprise.sh"
+        ).read_text(encoding="utf-8")
+        guests = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/check-guests.sh"
+        ).read_text(encoding="utf-8")
+        foundation = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-foundation.sh"
+        ).read_text(encoding="utf-8")
+        workstation = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/prepare-workstation.sh"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("grep '^keplerops-'", bootstrap)
+        self.assertNotIn("grep -v '^keplerops-participant-workstation-runtime$'", bootstrap)
+        self.assertIn('docker rm "${legacy_containers[@]}"', bootstrap)
+        self.assertIn(
+            "UBUNTU_CLOUD_IMAGE_URL=https://cloud-images.ubuntu.com/noble/20260801/"
+            "noble-server-cloudimg-amd64.img",
+            lock,
+        )
+        self.assertIn(
+            "UBUNTU_CLOUD_IMAGE_SHA256=0533b0655c32e68b31d792ecd6ccfca95abdbc536c4446874fe0513bd4140ffe",
+            lock,
+        )
+        self.assertIn("pull --ignore-buildable", enterprise)
+        self.assertIn("build odoo business-adapter preview", enterprise)
+        self.assertLess(
+            enterprise.index("build odoo business-adapter preview"),
+            enterprise.index("up -d"),
+        )
+        self.assertIn("! check_port 192.168.78.1 13081", guests)
+        self.assertLess(
+            guests.index("! check_port 192.168.78.1 13081"),
+            guests.index("guest identity substrate healthy"),
+        )
+        self.assertIn('[[ -d "$ROOT/state/caddy-root.crt" ]]', foundation)
+        self.assertIn('rmdir "$ROOT/state/caddy-root.crt"', foundation)
+        self.assertLess(
+            foundation.index('rmdir "$ROOT/state/caddy-root.crt"'),
+            foundation.index('install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"'),
+        )
+        self.assertIn('[[ -d "$STATE/caddy-root.crt" ]]', workstation)
+        self.assertIn('rmdir "$STATE/caddy-root.crt"', workstation)
 
     def test_shared_model_pool_is_cell_owned_and_workload_authenticated(self) -> None:
         range_launch = (BUILD_ROOT / "launch.sh").read_text(encoding="utf-8")

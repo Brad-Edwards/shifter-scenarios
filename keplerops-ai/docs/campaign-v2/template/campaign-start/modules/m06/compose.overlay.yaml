@@ -160,8 +160,7 @@ services:
     volumes:
       - orion-preview-audit:/var/lib/orion-preview/audit
     restart: "no"
-    networks:
-      - public
+    network_mode: none
 
   cinder-model-edge:
     build:
@@ -201,9 +200,8 @@ services:
     command: ["sh", "-ec", "chown 65532:65532 /var/lib/cinder-model-edge && install -d -o 65532 -g 65532 -m 0750 /var/lib/cinder-model-edge/responses"]
     volumes:
       - cinder-model-usage:/var/lib/cinder-model-edge
-    networks:
-      - cinder
     restart: "no"
+    network_mode: none
 
   cinder-developer-assistant:
     build:
@@ -545,9 +543,8 @@ services:
     command: ["sh", "-ec", "chown 65532:65532 /var/lib/cinder-model-edge && install -d -o 65532 -g 65532 -m 0750 /var/lib/cinder-model-edge/responses"]
     volumes:
       - partner-model-usage:/var/lib/cinder-model-edge
-    networks:
-      - public
     restart: "no"
+    network_mode: none
 
 networks:
   public:

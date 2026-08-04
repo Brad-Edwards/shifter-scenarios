@@ -52,6 +52,7 @@ if [[ ! -s $WORKER_STATE ]] ||
     'systemctl cat orion-review-worker.service >/dev/null 2>&1' ||
   ! timeout 15 "${SSH[@]}" kepler@192.168.78.21 \
     'systemctl cat orion-review-worker.service >/dev/null 2>&1' ||
+  ! check_port 192.168.78.1 13081 ||
   ! (
     set -a
     # shellcheck disable=SC1090

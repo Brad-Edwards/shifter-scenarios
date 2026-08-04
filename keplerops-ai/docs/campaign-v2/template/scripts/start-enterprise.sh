@@ -10,8 +10,13 @@ if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
     --env-file component-lock.env \
     -f compose.foundation.yaml \
     -f compose.enterprise.yaml \
-    pull
+    pull --ignore-buildable
 fi
+docker compose \
+  --env-file component-lock.env \
+  -f compose.foundation.yaml \
+  -f compose.enterprise.yaml \
+  build odoo business-adapter preview
 docker compose \
   --env-file component-lock.env \
   -f compose.foundation.yaml \

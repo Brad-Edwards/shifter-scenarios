@@ -4,6 +4,7 @@ set -euo pipefail
 readonly ROOT=${KEPLEROPS_V2_ROOT:-/opt/keplerops-v2}
 
 cd "$ROOT"
+"$ROOT/scripts/ensure-identity-network.sh"
 if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
   docker compose \
     --env-file component-lock.env \
@@ -18,6 +19,9 @@ docker compose \
 "$ROOT/scripts/reconcile-step-ca.sh"
 
 install -d -m 0750 "$ROOT/state"
+if [[ -d "$ROOT/state/caddy-root.crt" ]]; then
+  rmdir "$ROOT/state/caddy-root.crt"
+fi
 caddy_root="$(mktemp)"
 docker exec kep-v2-caddy cat /data/caddy/pki/authorities/local/root.crt >"$caddy_root"
 install -m 0644 "$caddy_root" "$ROOT/state/caddy-root.crt"
