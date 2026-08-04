@@ -133,6 +133,14 @@ class LiveRehearsalContractTests(unittest.TestCase):
         self.assertIn('issue_60_excluded_ids = {"kep-m06-m", "kep-m08-i"}', after_reset)
         self.assertNotIn("len(challenges) == 34", after_reset)
 
+    def test_source_commit_uses_repository_root(self) -> None:
+        rehearsal = load_module()
+        repo_root = rehearsal._repo_root(Path(rehearsal.__file__))
+
+        self.assertEqual(repo_root, Path(__file__).resolve().parents[2])
+        self.assertTrue((repo_root / "keplerops-ai").is_dir())
+        self.assertRegex(rehearsal._source_commit(repo_root), rehearsal.COMMIT)
+
     def test_full_atlas_marker_ids_fit_kasm_namespace_contract(self) -> None:
         rehearsal = load_module()
         marker_call = re.compile(r'marker\("([^"]+)"')

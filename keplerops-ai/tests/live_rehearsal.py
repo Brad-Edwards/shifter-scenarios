@@ -2004,11 +2004,15 @@ def _source_commit_time(repo_root: Path) -> dt.datetime:
     return value
 
 
+def _repo_root(script_path: Path) -> Path:
+    return script_path.resolve().parents[2]
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     config = RunConfig.from_namespace(args)
     pack_root = Path(__file__).resolve().parents[1]
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = _repo_root(Path(__file__))
     contract = load_contract(pack_root)
     lifecycle = CommandLifecycle(pack_root / "build", config)
     participant = LifecycleBoundKasmParticipant(lifecycle, pack_root)
