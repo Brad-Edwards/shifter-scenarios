@@ -7,6 +7,11 @@ readonly IMAGE_DIR=/var/lib/libvirt/images/keplerops-v2
 readonly DOMAIN=CORP.KEPLEROPS.LAB
 readonly SHORT_DOMAIN=KEPLEROPS
 readonly ADMIN_PASSWORD=KeplerV2-Training-AD-Admin
+# The libvirt network created by ensure-identity-network.sh; create_guest attaches
+# guests to it. ensure_network() runs that script in a subshell, so define the
+# name here too (must match KEPLEROPS_IDENTITY_NETWORK there) or a guest *create*
+# (e.g. RECREATE_GUESTS) fails under set -u with "NETWORK: unbound variable".
+readonly NETWORK="${KEPLEROPS_IDENTITY_NETWORK:-kep-v2-identity}"
 
 if [[ ${EUID} -ne 0 ]]; then
   echo "provision-guests.sh must run as root" >&2
