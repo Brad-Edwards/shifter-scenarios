@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import math
 import unittest
+from types import SimpleNamespace
 from unittest.mock import AsyncMock, patch
 
 import agent_service
@@ -292,6 +293,33 @@ class AgentServiceTests(unittest.TestCase):
         chunks = asyncio.run(collect())
         self.assertTrue(any("chat.completion.chunk" in chunk for chunk in chunks))
         self.assertEqual(chunks[-1], "data: [DONE]\n\n")
+
+    def test_support_session_cookie_matches_suffixed_and_bare_names(self) -> None:
+        # Guards the M04 export path against another silent revert: the resolver
+        # must accept the configured suffixed Zammad cookie, any _zammad_session_*
+        # suffix, and map a bare _zammad_session to the canonical name.
+        canonical = agent_service.ZAMMAD_SESSION_COOKIE_NAME
+        self.assertEqual(
+            agent_service.support_session_cookie(SimpleNamespace(cookies={canonical: "abc"})),
+            (canonical, "abc"),
+        )
+        self.assertEqual(
+            agent_service.support_session_cookie(
+                SimpleNamespace(cookies={"_zammad_session_deadbeef": "xyz"})
+            ),
+            ("_zammad_session_deadbeef", "xyz"),
+        )
+        self.assertEqual(
+            agent_service.support_session_cookie(
+                SimpleNamespace(cookies={"_zammad_session": "bare"})
+            ),
+            (canonical, "bare"),
+        )
+        self.assertIsNone(
+            agent_service.support_session_cookie(
+                SimpleNamespace(cookies={"other": "v", "_zammad_session_x": ""})
+            )
+        )
 
 
 if __name__ == "__main__":

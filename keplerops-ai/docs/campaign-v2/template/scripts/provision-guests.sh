@@ -32,10 +32,12 @@ ensure_network() {
 
 ensure_base_image() {
   local base="$IMAGE_DIR/ubuntu-noble-base.qcow2"
+  local downloaded=0
   if [[ ! -s $base ]]; then
     curl -4 -fL --retry 5 --retry-delay 3 \
       "$UBUNTU_CLOUD_IMAGE_URL" -o "$base.download"
     mv "$base.download" "$base"
+    downloaded=1
   fi
   chown libvirt-qemu:kvm "$base"
   chmod 0640 "$base"
@@ -43,8 +45,16 @@ ensure_base_image() {
   actual=$(sha256sum "$base" | awk '{print $1}')
   printf '%s  %s\n' "$actual" "$base" >"$ROOT/state/ubuntu-cloud-image.sha256"
   if [[ -n ${UBUNTU_CLOUD_IMAGE_SHA256:-} && $actual != "$UBUNTU_CLOUD_IMAGE_SHA256" ]]; then
-    echo "Ubuntu cloud image digest mismatch" >&2
-    exit 4
+    if ((downloaded)); then
+      # A freshly downloaded base must match the pin (supply-chain integrity).
+      echo "Ubuntu cloud image digest mismatch on fresh download" >&2
+      exit 4
+    fi
+    # An already-present base backs the provisioned guests' qcow2 disks and cannot
+    # be swapped without recreating them (set RECREATE_GUESTS to rebuild from the
+    # pin). Ubuntu also re-publishes daily images in place, so re-verifying a
+    # baked base against a newer pin would break every rebuild-on-image; reuse it.
+    echo "note: existing Ubuntu base digest ${actual} differs from pin; reusing it for provisioned guests" >&2
   fi
 }
 
