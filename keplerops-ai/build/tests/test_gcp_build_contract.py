@@ -517,7 +517,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertEqual(by_component["keplerops-lab-portal"]["build_revision"], 41)
         self.assertEqual(by_component["terraform-gcp-range-controller"]["build_revision"], 40)
         self.assertEqual(by_component["keycloak-identity"]["build_revision"], 8)
-        self.assertEqual(by_component["envoy-fastapi-inference-gateway"]["build_revision"], 90)
+        self.assertEqual(by_component["envoy-fastapi-inference-gateway"]["build_revision"], 91)
         self.assertEqual(by_component["postgresql-dataset-store"]["build_revision"], 15)
         self.assertEqual(by_component["mlflow-model-registry"]["build_revision"], 2)
         self.assertEqual(by_component["kali-browser-terminal"]["build_revision"], 7)
