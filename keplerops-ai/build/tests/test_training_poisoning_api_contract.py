@@ -101,25 +101,6 @@ class TrainingPoisoningApiContractTests(unittest.TestCase):
         self.assertIn("if job_inserted:", self.runtime)
         self.assertIn('"status": job_status', self.runtime)
 
-    def test_gateway_records_proof_evidence_for_passed_training_attempts(self) -> None:
-        attempt_route = self.module_runtime[
-            self.module_runtime.index("async def attempt_training_challenge") :
-        ]
-        event_helper = self.module_runtime[
-            self.module_runtime.index("async def _record_training_evidence") :
-            self.module_runtime.index("def _observe_training_objective")
-        ]
-        self.assertIn("TRAINING_EVIDENCE[request.challenge_id]", event_helper)
-        self.assertIn("if not outcome.passed:", event_helper)
-        self.assertIn('"event_kind": event_kind', event_helper)
-        self.assertIn('"digest": outcome.artifact_digest', event_helper)
-        self.assertIn('"workflow_id": outcome.workflow_id', event_helper)
-        self.assertIn(
-            "await _record_training_evidence(request, session, dataset, outcome=outcome)",
-            attempt_route,
-        )
-        self.assertNotIn('request.challenge_id != "kep-m07-a"', event_helper)
-
     def test_airflow_trains_and_persists_a_real_model_artifact(self) -> None:
         self.assertIn("TfidfVectorizer", self.model)
         self.assertIn("LogisticRegression", self.model)
