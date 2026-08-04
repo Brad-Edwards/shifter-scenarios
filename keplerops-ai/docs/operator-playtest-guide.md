@@ -43,12 +43,15 @@ build/launch.sh \
   --range-instance <range-instance> \
   --participant <participant-id> \
   --participant-source-cidr <participant-cidr> \
+  --range-host-ip-offset <unique-host-offset> \
   --research-profile off
 ```
 
 Use a globally routable, explicitly scoped participant CIDR. `0.0.0.0/0` is
 rejected. The default region and zone are `europe-west4` and `europe-west4-a`;
 override them only when the event infrastructure requires it.
+`--range-host-ip-offset` defaults to `10`; set a unique value for each retained
+range that shares a cell subnet with other operators.
 
 `launch.sh` renders the SDL realization, validates the ACES build contract,
 applies the tenant foundation, publishes pinned runtime images, applies runtime
@@ -160,6 +163,9 @@ summary below is only an operator orientation map.
 
 The current full board is intentionally larger than the event window. Select a
 dependency-closed event bundle for each cohort rather than expecting full clear.
+For Issue 60 event-readiness proof, the current in-scope happy path is 132
+challenges: all realized board rows except hardware-oriented `kep-m06-m` and
+`kep-m08-i`.
 
 ## Reset and health
 

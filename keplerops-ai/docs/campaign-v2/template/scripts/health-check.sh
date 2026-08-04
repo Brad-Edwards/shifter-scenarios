@@ -7,6 +7,7 @@ readonly TIMEOUT=${KEPLEROPS_HEALTH_TIMEOUT:-900}
 readonly ROUTE_REQUEST_TIMEOUT=${KEPLEROPS_ROUTE_REQUEST_TIMEOUT:-8}
 readonly ROUTE_ADDRESS=${KEPLEROPS_ROUTE_ADDRESS:-10.61.10.2}
 readonly ROUTE_CA=${KEPLEROPS_ROUTE_CA:-${ROOT}/state/caddy-root.crt}
+readonly ALLOW_PREVIEW_PENDING=${KEPLEROPS_ALLOW_PREVIEW_PENDING:-0}
 
 routes=()
 
@@ -49,6 +50,14 @@ case "$LAYER" in
     exit 2
     ;;
 esac
+
+if [[ $LAYER == enterprise && $ALLOW_PREVIEW_PENDING == 1 ]]; then
+  filtered=()
+  for container in "${required[@]}"; do
+    [[ $container == kep-v2-preview ]] || filtered+=("$container")
+  done
+  required=("${filtered[@]}")
+fi
 
 [[ $TIMEOUT =~ ^[1-9][0-9]*$ ]] || {
   echo "KEPLEROPS_HEALTH_TIMEOUT must be a positive integer" >&2

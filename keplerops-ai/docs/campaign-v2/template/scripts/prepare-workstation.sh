@@ -30,12 +30,26 @@ chown 1000:1000 "$STATE/tls/tls.key"
 chmod 0600 "$STATE/tls/tls.key"
 chmod 0644 "$STATE/tls/tls.crt"
 
+if [[ -d "$STATE/caddy-root.crt" && ! -L "$STATE/caddy-root.crt" ]]; then
+  rm -rf "$STATE/caddy-root.crt"
+fi
 docker run --rm --volume keplerops-v2_caddy-data:/data:ro "$CADDY_IMAGE" \
   cat /data/caddy/pki/authorities/local/root.crt >"$STATE/caddy-root.crt"
 chmod 0644 "$STATE/caddy-root.crt"
-if [[ ! -e "$ROOT/state/cinder-step-root.crt" ]]; then
-  install -m 0644 /dev/null "$ROOT/state/cinder-step-root.crt"
-fi
-if [[ ! -e "$ROOT/state/cinder-bootstrap-root.crt" ]]; then
-  install -m 0644 /dev/null "$ROOT/state/cinder-bootstrap-root.crt"
-fi
+
+install -d -m 0750 "$ROOT/state"
+for cert in cinder-step-root.crt cinder-bootstrap-root.crt cinder-trust-bundle.crt; do
+  if [[ -d "$ROOT/state/$cert" && ! -L "$ROOT/state/$cert" ]]; then
+    rm -rf "$ROOT/state/$cert"
+  fi
+done
+install -m 0644 "$STATE/caddy-root.crt" "$ROOT/state/cinder-bootstrap-root.crt"
+docker exec kep-v2-step-ca sed -n '/-----BEGIN CERTIFICATE-----/,/-----END CERTIFICATE-----/p' \
+  /home/step/certs/root_ca.crt >"$ROOT/state/cinder-step-root.crt"
+{
+  cat "$ROOT/state/cinder-bootstrap-root.crt"
+  cat "$ROOT/state/cinder-step-root.crt"
+} >"$ROOT/state/cinder-trust-bundle.crt"
+chmod 0644 "$ROOT/state/cinder-step-root.crt" \
+  "$ROOT/state/cinder-bootstrap-root.crt" \
+  "$ROOT/state/cinder-trust-bundle.crt"

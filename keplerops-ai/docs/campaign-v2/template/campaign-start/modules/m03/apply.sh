@@ -16,6 +16,7 @@ readonly MINIO_MC_IMAGE="${MINIO_MC_IMAGE:-$(sed -n 's/^MINIO_MC_IMAGE=//p' "${T
 readonly NODE_IMAGE="${NODE_IMAGE:-$(sed -n 's/^OPENCODE_BUILDER_IMAGE=//p' "${TEMPLATE_ROOT}/component-lock.env")}"
 readonly CINDER_S3_ENDPOINT="${CINDER_S3_ENDPOINT:-http://cinder-minio:9000}"
 readonly REDMINE_ADMIN_USER="${REDMINE_ADMIN_USER:-range-admin}"
+readonly PUBLIC_ROUTE_ADDRESS="${KEPLEROPS_PUBLIC_ROUTE_ADDRESS:-192.168.78.1}"
 
 # shellcheck source=../../../seeding/config.env
 # shellcheck disable=SC1091
@@ -296,7 +297,7 @@ ensure_relay_basket() {
 }
 
 seed_protected_inventory_attachment() (
-  local payload current issue_state issue_id upload_token attachment_url
+  local payload current issue_state issue_id upload_token attachment_url download_url participant_url
   local -a tls=()
   payload="$(mktemp)"
   current="$(mktemp)"
@@ -305,6 +306,7 @@ seed_protected_inventory_attachment() (
   jq '.protected_inventory' "${MODULE_ROOT}/payloads/kep-m03-g.json" >"${payload}"
   while IFS= read -r -d '' value; do tls+=("${value}"); done < <(
     if [[ -n ${KEPLEROPS_CA_CERT:-} ]]; then printf '%s\0%s\0' --cacert "${KEPLEROPS_CA_CERT}"; fi
+    printf '%s\0%s\0' --resolve "workhub.keplerops.lab:443:${PUBLIC_ROUTE_ADDRESS}"
   )
   issue_id="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
     -H 'Host: workhub.keplerops.lab' \
@@ -315,7 +317,9 @@ seed_protected_inventory_attachment() (
     "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" >"${issue_state}"
   attachment_url="$(jq -r '.issue.attachments[]? | select(.filename == "orion-rag-source-inventory.json") | .content_url' "${issue_state}" | tail -1)"
   if [[ -n ${attachment_url} ]]; then
-    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" "${attachment_url}" >"${current}"
+    download_url="${attachment_url/http:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
+    download_url="${download_url/https:\/\/workhub.keplerops.lab/http:\/\/10.61.50.41:3000}"
+    curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" "${download_url}" >"${current}"
   fi
   if [[ -z ${attachment_url} || $(sha256sum "${current}" | awk '{print $1}') != $(sha256sum "${payload}" | awk '{print $1}') ]]; then
     upload_token="$(curl -fsS "${tls[@]}" -u "${REDMINE_ADMIN_USER}:${REDMINE_ADMIN_PASSWORD}" \
@@ -331,7 +335,9 @@ seed_protected_inventory_attachment() (
       "http://10.61.50.41:3000/issues/${issue_id}.json?include=attachments" | \
       jq -er '.issue.attachments[] | select(.filename == "orion-rag-source-inventory.json") | .content_url' | tail -1)"
   fi
-  M03_SOURCE_INVENTORY_URL="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}" \
+  participant_url="${attachment_url/http:\/\/10.61.50.41:3000/https:\/\/workhub.keplerops.lab}"
+  participant_url="${participant_url/http:\/\/workhub.keplerops.lab/https:\/\/workhub.keplerops.lab}"
+  M03_SOURCE_INVENTORY_URL="${participant_url}" \
   M03_SOURCE_INVENTORY_SHA256="$(sha256sum "${payload}" | awk '{print $1}')" \
     seed_haystack_source kep-m03-g
 )
