@@ -11,7 +11,7 @@ from keplerops_runtime.foundation.telemetry import _capture_http_body, _observe
 from keplerops_runtime.modules.m01.store import _finish_agent_attempt, _start_agent_attempt
 from keplerops_runtime.modules.m07 import TrainingAttemptRequest
 from keplerops_runtime.modules.m07.datasets import _load_training_dataset
-from keplerops_runtime.modules.m07.jobs import _evaluate_training_attempt, _observe_training_objective, _participant_training_metrics, _record_training_evidence, _store_training_attempt, _training_score_bucket
+from keplerops_runtime.modules.m07.jobs import _evaluate_training_attempt, _observe_training_objective, _participant_training_metrics, _record_training_dataset_evidence, _store_training_attempt, _training_score_bucket
 from typing import Annotated
 from typing import Any
 import time
@@ -70,7 +70,9 @@ async def attempt_training_challenge(
         score_bucket=score_bucket,
         **common,
     )
-    await _record_training_evidence(request, session, dataset, outcome=outcome)
+    await _record_training_dataset_evidence(
+        request, session, dataset, passed=outcome.passed
+    )
     _observe_training_objective(
         session,
         dataset,
