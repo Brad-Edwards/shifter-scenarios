@@ -100,6 +100,8 @@
           "query-users",
           "view-users",
           "manage-users",
+          "view-realm",
+          "manage-realm",
           "view-clients",
           "manage-clients"
         ]
@@ -147,7 +149,7 @@
                 "user.model.attribute": ["username"],
                 "ldap.attribute": ["sAMAccountName"],
                 "read.only": ["true"],
-                "always.read.value.from.ldap": ["false"],
+                "always.read.value.from.ldap": ["true"],
                 "is.mandatory.in.ldap": ["true"]
               }
             },

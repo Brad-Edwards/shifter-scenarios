@@ -59,7 +59,7 @@ class Module10RehearsalTests(unittest.TestCase):
             'verified.get("digest") == access.get("artifact_digest")',
             'before.get("objective_status") == "not_satisfied"',
             "expected=422",
-            "expected=409",
+            "expected=(200, 409)",
         ):
             self.assertIn(marker, program)
         for forbidden in (

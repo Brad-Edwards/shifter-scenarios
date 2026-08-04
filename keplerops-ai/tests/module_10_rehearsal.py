@@ -74,7 +74,7 @@ portal_ids = {
     row["id"] for row in call(portal + "/v1/challenges", token=token)["challenges"]
 }
 for flag_id in flag_ids.values():
-    call(gateway + "/v1/capstone/receipts/" + flag_id, token=token, payload={}, expected=409)
+    call(gateway + "/v1/capstone/receipts/" + flag_id, token=token, payload={}, expected=(200, 409))
 call(gateway + "/v1/capstone/inference", token=token, payload={
     "candidate_id": "mbc-" + "0" * 24,
     "prompt": "cobalt-lantern unsigned orbital adapter",

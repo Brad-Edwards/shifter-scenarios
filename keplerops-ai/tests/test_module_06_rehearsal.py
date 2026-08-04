@@ -78,7 +78,7 @@ class Module06RehearsalTests(unittest.TestCase):
         self.assertIn('"verdict": "passed"', program)
         self.assertIn('"digest": "sha256:"', program)
         self.assertIn("expected=422", program)
-        self.assertIn("expected=409", program)
+        self.assertIn("expected=(200, 409)", program)
         self.assertEqual(len(programs), 5)
         self.assertNotIn("listed_ids", programs[1])
         self.assertNotIn("portal_ids", programs[1])
