@@ -22,7 +22,7 @@ x-m05-actions-runner: &m05-actions-runner
   read_only: true
   tmpfs:
     - /tmp:rw,nosuid,nodev,size=256m
-    - /home/runner:rw,nosuid,nodev,size=64m
+    - /home/runner:rw,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=0700
   cap_drop: [ALL]
   security_opt: [no-new-privileges:true]
   depends_on:
@@ -50,6 +50,15 @@ services:
       - m05-runner-agent-config:/runner/agent-config
       - m05-runner-blueprints:/runner/blueprints
       - m05-runner-staging:/runner/staging
+    restart: "no"
+
+  m05-source-admission-volume-init:
+    image: keplerops/orion-agent:0.1.0
+    user: "0:0"
+    entrypoint: ["/bin/sh", "-ec"]
+    command: ["chown -R 65532:65532 /state"]
+    volumes:
+      - m05-source-admission:/state
     restart: "no"
 
   m05-buildkit:
@@ -140,6 +149,9 @@ services:
       FORGEJO_ADMISSION_PASSWORD: KAI-Orion-Release-Admission-2026
     volumes:
       - m05-source-admission:/state
+    depends_on:
+      m05-source-admission-volume-init:
+        condition: service_completed_successfully
     networks:
       engineering:
         ipv4_address: 10.61.40.57

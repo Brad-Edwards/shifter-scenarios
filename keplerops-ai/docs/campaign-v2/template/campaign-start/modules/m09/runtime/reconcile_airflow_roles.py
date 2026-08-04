@@ -1,3 +1,5 @@
+import os
+
 from airflow.providers.fab.auth_manager.cli_commands.utils import get_application_builder
 
 
@@ -16,6 +18,9 @@ DAG_IDS = (
     "orion_staging_reconciliation",
 )
 ROLE_NAME = "Orion Release Runner"
+PARTICIPANT_USER = os.getenv("M09_PARTICIPANT_USER", "svc-orion-release-runner")
+PARTICIPANT_PASSWORD = os.getenv("M09_PARTICIPANT_PASSWORD", "KeplerV2-M09-Release-Runner-2026")
+PARTICIPANT_EMAIL = os.getenv("M09_PARTICIPANT_EMAIL", "svc-orion-release-runner@keplerops.lab")
 
 
 with get_application_builder() as appbuilder:
@@ -52,5 +57,28 @@ with get_application_builder() as appbuilder:
         for action in ("can_read", "can_edit"):
             if (action, f"DAG:{dag_id}") not in permissions:
                 raise RuntimeError(f"{ROLE_NAME} lacks {action} on {dag_id}")
+
+    user = security_manager.find_user(username=PARTICIPANT_USER)
+    if user is None:
+        user = security_manager.add_user(
+            username=PARTICIPANT_USER,
+            first_name="Orion",
+            last_name="Release",
+            email=PARTICIPANT_EMAIL,
+            role=[role],
+            password=PARTICIPANT_PASSWORD,
+        )
+        if user is None:
+            raise RuntimeError(f"failed to create Airflow user {PARTICIPANT_USER}")
+    else:
+        user.first_name = "Orion"
+        user.last_name = "Release"
+        user.email = PARTICIPANT_EMAIL
+        user.roles = [role]
+        if not security_manager.reset_password(user.id, PARTICIPANT_PASSWORD):
+            raise RuntimeError(f"failed to reset Airflow password for {PARTICIPANT_USER}")
+        if not security_manager.update_user(user):
+            raise RuntimeError(f"failed to update Airflow user {PARTICIPANT_USER}")
+        security_manager.session.commit()
 
 print("Airflow Orion release workflow permissions reconciled")

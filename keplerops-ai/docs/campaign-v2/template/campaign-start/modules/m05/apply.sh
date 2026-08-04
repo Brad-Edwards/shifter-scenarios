@@ -81,13 +81,20 @@ ensure_harbor_project() {
 }
 
 ensure_harbor_robot() {
-  local project=$1 short_name=$2 secret=$3 accesses=$4 status
-  status="$(curl -sS -o /dev/null -w '%{http_code}' \
+  local project=$1 short_name=$2 secret=$3 accesses=$4 body status effective_secret
+  body="$(mktemp)"
+  status="$(curl -sS -o "$body" -w '%{http_code}' \
     --user 'admin:KeplerV2-Training-Harbor' -H 'Content-Type: application/json' -X POST \
     --data "$(jq -cn --arg name "$short_name" --arg secret "$secret" --arg namespace "$project" --argjson access "$accesses" '{name:$name,description:"Bounded Orion automation identity",disable:false,duration:-1,level:"project",secret:$secret,permissions:[{kind:"project",namespace:$namespace,access:$access}]}')" \
     "${HARBOR_API_URL}/robots")"
   [[ ${status} == 201 || ${status} == 409 ]] || \
     die "Harbor robot ${project}/${short_name} reconciliation returned HTTP ${status}"
+  effective_secret="$secret"
+  if [[ ${status} == 201 ]]; then
+    effective_secret="$(jq -er --arg fallback "$secret" '.secret // $fallback' "$body")"
+  fi
+  rm "$body"
+  printf '%s\n' "$effective_secret"
 }
 
 cosign() {
@@ -111,16 +118,17 @@ seed_signing_and_ci_identities() {
   if [[ ! -s ${STATE_ROOT}/signing/cosign.key ]]; then cosign generate-key-pair --output-key-prefix cosign >/dev/null; fi
   ensure_harbor_project orion-internal
   ensure_harbor_project orion-review
-  ensure_harbor_robot orion-internal ci-publisher Orion-Internal-CI-Publisher-2026 '[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]'
+  local ci_secret
+  ci_secret="$(ensure_harbor_robot orion-internal ci-publisher Orion-Internal-CI-Publisher-2026 '[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]')"
   ensure_forgejo_user svc-orion-gitops KAI-Orion-GitOps-Writer-2026 svc-orion-gitops@keplerops.lab
   curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" -H 'Content-Type: application/json' -X PUT \
     --data '{"permission":"write"}' "${FORGEJO_API_URL}/repos/keplerops/orion-agent-gitops/collaborators/svc-orion-gitops" >/dev/null
   local repo
   for repo in orion-release-tools orion-agent-config; do
     forgejo_secret "$repo" HARBOR_TOOL_PUBLISHER_USER "robot\$orion-internal+ci-publisher"
-    forgejo_secret "$repo" HARBOR_TOOL_PUBLISHER_PASSWORD Orion-Internal-CI-Publisher-2026
+    forgejo_secret "$repo" HARBOR_TOOL_PUBLISHER_PASSWORD "$ci_secret"
     forgejo_secret "$repo" HARBOR_CONFIG_PUBLISHER_USER "robot\$orion-internal+ci-publisher"
-    forgejo_secret "$repo" HARBOR_CONFIG_PUBLISHER_PASSWORD Orion-Internal-CI-Publisher-2026
+    forgejo_secret "$repo" HARBOR_CONFIG_PUBLISHER_PASSWORD "$ci_secret"
     forgejo_secret "$repo" GITOPS_USER svc-orion-gitops
     forgejo_secret "$repo" GITOPS_PASSWORD KAI-Orion-GitOps-Writer-2026
     forgejo_secret "$repo" COSIGN_PASSWORD Orion-M05-Signing-2026
@@ -132,7 +140,7 @@ seed_signing_and_ci_identities() {
 configure_source_admission() {
   local repo status payload
   ensure_forgejo_user svc-orion-release-admission KAI-Orion-Release-Admission-2026 svc-orion-release-admission@keplerops.lab
-  payload='{"branch_name":"main","enable_push":true,"enable_push_whitelist":true,"push_whitelist_usernames":["svc-orion-release-admission"],"enable_merge_whitelist":true,"merge_whitelist_usernames":["svc-orion-release-admission"],"required_approvals":1,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"dismiss_stale_approvals":true}'
+  payload='{"branch_name":"main","enable_push":true,"enable_push_whitelist":true,"push_whitelist_usernames":["svc-orion-release-admission"],"enable_merge_whitelist":true,"merge_whitelist_usernames":["svc-orion-release-admission"],"required_approvals":0,"block_on_rejected_reviews":true,"block_on_official_review_requests":true,"dismiss_stale_approvals":true}'
   for repo in orion-release-tools orion-agent-config orion-staging; do
     curl -fsS --user "${FORGEJO_ADMIN_USER}:${FORGEJO_ADMIN_PASSWORD}" -H 'Content-Type: application/json' -X PUT \
       --data '{"permission":"admin"}' \
@@ -438,7 +446,7 @@ seed_harbor_review() {
   config_digest="$(docker inspect --format '{{.Id}}' "$image")"
   carrier_sha256="$(sha256sum "$tmp/release-reference.json" | awk '{print $1}')"
   robot_secret=OrionReview-StagingWriter-2026
-  ensure_harbor_robot orion-review staging-writer "$robot_secret" '[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]'
+  robot_secret="$(ensure_harbor_robot orion-review staging-writer "$robot_secret" '[{"resource":"repository","action":"pull"},{"resource":"repository","action":"push"}]')"
   # shellcheck disable=SC2016 # Harbor robot delimiter is a literal dollar sign.
   forgejo_secret orion-staging HARBOR_STAGING_USER 'robot$orion-review+staging-writer'
   forgejo_secret orion-staging HARBOR_STAGING_PASSWORD "$robot_secret"

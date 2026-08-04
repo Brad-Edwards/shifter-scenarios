@@ -158,20 +158,37 @@ def dispatch(issue: dict[str, Any], channel) -> None:
 
 def main() -> None:
     STATE.mkdir(parents=True, exist_ok=True)
-    connection = pika.BlockingConnection(pika.URLParameters(RABBITMQ_URL))
-    channel = connection.channel()
-    channel.queue_declare(queue=IMPORT_QUEUE, durable=True)
-    channel.queue_declare(queue=RESULT_QUEUE, durable=True)
     while True:
+        connection = None
         try:
-            issues = forgejo("/repos/keplerops/orion-model-review/issues?state=closed&labels=load-approved&limit=50")
-            for issue in issues:
+            connection = pika.BlockingConnection(pika.URLParameters(RABBITMQ_URL))
+            channel = connection.channel()
+            channel.queue_declare(queue=IMPORT_QUEUE, durable=True)
+            channel.queue_declare(queue=RESULT_QUEUE, durable=True)
+            while True:
                 try:
-                    dispatch(issue, channel)
+                    issues = forgejo("/repos/keplerops/orion-model-review/issues?state=closed&labels=load-approved&limit=50")
+                    for issue in issues:
+                        try:
+                            dispatch(issue, channel)
+                        except pika.exceptions.AMQPError:
+                            raise
+                        except Exception as exc:
+                            print(f"review {issue.get('number')}: {type(exc).__name__}: {exc}", flush=True)
+                except pika.exceptions.AMQPError as exc:
+                    print(f"review rabbitmq: {type(exc).__name__}: {exc}; reconnecting", flush=True)
+                    break
                 except Exception as exc:
-                    print(f"review {issue.get('number')}: {type(exc).__name__}: {exc}", flush=True)
+                    print(f"review poll: {type(exc).__name__}: {exc}", flush=True)
+                time.sleep(5)
         except Exception as exc:
-            print(f"review poll: {type(exc).__name__}: {exc}", flush=True)
+            print(f"review connection: {type(exc).__name__}: {exc}", flush=True)
+        finally:
+            if connection and not connection.is_closed:
+                try:
+                    connection.close()
+                except Exception:
+                    pass
         time.sleep(5)
 
 

@@ -13,6 +13,8 @@ readonly CINDER_FORGEJO_API_URL="${CINDER_FORGEJO_API_URL:-http://10.61.90.30:30
 readonly HARBOR_API_URL="${HARBOR_API_URL:-http://10.61.40.32:8080/api/v2.0}"
 readonly MLFLOW_URL="${MLFLOW_URL:-http://10.61.40.36:5000}"
 readonly MLFLOW_ADMIN_AUTH="${MLFLOW_ADMIN_AUTH:-range-admin:KeplerV2-Training-MLflow-Admin}"
+readonly NEXTCLOUD_URL="${NEXTCLOUD_URL:-http://10.61.30.23}"
+readonly NEXTCLOUD_HOST="${NEXTCLOUD_HOST:-files.keplerops.lab}"
 readonly RABBIT_API="${RABBITMQ_MANAGEMENT_URL:-http://10.61.50.12:15672/api}"
 readonly RELAY_URL="${CINDER_RELAY_INTERNAL_URL:-https://relay.cinder.lab}"
 readonly K3S01_SSH_TARGET="${K3S01_SSH_TARGET:-kepler@192.168.78.30}"
@@ -21,6 +23,8 @@ readonly SSH=(ssh -i "${K3S01_SSH_KEY}" -o BatchMode=yes -o StrictHostKeyCheckin
 readonly M09_PARTICIPANT_USER="${M09_PARTICIPANT_USER:-svc-orion-release-runner}"
 readonly M09_PARTICIPANT_PASSWORD="${M09_PARTICIPANT_PASSWORD:-KeplerV2-M09-Release-Runner-2026}"
 readonly M09_PARTICIPANT_EMAIL="${M09_PARTICIPANT_EMAIL:-svc-orion-release-runner@keplerops.lab}"
+readonly HARBOR_LABELER_USER_FILE="${STATE_ROOT}/harbor/labeler-user"
+readonly HARBOR_LABELER_PASSWORD_FILE="${STATE_ROOT}/harbor/labeler-password"
 readonly -a M09_DAG_IDS=(
   orion_visible_release_evaluation
   orion_candidate_registration
@@ -38,6 +42,7 @@ readonly -a M09_DAG_IDS=(
 
 log() { printf '[campaign-m09] %s\n' "$*" >&2; }
 die() { log "ERROR: $*"; exit 1; }
+shell_quote() { printf '%q' "$1"; }
 
 compose() {
   docker compose --project-directory "${TEMPLATE_ROOT}" \
@@ -57,6 +62,8 @@ forgejo() {
   shift 4
   curl -fsS --user "${auth}" -H 'Content-Type: application/json' -X "${method}" "$@" "${base}${path}"
 }
+
+nextcloud_occ() { docker exec -u www-data kep-v2-nextcloud php occ "$@"; }
 
 ensure_repo() {
   local base=$1 auth=$2 owner=$3 repo=$4 description=$5 private=$6
@@ -195,6 +202,23 @@ ensure_mlflow_access() {
   fi
 }
 
+ensure_nextcloud_access() {
+  if ! nextcloud_occ user:info "${M09_PARTICIPANT_USER}" >/dev/null 2>&1; then
+    docker exec -u www-data -e OC_PASS="${M09_PARTICIPANT_PASSWORD}" kep-v2-nextcloud \
+      php occ user:add --password-from-env --display-name 'Orion Release Runner' "${M09_PARTICIPANT_USER}" >/dev/null
+  else
+    docker exec -u www-data -e OC_PASS="${M09_PARTICIPANT_PASSWORD}" kep-v2-nextcloud \
+      php occ user:resetpassword --password-from-env "${M09_PARTICIPANT_USER}" >/dev/null
+  fi
+  local path code
+  for path in release release/negatives model-review model-review/accepted model-mirror model-mirror/orion; do
+    code="$(curl -sS -o /dev/null -w '%{http_code}' -X MKCOL \
+      -u "${M09_PARTICIPANT_USER}:${M09_PARTICIPANT_PASSWORD}" -H "Host: ${NEXTCLOUD_HOST}" \
+      "${NEXTCLOUD_URL}/remote.php/dav/files/${M09_PARTICIPANT_USER}/${path}")"
+    [[ ${code} == 201 || ${code} == 405 ]] || die "Nextcloud MKCOL ${path} returned ${code}"
+  done
+}
+
 ensure_forgejo_state() {
   ensure_repo "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
     cinder-operator orion-model-releases 'Cinder upstream Orion model releases.' false
@@ -208,6 +232,9 @@ ensure_forgejo_state() {
     keplerops orion-release-suite 'Orion release evaluation and lineage controls.' true
   ensure_forgejo_user "${M09_PARTICIPANT_USER}" "${M09_PARTICIPANT_PASSWORD}" "${M09_PARTICIPANT_EMAIL}"
   grant_repo keplerops orion-release-suite "${M09_PARTICIPANT_USER}" read
+  grant_repo keplerops orion-release-approvals "${M09_PARTICIPANT_USER}" write
+  grant_repo keplerops orion-release-approvals release.engineer write
+  grant_repo keplerops orion-model-review release.engineer write
   grant_cinder_repo cinder-operator orion-model-releases cinder-field-operator write
   put_file "${CINDER_FORGEJO_API_URL}" 'cinder-operator:Cinder-Operations-Git-K3m7Pq4x' \
     cinder-operator orion-model-releases README.md "${MODULE_ROOT}/payloads/UPSTREAM_RELEASE.md" 'Publish upstream release requirements'
@@ -218,6 +245,9 @@ ensure_forgejo_state() {
     keplerops orion-release-approvals README.md "${MODULE_ROOT}/payloads/ORION_RELEASE_RUNBOOK.md" 'Publish Orion release runbook'
   put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
     keplerops orion-model-review README.md "${MODULE_ROOT}/payloads/ORION_RELEASE_RUNBOOK.md" 'Publish Orion review handoff'
+  put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
+    keplerops orion-platform gitops/orion-staging/kustomization.yaml \
+    "${MODULE_ROOT}/payloads/orion-staging-kustomization.yaml" 'Seed Orion staging GitOps kustomization'
   put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
     keplerops orion-release-suite visible-suite.json "${MODULE_ROOT}/payloads/visible-suite.json" 'Publish visible Orion release suite'
   put_file "${FORGEJO_API_URL}" 'range-admin:KeplerV2-Training-Forgejo-Admin' \
@@ -239,7 +269,48 @@ ensure_harbor_state() {
       --data '{"name":"orion-release-compatible","description":"Legacy Orion serving compatibility","color":"#2da44e","scope":"g"}' \
       "${HARBOR_API_URL}/labels" >/dev/null
   fi
+  ensure_harbor_labeler
 
+}
+
+harbor_labeler_user() {
+  [[ -s ${HARBOR_LABELER_USER_FILE} ]] && cat "${HARBOR_LABELER_USER_FILE}"
+}
+
+harbor_labeler_password() {
+  [[ -s ${HARBOR_LABELER_PASSWORD_FILE} ]] && cat "${HARBOR_LABELER_PASSWORD_FILE}"
+}
+
+harbor_labeler_works() {
+  local user password
+  user="$(harbor_labeler_user || true)"
+  password="$(harbor_labeler_password || true)"
+  [[ -n ${user} && -n ${password} ]] || return 1
+  curl -fsS --user "${user}:${password}" \
+    "${HARBOR_API_URL}/projects/orion-candidates/repositories" >/dev/null
+}
+
+ensure_harbor_labeler() {
+  local created
+  install -d -m 0750 "$(dirname "${HARBOR_LABELER_USER_FILE}")"
+  harbor_labeler_works && return 0
+  created="$(curl -fsS --user 'admin:KeplerV2-Training-Harbor' -H 'Content-Type: application/json' \
+    -X POST --data "$(jq -cn --arg name "m09-labeler-$(date +%s)" '{
+      name:$name, description:"M09 participant compatibility label mover",
+      disable:false, duration:-1, level:"project",
+      permissions:[{kind:"project", namespace:"orion-candidates", access:[
+        {resource:"repository", action:"pull"},
+        {resource:"repository", action:"list"},
+        {resource:"artifact", action:"read"},
+        {resource:"artifact", action:"list"},
+        {resource:"artifact-label", action:"create"},
+        {resource:"artifact-label", action:"delete"}
+      ]}]
+    }')" "${HARBOR_API_URL}/robots")"
+  jq -er '.name' <<<"${created}" >"${HARBOR_LABELER_USER_FILE}"
+  jq -er '.secret' <<<"${created}" >"${HARBOR_LABELER_PASSWORD_FILE}"
+  chmod 0640 "${HARBOR_LABELER_USER_FILE}" "${HARBOR_LABELER_PASSWORD_FILE}"
+  harbor_labeler_works || die 'M09 Harbor labeler robot cannot read orion-candidates'
 }
 
 ensure_rabbit_state() {
@@ -260,15 +331,22 @@ ensure_relay_basket() {
   install -d -m 0750 "$(dirname "${token_file}")"
   if [[ -s ${token_file} ]]; then
     token="$(<"${token_file}")"
-    if curl -fsS -H "Authorization: ${token}" \
+    if curl -kfsS -H "Authorization: ${token}" \
         "${RELAY_URL}/api/baskets/${basket}" >/dev/null 2>&1; then
       return
     fi
   fi
-  response="$(curl -fsS -X POST -H 'Content-Type: application/json' \
+  response="$(curl -kfsS -X POST -H 'Content-Type: application/json' \
     --data '{"capacity":100}' "${RELAY_URL}/api/baskets/${basket}")"
   jq -er '.token' <<<"${response}" >"${token_file}"
   chmod 0600 "${token_file}"
+}
+
+ensure_business_release_access() {
+  install -d -m 0710 -o root -g 0 "${TEMPLATE_ROOT}/state"
+  touch "${TEMPLATE_ROOT}/state/business-release.env"
+  chown root:0 "${TEMPLATE_ROOT}/state/business-release.env"
+  chmod 0660 "${TEMPLATE_ROOT}/state/business-release.env"
 }
 
 ensure_opa_policy() {
@@ -307,6 +385,10 @@ fi
 k3s kubectl -n orion-platform patch service opa --type=merge -p='{"spec":{"type":"NodePort","ports":[{"name":"http","port":8181,"targetPort":"http","nodePort":30082}]}}' >/dev/null
 k3s kubectl -n orion-platform rollout restart deployment/opa >/dev/null
 k3s kubectl -n orion-platform rollout status deployment/opa --timeout=5m >/dev/null
+for _ in $(seq 1 30); do
+  curl -fsS http://192.168.78.30:30082/health >/dev/null && exit 0
+  sleep 2
+done
 curl -fsS http://192.168.78.30:30082/health >/dev/null
 REMOTE
 }
@@ -320,22 +402,26 @@ capture_upstream_baseline() {
   chmod 0640 "${path}"
 }
 
+ensure_m07_handoff_access() {
+  local m07_root="${TEMPLATE_ROOT}/state/campaign-start/m07"
+  [[ -d ${m07_root}/attempts/kep-m07-i ]] || return
+  chgrp -R 0 "${m07_root}/attempts/kep-m07-i"
+  chmod g+rx "${m07_root}/attempts/kep-m07-i"
+  find "${m07_root}/attempts/kep-m07-i" -type f -name '*.json' -exec chmod g+r {} +
+}
+
+ensure_k3s_key_access() {
+  install -m 0640 -o root -g 0 "${K3S01_SSH_KEY}" "${STATE_ROOT}/k3s-key"
+}
+
+ensure_k3s_namespaces() {
+  "${SSH[@]}" "${K3S01_SSH_TARGET}" \
+    'sudo k3s kubectl create namespace orion-evaluation --dry-run=client -o yaml | sudo k3s kubectl apply -f - >/dev/null'
+}
+
 reconcile_airflow_access() {
   docker exec kep-v2-airflow-api airflow sync-perm >/dev/null
   docker exec kep-v2-airflow-api python /opt/airflow/config/reconcile_airflow_roles.py >/dev/null
-  docker exec kep-v2-airflow-api airflow users create \
-    --username "${M09_PARTICIPANT_USER}" --firstname Orion --lastname Release \
-    --role 'Orion Release Runner' --email "${M09_PARTICIPANT_EMAIL}" \
-    --password "${M09_PARTICIPANT_PASSWORD}" >/dev/null 2>&1 || \
-    docker exec kep-v2-airflow-api airflow users reset-password \
-      --username "${M09_PARTICIPANT_USER}" --password "${M09_PARTICIPANT_PASSWORD}" >/dev/null
-  docker exec kep-v2-airflow-api airflow users add-role \
-    --username "${M09_PARTICIPANT_USER}" --role 'Orion Release Runner' >/dev/null 2>&1 || true
-  local stale_role
-  for stale_role in Admin 'Orion Runner' 'Orion Viewer' 'Orion Integrity Runner'; do
-    docker exec kep-v2-airflow-api airflow users remove-role \
-      --username "${M09_PARTICIPANT_USER}" --role "${stale_role}" >/dev/null 2>&1 || true
-  done
 
   local runner_token='' dag denied_status
   runner_token="$(curl -fsS -H 'Content-Type: application/json' -X POST \
@@ -403,6 +489,12 @@ AIRFLOW_PASSWORD=${M09_PARTICIPANT_PASSWORD}
 MLFLOW_URL=https://mlflow.keplerops.lab
 MLFLOW_USERNAME=${M09_PARTICIPANT_USER}
 MLFLOW_PASSWORD=${M09_PARTICIPANT_PASSWORD}
+FILES_URL=https://files.keplerops.lab
+FILES_USER=${M09_PARTICIPANT_USER}
+FILES_PASSWORD=${M09_PARTICIPANT_PASSWORD}
+HARBOR_URL=https://registry.keplerops.lab
+HARBOR_USER=$(shell_quote "$(harbor_labeler_user)")
+HARBOR_PASSWORD=$(shell_quote "$(harbor_labeler_password)")
 KEPLEROPS_FORGEJO_URL=https://git.keplerops.lab
 KEPLEROPS_FORGEJO_USER=${M09_PARTICIPANT_USER}
 KEPLEROPS_FORGEJO_PASSWORD=${M09_PARTICIPANT_PASSWORD}
@@ -425,8 +517,13 @@ main() {
   install -d -m 0770 -o 50000 -g 10001 "${STATE_ROOT}/review-dispatch"
   ensure_forgejo_state
   capture_upstream_baseline
+  ensure_m07_handoff_access
+  ensure_k3s_key_access
+  ensure_k3s_namespaces
   ensure_harbor_state
   ensure_mlflow_access
+  ensure_nextcloud_access
+  ensure_business_release_access
   ensure_rabbit_state
   ensure_relay_basket m09-import-exceptions
   ensure_relay_basket m09-mirror-review

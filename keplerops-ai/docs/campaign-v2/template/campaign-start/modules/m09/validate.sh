@@ -13,7 +13,7 @@ fetch() {
   local -a args=(-kfsS --connect-timeout 10 --max-time 180)
   [[ -z ${PARTICIPANT_COOKIE_FILE:-} ]] || args+=(-b "${PARTICIPANT_COOKIE_FILE}")
   [[ -z ${PARTICIPANT_BEARER_TOKEN:-} ]] || args+=(-H "Authorization: Bearer ${PARTICIPANT_BEARER_TOKEN}")
-  [[ -z ${PARTICIPANT_BASIC_AUTH:-} ]] || args+=(--user "${PARTICIPANT_BASIC_AUTH}")
+  [[ -z ${PARTICIPANT_BASIC_AUTH:-} || ${url} =~ ^https://git\.cinder\.lab/ ]] || args+=(--user "${PARTICIPANT_BASIC_AUTH}")
   curl "${args[@]}" "${url}" >"${output}"
 }
 
