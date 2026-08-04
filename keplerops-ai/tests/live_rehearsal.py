@@ -85,6 +85,44 @@ class RehearsalError(RuntimeError):
     """A bounded rehearsal failure that does not include captured output."""
 
 
+CANONICAL_RESET_HELP = (
+    "allow the canonical range reset; this may replace the range host and "
+    "attached disks"
+)
+
+
+def add_canonical_reset_argument(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--allow-canonical-reset",
+        action="store_true",
+        help=CANONICAL_RESET_HELP,
+    )
+
+
+def add_retained_reset_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--prepared-module-reset",
+        action="store_true",
+        help="use a separately verified module-service reset instead of resetting the range",
+    )
+    add_canonical_reset_argument(parser)
+
+
+def require_canonical_reset_approval(args: argparse.Namespace, module: str) -> None:
+    if not getattr(args, "allow_canonical_reset", False):
+        raise RehearsalError(
+            f"{module} canonical reset requires --allow-canonical-reset; "
+            "use --prepared-module-reset for a retained range"
+        )
+
+
+def retained_reset_before_run(args: argparse.Namespace, module: str) -> bool:
+    if getattr(args, "prepared_module_reset", False):
+        return False
+    require_canonical_reset_approval(args, module)
+    return True
+
+
 @dataclass(frozen=True)
 class TransportBinding:
     transport: str
@@ -590,6 +628,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="prove participant paths without exercising range reset",
     )
+    add_canonical_reset_argument(parser)
     parser.add_argument(
         "--skip-health-check",
         action="store_true",
@@ -806,6 +845,18 @@ def marker(check_id, status, count):
     digest = hashlib.sha256(f"{check_id}:{status}:{count}".encode()).hexdigest()[:16]
     (ROOT / f"kepresult-{check_id}-{status}-{count}-{digest}").touch(mode=0o600)
 
+def identity_token():
+    form = urllib.parse.urlencode({
+        "client_id": "keplerops-lab", "grant_type": "password",
+        "username": "operator", "password": participant_password,
+    }).encode()
+    request = urllib.request.Request(
+        "https://idp-01.keplerops.lab/realms/keplerops/protocol/openid-connect/token",
+        data=form, method="POST",
+    )
+    with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
+        return json.loads(response.read(65536))["access_token"]
+
 def call(url,*,token=None,payload=None,expected=200,t=35):
     data = None if payload is None else json.dumps(payload, separators=(",", ":")).encode()
     expected_statuses = {expected} if isinstance(expected, int) else set(expected)
@@ -821,6 +872,10 @@ def call(url,*,token=None,payload=None,expected=200,t=35):
         except urllib.error.HTTPError as error:
             body = error.read(65536)
             status = error.code
+            if status == 401 and token is not None and attempt == 0:
+                token = identity_token()
+                globals()["token"] = token
+                continue
         except (TimeoutError, urllib.error.URLError) as error:
             if attempt == 3:
                 raise RuntimeError(
@@ -842,16 +897,8 @@ text = Path("/opt/keplerops/synthetic-defaults.yaml").read_text(encoding="utf-8"
 match = re.search(r"username:\s*operator\s*\n\s*password:\s*\"([^\"]+)\"", text)
 if match is None:
     raise RuntimeError("participant start material unavailable")
-form = urllib.parse.urlencode({
-    "client_id": "keplerops-lab", "grant_type": "password",
-    "username": "operator", "password": match.group(1),
-}).encode()
-request = urllib.request.Request(
-    "https://idp-01.keplerops.lab/realms/keplerops/protocol/openid-connect/token",
-    data=form, method="POST",
-)
-with urllib.request.urlopen(request, context=CTX, timeout=20) as response:
-    token = json.loads(response.read(65536))["access_token"]
+participant_password = match.group(1)
+token = identity_token()
 
 portal = "https://lab-portal.keplerops.lab"
 gateway = "https://inference-gateway.keplerops.lab"
@@ -873,7 +920,19 @@ extraction_ids = {"kep-m08-" + suffix for suffix in "abcdefghijk"} - {"kep-m08-i
 backdoor_ids = {"kep-m09-" + suffix for suffix in "abcdefghijkl"}
 capstone_ids = {"kep-m10-" + suffix for suffix in "abcdefghijklmnopq"}
 expected_ids = agent_ids | evasion_ids | context_ids | secrets_ids
-catalog_ids = agent_ids | evasion_ids | supply_ids | context_catalog_ids | secrets_catalog_ids | persistence_ids | adversarial_ids | training_ids | extraction_ids | backdoor_ids | capstone_ids
+catalog_ids = (
+    agent_ids
+    | evasion_ids
+    | context_catalog_ids
+    | secrets_catalog_ids
+    | supply_ids
+    | persistence_ids
+    | adversarial_ids
+    | training_ids
+    | extraction_ids
+    | backdoor_ids
+    | capstone_ids
+)
 marker(
     "test-start-state",
     "PASS" if ids - issue_60_excluded_ids == catalog_ids else "FAIL",
@@ -2020,6 +2079,8 @@ def main(argv: list[str] | None = None) -> int:
     pack_root = Path(__file__).resolve().parents[1]
     repo_root = _repo_root(Path(__file__))
     contract = load_contract(pack_root)
+    if not args.walkthrough_only:
+        require_canonical_reset_approval(args, "live rehearsal reset proof")
     lifecycle = CommandLifecycle(pack_root / "build", config)
     participant = LifecycleBoundKasmParticipant(lifecycle, pack_root)
     started_at = _utc_now()

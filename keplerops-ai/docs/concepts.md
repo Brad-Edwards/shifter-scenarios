@@ -82,4 +82,4 @@ reset, and the earlier Phase-E teardown pass. The original Modules 01 through
 07 kernels are participant-proven. It remains `draft` because the expansion
 rows and Modules 08 through 10 playtest calibration and release hardening are
 incomplete. The exact boundary is recorded in the operator-only
-challenge portfolio, manual walkthrough report, and golden-readiness checklist.
+challenge portfolio, module proof reports, and golden-readiness checklist.

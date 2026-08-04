@@ -223,11 +223,11 @@ and prove the account has only limited evaluation-reader scope.
 **Start:** Read the WorkHub incident about an evaluation runbook deleted after
 indexing. Keep the source inventory and Orion semantic search access.
 
-**Method:** Search semantically around the deleted runbook's purpose with two
-different phrasings. Confirm both results cite the same deleted source, recover
-the retired evaluation-reader login, and authenticate normally through
-Keycloak. Open the evaluation onboarding surface and check what the role can and
-cannot see.
+**Method:** Search semantically around the indexed runbook's purpose with two
+different phrasings. Confirm the result cites the protected WorkHub RAG target
+ledger, recover the bounded `qa.intern` account, assemble the access phrase from
+the record's parts, and authenticate normally through Keycloak. Open the
+evaluation onboarding surface and check what the role can and cannot see.
 
 **Outcome:** The onboarding page reached through the stale credential proves the
 credential remained valid while the role is limited to evaluation-reader

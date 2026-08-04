@@ -3,6 +3,11 @@
 This walkthrough covers the source-implemented Module 10 expansion challenges
 `kep-m10-h` through `kep-m10-q`.
 
+On 2026-08-04, issue 60 proved this expansion path on retained range
+`kep-issue60-r1` through the participant Kasm surface. The bounded runner
+completed controls, prerequisites, service/cost impact, harms, destruction,
+and awards with final output `module-10 full-ATLAS smoke: PASS`.
+
 The expansion uses the contained platform-impact service plus existing capstone
 deployment, cost, publication, ledger, and reset state. Participants create the
 effect through participant-facing platform routes, then submit the relevant

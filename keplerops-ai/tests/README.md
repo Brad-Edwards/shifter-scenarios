@@ -150,15 +150,28 @@ uv run --no-project --with 'raes==2.0.0' --with 'pyyaml>=6,<7' \
 ```
 
 Expansion rehearsal adds focused full-ATLAS expansion proof runners for the Module 03
-through Module 10 expansion rows. Those runners have now recorded retained-range
-participant-equivalent receipts for all playable expansion rows; `kep-m02-g`
-remains outside this runner set because it is the reserved hardware-attestation
-design. Modules 03 through 09 accept
+through Module 10 expansion rows. The issue-62 template proof covers 132
+participant-surface challenges and excludes only the two unimplemented hardware
+rows: `kep-m06-m` and `kep-m08-i`. Modules 03 through 09 accept
 `--prepared-module-reset` only after the module dependency closure has already
-passed the SDL-rendered reset and range health gate; otherwise omit it and let
-the runner perform its bounded canonical reset. Module 08 deliberately blocks,
-rather than promotes, if the retained range cannot provide the live browser
-camera/video-frame evidence for `kep-m08-i`.
+passed the SDL-rendered reset and range health gate. Canonical range reset is
+destructive to retained range host state and now requires the explicit
+`--allow-canonical-reset` flag. The fresh walkthrough preparation helper wraps
+that same reset and also requires the explicit flag:
+
+```sh
+build/prepare-fresh-walkthrough-range.sh \
+  --range-instance <range-instance> \
+  --participant <participant-id> \
+  --allow-canonical-reset
+```
+
+Use
+`--exclude-challenge kep-m06-m` with the Module 06 runner and
+`--exclude-challenge kep-m08-i` with the Module 08 runner only for this
+participant-only issue-62 scope; without that exclusion, Module 08 deliberately
+blocks if the retained range cannot provide the live browser camera/video-frame
+evidence for `kep-m08-i`.
 
 ```sh
 module=03
@@ -226,7 +239,8 @@ python3 tests/module_03_reliability.py \
   --participant operator \
   --participant-source-cidr 203.0.113.10/32 \
   --use-existing-range \
-  --retain-until-phase-e
+  --retain-until-phase-e \
+  --allow-canonical-reset
 ```
 
 Module 04 implementation adds the pre-playtest module-04 runner. It performs one participant-

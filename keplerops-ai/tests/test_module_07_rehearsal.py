@@ -70,6 +70,9 @@ class Module07RehearsalTests(unittest.TestCase):
         self.assertIn("expected=(200, 409)", program)
         self.assertIn('"challenge_id": "kep-m03-a"', program)
         self.assertIn('if job.get("status") == "queued":', program)
+        self.assertIn("TRAINING_JOB_POLL_SECONDS", dir(module))
+        self.assertIn(f"range({module.TRAINING_JOB_POLL_SECONDS})", program)
+        self.assertNotIn("range(120)", program)
         self.assertIn(
             'elif job.get("status") not in {"running", "evaluating", "succeeded"}:',
             program,

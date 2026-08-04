@@ -66,12 +66,44 @@ done
 [[ $NESTED_HOST_IMAGE =~ ^projects/[^/]+/global/images/[^/]+$ ]] || usage
 [[ $RESEARCH_PROFILE =~ ^(off|full-content)$ ]] || usage
 [[ $RANGE_HOST_IP_OFFSET =~ ^[0-9]+$ ]] || usage
-if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} ]]; then
+
+refresh_access_token() {
   export GOOGLE_OAUTH_ACCESS_TOKEN
-  GOOGLE_OAUTH_ACCESS_TOKEN=$(gcloud auth print-access-token)
-fi
-if [[ -z ${CLOUDSDK_AUTH_ACCESS_TOKEN:-} ]]; then
+  if ! GOOGLE_OAUTH_ACCESS_TOKEN=$(
+    env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+      gcloud auth application-default print-access-token 2>/dev/null
+  ); then
+    GOOGLE_OAUTH_ACCESS_TOKEN=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth print-access-token
+    )
+  fi
   export CLOUDSDK_AUTH_ACCESS_TOKEN=$GOOGLE_OAUTH_ACCESS_TOKEN
+}
+if [[ -z ${GOOGLE_OAUTH_ACCESS_TOKEN:-} || -z ${CLOUDSDK_AUTH_ACCESS_TOKEN:-} ]]; then
+  refresh_access_token
+fi
+resolve_gcloud_account() {
+  local account=${KEPLEROPS_GCLOUD_ACCOUNT:-}
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud auth list --filter=status:ACTIVE --format='value(account)' 2>/dev/null |
+        head -n1 || true
+    )
+  fi
+  if [[ -z "$account" ]]; then
+    account=$(
+      env -u GOOGLE_OAUTH_ACCESS_TOKEN -u CLOUDSDK_AUTH_ACCESS_TOKEN \
+        gcloud config get-value core/account 2>/dev/null || true
+    )
+  fi
+  printf '%s\n' "$account"
+}
+GCLOUD_ACCOUNT=$(resolve_gcloud_account)
+GCLOUD_ACCOUNT_ARGS=()
+if [[ -n "$GCLOUD_ACCOUNT" ]]; then
+  GCLOUD_ACCOUNT_ARGS=(--account "$GCLOUD_ACCOUNT")
 fi
 python3 - "$PARTICIPANT_SOURCE_CIDR" "$RANGE_SUBNET_CIDR" "$RANGE_HOST_IP_OFFSET" <<'PY' || usage
 import ipaddress, sys
@@ -213,9 +245,12 @@ OUTER_HOST=$(
   terraform -chdir="$GCP_ROOT" output -state="$TFSTATE" -json asset_inventory |
     jq -er '."range-linux-carrier-01".name'
 )
+
 LAUNCH_SSH_ATTEMPTS=${KEPLEROPS_LAUNCH_SSH_ATTEMPTS:-120}
 ssh_command() {
+  refresh_access_token
   gcloud compute ssh "$OUTER_HOST" \
+    "${GCLOUD_ACCOUNT_ARGS[@]}" \
     --project "$PROJECT_ID" \
     --zone "$ZONE" \
     --tunnel-through-iap \
@@ -232,15 +267,18 @@ for attempt in $(seq 1 "$LAUNCH_SSH_ATTEMPTS"); do
   }
   sleep 5
 done
+
 LAUNCH_CARRIER_ATTEMPTS=${KEPLEROPS_LAUNCH_CARRIER_ATTEMPTS:-720}
-for attempt in $(seq 1 "$LAUNCH_CARRIER_ATTEMPTS"); do
-  if ssh_command 'sudo bash -lc '\''test "$(cat /proc/sys/kernel/random/boot_id)" = "$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)"'\''' >/dev/null 2>&1; then
-    break
-  fi
-  [[ $attempt -lt $LAUNCH_CARRIER_ATTEMPTS ]] || {
-    echo "error: nested range carrier did not become ready" >&2
-    exit 1
-  }
-  sleep 10
-done
+wait_for_carrier_ready() {
+  for _ in $(seq 1 "$LAUNCH_CARRIER_ATTEMPTS"); do
+    if ssh_command "sudo bash -lc 'test \"\$(cat /proc/sys/kernel/random/boot_id)\" = \"\$(cat /var/lib/keplerops-carrier/ready 2>/dev/null)\"'" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 10
+  done
+  return 1
+}
+
+wait_for_carrier_ready
+refresh_access_token
 "$BUILD_ROOT/health-check.sh" --range-instance "$RANGE_INSTANCE" --participant "$PARTICIPANT"

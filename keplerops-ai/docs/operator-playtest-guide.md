@@ -207,8 +207,8 @@ evidence and then by a fresh proof-service receipt. A receipt is bound to:
 - the current reset generation;
 - the receipt expiry.
 
-Operator reports in `docs/*proof-report.md`, `docs/manual-walkthrough-report.md`,
-and `docs/telemetry-rehearsal-report.md` are sanitized evidence summaries.
+Operator reports in `docs/*proof-report.md` and
+`docs/telemetry-rehearsal-report.md` are sanitized evidence summaries.
 They should never include raw browser state, cloud identifiers, credentials,
 tokens, receipts, model data, raw prompts, completions, proof bodies, or
 operator command output.

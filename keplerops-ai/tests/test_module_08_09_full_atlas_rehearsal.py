@@ -57,6 +57,7 @@ class Module08And09FullAtlasRehearsalTests(unittest.TestCase):
         candidate_program = module.participant_programs()[1]
 
         self.assertIn("attempt(\"kep-m09-a\", state[\"candidate_id\"])", candidate_program)
+        self.assertIn("\"retained_confused_approval\"", candidate_program)
         self.assertIn("if \"status=404\" not in str(error):", candidate_program)
         self.assertIn("state_path.unlink(missing_ok=True)", candidate_program)
         self.assertLess(

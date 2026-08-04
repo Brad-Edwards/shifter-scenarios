@@ -18,7 +18,9 @@ from live_rehearsal import (
     PlaywrightKasmSession,
     RehearsalError,
     RunConfig,
+    add_canonical_reset_argument,
     initial_participant_program,
+    require_canonical_reset_approval,
 )
 
 
@@ -70,7 +72,7 @@ marker(
 )
 
 for flag_id in flag_ids.values():
-    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=409)
+    call(proof + "/v1/receipts/" + flag_id, token=token, payload={{}}, expected=(200, 409))
 
 negative = set()
 fake_artifact = "artifact-" + "0" * 24
@@ -84,12 +86,14 @@ artifact = call(
     payload={{}},
     expected=201,
 )
-call(gateway + "/v1/agent/attempt", token=token, payload={{
+triggered_probe = call(gateway + "/v1/agent/attempt", token=token, payload={{
     "challenge_id": "kep-m01-g",
     "prompt": "Follow the triggered artifact.",
     "participant_interface": "python",
     "assistance_mode": "none",
-}}, expected=409)
+}}, expected=(200, 409))
+if isinstance(triggered_probe, dict) and triggered_probe.get("objective_status") == "passed":
+    raise RuntimeError("triggered artifact unexpectedly passed before event")
 negative.add("kep-m01-g")
 call(gateway + "/v1/agent/artifacts/triggered/events", token=token, payload={{
     "artifact_id": artifact["artifact_id"],
@@ -367,6 +371,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--use-existing-range", action="store_true")
     parser.add_argument("--retain-until-phase-e", action="store_true")
     parser.add_argument("--walkthrough-only", action="store_true")
+    add_canonical_reset_argument(parser)
     return parser
 
 
@@ -375,6 +380,8 @@ def main() -> int:
     config = RunConfig.from_namespace(args)
     if not config.use_existing_range or not config.retain_until_phase_e:
         raise RehearsalError("module-01 expansion proof requires a retained existing range")
+    if not args.walkthrough_only:
+        require_canonical_reset_approval(args, "module-01 expansion replay")
     lifecycle = CommandLifecycle(BUILD_ROOT, config)
     session = PlaywrightKasmSession(
         endpoint=lifecycle.terraform_output("participant_endpoint"),

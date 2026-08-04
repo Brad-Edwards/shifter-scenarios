@@ -32,6 +32,11 @@ under consideration on the physical accelerator contract, leaving one
 unrealized design. The 134-item tables below are the current runtime board, not
 an eight-hour full-clear expectation.
 
+Issue #62 uses a narrower participant-only live-proof scope: 132 in-scope
+challenges across Modules 01 through 10. The unimplemented hardware rows
+`kep-m06-m` and `kep-m08-i` remain authored catalog entries, but they are
+excluded from the issue #62 happy-path proof and playtest readiness claim.
+
 The original module work implemented sixty module-01 through module-10
 items as independent model, policy, tool, paired-probe, vector
 retrieval, privacy-classification, durable-state, restart, brokered-effect,

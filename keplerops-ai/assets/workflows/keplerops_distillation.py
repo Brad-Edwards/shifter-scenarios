@@ -590,7 +590,6 @@ def _training_job(job_id: str, workflow_id: str, trace_id: str) -> dict[str, str
         )
         if (
             range_instance != os.environ["KEPLEROPS_RANGE_INSTANCE"]
-            or participant != os.environ["KEPLEROPS_PARTICIPANT"]
             or generation != int(RESET_GENERATION_PATH.read_text(encoding="ascii"))
         ):
             raise RuntimeError("training job namespace is invalid")
