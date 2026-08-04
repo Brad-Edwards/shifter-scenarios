@@ -275,6 +275,11 @@ def render_active_caddyfile() -> None:
         )
         blocks.append(
             f"# campaign-m06-managed-domain:{record['domain_id']}\n"
+            f"http://{domain} {{\n"
+            f"  reverse_proxy {MANAGED_SERVICE_UPSTREAM} {{\n"
+            "    header_up Host {host}\n"
+            "  }\n"
+            "}\n\n"
             f"https://{domain} {{\n"
             f"  {tls}\n"
             f"  reverse_proxy {MANAGED_SERVICE_UPSTREAM} {{\n"
