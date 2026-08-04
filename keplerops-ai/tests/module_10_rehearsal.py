@@ -98,7 +98,7 @@ ok = set(challenge_ids) <= listed_ids and set(challenge_ids) <= portal_ids
 marker("test-module-10-controls", "PASS" if ok else "FAIL", 11)
 '''
     deployment = common + '''m09 = read_state(
-    module09_state, {"candidate_id", "artifact_digest", "approval_id"}
+    module09_state, {"candidate_id", "artifact_digest", "approval_id", "retained_confused_approval"}
 )
 candidate_id = m09["candidate_id"]
 production = attempt("kep-m10-a", candidate_id=candidate_id)

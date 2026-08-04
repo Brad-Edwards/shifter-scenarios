@@ -52,6 +52,7 @@ class Module10RehearsalTests(unittest.TestCase):
         for marker in (
             "import shutil",
             "import subprocess",
+            '"retained_confused_approval"',
             '"--cacert", "/run/tls/ca.crt"',
             '"--upload-file"',
             "shutil.copyfileobj",
