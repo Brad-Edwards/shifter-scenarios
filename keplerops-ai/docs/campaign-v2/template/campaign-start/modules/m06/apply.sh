@@ -39,6 +39,29 @@ compose() {
     -f "${MODULE_ROOT}/compose.overlay.yaml" "$@"
 }
 
+compose_up() {
+  local attempt output rc
+  output="$(mktemp)"
+  for attempt in 1 2 3; do
+    if compose up "$@" >"$output" 2>&1; then
+      cat "$output"
+      rm -f "$output"
+      return 0
+    fi
+    rc=$?
+    cat "$output" >&2
+    if grep -Fq 'Address already in use' "$output" && [[ $attempt != 3 ]]; then
+      log "compose up hit a transient address conflict; retrying (${attempt}/3)"
+      sleep 5
+      continue
+    fi
+    rm -f "$output"
+    return "$rc"
+  done
+  rm -f "$output"
+  return 1
+}
+
 forgejo() {
   local auth=$1 method=$2 path=$3
   shift 3
@@ -364,16 +387,29 @@ if "https://external-intake.keplerops.lab" not in managed or "https://status.kep
     raise SystemExit("m06 external-intake Caddy route differs from the campaign contract")
 path.write_text(text[:start] + managed + text[end:])
 PY
-  if ! grep -q 'campaign-m06-prerequisite-records' "$caddyfile"; then
-    cat >>"$caddyfile" <<'CADDY'
+  python3 - "$caddyfile" <<'PY'
+from pathlib import Path
+import sys
 
+path = Path(sys.argv[1])
+text = path.read_text()
+duplicate = """
 # campaign-m06-prerequisite-records
 https://artifacts.keplerops.lab {
   tls internal
   reverse_proxy 10.61.50.60:9000
 }
-CADDY
-  fi
+"""
+text = text.replace(duplicate, "\n")
+canonical = """https://artifacts.keplerops.lab {
+  tls internal
+  reverse_proxy 10.61.50.60:9000
+}
+"""
+if canonical not in text:
+    raise SystemExit("artifacts.keplerops.lab Caddy route is missing")
+path.write_text(text)
+PY
   if ! grep -q 'campaign-m06-scoped-object-api' "$caddyfile"; then
     cat >>"$caddyfile" <<'CADDY'
 
@@ -502,14 +538,13 @@ ensure_preview_shared_audit_mount() {
     return
   fi
   log "recreating preview with shared Orion audit volume"
-  compose up -d --build --force-recreate --no-deps preview
+  compose_up -d --build --force-recreate --no-deps preview
 }
 
 install_native_services() {
   compose build preview >/dev/null
-  compose run --rm --no-deps --user 0:0 --entrypoint sh preview -ec \
-    'chown 10001:10001 /var/lib/orion-preview/audit && chmod 0755 /var/lib/orion-preview/audit'
-  compose up -d --build \
+  compose_up --force-recreate orion-preview-audit-init
+  compose_up -d --build \
     preview orion-osint-site cinder-forgejo cinder-buildkit cinder-jupyter \
     cinder-model-edge cinder-developer-assistant cinder-host-bridge \
     cinder-openvoice cinder-registrar cinder-qdrant keplerops-intake-qdrant \

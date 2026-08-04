@@ -160,6 +160,9 @@ summary below is only an operator orientation map.
 
 The current full board is intentionally larger than the event window. Select a
 dependency-closed event bundle for each cohort rather than expecting full clear.
+For the current event-readiness proof, the in-scope happy path is 132
+challenges: all realized board rows except hardware-oriented `kep-m06-m` and
+`kep-m08-i`.
 
 ## Reset and health
 
