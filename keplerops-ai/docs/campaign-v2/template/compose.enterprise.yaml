@@ -191,6 +191,8 @@ services:
       - forgejo-data:/data
     ports:
       - "192.168.78.1:3000:3000"
+    extra_hosts:
+      - "id.keplerops.lab:10.61.40.2"
     networks:
       engineering:
         ipv4_address: 10.61.40.20
@@ -246,6 +248,7 @@ services:
       NEXTCLOUD_ADMIN_USER: range-admin
       NEXTCLOUD_ADMIN_PASSWORD: KeplerV2-Training-Nextcloud
       NEXTCLOUD_TRUSTED_DOMAINS: files.keplerops.lab
+      NEXTCLOUD_UPDATE: "1"
       OVERWRITEHOST: files.keplerops.lab
       OVERWRITEPROTOCOL: https
       OVERWRITECLIURL: https://files.keplerops.lab
@@ -487,6 +490,8 @@ services:
     extra_hosts:
       - "mail.keplerops.lab:10.61.10.20"
     networks:
+      public:
+        ipv4_address: 10.61.10.48
       business:
         ipv4_address: 10.61.70.21
       data:

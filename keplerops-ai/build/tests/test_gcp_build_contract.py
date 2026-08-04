@@ -1728,8 +1728,17 @@ class GcpBuildContractTests(unittest.TestCase):
         enterprise = (
             PACK_ROOT / "docs/campaign-v2/template/scripts/start-enterprise.sh"
         ).read_text(encoding="utf-8")
+        start_all = (
+            PACK_ROOT / "docs/campaign-v2/template/scripts/start-all.sh"
+        ).read_text(encoding="utf-8")
         guests = (
             PACK_ROOT / "docs/campaign-v2/template/scripts/check-guests.sh"
+        ).read_text(encoding="utf-8")
+        compose_enterprise = (
+            PACK_ROOT / "docs/campaign-v2/template/compose.enterprise.yaml"
+        ).read_text(encoding="utf-8")
+        nextcloud = (
+            PACK_ROOT / "docs/campaign-v2/template/seeding/apps/nextcloud.sh"
         ).read_text(encoding="utf-8")
         foundation = (
             PACK_ROOT / "docs/campaign-v2/template/scripts/start-foundation.sh"
@@ -1760,6 +1769,16 @@ class GcpBuildContractTests(unittest.TestCase):
             'KEPLEROPS_ALLOW_PREVIEW_PENDING=1 "$ROOT/scripts/health-check.sh" enterprise',
             enterprise,
         )
+        self.assertLess(
+            enterprise.index('"$ROOT/seeding/seed.sh"'),
+            enterprise.index('KEPLEROPS_ALLOW_PREVIEW_PENDING=1'),
+        )
+        self.assertIn(
+            'KEPLEROPS_ALLOW_REVIEW_WORKERS_PENDING=1 "$ROOT/scripts/check-guests.sh"',
+            start_all,
+        )
+        self.assertIn("readonly ALLOW_REVIEW_WORKERS_PENDING=", guests)
+        self.assertIn("review worker verification substrate is unavailable", guests)
         health = (
             PACK_ROOT / "docs/campaign-v2/template/scripts/health-check.sh"
         ).read_text(encoding="utf-8")
@@ -1777,10 +1796,23 @@ class GcpBuildContractTests(unittest.TestCase):
             "cidr:192.168.78.30/32\tkep-v2-step-ca\ttcp\t9000\tplatform signing CA enrollment",
             network_flows,
         )
+        self.assertIn('"id.keplerops.lab:10.61.40.2"', compose_enterprise)
+        self.assertIn('NEXTCLOUD_UPDATE: "1"', compose_enterprise)
+        self.assertIn("ipv4_address: 10.61.10.48", compose_enterprise)
+        self.assertIn("NEXTCLOUD_USER_OIDC_ARCHIVE_URL=", nextcloud)
+        self.assertIn(
+            "NEXTCLOUD_USER_OIDC_ARCHIVE_SHA256=49ced1fe192302f4540b869438b6ccb9ca0d69b717b76ed7075a70aa5cf666fd",
+            nextcloud,
+        )
+        self.assertIn("install_user_oidc_from_archive", nextcloud)
         self.assertIn("! check_port 192.168.78.1 13081", guests)
         self.assertLess(
-            guests.index("! check_port 192.168.78.1 13081"),
+            guests.index("ALLOW_REVIEW_WORKERS_PENDING == 1"),
             guests.index("guest identity substrate healthy"),
+        )
+        self.assertLess(
+            guests.index("! check_port 192.168.78.1 13081"),
+            guests.index("review worker verification substrate is unavailable"),
         )
         self.assertIn('[[ -d "$ROOT/state/caddy-root.crt" ]]', foundation)
         self.assertIn('rmdir "$ROOT/state/caddy-root.crt"', foundation)

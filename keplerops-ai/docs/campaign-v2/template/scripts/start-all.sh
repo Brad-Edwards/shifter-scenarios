@@ -26,7 +26,7 @@ rm -f "$SHIFTER_READY"
 "$ROOT/scripts/provision-guests.sh"
 
 deadline=$((SECONDS + 1800))
-until "$ROOT/scripts/check-guests.sh"; do
+until KEPLEROPS_ALLOW_REVIEW_WORKERS_PENDING=1 "$ROOT/scripts/check-guests.sh"; do
   if ((SECONDS >= deadline)); then
     echo "Nested guests did not become ready" >&2
     exit 3

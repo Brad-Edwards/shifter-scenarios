@@ -8,6 +8,7 @@ readonly WORKER_STATE="$ROOT/state/guests/review-verification.env"
 readonly REVIEW_QUEUE=orion.review.review01
 readonly INTEGRATION_QUEUE=orion.review.integration01
 readonly RESULT_QUEUE=orion.review.results
+readonly ALLOW_REVIEW_WORKERS_PENDING=${KEPLEROPS_ALLOW_REVIEW_WORKERS_PENDING:-0}
 
 check_port() {
   timeout 3 bash -c "</dev/tcp/$1/$2" 2>/dev/null
@@ -47,6 +48,13 @@ timeout 30 "${SSH[@]}" kepler@192.168.78.30 \
   'sudo systemctl is-active --quiet k3s; test -f /var/lib/keplerops-k3s.ready'
 
 install -d -m 0755 /run/shifter
+if [[ $ALLOW_REVIEW_WORKERS_PENDING == 1 ]]; then
+  printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) guests-domain-bootstrap" \
+    >/run/shifter/keplerops-v2-guests.ready
+  echo "campaign-v2 guest identity substrate healthy; review workers await reconciliation"
+  exit 0
+fi
+
 if [[ ! -s $WORKER_STATE ]] ||
   ! timeout 15 "${SSH[@]}" kepler@192.168.78.20 \
     'systemctl cat orion-review-worker.service >/dev/null 2>&1' ||
@@ -61,10 +69,8 @@ if [[ ! -s $WORKER_STATE ]] ||
     curl -fsS --max-time 5 -u "$RABBITMQ_USER:$RABBITMQ_PASSWORD" \
       "$RABBITMQ_MANAGEMENT_URL/overview" >/dev/null
   ); then
-  printf '%s\n' "$(cat /proc/sys/kernel/random/boot_id) guests-domain-bootstrap" \
-    >/run/shifter/keplerops-v2-guests.ready
-  echo "campaign-v2 guest identity substrate healthy; review workers await reconciliation"
-  exit 0
+  echo "campaign-v2 review worker verification substrate is unavailable" >&2
+  exit 1
 fi
 
 set -a
