@@ -510,7 +510,13 @@ services:
       # harbor-core must reach Caddy / id.keplerops.lab (10.61.40.2) on the
       # engineering network for OIDC discovery. Without this attachment its
       # OIDC login 500s with "dial tcp 10.61.40.2:443: network is unreachable".
+      # Pin a static address: harbor-core is the only dynamic-IP client on this
+      # densely-static subnet, so its dynamic allocation races the concurrent
+      # converge on a from-scratch resume ("failed to set up container
+      # networking: Address already in use") even though a live post-boot
+      # `docker network connect` succeeds.
       engineering:
+        ipv4_address: 10.61.40.38
     labels: *common-labels
 
   harbor-jobservice:
