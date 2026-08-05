@@ -24,6 +24,17 @@ Control portal automatically. If it does not, open:
 
 <https://inference-gateway.keplerops.lab/agent-control>
 
+The Agent Control and module pages use a separate range-local participant
+session from Shifter. Sign in there with the lab participant credentials supplied
+for the range handoff. Do not use the `EVALUATION-READER` notebook/Airflow
+account for challenge APIs; it is scoped to audit workspaces and is not a
+gateway participant session.
+
+For browser playtesting, signing in sets the `keplerops_session` cookie used by
+the module pages. For terminal-based QA walkthroughs that require
+`/tmp/kep-token`, obtain the token through the same gateway login flow and keep
+it local to the workstation; do not print it in reports or issue comments.
+
 The desktop also contains `MISSION.md`, which summarizes the mission and range
 rules.
 

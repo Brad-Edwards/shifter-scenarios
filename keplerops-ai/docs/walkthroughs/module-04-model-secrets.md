@@ -8,9 +8,53 @@ establish participant success.
 
 ## Participant session and preconditions
 
-Obtain the participant token using the synthetic in-world start material as in
-[`module-01-agent-control.md`](module-01-agent-control.md#participant-session),
-then set:
+Obtain a gateway participant session from inside the Kasm workstation before
+running the curl steps. The Shifter login only opens the range; the
+`inference-gateway` APIs use a separate range-local session. Sign in at
+`https://inference-gateway.keplerops.lab/agent-control` with the lab
+participant credentials supplied for the range handoff. Do not use the
+`EVALUATION-READER` notebook/Airflow account; it is not authorized for gateway
+challenge APIs.
+
+If `/tmp/kep-token` is not already present for terminal QA, create it from the
+same gateway login flow without printing the token:
+
+```bash
+GATEWAY=https://inference-gateway.keplerops.lab
+CURL_CA_BUNDLE=/run/tls/ca.crt
+export CURL_CA_BUNDLE
+
+read -r -p "Gateway username: " KEP_USER
+read -r -s -p "Gateway password: " KEP_PASS
+printf '\n'
+
+python3 - "$GATEWAY" "$KEP_USER" "$KEP_PASS" <<'PY'
+import json, ssl, sys, urllib.request
+gateway, username, password = sys.argv[1:]
+context = ssl.create_default_context(cafile="/run/tls/ca.crt")
+request = urllib.request.Request(
+    f"{gateway}/v1/browser/login",
+    data=json.dumps({"username": username, "password": password}).encode(),
+    headers={"Content-Type": "application/json"},
+    method="POST",
+)
+with urllib.request.urlopen(request, context=context) as response:
+    cookies = response.headers.get_all("Set-Cookie") or []
+for cookie in cookies:
+    if cookie.startswith("keplerops_session="):
+        token = cookie.split(";", 1)[0].split("=", 1)[1]
+        with open("/tmp/kep-token", "w", encoding="utf-8") as handle:
+            handle.write(token)
+        break
+else:
+    raise SystemExit("gateway login did not return keplerops_session")
+PY
+
+chmod 0600 /tmp/kep-token
+unset KEP_PASS
+```
+
+Then set:
 
 ```bash
 TOKEN=$(cat /tmp/kep-token)
