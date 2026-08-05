@@ -66,6 +66,11 @@ fi
 # on resume the baked module state is authoritative and check-all still gates it.
 if [[ $MODE == build ]]; then
   "$ROOT/campaign-start/apply.sh"
+else
+  # apply.sh (skipped on resume) is what assembles base + module Caddy fragments
+  # and reloads caddy; the caddy container itself only ever loads the base file,
+  # so on a from-bake boot re-assemble the campaign routes here.
+  "$ROOT/scripts/reconcile-campaign-caddy.sh"
 fi
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/scripts/reconcile-oidc-clients.sh"
