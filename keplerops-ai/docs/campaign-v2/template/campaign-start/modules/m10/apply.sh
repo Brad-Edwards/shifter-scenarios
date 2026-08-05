@@ -77,7 +77,18 @@ verify_clean_platform_release() {
       "${assistant_release}" "${assistant_model}" "${assistant_image}"; do
     [[ ${value} =~ ^sha256:[0-9a-f]{64}$ ]] || die 'clean platform identity contains an invalid digest'
   done
-  "${TEMPLATE_ROOT}/baseline/release-runtime-continuity.sh" >/dev/null || \
+  # The release-risk runtime (KServe) can still be settling right after the
+  # M09->M10 identity activation restarts the serving path, so poll the
+  # continuity join rather than failing on the first miss.
+  continuity_joined=0
+  for _ in $(seq 1 30); do
+    if "${TEMPLATE_ROOT}/baseline/release-runtime-continuity.sh" >/dev/null 2>&1; then
+      continuity_joined=1
+      break
+    fi
+    sleep 10
+  done
+  [[ ${continuity_joined} == 1 ]] || \
     die 'clean Release Risk identity is not joined to its promoted runtime'
   "${SSH[@]}" "${K3S01_SSH_TARGET}" sudo bash -s -- \
     "${release_id}" "${model_digest}" "${image_digest}" \
