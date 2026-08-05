@@ -1,5 +1,5 @@
 
 vision-research.cinder.lab {
-  tls /etc/caddy/cinder-certs/current.crt /etc/caddy/cinder-certs/current.key
+  tls internal
   reverse_proxy orion-vision-research:8080
 }
