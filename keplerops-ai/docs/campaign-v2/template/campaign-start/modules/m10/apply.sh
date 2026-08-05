@@ -296,14 +296,17 @@ ensure_airflow() {
 ensure_operations_edge() {
   local caddyfile="${TEMPLATE_ROOT}/config/caddy/Caddyfile"
   local fragment="${MODULE_ROOT}/runtime/Caddyfile.fragment"
-  if ! grep -q 'campaign-m10-production-operations' "${caddyfile}"; then
-    cat "${fragment}" >>"${caddyfile}"
-  fi
   curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
     --data '{"rrsets":[{"name":"operations.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
     http://10.61.10.10:8081/api/v1/servers/localhost/zones/keplerops.lab. >/dev/null
   docker exec kep-v2-pdns-recursor rec_control wipe-cache 'keplerops.lab$' >/dev/null
-  docker cp "${caddyfile}" kep-v2-caddy:/tmp/keplerops-campaign-Caddyfile
+  # Reload Caddy with the base config plus this module's fragment WITHOUT
+  # persisting the fragment into the base Caddyfile. campaign-start/apply.sh
+  # assembles the base plus every module runtime/Caddyfile.fragment (globbed),
+  # so appending here would define operations.keplerops.lab twice and fail with
+  # "ambiguous site definition".
+  cat "${caddyfile}" "${fragment}" |
+    docker exec -i kep-v2-caddy sh -eu -c 'cat >/tmp/keplerops-campaign-Caddyfile'
   docker exec kep-v2-caddy caddy reload --adapter caddyfile \
     --config /tmp/keplerops-campaign-Caddyfile >/dev/null
   for _ in $(seq 1 30); do
