@@ -27,3 +27,12 @@ AI range currently consumes roughly 138 firewall rules, so three retained
 standalone ranges plus other project infrastructure can exhaust the quota. Tear
 down superseded retained ranges before launching additional standalone copies,
 or raise the project quota before scheduling more concurrent playtest ranges.
+
+## Walkthrough range front door
+
+The spoiler-heavy QA walkthroughs in `docs/walkthroughs/` start from the
+participant workstation and expect these participant-facing aliases to resolve:
+`idp-01.keplerops.lab`, `inference-gateway.keplerops.lab`, and
+`telemetry-proof-01.keplerops.lab`. Treat a missing alias as a range-readiness
+blocker, not as a challenge failure. Do not start recording challenge results
+until the aliases work from the Kali terminal with the range CA bundle.
