@@ -59,6 +59,7 @@ fi
 "$ROOT/scripts/start-cinder.sh"
 "$ROOT/campaign-start/apply.sh"
 "$ROOT/baseline/source-ci-registries.sh"
+"$ROOT/scripts/reconcile-oidc-clients.sh"
 "$ROOT/scripts/check-all.sh"
 
 boot_id=$(cat /proc/sys/kernel/random/boot_id)

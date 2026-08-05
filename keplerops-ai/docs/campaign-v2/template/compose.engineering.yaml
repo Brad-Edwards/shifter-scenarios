@@ -507,6 +507,10 @@ services:
       - "id.keplerops.lab:10.61.40.2"
     networks:
       harbor:
+      # harbor-core must reach Caddy / id.keplerops.lab (10.61.40.2) on the
+      # engineering network for OIDC discovery. Without this attachment its
+      # OIDC login 500s with "dial tcp 10.61.40.2:443: network is unreachable".
+      engineering:
     labels: *common-labels
 
   harbor-jobservice:
