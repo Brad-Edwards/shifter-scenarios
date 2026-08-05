@@ -65,7 +65,7 @@ if [ "$username_mapper_count" -eq 0 ]; then
     parentId: $parent,
     config: {
       "user.model.attribute": ["username"],
-      "ldap.attribute": ["sAMAccountName"],
+      "ldap.attribute": ["samaccountname"],
       "read.only": ["true"],
       "always.read.value.from.ldap": ["true"],
       "is.mandatory.in.ldap": ["true"]
@@ -85,7 +85,7 @@ else
     -r "$realm" \
     --config "$config" | jq '
       .config["user.model.attribute"] = ["username"] |
-      .config["ldap.attribute"] = ["sAMAccountName"] |
+      .config["ldap.attribute"] = ["samaccountname"] |
       .config["read.only"] = ["true"] |
       .config["always.read.value.from.ldap"] = ["true"] |
       .config["is.mandatory.in.ldap"] = ["true"]

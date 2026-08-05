@@ -222,7 +222,7 @@ class ModelSupplyContractTests(unittest.TestCase):
             "identifiers[0].split()[-50:]",
             'delivered["Message-ID"] == message_id',
             "Disclosure rule: internal sender",
-            'f"{issuer.rstrip(\'/\')}/protocol/openid-connect/token"',
+            'f"{identity_issuer.rstrip(\'/\')}/protocol/openid-connect/token"',
             '"ai_service_recipient" not in roles',
             "attachment_digest",
             "token_digest",

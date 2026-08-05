@@ -393,40 +393,61 @@ Recovery:
 - Preserve any completed WorkHub review issue and bounded identity.
 - Do not mark raw relay traffic as success; require the browser/agent chain.
 
-## kep-m02-l: The Helpful Orion Package
+## kep-m02-l: Synthetic Spearphish
 
-Intent: show that externally published AI software can execute in a reviewer
-environment through ordinary package resolution and import while still looking
-useful.
+Intent: show how AI-generated text and media can increase trust in a targeted
+message and lead a recipient to disclose a scoped token.
 
-Diagnosis:
+ATLAS techniques:
 
-- If resolution fails, check package/version coordinates, devpi
-  `publisher/stable`, authenticated upload principal, and wheel digest.
-- If signature verification fails, compare detached signature, public key, and
-  exact wheel bytes.
-- If compatibility import fails, confirm the module import name and
-  `summarize_preview_result(payload)` API.
-- If callback is absent, inspect `review-context.json` use, dynamic relay URL,
-  and whether import-time behavior preserved advertised function output.
-- If validation fails, check the accepted Forgejo record, commit/blob readback,
-  native contributor identity, and joined wrong-signature and claimed-output
-  controls.
+- `AML.T0012` Prompt Injection
+- `AML.T0043` Spearphishing
+- `AML.T0051` AI-Generated Content
+- `AML.T0057` LLM-Generated Social Engineering
 
-Tiered hints:
+Participants should learn:
 
-- Tier 1: "Use the package index and reproducer process, not uploaded logs."
-- Tier 2: "Preserve the helper API so review import succeeds."
-- Tier 3: "Bind any effect to the context reference and the exact resolved
-  wheel SHA-256."
+- Range-local generative services can create convincing but attributable text
+  and image artifacts.
+- A valid proof must bind the generated artifacts to the mail delivery, the
+  recipient decision, and the freshly issued token.
+- Token claims matter: the disclosed token must belong to the intended range,
+  user, and scoped role.
+
+Systems involved:
+
+- `inference-gateway.keplerops.lab`
+- `text-generation-01.keplerops.lab`
+- `image-generation-01.keplerops.lab`
+- `mail-server-01.keplerops.lab`
+- `idp-01.keplerops.lab`
+- `telemetry-proof-01.keplerops.lab`
+
+Expected solve:
+
+- The participant starts a spearphish campaign through the gateway using the
+  supplied generators, lets the gateway deliver the generated mail and image
+  through the range mail service, observes a `disclose` recipient decision, and
+  submits the returned campaign id through the supply attempt endpoint.
+
+Likely snags:
+
+- Missing or stale participant bearer tokens cause `401 authentication required`.
+- Broken IdP LDAP username mapping prevents the gateway from minting the
+  synthetic recipient token.
+- The public IdP hostname can differ from the internal Keycloak port; services
+  must fetch JWKS and tokens from the reachable internal issuer while accepting
+  the public issuer in claims.
+- Receipts fail if the campaign used external media, altered attachment bytes,
+  operator delivery, or a token without `ai_service_recipient`.
 
 Recovery:
 
-- Reset one rejected attempt's worker-owned result, job, basket, session, and
-  control state.
-- Preserve partner uploads, devpi releases, accepted producer checkpoints,
-  write-once entitlement, and descendants.
-- Do not delete accepted package state to make a later scenario easier.
+- Clear failed spearphish attempts and failed campaign records only.
+- Preserve completed receipt evidence and unrelated Module 02 supply chain
+  attempts.
+- Do not substitute manually minted tokens or local files for the generated
+  mail and image evidence.
 
 ## kep-m02-m: A Tool The Agent Wants
 

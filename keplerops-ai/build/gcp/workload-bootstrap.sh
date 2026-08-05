@@ -365,6 +365,7 @@ asset_id: $ASSET_ID
 range_instance: $RANGE_INSTANCE
 reset_generation: $RESET_GENERATION
 issuer: https://idp-01.keplerops.lab/realms/keplerops
+identity_internal_issuer: https://idp-01.keplerops.lab:8443/realms/keplerops
 audience: keplerops-lab
 opa_url: http://guardrail-policy.keplerops.lab:8181
 policy_api_url: https://guardrail-policy.keplerops.lab

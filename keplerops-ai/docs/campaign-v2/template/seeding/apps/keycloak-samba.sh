@@ -187,7 +187,7 @@ ldap_component_args() {
     -s "config.bindDn=$(json_array "${SAMBA_BIND_DN}")" \
     -s "config.bindCredential=$(json_array "${SAMBA_BIND_PASSWORD}")" \
     -s "config.usersDn=$(json_array "${SAMBA_USERS_DN}")" \
-    -s "config.usernameLDAPAttribute=$(json_array sAMAccountName)" \
+    -s "config.usernameLDAPAttribute=$(json_array samaccountname)" \
     -s "config.rdnLDAPAttribute=$(json_array cn)" \
     -s "config.uuidLDAPAttribute=$(json_array objectGUID)" \
     -s "config.userObjectClasses=$(json_array 'person, organizationalPerson, user')" \
@@ -221,7 +221,7 @@ group_mapper_json() {
       "ignore.missing.groups": ["false"],
       "membership.ldap.attribute": ["member"],
       "membership.attribute.type": ["DN"],
-      "membership.user.ldap.attribute": ["sAMAccountName"],
+      "membership.user.ldap.attribute": ["samaccountname"],
       "mode": ["READ_ONLY"],
       "user.roles.retrieve.strategy": ["LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"],
       "drop.non.existing.groups.during.sync": ["false"]

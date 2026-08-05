@@ -33,17 +33,21 @@ def _bearer(
 
 def _session(token: Annotated[str, Depends(_bearer)]) -> SessionClaims:
     issuer = CONFIG.get("issuer")
+    identity_issuer = CONFIG.get("identity_internal_issuer", issuer)
     audience = CONFIG.get("audience")
-    if not isinstance(issuer, str) or not isinstance(audience, str):
+    if not isinstance(issuer, str) or not isinstance(identity_issuer, str) or not isinstance(audience, str):
         raise HTTPException(status_code=503, detail=IDENTITY_UNAVAILABLE)
     try:
-        key = PyJWKClient(f"{issuer.rstrip('/')}/protocol/openid-connect/certs").get_signing_key_from_jwt(token)
+        valid_issuer: str | tuple[str, str] = (
+            issuer if identity_issuer == issuer else (issuer, identity_issuer)
+        )
+        key = PyJWKClient(f"{identity_issuer.rstrip('/')}/protocol/openid-connect/certs").get_signing_key_from_jwt(token)
         claims = jwt.decode(
             token,
             key.key,
             algorithms=["RS256"],
             audience=audience,
-            issuer=issuer,
+            issuer=valid_issuer,
             options={"require": ["exp", "sub", "preferred_username", "roles", "range_instance"]},
         )
         session = SessionClaims.from_mapping(

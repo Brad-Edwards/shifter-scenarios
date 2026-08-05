@@ -176,6 +176,7 @@ CONFIG_FIELDS = {
     "asset_id",
     "range_instance",
     "issuer",
+    "identity_internal_issuer",
     "audience",
     "opa_url",
     "policy_api_url",

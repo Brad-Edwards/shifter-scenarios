@@ -126,7 +126,7 @@
           "editMode": ["READ_ONLY"],
           "importEnabled": ["true"],
           "syncRegistrations": ["false"],
-          "usernameLDAPAttribute": ["sAMAccountName"],
+          "usernameLDAPAttribute": ["samaccountname"],
           "rdnLDAPAttribute": ["cn"],
           "uuidLDAPAttribute": ["objectGUID"],
           "userObjectClasses": ["person, organizationalPerson, user"],
@@ -145,7 +145,7 @@
               "providerId": "user-attribute-ldap-mapper",
               "config": {
                 "user.model.attribute": ["username"],
-                "ldap.attribute": ["sAMAccountName"],
+                "ldap.attribute": ["samaccountname"],
                 "read.only": ["true"],
                 "always.read.value.from.ldap": ["true"],
                 "is.mandatory.in.ldap": ["true"]

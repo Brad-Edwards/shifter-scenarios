@@ -576,7 +576,7 @@ class GcpBuildContractTests(unittest.TestCase):
         self.assertIn("Keycloak company-state readback did not converge; continuing", keycloak_entrypoint)
         keycloak_readback = (PACK_ROOT / "assets/services/keycloak-company-state-readback.sh").read_text(encoding="utf-8")
         self.assertIn("keycloak-ldap-username-mapper.json", keycloak_readback)
-        self.assertIn('"ldap.attribute": ["sAMAccountName"]', keycloak_readback)
+        self.assertIn('"ldap.attribute": ["samaccountname"]', keycloak_readback)
         self.assertIn('"always.read.value.from.ldap": ["true"]', keycloak_readback)
         keycloak_realm = json.loads((PACK_ROOT / "assets/services/keycloak-realm.json").read_text(encoding="utf-8"))
         self.assertEqual(keycloak_realm["accessTokenLifespan"], 3600)
@@ -621,7 +621,7 @@ class GcpBuildContractTests(unittest.TestCase):
             username_mapper["config"],
             {
                 "user.model.attribute": ["username"],
-                "ldap.attribute": ["sAMAccountName"],
+                "ldap.attribute": ["samaccountname"],
                 "read.only": ["true"],
                 "always.read.value.from.ldap": ["true"],
                 "is.mandatory.in.ldap": ["true"],

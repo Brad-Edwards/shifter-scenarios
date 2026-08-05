@@ -269,24 +269,24 @@ Progressive hints:
 - Keep the repository plausible enough for review.
 - The package name or symbol selected from your documentation is the lever.
 
-## kep-m02-l: The Helpful Orion Package
+## kep-m02-l: Synthetic Spearphish
 
-Goal: introduce a useful-looking Orion helper through the partner package review
-process and observe what happens when the reviewer imports it.
+Goal: use the range-local generators to create a targeted message and matching
+synthetic media, then prove that the normal mail and identity systems observed
+the resulting disclosure.
 
-Publish a signed wheel to the assigned partner index using the publisher route
-you earned earlier. Upload the SBOM, detached signature, public key, and package
-reproducer JSON into the Orion review room. Preserve the advertised helper API
-so the compatibility import succeeds. Review the package result and the accepted
-producer record created by KeplerOps.
+This challenge is about the trust chain around generated content. The useful
+part is not just writing a convincing message; it is keeping enough native
+evidence that the mail delivery, attachment bytes, recipient decision, and
+disclosed token all line up.
 
 Progressive hints:
 
-- The review resolves from the configured package index; uploaded logs or
-  claimed output are not enough.
-- The helper has to be genuinely callable by the reproducer.
-- Import-time behavior is observed only when it is tied to the exact resolved
-  wheel.
+- Use the supplied text and image generation path; externally created content
+  will not satisfy the proof.
+- Keep the campaign id returned by the gateway.
+- The disclosed token should be fresh, range-scoped, and limited to the role
+  needed by the scenario.
 
 ## kep-m02-m: A Tool The Agent Wants
 

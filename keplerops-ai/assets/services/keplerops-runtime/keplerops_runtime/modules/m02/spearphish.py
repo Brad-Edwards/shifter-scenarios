@@ -260,13 +260,14 @@ def _mail_round_trip(
 
 async def _mint_spearphish_token() -> tuple[str, str, int]:
     issuer = CONFIG.get("issuer")
+    identity_issuer = CONFIG.get("identity_internal_issuer", issuer)
     audience = CONFIG.get("audience")
-    if not isinstance(issuer, str) or not isinstance(audience, str):
+    if not isinstance(issuer, str) or not isinstance(identity_issuer, str) or not isinstance(audience, str):
         raise HTTPException(status_code=503, detail=IDENTITY_UNAVAILABLE)
     client = _backend_http_client("spearphish-identity", timeout=10.0, verify=TLS_CA_PATH)
     try:
         response = await client.post(
-            f"{issuer.rstrip('/')}/protocol/openid-connect/token",
+            f"{identity_issuer.rstrip('/')}/protocol/openid-connect/token",
             data={
                 "client_id": "keplerops-lab",
                 "grant_type": "password",
@@ -276,14 +277,17 @@ async def _mint_spearphish_token() -> tuple[str, str, int]:
         )
         token = response.json()["access_token"]
         key = PyJWKClient(
-            f"{issuer.rstrip('/')}/protocol/openid-connect/certs"
+            f"{identity_issuer.rstrip('/')}/protocol/openid-connect/certs"
         ).get_signing_key_from_jwt(token)
+        valid_issuer: str | tuple[str, str] = (
+            issuer if identity_issuer == issuer else (issuer, identity_issuer)
+        )
         claims = jwt.decode(
             token,
             key.key,
             algorithms=["RS256"],
             audience=audience,
-            issuer=issuer,
+            issuer=valid_issuer,
             options={
                 "require": [
                     "exp",
