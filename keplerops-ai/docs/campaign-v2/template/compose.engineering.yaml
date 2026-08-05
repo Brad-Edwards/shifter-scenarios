@@ -96,6 +96,11 @@ x-airflow-environment: &airflow-environment
   LAKEFS_SECRET_ACCESS_KEY: KeplerV2-Training-LakeFS-Object-Key
 
 x-airflow-service: &airflow-service
+  # Long-running airflow services must self-heal a transient DB blip during a
+  # fresh startup: scheduler/dag-processor otherwise crash (Exit 1) when the
+  # metadata DB briefly cycles and stay down, failing engineering readiness.
+  # airflow-init overrides this with restart:"no" (it is a one-shot).
+  restart: unless-stopped
   image: keplerops/airflow:campaign-v2-clean
   build:
     context: ./engineering
@@ -374,7 +379,12 @@ services:
       - harbor-db-data:/var/lib/postgresql/data
     networks:
       engineering:
-        ipv4_address: 10.61.40.134
+        # Keep harbor-db's static below the dynamic-allocation zone: at .134 it
+        # overlapped the pool Docker hands to dynamic-IP containers, so on a
+        # bake/restore a dynamic container (e.g. forgejo-runner) could grab it
+        # first and harbor-db failed with "Address already in use". All other
+        # engineering statics sit in .2-.57.
+        ipv4_address: 10.61.40.40
       harbor:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d registry"]
@@ -502,6 +512,16 @@ services:
       - "id.keplerops.lab:10.61.40.2"
     networks:
       harbor:
+      # harbor-core must reach Caddy / id.keplerops.lab (10.61.40.2) on the
+      # engineering network for OIDC discovery. Without this attachment its
+      # OIDC login 500s with "dial tcp 10.61.40.2:443: network is unreachable".
+      # Pin a static address: harbor-core is the only dynamic-IP client on this
+      # densely-static subnet, so its dynamic allocation races the concurrent
+      # converge on a from-scratch resume ("failed to set up container
+      # networking: Address already in use") even though a live post-boot
+      # `docker network connect` succeeds.
+      engineering:
+        ipv4_address: 10.61.40.38
     labels: *common-labels
 
   harbor-jobservice:

@@ -15,6 +15,12 @@ if [[ $MODE != build && $MODE != resume ]]; then
   exit 2
 fi
 
+# buildx is not installed on the range host, so Compose's Bake build path
+# mishandles services that share a build (it hands the second one a 2-byte
+# dockerfile). Disable Bake for every compose build in this standup; Bake is a
+# build-only feature, so pulls and `up` are unaffected.
+export COMPOSE_BAKE=false
+
 if [[ $MODE == resume ]]; then
   export KEPLEROPS_SKIP_PULL=1
 fi
@@ -51,8 +57,27 @@ fi
 
 "$ROOT/scripts/start-workstation.sh"
 "$ROOT/scripts/start-cinder.sh"
-"$ROOT/campaign-start/apply.sh"
+# Modules M01-M10 are installed once at build time and captured in the bake;
+# their containers auto-start from the baked disks on boot. Re-running apply.sh
+# on resume is not idempotent: it re-seeds records (409s), re-applies identity/
+# policy over existing state, and re-runs apply-time self-tests written for a
+# fresh substrate (e.g. M08's project-enumeration boundary check), so a captured
+# range that stood up cleanly then fails to resume. Apply only on a fresh build;
+# on resume the baked module state is authoritative and check-all still gates it.
+if [[ $MODE == build ]]; then
+  "$ROOT/campaign-start/apply.sh"
+else
+  # apply.sh (skipped on resume) assembles base + module Caddy fragments and
+  # reloads caddy, and writes the software-readiness marker the gate below
+  # verifies. The caddy container only ever loads the base file, and the marker
+  # lives on tmpfs (/run), so both must be redone on a from-bake boot.
+  "$ROOT/scripts/reconcile-campaign-caddy.sh"
+  install -d -m 0755 /run/shifter
+  printf '%s\tresume\tsoftware-operations\n' \
+    "$(cat /proc/sys/kernel/random/boot_id)" >"$CAMPAIGN_READY"
+fi
 "$ROOT/baseline/source-ci-registries.sh"
+"$ROOT/scripts/reconcile-oidc-clients.sh"
 "$ROOT/scripts/check-all.sh"
 
 boot_id=$(cat /proc/sys/kernel/random/boot_id)

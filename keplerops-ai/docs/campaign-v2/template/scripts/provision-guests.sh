@@ -7,6 +7,11 @@ readonly IMAGE_DIR=/var/lib/libvirt/images/keplerops-v2
 readonly DOMAIN=CORP.KEPLEROPS.LAB
 readonly SHORT_DOMAIN=KEPLEROPS
 readonly ADMIN_PASSWORD=KeplerV2-Training-AD-Admin
+# The libvirt network created by ensure-identity-network.sh; create_guest attaches
+# guests to it. ensure_network() runs that script in a subshell, so define the
+# name here too (must match KEPLEROPS_IDENTITY_NETWORK there) or a guest *create*
+# (e.g. RECREATE_GUESTS) fails under set -u with "NETWORK: unbound variable".
+readonly NETWORK="${KEPLEROPS_IDENTITY_NETWORK:-kep-v2-identity}"
 
 if [[ ${EUID} -ne 0 ]]; then
   echo "provision-guests.sh must run as root" >&2
@@ -199,6 +204,18 @@ create_guest() {
     virsh destroy "$name" >/dev/null 2>&1 || true
     virsh undefine "$name" --nvram >/dev/null 2>&1 ||
       virsh undefine "$name" >/dev/null 2>&1 || true
+    # A recreated guest boots with a NEW SSH host key. Drop the stale entry so
+    # later ssh calls (StrictHostKeyChecking=accept-new) learn the new key rather
+    # than failing with "Host key verification failed" (rc=255).
+    local guest_ip=""
+    case "$name" in
+      dc01) guest_ip=192.168.78.10 ;;
+      dc02) guest_ip=192.168.78.11 ;;
+      review01) guest_ip=192.168.78.20 ;;
+      integration01) guest_ip=192.168.78.21 ;;
+      k3s01) guest_ip=192.168.78.30 ;;
+    esac
+    [[ -z $guest_ip ]] || ssh-keygen -f /root/.ssh/known_hosts -R "$guest_ip" >/dev/null 2>&1 || true
   fi
   if virsh dominfo "$name" >/dev/null 2>&1; then
     if [[ $(virsh domstate "$name") == 'shut off' ]]; then

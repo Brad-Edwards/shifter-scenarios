@@ -77,7 +77,18 @@ verify_clean_platform_release() {
       "${assistant_release}" "${assistant_model}" "${assistant_image}"; do
     [[ ${value} =~ ^sha256:[0-9a-f]{64}$ ]] || die 'clean platform identity contains an invalid digest'
   done
-  "${TEMPLATE_ROOT}/baseline/release-runtime-continuity.sh" >/dev/null || \
+  # The release-risk runtime (KServe) can still be settling right after the
+  # M09->M10 identity activation restarts the serving path, so poll the
+  # continuity join rather than failing on the first miss.
+  continuity_joined=0
+  for _ in $(seq 1 30); do
+    if "${TEMPLATE_ROOT}/baseline/release-runtime-continuity.sh" >/dev/null 2>&1; then
+      continuity_joined=1
+      break
+    fi
+    sleep 10
+  done
+  [[ ${continuity_joined} == 1 ]] || \
     die 'clean Release Risk identity is not joined to its promoted runtime'
   "${SSH[@]}" "${K3S01_SSH_TARGET}" sudo bash -s -- \
     "${release_id}" "${model_digest}" "${image_digest}" \
@@ -285,14 +296,17 @@ ensure_airflow() {
 ensure_operations_edge() {
   local caddyfile="${TEMPLATE_ROOT}/config/caddy/Caddyfile"
   local fragment="${MODULE_ROOT}/runtime/Caddyfile.fragment"
-  if ! grep -q 'campaign-m10-production-operations' "${caddyfile}"; then
-    cat "${fragment}" >>"${caddyfile}"
-  fi
   curl -fsS -H 'X-API-Key: KeplerV2-Training-PDNS' -H 'Content-Type: application/json' -X PATCH \
     --data '{"rrsets":[{"name":"operations.keplerops.lab.","type":"A","ttl":60,"changetype":"REPLACE","records":[{"content":"10.61.10.2","disabled":false}]}]}' \
     http://10.61.10.10:8081/api/v1/servers/localhost/zones/keplerops.lab. >/dev/null
   docker exec kep-v2-pdns-recursor rec_control wipe-cache 'keplerops.lab$' >/dev/null
-  docker cp "${caddyfile}" kep-v2-caddy:/tmp/keplerops-campaign-Caddyfile
+  # Reload Caddy with the base config plus this module's fragment WITHOUT
+  # persisting the fragment into the base Caddyfile. campaign-start/apply.sh
+  # assembles the base plus every module runtime/Caddyfile.fragment (globbed),
+  # so appending here would define operations.keplerops.lab twice and fail with
+  # "ambiguous site definition".
+  cat "${caddyfile}" "${fragment}" |
+    docker exec -i kep-v2-caddy sh -eu -c 'cat >/tmp/keplerops-campaign-Caddyfile'
   docker exec kep-v2-caddy caddy reload --adapter caddyfile \
     --config /tmp/keplerops-campaign-Caddyfile >/dev/null
   for _ in $(seq 1 30); do

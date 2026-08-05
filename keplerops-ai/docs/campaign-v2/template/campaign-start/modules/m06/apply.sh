@@ -835,7 +835,12 @@ apply_common() {
   install_participant_prerequisite_identity
   install_participant_mail_identity
   install_knative_publisher
-  compose up -d --build cinder-forgejo-runner
+  # cinder-forgejo-runner is already built by start-cinder.sh (image
+  # keplerops/forgejo-runner:campaign-v2-clean). Rebuilding it here via the
+  # multi-file compose function trips a Compose build-context bug on the
+  # buildx-less host (2-byte dockerfile / "failed to read dockerfile:
+  # Dockerfile.forgejo-runner"). Reuse the existing image instead of rebuilding.
+  compose up -d --no-build cinder-forgejo-runner
   install_participant_publisher_access
 }
 

@@ -27,6 +27,11 @@ fi
 if [[ ${KEPLEROPS_SKIP_PULL:-0} != 1 ]]; then
   docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml pull --ignore-buildable
 fi
+# cinder-forgejo-runner-init and cinder-forgejo-runner build the SAME image. With
+# buildx absent, Compose's Bake fallback hands the second same-image service a
+# 2-byte dockerfile ("failed to read dockerfile: Dockerfile.forgejo-runner").
+# Disable Bake and serialize the build (same workaround as m01/apply.sh).
+COMPOSE_BAKE=false COMPOSE_PARALLEL_LIMIT=1 \
 docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml build \
   cinder-forgejo-runner-init cinder-forgejo-runner
 docker compose --env-file engineering/component-lock.additions.env --env-file component-lock.env -f compose.cinder.yaml up -d

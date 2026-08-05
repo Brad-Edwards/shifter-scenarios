@@ -77,6 +77,28 @@ wait_url() {
   die "endpoint did not become ready: ${name} (${url})"
 }
 
+wait_harbor() {
+  # Harbor's nginx and jobservice can start before harbor-core is ready and get
+  # wedged (nginx serves 502, jobservice restart-loops), so the API never goes
+  # healthy within the wait even though core is fine. Kick nginx + jobservice
+  # once mid-wait so nginx re-resolves its upstreams, then keep polling.
+  local url='http://10.61.40.32:8080/api/v2.0/health'
+  local attempt kicked=0
+  for ((attempt = 1; attempt <= HEALTH_ATTEMPTS; attempt++)); do
+    if curl --fail --silent --show-error --location \
+      --connect-timeout 3 --max-time 10 "${url}" >/dev/null 2>&1; then
+      printf '[engineering] %-24s %s\n' 'Harbor API' "${url}"
+      return 0
+    fi
+    if ((kicked == 0 && attempt >= HEALTH_ATTEMPTS / 3)); then
+      docker restart kep-v2-harbor-nginx kep-v2-harbor-jobservice >/dev/null 2>&1 || true
+      kicked=1
+    fi
+    sleep "${HEALTH_DELAY}"
+  done
+  die "endpoint did not become ready: Harbor API (${url})"
+}
+
 reconcile_postgres() {
   log 'reconciling application roles and databases'
   docker exec -i kep-v2-postgres \
@@ -87,7 +109,7 @@ reconcile_postgres() {
 reconcile_products() {
   log 'reconciling package indexes, registry trust, object stores, and orchestration metadata'
   wait_service devpi
-  wait_url 'Harbor API' 'http://10.61.40.32:8080/api/v2.0/health'
+  wait_harbor
   wait_url 'Label Studio API' 'http://10.61.40.34:8080/health'
   wait_url 'MinIO API' 'http://10.61.50.60:9000/minio/health/live'
   wait_url 'lakeFS API' 'http://10.61.50.61:8000/api/v1/healthcheck'
@@ -127,7 +149,7 @@ health() {
   log 'checking product APIs'
   wait_url 'devpi' 'http://10.61.40.30:3141/+status'
   wait_url 'Verdaccio' 'http://10.61.40.31:4873/-/ping'
-  wait_url 'Harbor' 'http://10.61.40.32:8080/api/v2.0/health'
+  wait_harbor
   wait_url 'JupyterHub' 'http://10.61.40.33:8000/hub/health'
   wait_url 'Label Studio' 'http://10.61.40.34:8080/health'
   wait_url 'MinIO API' 'http://10.61.50.60:9000/minio/health/live'
