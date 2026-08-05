@@ -57,7 +57,16 @@ fi
 
 "$ROOT/scripts/start-workstation.sh"
 "$ROOT/scripts/start-cinder.sh"
-"$ROOT/campaign-start/apply.sh"
+# Modules M01-M10 are installed once at build time and captured in the bake;
+# their containers auto-start from the baked disks on boot. Re-running apply.sh
+# on resume is not idempotent: it re-seeds records (409s), re-applies identity/
+# policy over existing state, and re-runs apply-time self-tests written for a
+# fresh substrate (e.g. M08's project-enumeration boundary check), so a captured
+# range that stood up cleanly then fails to resume. Apply only on a fresh build;
+# on resume the baked module state is authoritative and check-all still gates it.
+if [[ $MODE == build ]]; then
+  "$ROOT/campaign-start/apply.sh"
+fi
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/scripts/reconcile-oidc-clients.sh"
 "$ROOT/scripts/check-all.sh"
