@@ -22,6 +22,11 @@ readonly LEGACY_FLOW_NAME='Orion Preview Integration Flow'
 readonly STARTER_NAME='Basic Prompting'
 readonly VARIABLE_NAME=ORION_AGENT_API_KEY
 readonly WORKHUB_SOURCE_ID=ORION-RELEASE-POLICY-2026
+readonly WORKHUB_COLLECTION="${WORKHUB_COLLECTION:-orion_partner_intake}"
+# An engineering-network container with python3 that resolves qdrant-writer; used
+# only to reach the Orion retrieval corpus, which the seeding compose helper
+# (foundation + enterprise) cannot address.
+readonly QDRANT_SEED_CONTAINER="${QDRANT_SEED_CONTAINER:-kep-v2-airflow-worker}"
 readonly CONVERSATION_ID=langflow-orion-preview-integration
 readonly EMPLOYEE_PROMPT="Review candidate orion-edge-2026.08 for Preview integration. Use lookup_release_context for ${WORKHUB_SOURCE_ID}, summarize the required release evidence with citations, and open a handoff to Release Engineering for digest-bound validation."
 
@@ -231,6 +236,105 @@ seed_conversation() {
     SET "${key}" "${payload}" EX 2592000 >/dev/null
 }
 
+seed_release_policy_source() {
+  # The "Orion Preview Release Review" flow requires the assistant to retrieve
+  # and cite the benign Orion Release Policy via lookup_release_context. That
+  # source must exist in the Orion retrieval corpus for a clean standup: on a
+  # fresh substrate the Qdrant volume is empty, so seed the policy point here
+  # instead of relying on persisted volume state. Writes go through qdrant-writer
+  # (which injects the write key) into the single backing store the assistant
+  # reads through qdrant-edge.
+  retry 60 2 bash -c \
+    "[[ \$(docker inspect --format '{{.State.Running}}' '${QDRANT_SEED_CONTAINER}' 2>/dev/null) == true ]]" ||
+    die "Qdrant seeding container is unavailable: ${QDRANT_SEED_CONTAINER}"
+
+  docker exec --interactive \
+    --env WORKHUB_COLLECTION="${WORKHUB_COLLECTION}" \
+    --env WORKHUB_SOURCE_ID="${WORKHUB_SOURCE_ID}" \
+    "${QDRANT_SEED_CONTAINER}" python3 - <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import math
+import os
+import re
+import urllib.error
+import urllib.request
+
+QDRANT_WRITE_URL = "http://qdrant-writer:6333"
+COLLECTION = os.environ["WORKHUB_COLLECTION"]
+SOURCE_ID = os.environ["WORKHUB_SOURCE_ID"]
+POINT_ID = 2026080201
+VECTOR_SIZE = 128
+POLICY_TEXT = (
+    "Orion release candidates require an immutable source digest, a completed "
+    "evaluation record, and an approval bound to the candidate digest. Release "
+    "Engineering owns promotion; Finance cannot approve a model release."
+)
+
+
+def feature_hash(text: str) -> list[float]:
+    vector = [0.0] * VECTOR_SIZE
+    for token in re.findall(r"[a-z0-9_]+", text.lower()):
+        digest = hashlib.sha256(token.encode()).digest()
+        bucket = int.from_bytes(digest[:4], "big") % VECTOR_SIZE
+        vector[bucket] += 1.0 if digest[4] & 1 else -1.0
+    norm = math.sqrt(sum(value * value for value in vector)) or 1.0
+    return [value / norm for value in vector]
+
+
+def qdrant(method: str, path: str, body: object | None = None) -> None:
+    data = json.dumps(body).encode() if body is not None else None
+    request = urllib.request.Request(
+        QDRANT_WRITE_URL + path,
+        data=data,
+        headers={"Content-Type": "application/json"},
+        method=method,
+    )
+    with urllib.request.urlopen(request, timeout=30) as response:
+        response.read()
+
+
+try:
+    with urllib.request.urlopen(
+        urllib.request.Request(
+            f"{QDRANT_WRITE_URL}/collections/{COLLECTION}", method="GET"
+        ),
+        timeout=20,
+    ) as response:
+        response.read()
+except urllib.error.HTTPError as error:
+    if error.code != 404:
+        raise
+    qdrant(
+        "PUT",
+        f"/collections/{COLLECTION}",
+        {"vectors": {"size": VECTOR_SIZE, "distance": "Cosine"}},
+    )
+
+qdrant(
+    "PUT",
+    f"/collections/{COLLECTION}/points?wait=true",
+    {
+        "points": [
+            {
+                "id": POINT_ID,
+                "vector": feature_hash(POLICY_TEXT),
+                "payload": {
+                    "source_id": SOURCE_ID,
+                    "title": "Orion Release Policy",
+                    "filename": "workhub/orion-release-policy.md",
+                    "text": POLICY_TEXT,
+                },
+            }
+        ]
+    },
+)
+print(f"seeded {SOURCE_ID} into {COLLECTION}")
+PY
+}
+
 main() {
   require_command curl
   require_command docker
@@ -377,6 +481,7 @@ main() {
     ' <<<"${flow}" >/dev/null ||
     die "Langflow Orion release review flow reconciliation failed"
 
+  seed_release_policy_source
   seed_conversation
   log "Langflow release engineer and executable Orion review flow are ready: $(jq -r .id <<<"${flow}")"
 }
