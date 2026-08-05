@@ -67,10 +67,14 @@ fi
 if [[ $MODE == build ]]; then
   "$ROOT/campaign-start/apply.sh"
 else
-  # apply.sh (skipped on resume) is what assembles base + module Caddy fragments
-  # and reloads caddy; the caddy container itself only ever loads the base file,
-  # so on a from-bake boot re-assemble the campaign routes here.
+  # apply.sh (skipped on resume) assembles base + module Caddy fragments and
+  # reloads caddy, and writes the software-readiness marker the gate below
+  # verifies. The caddy container only ever loads the base file, and the marker
+  # lives on tmpfs (/run), so both must be redone on a from-bake boot.
   "$ROOT/scripts/reconcile-campaign-caddy.sh"
+  install -d -m 0755 /run/shifter
+  printf '%s\tresume\tsoftware-operations\n' \
+    "$(cat /proc/sys/kernel/random/boot_id)" >"$CAMPAIGN_READY"
 fi
 "$ROOT/baseline/source-ci-registries.sh"
 "$ROOT/scripts/reconcile-oidc-clients.sh"
