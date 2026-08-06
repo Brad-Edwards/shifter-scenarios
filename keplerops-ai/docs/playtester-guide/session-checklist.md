@@ -7,6 +7,10 @@
 - Confirm the participant endpoint opens from the allowed source CIDR.
 - Confirm the participant can reach the Kasm workstation.
 - Confirm the lab portal and receipt/proof surfaces respond.
+- From the participant workstation terminal, confirm the QA walkthrough start
+  aliases resolve and respond before starting module work:
+  `idp-01.keplerops.lab`, `inference-gateway.keplerops.lab`, and
+  `telemetry-proof-01.keplerops.lab`.
 - For the current event-readiness proof, track 132 in-scope challenge
   receipts; exclude hardware-oriented `kep-m06-m` and `kep-m08-i`.
 - Record the range instance, participant id, reset generation, and source CIDR
