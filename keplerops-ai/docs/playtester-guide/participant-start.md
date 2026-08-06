@@ -6,9 +6,10 @@ and submit objective receipts in Shifter.
 
 ## Sign in
 
-1. Open the [Shifter CTF login](https://gcp.shifter.keplerops.com/ctf/login/).
-2. Sign in with the participant username and temporary password supplied by the
-   organizer.
+1. Open the [Shifter CTF login](https://aisf.keplerops.com/ctf/login/). The
+   trailing slash is required.
+2. Get your participant username and temporary password from the organizers,
+   then sign in with those credentials.
 3. If Shifter asks you to choose a new password, do that before continuing.
 4. Open **Range** in Shifter.
 5. Find the Kali workstation and select **Open**. Shifter opens the desktop
