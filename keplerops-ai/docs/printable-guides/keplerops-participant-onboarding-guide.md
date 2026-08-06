@@ -70,12 +70,16 @@ system, get a flag, submit it in Shifter.
 
 ### 10-20 Minutes: Pick A Starter Challenge
 
-Start with an early challenge in one of these areas:
+Start with an early challenge in one of these Shifter categories:
 
-- Agent Control;
-- Model Evasion;
-- Context Poisoning;
-- Model Secrets.
+- AI Agent Security;
+- Model Security;
+- Data and Retrieval;
+- Model Privacy.
+
+Those are the category names shown in the challenge list. If organizers call a
+module by a different classroom name, use the category name you see in Shifter
+when choosing the challenge.
 
 Pick a challenge with no prerequisite if possible. Read the objective and the
 first hint. Identify the main system it mentions, then try the smallest action
