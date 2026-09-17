@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools==84.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shifter-panw-adapter"
+version = "0.1.0"
+description = "Private scenario runtime adapter components"
+requires-python = ">=3.12"
+dependencies = ["shifter-adapter-sdk[runtime]==0.1.0"]
+
+[project.entry-points."shifter.runtime.plugins"]
+polaris = "shifter_panw_adapter.runtime:PolarisAdapter"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+shifter_panw_adapter = ["assets/*.py", "assets/*.cjs"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

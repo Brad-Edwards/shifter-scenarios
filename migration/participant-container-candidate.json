@@ -1,0 +1,16 @@
+{
+  "scope": "local participant container; no cloud guest or live broker qualification",
+  "image_id": "sha256:de618bc9cb55a6f5648d72c7891bbd1862fbf9b269b11873416b255b7d2d03b6",
+  "recipe_sha256": "9dedaded6305d71f93cfa259136e6295c89d5cd7ad3ba07e62e8e0fc3a5bcb22",
+  "network": "none; synthetic loopback endpoint only",
+  "root_filesystem": "read-only",
+  "client_wire": {
+    "client_version": "2.1.108",
+    "status": "passed",
+    "message_requests": 2,
+    "streaming": true,
+    "local_tool_result": true,
+    "helper_authentication": true
+  },
+  "cloud_guest_image_bakes": "pending target and execution window"
+}

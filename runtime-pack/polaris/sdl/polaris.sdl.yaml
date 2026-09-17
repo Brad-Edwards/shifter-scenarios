@@ -1,0 +1,70 @@
+name: polaris
+description: 'Polaris / NORTHSTORM runtime launch binding for AWS and GCP: a baked
+  container host and pre-promoted directory guest. The private image and adapter own
+  the internal scenario topology. Host-network addresses are allocated per range and
+  supplied through SDK runtime values.'
+nodes:
+  a14-kali:
+    type: compute
+    os: linux
+    os_distribution: x-shifter:kali
+    os_version: rolling
+    source:
+      name: polaris-vm
+    resources:
+      ram: 8 gib
+      cpu: 2
+    services:
+    - port: 22
+      name: ssh
+    - port: 3389
+      name: rdp
+  dc01:
+    type: compute
+    os: windows
+    os_distribution: windows-server
+    os_version: '2022'
+    source:
+      name: polaris-dc
+    resources:
+      ram: 4 gib
+      cpu: 2
+    services:
+    - port: 389
+      name: ldap
+    - port: 445
+      name: smb
+entities:
+  participant:
+    description: Polaris participant
+    role: red
+accounts:
+  kali_login:
+    username: kali
+    node: a14-kali
+    auth_method: key
+agents:
+  participant:
+    entity: participant
+    description: Participant with SSH access to the Kali docker-host
+    starting_accounts:
+    - kali_login
+    interactive_access:
+      kali_ssh:
+        target_ref: a14-kali
+        channel: ssh
+        account_ref: kali_login
+realization:
+  constraints:
+  - field_pointer: /nodes/a14-kali
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine
+  - field_pointer: /nodes/dc01
+    concern: compute-substrate
+    posture: exact
+    domain:
+      kind: exact
+      value: virtual-machine

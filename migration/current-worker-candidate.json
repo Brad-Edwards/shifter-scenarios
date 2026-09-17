@@ -1,0 +1,21 @@
+{
+  "scope": "local installed-wheel and isolated worker protocol; no guest or cloud execution",
+  "invocations": 9,
+  "providers": [
+    "aws",
+    "gcp"
+  ],
+  "runtime": "local runc; not cloud gVisor qualification",
+  "network": "none",
+  "root_filesystem": "read-only",
+  "uid": 65532,
+  "synthetic_manifest_coordinates": true,
+  "image_id": "sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
+  "registry_digest": "sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
+  "sdk_wheel_sha256": "709f416acc766ab22fb683668d9e43637f59b5224c0b650604d4b53f6798faba",
+  "adapter_wheel_sha256": "379e6da37ae54178a536c177a0375d7037243f9afe159b9df1f8655508781d0f",
+  "python_tests_passed": 42,
+  "client_shim_tests_passed": 14,
+  "build_inputs": "migration/worker-build-inputs.json",
+  "sdk_source": "locally built wheel"
+}

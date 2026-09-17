@@ -1,0 +1,11 @@
+name: polaris
+title: Polaris / NORTHSTORM
+version: 0.2.0
+status: draft
+description: Private AWS and GCP runtime launch package. Requires the separately installed
+  private adapter and published guest images. Local qualification candidate; no live
+  acceptance claim.
+authors:
+- Palo Alto Networks, Inc.
+provenance_ledger: docs/provenance-ledger.yaml
+associated_artifact_manifest: associated-artifacts.json

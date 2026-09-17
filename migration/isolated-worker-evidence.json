@@ -1,0 +1,14 @@
+{
+  "scope": "local worker protocol, no guest or cloud execution",
+  "invocations": 9,
+  "providers": [
+    "aws",
+    "gcp"
+  ],
+  "runtime": "local runc; not cloud gVisor qualification",
+  "network": "none",
+  "root_filesystem": "read-only",
+  "uid": 65532,
+  "image_id": "sha256:ce41831be625347a07ca4840f1e691496f97cd4cae3bc8a34a69c40ce61cae09",
+  "adapter_wheel_sha256": "78224a2d7e46b6307a76179c4cd61b5bcc8ed5d2fff7cc48741a648aaf7d3dfe"
+}

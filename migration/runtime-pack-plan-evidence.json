@@ -1,0 +1,7 @@
+{
+  "kind": "offline-plan-validation",
+  "cloud_calls": false,
+  "images": "synthetic profiles; no image qualification",
+  "aws_guests": 2,
+  "gcp_guests": 2
+}
