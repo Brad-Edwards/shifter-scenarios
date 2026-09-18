@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import sqlite3
 import sys
 import tempfile
@@ -82,6 +83,27 @@ def seed_chromium_history(path: Path) -> None:
 
 
 class WorkstationBrowserCaptureTests(unittest.TestCase):
+    def test_chromium_opens_at_agent_control_without_profile_mutation(self) -> None:
+        dockerfile = (PACK_ROOT / "assets/services/Dockerfile.kali").read_text(
+            encoding="utf-8"
+        )
+        policy = json.loads(
+            (PACK_ROOT / "assets/services/chromium-startup-policy.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        launcher = (PACK_ROOT / "assets/services/chromium.desktop").read_text(
+            encoding="utf-8"
+        )
+        start_url = "https://inference-gateway.keplerops.lab/agent-control"
+
+        self.assertEqual(policy["HomepageLocation"], start_url)
+        self.assertEqual(policy["RestoreOnStartup"], 4)
+        self.assertEqual(policy["RestoreOnStartupURLs"], [start_url])
+        self.assertIn(f"Exec=/usr/bin/chromium --new-window {start_url} %U", launcher)
+        self.assertIn("/etc/chromium/policies/managed/keplerops-startup.json", dockerfile)
+        self.assertIn("/home/kasm-default-profile/.config/xfce4/panel/launcher-6/", dockerfile)
+
     def test_chromium_history_emits_navigation_and_download_events(self) -> None:
         capture = load_module(
             "assets/services/kali-browser-recorder.py",
