@@ -1,0 +1,15 @@
+{
+  "schema": "private-worker-registry-candidate/v1",
+  "source_revision": "b60933d429a27a2809bf2b31b38285876d97ad6c",
+  "image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
+  "tag": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter:0.1.0-candidate-sdk-1a1d21796b03",
+  "visibility": "internal",
+  "visibility_decision": "Maintainer confirmed Internal is the intended access level, matching the repository.",
+  "source_label": "https://github.com/PaloAltoNetworks/shifter-scenarios",
+  "api_repository_link": null,
+  "pull_by_digest": "passed",
+  "isolated_inspection": "compatible",
+  "sdk_source": "locally built wheel",
+  "live_qualified": false,
+  "sdk_source_revision": "1a1d21796b03a2fdc2c93046d05819f7fff4fe02"
+}

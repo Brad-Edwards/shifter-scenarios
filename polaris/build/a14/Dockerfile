@@ -56,8 +56,8 @@ RUN python3 -m venv /opt/tools && \
     ln -sf /opt/tools/bin/smbclient.py /usr/local/bin/impacket-smbclient.py
 ENV PATH="/opt/tools/bin:${PATH}"
 
-# Claude Code CLI (runtime API key/model config injected by Shifter at deploy time)
-RUN npm install -g @anthropic-ai/claude-code
+# Qualified client; the private adapter configures temporary broker access at runtime.
+RUN npm install -g @anthropic-ai/claude-code@2.1.108
 
 # Set kali user password and enable SSH password auth (matches AWS base.sh)
 RUN echo "kali:kali" | chpasswd && \
