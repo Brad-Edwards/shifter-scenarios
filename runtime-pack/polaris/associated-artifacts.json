@@ -51,9 +51,9 @@
       "uri": "raes-environment-pack:/model-needs.json",
       "checksum": {
         "algorithm": "sha256",
-        "value": "09d53f3074e5ee7d21988de84e730458f97d3cce1707b0daa85fcd5ebebe5290"
+        "value": "e04ed99d8567e7ee791b2d40e1943132b7eb788a02ab55ca0c4158c6830c5d13"
       },
-      "size_bytes": 799,
+      "size_bytes": 796,
       "created_at": "2026-09-17T00:00:00Z",
       "source": "private-pack-owner",
       "satisfies_refs": [],
@@ -93,5 +93,5 @@
       "description": null
     }
   },
-  "set_digest": "sha256:6c373ef02242d7f23c321afea2077a3a903a571849f75f0e2ef09e230e12b68d"
+  "set_digest": "sha256:47a9af30553305a188924131d3c3b808326453dce33a4b520279fe435c14878e"
 }

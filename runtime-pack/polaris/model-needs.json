@@ -16,7 +16,7 @@
         "fixed-v1"
       ],
       "data_regions": [
-        "us-central1"
+        "us-east5"
       ],
       "limits": {
         "max_request_seconds": 300,
