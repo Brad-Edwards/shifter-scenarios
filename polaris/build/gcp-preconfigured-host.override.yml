@@ -1,0 +1,4 @@
+services:
+  a14-kali:
+    ports:
+      - "3389:3389"
