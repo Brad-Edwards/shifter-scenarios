@@ -1,16 +1,24 @@
 {
-  "scope": "local participant container; no cloud guest or live broker qualification",
-  "image_id": "sha256:de618bc9cb55a6f5648d72c7891bbd1862fbf9b269b11873416b255b7d2d03b6",
-  "recipe_sha256": "9dedaded6305d71f93cfa259136e6295c89d5cd7ad3ba07e62e8e0fc3a5bcb22",
-  "network": "none; synthetic loopback endpoint only",
-  "root_filesystem": "read-only",
   "client_wire": {
     "client_version": "2.1.108",
-    "status": "passed",
-    "message_requests": 2,
-    "streaming": true,
+    "helper_authentication": true,
     "local_tool_result": true,
-    "helper_authentication": true
+    "message_requests": 2,
+    "status": "passed",
+    "streaming": true
   },
-  "cloud_guest_image_bakes": "pending target and execution window"
+  "cloud_guest_image_bakes": "pending target and execution window",
+  "image_id": "sha256:6891c8ad24f4321404b81c3bd0101d90110f5c92dbe4187809c1af46cc4a7e46",
+  "network": "none; synthetic loopback endpoint only",
+  "readiness_canary": {
+    "contract": "participant-readiness/v1",
+    "executable": "/usr/local/libexec/shifter-participant-readiness",
+    "manifest_sha256": "b63847b7937e939f1901583a5775f1e50767ce92a22847139f63fd0520ffa8ae",
+    "negative_digest_rejected": true,
+    "participant_user": "kali",
+    "status": "passed"
+  },
+  "recipe_sha256": "77bad6f3f5c30fd31a44c309fa61842ebc816d43f7deec9d2a862f310d2d920a",
+  "root_filesystem": "read-only",
+  "scope": "local participant container; no cloud guest or live broker qualification"
 }

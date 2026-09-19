@@ -1,0 +1,12 @@
+{
+  "client": {
+    "name": "@anthropic-ai/claude-code",
+    "version": "2.1.108"
+  },
+  "participant_user": "kali",
+  "schema_version": "participant-readiness/v1",
+  "surfaces": {
+    "rdp_port": 3389,
+    "ssh_port": 22
+  }
+}

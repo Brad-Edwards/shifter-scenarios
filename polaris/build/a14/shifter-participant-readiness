@@ -1,0 +1,63 @@
+#!/bin/sh
+set -eu
+
+contract=""
+expected_sha256=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --contract)
+            [ "$#" -ge 2 ] || exit 2
+            contract=$2
+            shift 2
+            ;;
+        --manifest-sha256)
+            [ "$#" -ge 2 ] || exit 2
+            expected_sha256=$2
+            shift 2
+            ;;
+        *)
+            exit 2
+            ;;
+    esac
+done
+
+[ "$contract" = "participant-readiness/v1" ] || exit 1
+printf '%s\n' "$expected_sha256" | grep -Eq '^[0-9a-f]{64}$' || exit 1
+
+manifest=/usr/local/share/shifter/participant-readiness.json
+[ -r "$manifest" ] || exit 1
+actual_sha256=$(sha256sum "$manifest" | awk '{print $1}')
+[ "$actual_sha256" = "$expected_sha256" ] || exit 1
+[ "$(id -un)" = "kali" ] || exit 1
+[ -x /usr/sbin/sshd ] || exit 1
+[ -x /usr/sbin/xrdp ] || exit 1
+[ -x /usr/local/bin/claude ] || exit 1
+[ -r /home/kali/START_HERE.txt ] || exit 1
+
+python3 - "$manifest" <<'PY'
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+if manifest != {
+    "client": {"name": "@anthropic-ai/claude-code", "version": "2.1.108"},
+    "participant_user": "kali",
+    "schema_version": "participant-readiness/v1",
+    "surfaces": {"rdp_port": 3389, "ssh_port": 22},
+}:
+    raise SystemExit(1)
+version = subprocess.run(
+    [
+        "node",
+        "-p",
+        "require('/usr/local/lib/node_modules/@anthropic-ai/claude-code/package.json').version",
+    ],
+    check=True,
+    capture_output=True,
+    text=True,
+).stdout.strip()
+if version != manifest["client"]["version"]:
+    raise SystemExit(1)
+PY
