@@ -57,7 +57,7 @@ RUN python3 -m venv /opt/tools && \
 ENV PATH="/opt/tools/bin:${PATH}"
 
 # Qualified client; the private adapter configures temporary broker access at runtime.
-RUN npm install -g @anthropic-ai/claude-code@2.1.108
+RUN npm install -g @anthropic-ai/claude-code@2.1.273
 
 # Set kali user password and enable SSH password auth (matches AWS base.sh)
 RUN echo "kali:kali" | chpasswd && \

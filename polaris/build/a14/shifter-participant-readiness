@@ -42,7 +42,7 @@ from pathlib import Path
 
 manifest = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 if manifest != {
-    "client": {"name": "@anthropic-ai/claude-code", "version": "2.1.108"},
+    "client": {"name": "@anthropic-ai/claude-code", "version": "2.1.273"},
     "participant_user": "kali",
     "schema_version": "participant-readiness/v1",
     "surfaces": {"rdp_port": 3389, "ssh_port": 22},

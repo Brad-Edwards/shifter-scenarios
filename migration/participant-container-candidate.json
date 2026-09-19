@@ -1,24 +1,24 @@
 {
   "client_wire": {
-    "client_version": "2.1.108",
+    "client_version": "2.1.273",
     "helper_authentication": true,
     "local_tool_result": true,
     "message_requests": 2,
     "status": "passed",
     "streaming": true
   },
-  "cloud_guest_image_bakes": "pending target and execution window",
+  "cloud_guest_image_bakes": "GCP readiness canary in progress",
   "image_id": "sha256:6891c8ad24f4321404b81c3bd0101d90110f5c92dbe4187809c1af46cc4a7e46",
   "network": "none; synthetic loopback endpoint only",
   "readiness_canary": {
     "contract": "participant-readiness/v1",
     "executable": "/usr/local/libexec/shifter-participant-readiness",
-    "manifest_sha256": "b63847b7937e939f1901583a5775f1e50767ce92a22847139f63fd0520ffa8ae",
+    "manifest_sha256": "a2b2f58d7ea1276497e95b4a02509a7adc06df83b5cd7af89f528f063877c1ea",
     "negative_digest_rejected": true,
     "participant_user": "kali",
     "status": "passed"
   },
-  "recipe_sha256": "77bad6f3f5c30fd31a44c309fa61842ebc816d43f7deec9d2a862f310d2d920a",
+  "recipe_sha256": "084c56188175cb44c440e4b42752cdfea9ad0ecdba4452e1423d7ceb074fe264",
   "root_filesystem": "read-only",
   "scope": "local participant container; no cloud guest or live broker qualification"
 }
