@@ -3,11 +3,14 @@
 Draft 3 of the BSides Ottawa challenge architecture: approximately 300 individual
 players, sixteen hours over two days, a provided agent, and optional BYO agents.
 The campaign moves through Cinder Typhoon training, KeplerOps Software, and
-Alterra Regional Water Company. This is design work before topology selection;
-it is not yet an executable scenario pack.
+Alterra Regional Water Company. The challenge briefs now have a first logical
+network architecture; this is not yet an executable scenario pack.
 
 - [Architecture](design/challenge-architecture.md): product and story, medium
   entry routes, explicit process-evidence joins, progression, and review responses.
+- [Logical network architecture](design/logical-architecture.md): the in-world
+  networks, 36 logical systems, and connection points between phases, with
+  separate training, KeplerOps, ARWC corporate, and ARWC OT diagrams.
 - [Operation portfolio](design/operation-portfolio.md): 240 challenge allocations
   across 70 operation briefs, with both organizations spanning every tier.
 - [Campaign operations](design/campaign-operations.md): twenty new card contracts
