@@ -23,6 +23,11 @@ digest, and produces a deterministic uncompressed tar for tenant upload. Upload
 with pack name `polaris`. Install the adapter manifest separately and bind its
 `host` and `directory` targets to the corresponding compiled guests.
 
+`model-needs.json` declares the participant workload's bounded model demand.
+Shifter binds it to the verified installed archive digest. It intentionally
+contains no provider, account, project, credential, endpoint, or source choice;
+tenant administrators select and may later change those sources in Shifter.
+
 Local evidence covers package validation, the actual compiled plan, and pure AWS
 and GCP placement with synthetic image profiles. It does not verify deployed
 images, cloud behavior, participant access or live model requests. The

@@ -1,16 +1,28 @@
 {
-  "scope": "local participant container; no cloud guest or live broker qualification",
-  "image_id": "sha256:de618bc9cb55a6f5648d72c7891bbd1862fbf9b269b11873416b255b7d2d03b6",
-  "recipe_sha256": "9dedaded6305d71f93cfa259136e6295c89d5cd7ad3ba07e62e8e0fc3a5bcb22",
-  "network": "none; synthetic loopback endpoint only",
-  "root_filesystem": "read-only",
   "client_wire": {
-    "client_version": "2.1.108",
-    "status": "passed",
-    "message_requests": 2,
-    "streaming": true,
-    "local_tool_result": true,
-    "helper_authentication": true
+    "client_version": "2.1.273",
+    "status": "pending live broker qualification"
   },
-  "cloud_guest_image_bakes": "pending target and execution window"
+  "cloud_guest_image_bakes": {
+    "gcp": {
+      "cold_boot_readiness": true,
+      "machine_image": "projects/prod-wpfcav/global/machineImages/shifter-runtime-host-20260919000247",
+      "participant_canary": true,
+      "status": "passed"
+    }
+  },
+  "gcp_host_override_sha256": "510081085ede50f5456e2b5db28559054668c013023dea54672d287cc1030ddb",
+  "image_id": "sha256:55014d7f3887fc6fa07d215a4e9845d9287234e9d673fa4cbeffc56db6a9865e",
+  "network": "GCP image canary completed; live broker request pending",
+  "readiness_canary": {
+    "contract": "participant-readiness/v1",
+    "executable": "/usr/local/libexec/shifter-participant-readiness",
+    "manifest_sha256": "a2b2f58d7ea1276497e95b4a02509a7adc06df83b5cd7af89f528f063877c1ea",
+    "negative_digest_rejected": true,
+    "participant_user": "kali",
+    "status": "passed"
+  },
+  "recipe_sha256": "084c56188175cb44c440e4b42752cdfea9ad0ecdba4452e1423d7ceb074fe264",
+  "root_filesystem": "read-only",
+  "scope": "GCP participant image and preconfigured host readiness; live broker qualification pending"
 }

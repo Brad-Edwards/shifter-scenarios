@@ -1,6 +1,7 @@
 """The installable outer runtime package is validated independently of Shifter."""
 
 import importlib.util
+import json
 import shutil
 import tarfile
 from pathlib import Path
@@ -28,6 +29,16 @@ def test_outer_hosts_use_allocated_addresses_and_explicit_participant_access():
     access = data["agents"]["participant"]["interactive_access"]["kali_ssh"]
     assert access == {"target_ref": "a14-kali", "channel": "ssh", "account_ref": "kali_login"}
     assert data["accounts"]["kali_login"]["auth_method"] == "key"
+
+
+def test_pack_declares_bounded_participant_model_demand_without_a_source():
+    declaration = json.loads((ROOT / "model-needs.json").read_text())
+    assert declaration["contract_version"] == "model-access-pack/v1"
+    participant = declaration["needs"]["participant"]
+    assert participant["workload_role"] == "participant"
+    assert participant["required_capabilities"] == ["messages"]
+    assert "provider" not in str(declaration).lower()
+    assert "credential" not in str(declaration).lower()
 
 
 def test_archive_is_reproducible_and_contains_exactly_the_validated_package(tmp_path):

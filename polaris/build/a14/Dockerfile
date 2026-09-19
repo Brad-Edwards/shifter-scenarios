@@ -57,7 +57,7 @@ RUN python3 -m venv /opt/tools && \
 ENV PATH="/opt/tools/bin:${PATH}"
 
 # Qualified client; the private adapter configures temporary broker access at runtime.
-RUN npm install -g @anthropic-ai/claude-code@2.1.108
+RUN npm install -g @anthropic-ai/claude-code@2.1.273
 
 # Set kali user password and enable SSH password auth (matches AWS base.sh)
 RUN echo "kali:kali" | chpasswd && \
@@ -79,6 +79,15 @@ RUN touch /var/log/xrdp.log /var/log/xrdp-sesman.log && \
 
 # Tmux mouse-on (matches AWS tools.sh)
 RUN echo 'set -g mouse on' > /etc/tmux.conf
+
+# Bounded image-owned readiness canary used by Shifter's preconfigured-host
+# contract. The platform supplies the reviewed manifest digest at launch; the
+# canary verifies both that immutable manifest and the installed participant
+# surfaces without emitting guest content.
+COPY a14/participant-readiness.json /usr/local/share/shifter/participant-readiness.json
+COPY a14/shifter-participant-readiness /usr/local/libexec/shifter-participant-readiness
+RUN chmod 0644 /usr/local/share/shifter/participant-readiness.json && \
+    chmod 0755 /usr/local/libexec/shifter-participant-readiness
 
 # CTF content overlay — modbus scan helper is shared with A9-splice-landing/.
 # welcome.txt is the warm-up challenge target; lives hidden in /home/kali/.polaris/.
