@@ -1,0 +1,143 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-a-engineering
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/a-engineering
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - a-hmi
+    - a-historian
+    - a-engineering
+    - a-diagnostics
+    infrastructure:
+    - subnet
+    - a-hmi
+    - a-historian
+    - a-engineering
+    - a-diagnostics
+    entities:
+    - organization
+    features:
+    - a-hmi
+    - a-historian
+    - a-engineering
+    - a-diagnostics
+    - a-hmi--dispatch
+    - a-engineering--utility-worker
+    - a-diagnostics--vault-worker
+    - a-diagnostics--history
+    - a-diagnostics--estimate-output
+    - a-diagnostics--program-output
+    - a-diagnostics--export-log
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'ARWC: OT engineering / supervision. Logical network segment; physical realization and
+      addressing remain open.'
+  a-hmi:
+    type: compute
+    description: HMI / practice / scheduler
+    features:
+      a-hmi: ''
+      a-hmi--dispatch: ''
+  a-historian:
+    type: compute
+    description: Historian / tag records
+    features:
+      a-historian: ''
+  a-engineering:
+    type: compute
+    description: Engineering workstation / projects
+    features:
+      a-engineering: ''
+      a-engineering--utility-worker: ''
+  a-diagnostics:
+    type: compute
+    description: Diagnostic services
+    features:
+      a-diagnostics: ''
+      a-diagnostics--vault-worker: ''
+      a-diagnostics--history: ''
+      a-diagnostics--estimate-output: ''
+      a-diagnostics--program-output: ''
+      a-diagnostics--export-log: ''
+infrastructure:
+  subnet: {}
+  a-hmi:
+    links:
+    - subnet
+  a-historian:
+    links:
+    - subnet
+  a-engineering:
+    links:
+    - subnet
+  a-diagnostics:
+    links:
+    - subnet
+entities:
+  organization:
+    name: ARWC
+    description: OT engineering / supervision
+    role: green
+features:
+  a-hmi:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-hmi. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
+  a-historian:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-historian. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-engineering:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-engineering. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-diagnostics:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-diagnostics. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-hmi--dispatch:
+    name: Live supervisory command dispatcher
+    type: service
+    description: Live supervisory command dispatcher on a-hmi. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  a-engineering--utility-worker:
+    name: Constrained engineering utility execution
+    type: service
+    description: Constrained engineering utility execution on a-engineering. A separately scoped in-world
+      interface or principal; access does not imply ownership of the other authorities on this system.
+  a-diagnostics--vault-worker:
+    name: Diagnostic vault execution
+    type: service
+    description: Diagnostic vault execution on a-diagnostics. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  a-diagnostics--history:
+    name: Retained approval history
+    type: service
+    description: Retained approval history on a-diagnostics. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  a-diagnostics--estimate-output:
+    name: Controlled estimator output
+    type: service
+    description: Controlled estimator output on a-diagnostics. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  a-diagnostics--program-output:
+    name: Accepted diagnostic output
+    type: service
+    description: Accepted diagnostic output on a-diagnostics. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  a-diagnostics--export-log:
+    name: Signed calibration export
+    type: service
+    description: Signed calibration export on a-diagnostics. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.

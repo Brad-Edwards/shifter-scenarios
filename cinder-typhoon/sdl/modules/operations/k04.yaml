@@ -1,0 +1,781 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k04
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k04
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Demonstrate reproducible, controlled corruption across the indexer's object boundary. A crash alone is insufficient; this is the foundation for the later capabilities.
+
+      Required technical proof: The daemon records a controlled mutation of the designated sentinel object and a successful subsequent normal index operation.
+    source_refs: &id001
+    - features.k-delivery.k-indexer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k04-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k04-1.satisfied
+        component_refs:
+        - features.k-delivery.k-indexer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test valid indexing, nonpersistent crash rejection, intended sentinel-only mutation,
+      continued normal indexing, no out-of-fixture data exposure, and reset.'
+  c2:
+    description: |-
+      Recover the protected runtime evidence needed to reason about the actual process state. This is a separate disclosure capability, not another reward for the first corruption.
+
+      Required technical proof: Completion returns the expected runtime descriptor with process generation, protected object marker, and integrity relation checked by the daemon.
+    source_refs: &id002
+    - features.k-delivery.k-indexer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k04-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k04-2.satisfied
+        component_refs:
+        - features.k-delivery.k-indexer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify K04.1 alone cannot read the descriptor, partial/incorrect disclosures fail,
+      intended runtime evidence is consistent, normal requests remain functional, and reset changes private
+      layout safely.'
+  c3:
+    description: |-
+      Demonstrate the scoped write capability while the indexer remains usable. The prior disclosure or another crash does not satisfy this achievement.
+
+      Required technical proof: The service accepts completion only when the target state changes to the specified value, its integrity relation remains valid, and a normal indexing transaction still succeeds.
+    source_refs: &id003
+    - features.k-delivery.k-indexer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k04-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k04-3.satisfied
+        component_refs:
+        - features.k-delivery.k-indexer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test direct state mutation denial, disclosure prerequisite, intended bounded write,
+      integrity failure rejection, service liveness after success, and private-state reset.'
+  c4:
+    description: |-
+      Demonstrate execution in the indexer's actual context and recover the protected exception queue. It is an alternative K29 dossier lead, not cloud authority or ARWC access.
+
+      Required technical proof: The daemon logs the internal routine, service identity, queue record revision, and recovered exception dossier; that dossier is an alternative K29 lead.
+    source_refs: &id004
+    - features.k-delivery.k-indexer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k04-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k04-4.satisfied
+        component_refs:
+        - features.k-delivery.k-indexer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify queue access is denied normally, invalid routine arguments fail, intended
+      invocation produces one audited dossier, no process escape exists, downstream dossier format is
+      valid, and reset is clean.'
+propositions:
+  c1:
+    description: Demonstrate reproducible, controlled corruption across the indexer's object boundary.
+      A crash alone is insufficient; this is the foundation for the later capabilities.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k04-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K04.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the protected runtime evidence needed to reason about the actual process state.
+      This is a separate disclosure capability, not another reward for the first corruption.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k04-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K04.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the scoped write capability while the indexer remains usable. The prior disclosure
+      or another crash does not satisfy this achievement.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k04-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K04.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate execution in the indexer's actual context and recover the protected exception
+      queue. It is an alternative K29 dossier lead, not cloud authority or ARWC access.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k04-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K04.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K04.1: A bundle with consequences'
+    description: |-
+      The support indexer treats uploaded bundles as routine work. Construct a bundle that causes a controlled change beyond the object it should be allowed to affect.
+
+      Begins an optional deep investigation from the initial workstation.
+    agent: participant.operator
+    actions:
+    - k04.c1
+    targets: &id005
+    - features.k-delivery.k-indexer
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k04.c1
+  c2:
+    name: 'K04.2: Read past the index'
+    description: |-
+      Use the compromised indexing behavior to recover protected runtime information that an ordinary bundle cannot see.
+
+      Turns a narrow fault into a new information capability.
+    agent: participant.operator
+    actions:
+    - k04.c2
+    targets: &id006
+    - features.k-delivery.k-indexer
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k04.c2
+  c3:
+    name: 'K04.3: Control the allocation'
+    description: |-
+      The indexer still restricts what your corrupted object can influence. Establish a controlled write capability under those restrictions and demonstrate it against the designated protected state.
+
+      Provides a substantive elite milestone before final execution.
+    agent: participant.operator
+    actions:
+    - k04.c3
+    targets: &id007
+    - features.k-delivery.k-indexer
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k04.c3
+  c4:
+    name: 'K04.4: The exception queue'
+    description: |-
+      Turn the indexer compromise into execution under its service identity. Recover the release-exception queue the support engineer has been trying to clear.
+
+      Completes the native branch with useful release intelligence.
+    agent: participant.operator
+    actions:
+    - k04.c4
+    targets: &id008
+    - features.k-delivery.k-indexer
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k04.c4
+workflows:
+  c1:
+    description: 'K04.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k04.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K04.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k04.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k04.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K04.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k04.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k04.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K04.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k04.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k04.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: A deliberately flawed deserializer confuses attacker-controlled entry metadata with
+      an internal object length. The intended solution is a reproducible, constrained object-boundary
+      corruption that preserves service liveness; a crash is not a solution.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k04.c1
+      - features.k-delivery.k-indexer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The source-available support indexer accepts signed archive bundles, indexes their
+        entries, and maintains an in-memory object graph for the release-exception queue.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The native daemon runs against per-player memory and fixture data with no useful host interfaces, filesystem write, or network reachability; reset restarts its private state.
+      support_refs:
+      - features.k-delivery.k-indexer
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate reproducible, controlled corruption across the indexer's object boundary.
+        A crash alone is insufficient; this is the foundation for the later capabilities.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k04.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The daemon records a controlled mutation of the designated sentinel object and a successful
+        subsequent normal index operation.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k04.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The next stage requires using that primitive to create a bounded disclosure, then
+      interpreting the disclosed process layout and runtime record. It is an expert reasoning task, not
+      a generic file-read endpoint.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k04.c2
+      - features.k-delivery.k-indexer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The indexer process holds a protected runtime descriptor and release-queue metadata
+        outside the ordinary bundle index. K04.1's controlled primitive applies only to the designated
+        object graph.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only a synthetic runtime window is discloseable and it is regenerated per player; the service cannot reveal operating-system, deployment, or other-player data.
+      support_refs:
+      - features.k-delivery.k-indexer
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the protected runtime evidence needed to reason about the actual process state.
+        This is a separate disclosure capability, not another reward for the first corruption.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k04.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Completion returns the expected runtime descriptor with process generation, protected
+        object marker, and integrity relation checked by the daemon.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k04.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The intended solution develops a scoped write primitive from the earlier disclosure
+      and applies it only to the designated state with its required integrity relationship. This is an
+      elite exploitation exercise with a stable authored target, not arbitrary memory control.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k04.c3
+      - features.k-delivery.k-indexer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The daemon exposes a protected release-exception state object whose fields are validated
+        against the runtime descriptor and ordinary index transactions.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Writable memory is restricted to private card objects; any unsafe transition terminates only the player daemon and never affects another service. Reset restores a fresh state image.
+      support_refs:
+      - features.k-delivery.k-indexer
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the scoped write capability while the indexer remains usable. The prior
+        disclosure or another crash does not satisfy this achievement.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k04.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The service accepts completion only when the target state changes to the specified
+        value, its integrity relation remains valid, and a normal indexing transaction still succeeds.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k04.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The intended solution turns K04.3's constrained control into invocation of the card's
+      designated internal routine with valid queue arguments. It must demonstrate execution in the indexer
+      context, not merely change a completion flag.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k04.c4
+      - features.k-delivery.k-indexer
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The support indexer processes release-exception entries under a restricted service
+        identity and holds an encrypted queue document available only through an internal completion routine.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The invoked routine can read only the one queue document and cannot start commands, persist code, or reach CI, cloud, or ARWC. Reset recreates its per-player daemon and queue state.
+      support_refs:
+      - features.k-delivery.k-indexer
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate execution in the indexer's actual context and recover the protected exception
+        queue. It is an alternative K29 dossier lead, not cloud authority or ARWC access.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k04.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The daemon logs the internal routine, service identity, queue record revision, and
+        recovered exception dossier; that dossier is an alternative K29 lead.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k04.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-indexer
+    description: K04.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k04.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-indexer
+    description: K04.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k04.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-indexer
+    description: K04.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k04.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-indexer
+    description: K04.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k04.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K04.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The native support-bundle indexer, source or analysis material, a local reproducer, and normal bundle examples.
+
+      The source-available support indexer accepts signed archive bundles, indexes their entries, and maintains an in-memory object graph for the release-exception queue.
+    target: k-delivery.k-indexer
+    tags:
+    - synthetic
+    - k04
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The native support-bundle indexer, source or analysis material, a local reproducer,
+        and normal bundle examples.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K04.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The native support-bundle indexer, source or analysis material, a local reproducer, and normal bundle examples.
+
+      The indexer process holds a protected runtime descriptor and release-queue metadata outside the ordinary bundle index. K04.1's controlled primitive applies only to the designated object graph.
+    target: k-delivery.k-indexer
+    tags:
+    - synthetic
+    - k04
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The native support-bundle indexer, source or analysis material, a local reproducer,
+        and normal bundle examples.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K04.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The native support-bundle indexer, source or analysis material, a local reproducer, and normal bundle examples.
+
+      The daemon exposes a protected release-exception state object whose fields are validated against the runtime descriptor and ordinary index transactions.
+    target: k-delivery.k-indexer
+    tags:
+    - synthetic
+    - k04
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The native support-bundle indexer, source or analysis material, a local reproducer,
+        and normal bundle examples.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K04.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The native support-bundle indexer, source or analysis material, a local reproducer, and normal bundle examples.
+
+      The support indexer processes release-exception entries under a restricted service identity and holds an encrypted queue document available only through an internal completion routine.
+    target: k-delivery.k-indexer
+    tags:
+    - synthetic
+    - k04
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The native support-bundle indexer, source or analysis material, a local reproducer,
+        and normal bundle examples.

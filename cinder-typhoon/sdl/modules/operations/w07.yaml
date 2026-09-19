@@ -1,0 +1,510 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w07
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w07
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the report definition and a correct account of the permitted operation classes
+      supported by the supplied request/result evidence. Merely opening the planner session or downloading
+      a profile does not count; protected backend reads remain W07.2.
+    source_refs: &id001
+    - features.a-corporate.a-data--query
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w07-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w07-1.satisfied
+        component_refs:
+        - features.a-corporate.a-data--query
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Recover the actual adjustment ledger with its district and reporting-period binding.
+      Running an already permitted report or merely describing the interface restriction is insufficient.
+    source_refs: &id002
+    - features.a-corporate.a-data--query
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w07-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w07-2.satisfied
+        component_refs:
+        - features.a-corporate.a-data--query
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate backend-context execution and recover the resulting reconciliation-log copy.
+      The ledger read in W07.2 does not confer this score.
+    source_refs: &id003
+    - features.a-corporate.a-data--query
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w07-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w07-3.satisfied
+        component_refs:
+        - features.a-corporate.a-data--query
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the report definition and a correct account of the permitted operation classes
+      supported by the supplied request/result evidence. Merely opening the planner session or downloading
+      a profile does not count; protected backend reads remain W07.2.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w07-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W07.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the actual adjustment ledger with its district and reporting-period binding.
+      Running an already permitted report or merely describing the interface restriction is insufficient.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w07-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W07.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate backend-context execution and recover the resulting reconciliation-log copy.
+      The ledger read in W07.2 does not confer this score.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w07-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W07.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W07.1: The query the planner keeps'
+    description: |-
+      Recover the private reserve-report definition and determine which report operations the planner's query interface actually permits. Resolve the disagreement between its 'read-only' label and the supplied ordinary request results.
+
+      Introduces the backend's actual data scope.
+    agent: participant.operator
+    actions:
+    - w07.c1
+    targets: &id004
+    - features.a-corporate.a-data--query
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w07.c1
+  c2:
+    name: 'W07.2: Read beyond the allowed statement'
+    description: |-
+      Recover the restricted district-allocation adjustment ledger through the planner's query interface, despite the rules that exclude it from ordinary reserve reports.
+
+      Establishes a useful data primitive beyond normal planning queries.
+    agent: participant.operator
+    actions:
+    - w07.c2
+    targets: &id005
+    - features.a-corporate.a-data--query
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w07.c2
+  c3:
+    name: 'W07.3: The database does more than read'
+    description: |-
+      Make the database service execute a job that produces a copy of its protected reconciliation log under the service's own execution identity.
+
+      Completes the application-to-backend chain with a concrete effect.
+    agent: participant.operator
+    actions:
+    - w07.c3
+    targets: &id006
+    - features.a-corporate.a-data--query
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w07.c3
+workflows:
+  c1:
+    description: 'W07.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w06.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w07.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W07.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w07.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w07.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W07.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w07.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w07.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the private reserve-report definition and determine which report operations
+      the planner's query interface actually permits. Resolve the disagreement between its 'read-only'
+      label and the supplied ordinary request results.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w07.c1
+      - features.a-corporate.a-data--query
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the report definition and a correct account of the permitted operation classes
+        supported by the supplied request/result evidence. Merely opening the planner session or downloading
+        a profile does not count; protected backend reads remain W07.2.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w07.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the restricted district-allocation adjustment ledger through the planner's
+      query interface, despite the rules that exclude it from ordinary reserve reports.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w07.c2
+      - features.a-corporate.a-data--query
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual adjustment ledger with its district and reporting-period binding.
+        Running an already permitted report or merely describing the interface restriction is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w07.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Make the database service execute a job that produces a copy of its protected reconciliation
+      log under the service's own execution identity.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w07.c3
+      - features.a-corporate.a-data--query
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate backend-context execution and recover the resulting reconciliation-log
+        copy. The ledger read in W07.2 does not confer this score.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w07.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--query
+    description: W07.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w07.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--query
+    description: W07.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w07.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--query
+    description: W07.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w07.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W07.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planner session, its restricted query interface, and normal report/query examples.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w07
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planner session, its restricted query interface, and normal report/query
+        examples.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W07.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planner session, its restricted query interface, and normal report/query examples.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w07
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planner session, its restricted query interface, and normal report/query
+        examples.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W07.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planner session, its restricted query interface, and normal report/query examples.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w07
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planner session, its restricted query interface, and normal report/query
+        examples.

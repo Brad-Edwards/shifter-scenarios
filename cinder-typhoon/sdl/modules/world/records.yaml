@@ -1,0 +1,171 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-records
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/records
+  version: 0.1.0
+  exports:
+    content:
+    - keplerops-identities
+    - arwc-identities
+    - fieldlink-customer
+    - cedar-ridge-work
+    - engineering-revisions
+    - independent-measurements
+realization:
+  default: open
+content:
+  keplerops-identities:
+    type: dataset
+    target: k-corporate.k-identity
+    description: Synthetic identity seed catalog; actor IDs join people, service identities and business records.
+      These identities have distinct authority and no implicit shared credentials.
+    items:
+    - name: k-dev-01
+      display_name: Rowan Ito (`rowan.ito`)
+      description: FieldKest developer whose workstation is supplied to Cinder. Browser history, worktree,
+        local notes, stale client profiles, test-job references.
+    - name: k-sup-01
+      display_name: Maya Ranscombe (`maya.ranscombe`)
+      description: Support engineer assigned the ARWC case. `SUP-2841`, support mailbox, assistant conversation,
+        diagnostic delivery assignment.
+    - name: k-rel-01
+      display_name: Evan Calderoux (`evan.calderoux`)
+      description: Release engineer for FieldKest. Release dossier, signing history, rollover notice, private
+        consumer reviews.
+    - name: k-sre-01
+      display_name: Noor Aveling (`noor.aveling`)
+      description: Build and workload operator. Runner records, cloud policy notes, maintenance scheduler contract.
+    - name: k-rev-01
+      display_name: Talia Mornac (`talia.mornac`)
+      description: Support reviewer. Duplicate-review workflow and restricted note-review account.
+    - name: k-svc-ci
+      display_name: '`svc-fieldlink-ci`'
+      description: Build execution identity. Build job provenance, limited source scope, private test-consumer
+        binding.
+    - name: k-svc-exp
+      display_name: '`svc-support-export`'
+      description: Customer export worker. Export job actions and delivery-destination history.
+    - name: k-svc-bak
+      display_name: '`svc-history-recovery`'
+      description: Backup recovery identity. Backup catalog and permitted restore operation.
+    - name: k-svc-run
+      display_name: '`svc-fieldlink-maintenance`'
+      description: Maintenance workload runtime identity. Runtime archive policy evaluated independently of
+        its deployment manager.
+    - name: leah-calder-voss
+      display_name: Leah Calder-Voss (`leah.calder-voss`)
+      description: Founder and managing director; ordinary staff directory and workplace mailbox. Business
+        role does not confer universal service authority.
+    tags:
+    - synthetic
+    - identity
+    - seed-requirement
+  arwc-identities:
+    type: dataset
+    target: a-corporate.a-identity
+    description: Synthetic identity seed catalog; actor IDs join people, service identities and business records.
+      These identities have distinct authority and no implicit shared credentials.
+    items:
+    - name: a-plan-01
+      display_name: Nadia Corvane (`nadia.corvane`)
+      description: Regional water planner. Planning reports, allocation query role, decision handovers.
+    - name: a-maint-01
+      display_name: Theo Marrivel (`theo.marrivel`)
+      description: Maintenance planner. Work order, drawing approval, inspection appointment, procurement record.
+    - name: a-ctrl-01
+      display_name: Clara Morivelle (`clara.morivelle`)
+      description: Controls engineer. Commissioning note, project revision, calibration concern, operating
+        envelope.
+    - name: a-field-01
+      display_name: Jules Orswick (`jules.orswick`)
+      description: Contractor scheduled for outlet inspection. Contractor roster, field bag, appointment, scoped
+        field session.
+    - name: a-proc-01
+      display_name: Priya Naravel (`priya.naravel`)
+      description: District procurement officer. Quote records, replacement-supply catalogue, order acknowledgement.
+    - name: a-svc-conn
+      display_name: '`svc-fieldlink-arwc`'
+      description: FieldKest connector identity. Delivery execution, limited corporate service context, process-read
+        integration.
+    - name: a-svc-plan
+      display_name: '`svc-reserve-planning`'
+      description: Planning-service identity. Allocation decision input and report refresh records.
+    - name: a-svc-rend
+      display_name: '`svc-maint-preview`'
+      description: Maintenance rendering identity. Approved drawing preview and maintenance command-client
+        issuance.
+    - name: a-svc-eng
+      display_name: '`svc-engineering-client`'
+      description: Engineering command-client issuer. Narrow client issuance, distinct from project publication.
+    - name: luc-venn-morel
+      display_name: Luc Venn-Morel (`luc.venn-morel`)
+      description: Director of regional operations, reporting to the general manager; ordinary workplace correspondence.
+    - name: mina-selverin
+      display_name: Mina Selverin (`mina.selverin`)
+      description: Senior water treatment operator; shift, training, and staff correspondence.
+    - name: owen-vardell
+      display_name: Owen Vardell (`owen.vardell`)
+      description: Water distribution apprentice; supervised learning and ordinary staff correspondence.
+    - name: rosa-nerivet
+      display_name: Rosa Nerivet (`rosa.nerivet`)
+      description: Customer-service adviser; account explanations, meter enquiries, and staff correspondence.
+    tags:
+    - synthetic
+    - identity
+    - seed-requirement
+  fieldlink-customer:
+    type: dataset
+    target: k-delivery.k-support
+    description: Active customer TEN-ARWC-047, connector FLK-7.4.2 / package line 7.4.x, case SUP-2841. TEN-ARWC-019
+      and FLK-6.9.8 are clearly dated history; they never satisfy current-tenant or revision checks.
+    items:
+    - name: required-records
+      description: Active customer TEN-ARWC-047, connector FLK-7.4.2 / package line 7.4.x, case SUP-2841. TEN-ARWC-019
+        and FLK-6.9.8 are clearly dated history; they never satisfy current-tenant or revision checks.
+    tags:
+    - synthetic
+    - seed-requirement
+  cedar-ridge-work:
+    type: dataset
+    target: a-corporate.a-business
+    description: Cairn Reach CRR-01; east outlet group CRR-OG2; actuators CRR-OG2-GA and CRR-OG2-GB; work order
+      MWO-7742; appointment APT-CRR-7742; planning window ALLOC-2026-09-W3. Districts PINE and RIVER have distinct
+      immutable IDs.
+    items:
+    - name: required-records
+      description: Cairn Reach CRR-01; east outlet group CRR-OG2; actuators CRR-OG2-GA and CRR-OG2-GB; work
+        order MWO-7742; appointment APT-CRR-7742; planning window ALLOC-2026-09-W3. Districts PINE and RIVER
+        have distinct immutable IDs.
+    tags:
+    - synthetic
+    - seed-requirement
+  engineering-revisions:
+    type: dataset
+    target: a-engineering.a-engineering
+    description: Current project CRR-5.4.2; obsolete project CRR-5.3.7. Deployed revision has independent provenance.
+      Repository history, tags, calibration, scale tables, images and retained binaries expose real, consistent
+      revision evidence.
+    items:
+    - name: required-records
+      description: Current project CRR-5.4.2; obsolete project CRR-5.3.7. Deployed revision has independent
+        provenance. Repository history, tags, calibration, scale tables, images and retained binaries expose
+        real, consistent revision evidence.
+    tags:
+    - synthetic
+    - seed-requirement
+  independent-measurements:
+    type: dataset
+    target: a-control.a-instruments
+    description: CRR.OG2.GA.POSITION; CRR.OG2.GB.POSITION; CRR.RESERVOIR.USABLE_VOLUME; CRR.OG2.PERMISSIVE.
+      Independent observations distinguish command receipt, actuation, reporting, and practice. Preserve truthful
+      measurement history.
+    items:
+    - name: required-records
+      description: CRR.OG2.GA.POSITION; CRR.OG2.GB.POSITION; CRR.RESERVOIR.USABLE_VOLUME; CRR.OG2.PERMISSIVE.
+        Independent observations distinguish command receipt, actuation, reporting, and practice. Preserve
+        truthful measurement history.
+    tags:
+    - synthetic
+    - seed-requirement

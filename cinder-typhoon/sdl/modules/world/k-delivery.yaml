@@ -1,0 +1,196 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k-delivery
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k-delivery
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - k-source
+    - k-registry
+    - k-ci
+    - k-preview
+    - k-support
+    - k-indexer
+    infrastructure:
+    - subnet
+    - k-source
+    - k-registry
+    - k-ci
+    - k-preview
+    - k-support
+    - k-indexer
+    entities:
+    - organization
+    features:
+    - k-source
+    - k-registry
+    - k-ci
+    - k-preview
+    - k-support
+    - k-indexer
+    - k-ci--runner
+    - k-ci--rehearsals
+    - k-ci--consumer-state
+    - k-ci--release-client
+    - k-indexer--worker
+    - k-indexer--queue
+    - k-preview--renderer
+    - k-support--staff-client
+    - k-support--customer-records
+    - k-support--review-item
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'KeplerOps: Development / delivery. Logical network segment; physical realization and
+      addressing remain open.'
+  k-source:
+    type: compute
+    description: Source and retained releases
+    features:
+      k-source: ''
+  k-registry:
+    type: compute
+    description: Packages / inspection
+    features:
+      k-registry: ''
+  k-ci:
+    type: compute
+    description: CI and private test consumers
+    features:
+      k-ci: ''
+      k-ci--runner: ''
+      k-ci--rehearsals: ''
+      k-ci--consumer-state: ''
+      k-ci--release-client: ''
+  k-preview:
+    type: compute
+    description: Preview / browser workers
+    features:
+      k-preview: ''
+      k-preview--renderer: ''
+  k-support:
+    type: compute
+    description: Support and customer delivery
+    features:
+      k-support: ''
+      k-support--staff-client: ''
+      k-support--customer-records: ''
+      k-support--review-item: ''
+  k-indexer:
+    type: compute
+    description: Native support indexer
+    features:
+      k-indexer: ''
+      k-indexer--worker: ''
+      k-indexer--queue: ''
+infrastructure:
+  subnet: {}
+  k-source:
+    links:
+    - subnet
+  k-registry:
+    links:
+    - subnet
+  k-ci:
+    links:
+    - subnet
+  k-preview:
+    links:
+    - subnet
+  k-support:
+    links:
+    - subnet
+  k-indexer:
+    links:
+    - subnet
+entities:
+  organization:
+    name: KeplerOps
+    description: Development / delivery
+    role: green
+features:
+  k-source:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-source. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-registry:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-registry. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-ci:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-ci. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
+  k-preview:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-preview. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-support:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-support. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-indexer:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-indexer. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-ci--runner:
+    name: Build job identity
+    type: service
+    description: Build job identity on k-ci. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
+  k-ci--rehearsals:
+    name: Private consumer submission interface
+    type: service
+    description: Private consumer submission interface on k-ci. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  k-ci--consumer-state:
+    name: Private consumer state
+    type: service
+    description: Private consumer state on k-ci. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-ci--release-client:
+    name: Release rehearsal client
+    type: service
+    description: Release rehearsal client on k-ci. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-indexer--worker:
+    name: Indexer execution
+    type: service
+    description: Indexer execution on k-indexer. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-indexer--queue:
+    name: Release exception queue
+    type: service
+    description: Release exception queue on k-indexer. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-preview--renderer:
+    name: Constrained preview renderer
+    type: service
+    description: Constrained preview renderer on k-preview. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-support--staff-client:
+    name: Support staff delegation
+    type: service
+    description: Support staff delegation on k-support. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-support--customer-records:
+    name: Federated customer records
+    type: service
+    description: Federated customer records on k-support. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-support--review-item:
+    name: Assistant duplicate-review item
+    type: service
+    description: Assistant duplicate-review item on k-support. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.

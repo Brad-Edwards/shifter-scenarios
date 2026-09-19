@@ -1,0 +1,106 @@
+documents:
+- id: k-company-direction
+  employer: keplerops
+  file: documents/keplerops/company-direction.md
+  title: A specialist company with room to grow
+  audience: staff
+  story: company-direction
+  published_at: '2026-09-02T08:00:00-04:00'
+- id: k-working-guide
+  employer: keplerops
+  file: documents/keplerops/working-guide.md
+  title: Working at KeplerOps
+  audience: staff
+  story: company-culture
+  published_at: '2026-09-07T08:00:00-04:00'
+- id: k-workshop-outline
+  employer: keplerops
+  file: documents/keplerops/workshop-outline.md
+  title: Rillhaven maintenance workshop
+  audience: support
+  story: workshop
+  published_at: '2026-09-09T14:00:00-04:00'
+- id: k-service-review
+  employer: keplerops
+  file: documents/keplerops/service-review.md
+  title: KeplerOps service review
+  audience: platform
+  story: orrenvale
+  published_at: '2026-09-03T11:00:00-04:00'
+- id: k-company-history
+  employer: keplerops
+  file: documents/keplerops/company-history.md
+  title: Ten years of KeplerOps
+  audience: staff
+  story: anniversary
+  published_at: '2026-08-24T08:00:00-04:00'
+- id: k-customer-relationships
+  employer: keplerops
+  file: documents/keplerops/customer-relationships.md
+  title: Working with established utility customers
+  audience: support
+  story: principal-relationship
+  published_at: '2026-09-01T08:00:00-04:00'
+- id: a-outreach-preparation
+  employer: arwc
+  file: documents/arwc/outreach-preparation.md
+  title: Community water-service explanation — preparation
+  audience: outreach
+  story: outreach
+  published_at: '2026-09-09T14:00:00-04:00'
+- id: a-outreach-outline
+  employer: arwc
+  file: documents/arwc/outreach-outline.md
+  title: Before water reaches the tap
+  audience: outreach
+  story: outreach
+  published_at: '2026-09-10T13:30:00-04:00'
+- id: a-billing-explanation
+  employer: arwc
+  file: documents/arwc/billing-explanation.md
+  title: Which period does my water bill cover?
+  audience: staff
+  story: billing
+  published_at: '2026-09-15T09:00:00-04:00'
+- id: a-refurbishment-history
+  employer: arwc
+  file: documents/arwc/refurbishment-history.md
+  title: The treatment refurbishment 2021–2023
+  audience: staff
+  story: utility-history
+  published_at: '2026-09-03T10:00:00-04:00'
+- id: a-company-and-governance
+  employer: arwc
+  file: documents/arwc/company-and-governance.md
+  title: Your regional water company
+  audience: staff
+  story: governance
+  published_at: '2026-09-01T08:00:00-04:00'
+- id: a-working-at-arwc
+  employer: arwc
+  file: documents/arwc/working-at-arwc.md
+  title: Working at ARWC
+  audience: staff
+  story: company-culture
+  published_at: '2026-09-01T08:00:00-04:00'
+- id: a-regional-history
+  employer: arwc
+  file: documents/arwc/regional-history.md
+  title: Becoming a regional service
+  audience: staff
+  story: utility-history
+  published_at: '2026-09-01T08:00:00-04:00'
+- id: a-regional-service
+  employer: arwc
+  file: documents/arwc/regional-service-and-customers.md
+  title: Regional service and customer relationships
+  audience: staff
+  story: regional-business
+  published_at: '2026-09-01T08:00:00-04:00'
+- id: k-workshop-outline-draft
+  employer: keplerops
+  file: documents/keplerops/workshop-outline-draft.md
+  title: Rillhaven maintenance workshop — draft for rehearsal
+  audience: support
+  story: workshop
+  published_at: '2026-09-08T09:00:00-04:00'

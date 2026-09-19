@@ -1,0 +1,129 @@
+name: cinder-flows-participant
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/flows-participant
+  version: 0.1.0
+  exports:
+    relationships:
+    - training-t-workbench
+    - training-t-accounts
+    - training-t-developer
+    - training-t-state
+    workflows:
+    - training-t-workbench
+    - training-t-accounts
+    - training-t-developer
+    - training-t-state
+realization:
+  default: open
+relationships:
+  training-t-workbench:
+    type: connects_to
+    source: nodes.participant.kali
+    target: features.training.t-workbench
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-participant.training-t-workbench
+  training-t-accounts:
+    type: connects_to
+    source: nodes.participant.kali
+    target: features.training.t-accounts
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-participant.training-t-accounts
+  training-t-developer:
+    type: connects_to
+    source: nodes.participant.kali
+    target: features.training.t-developer
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-participant.training-t-developer
+  training-t-state:
+    type: connects_to
+    source: nodes.participant.kali
+    target: features.training.t-state
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-participant.training-t-state
+workflows:
+  training-t-workbench:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  training-t-accounts:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  training-t-developer:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  training-t-state:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end

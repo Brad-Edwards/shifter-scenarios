@@ -1,0 +1,70 @@
+name: cinder-flows-a-control
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/flows-a-control
+  version: 0.1.0
+  exports:
+    relationships:
+    - observations-a-distribution
+    - observations-a-reservoir
+    - instrument-history
+    workflows:
+    - observations-a-distribution
+    - observations-a-reservoir
+    - instrument-history
+realization:
+  default: open
+relationships:
+  observations-a-distribution:
+    type: connects_to
+    source: features.a-control.a-distribution
+    target: features.a-control.a-instruments
+    description: Measured process outcome
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: telemetry
+      guard: workflows.flows-a-control.observations-a-distribution
+  observations-a-reservoir:
+    type: connects_to
+    source: features.a-control.a-reservoir
+    target: features.a-control.a-instruments
+    description: Measured process outcome
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: telemetry
+      guard: workflows.flows-a-control.observations-a-reservoir
+  instrument-history:
+    type: connects_to
+    source: features.a-control.a-instruments
+    target: features.a-engineering.a-historian
+    description: Independent observations retained by historian
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: telemetry
+      guard: workflows.flows-a-control.instrument-history
+workflows:
+  observations-a-distribution:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  observations-a-reservoir:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  instrument-history:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end

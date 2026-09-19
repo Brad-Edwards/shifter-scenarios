@@ -1,0 +1,777 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k09
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k09
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the actual log and its job binding. Its dossier reference can introduce K29 or K30; it grants no cloud principal.
+
+      Required technical proof: The log digest, run ID, and dossier ID are recorded as player evidence; no runner or release authority results.
+    source_refs: &id001
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k09-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k09-1.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify summary omission, a fair run lead, retained log access, matching dossier
+      reference, no job execution, and reset.'
+  c2:
+    description: |-
+      Recover the missing artifact from its separate publication surface. It contains the test-job evidence used later in this operation.
+
+      Required technical proof: Artifact retrieval records the run, object version, and build revision, enabling K09.3's input path.
+    source_refs: &id002
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k09-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k09-2.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test index omission, metadata lead, one matching artifact, wrong-run artifact rejection,
+      provenance consistency, and reset.'
+  c3:
+    description: |-
+      Produce the protected review output under the intended job identity. This establishes a distinct input capability, not general runner execution.
+
+      Required technical proof: CI records the selected support object and returns the restricted review output with job provenance; no persistent runner access is granted.
+    source_refs: &id003
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k09-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k09-3.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal input, intended linked-object read, arbitrary reference denial, correct
+      job provenance, no execution authority yet, and reset.'
+  c4:
+    description: |-
+      Demonstrate actual execution and recover the job note. This context enables workload and maintenance branches; it grants no customer execution.
+
+      Required technical proof: The runner audit records identity, permitted action, run ID, and protected note revision, awarding the bounded workload lead used by K14 or K30.
+    source_refs: &id004
+    - features.k-delivery.k-ci--runner
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k09-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k09-4.satisfied
+        component_refs:
+        - features.k-delivery.k-ci--runner
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test ordinary job, K09.3 prerequisite, intended diagnostic action, action allowlist
+      denial, audited identity/note, and reset.'
+propositions:
+  c1:
+    description: Recover the actual log and its job binding. Its dossier reference can introduce K29 or
+      K30; it grants no cloud principal.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k09-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K09.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the missing artifact from its separate publication surface. It contains the test-job
+      evidence used later in this operation.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k09-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K09.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Produce the protected review output under the intended job identity. This establishes
+      a distinct input capability, not general runner execution.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k09-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K09.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate actual execution and recover the job note. This context enables workload
+      and maintenance branches; it grants no customer execution.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k09-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K09.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K09.1: A runner tells on itself'
+    description: |-
+      The failed build's public summary omits its useful details. Recover the retained runner log and the release-dossier reference it exposes.
+
+      Makes routine build output a useful cloud and release lead.
+    agent: participant.operator
+    actions:
+    - k09.c1
+    targets: &id005
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k09.c1
+  c2:
+    name: 'K09.2: The artifact without a link'
+    description: |-
+      A completed job recorded an artifact that the current results page does not list. Recover that omitted artifact and its build revision.
+
+      Provides a distinct build artifact rather than another string from the log.
+    agent: participant.operator
+    actions:
+    - k09.c2
+    targets: &id006
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k09.c2
+  c3:
+    name: 'K09.3: A job input with reach'
+    description: |-
+      Make the test job consume a support input outside the collection its ordinary form allows. Recover the restricted review output it produces.
+
+      Crosses a build-input boundary before attempting execution.
+    agent: participant.operator
+    actions:
+    - k09.c3
+    targets: &id007
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k09.c3
+  c4:
+    name: 'K09.4: Run in the runner'
+    description: |-
+      Use the compromised job workflow to execute a limited action in its runner context and recover the protected job note.
+
+      Turns build access into a useful scoped execution foothold.
+    agent: participant.operator
+    actions:
+    - k09.c4
+    targets: &id008
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k09.c4
+workflows:
+  c1:
+    description: 'K09.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k09.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K09.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k09.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K09.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k09.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k09.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K09.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k09.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k09.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Summary redaction does not extend to the run's normally archived log. The intended
+      solution recovers that log through its run provenance and validates the dossier reference.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k09.c1
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The CI public summary links a failed run while a retained runner log contains ordinary
+        execution details and a release-dossier reference.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Run history is read-only synthetic data; reset removes player reads without changing CI records.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual log and its job binding. Its dossier reference can introduce K29
+        or K30; it grants no cloud principal.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k09.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The log digest, run ID, and dossier ID are recorded as player evidence; no runner or
+        release authority results.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k09.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The artifact index filters one completed output incorrectly. The intended solution
+      follows normal build metadata to recover the omitted artifact and confirm its exact revision.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k09.c2
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The CI run's immutable metadata names an artifact whose current results-page index
+        is incomplete; the artifact archive retains build revision and provenance.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The artifact is read-only, player evidence only, and does not expose runner credentials or job modification; reset clears its event.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the missing artifact from its separate publication surface. It contains the
+        test-job evidence used later in this operation.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k09.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Artifact retrieval records the run, object version, and build revision, enabling K09.3's
+        input path.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k09.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The job input resolver validates the submitted collection but follows a linked support
+      reference outside it. The intended solution creates a bounded valid input using K09.2's artifact
+      and observes the review result.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k09.c3
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The CI test job consumes an archived support input and generates a restricted review
+        output under the runner's job identity.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Resolution is restricted to two fixtures and a player-local job; no arbitrary archive path or workflow edit is available. Reset clears queued/job data.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the protected review output under the intended job identity. This establishes
+        a distinct input capability, not general runner execution.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k09.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: CI records the selected support object and returns the restricted review output with
+        job provenance; no persistent runner access is granted.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k09.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The resolved support input can alter one declared diagnostic action after K09.3.
+      The intended solution demonstrates that action in the runner context and retrieves the protected
+      job note.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k09.c4
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The test-job workflow renders the selected review output with a constrained diagnostic
+        action executed by the `svc-fieldlink-ci` runner identity.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Execution is an authored one-action sandbox with no shell, persistence, workload deployment, or broad CI control. Reset destroys job state and its scoped token.
+      support_refs:
+      - features.k-delivery.k-ci
+      - features.k-delivery.k-ci--runner
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate actual execution and recover the job note. This context enables workload
+        and maintenance branches; it grants no customer execution.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k09.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The runner audit records identity, permitted action, run ID, and protected note revision,
+        awarding the bounded workload lead used by K14 or K30.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k09.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K09.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k09.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K09.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k09.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K09.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k09.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K09.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k09.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K09.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
+
+      The CI public summary links a failed run while a retained runner log contains ordinary execution details and a release-dossier reference.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k09
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's build history, ordinary job interface, artifact references, and a sample
+        FieldKest build.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K09.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
+
+      The CI run's immutable metadata names an artifact whose current results-page index is incomplete; the artifact archive retains build revision and provenance.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k09
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's build history, ordinary job interface, artifact references, and a sample
+        FieldKest build.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K09.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
+
+      The CI test job consumes an archived support input and generates a restricted review output under the runner's job identity.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k09
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's build history, ordinary job interface, artifact references, and a sample
+        FieldKest build.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K09.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's build history, ordinary job interface, artifact references, and a sample FieldKest build.
+
+      The test-job workflow renders the selected review output with a constrained diagnostic action executed by the `svc-fieldlink-ci` runner identity.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k09
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's build history, ordinary job interface, artifact references, and a sample
+        FieldKest build.

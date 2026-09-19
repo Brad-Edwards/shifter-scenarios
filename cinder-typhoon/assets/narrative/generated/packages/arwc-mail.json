@@ -1,0 +1,397 @@
+{
+  "schema_version": "cinder-mailbox-set/v1",
+  "snapshot": "2026-09-16T08:30:00-04:00",
+  "messages": [
+    {
+      "message_id": "<6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 16:40:00 -0400\r\nMessage-ID: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\nSubject: After rehearsal\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nStill time for something to eat after choir? I have had a day made entirely o=\r\nf small questions about invoices and would like to discuss anything with a tu=\r\nne.\r\n\r\nPriya\r\n",
+      "sha256": "3a2ceb85a8b4274e35af927f6bc5628b834e739589d7e2c0729bd40b7a32fe0a"
+    },
+    {
+      "message_id": "<d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>",
+      "rfc822": "From: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 17:02:00 -0400\r\nMessage-ID: <d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>\r\nSubject: Re: After rehearsal\r\nIn-Reply-To: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\nReferences: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. And perhaps we could look at where those questions are coming from? If t=\r\nhere are a few common patterns, a short guide might take some of them out of =\r\nyour day.\r\n\r\nNadia\r\n",
+      "sha256": "f57dec54990e72953626a5dfa853741a070ddc5969ed53728b9c1519869ee225"
+    },
+    {
+      "message_id": "<058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 17:15:00 -0400\r\nMessage-ID: <058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>\r\nSubject: Re: After rehearsal\r\nIn-Reply-To: <d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>\r\nReferences: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\n <d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI was hoping for ten minutes of complaining followed by dinner. No guide requ=\r\nired.\r\n\r\nYou may ask me about the middle section we still haven't got right. That is a=\r\n problem we have both volunteered to have.\r\n\r\nPriya\r\n",
+      "sha256": "443e445bf91b01c655beff2190ede4c080394ee27416fc05ba165601b0d13599"
+    },
+    {
+      "message_id": "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
+      "rfc822": "From: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 13 Aug 2026 09:08:00 -0400\r\nMessage-ID: <879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>\r\nSubject: Re: After rehearsal\r\nIn-Reply-To: <058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>\r\nReferences: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\n <d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>\r\n <058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nGood evening. Thanks for saying what you meant.\r\n\r\nI will ask whether you want help or company next time. I enjoyed the company.=\r\n I am reserving judgment on that middle section.\r\n\r\nNadia\r\n",
+      "sha256": "548789b6f3360a80bb5211139be0a807d1df8045475501514142288650cd5fd2"
+    },
+    {
+      "message_id": "<b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>",
+      "rfc822": "From: Merewick Bulk Water Cooperative =?utf-8?b?4oCU?= Account Services\r\n <accounts@merewick.test>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 25 Aug 2026 10:30:00 -0400\r\nMessage-ID: <b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>\r\nSubject: Annual account contact review\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe are reviewing the contacts for our bulk-supply customers. Please confirm t=\r\nhat you remain the purchasing contact for ARWC and advise whether general pla=\r\nnning correspondence should continue to go through your office.\r\n\r\nOur membership planning meetings take place separately from customer account =\r\nreviews. We are trying to make the distinction clearer in the next version of=\r\n the account guide.\r\n\r\nAccount Services\r\nMerewick Bulk Water Cooperative\r\n",
+      "sha256": "7866b20652fec4f215657ee5471bf3b31d5fef42899bbf9397a379171f90b3c4"
+    },
+    {
+      "message_id": "<36acfbd6-e4c8-5f74-a22b-a9375d5a1547@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Merewick Bulk Water Cooperative =?utf-8?b?4oCU?= Account Services\r\n <accounts@merewick.test>\r\nDate: Wed, 26 Aug 2026 09:10:00 -0400\r\nMessage-ID: <36acfbd6-e4c8-5f74-a22b-a9375d5a1547@alterrawaterco.com>\r\nSubject: Re: Annual account contact review\r\nIn-Reply-To: <b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>\r\nReferences: <b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI remain the purchasing contact. Please send the general planning corresponde=\r\nnce here and I will route it internally.\r\n\r\nThe distinction would help. We are a contract customer, and the references to=\r\n member meetings have occasionally confused new colleagues. Please include th=\r\ne revised guide with the next account review.\r\n\r\nPriya Naravel\r\nAlterra Regional Water Company\r\n",
+      "sha256": "3c33279e9bfc80c9e634efd77dcf160bd74468c36d9f7af242b5328afc0ab72a"
+    },
+    {
+      "message_id": "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 27 Aug 2026 10:10:00 -0400\r\nMessage-ID: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nSubject: Reference conversation next month\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTheo,\r\n\r\nWould ARWC be willing to join another short reference conversation? The prosp=\r\nective customer wants to hear how FieldKest fits around established maintenan=\r\nce processes. We would agree the agenda and staff time beforehand.\r\n\r\nIt would help to hear what has improved since the early work as well as what =\r\nyou wish had been easier. There is no presentation for you to deliver on our =\r\nbehalf.\r\n\r\nMaya\r\n",
+      "sha256": "1a474220a6f2d11b24fccd9cf0cff0849b8131d29777eb8797d81412ce570a0e"
+    },
+    {
+      "message_id": "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Fri, 28 Aug 2026 09:25:00 -0400\r\nMessage-ID: <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\nSubject: Re: Reference conversation next month\r\nIn-Reply-To: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nProbably, subject to the usual agreement on time. Send an outline and I'll fi=\r\nnd the right colleagues.\r\n\r\nThe useful story is less repeated collection of the same field material. The =\r\nadjustment has been learning to work with a support process rather than calli=\r\nng whichever engineer we met first. We have both grown since then.\r\n\r\nI can describe that honestly. I would rather not read slides.\r\n\r\nTheo\r\n",
+      "sha256": "dc512dcc439732b5c5c33398a8e8270968a6f06d683ff08b133536bc9c62a9c4"
+    },
+    {
+      "message_id": "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+      "rfc822": "From: ARWC Staff Activities <staff-activities@alterrawaterco.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>,\r\n Clara Morivelle <clara.morivelle@alterrawaterco.com>,\r\n Nadia Corvane <nadia.corvane@alterrawaterco.com>,\r\n Priya Naravel <priya.naravel@alterrawaterco.com>,\r\n Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>,\r\n Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Owen Vardell <owen.vardell@alterrawaterco.com>,\r\n Rosa Nerivet <rosa.nerivet@alterrawaterco.com>,\r\n ARWC Laboratory Team <laboratory@alterrawaterco.com>\r\nDate: Tue, 01 Sep 2026 11:00:00 -0400\r\nMessage-ID: <e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>\r\nSubject: Staff photographs =?utf-8?b?4oCU?= ordinary light\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThis year's voluntary staff photography display is open for entries through M=\r\nonday, 14 September. The theme is ordinary light. Please use photographs from=\r\n your own time and only submit work you are happy to have displayed to collea=\r\ngues.\r\n\r\nPhone photographs are welcome. There is no requirement to take part in the co=\r\nmpetition to have a photograph included in the display.\r\n\r\nResults will be circulated on Tuesday, 15 September. The October staff walk i=\r\ns being arranged separately.\r\n\r\nStaff Activities\r\n",
+      "sha256": "0f32f6121366c1915f127e03b0856d2199bb5c71917f0eb17d64aaac6ba595d2"
+    },
+    {
+      "message_id": "<74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>",
+      "rfc822": "From: Ardenvale Instrument Services =?utf-8?b?4oCU?= Customer Service\r\n <service@ardenvale.test>\r\nTo: Jules Orswick <jules.orswick@veybridge.test>,\r\n Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Tue, 01 Sep 2026 14:10:00 -0400\r\nMessage-ID: <74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>\r\nSubject: Autumn service workshop feedback\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThank you for the comments on our last training day. We are revising the autu=\r\nmn programme to spend more time on practical service examples and less on the=\r\n catalogue introduction.\r\n\r\nWould a short session on preparing equipment for return be useful? We are col=\r\nlecting preferences before publishing dates.\r\n\r\nCustomer Service\r\nArdenvale Instrument Services\r\n",
+      "sha256": "1be5c0240ecae43aabbd3283215f6f9534bcf5535e25642e28e45eea44c3993b"
+    },
+    {
+      "message_id": "<ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>",
+      "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Ardenvale Instrument Services =?utf-8?b?4oCU?= Customer Service\r\n <service@ardenvale.test>, Jules Orswick <jules.orswick@veybridge.test>\r\nDate: Wed, 02 Sep 2026 11:05:00 -0400\r\nMessage-ID: <ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>\r\nSubject: Re: Autumn service workshop feedback\r\nIn-Reply-To: <74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>\r\nReferences: <74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. Examples of the information that makes a return straightforward would be=\r\n useful to our staff.\r\n\r\nPlease keep the practical session separate from the product demonstration so =\r\npeople can choose the part relevant to their work.\r\n\r\nClara Morivelle\r\nAlterra Regional Water Company\r\n",
+      "sha256": "77373b84707a49cd9ff50b4958a79f6238a0ef7b25c6c9dfe290a561217590d5"
+    },
+    {
+      "message_id": "<a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>",
+      "rfc822": "From: Jules Orswick <jules.orswick@veybridge.test>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Wed, 02 Sep 2026 15:30:00 -0400\r\nMessage-ID: <a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>\r\nSubject: Scheduling contact for future visits\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTheo,\r\n\r\nCould you put routine scheduling requests through dispatch first? I'll still =\r\ndiscuss the work with you. They have the full diary, and I am often on the ro=\r\nad when a customer calls.\r\n\r\nWe have newer people taking some of those arrangements now. It will help if c=\r\nustomers get to know them before they need to move a visit at short notice.\r\n\r\nJules\r\n",
+      "sha256": "0b17e8349e5df6f96370ac5e3b56d7a257898f193ef087d26b67932ce2df519d"
+    },
+    {
+      "message_id": "<b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Jules Orswick <jules.orswick@veybridge.test>\r\nDate: Thu, 03 Sep 2026 08:35:00 -0400\r\nMessage-ID: <b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>\r\nSubject: Re: Scheduling contact for future visits\r\nIn-Reply-To: <a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>\r\nReferences: <a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWill do. Habit on my part =E2=80=94 your name was the whole process when we f=\r\nirst started using Veybridge.\r\n\r\nAre you still thinking about teaching some of the newer field staff? You expl=\r\nain the practical bits well.\r\n\r\nTheo\r\n",
+      "sha256": "654069d913a86177e7f17b0d65f33588862c423455f48f68adf98246213c5ac9"
+    },
+    {
+      "message_id": "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+      "rfc822": "From: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Clara Morivelle <clara.morivelle@alterrawaterco.com>,\r\n Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 03 Sep 2026 11:40:00 -0400\r\nMessage-ID: <f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>\r\nSubject: Refurbishment account for the induction material\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-9f5dafc1b5e936aa07a1280f\"\r\n\r\n--workplace-9f5dafc1b5e936aa07a1280f\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe new induction pack includes the treatment refurbishment completed in 2023=\r\n. I've attached the short account.\r\n\r\nMina, would you be willing to say a few words at an induction session about w=\r\nhat the staged work was like for the crews? I think people would appreciate h=\r\nearing it from somebody who was there.\r\n\r\nLuc\r\n\r\n--workplace-9f5dafc1b5e936aa07a1280f\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"refurbishment-history.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBUaGUgdHJlYXRtZW50IHJlZnVyYmlzaG1lbnQsIDIwMjHigJMyMDIzCgpTdGFmZiBpbmR1Y3Rp\r\nb24gYmFja2dyb3VuZCDigKIgU2VwdGVtYmVyIDIwMjYKClRoZSByZWZ1cmJpc2htZW50IHdhcyBj\r\nb21wbGV0ZWQgaW4gcGxhbm5lZCBzdGFnZXMgd2hpbGUgdGhlIHNlcnZpY2UgY29udGludWVkLgpJ\r\ndCBpcyBhbiBhY2hpZXZlbWVudCBpbnZvbHZpbmcgb3BlcmF0aW9ucywgbWFpbnRlbmFuY2UsIGVu\r\nZ2luZWVyaW5nLCBwbGFubmluZywKYW5kIHRoZSBjb2xsZWFndWVzIHdobyBrZXB0IG90aGVyIHJv\r\ndXRpbmUgd29yayBtb3ZpbmcgYXQgdGhlIHNhbWUgdGltZS4KClB1YmxpYyByZXBvcnRpbmcgcmVj\r\nb3JkZWQgcHJvZ3Jlc3MgYW5kIHRoZSBjb21wbGV0ZWQgcmVzdWx0LiBTdGFmZiB3aG8gd29ya2Vk\r\nCnRocm91Z2ggdGhlIHN0YWdlcyByZW1lbWJlciB0aGUgcHJhY3RpY2FsIGNvb3JkaW5hdGlvbjog\r\ncHJlcGFyaW5nIHdvcmssIGZpdHRpbmcKaXQgYXJvdW5kIGV4aXN0aW5nIHJlc3BvbnNpYmlsaXRp\r\nZXMsIGFza2luZyBxdWVzdGlvbnMgZWFybHksIGFuZCBsZWF2aW5nIGEKdXNlZnVsIGFjY291bnQg\r\nZm9yIHRoZSBwZW9wbGUgdGFraW5nIG92ZXIuCgpUaGUgaW5kdWN0aW9uIHByb2dyYW1tZSBzaG91\r\nbGQgZ2l2ZSBuZXdlciBjb2xsZWFndWVzIGFuIG9wcG9ydHVuaXR5IHRvIG1lZXQKc29tZSBvZiB0\r\naGUgcGVvcGxlIGJlaGluZCB0aGUgd29yayBhbmQgYXNrIHdoYXQgdGhlIGV4cGVyaWVuY2Ugd2Fz\r\nIGxpa2UuClRoZSBwcmFjdGljYWwgYXJyYW5nZW1lbnRzIHN0aWxsIG5lZWQgdG8gYmUgZGlzY3Vz\r\nc2VkIHdpdGggdGhlIHN0YWZmIGludm9sdmVkLgoKQSBjb2xsZWFndWUgd2hvIGpvaW5lZCBhZnRl\r\nciAyMDIzIG1heSBrbm93IHRoZSBjb21wbGV0ZWQgZmFjaWxpdGllcyB3aXRob3V0Cmtub3dpbmcg\r\ndGhlaXIgaGlzdG9yeS4gQm90aCBleHBlcmllbmNlcyBiZWxvbmcgaW4gdGhlIGNvbXBhbnkuIE5v\r\nYm9keSBuZWVkcyB0bwpoYXZlIGJlZW4gaGVyZSBmb3IgYSBwYXJ0aWN1bGFyIHByb2plY3QgdG8g\r\ndGFrZSBwcmlkZSBpbiB0aGUgc2VydmljZSBub3cuCg==\r\n\r\n--workplace-9f5dafc1b5e936aa07a1280f--\r\n",
+      "sha256": "acbd5eb2312c66edcf5d15f3b5e081c78a66d9231e3c776871c66700007cad01"
+    },
+    {
+      "message_id": "<428bd3b9-7115-545d-a2c3-0355982deb5b@veybridge.test>",
+      "rfc822": "From: Jules Orswick <jules.orswick@veybridge.test>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 03 Sep 2026 16:10:00 -0400\r\nMessage-ID: <428bd3b9-7115-545d-a2c3-0355982deb5b@veybridge.test>\r\nSubject: Re: Scheduling contact for future visits\r\nIn-Reply-To: <b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>\r\nReferences: <a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>\r\n <b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. I've asked to split the time, rather than move into the office permanent=\r\nly. I like some travel. I also like making plans at home that survive until t=\r\nhe weekend.\r\n\r\nGlad dispatch will be your first call. They are good at it.\r\n\r\nJules\r\n",
+      "sha256": "0113f5ae43c52398b4e132a71591dfaea99f0105a55d92ab654dbe8e04c53004"
+    },
+    {
+      "message_id": "<12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>",
+      "rfc822": "From: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nTo: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nDate: Fri, 04 Sep 2026 08:15:00 -0400\r\nMessage-ID: <12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>\r\nSubject: Re: Refurbishment account for the induction material\r\nIn-Reply-To: <f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>\r\nReferences: <f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nHappy to help with the account. I would prefer a small visit and questions to=\r\n giving a speech.\r\n\r\nThe part I remember is how many people made each stage fit around the work al=\r\nready happening. The report gets the result right. I'd like the new starters =\r\nto meet some of the people who made it work.\r\n\r\nMina\r\n",
+      "sha256": "7bf4ceda5b15a61b18973a721ebf8dcf9f0abd874c9d9db6c04b99fcd5681a1f"
+    },
+    {
+      "message_id": "<fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>",
+      "rfc822": "From: Ternwick Records Bureau =?utf-8?b?4oCU?= Customer Services\r\n <customers@ternwick.test>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Fri, 04 Sep 2026 09:30:00 -0400\r\nMessage-ID: <fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>\r\nSubject: Staff-history batch accepted\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYour records colleagues have accepted the staff-history scanning batch, inclu=\r\nding the corrected descriptions for the old office photographs. Thank you for=\r\n confirming the invoice route.\r\n\r\nWe have noted their suggestions for the next batch. Additional description wo=\r\nrk can be included in a separate proposal once the selection is settled.\r\n\r\nCustomer Services\r\nTernwick Records Bureau\r\n",
+      "sha256": "6867da6962b3f1bbb9da314111fe0bc17bd8d3ee57d0a8de7edcf808fe8605ba"
+    },
+    {
+      "message_id": "<b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>",
+      "rfc822": "From: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nDate: Fri, 04 Sep 2026 10:12:00 -0400\r\nMessage-ID: <b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>\r\nSubject: Re: Refurbishment account for the induction material\r\nIn-Reply-To: <12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>\r\nReferences: <f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>\r\n <12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nA small visit sounds better. Thank you for saying so.\r\n\r\nI sometimes assume that recognition ought to involve a microphone. We can rec=\r\nognize the work by making enough time to hear about it properly.\r\n\r\nLuc\r\n",
+      "sha256": "1d8b93b41e43d68ba62324a7770787b134de36bc72abcb772ac1ef7325f50264"
+    },
+    {
+      "message_id": "<459c241b-e78e-5bd4-858e-ed2bb8190d6e@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Ternwick Records Bureau =?utf-8?b?4oCU?= Customer Services\r\n <customers@ternwick.test>\r\nDate: Mon, 07 Sep 2026 09:45:00 -0400\r\nMessage-ID: <459c241b-e78e-5bd4-858e-ed2bb8190d6e@alterrawaterco.com>\r\nSubject: Re: Staff-history batch accepted\r\nIn-Reply-To: <fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>\r\nReferences: <fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThank you. Acceptance is recorded and the ordinary invoice process can procee=\r\nd.\r\n\r\nThe descriptions are much clearer. I particularly appreciate that someone can=\r\n now tell which office a photograph shows without finding a colleague who wor=\r\nked there at the time.\r\n\r\nPriya Naravel\r\nAlterra Regional Water Company\r\n",
+      "sha256": "4e7fb7bdda1da007d7e8b76c0bc02a47b5a93459faa44f99118bf9f6df78ae3f"
+    },
+    {
+      "message_id": "<0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>",
+      "rfc822": "From:\r\n Belvarn Packaging =?utf-8?b?4oCU?= Production Planning <planning@belvarn.test>\r\nTo: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nDate: Mon, 07 Sep 2026 13:00:00 -0400\r\nMessage-ID: <0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>\r\nSubject: Meter visit contact\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould you confirm which contact we should give the meter appointments team? O=\r\nur production schedule now includes more short runs, so the most convenient t=\r\nimes vary by week.\r\n\r\nWe are also gathering information for an efficiency project. A simple account=\r\n of the information on our ordinary meter bill would help us ask better quest=\r\nions internally.\r\n\r\nProduction Planning\r\nBelvarn Packaging\r\n",
+      "sha256": "f2f09001a7d4751744169d9f49907c79b11f1fd5bba4241caa1656b9158ed916"
+    },
+    {
+      "message_id": "<86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>",
+      "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Mon, 07 Sep 2026 17:05:00 -0400\r\nMessage-ID: <86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>\r\nSubject: A walk for your weekend\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe riverside path would be my first choice. If the weather is clear, the hig=\r\nher route is also lovely, but you would want more of the day for it. I have n=\r\notes on both and a few ideas about lunch.\r\n\r\nOn rereading your question, you asked for one easy walk. Riverside path. I'll=\r\n stop there unless invited.\r\n\r\nClara\r\n",
+      "sha256": "d988356bd2cc5f7441f4353b398237f6d512250b5bf4206fd5d8ffe91bcadf75"
+    },
+    {
+      "message_id": "<9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>",
+      "rfc822": "From: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Tue, 08 Sep 2026 09:18:00 -0400\r\nMessage-ID: <9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>\r\nSubject: Re: A walk for your weekend\r\nIn-Reply-To: <86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>\r\nReferences: <86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nRiverside it is. Thank you.\r\n\r\nI would still like the lunch ideas. I can be persuaded to plan that portion o=\r\nf the day in some detail.\r\n\r\nNadia\r\n",
+      "sha256": "8b374f20346332869d00d7b48506500892ea088ac2a6f4503dc853eb2f4d5827"
+    },
+    {
+      "message_id": "<9d187de3-f8ef-5fcd-a201-f902c4fe9875@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo:\r\n Belvarn Packaging =?utf-8?b?4oCU?= Production Planning <planning@belvarn.test>\r\nDate: Tue, 08 Sep 2026 10:20:00 -0400\r\nMessage-ID: <9d187de3-f8ef-5fcd-a201-f902c4fe9875@alterrawaterco.com>\r\nSubject: Re: Meter visit contact\r\nIn-Reply-To: <0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>\r\nReferences: <0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease use your usual production-office contact so the appointments team can =\r\nagree a time against the current schedule. I've passed that preference on.\r\n\r\nWe are improving the billing-period explanation this week. I'll send you the =\r\nfinished version once it is ready. It should be a useful starting point for t=\r\nhe efficiency discussion.\r\n\r\nRosa Nerivet\r\nAlterra Regional Water Company\r\n",
+      "sha256": "da3f12584c7d1a6adcc27b299f3006b894fe079e244e16ef4ef96f1f1b539e54"
+    },
+    {
+      "message_id": "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Owen Vardell <owen.vardell@alterrawaterco.com>\r\nDate: Tue, 08 Sep 2026 12:02:00 -0400\r\nMessage-ID: <6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>\r\nSubject: Have you entered a photograph?\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nOwen, you should put in the picture you showed us. Phones count.\r\n\r\nMina, do you know whether they are judging the prints or the originals? Only =\r\nasking because the colours look a bit different. It's all just a bit of fun, =\r\nobviously.\r\n\r\nTheo\r\n",
+      "sha256": "4df33c3645071799ba401e3f1ae8fdfc6f443cd0aa015eac1c55f559323c1293"
+    },
+    {
+      "message_id": "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
+      "rfc822": "From: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>,\r\n Owen Vardell <owen.vardell@alterrawaterco.com>\r\nDate: Tue, 08 Sep 2026 12:25:00 -0400\r\nMessage-ID: <60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>\r\nSubject: Re: Have you entered a photograph?\r\nIn-Reply-To: <6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>\r\nReferences: <6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI don't know. You could ask the organizers along with your other very casual =\r\nquestions.\r\n\r\nMine is a patch of evening light on the garden wall. I like it. That may be t=\r\nhe limit of my campaign for office glory.\r\n\r\nOwen, send yours in.\r\n\r\nMina\r\n",
+      "sha256": "b7dfa86f3ae25c002bb3dc7b4f6d2024f9d2cba95f6fb72ece2753b1b7cf5991"
+    },
+    {
+      "message_id": "<f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>",
+      "rfc822": "From: Talvern Growers Cooperative =?utf-8?b?4oCU?= Member Services\r\n <members@talvern.test>\r\nTo: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nDate: Tue, 08 Sep 2026 14:25:00 -0400\r\nMessage-ID: <f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>\r\nSubject: Information session timing\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe would like to move the member information session later in the autumn. The=\r\n proposed week overlaps with several members' busiest period, and our packing=\r\n-facility discussion has already filled the next meeting.\r\n\r\nPlease keep us on the list. Members found the previous explanation useful, pa=\r\nrticularly the distinction between our supplementary contract supply and thei=\r\nr other water arrangements.\r\n\r\nMember Services\r\nTalvern Growers Cooperative\r\n",
+      "sha256": "94d4a905d1c76963d388e127a50fe1ef9f460514253c11217645f86c7b09fe21"
+    },
+    {
+      "message_id": "<93a33adf-05bc-50d3-b5c4-4da3f35f99c5@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo: Talvern Growers Cooperative =?utf-8?b?4oCU?= Member Services\r\n <members@talvern.test>\r\nDate: Wed, 09 Sep 2026 11:20:00 -0400\r\nMessage-ID: <93a33adf-05bc-50d3-b5c4-4da3f35f99c5@alterrawaterco.com>\r\nSubject: Re: Information session timing\r\nIn-Reply-To: <f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>\r\nReferences: <f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nOf course. I'll ask for some later dates rather than trying to squeeze anothe=\r\nr subject into your existing meeting.\r\n\r\nSend any common questions beforehand and we can prepare around those. I hope =\r\nthe packing-facility discussion makes progress.\r\n\r\nRosa Nerivet\r\nAlterra Regional Water Company\r\n",
+      "sha256": "4e984d19a86e7bed28a1d5ad8d3bba6acf594c157621db2c4b24955024e68e0d"
+    },
+    {
+      "message_id": "<ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>",
+      "rfc822": "From: Owen Vardell <owen.vardell@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nDate: Wed, 09 Sep 2026 15:10:00 -0400\r\nMessage-ID: <ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>\r\nSubject: Short explanation for the community session\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-f732bea75e0890608a4e8b0a\"\r\n\r\n--workplace-f732bea75e0890608a4e8b0a\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nI have attached my preparation note for tomorrow. I tried to explain the whol=\r\ne journey from source to tap, but it takes longer aloud than it did in my hea=\r\nd.\r\n\r\nMina, could we go over the terms you used for the old district arrangements? =\r\nI wrote them down, but I am not sure I understood them well enough to explain=\r\n them to someone else.\r\n\r\nOwen\r\n\r\n--workplace-f732bea75e0890608a4e8b0a\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"outreach-preparation.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBDb21tdW5pdHkgd2F0ZXItc2VydmljZSBleHBsYW5hdGlvbiDigJQgcHJlcGFyYXRpb24KCk93\r\nZW4gVmFyZGVsbCDigKIgOSBTZXB0ZW1iZXIgMjAyNiDigKIgRHJhZnQgZm9yIHJlaGVhcnNhbAoK\r\nVGhlIG9yaWdpbmFsIG91dGxpbmUgdHJpZWQgdG8gY292ZXIgc291cmNlIHdhdGVyLCB0cmVhdG1l\r\nbnQsIGRpc3RyaWJ1dGlvbiwKY3VzdG9tZXIgc2VydmljZSwgdGhlIGNvbXBhbnkgbWVyZ2VyLCBh\r\nbmQgdGhlIGRpZmZlcmVuY2UgYmV0d2VlbiBzZXZlcmFsIHRlYW1zLgpJdCBpcyB0b28gbG9uZyBm\r\nb3IgdGhlIHNob3J0IGV4cGxhbmF0aW9uIHdlIGhhdmUgYmVlbiBhc2tlZCB0byBwcmVwYXJlLgoK\r\nRm9yIHRoZSByZWhlYXJzYWwsIEkgd2FudCB0byB0ZXN0IGEgc2ltcGxlciBvcGVuaW5nOiB3aGF0\r\nIGhhcHBlbnMgYmVmb3JlIHdhdGVyCnJlYWNoZXMgb3VyIHRhcD8KCkkgbmVlZCB0byBjaGVjayB0\r\naGUgb2xkIGRpc3RyaWN0IHRlcm1pbm9sb2d5IHdpdGggTWluYSBiZWZvcmUgdXNpbmcgYW55IG9m\r\nIGl0LgpJdCBtYXkgYmUgbW9yZSBoaXN0b3J5IHRoYW4gdGhlIGF1ZGllbmNlIG5lZWRzIGZvciB0\r\naGlzIGV4cGxhbmF0aW9uLiBSb3NhIGNhbgpoZWxwIGRlY2lkZSB3aGF0IHRoZSBvcGVuaW5nIHF1\r\nZXN0aW9uIHNob3VsZCBsZWFkIHRvIG5leHQuCgpPbmUgY29tcGFyaXNvbiB0aGF0IG1heSB3b3Jr\r\nIGlzIGEgcmVsYXk6IGRpZmZlcmVudCBwZW9wbGUgY29udHJpYnV0ZSBkaWZmZXJlbnQKcGFydHMg\r\nb2YgYSBjb250aW51b3VzIHNlcnZpY2UuIEkgd2FudCB0byBrZWVwIGl0IGFjY3VyYXRlIHdpdGhv\r\ndXQgbWFraW5nIGl0CnNvdW5kIGFzIHRob3VnaCBvbmUgam9iIG9ubHkgYmVnaW5zIGFmdGVyIGFu\r\nb3RoZXIgdGVhbSBoYXMgc3RvcHBlZCB3b3JraW5nLgo=\r\n\r\n--workplace-f732bea75e0890608a4e8b0a--\r\n",
+      "sha256": "64c931074fdc57bff66604e803b6161634f64a1c7b7d10cfaa04070f40ad5db3"
+    },
+    {
+      "message_id": "<56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>",
+      "rfc822": "From: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nTo: Owen Vardell <owen.vardell@alterrawaterco.com>,\r\n Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nDate: Wed, 09 Sep 2026 16:00:00 -0400\r\nMessage-ID: <56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>\r\nSubject: Re: Short explanation for the community session\r\nIn-Reply-To: <ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>\r\nReferences: <ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. Those were names people used before the services joined. I forget how mu=\r\nch local shorthand is in that explanation.\r\n\r\nFor a visitor, start with what the water company does today. We can keep the =\r\nhistory for anyone who asks. Bring the note; we'll cut it down together.\r\n\r\nMina\r\n",
+      "sha256": "70235cf7ac31c4219c04f9496a23d5c763487394c3f914e6b59dc206faef4fda"
+    },
+    {
+      "message_id": "<f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo: Owen Vardell <owen.vardell@alterrawaterco.com>,\r\n Mina Selverin <mina.selverin@alterrawaterco.com>\r\nDate: Thu, 10 Sep 2026 14:05:00 -0400\r\nMessage-ID: <f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>\r\nSubject: Re: Short explanation for the community session\r\nIn-Reply-To: <56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>\r\nReferences: <ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>\r\n <56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-7874a3f2ebc110ab49f4ee25\"\r\n\r\n--workplace-7874a3f2ebc110ab49f4ee25\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe shorter version works. Owen's opening question =E2=80=94 what happens bef=\r\nore the water reaches our tap? =E2=80=94 gives people somewhere to start.\r\n\r\nI've attached the agreed outline. The community group's date is still being a=\r\nrranged, so please don't promise a session time yet.\r\n\r\nRosa\r\n\r\n--workplace-7874a3f2ebc110ab49f4ee25\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"outreach-outline.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBCZWZvcmUgd2F0ZXIgcmVhY2hlcyB0aGUgdGFwCgpDb21tdW5pdHkgc2Vzc2lvbiBvdXRsaW5l\r\nIOKAoiBBZ3JlZWQgYXQgcmVoZWFyc2FsLCAxMCBTZXB0ZW1iZXIgMjAyNgoKKipPcGVuaW5nIHF1\r\nZXN0aW9uOioqIFdoYXQgaGFwcGVucyBiZWZvcmUgd2F0ZXIgcmVhY2hlcyBvdXIgdGFwPwoKRXhw\r\nbGFpbiB0aGF0IEFSV0MgbG9va3MgYWZ0ZXIgYSBjb25uZWN0ZWQgc2VydmljZTogb2J0YWluaW5n\r\nIHNvdXJjZSB3YXRlciwKdHJlYXRpbmcgaXQsIGtlZXBpbmcgdGhlIGRpc3RyaWJ1dGlvbiBzeXN0\r\nZW0gd29ya2luZywgYW5kIGhlbHBpbmcgY3VzdG9tZXJzCnVuZGVyc3RhbmQgdGhlIHNlcnZpY2Ug\r\ndGhleSByZWNlaXZlLiBQZW9wbGUgd2l0aCBkaWZmZXJlbnQgc2tpbGxzIGRvIHRob3NlIGpvYnMK\r\nYWxvbmdzaWRlIG9uZSBhbm90aGVyLgoKT3dlbidzIHJlbGF5IGNvbXBhcmlzb24gaXMgdXNlZnVs\r\nIGZvciBleHBsYWluaW5nIHRoYXQgZGlmZmVyZW50IHJlc3BvbnNpYmlsaXRpZXMKY29udHJpYnV0\r\nZSB0byB0aGUgc2FtZSByZXN1bHQuIE1ha2UgY2xlYXIgdGhhdCB0aGUgd29yayBjb250aW51ZXMg\r\ndGhyb3VnaG91dAp0aGUgZGF5OyBvbmUgZGVwYXJ0bWVudCBkb2VzIG5vdCBmaW5pc2ggcGVybWFu\r\nZW50bHkgd2hlbiBhbm90aGVyIHRha2VzIG92ZXIuCgpVc2UgYW4gZXZlcnlkYXkgZXhhbXBsZSBz\r\ndWNoIGFzIGFycmFuZ2luZyBhIG1ldGVyIHZpc2l0LiBBIGN1c3RvbWVyLXNlcnZpY2UKY29sbGVh\r\nZ3VlIGhlbHBzIGFncmVlIHRoZSBhcHBvaW50bWVudCwgZmllbGQgc3RhZmYgZG8gdGhlIHByYWN0\r\naWNhbCB3b3JrLCBhbmQKdGhlIGFjY291bnQgcmVjb3JkcyB0aGUgcmVzdWx0LiBMZWF2ZSB0aW1l\r\nIGZvciB0aGUgYXVkaWVuY2UncyBxdWVzdGlvbnMuCgpUaGUgc2VwYXJhdGUgUGluZSBhbmQgUml2\r\nZXIgc2VydmljZXMgam9pbmVkIGluIDIwMDkuIE1lbnRpb24gdGhhdCBoaXN0b3J5IGlmCml0IGhl\r\nbHBzIGFuc3dlciBhIHF1ZXN0aW9uLCByYXRoZXIgdGhhbiBtYWtpbmcgaXQgdGhlIGludHJvZHVj\r\ndGlvbiBldmVyeW9uZQptdXN0IHNpdCB0aHJvdWdoLgoKTWluYSBoYXMgY2hlY2tlZCB0aGUgZXhw\r\nbGFuYXRpb24ncyBhY2N1cmFjeS4gUm9zYSBoYXMgaGVscGVkIHdpdGggaXRzIG9yZGVyLgpPd2Vu\r\nIHdpbGwgcHJhY3Rpc2UgdGhlIHNob3J0ZXIgdmVyc2lvbi4gVGhlIGNvbW11bml0eSBzZXNzaW9u\r\nJ3MgZmluYWwgZGF0ZQpyZW1haW5zIHRvIGJlIGFycmFuZ2VkLgo=\r\n\r\n--workplace-7874a3f2ebc110ab49f4ee25--\r\n",
+      "sha256": "c8bea3122729b3ffd5d57318edf370fba4c6ea018ec5df968c724aa8d9080a95"
+    },
+    {
+      "message_id": "<d0bd75ec-9a41-5dd5-aef3-e6a77d75c978@alterrawaterco.com>",
+      "rfc822": "From: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nTo: Owen Vardell <owen.vardell@alterrawaterco.com>\r\nDate: Thu, 10 Sep 2026 15:12:00 -0400\r\nMessage-ID: <d0bd75ec-9a41-5dd5-aef3-e6a77d75c978@alterrawaterco.com>\r\nSubject: Your comparison this afternoon\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould I use your relay comparison in the next orientation? It made the differ=\r\nence between the jobs clear without making one sound more important than anot=\r\nher.\r\n\r\nGood work asking again yesterday. I had given you an explanation that assumed=\r\n you had already worked here for years.\r\n\r\nMina\r\n",
+      "sha256": "9749910106ae3c457fd398a731b3c2b5fc9deb3061c3d06a33bfe39d95ede08d"
+    },
+    {
+      "message_id": "<19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo: Nadia Corvane <nadia.corvane@alterrawaterco.com>,\r\n Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Fri, 11 Sep 2026 10:30:00 -0400\r\nMessage-ID: <19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>\r\nSubject: The billing-period explanation\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould we look at this on Monday? Customers ask which dates their bill covers.=\r\n We start by explaining how the reading gets into our account process.\r\n\r\nBoth are true, but only one is the question they asked. I'd like to move the =\r\ndates to the opening sentence and keep the process explanation underneath.\r\n\r\nRosa\r\n",
+      "sha256": "8d3d80d6d76f70739d0d42fad581a5d3898a96d6d720c96beb1674a4668ab802"
+    },
+    {
+      "message_id": "<c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>",
+      "rfc822": "From: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nTo: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nDate: Mon, 14 Sep 2026 14:00:00 -0400\r\nMessage-ID: <c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>\r\nSubject: Time for the next orientation group\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould the next planning round include the preparation time for orientations, =\r\nas well as the sessions themselves? I'm glad to teach, but the preparation is=\r\n real work too.\r\n\r\nAnd please keep me in the development conversation. Long service doesn't mean=\r\n I have already fixed a retirement date. There are still things I would like =\r\nto learn here.\r\n\r\nMina\r\n",
+      "sha256": "d64e28d1971f840e11b5320b59b0547d72a8a79cadf6f9119e29b1b92751891e"
+    },
+    {
+      "message_id": "<20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>,\r\n Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Mon, 14 Sep 2026 15:22:00 -0400\r\nMessage-ID: <20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>\r\nSubject: Re: The billing-period explanation\r\nIn-Reply-To: <19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>\r\nReferences: <19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe revised explanation is clear. I have one more suggestion about the wordin=\r\ng of the last paragraph, although I concede it may simply be how I would writ=\r\ne it.\r\n\r\nDoes it help the customer, or have we reached the point where I should leave =\r\nit alone?\r\n\r\nPriya\r\n",
+      "sha256": "76226fa6a6f6260137b4d32005cff083390729c5321a8a0871f25473b80370b6"
+    },
+    {
+      "message_id": "<63d5f496-64c8-5fa0-a16d-dc1cbcea14c8@alterrawaterco.com>",
+      "rfc822": "From: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 08:10:00 -0400\r\nMessage-ID: <63d5f496-64c8-5fa0-a16d-dc1cbcea14c8@alterrawaterco.com>\r\nSubject: Re: Time for the next orientation group\r\nIn-Reply-To: <c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>\r\nReferences: <c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nAgreed. I'll ask the managers to include preparation when they bring their tr=\r\naining proposals.\r\n\r\nPoint taken about development. I've been thinking a good deal about successio=\r\nn lately, including my own, and should not assume everyone is asking the same=\r\n question.\r\n\r\nLuc\r\n",
+      "sha256": "d399d5c9cbd78e5426ea0a634220184e116230fba9240cf7bf13435ed60e99bb"
+    },
+    {
+      "message_id": "<a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>,\r\n Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 09:20:00 -0400\r\nMessage-ID: <a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>\r\nSubject: Re: The billing-period explanation\r\nIn-Reply-To: <20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>\r\nReferences: <19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>\r\n <20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-be37c892b2ca04641d16f660\"\r\n\r\n--workplace-be37c892b2ca04641d16f660\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nI think we have reached that point. I tried both versions with colleagues and=\r\n they answered the question equally well.\r\n\r\nThe accepted version is attached. Thank you both. This should save customers =\r\na second explanation.\r\n\r\nRosa\r\n\r\n--workplace-be37c892b2ca04641d16f660\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"billing-explanation.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBXaGljaCBwZXJpb2QgZG9lcyBteSB3YXRlciBiaWxsIGNvdmVyPwoKQ3VzdG9tZXItc2Vydmlj\r\nZSBleHBsYW5hdGlvbiDigKIgQWNjZXB0ZWQgMTUgU2VwdGVtYmVyIDIwMjYKClRoZSBiaWxsaW5n\r\nIHBlcmlvZCBpcyB0aGUgaW50ZXJ2YWwgaWRlbnRpZmllZCBvbiB5b3VyIGJpbGwuIEl0IHRlbGxz\r\nIHlvdSB3aGljaApwYXJ0IG9mIHlvdXIgc2VydmljZSBoaXN0b3J5IHRoZSBiaWxsIGNvdmVycy4g\r\nVGhlIGRhdGUgYSBiaWxsIGlzIGlzc3VlZCBpcyBhCnNlcGFyYXRlIGRhdGUgYW5kIGNhbiBiZSBs\r\nYXRlciB0aGFuIHRoZSBlbmQgb2YgdGhhdCBpbnRlcnZhbC4KCllvdXIgYmlsbCBpZGVudGlmaWVz\r\nIHRoZSByZWFkaW5ncyB1c2VkIHRvIGNhbGN1bGF0ZSBtZXRlcmVkIGNvbnN1bXB0aW9uIGFuZAp3\r\naGV0aGVyIGEgcmVhZGluZyBpcyBhY3R1YWwgb3IgZXN0aW1hdGVkLiBJZiBhIGRhdGUgb3IgcmVh\r\nZGluZyBpcyB1bmNsZWFyLApjdXN0b21lciBzZXJ2aWNlIGNhbiBleHBsYWluIHRoZSBlbnRyaWVz\r\nIG9uIHlvdXIgaW5kaXZpZHVhbCBhY2NvdW50LgoKV2hlbiBjb250YWN0aW5nIHVzLCB0ZWxsIHVz\r\nIHdoaWNoIGJpbGwgYW5kIHdoaWNoIHBhcnQgeW91IHdvdWxkIGxpa2UgZXhwbGFpbmVkLgpUaGVy\r\nZSBpcyBubyBuZWVkIHRvIHJlY29uc3RydWN0IG91ciBpbnRlcm5hbCBwcm9jZXNzIGJlZm9yZSBh\r\nc2tpbmcgdGhlIHF1ZXN0aW9uLgpXZSBjYW4gZXhwbGFpbiB0aGUgYmlsbGluZyBwZXJpb2QgZmly\r\nc3QsIHRoZW4gZGlzY3VzcyBob3cgdGhlIHJlbGV2YW50IHJlYWRpbmcKd2FzIG9idGFpbmVkIG9y\r\nIGFwcGxpZWQgaWYgdGhhdCB3b3VsZCBoZWxwLgoKRm9yIGFuIGFwcG9pbnRtZW50IGNvbmNlcm5p\r\nbmcgeW91ciBtZXRlciwgY3VzdG9tZXIgc2VydmljZSB3aWxsIHdvcmsgd2l0aCB0aGUKYXBwb2lu\r\ndG1lbnRzIHRlYW0gdG8gYWdyZWUgdGhlIHByYWN0aWNhbCBhcnJhbmdlbWVudHMuIEEgcXVlc3Rp\r\nb24gYWJvdXQgeW91cgpiaWxsIGRvZXMgbm90IGl0c2VsZiBib29rIGEgbWV0ZXIgdmlzaXQuCg==\r\n\r\n--workplace-be37c892b2ca04641d16f660--\r\n",
+      "sha256": "aa725228169a137e06a9411d123574d73cc3946c093990f19369c74381e7d077"
+    },
+    {
+      "message_id": "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+      "rfc822": "From: ARWC Staff Activities <staff-activities@alterrawaterco.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>,\r\n Clara Morivelle <clara.morivelle@alterrawaterco.com>,\r\n Nadia Corvane <nadia.corvane@alterrawaterco.com>,\r\n Priya Naravel <priya.naravel@alterrawaterco.com>,\r\n Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>,\r\n Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Owen Vardell <owen.vardell@alterrawaterco.com>,\r\n Rosa Nerivet <rosa.nerivet@alterrawaterco.com>,\r\n ARWC Laboratory Team <laboratory@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 10:00:00 -0400\r\nMessage-ID: <3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>\r\nSubject: Staff photography results and display\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThank you to everyone who contributed. The first-place photograph came from a=\r\n laboratory colleague: rain catching the light on a kitchen window. Theo Marr=\r\nivel's early-morning footpath placed second.\r\n\r\nAll accepted entries, including the photographs from Mina Selverin and Owen V=\r\nardell, will be included in the staff display. Thank you also to colleagues w=\r\nho helped prepare it around different shifts.\r\n\r\nStaff Activities\r\n",
+      "sha256": "0a8714c49ff410a282f79ad7aea8b1a2cc1f9383a00089650d9a8b60c9e9e64b"
+    },
+    {
+      "message_id": "<87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>",
+      "rfc822": "From: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nTo: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 11:35:00 -0400\r\nMessage-ID: <87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>\r\nSubject: Lunch next week?\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWould you like to get lunch next week? I've enjoyed these writing sessions.\r\n\r\nWe can leave the next explanation until we're back. I am trying to get better=\r\n at making that distinction.\r\n\r\nNadia\r\n",
+      "sha256": "0f9ca852088f6d7ed496e1bc29235784898a00f4547d9043adca01ce470cd4fa"
+    },
+    {
+      "message_id": "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Mina Selverin <mina.selverin@alterrawaterco.com>,\r\n Owen Vardell <owen.vardell@alterrawaterco.com>,\r\n ARWC Laboratory Team <laboratory@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 12:15:00 -0400\r\nMessage-ID: <0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>\r\nSubject: Congratulations on the photograph\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease pass my congratulations to the winner. Lovely picture. The light reall=\r\ny does make it.\r\n\r\nI am happy with second. Have they chosen next year's theme yet?\r\n\r\nTheo\r\n",
+      "sha256": "f0887f186aa472f5afe51cba59dcd776a22e3f85bc4c7dde851d27541e3a763c"
+    },
+    {
+      "message_id": "<5c77d06b-0761-5852-9f79-2aa15cc28172@alterrawaterco.com>",
+      "rfc822": "From: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>\r\nTo: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 13:05:00 -0400\r\nMessage-ID: <5c77d06b-0761-5852-9f79-2aa15cc28172@alterrawaterco.com>\r\nSubject: Re: Lunch next week?\r\nIn-Reply-To: <87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>\r\nReferences: <87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes, Tuesday suits me if we go after the morning cover changes. I'll check th=\r\ne time with the team.\r\n\r\nLooking forward to it.\r\n\r\nRosa\r\n",
+      "sha256": "0067ba9552c344627939bcbec95c104d7b96e32a4ee27dd91efbf4bebe48e04e"
+    },
+    {
+      "message_id": "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>",
+      "rfc822": "From: Owen Vardell <owen.vardell@alterrawaterco.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>,\r\n Mina Selverin <mina.selverin@alterrawaterco.com>\r\nDate: Tue, 15 Sep 2026 13:10:00 -0400\r\nMessage-ID: <a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>\r\nSubject: Mine is going in the display\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThanks for encouraging me. I didn't place but I'm pleased they are using it.\r\n\r\nAlso, Theo, your footpath picture is very good. I had not realized how early =\r\nyou have to get up to look that relaxed about a competition.\r\n\r\nOwen\r\n",
+      "sha256": "43106c2cd8b17a7b301359d1a9d2095c7a42515b594169524c984cd7c024c876"
+    }
+  ],
+  "mailboxes": {
+    "theo.marrivel@alterrawaterco.com": {
+      "owner": "theo.marrivel@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>",
+          "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+          "<428bd3b9-7115-545d-a2c3-0355982deb5b@veybridge.test>",
+          "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
+          "<b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>",
+          "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
+          "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>"
+        ]
+      }
+    },
+    "clara.morivelle@alterrawaterco.com": {
+      "owner": "clara.morivelle@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>",
+          "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+          "<9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>",
+          "<86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>"
+        ]
+      }
+    },
+    "nadia.corvane@alterrawaterco.com": {
+      "owner": "nadia.corvane@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>",
+          "<058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>",
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>",
+          "<19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>",
+          "<20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>",
+          "<a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<5c77d06b-0761-5852-9f79-2aa15cc28172@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>",
+          "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
+          "<9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>",
+          "<87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>"
+        ]
+      }
+    },
+    "priya.naravel@alterrawaterco.com": {
+      "owner": "priya.naravel@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>",
+          "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
+          "<b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>",
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>",
+          "<19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>",
+          "<a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>",
+          "<058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>",
+          "<36acfbd6-e4c8-5f74-a22b-a9375d5a1547@alterrawaterco.com>",
+          "<459c241b-e78e-5bd4-858e-ed2bb8190d6e@alterrawaterco.com>",
+          "<20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>"
+        ]
+      }
+    },
+    "luc.venn-morel@alterrawaterco.com": {
+      "owner": "luc.venn-morel@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>",
+          "<c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+          "<b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>",
+          "<63d5f496-64c8-5fa0-a16d-dc1cbcea14c8@alterrawaterco.com>"
+        ]
+      }
+    },
+    "mina.selverin@alterrawaterco.com": {
+      "owner": "mina.selverin@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+          "<b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>",
+          "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
+          "<ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>",
+          "<f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>",
+          "<63d5f496-64c8-5fa0-a16d-dc1cbcea14c8@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>",
+          "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>",
+          "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
+          "<56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>",
+          "<d0bd75ec-9a41-5dd5-aef3-e6a77d75c978@alterrawaterco.com>",
+          "<c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>"
+        ]
+      }
+    },
+    "owen.vardell@alterrawaterco.com": {
+      "owner": "owen.vardell@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
+          "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
+          "<56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>",
+          "<f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>",
+          "<d0bd75ec-9a41-5dd5-aef3-e6a77d75c978@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>",
+          "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>"
+        ]
+      }
+    },
+    "rosa.nerivet@alterrawaterco.com": {
+      "owner": "rosa.nerivet@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>",
+          "<f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>",
+          "<ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>",
+          "<56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>",
+          "<20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>"
+        ],
+        "Sent": [
+          "<9d187de3-f8ef-5fcd-a201-f902c4fe9875@alterrawaterco.com>",
+          "<93a33adf-05bc-50d3-b5c4-4da3f35f99c5@alterrawaterco.com>",
+          "<f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>",
+          "<19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>",
+          "<a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>",
+          "<5c77d06b-0761-5852-9f79-2aa15cc28172@alterrawaterco.com>"
+        ]
+      }
+    },
+    "staff-activities@alterrawaterco.com": {
+      "owner": "staff-activities@alterrawaterco.com",
+      "folders": {
+        "INBOX": [],
+        "Sent": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>"
+        ]
+      }
+    },
+    "laboratory@alterrawaterco.com": {
+      "owner": "laboratory@alterrawaterco.com",
+      "folders": {
+        "INBOX": [
+          "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+          "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>"
+        ],
+        "Sent": []
+      }
+    }
+  }
+}

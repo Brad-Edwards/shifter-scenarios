@@ -1,0 +1,689 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w24
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w24
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the actual contract and correctly classify the supplied responses. A service
+      banner or guessed algorithm name is insufficient.
+    source_refs: &id001
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w24-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w24-1.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate correct selection predictions under the stated conditions. Replaying a known
+      sequence does not count.
+    source_refs: &id002
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w24-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w24-2.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
+      These are one achievement. The bundle contains the retained diagnostic signer executable and signed
+      records with their original metadata, providing W24.4's analysis material. Its unlock value is separate
+      from diagnostic signing authority; no signing key or fresh authorization is awarded here.
+    source_refs: &id003
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w24-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w24-3.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Produce an authorization accepted for the fresh request under the service's existing
+      verification identity and retrieve the corresponding calibration-exception log. Replaying an old
+      approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request.
+      Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement.
+      This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
+    source_refs: &id004
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w24-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w24-4.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the actual contract and correctly classify the supplied responses. A service
+      banner or guessed algorithm name is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w24-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W24.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate correct selection predictions under the stated conditions. Replaying a known
+      sequence does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w24-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W24.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
+      These are one achievement. The bundle contains the retained diagnostic signer executable and signed
+      records with their original metadata, providing W24.4's analysis material. Its unlock value is separate
+      from diagnostic signing authority; no signing key or fresh authorization is awarded here.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w24-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W24.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Produce an authorization accepted for the fresh request under the service's existing
+      verification identity and retrieve the corresponding calibration-exception log. Replaying an old
+      approval, substituting a trusted key, or using the archive-unlock value does not satisfy that request.
+      Reconstructing the signer, obtaining signing capability, and its first successful use form one achievement.
+      This authorization is scoped to the diagnostic export and does not supply W15.APPROVAL or CONTROL.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w24-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W24.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W24.1: Two kinds of answer'
+    description: |-
+      Recover the legacy recovery contract and distinguish the response classes produced for the supplied engineering record.
+
+      Establishes what the recovery interface actually reveals.
+    agent: participant.operator
+    actions:
+    - w24.c1
+    targets: &id005
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w24.c1
+  c2:
+    name: 'W24.2: Which answer comes next'
+    description: |-
+      Predict the recovery interface's response selection well enough to satisfy the designated challenge cases.
+
+      Develops a useful cryptographic observation capability.
+    agent: participant.operator
+    actions:
+    - w24.c2
+    targets: &id006
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w24.c2
+  c3:
+    name: 'W24.3: The diagnostic evidence bundle'
+    description: |-
+      Recover the archive-unlock value within the recovery interface's query allowance and open the diagnostic evidence bundle bound to the current engineering project.
+
+      Turns the observation capability into protected engineering evidence and reveals the separate diagnostic-signing component behind the legacy service.
+    agent: participant.operator
+    actions:
+    - w24.c3
+    targets: &id007
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w24.c3
+  c4:
+    name: 'W24.4: Signed by someone who never approved it'
+    description: |-
+      The diagnostic service requires a signed authorization to export its private calibration-exception log. Use the recovered signer and its old records to produce an authorization for a fresh export request bound to the current project, then obtain the log.
+
+      Lets Cinder impersonate the diagnostic approver and recover the calibration exceptions omitted from routine support exports. Recovering archived evidence now leads to a distinct breach of the service's approval boundary.
+    agent: participant.operator
+    actions:
+    - w24.c4
+    targets: &id008
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w24.c4
+workflows:
+  c1:
+    description: 'W24.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w21-revision-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w24.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W24.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w24.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w24.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W24.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w24.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w24.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W24.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w24.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w24.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the legacy recovery contract and distinguish the response classes produced
+      for the supplied engineering record.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w24.c1
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual contract and correctly classify the supplied responses. A service
+        banner or guessed algorithm name is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w24.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Predict the recovery interface's response selection well enough to satisfy the designated
+      challenge cases.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w24.c2
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate correct selection predictions under the stated conditions. Replaying a
+        known sequence does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w24.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the archive-unlock value within the recovery interface's query allowance
+      and open the diagnostic evidence bundle bound to the current engineering project.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w24.c3
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the correct archive-unlock value and open the matching bundle within the allowance.
+        These are one achievement. The bundle contains the retained diagnostic signer executable and signed
+        records with their original metadata, providing W24.4's analysis material. Its unlock value is
+        separate from diagnostic signing authority; no signing key or fresh authorization is awarded here.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w24.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The diagnostic service requires a signed authorization to export its private calibration-exception
+      log. Use the recovered signer and its old records to produce an authorization for a fresh export
+      request bound to the current project, then obtain the log.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w24.c4
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce an authorization accepted for the fresh request under the service's existing
+        verification identity and retrieve the corresponding calibration-exception log. Replaying an old
+        approval, substituting a trusted key, or using the archive-unlock value does not satisfy that
+        request. Reconstructing the signer, obtaining signing capability, and its first successful use
+        form one achievement. This authorization is scoped to the diagnostic export and does not supply
+        W15.APPROVAL or CONTROL.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w24.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W24.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w24.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W24.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w24.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W24.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w24.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W24.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w24.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W24.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The legacy engineering recovery interface, its ordinary examples, the sealed diagnostic evidence bundle, the current project binding, and a bounded query allowance. The bundle's contents are not yet readable.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w24
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The legacy engineering recovery interface, its ordinary examples, the sealed diagnostic
+        evidence bundle, the current project binding, and a bounded query allowance. The bundle's contents
+        are not yet readable.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W24.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The recovery contract and response classes earned in W24.1, the sealed diagnostic evidence bundle, the current project binding, and the bounded query allowance. The bundle's contents are not yet readable.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w24
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The recovery contract and response classes earned in W24.1, the sealed diagnostic evidence
+        bundle, the current project binding, and the bounded query allowance. The bundle's contents are
+        not yet readable.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W24.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The legacy recovery interface and its response-selection capability earned in W24.2, the sealed diagnostic evidence bundle, a bounded query allowance, and the current project binding from W21.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w24
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The legacy recovery interface and its response-selection capability earned in W24.2,
+        the sealed diagnostic evidence bundle, a bounded query allowance, and the current project binding
+        from W21.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W24.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      W24.3's opened bundle supplies the retained signer executable and a finite set of signed diagnostic records with their original metadata. The service supplies its public verification contract, the current project binding, and a fresh read-only export request. The archive-unlock value is already held; the signing key, signing equations, and an authorization for this request are not supplied.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w24
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: W24.3's opened bundle supplies the retained signer executable and a finite set of signed
+        diagnostic records with their original metadata. The service supplies its public verification
+        contract, the current project binding, and a fresh read-only export request. The archive-unlock
+        value is already held; the signing key, signing equations, and an authorization for this request
+        are not supplied.

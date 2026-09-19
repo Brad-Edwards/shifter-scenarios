@@ -1,0 +1,835 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-t02
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/t02
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the actual active account and its case reference. Submitting candidate names alone is insufficient. These are inputs to T02.3.
+
+      Required technical proof: The desk writes a lookup event for the active subject and discloses its linked
+      case reference. Scoring checks both values and makes the evidence available to
+      T02.3 without authenticating the player.
+    source_refs: &id001
+    - features.training.t-accounts
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t02-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t02-1.satisfied
+        component_refs:
+        - features.training.t-accounts
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Verify the supplied lead narrows the candidates, response classes are stable,
+      only the active account yields the case fragment, bulk submission is bounded,
+      and a correct lookup records the expected subject.
+  c2:
+    description: |-
+      Recover the actual private roster entry. Its staff detail supports T02.3; the public name list alone does not count.
+
+      Required technical proof: The roster service emits a detail-read event with the assignment and staff
+      record version. That exact private entry becomes player evidence for recovery;
+      the public display response cannot satisfy the score.
+    source_refs: &id002
+    - features.training.t-accounts
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t02-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t02-2.satisfied
+        component_refs:
+        - features.training.t-accounts
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Confirm public listing works, the coordinator route is discoverable from normal
+      client material, one expected detail returns, unrelated roster IDs are denied,
+      and the recorded entry matches T02.3's recovery data.
+  c3:
+    description: |-
+      Demonstrate the recovered identity and obtain its private handover. A recovery acknowledgement without usable access is insufficient. The session enables T02.4.
+
+      Required technical proof: A successful recovery creates a player-scoped session tied to the rehearsal
+      subject and a handover-read event. Scoring requires both session issuance and
+      the private handover retrieval, then exposes the session for T02.4.
+    source_refs: &id003
+    - features.training.t-accounts
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t02-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t02-3.satisfied
+        component_refs:
+        - features.training.t-accounts
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Test each factor separately fails, the intended three-record join succeeds,
+      the resulting session reads only its own handover, T02.4 receives the expected
+      identity, and reset invalidates the session.
+  c4:
+    description: |-
+      Recover the specified other operator's private brief while retaining the recovered account's identity. Reading its own handover is not new credit.
+
+      Required technical proof: Completion is a read of the specified other operator's brief, recorded with the
+      recovered subject, requested assignment, and document revision. Reading the
+      caller's own brief is ordinary behavior and earns no new event.
+    source_refs: &id004
+    - features.training.t-accounts
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t02-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t02-4.satisfied
+        component_refs:
+        - features.training.t-accounts
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Verify own-assignment access, denial without a recovered session, intended
+      cross-assignment read, no access to an unknown assignment, exact audit fields,
+      and repeatable reset.
+propositions:
+  c1:
+    description: Recover the actual active account and its case reference. Submitting candidate names
+      alone is insufficient. These are inputs to T02.3.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t02-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T02.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the actual private roster entry. Its staff detail supports T02.3; the public
+      name list alone does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t02-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T02.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the recovered identity and obtain its private handover. A recovery acknowledgement
+      without usable access is insufficient. The session enables T02.4.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t02-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T02.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Recover the specified other operator's private brief while retaining the recovered account's
+      identity. Reading its own handover is not new credit.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t02-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T02.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'T02.1: An account by any other response'
+    description: |-
+      Identify the active rehearsal account and recover the account-bound case reference exposed by the identity desk.
+
+      Provides a useful identity lead without password guessing.
+    agent: participant.operator
+    actions:
+    - t02.c1
+    targets: &id005
+    - features.training.t-accounts
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - t02.c1
+  c2:
+    name: 'T02.2: Hidden on the page'
+    description: |-
+      The identity desk's public directory hides rehearsal assignments from visitors. Recover the private assignment and associated staff detail it should not expose.
+
+      Adds an independent data disclosure to the identity story.
+    agent: participant.operator
+    actions:
+    - t02.c2
+    targets: &id006
+    - features.training.t-accounts
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - t02.c2
+  c3:
+    name: 'T02.3: Recovery is another way in'
+    description: |-
+      Use the identity evidence you recovered to take control of the rehearsal account through its recovery workflow and retrieve its private handover.
+
+      Makes the identity trail produce actual account access.
+    agent: participant.operator
+    actions:
+    - t02.c3
+    targets: &id007
+    - features.training.t-accounts
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - t02.c3
+  c4:
+    name: 'T02.4: Someone else''s assignment'
+    description: |-
+      Your recovered account can list its own assignments. Obtain the other operator's sealed rehearsal brief through the assignment service.
+
+      Introduces authorization beyond successful authentication.
+    agent: participant.operator
+    actions:
+    - t02.c4
+    targets: &id008
+    - features.training.t-accounts
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - t02.c4
+workflows:
+  c1:
+    description: 'T02.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t02.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'T02.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t02.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'T02.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - t02.c1-ready
+            - t02.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t02.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'T02.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - t02.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t02.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      Its recovery lookup distinguishes inactive, unknown, and active accounts and
+      returns a case-reference fragment only for an active assignment. The intended
+      solution is to use the supplied contextual leads and response differences to
+      identify the actual account, not to submit an unrestricted name list.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t02.c1
+      - features.training.t-accounts
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The identity desk is an authored self-service front end backed by the training
+        realm in the shared identity broker. It accepts an account-recovery lookup and
+        creates a case record for an active rehearsal account.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The endpoint is limited to the small rehearsal account set, rate-bounded, and
+        has no password reset or session creation path. Reset clears lookup events and
+        returns the fixed account states.
+      support_refs:
+      - features.training.t-accounts
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual active account and its case reference. Submitting candidate names
+        alone is insufficient. These are inputs to T02.3.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.t02.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The desk writes a lookup event for the active subject and discloses its linked
+        case reference. Scoring checks both values and makes the evidence available to
+        T02.3 without authenticating the player.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.t02.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      The detail route relies on a client-side visibility decision and lacks the
+      corresponding server-side authorization check. The intended solution is to
+      inspect the normal public application and retrieve the one roster detail named
+      by the training context.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t02.c2
+      - features.training.t-accounts
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The public directory renders a limited staff list from an API used by the
+        identity desk. Its browser bundle also contains an assignment-detail request
+        used by internal rehearsal coordinators and seeded roster records with staff
+        IDs and assignments.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The API exposes only synthetic rehearsal roster entries and no identity
+        mutation. Reset removes player read events; it does not change staff data.
+      support_refs:
+      - features.training.t-accounts
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual private roster entry. Its staff detail supports T02.3; the public
+        name list alone does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.t02.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The roster service emits a detail-read event with the assignment and staff
+        record version. That exact private entry becomes player evidence for recovery;
+        the public display response cannot satisfy the score.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.t02.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      The workflow accepts independently observable identity attributes as if they
+      were proof of account ownership. The intended solution combines the exact
+      outputs of T02.1 and T02.2 in the normal recovery flow; neither alone is
+      sufficient.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t02.c3
+      - features.training.t-accounts
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The training recovery workflow verifies an account, case reference, and a
+        staff-detail value before issuing a one-use recovery session. The recovered
+        account owns a private handover document in the identity desk.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The session can view only this training account and expires rapidly. It cannot
+        change recovery factors, password, directory records, or any non-training
+        application. Reset revokes the session and restores case state.
+      support_refs:
+      - features.training.t-accounts
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the recovered identity and obtain its private handover. A recovery acknowledgement
+        without usable access is insufficient. The session enables T02.4.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.t02.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        A successful recovery creates a player-scoped session tied to the rehearsal
+        subject and a handover-read event. Scoring requires both session issuance and
+        the private handover retrieval, then exposes the session for T02.4.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.t02.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      The service checks that a caller has any training assignment but does not bind
+      the requested brief to that caller's assignment. The intended solution is a
+      record-level authorization test using the session earned in T02.3.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t02.c4
+      - features.training.t-accounts
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The assignment service lists assignments for the recovered training subject and
+        serves sealed briefs by assignment ID. Each brief has a distinct owner,
+        rehearsal scope, and immutable document revision.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only two synthetic training assignments exist and document access is read-only.
+        The flaw cannot enumerate arbitrary accounts or cross into KeplerOps. Reset
+        clears player events and restores the session fixture.
+      support_refs:
+      - features.training.t-accounts
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the specified other operator's private brief while retaining the recovered
+        account's identity. Reading its own handover is not new credit.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.t02.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Completion is a read of the specified other operator's brief, recorded with the
+        recovered subject, requested assignment, and document revision. Reading the
+        caller's own brief is ordinary behavior and earns no new event.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.t02.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-accounts
+    description: T02.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t02.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-accounts
+    description: T02.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t02.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-accounts
+    description: T02.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t02.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-accounts
+    description: T02.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t02.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      T02.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The rehearsal identity desk, candidate account notes, a public directory, recovery workflow, and assignment service.
+
+      The identity desk is an authored self-service front end backed by the training
+      realm in the shared identity broker. It accepts an account-recovery lookup and
+      creates a case record for an active rehearsal account.
+    target: training.t-accounts
+    tags:
+    - synthetic
+    - t02
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The rehearsal identity desk, candidate account notes, a public directory, recovery
+        workflow, and assignment service.
+  c2-records-1:
+    type: dataset
+    description: |-
+      T02.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The rehearsal identity desk, candidate account notes, a public directory, recovery workflow, and assignment service.
+
+      The public directory renders a limited staff list from an API used by the
+      identity desk. Its browser bundle also contains an assignment-detail request
+      used by internal rehearsal coordinators and seeded roster records with staff
+      IDs and assignments.
+    target: training.t-accounts
+    tags:
+    - synthetic
+    - t02
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The rehearsal identity desk, candidate account notes, a public directory, recovery
+        workflow, and assignment service.
+  c3-records-1:
+    type: dataset
+    description: |-
+      T02.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The rehearsal identity desk, candidate account notes, a public directory, recovery workflow, and assignment service.
+
+      The training recovery workflow verifies an account, case reference, and a
+      staff-detail value before issuing a one-use recovery session. The recovered
+      account owns a private handover document in the identity desk.
+    target: training.t-accounts
+    tags:
+    - synthetic
+    - t02
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The rehearsal identity desk, candidate account notes, a public directory, recovery
+        workflow, and assignment service.
+  c4-records-1:
+    type: dataset
+    description: |-
+      T02.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The rehearsal identity desk, candidate account notes, a public directory, recovery workflow, and assignment service.
+
+      The assignment service lists assignments for the recovered training subject and
+      serves sealed briefs by assignment ID. Each brief has a distinct owner,
+      rehearsal scope, and immutable document revision.
+    target: training.t-accounts
+    tags:
+    - synthetic
+    - t02
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The rehearsal identity desk, candidate account notes, a public directory, recovery
+        workflow, and assignment service.

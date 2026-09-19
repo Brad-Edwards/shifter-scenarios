@@ -1,0 +1,421 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w30
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w30
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    propositions:
+    - c1
+    - c2
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    objectives:
+    - c1
+    - c2
+    workflows:
+    - c1
+    - c2
+    action_contracts:
+    - c1
+    - c2
+    relationships:
+    - c1-surface-1
+    - c1-surface-2
+    - c2-surface-1
+    - c2-surface-2
+    content:
+    - c1-records-1
+    - c1-records-2
+    - c2-records-1
+    - c2-records-2
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Produce a command plan whose target, current revision, units, mode, and authority match
+      the intended bounded release. A copied practice sequence is insufficient.
+    source_refs: &id001
+    - features.a-engineering.a-hmi
+    - features.a-control.a-reservoir
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w30-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w30-1.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+        - features.a-control.a-reservoir
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: |-
+      Demonstrate the opening and resulting volume change through independent process observations. This supplies W30.RESULT. A command acknowledgement or altered report does not count; the release remains within the normal channel envelope.
+
+      The conclusion follows the verified effect through three connected facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and that loss produces the calculated replacement cost and water restrictions. ARWC's resulting continuity notice makes the economic consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all belong to this player's same completed release; success does not require waiting for a cinematic sequence or completing another challenge.
+
+      The earlier maintenance ticket and the outlet the player identified anchor the ending in familiar evidence. Callbacks to optional investigations appear only when earned. The fictional consequence remains financial loss and restrictions, with the dam intact and no catastrophic flooding. The authored notice expresses the existing consequence calculation; it does not require a new procurement, messaging, or control capability.
+    source_refs: &id002
+    - features.a-control.a-reservoir
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w30-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w30-2.satisfied
+        component_refs:
+        - features.a-control.a-reservoir
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Produce a command plan whose target, current revision, units, mode, and authority match
+      the intended bounded release. A copied practice sequence is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w30-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W30.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: |-
+      Demonstrate the opening and resulting volume change through independent process observations. This supplies W30.RESULT. A command acknowledgement or altered report does not count; the release remains within the normal channel envelope.
+
+      The conclusion follows the verified effect through three connected facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and that loss produces the calculated replacement cost and water restrictions. ARWC's resulting continuity notice makes the economic consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all belong to this player's same completed release; success does not require waiting for a cinematic sequence or completing another challenge.
+
+      The earlier maintenance ticket and the outlet the player identified anchor the ending in familiar evidence. Callbacks to optional investigations appear only when earned. The fictional consequence remains financial loss and restrictions, with the dam intact and no catastrophic flooding. The authored notice expresses the existing consequence calculation; it does not require a new procurement, messaging, or control capability.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w30-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W30.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W30.1: Bind the plan to the plant'
+    description: |-
+      Turn the bounded release plan into a correctly bound live command plan using the client and authority you earned.
+
+      Joins the campaign's separately earned knowledge and control capabilities.
+    agent: participant.operator
+    actions:
+    - w30.c1
+    targets: &id003
+    - features.a-engineering.a-hmi
+    - features.a-control.a-reservoir
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w30.c1
+  c2:
+    name: 'W30.2: Open the gates'
+    description: |-
+      Execute the bounded opening and establish its actual effect on usable reserve. Show the replacement cost and restrictions that follow from the lost water.
+
+      Completes the main story with gates moving and a credible financial consequence.
+    agent: participant.operator
+    actions:
+    - w30.c2
+    targets: &id004
+    - features.a-control.a-reservoir
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w30.c2
+workflows:
+  c1:
+    description: 'W30.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.process-interpretation-ready
+            - capabilities.control-ready
+            - capabilities.mode-ready
+            - capabilities.consequence-plan-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w30.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W30.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w30.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w30.c2
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Turn the bounded release plan into a correctly bound live command plan using the
+      client and authority you earned.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w30.c1
+      - features.a-engineering.a-hmi
+      - features.a-control.a-reservoir
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce a command plan whose target, current revision, units, mode, and authority match
+        the intended bounded release. A copied practice sequence is insufficient.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.w30.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Execute the bounded opening and establish its actual effect on usable reserve. Show
+      the replacement cost and restrictions that follow from the lost water.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w30.c2
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: |-
+        Demonstrate the opening and resulting volume change through independent process observations. This supplies W30.RESULT. A command acknowledgement or altered report does not count; the release remains within the normal channel envelope.
+
+        The conclusion follows the verified effect through three connected facts: the identified reservoir gates moved, usable reserve fell by the observed amount, and that loss produces the calculated replacement cost and water restrictions. ARWC's resulting continuity notice makes the economic consequence explicit. The gate state, before-and-after reserve, cost, and restrictions all belong to this player's same completed release; success does not require waiting for a cinematic sequence or completing another challenge.
+
+        The earlier maintenance ticket and the outlet the player identified anchor the ending in familiar evidence. Callbacks to optional investigations appear only when earned. The fictional consequence remains financial loss and restrictions, with the dam intact and no catastrophic flooding. The authored notice expresses the existing consequence calculation; it does not require a new procurement, messaging, or control capability.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w30.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-hmi
+    description: W30.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w30.c1
+      mode: service
+  c1-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-reservoir
+    description: W30.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w30.c1
+      mode: control
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-reservoir
+    description: W30.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w30.c2
+      mode: control
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W30.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w30.c2
+      mode: read
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W30.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned scoped control client, validated current process evidence, and the bounded release/consequence plan.
+    target: a-engineering.a-hmi
+    tags:
+    - synthetic
+    - w30
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned scoped control client, validated current process evidence, and the bounded
+        release/consequence plan.
+  c1-records-2:
+    type: dataset
+    description: |-
+      W30.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned scoped control client, validated current process evidence, and the bounded release/consequence plan.
+    target: a-control.a-reservoir
+    tags:
+    - synthetic
+    - w30
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned scoped control client, validated current process evidence, and the bounded
+        release/consequence plan.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W30.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned scoped control client, validated current process evidence, and the bounded release/consequence plan.
+    target: a-control.a-reservoir
+    tags:
+    - synthetic
+    - w30
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned scoped control client, validated current process evidence, and the bounded
+        release/consequence plan.
+  c2-records-2:
+    type: dataset
+    description: |-
+      W30.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned scoped control client, validated current process evidence, and the bounded release/consequence plan.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w30
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned scoped control client, validated current process evidence, and the bounded
+        release/consequence plan.

@@ -1,0 +1,345 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-participant
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/participant
+  version: 0.1.0
+  exports:
+    entities:
+    - cinder
+    nodes:
+    - kali
+    infrastructure:
+    - kali
+    propositions:
+    - training
+    - foothold
+    assertions:
+    - training-ready
+    - training-done
+    - foothold-ready
+    - foothold-done
+    agents:
+    - operator
+realization:
+  default: open
+entities:
+  cinder:
+    name: Cinder Typhoon
+    role: red
+    mission: Use the supplied developer foothold to compromise FieldKest customer delivery, enter ARWC,
+      and cause a bounded Cairn Reach outlet release with financial loss and water restrictions.
+nodes:
+  kali:
+    type: compute
+    os: linux
+    os_distribution: x-kali:kali
+    description: One individual operator’s Kali attacker workstation. The provided co-hacking agent and
+      optional personal tools act through this workspace and the same earned authorities. Target systems
+      are separate; no automatic access to all subnets.
+infrastructure:
+  kali: {}
+propositions:
+  training:
+    description: The operator has the supplied Cinder training workspace.
+    subjects:
+    - nodes.participant.kali
+    - nodes.training.t-workbench
+    basis: declared_state
+    predicate:
+      kind: boolean
+      property: cinder.training.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:TRAINING
+      operator: equals
+      expected: true
+  foothold:
+    description: The operator has the supplied Rowan Ito developer session at KeplerOps; this is separate
+      from the Kali attacker workstation.
+    subjects:
+    - nodes.k-corporate.k-dev
+    basis: declared_state
+    predicate:
+      kind: boolean
+      property: cinder.foothold.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:FOOTHOLD
+      operator: equals
+      expected: true
+assertions:
+  training-ready:
+    proposition: training
+    role: precondition
+    polarity: positive
+  training-done:
+    proposition: training
+    role: postcondition
+    polarity: positive
+  foothold-ready:
+    proposition: foothold
+    role: precondition
+    polarity: positive
+  foothold-done:
+    proposition: foothold
+    role: postcondition
+    polarity: positive
+agents:
+  operator:
+    entity: cinder
+    actions:
+    - k01.c1
+    - k01.c2
+    - k01.c3
+    - k01.c4
+    - k02.c1
+    - k02.c2
+    - k02.c3
+    - k03.c1
+    - k03.c2
+    - k03.c3
+    - k04.c1
+    - k04.c2
+    - k04.c3
+    - k04.c4
+    - k05.c1
+    - k05.c2
+    - k05.c3
+    - k05.c4
+    - k06.c1
+    - k06.c2
+    - k06.c3
+    - k07.c1
+    - k07.c2
+    - k07.c3
+    - k08.c1
+    - k08.c2
+    - k08.c3
+    - k09.c1
+    - k09.c2
+    - k09.c3
+    - k09.c4
+    - k10.c1
+    - k10.c2
+    - k10.c3
+    - k11.c1
+    - k11.c2
+    - k11.c3
+    - k11.c4
+    - k12.c1
+    - k12.c2
+    - k12.c3
+    - k12.c4
+    - k13.c1
+    - k13.c2
+    - k13.c3
+    - k13.c4
+    - k14.c1
+    - k14.c2
+    - k14.c3
+    - k15.c1
+    - k15.c2
+    - k15.c3
+    - k15.c4
+    - k16.c1
+    - k16.c2
+    - k16.c3
+    - k16.c4
+    - k17.c1
+    - k17.c2
+    - k17.c3
+    - k17.c4
+    - k18.c1
+    - k18.c2
+    - k18.c3
+    - k18.c4
+    - k19.c1
+    - k19.c2
+    - k19.c3
+    - k20.c1
+    - k20.c2
+    - k20.c3
+    - k21.c1
+    - k21.c2
+    - k21.c3
+    - k22.c1
+    - k22.c2
+    - k22.c3
+    - k23.c1
+    - k23.c2
+    - k23.c3
+    - k24.c1
+    - k24.c2
+    - k24.c3
+    - k25.c1
+    - k25.c2
+    - k26.c1
+    - k26.c2
+    - k26.c3
+    - k27.c1
+    - k27.c2
+    - k27.c3
+    - k28.c1
+    - k28.c2
+    - k28.c3
+    - k29.c1
+    - k29.c2
+    - k29.c3
+    - k29.c4
+    - k30.c1
+    - k30.c2
+    - k30.c3
+    - k31.c1
+    - k31.c2
+    - k31.c3
+    - t01.c1
+    - t01.c2
+    - t01.c3
+    - t01.c4
+    - t02.c1
+    - t02.c2
+    - t02.c3
+    - t02.c4
+    - t03.c1
+    - t03.c2
+    - t03.c3
+    - t03.c4
+    - t04.c1
+    - t04.c2
+    - t04.c3
+    - t04.c4
+    - w01.c1
+    - w01.c2
+    - w01.c3
+    - w01.c4
+    - w02.c1
+    - w02.c2
+    - w02.c3
+    - w03.c1
+    - w03.c2
+    - w03.c3
+    - w04.c1
+    - w04.c2
+    - w04.c3
+    - w05.c1
+    - w05.c2
+    - w05.c3
+    - w06.c1
+    - w06.c2
+    - w06.c3
+    - w07.c1
+    - w07.c2
+    - w07.c3
+    - w08.c1
+    - w08.c2
+    - w08.c3
+    - w08.c4
+    - w09.c1
+    - w09.c2
+    - w09.c3
+    - w09.c4
+    - w10.c1
+    - w10.c2
+    - w10.c3
+    - w11.c1
+    - w11.c2
+    - w11.c3
+    - w12.c1
+    - w12.c2
+    - w12.c3
+    - w12.c4
+    - w13.c1
+    - w13.c2
+    - w13.c3
+    - w13.c4
+    - w14.c1
+    - w14.c2
+    - w14.c3
+    - w15.c1
+    - w15.c2
+    - w15.c3
+    - w15.c4
+    - w16.c1
+    - w16.c2
+    - w16.c3
+    - w16.c4
+    - w17.c1
+    - w17.c2
+    - w17.c3
+    - w17.c4
+    - w18.c1
+    - w18.c2
+    - w18.c3
+    - w18.c4
+    - w19.c1
+    - w19.c2
+    - w19.c3
+    - w19.c4
+    - w20.c1
+    - w20.c2
+    - w20.c3
+    - w21.c1
+    - w21.c2
+    - w22.c1
+    - w22.c2
+    - w22.c3
+    - w22.c4
+    - w23.c1
+    - w23.c2
+    - w23.c3
+    - w24.c1
+    - w24.c2
+    - w24.c3
+    - w24.c4
+    - w25.c1
+    - w25.c2
+    - w25.c3
+    - w25.c4
+    - w26.c1
+    - w26.c2
+    - w26.c3
+    - w26.c4
+    - w27.c1
+    - w27.c2
+    - w27.c3
+    - w28.c1
+    - w28.c2
+    - w28.c3
+    - w29.c1
+    - w29.c2
+    - w29.c3
+    - w30.c1
+    - w30.c2
+    - w31.c1
+    - w31.c2
+    - w31.c3
+    - w31.c4
+    - w32.c1
+    - w32.c2
+    - w32.c3
+    - w32.c4
+    - w33.c1
+    - w33.c2
+    - w33.c3
+    - w33.c4
+    - w34.c1
+    - w34.c2
+    - w34.c3
+    - w35.c1
+    - w35.c2
+    - w35.c3
+    description: One individual human operator, assisted by the provided agent and optionally their own
+      tooling. This is an in-world participant, not an event hosting or model-provider binding.
+    starting_assertions:
+    - training-ready
+    - foothold-ready
+    initial_knowledge:
+      hosts:
+      - kali
+      - k-corporate.k-dev
+      subnets:
+      - training.subnet
+    authority_anchors:
+    - nodes.participant.kali
+    interactive_access:
+      workstation:
+        target_ref: nodes.participant.kali
+        channel: ssh

@@ -1,0 +1,81 @@
+name: cinder-relays
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/relays
+  version: 0.1.0
+  exports:
+    relationships:
+    - relay-1
+    - relay-2
+    - relay-3
+    - relay-4
+    - relay-5
+    - relay-6
+    - relay-7
+realization:
+  default: open
+relationships:
+  relay-1:
+    type: manages
+    source: features.k-delivery.k-registry
+    target: nodes.k-delivery.k-registry
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: delivery
+  relay-2:
+    type: manages
+    source: features.k-delivery.k-support
+    target: nodes.k-delivery.k-support
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: delivery
+  relay-3:
+    type: manages
+    source: features.a-dmz.a-data-bridge
+    target: nodes.a-dmz.a-data-bridge
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: artifact,read,service
+  relay-4:
+    type: manages
+    source: features.a-dmz.a-contractor-bridge
+    target: nodes.a-dmz.a-contractor-bridge
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: artifact,read,service
+  relay-5:
+    type: manages
+    source: features.a-dmz.a-control-broker
+    target: nodes.a-dmz.a-control-broker
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: control
+  relay-6:
+    type: manages
+    source: features.a-engineering.a-hmi--dispatch
+    target: nodes.a-engineering.a-hmi
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: control
+  relay-7:
+    type: manages
+    source: features.a-dmz.a-data-bridge--estimates
+    target: nodes.a-dmz.a-data-bridge
+    description: This interface may forward only the named modes along its explicit outgoing flows. Other
+      interfaces on the same system do not inherit this authority.
+    properties:
+      cinder_kind: relay
+      modes: report

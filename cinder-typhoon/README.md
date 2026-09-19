@@ -1,65 +1,52 @@
-# Cinder Typhoon
+# Cinder Typhoon — environment pack
 
-Draft 3 of the BSides Ottawa challenge architecture: approximately 300 individual
-players, sixteen hours over two days, a provided agent, and optional BYO agents.
-The campaign moves through Cinder Typhoon training, KeplerOps Software, and
-Alterra Regional Water Company. The challenge briefs now have a first logical
-network architecture with explicit authority boundaries and operational flows;
-this is not yet an executable scenario pack.
+Draft scenario for BSides Ottawa: approximately 300 individual players over
+sixteen hours, with a provided agent and optional bring-your-own agents.
+Participants operate as Cinder Typhoon, progressing from training through
+KeplerOps Software to Alterra Regional Water Company. The final reservoir
+operation causes fictional financial loss and water restrictions.
 
-- [Architecture](design/challenge-architecture.md): product and story, medium
-  entry routes, explicit process-evidence joins, progression, and review responses.
-- [Logical network architecture](design/logical-architecture.md): the in-world
-  networks, 36 logical systems, and connection points between phases, with
-  separate training, KeplerOps, ARWC corporate, and ARWC OT diagrams.
-- [Authority and flow register](design/logical-authorities.md): earned execution
-  positions, delegated identities, shared-system boundaries, and the operational
-  connections used to check pivots and prevent unintended shortcuts.
-- [Operation portfolio](design/operation-portfolio.md): 240 challenge allocations
-  across 70 operation briefs, with both organizations spanning every tier.
-- [Campaign operations](design/campaign-operations.md): twenty new card contracts
-  in six operations, plus concrete outcomes for the existing difficult work.
-- [Individual challenge briefs](design/challenges/README.md): all 240 documents,
-  covering [training](design/challenges/training.md),
-  [KeplerOps](design/challenges/keplerops.md), and [ARWC](design/challenges/arwc.md).
-  Each includes its description, story purpose, prerequisites, outcome, and
-  difficulty/source references. Technical design and three hints remain blank.
-- [Challenge template](design/challenges/TEMPLATE.md): the common brief structure,
-  without solutions or implementation detail.
-- [Challenge quality review](design/challenge-quality-review.md): the review of
-  all 240 briefs, corrected access and outcome contracts, and the revised
-  W22.4/W24.4 problems that resolve the two Expert-allocation findings.
-- [Full dependency report](design/challenge-dependency-report.md): complete
-  prerequisite sets, route alternatives, cumulative tier bounds, and available
-  work at the major transitions.
-- [Player experience](design/player-experience.md): choices at each access stage,
-  a worked co-hacking episode, day-two continuation, and shared event identity.
-- [Allocation audit](design/allocation-audit.md): twenty merged or removed slots
-  and their replacements, preserving the sixteen-hour content ambition.
-- [Challenge reference catalog](design/reference-catalog.md): 32 named precedents,
-  original ratings, retained mechanisms, adaptation choices, and evidence limits.
-- [Threat inspiration](design/threat-inspiration.md): MITRE's Adversary Emulation
-  Library, ATT&CK Enterprise/ICS, and a small, inexpensive-to-prototype AI section.
-- [Calibration](design/calibration.md): fresh assisted solves, medium-gate checks,
-  experience testing, depth, reliability, event capacity, and cost validation.
-- [Research](design/research.md): Polaris reconciliation and professional design
-  and agent-performance evidence.
-- [Draft 2 adversarial review](design/adversarial-review-v2.md): critique of the
-  preserved second draft. The current architecture records the response.
-- [First adversarial review](design/adversarial-review.md): critique of the
-  preserved first draft. The current architecture includes a response ledger.
+This directory follows the [OpenRAE/env-packs template](https://github.com/OpenRAE/env-packs/tree/679356d762971600f22e6ff3228f4c2b48376eee/src/raes_env_packs/resources/template).
+It contains the preserved design material, a modular in-world SDL draft, and
+authored workplace correspondence and documents.
+[pack.yaml](pack.yaml) records `status: draft`; its optional content layers
+remain disabled until populated. The SDL covers the logical world, participant,
+challenge objectives, dependencies, scoped routes, required records, and consequences.
 
-[Portfolio CSV](design/portfolio.csv), [entry routes](design/entry-routes.json),
-[main capability routes](design/capability-routes.json), and the
-[complete challenge dependency ledger](design/challenge-dependencies.json)
-make the allocation and evidence constraints reviewable. Run
-`python3 cinder-typhoon/design/validate_design.py` to check their consistency.
-This includes all 240 briefs and their index rows. Run
-`python3 cinder-typhoon/design/validate_challenges.py --self-test` to additionally
-exercise deliberately broken graphs. These checks validate the declared
-contracts; distinctness and difficulty also require editorial judgment.
-Run `python3 cinder-typhoon/design/model_topology.py --self-test` to check
-logical access, earned execution contexts, authority boundaries, operational
-routes, and deliberately broken topologies.
-The portfolio can be regenerated with
-`python3 cinder-typhoon/design/render_portfolio.py`.
+| Location | Purpose and current contents |
+| --- | --- |
+| [sdl/](sdl/README.md) | Native OpenRAE/rae SDL, with default-open realization and a Kali attacker workstation. |
+| [docs/design/](docs/design/README.md) | Preserved architecture, research, reviews, 240 challenge documents, ledgers, and existing design checks. |
+| [docs/narrative/](docs/narrative/README.md) | Enterprise world design: company stories, people, suppliers/customers, ambient-content direction, and name screening. |
+| [docs/diagrams/](docs/diagrams/) | Existing logical network diagrams. |
+| [docs/concepts.md](docs/concepts.md) | Concept-document entry point. |
+| [docs/attack-path.md](docs/attack-path.md) | Route-document entry point. |
+| [docs/lineage.md](docs/lineage.md) | Template source and folder mapping. |
+| [assets/](assets/README.md) | Workplace emails, documents, contacts, calendars, and source artifacts bound into SDL. |
+| [flags/placement.yaml](flags/placement.yaml) | Empty template placement map. |
+| [challenges/challenges.yaml](challenges/challenges.yaml) | Empty template delivery catalog; authoring briefs are under `docs/design/challenges/`. |
+| [ctfd/](ctfd/README.md) | Reserved for the reference challenge loader. |
+| [tests/](tests/README.md) | Native SDL validation and independent design/graph agreement checks. |
+| [build/](build/README.md) | Deterministic workplace asset renderer; no target provisioning. |
+| [docs/walkthroughs/](docs/walkthroughs/README.md) | Reserved for reference walkthroughs. |
+| [runtime-adapter/](runtime-adapter/README.md) | Reserved for the eventual adapter. |
+
+The existing challenge cards include 50 technical drafts; the remaining 190
+are briefs. All hint sections remain blank. Start at the
+[design index](docs/design/README.md) for the retained work.
+
+Existing design checks, run from the repository root:
+
+```sh
+python3 cinder-typhoon/docs/design/validate_design.py
+python3 cinder-typhoon/docs/design/validate_challenges.py --self-test
+python3 cinder-typhoon/docs/design/model_topology.py --self-test
+```
+
+For SDL validation, follow [tests/README.md](tests/README.md). The checker reads
+the graph back from composed SDL and replays it against the existing design
+contracts. The design ledgers remain independent authoring expectations.
+The first [workplace collection](assets/narrative/README.md) includes 68 messages,
+15 documents, staff contacts, and three calendar invitations. Four native SDL
+content declarations bind the source artifacts to existing workplace systems.
+The runtime adapter, hosting layout, and consumer delivery bundle remain pending.

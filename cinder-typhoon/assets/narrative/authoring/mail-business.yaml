@@ -1,0 +1,259 @@
+messages:
+  - id: b-rillhaven-1
+    story: rillhaven
+    from: rillhaven
+    to: [maya, talia]
+    date: '2026-09-04T10:15:00-04:00'
+    subject: Seasonal handover complete; workshop on the 24th
+    body: |
+      The seasonal maintenance handover is complete on our side. Thank you for the help with the last set of submissions. We have what we need for our autumn review.
+
+      We would still like the workshop on Thursday, 24 September. Our staff would prefer to work through an example and ask questions, rather than have a product presentation. We also have a short list of suggestions, inevitably.
+
+      Maintenance Office
+      Rillhaven District Heating
+  - id: b-rillhaven-2
+    story: rillhaven
+    from: talia
+    to: [rillhaven, maya]
+    date: '2026-09-07T11:15:00-04:00'
+    subject: 'Re: Seasonal handover complete; workshop on the 24th'
+    reply_to: b-rillhaven-1
+    body: |
+      Thank you for confirming. I've recorded the support work as complete.
+
+      I'll lead the workshop, with Maya available for the ongoing-support questions. An example followed by discussion suits the plan well. Please send the suggestions; we can discuss them without treating each one as a delivery commitment.
+
+      Talia Mornac
+      KeplerOps Software
+  - id: b-veybridge-1
+    story: veybridge
+    from: jules
+    to: [theo]
+    date: '2026-09-02T15:30:00-04:00'
+    subject: Scheduling contact for future visits
+    body: |
+      Theo,
+
+      Could you put routine scheduling requests through dispatch first? I'll still discuss the work with you. They have the full diary, and I am often on the road when a customer calls.
+
+      We have newer people taking some of those arrangements now. It will help if customers get to know them before they need to move a visit at short notice.
+
+      Jules
+  - id: b-veybridge-2
+    story: veybridge
+    from: theo
+    to: [jules]
+    date: '2026-09-03T08:35:00-04:00'
+    subject: 'Re: Scheduling contact for future visits'
+    reply_to: b-veybridge-1
+    body: |
+      Will do. Habit on my part — your name was the whole process when we first started using Veybridge.
+
+      Are you still thinking about teaching some of the newer field staff? You explain the practical bits well.
+
+      Theo
+  - id: b-veybridge-3
+    story: veybridge
+    from: jules
+    to: [theo]
+    date: '2026-09-03T16:10:00-04:00'
+    subject: 'Re: Scheduling contact for future visits'
+    reply_to: b-veybridge-2
+    body: |
+      Yes. I've asked to split the time, rather than move into the office permanently. I like some travel. I also like making plans at home that survive until the weekend.
+
+      Glad dispatch will be your first call. They are good at it.
+
+      Jules
+  - id: b-ardenvale-1
+    story: ardenvale
+    from: ardenvale
+    to: [jules, clara]
+    date: '2026-09-01T14:10:00-04:00'
+    subject: Autumn service workshop feedback
+    body: |
+      Thank you for the comments on our last training day. We are revising the autumn programme to spend more time on practical service examples and less on the catalogue introduction.
+
+      Would a short session on preparing equipment for return be useful? We are collecting preferences before publishing dates.
+
+      Customer Service
+      Ardenvale Instrument Services
+  - id: b-ardenvale-2
+    story: ardenvale
+    from: clara
+    to: [ardenvale, jules]
+    date: '2026-09-02T11:05:00-04:00'
+    subject: 'Re: Autumn service workshop feedback'
+    reply_to: b-ardenvale-1
+    body: |
+      Yes. Examples of the information that makes a return straightforward would be useful to our staff.
+
+      Please keep the practical session separate from the product demonstration so people can choose the part relevant to their work.
+
+      Clara Morivelle
+      Alterra Regional Water Company
+  - id: b-merewick-1
+    story: merewick
+    from: merewick
+    to: [priya]
+    date: '2026-08-25T10:30:00-04:00'
+    subject: Annual account contact review
+    body: |
+      We are reviewing the contacts for our bulk-supply customers. Please confirm that you remain the purchasing contact for ARWC and advise whether general planning correspondence should continue to go through your office.
+
+      Our membership planning meetings take place separately from customer account reviews. We are trying to make the distinction clearer in the next version of the account guide.
+
+      Account Services
+      Merewick Bulk Water Cooperative
+  - id: b-merewick-2
+    story: merewick
+    from: priya
+    to: [merewick]
+    date: '2026-08-26T09:10:00-04:00'
+    subject: 'Re: Annual account contact review'
+    reply_to: b-merewick-1
+    body: |
+      I remain the purchasing contact. Please send the general planning correspondence here and I will route it internally.
+
+      The distinction would help. We are a contract customer, and the references to member meetings have occasionally confused new colleagues. Please include the revised guide with the next account review.
+
+      Priya Naravel
+      Alterra Regional Water Company
+  - id: b-belvarn-1
+    story: belvarn
+    from: belvarn
+    to: [rosa]
+    date: '2026-09-07T13:00:00-04:00'
+    subject: Meter visit contact
+    body: |
+      Could you confirm which contact we should give the meter appointments team? Our production schedule now includes more short runs, so the most convenient times vary by week.
+
+      We are also gathering information for an efficiency project. A simple account of the information on our ordinary meter bill would help us ask better questions internally.
+
+      Production Planning
+      Belvarn Packaging
+  - id: b-belvarn-2
+    story: belvarn
+    from: rosa
+    to: [belvarn]
+    date: '2026-09-08T10:20:00-04:00'
+    subject: 'Re: Meter visit contact'
+    reply_to: b-belvarn-1
+    body: |
+      Please use your usual production-office contact so the appointments team can agree a time against the current schedule. I've passed that preference on.
+
+      We are improving the billing-period explanation this week. I'll send you the finished version once it is ready. It should be a useful starting point for the efficiency discussion.
+
+      Rosa Nerivet
+      Alterra Regional Water Company
+  - id: b-talvern-1
+    story: talvern
+    from: talvern
+    to: [rosa]
+    date: '2026-09-08T14:25:00-04:00'
+    subject: Information session timing
+    body: |
+      We would like to move the member information session later in the autumn. The proposed week overlaps with several members' busiest period, and our packing-facility discussion has already filled the next meeting.
+
+      Please keep us on the list. Members found the previous explanation useful, particularly the distinction between our supplementary contract supply and their other water arrangements.
+
+      Member Services
+      Talvern Growers Cooperative
+  - id: b-talvern-2
+    story: talvern
+    from: rosa
+    to: [talvern]
+    date: '2026-09-09T11:20:00-04:00'
+    subject: 'Re: Information session timing'
+    reply_to: b-talvern-1
+    body: |
+      Of course. I'll ask for some later dates rather than trying to squeeze another subject into your existing meeting.
+
+      Send any common questions beforehand and we can prepare around those. I hope the packing-facility discussion makes progress.
+
+      Rosa Nerivet
+      Alterra Regional Water Company
+  - id: b-orren-1
+    story: orrenvale
+    from: orrenvale
+    to: [noor]
+    date: '2026-09-03T11:45:00-04:00'
+    subject: Service review completed
+    body: |
+      Thank you for today's review. The completed maintenance items and retained support scope are recorded in the attached summary.
+
+      We have left product workloads with your platform team, as discussed. Please suggest a suitable week for the next account review when you have your planning calendar.
+
+      Service Desk
+      Orren & Vale IT Services
+    attachments: [k-service-review]
+  - id: b-orren-2
+    story: orrenvale
+    from: noor
+    to: [orrenvale]
+    date: '2026-09-03T14:35:00-04:00'
+    subject: 'Re: Service review completed'
+    reply_to: b-orren-1
+    body: |
+      Summary looks right. Thank you for keeping the review to the questions we actually had.
+
+      I will send a week for the next one after planning. Your persistence in putting these in the diary is useful, even when I pretend otherwise.
+
+      Noor
+  - id: b-ternwick-1
+    story: ternwick
+    from: ternwick
+    to: [priya]
+    date: '2026-09-04T09:30:00-04:00'
+    subject: Staff-history batch accepted
+    body: |
+      Your records colleagues have accepted the staff-history scanning batch, including the corrected descriptions for the old office photographs. Thank you for confirming the invoice route.
+
+      We have noted their suggestions for the next batch. Additional description work can be included in a separate proposal once the selection is settled.
+
+      Customer Services
+      Ternwick Records Bureau
+  - id: b-ternwick-2
+    story: ternwick
+    from: priya
+    to: [ternwick]
+    date: '2026-09-07T09:45:00-04:00'
+    subject: 'Re: Staff-history batch accepted'
+    reply_to: b-ternwick-1
+    body: |
+      Thank you. Acceptance is recorded and the ordinary invoice process can proceed.
+
+      The descriptions are much clearer. I particularly appreciate that someone can now tell which office a photograph shows without finding a colleague who worked there at the time.
+
+      Priya Naravel
+      Alterra Regional Water Company
+  - id: b-kepler-arwc-1
+    story: principal-relationship
+    from: maya
+    to: [theo]
+    date: '2026-08-27T10:10:00-04:00'
+    subject: Reference conversation next month
+    body: |
+      Theo,
+
+      Would ARWC be willing to join another short reference conversation? The prospective customer wants to hear how FieldKest fits around established maintenance processes. We would agree the agenda and staff time beforehand.
+
+      It would help to hear what has improved since the early work as well as what you wish had been easier. There is no presentation for you to deliver on our behalf.
+
+      Maya
+  - id: b-kepler-arwc-2
+    story: principal-relationship
+    from: theo
+    to: [maya]
+    date: '2026-08-28T09:25:00-04:00'
+    subject: 'Re: Reference conversation next month'
+    reply_to: b-kepler-arwc-1
+    body: |
+      Probably, subject to the usual agreement on time. Send an outline and I'll find the right colleagues.
+
+      The useful story is less repeated collection of the same field material. The adjustment has been learning to work with a support process rather than calling whichever engineer we met first. We have both grown since then.
+
+      I can describe that honestly. I would rather not read slides.
+
+      Theo

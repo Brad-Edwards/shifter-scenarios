@@ -1,0 +1,673 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w15
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w15
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the real cache/drawing association. Public viewer configuration or an unrelated
+      cached object is insufficient.
+    source_refs: &id001
+    - features.a-maintenance.a-approval
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w15-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w15-1.satisfied
+        component_refs:
+        - features.a-maintenance.a-approval
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate the fresh controlled response being served for the intended drawing. A local
+      replacement or cache miss does not count.
+    source_refs: &id002
+    - features.a-maintenance.a-approval
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w15-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w15-2.satisfied
+        component_refs:
+        - features.a-maintenance.a-approval
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate a review submission in the intended reviewer session. Serving a changed drawing
+      does not count. This capability still cannot retrieve the signed maintenance approval required by
+      W15.4.
+    source_refs: &id003
+    - features.a-maintenance.a-approval
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w15-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w15-3.satisfied
+        component_refs:
+        - features.a-maintenance.a-approval
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Recover the current approval with its maintenance and revision binding. This supplies
+      W15.APPROVAL for W26; it grants no live control on its own.
+    source_refs: &id004
+    - features.a-maintenance.a-approval
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w15-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w15-4.satisfied
+        component_refs:
+        - features.a-maintenance.a-approval
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the real cache/drawing association. Public viewer configuration or an unrelated
+      cached object is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w15-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W15.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate the fresh controlled response being served for the intended drawing. A local
+      replacement or cache miss does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w15-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W15.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate a review submission in the intended reviewer session. Serving a changed drawing
+      does not count. This capability still cannot retrieve the signed maintenance approval required by
+      W15.4.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w15-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W15.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Recover the current approval with its maintenance and revision binding. This supplies
+      W15.APPROVAL for W26; it grants no live control on its own.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w15-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W15.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W15.1: Which drawing did the cache keep'
+    description: |-
+      Recover the restricted cache association for the maintenance drawing and identify the version the review workflow will serve.
+
+      Grounds the cache investigation in an actual maintenance record.
+    agent: participant.operator
+    actions:
+    - w15.c1
+    targets: &id005
+    - features.a-maintenance.a-approval
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w15.c1
+  c2:
+    name: 'W15.2: A drawing of our choosing'
+    description: |-
+      Make the maintenance viewer serve your controlled response for the designated cached drawing while preserving its expected identity.
+
+      Establishes a meaningful cache-control capability.
+    agent: participant.operator
+    actions:
+    - w15.c2
+    targets: &id006
+    - features.a-maintenance.a-approval
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w15.c2
+  c3:
+    name: 'W15.3: The reviewer trusts the drawing'
+    description: |-
+      Use the controlled drawing delivery to obtain the reviewer's private maintenance-review submission capability.
+
+      Connects cache control to an actual browser/application effect.
+    agent: participant.operator
+    actions:
+    - w15.c3
+    targets: &id007
+    - features.a-maintenance.a-approval
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w15.c3
+  c4:
+    name: 'W15.4: Approval beyond the token'
+    description: |-
+      Recover the protected maintenance approval through the downstream authority check that still restricts the review capability.
+
+      Completes an advanced path to a useful approval artifact.
+    agent: participant.operator
+    actions:
+    - w15.c4
+    targets: &id008
+    - features.a-maintenance.a-approval
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w15.c4
+workflows:
+  c1:
+    description: 'W15.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w13-session-ready
+          next: attempt
+        - when:
+            assertions:
+            - capabilities.w03-read-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w15.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W15.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w15.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w15.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W15.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w15.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w15.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W15.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w15.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w15.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the restricted cache association for the maintenance drawing and identify
+      the version the review workflow will serve.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w15.c1
+      - features.a-maintenance.a-approval
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the real cache/drawing association. Public viewer configuration or an unrelated
+        cached object is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w15.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Make the maintenance viewer serve your controlled response for the designated cached
+      drawing while preserving its expected identity.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w15.c2
+      - features.a-maintenance.a-approval
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the fresh controlled response being served for the intended drawing. A
+        local replacement or cache miss does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w15.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Use the controlled drawing delivery to obtain the reviewer's private maintenance-review
+      submission capability.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w15.c3
+      - features.a-maintenance.a-approval
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate a review submission in the intended reviewer session. Serving a changed
+        drawing does not count. This capability still cannot retrieve the signed maintenance approval
+        required by W15.4.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w15.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the protected maintenance approval through the downstream authority check
+      that still restricts the review capability.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w15.c4
+      - features.a-maintenance.a-approval
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the current approval with its maintenance and revision binding. This supplies
+        W15.APPROVAL for W26; it grants no live control on its own.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w15.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-approval
+    description: W15.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w15.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-approval
+    description: W15.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w15.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-approval
+    description: W15.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w15.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-approval
+    description: W15.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w15.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W15.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The maintenance drawing viewer, cache observations, ordinary review material, and a protected approval service.
+    target: a-maintenance.a-approval
+    tags:
+    - synthetic
+    - w15
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The maintenance drawing viewer, cache observations, ordinary review material, and a
+        protected approval service.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W15.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The maintenance drawing viewer, cache observations, ordinary review material, and a protected approval service.
+    target: a-maintenance.a-approval
+    tags:
+    - synthetic
+    - w15
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The maintenance drawing viewer, cache observations, ordinary review material, and a
+        protected approval service.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W15.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The maintenance drawing viewer, cache observations, ordinary review material, and a protected approval service.
+    target: a-maintenance.a-approval
+    tags:
+    - synthetic
+    - w15
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The maintenance drawing viewer, cache observations, ordinary review material, and a
+        protected approval service.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W15.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The maintenance drawing viewer, cache observations, ordinary review material, and a protected approval service.
+    target: a-maintenance.a-approval
+    tags:
+    - synthetic
+    - w15
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The maintenance drawing viewer, cache observations, ordinary review material, and a
+        protected approval service.

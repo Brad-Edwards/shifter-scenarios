@@ -1,0 +1,832 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-t04
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/t04
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the measured volume bound to its sample and units. A target setting or unitless guess is insufficient.
+
+      Required technical proof: Scoring accepts the observation's sample ID, measured value, and unit only when
+      they match the current practice trace. It adds no control authority or mutable
+      state.
+    source_refs: &id001
+    - features.training.t-state
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t04-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t04-1.satisfied
+        component_refs:
+        - features.training.t-state
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Confirm requested and measured values visibly differ, the legend identifies
+      units, a setpoint answer fails, the target observation resolves once, and a
+      reset reproduces the trace.
+  c2:
+    description: |-
+      Identify the actual blocking condition and its state in the capture. Selecting an arbitrary alarm from the legend does not count.
+
+      Required technical proof: The player submits the sample ID, controller revision, blocking condition, and
+      its state. The score verifies that tuple against the practice trace and makes
+      the condition visible for T04.3.
+    source_refs: &id002
+    - features.training.t-state
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t04-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t04-2.satisfied
+        component_refs:
+        - features.training.t-state
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Verify the correct legend is reachable, version mismatch leads to a distinct
+      wrong interpretation, only one bit explains the observed block, arbitrary
+      alarm selection fails, and the evidence tuple is retained.
+  c3:
+    description: |-
+      Demonstrate the requested transfer and final outlet state within the published bounds. An accepted request alone is insufficient; no campaign authority is granted.
+
+      Required technical proof: Completion requires an accepted request, final outlet state, and matching
+      before/after measurements showing the requested transfer within tolerance.
+      Scoring consumes the independent practice transition rather than the request
+      receipt alone.
+    source_refs: &id003
+    - features.training.t-state
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t04-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t04-3.satisfied
+        component_refs:
+        - features.training.t-state
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Test the block prevents movement, an in-range normal request succeeds, an
+      out-of-range request is rejected, request-only evidence fails, the observation
+      delta is correct, and reset returns the initial state.
+  c4:
+    description: |-
+      Recover the current attempt's result and the evidence establishing the report's error. This separate replay does not reuse T04.3's result for another score.
+
+      Required technical proof: The completion record names the attempt, actual result, stale source record,
+      and contradictory observation. The scorer validates their correlation IDs and
+      timestamps, not a generic claim that the report is wrong.
+    source_refs: &id004
+    - features.training.t-state
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-t04-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.t04-4.satisfied
+        component_refs:
+        - features.training.t-state
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - |-
+      Author checks: Verify report and trace initially disagree, identifiers make the stale join
+      discoverable, the current attempt has a unique result, an unrelated trace fails,
+      T04.3's event cannot score this card, and reset is deterministic.
+propositions:
+  c1:
+    description: Recover the measured volume bound to its sample and units. A target setting or unitless
+      guess is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t04-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T04.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary
+      alarm from the legend does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t04-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T04.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the requested transfer and final outlet state within the published bounds.
+      An accepted request alone is insufficient; no campaign authority is granted.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t04-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T04.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Recover the current attempt's result and the evidence establishing the report's error.
+      This separate replay does not reuse T04.3's result for another score.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.t04-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:T04.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'T04.1: Which value is real'
+    description: |-
+      Read the supplied training-tank observation and recover how much water it actually contains, distinguishing the measurement from the requested level.
+
+      Establishes the difference between intention and observation.
+    agent: participant.operator
+    actions:
+    - t04.c1
+    targets: &id005
+    - features.training.t-state
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - t04.c1
+  c2:
+    name: 'T04.2: The light behind the number'
+    description: |-
+      Decode the supplied controller status capture and identify the condition preventing the practice outlet from moving.
+
+      Connects a compact representation to a meaningful operating condition.
+    agent: participant.operator
+    actions:
+    - t04.c2
+    targets: &id006
+    - features.training.t-state
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - t04.c2
+  c3:
+    name: 'T04.3: A request is not a movement'
+    description: |-
+      Move the specified bounded amount of water through the training outlet and verify the transfer from the tank's observations.
+
+      Connects commands and operating conditions to actual effect.
+    agent: participant.operator
+    actions:
+    - t04.c3
+    targets: &id007
+    - features.training.t-state
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - t04.c3
+  c4:
+    name: 'T04.4: Yesterday''s green light'
+    description: |-
+      The training report says the latest outlet test succeeded, but the observations disagree. Determine what actually happened during this attempt and explain the discrepancy through the supplied evidence.
+
+      Ends training with a compact investigation into conflicting process claims.
+    agent: participant.operator
+    actions:
+    - t04.c4
+    targets: &id008
+    - features.training.t-state
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - t04.c4
+workflows:
+  c1:
+    description: 'T04.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t04.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'T04.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t04.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'T04.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t04.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'T04.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.training-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: t04.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      This is a measurement-literacy task. The intended solution is to distinguish a
+      setpoint from the independent observation and bind the reported volume to its
+      sample and units, using the supplied HMI and tag legend.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t04.c1
+      - features.training.t-state
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The training HMI displays a requested level alongside a timestamped tank
+        observation from a deterministic practice model. The observation includes tag,
+        sample ID, engineering units, value, and quality.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The display is read-only and contains a small synthetic trace. Reset restores
+        the same deterministic sample sequence and clears evidence events.
+      support_refs:
+      - features.training.t-state
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the measured volume bound to its sample and units. A target setting or unitless
+        guess is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.t04.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Scoring accepts the observation's sample ID, measured value, and unit only when
+        they match the current practice trace. It adds no control authority or mutable
+        state.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.t04.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      This is a bounded protocol-and-documentation interpretation exercise. The
+      intended solution decodes the captured status with the matching controller
+      revision and correlates the asserted bit with the outlet state, rather than
+      selecting an alarm label by guesswork.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t04.c2
+      - features.training.t-state
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The practice controller publishes a compact status word and a versioned legend
+        alongside its HMI diagram. The captured record represents one outlet, one
+        sample time, and the condition that blocks a requested practice transition.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only a recorded status capture is exposed. It cannot alter the controller or
+        issue a command, and reset restores the exact trace and legend.
+      support_refs:
+      - features.training.t-state
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary
+        alarm from the legend does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.t04.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The player submits the sample ID, controller revision, blocking condition, and
+        its state. The score verifies that tuple against the practice trace and makes
+        the condition visible for T04.3.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.t04.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      This is a safe control-verification task, not an authorization bypass. The
+      intended solution is to clear the condition learned in T04.2 through the normal
+      practice workflow, request the specified bounded transfer, and validate the
+      result against observations.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t04.c3
+      - features.training.t-state
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        The training HMI drives a deterministic isolated tank-and-outlet practice model.
+        It exposes a documented request interface, operating bounds, accepted/rejected
+        command record, and independently published tank observations.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The practice model is per-player, has fixed water and movement bounds, and
+        cannot reach any campaign control state. Reset restores the initial tank volume,
+        mode, and trace history.
+      support_refs:
+      - features.training.t-state
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the requested transfer and final outlet state within the published bounds.
+        An accepted request alone is insufficient; no campaign authority is granted.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.t04.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        Completion requires an accepted request, final outlet state, and matching
+        before/after measurements showing the requested transfer within tolerance.
+        Scoring consumes the independent practice transition rather than the request
+        receipt alone.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.t04.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: |-
+      The reporting job correlates a stale accepted request with the latest test
+      record, ignoring the later blocked transition. The intended solution is a
+      timeline reconstruction from the supplied records; T04.3 is neither required
+      nor sufficient because this card uses a separate attempt.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.t04.c4
+      - features.training.t-state
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: |-
+        A training report records a green test outcome while the same attempt has an
+        immutable controller request, HMI status capture, and independent observation
+        trace. The report's author and generation timestamp are ordinary seeded data.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        All records are read-only training evidence and the report cannot be edited.
+        Reset removes player conclusions only; it does not rewrite the discrepancy.
+      support_refs:
+      - features.training.t-state
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the current attempt's result and the evidence establishing the report's error.
+        This separate replay does not reuse T04.3's result for another score.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.t04.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: |-
+        The completion record names the attempt, actual result, stale source record,
+        and contradictory observation. The scorer validates their correlation IDs and
+        timestamps, not a generic claim that the report is wrong.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.t04.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-state
+    description: T04.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t04.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-state
+    description: T04.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t04.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-state
+    description: T04.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t04.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.training.t-state
+    description: T04.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.t04.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      T04.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
+
+      The training HMI displays a requested level alongside a timestamped tank
+      observation from a deterministic practice model. The observation includes tag,
+      sample ID, engineering units, value, and quality.
+    target: training.t-state
+    tags:
+    - synthetic
+    - t04
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Small training snapshots, readable field and status legends, a private practice tank,
+        and a separate reporting replay case.
+  c2-records-1:
+    type: dataset
+    description: |-
+      T04.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
+
+      The practice controller publishes a compact status word and a versioned legend
+      alongside its HMI diagram. The captured record represents one outlet, one
+      sample time, and the condition that blocks a requested practice transition.
+    target: training.t-state
+    tags:
+    - synthetic
+    - t04
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Small training snapshots, readable field and status legends, a private practice tank,
+        and a separate reporting replay case.
+  c3-records-1:
+    type: dataset
+    description: |-
+      T04.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
+
+      The training HMI drives a deterministic isolated tank-and-outlet practice model.
+      It exposes a documented request interface, operating bounds, accepted/rejected
+      command record, and independently published tank observations.
+    target: training.t-state
+    tags:
+    - synthetic
+    - t04
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Small training snapshots, readable field and status legends, a private practice tank,
+        and a separate reporting replay case.
+  c4-records-1:
+    type: dataset
+    description: |-
+      T04.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
+
+      A training report records a green test outcome while the same attempt has an
+      immutable controller request, HMI status capture, and independent observation
+      trace. The report's author and generation timestamp are ordinary seeded data.
+    target: training.t-state
+    tags:
+    - synthetic
+    - t04
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Small training snapshots, readable field and status legends, a private practice tank,
+        and a separate reporting replay case.

@@ -1,0 +1,761 @@
+name: cinder-contexts
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/contexts
+  version: 0.1.0
+  exports:
+    relationships:
+    - context-player
+    - context-developer
+    - context-runner
+    - context-indexer
+    - context-preview
+    - context-completion
+    - context-support-staff
+    - context-support-federation
+    - context-staff-delegation
+    - context-release-client
+    - context-workload-base
+    - context-cloud-role
+    - context-export-delegation
+    - context-backup-principal
+    - context-support-task
+    - context-maintenance-runtime
+    - context-customer
+    - context-archive-helper
+    - context-planner
+    - context-query-worker
+    - context-maintenance-renderer
+    - context-engineering-utility
+    - context-diagnostic-vault
+    - context-estimator-output
+    - context-program-output
+    - context-assistant-review
+    workflows:
+    - context-player
+    - context-developer
+    - context-runner
+    - context-indexer
+    - context-preview
+    - context-completion
+    - context-support-staff
+    - context-support-federation
+    - context-staff-delegation
+    - context-release-client
+    - context-workload-base
+    - context-cloud-role
+    - context-export-delegation
+    - context-backup-principal
+    - context-support-task
+    - context-maintenance-runtime
+    - context-customer
+    - context-archive-helper
+    - context-planner
+    - context-query-worker
+    - context-maintenance-renderer
+    - context-engineering-utility
+    - context-diagnostic-vault
+    - context-estimator-output
+    - context-program-output
+    - context-assistant-review
+realization:
+  default: open
+relationships:
+  context-player:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: nodes.participant.kali
+    description: 'player: workspace context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: workspace
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-player
+  context-developer:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-corporate.k-dev
+    description: 'developer: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-developer
+  context-runner:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci--runner
+    description: 'runner: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-runner
+  context-indexer:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-delivery.k-indexer--worker
+    description: 'indexer: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-indexer
+  context-preview:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview--renderer
+    description: 'preview: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-preview
+  context-completion:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-assistant--completion
+    description: 'completion: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-completion
+  context-support-staff:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-delivery.k-support--staff-client
+    description: 'support-staff: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-support-staff
+  context-support-federation:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-corporate.k-identity--support-federation
+    description: 'support-federation: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-support-federation
+  context-staff-delegation:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-corporate.k-staff--delegated-client
+    description: 'staff-delegation: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-staff-delegation
+  context-release-client:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci--release-client
+    description: 'release-client: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-release-client
+  context-workload-base:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-cloud-api--workload-client
+    description: 'workload-base: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-workload-base
+  context-cloud-role:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-cloud-api--delegated-client
+    description: 'cloud-role: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-cloud-role
+  context-export-delegation:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-data--export-client
+    description: 'export-delegation: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-export-delegation
+  context-backup-principal:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-data--backup-client
+    description: 'backup-principal: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-backup-principal
+  context-support-task:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-workload--task
+    description: 'support-task: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-support-task
+  context-maintenance-runtime:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-workload--runtime
+    description: 'maintenance-runtime: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-maintenance-runtime
+  context-customer:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-corporate.a-connector
+    description: 'customer: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-customer
+  context-archive-helper:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-corporate.a-archive--helper
+    description: 'archive-helper: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-archive-helper
+  context-planner:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-corporate.a-connector--planner-client
+    description: 'planner: delegated identity context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: delegated identity
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-planner
+  context-query-worker:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--query-worker
+    description: 'query-worker: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-query-worker
+  context-maintenance-renderer:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-maintenance.a-renderer--worker
+    description: 'maintenance-renderer: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-maintenance-renderer
+  context-engineering-utility:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering--utility-worker
+    description: 'engineering-utility: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-engineering-utility
+  context-diagnostic-vault:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics--vault-worker
+    description: 'diagnostic-vault: execution context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: execution
+      modes: service,artifact,read,delivery,control,report,telemetry
+      guard: workflows.contexts.context-diagnostic-vault
+  context-estimator-output:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics--estimate-output
+    description: 'estimator-output: output control context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: output control
+      modes: report
+      guard: workflows.contexts.context-estimator-output
+  context-program-output:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics--program-output
+    description: 'program-output: output control context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: output control
+      modes: report
+      guard: workflows.contexts.context-program-output
+  context-assistant-review:
+    type: authenticates_with
+    source: agents.participant.operator
+    target: features.k-cloud.k-assistant--review-tool
+    description: 'assistant-review: scoped tool action context; only the listed interaction modes.'
+    properties:
+      cinder_kind: context
+      context_kind: scoped tool action
+      modes: service
+      guard: workflows.contexts.context-assistant-review
+workflows:
+  context-player:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: available
+    steps:
+      available:
+        type: end
+  context-developer:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-runner:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k09.c4-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-indexer:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k04.c4-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-preview:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k12.c4-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-completion:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k24.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-support-staff:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.b01-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-support-federation:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k18.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-staff-delegation:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k19.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-release-client:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k29.c2-ready
+          next: available
+        - when:
+            assertions:
+            - k20.c2-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-workload-base:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k13.c4-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-cloud-role:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k14.c2-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-export-delegation:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k15.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-backup-principal:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k30.c1-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-support-task:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k16.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-maintenance-runtime:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k31.c2-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-customer:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-archive-helper:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w04.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-planner:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w06.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-query-worker:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w07.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-maintenance-renderer:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w26.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-engineering-utility:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w28.c2-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-diagnostic-vault:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w31.c4-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-estimator-output:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w23.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-program-output:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w27.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  context-assistant-review:
+    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
+      not acquire its principal.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k22.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end

@@ -1,0 +1,669 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k17
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k17
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
+      or advanced identity challenge is required for that capability.
+    source_refs: &id001
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k17-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k17-1.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
+      its local session label does not count.
+    source_refs: &id002
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k17-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k17-2.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Recover the assignment record and case binding under B01. This is additional case intelligence,
+      not another score for authentication; G02 remains the current ARWC binding.
+    source_refs: &id003
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k17-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k17-3.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Cause the server to create the handover for that alternate reviewer while your ordinary
+      account still lacks the right to assign it directly. An edited local document or a change to the
+      case's display label does not count. This grants no customer execution.
+    source_refs: &id004
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k17-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k17-4.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
+      or advanced identity challenge is required for that capability.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k17-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K17.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
+      its local session label does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k17-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K17.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Recover the assignment record and case binding under B01. This is additional case intelligence,
+      not another score for authentication; G02 remains the current ARWC binding.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k17-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K17.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Cause the server to create the handover for that alternate reviewer while your ordinary
+      account still lacks the right to assign it directly. An edited local document or a change to the
+      case's display label does not count. This grants no customer execution.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k17-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K17.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K17.1: A support session left behind'
+    description: |-
+      Recover usable access to the support application and retrieve the session's protected handover.
+
+      Gives the player a second approachable supplier identity.
+    agent: participant.operator
+    actions:
+    - k17.c1
+    targets: &id005
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k17.c1
+  c2:
+    name: 'K17.2: A different way to recover'
+    description: |-
+      The support account's recovery process exposes a separate opportunity. Establish the alternate support identity and recover its private recovery note.
+
+      Adds a distinct identity compromise beyond the retained session.
+    agent: participant.operator
+    actions:
+    - k17.c2
+    targets: &id006
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k17.c2
+  c3:
+    name: 'K17.3: Which customers belong here'
+    description: |-
+      Recover the support identity's private customer-assignment record and the unresolved case actually assigned to it.
+
+      Makes support access useful through customer context.
+    agent: participant.operator
+    actions:
+    - k17.c3
+    targets: &id007
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k17.c3
+  c4:
+    name: 'K17.4: A delegated support action'
+    description: |-
+      The ARWC case is assigned to the support engineer. Make the delegation workflow route a copy of its restricted diagnostic handover to the alternate reviewer named in Cinder's case note.
+
+      Demonstrates an action boundary beyond reading assigned cases.
+    agent: participant.operator
+    actions:
+    - k17.c4
+    targets: &id008
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k17.c4
+workflows:
+  c1:
+    description: 'K17.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k17.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K17.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.b01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k17.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K17.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.b01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k17.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K17.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.b01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k17.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover usable access to the support application and retrieve the session's protected
+      handover.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k17.c1
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover and demonstrate the limited support session. This supplies B01; no account-recovery
+        or advanced identity challenge is required for that capability.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k17.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The support account's recovery process exposes a separate opportunity. Establish
+      the alternate support identity and recover its private recovery note.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k17.c2
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the alternate recovered identity and its private note. Reusing B01 or changing
+        its local session label does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k17.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the support identity's private customer-assignment record and the unresolved
+      case actually assigned to it.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k17.c3
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the assignment record and case binding under B01. This is additional case intelligence,
+        not another score for authentication; G02 remains the current ARWC binding.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k17.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The ARWC case is assigned to the support engineer. Make the delegation workflow route
+      a copy of its restricted diagnostic handover to the alternate reviewer named in Cinder's case note.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k17.c4
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Cause the server to create the handover for that alternate reviewer while your ordinary
+        account still lacks the right to assign it directly. An edited local document or a change to the
+        case's display label does not count. This grants no customer execution.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k17.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K17.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k17.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K17.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k17.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K17.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k17.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K17.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k17.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K17.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k17
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The repository's support-client material, retained session artifacts, and ordinary
+        support-account workflows.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K17.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k17
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The repository's support-client material, retained session artifacts, and ordinary
+        support-account workflows.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K17.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k17
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The repository's support-client material, retained session artifacts, and ordinary
+        support-account workflows.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K17.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The repository's support-client material, retained session artifacts, and ordinary support-account workflows.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k17
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The repository's support-client material, retained session artifacts, and ordinary
+        support-account workflows.

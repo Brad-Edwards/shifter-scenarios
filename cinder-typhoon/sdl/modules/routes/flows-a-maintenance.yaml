@@ -1,0 +1,70 @@
+name: cinder-flows-a-maintenance
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/flows-a-maintenance
+  version: 0.1.0
+  exports:
+    relationships:
+    - renderer-approval-read
+    - renderer-dispatch
+    - maintenance-issuance
+    workflows:
+    - renderer-approval-read
+    - renderer-dispatch
+    - maintenance-issuance
+realization:
+  default: open
+relationships:
+  renderer-approval-read:
+    type: connects_to
+    source: features.a-maintenance.a-renderer--worker
+    target: features.a-maintenance.a-approval
+    description: Validate bound inspection; cannot issue approval
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: read
+      guard: workflows.flows-a-maintenance.renderer-approval-read
+  renderer-dispatch:
+    type: connects_to
+    source: features.a-maintenance.a-renderer
+    target: features.a-maintenance.a-renderer--worker
+    description: Maintenance application invokes renderer
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: service
+      guard: workflows.flows-a-maintenance.renderer-dispatch
+  maintenance-issuance:
+    type: connects_to
+    source: features.a-maintenance.a-renderer--worker
+    target: features.a-dmz.a-control-broker--maintenance-issuer
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-a-maintenance.maintenance-issuance
+workflows:
+  renderer-approval-read:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  renderer-dispatch:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  maintenance-issuance:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end

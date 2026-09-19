@@ -1,0 +1,847 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k01
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k01
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c1-surface-2
+    - c2-surface-1
+    - c2-surface-2
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c1-records-2
+    - c2-records-1
+    - c2-records-2
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover and use the limited repository identity to obtain the protected handover. This supplies G01; credential discovery and use earn one score.
+
+      Required technical proof: Gitea records a handover read by the player-scoped developer identity and returns its current revision, awarding `G01`.
+    source_refs: &id001
+    - features.k-delivery.k-source
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k01-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k01-1.satisfied
+        component_refs:
+        - features.k-delivery.k-source
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test anonymous denial, intended credential use, no write access, correct handover
+      revision, audit attribution, and session revocation.'
+  c2:
+    description: |-
+      Recover the retained conversation and its actual ticket reference. It supplies optional story context, not the credentials or current customer binding required for entry.
+
+      Required technical proof: The support gateway logs the conversation restoration and exposes the immutable `SUP-2841` record as player evidence.
+    source_refs: &id002
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k01-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k01-2.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify no tab is initially open, the profile holds one fair restoration lead, the
+      recovered ticket resolves once, direct unrelated ticket reads fail, and reset clears state.'
+  c3:
+    description: |-
+      Recover the separate review document and its release reference. Reading the browser conversation does not reveal this content.
+
+      Required technical proof: Completion records the document digest, unresolved comments, and related release ID; the document is distinct from the browser conversation.
+    source_refs: &id003
+    - features.k-corporate.k-dev
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k01-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k01-3.satisfied
+        component_refs:
+        - features.k-corporate.k-dev
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Check the checkout lacks the file, the review references it, the external copy has
+      one matching release, K01.2 is insufficient, and unrelated artifacts do not score.'
+  c4:
+    description: |-
+      Produce the sample's inspection summary through the local helper, preserving its asset and revision binding. This is an introductory interface task with a visible result, not a claimed privilege escalation.
+
+      Required technical proof: The helper stores a fresh report receipt containing the expected sample ID, asset, revision, and output digest; local file edits do not score.
+    source_refs: &id004
+    - features.k-corporate.k-dev
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k01-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k01-4.satisfied
+        component_refs:
+        - features.k-corporate.k-dev
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test documented sample success, malformed sample rejection, correct asset/revision
+      preservation, receipt generation, no external request, and reset.'
+propositions:
+  c1:
+    description: Recover and use the limited repository identity to obtain the protected handover. This
+      supplies G01; credential discovery and use earn one score.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k01-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K01.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the retained conversation and its actual ticket reference. It supplies optional
+      story context, not the credentials or current customer binding required for entry.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k01-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K01.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Recover the separate review document and its release reference. Reading the browser conversation
+      does not reveal this content.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k01-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K01.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Produce the sample's inspection summary through the local helper, preserving its asset
+      and revision binding. This is an introductory interface task with a visible result, not a claimed
+      privilege escalation.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k01-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K01.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K01.1: The developer left a way back'
+    description: |-
+      The workstation is yours, but the FieldKest repositories still expect an identity. Recover the developer's usable repository access and retrieve the current project handover.
+
+      Establishes a useful first foothold beyond the borrowed desktop.
+    agent: participant.operator
+    actions:
+    - k01.c1
+    targets: &id005
+    - features.k-corporate.k-dev
+    - features.k-delivery.k-source
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k01.c1
+  c2:
+    name: 'K01.2: The tab that survived'
+    description: |-
+      The developer closed the support portal before leaving. Recover the unfinished ARWC conversation retained by the browser.
+
+      Introduces the recurring support engineer and the customer ticket.
+    agent: participant.operator
+    actions:
+    - k01.c2
+    targets: &id006
+    - features.k-corporate.k-dev
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k01.c2
+  c3:
+    name: 'K01.3: Outside the working folder'
+    description: |-
+      A release review refers to a work file missing from the checkout. Find the developer's exposed copy and recover the unresolved review comments.
+
+      Makes the workstation feel like a working environment with unfinished decisions.
+    agent: participant.operator
+    actions:
+    - k01.c3
+    targets: &id007
+    - features.k-corporate.k-dev
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k01.c3
+  c4:
+    name: 'K01.4: Put it on the workbench'
+    description: |-
+      The local FieldKest helper has an unfinished support-report job. Make it produce a fresh inspection summary from the developer's supplied sample, with that sample's asset and revision correctly represented.
+
+      Gives a newcomer a visible application result before a larger compromise.
+    agent: participant.operator
+    actions:
+    - k01.c4
+    targets: &id008
+    - features.k-corporate.k-dev
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k01.c4
+workflows:
+  c1:
+    description: 'K01.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k01.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K01.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k01.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K01.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k01.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K01.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k01.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The workstation retains a usable developer session after handover. The intended solution
+      is local credential recovery followed by an ordinary authenticated Forge read.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k01.c1
+      - features.k-corporate.k-dev
+      - features.k-delivery.k-source
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: Rowan's supplied workspace has a Gitea credential helper and FieldKest Forge project;
+        the current handover is protected by the developer's normal repository role.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The identity is read-only for its assigned projects and cannot alter protected branches, CI, registry, or customer systems; reset revokes its session.
+      support_refs:
+      - features.k-corporate.k-dev
+      - features.k-delivery.k-source
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover and use the limited repository identity to obtain the protected handover. This
+        supplies G01; credential discovery and use earn one score.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k01.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Gitea records a handover read by the player-scoped developer identity and returns its
+        current revision, awarding `G01`.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k01.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Closing the tab did not clear recoverable browser state. The intended solution is
+      forensic recovery of the existing conversation and correlation of its actual ticket ID.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k01.c2
+      - features.k-corporate.k-dev
+      - features.k-delivery.k-support
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The supplied browser profile has normal session-restoration data for the FieldKest
+        support gateway and its seeded ARWC conversation.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The restored view is read-only, limited to one conversation, and grants no support action or customer delivery; reset removes its session and event.
+      support_refs:
+      - features.k-corporate.k-dev
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the retained conversation and its actual ticket reference. It supplies optional
+        story context, not the credentials or current customer binding required for entry.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k01.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The support gateway logs the conversation restoration and exposes the immutable `SUP-2841`
+        record as player evidence.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k01.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The developer left a stale copy in a user-accessible project artifact area. The intended
+      solution is contextual local-artifact discovery, then validation against the release reference.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k01.c3
+      - features.k-corporate.k-dev
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: Rowan's review workspace includes a release-review reference and a separate ordinary
+        local export outside the checked-out repository.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only fixed synthetic local artifacts are reachable and the area is read-only; reset clears evidence without modifying the source or review history.
+      support_refs:
+      - features.k-corporate.k-dev
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the separate review document and its release reference. Reading the browser
+        conversation does not reveal this content.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k01.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Completion records the document digest, unresolved comments, and related release ID;
+        the document is distinct from the browser conversation.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k01.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: 'This is a normal-interface orientation task: the sample''s shape is documented in
+      local examples and the helper validates its asset/revision binding.'
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k01.c4
+      - features.k-corporate.k-dev
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The local FieldKest helper accepts a supplied sample and renders an inspection summary
+        with asset and revision fields from the training fixture.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        It reads only a card-local fixture directory and cannot call Forge, support, packages, or ARWC; reset replaces its player-local reports.
+      support_refs:
+      - features.k-corporate.k-dev
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the sample's inspection summary through the local helper, preserving its asset
+        and revision binding. This is an introductory interface task with a visible result, not a claimed
+        privilege escalation.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k01.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The helper stores a fresh report receipt containing the expected sample ID, asset,
+        revision, and output digest; local file edits do not score.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k01.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-corporate.k-dev
+    description: K01.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c1
+      mode: service
+  c1-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-source
+    description: K01.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-corporate.k-dev
+    description: K01.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c2
+      mode: service
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K01.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-corporate.k-dev
+    description: K01.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-corporate.k-dev
+    description: K01.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k01.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K01.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      Rowan's supplied workspace has a Gitea credential helper and FieldKest Forge project; the current handover is protected by the developer's normal repository role.
+
+      Records owned by this system: Rowan's local Gitea credential-helper/session material and FieldKest Forge project reference; the protected current handover and Forge audit remain at the source service.
+    target: k-corporate.k-dev
+    tags:
+    - synthetic
+    - k01
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Rowan's local Gitea credential-helper/session material and FieldKest Forge project
+        reference; the protected current handover and Forge audit remain at the source service.
+  c1-records-2:
+    type: dataset
+    description: |-
+      K01.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      Rowan's supplied workspace has a Gitea credential helper and FieldKest Forge project; the current handover is protected by the developer's normal repository role.
+
+      Records owned by this system: The protected current FieldKest handover and revision, read-only developer project role, session binding, and authenticated handover-read audit. The developer workspace holds the recovery material.
+    target: k-delivery.k-source
+    tags:
+    - synthetic
+    - k01
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The protected current FieldKest handover and revision, read-only developer project
+        role, session binding, and authenticated handover-read audit. The developer workspace holds the
+        recovery material.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K01.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      The supplied browser profile has normal session-restoration data for the FieldKest support gateway and its seeded ARWC conversation.
+
+      Records owned by this system: Browser session-restoration material and the support gateway reference; the authoritative ARWC conversation and restoration audit remain at the support service.
+    target: k-corporate.k-dev
+    tags:
+    - synthetic
+    - k01
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Browser session-restoration material and the support gateway reference; the authoritative
+        ARWC conversation and restoration audit remain at the support service.
+  c2-records-2:
+    type: dataset
+    description: |-
+      K01.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      The supplied browser profile has normal session-restoration data for the FieldKest support gateway and its seeded ARWC conversation.
+
+      Records owned by this system: The retained ARWC conversation, SUP-2841 reference, player-scoped restored session, and gateway audit of restoration and protected conversation retrieval.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k01
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The retained ARWC conversation, SUP-2841 reference, player-scoped restored session,
+        and gateway audit of restoration and protected conversation retrieval.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K01.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      Rowan's review workspace includes a release-review reference and a separate ordinary local export outside the checked-out repository.
+    target: k-corporate.k-dev
+    tags:
+    - synthetic
+    - k01
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's working directory, browser profile, saved client settings, and local
+        FieldKest tools.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K01.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The developer's working directory, browser profile, saved client settings, and local FieldKest tools.
+
+      The local FieldKest helper accepts a supplied sample and renders an inspection summary with asset and revision fields from the training fixture.
+    target: k-corporate.k-dev
+    tags:
+    - synthetic
+    - k01
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The developer's working directory, browser profile, saved client settings, and local
+        FieldKest tools.

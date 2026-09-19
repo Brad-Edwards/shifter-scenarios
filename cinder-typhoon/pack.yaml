@@ -1,0 +1,16 @@
+name: cinder-typhoon
+title: "Cinder Typhoon"
+version: 0.1.0
+status: draft
+description: "A two-day campaign through Cinder training, KeplerOps Software, and Alterra Regional Water Company."
+authors:
+  - Palo Alto Networks, Inc.
+license: "Copyright (c) 2026, Palo Alto Networks Inc. All rights reserved."
+requirement: null
+# Reserved folders do not constitute shipped optional layers.
+contents:
+  flag_layer: false
+  reference_triangle: false
+  profile_bundles: false
+compatibility_manifest: pack.compatibility.yaml
+provenance_ledger: docs/provenance-ledger.yaml

@@ -1,0 +1,3 @@
+# Python 3.12 or newer. Author validation intentionally uses matching upstream releases.
+raes==5.0.0
+raes-env-packs==6.1.0

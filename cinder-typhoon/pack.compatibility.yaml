@@ -1,0 +1,42 @@
+schema_version: "environment-pack-compatibility/v2"
+pack:
+  name: cinder-typhoon
+  title: "Cinder Typhoon"
+  version: 0.1.0
+  status: draft
+  source:
+    requirement: null
+    issues: []
+    upstream_references:
+      - https://github.com/OpenRAE/env-packs/tree/679356d762971600f22e6ff3228f4c2b48376eee/src/raes_env_packs/resources/template
+      - https://github.com/OpenRAE/rae
+
+# The current pack is authoring material, not a participant delivery bundle.
+artifact_boundaries:
+  participant_visible: []
+  operator_only:
+    - path: README.md
+      export: operator
+      description: Draft pack and authoring index.
+    - path: docs/
+      export: operator
+      description: Existing authoring documents, diagrams, and design checks.
+    - path: sdl/
+      export: operator
+      description: Modular in-world SDL with native default-open realization.
+    - path: tests/
+      export: operator
+      description: Static native SDL and design correspondence checks.
+    - path: runtime-adapter/
+      export: operator
+      description: Reserved adapter folder; no implementation.
+  oracle_only: []
+  commercial: []
+runtime_profiles: []
+delivery_bundles: []
+platform_features: []
+assets: []
+operator_surfaces: []
+validation:
+  commands: []
+  gates: []

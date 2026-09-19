@@ -1,0 +1,78 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-a-control
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/a-control
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - a-reservoir
+    - a-distribution
+    - a-instruments
+    infrastructure:
+    - subnet
+    - a-reservoir
+    - a-distribution
+    - a-instruments
+    entities:
+    - organization
+    features:
+    - a-reservoir
+    - a-distribution
+    - a-instruments
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'ARWC: Process control. Logical network segment; physical realization and addressing
+      remain open.'
+  a-reservoir:
+    type: compute
+    description: Reservoir / outlet endpoint
+    features:
+      a-reservoir: ''
+  a-distribution:
+    type: compute
+    description: Distribution endpoint
+    features:
+      a-distribution: ''
+  a-instruments:
+    type: compute
+    description: Instrumentation / retained device images
+    features:
+      a-instruments: ''
+infrastructure:
+  subnet: {}
+  a-reservoir:
+    links:
+    - subnet
+  a-distribution:
+    links:
+    - subnet
+  a-instruments:
+    links:
+    - subnet
+entities:
+  organization:
+    name: ARWC
+    description: Process control
+    role: green
+features:
+  a-reservoir:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-reservoir. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-distribution:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-distribution. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-instruments:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-instruments. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.

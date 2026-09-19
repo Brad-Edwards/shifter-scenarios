@@ -1,0 +1,1444 @@
+{
+  "snapshot": "2026-09-16T08:30:00-04:00",
+  "messages": {
+    "a-choir-1": {
+      "story": "choir",
+      "file": "generated/messages/a-choir-1.eml",
+      "message_id": "<6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-choir-2": {
+      "story": "choir",
+      "file": "generated/messages/a-choir-2.eml",
+      "message_id": "<d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-choir-3": {
+      "story": "choir",
+      "file": "generated/messages/a-choir-3.eml",
+      "message_id": "<058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-choir-4": {
+      "story": "choir",
+      "file": "generated/messages/a-choir-4.eml",
+      "message_id": "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-anniversary-1": {
+      "story": "anniversary",
+      "file": "generated/messages/k-anniversary-1.eml",
+      "message_id": "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-anniversary-2": {
+      "story": "anniversary",
+      "file": "generated/messages/k-anniversary-2.eml",
+      "message_id": "<e67546f7-3b41-5e65-8020-89ef246dfaee@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-anniversary-3": {
+      "story": "anniversary",
+      "file": "generated/messages/k-anniversary-3.eml",
+      "message_id": "<68aa032a-8177-524b-be02-9bd9f95fc46a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-anniversary-4": {
+      "story": "anniversary",
+      "file": "generated/messages/k-anniversary-4.eml",
+      "message_id": "<b4fc7a0e-278e-5c6d-869f-ea9033fdb429@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-anniversary-5": {
+      "story": "anniversary",
+      "file": "generated/messages/k-anniversary-5.eml",
+      "message_id": "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-merewick-1": {
+      "story": "merewick",
+      "file": "generated/messages/b-merewick-1.eml",
+      "message_id": "<b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-merewick-2": {
+      "story": "merewick",
+      "file": "generated/messages/b-merewick-2.eml",
+      "message_id": "<36acfbd6-e4c8-5f74-a22b-a9375d5a1547@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-kepler-arwc-1": {
+      "story": "principal-relationship",
+      "file": "generated/messages/b-kepler-arwc-1.eml",
+      "message_id": "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          }
+        ],
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-kepler-arwc-2": {
+      "story": "principal-relationship",
+      "file": "generated/messages/b-kepler-arwc-2.eml",
+      "message_id": "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ],
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-photo-1": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-1.eml",
+      "message_id": "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "staff-activities@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "laboratory@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-ardenvale-1": {
+      "story": "ardenvale",
+      "file": "generated/messages/b-ardenvale-1.eml",
+      "message_id": "<74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-growth-1": {
+      "story": "company-direction",
+      "file": "generated/messages/k-growth-1.eml",
+      "message_id": "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "k-company-direction"
+      ]
+    },
+    "b-ardenvale-2": {
+      "story": "ardenvale",
+      "file": "generated/messages/b-ardenvale-2.eml",
+      "message_id": "<ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-growth-2": {
+      "story": "company-direction",
+      "file": "generated/messages/k-growth-2.eml",
+      "message_id": "<1b9879c5-19d8-5f55-b883-467a6db9c0ec@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-veybridge-1": {
+      "story": "veybridge",
+      "file": "generated/messages/b-veybridge-1.eml",
+      "message_id": "<a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-veybridge-2": {
+      "story": "veybridge",
+      "file": "generated/messages/b-veybridge-2.eml",
+      "message_id": "<b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-growth-3": {
+      "story": "company-direction",
+      "file": "generated/messages/k-growth-3.eml",
+      "message_id": "<82448f32-2b45-537b-bfbd-8e48c79a4eae@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-history-1": {
+      "story": "utility-history",
+      "file": "generated/messages/a-history-1.eml",
+      "message_id": "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "a-refurbishment-history"
+      ]
+    },
+    "b-orren-1": {
+      "story": "orrenvale",
+      "file": "generated/messages/b-orren-1.eml",
+      "message_id": "<0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "k-service-review"
+      ]
+    },
+    "b-orren-2": {
+      "story": "orrenvale",
+      "file": "generated/messages/b-orren-2.eml",
+      "message_id": "<74d74bcf-d2ef-5961-8f7c-ecc202a2aa9c@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-veybridge-3": {
+      "story": "veybridge",
+      "file": "generated/messages/b-veybridge-3.eml",
+      "message_id": "<428bd3b9-7115-545d-a2c3-0355982deb5b@veybridge.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-bike-1": {
+      "story": "bicycle",
+      "file": "generated/messages/k-bike-1.eml",
+      "message_id": "<1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-history-2": {
+      "story": "utility-history",
+      "file": "generated/messages/a-history-2.eml",
+      "message_id": "<12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-ternwick-1": {
+      "story": "ternwick",
+      "file": "generated/messages/b-ternwick-1.eml",
+      "message_id": "<fc563381-1db9-54bb-b2c1-1b68e197e8c9@ternwick.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-history-3": {
+      "story": "utility-history",
+      "file": "generated/messages/a-history-3.eml",
+      "message_id": "<b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-rillhaven-1": {
+      "story": "rillhaven",
+      "file": "generated/messages/b-rillhaven-1.eml",
+      "message_id": "<2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-bike-2": {
+      "story": "bicycle",
+      "file": "generated/messages/k-bike-2.eml",
+      "message_id": "<e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-onboarding-1": {
+      "story": "routine-keplerops",
+      "file": "generated/messages/k-onboarding-1.eml",
+      "message_id": "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "k-working-guide"
+      ]
+    },
+    "b-ternwick-2": {
+      "story": "ternwick",
+      "file": "generated/messages/b-ternwick-2.eml",
+      "message_id": "<459c241b-e78e-5bd4-858e-ed2bb8190d6e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-rillhaven-2": {
+      "story": "rillhaven",
+      "file": "generated/messages/b-rillhaven-2.eml",
+      "message_id": "<fbcaa0be-bdab-513b-b8d9-462206870d3a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-belvarn-1": {
+      "story": "belvarn",
+      "file": "generated/messages/b-belvarn-1.eml",
+      "message_id": "<0732f1bd-8099-5a37-81cb-153b82330bac@belvarn.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-walk-1": {
+      "story": "friends",
+      "file": "generated/messages/a-walk-1.eml",
+      "message_id": "<86fd41b4-e079-53e9-8d1c-4412f7441ad9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-walk-2": {
+      "story": "friends",
+      "file": "generated/messages/a-walk-2.eml",
+      "message_id": "<9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-workshop-1": {
+      "story": "workshop",
+      "file": "generated/messages/k-workshop-1.eml",
+      "message_id": "<3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "k-workshop-outline-draft"
+      ]
+    },
+    "b-belvarn-2": {
+      "story": "belvarn",
+      "file": "generated/messages/b-belvarn-2.eml",
+      "message_id": "<9d187de3-f8ef-5fcd-a201-f902c4fe9875@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-workshop-2": {
+      "story": "workshop",
+      "file": "generated/messages/k-workshop-2.eml",
+      "message_id": "<e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-photo-2": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-2.eml",
+      "message_id": "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-lunch-1": {
+      "story": "lunch",
+      "file": "generated/messages/k-lunch-1.eml",
+      "message_id": "<9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-photo-3": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-3.eml",
+      "message_id": "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-lunch-2": {
+      "story": "lunch",
+      "file": "generated/messages/k-lunch-2.eml",
+      "message_id": "<aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-talvern-1": {
+      "story": "talvern",
+      "file": "generated/messages/b-talvern-1.eml",
+      "message_id": "<f3dcbc5a-cb2c-5b79-b212-7b389cc7b0ce@talvern.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-talvern-2": {
+      "story": "talvern",
+      "file": "generated/messages/b-talvern-2.eml",
+      "message_id": "<93a33adf-05bc-50d3-b5c4-4da3f35f99c5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-workshop-3": {
+      "story": "workshop",
+      "file": "generated/messages/k-workshop-3.eml",
+      "message_id": "<966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "k-workshop-outline"
+      ]
+    },
+    "k-workshop-4": {
+      "story": "workshop",
+      "file": "generated/messages/k-workshop-4.eml",
+      "message_id": "<cb04b19a-40b6-5715-b66f-c57713647291@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-outreach-1": {
+      "story": "outreach",
+      "file": "generated/messages/a-outreach-1.eml",
+      "message_id": "<ae6183c7-9236-5349-bd23-bcb55159ee51@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "a-outreach-preparation"
+      ]
+    },
+    "a-outreach-2": {
+      "story": "outreach",
+      "file": "generated/messages/a-outreach-2.eml",
+      "message_id": "<56b14a09-e731-551a-8281-e6ac6b0898a8@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-bike-3": {
+      "story": "bicycle",
+      "file": "generated/messages/k-bike-3.eml",
+      "message_id": "<d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-outreach-3": {
+      "story": "outreach",
+      "file": "generated/messages/a-outreach-3.eml",
+      "message_id": "<f34e92f9-7927-5914-b26b-6d936dbe4498@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "a-outreach-outline"
+      ]
+    },
+    "a-outreach-4": {
+      "story": "outreach",
+      "file": "generated/messages/a-outreach-4.eml",
+      "message_id": "<d0bd75ec-9a41-5dd5-aef3-e6a77d75c978@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-lunch-3": {
+      "story": "lunch",
+      "file": "generated/messages/k-lunch-3.eml",
+      "message_id": "<aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-lunch-4": {
+      "story": "lunch",
+      "file": "generated/messages/k-lunch-4.eml",
+      "message_id": "<3a0f3099-e06c-54d6-84f0-14a81c61877a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "noor.aveling@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-billing-1": {
+      "story": "billing",
+      "file": "generated/messages/a-billing-1.eml",
+      "message_id": "<19921ae0-14e4-55de-9408-5608af682ecf@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-bike-4": {
+      "story": "bicycle",
+      "file": "generated/messages/k-bike-4.eml",
+      "message_id": "<27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-bike-5": {
+      "story": "bicycle",
+      "file": "generated/messages/k-bike-5.eml",
+      "message_id": "<66e4425c-a7e5-5cbb-ad65-746f81c4cf05@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-family-1": {
+      "story": "family-swap",
+      "file": "generated/messages/k-family-1.eml",
+      "message_id": "<4237a7ab-eb59-5519-9e7a-607b68127b59@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-learning-1": {
+      "story": "workforce",
+      "file": "generated/messages/a-learning-1.eml",
+      "message_id": "<c9fe03b5-aad5-5610-a2b3-16830940a616@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-billing-2": {
+      "story": "billing",
+      "file": "generated/messages/a-billing-2.eml",
+      "message_id": "<20dbc210-45db-5d68-a7f3-93081868ccd1@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-learning-2": {
+      "story": "workforce",
+      "file": "generated/messages/a-learning-2.eml",
+      "message_id": "<63d5f496-64c8-5fa0-a16d-dc1cbcea14c8@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-billing-3": {
+      "story": "billing",
+      "file": "generated/messages/a-billing-3.eml",
+      "message_id": "<a09c8db7-0a60-582c-9732-0e4bfc68780c@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "a-billing-explanation"
+      ]
+    },
+    "a-photo-4": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-4.eml",
+      "message_id": "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "staff-activities@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "clara.morivelle@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "laboratory@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-billing-4": {
+      "story": "billing",
+      "file": "generated/messages/a-billing-4.eml",
+      "message_id": "<87a727a2-9a18-52e6-b512-b31ee715ebfc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-photo-5": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-5.eml",
+      "message_id": "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "laboratory@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-billing-5": {
+      "story": "billing",
+      "file": "generated/messages/a-billing-5.eml",
+      "message_id": "<5c77d06b-0761-5852-9f79-2aa15cc28172@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "a-photo-6": {
+      "story": "photography",
+      "file": "generated/messages/a-photo-6.eml",
+      "message_id": "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "owen.vardell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    }
+  },
+  "documents": {
+    "k-company-direction": {
+      "story": "company-direction",
+      "file": "documents/keplerops/company-direction.md",
+      "employer": "keplerops"
+    },
+    "k-working-guide": {
+      "story": "company-culture",
+      "file": "documents/keplerops/working-guide.md",
+      "employer": "keplerops"
+    },
+    "k-workshop-outline": {
+      "story": "workshop",
+      "file": "documents/keplerops/workshop-outline.md",
+      "employer": "keplerops"
+    },
+    "k-service-review": {
+      "story": "orrenvale",
+      "file": "documents/keplerops/service-review.md",
+      "employer": "keplerops"
+    },
+    "k-company-history": {
+      "story": "anniversary",
+      "file": "documents/keplerops/company-history.md",
+      "employer": "keplerops"
+    },
+    "k-customer-relationships": {
+      "story": "principal-relationship",
+      "file": "documents/keplerops/customer-relationships.md",
+      "employer": "keplerops"
+    },
+    "a-outreach-preparation": {
+      "story": "outreach",
+      "file": "documents/arwc/outreach-preparation.md",
+      "employer": "arwc"
+    },
+    "a-outreach-outline": {
+      "story": "outreach",
+      "file": "documents/arwc/outreach-outline.md",
+      "employer": "arwc"
+    },
+    "a-billing-explanation": {
+      "story": "billing",
+      "file": "documents/arwc/billing-explanation.md",
+      "employer": "arwc"
+    },
+    "a-refurbishment-history": {
+      "story": "utility-history",
+      "file": "documents/arwc/refurbishment-history.md",
+      "employer": "arwc"
+    },
+    "a-company-and-governance": {
+      "story": "governance",
+      "file": "documents/arwc/company-and-governance.md",
+      "employer": "arwc"
+    },
+    "a-working-at-arwc": {
+      "story": "company-culture",
+      "file": "documents/arwc/working-at-arwc.md",
+      "employer": "arwc"
+    },
+    "a-regional-history": {
+      "story": "utility-history",
+      "file": "documents/arwc/regional-history.md",
+      "employer": "arwc"
+    },
+    "a-regional-service": {
+      "story": "regional-business",
+      "file": "documents/arwc/regional-service-and-customers.md",
+      "employer": "arwc"
+    },
+    "k-workshop-outline-draft": {
+      "story": "workshop",
+      "file": "documents/keplerops/workshop-outline-draft.md",
+      "employer": "keplerops"
+    }
+  }
+}

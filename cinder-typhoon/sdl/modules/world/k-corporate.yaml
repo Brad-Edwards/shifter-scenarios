@@ -1,0 +1,127 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k-corporate
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k-corporate
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - k-dev
+    - k-staff
+    - k-identity
+    - k-cert
+    infrastructure:
+    - subnet
+    - k-dev
+    - k-staff
+    - k-identity
+    - k-cert
+    entities:
+    - organization
+    features:
+    - k-dev
+    - k-staff
+    - k-identity
+    - k-cert
+    - k-staff--delegated-client
+    - k-staff--managed-record
+    - k-identity--support-federation
+    - k-identity--delegation
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'KeplerOps: Corporate / identity. Logical network segment; physical realization and addressing
+      remain open.'
+  k-dev:
+    type: compute
+    description: Developer foothold
+    features:
+      k-dev: ''
+  k-staff:
+    type: compute
+    description: Staff workflow
+    services:
+    - name: workplace
+      port: 443
+      protocol: tcp
+      description: Authenticated staff workplace for mailboxes and company records; software and hosting remain open.
+    features:
+      k-staff: ''
+      k-staff--delegated-client: ''
+      k-staff--managed-record: ''
+  k-identity:
+    type: compute
+    description: Identity services
+    features:
+      k-identity: ''
+      k-identity--support-federation: ''
+      k-identity--delegation: ''
+  k-cert:
+    type: compute
+    description: Certificate service
+    features:
+      k-cert: ''
+infrastructure:
+  subnet: {}
+  k-dev:
+    links:
+    - subnet
+  k-staff:
+    links:
+    - subnet
+  k-identity:
+    links:
+    - subnet
+  k-cert:
+    links:
+    - subnet
+entities:
+  organization:
+    name: KeplerOps
+    description: Corporate / identity
+    role: green
+features:
+  k-dev:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-dev. A separately scoped in-world interface or principal; access
+      does not imply ownership of the other authorities on this system.
+  k-staff:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-staff. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-identity:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-identity. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-cert:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-cert. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-staff--delegated-client:
+    name: Staff delegation client
+    type: service
+    description: Staff delegation client on k-staff. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-staff--managed-record:
+    name: Managed identity record
+    type: service
+    description: Managed identity record on k-staff. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-identity--support-federation:
+    name: Support application trust
+    type: service
+    description: Support application trust on k-identity. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-identity--delegation:
+    name: Supplier service delegation
+    type: service
+    description: Supplier service delegation on k-identity. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.

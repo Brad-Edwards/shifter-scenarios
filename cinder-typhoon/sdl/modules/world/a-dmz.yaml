@@ -1,0 +1,99 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-a-dmz
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/a-dmz
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - a-data-bridge
+    - a-contractor-bridge
+    - a-control-broker
+    infrastructure:
+    - subnet
+    - a-data-bridge
+    - a-contractor-bridge
+    - a-control-broker
+    entities:
+    - organization
+    features:
+    - a-data-bridge
+    - a-contractor-bridge
+    - a-control-broker
+    - a-control-broker--maintenance-issuer
+    - a-control-broker--utility-issuer
+    - a-data-bridge--estimates
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'ARWC: Industrial DMZ. Logical network segment; physical realization and addressing remain
+      open.'
+  a-data-bridge:
+    type: compute
+    description: Integration read gateway
+    features:
+      a-data-bridge: ''
+      a-data-bridge--estimates: ''
+  a-contractor-bridge:
+    type: compute
+    description: Contractor read gateway
+    features:
+      a-contractor-bridge: ''
+  a-control-broker:
+    type: compute
+    description: Scoped maintenance broker
+    features:
+      a-control-broker: ''
+      a-control-broker--maintenance-issuer: ''
+      a-control-broker--utility-issuer: ''
+infrastructure:
+  subnet: {}
+  a-data-bridge:
+    links:
+    - subnet
+  a-contractor-bridge:
+    links:
+    - subnet
+  a-control-broker:
+    links:
+    - subnet
+entities:
+  organization:
+    name: ARWC
+    description: Industrial DMZ
+    role: green
+features:
+  a-data-bridge:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-data-bridge. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-contractor-bridge:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-contractor-bridge. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  a-control-broker:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-control-broker. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-control-broker--maintenance-issuer:
+    name: Approval-bound client issuance
+    type: service
+    description: Approval-bound client issuance on a-control-broker. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  a-control-broker--utility-issuer:
+    name: Engineering client issuance
+    type: service
+    description: Engineering client issuance on a-control-broker. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  a-data-bridge--estimates:
+    name: Outbound estimate publication
+    type: service
+    description: Outbound estimate publication on a-data-bridge. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.

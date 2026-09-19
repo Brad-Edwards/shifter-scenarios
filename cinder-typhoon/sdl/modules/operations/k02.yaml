@@ -1,0 +1,596 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k02
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k02
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the missing fixture and identify its matching test revision. This supplies the baseline for K02.3.
+
+      Required technical proof: Scoring verifies the fixture digest, historical revision, and test binding, then makes the baseline available to K02.3.
+    source_refs: &id001
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k02-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k02-1.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify head lacks the fixture, one provenance path finds it, an unrelated historical
+      file fails, the test revision matches, and reset is deterministic.'
+  c2:
+    description: |-
+      Recover the restricted review note and the test job's input contract through the importer. These supply evidence for K02.3; the read does not itself grant job-editing or execution authority.
+
+      Required technical proof: The importer logs the resolved object ID and job contract; the expected restricted note is attached as player evidence without giving job-edit rights.
+    source_refs: &id002
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k02-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k02-2.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal import, intended cross-namespace read, rejection outside allowlist,
+      no job configuration mutation, exact object audit, and reset.'
+  c3:
+    description: |-
+      Produce a fresh altered report accepted by the test interface. Its content and job binding must agree; an edited local file or green status alone is insufficient.
+
+      The conclusion shows the report as received in the support handover, with the player's changed result alongside the successful job status and preserved ordinary fields. It uses the report already produced by the challenge; there is no extra delivery step or score. This is the first small example of a reassuring status accompanying a compromised result, a theme that returns at ARWC.
+
+      Required technical proof: Completion is a green job whose fresh report has the expected baseline fields and player change; the support handover displays that actual output and the job receipt binds it.
+    source_refs: &id003
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k02-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k02-3.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test baseline green behavior, interface-breaking failure, intended compatible changed
+      report, handover receipt correlation, no score for a local edit, and clean reset.'
+propositions:
+  c1:
+    description: Recover the missing fixture and identify its matching test revision. This supplies the
+      baseline for K02.3.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k02-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K02.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the restricted review note and the test job's input contract through the importer.
+      These supply evidence for K02.3; the read does not itself grant job-editing or execution authority.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k02-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K02.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: |-
+      Produce a fresh altered report accepted by the test interface. Its content and job binding must agree; an edited local file or green status alone is insufficient.
+
+      The conclusion shows the report as received in the support handover, with the player's changed result alongside the successful job status and preserved ordinary fields. It uses the report already produced by the challenge; there is no extra delivery step or score. This is the first small example of a reassuring status accompanying a compromised result, a theme that returns at ARWC.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k02-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K02.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K02.1: The missing fixture'
+    description: |-
+      The report test has been failing since its reference fixture disappeared. Recover the fixture from the development artifacts so the intended report is visible again.
+
+      Exposes the legitimate baseline behind a report Cinder will change.
+    agent: participant.operator
+    actions:
+    - k02.c1
+    targets: &id004
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k02.c1
+  c2:
+    name: 'K02.2: An input outside its lane'
+    description: |-
+      The test importer is supposed to accept only job inputs. Make it expose the separate review note that the ordinary test view withholds.
+
+      Introduces a small application boundary through an everyday developer workflow.
+    agent: participant.operator
+    actions:
+    - k02.c2
+    targets: &id005
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k02.c2
+  c3:
+    name: 'K02.3: Green, with our changes'
+    description: |-
+      Change the report produced by the test job while keeping the interface its caller expects. The support engineer should receive Cinder's version with a successful job result.
+
+      Completes an early supply-chain episode in which a real support workflow accepts the player's altered work as a successful report. A newcomer can see someone else's business process consuming their change.
+    agent: participant.operator
+    actions:
+    - k02.c3
+    targets: &id006
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k02.c3
+workflows:
+  c1:
+    description: 'K02.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k02.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K02.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - participant.foothold-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k02.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K02.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k02.c1-ready
+            - k02.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k02.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The fixture was removed from the current checkout but retained in real source or
+      artifact history. The intended solution is evidence-led recovery and revision correlation.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k02.c1
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: Gitea project history, local build artifacts, and a test-job record describe a deleted
+        report fixture and its matching test revision.
+      support_refs: *id004
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        All source and artifacts are read-only synthetic history; reset removes only player evidence.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the missing fixture and identify its matching test revision. This supplies
+        the baseline for K02.3.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k02.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Scoring verifies the fixture digest, historical revision, and test binding, then makes
+        the baseline available to K02.3.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k02.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: An importer field is resolved outside the declared job-input namespace before access
+      control. The intended solution is to construct a valid input that demonstrates the boundary and
+      recovers the note plus its input contract.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k02.c2
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The FieldKest test importer accepts a documented job-input archive and returns a test
+        report; its repository contains a separate restricted review-note object.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Resolution is allowlisted to two card-local object namespaces, read-only, and request-bounded. Reset clears imported job state and audit events.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the restricted review note and the test job's input contract through the importer.
+        These supply evidence for K02.3; the read does not itself grant job-editing or execution authority.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k02.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The importer logs the resolved object ID and job contract; the expected restricted
+        note is attached as player evidence without giving job-edit rights.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k02.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The test input permits a compatible report implementation selected through its documented
+      extension point. The intended solution combines the fixture baseline and importer contract to produce
+      changed content while preserving required interface fields.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k02.c3
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: An isolated Jenkins or Woodpecker test consumer invokes the FieldKest report interface
+        with the recovered fixture and publishes the resulting support handover report.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The extension runs in an isolated player test context with fixture-only access and cannot publish packages or modify production support records. Reset removes job/output state.
+      support_refs:
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: |-
+        Produce a fresh altered report accepted by the test interface. Its content and job binding must agree; an edited local file or green status alone is insufficient.
+
+        The conclusion shows the report as received in the support handover, with the player's changed result alongside the successful job status and preserved ordinary fields. It uses the report already produced by the challenge; there is no extra delivery step or score. This is the first small example of a reassuring status accompanying a compromised result, a theme that returns at ARWC.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k02.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Completion is a green job whose fresh report has the expected baseline fields and player
+        change; the support handover displays that actual output and the job receipt binds it.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k02.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K02.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k02.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K02.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k02.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K02.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k02.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K02.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The failing report job, a sample output, the fixture reference, and the developer's normal test interface.
+
+      Gitea project history, local build artifacts, and a test-job record describe a deleted report fixture and its matching test revision.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k02
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The failing report job, a sample output, the fixture reference, and the developer's
+        normal test interface.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K02.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The failing report job, a sample output, the fixture reference, and the developer's normal test interface.
+
+      The FieldKest test importer accepts a documented job-input archive and returns a test report; its repository contains a separate restricted review-note object.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k02
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The failing report job, a sample output, the fixture reference, and the developer's
+        normal test interface.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K02.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The failing report job, a sample output, the fixture reference, and the developer's normal test interface.
+
+      An isolated Jenkins or Woodpecker test consumer invokes the FieldKest report interface with the recovered fixture and publishes the resulting support handover report.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k02
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The failing report job, a sample output, the fixture reference, and the developer's
+        normal test interface.

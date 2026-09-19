@@ -1,0 +1,568 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w29
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w29
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c2-surface-2
+    - c3-surface-1
+    - c3-surface-2
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c2-records-2
+    - c3-records-1
+    - c3-records-2
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the current tariff and its effective window. This is distinct from W35's general
+      procurement catalog and its private district quote.
+    source_refs: &id001
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w29-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w29-1.satisfied
+        component_refs:
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical
+      reporting discrepancy is insufficient.
+    source_refs: &id002
+    - features.a-corporate.a-data
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w29-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w29-2.satisfied
+        component_refs:
+        - features.a-corporate.a-data
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Produce the bounded plan and its predicted reserve and economic effects. This supplies
+      W29.PLAN and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+    source_refs: &id003
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w29-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w29-3.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the current tariff and its effective window. This is distinct from W35's general
+      procurement catalog and its private district quote.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w29-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W29.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical
+      reporting discrepancy is insufficient.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w29-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W29.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Produce the bounded plan and its predicted reserve and economic effects. This supplies
+      W29.PLAN and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w29-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W29.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W29.1: The price of this planning window'
+    description: |-
+      Recover the settlement tariff that applies to replacement supply in the current allocation window.
+
+      Gives the final consequence a current financial basis.
+    agent: participant.operator
+    actions:
+    - w29.c1
+    targets: &id004
+    - features.a-corporate.a-data
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w29.c1
+  c2:
+    name: 'W29.2: What reserve remains uncommitted'
+    description: |-
+      Reconcile the current usable reserve with the company's allocation commitments and establish what the release plan must account for.
+
+      Connects present process state to the business obligations discovered earlier.
+    agent: participant.operator
+    actions:
+    - w29.c2
+    targets: &id005
+    - features.a-corporate.a-data
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w29.c2
+  c3:
+    name: 'W29.3: Paper truth'
+    description: |-
+      Construct a release plan that reduces usable reserve within the operating envelope and explains the resulting replacement cost and restrictions.
+
+      Defines the intended non-catastrophic consequence before live action.
+    agent: participant.operator
+    actions:
+    - w29.c3
+    targets: &id006
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w29.c3
+workflows:
+  c1:
+    description: 'W29.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.ot-read-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w29.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W29.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.process-interpretation-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w29.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W29.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w29.c1-ready
+            - w29.c2-ready
+            - capabilities.mode-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w29.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the settlement tariff that applies to replacement supply in the current allocation
+      window.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w29.c1
+      - features.a-corporate.a-data
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the current tariff and its effective window. This is distinct from W35's general
+        procurement catalog and its private district quote.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w29.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Reconcile the current usable reserve with the company's allocation commitments and
+      establish what the release plan must account for.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w29.c2
+      - features.a-corporate.a-data
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the correctly bound current reserve/commitment balance. Repeating W09's historical
+        reporting discrepancy is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w29.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Construct a release plan that reduces usable reserve within the operating envelope
+      and explains the resulting replacement cost and restrictions.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w29.c3
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the bounded plan and its predicted reserve and economic effects. This supplies
+        W29.PLAN and CONSEQUENCE_PLAN; the tariff, current evidence, and mode must agree.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w29.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W29.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w29.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W29.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w29.c2
+      mode: service
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W29.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w29.c2
+      mode: read
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-hmi
+    description: W29.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w29.c3
+      mode: service
+  c3-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W29.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w29.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W29.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current settlement tariff, allocation evidence, fresh process observations, and the supplied reserve/consequence model.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w29
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current settlement tariff, allocation evidence, fresh process observations, and
+        the supplied reserve/consequence model.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W29.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current settlement tariff, allocation evidence, fresh process observations, and the supplied reserve/consequence model.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w29
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current settlement tariff, allocation evidence, fresh process observations, and
+        the supplied reserve/consequence model.
+  c2-records-2:
+    type: dataset
+    description: |-
+      W29.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current settlement tariff, allocation evidence, fresh process observations, and the supplied reserve/consequence model.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w29
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current settlement tariff, allocation evidence, fresh process observations, and
+        the supplied reserve/consequence model.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W29.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current settlement tariff, allocation evidence, fresh process observations, and the supplied reserve/consequence model.
+    target: a-engineering.a-hmi
+    tags:
+    - synthetic
+    - w29
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current settlement tariff, allocation evidence, fresh process observations, and
+        the supplied reserve/consequence model.
+  c3-records-2:
+    type: dataset
+    description: |-
+      W29.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current settlement tariff, allocation evidence, fresh process observations, and the supplied reserve/consequence model.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w29
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current settlement tariff, allocation evidence, fresh process observations, and
+        the supplied reserve/consequence model.

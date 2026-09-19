@@ -1,0 +1,858 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w33
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w33
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c1-surface-2
+    - c2-surface-1
+    - c2-surface-2
+    - c3-surface-1
+    - c3-surface-2
+    - c3-surface-3
+    - c4-surface-1
+    - c4-surface-2
+    - c4-surface-3
+    content:
+    - c1-records-1
+    - c1-records-2
+    - c2-records-1
+    - c2-records-2
+    - c3-records-1
+    - c3-records-2
+    - c3-records-3
+    - c4-records-1
+    - c4-records-2
+    - c4-records-3
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
+      records are sufficient; W16 is never required.
+    source_refs: &id001
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w33-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w33-1.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+        - features.a-engineering.a-historian
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every
+      published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+    source_refs: &id002
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w33-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w33-2.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
+      effect. Bind the advanced schedule to the current evidence and recompute its consequence using the
+      earned model; a valid plan for another schedule or checkpoint is insufficient.
+    source_refs: &id003
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w33-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w33-3.satisfied
+        component_refs:
+        - features.a-control.a-reservoir
+        - features.a-control.a-distribution
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within
+      the published bounds, using available observations. A standalone offline policy or one replayed
+      winning schedule is insufficient; scenario time advances on demand.
+    source_refs: &id004
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w33-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w33-4.satisfied
+        component_refs:
+        - features.a-control.a-reservoir
+        - features.a-control.a-distribution
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
+      records are sufficient; W16 is never required.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w33-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W33.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce a feasible practice trajectory meeting both the reserve-loss objective and every
+      published state constraint. Simply holding the outlet at its maximum cannot satisfy the task.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w33-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W33.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting economic
+      effect. Bind the advanced schedule to the current evidence and recompute its consequence using the
+      earned model; a valid plan for another schedule or checkpoint is insufficient.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w33-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W33.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate the policy through the scheduler in independent private rehearsal cases within
+      the published bounds, using available observations. A standalone offline policy or one replayed
+      winning schedule is insufficient; scenario time advances on demand.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w33-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W33.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W33.1: A forecast that matches the instrument'
+    description: |-
+      Reconcile calibration and observation delay with the supplied trace so the planning model reproduces the relevant forecast.
+
+      Grounds the advanced process branch in observable engineering evidence.
+    agent: participant.operator
+    actions:
+    - w33.c1
+    targets: &id005
+    - features.a-engineering.a-hmi
+    - features.a-engineering.a-historian
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w33.c1
+  c2:
+    name: 'W33.2: The expensive hour'
+    description: |-
+      Construct a time-varying release schedule that meets the practice objective while respecting the declared operating constraints.
+
+      Makes timing and economic context substantive parts of the challenge.
+    agent: participant.operator
+    actions:
+    - w33.c2
+    targets: &id006
+    - features.a-engineering.a-hmi
+    - features.a-corporate.a-data
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w33.c2
+  c3:
+    name: 'W33.3: The schedule the service accepts'
+    description: |-
+      Carry the planned release across the scheduler's authorization boundary and demonstrate its bounded economic effect in the live rehearsal.
+
+      Adds a real application/control problem after offline planning.
+    agent: participant.operator
+    actions:
+    - w33.c3
+    targets: &id007
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w33.c3
+  c4:
+    name: 'W33.4: When the forecast moves'
+    description: |-
+      Run a feedback policy through your earned scheduler capability so the bounded objective is met across the disclosed demand and calibration conditions.
+
+      Extends a one-case result into a robust process-control achievement.
+    agent: participant.operator
+    actions:
+    - w33.c4
+    targets: &id008
+    - features.a-control.a-reservoir
+    - features.a-control.a-distribution
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w33.c4
+workflows:
+  c1:
+    description: 'W33.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.ot-read-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w33.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W33.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w33.c1-ready
+            - capabilities.envelope-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w33.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W33.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w33.c2-ready
+            - capabilities.process-interpretation-ready
+            - capabilities.control-ready
+            - capabilities.mode-ready
+            - capabilities.consequence-plan-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w33.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W33.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w33.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w33.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Reconcile calibration and observation delay with the supplied trace so the planning
+      model reproduces the relevant forecast.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w33.c1
+      - features.a-engineering.a-hmi
+      - features.a-engineering.a-historian
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the correctly bound forecast within the stated tolerance. Normal commissioning
+        records are sufficient; W16 is never required.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w33.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Construct a time-varying release schedule that meets the practice objective while
+      respecting the declared operating constraints.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w33.c2
+      - features.a-engineering.a-hmi
+      - features.a-corporate.a-data
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce a feasible practice trajectory meeting both the reserve-loss objective and
+        every published state constraint. Simply holding the outlet at its maximum cannot satisfy the
+        task.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w33.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Carry the planned release across the scheduler's authorization boundary and demonstrate
+      its bounded economic effect in the live rehearsal.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w33.c3
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate accepted scoped actions, actual bounded reserve loss, and the resulting
+        economic effect. Bind the advanced schedule to the current evidence and recompute its consequence
+        using the earned model; a valid plan for another schedule or checkpoint is insufficient.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w33.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Run a feedback policy through your earned scheduler capability so the bounded objective
+      is met across the disclosed demand and calibration conditions.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w33.c4
+      - features.a-control.a-reservoir
+      - features.a-control.a-distribution
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the policy through the scheduler in independent private rehearsal cases
+        within the published bounds, using available observations. A standalone offline policy or one
+        replayed winning schedule is insufficient; scenario time advances on demand.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w33.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-hmi
+    description: W33.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c1
+      mode: service
+  c1-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-historian
+    description: W33.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c1
+      mode: read
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-hmi
+    description: W33.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c2
+      mode: service
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W33.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-reservoir
+    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c3
+      mode: control
+  c3-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-distribution
+    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c3
+      mode: control
+  c3-surface-3:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W33.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c3
+      mode: read
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-reservoir
+    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c4
+      mode: control
+  c4-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-distribution
+    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c4
+      mode: control
+  c4-surface-3:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W33.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w33.c4
+      mode: read
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W33.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-engineering.a-hmi
+    tags:
+    - synthetic
+    - w33
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c1-records-2:
+    type: dataset
+    description: |-
+      W33.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-engineering.a-historian
+    tags:
+    - synthetic
+    - w33
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W33.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-engineering.a-hmi
+    tags:
+    - synthetic
+    - w33
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c2-records-2:
+    type: dataset
+    description: |-
+      W33.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w33
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-reservoir
+    tags:
+    - synthetic
+    - w33
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c3-records-2:
+    type: dataset
+    description: |-
+      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-distribution
+    tags:
+    - synthetic
+    - w33
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c3-records-3:
+    type: dataset
+    description: |-
+      W33.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w33
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-reservoir
+    tags:
+    - synthetic
+    - w33
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c4-records-2:
+    type: dataset
+    description: |-
+      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-distribution
+    tags:
+    - synthetic
+    - w33
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.
+  c4-records-3:
+    type: dataset
+    description: |-
+      W33.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A supplied forecast, ordinary commissioning records, a practice model, and the earned process/control context for live stages. W16's calibration record is an optional alternative input.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w33
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A supplied forecast, ordinary commissioning records, a practice model, and the earned
+        process/control context for live stages. W16's calibration record is an optional alternative input.

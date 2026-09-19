@@ -1,0 +1,626 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k06
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k06
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c3-surface-2
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c3-records-2
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover and demonstrate the limited registry publication authority. This supplies A01; recovering its configuration and using the resulting credential are one achievement.
+
+      Required technical proof: Registry audit data must show the scoped identity performing its permitted release-channel action; this awards `A01`.
+    source_refs: &id001
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k06-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k06-1.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test direct developer denial, intended error evidence, scoped registry use, other-scope
+      denial, no score for copied configuration, and revocation.'
+  c2:
+    description: |-
+      Recover the protected package through the distinct package-view authorization weakness. Merely reusing A01 for an already permitted read does not earn this score.
+
+      Required technical proof: The registry logs an authorized-by-flaw read of the protected package version and returns its immutable manifest/content digest.
+    source_refs: &id002
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k06-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k06-2.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal view separation, intended package read, unrelated private package denial,
+      no write escalation, audit attribution, and reset.'
+  c3:
+    description: |-
+      Cause actual changed behavior in the separate test consumer and recover its result. This grants no ARWC execution and does not replace K26.
+
+      Required technical proof: Completion requires publication, resolution, execution, and a receipt showing the protected rehearsal result and exact consumed package revision.
+    source_refs: &id003
+    - features.k-delivery.k-registry
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k06-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k06-3.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test baseline resolution, intended compatible behavior, failed incompatible package,
+      fresh consumer receipt, no cross-player result, and registry/consumer reset.'
+propositions:
+  c1:
+    description: Recover and demonstrate the limited registry publication authority. This supplies A01;
+      recovering its configuration and using the resulting credential are one achievement.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k06-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K06.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the protected package through the distinct package-view authorization weakness.
+      Merely reusing A01 for an already permitted read does not earn this score.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k06-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K06.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Cause actual changed behavior in the separate test consumer and recover its result. This
+      grants no ARWC execution and does not replace K26.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k06-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K06.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K06.1: House credentials'
+    description: |-
+      The importer can retrieve material the developer cannot read directly. Recover usable authority over the release channel consumed by FieldKest customers.
+
+      Creates the ordinary package-delivery route's publication capability.
+    agent: participant.operator
+    actions:
+    - k06.c1
+    targets: &id004
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k06.c1
+  c2:
+    name: 'K06.2: A private package in the wrong view'
+    description: |-
+      Your publication identity still cannot read the private support package. Cross the package-view boundary and recover its protected contents.
+
+      Adds a separate registry data compromise after publication access.
+    agent: participant.operator
+    actions:
+    - k06.c2
+    targets: &id005
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k06.c2
+  c3:
+    name: 'K06.3: The rehearsal consumer'
+    description: |-
+      Make the isolated test consumer run your compatible package behavior and return its protected rehearsal result.
+
+      Completes a local supplier-side execution episode before customer delivery.
+    agent: participant.operator
+    actions:
+    - k06.c3
+    targets: &id006
+    - features.k-delivery.k-registry
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k06.c3
+workflows:
+  c1:
+    description: 'K06.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g03-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k06.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K06.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k06.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k06.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K06.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k06.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k06.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The importer exposes its resolved configuration in an error path after validating
+      a normal package request. The intended solution is to recover and use the scoped credential through
+      the registry's ordinary authenticated flow.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k06.c1
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The FieldKest importer uses a registry configuration object that the developer cannot
+        directly read, and a scoped Verdaccio publication identity for the customer connector channel.
+      support_refs: *id004
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The identity is limited to the designated package scope and cannot read private support packages, administer registry policy, or act as the customer; reset revokes it.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover and demonstrate the limited registry publication authority. This supplies A01;
+        recovering its configuration and using the resulting credential are one achievement.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k06.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Registry audit data must show the scoped identity performing its permitted release-channel
+        action; this awards `A01`.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k06.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: A view-resolution endpoint evaluates the requested package before applying the caller's
+      restricted view. The intended solution is to demonstrate the specific cross-view authorization error
+      with `A01`, then recover the protected package contents.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k06.c2
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: Verdaccio presents public release-channel packages and a protected support package
+        using the same scoped package namespace but different view policies.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The flaw is limited to one named support package and read-only; publication, policy changes, and unrelated private packages remain denied. Reset clears events.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the protected package through the distinct package-view authorization weakness.
+        Merely reusing A01 for an already permitted read does not earn this score.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k06.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The registry logs an authorized-by-flaw read of the protected package version and returns
+        its immutable manifest/content digest.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k06.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The intended solution uses the distinct package-view result and the normal release-channel
+      publication scope to supply compatible changed behavior to the isolated consumer.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k06.c3
+      - features.k-delivery.k-registry
+      - features.k-delivery.k-ci
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The private package describes a player-local rehearsal consumer that resolves compatible
+        FieldKest versions, runs its documented diagnostic behavior, and returns a protected receipt.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The rehearsal consumer has synthetic input and no ARWC delivery route; every player receives separate registry versions and receipt state. Reset removes them.
+      support_refs:
+      - features.k-delivery.k-registry
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Cause actual changed behavior in the separate test consumer and recover its result.
+        This grants no ARWC execution and does not replace K26.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k06.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Completion requires publication, resolution, execution, and a receipt showing the protected
+        rehearsal result and exact consumed package revision.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k06.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K06.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k06.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K06.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k06.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K06.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k06.c3
+      mode: service
+  c3-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K06.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k06.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K06.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The package import workflow, its documented input form, a rehearsal consumer, and the registry interfaces exposed by the workflow.
+
+      The FieldKest importer uses a registry configuration object that the developer cannot directly read, and a scoped Verdaccio publication identity for the customer connector channel.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k06
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The package import workflow, its documented input form, a rehearsal consumer, and the
+        registry interfaces exposed by the workflow.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K06.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The package import workflow, its documented input form, a rehearsal consumer, and the registry interfaces exposed by the workflow.
+
+      Verdaccio presents public release-channel packages and a protected support package using the same scoped package namespace but different view policies.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k06
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The package import workflow, its documented input form, a rehearsal consumer, and the
+        registry interfaces exposed by the workflow.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K06.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The package import workflow, its documented input form, a rehearsal consumer, and the registry interfaces exposed by the workflow.
+
+      The private package describes a player-local rehearsal consumer that resolves compatible FieldKest versions, runs its documented diagnostic behavior, and returns a protected receipt.
+
+      Records owned by this system: Player-scoped release-channel versions, compatible package metadata, and publication audit. The protected execution receipt belongs to the isolated test consumer.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k06
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Player-scoped release-channel versions, compatible package metadata, and publication
+        audit. The protected execution receipt belongs to the isolated test consumer.
+  c3-records-2:
+    type: dataset
+    description: |-
+      K06.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The package import workflow, its documented input form, a rehearsal consumer, and the registry interfaces exposed by the workflow.
+
+      The private package describes a player-local rehearsal consumer that resolves compatible FieldKest versions, runs its documented diagnostic behavior, and returns a protected receipt.
+
+      Records owned by this system: Isolated rehearsal-consumer contract, synthetic input, consumed package revision, execution record, and protected fresh receipt; no ARWC delivery route.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k06
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Isolated rehearsal-consumer contract, synthetic input, consumed package revision, execution
+        record, and protected fresh receipt; no ARWC delivery route.

@@ -1,0 +1,276 @@
+{
+  "schema_version": "cinder-mailbox-set/v1",
+  "snapshot": "2026-09-16T08:30:00-04:00",
+  "messages": [
+    {
+      "message_id": "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+      "rfc822": "From: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>,\r\n Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Evan Calderoux <evan.calderoux@keplerops.com>,\r\n Noor Aveling <noor.aveling@keplerops.com>,\r\n Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Tue, 18 Aug 2026 09:30:00 -0400\r\nMessage-ID: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nSubject: Ten years =?utf-8?b?4oCU?= what do you remember?\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe're planning a small gathering in November for the company's tenth annivers=\r\nary. My first idea was to tell the story from the rented rooms onward. On ref=\r\nlection, you have all heard me tell that story.\r\n\r\nI'd like memories from different years instead. A project, a person who helpe=\r\nd, something that changed your working day. It needn't be impressive enough f=\r\nor a sales presentation.\r\n\r\nReply to me if you'd like to contribute. Taking part is optional.\r\n\r\nLeah\r\n",
+      "sha256": "c9baed3561c1b35af93fba002d2c2e79229fed6b52932cd2c87b9b410305e0a3"
+    },
+    {
+      "message_id": "<e67546f7-3b41-5e65-8020-89ef246dfaee@keplerops.com>",
+      "rfc822": "From: Talia Mornac <talia.mornac@keplerops.com>\r\nTo: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nDate: Wed, 19 Aug 2026 11:25:00 -0400\r\nMessage-ID: <e67546f7-3b41-5e65-8020-89ef246dfaee@keplerops.com>\r\nSubject: Re: Ten years =?utf-8?b?4oCU?= what do you remember?\r\nIn-Reply-To: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nReferences: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI remember Maya asking what I thought about a support review during my first =\r\nmonth. Until then I had mostly been trying to remember how everything worked.=\r\n It was the first time I felt I was here to contribute, rather than finish be=\r\ning new.\r\n\r\nIt's a very small memory, but I would be happy to include it.\r\n\r\nTalia\r\n",
+      "sha256": "0161edecb70299710598a227d10d25f8e544d6f2d64035c90b7b16f8a60199a8"
+    },
+    {
+      "message_id": "<68aa032a-8177-524b-be02-9bd9f95fc46a@keplerops.com>",
+      "rfc822": "From: Rowan Ito <rowan.ito@keplerops.com>\r\nTo: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nDate: Wed, 19 Aug 2026 15:35:00 -0400\r\nMessage-ID: <68aa032a-8177-524b-be02-9bd9f95fc46a@keplerops.com>\r\nSubject: Re: Ten years =?utf-8?b?4oCU?= what do you remember?\r\nIn-Reply-To: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nReferences: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI still have a fondness for the little self-service edition we stopped sellin=\r\ng. Customers wanted help with their actual integrations, not a smaller box of=\r\n software. Closing it was the right call.\r\n\r\nThe screen for comparing submissions was good, though. I am prepared to defen=\r\nd exactly that part over lunch.\r\n\r\nRowan\r\n",
+      "sha256": "5170978781cb383c280bc8148448fb6142b7da0cbd2e1e037a20112148aea15a"
+    },
+    {
+      "message_id": "<b4fc7a0e-278e-5c6d-869f-ea9033fdb429@keplerops.com>",
+      "rfc822": "From: Evan Calderoux <evan.calderoux@keplerops.com>\r\nTo: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nDate: Thu, 20 Aug 2026 10:40:00 -0400\r\nMessage-ID: <b4fc7a0e-278e-5c6d-869f-ea9033fdb429@keplerops.com>\r\nSubject: Re: Ten years =?utf-8?b?4oCU?= what do you remember?\r\nIn-Reply-To: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nReferences: <d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe 2022 move. We finally had rooms for conversations, which was an excellent=\r\n development for those of us who were not in the conversation happening besid=\r\ne us.\r\n\r\nAnd the 2024 implementation photograph. We look exhausted, but the customer w=\r\nas using the result and we were properly finished. I would include that.\r\n\r\nEvan\r\n",
+      "sha256": "ed8c7f647c08cafbe355458f4b1ceb9389c2e237b17aa1c69b288e4c740303a0"
+    },
+    {
+      "message_id": "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+      "rfc822": "From: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>,\r\n Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Evan Calderoux <evan.calderoux@keplerops.com>,\r\n Noor Aveling <noor.aveling@keplerops.com>,\r\n Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Mon, 24 Aug 2026 09:10:00 -0400\r\nMessage-ID: <d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>\r\nSubject: Anniversary contributions\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThank you for the memories. There are several moments in these replies I woul=\r\nd never have thought to include.\r\n\r\nWe'll have a small group from different hiring years choose contributions, wi=\r\nth each person's agreement before sharing their account. I'll keep my part br=\r\nief. That is now in writing.\r\n\r\nThe gathering is still being arranged for November. Business operations will =\r\ncirculate details once the booking is settled.\r\n\r\nLeah\r\n",
+      "sha256": "12a0c7a367a9922b36db7094eddb3b3db26facec6b22a0f98eb4a311642f36b7"
+    },
+    {
+      "message_id": "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 27 Aug 2026 10:10:00 -0400\r\nMessage-ID: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nSubject: Reference conversation next month\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTheo,\r\n\r\nWould ARWC be willing to join another short reference conversation? The prosp=\r\nective customer wants to hear how FieldKest fits around established maintenan=\r\nce processes. We would agree the agenda and staff time beforehand.\r\n\r\nIt would help to hear what has improved since the early work as well as what =\r\nyou wish had been easier. There is no presentation for you to deliver on our =\r\nbehalf.\r\n\r\nMaya\r\n",
+      "sha256": "1a474220a6f2d11b24fccd9cf0cff0849b8131d29777eb8797d81412ce570a0e"
+    },
+    {
+      "message_id": "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Fri, 28 Aug 2026 09:25:00 -0400\r\nMessage-ID: <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\nSubject: Re: Reference conversation next month\r\nIn-Reply-To: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nProbably, subject to the usual agreement on time. Send an outline and I'll fi=\r\nnd the right colleagues.\r\n\r\nThe useful story is less repeated collection of the same field material. The =\r\nadjustment has been learning to work with a support process rather than calli=\r\nng whichever engineer we met first. We have both grown since then.\r\n\r\nI can describe that honestly. I would rather not read slides.\r\n\r\nTheo\r\n",
+      "sha256": "dc512dcc439732b5c5c33398a8e8270968a6f06d683ff08b133536bc9c62a9c4"
+    },
+    {
+      "message_id": "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+      "rfc822": "From: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>,\r\n Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Evan Calderoux <evan.calderoux@keplerops.com>,\r\n Noor Aveling <noor.aveling@keplerops.com>,\r\n Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Wed, 02 Sep 2026 09:20:00 -0400\r\nMessage-ID: <7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>\r\nSubject: Planning note for the next two years\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-c67185f5cacb1246820a881f\"\r\n\r\n--workplace-c67185f5cacb1246820a881f\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nI've attached the note discussed with the managers. Please read it before Thu=\r\nrsday's company update.\r\n\r\nWe can fund careful growth from the business we have. The question is how muc=\r\nh additional customer-specific work we should accept while making the product=\r\n easier to support. Those are real choices, even in a profitable year.\r\n\r\nI'd especially like examples of work that keeps following someone after their=\r\n role has changed.\r\n\r\nLeah\r\n\r\n--workplace-c67185f5cacb1246820a881f\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"company-direction.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBBIHNwZWNpYWxpc3QgY29tcGFueSB3aXRoIHJvb20gdG8gZ3JvdwoKTGVhaCBDYWxkZXItVm9z\r\ncyDigKIgQ29tcGFueSBwbGFubmluZyBub3RlIOKAoiAyIFNlcHRlbWJlciAyMDI2CgpLZXBsZXJP\r\ncHMgaXMgcHJvZml0YWJsZS4gV2UgaGF2ZSBhIHdvcmtpbmcgY2FzaCByZXNlcnZlIGFuZCBpbnRl\r\nbmQgdG8gZnVuZCB0aGUKbmV4dCBzdGFnZSBvZiBncm93dGggZnJvbSByZXRhaW5lZCBlYXJuaW5n\r\ncyBhbmQgd29yayB3ZSBoYXZlIGNvbnRyYWN0ZWQgdG8gZG8uCldlIHJlbWFpbiBwcml2YXRlbHkg\r\naGVsZCBhbmQgZm91bmRlci1jb250cm9sbGVkLCB3aXRoIG1pbm9yaXR5IG93bmVyc2hpcCBhbW9u\r\nZwpzb21lIGVhcmx5IGVtcGxveWVlcy4gVGhlcmUgaXMgbm8gaW52ZXN0b3IgZGVhZGxpbmUgcmVx\r\ndWlyaW5nIHVzIHRvIGJlY29tZSBhCmRpZmZlcmVudCBzaXplIGJ5IGEgcGFydGljdWxhciB5ZWFy\r\nLgoKT3VyIHJvdWdobHkgdHdlbHZlIHV0aWxpdHkgY3VzdG9tZXJzIGJ1eSBzdWJzdGFudGlhbCBv\r\ncmdhbml6YXRpb25hbCBzZXJ2aWNlcy4KU3Vic2NyaXB0aW9ucyBhbmQgb25nb2luZyBzdXBwb3J0\r\nIHByb3ZpZGUgbW9zdCByZXZlbnVlLiBJbXBsZW1lbnRhdGlvbiwKbWlncmF0aW9ucywgYW5kIHNj\r\nb3BlZCBpbnRlZ3JhdGlvbiB3b3JrIHByb3ZpZGUgdGhlIHJlbWFpbmRlci4gU2V2ZXJhbCBjdXN0\r\nb21lcgpjb250cmFjdHMgY292ZXIgbW9yZSB0aGFuIG9uZSBkZXBhcnRtZW50IG9yIHNpdGUuIFJl\r\nbmV3YWxzLCBwcm9jdXJlbWVudCBleGVyY2lzZXMsCmFuZCBleHBhbnNpb24gd2l0aGluIGN1c3Rv\r\nbWVycyBhcmUgYSBzdWJzdGFudGlhbCBwYXJ0IG9mIHRoZSBjb21tZXJjaWFsIHRlYW0ncwp3b3Jr\r\nLgoKT3ZlciB0aGUgbmV4dCB0d28geWVhcnMsIEkgd2FudCB1cyB0byBhZGQgYSBmZXcgc3VpdGFi\r\nbGUgY3VzdG9tZXJzIGFuZCByZWR1Y2UKdGhlIHNoYXJlIG9mIGVuZ2luZWVyaW5nIHRoYXQgbXVz\r\ndCBiZSByZXBlYXRlZCBmb3IgZWFjaCBvbmUuIFRoYXQgcmVxdWlyZXMKY2hvaWNlcy4gQSBiZXNw\r\nb2tlIHByb2plY3QgY2FuIHBheSBmb3IgdXNlZnVsIGNhcGFjaXR5IHdoaWxlIGNvbnN1bWluZyB0\r\naGUKcGVvcGxlIHdobyB3b3VsZCBvdGhlcndpc2UgbWFrZSB0aGUgcHJvZHVjdCBlYXNpZXIgdG8g\r\nbWFpbnRhaW4uCgpXZSBzaG91bGQgY29uc2lkZXIgcHJvcG9zYWxzIGFnYWluc3QgdGhyZWUgcXVl\r\nc3Rpb25zOgoKLSBEb2VzIHRoZSB3b3JrIHN1aXQgdGhlIHByb2R1Y3Qgd2UgaW50ZW5kIHRvIHN1\r\ncHBvcnQ/Ci0gQ2FuIHdlIG1lZXQgdGhlIGNvbW1pdG1lbnQgd2hpbGUga2VlcGluZyBvdXIgZXhp\r\nc3RpbmcgY29tbWl0bWVudHM/Ci0gV2hhdCB3aWxsIHJlbWFpbiBpbiBvdXIgb3JkaW5hcnkgd29y\r\na2xvYWQgYWZ0ZXIgdGhlIHByb2plY3QgY2xvc2VzPwoKVGhlIGxhc3QgcXVlc3Rpb24gaW5jbHVk\r\nZXMgbWFpbnRlbmFuY2UsIHN1cHBvcnQsIGRvY3VtZW50YXRpb24sIGFuZCB0aGUgd29yawphbiBl\r\neHBlcmllbmNlZCBwZXJzb24ga2VlcHMgZG9pbmcgYWZ0ZXIgbW92aW5nIHRvIGEgZGlmZmVyZW50\r\nIHJvbGUuIFBsZWFzZQpicmluZyBleGFtcGxlcyB0byB5b3VyIG1hbmFnZXIuIEFuIGltcHJvdmVt\r\nZW50IG5lZWQgbm90IGJlIGEgbmV3IGZlYXR1cmUgdG8KYmUgd29ydGggZnVuZGluZy4KCldlIGhh\r\ndmUgNjQgY29sbGVhZ3VlcyBub3cuIEkgd291bGQgbGlrZSB0aGlzIHRvIHJlbWFpbiBzb21ld2hl\r\ncmUgcGVvcGxlIGNhbgpidWlsZCBhIGxvbmcgY2FyZWVyLCBpbmNsdWRpbmcgdGhvc2Ugd2hvIHdh\r\nbnQgdG8gcmVtYWluIHNwZWNpYWxpc3RzLiBBIGdvb2QKbmV4dCB5ZWFyIHNob3VsZCBtYWtlIHRo\r\nZSBjb21wYW55IG1vcmUgZHVyYWJsZSBhcyB3ZWxsIGFzIGxhcmdlci4K\r\n\r\n--workplace-c67185f5cacb1246820a881f--\r\n",
+      "sha256": "b277dbc1c7143919287fddf6a52fa2d87385b6a0e65960f082d24dfdd3fcf1a3"
+    },
+    {
+      "message_id": "<1b9879c5-19d8-5f55-b883-467a6db9c0ec@keplerops.com>",
+      "rfc822": "From: Noor Aveling <noor.aveling@keplerops.com>\r\nTo: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nDate: Wed, 02 Sep 2026 14:05:00 -0400\r\nMessage-ID: <1b9879c5-19d8-5f55-b883-467a6db9c0ec@keplerops.com>\r\nSubject: Re: Planning note for the next two years\r\nIn-Reply-To: <7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>\r\nReferences: <7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease include maintenance capacity when comparing the choices. We can make r=\r\noom for a new customer by deferring work once. Doing it in every planning rou=\r\nnd becomes a different operating model.\r\n\r\nI can put together a short account of what we completed this quarter and what=\r\n is already committed. No new presentation required.\r\n\r\nNoor\r\n",
+      "sha256": "ebe00167018e5f0326409b64b5885d20a77276923fde9c697815206cb38eebcc"
+    },
+    {
+      "message_id": "<82448f32-2b45-537b-bfbd-8e48c79a4eae@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Leah Calder-Voss <leah.calder-voss@keplerops.com>\r\nDate: Thu, 03 Sep 2026 10:30:00 -0400\r\nMessage-ID: <82448f32-2b45-537b-bfbd-8e48c79a4eae@keplerops.com>\r\nSubject: Re: Planning note for the next two years\r\nIn-Reply-To: <7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>\r\nReferences: <7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nSupport needs time to turn repeated customer questions into something the res=\r\nt of the company can use. That work gets squeezed between cases because it ra=\r\nrely has one customer waiting for it.\r\n\r\nAlso, could we include the progression guide in the new-starter material? It =\r\ntook me too long to understand that discussing a future leadership role wasn'=\r\nt the same as promising to apply for the next vacancy.\r\n\r\nMaya\r\n",
+      "sha256": "7bd0cb7ae15c4ea946d0e68002a59667ae2ebf0077c2fc0f795475065643f665"
+    },
+    {
+      "message_id": "<0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>",
+      "rfc822": "From: Orren & Vale IT Services =?utf-8?b?4oCU?= Service Desk\r\n <service@orrenvale.test>\r\nTo: Noor Aveling <noor.aveling@keplerops.com>\r\nDate: Thu, 03 Sep 2026 11:45:00 -0400\r\nMessage-ID: <0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>\r\nSubject: Service review completed\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-e34fef4bd71d858cee68010b\"\r\n\r\n--workplace-e34fef4bd71d858cee68010b\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThank you for today's review. The completed maintenance items and retained su=\r\npport scope are recorded in the attached summary.\r\n\r\nWe have left product workloads with your platform team, as discussed. Please =\r\nsuggest a suitable week for the next account review when you have your planni=\r\nng calendar.\r\n\r\nService Desk\r\nOrren & Vale IT Services\r\n\r\n--workplace-e34fef4bd71d858cee68010b\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"service-review.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBLZXBsZXJPcHMgc2VydmljZSByZXZpZXcKCk9ycmVuICYgVmFsZSBJVCBTZXJ2aWNlcyDigKIg\r\nMyBTZXB0ZW1iZXIgMjAyNiDigKIgUmV2aWV3IGNvbXBsZXRlCgpUaGUgcmV2aWV3IGNvdmVyZWQg\r\ndGhlIGludGVybmFsIElUIGFuZCBiYWNrdXAtc3VwcG9ydCB3b3JrIHJldGFpbmVkIHVuZGVyIHRo\r\nZQpjdXJyZW50IHNlcnZpY2UgYXJyYW5nZW1lbnQuIENvbXBsZXRlZCByb3V0aW5lIG1haW50ZW5h\r\nbmNlIHdhcyBhY2tub3dsZWRnZWQsCmFuZCBubyBmdXJ0aGVyIHF1ZXN0aW9uIHJlbWFpbmVkIGFn\r\nYWluc3QgdGhvc2UgY29tcGxldGVkIGl0ZW1zIGF0IHRoZSBtZWV0aW5nLgoKS2VwbGVyT3BzJyBw\r\nbGF0Zm9ybSB0ZWFtIGNvbnRpbnVlcyB0byBvd24gcHJvZHVjdCB3b3JrbG9hZHMuIFRoZSBtYW5h\r\nZ2VkLXNlcnZpY2UKYXJyYW5nZW1lbnQgc3VwcG9ydHMgdGhlIGFncmVlZCBpbnRlcm5hbCBzZXJ2\r\naWNlczsgaXQgZG9lcyBub3QgdHJhbnNmZXIgb3duZXJzaGlwCm9mIHRoZSBwcm9kdWN0IHBsYXRm\r\nb3JtIHRvIE9ycmVuICYgVmFsZS4KCkJvdGggcGFydGllcyBhZ3JlZWQgdGhhdCBhY2NvdW50IGRv\r\nY3VtZW50YXRpb24gc2hvdWxkIGxldCBhIGNvbGxlYWd1ZSBwaWNrIHVwCmFuIG9yZGluYXJ5IHF1\r\nZXN0aW9uIHdpdGhvdXQgZGVwZW5kaW5nIG9uIG9uZSBwZXJzb24ncyBtZW1vcnkgb2YgZWFybGll\r\nciByZXZpZXdzLgpGdXR1cmUgc2NvcGUgY2hhbmdlcyB3aWxsIGJlIGRlc2NyaWJlZCBleHBsaWNp\r\ndGx5IHdoZW4gcHJvcG9zZWQuCgpLZXBsZXJPcHMgd2lsbCBzdWdnZXN0IGEgc3VpdGFibGUgd2Vl\r\nayBmb3IgdGhlIG5leHQgYWNjb3VudCByZXZpZXcgYWZ0ZXIgaXRzCnBsYW5uaW5nIGNhbGVuZGFy\r\nIGlzIHNldHRsZWQuIFRoZSBuZXh0IHJldmlldyBoYXMgbm90IHlldCBiZWVuIGJvb2tlZC4K\r\n\r\n--workplace-e34fef4bd71d858cee68010b--\r\n",
+      "sha256": "62a92375287d0f3f9e4c601a38844fb1f04b6eb019b7af2e755ebe944b1d5eac"
+    },
+    {
+      "message_id": "<74d74bcf-d2ef-5961-8f7c-ecc202a2aa9c@keplerops.com>",
+      "rfc822": "From: Noor Aveling <noor.aveling@keplerops.com>\r\nTo: Orren & Vale IT Services =?utf-8?b?4oCU?= Service Desk\r\n <service@orrenvale.test>\r\nDate: Thu, 03 Sep 2026 14:35:00 -0400\r\nMessage-ID: <74d74bcf-d2ef-5961-8f7c-ecc202a2aa9c@keplerops.com>\r\nSubject: Re: Service review completed\r\nIn-Reply-To: <0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>\r\nReferences: <0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nSummary looks right. Thank you for keeping the review to the questions we act=\r\nually had.\r\n\r\nI will send a week for the next one after planning. Your persistence in putti=\r\nng these in the diary is useful, even when I pretend otherwise.\r\n\r\nNoor\r\n",
+      "sha256": "22799f33278ddc4ef174819492304cc157277973051a22d766c844acc8593e1b"
+    },
+    {
+      "message_id": "<1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>\r\nDate: Thu, 03 Sep 2026 16:20:00 -0400\r\nMessage-ID: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\nSubject: Bicycle, if your offer still stands\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nRowan,\r\n\r\nYou offered to look at the rear brake. Does that still suit you? It has start=\r\ned rubbing again and I would like to use the bike for the station run.\r\n\r\nI can bring it in tomorrow. Please tell me if this is a bigger job than you m=\r\neant to volunteer for. I am very happy to take it to a shop.\r\n\r\nMaya\r\n",
+      "sha256": "57a7b7e7aa596811a8bb7b86adddced78de82e6ad18161490d7abe9505dc9238"
+    },
+    {
+      "message_id": "<2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>",
+      "rfc822": "From: Rillhaven District Heating =?utf-8?b?4oCU?= Maintenance Office\r\n <maintenance@rillhaven.test>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Fri, 04 Sep 2026 10:15:00 -0400\r\nMessage-ID: <2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>\r\nSubject: Seasonal handover complete; workshop on the 24th\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe seasonal maintenance handover is complete on our side. Thank you for the =\r\nhelp with the last set of submissions. We have what we need for our autumn re=\r\nview.\r\n\r\nWe would still like the workshop on Thursday, 24 September. Our staff would p=\r\nrefer to work through an example and ask questions, rather than have a produc=\r\nt presentation. We also have a short list of suggestions, inevitably.\r\n\r\nMaintenance Office\r\nRillhaven District Heating\r\n",
+      "sha256": "6ddd5db60575b5a79a20ec8c9dc2a0204500b256e269b80ff3c3cf1652d37424"
+    },
+    {
+      "message_id": "<e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>",
+      "rfc822": "From: Rowan Ito <rowan.ito@keplerops.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Fri, 04 Sep 2026 15:40:00 -0400\r\nMessage-ID: <e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>\r\nSubject: Re: Bicycle, if your offer still stands\r\nIn-Reply-To: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\nReferences: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nFound the rubbing. Straightforward adjustment.\r\n\r\nWhile looking at it I noticed a couple of things we could improve. Nothing th=\r\nat stops you riding it. I have opinions about the cable routing, which probab=\r\nly surprises nobody.\r\n\r\nLet me price the small parts before you decide.\r\n\r\nRowan\r\n",
+      "sha256": "6bc5022b4e26edfc5729fcd6e215bac91f52fbd20768203b76288a5469a6cbf2"
+    },
+    {
+      "message_id": "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+      "rfc822": "From: Talia Mornac <talia.mornac@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>,\r\n Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Evan Calderoux <evan.calderoux@keplerops.com>,\r\n Noor Aveling <noor.aveling@keplerops.com>\r\nDate: Mon, 07 Sep 2026 09:05:00 -0400\r\nMessage-ID: <699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>\r\nSubject: New-starter guide corrections are in\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-3051c1e6e6420dbde82896e1\"\r\n\r\n--workplace-3051c1e6e6420dbde82896e1\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe revised guide is attached. Wednesday and Thursday arrangements now have a=\r\n written explanation, and the old meeting-room directions are gone.\r\n\r\nPlease introduce the new starters to someone outside their own function this =\r\nweek. They have buddies; this is just a chance to connect a name with the per=\r\nson who does the work.\r\n\r\nTalia\r\n\r\n--workplace-3051c1e6e6420dbde82896e1\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"working-guide.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBXb3JraW5nIGF0IEtlcGxlck9wcwoKTmV3LXN0YXJ0ZXIgZ3VpZGUg4oCiIFJldmlzZWQgNyBT\r\nZXB0ZW1iZXIgMjAyNgoKV2VsY29tZS4gWW91ciBidWRkeSBjYW4gaGVscCB5b3UgZmluZCB0aGUg\r\ncGVvcGxlIGJlaGluZCB0aGUgbmFtZXMgeW91IGVuY291bnRlcgppbiB5b3VyIGZpcnN0IHdlZWtz\r\nLiBBc2sgcXVlc3Rpb25zIGFzIHRoZXkgYXJpc2U7IG5vYm9keSBleHBlY3RzIHRoZSBjb21wYW55\r\nCnRvIGJlY29tZSBmYW1pbGlhciBhbGwgYXQgb25jZS4KCiMjIFdoYXQgd2UgbWFrZQoKRmllbGRL\r\nZXN0IGNvbm5lY3RzIGZpZWxkIHN1Ym1pc3Npb25zLCBtYWludGVuYW5jZSBwYWNrYWdlcywgYXNz\r\nZXQgcmVjb3JkcywgYW5kCm9wZXJhdGlvbmFsIHJlcG9ydHMgd2l0aCB0aGUgcHJvY2Vzc2VzIGN1\r\nc3RvbWVycyBhbHJlYWR5IHVzZS4gV2UgYmVnYW4gYXMgYW4KaW50ZWdyYXRpb24gY29uc3VsdGFu\r\nY3kgaW4gMjAxNi4gVGhlIHByb2R1Y3QgZ3JldyBvdXQgb2YgcmVwZWF0ZWRseSBjb2xsZWN0aW5n\r\nCnRoZSBzYW1lIHBpZWNlcyBvZiBpbmZvcm1hdGlvbiBzbyBhIGN1c3RvbWVyIGNvdWxkIGFjY2Vw\r\ndCBjb21wbGV0ZWQgd29yay4KCldlIHN0aWxsIGVhcm4gb3VyIHJlcHV0YXRpb24gdGhyb3VnaCB1\r\nc2VmdWwgc29mdHdhcmUgYW5kIHBlb3BsZSB3aG8gdW5kZXJzdGFuZAppdHMgdXNlLiBPdXIgY3Vz\r\ndG9tZXJzIG9wZXJhdGUgdXRpbGl0aWVzLiBUaGVpciB3b3JraW5nIGRheSwgcHJvY3VyZW1lbnQg\r\ncHJvY2VzcywKYW5kIGRlZmluaXRpb24gb2YgYSBjb21wbGV0ZWQgam9iIG1heSBkaWZmZXIgZnJv\r\nbSBvdXJzLgoKIyMgVGhlIHBlb3BsZSBhcm91bmQgeW91Cgp8IEZ1bmN0aW9uIHwgQ29sbGVhZ3Vl\r\ncyB8IFdvcmsgfAp8IC0tLSB8IC0tLTogfCAtLS0gfAp8IFByb2R1Y3QgZW5naW5lZXJpbmcgfCAy\r\nMiB8IFByb2R1Y3QgYmVoYXZpb3VyIGFuZCBjdXN0b21lciBjb21wYXRpYmlsaXR5IHwKfCBTdXBw\r\nb3J0IGFuZCBpbXBsZW1lbnRhdGlvbiB8IDE0IHwgT25ib2FyZGluZywgY2FzZXMsIG1pZ3JhdGlv\r\nbiwgYW5kIGN1c3RvbWVyIHJlbGF0aW9uc2hpcHMgfAp8IFBsYXRmb3JtIGFuZCByZWxlYXNlIHwg\r\nNyB8IEJ1aWxkLCByZWxlYXNlLCBzZXJ2aWNlIG9wZXJhdGlvbiwgYW5kIHJlY292ZXJhYmlsaXR5\r\nIHwKfCBQcm9kdWN0IG1hbmFnZW1lbnQgYW5kIHF1YWxpdHkgfCA4IHwgUHJpb3JpdGllcywgdGVz\r\ndGluZywgYW5kIGFjY2VwdGFuY2UgfAp8IENvbW1lcmNpYWwgfCA2IHwgQmlkcywgcmVuZXdhbHMs\r\nIGFuZCBjdXN0b21lciBjb21taXRtZW50cyB8CnwgTGVhZGVyc2hpcCBhbmQgYnVzaW5lc3Mgb3Bl\r\ncmF0aW9ucyB8IDcgfCBGaW5hbmNlLCBwZW9wbGUsIHB1cmNoYXNpbmcsIGFuZCBydW5uaW5nIHRo\r\nZSBjb21wYW55IHwKCiMjIFdvcmtpbmcgdG9nZXRoZXIKCk1vc3QgbG9jYWxseSBiYXNlZCBjb2xs\r\nZWFndWVzIHVzZSBXZWRuZXNkYXkgYW5kIFRodXJzZGF5IGFzIGNvbW1vbiBvZmZpY2UgZGF5cy4K\r\nQWdyZWUgeW91ciBvd24gYXJyYW5nZW1lbnRzIHdpdGggeW91ciBtYW5hZ2VyLiBSZW1vdGUgY29s\r\nbGVhZ3VlcyBwYXJ0aWNpcGF0ZSBpbgpkZWNpc2lvbnMgYW5kIGRlbW9uc3RyYXRpb25zOyBsZWF2\r\nZSBhIHVzZWZ1bCB3cml0dGVuIGFjY291bnQgd2hlbiBhIGNvbnZlcnNhdGlvbgpwcm9kdWNlcyBh\r\nIGRlY2lzaW9uIG90aGVycyBuZWVkIHRvIGtub3cgYWJvdXQuCgpCcmluZyBhbiBleGFtcGxlIHdo\r\nZW4gaXQgaGVscHMgZXhwbGFpbiBhIHF1ZXN0aW9uLiBZb3UgZG8gbm90IG5lZWQgYSBwcmVzZW50\r\nYXRpb24KZm9yIGV2ZXJ5IGRpc2N1c3Npb24uIFJlbGVhc2UgbWVldGluZ3Mgbm9ybWFsbHkgaGF2\r\nZSBhbiBhZ2VuZGEgYW5kIGFuIGVuZGluZzsKcHJvZHVjdCBkaXNjdXNzaW9ucyBzb21ldGltZXMg\r\nbmVlZCBhIGZvbGxvdy11cCB3aGVuIGFuIGV4YW1wbGUgcmFpc2VzIGFub3RoZXIKcXVlc3Rpb24u\r\nCgpZb3VyIG1hbmFnZXIgd2lsbCBkaXNjdXNzIGRldmVsb3BtZW50IHdpdGggeW91LiBTcGVjaWFs\r\naXN0IHByb2dyZXNzaW9uIGFuZAptYW5hZ2VtZW50IGFyZSBib3RoIGF2YWlsYWJsZSBwYXRocy4g\r\nQXNraW5nIGFib3V0IGEgZnV0dXJlIHJvbGUgZG9lcyBub3QgY29tbWl0CnlvdSB0byBhcHBseWlu\r\nZyBmb3IgdGhlIG5leHQgdmFjYW5jeS4KClNvY2lhbCBhcnJhbmdlbWVudHMgYXJlIG9wdGlvbmFs\r\nLiBTb21lIGNvbGxlYWd1ZXMgbHVuY2ggdG9nZXRoZXI7IG90aGVycyB1c2UKdGhlIGJyZWFrIGZv\r\nciBlcnJhbmRzIG9yIHF1aWV0IHRpbWUuIEludHJvZHVjdGlvbnMgYWNyb3NzIGZ1bmN0aW9ucyBh\r\ncmUgcGFydApvZiBnZXR0aW5nIHRvIGtub3cgdGhlIHdvcmssIGFuZCB5b3VyIGJ1ZGR5IGNhbiBh\r\ncnJhbmdlIHRoZW0uCg==\r\n\r\n--workplace-3051c1e6e6420dbde82896e1--\r\n",
+      "sha256": "d4f3b68c0a48e93b946490069af356908b085416ddb16ee627071de4d8444972"
+    },
+    {
+      "message_id": "<fbcaa0be-bdab-513b-b8d9-462206870d3a@keplerops.com>",
+      "rfc822": "From: Talia Mornac <talia.mornac@keplerops.com>\r\nTo: Rillhaven District Heating =?utf-8?b?4oCU?= Maintenance Office\r\n <maintenance@rillhaven.test>, Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Mon, 07 Sep 2026 11:15:00 -0400\r\nMessage-ID: <fbcaa0be-bdab-513b-b8d9-462206870d3a@keplerops.com>\r\nSubject: Re: Seasonal handover complete; workshop on the 24th\r\nIn-Reply-To: <2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>\r\nReferences: <2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThank you for confirming. I've recorded the support work as complete.\r\n\r\nI'll lead the workshop, with Maya available for the ongoing-support questions=\r\n. An example followed by discussion suits the plan well. Please send the sugg=\r\nestions; we can discuss them without treating each one as a delivery commitme=\r\nnt.\r\n\r\nTalia Mornac\r\nKeplerOps Software\r\n",
+      "sha256": "a0f7884693dfdedeac582a25afe443a1375eb0b217cdd70864271e95cf470942"
+    },
+    {
+      "message_id": "<3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>",
+      "rfc822": "From: Talia Mornac <talia.mornac@keplerops.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Tue, 08 Sep 2026 10:00:00 -0400\r\nMessage-ID: <3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>\r\nSubject: Rillhaven rehearsal tomorrow\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-a157ddc8ac24b2ef856108f4\"\r\n\r\n--workplace-a157ddc8ac24b2ef856108f4\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nI've attached the workshop outline for the 24th. Could you listen to the open=\r\ning tomorrow?\r\n\r\nI'd particularly like feedback on whether the example is clear and whether I'=\r\nve left enough time for the customer's questions. I have already shortened th=\r\ne introduction twice.\r\n\r\nTalia\r\n\r\n--workplace-a157ddc8ac24b2ef856108f4\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"workshop-outline-draft.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaWxsaGF2ZW4gbWFpbnRlbmFuY2Ugd29ya3Nob3Ag4oCUIGRyYWZ0IGZvciByZWhlYXJzYWwK\r\nClRhbGlhIE1vcm5hYyDigKIgOCBTZXB0ZW1iZXIgMjAyNgoKVGhlIHdvcmtzaG9wIGlzIHBsYW5u\r\nZWQgZm9yIFRodXJzZGF5LCAyNCBTZXB0ZW1iZXIuIFJpbGxoYXZlbidzIHNlYXNvbmFsIGhhbmRv\r\ndmVyCmlzIGNvbXBsZXRlLCBhbmQgaXRzIHN0YWZmIGhhdmUgYXNrZWQgdG8gd29yayB0aHJvdWdo\r\nIGFuIGV4YW1wbGUgYW5kIGRpc2N1c3MKdGhlaXIgZXhwZXJpZW5jZS4KCkkgcHJvcG9zZSBvcGVu\r\naW5nIHdpdGggb25lIG9yZGluYXJ5IHN1Ym1pc3Npb24gYW5kIGV4cGxhaW5pbmcgd2hlcmUgaXQg\r\nYmVsb25ncwppbiBhIG1haW50ZW5hbmNlIHBhY2thZ2UuIFRoZSBjdXN0b21lciBzaG91bGQgdGhl\r\nbiBoYXZlIHRpbWUgdG8gZGVzY3JpYmUgaG93CnRoYXQgZml0cyB0aGVpciB3b3JraW5nIGRheSBh\r\nbmQgd2hhdCBzdGlsbCB0YWtlcyB1bm5lY2Vzc2FyeSBlZmZvcnQuCgpNYXlhIGNhbiBoZWxwIHdp\r\ndGggdGhlIHF1ZXN0aW9ucyBhYm91dCBvbmdvaW5nIHN1cHBvcnQuIEkgd291bGQgbGlrZSB0byBs\r\nZWFkCnRoZSBwcmVzZW50YXRpb24gbXlzZWxmLiBXZSBzaG91bGQgcmVjb3JkIHByb2R1Y3Qgc3Vn\r\nZ2VzdGlvbnMgc2VwYXJhdGVseSBmcm9tCndvcmsgd2UgYWdyZWUgdG8gZGVsaXZlci4KCkZvciB0\r\nb21vcnJvdydzIHJlaGVhcnNhbCwgSSBwYXJ0aWN1bGFybHkgd2FudCB0byBjaGVjayB3aGV0aGVy\r\nIHRoZSBleGFtcGxlIGlzCmNsZWFyIGFuZCB3aGV0aGVyIGVub3VnaCB0aW1lIHJlbWFpbnMgZm9y\r\nIHF1ZXN0aW9ucy4gVGhlIGludHJvZHVjdGlvbiBoYXMgYWxyZWFkeQpiZWVuIHNob3J0ZW5lZDsg\r\nSSBkbyBub3QgdGhpbmsgYSBsb25nZXIgcHJvZHVjdCB0b3VyIHdpbGwgaGVscCB0aGlzIGF1ZGll\r\nbmNlLgo=\r\n\r\n--workplace-a157ddc8ac24b2ef856108f4--\r\n",
+      "sha256": "3d07f51cfbcfedc73b262f9c259e85118e525ecf2fdb21834d6a105d281dabe3"
+    },
+    {
+      "message_id": "<e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Tue, 08 Sep 2026 11:20:00 -0400\r\nMessage-ID: <e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>\r\nSubject: Re: Rillhaven rehearsal tomorrow\r\nIn-Reply-To: <3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>\r\nReferences: <3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. I have a few thoughts about the order as well. We used to start these wi=\r\nth a quick tour of the support process, which might save some questions later.\r\n\r\nI'll bring the old outline so you can see what I mean.\r\n\r\nMaya\r\n",
+      "sha256": "afe974e18e24da20c64e82b464b3829cc403618eedb08c3b6c47e5a5da3328f8"
+    },
+    {
+      "message_id": "<9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>",
+      "rfc822": "From: Evan Calderoux <evan.calderoux@keplerops.com>\r\nTo: Noor Aveling <noor.aveling@keplerops.com>\r\nDate: Tue, 08 Sep 2026 12:15:00 -0400\r\nMessage-ID: <9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>\r\nSubject: Can we keep Thursday?\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nNoor,\r\n\r\nCould we keep Thursday's lunch this time? I know each cancellation has made s=\r\nense on its own. Taken together, I miss seeing you without discussing a relea=\r\nse.\r\n\r\nWhen we moved out of the house I thought this was the bit we would keep. I pr=\r\nobably never actually said that.\r\n\r\nEvan\r\n",
+      "sha256": "5bcc12db7dec44d7437bbbd66cd6cbbb0acec41b20d9218b7be7be654b023e72"
+    },
+    {
+      "message_id": "<aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>",
+      "rfc822": "From: Noor Aveling <noor.aveling@keplerops.com>\r\nTo: Evan Calderoux <evan.calderoux@keplerops.com>\r\nDate: Tue, 08 Sep 2026 13:02:00 -0400\r\nMessage-ID: <aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>\r\nSubject: Re: Can we keep Thursday?\r\nIn-Reply-To: <9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>\r\nReferences: <9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI didn't understand it that way. I'm sorry.\r\n\r\nThursday is clear. Could we do one lunch a month that we actually keep, and l=\r\neave the other invitations flexible? I would rather promise something I turn =\r\nup for.\r\n\r\nI'll choose somewhere. You chose the last several.\r\n\r\nNoor\r\n",
+      "sha256": "931140eca64200d09afcb140cfbb875991ef6d1216a80c07191bfabb5cd7ff66"
+    },
+    {
+      "message_id": "<966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>",
+      "rfc822": "From: Talia Mornac <talia.mornac@keplerops.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Wed, 09 Sep 2026 14:08:00 -0400\r\nMessage-ID: <966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>\r\nSubject: Re: Rillhaven rehearsal tomorrow\r\nIn-Reply-To: <e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>\r\nReferences: <3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>\r\n <e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-bbc3e41e0486244c2c847379\"\r\n\r\n--workplace-bbc3e41e0486244c2c847379\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThank you for listening. The point about explaining who the example is for he=\r\nlped.\r\n\r\nI'd like to keep my opening and lead the session myself. Could you take the q=\r\nuestions about ongoing support, rather than sharing the presentation? I know =\r\nyou have done more of these. I need to find out how I do one.\r\n\r\nTalia\r\n\r\n--workplace-bbc3e41e0486244c2c847379\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"workshop-outline.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaWxsaGF2ZW4gbWFpbnRlbmFuY2Ugd29ya3Nob3AKClByZXBhcmF0aW9uIG91dGxpbmUg4oCi\r\nIFRhbGlhIE1vcm5hYyDigKIgUmV2aXNlZCA5IFNlcHRlbWJlciAyMDI2CgoqKlBsYW5uZWQgZGF0\r\nZToqKiBUaHVyc2RheSwgMjQgU2VwdGVtYmVyIDIwMjYKCioqTGVhZDoqKiBUYWxpYSBNb3JuYWMu\r\nIE1heWEgUmFuc2NvbWJlIHdpbGwgdGFrZSBxdWVzdGlvbnMgYWJvdXQgb25nb2luZyBzdXBwb3J0\r\nLgoKUmlsbGhhdmVuJ3Mgc2Vhc29uYWwgaGFuZG92ZXIgaXMgY29tcGxldGUuIFRoZSB3b3Jrc2hv\r\ncCBpcyBhbiBvcHBvcnR1bml0eSBmb3IKaXRzIHN0YWZmIHRvIHdvcmsgdGhyb3VnaCBhbiBleGFt\r\ncGxlLCBkaXNjdXNzIHRoZWlyIGV4cGVyaWVuY2UsIGFuZCBvZmZlciBwcm9kdWN0CmZlZWRiYWNr\r\nIGJlZm9yZSB0aGUgYnVzaWVzdCBwYXJ0IG9mIHRoZSBoZWF0aW5nIHNlYXNvbi4KCiMjIFByb3Bv\r\nc2VkIHNoYXBlCgoxLiBBc2sgd2hhdCBlYWNoIGdyb3VwIHdhbnRzIHRvIGdldCBmcm9tIHRoZSBz\r\nZXNzaW9uLgoyLiBXb3JrIHRocm91Z2ggb25lIG9yZGluYXJ5IHN1Ym1pc3Npb24gYW5kIGl0cyBw\r\nbGFjZSBpbiBhIG1haW50ZW5hbmNlIHBhY2thZ2UuCjMuIExldCB0aGUgY3VzdG9tZXIgZXhwbGFp\r\nbiB3aGljaCBwYXJ0cyBmaXQgdGhlaXIgb3duIHdvcmtpbmcgZGF5IGFuZCB3aGljaAogICBwYXJ0\r\ncyBzdGlsbCB0YWtlIG1vcmUgZWZmb3J0IHRoYW4gdGhleSBzaG91bGQuCjQuIERpc2N1c3Mgc3Vw\r\ncG9ydCBxdWVzdGlvbnMgd2l0aCBNYXlhLgo1LiBSZWNvcmQgcHJvZHVjdCBzdWdnZXN0aW9ucyBz\r\nZXBhcmF0ZWx5IGZyb20gY29tbWl0bWVudHMgdG8gZGVsaXZlciB3b3JrLgoKVGhlIGV4YW1wbGUg\r\nc2hvdWxkIG1ha2UgY2xlYXIgd2hvIG5lZWRzIHRoZSByZXN1bHQgYW5kIHdoYXQgdGhleSBkbyB3\r\naXRoIGl0LgpUaGUgaW50cm9kdWN0aW9uIGNhbiBiZSBzaG9ydC4gV2Ugc2hvdWxkIHByZXNlcnZl\r\nIHRpbWUgZm9yIHF1ZXN0aW9ucyByYXRoZXIKdGhhbiB0cnlpbmcgdG8gZGVtb25zdHJhdGUgZXZl\r\ncnkgcGFydCBvZiB0aGUgcHJvZHVjdC4KCiMjIEFmdGVyIHRoZSByZWhlYXJzYWwKClRoZSBvcGVu\r\naW5nIHJlbWFpbnMgb3JnYW5pemVkIGFyb3VuZCB0aGUgZXhhbXBsZS4gTWF5YSdzIHN1Z2dlc3Rp\r\nb24gdG8gZXhwbGFpbgppdHMgaW50ZW5kZWQgYXVkaWVuY2UgZWFybGllciB3YXMgdXNlZnVsIGFu\r\nZCBpcyBpbmNsdWRlZC4gVGFsaWEgd2lsbCBsZWFkIHRoZQpwcmVzZW50YXRpb247IE1heWEgd2ls\r\nbCBzdXBwb3J0IHRoZSBkaXNjdXNzaW9uIGluIHRoZSBhZ3JlZWQgcGFydC4KClRoZSB3b3Jrc2hv\r\ncCBoYXMgbm90IHlldCB0YWtlbiBwbGFjZS4gVGhlIGZvbGxvdy11cCB3aWxsIHJlY29yZCBxdWVz\r\ndGlvbnMsCmFncmVlZCB3b3JrLCBhbmQgc3VnZ2VzdGlvbnMgb25jZSB0aGUgY3VzdG9tZXIgaGFz\r\nIGhhZCB0aGUgc2Vzc2lvbi4K\r\n\r\n--workplace-bbc3e41e0486244c2c847379--\r\n",
+      "sha256": "9e4eb17ac17cf549095d61b2b174f6eae047a6ac742bab68ba628318c18f18c2"
+    },
+    {
+      "message_id": "<cb04b19a-40b6-5715-b66f-c57713647291@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Wed, 09 Sep 2026 15:01:00 -0400\r\nMessage-ID: <cb04b19a-40b6-5715-b66f-c57713647291@keplerops.com>\r\nSubject: Re: Rillhaven rehearsal tomorrow\r\nIn-Reply-To: <966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>\r\nReferences: <3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>\r\n <e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>\r\n <966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYou're right. You asked me to listen to two things and I arrived with the mus=\r\neum collection.\r\n\r\nKeep your opening. I'll take the support questions and otherwise let you run =\r\nit.\r\n\r\nMaya\r\n",
+      "sha256": "76ecd3f520648ec43eabb5536570c45f5f5139db4e9712e1eb36e8e587df90bf"
+    },
+    {
+      "message_id": "<d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>\r\nDate: Thu, 10 Sep 2026 10:05:00 -0400\r\nMessage-ID: <d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>\r\nSubject: Re: Bicycle, if your offer still stands\r\nIn-Reply-To: <e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>\r\nReferences: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\n <e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould we stop at the adjustment for now? I mainly need my bicycle back for Mo=\r\nnday.\r\n\r\nThis is a very generous amount of thought to put into it. I would also quite =\r\nlike to ride it.\r\n\r\nMaya\r\n",
+      "sha256": "e42068a5b3401ad98f1bf06be33e82fefcdc209b75b1b925864ecb5087699896"
+    },
+    {
+      "message_id": "<aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>",
+      "rfc822": "From: Evan Calderoux <evan.calderoux@keplerops.com>\r\nTo: Noor Aveling <noor.aveling@keplerops.com>\r\nDate: Thu, 10 Sep 2026 15:32:00 -0400\r\nMessage-ID: <aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>\r\nSubject: Re: Can we keep Thursday?\r\nIn-Reply-To: <aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>\r\nReferences: <9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>\r\n <aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThat was lovely. Monthly works.\r\n\r\nAlso, please send me the film you were trying to remember. I have now describ=\r\ned half of its apparent plot to the discussion group and would like to establ=\r\nish that it exists.\r\n\r\nEvan\r\n",
+      "sha256": "967e5ee98314755ad37880baa8c1c80f7c182867d5e9caeb9cfeba200c8fc125"
+    },
+    {
+      "message_id": "<3a0f3099-e06c-54d6-84f0-14a81c61877a@keplerops.com>",
+      "rfc822": "From: Noor Aveling <noor.aveling@keplerops.com>\r\nTo: Evan Calderoux <evan.calderoux@keplerops.com>\r\nDate: Thu, 10 Sep 2026 16:06:00 -0400\r\nMessage-ID: <3a0f3099-e06c-54d6-84f0-14a81c61877a@keplerops.com>\r\nSubject: Re: Can we keep Thursday?\r\nIn-Reply-To: <aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>\r\nReferences: <9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>\r\n <aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>\r\n <aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI think I combined two films. I'll check at home before I invent a third.\r\n\r\nGood lunch. Let's keep the first Thursday next month.\r\n\r\nAlso: the clarinet group has got through an entire piece together. Slowly. I =\r\nam choosing to count it.\r\n\r\nNoor\r\n",
+      "sha256": "006ca400261f1568ceeedf2eafa8b887293770f34dc7d2d7cf5390dceb4d8b01"
+    },
+    {
+      "message_id": "<27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>",
+      "rfc822": "From: Rowan Ito <rowan.ito@keplerops.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Fri, 11 Sep 2026 14:10:00 -0400\r\nMessage-ID: <27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>\r\nSubject: Re: Bicycle, if your offer still stands\r\nIn-Reply-To: <d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>\r\nReferences: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\n <e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>\r\n <d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nDone. Brake adjusted, checked, bicycle returned to the rack.\r\n\r\nYou asked for a repair and I started designing the winter edition. Sorry. No =\r\nparts ordered.\r\n\r\nRowan\r\n",
+      "sha256": "8f71cd5255a5caa517e2387e3e3c1bfa79110d6a1cbeaaae724481027a94888a"
+    },
+    {
+      "message_id": "<66e4425c-a7e5-5cbb-ad65-746f81c4cf05@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Rowan Ito <rowan.ito@keplerops.com>\r\nDate: Mon, 14 Sep 2026 09:12:00 -0400\r\nMessage-ID: <66e4425c-a7e5-5cbb-ad65-746f81c4cf05@keplerops.com>\r\nSubject: Re: Bicycle, if your offer still stands\r\nIn-Reply-To: <27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>\r\nReferences: <1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>\r\n <e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>\r\n <d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>\r\n <27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nRode it this morning. Much better. Thank you.\r\n\r\nI am not accepting a winter roadmap at this time.\r\n\r\nMaya\r\n",
+      "sha256": "bf0ad55b19c3762f17981efae3db0399450681a6b63e3b3f7fd736f906e9073b"
+    },
+    {
+      "message_id": "<4237a7ab-eb59-5519-9e7a-607b68127b59@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Talia Mornac <talia.mornac@keplerops.com>\r\nDate: Mon, 14 Sep 2026 10:05:00 -0400\r\nMessage-ID: <4237a7ab-eb59-5519-9e7a-607b68127b59@keplerops.com>\r\nSubject: Thanks for checking the rota\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe swap was on the rota and the dinner went ahead on Saturday. Thank you for=\r\n checking when I started doubting whether I had done everything.\r\n\r\nMy sister was very pleased to get everyone around one table. We spent longer =\r\nchoosing the photograph to keep than eating dessert.\r\n\r\nMaya\r\n",
+      "sha256": "599d015280755df6120b6d5b33215ebb97965e43566a2f554eff0e44a7c806a3"
+    }
+  ],
+  "mailboxes": {
+    "rowan.ito@keplerops.com": {
+      "owner": "rowan.ito@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+          "<1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>",
+          "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+          "<d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>",
+          "<66e4425c-a7e5-5cbb-ad65-746f81c4cf05@keplerops.com>"
+        ],
+        "Sent": [
+          "<68aa032a-8177-524b-be02-9bd9f95fc46a@keplerops.com>",
+          "<e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>",
+          "<27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>"
+        ]
+      }
+    },
+    "maya.ranscombe@keplerops.com": {
+      "owner": "maya.ranscombe@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+          "<2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>",
+          "<e845a019-6baa-5bd4-b3b6-05b540cd5a82@keplerops.com>",
+          "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+          "<fbcaa0be-bdab-513b-b8d9-462206870d3a@keplerops.com>",
+          "<3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>",
+          "<966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>",
+          "<27135fe0-031c-5d9a-ad1d-2a0f97730210@keplerops.com>"
+        ],
+        "Sent": [
+          "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
+          "<82448f32-2b45-537b-bfbd-8e48c79a4eae@keplerops.com>",
+          "<1a7f4cbe-c788-535a-8a29-f189eae74c7c@keplerops.com>",
+          "<e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>",
+          "<cb04b19a-40b6-5715-b66f-c57713647291@keplerops.com>",
+          "<d5ff63d0-6aff-535e-b8ed-12aa3fdc8838@keplerops.com>",
+          "<66e4425c-a7e5-5cbb-ad65-746f81c4cf05@keplerops.com>",
+          "<4237a7ab-eb59-5519-9e7a-607b68127b59@keplerops.com>"
+        ]
+      }
+    },
+    "evan.calderoux@keplerops.com": {
+      "owner": "evan.calderoux@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+          "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+          "<aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>",
+          "<3a0f3099-e06c-54d6-84f0-14a81c61877a@keplerops.com>"
+        ],
+        "Sent": [
+          "<b4fc7a0e-278e-5c6d-869f-ea9033fdb429@keplerops.com>",
+          "<9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>",
+          "<aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>"
+        ]
+      }
+    },
+    "noor.aveling@keplerops.com": {
+      "owner": "noor.aveling@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+          "<0678e287-4cb0-56c3-abf1-f74006bc69c9@orrenvale.test>",
+          "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+          "<9b474741-35ab-596b-b125-a11283bc3fca@keplerops.com>",
+          "<aa42b820-0c0e-5e77-93bb-78b99ae5f959@keplerops.com>"
+        ],
+        "Sent": [
+          "<1b9879c5-19d8-5f55-b883-467a6db9c0ec@keplerops.com>",
+          "<74d74bcf-d2ef-5961-8f7c-ecc202a2aa9c@keplerops.com>",
+          "<aa23c2a8-8969-5a6c-bead-37d910276880@keplerops.com>",
+          "<3a0f3099-e06c-54d6-84f0-14a81c61877a@keplerops.com>"
+        ]
+      }
+    },
+    "talia.mornac@keplerops.com": {
+      "owner": "talia.mornac@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>",
+          "<2e2b3504-1240-54a9-aa8f-93a10cd69e37@rillhaven.test>",
+          "<e5211c0f-173e-5d92-811a-64a41a846225@keplerops.com>",
+          "<cb04b19a-40b6-5715-b66f-c57713647291@keplerops.com>",
+          "<4237a7ab-eb59-5519-9e7a-607b68127b59@keplerops.com>"
+        ],
+        "Sent": [
+          "<e67546f7-3b41-5e65-8020-89ef246dfaee@keplerops.com>",
+          "<699033ce-f9cd-50a7-9707-68316420705a@keplerops.com>",
+          "<fbcaa0be-bdab-513b-b8d9-462206870d3a@keplerops.com>",
+          "<3e61ffc9-2f88-57a1-bf2e-ddbc6943b566@keplerops.com>",
+          "<966201d2-556b-5659-b36b-41d87a2aeee1@keplerops.com>"
+        ]
+      }
+    },
+    "leah.calder-voss@keplerops.com": {
+      "owner": "leah.calder-voss@keplerops.com",
+      "folders": {
+        "INBOX": [
+          "<e67546f7-3b41-5e65-8020-89ef246dfaee@keplerops.com>",
+          "<68aa032a-8177-524b-be02-9bd9f95fc46a@keplerops.com>",
+          "<b4fc7a0e-278e-5c6d-869f-ea9033fdb429@keplerops.com>",
+          "<1b9879c5-19d8-5f55-b883-467a6db9c0ec@keplerops.com>",
+          "<82448f32-2b45-537b-bfbd-8e48c79a4eae@keplerops.com>"
+        ],
+        "Sent": [
+          "<d3fb363d-6c6f-574d-b24c-8298aa4b950b@keplerops.com>",
+          "<d7bd9806-6009-56af-9269-55c61f4623cb@keplerops.com>",
+          "<7883c08e-aa6e-5aa5-a2d1-0d64897fc97f@keplerops.com>"
+        ]
+      }
+    }
+  }
+}

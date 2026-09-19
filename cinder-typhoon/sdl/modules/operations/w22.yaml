@@ -1,0 +1,685 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w22
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w22
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the correct viewer artifact and project binding. Locating an unrelated viewer
+      binary is insufficient.
+    source_refs: &id001
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w22-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w22-1.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce the correct fragment results and state effects. Recognizing a virtual machine
+      or naming its implementation language does not count.
+    source_refs: &id002
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w22-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w22-2.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Recover the project-bound key, the readable engineering material, and its commissioning
+      decision as one achievement. The opened package also supplies the retained review helper, captured
+      commissioning session, and matching archive context for W22.4. The decision provides optional context
+      for W34; it supplies neither live revision evidence nor control authority.
+    source_refs: &id003
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w22-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w22-3.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: 'Recover the usable concealed review identity from the helper''s actual behavior and
+      obtain the withheld commissioning comparison through its scoped archive access. Identity recovery
+      and its first use form one achievement. The result must concern the same project and commissioning
+      revision. The archive context is historical: this result grants no current corporate identity, maintenance
+      approval, or CONTROL capability.'
+    source_refs: &id004
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w22-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w22-4.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the correct viewer artifact and project binding. Locating an unrelated viewer
+      binary is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w22-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W22.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce the correct fragment results and state effects. Recognizing a virtual machine
+      or naming its implementation language does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w22-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W22.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Recover the project-bound key, the readable engineering material, and its commissioning
+      decision as one achievement. The opened package also supplies the retained review helper, captured
+      commissioning session, and matching archive context for W22.4. The decision provides optional context
+      for W34; it supplies neither live revision evidence nor control authority.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w22-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W22.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: 'Recover the usable concealed review identity from the helper''s actual behavior and
+      obtain the withheld commissioning comparison through its scoped archive access. Identity recovery
+      and its first use form one achievement. The result must concern the same project and commissioning
+      revision. The archive context is historical: this result grants no current corporate identity, maintenance
+      approval, or CONTROL capability.'
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w22-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W22.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W22.1: The viewer in the delivery'
+    description: |-
+      Recover the usable protected viewer from the retained engineering delivery and bind it to the sealed project.
+
+      Opens an optional engineering-analysis branch.
+    agent: participant.operator
+    actions:
+    - w22.c1
+    targets: &id005
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w22.c1
+  c2:
+    name: 'W22.2: The machine inside the viewer'
+    description: |-
+      Reconstruct the viewer's embedded instruction behavior and reproduce the designated program fragments.
+
+      Builds a substantive model of the viewer's internal machine.
+    agent: participant.operator
+    actions:
+    - w22.c2
+    targets: &id006
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w22.c2
+  c3:
+    name: 'W22.3: The decision inside the sealed project'
+    description: |-
+      Open the sealed engineering project and recover the commissioning decision omitted from the business report. Establish which project revision the decision concerns.
+
+      Completes the protected-project investigation with the engineering finding that explains the missing warning in the business report.
+    agent: participant.operator
+    actions:
+    - w22.c3
+    targets: &id007
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w22.c3
+  c4:
+    name: 'W22.4: The reviewer who was never listed'
+    description: |-
+      The opened project includes a commissioning review helper whose recorded archive access does not match its apparent behavior or the listed reviewers. Recover the concealed review identity and use its access in the retained review context to obtain the withheld commissioning comparison.
+
+      Gives Cinder a usable route into the retained review archive and the comparison that the official handover omitted. The project decision is already earned in W22.3; this challenge exposes who could read beyond that handover.
+    agent: participant.operator
+    actions:
+    - w22.c4
+    targets: &id008
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w22.c4
+workflows:
+  c1:
+    description: 'W22.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w21-revision-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w22.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W22.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w22.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w22.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W22.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w22.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w22.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W22.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w22.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w22.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the usable protected viewer from the retained engineering delivery and bind
+      it to the sealed project.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w22.c1
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the correct viewer artifact and project binding. Locating an unrelated viewer
+        binary is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w22.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Reconstruct the viewer's embedded instruction behavior and reproduce the designated
+      program fragments.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w22.c2
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the correct fragment results and state effects. Recognizing a virtual machine
+        or naming its implementation language does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w22.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Open the sealed engineering project and recover the commissioning decision omitted
+      from the business report. Establish which project revision the decision concerns.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w22.c3
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the project-bound key, the readable engineering material, and its commissioning
+        decision as one achievement. The opened package also supplies the retained review helper, captured
+        commissioning session, and matching archive context for W22.4. The decision provides optional
+        context for W34; it supplies neither live revision evidence nor control authority.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w22.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The opened project includes a commissioning review helper whose recorded archive
+      access does not match its apparent behavior or the listed reviewers. Recover the concealed review
+      identity and use its access in the retained review context to obtain the withheld commissioning
+      comparison.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w22.c4
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: 'Recover the usable concealed review identity from the helper''s actual behavior and
+        obtain the withheld commissioning comparison through its scoped archive access. Identity recovery
+        and its first use form one achievement. The result must concern the same project and commissioning
+        revision. The archive context is historical: this result grants no current corporate identity,
+        maintenance approval, or CONTROL capability.'
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w22.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W22.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w22.c1
+      mode: artifact
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W22.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w22.c2
+      mode: artifact
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W22.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w22.c3
+      mode: artifact
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W22.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w22.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W22.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The protected project-viewer delivery, ordinary viewing examples, and the engineering package associated with the current project evidence.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w22
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The protected project-viewer delivery, ordinary viewing examples, and the engineering
+        package associated with the current project evidence.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W22.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The protected project-viewer delivery, ordinary viewing examples, and the engineering package associated with the current project evidence.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w22
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The protected project-viewer delivery, ordinary viewing examples, and the engineering
+        package associated with the current project evidence.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W22.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The protected project-viewer delivery, ordinary viewing examples, and the engineering package associated with the current project evidence.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w22
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The protected project-viewer delivery, ordinary viewing examples, and the engineering
+        package associated with the current project evidence.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W22.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      W22.3's opened package supplies the unmodified review helper, its captured commissioning session, ordinary review examples, the listed reviewer identities, and the matching retained archive context. The project decryption key and readable decision are already held. The helper's concealed identity and access are not supplied.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w22
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: W22.3's opened package supplies the unmodified review helper, its captured commissioning
+        session, ordinary review examples, the listed reviewer identities, and the matching retained archive
+        context. The project decryption key and readable decision are already held. The helper's concealed
+        identity and access are not supplied.

@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:4781598b-ac1c-5ab1-8546-2d9d732beaf5@keplerops.com
+DTSTAMP:20260916T123000Z
+DTSTART:20261001T161500Z
+DTEND:20261001T170000Z
+ORGANIZER:mailto:noor.aveling@keplerops.com
+ATTENDEE:mailto:evan.calderoux@keplerops.com
+SUMMARY:Lunch with Evan
+DESCRIPTION:Our monthly lunch. Noor to choose the place.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

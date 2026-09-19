@@ -1,0 +1,589 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k07
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k07
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the protected transaction record and associate its observations with the supplied normal request. Public interface documentation alone is not the result.
+
+      Required technical proof: The player receives the trace ID, normalized request fields, and downstream component binding needed by K07.2.
+    source_refs: &id001
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k07-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k07-1.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal inspection, trace access lead, exact request/component correlation,
+      denial for unrelated traces, and reset.'
+  c2:
+    description: |-
+      Produce a fresh, reproducible downstream action inconsistent with the front-end request interpretation. A malformed response or rejected request is insufficient.
+
+      Required technical proof: Both component audit records, with their distinct interpreted request IDs and the expected test-only effect, form completion evidence.
+    source_refs: &id002
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k07-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k07-2.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test ordinary agreement, intended parser disagreement, invalid envelope rejection,
+      sentinel-only effect, both audit records, and reset.'
+  c3:
+    description: |-
+      Complete the protected assessment under the inspector's downstream authority. Repeating the framing demonstration without crossing the action boundary earns no further credit.
+
+      Required technical proof: The component emits a protected-assessment read with request correlation and returns its immutable finding as player evidence.
+    source_refs: &id003
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k07-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k07-3.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify direct protected access denial, required K07.2 evidence, intended read, unrelated
+      action denial, correct audit correlation, and reset.'
+propositions:
+  c1:
+    description: Recover the protected transaction record and associate its observations with the supplied
+      normal request. Public interface documentation alone is not the result.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k07-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K07.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce a fresh, reproducible downstream action inconsistent with the front-end request
+      interpretation. A malformed response or rejected request is insufficient.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k07-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K07.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Complete the protected assessment under the inspector's downstream authority. Repeating
+      the framing demonstration without crossing the action boundary earns no further credit.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k07-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K07.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K07.1: What the inspector forwards'
+    description: |-
+      Recover the inspector's restricted transaction record and determine how a normal package request reaches its downstream component.
+
+      Establishes concrete evidence for investigating the inspection boundary.
+    agent: participant.operator
+    actions:
+    - k07.c1
+    targets: &id004
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k07.c1
+  c2:
+    name: 'K07.2: One request becomes another'
+    description: |-
+      Construct input that causes the inspection components to disagree about the request they are processing. Demonstrate the disagreement with a controlled downstream effect.
+
+      Turns boundary analysis into an exploitable request capability.
+    agent: participant.operator
+    actions:
+    - k07.c2
+    targets: &id005
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k07.c2
+  c3:
+    name: 'K07.3: The protected inspection'
+    description: |-
+      Use the framing capability to perform the inspector's protected package action and recover its restricted assessment.
+
+      Gives the request exploit a useful package-intelligence conclusion.
+    agent: participant.operator
+    actions:
+    - k07.c3
+    targets: &id006
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k07.c3
+workflows:
+  c1:
+    description: 'K07.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k07.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K07.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k07.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k07.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K07.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k07.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k07.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The trace-retention endpoint authorizes the caller's request but not the linked internal
+      trace. The intended solution is contextual record recovery and request-flow reconstruction.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k07.c1
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The FieldKest package inspector accepts a package request, records a restricted transaction
+        trace, and forwards a normalized request to its assessment component.
+      support_refs: *id004
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only the named transaction's synthetic trace is exposed and no assessment can be invoked; reset clears evidence events.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the protected transaction record and associate its observations with the supplied
+        normal request. Public interface documentation alone is not the result.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k07.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The player receives the trace ID, normalized request fields, and downstream component
+        binding needed by K07.2.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k07.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Their framing rules disagree at one deliberate length/normalization boundary. The
+      intended solution constructs a valid outer request whose downstream interpretation differs, then
+      verifies the designated harmless assessment change.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k07.c2
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The inspector and assessment component parse a compact request envelope before producing
+        a bounded test assessment.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The parser accepts fixed-size player-local inputs and can affect only the card's assessment sentinel; reset recreates its transaction state.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce a fresh, reproducible downstream action inconsistent with the front-end request
+        interpretation. A malformed response or rejected request is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k07.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Both component audit records, with their distinct interpreted request IDs and the expected
+        test-only effect, form completion evidence.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k07.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: K07.2's framing primitive can select that action while retaining the external inspector's
+      permitted request context. The intended solution applies the documented discrepancy to retrieve
+      one protected assessment.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k07.c3
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The assessment component has a protected package-inspection action tied to a restricted
+        assessment record and accepts only its internal framed request form.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The primitive is limited to one action and read-only assessment data; it cannot publish packages, alter policy, or access customer records. Reset clears events.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Complete the protected assessment under the inspector's downstream authority. Repeating
+        the framing demonstration without crossing the action boundary earns no further credit.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k07.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The component emits a protected-assessment read with request correlation and returns
+        its immutable finding as player evidence.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k07.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K07.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k07.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K07.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k07.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K07.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k07.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K07.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The registry inspector's normal account, request samples, component descriptions, and a constrained rehearsal interface.
+
+      The FieldKest package inspector accepts a package request, records a restricted transaction trace, and forwards a normalized request to its assessment component.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k07
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The registry inspector's normal account, request samples, component descriptions, and
+        a constrained rehearsal interface.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K07.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The registry inspector's normal account, request samples, component descriptions, and a constrained rehearsal interface.
+
+      The inspector and assessment component parse a compact request envelope before producing a bounded test assessment.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k07
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The registry inspector's normal account, request samples, component descriptions, and
+        a constrained rehearsal interface.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K07.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The registry inspector's normal account, request samples, component descriptions, and a constrained rehearsal interface.
+
+      The assessment component has a protected package-inspection action tied to a restricted assessment record and accepts only its internal framed request form.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k07
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The registry inspector's normal account, request samples, component descriptions, and
+        a constrained rehearsal interface.

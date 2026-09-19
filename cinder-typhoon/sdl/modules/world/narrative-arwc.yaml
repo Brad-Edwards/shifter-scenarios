@@ -1,0 +1,294 @@
+name: cinder-narrative-arwc
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+realization:
+  default: open
+module:
+  id: cinder-typhoon/narrative-arwc
+  version: 0.1.0
+  exports:
+    content:
+    - mail
+    - documents
+    propositions:
+    - mail-visible
+    - documents-visible
+    assertions:
+    - mail-visible
+    - documents-visible
+    evidence_requirements:
+    - mail-visible
+    - documents-visible
+    observation_boundaries:
+    - mail-visible
+    - documents-visible
+content:
+  mail:
+    type: dataset
+    target: a-corporate.a-business
+    format: cinder-mailbox-set/v1
+    source:
+      name: cinder-typhoon/narrative/arwc-mail
+      version: sha256-6722e554c633052dd31df20e73951ce3324b9d38e48c93c75e97a6a129686557
+    description: arwc workplace mail. Preserve authored content, mailbox membership or document readers, and
+      declared opening state.
+    items:
+    - name: a-choir-1
+      display_name: After rehearsal
+    - name: a-choir-2
+      display_name: 'Re: After rehearsal'
+    - name: a-choir-3
+      display_name: 'Re: After rehearsal'
+    - name: a-choir-4
+      display_name: 'Re: After rehearsal'
+    - name: b-merewick-1
+      display_name: Annual account contact review
+    - name: b-merewick-2
+      display_name: 'Re: Annual account contact review'
+    - name: b-kepler-arwc-1
+      display_name: Reference conversation next month
+    - name: b-kepler-arwc-2
+      display_name: 'Re: Reference conversation next month'
+    - name: a-photo-1
+      display_name: Staff photographs — ordinary light
+    - name: b-ardenvale-1
+      display_name: Autumn service workshop feedback
+    - name: b-ardenvale-2
+      display_name: 'Re: Autumn service workshop feedback'
+    - name: b-veybridge-1
+      display_name: Scheduling contact for future visits
+    - name: b-veybridge-2
+      display_name: 'Re: Scheduling contact for future visits'
+    - name: a-history-1
+      display_name: Refurbishment account for the induction material
+    - name: b-veybridge-3
+      display_name: 'Re: Scheduling contact for future visits'
+    - name: a-history-2
+      display_name: 'Re: Refurbishment account for the induction material'
+    - name: b-ternwick-1
+      display_name: Staff-history batch accepted
+    - name: a-history-3
+      display_name: 'Re: Refurbishment account for the induction material'
+    - name: b-ternwick-2
+      display_name: 'Re: Staff-history batch accepted'
+    - name: b-belvarn-1
+      display_name: Meter visit contact
+    - name: a-walk-1
+      display_name: A walk for your weekend
+    - name: a-walk-2
+      display_name: 'Re: A walk for your weekend'
+    - name: b-belvarn-2
+      display_name: 'Re: Meter visit contact'
+    - name: a-photo-2
+      display_name: Have you entered a photograph?
+    - name: a-photo-3
+      display_name: 'Re: Have you entered a photograph?'
+    - name: b-talvern-1
+      display_name: Information session timing
+    - name: b-talvern-2
+      display_name: 'Re: Information session timing'
+    - name: a-outreach-1
+      display_name: Short explanation for the community session
+    - name: a-outreach-2
+      display_name: 'Re: Short explanation for the community session'
+    - name: a-outreach-3
+      display_name: 'Re: Short explanation for the community session'
+    - name: a-outreach-4
+      display_name: Your comparison this afternoon
+    - name: a-billing-1
+      display_name: The billing-period explanation
+    - name: a-learning-1
+      display_name: Time for the next orientation group
+    - name: a-billing-2
+      display_name: 'Re: The billing-period explanation'
+    - name: a-learning-2
+      display_name: 'Re: Time for the next orientation group'
+    - name: a-billing-3
+      display_name: 'Re: The billing-period explanation'
+    - name: a-photo-4
+      display_name: Staff photography results and display
+    - name: a-billing-4
+      display_name: Lunch next week?
+    - name: a-photo-5
+      display_name: Congratulations on the photograph
+    - name: a-billing-5
+      display_name: 'Re: Lunch next week?'
+    - name: a-photo-6
+      display_name: Mine is going in the display
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.a-corporate.a-business.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - mail-visible
+      evidence_requirement_refs:
+      - mail-visible
+      observation_boundary_refs:
+      - mail-visible
+  documents:
+    type: dataset
+    target: a-corporate.a-business
+    format: cinder-document-library/v1
+    source:
+      name: cinder-typhoon/narrative/arwc-documents
+      version: sha256-983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2
+    description: arwc workplace documents. Preserve authored content, mailbox membership or document readers,
+      and declared opening state.
+    items:
+    - name: a-outreach-preparation
+      display_name: Community water-service explanation — preparation
+    - name: a-outreach-outline
+      display_name: Before water reaches the tap
+    - name: a-billing-explanation
+      display_name: Which period does my water bill cover?
+    - name: a-refurbishment-history
+      display_name: The treatment refurbishment 2021–2023
+    - name: a-company-and-governance
+      display_name: Your regional water company
+    - name: a-working-at-arwc
+      display_name: Working at ARWC
+    - name: a-regional-history
+      display_name: Becoming a regional service
+    - name: a-regional-service
+      display_name: Regional service and customer relationships
+    - name: arwc-directory
+      display_name: Staff contacts
+    - name: rosa-nadia-lunch
+      display_name: Lunch with Rosa
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.a-corporate.a-business.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - documents-visible
+      evidence_requirement_refs:
+      - documents-visible
+      observation_boundary_refs:
+      - documents-visible
+propositions:
+  mail-visible:
+    description: The declared mail can be read through the workplace service with the authored audience boundaries.
+    subjects:
+    - content.mail
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.arwc.mail.visible
+      semantic_ref: urn:cinder-typhoon:world:arwc:mail:visible
+      expected: true
+    evidence_requirements:
+    - mail-visible
+  documents-visible:
+    description: The declared documents can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.documents
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.arwc.documents.visible
+      semantic_ref: urn:cinder-typhoon:world:arwc:documents:visible
+      expected: true
+    evidence_requirements:
+    - documents-visible
+assertions:
+  mail-visible:
+    proposition: mail-visible
+    role: postcondition
+  documents-visible:
+    proposition: documents-visible
+    role: postcondition
+evidence_requirements:
+  mail-visible:
+    source_refs:
+    - content.mail
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.arwc.mail.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-arwc.mail
+        data_kind: artifact
+        names:
+        - cinder.world.arwc.mail.visible
+  documents-visible:
+    source_refs:
+    - content.documents
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.arwc.documents.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-arwc.documents
+        data_kind: artifact
+        names:
+        - cinder.world.arwc.documents.visible
+observation_boundaries:
+  mail-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.mail
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  documents-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.documents
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.

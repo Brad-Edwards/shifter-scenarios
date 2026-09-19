@@ -1,0 +1,139 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+people:
+  rowan:
+    name: Rowan Ito
+    email: rowan.ito@keplerops.com
+    employer: keplerops
+    department: Product engineering
+    job: FieldKest developer
+    actor_id: K-DEV-01
+  maya:
+    name: Maya Ranscombe
+    email: maya.ranscombe@keplerops.com
+    employer: keplerops
+    department: Support and implementation
+    job: Customer support engineer
+    actor_id: K-SUP-01
+  evan:
+    name: Evan Calderoux
+    email: evan.calderoux@keplerops.com
+    employer: keplerops
+    department: Platform and release
+    job: Release engineer
+    actor_id: K-REL-01
+  noor:
+    name: Noor Aveling
+    email: noor.aveling@keplerops.com
+    employer: keplerops
+    department: Platform and release
+    job: Platform and workload operator
+    actor_id: K-SRE-01
+  talia:
+    name: Talia Mornac
+    email: talia.mornac@keplerops.com
+    employer: keplerops
+    department: Support and implementation
+    job: Support quality reviewer
+    actor_id: K-REV-01
+  leah:
+    name: Leah Calder-Voss
+    email: leah.calder-voss@keplerops.com
+    employer: keplerops
+    department: Leadership and business operations
+    job: Founder and managing director
+  theo:
+    name: Theo Marrivel
+    email: theo.marrivel@alterrawaterco.com
+    employer: arwc
+    department: Maintenance and engineering
+    job: Maintenance planner
+    actor_id: A-MAINT-01
+  clara:
+    name: Clara Morivelle
+    email: clara.morivelle@alterrawaterco.com
+    employer: arwc
+    department: Maintenance and engineering
+    job: Controls engineer
+    actor_id: A-CTRL-01
+  nadia:
+    name: Nadia Corvane
+    email: nadia.corvane@alterrawaterco.com
+    employer: arwc
+    department: Planning, quality, and compliance
+    job: Regional water planner
+    actor_id: A-PLAN-01
+  priya:
+    name: Priya Naravel
+    email: priya.naravel@alterrawaterco.com
+    employer: arwc
+    department: Customer service and business support
+    job: District procurement officer
+    actor_id: A-PROC-01
+  luc:
+    name: Luc Venn-Morel
+    email: luc.venn-morel@alterrawaterco.com
+    employer: arwc
+    department: Leadership and finance
+    job: Director of regional operations
+  mina:
+    name: Mina Selverin
+    email: mina.selverin@alterrawaterco.com
+    employer: arwc
+    department: Operations, treatment, and distribution
+    job: Senior water treatment operator
+  owen:
+    name: Owen Vardell
+    email: owen.vardell@alterrawaterco.com
+    employer: arwc
+    department: Operations, treatment, and distribution
+    job: Water distribution apprentice
+  rosa:
+    name: Rosa Nerivet
+    email: rosa.nerivet@alterrawaterco.com
+    employer: arwc
+    department: Customer service and business support
+    job: Customer-service adviser
+  jules:
+    name: Jules Orswick
+    email: jules.orswick@veybridge.test
+    employer: veybridge
+    department: Field services
+    job: Field specialist
+    actor_id: A-FIELD-01
+correspondents:
+  ardenvale:
+    name: Ardenvale Instrument Services — Customer Service
+    email: service@ardenvale.test
+    employer: ardenvale
+  merewick:
+    name: Merewick Bulk Water Cooperative — Account Services
+    email: accounts@merewick.test
+    employer: merewick
+  rillhaven:
+    name: Rillhaven District Heating — Maintenance Office
+    email: maintenance@rillhaven.test
+    employer: rillhaven
+  belvarn:
+    name: Belvarn Packaging — Production Planning
+    email: planning@belvarn.test
+    employer: belvarn
+  talvern:
+    name: Talvern Growers Cooperative — Member Services
+    email: members@talvern.test
+    employer: talvern
+  orrenvale:
+    name: Orren & Vale IT Services — Service Desk
+    email: service@orrenvale.test
+    employer: orrenvale
+  ternwick:
+    name: Ternwick Records Bureau — Customer Services
+    email: customers@ternwick.test
+    employer: ternwick
+  arwc_lab:
+    name: ARWC Laboratory Team
+    email: laboratory@alterrawaterco.com
+    employer: arwc
+  arwc_staff:
+    name: ARWC Staff Activities
+    email: staff-activities@alterrawaterco.com
+    employer: arwc
