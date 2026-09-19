@@ -1,15 +1,19 @@
 {
   "client_wire": {
     "client_version": "2.1.273",
-    "helper_authentication": true,
-    "local_tool_result": true,
-    "message_requests": 2,
-    "status": "passed",
-    "streaming": true
+    "status": "pending live broker qualification"
   },
-  "cloud_guest_image_bakes": "GCP readiness canary in progress",
-  "image_id": "sha256:6891c8ad24f4321404b81c3bd0101d90110f5c92dbe4187809c1af46cc4a7e46",
-  "network": "none; synthetic loopback endpoint only",
+  "cloud_guest_image_bakes": {
+    "gcp": {
+      "cold_boot_readiness": true,
+      "machine_image": "projects/prod-wpfcav/global/machineImages/shifter-runtime-host-20260919000247",
+      "participant_canary": true,
+      "status": "passed"
+    }
+  },
+  "gcp_host_override_sha256": "510081085ede50f5456e2b5db28559054668c013023dea54672d287cc1030ddb",
+  "image_id": "sha256:55014d7f3887fc6fa07d215a4e9845d9287234e9d673fa4cbeffc56db6a9865e",
+  "network": "GCP image canary completed; live broker request pending",
   "readiness_canary": {
     "contract": "participant-readiness/v1",
     "executable": "/usr/local/libexec/shifter-participant-readiness",
@@ -20,5 +24,5 @@
   },
   "recipe_sha256": "084c56188175cb44c440e4b42752cdfea9ad0ecdba4452e1423d7ceb074fe264",
   "root_filesystem": "read-only",
-  "scope": "local participant container; no cloud guest or live broker qualification"
+  "scope": "GCP participant image and preconfigured host readiness; live broker qualification pending"
 }
