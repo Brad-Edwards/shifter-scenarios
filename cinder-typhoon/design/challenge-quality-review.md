@@ -5,6 +5,10 @@ allocations, phase indexes, capability definitions, and campaign summaries.
 This is a review of the challenge architecture and writing. Technical design
 and all 720 hints remain empty.
 
+Updated 2026-09-19 for discovery evidence, AI attempt feedback, and selected
+story conclusions. The earlier dependency and scoring corrections below remain
+in force.
+
 The declared graph is consistent after the corrections below. The ordinary
 customer routes remain Medium or easier, alternatives remain independently
 usable, and live endings require the intended evidence and authority. The two
@@ -13,6 +17,47 @@ and distinct source-backed problems. Their difficulty labels remain proposals
 for the authored work, consistent with the rest of the portfolio.
 
 ## Quality findings and their resolutions
+
+### Discovery evidence and useful AI failure feedback
+
+**Resolved at brief level.** [T01.2](challenges/T01/T01.2.md) now locates its
+discovery trail in the dispatch site's ordinary accessible page material. That
+material references the withdrawn rehearsal content. The starting lead requires
+no other solve or hint, and the challenge does not depend on inventing a path.
+
+K21.3, K22.2/K22.3, and K24.2/K24.3 now locate observable evidence in the victim's
+ordinary conversation records, attachment history, case activity, job history,
+outputs, and errors. Players correlate those records to investigate failures
+and establish actual effects. The [AI contract](threat-inspiration.md#evidence-from-unsuccessful-attempts)
+keeps that evidence within earned access and available without hints, while
+excluding exploit progress panels or an event narrator diagnosing the attack.
+Target behavior stays inside the fiction; the player or co-hacking agent does
+the interpretation. Protected contents and working payloads remain withheld.
+Equivalent answer wording is accepted; authored comic copy is not a phrase the
+player must make the model produce.
+
+### Selected conclusions now carry the story forward
+
+The [experience contract](player-experience.md#memorable-consequences-on-the-way-to-the-reservoir)
+and affected briefs make selected existing payoffs concrete: a consumed altered
+report, circular approval of the assistant's recommendation, execution under the
+customer's identity, an intelligible reserve discrepancy, an unauthorized bill,
+a physically meaningful outlet mapping, practice movement, and the verified
+reservoir release with its cost and restrictions. K12, K29, and W34 retain
+distinct specialist conclusions.
+
+The two light comic moments concern self-certifying automation and routine
+procurement thanks to the wrongly charged district. The reservoir ending keeps
+its financial-loss and water-restriction stakes. Every conclusion uses the
+player's actual result; optional callbacks require their own earned evidence.
+Neither branch choice nor skipping an optional episode removes the main ending's
+meaning. Alternative customer and mapping routes receive equivalent recognition.
+
+These changes add no flags, dependencies, authority, topology, or mandatory
+waiting. The selected conclusion paragraphs specify the observable payoff,
+leaving technical design and the three hints per challenge blank. The campaign
+summary also now matches W31's existing historical-approval outcome rather than
+retaining an obsolete suggestion that it might supply live control.
 
 <a id="w22-separation"></a>
 

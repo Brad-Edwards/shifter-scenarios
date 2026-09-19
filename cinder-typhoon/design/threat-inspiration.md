@@ -101,6 +101,35 @@ large-scale model extraction, gradient optimization, GPU races, and open-ended
 jailbreak search. A toy prompt puzzle without a business effect does not earn
 a place merely because ATLAS names a related technique.
 
+### Evidence from unsuccessful attempts
+
+K21.3, K22.2/K22.3, and K24.2/K24.3 provide evidence through the victim's
+ordinary workflows: conversation records, attachment revisions, support-case
+activity, job histories, outputs, and normal application errors. Each item has
+a business reason to exist and is reachable within the player's earned access.
+Players inspect and correlate that evidence to investigate whether content was
+consumed, an answer changed, an action was denied, or a job actually ran. Their
+co-hacking agent can help interpret it.
+
+Target applications stay inside the fiction. They do not display an exploit
+progress panel, label a trust boundary as defeated, or explain how close an
+attempt came to a flag. An assistant claiming approval while the case still
+awaits review is useful evidence; a narrator announcing partial injection
+success is not. No component purports to expose the model's internal reasoning.
+Protected content, credentials, and working payloads remain for the player to
+recover or construct.
+
+The relevant records belong to the starting material or earned workflow, with
+no hint purchase needed to expose them. Not every failed attempt needs a
+tailored explanation; the available evidence must support reasoned progress.
+Inspecting existing records does not require another model call to explain a
+failure. The objective and any trial allowance remain visible before the task.
+Grade the stated evidence or effect, accepting equivalent wording where an
+answer is itself the objective. Comic case copy is an authored consequence of
+a verified result, never a model-output test.
+
+### Inference budget
+
 For prototyping, budget no more than two short model calls per trial in the
 three operations that actually need generation. A candidate ceiling of twenty
 trials per operation gives 120 calls per player and 36,000 calls for 300 players.

@@ -6,6 +6,11 @@ belong to the [portfolio](operation-portfolio.md); they add no bonus flags.
 They remain optional. None supplies a hidden prerequisite for ordinary ARWC
 entry, OT visibility, or the reservoir ending.
 
+The [player-experience contract](player-experience.md#memorable-consequences-on-the-way-to-the-reservoir)
+connects selected outcomes across the campaign into visible conclusions and
+callbacks. Those effects use the existing achievements and preserve the routes
+below; they are not a new sequence of required challenges.
+
 The named sources establish mechanisms and historical difficulty. Added campaign
 constraints are authored adaptations whose assisted difficulty needs testing.
 CloudGoat is a published challenge lab rather than a timed competition; its
@@ -153,10 +158,12 @@ is new work. Difficulty is conditional on those mechanisms already being earned.
 | W34.2 | H | Construct a false planning view that passes the declared consistency checks against unaffected meters and known delays, causing the planner to select a different allocation. A green screen alone is insufficient. |
 | W34.3 | X | Couple the view to a bounded release through a disclosed reporting/shift transition. Prove the changed planning decision, actual reserve loss, and continued consistency with every unaffected observation over the specified interval. |
 
-**Conclusion:** the planner issues a reassuring report while a separate replay
-shows the real volume loss. The controls engineer's earlier warning becomes
-the explanation for the discrepancy. This is an optional deeper ending with
-the same bounded consequences, not a larger disaster.
+**Conclusion:** the planner issues a reassuring report while independent
+observations show the real volume loss and a comparison identifies the changed
+allocation decision. The controls engineer's earlier warning can return if the
+player recovered it; the earned planning and process evidence explains the
+discrepancy on its own. This is an optional deeper ending with the same bounded
+consequences, not a larger disaster.
 
 The player starts a private rehearsal from a chosen earned checkpoint. Prior
 scores and the main campaign's gate result persist. Scenario time can advance
@@ -179,9 +186,12 @@ replacement supply; its records have a purpose beyond hiding credentials.
 | W35.3 | M | Exploit the importer's confusion between report district and purchasing district to issue an unauthorized order against the wrong budget. An independent order receipt proves the limited simulated liability. |
 
 **Conclusion:** the maintenance planner receives an unexpected purchase order.
-The handler acknowledges a completed financial objective. Nothing moves in the
-plant, and no real purchasing or payment service participates. This is a complete
-local ending for a participant who does not reach OT.
+The player sees the order and the liability against the wrong district, which
+procurement routinely thanks for supporting regional resilience. The dry joke
+is authored acknowledgement after the verified order, never another acceptance
+condition. The handler acknowledges a completed financial objective. Nothing
+moves in the plant, and no real purchasing or payment service participates.
+This is a complete local ending for a participant who does not reach OT.
 
 ## Existing difficult operations now have explicit uses
 
@@ -200,7 +210,7 @@ conclusion. They do not silently add achievements.
 | W24 | Oracle recovery opens a diagnostic evidence bundle; separate signer analysis then enables a fresh authorization to export the private calibration-exception log. | A complete diagnostic intelligence objective. Its authorization grants neither maintenance approval nor live control. |
 | W23 | A genuine planning estimator accepts a controlled false state. | One route into W34's reporting composition. |
 | W27 | The engineering consumer accepts a changed diagnostic program with the required meaning. | The other route into the same W34 planning-view capability. |
-| W31 | The diagnostic service runs under Cinder's earned privilege. | A substitute control route only after its implementation proves the same scope as CONTROL; it is not presently assumed in the main graph. |
+| W31 | The diagnostic service runs under Cinder's earned privilege and yields the restricted maintenance approval history. | A complete historical investigation; it grants neither current maintenance approval nor CONTROL. |
 | W32 | A side-by-side replay exposes why the old project approved the wrong schedule. | Optional model evidence for W33; current observations remain necessary. |
 
 ## Source and acceptance boundaries

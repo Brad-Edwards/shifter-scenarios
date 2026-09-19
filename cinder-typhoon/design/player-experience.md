@@ -62,6 +62,62 @@ including before W30 where applicable. They are not a new compulsory phase or
 content withheld for day two. A participant who finishes early has meaningful
 choices; a participant who never finishes still has completed local episodes.
 
+## Memorable consequences on the way to the reservoir
+
+Let selected operations end with an effect the player can recognize and describe:
+their work reaches an employee, runs at a customer, explains the missing reserve,
+identifies an outlet, moves it in practice, and finally changes the live reserve
+and the company's costs. Vary those conclusions between an intrusion, an
+intelligence reveal, a changed business decision, and a process effect. Quiet
+investigations remain useful between them; each recovered file does not need a
+set piece.
+
+The following are consequences of existing achievements. Their order describes
+the intended growth in significance, not a new required path. Optional work
+stays optional, and either customer or mapping route earns an equally clear
+transition. The individual briefs carry the local outcome contracts.
+
+| Existing achievement | What the player gets to see | Place in the story |
+| --- | --- | --- |
+| [K02.3](challenges/K02/K02.3.md): the green report | The support handover contains their altered result under a successful job status, with the normal report fields preserved. | An approachable first intrusion into a business workflow. Introduces the difference between a reassuring status and a trustworthy result. |
+| [K22.3](challenges/K22/K22.3.md): the assistant reviews itself | The duplicate review of the assistant's bad recommendation is accepted by that same assistant; the ordinary case history makes the circular approval visible. | A small comic local ending. The joke follows a real unauthorized action and leaves the main maintenance dispute open. |
+| [K26.2](challenges/K26/K26.2.md) or [K27.3](challenges/K27/K27.3.md): the other side of the ticket | Their package or diagnostic produces its changed result inside ARWC. The familiar maintenance ticket now has the customer's identity and context. | The first major transition: an attack on the supplier has become execution at the intended victim. |
+| [W09.3](challenges/W09/W09.3.md): the missing water becomes legible | The reported reserve and corrected position sit beside the allocation commitments and the evidence explaining the discrepancy. | An intelligence reveal with stakes. Understanding the records changes what the player thinks ARWC can afford to lose. |
+| [W35.3](challenges/W35/W35.3.md): procurement says thank you | An actual simulated order charges the wrong district, which receives procurement's routine thanks for supporting regional resilience. | A second, understated joke and a complete corporate ending. Replacement water becomes a concrete financial obligation before the gates matter. |
+| [W18.4](challenges/W18/W18.4.md) or [W19.4](challenges/W19/W19.4.md): this is the outlet | Recovered identifiers acquire physical meaning through the mapping and observed behavior. | The plant becomes a comprehensible target. This reveal earns no write authority and creates no new live movement. |
+| [W25.4](challenges/W25/W25.4.md): the practice outlet moves | A valid sequence produces movement and a measured response where earlier acknowledgements produced none. | A rehearsal of the finale, clearly confined to practice. Understanding, live authority, and eventual actuation remain distinct. |
+| [W30.2](challenges/W30/W30.2.md): open the gates | The identified gates move, the measured reserve falls, and the resulting cost and restrictions appear in ARWC's continuity notice. | The main conclusion connects the player's own command, physical effect, and business consequence. The dam remains intact; the stakes are financial loss and water restrictions. |
+
+Specialists also need satisfying local conclusions. [K12.4](challenges/K12/K12.4.md)
+shows the changed document as the privileged reviewer actually received it.
+[K29.4](challenges/K29/K29.4.md) shows the old credential failing while a fresh
+replacement delivery still succeeds. [W34.3](challenges/W34/W34.3.md) places the
+reassuring planning handover beside the independently measured loss and the
+wrong allocation decision. That final contrast develops the early reporting
+theme into an optional deeper ending, with the same bounded consequences.
+
+The two comic moments target self-certifying automation and bureaucratic
+approval. Their copy follows the verified case or order state. Getting a model
+to say a particular joke is never the challenge. Keep the process finale direct;
+the actual consequence deserves room to land.
+
+Use familiar evidence for callbacks: the maintenance ticket, the customer's
+revision, the identified outlet, the discrepancy in reserve. The main ending
+must make sense using its required evidence alone. An optional warning or
+earlier joke can return only if that player encountered it. Someone who skips
+the AI branch, procurement, or an advanced investigation loses no explanation
+needed to understand the reservoir result.
+
+These conclusions use the already verified operation result and its retained
+evidence. Where the scenario changes state, reveal the corresponding persisted
+stage when that result is established. They add no flags, access rights,
+subnets, extra solve steps, real-time waits, or continuously running simulation.
+Before-and-after facts must match the same player's actual achievement;
+presentation alone cannot establish success. The conclusion remains reviewable
+after a break, and players can continue immediately without waiting through a
+mandatory scene. Visual production and technical delivery remain later design
+work.
+
 ## A concrete co-hacking episode: water on paper
 
 The player has reached corporate ARWC and chooses the missing-reserve lead.
