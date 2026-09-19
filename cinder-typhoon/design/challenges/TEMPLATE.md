@@ -44,6 +44,38 @@ solution or turn the reference into an exploit recipe.}
 
 ## Technical design
 
+When this brief becomes a technical draft, change `Design status` to
+`Technical draft` and fill every subsection below. Keep the design at the
+logical application, data, and authority level: identify real or selected
+open-source behavior where it matters, but do not choose hosts, deployment
+layouts, production credentials, flags, or build automation.
+
+### Surface and normal behavior
+
+{Name the application or record surface, normal user workflow, and seeded data
+that make it believable. Link shared components or data-contract IDs as needed.}
+
+### Vulnerability and intended solution
+
+{State the deliberate boundary flaw or analysis problem and the intended class
+of solution. Explain why its evidence is sufficient without providing an
+operator-facing exploit procedure.}
+
+### Evidence and completion
+
+{Name the server- or record-side evidence that proves this outcome and the
+scoped event, artifact, or authority it creates for downstream work.}
+
+### Boundaries and reset
+
+{State what this exercise cannot reach, any per-player isolation, rate or
+resource bounds, and how its mutable state is restored.}
+
+### Author checks
+
+{List the ordinary workflow, intended completion path, principal negative
+authorization case, evidence check, and reset check.}
+
 ## Hints
 
 ### Hint 1

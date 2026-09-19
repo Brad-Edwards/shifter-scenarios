@@ -20,6 +20,8 @@ PHASE_INDEX = {'Training': 'training.md', 'KeplerOps': 'keplerops.md', 'ARWC': '
 ROOT_TEXT = {'the supplied training workspace': 'TRAINING',
              'the supplied KeplerOps developer foothold': 'FOOTHOLD'}
 CARD_ID = re.compile(r'[TKW]\d{2}\.\d+')
+TECHNICAL_SECTIONS = ('Surface and normal behavior', 'Vulnerability and intended solution',
+                      'Evidence and completion', 'Boundaries and reset', 'Author checks')
 
 
 class DesignError(ValueError):
@@ -95,6 +97,30 @@ def parse_requirements(text):
     return result
 
 
+def check_design_sections(text, status, ident):
+    require(status in ('Challenge brief', 'Technical draft'), f'Unexpected design stage: {ident}')
+    matches = list(re.finditer(r'^## Technical design\n(.*?)(?=^## |\Z)', text, re.M | re.S))
+    require(len(matches) == 1, f'Missing/duplicate technical design section: {ident}')
+    technical = matches[0][1]
+    if status == 'Challenge brief':
+        require(not technical.strip(), f'Technical content in brief-only stage: {ident}')
+    else:
+        for section in TECHNICAL_SECTIONS:
+            parts = re.findall(r'^### ' + re.escape(section) + r'\n(.*?)(?=^### |\Z)',
+                               technical, re.M | re.S)
+            require(len(parts) == 1 and parts[0].strip(),
+                    f'Missing/empty/duplicate technical subsection: {ident}/{section}')
+    for section in ('Hint 1', 'Hint 2', 'Hint 3'):
+        parts = re.findall(r'^### ' + re.escape(section) + r'\n(.*?)(?=^#{2,3} |\Z)',
+                           text, re.M | re.S)
+        require(len(parts) == 1 and not parts[0].strip(),
+                f'Reserved hint is missing, duplicated, or populated: {ident}/{section}')
+    outside = text[:matches[0].start()] + text[matches[0].end():]
+    require('```' not in outside and
+            not re.search(r'^#+ .*\b(solution|implementation)\b', outside, re.M | re.I),
+            f'Solution/implementation material outside technical design: {ident}')
+
+
 def load_briefs():
     result = {}
     for path in sorted(BRIEFS.glob('[TKW][0-9][0-9]/*.md')):
@@ -118,18 +144,12 @@ def load_briefs():
                         'Difficulty and inspiration'):
             match = re.search(r'^## ' + re.escape(section) + r'\n(.*?)(?=^## |\Z)', text, re.M | re.S)
             require(match and match[1].strip(), f'Missing/empty section: {ident}/{section}')
-        require(fields.get('Design status') == 'Challenge brief', f'Unexpected design stage: {ident}')
-        for section in ('Technical design', 'Hint 1', 'Hint 2', 'Hint 3'):
-            matches = re.findall(r'^#{2,3} ' + re.escape(section) + r'\n(.*?)(?=^#{2,3} |\Z)',
-                                 text, re.M | re.S)
-            require(len(matches) == 1 and not matches[0].strip(),
-                    f'Reserved section is missing, duplicated, or populated: {ident}/{section}')
-        require('```' not in text and not re.search(r'^#+ .*\b(solution|implementation)\b', text, re.M | re.I),
-                f'Solution/implementation material in brief: {ident}')
+        check_design_sections(text, fields.get('Design status'), ident)
         match = re.search(r'^\*\*Required access or evidence:\*\* (.+)$', text, re.M)
         require(match, f'Missing prerequisite field: {ident}')
         result[ident] = dict(path=path, title=heading[2], operation=owner,
                             phase=fields['Phase'], category=fields['Primary work'],
+                            status=fields['Design status'],
                             tier=TIERS[fields['Proposed difficulty']], tier_name=fields['Proposed difficulty'],
                             requires_any=parse_requirements(match[1]), text=text)
     return result
@@ -457,6 +477,28 @@ def self_test(data, briefs):
     require(canonical(parse_requirements('(K01.1 OR K02.1) AND G02.')) ==
             canonical([['K01.1', 'G02'], ['K02.1', 'G02']]), 'Left-grouped OR parser error')
     print(f'PASS: {len(cases)} deliberately broken graphs rejected; grouped AND/OR parser cases passed')
+    technical = '\n'.join(f'### {section}\n\nAuthor content.\n' for section in TECHNICAL_SECTIONS)
+    empty = ('# T01.1: Example\n\n## Technical design\n\n## Hints\n\n'
+             '### Hint 1\n\n### Hint 2\n\n### Hint 3\n')
+    complete = empty.replace('## Technical design\n', '## Technical design\n\n' + technical)
+    check_design_sections(empty, 'Challenge brief', 'test')
+    check_design_sections(complete, 'Technical draft', 'test')
+    section_cases = [
+        ('technical content without draft status', complete, 'Challenge brief'),
+        ('empty technical draft', empty, 'Technical draft'),
+        ('missing technical subsection', complete.replace('### Author checks', '### Other'), 'Technical draft'),
+        ('populated hint', complete.replace('### Hint 1\n', '### Hint 1\nA hint.\n'), 'Technical draft'),
+        ('solution outside technical section', complete + '\n## Solution\nHidden here.\n', 'Technical draft'),
+        ('duplicate technical section', complete + '\n## Technical design\n', 'Technical draft'),
+        ('unknown design status', empty, 'Implemented'),
+    ]
+    for label, content, status in section_cases:
+        try:
+            check_design_sections(content, status, 'test')
+        except DesignError:
+            continue
+        raise DesignError(f'Design-stage negative test was not rejected: {label}')
+    print(f'PASS: brief/technical-draft stages accepted; {len(section_cases)} invalid documents rejected')
 
 
 def validate(write_indexes=False, run_self_test=False, report_path=None):
@@ -471,6 +513,9 @@ def validate(write_indexes=False, run_self_test=False, report_path=None):
     if report_path:
         report_path.write_text(report(graph))
     print(f'PASS: {len(briefs)} briefs; allocations, full AND/OR closures, capability contracts, and document/index agreement')
+    counts = Counter(b['status'] for b in briefs.values())
+    print(f'Design stage: {counts["Technical draft"]} technical drafts; '
+          f'{counts["Challenge brief"]} briefs awaiting technical design; all hints empty')
     print('PASS: ordinary entry has 6/7 challenges at Medium or easier; both read and control routes survive')
     print('PASS: current evidence and control required for live endings; planning-only work remains available earlier')
     return graph

@@ -16,10 +16,13 @@ Use [TEMPLATE.md](TEMPLATE.md) for the common structure: a player-facing
 description, story purpose, prerequisites and starting material, completion and
 downstream use, and difficulty/source references.
 
-The briefs state the problem and intended outcome. They contain no solution
-walkthroughs, implementation plans, topology assignments, or grading code.
-**Technical design and all three hint sections are deliberately empty.**
-Hints will be populated after technical design.
+The briefs state the problem and intended outcome. A card starts as a
+`Challenge brief`, with empty technical-design and hint sections. A reviewed
+`Technical draft` adds logical application behavior, seeded-data requirements,
+intended solution class, completion evidence, boundaries, and author checks.
+It still contains no deployment layout, grading code, flags, or player-facing
+solution walkthrough. **All three hint sections remain deliberately empty**
+until the technical work is settled.
 
 Only the challenge description is player-facing text. The remaining populated
 sections support author review and may disclose dependencies or source lineage.
@@ -88,8 +91,10 @@ python3 cinder-typhoon/design/validate_challenges.py --self-test
 
 The second command also checks deliberate failures, including cycles, discovery
 mistaken for authority, accidentally mandatory alternatives, harder entry gates,
-and omitted live-control evidence. All technical-design and hint sections must
-remain blank at this stage. These commands do not modify documents.
+and omitted live-control evidence. It accepts only blank technical sections in
+`Challenge brief` cards and complete five-part technical sections in `Technical
+draft` cards; hints must always remain empty. These commands do not modify
+documents.
 
 After an intentional dependency or title change, regenerate the existing index
 rows and [dependency report](../challenge-dependency-report.md) with:
