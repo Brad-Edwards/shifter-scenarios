@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:59d28997-ad61-560d-b4f9-aaab17e0e25a@alterrawaterco.com
+DTSTAMP:20260202T130000Z
+DTSTART:20260209T140000Z
+DTEND:20260209T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:soren.garsen@alterrawaterco.com
+ATTENDEE:mailto:elin.verrin@alterrawaterco.com
+SUMMARY:New colleague induction
+DESCRIPTION:Soren Garsen: meet Elin Verrin\; check local handover and first
+  work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

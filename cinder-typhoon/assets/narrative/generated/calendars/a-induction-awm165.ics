@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:a0c56205-e433-59e9-bc2d-5c1076d04661@alterrawaterco.com
+DTSTAMP:20260420T130000Z
+DTSTART:20260427T140000Z
+DTEND:20260427T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:morgan.mavell@alterrawaterco.com
+ATTENDEE:mailto:mira.delmont@alterrawaterco.com
+SUMMARY:New colleague induction
+DESCRIPTION:Morgan Mavell: meet Mira Delmont\; check local handover and fir
+ st work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

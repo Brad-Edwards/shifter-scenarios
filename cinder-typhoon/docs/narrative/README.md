@@ -1,8 +1,9 @@
 # KeplerOps and Alterra: the enterprise world
 
-Worldbuilding draft 2, 19 September 2026. These documents establish two
-fictional companies, the region around them, and the people who work there.
-They are narrative design, preceding individual messages, accounts, and assets.
+Worldbuilding draft 2, 19 September 2026, with the workforce content slice added
+on 20 September. These documents establish two fictional companies, the region
+around them, and the people who work there. The authored records are in
+`assets/narrative/`.
 
 **KeplerOps Software** is a successful specialist deciding what kind of company
 it wants to become. Early employees remember making a living by being
@@ -29,6 +30,9 @@ and unfinished plans of their own.
 | [The two companies](companies.md) | Business models, ownership, histories, ambitions, organization, and workplace customs. |
 | [People and relationships](people.md) | Fifteen recurring people, distinct voices, personal motives, friendships, and professional relationships. |
 | [Character writing review](voice-review.md) | Thirty selected samples, reuse counts, continuity findings, and the author-only ownership inventory. |
+| [Workforce review](workforce-review.md) | Adversarial review of the 294-person roster, employment records, readers, and message coverage. |
+| [Additional workforce voices](workforce-voices.md) | Profiles and samples for twelve new recurring speakers. |
+| [Workforce ownership](workforce-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
 | [Direction for ambient content](content-direction.md) | How later correspondence and workplace records should express this world. |
@@ -51,8 +55,10 @@ staff, supporting businesses, and local circumstances here are original fiction.
 The ten existing actor IDs remain continuity keys. Leah, Luc, Mina, Owen, and
 Rosa are narrative characters without assigned challenge identities. Their
 jobs establish their place in the company, rather than application permissions.
-The cast comprises six KeplerOps employees, eight ARWC employees, and Jules,
-an external contractor employed by Veybridge.
+The initial profiled cast comprises six KeplerOps employees, eight ARWC employees,
+and Jules, an external contractor employed by Veybridge. The full roster adds
+280 employees for a total of 64 at KeplerOps and 230 at ARWC. It does not add
+challenge actors or privileges.
 
 The subsequent [workplace asset collection](../../assets/narrative/README.md)
 implements this draft as correspondence, documents, directories, and calendars.
@@ -63,9 +69,9 @@ aliases; they do not represent in-world name changes.
 Further content implementation is tracked in the
 [enterprise content milestone](https://github.com/PaloAltoNetworks/shifter-scenarios/milestone/3).
 Its issues deliver finished content slices, each with fit review, adversarial
-review, assets, and native SDL authoring. The first issue extends the existing
-character profiles and writing samples. Generator infrastructure is outside
-that milestone's scope.
+review, assets, and native SDL authoring. The first issue extended the existing
+character profiles; the workforce slice supplies the complete employee roster.
+Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.
 Exact evidence needed by an individual challenge remains in its technical

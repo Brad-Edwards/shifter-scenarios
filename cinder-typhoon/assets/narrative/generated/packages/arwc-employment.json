@@ -1,0 +1,1712 @@
+{
+  "schema_version": "cinder-employment-records/v1",
+  "documents": [
+    {
+      "name": "a-personnel-register",
+      "title": "Current personnel and assignment register",
+      "path": "a-personnel-register.csv",
+      "media_type": "text/csv",
+      "published_at": "2026-09-15T17:00:00-04:00",
+      "readers": [
+        "elin.verrin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com"
+      ],
+      "text": "employee_id,name,work_email,department,team,role,manager,start_date,current_role_effective,previous_team,previous_role,work_pattern,site,distribution_groups\nMINA,Mina Selverin,mina.selverin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Senior water treatment operator,Nina Rivelin,2007-05-21,2007-05-21,,Pine Water Service,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM001,Nina Rivelin,nina.rivelin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment shift supervisor,Luc Venn-Morel,2017-12-14,2017-12-14,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM002,Omar Carsten,omar.carsten@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2024-07-25,2024-07-25,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM003,Orla Jorrel,orla.jorrel@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2014-02-09,2014-02-09,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM004,Pascal Sarnell,pascal.sarnell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2021-09-20,2021-09-20,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM005,Petra Cavelin,petra.cavelin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2013-04-04,2013-04-04,,Earlier pine treatment assignment,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM006,Quinn Kelswick,quinn.kelswick@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2018-11-15,2018-11-15,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM007,Rafael Selwyn,rafael.selwyn@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2025-06-26,2025-06-26,,,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM008,Remi Cernault,remi.cernault@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2015-01-10,2015-01-10,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM009,Ren Larmont,ren.larmont@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2022-08-21,2026-06-01,River treatment,\"Team member, river treatment\",rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM010,Safa Senvard,safa.senvard@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2012-03-05,2012-03-05,,Earlier pine treatment assignment,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM011,Samira Dalver,samira.dalver@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2019-10-16,2019-10-16,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM012,Sela Lestrel,sela.lestrel@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2026-05-27,2026-05-27,,,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM013,Silas Tarlowe,silas.tarlowe@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2016-12-11,2016-12-11,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM014,Soren Danwick,soren.danwick@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2023-07-22,2023-07-22,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM015,Tamsin Maraven,tamsin.maraven@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2013-02-06,2013-02-06,,Earlier pine treatment assignment,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM016,Tariq Telmire,tariq.telmire@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2020-09-17,2020-09-17,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM017,Tessa Darsell,tessa.darsell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2012-04-01,2012-04-01,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM018,Thane Marrent,thane.marrent@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2017-11-12,2026-06-01,River treatment,\"Team member, river treatment\",rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM019,Tomas Torren,tomas.torren@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2024-06-23,2024-06-23,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM020,Uma Delmont,uma.delmont@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2014-01-07,2014-01-07,,Earlier pine treatment assignment,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM021,Valen Mavell,valen.mavell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine treatment,Treatment operator,Nina Rivelin,2021-08-18,2021-08-18,,Treatment operator,rotating shifts,Pine plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-treatment\nAWM022,Vera Velswick,vera.velswick@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment shift supervisor,Nina Rivelin,2011-03-02,2026-06-01,Pine distribution,\"Team member, pine distribution\",rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM023,Willa Dravik,willa.dravik@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2018-10-13,2018-10-13,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM024,Yara Narsen,yara.narsen@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2025-05-24,2025-05-24,,,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM025,Yasmin Verrin,yasmin.verrin@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2015-12-08,2015-12-08,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM026,Zane Edran,zane.edran@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2022-07-19,2022-07-19,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM027,Adele Odrin,adele.odrin@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2012-02-03,2012-02-03,,Earlier river treatment assignment,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM028,Alix Wellard,alix.wellard@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2019-09-14,2019-09-14,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM029,Amara Fennard,amara.fennard@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2026-08-25,2026-08-25,,,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM030,Anika Orvel,anika.orvel@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2016-11-09,2016-11-09,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM031,Ari Wernick,ari.wernick@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2023-06-20,2026-06-01,Pine distribution,\"Team member, pine distribution\",rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM032,Avery Ferrell,avery.ferrell@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2013-01-04,2013-01-04,,Earlier river treatment assignment,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM033,Beatrice Parnell,beatrice.parnell@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2020-08-15,2020-08-15,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM034,Ben Yervan,ben.yervan@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2012-03-26,2012-03-26,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM035,Callum Garsen,callum.garsen@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2017-10-10,2017-10-10,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM036,Camille Peveran,camille.peveran@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2024-05-21,2024-05-21,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM037,Cara Zorrel,cara.zorrel@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2014-12-05,2014-12-05,,Earlier river treatment assignment,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM038,Celia Gervain,celia.gervain@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2021-07-16,2021-07-16,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM039,Cian Quillan,cian.quillan@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2013-02-27,2013-02-27,,Treatment operator,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM040,Corin Aldren,corin.aldren@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2018-09-11,2026-06-01,Pine distribution,\"Team member, pine distribution\",rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nAWM041,Dana Harlowe,dana.harlowe@alterrawaterco.com,\"Operations, treatment, and distribution\",River treatment,Treatment operator,Vera Velswick,2025-04-22,2025-04-22,,,rotating shifts,River plant,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-treatment\nOWEN,Owen Vardell,owen.vardell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Water distribution apprentice,Dario Radvell,2025-04-07,2025-04-07,,,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM042,Dario Radvell,dario.radvell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution supervisor,Nina Rivelin,2015-06-17,2015-06-17,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM043,Della Belsart,della.belsart@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2022-01-01,2022-01-01,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM044,Dev Havelin,dev.havelin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2012-08-12,2012-08-12,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM045,Edda Renshaw,edda.renshaw@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2019-03-23,2019-03-23,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM046,Eira Bravelle,eira.bravelle@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2026-06-07,2026-06-07,,,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM047,Elias Iversen,elias.iversen@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2016-05-18,2016-05-18,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM048,Elin Rivelin,elin.rivelin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2023-12-02,2023-12-02,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM049,Emre Carsten,emre.carsten@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2013-07-13,2013-07-13,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM050,Farah Jorrel,farah.jorrel@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2020-02-24,2026-06-01,River distribution,\"Team member, river distribution\",depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM051,Felix Sarnell,felix.sarnell@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2012-09-08,2012-09-08,,Earlier pine distribution assignment,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM052,Finn Cavelin,finn.cavelin@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2017-04-19,2017-04-19,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM053,Flora Kelswick,flora.kelswick@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2024-11-03,2024-11-03,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM054,Gabriel Selwyn,gabriel.selwyn@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2014-06-14,2014-06-14,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM055,Hana Cernault,hana.cernault@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2021-01-25,2021-01-25,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM056,Harriet Larmont,harriet.larmont@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2013-08-09,2013-08-09,,Earlier pine distribution assignment,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM057,Hugo Senvard,hugo.senvard@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2018-03-20,2018-03-20,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM058,Idris Dalver,idris.dalver@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2025-10-04,2025-10-04,,,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM059,Imani Lestrel,imani.lestrel@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2015-05-15,2026-06-01,River distribution,\"Team member, river distribution\",depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM060,Iris Tarlowe,iris.tarlowe@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2022-12-26,2022-12-26,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM061,Isabel Danwick,isabel.danwick@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2012-07-10,2012-07-10,,Earlier pine distribution assignment,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM062,Jalen Maraven,jalen.maraven@alterrawaterco.com,\"Operations, treatment, and distribution\",Pine distribution,Distribution technician,Dario Radvell,2019-02-21,2019-02-21,,Distribution technician,depot and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-pine-distribution\nAWM063,Jamie Telmire,jamie.telmire@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution supervisor,Nina Rivelin,2026-01-05,2026-06-01,Field coordination,\"Team member, field coordination\",depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM064,Jonas Darsell,jonas.darsell@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2016-04-16,2016-04-16,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM065,Jory Marrent,jory.marrent@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2023-11-27,2023-11-27,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM066,Kaisa Torren,kaisa.torren@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2013-06-11,2013-06-11,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM067,Kiran Delmont,kiran.delmont@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2020-01-22,2020-01-22,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM068,Lara Mavell,lara.mavell@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2012-08-06,2012-08-06,,Earlier river distribution assignment,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM069,Leila Velswick,leila.velswick@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2017-03-17,2017-03-17,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM070,Lena Dravik,lena.dravik@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2024-10-01,2024-10-01,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM071,Leo Narsen,leo.narsen@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2014-05-12,2014-05-12,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM072,Lila Verrin,lila.verrin@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2021-12-23,2026-06-01,Field coordination,\"Team member, field coordination\",depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM073,Lina Edran,lina.edran@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2013-07-07,2013-07-07,,Earlier river distribution assignment,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM074,Louis Nelcourt,louis.nelcourt@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2018-02-18,2018-02-18,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM075,Luca Warden,luca.warden@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2025-09-02,2025-09-02,,,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM076,Mara Elvarn,mara.elvarn@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2015-04-13,2015-04-13,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM077,Margot Odrin,margot.odrin@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2022-11-24,2022-11-24,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM078,Martin Wellard,martin.wellard@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2012-06-08,2012-06-08,,Earlier river distribution assignment,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM079,Mica Fennard,mica.fennard@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2019-01-19,2019-01-19,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM080,Mira Orvel,mira.orvel@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2026-04-03,2026-04-03,,,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM081,Morgan Wernick,morgan.wernick@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2016-03-14,2026-06-01,Field coordination,\"Team member, field coordination\",depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM082,Nella Ferrell,nella.ferrell@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2023-10-25,2023-10-25,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM083,Niamh Parnell,niamh.parnell@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2013-05-09,2013-05-09,,Earlier river distribution assignment,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM084,Niko Yervan,niko.yervan@alterrawaterco.com,\"Operations, treatment, and distribution\",River distribution,Distribution technician,Jamie Telmire,2020-12-20,2020-12-20,,Distribution technician,depot and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-river-distribution\nAWM085,Nina Garsen,nina.garsen@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field coordination lead,Nina Rivelin,2010-07-04,2026-06-01,Pine treatment,\"Team member, pine treatment\",office and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM086,Omar Peveran,omar.peveran@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2017-02-15,2017-02-15,,Field scheduler,office and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM087,Orla Zorrel,orla.zorrel@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2024-09-26,2024-09-26,,Field scheduler,office and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM088,Pascal Gervain,pascal.gervain@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2014-04-10,2014-04-10,,Field scheduler,office and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM089,Petra Quillan,petra.quillan@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2021-11-21,2021-11-21,,Field scheduler,office and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM090,Quinn Aldren,quinn.aldren@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2013-06-05,2013-06-05,,Earlier field coordination assignment,office and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM091,Rafael Harlowe,rafael.harlowe@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2018-01-16,2018-01-16,,Field scheduler,office and field,Pine depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM092,Remi Radvell,remi.radvell@alterrawaterco.com,\"Operations, treatment, and distribution\",Field coordination,Field scheduler,Nina Garsen,2025-08-27,2025-08-27,,,office and field,River depot,arwc-staff; arwc-operations-treatment-and-distribution; arwc-field-coordination\nAWM093,Ren Belsart,ren.belsart@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Head of maintenance and engineering,Luc Venn-Morel,2015-03-11,2026-06-01,Electrical and controls,\"Team member, electrical and controls\",depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM094,Safa Havelin,safa.havelin@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2022-10-22,2022-10-22,,Mechanical technician,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM095,Samira Renshaw,samira.renshaw@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2012-05-06,2012-05-06,,Mechanical technician,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM096,Sela Bravelle,sela.bravelle@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2019-12-17,2019-12-17,,Mechanical technician,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM097,Silas Iversen,silas.iversen@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2026-07-01,2026-07-01,,,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM098,Soren Rivelin,soren.rivelin@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2016-02-12,2016-02-12,,Earlier mechanical maintenance assignment,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM099,Tamsin Carsten,tamsin.carsten@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2023-09-23,2023-09-23,,Mechanical technician,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM100,Tariq Jorrel,tariq.jorrel@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2013-04-07,2013-04-07,,Mechanical technician,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM101,Tessa Sarnell,tessa.sarnell@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2020-11-18,2020-11-18,,Mechanical technician,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM102,Thane Cavelin,thane.cavelin@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2012-06-02,2026-06-01,Electrical and controls,\"Team member, electrical and controls\",depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM103,Tomas Kelswick,tomas.kelswick@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2017-01-13,2017-01-13,,Earlier mechanical maintenance assignment,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM104,Uma Selwyn,uma.selwyn@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2024-08-24,2024-08-24,,Mechanical technician,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM105,Valen Cernault,valen.cernault@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2014-03-08,2014-03-08,,Mechanical technician,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM106,Vera Larmont,vera.larmont@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2021-10-19,2021-10-19,,Mechanical technician,depot and field,River depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nAWM107,Willa Senvard,willa.senvard@alterrawaterco.com,Maintenance and engineering,Mechanical maintenance,Mechanical technician,Ren Belsart,2013-05-03,2013-05-03,,Mechanical technician,depot and field,Pine depot,arwc-staff; arwc-maintenance-and-engineering; arwc-mechanical-maintenance\nCLARA,Clara Morivelle,clara.morivelle@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls engineer,Yara Dalver,2014-07-14,2014-07-14,,Earlier electrical and controls assignment,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM108,Yara Dalver,yara.dalver@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Electrical and controls lead,Ren Belsart,2018-07-25,2018-07-25,,Controls technician,hybrid,River plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM109,Yasmin Lestrel,yasmin.lestrel@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2025-02-09,2025-02-09,,,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM110,Zane Tarlowe,zane.tarlowe@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2015-09-20,2015-09-20,,Controls technician,hybrid,River plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM111,Adele Darsell,adele.darsell@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2022-04-04,2022-04-04,,Controls technician,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM112,Alix Marrent,alix.marrent@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2012-11-15,2012-11-15,,Earlier electrical and controls assignment,hybrid,River plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM113,Amara Torren,amara.torren@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2019-06-26,2019-06-26,,Controls technician,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM114,Anika Delmont,anika.delmont@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2026-05-10,2026-05-10,,,hybrid,River plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM115,Ari Mavell,ari.mavell@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2016-08-21,2016-08-21,,Controls technician,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM116,Avery Velswick,avery.velswick@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2023-03-05,2026-06-01,Maintenance planning,\"Team member, maintenance planning\",hybrid,River plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nAWM117,Beatrice Dravik,beatrice.dravik@alterrawaterco.com,Maintenance and engineering,Electrical and controls,Controls technician,Yara Dalver,2013-10-16,2013-10-16,,Earlier electrical and controls assignment,hybrid,Pine plant,arwc-staff; arwc-maintenance-and-engineering; arwc-electrical-and-controls\nTHEO,Theo Marrivel,theo.marrivel@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2016-05-27,2016-05-27,,Earlier maintenance planning assignment,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM118,Ben Narsen,ben.narsen@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planning supervisor,Ren Belsart,2020-12-11,2020-12-11,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM119,Callum Verrin,callum.verrin@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2012-07-22,2012-07-22,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM120,Camille Edran,camille.edran@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2017-02-06,2017-02-06,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM121,Cara Nelcourt,cara.nelcourt@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2024-09-17,2024-09-17,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM122,Celia Warden,celia.warden@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2014-04-01,2014-04-01,,Earlier maintenance planning assignment,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM123,Cian Elvarn,cian.elvarn@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2021-11-12,2021-11-12,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM124,Corin Odrin,corin.odrin@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2013-06-23,2013-06-23,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM125,Dana Wellard,dana.wellard@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2018-01-07,2018-01-07,,Maintenance planner,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM126,Dario Fennard,dario.fennard@alterrawaterco.com,Maintenance and engineering,Maintenance planning,Maintenance planner,Ben Narsen,2025-08-18,2026-06-01,Capital projects,\"Team member, capital projects\",office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-maintenance-planning\nAWM127,Della Orvel,della.orvel@alterrawaterco.com,Maintenance and engineering,Capital projects,Capital projects lead,Ren Belsart,2015-03-02,2026-06-01,Mechanical maintenance,\"Team member, mechanical maintenance\",office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM128,Dev Wernick,dev.wernick@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2022-10-13,2022-10-13,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM129,Edda Ferrell,edda.ferrell@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2012-05-24,2012-05-24,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM130,Eira Parnell,eira.parnell@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2019-12-08,2019-12-08,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM131,Elias Yervan,elias.yervan@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2026-03-19,2026-03-19,,,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM132,Elin Garsen,elin.garsen@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2016-02-03,2016-02-03,,Earlier capital projects assignment,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM133,Emre Peveran,emre.peveran@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2023-09-14,2023-09-14,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM134,Farah Zorrel,farah.zorrel@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2013-04-25,2013-04-25,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM135,Felix Gervain,felix.gervain@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2020-11-09,2020-11-09,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM136,Finn Quillan,finn.quillan@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2012-06-20,2026-06-01,Mechanical maintenance,\"Team member, mechanical maintenance\",office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM137,Flora Aldren,flora.aldren@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2017-01-04,2017-01-04,,Earlier capital projects assignment,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nAWM138,Gabriel Harlowe,gabriel.harlowe@alterrawaterco.com,Maintenance and engineering,Capital projects,Project engineer,Della Orvel,2024-08-15,2024-08-15,,Project engineer,office and field,Regional office,arwc-staff; arwc-maintenance-and-engineering; arwc-capital-projects\nNADIA,Nadia Corvane,nadia.corvane@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Regional water planner,Hana Radvell,2017-03-26,2017-03-26,,Earlier resource planning assignment,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM139,Hana Radvell,hana.radvell@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Resource planning lead,Luc Venn-Morel,2014-10-10,2014-10-10,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM140,Harriet Belsart,harriet.belsart@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2021-05-21,2021-05-21,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM141,Hugo Havelin,hugo.havelin@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2013-12-05,2013-12-05,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM142,Idris Renshaw,idris.renshaw@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2018-07-16,2018-07-16,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM143,Imani Bravelle,imani.bravelle@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2025-02-27,2025-02-27,,,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM144,Iris Iversen,iris.iversen@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2015-09-11,2015-09-11,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM145,Isabel Rivelin,isabel.rivelin@alterrawaterco.com,\"Planning, quality, and compliance\",Resource planning,Water planner,Hana Radvell,2022-04-22,2022-04-22,,Water planner,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-resource-planning\nAWM146,Jalen Carsten,jalen.carsten@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory lead,Hana Radvell,2012-11-06,2026-06-01,Quality systems,\"Team member, quality systems\",office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM147,Jamie Jorrel,jamie.jorrel@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2019-06-17,2019-06-17,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM148,Jonas Sarnell,jonas.sarnell@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2026-01-01,2026-01-01,,,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM149,Jory Cavelin,jory.cavelin@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2016-08-12,2016-08-12,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM150,Kaisa Kelswick,kaisa.kelswick@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2023-03-23,2023-03-23,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM151,Kiran Selwyn,kiran.selwyn@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2013-10-07,2013-10-07,,Earlier laboratory assignment,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM152,Lara Cernault,lara.cernault@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2020-05-18,2020-05-18,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM153,Leila Larmont,leila.larmont@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2012-12-02,2012-12-02,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM154,Lena Senvard,lena.senvard@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2017-07-13,2017-07-13,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM155,Leo Dalver,leo.dalver@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2024-02-24,2026-06-01,Quality systems,\"Team member, quality systems\",office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM156,Lila Lestrel,lila.lestrel@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2014-09-08,2014-09-08,,Earlier laboratory assignment,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM157,Lina Tarlowe,lina.tarlowe@alterrawaterco.com,\"Planning, quality, and compliance\",Laboratory,Laboratory analyst,Jalen Carsten,2021-04-19,2021-04-19,,Laboratory analyst,office,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-laboratory\nAWM158,Louis Danwick,louis.danwick@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality systems lead,Hana Radvell,2011-11-03,2026-06-01,Compliance reporting,\"Team member, compliance reporting\",hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM159,Luca Maraven,luca.maraven@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality officer,Louis Danwick,2018-06-14,2018-06-14,,Quality officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM160,Mara Telmire,mara.telmire@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality officer,Louis Danwick,2025-01-25,2025-01-25,,,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM161,Margot Darsell,margot.darsell@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality officer,Louis Danwick,2015-08-09,2015-08-09,,Quality officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM162,Martin Marrent,martin.marrent@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality officer,Louis Danwick,2022-03-20,2022-03-20,,Quality officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM163,Mica Torren,mica.torren@alterrawaterco.com,\"Planning, quality, and compliance\",Quality systems,Quality officer,Louis Danwick,2012-10-04,2012-10-04,,Earlier quality systems assignment,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-quality-systems\nAWM164,Mira Delmont,mira.delmont@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Compliance reporting lead,Hana Radvell,2019-05-15,2026-06-01,Resource planning,\"Team member, resource planning\",hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM165,Morgan Mavell,morgan.mavell@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Reporting officer,Mira Delmont,2026-04-26,2026-04-26,,,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM166,Nella Velswick,nella.velswick@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Reporting officer,Mira Delmont,2016-07-10,2016-07-10,,Reporting officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM167,Niamh Dravik,niamh.dravik@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Reporting officer,Mira Delmont,2023-02-21,2023-02-21,,Reporting officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM168,Niko Narsen,niko.narsen@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Reporting officer,Mira Delmont,2013-09-05,2013-09-05,,Reporting officer,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM169,Nina Verrin,nina.verrin@alterrawaterco.com,\"Planning, quality, and compliance\",Compliance reporting,Reporting officer,Mira Delmont,2020-04-16,2020-04-16,,Earlier compliance reporting assignment,hybrid,Regional office,arwc-staff; arwc-planning-quality-and-compliance; arwc-compliance-reporting\nAWM170,Omar Edran,omar.edran@alterrawaterco.com,Information technology,Service desk,Head of information technology,Elin Verrin,2010-11-27,2026-06-01,Business applications,\"Team member, business applications\",office,Regional office,arwc-staff; arwc-information-technology; arwc-service-desk\nAWM171,Orla Nelcourt,orla.nelcourt@alterrawaterco.com,Information technology,Service desk,IT support analyst,Omar Edran,2017-06-11,2017-06-11,,IT support analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-service-desk\nAWM172,Pascal Warden,pascal.warden@alterrawaterco.com,Information technology,Service desk,IT support analyst,Omar Edran,2024-01-22,2024-01-22,,IT support analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-service-desk\nAWM173,Petra Elvarn,petra.elvarn@alterrawaterco.com,Information technology,Service desk,IT support analyst,Omar Edran,2014-08-06,2014-08-06,,IT support analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-service-desk\nAWM174,Quinn Odrin,quinn.odrin@alterrawaterco.com,Information technology,Service desk,IT support analyst,Omar Edran,2021-03-17,2021-03-17,,IT support analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-service-desk\nAWM175,Rafael Wellard,rafael.wellard@alterrawaterco.com,Information technology,Business applications,Business applications lead,Omar Edran,2011-10-01,2026-06-01,Identity services,\"Team member, identity services\",hybrid,Regional office,arwc-staff; arwc-information-technology; arwc-business-applications\nAWM176,Remi Fennard,remi.fennard@alterrawaterco.com,Information technology,Business applications,Applications analyst,Rafael Wellard,2018-05-12,2018-05-12,,Applications analyst,hybrid,Regional office,arwc-staff; arwc-information-technology; arwc-business-applications\nAWM177,Ren Orvel,ren.orvel@alterrawaterco.com,Information technology,Business applications,Applications analyst,Rafael Wellard,2025-12-23,2025-12-23,,,hybrid,Regional office,arwc-staff; arwc-information-technology; arwc-business-applications\nAWM178,Safa Wernick,safa.wernick@alterrawaterco.com,Information technology,Business applications,Applications analyst,Rafael Wellard,2015-07-07,2015-07-07,,Applications analyst,hybrid,Regional office,arwc-staff; arwc-information-technology; arwc-business-applications\nAWM179,Samira Ferrell,samira.ferrell@alterrawaterco.com,Information technology,Identity services,Identity services lead,Omar Edran,2022-02-18,2026-06-01,Service desk,\"Team member, service desk\",office,Regional office,arwc-staff; arwc-information-technology; arwc-identity-services\nAWM180,Sela Parnell,sela.parnell@alterrawaterco.com,Information technology,Identity services,Identity analyst,Samira Ferrell,2012-09-02,2012-09-02,,Identity analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-identity-services\nAWM181,Silas Yervan,silas.yervan@alterrawaterco.com,Information technology,Identity services,Identity analyst,Samira Ferrell,2019-04-13,2019-04-13,,Identity analyst,office,Regional office,arwc-staff; arwc-information-technology; arwc-identity-services\nROSA,Rosa Nerivet,rosa.nerivet@alterrawaterco.com,Customer service and business support,Customer contact,Customer-service adviser,Soren Garsen,2018-11-24,2018-11-24,,Earlier customer contact assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM182,Soren Garsen,soren.garsen@alterrawaterco.com,Customer service and business support,Customer contact,Customer-service supervisor,Elin Verrin,2026-02-08,2026-02-08,,,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM183,Tamsin Peveran,tamsin.peveran@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2016-01-19,2016-01-19,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM184,Tariq Zorrel,tariq.zorrel@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2023-08-03,2023-08-03,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM185,Tessa Gervain,tessa.gervain@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2013-03-14,2013-03-14,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM186,Thane Quillan,thane.quillan@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2020-10-25,2020-10-25,,Earlier customer contact assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM187,Tomas Aldren,tomas.aldren@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2012-05-09,2012-05-09,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM188,Uma Harlowe,uma.harlowe@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2017-12-20,2017-12-20,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM189,Valen Radvell,valen.radvell@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2024-07-04,2024-07-04,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM190,Vera Belsart,vera.belsart@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2014-02-15,2026-06-01,Accounts,\"Team member, accounts\",office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM191,Willa Havelin,willa.havelin@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2021-09-26,2021-09-26,,Earlier customer contact assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM192,Yara Renshaw,yara.renshaw@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2013-04-10,2013-04-10,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM193,Yasmin Bravelle,yasmin.bravelle@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2018-11-21,2018-11-21,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM194,Zane Iversen,zane.iversen@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2025-06-05,2025-06-05,,,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM195,Adele Sarnell,adele.sarnell@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2015-01-16,2015-01-16,,Customer adviser,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM196,Alix Cavelin,alix.cavelin@alterrawaterco.com,Customer service and business support,Customer contact,Customer adviser,Soren Garsen,2022-08-27,2022-08-27,,Earlier customer contact assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-customer-contact\nAWM197,Amara Kelswick,amara.kelswick@alterrawaterco.com,Customer service and business support,Accounts,Accounts lead,Soren Garsen,2012-03-11,2026-06-01,Procurement,\"Team member, procurement\",office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM198,Anika Selwyn,anika.selwyn@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2019-10-22,2019-10-22,,Accounts officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM199,Ari Cernault,ari.cernault@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2026-05-06,2026-05-06,,,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM200,Avery Larmont,avery.larmont@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2016-12-17,2016-12-17,,Accounts officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM201,Beatrice Senvard,beatrice.senvard@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2023-07-01,2023-07-01,,Accounts officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM202,Ben Dalver,ben.dalver@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2013-02-12,2013-02-12,,Earlier accounts assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM203,Callum Lestrel,callum.lestrel@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2020-09-23,2020-09-23,,Accounts officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nAWM204,Camille Tarlowe,camille.tarlowe@alterrawaterco.com,Customer service and business support,Accounts,Accounts officer,Amara Kelswick,2012-04-07,2012-04-07,,Accounts officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-accounts\nPRIYA,Priya Naravel,priya.naravel@alterrawaterco.com,Customer service and business support,Procurement,District procurement officer,Cara Danwick,2018-11-18,2018-11-18,,Earlier procurement assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM205,Cara Danwick,cara.danwick@alterrawaterco.com,Customer service and business support,Procurement,Procurement lead,Soren Garsen,2017-06-02,2017-06-02,,Procurement officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM206,Celia Maraven,celia.maraven@alterrawaterco.com,Customer service and business support,Procurement,Procurement officer,Cara Danwick,2024-01-13,2024-01-13,,Procurement officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM207,Cian Telmire,cian.telmire@alterrawaterco.com,Customer service and business support,Procurement,Procurement officer,Cara Danwick,2014-08-24,2014-08-24,,Procurement officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM208,Corin Darsell,corin.darsell@alterrawaterco.com,Customer service and business support,Procurement,Procurement officer,Cara Danwick,2021-03-08,2021-03-08,,Procurement officer,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM209,Dana Marrent,dana.marrent@alterrawaterco.com,Customer service and business support,Procurement,Procurement officer,Cara Danwick,2013-10-19,2013-10-19,,Earlier procurement assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-procurement\nAWM210,Dario Torren,dario.torren@alterrawaterco.com,Customer service and business support,Records and scheduling,Records and scheduling lead,Soren Garsen,2018-05-03,2026-06-01,Customer contact,\"Team member, customer contact\",office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nAWM211,Della Delmont,della.delmont@alterrawaterco.com,Customer service and business support,Records and scheduling,Records coordinator,Dario Torren,2025-12-14,2025-12-14,,,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nAWM212,Dev Mavell,dev.mavell@alterrawaterco.com,Customer service and business support,Records and scheduling,Records coordinator,Dario Torren,2015-07-25,2015-07-25,,Records coordinator,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nAWM213,Edda Velswick,edda.velswick@alterrawaterco.com,Customer service and business support,Records and scheduling,Records coordinator,Dario Torren,2022-02-09,2022-02-09,,Records coordinator,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nAWM214,Eira Dravik,eira.dravik@alterrawaterco.com,Customer service and business support,Records and scheduling,Records coordinator,Dario Torren,2012-09-20,2012-09-20,,Records coordinator,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nAWM215,Elias Narsen,elias.narsen@alterrawaterco.com,Customer service and business support,Records and scheduling,Records coordinator,Dario Torren,2019-04-04,2019-04-04,,Earlier records and scheduling assignment,office,Regional office,arwc-staff; arwc-customer-service-and-business-support; arwc-records-and-scheduling\nLUC,Luc Venn-Morel,luc.venn-morel@alterrawaterco.com,Leadership and finance,Executive,Director of regional operations,Elin Verrin,2012-11-15,2012-11-15,,Earlier executive assignment,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-executive\nAWM216,Elin Verrin,elin.verrin@alterrawaterco.com,Leadership and finance,Executive,General manager,,2013-06-26,2013-06-26,,Executive director,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-executive\nAWM217,Emre Edran,emre.edran@alterrawaterco.com,Leadership and finance,Finance,Finance lead,Elin Verrin,2016-01-10,2026-06-01,People and board support,\"Team member, people and board support\",hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-finance\nAWM218,Farah Nelcourt,farah.nelcourt@alterrawaterco.com,Leadership and finance,Finance,Finance analyst,Emre Edran,2023-08-21,2023-08-21,,Finance analyst,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-finance\nAWM219,Felix Warden,felix.warden@alterrawaterco.com,Leadership and finance,Finance,Finance analyst,Emre Edran,2013-03-05,2013-03-05,,Finance analyst,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-finance\nAWM220,Finn Elvarn,finn.elvarn@alterrawaterco.com,Leadership and finance,People and board support,People and board support lead,Elin Verrin,2020-10-16,2026-06-01,Executive,\"Team member, executive\",hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-people-and-board-support\nAWM221,Flora Odrin,flora.odrin@alterrawaterco.com,Leadership and finance,People and board support,People services officer,Finn Elvarn,2012-05-27,2012-05-27,,People services officer,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-people-and-board-support\nAWM222,Gabriel Wellard,gabriel.wellard@alterrawaterco.com,Leadership and finance,People and board support,People services officer,Finn Elvarn,2017-12-11,2017-12-11,,People services officer,hybrid,Regional office,arwc-staff; arwc-leadership-and-finance; arwc-people-and-board-support\n"
+    },
+    {
+      "name": "a-onboard-awm012",
+      "title": "Starting arrangements — Sela Lestrel",
+      "path": "a-onboard-awm012.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-05-20T09:00:00-04:00",
+      "readers": [
+        "sela.lestrel@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Sela Lestrel\n\nEmployee: Sela Lestrel (AWM012)\nStart: 2026-05-27\nRole: Treatment operator, Pine treatment\nManager: Nina Rivelin\nBase: Pine plant\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Supervisor to confirm the rota, site orientation, and supervised first assignment.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm029",
+      "title": "Starting arrangements — Amara Fennard",
+      "path": "a-onboard-awm029.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T09:00:00-04:00",
+      "readers": [
+        "amara.fennard@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Amara Fennard\n\nEmployee: Amara Fennard (AWM029)\nStart: 2026-08-25\nRole: Treatment operator, River treatment\nManager: Vera Velswick\nBase: River plant\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Supervisor to confirm the rota, site orientation, and supervised first assignment.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm046",
+      "title": "Starting arrangements — Eira Bravelle",
+      "path": "a-onboard-awm046.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-05-31T09:00:00-04:00",
+      "readers": [
+        "eira.bravelle@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Eira Bravelle\n\nEmployee: Eira Bravelle (AWM046)\nStart: 2026-06-07\nRole: Distribution technician, Pine distribution\nManager: Dario Radvell\nBase: Pine depot\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Supervisor to confirm the rota, site orientation, and supervised first assignment.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm063",
+      "title": "Starting arrangements — Jamie Telmire",
+      "path": "a-onboard-awm063.md",
+      "media_type": "text/markdown",
+      "published_at": "2025-12-29T09:00:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Jamie Telmire\n\nEmployee: Jamie Telmire (AWM063)\nStart: 2026-01-05\nRole: Distribution supervisor, River distribution\nManager: Nina Rivelin\nBase: River depot\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Supervisor to confirm the rota, site orientation, and supervised first assignment.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm080",
+      "title": "Starting arrangements — Mira Orvel",
+      "path": "a-onboard-awm080.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-03-27T09:00:00-04:00",
+      "readers": [
+        "mira.orvel@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Mira Orvel\n\nEmployee: Mira Orvel (AWM080)\nStart: 2026-04-03\nRole: Distribution technician, River distribution\nManager: Jamie Telmire\nBase: River depot\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Supervisor to confirm the rota, site orientation, and supervised first assignment.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm097",
+      "title": "Starting arrangements — Silas Iversen",
+      "path": "a-onboard-awm097.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-24T09:00:00-04:00",
+      "readers": [
+        "silas.iversen@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Silas Iversen\n\nEmployee: Silas Iversen (AWM097)\nStart: 2026-07-01\nRole: Mechanical technician, Mechanical maintenance\nManager: Ren Belsart\nBase: Pine depot\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm114",
+      "title": "Starting arrangements — Anika Delmont",
+      "path": "a-onboard-awm114.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-05-03T09:00:00-04:00",
+      "readers": [
+        "anika.delmont@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Anika Delmont\n\nEmployee: Anika Delmont (AWM114)\nStart: 2026-05-10\nRole: Controls technician, Electrical and controls\nManager: Yara Dalver\nBase: River plant\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm131",
+      "title": "Starting arrangements — Elias Yervan",
+      "path": "a-onboard-awm131.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-03-12T09:00:00-04:00",
+      "readers": [
+        "elias.yervan@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Elias Yervan\n\nEmployee: Elias Yervan (AWM131)\nStart: 2026-03-19\nRole: Project engineer, Capital projects\nManager: Della Orvel\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm148",
+      "title": "Starting arrangements — Jonas Sarnell",
+      "path": "a-onboard-awm148.md",
+      "media_type": "text/markdown",
+      "published_at": "2025-12-25T09:00:00-04:00",
+      "readers": [
+        "jonas.sarnell@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Jonas Sarnell\n\nEmployee: Jonas Sarnell (AWM148)\nStart: 2026-01-01\nRole: Laboratory analyst, Laboratory\nManager: Jalen Carsten\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm165",
+      "title": "Starting arrangements — Morgan Mavell",
+      "path": "a-onboard-awm165.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-04-19T09:00:00-04:00",
+      "readers": [
+        "morgan.mavell@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Morgan Mavell\n\nEmployee: Morgan Mavell (AWM165)\nStart: 2026-04-26\nRole: Reporting officer, Compliance reporting\nManager: Mira Delmont\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm182",
+      "title": "Starting arrangements — Soren Garsen",
+      "path": "a-onboard-awm182.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-02-01T09:00:00-04:00",
+      "readers": [
+        "soren.garsen@alterrawaterco.com",
+        "elin.verrin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Soren Garsen\n\nEmployee: Soren Garsen (AWM182)\nStart: 2026-02-08\nRole: Customer-service supervisor, Customer contact\nManager: Elin Verrin\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-onboard-awm199",
+      "title": "Starting arrangements — Ari Cernault",
+      "path": "a-onboard-awm199.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-04-29T09:00:00-04:00",
+      "readers": [
+        "ari.cernault@alterrawaterco.com",
+        "amara.kelswick@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Starting arrangements: Ari Cernault\n\nEmployee: Ari Cernault (AWM199)\nStart: 2026-05-06\nRole: Accounts officer, Accounts\nManager: Amara Kelswick\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "a-move-awm009",
+      "title": "Assignment change — Ren Larmont",
+      "path": "a-move-awm009.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "ren.larmont@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Ren Larmont\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, river treatment (River treatment).\nCurrent assignment: Treatment operator (Pine treatment).\nCurrent manager: Nina Rivelin.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm018",
+      "title": "Assignment change — Thane Marrent",
+      "path": "a-move-awm018.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "thane.marrent@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Thane Marrent\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, river treatment (River treatment).\nCurrent assignment: Treatment operator (Pine treatment).\nCurrent manager: Nina Rivelin.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm022",
+      "title": "Assignment change — Vera Velswick",
+      "path": "a-move-awm022.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Vera Velswick\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, pine distribution (Pine distribution).\nCurrent assignment: Treatment shift supervisor (River treatment).\nCurrent manager: Nina Rivelin.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm031",
+      "title": "Assignment change — Ari Wernick",
+      "path": "a-move-awm031.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "ari.wernick@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Ari Wernick\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, pine distribution (Pine distribution).\nCurrent assignment: Treatment operator (River treatment).\nCurrent manager: Vera Velswick.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm040",
+      "title": "Assignment change — Corin Aldren",
+      "path": "a-move-awm040.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "corin.aldren@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Corin Aldren\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, pine distribution (Pine distribution).\nCurrent assignment: Treatment operator (River treatment).\nCurrent manager: Vera Velswick.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm050",
+      "title": "Assignment change — Farah Jorrel",
+      "path": "a-move-awm050.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "farah.jorrel@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Farah Jorrel\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, river distribution (River distribution).\nCurrent assignment: Distribution technician (Pine distribution).\nCurrent manager: Dario Radvell.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm059",
+      "title": "Assignment change — Imani Lestrel",
+      "path": "a-move-awm059.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "imani.lestrel@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Imani Lestrel\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, river distribution (River distribution).\nCurrent assignment: Distribution technician (Pine distribution).\nCurrent manager: Dario Radvell.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm063",
+      "title": "Assignment change — Jamie Telmire",
+      "path": "a-move-awm063.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Jamie Telmire\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, field coordination (Field coordination).\nCurrent assignment: Distribution supervisor (River distribution).\nCurrent manager: Nina Rivelin.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm072",
+      "title": "Assignment change — Lila Verrin",
+      "path": "a-move-awm072.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "lila.verrin@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Lila Verrin\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, field coordination (Field coordination).\nCurrent assignment: Distribution technician (River distribution).\nCurrent manager: Jamie Telmire.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm081",
+      "title": "Assignment change — Morgan Wernick",
+      "path": "a-move-awm081.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "morgan.wernick@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Morgan Wernick\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, field coordination (Field coordination).\nCurrent assignment: Distribution technician (River distribution).\nCurrent manager: Jamie Telmire.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm085",
+      "title": "Assignment change — Nina Garsen",
+      "path": "a-move-awm085.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "nina.garsen@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Nina Garsen\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, pine treatment (Pine treatment).\nCurrent assignment: Field coordination lead (Field coordination).\nCurrent manager: Nina Rivelin.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm093",
+      "title": "Assignment change — Ren Belsart",
+      "path": "a-move-awm093.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "ren.belsart@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Ren Belsart\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, electrical and controls (Electrical and controls).\nCurrent assignment: Head of maintenance and engineering (Mechanical maintenance).\nCurrent manager: Luc Venn-Morel.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm102",
+      "title": "Assignment change — Thane Cavelin",
+      "path": "a-move-awm102.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "thane.cavelin@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Thane Cavelin\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, electrical and controls (Electrical and controls).\nCurrent assignment: Mechanical technician (Mechanical maintenance).\nCurrent manager: Ren Belsart.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm116",
+      "title": "Assignment change — Avery Velswick",
+      "path": "a-move-awm116.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "avery.velswick@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Avery Velswick\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, maintenance planning (Maintenance planning).\nCurrent assignment: Controls technician (Electrical and controls).\nCurrent manager: Yara Dalver.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm126",
+      "title": "Assignment change — Dario Fennard",
+      "path": "a-move-awm126.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "dario.fennard@alterrawaterco.com",
+        "ben.narsen@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Dario Fennard\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, capital projects (Capital projects).\nCurrent assignment: Maintenance planner (Maintenance planning).\nCurrent manager: Ben Narsen.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm127",
+      "title": "Assignment change — Della Orvel",
+      "path": "a-move-awm127.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "della.orvel@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Della Orvel\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, mechanical maintenance (Mechanical maintenance).\nCurrent assignment: Capital projects lead (Capital projects).\nCurrent manager: Ren Belsart.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-move-awm136",
+      "title": "Assignment change — Finn Quillan",
+      "path": "a-move-awm136.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "finn.quillan@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com",
+        "finn.elvarn@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Assignment change — Finn Quillan\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, mechanical maintenance (Mechanical maintenance).\nCurrent assignment: Project engineer (Capital projects).\nCurrent manager: Della Orvel.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "a-equipment-a-0011-26",
+      "title": "Equipment request A-0011-26",
+      "path": "a-equipment-a-0011-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-28T10:00:00-04:00",
+      "readers": [
+        "quinn.kelswick@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0011-26\n\nRequested: 25 June 2026 by Quinn Kelswick.\nManager: Nina Rivelin.\nFor: shared shift headset, Pine treatment work at Pine plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM006 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0012-26",
+      "title": "Equipment request A-0012-26",
+      "path": "a-equipment-a-0012-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-30T10:00:00-04:00",
+      "readers": [
+        "silas.tarlowe@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0012-26\n\nRequested: 27 June 2026 by Silas Tarlowe.\nManager: Nina Rivelin.\nFor: shared shift headset, Pine treatment work at Pine plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM013 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0013-26",
+      "title": "Equipment request A-0013-26",
+      "path": "a-equipment-a-0013-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-02T10:00:00-04:00",
+      "readers": [
+        "uma.delmont@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0013-26\n\nRequested: 29 June 2026 by Uma Delmont.\nManager: Nina Rivelin.\nFor: shared shift headset, Pine treatment work at Pine plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM020 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0014-26",
+      "title": "Equipment request A-0014-26",
+      "path": "a-equipment-a-0014-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-04T10:00:00-04:00",
+      "readers": [
+        "adele.odrin@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0014-26\n\nRequested: 1 July 2026 by Adele Odrin.\nManager: Vera Velswick.\nFor: shared shift headset, River treatment work at River plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM027 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0015-26",
+      "title": "Equipment request A-0015-26",
+      "path": "a-equipment-a-0015-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-06T10:00:00-04:00",
+      "readers": [
+        "ben.yervan@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0015-26\n\nRequested: 3 July 2026 by Ben Yervan.\nManager: Vera Velswick.\nFor: shared shift headset, River treatment work at River plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM034 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0016-26",
+      "title": "Equipment request A-0016-26",
+      "path": "a-equipment-a-0016-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T10:00:00-04:00",
+      "readers": [
+        "dana.harlowe@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0016-26\n\nRequested: 5 July 2026 by Dana Harlowe.\nManager: Vera Velswick.\nFor: shared shift headset, River treatment work at River plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM041 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0017-26",
+      "title": "Equipment request A-0017-26",
+      "path": "a-equipment-a-0017-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T10:00:00-04:00",
+      "readers": [
+        "elias.iversen@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0017-26\n\nRequested: 7 July 2026 by Elias Iversen.\nManager: Dario Radvell.\nFor: field tablet, Pine distribution work at Pine depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM047 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0018-26",
+      "title": "Equipment request A-0018-26",
+      "path": "a-equipment-a-0018-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-12T10:00:00-04:00",
+      "readers": [
+        "gabriel.selwyn@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0018-26\n\nRequested: 9 July 2026 by Gabriel Selwyn.\nManager: Dario Radvell.\nFor: field tablet, Pine distribution work at Pine depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM054 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0019-26",
+      "title": "Equipment request A-0019-26",
+      "path": "a-equipment-a-0019-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T10:00:00-04:00",
+      "readers": [
+        "isabel.danwick@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0019-26\n\nRequested: 11 July 2026 by Isabel Danwick.\nManager: Dario Radvell.\nFor: field tablet, Pine distribution work at Pine depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM061 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0020-26",
+      "title": "Equipment request A-0020-26",
+      "path": "a-equipment-a-0020-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-16T10:00:00-04:00",
+      "readers": [
+        "lara.mavell@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0020-26\n\nRequested: 13 July 2026 by Lara Mavell.\nManager: Jamie Telmire.\nFor: field tablet, River distribution work at River depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM068 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0021-26",
+      "title": "Equipment request A-0021-26",
+      "path": "a-equipment-a-0021-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-18T10:00:00-04:00",
+      "readers": [
+        "luca.warden@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0021-26\n\nRequested: 15 July 2026 by Luca Warden.\nManager: Jamie Telmire.\nFor: field tablet, River distribution work at River depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM075 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0022-26",
+      "title": "Equipment request A-0022-26",
+      "path": "a-equipment-a-0022-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T10:00:00-04:00",
+      "readers": [
+        "nella.ferrell@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0022-26\n\nRequested: 17 July 2026 by Nella Ferrell.\nManager: Jamie Telmire.\nFor: field tablet, River distribution work at River depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM082 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0023-26",
+      "title": "Equipment request A-0023-26",
+      "path": "a-equipment-a-0023-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-22T10:00:00-04:00",
+      "readers": [
+        "petra.quillan@alterrawaterco.com",
+        "nina.garsen@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0023-26\n\nRequested: 19 July 2026 by Petra Quillan.\nManager: Nina Garsen.\nFor: work laptop, Field coordination work at Pine depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM089 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0024-26",
+      "title": "Equipment request A-0024-26",
+      "path": "a-equipment-a-0024-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-24T10:00:00-04:00",
+      "readers": [
+        "sela.bravelle@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0024-26\n\nRequested: 21 July 2026 by Sela Bravelle.\nManager: Ren Belsart.\nFor: field tablet, Mechanical maintenance work at River depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM096 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0025-26",
+      "title": "Equipment request A-0025-26",
+      "path": "a-equipment-a-0025-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-26T10:00:00-04:00",
+      "readers": [
+        "tomas.kelswick@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0025-26\n\nRequested: 23 July 2026 by Tomas Kelswick.\nManager: Ren Belsart.\nFor: field tablet, Mechanical maintenance work at Pine depot.\nStatus: Issued.\n\nThe service desk records the asset against AWM103 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0026-26",
+      "title": "Equipment request A-0026-26",
+      "path": "a-equipment-a-0026-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-28T10:00:00-04:00",
+      "readers": [
+        "yasmin.lestrel@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0026-26\n\nRequested: 25 July 2026 by Yasmin Lestrel.\nManager: Yara Dalver.\nFor: field tablet, Electrical and controls work at Pine plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM109 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0027-26",
+      "title": "Equipment request A-0027-26",
+      "path": "a-equipment-a-0027-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-30T10:00:00-04:00",
+      "readers": [
+        "avery.velswick@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0027-26\n\nRequested: 27 July 2026 by Avery Velswick.\nManager: Yara Dalver.\nFor: field tablet, Electrical and controls work at River plant.\nStatus: Issued.\n\nThe service desk records the asset against AWM116 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0028-26",
+      "title": "Equipment request A-0028-26",
+      "path": "a-equipment-a-0028-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-01T10:00:00-04:00",
+      "readers": [
+        "celia.warden@alterrawaterco.com",
+        "ben.narsen@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0028-26\n\nRequested: 29 July 2026 by Celia Warden.\nManager: Ben Narsen.\nFor: field tablet, Maintenance planning work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM122 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0029-26",
+      "title": "Equipment request A-0029-26",
+      "path": "a-equipment-a-0029-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-03T10:00:00-04:00",
+      "readers": [
+        "edda.ferrell@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0029-26\n\nRequested: 31 July 2026 by Edda Ferrell.\nManager: Della Orvel.\nFor: field tablet, Capital projects work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM129 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0030-26",
+      "title": "Equipment request A-0030-26",
+      "path": "a-equipment-a-0030-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-05T10:00:00-04:00",
+      "readers": [
+        "finn.quillan@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0030-26\n\nRequested: 2 August 2026 by Finn Quillan.\nManager: Della Orvel.\nFor: field tablet, Capital projects work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM136 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0031-26",
+      "title": "Equipment request A-0031-26",
+      "path": "a-equipment-a-0031-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-07T10:00:00-04:00",
+      "readers": [
+        "idris.renshaw@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0031-26\n\nRequested: 4 August 2026 by Idris Renshaw.\nManager: Hana Radvell.\nFor: work laptop, Resource planning work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM142 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0032-26",
+      "title": "Equipment request A-0032-26",
+      "path": "a-equipment-a-0032-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-09T10:00:00-04:00",
+      "readers": [
+        "jory.cavelin@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0032-26\n\nRequested: 6 August 2026 by Jory Cavelin.\nManager: Jalen Carsten.\nFor: work laptop, Laboratory work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM149 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0033-26",
+      "title": "Equipment request A-0033-26",
+      "path": "a-equipment-a-0033-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-11T10:00:00-04:00",
+      "readers": [
+        "lila.lestrel@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0033-26\n\nRequested: 8 August 2026 by Lila Lestrel.\nManager: Jalen Carsten.\nFor: work laptop, Laboratory work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM156 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0034-26",
+      "title": "Equipment request A-0034-26",
+      "path": "a-equipment-a-0034-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-13T10:00:00-04:00",
+      "readers": [
+        "mica.torren@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0034-26\n\nRequested: 10 August 2026 by Mica Torren.\nManager: Louis Danwick.\nFor: work laptop, Quality systems work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM163 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0035-26",
+      "title": "Equipment request A-0035-26",
+      "path": "a-equipment-a-0035-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-15T10:00:00-04:00",
+      "readers": [
+        "omar.edran@alterrawaterco.com",
+        "elin.verrin@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0035-26\n\nRequested: 12 August 2026 by Omar Edran.\nManager: Elin Verrin.\nFor: work laptop, Service desk work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM170 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0036-26",
+      "title": "Equipment request A-0036-26",
+      "path": "a-equipment-a-0036-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-17T10:00:00-04:00",
+      "readers": [
+        "ren.orvel@alterrawaterco.com",
+        "rafael.wellard@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0036-26\n\nRequested: 14 August 2026 by Ren Orvel.\nManager: Rafael Wellard.\nFor: work laptop, Business applications work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM177 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0037-26",
+      "title": "Equipment request A-0037-26",
+      "path": "a-equipment-a-0037-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T10:00:00-04:00",
+      "readers": [
+        "tamsin.peveran@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0037-26\n\nRequested: 16 August 2026 by Tamsin Peveran.\nManager: Soren Garsen.\nFor: work laptop, Customer contact work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM183 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0038-26",
+      "title": "Equipment request A-0038-26",
+      "path": "a-equipment-a-0038-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T10:00:00-04:00",
+      "readers": [
+        "vera.belsart@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0038-26\n\nRequested: 18 August 2026 by Vera Belsart.\nManager: Soren Garsen.\nFor: work laptop, Customer contact work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM190 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0039-26",
+      "title": "Equipment request A-0039-26",
+      "path": "a-equipment-a-0039-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-23T10:00:00-04:00",
+      "readers": [
+        "amara.kelswick@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0039-26\n\nRequested: 20 August 2026 by Amara Kelswick.\nManager: Soren Garsen.\nFor: work laptop, Accounts work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM197 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-equipment-a-0040-26",
+      "title": "Equipment request A-0040-26",
+      "path": "a-equipment-a-0040-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T10:00:00-04:00",
+      "readers": [
+        "camille.tarlowe@alterrawaterco.com",
+        "amara.kelswick@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com"
+      ],
+      "text": "# Equipment request A-0040-26\n\nRequested: 22 August 2026 by Camille Tarlowe.\nManager: Amara Kelswick.\nFor: work laptop, Accounts work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against AWM204 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "a-induction-awm012",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm012.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "sela.lestrel@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:22bd48b9-19fa-5308-aaec-b1fc83e5796d@alterrawaterco.com\r\nDTSTAMP:20260521T130000Z\r\nDTSTART:20260528T140000Z\r\nDTEND:20260528T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:sela.lestrel@alterrawaterco.com\r\nATTENDEE:mailto:nina.rivelin@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Sela Lestrel: meet Nina Rivelin\\; check local handover and firs\r\n t work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm029",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm029.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "amara.fennard@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:6f1dc302-297e-5706-b800-c4a3dc2ffbfe@alterrawaterco.com\r\nDTSTAMP:20260819T130000Z\r\nDTSTART:20260826T140000Z\r\nDTEND:20260826T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:amara.fennard@alterrawaterco.com\r\nATTENDEE:mailto:vera.velswick@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Amara Fennard: meet Vera Velswick\\; check local handover and fi\r\n rst work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm046",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm046.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "eira.bravelle@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:933cbb49-2179-5d2c-a4f0-9da1930698e2@alterrawaterco.com\r\nDTSTAMP:20260601T130000Z\r\nDTSTART:20260608T140000Z\r\nDTEND:20260608T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:eira.bravelle@alterrawaterco.com\r\nATTENDEE:mailto:dario.radvell@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Eira Bravelle: meet Dario Radvell\\; check local handover and fi\r\n rst work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm063",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm063.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:75c0a009-cd6d-530c-b2ca-b81d2f28df34@alterrawaterco.com\r\nDTSTAMP:20251230T130000Z\r\nDTSTART:20260106T140000Z\r\nDTEND:20260106T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:jamie.telmire@alterrawaterco.com\r\nATTENDEE:mailto:nina.rivelin@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Jamie Telmire: meet Nina Rivelin\\; check local handover and fir\r\n st work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm080",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm080.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "mira.orvel@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:c54dd555-dfc7-5108-a27e-50035db12d4a@alterrawaterco.com\r\nDTSTAMP:20260328T130000Z\r\nDTSTART:20260404T140000Z\r\nDTEND:20260404T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:mira.orvel@alterrawaterco.com\r\nATTENDEE:mailto:jamie.telmire@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Mira Orvel: meet Jamie Telmire\\; check local handover and first\r\n  work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm097",
+      "title": "Site and shift induction",
+      "path": "a-induction-awm097.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "silas.iversen@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:6b21878d-9bc1-5a8c-8c6b-f4ffe5542438@alterrawaterco.com\r\nDTSTAMP:20260625T130000Z\r\nDTSTART:20260702T140000Z\r\nDTEND:20260702T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:silas.iversen@alterrawaterco.com\r\nATTENDEE:mailto:ren.belsart@alterrawaterco.com\r\nSUMMARY:Site and shift induction\r\nDESCRIPTION:Silas Iversen: meet Ren Belsart\\; check local handover and firs\r\n t work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm114",
+      "title": "New colleague induction",
+      "path": "a-induction-awm114.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "anika.delmont@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:eb1b6a44-3eee-535f-a938-b9204a2b20f9@alterrawaterco.com\r\nDTSTAMP:20260504T130000Z\r\nDTSTART:20260511T140000Z\r\nDTEND:20260511T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:anika.delmont@alterrawaterco.com\r\nATTENDEE:mailto:yara.dalver@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Anika Delmont: meet Yara Dalver\\; check local handover and firs\r\n t work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm131",
+      "title": "New colleague induction",
+      "path": "a-induction-awm131.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "elias.yervan@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:349dd848-f521-5f41-8e36-7c84adff4599@alterrawaterco.com\r\nDTSTAMP:20260313T130000Z\r\nDTSTART:20260320T140000Z\r\nDTEND:20260320T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:elias.yervan@alterrawaterco.com\r\nATTENDEE:mailto:della.orvel@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Elias Yervan: meet Della Orvel\\; check local handover and first\r\n  work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm148",
+      "title": "New colleague induction",
+      "path": "a-induction-awm148.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "jonas.sarnell@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:f400bc8d-4465-5fa5-8a62-a63b6dd0d113@alterrawaterco.com\r\nDTSTAMP:20251226T130000Z\r\nDTSTART:20260102T140000Z\r\nDTEND:20260102T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:jonas.sarnell@alterrawaterco.com\r\nATTENDEE:mailto:jalen.carsten@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Jonas Sarnell: meet Jalen Carsten\\; check local handover and fi\r\n rst work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm165",
+      "title": "New colleague induction",
+      "path": "a-induction-awm165.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "morgan.mavell@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:a0c56205-e433-59e9-bc2d-5c1076d04661@alterrawaterco.com\r\nDTSTAMP:20260420T130000Z\r\nDTSTART:20260427T140000Z\r\nDTEND:20260427T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:morgan.mavell@alterrawaterco.com\r\nATTENDEE:mailto:mira.delmont@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Morgan Mavell: meet Mira Delmont\\; check local handover and fir\r\n st work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm182",
+      "title": "New colleague induction",
+      "path": "a-induction-awm182.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "elin.verrin@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:59d28997-ad61-560d-b4f9-aaab17e0e25a@alterrawaterco.com\r\nDTSTAMP:20260202T130000Z\r\nDTSTART:20260209T140000Z\r\nDTEND:20260209T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:soren.garsen@alterrawaterco.com\r\nATTENDEE:mailto:elin.verrin@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Soren Garsen: meet Elin Verrin\\; check local handover and first\r\n  work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "a-induction-awm199",
+      "title": "New colleague induction",
+      "path": "a-induction-awm199.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "finn.elvarn@alterrawaterco.com",
+        "ari.cernault@alterrawaterco.com",
+        "amara.kelswick@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:7ec6eac4-a035-562f-815e-c7818e21b95b@alterrawaterco.com\r\nDTSTAMP:20260430T130000Z\r\nDTSTART:20260507T140000Z\r\nDTEND:20260507T144500Z\r\nORGANIZER:mailto:finn.elvarn@alterrawaterco.com\r\nATTENDEE:mailto:ari.cernault@alterrawaterco.com\r\nATTENDEE:mailto:amara.kelswick@alterrawaterco.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Ari Cernault: meet Amara Kelswick\\; check local handover and fi\r\n rst work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    }
+  ],
+  "reader_groups": {
+    "arwc-staff": [
+      "mina.selverin@alterrawaterco.com",
+      "nina.rivelin@alterrawaterco.com",
+      "omar.carsten@alterrawaterco.com",
+      "orla.jorrel@alterrawaterco.com",
+      "pascal.sarnell@alterrawaterco.com",
+      "petra.cavelin@alterrawaterco.com",
+      "quinn.kelswick@alterrawaterco.com",
+      "rafael.selwyn@alterrawaterco.com",
+      "remi.cernault@alterrawaterco.com",
+      "ren.larmont@alterrawaterco.com",
+      "safa.senvard@alterrawaterco.com",
+      "samira.dalver@alterrawaterco.com",
+      "sela.lestrel@alterrawaterco.com",
+      "silas.tarlowe@alterrawaterco.com",
+      "soren.danwick@alterrawaterco.com",
+      "tamsin.maraven@alterrawaterco.com",
+      "tariq.telmire@alterrawaterco.com",
+      "tessa.darsell@alterrawaterco.com",
+      "thane.marrent@alterrawaterco.com",
+      "tomas.torren@alterrawaterco.com",
+      "uma.delmont@alterrawaterco.com",
+      "valen.mavell@alterrawaterco.com",
+      "vera.velswick@alterrawaterco.com",
+      "willa.dravik@alterrawaterco.com",
+      "yara.narsen@alterrawaterco.com",
+      "yasmin.verrin@alterrawaterco.com",
+      "zane.edran@alterrawaterco.com",
+      "adele.odrin@alterrawaterco.com",
+      "alix.wellard@alterrawaterco.com",
+      "amara.fennard@alterrawaterco.com",
+      "anika.orvel@alterrawaterco.com",
+      "ari.wernick@alterrawaterco.com",
+      "avery.ferrell@alterrawaterco.com",
+      "beatrice.parnell@alterrawaterco.com",
+      "ben.yervan@alterrawaterco.com",
+      "callum.garsen@alterrawaterco.com",
+      "camille.peveran@alterrawaterco.com",
+      "cara.zorrel@alterrawaterco.com",
+      "celia.gervain@alterrawaterco.com",
+      "cian.quillan@alterrawaterco.com",
+      "corin.aldren@alterrawaterco.com",
+      "dana.harlowe@alterrawaterco.com",
+      "owen.vardell@alterrawaterco.com",
+      "dario.radvell@alterrawaterco.com",
+      "della.belsart@alterrawaterco.com",
+      "dev.havelin@alterrawaterco.com",
+      "edda.renshaw@alterrawaterco.com",
+      "eira.bravelle@alterrawaterco.com",
+      "elias.iversen@alterrawaterco.com",
+      "elin.rivelin@alterrawaterco.com",
+      "emre.carsten@alterrawaterco.com",
+      "farah.jorrel@alterrawaterco.com",
+      "felix.sarnell@alterrawaterco.com",
+      "finn.cavelin@alterrawaterco.com",
+      "flora.kelswick@alterrawaterco.com",
+      "gabriel.selwyn@alterrawaterco.com",
+      "hana.cernault@alterrawaterco.com",
+      "harriet.larmont@alterrawaterco.com",
+      "hugo.senvard@alterrawaterco.com",
+      "idris.dalver@alterrawaterco.com",
+      "imani.lestrel@alterrawaterco.com",
+      "iris.tarlowe@alterrawaterco.com",
+      "isabel.danwick@alterrawaterco.com",
+      "jalen.maraven@alterrawaterco.com",
+      "jamie.telmire@alterrawaterco.com",
+      "jonas.darsell@alterrawaterco.com",
+      "jory.marrent@alterrawaterco.com",
+      "kaisa.torren@alterrawaterco.com",
+      "kiran.delmont@alterrawaterco.com",
+      "lara.mavell@alterrawaterco.com",
+      "leila.velswick@alterrawaterco.com",
+      "lena.dravik@alterrawaterco.com",
+      "leo.narsen@alterrawaterco.com",
+      "lila.verrin@alterrawaterco.com",
+      "lina.edran@alterrawaterco.com",
+      "louis.nelcourt@alterrawaterco.com",
+      "luca.warden@alterrawaterco.com",
+      "mara.elvarn@alterrawaterco.com",
+      "margot.odrin@alterrawaterco.com",
+      "martin.wellard@alterrawaterco.com",
+      "mica.fennard@alterrawaterco.com",
+      "mira.orvel@alterrawaterco.com",
+      "morgan.wernick@alterrawaterco.com",
+      "nella.ferrell@alterrawaterco.com",
+      "niamh.parnell@alterrawaterco.com",
+      "niko.yervan@alterrawaterco.com",
+      "nina.garsen@alterrawaterco.com",
+      "omar.peveran@alterrawaterco.com",
+      "orla.zorrel@alterrawaterco.com",
+      "pascal.gervain@alterrawaterco.com",
+      "petra.quillan@alterrawaterco.com",
+      "quinn.aldren@alterrawaterco.com",
+      "rafael.harlowe@alterrawaterco.com",
+      "remi.radvell@alterrawaterco.com",
+      "ren.belsart@alterrawaterco.com",
+      "safa.havelin@alterrawaterco.com",
+      "samira.renshaw@alterrawaterco.com",
+      "sela.bravelle@alterrawaterco.com",
+      "silas.iversen@alterrawaterco.com",
+      "soren.rivelin@alterrawaterco.com",
+      "tamsin.carsten@alterrawaterco.com",
+      "tariq.jorrel@alterrawaterco.com",
+      "tessa.sarnell@alterrawaterco.com",
+      "thane.cavelin@alterrawaterco.com",
+      "tomas.kelswick@alterrawaterco.com",
+      "uma.selwyn@alterrawaterco.com",
+      "valen.cernault@alterrawaterco.com",
+      "vera.larmont@alterrawaterco.com",
+      "willa.senvard@alterrawaterco.com",
+      "clara.morivelle@alterrawaterco.com",
+      "yara.dalver@alterrawaterco.com",
+      "yasmin.lestrel@alterrawaterco.com",
+      "zane.tarlowe@alterrawaterco.com",
+      "adele.darsell@alterrawaterco.com",
+      "alix.marrent@alterrawaterco.com",
+      "amara.torren@alterrawaterco.com",
+      "anika.delmont@alterrawaterco.com",
+      "ari.mavell@alterrawaterco.com",
+      "avery.velswick@alterrawaterco.com",
+      "beatrice.dravik@alterrawaterco.com",
+      "theo.marrivel@alterrawaterco.com",
+      "ben.narsen@alterrawaterco.com",
+      "callum.verrin@alterrawaterco.com",
+      "camille.edran@alterrawaterco.com",
+      "cara.nelcourt@alterrawaterco.com",
+      "celia.warden@alterrawaterco.com",
+      "cian.elvarn@alterrawaterco.com",
+      "corin.odrin@alterrawaterco.com",
+      "dana.wellard@alterrawaterco.com",
+      "dario.fennard@alterrawaterco.com",
+      "della.orvel@alterrawaterco.com",
+      "dev.wernick@alterrawaterco.com",
+      "edda.ferrell@alterrawaterco.com",
+      "eira.parnell@alterrawaterco.com",
+      "elias.yervan@alterrawaterco.com",
+      "elin.garsen@alterrawaterco.com",
+      "emre.peveran@alterrawaterco.com",
+      "farah.zorrel@alterrawaterco.com",
+      "felix.gervain@alterrawaterco.com",
+      "finn.quillan@alterrawaterco.com",
+      "flora.aldren@alterrawaterco.com",
+      "gabriel.harlowe@alterrawaterco.com",
+      "nadia.corvane@alterrawaterco.com",
+      "hana.radvell@alterrawaterco.com",
+      "harriet.belsart@alterrawaterco.com",
+      "hugo.havelin@alterrawaterco.com",
+      "idris.renshaw@alterrawaterco.com",
+      "imani.bravelle@alterrawaterco.com",
+      "iris.iversen@alterrawaterco.com",
+      "isabel.rivelin@alterrawaterco.com",
+      "jalen.carsten@alterrawaterco.com",
+      "jamie.jorrel@alterrawaterco.com",
+      "jonas.sarnell@alterrawaterco.com",
+      "jory.cavelin@alterrawaterco.com",
+      "kaisa.kelswick@alterrawaterco.com",
+      "kiran.selwyn@alterrawaterco.com",
+      "lara.cernault@alterrawaterco.com",
+      "leila.larmont@alterrawaterco.com",
+      "lena.senvard@alterrawaterco.com",
+      "leo.dalver@alterrawaterco.com",
+      "lila.lestrel@alterrawaterco.com",
+      "lina.tarlowe@alterrawaterco.com",
+      "louis.danwick@alterrawaterco.com",
+      "luca.maraven@alterrawaterco.com",
+      "mara.telmire@alterrawaterco.com",
+      "margot.darsell@alterrawaterco.com",
+      "martin.marrent@alterrawaterco.com",
+      "mica.torren@alterrawaterco.com",
+      "mira.delmont@alterrawaterco.com",
+      "morgan.mavell@alterrawaterco.com",
+      "nella.velswick@alterrawaterco.com",
+      "niamh.dravik@alterrawaterco.com",
+      "niko.narsen@alterrawaterco.com",
+      "nina.verrin@alterrawaterco.com",
+      "omar.edran@alterrawaterco.com",
+      "orla.nelcourt@alterrawaterco.com",
+      "pascal.warden@alterrawaterco.com",
+      "petra.elvarn@alterrawaterco.com",
+      "quinn.odrin@alterrawaterco.com",
+      "rafael.wellard@alterrawaterco.com",
+      "remi.fennard@alterrawaterco.com",
+      "ren.orvel@alterrawaterco.com",
+      "safa.wernick@alterrawaterco.com",
+      "samira.ferrell@alterrawaterco.com",
+      "sela.parnell@alterrawaterco.com",
+      "silas.yervan@alterrawaterco.com",
+      "rosa.nerivet@alterrawaterco.com",
+      "soren.garsen@alterrawaterco.com",
+      "tamsin.peveran@alterrawaterco.com",
+      "tariq.zorrel@alterrawaterco.com",
+      "tessa.gervain@alterrawaterco.com",
+      "thane.quillan@alterrawaterco.com",
+      "tomas.aldren@alterrawaterco.com",
+      "uma.harlowe@alterrawaterco.com",
+      "valen.radvell@alterrawaterco.com",
+      "vera.belsart@alterrawaterco.com",
+      "willa.havelin@alterrawaterco.com",
+      "yara.renshaw@alterrawaterco.com",
+      "yasmin.bravelle@alterrawaterco.com",
+      "zane.iversen@alterrawaterco.com",
+      "adele.sarnell@alterrawaterco.com",
+      "alix.cavelin@alterrawaterco.com",
+      "amara.kelswick@alterrawaterco.com",
+      "anika.selwyn@alterrawaterco.com",
+      "ari.cernault@alterrawaterco.com",
+      "avery.larmont@alterrawaterco.com",
+      "beatrice.senvard@alterrawaterco.com",
+      "ben.dalver@alterrawaterco.com",
+      "callum.lestrel@alterrawaterco.com",
+      "camille.tarlowe@alterrawaterco.com",
+      "priya.naravel@alterrawaterco.com",
+      "cara.danwick@alterrawaterco.com",
+      "celia.maraven@alterrawaterco.com",
+      "cian.telmire@alterrawaterco.com",
+      "corin.darsell@alterrawaterco.com",
+      "dana.marrent@alterrawaterco.com",
+      "dario.torren@alterrawaterco.com",
+      "della.delmont@alterrawaterco.com",
+      "dev.mavell@alterrawaterco.com",
+      "edda.velswick@alterrawaterco.com",
+      "eira.dravik@alterrawaterco.com",
+      "elias.narsen@alterrawaterco.com",
+      "luc.venn-morel@alterrawaterco.com",
+      "elin.verrin@alterrawaterco.com",
+      "emre.edran@alterrawaterco.com",
+      "farah.nelcourt@alterrawaterco.com",
+      "felix.warden@alterrawaterco.com",
+      "finn.elvarn@alterrawaterco.com",
+      "flora.odrin@alterrawaterco.com",
+      "gabriel.wellard@alterrawaterco.com"
+    ],
+    "arwc-operations-treatment-and-distribution": [
+      "mina.selverin@alterrawaterco.com",
+      "nina.rivelin@alterrawaterco.com",
+      "omar.carsten@alterrawaterco.com",
+      "orla.jorrel@alterrawaterco.com",
+      "pascal.sarnell@alterrawaterco.com",
+      "petra.cavelin@alterrawaterco.com",
+      "quinn.kelswick@alterrawaterco.com",
+      "rafael.selwyn@alterrawaterco.com",
+      "remi.cernault@alterrawaterco.com",
+      "ren.larmont@alterrawaterco.com",
+      "safa.senvard@alterrawaterco.com",
+      "samira.dalver@alterrawaterco.com",
+      "sela.lestrel@alterrawaterco.com",
+      "silas.tarlowe@alterrawaterco.com",
+      "soren.danwick@alterrawaterco.com",
+      "tamsin.maraven@alterrawaterco.com",
+      "tariq.telmire@alterrawaterco.com",
+      "tessa.darsell@alterrawaterco.com",
+      "thane.marrent@alterrawaterco.com",
+      "tomas.torren@alterrawaterco.com",
+      "uma.delmont@alterrawaterco.com",
+      "valen.mavell@alterrawaterco.com",
+      "vera.velswick@alterrawaterco.com",
+      "willa.dravik@alterrawaterco.com",
+      "yara.narsen@alterrawaterco.com",
+      "yasmin.verrin@alterrawaterco.com",
+      "zane.edran@alterrawaterco.com",
+      "adele.odrin@alterrawaterco.com",
+      "alix.wellard@alterrawaterco.com",
+      "amara.fennard@alterrawaterco.com",
+      "anika.orvel@alterrawaterco.com",
+      "ari.wernick@alterrawaterco.com",
+      "avery.ferrell@alterrawaterco.com",
+      "beatrice.parnell@alterrawaterco.com",
+      "ben.yervan@alterrawaterco.com",
+      "callum.garsen@alterrawaterco.com",
+      "camille.peveran@alterrawaterco.com",
+      "cara.zorrel@alterrawaterco.com",
+      "celia.gervain@alterrawaterco.com",
+      "cian.quillan@alterrawaterco.com",
+      "corin.aldren@alterrawaterco.com",
+      "dana.harlowe@alterrawaterco.com",
+      "owen.vardell@alterrawaterco.com",
+      "dario.radvell@alterrawaterco.com",
+      "della.belsart@alterrawaterco.com",
+      "dev.havelin@alterrawaterco.com",
+      "edda.renshaw@alterrawaterco.com",
+      "eira.bravelle@alterrawaterco.com",
+      "elias.iversen@alterrawaterco.com",
+      "elin.rivelin@alterrawaterco.com",
+      "emre.carsten@alterrawaterco.com",
+      "farah.jorrel@alterrawaterco.com",
+      "felix.sarnell@alterrawaterco.com",
+      "finn.cavelin@alterrawaterco.com",
+      "flora.kelswick@alterrawaterco.com",
+      "gabriel.selwyn@alterrawaterco.com",
+      "hana.cernault@alterrawaterco.com",
+      "harriet.larmont@alterrawaterco.com",
+      "hugo.senvard@alterrawaterco.com",
+      "idris.dalver@alterrawaterco.com",
+      "imani.lestrel@alterrawaterco.com",
+      "iris.tarlowe@alterrawaterco.com",
+      "isabel.danwick@alterrawaterco.com",
+      "jalen.maraven@alterrawaterco.com",
+      "jamie.telmire@alterrawaterco.com",
+      "jonas.darsell@alterrawaterco.com",
+      "jory.marrent@alterrawaterco.com",
+      "kaisa.torren@alterrawaterco.com",
+      "kiran.delmont@alterrawaterco.com",
+      "lara.mavell@alterrawaterco.com",
+      "leila.velswick@alterrawaterco.com",
+      "lena.dravik@alterrawaterco.com",
+      "leo.narsen@alterrawaterco.com",
+      "lila.verrin@alterrawaterco.com",
+      "lina.edran@alterrawaterco.com",
+      "louis.nelcourt@alterrawaterco.com",
+      "luca.warden@alterrawaterco.com",
+      "mara.elvarn@alterrawaterco.com",
+      "margot.odrin@alterrawaterco.com",
+      "martin.wellard@alterrawaterco.com",
+      "mica.fennard@alterrawaterco.com",
+      "mira.orvel@alterrawaterco.com",
+      "morgan.wernick@alterrawaterco.com",
+      "nella.ferrell@alterrawaterco.com",
+      "niamh.parnell@alterrawaterco.com",
+      "niko.yervan@alterrawaterco.com",
+      "nina.garsen@alterrawaterco.com",
+      "omar.peveran@alterrawaterco.com",
+      "orla.zorrel@alterrawaterco.com",
+      "pascal.gervain@alterrawaterco.com",
+      "petra.quillan@alterrawaterco.com",
+      "quinn.aldren@alterrawaterco.com",
+      "rafael.harlowe@alterrawaterco.com",
+      "remi.radvell@alterrawaterco.com"
+    ],
+    "arwc-pine-treatment": [
+      "mina.selverin@alterrawaterco.com",
+      "nina.rivelin@alterrawaterco.com",
+      "omar.carsten@alterrawaterco.com",
+      "orla.jorrel@alterrawaterco.com",
+      "pascal.sarnell@alterrawaterco.com",
+      "petra.cavelin@alterrawaterco.com",
+      "quinn.kelswick@alterrawaterco.com",
+      "rafael.selwyn@alterrawaterco.com",
+      "remi.cernault@alterrawaterco.com",
+      "ren.larmont@alterrawaterco.com",
+      "safa.senvard@alterrawaterco.com",
+      "samira.dalver@alterrawaterco.com",
+      "sela.lestrel@alterrawaterco.com",
+      "silas.tarlowe@alterrawaterco.com",
+      "soren.danwick@alterrawaterco.com",
+      "tamsin.maraven@alterrawaterco.com",
+      "tariq.telmire@alterrawaterco.com",
+      "tessa.darsell@alterrawaterco.com",
+      "thane.marrent@alterrawaterco.com",
+      "tomas.torren@alterrawaterco.com",
+      "uma.delmont@alterrawaterco.com",
+      "valen.mavell@alterrawaterco.com"
+    ],
+    "arwc-river-treatment": [
+      "vera.velswick@alterrawaterco.com",
+      "willa.dravik@alterrawaterco.com",
+      "yara.narsen@alterrawaterco.com",
+      "yasmin.verrin@alterrawaterco.com",
+      "zane.edran@alterrawaterco.com",
+      "adele.odrin@alterrawaterco.com",
+      "alix.wellard@alterrawaterco.com",
+      "amara.fennard@alterrawaterco.com",
+      "anika.orvel@alterrawaterco.com",
+      "ari.wernick@alterrawaterco.com",
+      "avery.ferrell@alterrawaterco.com",
+      "beatrice.parnell@alterrawaterco.com",
+      "ben.yervan@alterrawaterco.com",
+      "callum.garsen@alterrawaterco.com",
+      "camille.peveran@alterrawaterco.com",
+      "cara.zorrel@alterrawaterco.com",
+      "celia.gervain@alterrawaterco.com",
+      "cian.quillan@alterrawaterco.com",
+      "corin.aldren@alterrawaterco.com",
+      "dana.harlowe@alterrawaterco.com"
+    ],
+    "arwc-pine-distribution": [
+      "owen.vardell@alterrawaterco.com",
+      "dario.radvell@alterrawaterco.com",
+      "della.belsart@alterrawaterco.com",
+      "dev.havelin@alterrawaterco.com",
+      "edda.renshaw@alterrawaterco.com",
+      "eira.bravelle@alterrawaterco.com",
+      "elias.iversen@alterrawaterco.com",
+      "elin.rivelin@alterrawaterco.com",
+      "emre.carsten@alterrawaterco.com",
+      "farah.jorrel@alterrawaterco.com",
+      "felix.sarnell@alterrawaterco.com",
+      "finn.cavelin@alterrawaterco.com",
+      "flora.kelswick@alterrawaterco.com",
+      "gabriel.selwyn@alterrawaterco.com",
+      "hana.cernault@alterrawaterco.com",
+      "harriet.larmont@alterrawaterco.com",
+      "hugo.senvard@alterrawaterco.com",
+      "idris.dalver@alterrawaterco.com",
+      "imani.lestrel@alterrawaterco.com",
+      "iris.tarlowe@alterrawaterco.com",
+      "isabel.danwick@alterrawaterco.com",
+      "jalen.maraven@alterrawaterco.com"
+    ],
+    "arwc-river-distribution": [
+      "jamie.telmire@alterrawaterco.com",
+      "jonas.darsell@alterrawaterco.com",
+      "jory.marrent@alterrawaterco.com",
+      "kaisa.torren@alterrawaterco.com",
+      "kiran.delmont@alterrawaterco.com",
+      "lara.mavell@alterrawaterco.com",
+      "leila.velswick@alterrawaterco.com",
+      "lena.dravik@alterrawaterco.com",
+      "leo.narsen@alterrawaterco.com",
+      "lila.verrin@alterrawaterco.com",
+      "lina.edran@alterrawaterco.com",
+      "louis.nelcourt@alterrawaterco.com",
+      "luca.warden@alterrawaterco.com",
+      "mara.elvarn@alterrawaterco.com",
+      "margot.odrin@alterrawaterco.com",
+      "martin.wellard@alterrawaterco.com",
+      "mica.fennard@alterrawaterco.com",
+      "mira.orvel@alterrawaterco.com",
+      "morgan.wernick@alterrawaterco.com",
+      "nella.ferrell@alterrawaterco.com",
+      "niamh.parnell@alterrawaterco.com",
+      "niko.yervan@alterrawaterco.com"
+    ],
+    "arwc-field-coordination": [
+      "nina.garsen@alterrawaterco.com",
+      "omar.peveran@alterrawaterco.com",
+      "orla.zorrel@alterrawaterco.com",
+      "pascal.gervain@alterrawaterco.com",
+      "petra.quillan@alterrawaterco.com",
+      "quinn.aldren@alterrawaterco.com",
+      "rafael.harlowe@alterrawaterco.com",
+      "remi.radvell@alterrawaterco.com"
+    ],
+    "arwc-maintenance-and-engineering": [
+      "ren.belsart@alterrawaterco.com",
+      "safa.havelin@alterrawaterco.com",
+      "samira.renshaw@alterrawaterco.com",
+      "sela.bravelle@alterrawaterco.com",
+      "silas.iversen@alterrawaterco.com",
+      "soren.rivelin@alterrawaterco.com",
+      "tamsin.carsten@alterrawaterco.com",
+      "tariq.jorrel@alterrawaterco.com",
+      "tessa.sarnell@alterrawaterco.com",
+      "thane.cavelin@alterrawaterco.com",
+      "tomas.kelswick@alterrawaterco.com",
+      "uma.selwyn@alterrawaterco.com",
+      "valen.cernault@alterrawaterco.com",
+      "vera.larmont@alterrawaterco.com",
+      "willa.senvard@alterrawaterco.com",
+      "clara.morivelle@alterrawaterco.com",
+      "yara.dalver@alterrawaterco.com",
+      "yasmin.lestrel@alterrawaterco.com",
+      "zane.tarlowe@alterrawaterco.com",
+      "adele.darsell@alterrawaterco.com",
+      "alix.marrent@alterrawaterco.com",
+      "amara.torren@alterrawaterco.com",
+      "anika.delmont@alterrawaterco.com",
+      "ari.mavell@alterrawaterco.com",
+      "avery.velswick@alterrawaterco.com",
+      "beatrice.dravik@alterrawaterco.com",
+      "theo.marrivel@alterrawaterco.com",
+      "ben.narsen@alterrawaterco.com",
+      "callum.verrin@alterrawaterco.com",
+      "camille.edran@alterrawaterco.com",
+      "cara.nelcourt@alterrawaterco.com",
+      "celia.warden@alterrawaterco.com",
+      "cian.elvarn@alterrawaterco.com",
+      "corin.odrin@alterrawaterco.com",
+      "dana.wellard@alterrawaterco.com",
+      "dario.fennard@alterrawaterco.com",
+      "della.orvel@alterrawaterco.com",
+      "dev.wernick@alterrawaterco.com",
+      "edda.ferrell@alterrawaterco.com",
+      "eira.parnell@alterrawaterco.com",
+      "elias.yervan@alterrawaterco.com",
+      "elin.garsen@alterrawaterco.com",
+      "emre.peveran@alterrawaterco.com",
+      "farah.zorrel@alterrawaterco.com",
+      "felix.gervain@alterrawaterco.com",
+      "finn.quillan@alterrawaterco.com",
+      "flora.aldren@alterrawaterco.com",
+      "gabriel.harlowe@alterrawaterco.com"
+    ],
+    "arwc-mechanical-maintenance": [
+      "ren.belsart@alterrawaterco.com",
+      "safa.havelin@alterrawaterco.com",
+      "samira.renshaw@alterrawaterco.com",
+      "sela.bravelle@alterrawaterco.com",
+      "silas.iversen@alterrawaterco.com",
+      "soren.rivelin@alterrawaterco.com",
+      "tamsin.carsten@alterrawaterco.com",
+      "tariq.jorrel@alterrawaterco.com",
+      "tessa.sarnell@alterrawaterco.com",
+      "thane.cavelin@alterrawaterco.com",
+      "tomas.kelswick@alterrawaterco.com",
+      "uma.selwyn@alterrawaterco.com",
+      "valen.cernault@alterrawaterco.com",
+      "vera.larmont@alterrawaterco.com",
+      "willa.senvard@alterrawaterco.com"
+    ],
+    "arwc-electrical-and-controls": [
+      "clara.morivelle@alterrawaterco.com",
+      "yara.dalver@alterrawaterco.com",
+      "yasmin.lestrel@alterrawaterco.com",
+      "zane.tarlowe@alterrawaterco.com",
+      "adele.darsell@alterrawaterco.com",
+      "alix.marrent@alterrawaterco.com",
+      "amara.torren@alterrawaterco.com",
+      "anika.delmont@alterrawaterco.com",
+      "ari.mavell@alterrawaterco.com",
+      "avery.velswick@alterrawaterco.com",
+      "beatrice.dravik@alterrawaterco.com"
+    ],
+    "arwc-maintenance-planning": [
+      "theo.marrivel@alterrawaterco.com",
+      "ben.narsen@alterrawaterco.com",
+      "callum.verrin@alterrawaterco.com",
+      "camille.edran@alterrawaterco.com",
+      "cara.nelcourt@alterrawaterco.com",
+      "celia.warden@alterrawaterco.com",
+      "cian.elvarn@alterrawaterco.com",
+      "corin.odrin@alterrawaterco.com",
+      "dana.wellard@alterrawaterco.com",
+      "dario.fennard@alterrawaterco.com"
+    ],
+    "arwc-capital-projects": [
+      "della.orvel@alterrawaterco.com",
+      "dev.wernick@alterrawaterco.com",
+      "edda.ferrell@alterrawaterco.com",
+      "eira.parnell@alterrawaterco.com",
+      "elias.yervan@alterrawaterco.com",
+      "elin.garsen@alterrawaterco.com",
+      "emre.peveran@alterrawaterco.com",
+      "farah.zorrel@alterrawaterco.com",
+      "felix.gervain@alterrawaterco.com",
+      "finn.quillan@alterrawaterco.com",
+      "flora.aldren@alterrawaterco.com",
+      "gabriel.harlowe@alterrawaterco.com"
+    ],
+    "arwc-planning-quality-and-compliance": [
+      "nadia.corvane@alterrawaterco.com",
+      "hana.radvell@alterrawaterco.com",
+      "harriet.belsart@alterrawaterco.com",
+      "hugo.havelin@alterrawaterco.com",
+      "idris.renshaw@alterrawaterco.com",
+      "imani.bravelle@alterrawaterco.com",
+      "iris.iversen@alterrawaterco.com",
+      "isabel.rivelin@alterrawaterco.com",
+      "jalen.carsten@alterrawaterco.com",
+      "jamie.jorrel@alterrawaterco.com",
+      "jonas.sarnell@alterrawaterco.com",
+      "jory.cavelin@alterrawaterco.com",
+      "kaisa.kelswick@alterrawaterco.com",
+      "kiran.selwyn@alterrawaterco.com",
+      "lara.cernault@alterrawaterco.com",
+      "leila.larmont@alterrawaterco.com",
+      "lena.senvard@alterrawaterco.com",
+      "leo.dalver@alterrawaterco.com",
+      "lila.lestrel@alterrawaterco.com",
+      "lina.tarlowe@alterrawaterco.com",
+      "louis.danwick@alterrawaterco.com",
+      "luca.maraven@alterrawaterco.com",
+      "mara.telmire@alterrawaterco.com",
+      "margot.darsell@alterrawaterco.com",
+      "martin.marrent@alterrawaterco.com",
+      "mica.torren@alterrawaterco.com",
+      "mira.delmont@alterrawaterco.com",
+      "morgan.mavell@alterrawaterco.com",
+      "nella.velswick@alterrawaterco.com",
+      "niamh.dravik@alterrawaterco.com",
+      "niko.narsen@alterrawaterco.com",
+      "nina.verrin@alterrawaterco.com"
+    ],
+    "arwc-resource-planning": [
+      "nadia.corvane@alterrawaterco.com",
+      "hana.radvell@alterrawaterco.com",
+      "harriet.belsart@alterrawaterco.com",
+      "hugo.havelin@alterrawaterco.com",
+      "idris.renshaw@alterrawaterco.com",
+      "imani.bravelle@alterrawaterco.com",
+      "iris.iversen@alterrawaterco.com",
+      "isabel.rivelin@alterrawaterco.com"
+    ],
+    "arwc-laboratory": [
+      "jalen.carsten@alterrawaterco.com",
+      "jamie.jorrel@alterrawaterco.com",
+      "jonas.sarnell@alterrawaterco.com",
+      "jory.cavelin@alterrawaterco.com",
+      "kaisa.kelswick@alterrawaterco.com",
+      "kiran.selwyn@alterrawaterco.com",
+      "lara.cernault@alterrawaterco.com",
+      "leila.larmont@alterrawaterco.com",
+      "lena.senvard@alterrawaterco.com",
+      "leo.dalver@alterrawaterco.com",
+      "lila.lestrel@alterrawaterco.com",
+      "lina.tarlowe@alterrawaterco.com"
+    ],
+    "arwc-quality-systems": [
+      "louis.danwick@alterrawaterco.com",
+      "luca.maraven@alterrawaterco.com",
+      "mara.telmire@alterrawaterco.com",
+      "margot.darsell@alterrawaterco.com",
+      "martin.marrent@alterrawaterco.com",
+      "mica.torren@alterrawaterco.com"
+    ],
+    "arwc-compliance-reporting": [
+      "mira.delmont@alterrawaterco.com",
+      "morgan.mavell@alterrawaterco.com",
+      "nella.velswick@alterrawaterco.com",
+      "niamh.dravik@alterrawaterco.com",
+      "niko.narsen@alterrawaterco.com",
+      "nina.verrin@alterrawaterco.com"
+    ],
+    "arwc-information-technology": [
+      "omar.edran@alterrawaterco.com",
+      "orla.nelcourt@alterrawaterco.com",
+      "pascal.warden@alterrawaterco.com",
+      "petra.elvarn@alterrawaterco.com",
+      "quinn.odrin@alterrawaterco.com",
+      "rafael.wellard@alterrawaterco.com",
+      "remi.fennard@alterrawaterco.com",
+      "ren.orvel@alterrawaterco.com",
+      "safa.wernick@alterrawaterco.com",
+      "samira.ferrell@alterrawaterco.com",
+      "sela.parnell@alterrawaterco.com",
+      "silas.yervan@alterrawaterco.com"
+    ],
+    "arwc-service-desk": [
+      "omar.edran@alterrawaterco.com",
+      "orla.nelcourt@alterrawaterco.com",
+      "pascal.warden@alterrawaterco.com",
+      "petra.elvarn@alterrawaterco.com",
+      "quinn.odrin@alterrawaterco.com"
+    ],
+    "arwc-business-applications": [
+      "rafael.wellard@alterrawaterco.com",
+      "remi.fennard@alterrawaterco.com",
+      "ren.orvel@alterrawaterco.com",
+      "safa.wernick@alterrawaterco.com"
+    ],
+    "arwc-identity-services": [
+      "samira.ferrell@alterrawaterco.com",
+      "sela.parnell@alterrawaterco.com",
+      "silas.yervan@alterrawaterco.com"
+    ],
+    "arwc-customer-service-and-business-support": [
+      "rosa.nerivet@alterrawaterco.com",
+      "soren.garsen@alterrawaterco.com",
+      "tamsin.peveran@alterrawaterco.com",
+      "tariq.zorrel@alterrawaterco.com",
+      "tessa.gervain@alterrawaterco.com",
+      "thane.quillan@alterrawaterco.com",
+      "tomas.aldren@alterrawaterco.com",
+      "uma.harlowe@alterrawaterco.com",
+      "valen.radvell@alterrawaterco.com",
+      "vera.belsart@alterrawaterco.com",
+      "willa.havelin@alterrawaterco.com",
+      "yara.renshaw@alterrawaterco.com",
+      "yasmin.bravelle@alterrawaterco.com",
+      "zane.iversen@alterrawaterco.com",
+      "adele.sarnell@alterrawaterco.com",
+      "alix.cavelin@alterrawaterco.com",
+      "amara.kelswick@alterrawaterco.com",
+      "anika.selwyn@alterrawaterco.com",
+      "ari.cernault@alterrawaterco.com",
+      "avery.larmont@alterrawaterco.com",
+      "beatrice.senvard@alterrawaterco.com",
+      "ben.dalver@alterrawaterco.com",
+      "callum.lestrel@alterrawaterco.com",
+      "camille.tarlowe@alterrawaterco.com",
+      "priya.naravel@alterrawaterco.com",
+      "cara.danwick@alterrawaterco.com",
+      "celia.maraven@alterrawaterco.com",
+      "cian.telmire@alterrawaterco.com",
+      "corin.darsell@alterrawaterco.com",
+      "dana.marrent@alterrawaterco.com",
+      "dario.torren@alterrawaterco.com",
+      "della.delmont@alterrawaterco.com",
+      "dev.mavell@alterrawaterco.com",
+      "edda.velswick@alterrawaterco.com",
+      "eira.dravik@alterrawaterco.com",
+      "elias.narsen@alterrawaterco.com"
+    ],
+    "arwc-customer-contact": [
+      "rosa.nerivet@alterrawaterco.com",
+      "soren.garsen@alterrawaterco.com",
+      "tamsin.peveran@alterrawaterco.com",
+      "tariq.zorrel@alterrawaterco.com",
+      "tessa.gervain@alterrawaterco.com",
+      "thane.quillan@alterrawaterco.com",
+      "tomas.aldren@alterrawaterco.com",
+      "uma.harlowe@alterrawaterco.com",
+      "valen.radvell@alterrawaterco.com",
+      "vera.belsart@alterrawaterco.com",
+      "willa.havelin@alterrawaterco.com",
+      "yara.renshaw@alterrawaterco.com",
+      "yasmin.bravelle@alterrawaterco.com",
+      "zane.iversen@alterrawaterco.com",
+      "adele.sarnell@alterrawaterco.com",
+      "alix.cavelin@alterrawaterco.com"
+    ],
+    "arwc-accounts": [
+      "amara.kelswick@alterrawaterco.com",
+      "anika.selwyn@alterrawaterco.com",
+      "ari.cernault@alterrawaterco.com",
+      "avery.larmont@alterrawaterco.com",
+      "beatrice.senvard@alterrawaterco.com",
+      "ben.dalver@alterrawaterco.com",
+      "callum.lestrel@alterrawaterco.com",
+      "camille.tarlowe@alterrawaterco.com"
+    ],
+    "arwc-procurement": [
+      "priya.naravel@alterrawaterco.com",
+      "cara.danwick@alterrawaterco.com",
+      "celia.maraven@alterrawaterco.com",
+      "cian.telmire@alterrawaterco.com",
+      "corin.darsell@alterrawaterco.com",
+      "dana.marrent@alterrawaterco.com"
+    ],
+    "arwc-records-and-scheduling": [
+      "dario.torren@alterrawaterco.com",
+      "della.delmont@alterrawaterco.com",
+      "dev.mavell@alterrawaterco.com",
+      "edda.velswick@alterrawaterco.com",
+      "eira.dravik@alterrawaterco.com",
+      "elias.narsen@alterrawaterco.com"
+    ],
+    "arwc-leadership-and-finance": [
+      "luc.venn-morel@alterrawaterco.com",
+      "elin.verrin@alterrawaterco.com",
+      "emre.edran@alterrawaterco.com",
+      "farah.nelcourt@alterrawaterco.com",
+      "felix.warden@alterrawaterco.com",
+      "finn.elvarn@alterrawaterco.com",
+      "flora.odrin@alterrawaterco.com",
+      "gabriel.wellard@alterrawaterco.com"
+    ],
+    "arwc-executive": [
+      "luc.venn-morel@alterrawaterco.com",
+      "elin.verrin@alterrawaterco.com"
+    ],
+    "arwc-finance": [
+      "emre.edran@alterrawaterco.com",
+      "farah.nelcourt@alterrawaterco.com",
+      "felix.warden@alterrawaterco.com"
+    ],
+    "arwc-people-and-board-support": [
+      "finn.elvarn@alterrawaterco.com",
+      "flora.odrin@alterrawaterco.com",
+      "gabriel.wellard@alterrawaterco.com"
+    ]
+  },
+  "identity_requirements": {
+    "authentication": "individual staff identity",
+    "access": "exact item readers"
+  }
+}

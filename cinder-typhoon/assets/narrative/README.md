@@ -3,17 +3,18 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 75 authored messages, 15 company documents,
-contact directories for the fourteen principal-company employees in the cast,
-and three calendar invitations. There are sixteen retained mailboxes, including
-the laboratory and staff-activities shared correspondence. It covers the eight ordinary stories, the
-companies' histories and ambitions, and relationships with all eight supporting
-businesses. Jules appears as a Veybridge correspondent.
+The collection contains 1,475 distinct authored messages, 155 source documents,
+staff directories for all 294 employees, and 21 calendar invitations. The
+workforce slice adds 1,400 messages, 140 documents, and 18 induction appointments
+to the earlier story collection. It keeps the eight ordinary stories and the
+relationships with eight supporting businesses. Jules remains a Veybridge
+correspondent, outside both employee directories.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
-samples: nine unchanged messages, fourteen revised messages, and seven new
-messages. It extends the existing fifteen profiles in place. The other 45
-messages remain unchanged. Private profiles, sample annotations, ownership,
+samples from the original story collection: nine unchanged messages, fourteen
+revised messages, and seven new messages. It extends the existing fifteen
+profiles in place. The other 45 original messages remain unchanged. Private
+profiles, sample annotations, ownership,
 and base-version records stay under `docs/narrative/` and are not deployed.
 
 ## Sources and outputs
@@ -21,19 +22,20 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | Location | Purpose |
 | --- | --- |
 | `authoring/people.yaml` | Fictional people, addresses, and departmental correspondents. |
+| `authoring/workforce.yaml` | Full employee roster, reporting tree, distribution groups, tenure, and author-only writing notes. |
+| `authoring/workforce-actions.yaml` | Author-only join index for the workforce correspondence. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents.yaml`, `documents/` | Authored documents, titles, and intended readers. |
 | `authoring/calendars.yaml` | Agreed and tentative future arrangements as of the snapshot. |
-| `generated/messages/` | Individual RFC 5322 messages with MIME attachments. |
+| `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
 | `generated/directories/`, `generated/calendars/` | CSV contacts and RFC 5545 calendar files. |
-| `generated/packages/` | Four self-contained JSON source artifacts for native RAE content declarations. |
+| `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |
 
-Only the four package payloads are bound into the world. Authoring metadata,
+Only the eight package payloads are bound into the world. Authoring metadata,
 coverage records, and this README are not part of a staff mailbox or document
-library. The RFC822 files and original documents are also available here for
-review and reuse by the eventual adapter.
+library. The original documents and source mail are also available for review.
 
 Rebuild from the repository root using the validation environment:
 
@@ -48,9 +50,10 @@ is deterministic and local; it sends no mail and creates no target accounts.
 
 ## Native RAE binding
 
-The `narrative-keplerops` and `narrative-arwc` modules each declare two native
-`content` datasets: mail and documents. They target the existing staff and business
-systems respectively. Each uses RAE's `service_materialization` contract for a
+The `narrative-keplerops` and `narrative-arwc` modules each declare four native
+`content` datasets: mail, documents, directory, and employment. They target the
+existing staff and business systems respectively. Each uses RAE's
+`service_materialization` contract for a
 named `workplace` service, with `ensure-owned-items`, rejection of unowned
 collisions, and canonical content-digest readback.
 
@@ -66,7 +69,7 @@ no node, subnet, access route, or supplied credential. RAE's service declaration
 does not itself authorize traffic. Host operating systems, software products,
 physical hosting, and participant replication retain their open declarations.
 
-Four observed-state readback assertions require ordinary-reader visibility of
+Eight observed-state readback assertions require authorized-reader visibility of
 the exact content collections. They are materialization checks, separate from
 challenge completion; they add no objectives or prerequisite gates. The eventual
 adapter must implement the formats below and prove readback. Static validation
@@ -88,10 +91,16 @@ attachments. Access to one mailbox does not reveal the whole source collection.
 External correspondence is retained at the principal companies; no supplier
 mail environment is created by this collection.
 
-`cinder-document-library/v1` contains named items with title, relative display
-path, media type, exact text, and explicit reader addresses. It includes Markdown
-documents, CSV contact directories, and calendar items. A materializer must retain
-the reader sets and keep personal calendar items with their intended audience.
+`cinder-document-library/v1`, `cinder-staff-directory/v1`, and
+`cinder-employment-records/v1` contain named items with title, relative display
+path, media type, exact text, and explicit reader addresses. The directory source
+is readable by same-company staff; individual employment records and induction
+appointments require the listed staff identities. A materializer must enforce
+those reader sets for every item, not expose the whole collection to a reader of
+one item. The directory and employment packages carry exact department and team
+reader-group memberships and an individual-identity requirement. Native RAE
+marks mail, documents, and employment sensitive; source-package readers are the
+pack's detailed access contract for the eventual workplace adapter.
 These data formats are defined by this pack; RAE supplies their source, owner,
 materialization, observation, and compilation semantics.
 

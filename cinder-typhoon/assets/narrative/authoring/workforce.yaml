@@ -1,0 +1,5962 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+employees:
+- key: rowan
+  name: Rowan Ito
+  email: rowan.ito@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: FieldKest developer
+  manager: kwm001
+  start_date: '2018-01-01'
+  effective_date: '2018-01-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310101'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: Earlier core product assignment
+  context_note: Prefers a technical path and examples; can overextend a small request.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: kwm001
+  name: Adele Aldren
+  email: adele.aldren@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Core product lead
+  manager: leah
+  start_date: '2023-08-12'
+  effective_date: '2023-08-12'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310102'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: Product engineer
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm002
+  name: Alix Harlowe
+  email: alix.harlowe@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Product engineer
+  manager: kwm001
+  start_date: '2019-03-23'
+  effective_date: '2019-03-23'
+  work_pattern: remote
+  site: Regional office
+  extension: '310103'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: Product engineer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm003
+  name: Amara Radvell
+  email: amara.radvell@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Product engineer
+  manager: kwm001
+  start_date: '2026-02-07'
+  effective_date: '2026-02-07'
+  work_pattern: office
+  site: Regional office
+  extension: '310104'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: ''
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm004
+  name: Anika Belsart
+  email: anika.belsart@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Product engineer
+  manager: kwm001
+  start_date: '2022-05-18'
+  effective_date: '2022-05-18'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310105'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: Product engineer
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm005
+  name: Ari Havelin
+  email: ari.havelin@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Product engineer
+  manager: kwm001
+  start_date: '2018-12-02'
+  effective_date: '2018-12-02'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310106'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: Earlier core product assignment
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm006
+  name: Avery Renshaw
+  email: avery.renshaw@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Core product
+  job: Product engineer
+  manager: kwm001
+  start_date: '2025-07-13'
+  effective_date: '2025-07-13'
+  work_pattern: remote
+  site: Regional office
+  extension: '310107'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-core-product
+  prior_role: ''
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm007
+  name: Beatrice Bravelle
+  email: beatrice.bravelle@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connectors lead
+  manager: kwm001
+  start_date: '2021-02-24'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310108'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Team member, experience
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Experience
+  move_date: '2026-06-01'
+- key: kwm008
+  name: Ben Iversen
+  email: ben.iversen@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connector engineer
+  manager: kwm007
+  start_date: '2017-09-08'
+  effective_date: '2017-09-08'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310109'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Connector engineer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm009
+  name: Callum Rivelin
+  email: callum.rivelin@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connector engineer
+  manager: kwm007
+  start_date: '2024-04-19'
+  effective_date: '2024-04-19'
+  work_pattern: remote
+  site: Regional office
+  extension: '310110'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Connector engineer
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm010
+  name: Camille Carsten
+  email: camille.carsten@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connector engineer
+  manager: kwm007
+  start_date: '2020-11-03'
+  effective_date: '2020-11-03'
+  work_pattern: office
+  site: Regional office
+  extension: '310111'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Connector engineer
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm011
+  name: Cara Jorrel
+  email: cara.jorrel@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connector engineer
+  manager: kwm007
+  start_date: '2016-06-14'
+  effective_date: '2016-06-14'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310112'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Connector engineer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm012
+  name: Celia Sarnell
+  email: celia.sarnell@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Connectors
+  job: Connector engineer
+  manager: kwm007
+  start_date: '2023-01-25'
+  effective_date: '2023-01-25'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310113'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-connectors
+  prior_role: Earlier connectors assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm013
+  name: Cian Cavelin
+  email: cian.cavelin@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Experience
+  job: Experience lead
+  manager: kwm001
+  start_date: '2019-08-09'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310114'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-experience
+  prior_role: Team member, customer integrations
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Customer integrations
+  move_date: '2026-06-01'
+- key: kwm014
+  name: Corin Kelswick
+  email: corin.kelswick@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Experience
+  job: Interface engineer
+  manager: kwm013
+  start_date: '2026-03-20'
+  effective_date: '2026-03-20'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310115'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-experience
+  prior_role: ''
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: kwm015
+  name: Dana Selwyn
+  email: dana.selwyn@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Experience
+  job: Interface engineer
+  manager: kwm013
+  start_date: '2022-10-04'
+  effective_date: '2022-10-04'
+  work_pattern: remote
+  site: Regional office
+  extension: '310116'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-experience
+  prior_role: Interface engineer
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm016
+  name: Dario Cernault
+  email: dario.cernault@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Experience
+  job: Interface engineer
+  manager: kwm013
+  start_date: '2018-05-15'
+  effective_date: '2018-05-15'
+  work_pattern: office
+  site: Regional office
+  extension: '310117'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-experience
+  prior_role: Interface engineer
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm017
+  name: Della Larmont
+  email: della.larmont@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Experience
+  job: Interface engineer
+  manager: kwm013
+  start_date: '2025-12-26'
+  effective_date: '2025-12-26'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310118'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-experience
+  prior_role: ''
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm018
+  name: Dev Senvard
+  email: dev.senvard@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Customer integrations
+  job: Customer integrations lead
+  manager: kwm001
+  start_date: '2021-07-10'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310119'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-customer-integrations
+  prior_role: Team member, core product
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Core product
+  move_date: '2026-06-01'
+- key: kwm019
+  name: Edda Dalver
+  email: edda.dalver@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Customer integrations
+  job: Integration engineer
+  manager: kwm018
+  start_date: '2017-02-21'
+  effective_date: '2017-02-21'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310120'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-customer-integrations
+  prior_role: Integration engineer
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm020
+  name: Eira Lestrel
+  email: eira.lestrel@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Customer integrations
+  job: Integration engineer
+  manager: kwm018
+  start_date: '2024-09-05'
+  effective_date: '2024-09-05'
+  work_pattern: remote
+  site: Regional office
+  extension: '310121'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-customer-integrations
+  prior_role: Integration engineer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm021
+  name: Elias Tarlowe
+  email: elias.tarlowe@keplerops.com
+  employer: keplerops
+  department: Product engineering
+  team: Customer integrations
+  job: Integration engineer
+  manager: kwm018
+  start_date: '2020-04-16'
+  effective_date: '2020-04-16'
+  work_pattern: office
+  site: Regional office
+  extension: '310122'
+  groups:
+  - keplerops-staff
+  - keplerops-product-engineering
+  - keplerops-customer-integrations
+  prior_role: Integration engineer
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: maya
+  name: Maya Ranscombe
+  email: maya.ranscombe@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Customer support engineer
+  manager: kwm022
+  start_date: '2019-11-27'
+  effective_date: '2019-11-27'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310123'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: Earlier customer support assignment
+  context_note: Remembers customer context and is considering team leadership.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: talia
+  name: Talia Mornac
+  email: talia.mornac@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Support quality reviewer
+  manager: kwm022
+  start_date: '2023-06-11'
+  effective_date: '2023-06-11'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310124'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: Support engineer
+  context_note: Wants ownership of her own workshop and focused feedback.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm022
+  name: Elin Danwick
+  email: elin.danwick@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Customer support lead
+  manager: leah
+  start_date: '2016-04-22'
+  effective_date: '2016-04-22'
+  work_pattern: remote
+  site: Regional office
+  extension: '310125'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: Support engineer
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm023
+  name: Emre Maraven
+  email: emre.maraven@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Support engineer
+  manager: kwm022
+  start_date: '2023-08-06'
+  effective_date: '2023-08-06'
+  work_pattern: office
+  site: Regional office
+  extension: '310126'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: Support engineer
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm024
+  name: Farah Telmire
+  email: farah.telmire@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Support engineer
+  manager: kwm022
+  start_date: '2019-03-17'
+  effective_date: '2019-03-17'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310127'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: Support engineer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm025
+  name: Felix Darsell
+  email: felix.darsell@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Customer support
+  job: Support engineer
+  manager: kwm022
+  start_date: '2026-02-01'
+  effective_date: '2026-02-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310128'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-customer-support
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm026
+  name: Finn Marrent
+  email: finn.marrent@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Implementation
+  job: Implementation lead
+  manager: kwm022
+  start_date: '2022-05-12'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310129'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-implementation
+  prior_role: Team member, enablement
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Enablement
+  move_date: '2026-06-01'
+- key: kwm027
+  name: Flora Torren
+  email: flora.torren@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Implementation
+  job: Implementation specialist
+  manager: kwm026
+  start_date: '2018-12-23'
+  effective_date: '2018-12-23'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310130'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-implementation
+  prior_role: Implementation specialist
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm028
+  name: Gabriel Delmont
+  email: gabriel.delmont@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Implementation
+  job: Implementation specialist
+  manager: kwm026
+  start_date: '2025-07-07'
+  effective_date: '2025-07-07'
+  work_pattern: remote
+  site: Regional office
+  extension: '310131'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-implementation
+  prior_role: ''
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm029
+  name: Hana Mavell
+  email: hana.mavell@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Implementation
+  job: Implementation specialist
+  manager: kwm026
+  start_date: '2021-02-18'
+  effective_date: '2021-02-18'
+  work_pattern: office
+  site: Regional office
+  extension: '310132'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-implementation
+  prior_role: Implementation specialist
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm030
+  name: Harriet Velswick
+  email: harriet.velswick@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Implementation
+  job: Implementation specialist
+  manager: kwm026
+  start_date: '2017-09-02'
+  effective_date: '2017-09-02'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310133'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-implementation
+  prior_role: Implementation specialist
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm031
+  name: Hugo Dravik
+  email: hugo.dravik@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Enablement
+  job: Enablement lead
+  manager: kwm022
+  start_date: '2024-04-13'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310134'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-enablement
+  prior_role: Team member, customer support
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: Customer support
+  move_date: '2026-06-01'
+- key: kwm032
+  name: Idris Narsen
+  email: idris.narsen@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Enablement
+  job: Training specialist
+  manager: kwm031
+  start_date: '2020-11-24'
+  effective_date: '2020-11-24'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310135'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-enablement
+  prior_role: Training specialist
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm033
+  name: Imani Verrin
+  email: imani.verrin@keplerops.com
+  employer: keplerops
+  department: Support and implementation
+  team: Enablement
+  job: Training specialist
+  manager: kwm031
+  start_date: '2016-06-08'
+  effective_date: '2016-06-08'
+  work_pattern: remote
+  site: Regional office
+  extension: '310136'
+  groups:
+  - keplerops-staff
+  - keplerops-support-and-implementation
+  - keplerops-enablement
+  prior_role: Training specialist
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: evan
+  name: Evan Calderoux
+  email: evan.calderoux@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Release engineering
+  job: Release engineer
+  manager: kwm034
+  start_date: '2019-01-19'
+  effective_date: '2019-01-19'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310137'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-release-engineering
+  prior_role: Earlier release engineering assignment
+  context_note: Protects release clarity and keeps service promises specific.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm034
+  name: Iris Edran
+  email: iris.edran@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Release engineering
+  job: Release engineering lead
+  manager: leah
+  start_date: '2023-08-03'
+  effective_date: '2023-08-03'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310138'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-release-engineering
+  prior_role: Release engineer
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm035
+  name: Isabel Nelcourt
+  email: isabel.nelcourt@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Release engineering
+  job: Release engineer
+  manager: kwm034
+  start_date: '2019-03-14'
+  effective_date: '2019-03-14'
+  work_pattern: remote
+  site: Regional office
+  extension: '310139'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-release-engineering
+  prior_role: Release engineer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: noor
+  name: Noor Aveling
+  email: noor.aveling@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Service operations
+  job: Platform and workload operator
+  manager: kwm036
+  start_date: '2020-10-25'
+  effective_date: '2020-10-25'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310140'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-service-operations
+  prior_role: Earlier service operations assignment
+  context_note: Comfortable with operational ambiguity but wants protected time with friends.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm036
+  name: Jalen Warden
+  email: jalen.warden@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Service operations
+  job: Service operations lead
+  manager: kwm034
+  start_date: '2026-01-09'
+  effective_date: '2026-01-09'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310141'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-service-operations
+  prior_role: ''
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm037
+  name: Jamie Elvarn
+  email: jamie.elvarn@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Service operations
+  job: Platform operator
+  manager: kwm036
+  start_date: '2022-12-20'
+  effective_date: '2022-12-20'
+  work_pattern: remote
+  site: Regional office
+  extension: '310142'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-service-operations
+  prior_role: Platform operator
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm038
+  name: Jonas Odrin
+  email: jonas.odrin@keplerops.com
+  employer: keplerops
+  department: Platform and release
+  team: Service operations
+  job: Platform operator
+  manager: kwm036
+  start_date: '2018-07-04'
+  effective_date: '2018-07-04'
+  work_pattern: office
+  site: Regional office
+  extension: '310143'
+  groups:
+  - keplerops-staff
+  - keplerops-platform-and-release
+  - keplerops-service-operations
+  prior_role: Platform operator
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: kwm039
+  name: Jory Wellard
+  email: jory.wellard@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Product management
+  job: Head of product management and quality
+  manager: leah
+  start_date: '2025-02-15'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310144'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-product-management
+  prior_role: Team member, quality assurance
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+  prior_team: Quality assurance
+  move_date: '2026-06-01'
+- key: kwm040
+  name: Kaisa Fennard
+  email: kaisa.fennard@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Product management
+  job: Product manager
+  manager: kwm039
+  start_date: '2021-09-26'
+  effective_date: '2021-09-26'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310145'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-product-management
+  prior_role: Product manager
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm041
+  name: Kiran Orvel
+  email: kiran.orvel@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Product management
+  job: Product manager
+  manager: kwm039
+  start_date: '2017-04-10'
+  effective_date: '2017-04-10'
+  work_pattern: remote
+  site: Regional office
+  extension: '310146'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-product-management
+  prior_role: Product manager
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm042
+  name: Lara Velswick
+  email: lara.velswick@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Quality assurance
+  job: Quality assurance lead
+  manager: kwm039
+  start_date: '2024-11-21'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310147'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-quality-assurance
+  prior_role: Team member, product management
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Product management
+  move_date: '2026-06-01'
+- key: kwm043
+  name: Leila Ferrell
+  email: leila.ferrell@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Quality assurance
+  job: Quality analyst
+  manager: kwm042
+  start_date: '2020-06-05'
+  effective_date: '2020-06-05'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310148'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-quality-assurance
+  prior_role: Quality analyst
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm044
+  name: Lena Parnell
+  email: lena.parnell@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Quality assurance
+  job: Quality analyst
+  manager: kwm042
+  start_date: '2016-04-16'
+  effective_date: '2016-04-16'
+  work_pattern: remote
+  site: Regional office
+  extension: '310149'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-quality-assurance
+  prior_role: Quality analyst
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm045
+  name: Leo Yervan
+  email: leo.yervan@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Quality assurance
+  job: Quality analyst
+  manager: kwm042
+  start_date: '2023-08-27'
+  effective_date: '2023-08-27'
+  work_pattern: office
+  site: Regional office
+  extension: '310150'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-quality-assurance
+  prior_role: Quality analyst
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: kwm046
+  name: Lila Garsen
+  email: lila.garsen@keplerops.com
+  employer: keplerops
+  department: Product management and quality
+  team: Quality assurance
+  job: Quality analyst
+  manager: kwm042
+  start_date: '2019-03-11'
+  effective_date: '2019-03-11'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310151'
+  groups:
+  - keplerops-staff
+  - keplerops-product-management-and-quality
+  - keplerops-quality-assurance
+  prior_role: Quality analyst
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm047
+  name: Lina Peveran
+  email: lina.peveran@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Accounts
+  job: Head of commercial
+  manager: leah
+  start_date: '2026-02-22'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310152'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-accounts
+  prior_role: Team member, proposals
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+  prior_team: Proposals
+  move_date: '2026-06-01'
+- key: kwm048
+  name: Louis Zorrel
+  email: louis.zorrel@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Accounts
+  job: Account manager
+  manager: kwm047
+  start_date: '2022-05-06'
+  effective_date: '2022-05-06'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310153'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-accounts
+  prior_role: Account manager
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: kwm049
+  name: Luca Gervain
+  email: luca.gervain@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Accounts
+  job: Account manager
+  manager: kwm047
+  start_date: '2018-12-17'
+  effective_date: '2018-12-17'
+  work_pattern: remote
+  site: Regional office
+  extension: '310154'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-accounts
+  prior_role: Account manager
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm050
+  name: Mara Quillan
+  email: mara.quillan@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Accounts
+  job: Account manager
+  manager: kwm047
+  start_date: '2025-07-01'
+  effective_date: '2025-07-01'
+  work_pattern: office
+  site: Regional office
+  extension: '310155'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-accounts
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: kwm051
+  name: Margot Aldren
+  email: margot.aldren@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Proposals
+  job: Proposals lead
+  manager: kwm047
+  start_date: '2021-02-12'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310156'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-proposals
+  prior_role: Team member, accounts
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Accounts
+  move_date: '2026-06-01'
+- key: kwm052
+  name: Martin Harlowe
+  email: martin.harlowe@keplerops.com
+  employer: keplerops
+  department: Commercial
+  team: Proposals
+  job: Commercial coordinator
+  manager: kwm051
+  start_date: '2017-09-23'
+  effective_date: '2017-09-23'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310157'
+  groups:
+  - keplerops-staff
+  - keplerops-commercial
+  - keplerops-proposals
+  prior_role: Commercial coordinator
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: leah
+  name: Leah Calder-Voss
+  email: leah.calder-voss@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: Executive
+  job: Founder and managing director
+  manager: ''
+  start_date: '2016-03-14'
+  effective_date: '2016-03-14'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310158'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-executive
+  prior_role: Earlier executive assignment
+  context_note: Founder; values a durable specialist company and shared credit.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: kwm053
+  name: Mica Radvell
+  email: mica.radvell@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: Executive
+  job: Business director
+  manager: leah
+  start_date: '2024-11-18'
+  effective_date: '2024-11-18'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310159'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-executive
+  prior_role: Business director
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: kwm054
+  name: Mira Belsart
+  email: mira.belsart@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: People operations
+  job: People operations lead
+  manager: leah
+  start_date: '2020-06-02'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310160'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-people-operations
+  prior_role: Team member, finance
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Asks one specific question at a time; may send a correction later.
+  prior_team: Finance
+  move_date: '2026-06-01'
+- key: kwm055
+  name: Morgan Havelin
+  email: morgan.havelin@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: People operations
+  job: People coordinator
+  manager: kwm054
+  start_date: '2016-04-13'
+  effective_date: '2016-04-13'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310161'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-people-operations
+  prior_role: People coordinator
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: kwm056
+  name: Nella Renshaw
+  email: nella.renshaw@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: Finance
+  job: Finance lead
+  manager: leah
+  start_date: '2023-08-24'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310162'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-finance
+  prior_role: Team member, office
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: Office
+  move_date: '2026-06-01'
+- key: kwm057
+  name: Niamh Bravelle
+  email: niamh.bravelle@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: Finance
+  job: Finance officer
+  manager: kwm056
+  start_date: '2019-03-08'
+  effective_date: '2019-03-08'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310163'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-finance
+  prior_role: Finance officer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: kwm058
+  name: Niko Rensart
+  email: niko.rensart@keplerops.com
+  employer: keplerops
+  department: Leadership and business operations
+  team: Office
+  job: Office lead
+  manager: leah
+  start_date: '2026-06-19'
+  effective_date: '2026-06-19'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '310164'
+  groups:
+  - keplerops-staff
+  - keplerops-leadership-and-business-operations
+  - keplerops-office
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: mina
+  name: Mina Selverin
+  email: mina.selverin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Senior water treatment operator
+  manager: awm001
+  start_date: '2007-05-21'
+  effective_date: '2007-05-21'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420165'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Pine Water Service
+  context_note: Experienced treatment operator; values sound shift handover.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm001
+  name: Nina Rivelin
+  email: nina.rivelin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment shift supervisor
+  manager: luc
+  start_date: '2017-12-14'
+  effective_date: '2017-12-14'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420166'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm002
+  name: Omar Carsten
+  email: omar.carsten@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2024-07-25'
+  effective_date: '2024-07-25'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420167'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm003
+  name: Orla Jorrel
+  email: orla.jorrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2014-02-09'
+  effective_date: '2014-02-09'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420168'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm004
+  name: Pascal Sarnell
+  email: pascal.sarnell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2021-09-20'
+  effective_date: '2021-09-20'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420169'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm005
+  name: Petra Cavelin
+  email: petra.cavelin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2013-04-04'
+  effective_date: '2013-04-04'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420170'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Earlier pine treatment assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm006
+  name: Quinn Kelswick
+  email: quinn.kelswick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2018-11-15'
+  effective_date: '2018-11-15'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420171'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm007
+  name: Rafael Selwyn
+  email: rafael.selwyn@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2025-06-26'
+  effective_date: '2025-06-26'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420172'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: ''
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm008
+  name: Remi Cernault
+  email: remi.cernault@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2015-01-10'
+  effective_date: '2015-01-10'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420173'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm009
+  name: Ren Larmont
+  email: ren.larmont@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2022-08-21'
+  effective_date: '2026-06-01'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420174'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Team member, river treatment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Asks one specific question at a time; may send a correction later.
+  prior_team: River treatment
+  move_date: '2026-06-01'
+- key: awm010
+  name: Safa Senvard
+  email: safa.senvard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2012-03-05'
+  effective_date: '2012-03-05'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420175'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Earlier pine treatment assignment
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm011
+  name: Samira Dalver
+  email: samira.dalver@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2019-10-16'
+  effective_date: '2019-10-16'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420176'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm012
+  name: Sela Lestrel
+  email: sela.lestrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2026-05-27'
+  effective_date: '2026-05-27'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420177'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: ''
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm013
+  name: Silas Tarlowe
+  email: silas.tarlowe@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2016-12-11'
+  effective_date: '2016-12-11'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420178'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm014
+  name: Soren Danwick
+  email: soren.danwick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2023-07-22'
+  effective_date: '2023-07-22'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420179'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm015
+  name: Tamsin Maraven
+  email: tamsin.maraven@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2013-02-06'
+  effective_date: '2013-02-06'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420180'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Earlier pine treatment assignment
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm016
+  name: Tariq Telmire
+  email: tariq.telmire@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2020-09-17'
+  effective_date: '2020-09-17'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420181'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm017
+  name: Tessa Darsell
+  email: tessa.darsell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2012-04-01'
+  effective_date: '2012-04-01'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420182'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm018
+  name: Thane Marrent
+  email: thane.marrent@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2017-11-12'
+  effective_date: '2026-06-01'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420183'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Team member, river treatment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: River treatment
+  move_date: '2026-06-01'
+- key: awm019
+  name: Tomas Torren
+  email: tomas.torren@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2024-06-23'
+  effective_date: '2024-06-23'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420184'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm020
+  name: Uma Delmont
+  email: uma.delmont@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2014-01-07'
+  effective_date: '2014-01-07'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420185'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Earlier pine treatment assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm021
+  name: Valen Mavell
+  email: valen.mavell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  job: Treatment operator
+  manager: awm001
+  start_date: '2021-08-18'
+  effective_date: '2021-08-18'
+  work_pattern: rotating shifts
+  site: Pine plant
+  extension: '420186'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-treatment
+  prior_role: Treatment operator
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm022
+  name: Vera Velswick
+  email: vera.velswick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment shift supervisor
+  manager: awm001
+  start_date: '2011-03-02'
+  effective_date: '2026-06-01'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420187'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Team member, pine distribution
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+  prior_team: Pine distribution
+  move_date: '2026-06-01'
+- key: awm023
+  name: Willa Dravik
+  email: willa.dravik@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2018-10-13'
+  effective_date: '2018-10-13'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420188'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm024
+  name: Yara Narsen
+  email: yara.narsen@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2025-05-24'
+  effective_date: '2025-05-24'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420189'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: ''
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm025
+  name: Yasmin Verrin
+  email: yasmin.verrin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2015-12-08'
+  effective_date: '2015-12-08'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420190'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm026
+  name: Zane Edran
+  email: zane.edran@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2022-07-19'
+  effective_date: '2022-07-19'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420191'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm027
+  name: Adele Odrin
+  email: adele.odrin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2012-02-03'
+  effective_date: '2012-02-03'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420192'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Earlier river treatment assignment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm028
+  name: Alix Wellard
+  email: alix.wellard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2019-09-14'
+  effective_date: '2019-09-14'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420193'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm029
+  name: Amara Fennard
+  email: amara.fennard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2026-08-25'
+  effective_date: '2026-08-25'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420194'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: ''
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm030
+  name: Anika Orvel
+  email: anika.orvel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2016-11-09'
+  effective_date: '2016-11-09'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420195'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm031
+  name: Ari Wernick
+  email: ari.wernick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2023-06-20'
+  effective_date: '2026-06-01'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420196'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Team member, pine distribution
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Pine distribution
+  move_date: '2026-06-01'
+- key: awm032
+  name: Avery Ferrell
+  email: avery.ferrell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2013-01-04'
+  effective_date: '2013-01-04'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420197'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Earlier river treatment assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm033
+  name: Beatrice Parnell
+  email: beatrice.parnell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2020-08-15'
+  effective_date: '2020-08-15'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420198'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm034
+  name: Ben Yervan
+  email: ben.yervan@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2012-03-26'
+  effective_date: '2012-03-26'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420199'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm035
+  name: Callum Garsen
+  email: callum.garsen@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2017-10-10'
+  effective_date: '2017-10-10'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420200'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm036
+  name: Camille Peveran
+  email: camille.peveran@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2024-05-21'
+  effective_date: '2024-05-21'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420201'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm037
+  name: Cara Zorrel
+  email: cara.zorrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2014-12-05'
+  effective_date: '2014-12-05'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420202'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Earlier river treatment assignment
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm038
+  name: Celia Gervain
+  email: celia.gervain@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2021-07-16'
+  effective_date: '2021-07-16'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420203'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm039
+  name: Cian Quillan
+  email: cian.quillan@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2013-02-27'
+  effective_date: '2013-02-27'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420204'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Treatment operator
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm040
+  name: Corin Aldren
+  email: corin.aldren@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2018-09-11'
+  effective_date: '2026-06-01'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420205'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: Team member, pine distribution
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Pine distribution
+  move_date: '2026-06-01'
+- key: awm041
+  name: Dana Harlowe
+  email: dana.harlowe@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River treatment
+  job: Treatment operator
+  manager: awm022
+  start_date: '2025-04-22'
+  effective_date: '2025-04-22'
+  work_pattern: rotating shifts
+  site: River plant
+  extension: '420206'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-treatment
+  prior_role: ''
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: owen
+  name: Owen Vardell
+  email: owen.vardell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Water distribution apprentice
+  manager: awm042
+  start_date: '2025-04-07'
+  effective_date: '2025-04-07'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420207'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: ''
+  context_note: Distribution apprentice; asks before working independently.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm042
+  name: Dario Radvell
+  email: dario.radvell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution supervisor
+  manager: awm001
+  start_date: '2015-06-17'
+  effective_date: '2015-06-17'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420208'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm043
+  name: Della Belsart
+  email: della.belsart@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2022-01-01'
+  effective_date: '2022-01-01'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420209'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm044
+  name: Dev Havelin
+  email: dev.havelin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2012-08-12'
+  effective_date: '2012-08-12'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420210'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm045
+  name: Edda Renshaw
+  email: edda.renshaw@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2019-03-23'
+  effective_date: '2019-03-23'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420211'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm046
+  name: Eira Bravelle
+  email: eira.bravelle@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2026-06-07'
+  effective_date: '2026-06-07'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420212'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: ''
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm047
+  name: Elias Iversen
+  email: elias.iversen@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2016-05-18'
+  effective_date: '2016-05-18'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420213'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm048
+  name: Elin Rivelin
+  email: elin.rivelin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2023-12-02'
+  effective_date: '2023-12-02'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420214'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm049
+  name: Emre Carsten
+  email: emre.carsten@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2013-07-13'
+  effective_date: '2013-07-13'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420215'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm050
+  name: Farah Jorrel
+  email: farah.jorrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2020-02-24'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420216'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Team member, river distribution
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Asks one specific question at a time; may send a correction later.
+  prior_team: River distribution
+  move_date: '2026-06-01'
+- key: awm051
+  name: Felix Sarnell
+  email: felix.sarnell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2012-09-08'
+  effective_date: '2012-09-08'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420217'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Earlier pine distribution assignment
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm052
+  name: Finn Cavelin
+  email: finn.cavelin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2017-04-19'
+  effective_date: '2017-04-19'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420218'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm053
+  name: Flora Kelswick
+  email: flora.kelswick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2024-11-03'
+  effective_date: '2024-11-03'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420219'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm054
+  name: Gabriel Selwyn
+  email: gabriel.selwyn@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2014-06-14'
+  effective_date: '2014-06-14'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420220'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm055
+  name: Hana Cernault
+  email: hana.cernault@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2021-01-25'
+  effective_date: '2021-01-25'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420221'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm056
+  name: Harriet Larmont
+  email: harriet.larmont@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2013-08-09'
+  effective_date: '2013-08-09'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420222'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Earlier pine distribution assignment
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm057
+  name: Hugo Senvard
+  email: hugo.senvard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2018-03-20'
+  effective_date: '2018-03-20'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420223'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm058
+  name: Idris Dalver
+  email: idris.dalver@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2025-10-04'
+  effective_date: '2025-10-04'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420224'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: ''
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm059
+  name: Imani Lestrel
+  email: imani.lestrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2015-05-15'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420225'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Team member, river distribution
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: River distribution
+  move_date: '2026-06-01'
+- key: awm060
+  name: Iris Tarlowe
+  email: iris.tarlowe@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2022-12-26'
+  effective_date: '2022-12-26'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420226'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm061
+  name: Isabel Danwick
+  email: isabel.danwick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2012-07-10'
+  effective_date: '2012-07-10'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420227'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Earlier pine distribution assignment
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm062
+  name: Jalen Maraven
+  email: jalen.maraven@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  job: Distribution technician
+  manager: awm042
+  start_date: '2019-02-21'
+  effective_date: '2019-02-21'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420228'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-pine-distribution
+  prior_role: Distribution technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm063
+  name: Jamie Telmire
+  email: jamie.telmire@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution supervisor
+  manager: awm001
+  start_date: '2026-01-05'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420229'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Team member, field coordination
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+  prior_team: Field coordination
+  move_date: '2026-06-01'
+- key: awm064
+  name: Jonas Darsell
+  email: jonas.darsell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2016-04-16'
+  effective_date: '2016-04-16'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420230'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm065
+  name: Jory Marrent
+  email: jory.marrent@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2023-11-27'
+  effective_date: '2023-11-27'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420231'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm066
+  name: Kaisa Torren
+  email: kaisa.torren@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2013-06-11'
+  effective_date: '2013-06-11'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420232'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm067
+  name: Kiran Delmont
+  email: kiran.delmont@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2020-01-22'
+  effective_date: '2020-01-22'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420233'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm068
+  name: Lara Mavell
+  email: lara.mavell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2012-08-06'
+  effective_date: '2012-08-06'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420234'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Earlier river distribution assignment
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm069
+  name: Leila Velswick
+  email: leila.velswick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2017-03-17'
+  effective_date: '2017-03-17'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420235'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm070
+  name: Lena Dravik
+  email: lena.dravik@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2024-10-01'
+  effective_date: '2024-10-01'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420236'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm071
+  name: Leo Narsen
+  email: leo.narsen@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2014-05-12'
+  effective_date: '2014-05-12'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420237'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm072
+  name: Lila Verrin
+  email: lila.verrin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2021-12-23'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420238'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Team member, field coordination
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Field coordination
+  move_date: '2026-06-01'
+- key: awm073
+  name: Lina Edran
+  email: lina.edran@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2013-07-07'
+  effective_date: '2013-07-07'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420239'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Earlier river distribution assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm074
+  name: Louis Nelcourt
+  email: louis.nelcourt@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2018-02-18'
+  effective_date: '2018-02-18'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420240'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm075
+  name: Luca Warden
+  email: luca.warden@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2025-09-02'
+  effective_date: '2025-09-02'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420241'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: ''
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm076
+  name: Mara Elvarn
+  email: mara.elvarn@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2015-04-13'
+  effective_date: '2015-04-13'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420242'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm077
+  name: Margot Odrin
+  email: margot.odrin@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2022-11-24'
+  effective_date: '2022-11-24'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420243'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm078
+  name: Martin Wellard
+  email: martin.wellard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2012-06-08'
+  effective_date: '2012-06-08'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420244'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Earlier river distribution assignment
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm079
+  name: Mica Fennard
+  email: mica.fennard@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2019-01-19'
+  effective_date: '2019-01-19'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420245'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm080
+  name: Mira Orvel
+  email: mira.orvel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2026-04-03'
+  effective_date: '2026-04-03'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420246'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: ''
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm081
+  name: Morgan Wernick
+  email: morgan.wernick@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2016-03-14'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420247'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Team member, field coordination
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Field coordination
+  move_date: '2026-06-01'
+- key: awm082
+  name: Nella Ferrell
+  email: nella.ferrell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2023-10-25'
+  effective_date: '2023-10-25'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420248'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm083
+  name: Niamh Parnell
+  email: niamh.parnell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2013-05-09'
+  effective_date: '2013-05-09'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420249'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Earlier river distribution assignment
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm084
+  name: Niko Yervan
+  email: niko.yervan@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: River distribution
+  job: Distribution technician
+  manager: awm063
+  start_date: '2020-12-20'
+  effective_date: '2020-12-20'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420250'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-river-distribution
+  prior_role: Distribution technician
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm085
+  name: Nina Garsen
+  email: nina.garsen@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field coordination lead
+  manager: awm001
+  start_date: '2010-07-04'
+  effective_date: '2026-06-01'
+  work_pattern: office and field
+  site: Pine depot
+  extension: '420251'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Team member, pine treatment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Asks one specific question at a time; may send a correction later.
+  prior_team: Pine treatment
+  move_date: '2026-06-01'
+- key: awm086
+  name: Omar Peveran
+  email: omar.peveran@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2017-02-15'
+  effective_date: '2017-02-15'
+  work_pattern: office and field
+  site: River depot
+  extension: '420252'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Field scheduler
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm087
+  name: Orla Zorrel
+  email: orla.zorrel@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2024-09-26'
+  effective_date: '2024-09-26'
+  work_pattern: office and field
+  site: Pine depot
+  extension: '420253'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Field scheduler
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm088
+  name: Pascal Gervain
+  email: pascal.gervain@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2014-04-10'
+  effective_date: '2014-04-10'
+  work_pattern: office and field
+  site: River depot
+  extension: '420254'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Field scheduler
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm089
+  name: Petra Quillan
+  email: petra.quillan@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2021-11-21'
+  effective_date: '2021-11-21'
+  work_pattern: office and field
+  site: Pine depot
+  extension: '420255'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Field scheduler
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm090
+  name: Quinn Aldren
+  email: quinn.aldren@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2013-06-05'
+  effective_date: '2013-06-05'
+  work_pattern: office and field
+  site: River depot
+  extension: '420256'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Earlier field coordination assignment
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm091
+  name: Rafael Harlowe
+  email: rafael.harlowe@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2018-01-16'
+  effective_date: '2018-01-16'
+  work_pattern: office and field
+  site: Pine depot
+  extension: '420257'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: Field scheduler
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm092
+  name: Remi Radvell
+  email: remi.radvell@alterrawaterco.com
+  employer: arwc
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  job: Field scheduler
+  manager: awm085
+  start_date: '2025-08-27'
+  effective_date: '2025-08-27'
+  work_pattern: office and field
+  site: River depot
+  extension: '420258'
+  groups:
+  - arwc-staff
+  - arwc-operations-treatment-and-distribution
+  - arwc-field-coordination
+  prior_role: ''
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm093
+  name: Ren Belsart
+  email: ren.belsart@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Head of maintenance and engineering
+  manager: luc
+  start_date: '2015-03-11'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420259'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Team member, electrical and controls
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Electrical and controls
+  move_date: '2026-06-01'
+- key: awm094
+  name: Safa Havelin
+  email: safa.havelin@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2022-10-22'
+  effective_date: '2022-10-22'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420260'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm095
+  name: Samira Renshaw
+  email: samira.renshaw@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2012-05-06'
+  effective_date: '2012-05-06'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420261'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm096
+  name: Sela Bravelle
+  email: sela.bravelle@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2019-12-17'
+  effective_date: '2019-12-17'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420262'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm097
+  name: Silas Iversen
+  email: silas.iversen@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2026-07-01'
+  effective_date: '2026-07-01'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420263'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm098
+  name: Soren Rivelin
+  email: soren.rivelin@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2016-02-12'
+  effective_date: '2016-02-12'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420264'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Earlier mechanical maintenance assignment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm099
+  name: Tamsin Carsten
+  email: tamsin.carsten@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2023-09-23'
+  effective_date: '2023-09-23'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420265'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm100
+  name: Tariq Jorrel
+  email: tariq.jorrel@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2013-04-07'
+  effective_date: '2013-04-07'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420266'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm101
+  name: Tessa Sarnell
+  email: tessa.sarnell@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2020-11-18'
+  effective_date: '2020-11-18'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420267'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm102
+  name: Thane Cavelin
+  email: thane.cavelin@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2012-06-02'
+  effective_date: '2026-06-01'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420268'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Team member, electrical and controls
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Electrical and controls
+  move_date: '2026-06-01'
+- key: awm103
+  name: Tomas Kelswick
+  email: tomas.kelswick@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2017-01-13'
+  effective_date: '2017-01-13'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420269'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Earlier mechanical maintenance assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm104
+  name: Uma Selwyn
+  email: uma.selwyn@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2024-08-24'
+  effective_date: '2024-08-24'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420270'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm105
+  name: Valen Cernault
+  email: valen.cernault@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2014-03-08'
+  effective_date: '2014-03-08'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420271'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm106
+  name: Vera Larmont
+  email: vera.larmont@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2021-10-19'
+  effective_date: '2021-10-19'
+  work_pattern: depot and field
+  site: River depot
+  extension: '420272'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm107
+  name: Willa Senvard
+  email: willa.senvard@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  job: Mechanical technician
+  manager: awm093
+  start_date: '2013-05-03'
+  effective_date: '2013-05-03'
+  work_pattern: depot and field
+  site: Pine depot
+  extension: '420273'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-mechanical-maintenance
+  prior_role: Mechanical technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: clara
+  name: Clara Morivelle
+  email: clara.morivelle@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls engineer
+  manager: awm108
+  start_date: '2014-07-14'
+  effective_date: '2014-07-14'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420274'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Earlier electrical and controls assignment
+  context_note: Precise engineering limits; generous when someone asks for detail.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm108
+  name: Yara Dalver
+  email: yara.dalver@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Electrical and controls lead
+  manager: awm093
+  start_date: '2018-07-25'
+  effective_date: '2018-07-25'
+  work_pattern: hybrid
+  site: River plant
+  extension: '420275'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Controls technician
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm109
+  name: Yasmin Lestrel
+  email: yasmin.lestrel@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2025-02-09'
+  effective_date: '2025-02-09'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420276'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: ''
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm110
+  name: Zane Tarlowe
+  email: zane.tarlowe@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2015-09-20'
+  effective_date: '2015-09-20'
+  work_pattern: hybrid
+  site: River plant
+  extension: '420277'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Controls technician
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm111
+  name: Adele Darsell
+  email: adele.darsell@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2022-04-04'
+  effective_date: '2022-04-04'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420278'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Controls technician
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm112
+  name: Alix Marrent
+  email: alix.marrent@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2012-11-15'
+  effective_date: '2012-11-15'
+  work_pattern: hybrid
+  site: River plant
+  extension: '420279'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Earlier electrical and controls assignment
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm113
+  name: Amara Torren
+  email: amara.torren@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2019-06-26'
+  effective_date: '2019-06-26'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420280'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Controls technician
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm114
+  name: Anika Delmont
+  email: anika.delmont@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2026-05-10'
+  effective_date: '2026-05-10'
+  work_pattern: hybrid
+  site: River plant
+  extension: '420281'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm115
+  name: Ari Mavell
+  email: ari.mavell@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2016-08-21'
+  effective_date: '2016-08-21'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420282'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Controls technician
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm116
+  name: Avery Velswick
+  email: avery.velswick@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2023-03-05'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: River plant
+  extension: '420283'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Team member, maintenance planning
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Maintenance planning
+  move_date: '2026-06-01'
+- key: awm117
+  name: Beatrice Dravik
+  email: beatrice.dravik@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Electrical and controls
+  job: Controls technician
+  manager: awm108
+  start_date: '2013-10-16'
+  effective_date: '2013-10-16'
+  work_pattern: hybrid
+  site: Pine plant
+  extension: '420284'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-electrical-and-controls
+  prior_role: Earlier electrical and controls assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: theo
+  name: Theo Marrivel
+  email: theo.marrivel@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2016-05-27'
+  effective_date: '2016-05-27'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420285'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Earlier maintenance planning assignment
+  context_note: Practical maintenance scheduler; asks for the next workable step.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm118
+  name: Ben Narsen
+  email: ben.narsen@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planning supervisor
+  manager: awm093
+  start_date: '2020-12-11'
+  effective_date: '2020-12-11'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420286'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm119
+  name: Callum Verrin
+  email: callum.verrin@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2012-07-22'
+  effective_date: '2012-07-22'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420287'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm120
+  name: Camille Edran
+  email: camille.edran@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2017-02-06'
+  effective_date: '2017-02-06'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420288'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm121
+  name: Cara Nelcourt
+  email: cara.nelcourt@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2024-09-17'
+  effective_date: '2024-09-17'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420289'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm122
+  name: Celia Warden
+  email: celia.warden@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2014-04-01'
+  effective_date: '2014-04-01'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420290'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Earlier maintenance planning assignment
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm123
+  name: Cian Elvarn
+  email: cian.elvarn@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2021-11-12'
+  effective_date: '2021-11-12'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420291'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm124
+  name: Corin Odrin
+  email: corin.odrin@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2013-06-23'
+  effective_date: '2013-06-23'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420292'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm125
+  name: Dana Wellard
+  email: dana.wellard@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2018-01-07'
+  effective_date: '2018-01-07'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420293'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Maintenance planner
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm126
+  name: Dario Fennard
+  email: dario.fennard@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Maintenance planning
+  job: Maintenance planner
+  manager: awm118
+  start_date: '2025-08-18'
+  effective_date: '2026-06-01'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420294'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-maintenance-planning
+  prior_role: Team member, capital projects
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Capital projects
+  move_date: '2026-06-01'
+- key: awm127
+  name: Della Orvel
+  email: della.orvel@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Capital projects lead
+  manager: awm093
+  start_date: '2015-03-02'
+  effective_date: '2026-06-01'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420295'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Team member, mechanical maintenance
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: Mechanical maintenance
+  move_date: '2026-06-01'
+- key: awm128
+  name: Dev Wernick
+  email: dev.wernick@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2022-10-13'
+  effective_date: '2022-10-13'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420296'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm129
+  name: Edda Ferrell
+  email: edda.ferrell@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2012-05-24'
+  effective_date: '2012-05-24'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420297'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm130
+  name: Eira Parnell
+  email: eira.parnell@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2019-12-08'
+  effective_date: '2019-12-08'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420298'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm131
+  name: Elias Yervan
+  email: elias.yervan@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2026-03-19'
+  effective_date: '2026-03-19'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420299'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm132
+  name: Elin Garsen
+  email: elin.garsen@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2016-02-03'
+  effective_date: '2016-02-03'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420300'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Earlier capital projects assignment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm133
+  name: Emre Peveran
+  email: emre.peveran@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2023-09-14'
+  effective_date: '2023-09-14'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420301'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm134
+  name: Farah Zorrel
+  email: farah.zorrel@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2013-04-25'
+  effective_date: '2013-04-25'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420302'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm135
+  name: Felix Gervain
+  email: felix.gervain@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2020-11-09'
+  effective_date: '2020-11-09'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420303'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm136
+  name: Finn Quillan
+  email: finn.quillan@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2012-06-20'
+  effective_date: '2026-06-01'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420304'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Team member, mechanical maintenance
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Mechanical maintenance
+  move_date: '2026-06-01'
+- key: awm137
+  name: Flora Aldren
+  email: flora.aldren@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2017-01-04'
+  effective_date: '2017-01-04'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420305'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Earlier capital projects assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm138
+  name: Gabriel Harlowe
+  email: gabriel.harlowe@alterrawaterco.com
+  employer: arwc
+  department: Maintenance and engineering
+  team: Capital projects
+  job: Project engineer
+  manager: awm127
+  start_date: '2024-08-15'
+  effective_date: '2024-08-15'
+  work_pattern: office and field
+  site: Regional office
+  extension: '420306'
+  groups:
+  - arwc-staff
+  - arwc-maintenance-and-engineering
+  - arwc-capital-projects
+  prior_role: Project engineer
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: nadia
+  name: Nadia Corvane
+  email: nadia.corvane@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Regional water planner
+  manager: awm139
+  start_date: '2017-03-26'
+  effective_date: '2017-03-26'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420307'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Earlier resource planning assignment
+  context_note: Plans carefully and tests whether an explanation helps its reader.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm139
+  name: Hana Radvell
+  email: hana.radvell@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Resource planning lead
+  manager: luc
+  start_date: '2014-10-10'
+  effective_date: '2014-10-10'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420308'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm140
+  name: Harriet Belsart
+  email: harriet.belsart@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2021-05-21'
+  effective_date: '2021-05-21'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420309'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm141
+  name: Hugo Havelin
+  email: hugo.havelin@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2013-12-05'
+  effective_date: '2013-12-05'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420310'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm142
+  name: Idris Renshaw
+  email: idris.renshaw@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2018-07-16'
+  effective_date: '2018-07-16'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420311'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm143
+  name: Imani Bravelle
+  email: imani.bravelle@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2025-02-27'
+  effective_date: '2025-02-27'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420312'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: ''
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm144
+  name: Iris Iversen
+  email: iris.iversen@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2015-09-11'
+  effective_date: '2015-09-11'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420313'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm145
+  name: Isabel Rivelin
+  email: isabel.rivelin@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  job: Water planner
+  manager: awm139
+  start_date: '2022-04-22'
+  effective_date: '2022-04-22'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420314'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-resource-planning
+  prior_role: Water planner
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm146
+  name: Jalen Carsten
+  email: jalen.carsten@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory lead
+  manager: awm139
+  start_date: '2012-11-06'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420315'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Team member, quality systems
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Quality systems
+  move_date: '2026-06-01'
+- key: awm147
+  name: Jamie Jorrel
+  email: jamie.jorrel@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2019-06-17'
+  effective_date: '2019-06-17'
+  work_pattern: office
+  site: Regional office
+  extension: '420316'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm148
+  name: Jonas Sarnell
+  email: jonas.sarnell@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2026-01-01'
+  effective_date: '2026-01-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420317'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: ''
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm149
+  name: Jory Cavelin
+  email: jory.cavelin@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2016-08-12'
+  effective_date: '2016-08-12'
+  work_pattern: office
+  site: Regional office
+  extension: '420318'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm150
+  name: Kaisa Kelswick
+  email: kaisa.kelswick@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2023-03-23'
+  effective_date: '2023-03-23'
+  work_pattern: office
+  site: Regional office
+  extension: '420319'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm151
+  name: Kiran Selwyn
+  email: kiran.selwyn@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2013-10-07'
+  effective_date: '2013-10-07'
+  work_pattern: office
+  site: Regional office
+  extension: '420320'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Earlier laboratory assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm152
+  name: Lara Cernault
+  email: lara.cernault@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2020-05-18'
+  effective_date: '2020-05-18'
+  work_pattern: office
+  site: Regional office
+  extension: '420321'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm153
+  name: Leila Larmont
+  email: leila.larmont@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2012-12-02'
+  effective_date: '2012-12-02'
+  work_pattern: office
+  site: Regional office
+  extension: '420322'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm154
+  name: Lena Senvard
+  email: lena.senvard@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2017-07-13'
+  effective_date: '2017-07-13'
+  work_pattern: office
+  site: Regional office
+  extension: '420323'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm155
+  name: Leo Dalver
+  email: leo.dalver@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2024-02-24'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420324'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Team member, quality systems
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+  prior_team: Quality systems
+  move_date: '2026-06-01'
+- key: awm156
+  name: Lila Lestrel
+  email: lila.lestrel@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2014-09-08'
+  effective_date: '2014-09-08'
+  work_pattern: office
+  site: Regional office
+  extension: '420325'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Earlier laboratory assignment
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm157
+  name: Lina Tarlowe
+  email: lina.tarlowe@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Laboratory
+  job: Laboratory analyst
+  manager: awm146
+  start_date: '2021-04-19'
+  effective_date: '2021-04-19'
+  work_pattern: office
+  site: Regional office
+  extension: '420326'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-laboratory
+  prior_role: Laboratory analyst
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm158
+  name: Louis Danwick
+  email: louis.danwick@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality systems lead
+  manager: awm139
+  start_date: '2011-11-03'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420327'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: Team member, compliance reporting
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+  prior_team: Compliance reporting
+  move_date: '2026-06-01'
+- key: awm159
+  name: Luca Maraven
+  email: luca.maraven@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality officer
+  manager: awm158
+  start_date: '2018-06-14'
+  effective_date: '2018-06-14'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420328'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: Quality officer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm160
+  name: Mara Telmire
+  email: mara.telmire@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality officer
+  manager: awm158
+  start_date: '2025-01-25'
+  effective_date: '2025-01-25'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420329'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: ''
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm161
+  name: Margot Darsell
+  email: margot.darsell@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality officer
+  manager: awm158
+  start_date: '2015-08-09'
+  effective_date: '2015-08-09'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420330'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: Quality officer
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm162
+  name: Martin Marrent
+  email: martin.marrent@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality officer
+  manager: awm158
+  start_date: '2022-03-20'
+  effective_date: '2022-03-20'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420331'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: Quality officer
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm163
+  name: Mica Torren
+  email: mica.torren@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Quality systems
+  job: Quality officer
+  manager: awm158
+  start_date: '2012-10-04'
+  effective_date: '2012-10-04'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420332'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-quality-systems
+  prior_role: Earlier quality systems assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm164
+  name: Mira Delmont
+  email: mira.delmont@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Compliance reporting lead
+  manager: awm139
+  start_date: '2019-05-15'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420333'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: Team member, resource planning
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+  prior_team: Resource planning
+  move_date: '2026-06-01'
+- key: awm165
+  name: Morgan Mavell
+  email: morgan.mavell@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Reporting officer
+  manager: awm164
+  start_date: '2026-04-26'
+  effective_date: '2026-04-26'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420334'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: ''
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm166
+  name: Nella Velswick
+  email: nella.velswick@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Reporting officer
+  manager: awm164
+  start_date: '2016-07-10'
+  effective_date: '2016-07-10'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420335'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: Reporting officer
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm167
+  name: Niamh Dravik
+  email: niamh.dravik@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Reporting officer
+  manager: awm164
+  start_date: '2023-02-21'
+  effective_date: '2023-02-21'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420336'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: Reporting officer
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm168
+  name: Niko Narsen
+  email: niko.narsen@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Reporting officer
+  manager: awm164
+  start_date: '2013-09-05'
+  effective_date: '2013-09-05'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420337'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: Reporting officer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm169
+  name: Nina Verrin
+  email: nina.verrin@alterrawaterco.com
+  employer: arwc
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  job: Reporting officer
+  manager: awm164
+  start_date: '2020-04-16'
+  effective_date: '2020-04-16'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420338'
+  groups:
+  - arwc-staff
+  - arwc-planning-quality-and-compliance
+  - arwc-compliance-reporting
+  prior_role: Earlier compliance reporting assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm170
+  name: Omar Edran
+  email: omar.edran@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Service desk
+  job: Head of information technology
+  manager: awm216
+  start_date: '2010-11-27'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420339'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-service-desk
+  prior_role: Team member, business applications
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Business applications
+  move_date: '2026-06-01'
+- key: awm171
+  name: Orla Nelcourt
+  email: orla.nelcourt@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Service desk
+  job: IT support analyst
+  manager: awm170
+  start_date: '2017-06-11'
+  effective_date: '2017-06-11'
+  work_pattern: office
+  site: Regional office
+  extension: '420340'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-service-desk
+  prior_role: IT support analyst
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm172
+  name: Pascal Warden
+  email: pascal.warden@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Service desk
+  job: IT support analyst
+  manager: awm170
+  start_date: '2024-01-22'
+  effective_date: '2024-01-22'
+  work_pattern: office
+  site: Regional office
+  extension: '420341'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-service-desk
+  prior_role: IT support analyst
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm173
+  name: Petra Elvarn
+  email: petra.elvarn@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Service desk
+  job: IT support analyst
+  manager: awm170
+  start_date: '2014-08-06'
+  effective_date: '2014-08-06'
+  work_pattern: office
+  site: Regional office
+  extension: '420342'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-service-desk
+  prior_role: IT support analyst
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm174
+  name: Quinn Odrin
+  email: quinn.odrin@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Service desk
+  job: IT support analyst
+  manager: awm170
+  start_date: '2021-03-17'
+  effective_date: '2021-03-17'
+  work_pattern: office
+  site: Regional office
+  extension: '420343'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-service-desk
+  prior_role: IT support analyst
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm175
+  name: Rafael Wellard
+  email: rafael.wellard@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Business applications
+  job: Business applications lead
+  manager: awm170
+  start_date: '2011-10-01'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420344'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-business-applications
+  prior_role: Team member, identity services
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses plain language and checks what action is needed next.
+  prior_team: Identity services
+  move_date: '2026-06-01'
+- key: awm176
+  name: Remi Fennard
+  email: remi.fennard@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Business applications
+  job: Applications analyst
+  manager: awm175
+  start_date: '2018-05-12'
+  effective_date: '2018-05-12'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420345'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-business-applications
+  prior_role: Applications analyst
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm177
+  name: Ren Orvel
+  email: ren.orvel@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Business applications
+  job: Applications analyst
+  manager: awm175
+  start_date: '2025-12-23'
+  effective_date: '2025-12-23'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420346'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-business-applications
+  prior_role: ''
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm178
+  name: Safa Wernick
+  email: safa.wernick@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Business applications
+  job: Applications analyst
+  manager: awm175
+  start_date: '2015-07-07'
+  effective_date: '2015-07-07'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420347'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-business-applications
+  prior_role: Applications analyst
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm179
+  name: Samira Ferrell
+  email: samira.ferrell@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Identity services
+  job: Identity services lead
+  manager: awm170
+  start_date: '2022-02-18'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420348'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-identity-services
+  prior_role: Team member, service desk
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+  prior_team: Service desk
+  move_date: '2026-06-01'
+- key: awm180
+  name: Sela Parnell
+  email: sela.parnell@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Identity services
+  job: Identity analyst
+  manager: awm179
+  start_date: '2012-09-02'
+  effective_date: '2012-09-02'
+  work_pattern: office
+  site: Regional office
+  extension: '420349'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-identity-services
+  prior_role: Identity analyst
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm181
+  name: Silas Yervan
+  email: silas.yervan@alterrawaterco.com
+  employer: arwc
+  department: Information technology
+  team: Identity services
+  job: Identity analyst
+  manager: awm179
+  start_date: '2019-04-13'
+  effective_date: '2019-04-13'
+  work_pattern: office
+  site: Regional office
+  extension: '420350'
+  groups:
+  - arwc-staff
+  - arwc-information-technology
+  - arwc-identity-services
+  prior_role: Identity analyst
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: rosa
+  name: Rosa Nerivet
+  email: rosa.nerivet@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer-service adviser
+  manager: awm182
+  start_date: '2018-11-24'
+  effective_date: '2018-11-24'
+  work_pattern: office
+  site: Regional office
+  extension: '420351'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Earlier customer contact assignment
+  context_note: Customer adviser who puts the customer question first.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm182
+  name: Soren Garsen
+  email: soren.garsen@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer-service supervisor
+  manager: awm216
+  start_date: '2026-02-08'
+  effective_date: '2026-02-08'
+  work_pattern: office
+  site: Regional office
+  extension: '420352'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: ''
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm183
+  name: Tamsin Peveran
+  email: tamsin.peveran@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2016-01-19'
+  effective_date: '2016-01-19'
+  work_pattern: office
+  site: Regional office
+  extension: '420353'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm184
+  name: Tariq Zorrel
+  email: tariq.zorrel@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2023-08-03'
+  effective_date: '2023-08-03'
+  work_pattern: office
+  site: Regional office
+  extension: '420354'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm185
+  name: Tessa Gervain
+  email: tessa.gervain@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2013-03-14'
+  effective_date: '2013-03-14'
+  work_pattern: office
+  site: Regional office
+  extension: '420355'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm186
+  name: Thane Quillan
+  email: thane.quillan@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2020-10-25'
+  effective_date: '2020-10-25'
+  work_pattern: office
+  site: Regional office
+  extension: '420356'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Earlier customer contact assignment
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm187
+  name: Tomas Aldren
+  email: tomas.aldren@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2012-05-09'
+  effective_date: '2012-05-09'
+  work_pattern: office
+  site: Regional office
+  extension: '420357'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm188
+  name: Uma Harlowe
+  email: uma.harlowe@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2017-12-20'
+  effective_date: '2017-12-20'
+  work_pattern: office
+  site: Regional office
+  extension: '420358'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm189
+  name: Valen Radvell
+  email: valen.radvell@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2024-07-04'
+  effective_date: '2024-07-04'
+  work_pattern: office
+  site: Regional office
+  extension: '420359'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm190
+  name: Vera Belsart
+  email: vera.belsart@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2014-02-15'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420360'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Team member, accounts
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Accounts
+  move_date: '2026-06-01'
+- key: awm191
+  name: Willa Havelin
+  email: willa.havelin@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2021-09-26'
+  effective_date: '2021-09-26'
+  work_pattern: office
+  site: Regional office
+  extension: '420361'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Earlier customer contact assignment
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm192
+  name: Yara Renshaw
+  email: yara.renshaw@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2013-04-10'
+  effective_date: '2013-04-10'
+  work_pattern: office
+  site: Regional office
+  extension: '420362'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm193
+  name: Yasmin Bravelle
+  email: yasmin.bravelle@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2018-11-21'
+  effective_date: '2018-11-21'
+  work_pattern: office
+  site: Regional office
+  extension: '420363'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm194
+  name: Zane Iversen
+  email: zane.iversen@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2025-06-05'
+  effective_date: '2025-06-05'
+  work_pattern: office
+  site: Regional office
+  extension: '420364'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: ''
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm195
+  name: Adele Sarnell
+  email: adele.sarnell@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2015-01-16'
+  effective_date: '2015-01-16'
+  work_pattern: office
+  site: Regional office
+  extension: '420365'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Customer adviser
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm196
+  name: Alix Cavelin
+  email: alix.cavelin@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Customer contact
+  job: Customer adviser
+  manager: awm182
+  start_date: '2022-08-27'
+  effective_date: '2022-08-27'
+  work_pattern: office
+  site: Regional office
+  extension: '420366'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-customer-contact
+  prior_role: Earlier customer contact assignment
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm197
+  name: Amara Kelswick
+  email: amara.kelswick@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts lead
+  manager: awm182
+  start_date: '2012-03-11'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420367'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Team member, procurement
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Procurement
+  move_date: '2026-06-01'
+- key: awm198
+  name: Anika Selwyn
+  email: anika.selwyn@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2019-10-22'
+  effective_date: '2019-10-22'
+  work_pattern: office
+  site: Regional office
+  extension: '420368'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Accounts officer
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm199
+  name: Ari Cernault
+  email: ari.cernault@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2026-05-06'
+  effective_date: '2026-05-06'
+  work_pattern: office
+  site: Regional office
+  extension: '420369'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: ''
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm200
+  name: Avery Larmont
+  email: avery.larmont@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2016-12-17'
+  effective_date: '2016-12-17'
+  work_pattern: office
+  site: Regional office
+  extension: '420370'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Accounts officer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm201
+  name: Beatrice Senvard
+  email: beatrice.senvard@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2023-07-01'
+  effective_date: '2023-07-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420371'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Accounts officer
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm202
+  name: Ben Dalver
+  email: ben.dalver@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2013-02-12'
+  effective_date: '2013-02-12'
+  work_pattern: office
+  site: Regional office
+  extension: '420372'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Earlier accounts assignment
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm203
+  name: Callum Lestrel
+  email: callum.lestrel@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2020-09-23'
+  effective_date: '2020-09-23'
+  work_pattern: office
+  site: Regional office
+  extension: '420373'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Accounts officer
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm204
+  name: Camille Tarlowe
+  email: camille.tarlowe@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Accounts
+  job: Accounts officer
+  manager: awm197
+  start_date: '2012-04-07'
+  effective_date: '2012-04-07'
+  work_pattern: office
+  site: Regional office
+  extension: '420374'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-accounts
+  prior_role: Accounts officer
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: priya
+  name: Priya Naravel
+  email: priya.naravel@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: District procurement officer
+  manager: awm205
+  start_date: '2018-11-18'
+  effective_date: '2018-11-18'
+  work_pattern: office
+  site: Regional office
+  extension: '420375'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Earlier procurement assignment
+  context_note: Purchasing officer who likes a clear commitment and can polish too long.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm205
+  name: Cara Danwick
+  email: cara.danwick@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: Procurement lead
+  manager: awm182
+  start_date: '2017-06-02'
+  effective_date: '2017-06-02'
+  work_pattern: office
+  site: Regional office
+  extension: '420376'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Procurement officer
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm206
+  name: Celia Maraven
+  email: celia.maraven@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: Procurement officer
+  manager: awm205
+  start_date: '2024-01-13'
+  effective_date: '2024-01-13'
+  work_pattern: office
+  site: Regional office
+  extension: '420377'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Procurement officer
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm207
+  name: Cian Telmire
+  email: cian.telmire@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: Procurement officer
+  manager: awm205
+  start_date: '2014-08-24'
+  effective_date: '2014-08-24'
+  work_pattern: office
+  site: Regional office
+  extension: '420378'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Procurement officer
+  context_note: Keeps a useful paper notebook beside the shared system.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm208
+  name: Corin Darsell
+  email: corin.darsell@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: Procurement officer
+  manager: awm205
+  start_date: '2021-03-08'
+  effective_date: '2021-03-08'
+  work_pattern: office
+  site: Regional office
+  extension: '420379'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Procurement officer
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm209
+  name: Dana Marrent
+  email: dana.marrent@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Procurement
+  job: Procurement officer
+  manager: awm205
+  start_date: '2013-10-19'
+  effective_date: '2013-10-19'
+  work_pattern: office
+  site: Regional office
+  extension: '420380'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-procurement
+  prior_role: Earlier procurement assignment
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm210
+  name: Dario Torren
+  email: dario.torren@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records and scheduling lead
+  manager: awm182
+  start_date: '2018-05-03'
+  effective_date: '2026-06-01'
+  work_pattern: office
+  site: Regional office
+  extension: '420381'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: Team member, customer contact
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+  prior_team: Customer contact
+  move_date: '2026-06-01'
+- key: awm211
+  name: Della Delmont
+  email: della.delmont@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records coordinator
+  manager: awm210
+  start_date: '2025-12-14'
+  effective_date: '2025-12-14'
+  work_pattern: office
+  site: Regional office
+  extension: '420382'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: ''
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+- key: awm212
+  name: Dev Mavell
+  email: dev.mavell@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records coordinator
+  manager: awm210
+  start_date: '2015-07-25'
+  effective_date: '2015-07-25'
+  work_pattern: office
+  site: Regional office
+  extension: '420383'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: Records coordinator
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm213
+  name: Edda Velswick
+  email: edda.velswick@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records coordinator
+  manager: awm210
+  start_date: '2022-02-09'
+  effective_date: '2022-02-09'
+  work_pattern: office
+  site: Regional office
+  extension: '420384'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: Records coordinator
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm214
+  name: Eira Dravik
+  email: eira.dravik@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records coordinator
+  manager: awm210
+  start_date: '2012-09-20'
+  effective_date: '2012-09-20'
+  work_pattern: office
+  site: Regional office
+  extension: '420385'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: Records coordinator
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+- key: awm215
+  name: Elias Narsen
+  email: elias.narsen@alterrawaterco.com
+  employer: arwc
+  department: Customer service and business support
+  team: Records and scheduling
+  job: Records coordinator
+  manager: awm210
+  start_date: '2019-04-04'
+  effective_date: '2019-04-04'
+  work_pattern: office
+  site: Regional office
+  extension: '420386'
+  groups:
+  - arwc-staff
+  - arwc-customer-service-and-business-support
+  - arwc-records-and-scheduling
+  prior_role: Earlier records and scheduling assignment
+  context_note: Likes being trusted with a clear piece of work.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: luc
+  name: Luc Venn-Morel
+  email: luc.venn-morel@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: Executive
+  job: Director of regional operations
+  manager: awm216
+  start_date: '2012-11-15'
+  effective_date: '2012-11-15'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420387'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-executive
+  prior_role: Earlier executive assignment
+  context_note: Operations director who prefers evidence before public commitments.
+  writing_note: Prefers a spoken handover; written notes capture the decision.
+- key: awm216
+  name: Elin Verrin
+  email: elin.verrin@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: Executive
+  job: General manager
+  manager: ''
+  start_date: '2013-06-26'
+  effective_date: '2013-06-26'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420388'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-executive
+  prior_role: Executive director
+  context_note: Notices when a plan creates extra work for another team.
+  writing_note: Short, direct notes; expands only when the recipient needs context.
+- key: awm217
+  name: Emre Edran
+  email: emre.edran@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: Finance
+  job: Finance lead
+  manager: awm216
+  start_date: '2016-01-10'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420389'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-finance
+  prior_role: Team member, people and board support
+  context_note: Keeps a running list of questions before asking for a meeting.
+  writing_note: Uses concrete dates and locations in work requests; little small talk.
+  prior_team: People and board support
+  move_date: '2026-06-01'
+- key: awm218
+  name: Farah Nelcourt
+  email: farah.nelcourt@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: Finance
+  job: Finance analyst
+  manager: awm217
+  start_date: '2023-08-21'
+  effective_date: '2023-08-21'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420390'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-finance
+  prior_role: Finance analyst
+  context_note: Knows the local handover routine and notices missing details.
+  writing_note: Friendly with familiar colleagues and concise in formal threads.
+- key: awm219
+  name: Felix Warden
+  email: felix.warden@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: Finance
+  job: Finance analyst
+  manager: awm217
+  start_date: '2013-03-05'
+  effective_date: '2013-03-05'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420391'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-finance
+  prior_role: Finance analyst
+  context_note: Enjoys teaching a colleague when the timing is right.
+  writing_note: Asks one specific question at a time; may send a correction later.
+- key: awm220
+  name: Finn Elvarn
+  email: finn.elvarn@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: People and board support
+  job: People and board support lead
+  manager: awm216
+  start_date: '2020-10-16'
+  effective_date: '2026-06-01'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420392'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-people-and-board-support
+  prior_role: Team member, executive
+  context_note: Prefers a small practical improvement to a grand announcement.
+  writing_note: Writes terse shift notes, with fuller detail on exceptions.
+  prior_team: Executive
+  move_date: '2026-06-01'
+- key: awm221
+  name: Flora Odrin
+  email: flora.odrin@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: People and board support
+  job: People services officer
+  manager: awm220
+  start_date: '2012-05-27'
+  effective_date: '2012-05-27'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420393'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-people-and-board-support
+  prior_role: People services officer
+  context_note: Remembers who covered a difficult shift last season.
+  writing_note: Uses plain language and checks what action is needed next.
+- key: awm222
+  name: Gabriel Wellard
+  email: gabriel.wellard@alterrawaterco.com
+  employer: arwc
+  department: Leadership and finance
+  team: People and board support
+  job: People services officer
+  manager: awm220
+  start_date: '2017-12-11'
+  effective_date: '2017-12-11'
+  work_pattern: hybrid
+  site: Regional office
+  extension: '420394'
+  groups:
+  - arwc-staff
+  - arwc-leadership-and-finance
+  - arwc-people-and-board-support
+  prior_role: People services officer
+  context_note: Checks the finish of a task before calling it complete.
+  writing_note: Prefers a spoken handover; written notes capture the decision.

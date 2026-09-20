@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:7ec6eac4-a035-562f-815e-c7818e21b95b@alterrawaterco.com
+DTSTAMP:20260430T130000Z
+DTSTART:20260507T140000Z
+DTEND:20260507T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:ari.cernault@alterrawaterco.com
+ATTENDEE:mailto:amara.kelswick@alterrawaterco.com
+SUMMARY:New colleague induction
+DESCRIPTION:Ari Cernault: meet Amara Kelswick\; check local handover and fi
+ rst work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

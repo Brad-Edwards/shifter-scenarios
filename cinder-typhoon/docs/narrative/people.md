@@ -1,9 +1,10 @@
 # People and relationships
 
-Fifteen recurring people make up this draft: six KeplerOps employees, eight
-ARWC employees, and one Veybridge contractor. They vary in how much of
-themselves they bring to work. This is a connected slice of the organizations,
-not their entire population.
+These fifteen established profiles cover six KeplerOps employees, eight ARWC
+employees, and one Veybridge contractor. They vary in how much of themselves
+they bring to work. The [workforce roster](../../assets/narrative/authoring/workforce.yaml)
+now records all 294 employees; [additional recurring speakers](workforce-voices.md)
+have separate short profiles and samples.
 
 The ten inherited actor IDs identify established characters. The five people
 without those IDs are narrative additions. Organizational reporting is described

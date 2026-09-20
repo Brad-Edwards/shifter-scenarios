@@ -1,7 +1,65 @@
-name,email,department,job
-Rowan Ito,rowan.ito@keplerops.com,Product engineering,FieldKest developer
-Maya Ranscombe,maya.ranscombe@keplerops.com,Support and implementation,Customer support engineer
-Evan Calderoux,evan.calderoux@keplerops.com,Platform and release,Release engineer
-Noor Aveling,noor.aveling@keplerops.com,Platform and release,Platform and workload operator
-Talia Mornac,talia.mornac@keplerops.com,Support and implementation,Support quality reviewer
-Leah Calder-Voss,leah.calder-voss@keplerops.com,Leadership and business operations,Founder and managing director
+name,email,department,team,job,manager,work_contact,base
+Rowan Ito,rowan.ito@keplerops.com,Product engineering,Core product,FieldKest developer,Adele Aldren,310101,Regional office
+Adele Aldren,adele.aldren@keplerops.com,Product engineering,Core product,Core product lead,Leah Calder-Voss,310102,Regional office
+Alix Harlowe,alix.harlowe@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,310103,Regional office
+Amara Radvell,amara.radvell@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,310104,Regional office
+Anika Belsart,anika.belsart@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,310105,Regional office
+Ari Havelin,ari.havelin@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,310106,Regional office
+Avery Renshaw,avery.renshaw@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,310107,Regional office
+Beatrice Bravelle,beatrice.bravelle@keplerops.com,Product engineering,Connectors,Connectors lead,Adele Aldren,310108,Regional office
+Ben Iversen,ben.iversen@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,310109,Regional office
+Callum Rivelin,callum.rivelin@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,310110,Regional office
+Camille Carsten,camille.carsten@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,310111,Regional office
+Cara Jorrel,cara.jorrel@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,310112,Regional office
+Celia Sarnell,celia.sarnell@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,310113,Regional office
+Cian Cavelin,cian.cavelin@keplerops.com,Product engineering,Experience,Experience lead,Adele Aldren,310114,Regional office
+Corin Kelswick,corin.kelswick@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,310115,Regional office
+Dana Selwyn,dana.selwyn@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,310116,Regional office
+Dario Cernault,dario.cernault@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,310117,Regional office
+Della Larmont,della.larmont@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,310118,Regional office
+Dev Senvard,dev.senvard@keplerops.com,Product engineering,Customer integrations,Customer integrations lead,Adele Aldren,310119,Regional office
+Edda Dalver,edda.dalver@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,310120,Regional office
+Eira Lestrel,eira.lestrel@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,310121,Regional office
+Elias Tarlowe,elias.tarlowe@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,310122,Regional office
+Maya Ranscombe,maya.ranscombe@keplerops.com,Support and implementation,Customer support,Customer support engineer,Elin Danwick,310123,Regional office
+Talia Mornac,talia.mornac@keplerops.com,Support and implementation,Customer support,Support quality reviewer,Elin Danwick,310124,Regional office
+Elin Danwick,elin.danwick@keplerops.com,Support and implementation,Customer support,Customer support lead,Leah Calder-Voss,310125,Regional office
+Emre Maraven,emre.maraven@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,310126,Regional office
+Farah Telmire,farah.telmire@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,310127,Regional office
+Felix Darsell,felix.darsell@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,310128,Regional office
+Finn Marrent,finn.marrent@keplerops.com,Support and implementation,Implementation,Implementation lead,Elin Danwick,310129,Regional office
+Flora Torren,flora.torren@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,310130,Regional office
+Gabriel Delmont,gabriel.delmont@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,310131,Regional office
+Hana Mavell,hana.mavell@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,310132,Regional office
+Harriet Velswick,harriet.velswick@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,310133,Regional office
+Hugo Dravik,hugo.dravik@keplerops.com,Support and implementation,Enablement,Enablement lead,Elin Danwick,310134,Regional office
+Idris Narsen,idris.narsen@keplerops.com,Support and implementation,Enablement,Training specialist,Hugo Dravik,310135,Regional office
+Imani Verrin,imani.verrin@keplerops.com,Support and implementation,Enablement,Training specialist,Hugo Dravik,310136,Regional office
+Evan Calderoux,evan.calderoux@keplerops.com,Platform and release,Release engineering,Release engineer,Iris Edran,310137,Regional office
+Iris Edran,iris.edran@keplerops.com,Platform and release,Release engineering,Release engineering lead,Leah Calder-Voss,310138,Regional office
+Isabel Nelcourt,isabel.nelcourt@keplerops.com,Platform and release,Release engineering,Release engineer,Iris Edran,310139,Regional office
+Noor Aveling,noor.aveling@keplerops.com,Platform and release,Service operations,Platform and workload operator,Jalen Warden,310140,Regional office
+Jalen Warden,jalen.warden@keplerops.com,Platform and release,Service operations,Service operations lead,Iris Edran,310141,Regional office
+Jamie Elvarn,jamie.elvarn@keplerops.com,Platform and release,Service operations,Platform operator,Jalen Warden,310142,Regional office
+Jonas Odrin,jonas.odrin@keplerops.com,Platform and release,Service operations,Platform operator,Jalen Warden,310143,Regional office
+Jory Wellard,jory.wellard@keplerops.com,Product management and quality,Product management,Head of product management and quality,Leah Calder-Voss,310144,Regional office
+Kaisa Fennard,kaisa.fennard@keplerops.com,Product management and quality,Product management,Product manager,Jory Wellard,310145,Regional office
+Kiran Orvel,kiran.orvel@keplerops.com,Product management and quality,Product management,Product manager,Jory Wellard,310146,Regional office
+Lara Velswick,lara.velswick@keplerops.com,Product management and quality,Quality assurance,Quality assurance lead,Jory Wellard,310147,Regional office
+Leila Ferrell,leila.ferrell@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,310148,Regional office
+Lena Parnell,lena.parnell@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,310149,Regional office
+Leo Yervan,leo.yervan@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,310150,Regional office
+Lila Garsen,lila.garsen@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,310151,Regional office
+Lina Peveran,lina.peveran@keplerops.com,Commercial,Accounts,Head of commercial,Leah Calder-Voss,310152,Regional office
+Louis Zorrel,louis.zorrel@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,310153,Regional office
+Luca Gervain,luca.gervain@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,310154,Regional office
+Mara Quillan,mara.quillan@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,310155,Regional office
+Margot Aldren,margot.aldren@keplerops.com,Commercial,Proposals,Proposals lead,Lina Peveran,310156,Regional office
+Martin Harlowe,martin.harlowe@keplerops.com,Commercial,Proposals,Commercial coordinator,Margot Aldren,310157,Regional office
+Leah Calder-Voss,leah.calder-voss@keplerops.com,Leadership and business operations,Executive,Founder and managing director,,310158,Regional office
+Mica Radvell,mica.radvell@keplerops.com,Leadership and business operations,Executive,Business director,Leah Calder-Voss,310159,Regional office
+Mira Belsart,mira.belsart@keplerops.com,Leadership and business operations,People operations,People operations lead,Leah Calder-Voss,310160,Regional office
+Morgan Havelin,morgan.havelin@keplerops.com,Leadership and business operations,People operations,People coordinator,Mira Belsart,310161,Regional office
+Nella Renshaw,nella.renshaw@keplerops.com,Leadership and business operations,Finance,Finance lead,Leah Calder-Voss,310162,Regional office
+Niamh Bravelle,niamh.bravelle@keplerops.com,Leadership and business operations,Finance,Finance officer,Nella Renshaw,310163,Regional office
+Niko Rensart,niko.rensart@keplerops.com,Leadership and business operations,Office,Office lead,Leah Calder-Voss,310164,Regional office

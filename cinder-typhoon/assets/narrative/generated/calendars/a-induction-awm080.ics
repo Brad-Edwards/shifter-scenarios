@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:c54dd555-dfc7-5108-a27e-50035db12d4a@alterrawaterco.com
+DTSTAMP:20260328T130000Z
+DTSTART:20260404T140000Z
+DTEND:20260404T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:mira.orvel@alterrawaterco.com
+ATTENDEE:mailto:jamie.telmire@alterrawaterco.com
+SUMMARY:Site and shift induction
+DESCRIPTION:Mira Orvel: meet Jamie Telmire\; check local handover and first
+  work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

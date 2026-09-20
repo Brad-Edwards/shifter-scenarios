@@ -10,18 +10,28 @@ module:
     content:
     - mail
     - documents
+    - directory
+    - employment
     propositions:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     assertions:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     evidence_requirements:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     observation_boundaries:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
 content:
   mail:
     type: dataset
@@ -29,56 +39,1964 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-4602b2b3c012a8ca91e792fe3f151cf46b161200f49935afa8c6af79cc4cf5b7
-    description: arwc workplace mail. Preserve authored content, mailbox membership or document readers, and
-      declared opening state.
+      version: sha256-b966dc27ac8ddc8f982bac4c56c0745f2e34e39fd0366d005b19004f113758c2
+    description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
+      authored readers and opening state.
     items:
+    - name: wm-0687
+      display_name: Kit handover for Resource planning [A-WS-197]
+    - name: wm-0688
+      display_name: 'Re: Kit handover for Resource planning [A-WS-197]'
+    - name: wm-0262
+      display_name: Role note for Pine treatment [A-WS-076]
+    - name: wm-0948
+      display_name: 'Next team slot: Records and scheduling [A-WS-272]'
+    - name: wm-0263
+      display_name: 'Re: Role note for Pine treatment [A-WS-076]'
+    - name: wm-0949
+      display_name: 'Re: Next team slot: Records and scheduling [A-WS-272]'
+    - name: wm-0524
+      display_name: Role note for Mechanical maintenance [A-WS-151]
+    - name: wm-0869
+      display_name: Follow-up on Customer contact [A-WS-249]
+    - name: wm-0264
+      display_name: 'Re: Role note for Pine treatment [A-WS-076]'
+    - name: wm-0950
+      display_name: 'Re: Next team slot: Records and scheduling [A-WS-272]'
+    - name: wm-0525
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-151]'
+    - name: wm-0870
+      display_name: 'Re: Follow-up on Customer contact [A-WS-249]'
+    - name: wm-0444
+      display_name: Kit handover for River distribution [A-WS-128]
+    - name: wm-0787
+      display_name: Follow-up on Compliance reporting [A-WS-226]
+    - name: wm-0526
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-151]'
+    - name: wm-0445
+      display_name: 'Re: Kit handover for River distribution [A-WS-128]'
+    - name: wm-0788
+      display_name: 'Re: Follow-up on Compliance reporting [A-WS-226]'
+    - name: wm-0265
+      display_name: 'Re: Role note for Pine treatment [A-WS-076]'
+    - name: wm-0951
+      display_name: 'Re: Next team slot: Records and scheduling [A-WS-272]'
+    - name: wm-0706
+      display_name: Follow-up on Resource planning [A-WS-203]
+    - name: wm-0446
+      display_name: 'Re: Kit handover for River distribution [A-WS-128]'
+    - name: wm-0789
+      display_name: 'Re: Follow-up on Compliance reporting [A-WS-226]'
+    - name: wm-0527
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-151]'
+    - name: wm-0266
+      display_name: 'Re: Role note for Pine treatment [A-WS-076]'
+    - name: wm-0707
+      display_name: 'Re: Follow-up on Resource planning [A-WS-203]'
+    - name: wm-0952
+      display_name: 'Re: Next team slot: Records and scheduling [A-WS-272]'
+    - name: wm-1390
+      display_name: 'A-WS-197: staff record deferred'
+    - name: wm-0283
+      display_name: Role note for River treatment [A-WS-082]
+    - name: wm-0969
+      display_name: Handover note for People and board support [A-WS-278]
+    - name: wm-0708
+      display_name: 'Re: Follow-up on Resource planning [A-WS-203]'
+    - name: wm-0447
+      display_name: 'Re: Kit handover for River distribution [A-WS-128]'
+    - name: wm-0284
+      display_name: 'Re: Role note for River treatment [A-WS-082]'
+    - name: wm-0970
+      display_name: 'Re: Handover note for People and board support [A-WS-278]'
+    - name: wm-0202
+      display_name: Role note for Pine treatment [A-WS-059]
+    - name: wm-0547
+      display_name: Follow-up on Mechanical maintenance [A-WS-157]
+    - name: wm-0285
+      display_name: 'Re: Role note for River treatment [A-WS-082]'
+    - name: wm-0971
+      display_name: 'Re: Handover note for People and board support [A-WS-278]'
+    - name: wm-0203
+      display_name: 'Re: Role note for Pine treatment [A-WS-059]'
+    - name: wm-0448
+      display_name: 'Re: Kit handover for River distribution [A-WS-128]'
+    - name: wm-0548
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-157]'
+    - name: wm-0709
+      display_name: 'Re: Follow-up on Resource planning [A-WS-203]'
+    - name: wm-0465
+      display_name: Follow-up on River distribution [A-WS-134]
+    - name: wm-0808
+      display_name: Handover note for Service desk [A-WS-232]
+    - name: wm-0204
+      display_name: 'Re: Role note for Pine treatment [A-WS-059]'
+    - name: wm-0466
+      display_name: 'Re: Follow-up on River distribution [A-WS-134]'
+    - name: wm-0809
+      display_name: 'Re: Handover note for Service desk [A-WS-232]'
+    - name: wm-0384
+      display_name: Follow-up on Pine distribution [A-WS-111]
+    - name: wm-0729
+      display_name: Learning slot for Laboratory [A-WS-209]
+    - name: wm-0467
+      display_name: 'Re: Follow-up on River distribution [A-WS-134]'
+    - name: wm-0810
+      display_name: 'Re: Handover note for Service desk [A-WS-232]'
+    - name: wm-0205
+      display_name: 'Re: Role note for Pine treatment [A-WS-059]'
+    - name: wm-0385
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-111]'
+    - name: wm-0730
+      display_name: 'Re: Learning slot for Laboratory [A-WS-209]'
+    - name: wm-0304
+      display_name: Follow-up on River treatment [A-WS-088]
+    - name: wm-0647
+      display_name: Learning slot for Capital projects [A-WS-186]
+    - name: wm-0386
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-111]'
+    - name: wm-0305
+      display_name: 'Re: Follow-up on River treatment [A-WS-088]'
+    - name: wm-0648
+      display_name: 'Re: Learning slot for Capital projects [A-WS-186]'
+    - name: wm-0811
+      display_name: 'Re: Handover note for Service desk [A-WS-232]'
+    - name: wm-0225
+      display_name: Cover for Pine treatment [A-WS-065]
+    - name: wm-0566
+      display_name: Learning slot for Mechanical maintenance [A-WS-163]
+    - name: wm-0911
+      display_name: Kit handover for Accounts [A-WS-261]
+    - name: wm-0306
+      display_name: 'Re: Follow-up on River treatment [A-WS-088]'
+    - name: wm-0649
+      display_name: 'Re: Learning slot for Capital projects [A-WS-186]'
+    - name: wm-0387
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-111]'
+    - name: wm-0226
+      display_name: 'Re: Cover for Pine treatment [A-WS-065]'
+    - name: wm-0567
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-163]'
+    - name: wm-0812
+      display_name: 'Re: Handover note for Service desk [A-WS-232]'
+    - name: wm-0912
+      display_name: 'Re: Kit handover for Accounts [A-WS-261]'
+    - name: wm-1380
+      display_name: 'A-WS-157: staff record confirmed'
+    - name: wm-0829
+      display_name: Kit handover for Identity services [A-WS-238]
+    - name: wm-0568
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-163]'
+    - name: wm-0307
+      display_name: 'Re: Follow-up on River treatment [A-WS-088]'
+    - name: wm-0830
+      display_name: 'Re: Kit handover for Identity services [A-WS-238]'
+    - name: wm-0407
+      display_name: Role note for Pine distribution [A-WS-117]
+    - name: wm-0748
+      display_name: Kit handover for Laboratory [A-WS-215]
+    - name: wm-0831
+      display_name: 'Re: Kit handover for Identity services [A-WS-238]'
+    - name: wm-0308
+      display_name: 'Re: Follow-up on River treatment [A-WS-088]'
+    - name: wm-0408
+      display_name: 'Re: Role note for Pine distribution [A-WS-117]'
+    - name: wm-0749
+      display_name: 'Re: Kit handover for Laboratory [A-WS-215]'
+    - name: wm-0569
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-163]'
+    - name: wm-1393
+      display_name: 'A-WS-209: staff record confirmed'
+    - name: wm-0325
+      display_name: Learning slot for River treatment [A-WS-094]
+    - name: wm-0668
+      display_name: Kit handover for Capital projects [A-WS-192]
+    - name: wm-0750
+      display_name: 'Re: Kit handover for Laboratory [A-WS-215]'
+    - name: wm-0326
+      display_name: 'Re: Learning slot for River treatment [A-WS-094]'
+    - name: wm-0669
+      display_name: 'Re: Kit handover for Capital projects [A-WS-192]'
+    - name: wm-0589
+      display_name: Role note for Electrical and controls [A-WS-169]
+    - name: wm-0930
+      display_name: Follow-up on Procurement [A-WS-267]
+    - name: wm-0327
+      display_name: 'Re: Learning slot for River treatment [A-WS-094]'
+    - name: wm-0670
+      display_name: 'Re: Kit handover for Capital projects [A-WS-192]'
+    - name: wm-0751
+      display_name: 'Re: Kit handover for Laboratory [A-WS-215]'
+    - name: wm-0590
+      display_name: 'Re: Role note for Electrical and controls [A-WS-169]'
+    - name: wm-0931
+      display_name: 'Re: Follow-up on Procurement [A-WS-267]'
+    - name: wm-1357
+      display_name: 'A-WS-065: staff record confirmed'
+    - name: wm-0507
+      display_name: Role note for Field coordination [A-WS-146]
+    - name: wm-0850
+      display_name: Follow-up on Customer contact [A-WS-244]
+    - name: wm-0932
+      display_name: 'Re: Follow-up on Procurement [A-WS-267]'
+    - name: wm-0508
+      display_name: 'Re: Role note for Field coordination [A-WS-146]'
+    - name: wm-0851
+      display_name: 'Re: Follow-up on Customer contact [A-WS-244]'
+    - name: wm-0671
+      display_name: 'Re: Kit handover for Capital projects [A-WS-192]'
+    - name: wm-0426
+      display_name: Role note for River distribution [A-WS-123]
+    - name: wm-0509
+      display_name: 'Re: Role note for Field coordination [A-WS-146]'
+    - name: wm-0852
+      display_name: 'Re: Follow-up on Customer contact [A-WS-244]'
+    - name: wm-0933
+      display_name: 'Re: Follow-up on Procurement [A-WS-267]'
+    - name: wm-0427
+      display_name: 'Re: Role note for River distribution [A-WS-123]'
+    - name: wm-0672
+      display_name: 'Re: Kit handover for Capital projects [A-WS-192]'
+    - name: wm-1370
+      display_name: 'A-WS-117: staff record confirmed'
+    - name: wm-0346
+      display_name: Role note for Pine distribution [A-WS-100]
+    - name: wm-0689
+      display_name: Follow-up on Resource planning [A-WS-198]
+    - name: wm-0428
+      display_name: 'Re: Role note for River distribution [A-WS-123]'
+    - name: wm-0853
+      display_name: 'Re: Follow-up on Customer contact [A-WS-244]'
+    - name: wm-0347
+      display_name: 'Re: Role note for Pine distribution [A-WS-100]'
+    - name: wm-0690
+      display_name: 'Re: Follow-up on Resource planning [A-WS-198]'
+    - name: wm-0267
+      display_name: Role note for Pine treatment [A-WS-077]
+    - name: wm-0608
+      display_name: Follow-up on Electrical and controls [A-WS-175]
+    - name: wm-0953
+      display_name: Learning slot for Records and scheduling [A-WS-273]
+    - name: wm-0348
+      display_name: 'Re: Role note for Pine distribution [A-WS-100]'
+    - name: wm-0691
+      display_name: 'Re: Follow-up on Resource planning [A-WS-198]'
+    - name: wm-0268
+      display_name: 'Re: Role note for Pine treatment [A-WS-077]'
+    - name: wm-0609
+      display_name: 'Re: Follow-up on Electrical and controls [A-WS-175]'
+    - name: wm-0854
+      display_name: 'Re: Follow-up on Customer contact [A-WS-244]'
+    - name: wm-0954
+      display_name: 'Re: Learning slot for Records and scheduling [A-WS-273]'
+    - name: wm-0429
+      display_name: 'Re: Role note for River distribution [A-WS-123]'
+    - name: wm-1383
+      display_name: 'A-WS-169: staff record deferred'
+    - name: wm-0528
+      display_name: Follow-up on Mechanical maintenance [A-WS-152]
+    - name: wm-0871
+      display_name: Learning slot for Customer contact [A-WS-250]
+    - name: wm-0610
+      display_name: 'Re: Follow-up on Electrical and controls [A-WS-175]'
+    - name: wm-0349
+      display_name: 'Re: Role note for Pine distribution [A-WS-100]'
+    - name: wm-0529
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
+    - name: wm-0872
+      display_name: 'Re: Learning slot for Customer contact [A-WS-250]'
+    - name: wm-0449
+      display_name: Cover for River distribution [A-WS-129]
+    - name: wm-0790
+      display_name: Learning slot for Compliance reporting [A-WS-227]
+    - name: wm-0530
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
+    - name: wm-0873
+      display_name: 'Re: Learning slot for Customer contact [A-WS-250]'
+    - name: wm-0611
+      display_name: 'Re: Follow-up on Electrical and controls [A-WS-175]'
+    - name: wm-0350
+      display_name: 'Re: Role note for Pine distribution [A-WS-100]'
+    - name: wm-0450
+      display_name: 'Re: Cover for River distribution [A-WS-129]'
+    - name: wm-0791
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-227]'
+    - name: wm-0367
+      display_name: Cover for Pine distribution [A-WS-106]
+    - name: wm-0710
+      display_name: Learning slot for Laboratory [A-WS-204]
+    - name: wm-0792
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-227]'
+    - name: wm-0368
+      display_name: 'Re: Cover for Pine distribution [A-WS-106]'
+    - name: wm-0711
+      display_name: 'Re: Learning slot for Laboratory [A-WS-204]'
+    - name: wm-0531
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
+    - name: wm-0286
+      display_name: Cover for River treatment [A-WS-083]
+    - name: wm-0631
+      display_name: Learning slot for Maintenance planning [A-WS-181]
+    - name: wm-0972
+      display_name: Kit handover for People and board support [A-WS-279]
+    - name: wm-0369
+      display_name: 'Re: Cover for Pine distribution [A-WS-106]'
+    - name: wm-0712
+      display_name: 'Re: Learning slot for Laboratory [A-WS-204]'
+    - name: wm-0793
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-227]'
+    - name: wm-0287
+      display_name: 'Re: Cover for River treatment [A-WS-083]'
+    - name: wm-0532
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
+    - name: wm-0632
+      display_name: 'Re: Learning slot for Maintenance planning [A-WS-181]'
+    - name: wm-0973
+      display_name: 'Re: Kit handover for People and board support [A-WS-279]'
+    - name: wm-1360
+      display_name: 'A-WS-077: staff record confirmed'
+    - name: wm-0206
+      display_name: Cover for Pine treatment [A-WS-060]
+    - name: wm-0549
+      display_name: Learning slot for Mechanical maintenance [A-WS-158]
+    - name: wm-0892
+      display_name: Kit handover for Accounts [A-WS-256]
+    - name: wm-0288
+      display_name: 'Re: Cover for River treatment [A-WS-083]'
+    - name: wm-0974
+      display_name: 'Re: Kit handover for People and board support [A-WS-279]'
+    - name: wm-0713
+      display_name: 'Re: Learning slot for Laboratory [A-WS-204]'
+    - name: wm-0207
+      display_name: 'Re: Cover for Pine treatment [A-WS-060]'
+    - name: wm-0550
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-158]'
+    - name: wm-0893
+      display_name: 'Re: Kit handover for Accounts [A-WS-256]'
+    - name: wm-0468
+      display_name: Learning slot for River distribution [A-WS-135]
+    - name: wm-0813
+      display_name: Role note for Business applications [A-WS-233]
+    - name: wm-0208
+      display_name: 'Re: Cover for Pine treatment [A-WS-060]'
+    - name: wm-0551
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-158]'
+    - name: wm-0894
+      display_name: 'Re: Kit handover for Accounts [A-WS-256]'
+    - name: wm-0469
+      display_name: 'Re: Learning slot for River distribution [A-WS-135]'
+    - name: wm-0714
+      display_name: 'Re: Learning slot for Laboratory [A-WS-204]'
+    - name: wm-0814
+      display_name: 'Re: Role note for Business applications [A-WS-233]'
+    - name: wm-0289
+      display_name: 'Re: Cover for River treatment [A-WS-083]'
+    - name: wm-0975
+      display_name: 'Re: Kit handover for People and board support [A-WS-279]'
+    - name: wm-1373
+      display_name: 'A-WS-129: staff record confirmed'
+    - name: wm-0731
+      display_name: Role note for Laboratory [A-WS-210]
+    - name: wm-0470
+      display_name: 'Re: Learning slot for River distribution [A-WS-135]'
+    - name: wm-0209
+      display_name: 'Re: Cover for Pine treatment [A-WS-060]'
+    - name: wm-0895
+      display_name: 'Re: Kit handover for Accounts [A-WS-256]'
+    - name: wm-0732
+      display_name: 'Re: Role note for Laboratory [A-WS-210]'
+    - name: wm-0309
+      display_name: Role note for River treatment [A-WS-089]
+    - name: wm-0733
+      display_name: 'Re: Role note for Laboratory [A-WS-210]'
+    - name: wm-0471
+      display_name: 'Re: Learning slot for River distribution [A-WS-135]'
+    - name: wm-0210
+      display_name: 'Re: Cover for Pine treatment [A-WS-060]'
+    - name: wm-0310
+      display_name: 'Re: Role note for River treatment [A-WS-089]'
+    - name: wm-0896
+      display_name: 'Re: Kit handover for Accounts [A-WS-256]'
+    - name: wm-1386
+      display_name: 'A-WS-181: staff record confirmed'
+    - name: wm-0570
+      display_name: Role note for Mechanical maintenance [A-WS-164]
+    - name: wm-0227
+      display_name: Contact route for Pine treatment [A-WS-066]
+    - name: wm-0571
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-164]'
+    - name: wm-0228
+      display_name: 'Re: Contact route for Pine treatment [A-WS-066]'
+    - name: wm-0491
+      display_name: Role note for River distribution [A-WS-141]
+    - name: wm-0832
+      display_name: Follow-up on Identity services [A-WS-239]
+    - name: wm-0244
+      display_name: Kit handover for Pine treatment [A-WS-071]
+    - name: wm-0572
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-164]'
+    - name: wm-0229
+      display_name: 'Re: Contact route for Pine treatment [A-WS-066]'
+    - name: wm-0492
+      display_name: 'Re: Role note for River distribution [A-WS-141]'
+    - name: wm-0833
+      display_name: 'Re: Follow-up on Identity services [A-WS-239]'
+    - name: wm-0245
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-071]'
+    - name: wm-1399
+      display_name: 'A-WS-233: staff record confirmed'
+    - name: wm-0409
+      display_name: Role note for Pine distribution [A-WS-118]
+    - name: wm-0752
+      display_name: Follow-up on Quality systems [A-WS-216]
+    - name: wm-0834
+      display_name: 'Re: Follow-up on Identity services [A-WS-239]'
+    - name: wm-0246
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-071]'
+    - name: wm-0573
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-164]'
+    - name: wm-0410
+      display_name: 'Re: Role note for Pine distribution [A-WS-118]'
+    - name: wm-0753
+      display_name: 'Re: Follow-up on Quality systems [A-WS-216]'
+    - name: wm-0328
+      display_name: Role note for River treatment [A-WS-095]
+    - name: wm-0673
+      display_name: Cover for Capital projects [A-WS-193]
+    - name: wm-0411
+      display_name: 'Re: Role note for Pine distribution [A-WS-118]'
+    - name: wm-0754
+      display_name: 'Re: Follow-up on Quality systems [A-WS-216]'
+    - name: wm-0329
+      display_name: 'Re: Role note for River treatment [A-WS-095]'
+    - name: wm-0574
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-164]'
+    - name: wm-0674
+      display_name: 'Re: Cover for Capital projects [A-WS-193]'
+    - name: wm-0835
+      display_name: 'Re: Follow-up on Identity services [A-WS-239]'
+    - name: wm-0247
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-071]'
+    - name: wm-1363
+      display_name: 'A-WS-089: staff record confirmed'
+    - name: wm-0248
+      display_name: Role note for Pine treatment [A-WS-072]
+    - name: wm-0591
+      display_name: Cover for Electrical and controls [A-WS-170]
+    - name: wm-0934
+      display_name: Learning slot for Records and scheduling [A-WS-268]
+    - name: wm-0330
+      display_name: 'Re: Role note for River treatment [A-WS-095]'
+    - name: wm-0755
+      display_name: 'Re: Follow-up on Quality systems [A-WS-216]'
+    - name: wm-0249
+      display_name: 'Re: Role note for Pine treatment [A-WS-072]'
+    - name: wm-0592
+      display_name: 'Re: Cover for Electrical and controls [A-WS-170]'
+    - name: wm-0935
+      display_name: 'Re: Learning slot for Records and scheduling [A-WS-268]'
+    - name: wm-0855
+      display_name: Learning slot for Customer contact [A-WS-245]
+    - name: wm-0250
+      display_name: 'Re: Role note for Pine treatment [A-WS-072]'
+    - name: wm-0593
+      display_name: 'Re: Cover for Electrical and controls [A-WS-170]'
+    - name: wm-0936
+      display_name: 'Re: Learning slot for Records and scheduling [A-WS-268]'
+    - name: wm-0331
+      display_name: 'Re: Role note for River treatment [A-WS-095]'
+    - name: wm-0756
+      display_name: 'Re: Follow-up on Quality systems [A-WS-216]'
+    - name: wm-0856
+      display_name: 'Re: Learning slot for Customer contact [A-WS-245]'
+    - name: wm-1376
+      display_name: 'A-WS-141: staff record deferred'
+    - name: wm-0430
+      display_name: Cover for River distribution [A-WS-124]
+    - name: wm-0773
+      display_name: Learning slot for Compliance reporting [A-WS-222]
+    - name: wm-0431
+      display_name: 'Re: Cover for River distribution [A-WS-124]'
+    - name: wm-0774
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-222]'
+    - name: wm-0251
+      display_name: 'Re: Role note for Pine treatment [A-WS-072]'
+    - name: wm-0937
+      display_name: 'Re: Learning slot for Records and scheduling [A-WS-268]'
+    - name: wm-0351
+      display_name: Cover for Pine distribution [A-WS-101]
+    - name: wm-0692
+      display_name: Learning slot for Resource planning [A-WS-199]
+    - name: wm-0432
+      display_name: 'Re: Cover for River distribution [A-WS-124]'
+    - name: wm-0775
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-222]'
+    - name: wm-0252
+      display_name: 'Re: Role note for Pine treatment [A-WS-072]'
+    - name: wm-0352
+      display_name: 'Re: Cover for Pine distribution [A-WS-101]'
+    - name: wm-0693
+      display_name: 'Re: Learning slot for Resource planning [A-WS-199]'
+    - name: wm-0938
+      display_name: 'Re: Learning slot for Records and scheduling [A-WS-268]'
+    - name: wm-1389
+      display_name: 'A-WS-193: staff record confirmed'
+    - name: wm-0269
+      display_name: Kit handover for Pine treatment [A-WS-078]
+    - name: wm-0612
+      display_name: Learning slot for Maintenance planning [A-WS-176]
+    - name: wm-0955
+      display_name: Role note for Executive [A-WS-274]
+    - name: wm-0694
+      display_name: 'Re: Learning slot for Resource planning [A-WS-199]'
+    - name: wm-0433
+      display_name: 'Re: Cover for River distribution [A-WS-124]'
+    - name: wm-0270
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-078]'
+    - name: wm-0613
+      display_name: 'Re: Learning slot for Maintenance planning [A-WS-176]'
+    - name: wm-0956
+      display_name: 'Re: Role note for Executive [A-WS-274]'
+    - name: wm-0533
+      display_name: Contact route for Mechanical maintenance [A-WS-153]
+    - name: wm-0874
+      display_name: Role note for Customer contact [A-WS-251]
+    - name: wm-0342
+      display_name: Kit handover for River treatment [A-WS-099]
+    - name: wm-0271
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-078]'
+    - name: wm-0614
+      display_name: 'Re: Learning slot for Maintenance planning [A-WS-176]'
+    - name: wm-0957
+      display_name: 'Re: Role note for Executive [A-WS-274]'
+    - name: wm-0434
+      display_name: 'Re: Cover for River distribution [A-WS-124]'
+    - name: wm-0534
+      display_name: 'Re: Contact route for Mechanical maintenance [A-WS-153]'
+    - name: wm-0875
+      display_name: 'Re: Role note for Customer contact [A-WS-251]'
+    - name: wm-0695
+      display_name: 'Re: Learning slot for Resource planning [A-WS-199]'
+    - name: wm-0343
+      display_name: 'Re: Kit handover for River treatment [A-WS-099]'
+    - name: wm-0451
+      display_name: Role note for River distribution [A-WS-130]
+    - name: wm-0876
+      display_name: 'Re: Role note for Customer contact [A-WS-251]'
+    - name: wm-0344
+      display_name: 'Re: Kit handover for River treatment [A-WS-099]'
+    - name: wm-0615
+      display_name: 'Re: Learning slot for Maintenance planning [A-WS-176]'
+    - name: wm-0452
+      display_name: 'Re: Role note for River distribution [A-WS-130]'
+    - name: wm-0370
+      display_name: Contact route for Pine distribution [A-WS-107]
+    - name: wm-0715
+      display_name: Role note for Laboratory [A-WS-205]
+    - name: wm-0365
+      display_name: Kit handover for Pine distribution [A-WS-105]
+    - name: wm-0453
+      display_name: 'Re: Role note for River distribution [A-WS-130]'
+    - name: wm-0877
+      display_name: 'Re: Role note for Customer contact [A-WS-251]'
+    - name: wm-0371
+      display_name: 'Re: Contact route for Pine distribution [A-WS-107]'
+    - name: wm-0616
+      display_name: 'Re: Learning slot for Maintenance planning [A-WS-176]'
+    - name: wm-0716
+      display_name: 'Re: Role note for Laboratory [A-WS-205]'
+    - name: wm-0345
+      display_name: 'Re: Kit handover for River treatment [A-WS-099]'
+    - name: wm-0366
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-105]'
+    - name: wm-1366
+      display_name: 'A-WS-101: staff record confirmed'
+    - name: wm-0633
+      display_name: Role note for Maintenance planning [A-WS-182]
+    - name: wm-0976
+      display_name: Follow-up on People and board support [A-WS-280]
+    - name: wm-0290
+      display_name: Contact route for River treatment [A-WS-084]
+    - name: wm-0372
+      display_name: 'Re: Contact route for Pine distribution [A-WS-107]'
+    - name: wm-0634
+      display_name: 'Re: Role note for Maintenance planning [A-WS-182]'
+    - name: wm-0977
+      display_name: 'Re: Follow-up on People and board support [A-WS-280]'
+    - name: wm-0291
+      display_name: 'Re: Contact route for River treatment [A-WS-084]'
+    - name: wm-0211
+      display_name: Contact route for Pine treatment [A-WS-061]
+    - name: wm-0552
+      display_name: Role note for Mechanical maintenance [A-WS-159]
+    - name: wm-0897
+      display_name: Learning slot for Accounts [A-WS-257]
+    - name: wm-0388
+      display_name: Kit handover for Pine distribution [A-WS-112]
+    - name: wm-0635
+      display_name: 'Re: Role note for Maintenance planning [A-WS-182]'
+    - name: wm-0978
+      display_name: 'Re: Follow-up on People and board support [A-WS-280]'
+    - name: wm-0292
+      display_name: 'Re: Contact route for River treatment [A-WS-084]'
+    - name: wm-0373
+      display_name: 'Re: Contact route for Pine distribution [A-WS-107]'
+    - name: wm-0212
+      display_name: 'Re: Contact route for Pine treatment [A-WS-061]'
+    - name: wm-0553
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-159]'
+    - name: wm-0898
+      display_name: 'Re: Learning slot for Accounts [A-WS-257]'
+    - name: wm-0389
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-112]'
+    - name: wm-1379
+      display_name: 'A-WS-153: staff record confirmed'
+    - name: wm-0472
+      display_name: Role note for River distribution [A-WS-136]
+    - name: wm-0815
+      display_name: Cover for Business applications [A-WS-234]
+    - name: wm-1326
+      display_name: 'Autumn cover: Finance [A-TEAM-FINANCE-2]'
+    - name: wm-1290
+      display_name: 'Autumn cover: Accounts [A-TEAM-ACCOUNTS-2]'
+    - name: wm-1317
+      display_name: 'Autumn cover: Executive [A-TEAM-EXECUTIVE-2]'
+    - name: wm-1227
+      display_name: 'Autumn cover: Laboratory [A-TEAM-LABORATORY-2]'
+    - name: wm-1299
+      display_name: 'Autumn cover: Procurement [A-TEAM-PROCUREMENT-2]'
+    - name: wm-1254
+      display_name: 'Autumn cover: Service desk [A-TEAM-SERVICE-DESK-2]'
+    - name: wm-1137
+      display_name: 'Autumn cover: Pine treatment [A-TEAM-PINE-TREATMENT-2]'
+    - name: wm-1146
+      display_name: 'Autumn cover: River treatment [A-TEAM-RIVER-TREATMENT-2]'
+    - name: wm-1236
+      display_name: 'Autumn cover: Quality systems [A-TEAM-QUALITY-SYSTEMS-2]'
+    - name: wm-1209
+      display_name: 'Autumn cover: Capital projects [A-TEAM-CAPITAL-PROJECTS-2]'
+    - name: wm-1281
+      display_name: 'Autumn cover: Customer contact [A-TEAM-CUSTOMER-CONTACT-2]'
+    - name: wm-1155
+      display_name: 'Autumn cover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-2]'
+    - name: wm-1218
+      display_name: 'Autumn cover: Resource planning [A-TEAM-RESOURCE-PLANNING-2]'
+    - name: wm-1272
+      display_name: 'Autumn cover: Identity services [A-TEAM-IDENTITY-SERVICES-2]'
+    - name: wm-1164
+      display_name: 'Autumn cover: River distribution [A-TEAM-RIVER-DISTRIBUTION-2]'
+    - name: wm-1173
+      display_name: 'Autumn cover: Field coordination [A-TEAM-FIELD-COORDINATION-2]'
+    - name: wm-1200
+      display_name: 'Autumn cover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-2]'
+    - name: wm-1245
+      display_name: 'Autumn cover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-2]'
+    - name: wm-1263
+      display_name: 'Autumn cover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-2]'
+    - name: wm-1182
+      display_name: 'Autumn cover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-2]'
+    - name: wm-1308
+      display_name: 'Autumn cover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-2]'
+    - name: wm-1191
+      display_name: 'Autumn cover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-2]'
+    - name: wm-1335
+      display_name: 'Autumn cover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-2]'
+    - name: wm-0554
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-159]'
+    - name: wm-0390
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-112]'
+    - name: wm-0979
+      display_name: 'Re: Follow-up on People and board support [A-WS-280]'
+    - name: wm-0473
+      display_name: 'Re: Role note for River distribution [A-WS-136]'
+    - name: wm-0816
+      display_name: 'Re: Cover for Business applications [A-WS-234]'
+    - name: wm-0293
+      display_name: 'Re: Contact route for River treatment [A-WS-084]'
+    - name: wm-1327
+      display_name: 'Re: Autumn cover: Finance [A-TEAM-FINANCE-2]'
+    - name: wm-1291
+      display_name: 'Re: Autumn cover: Accounts [A-TEAM-ACCOUNTS-2]'
+    - name: wm-1318
+      display_name: 'Re: Autumn cover: Executive [A-TEAM-EXECUTIVE-2]'
+    - name: wm-1228
+      display_name: 'Re: Autumn cover: Laboratory [A-TEAM-LABORATORY-2]'
+    - name: wm-1300
+      display_name: 'Re: Autumn cover: Procurement [A-TEAM-PROCUREMENT-2]'
+    - name: wm-1255
+      display_name: 'Re: Autumn cover: Service desk [A-TEAM-SERVICE-DESK-2]'
+    - name: wm-1138
+      display_name: 'Re: Autumn cover: Pine treatment [A-TEAM-PINE-TREATMENT-2]'
+    - name: wm-1147
+      display_name: 'Re: Autumn cover: River treatment [A-TEAM-RIVER-TREATMENT-2]'
+    - name: wm-1237
+      display_name: 'Re: Autumn cover: Quality systems [A-TEAM-QUALITY-SYSTEMS-2]'
+    - name: wm-1210
+      display_name: 'Re: Autumn cover: Capital projects [A-TEAM-CAPITAL-PROJECTS-2]'
+    - name: wm-1282
+      display_name: 'Re: Autumn cover: Customer contact [A-TEAM-CUSTOMER-CONTACT-2]'
+    - name: wm-1156
+      display_name: 'Re: Autumn cover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-2]'
+    - name: wm-1219
+      display_name: 'Re: Autumn cover: Resource planning [A-TEAM-RESOURCE-PLANNING-2]'
+    - name: wm-1273
+      display_name: 'Re: Autumn cover: Identity services [A-TEAM-IDENTITY-SERVICES-2]'
+    - name: wm-1165
+      display_name: 'Re: Autumn cover: River distribution [A-TEAM-RIVER-DISTRIBUTION-2]'
+    - name: wm-1174
+      display_name: 'Re: Autumn cover: Field coordination [A-TEAM-FIELD-COORDINATION-2]'
+    - name: wm-1201
+      display_name: 'Re: Autumn cover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-2]'
+    - name: wm-1246
+      display_name: 'Re: Autumn cover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-2]'
+    - name: wm-1264
+      display_name: 'Re: Autumn cover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-2]'
+    - name: wm-1183
+      display_name: 'Re: Autumn cover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-2]'
+    - name: wm-1309
+      display_name: 'Re: Autumn cover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-2]'
+    - name: wm-1192
+      display_name: 'Re: Autumn cover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-2]'
+    - name: wm-1336
+      display_name: 'Re: Autumn cover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-2]'
+    - name: wm-0734
+      display_name: Cover for Laboratory [A-WS-211]
+    - name: wm-0393
+      display_name: 'Next team slot: Pine distribution [A-WS-113]'
+    - name: wm-0474
+      display_name: 'Re: Role note for River distribution [A-WS-136]'
+    - name: wm-0817
+      display_name: 'Re: Cover for Business applications [A-WS-234]'
+    - name: wm-0735
+      display_name: 'Re: Cover for Laboratory [A-WS-211]'
+    - name: wm-0980
+      display_name: 'Re: Follow-up on People and board support [A-WS-280]'
+    - name: wm-1328
+      display_name: 'Re: Autumn cover: Finance [A-TEAM-FINANCE-2]'
+    - name: wm-1292
+      display_name: 'Re: Autumn cover: Accounts [A-TEAM-ACCOUNTS-2]'
+    - name: wm-1319
+      display_name: 'Re: Autumn cover: Executive [A-TEAM-EXECUTIVE-2]'
+    - name: wm-1229
+      display_name: 'Re: Autumn cover: Laboratory [A-TEAM-LABORATORY-2]'
+    - name: wm-1301
+      display_name: 'Re: Autumn cover: Procurement [A-TEAM-PROCUREMENT-2]'
+    - name: wm-1256
+      display_name: 'Re: Autumn cover: Service desk [A-TEAM-SERVICE-DESK-2]'
+    - name: wm-1139
+      display_name: 'Re: Autumn cover: Pine treatment [A-TEAM-PINE-TREATMENT-2]'
+    - name: wm-1148
+      display_name: 'Re: Autumn cover: River treatment [A-TEAM-RIVER-TREATMENT-2]'
+    - name: wm-1238
+      display_name: 'Re: Autumn cover: Quality systems [A-TEAM-QUALITY-SYSTEMS-2]'
+    - name: wm-1211
+      display_name: 'Re: Autumn cover: Capital projects [A-TEAM-CAPITAL-PROJECTS-2]'
+    - name: wm-1283
+      display_name: 'Re: Autumn cover: Customer contact [A-TEAM-CUSTOMER-CONTACT-2]'
+    - name: wm-1157
+      display_name: 'Re: Autumn cover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-2]'
+    - name: wm-1220
+      display_name: 'Re: Autumn cover: Resource planning [A-TEAM-RESOURCE-PLANNING-2]'
+    - name: wm-1274
+      display_name: 'Re: Autumn cover: Identity services [A-TEAM-IDENTITY-SERVICES-2]'
+    - name: wm-1166
+      display_name: 'Re: Autumn cover: River distribution [A-TEAM-RIVER-DISTRIBUTION-2]'
+    - name: wm-1175
+      display_name: 'Re: Autumn cover: Field coordination [A-TEAM-FIELD-COORDINATION-2]'
+    - name: wm-1202
+      display_name: 'Re: Autumn cover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-2]'
+    - name: wm-1247
+      display_name: 'Re: Autumn cover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-2]'
+    - name: wm-1265
+      display_name: 'Re: Autumn cover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-2]'
+    - name: wm-1184
+      display_name: 'Re: Autumn cover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-2]'
+    - name: wm-1310
+      display_name: 'Re: Autumn cover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-2]'
+    - name: wm-1193
+      display_name: 'Re: Autumn cover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-2]'
+    - name: wm-1337
+      display_name: 'Re: Autumn cover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-2]'
+    - name: wm-0555
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-159]'
+    - name: wm-0294
+      display_name: 'Re: Contact route for River treatment [A-WS-084]'
+    - name: wm-0394
+      display_name: 'Re: Next team slot: Pine distribution [A-WS-113]'
+    - name: wm-0391
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-112]'
+    - name: wm-1392
+      display_name: 'A-WS-205: staff record confirmed'
+    - name: wm-1367
+      display_name: 'A-WS-105: staff record confirmed'
+    - name: wm-0311
+      display_name: 'Next team slot: River treatment [A-WS-090]'
+    - name: wm-0654
+      display_name: Cover for Capital projects [A-WS-188]
+    - name: wm-0736
+      display_name: 'Re: Cover for Laboratory [A-WS-211]'
+    - name: wm-0475
+      display_name: 'Re: Role note for River distribution [A-WS-136]'
+    - name: wm-0312
+      display_name: 'Re: Next team slot: River treatment [A-WS-090]'
+    - name: wm-0655
+      display_name: 'Re: Cover for Capital projects [A-WS-188]'
+    - name: wm-0392
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-112]'
+    - name: wm-0230
+      display_name: Role note for Pine treatment [A-WS-067]
+    - name: wm-0575
+      display_name: Cover for Mechanical maintenance [A-WS-165]
+    - name: wm-0916
+      display_name: Learning slot for Procurement [A-WS-263]
+    - name: wm-0313
+      display_name: 'Re: Next team slot: River treatment [A-WS-090]'
+    - name: wm-0656
+      display_name: 'Re: Cover for Capital projects [A-WS-188]'
+    - name: wm-0737
+      display_name: 'Re: Cover for Laboratory [A-WS-211]'
+    - name: wm-0231
+      display_name: 'Re: Role note for Pine treatment [A-WS-067]'
+    - name: wm-0476
+      display_name: 'Re: Role note for River distribution [A-WS-136]'
+    - name: wm-0576
+      display_name: 'Re: Cover for Mechanical maintenance [A-WS-165]'
+    - name: wm-0917
+      display_name: 'Re: Learning slot for Procurement [A-WS-263]'
+    - name: wm-1356
+      display_name: 'A-WS-061: staff record confirmed'
+    - name: wm-0493
+      display_name: Cover for River distribution [A-WS-142]
+    - name: wm-0836
+      display_name: Learning slot for Customer contact [A-WS-240]
+    - name: wm-0232
+      display_name: 'Re: Role note for Pine treatment [A-WS-067]'
+    - name: wm-0918
+      display_name: 'Re: Learning slot for Procurement [A-WS-263]'
+    - name: wm-0494
+      display_name: 'Re: Cover for River distribution [A-WS-142]'
+    - name: wm-0837
+      display_name: 'Re: Learning slot for Customer contact [A-WS-240]'
+    - name: wm-0657
+      display_name: 'Re: Cover for Capital projects [A-WS-188]'
+    - name: wm-0412
+      display_name: Kit handover for Pine distribution [A-WS-119]
+    - name: wm-0757
+      display_name: Contact route for Quality systems [A-WS-217]
+    - name: wm-0495
+      display_name: 'Re: Cover for River distribution [A-WS-142]'
+    - name: wm-0838
+      display_name: 'Re: Learning slot for Customer contact [A-WS-240]'
+    - name: wm-0233
+      display_name: 'Re: Role note for Pine treatment [A-WS-067]'
+    - name: wm-0919
+      display_name: 'Re: Learning slot for Procurement [A-WS-263]'
+    - name: wm-0413
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-119]'
+    - name: wm-0658
+      display_name: 'Re: Cover for Capital projects [A-WS-188]'
+    - name: wm-0758
+      display_name: 'Re: Contact route for Quality systems [A-WS-217]'
+    - name: wm-1369
+      display_name: 'A-WS-113: staff record deferred'
+    - name: wm-0332
+      display_name: Cover for River treatment [A-WS-096]
+    - name: wm-0414
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-119]'
+    - name: wm-0839
+      display_name: 'Re: Learning slot for Customer contact [A-WS-240]'
+    - name: wm-0333
+      display_name: 'Re: Cover for River treatment [A-WS-096]'
+    - name: wm-0594
+      display_name: Contact route for Electrical and controls [A-WS-171]
+    - name: wm-0939
+      display_name: Role note for Records and scheduling [A-WS-269]
+    - name: wm-0253
+      display_name: Handover note for Pine treatment [A-WS-073]
+    - name: wm-0486
+      display_name: Kit handover for River distribution [A-WS-140]
+    - name: wm-0334
+      display_name: 'Re: Cover for River treatment [A-WS-096]'
+    - name: wm-0595
+      display_name: 'Re: Contact route for Electrical and controls [A-WS-171]'
+    - name: wm-0840
+      display_name: 'Re: Learning slot for Customer contact [A-WS-240]'
+    - name: wm-0940
+      display_name: 'Re: Role note for Records and scheduling [A-WS-269]'
+    - name: wm-0415
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-119]'
+    - name: wm-0254
+      display_name: 'Re: Handover note for Pine treatment [A-WS-073]'
+    - name: wm-0487
+      display_name: 'Re: Kit handover for River distribution [A-WS-140]'
+    - name: wm-1382
+      display_name: 'A-WS-165: staff record confirmed'
+    - name: wm-0514
+      display_name: Contact route for Field coordination [A-WS-148]
+    - name: wm-0857
+      display_name: Role note for Customer contact [A-WS-246]
+    - name: wm-0596
+      display_name: 'Re: Contact route for Electrical and controls [A-WS-171]'
+    - name: wm-0488
+      display_name: 'Re: Kit handover for River distribution [A-WS-140]'
+    - name: wm-0335
+      display_name: 'Re: Cover for River treatment [A-WS-096]'
+    - name: wm-0515
+      display_name: 'Re: Contact route for Field coordination [A-WS-148]'
+    - name: wm-0858
+      display_name: 'Re: Role note for Customer contact [A-WS-246]'
+    - name: wm-0435
+      display_name: Contact route for River distribution [A-WS-125]
+    - name: wm-0776
+      display_name: Learning slot for Compliance reporting [A-WS-223]
+    - name: wm-0510
+      display_name: Kit handover for Field coordination [A-WS-147]
+    - name: wm-0516
+      display_name: 'Re: Contact route for Field coordination [A-WS-148]'
+    - name: wm-0859
+      display_name: 'Re: Role note for Customer contact [A-WS-246]'
+    - name: wm-0597
+      display_name: 'Re: Contact route for Electrical and controls [A-WS-171]'
+    - name: wm-0336
+      display_name: 'Re: Cover for River treatment [A-WS-096]'
+    - name: wm-0436
+      display_name: 'Re: Contact route for River distribution [A-WS-125]'
+    - name: wm-0777
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-223]'
+    - name: wm-0489
+      display_name: 'Re: Kit handover for River distribution [A-WS-140]'
+    - name: wm-0511
+      display_name: 'Re: Kit handover for Field coordination [A-WS-147]'
+    - name: wm-1395
+      display_name: 'A-WS-217: staff record confirmed'
+    - name: wm-0353
+      display_name: Contact route for Pine distribution [A-WS-102]
+    - name: wm-0778
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-223]'
+    - name: wm-0512
+      display_name: 'Re: Kit handover for Field coordination [A-WS-147]'
+    - name: wm-0517
+      display_name: 'Re: Contact route for Field coordination [A-WS-148]'
+    - name: wm-0354
+      display_name: 'Re: Contact route for Pine distribution [A-WS-102]'
+    - name: wm-0490
+      display_name: 'Re: Kit handover for River distribution [A-WS-140]'
+    - name: wm-0272
+      display_name: Contact route for Pine treatment [A-WS-079]
+    - name: wm-0617
+      display_name: 'Next team slot: Maintenance planning [A-WS-177]'
+    - name: wm-0958
+      display_name: Cover for Finance [A-WS-275]
+    - name: wm-0355
+      display_name: 'Re: Contact route for Pine distribution [A-WS-102]'
+    - name: wm-0779
+      display_name: 'Re: Learning slot for Compliance reporting [A-WS-223]'
+    - name: wm-0273
+      display_name: 'Re: Contact route for Pine treatment [A-WS-079]'
+    - name: wm-0518
+      display_name: 'Re: Contact route for Field coordination [A-WS-148]'
+    - name: wm-0618
+      display_name: 'Re: Next team slot: Maintenance planning [A-WS-177]'
+    - name: wm-0959
+      display_name: 'Re: Cover for Finance [A-WS-275]'
+    - name: wm-0513
+      display_name: 'Re: Kit handover for Field coordination [A-WS-147]'
+    - name: wm-1359
+      display_name: 'A-WS-073: staff record confirmed'
+    - name: wm-0535
+      display_name: Kit handover for Mechanical maintenance [A-WS-154]
+    - name: wm-0878
+      display_name: Cover for Customer contact [A-WS-252]
+    - name: wm-0274
+      display_name: 'Re: Contact route for Pine treatment [A-WS-079]'
+    - name: wm-0960
+      display_name: 'Re: Cover for Finance [A-WS-275]'
+    - name: wm-0536
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-154]'
+    - name: wm-0879
+      display_name: 'Re: Cover for Customer contact [A-WS-252]'
+    - name: wm-0799
+      display_name: Cover for Service desk [A-WS-229]
+    - name: wm-0454
+      display_name: 'Next team slot: River distribution [A-WS-131]'
+    - name: wm-0537
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-154]'
+    - name: wm-0880
+      display_name: 'Re: Cover for Customer contact [A-WS-252]'
+    - name: wm-0800
+      display_name: 'Re: Cover for Service desk [A-WS-229]'
+    - name: wm-0275
+      display_name: 'Re: Contact route for Pine treatment [A-WS-079]'
+    - name: wm-0961
+      display_name: 'Re: Cover for Finance [A-WS-275]'
+    - name: wm-0455
+      display_name: 'Re: Next team slot: River distribution [A-WS-131]'
+    - name: wm-1372
+      display_name: 'A-WS-125: staff record confirmed'
+    - name: wm-0374
+      display_name: Role note for Pine distribution [A-WS-108]
+    - name: wm-0717
+      display_name: Learning slot for Laboratory [A-WS-206]
+    - name: wm-0456
+      display_name: 'Re: Next team slot: River distribution [A-WS-131]'
+    - name: wm-0881
+      display_name: 'Re: Cover for Customer contact [A-WS-252]'
+    - name: wm-0375
+      display_name: 'Re: Role note for Pine distribution [A-WS-108]'
+    - name: wm-0718
+      display_name: 'Re: Learning slot for Laboratory [A-WS-206]'
+    - name: wm-0295
+      display_name: Kit handover for River treatment [A-WS-085]
+    - name: wm-0636
+      display_name: Cover for Maintenance planning [A-WS-183]
+    - name: wm-0376
+      display_name: 'Re: Role note for Pine distribution [A-WS-108]'
+    - name: wm-0719
+      display_name: 'Re: Learning slot for Laboratory [A-WS-206]'
+    - name: wm-0296
+      display_name: 'Re: Kit handover for River treatment [A-WS-085]'
+    - name: wm-0637
+      display_name: 'Re: Cover for Maintenance planning [A-WS-183]'
+    - name: wm-0882
+      display_name: 'Re: Cover for Customer contact [A-WS-252]'
+    - name: wm-0457
+      display_name: 'Re: Next team slot: River distribution [A-WS-131]'
+    - name: wm-1385
+      display_name: 'A-WS-177: staff record open'
+    - name: wm-0899
+      display_name: Contact route for Accounts [A-WS-258]
+    - name: wm-0213
+      display_name: 'Next team slot: Pine treatment [A-WS-062]'
+    - name: wm-0556
+      display_name: Role note for Mechanical maintenance [A-WS-160]
+    - name: wm-0638
+      display_name: 'Re: Cover for Maintenance planning [A-WS-183]'
+    - name: wm-0900
+      display_name: 'Re: Contact route for Accounts [A-WS-258]'
+    - name: wm-0377
+      display_name: 'Re: Role note for Pine distribution [A-WS-108]'
+    - name: wm-0214
+      display_name: 'Re: Next team slot: Pine treatment [A-WS-062]'
+    - name: wm-0557
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-160]'
+    - name: wm-0477
+      display_name: Handover note for River distribution [A-WS-137]
+    - name: wm-0605
+      display_name: Kit handover for Electrical and controls [A-WS-174]
+    - name: wm-0901
+      display_name: 'Re: Contact route for Accounts [A-WS-258]'
+    - name: wm-0215
+      display_name: 'Re: Next team slot: Pine treatment [A-WS-062]'
+    - name: wm-0558
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-160]'
+    - name: wm-0639
+      display_name: 'Re: Cover for Maintenance planning [A-WS-183]'
+    - name: wm-0378
+      display_name: 'Re: Role note for Pine distribution [A-WS-108]'
+    - name: wm-0478
+      display_name: 'Re: Handover note for River distribution [A-WS-137]'
+    - name: wm-0606
+      display_name: 'Re: Kit handover for Electrical and controls [A-WS-174]'
+    - name: wm-1398
+      display_name: 'A-WS-229: staff record confirmed'
+    - name: wm-0395
+      display_name: Handover note for Pine distribution [A-WS-114]
+    - name: wm-0738
+      display_name: Contact route for Laboratory [A-WS-212]
+    - name: wm-0607
+      display_name: 'Re: Kit handover for Electrical and controls [A-WS-174]'
+    - name: wm-0396
+      display_name: 'Re: Handover note for Pine distribution [A-WS-114]'
+    - name: wm-0739
+      display_name: 'Re: Contact route for Laboratory [A-WS-212]'
+    - name: wm-0559
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-160]'
+    - name: wm-0659
+      display_name: Learning slot for Capital projects [A-WS-189]
+    - name: wm-0314
+      display_name: Handover note for River treatment [A-WS-091]
+    - name: wm-0626
+      display_name: Kit handover for Maintenance planning [A-WS-180]
+    - name: wm-0397
+      display_name: 'Re: Handover note for Pine distribution [A-WS-114]'
+    - name: wm-0740
+      display_name: 'Re: Contact route for Laboratory [A-WS-212]'
+    - name: wm-0660
+      display_name: 'Re: Learning slot for Capital projects [A-WS-189]'
+    - name: wm-0315
+      display_name: 'Re: Handover note for River treatment [A-WS-091]'
+    - name: wm-0560
+      display_name: 'Re: Role note for Mechanical maintenance [A-WS-160]'
+    - name: wm-0627
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
+    - name: wm-1362
+      display_name: 'A-WS-085: staff record confirmed'
+    - name: wm-0234
+      display_name: Handover note for Pine treatment [A-WS-068]
+    - name: wm-0577
+      display_name: Contact route for Electrical and controls [A-WS-166]
+    - name: wm-0920
+      display_name: Role note for Procurement [A-WS-264]
+    - name: wm-0316
+      display_name: 'Re: Handover note for River treatment [A-WS-091]'
+    - name: wm-0628
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
+    - name: wm-0741
+      display_name: 'Re: Contact route for Laboratory [A-WS-212]'
+    - name: wm-0235
+      display_name: 'Re: Handover note for Pine treatment [A-WS-068]'
+    - name: wm-0578
+      display_name: 'Re: Contact route for Electrical and controls [A-WS-166]'
+    - name: wm-0921
+      display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: wm-0496
+      display_name: Role note for Field coordination [A-WS-143]
+    - name: wm-0650
+      display_name: Kit handover for Capital projects [A-WS-187]
+    - name: wm-0236
+      display_name: 'Re: Handover note for Pine treatment [A-WS-068]'
+    - name: wm-0579
+      display_name: 'Re: Contact route for Electrical and controls [A-WS-166]'
+    - name: wm-0922
+      display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: wm-0497
+      display_name: 'Re: Role note for Field coordination [A-WS-143]'
+    - name: wm-0742
+      display_name: 'Re: Contact route for Laboratory [A-WS-212]'
+    - name: wm-0317
+      display_name: 'Re: Handover note for River treatment [A-WS-091]'
+    - name: wm-0629
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
+    - name: wm-0651
+      display_name: 'Re: Kit handover for Capital projects [A-WS-187]'
+    - name: wm-1375
+      display_name: 'A-WS-137: staff record confirmed'
+    - name: wm-0759
+      display_name: 'Next team slot: Quality systems [A-WS-218]'
+    - name: wm-0416
+      display_name: Contact route for Pine distribution [A-WS-120]
+    - name: wm-0498
+      display_name: 'Re: Role note for Field coordination [A-WS-143]'
+    - name: wm-0652
+      display_name: 'Re: Kit handover for Capital projects [A-WS-187]'
+    - name: wm-0760
+      display_name: 'Re: Next team slot: Quality systems [A-WS-218]'
+    - name: wm-0237
+      display_name: 'Re: Handover note for Pine treatment [A-WS-068]'
+    - name: wm-0923
+      display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: wm-0417
+      display_name: 'Re: Contact route for Pine distribution [A-WS-120]'
+    - name: wm-0630
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
+    - name: wm-0337
+      display_name: Kit handover for River treatment [A-WS-097]
+    - name: wm-0678
+      display_name: 'Next team slot: Capital projects [A-WS-195]'
+    - name: wm-0675
+      display_name: Kit handover for Capital projects [A-WS-194]
+    - name: wm-0761
+      display_name: 'Re: Next team slot: Quality systems [A-WS-218]'
+    - name: wm-0418
+      display_name: 'Re: Contact route for Pine distribution [A-WS-120]'
+    - name: wm-0499
+      display_name: 'Re: Role note for Field coordination [A-WS-143]'
+    - name: wm-0238
+      display_name: 'Re: Handover note for Pine treatment [A-WS-068]'
+    - name: wm-0338
+      display_name: 'Re: Kit handover for River treatment [A-WS-097]'
+    - name: wm-0679
+      display_name: 'Re: Next team slot: Capital projects [A-WS-195]'
+    - name: wm-0924
+      display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: wm-0653
+      display_name: 'Re: Kit handover for Capital projects [A-WS-187]'
+    - name: wm-0676
+      display_name: 'Re: Kit handover for Capital projects [A-WS-194]'
+    - name: wm-1388
+      display_name: 'A-WS-189: staff record confirmed'
+    - name: wm-0255
+      display_name: Kit handover for Pine treatment [A-WS-074]
+    - name: wm-0598
+      display_name: Learning slot for Electrical and controls [A-WS-172]
+    - name: wm-0941
+      display_name: Cover for Records and scheduling [A-WS-270]
+    - name: wm-0680
+      display_name: 'Re: Next team slot: Capital projects [A-WS-195]'
+    - name: wm-0677
+      display_name: 'Re: Kit handover for Capital projects [A-WS-194]'
+    - name: wm-0256
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-074]'
+    - name: wm-0599
+      display_name: 'Re: Learning slot for Electrical and controls [A-WS-172]'
+    - name: wm-0942
+      display_name: 'Re: Cover for Records and scheduling [A-WS-270]'
+    - name: wm-0419
+      display_name: 'Re: Contact route for Pine distribution [A-WS-120]'
+    - name: wm-0860
+      display_name: Cover for Customer contact [A-WS-247]
+    - name: wm-0519
+      display_name: 'Next team slot: Field coordination [A-WS-149]'
+    - name: wm-0696
+      display_name: Kit handover for Resource planning [A-WS-200]
+    - name: wm-0257
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-074]'
+    - name: wm-0600
+      display_name: 'Re: Learning slot for Electrical and controls [A-WS-172]'
+    - name: wm-0943
+      display_name: 'Re: Cover for Records and scheduling [A-WS-270]'
+    - name: wm-0861
+      display_name: 'Re: Cover for Customer contact [A-WS-247]'
+    - name: wm-0681
+      display_name: 'Re: Next team slot: Capital projects [A-WS-195]'
+    - name: wm-0420
+      display_name: 'Re: Contact route for Pine distribution [A-WS-120]'
+    - name: wm-0520
+      display_name: 'Re: Next team slot: Field coordination [A-WS-149]'
+    - name: wm-0697
+      display_name: 'Re: Kit handover for Resource planning [A-WS-200]'
+    - name: wm-0437
+      display_name: Kit handover for River distribution [A-WS-126]
+    - name: wm-0780
+      display_name: Cover for Compliance reporting [A-WS-224]
+    - name: wm-0862
+      display_name: 'Re: Cover for Customer contact [A-WS-247]'
+    - name: wm-0698
+      display_name: 'Re: Kit handover for Resource planning [A-WS-200]'
+    - name: wm-0601
+      display_name: 'Re: Learning slot for Electrical and controls [A-WS-172]'
+    - name: wm-0438
+      display_name: 'Re: Kit handover for River distribution [A-WS-126]'
+    - name: wm-0781
+      display_name: 'Re: Cover for Compliance reporting [A-WS-224]'
+    - name: wm-0356
+      display_name: 'Next team slot: Pine distribution [A-WS-103]'
+    - name: wm-0701
+      display_name: Handover note for Resource planning [A-WS-201]
+    - name: wm-0439
+      display_name: 'Re: Kit handover for River distribution [A-WS-126]'
+    - name: wm-0782
+      display_name: 'Re: Cover for Compliance reporting [A-WS-224]'
+    - name: wm-0863
+      display_name: 'Re: Cover for Customer contact [A-WS-247]'
+    - name: wm-0357
+      display_name: 'Re: Next team slot: Pine distribution [A-WS-103]'
+    - name: wm-0602
+      display_name: 'Re: Learning slot for Electrical and controls [A-WS-172]'
+    - name: wm-0702
+      display_name: 'Re: Handover note for Resource planning [A-WS-201]'
+    - name: wm-0699
+      display_name: 'Re: Kit handover for Resource planning [A-WS-200]'
+    - name: wm-1365
+      display_name: 'A-WS-097: staff record confirmed'
+    - name: wm-0962
+      display_name: Contact route for Finance [A-WS-276]
+    - name: wm-0276
+      display_name: Role note for River treatment [A-WS-080]
+    - name: wm-0619
+      display_name: Handover note for Maintenance planning [A-WS-178]
+    - name: wm-0358
+      display_name: 'Re: Next team slot: Pine distribution [A-WS-103]'
+    - name: wm-0963
+      display_name: 'Re: Contact route for Finance [A-WS-276]'
+    - name: wm-0783
+      display_name: 'Re: Cover for Compliance reporting [A-WS-224]'
+    - name: wm-0277
+      display_name: 'Re: Role note for River treatment [A-WS-080]'
+    - name: wm-0620
+      display_name: 'Re: Handover note for Maintenance planning [A-WS-178]'
+    - name: wm-0700
+      display_name: 'Re: Kit handover for Resource planning [A-WS-200]'
+    - name: wm-0538
+      display_name: Learning slot for Mechanical maintenance [A-WS-155]
+    - name: wm-0883
+      display_name: Contact route for Customer contact [A-WS-253]
+    - name: wm-0964
+      display_name: 'Re: Contact route for Finance [A-WS-276]'
+    - name: wm-0278
+      display_name: 'Re: Role note for River treatment [A-WS-080]'
+    - name: wm-0621
+      display_name: 'Re: Handover note for Maintenance planning [A-WS-178]'
+    - name: wm-0359
+      display_name: 'Re: Next team slot: Pine distribution [A-WS-103]'
+    - name: wm-0539
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-155]'
+    - name: wm-0784
+      display_name: 'Re: Cover for Compliance reporting [A-WS-224]'
+    - name: wm-0884
+      display_name: 'Re: Contact route for Customer contact [A-WS-253]'
+    - name: wm-1378
+      display_name: 'A-WS-149: staff record confirmed'
     - name: a-choir-1
       display_name: After rehearsal
     - name: a-choir-2
       display_name: 'Re: After rehearsal'
     - name: a-choir-3
       display_name: 'Re: After rehearsal'
+    - name: wm-0458
+      display_name: Handover note for River distribution [A-WS-132]
+    - name: wm-0801
+      display_name: Contact route for Service desk [A-WS-230]
     - name: a-choir-4
       display_name: 'Re: After rehearsal'
+    - name: wm-0540
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-155]'
+    - name: wm-0965
+      display_name: 'Re: Contact route for Finance [A-WS-276]'
+    - name: wm-0459
+      display_name: 'Re: Handover note for River distribution [A-WS-132]'
+    - name: wm-0802
+      display_name: 'Re: Contact route for Service desk [A-WS-230]'
+    - name: wm-0279
+      display_name: 'Re: Role note for River treatment [A-WS-080]'
+    - name: wm-0379
+      display_name: Handover note for Pine distribution [A-WS-109]
+    - name: wm-0720
+      display_name: Kit handover for Laboratory [A-WS-207]
+    - name: wm-0771
+      display_name: Kit handover for Quality systems [A-WS-221]
+    - name: wm-0460
+      display_name: 'Re: Handover note for River distribution [A-WS-132]'
+    - name: wm-0803
+      display_name: 'Re: Contact route for Service desk [A-WS-230]'
+    - name: wm-0966
+      display_name: 'Re: Contact route for Finance [A-WS-276]'
+    - name: wm-0541
+      display_name: 'Re: Learning slot for Mechanical maintenance [A-WS-155]'
+    - name: wm-0280
+      display_name: 'Re: Role note for River treatment [A-WS-080]'
+    - name: wm-0380
+      display_name: 'Re: Handover note for Pine distribution [A-WS-109]'
+    - name: wm-0721
+      display_name: 'Re: Kit handover for Laboratory [A-WS-207]'
+    - name: wm-0772
+      display_name: 'Re: Kit handover for Quality systems [A-WS-221]'
+    - name: wm-1391
+      display_name: 'A-WS-201: staff record confirmed'
+    - name: wm-0297
+      display_name: Handover note for River treatment [A-WS-086]
+    - name: wm-0640
+      display_name: Role note for Maintenance planning [A-WS-184]
+    - name: wm-0722
+      display_name: 'Re: Kit handover for Laboratory [A-WS-207]'
+    - name: wm-0461
+      display_name: 'Re: Handover note for River distribution [A-WS-132]'
+    - name: wm-0298
+      display_name: 'Re: Handover note for River treatment [A-WS-086]'
+    - name: wm-0641
+      display_name: 'Re: Role note for Maintenance planning [A-WS-184]'
+    - name: wm-0216
+      display_name: Handover note for Pine treatment [A-WS-063]
+    - name: wm-0561
+      display_name: Kit handover for Mechanical maintenance [A-WS-161]
+    - name: wm-0902
+      display_name: 'Next team slot: Accounts [A-WS-259]'
+    - name: wm-0794
+      display_name: Kit handover for Service desk [A-WS-228]
+    - name: wm-0299
+      display_name: 'Re: Handover note for River treatment [A-WS-086]'
+    - name: wm-0642
+      display_name: 'Re: Role note for Maintenance planning [A-WS-184]'
+    - name: wm-0217
+      display_name: 'Re: Handover note for Pine treatment [A-WS-063]'
+    - name: wm-0462
+      display_name: 'Re: Handover note for River distribution [A-WS-132]'
+    - name: wm-0562
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-161]'
+    - name: wm-0903
+      display_name: 'Re: Next team slot: Accounts [A-WS-259]'
+    - name: wm-0723
+      display_name: 'Re: Kit handover for Laboratory [A-WS-207]'
+    - name: wm-0795
+      display_name: 'Re: Kit handover for Service desk [A-WS-228]'
+    - name: wm-0822
+      display_name: 'Next team slot: Business applications [A-WS-236]'
+    - name: wm-0479
+      display_name: Learning slot for River distribution [A-WS-138]
+    - name: wm-0218
+      display_name: 'Re: Handover note for Pine treatment [A-WS-063]'
+    - name: wm-0904
+      display_name: 'Re: Next team slot: Accounts [A-WS-259]'
+    - name: wm-0796
+      display_name: 'Re: Kit handover for Service desk [A-WS-228]'
+    - name: wm-0823
+      display_name: 'Re: Next team slot: Business applications [A-WS-236]'
+    - name: wm-0643
+      display_name: 'Re: Role note for Maintenance planning [A-WS-184]'
+    - name: wm-0480
+      display_name: 'Re: Learning slot for River distribution [A-WS-138]'
+    - name: wm-0398
+      display_name: Kit handover for Pine distribution [A-WS-115]
+    - name: wm-0743
+      display_name: 'Next team slot: Laboratory [A-WS-213]'
+    - name: wm-0818
+      display_name: Kit handover for Business applications [A-WS-235]
+    - name: wm-0824
+      display_name: 'Re: Next team slot: Business applications [A-WS-236]'
+    - name: wm-0481
+      display_name: 'Re: Learning slot for River distribution [A-WS-138]'
+    - name: wm-0219
+      display_name: 'Re: Handover note for Pine treatment [A-WS-063]'
+    - name: wm-0905
+      display_name: 'Re: Next team slot: Accounts [A-WS-259]'
+    - name: wm-0399
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-115]'
+    - name: wm-0644
+      display_name: 'Re: Role note for Maintenance planning [A-WS-184]'
+    - name: wm-0744
+      display_name: 'Re: Next team slot: Laboratory [A-WS-213]'
+    - name: wm-0797
+      display_name: 'Re: Kit handover for Service desk [A-WS-228]'
+    - name: wm-0819
+      display_name: 'Re: Kit handover for Business applications [A-WS-235]'
+    - name: wm-1368
+      display_name: 'A-WS-109: staff record confirmed'
+    - name: wm-1396
+      display_name: 'A-WS-221: staff record confirmed'
+    - name: wm-0318
+      display_name: Kit handover for River treatment [A-WS-092]
+    - name: wm-0661
+      display_name: 'Next team slot: Capital projects [A-WS-190]'
+    - name: wm-0400
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-115]'
+    - name: wm-0820
+      display_name: 'Re: Kit handover for Business applications [A-WS-235]'
+    - name: wm-0825
+      display_name: 'Re: Next team slot: Business applications [A-WS-236]'
+    - name: wm-0319
+      display_name: 'Re: Kit handover for River treatment [A-WS-092]'
+    - name: wm-0662
+      display_name: 'Re: Next team slot: Capital projects [A-WS-190]'
+    - name: wm-0798
+      display_name: 'Re: Kit handover for Service desk [A-WS-228]'
+    - name: wm-0925
+      display_name: Handover note for Procurement [A-WS-265]
+    - name: wm-0239
+      display_name: Kit handover for Pine treatment [A-WS-069]
+    - name: wm-0580
+      display_name: Kit handover for Electrical and controls [A-WS-167]
+    - name: wm-0841
+      display_name: Kit handover for Customer contact [A-WS-241]
+    - name: wm-0320
+      display_name: 'Re: Kit handover for River treatment [A-WS-092]'
+    - name: wm-0663
+      display_name: 'Re: Next team slot: Capital projects [A-WS-190]'
+    - name: wm-0826
+      display_name: 'Re: Next team slot: Business applications [A-WS-236]'
+    - name: wm-0926
+      display_name: 'Re: Handover note for Procurement [A-WS-265]'
+    - name: wm-0401
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-115]'
+    - name: wm-0240
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-069]'
+    - name: wm-0581
+      display_name: 'Re: Kit handover for Electrical and controls [A-WS-167]'
+    - name: wm-0821
+      display_name: 'Re: Kit handover for Business applications [A-WS-235]'
+    - name: wm-0842
+      display_name: 'Re: Kit handover for Customer contact [A-WS-241]'
+    - name: wm-1381
+      display_name: 'A-WS-161: staff record confirmed'
+    - name: wm-0500
+      display_name: 'Next team slot: Field coordination [A-WS-144]'
+    - name: wm-0843
+      display_name: Handover note for Customer contact [A-WS-242]
+    - name: wm-0582
+      display_name: 'Re: Kit handover for Electrical and controls [A-WS-167]'
+    - name: wm-0321
+      display_name: 'Re: Kit handover for River treatment [A-WS-092]'
+    - name: wm-0501
+      display_name: 'Re: Next team slot: Field coordination [A-WS-144]'
+    - name: wm-0844
+      display_name: 'Re: Handover note for Customer contact [A-WS-242]'
+    - name: wm-0421
+      display_name: Learning slot for River distribution [A-WS-121]
+    - name: wm-0762
+      display_name: Handover note for Quality systems [A-WS-219]
+    - name: wm-0502
+      display_name: 'Re: Next team slot: Field coordination [A-WS-144]'
+    - name: wm-0845
+      display_name: 'Re: Handover note for Customer contact [A-WS-242]'
+    - name: wm-0322
+      display_name: 'Re: Kit handover for River treatment [A-WS-092]'
+    - name: wm-0422
+      display_name: 'Re: Learning slot for River distribution [A-WS-121]'
+    - name: wm-0763
+      display_name: 'Re: Handover note for Quality systems [A-WS-219]'
+    - name: wm-0583
+      display_name: 'Re: Kit handover for Electrical and controls [A-WS-167]'
+    - name: wm-1394
+      display_name: 'A-WS-213: staff record confirmed'
+    - name: wm-0339
+      display_name: Role note for River treatment [A-WS-098]
+    - name: wm-0682
+      display_name: Handover note for Capital projects [A-WS-196]
+    - name: wm-0764
+      display_name: 'Re: Handover note for Quality systems [A-WS-219]'
+    - name: wm-0503
+      display_name: 'Re: Next team slot: Field coordination [A-WS-144]'
+    - name: wm-0340
+      display_name: 'Re: Role note for River treatment [A-WS-098]'
+    - name: wm-0683
+      display_name: 'Re: Handover note for Capital projects [A-WS-196]'
+    - name: wm-0258
+      display_name: Follow-up on Pine treatment [A-WS-075]
+    - name: wm-0603
+      display_name: Handover note for Electrical and controls [A-WS-173]
+    - name: wm-0944
+      display_name: Contact route for Records and scheduling [A-WS-271]
+    - name: wm-0888
+      display_name: Kit handover for Accounts [A-WS-255]
+    - name: wm-0341
+      display_name: 'Re: Role note for River treatment [A-WS-098]'
+    - name: wm-0684
+      display_name: 'Re: Handover note for Capital projects [A-WS-196]'
+    - name: wm-0765
+      display_name: 'Re: Handover note for Quality systems [A-WS-219]'
+    - name: wm-0259
+      display_name: 'Re: Follow-up on Pine treatment [A-WS-075]'
+    - name: wm-0504
+      display_name: 'Re: Next team slot: Field coordination [A-WS-144]'
+    - name: wm-0604
+      display_name: 'Re: Handover note for Electrical and controls [A-WS-173]'
+    - name: wm-0945
+      display_name: 'Re: Contact route for Records and scheduling [A-WS-271]'
+    - name: wm-0889
+      display_name: 'Re: Kit handover for Accounts [A-WS-255]'
+    - name: wm-1358
+      display_name: 'A-WS-069: staff record confirmed'
+    - name: wm-0521
+      display_name: Handover note for Field coordination [A-WS-150]
+    - name: wm-0864
+      display_name: Kit handover for Customer contact [A-WS-248]
+    - name: wm-0260
+      display_name: 'Re: Follow-up on Pine treatment [A-WS-075]'
+    - name: wm-0946
+      display_name: 'Re: Contact route for Records and scheduling [A-WS-271]'
+    - name: wm-0890
+      display_name: 'Re: Kit handover for Accounts [A-WS-255]'
+    - name: wm-0522
+      display_name: 'Re: Handover note for Field coordination [A-WS-150]'
+    - name: wm-0865
+      display_name: 'Re: Kit handover for Customer contact [A-WS-248]'
     - name: b-merewick-1
       display_name: Annual account contact review
+    - name: wm-0685
+      display_name: 'Re: Handover note for Capital projects [A-WS-196]'
+    - name: wm-0440
+      display_name: Handover note for River distribution [A-WS-127]
+    - name: wm-0785
+      display_name: Kit handover for Compliance reporting [A-WS-225]
+    - name: wm-0913
+      display_name: Kit handover for Accounts [A-WS-262]
     - name: b-merewick-2
       display_name: 'Re: Annual account contact review'
+    - name: wm-0523
+      display_name: 'Re: Handover note for Field coordination [A-WS-150]'
+    - name: wm-0866
+      display_name: 'Re: Kit handover for Customer contact [A-WS-248]'
+    - name: wm-0261
+      display_name: 'Re: Follow-up on Pine treatment [A-WS-075]'
+    - name: wm-0947
+      display_name: 'Re: Contact route for Records and scheduling [A-WS-271]'
+    - name: wm-0441
+      display_name: 'Re: Handover note for River distribution [A-WS-127]'
+    - name: wm-0686
+      display_name: 'Re: Handover note for Capital projects [A-WS-196]'
+    - name: wm-0786
+      display_name: 'Re: Kit handover for Compliance reporting [A-WS-225]'
+    - name: wm-0891
+      display_name: 'Re: Kit handover for Accounts [A-WS-255]'
+    - name: wm-0914
+      display_name: 'Re: Kit handover for Accounts [A-WS-262]'
+    - name: wm-1371
+      display_name: 'A-WS-121: staff record confirmed'
+    - name: wm-0360
+      display_name: Learning slot for Pine distribution [A-WS-104]
+    - name: wm-0703
+      display_name: Kit handover for Resource planning [A-WS-202]
+    - name: wm-0442
+      display_name: 'Re: Handover note for River distribution [A-WS-127]'
+    - name: wm-0915
+      display_name: 'Re: Kit handover for Accounts [A-WS-262]'
     - name: b-kepler-arwc-1
       display_name: Reference conversation next month
+    - name: wm-0867
+      display_name: 'Re: Kit handover for Customer contact [A-WS-248]'
+    - name: wm-0361
+      display_name: 'Re: Learning slot for Pine distribution [A-WS-104]'
+    - name: wm-0704
+      display_name: 'Re: Kit handover for Resource planning [A-WS-202]'
+    - name: wm-0281
+      display_name: Learning slot for River treatment [A-WS-081]
+    - name: wm-0622
+      display_name: Kit handover for Maintenance planning [A-WS-179]
+    - name: wm-0967
+      display_name: 'Next team slot: Finance [A-WS-277]'
     - name: b-kepler-arwc-2
       display_name: 'Re: Reference conversation next month'
+    - name: wm-0362
+      display_name: 'Re: Learning slot for Pine distribution [A-WS-104]'
+    - name: wm-0705
+      display_name: 'Re: Kit handover for Resource planning [A-WS-202]'
+    - name: wm-0282
+      display_name: 'Re: Learning slot for River treatment [A-WS-081]'
+    - name: wm-0623
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-179]'
+    - name: wm-0868
+      display_name: 'Re: Kit handover for Customer contact [A-WS-248]'
+    - name: wm-0968
+      display_name: 'Re: Next team slot: Finance [A-WS-277]'
+    - name: wm-0443
+      display_name: 'Re: Handover note for River distribution [A-WS-127]'
+    - name: wm-1384
+      display_name: 'A-WS-173: staff record confirmed'
+    - name: wm-0542
+      display_name: Kit handover for Mechanical maintenance [A-WS-156]
+    - name: wm-0885
+      display_name: 'Next team slot: Customer contact [A-WS-254]'
+    - name: wm-0624
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-179]'
+    - name: wm-0363
+      display_name: 'Re: Learning slot for Pine distribution [A-WS-104]'
+    - name: wm-0543
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
+    - name: wm-0886
+      display_name: 'Re: Next team slot: Customer contact [A-WS-254]'
+    - name: wm-0463
+      display_name: Kit handover for River distribution [A-WS-133]
+    - name: wm-0804
+      display_name: 'Next team slot: Service desk [A-WS-231]'
+    - name: wm-0544
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
+    - name: wm-0887
+      display_name: 'Re: Next team slot: Customer contact [A-WS-254]'
+    - name: wm-0625
+      display_name: 'Re: Kit handover for Maintenance planning [A-WS-179]'
+    - name: wm-0364
+      display_name: 'Re: Learning slot for Pine distribution [A-WS-104]'
+    - name: wm-0464
+      display_name: 'Re: Kit handover for River distribution [A-WS-133]'
+    - name: wm-0805
+      display_name: 'Re: Next team slot: Service desk [A-WS-231]'
+    - name: wm-1397
+      display_name: 'A-WS-225: staff record deferred'
+    - name: wm-0381
+      display_name: Kit handover for Pine distribution [A-WS-110]
+    - name: wm-0724
+      display_name: 'Next team slot: Laboratory [A-WS-208]'
+    - name: wm-0806
+      display_name: 'Re: Next team slot: Service desk [A-WS-231]'
+    - name: wm-0382
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-110]'
+    - name: wm-0725
+      display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: wm-0545
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
+    - name: wm-0300
+      display_name: Learning slot for River treatment [A-WS-087]
+    - name: wm-0645
+      display_name: Role note for Capital projects [A-WS-185]
+    - name: wm-0383
+      display_name: 'Re: Kit handover for Pine distribution [A-WS-110]'
+    - name: wm-0726
+      display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: wm-0807
+      display_name: 'Re: Next team slot: Service desk [A-WS-231]'
+    - name: wm-0301
+      display_name: 'Re: Learning slot for River treatment [A-WS-087]'
+    - name: wm-0546
+      display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
+    - name: wm-0646
+      display_name: 'Re: Role note for Capital projects [A-WS-185]'
     - name: a-photo-1
       display_name: Staff photographs — ordinary light
+    - name: wm-1361
+      display_name: 'A-WS-081: staff record confirmed'
     - name: b-ardenvale-1
       display_name: Autumn service workshop feedback
+    - name: wm-0220
+      display_name: Kit handover for Pine treatment [A-WS-064]
+    - name: wm-0563
+      display_name: Follow-up on Mechanical maintenance [A-WS-162]
+    - name: wm-0906
+      display_name: Handover note for Accounts [A-WS-260]
+    - name: wm-0302
+      display_name: 'Re: Learning slot for River treatment [A-WS-087]'
+    - name: wm-0727
+      display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: wm-0221
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-064]'
+    - name: wm-0564
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-162]'
+    - name: wm-0907
+      display_name: 'Re: Handover note for Accounts [A-WS-260]'
     - name: b-ardenvale-2
       display_name: 'Re: Autumn service workshop feedback'
     - name: b-veybridge-1
       display_name: Scheduling contact for future visits
+    - name: wm-0482
+      display_name: Role note for River distribution [A-WS-139]
+    - name: wm-0827
+      display_name: Handover note for Identity services [A-WS-237]
     - name: b-veybridge-2
       display_name: 'Re: Scheduling contact for future visits'
+    - name: wm-1323
+      display_name: 'Shared handover: Finance [A-TEAM-FINANCE-1]'
+    - name: wm-1287
+      display_name: 'Shared handover: Accounts [A-TEAM-ACCOUNTS-1]'
+    - name: wm-1314
+      display_name: 'Shared handover: Executive [A-TEAM-EXECUTIVE-1]'
+    - name: wm-1224
+      display_name: 'Shared handover: Laboratory [A-TEAM-LABORATORY-1]'
+    - name: wm-1296
+      display_name: 'Shared handover: Procurement [A-TEAM-PROCUREMENT-1]'
+    - name: wm-1251
+      display_name: 'Shared handover: Service desk [A-TEAM-SERVICE-DESK-1]'
+    - name: wm-1134
+      display_name: 'Shared handover: Pine treatment [A-TEAM-PINE-TREATMENT-1]'
+    - name: wm-0222
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-064]'
+    - name: wm-1143
+      display_name: 'Shared handover: River treatment [A-TEAM-RIVER-TREATMENT-1]'
+    - name: wm-1233
+      display_name: 'Shared handover: Quality systems [A-TEAM-QUALITY-SYSTEMS-1]'
+    - name: wm-1206
+      display_name: 'Shared handover: Capital projects [A-TEAM-CAPITAL-PROJECTS-1]'
+    - name: wm-1278
+      display_name: 'Shared handover: Customer contact [A-TEAM-CUSTOMER-CONTACT-1]'
+    - name: wm-1152
+      display_name: 'Shared handover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-1]'
+    - name: wm-1215
+      display_name: 'Shared handover: Resource planning [A-TEAM-RESOURCE-PLANNING-1]'
+    - name: wm-1269
+      display_name: 'Shared handover: Identity services [A-TEAM-IDENTITY-SERVICES-1]'
+    - name: wm-1161
+      display_name: 'Shared handover: River distribution [A-TEAM-RIVER-DISTRIBUTION-1]'
+    - name: wm-1170
+      display_name: 'Shared handover: Field coordination [A-TEAM-FIELD-COORDINATION-1]'
+    - name: wm-0565
+      display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-162]'
+    - name: wm-1197
+      display_name: 'Shared handover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-1]'
+    - name: wm-1242
+      display_name: 'Shared handover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-1]'
+    - name: wm-1260
+      display_name: 'Shared handover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-1]'
+    - name: wm-1179
+      display_name: 'Shared handover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-1]'
+    - name: wm-1305
+      display_name: 'Shared handover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-1]'
+    - name: wm-1188
+      display_name: 'Shared handover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-1]'
+    - name: wm-1332
+      display_name: 'Shared handover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-1]'
+    - name: wm-0908
+      display_name: 'Re: Handover note for Accounts [A-WS-260]'
+    - name: wm-0483
+      display_name: 'Re: Role note for River distribution [A-WS-139]'
+    - name: wm-0728
+      display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: wm-0828
+      display_name: 'Re: Handover note for Identity services [A-WS-237]'
+    - name: wm-0303
+      display_name: 'Re: Learning slot for River treatment [A-WS-087]'
+    - name: wm-1374
+      display_name: 'A-WS-133: staff record confirmed'
     - name: a-history-1
       display_name: Refurbishment account for the induction material
+    - name: wm-1324
+      display_name: 'Re: Shared handover: Finance [A-TEAM-FINANCE-1]'
+    - name: wm-1288
+      display_name: 'Re: Shared handover: Accounts [A-TEAM-ACCOUNTS-1]'
+    - name: wm-1315
+      display_name: 'Re: Shared handover: Executive [A-TEAM-EXECUTIVE-1]'
+    - name: wm-1225
+      display_name: 'Re: Shared handover: Laboratory [A-TEAM-LABORATORY-1]'
+    - name: wm-1297
+      display_name: 'Re: Shared handover: Procurement [A-TEAM-PROCUREMENT-1]'
+    - name: wm-1252
+      display_name: 'Re: Shared handover: Service desk [A-TEAM-SERVICE-DESK-1]'
+    - name: wm-1135
+      display_name: 'Re: Shared handover: Pine treatment [A-TEAM-PINE-TREATMENT-1]'
+    - name: wm-1144
+      display_name: 'Re: Shared handover: River treatment [A-TEAM-RIVER-TREATMENT-1]'
+    - name: wm-1234
+      display_name: 'Re: Shared handover: Quality systems [A-TEAM-QUALITY-SYSTEMS-1]'
+    - name: wm-1207
+      display_name: 'Re: Shared handover: Capital projects [A-TEAM-CAPITAL-PROJECTS-1]'
+    - name: wm-1279
+      display_name: 'Re: Shared handover: Customer contact [A-TEAM-CUSTOMER-CONTACT-1]'
+    - name: wm-1153
+      display_name: 'Re: Shared handover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-1]'
+    - name: wm-1216
+      display_name: 'Re: Shared handover: Resource planning [A-TEAM-RESOURCE-PLANNING-1]'
+    - name: wm-1270
+      display_name: 'Re: Shared handover: Identity services [A-TEAM-IDENTITY-SERVICES-1]'
+    - name: wm-1162
+      display_name: 'Re: Shared handover: River distribution [A-TEAM-RIVER-DISTRIBUTION-1]'
+    - name: wm-1171
+      display_name: 'Re: Shared handover: Field coordination [A-TEAM-FIELD-COORDINATION-1]'
+    - name: wm-1198
+      display_name: 'Re: Shared handover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-1]'
+    - name: wm-1243
+      display_name: 'Re: Shared handover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-1]'
+    - name: wm-1261
+      display_name: 'Re: Shared handover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-1]'
+    - name: wm-1180
+      display_name: 'Re: Shared handover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-1]'
+    - name: wm-1306
+      display_name: 'Re: Shared handover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-1]'
+    - name: wm-1189
+      display_name: 'Re: Shared handover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-1]'
+    - name: wm-1333
+      display_name: 'Re: Shared handover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-1]'
     - name: b-veybridge-3
       display_name: 'Re: Scheduling contact for future visits'
     - name: a-history-2
       display_name: 'Re: Refurbishment account for the induction material'
+    - name: wm-0402
+      display_name: Follow-up on Pine distribution [A-WS-116]
+    - name: wm-0745
+      display_name: Kit handover for Laboratory [A-WS-214]
+    - name: wm-0484
+      display_name: 'Re: Role note for River distribution [A-WS-139]'
     - name: b-ternwick-1
       display_name: Staff-history batch accepted
     - name: a-history-3
       display_name: 'Re: Refurbishment account for the induction material'
+    - name: wm-1325
+      display_name: 'Re: Shared handover: Finance [A-TEAM-FINANCE-1]'
+    - name: wm-1289
+      display_name: 'Re: Shared handover: Accounts [A-TEAM-ACCOUNTS-1]'
+    - name: wm-1316
+      display_name: 'Re: Shared handover: Executive [A-TEAM-EXECUTIVE-1]'
+    - name: wm-1226
+      display_name: 'Re: Shared handover: Laboratory [A-TEAM-LABORATORY-1]'
+    - name: wm-1298
+      display_name: 'Re: Shared handover: Procurement [A-TEAM-PROCUREMENT-1]'
+    - name: wm-1253
+      display_name: 'Re: Shared handover: Service desk [A-TEAM-SERVICE-DESK-1]'
+    - name: wm-1136
+      display_name: 'Re: Shared handover: Pine treatment [A-TEAM-PINE-TREATMENT-1]'
+    - name: wm-0223
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-064]'
+    - name: wm-1145
+      display_name: 'Re: Shared handover: River treatment [A-TEAM-RIVER-TREATMENT-1]'
+    - name: wm-1235
+      display_name: 'Re: Shared handover: Quality systems [A-TEAM-QUALITY-SYSTEMS-1]'
+    - name: wm-1208
+      display_name: 'Re: Shared handover: Capital projects [A-TEAM-CAPITAL-PROJECTS-1]'
+    - name: wm-1280
+      display_name: 'Re: Shared handover: Customer contact [A-TEAM-CUSTOMER-CONTACT-1]'
+    - name: wm-1154
+      display_name: 'Re: Shared handover: Pine distribution [A-TEAM-PINE-DISTRIBUTION-1]'
+    - name: wm-1217
+      display_name: 'Re: Shared handover: Resource planning [A-TEAM-RESOURCE-PLANNING-1]'
+    - name: wm-1271
+      display_name: 'Re: Shared handover: Identity services [A-TEAM-IDENTITY-SERVICES-1]'
+    - name: wm-1163
+      display_name: 'Re: Shared handover: River distribution [A-TEAM-RIVER-DISTRIBUTION-1]'
+    - name: wm-1172
+      display_name: 'Re: Shared handover: Field coordination [A-TEAM-FIELD-COORDINATION-1]'
+    - name: wm-1199
+      display_name: 'Re: Shared handover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-1]'
+    - name: wm-1244
+      display_name: 'Re: Shared handover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-1]'
+    - name: wm-1262
+      display_name: 'Re: Shared handover: Business applications [A-TEAM-BUSINESS-APPLICATIONS-1]'
+    - name: wm-1181
+      display_name: 'Re: Shared handover: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-1]'
+    - name: wm-1307
+      display_name: 'Re: Shared handover: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-1]'
+    - name: wm-1190
+      display_name: 'Re: Shared handover: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-1]'
+    - name: wm-1334
+      display_name: 'Re: Shared handover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-1]'
+    - name: wm-0909
+      display_name: 'Re: Handover note for Accounts [A-WS-260]'
+    - name: wm-0403
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
+    - name: wm-0746
+      display_name: 'Re: Kit handover for Laboratory [A-WS-214]'
+    - name: wm-0323
+      display_name: Follow-up on River treatment [A-WS-093]
+    - name: wm-0664
+      display_name: Handover note for Capital projects [A-WS-191]
+    - name: wm-0404
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
+    - name: wm-0747
+      display_name: 'Re: Kit handover for Laboratory [A-WS-214]'
+    - name: wm-0485
+      display_name: 'Re: Role note for River distribution [A-WS-139]'
+    - name: wm-0224
+      display_name: 'Re: Kit handover for Pine treatment [A-WS-064]'
+    - name: wm-0324
+      display_name: 'Re: Follow-up on River treatment [A-WS-093]'
+    - name: wm-0665
+      display_name: 'Re: Handover note for Capital projects [A-WS-191]'
+    - name: wm-0910
+      display_name: 'Re: Handover note for Accounts [A-WS-260]'
+    - name: wm-1387
+      display_name: 'A-WS-185: staff record confirmed'
+    - name: wm-0241
+      display_name: Learning slot for Pine treatment [A-WS-070]
+    - name: wm-0584
+      display_name: Handover note for Electrical and controls [A-WS-168]
+    - name: wm-0927
+      display_name: Kit handover for Procurement [A-WS-266]
+    - name: wm-0666
+      display_name: 'Re: Handover note for Capital projects [A-WS-191]'
+    - name: wm-0242
+      display_name: 'Re: Learning slot for Pine treatment [A-WS-070]'
+    - name: wm-0585
+      display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
+    - name: wm-0928
+      display_name: 'Re: Kit handover for Procurement [A-WS-266]'
+    - name: wm-0405
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
+    - name: wm-0505
+      display_name: Learning slot for Field coordination [A-WS-145]
+    - name: wm-0846
+      display_name: Kit handover for Customer contact [A-WS-243]
+    - name: wm-0243
+      display_name: 'Re: Learning slot for Pine treatment [A-WS-070]'
+    - name: wm-0586
+      display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
+    - name: wm-0929
+      display_name: 'Re: Kit handover for Procurement [A-WS-266]'
     - name: b-ternwick-2
       display_name: 'Re: Staff-history batch accepted'
+    - name: wm-0667
+      display_name: 'Re: Handover note for Capital projects [A-WS-191]'
+    - name: wm-0406
+      display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
+    - name: wm-0506
+      display_name: 'Re: Learning slot for Field coordination [A-WS-145]'
+    - name: wm-0847
+      display_name: 'Re: Kit handover for Customer contact [A-WS-243]'
+    - name: wm-1400
+      display_name: 'A-WS-237: staff record confirmed'
     - name: b-belvarn-1
       display_name: Meter visit contact
     - name: a-walk-1
       display_name: A walk for your weekend
+    - name: wm-0423
+      display_name: Learning slot for River distribution [A-WS-122]
+    - name: wm-0766
+      display_name: Kit handover for Quality systems [A-WS-220]
     - name: a-walk-2
       display_name: 'Re: A walk for your weekend'
+    - name: wm-0848
+      display_name: 'Re: Kit handover for Customer contact [A-WS-243]'
+    - name: wm-0587
+      display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
     - name: b-belvarn-2
       display_name: 'Re: Meter visit contact'
+    - name: wm-0424
+      display_name: 'Re: Learning slot for River distribution [A-WS-122]'
+    - name: wm-0767
+      display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
     - name: a-photo-2
       display_name: Have you entered a photograph?
     - name: a-photo-3
@@ -87,18 +2005,172 @@ content:
       display_name: Your garden photograph
     - name: b-talvern-1
       display_name: Information session timing
+    - name: wm-0425
+      display_name: 'Re: Learning slot for River distribution [A-WS-122]'
+    - name: wm-0768
+      display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
+    - name: wm-0588
+      display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
+    - name: wm-0849
+      display_name: 'Re: Kit handover for Customer contact [A-WS-243]'
     - name: b-talvern-2
       display_name: 'Re: Information session timing'
+    - name: wm-1364
+      display_name: 'A-WS-093: staff record confirmed'
     - name: a-outreach-1
       display_name: Short explanation for the community session
     - name: a-outreach-2
       display_name: 'Re: Short explanation for the community session'
+    - name: wm-1329
+      display_name: 'Contact page: Finance [A-TEAM-FINANCE-3]'
+    - name: wm-1293
+      display_name: 'Contact page: Accounts [A-TEAM-ACCOUNTS-3]'
+    - name: wm-1320
+      display_name: 'Contact page: Executive [A-TEAM-EXECUTIVE-3]'
+    - name: wm-1230
+      display_name: 'Contact page: Laboratory [A-TEAM-LABORATORY-3]'
+    - name: wm-1302
+      display_name: 'Contact page: Procurement [A-TEAM-PROCUREMENT-3]'
+    - name: wm-1257
+      display_name: 'Contact page: Service desk [A-TEAM-SERVICE-DESK-3]'
+    - name: wm-1140
+      display_name: 'Contact page: Pine treatment [A-TEAM-PINE-TREATMENT-3]'
+    - name: wm-1149
+      display_name: 'Contact page: River treatment [A-TEAM-RIVER-TREATMENT-3]'
+    - name: wm-1239
+      display_name: 'Contact page: Quality systems [A-TEAM-QUALITY-SYSTEMS-3]'
+    - name: wm-1212
+      display_name: 'Contact page: Capital projects [A-TEAM-CAPITAL-PROJECTS-3]'
+    - name: wm-1284
+      display_name: 'Contact page: Customer contact [A-TEAM-CUSTOMER-CONTACT-3]'
+    - name: wm-1158
+      display_name: 'Contact page: Pine distribution [A-TEAM-PINE-DISTRIBUTION-3]'
+    - name: wm-1221
+      display_name: 'Contact page: Resource planning [A-TEAM-RESOURCE-PLANNING-3]'
+    - name: wm-1275
+      display_name: 'Contact page: Identity services [A-TEAM-IDENTITY-SERVICES-3]'
+    - name: wm-1167
+      display_name: 'Contact page: River distribution [A-TEAM-RIVER-DISTRIBUTION-3]'
+    - name: wm-1176
+      display_name: 'Contact page: Field coordination [A-TEAM-FIELD-COORDINATION-3]'
+    - name: wm-1203
+      display_name: 'Contact page: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-3]'
+    - name: wm-1248
+      display_name: 'Contact page: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-3]'
+    - name: wm-1266
+      display_name: 'Contact page: Business applications [A-TEAM-BUSINESS-APPLICATIONS-3]'
+    - name: wm-1185
+      display_name: 'Contact page: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-3]'
+    - name: wm-1311
+      display_name: 'Contact page: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-3]'
+    - name: wm-1194
+      display_name: 'Contact page: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-3]'
+    - name: wm-1338
+      display_name: 'Contact page: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-3]'
+    - name: wm-0769
+      display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
+    - name: wm-1330
+      display_name: 'Re: Contact page: Finance [A-TEAM-FINANCE-3]'
+    - name: wm-1294
+      display_name: 'Re: Contact page: Accounts [A-TEAM-ACCOUNTS-3]'
+    - name: wm-1321
+      display_name: 'Re: Contact page: Executive [A-TEAM-EXECUTIVE-3]'
+    - name: wm-1231
+      display_name: 'Re: Contact page: Laboratory [A-TEAM-LABORATORY-3]'
+    - name: wm-1303
+      display_name: 'Re: Contact page: Procurement [A-TEAM-PROCUREMENT-3]'
+    - name: wm-1258
+      display_name: 'Re: Contact page: Service desk [A-TEAM-SERVICE-DESK-3]'
+    - name: wm-1141
+      display_name: 'Re: Contact page: Pine treatment [A-TEAM-PINE-TREATMENT-3]'
+    - name: wm-1150
+      display_name: 'Re: Contact page: River treatment [A-TEAM-RIVER-TREATMENT-3]'
+    - name: wm-1240
+      display_name: 'Re: Contact page: Quality systems [A-TEAM-QUALITY-SYSTEMS-3]'
+    - name: wm-1213
+      display_name: 'Re: Contact page: Capital projects [A-TEAM-CAPITAL-PROJECTS-3]'
+    - name: wm-1285
+      display_name: 'Re: Contact page: Customer contact [A-TEAM-CUSTOMER-CONTACT-3]'
+    - name: wm-1159
+      display_name: 'Re: Contact page: Pine distribution [A-TEAM-PINE-DISTRIBUTION-3]'
+    - name: wm-1222
+      display_name: 'Re: Contact page: Resource planning [A-TEAM-RESOURCE-PLANNING-3]'
+    - name: wm-1276
+      display_name: 'Re: Contact page: Identity services [A-TEAM-IDENTITY-SERVICES-3]'
+    - name: wm-1168
+      display_name: 'Re: Contact page: River distribution [A-TEAM-RIVER-DISTRIBUTION-3]'
+    - name: wm-1177
+      display_name: 'Re: Contact page: Field coordination [A-TEAM-FIELD-COORDINATION-3]'
+    - name: wm-1204
+      display_name: 'Re: Contact page: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-3]'
+    - name: wm-1249
+      display_name: 'Re: Contact page: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-3]'
+    - name: wm-1267
+      display_name: 'Re: Contact page: Business applications [A-TEAM-BUSINESS-APPLICATIONS-3]'
+    - name: wm-1186
+      display_name: 'Re: Contact page: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-3]'
+    - name: wm-1312
+      display_name: 'Re: Contact page: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-3]'
+    - name: wm-1195
+      display_name: 'Re: Contact page: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-3]'
+    - name: wm-1339
+      display_name: 'Re: Contact page: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-3]'
     - name: a-outreach-3
       display_name: 'Re: Short explanation for the community session'
     - name: a-outreach-4
       display_name: Your comparison this afternoon
+    - name: wm-1331
+      display_name: 'Re: Contact page: Finance [A-TEAM-FINANCE-3]'
+    - name: wm-1295
+      display_name: 'Re: Contact page: Accounts [A-TEAM-ACCOUNTS-3]'
+    - name: wm-1322
+      display_name: 'Re: Contact page: Executive [A-TEAM-EXECUTIVE-3]'
+    - name: wm-1232
+      display_name: 'Re: Contact page: Laboratory [A-TEAM-LABORATORY-3]'
+    - name: wm-1304
+      display_name: 'Re: Contact page: Procurement [A-TEAM-PROCUREMENT-3]'
+    - name: wm-1259
+      display_name: 'Re: Contact page: Service desk [A-TEAM-SERVICE-DESK-3]'
+    - name: wm-1142
+      display_name: 'Re: Contact page: Pine treatment [A-TEAM-PINE-TREATMENT-3]'
     - name: a-billing-1
       display_name: The billing-period explanation
+    - name: wm-1151
+      display_name: 'Re: Contact page: River treatment [A-TEAM-RIVER-TREATMENT-3]'
+    - name: wm-1241
+      display_name: 'Re: Contact page: Quality systems [A-TEAM-QUALITY-SYSTEMS-3]'
+    - name: wm-1214
+      display_name: 'Re: Contact page: Capital projects [A-TEAM-CAPITAL-PROJECTS-3]'
+    - name: wm-1286
+      display_name: 'Re: Contact page: Customer contact [A-TEAM-CUSTOMER-CONTACT-3]'
+    - name: wm-1160
+      display_name: 'Re: Contact page: Pine distribution [A-TEAM-PINE-DISTRIBUTION-3]'
+    - name: wm-1223
+      display_name: 'Re: Contact page: Resource planning [A-TEAM-RESOURCE-PLANNING-3]'
+    - name: wm-1277
+      display_name: 'Re: Contact page: Identity services [A-TEAM-IDENTITY-SERVICES-3]'
+    - name: wm-1169
+      display_name: 'Re: Contact page: River distribution [A-TEAM-RIVER-DISTRIBUTION-3]'
+    - name: wm-1178
+      display_name: 'Re: Contact page: Field coordination [A-TEAM-FIELD-COORDINATION-3]'
+    - name: wm-1205
+      display_name: 'Re: Contact page: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-3]'
+    - name: wm-1250
+      display_name: 'Re: Contact page: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-3]'
+    - name: wm-1268
+      display_name: 'Re: Contact page: Business applications [A-TEAM-BUSINESS-APPLICATIONS-3]'
+    - name: wm-0770
+      display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
+    - name: wm-1187
+      display_name: 'Re: Contact page: Mechanical maintenance [A-TEAM-MECHANICAL-MAINTENANCE-3]'
+    - name: wm-1313
+      display_name: 'Re: Contact page: Records and scheduling [A-TEAM-RECORDS-AND-SCHEDULING-3]'
+    - name: wm-1196
+      display_name: 'Re: Contact page: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-3]'
+    - name: wm-1340
+      display_name: 'Re: Contact page: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-3]'
+    - name: wm-1377
+      display_name: 'A-WS-145: staff record confirmed'
     - name: a-explanation-1
       display_name: 'Re: The billing-period explanation'
     - name: a-learning-1
@@ -121,6 +2193,7 @@ content:
       display_name: Mine is going in the display
     - name: b-path-1
       display_name: Second place
+    sensitive: true
     tags:
     - world-content
     - synthetic
@@ -144,9 +2217,9 @@ content:
     format: cinder-document-library/v1
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2
-    description: arwc workplace documents. Preserve authored content, mailbox membership or document readers,
-      and declared opening state.
+      version: sha256-9713d7f67dffa44a084893be959e2869f09ef2b00e165b8d796b3d87f6c678a1
+    description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
+      authored readers and opening state.
     items:
     - name: a-outreach-preparation
       display_name: Community water-service explanation — preparation
@@ -164,10 +2237,9 @@ content:
       display_name: Becoming a regional service
     - name: a-regional-service
       display_name: Regional service and customer relationships
-    - name: arwc-directory
-      display_name: Staff contacts
     - name: rosa-nadia-lunch
       display_name: Lunch with Rosa
+    sensitive: true
     tags:
     - world-content
     - synthetic
@@ -185,6 +2257,266 @@ content:
       - documents-visible
       observation_boundary_refs:
       - documents-visible
+  directory:
+    type: dataset
+    target: a-corporate.a-business
+    format: cinder-staff-directory/v1
+    source:
+      name: cinder-typhoon/narrative/arwc-directory
+      version: sha256-24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f
+    description: arwc workplace directory. Require an individual staff identity; Same-employer staff readers.
+      Preserve authored readers and opening state.
+    items:
+    - name: a-staff-operations-treatment-and-distribution
+      display_name: Operations, treatment, and distribution contacts
+    - name: a-staff-role-pine-treatment
+      display_name: Pine treatment work and handovers
+    - name: a-staff-role-river-treatment
+      display_name: River treatment work and handovers
+    - name: a-staff-role-pine-distribution
+      display_name: Pine distribution work and handovers
+    - name: a-staff-role-river-distribution
+      display_name: River distribution work and handovers
+    - name: a-staff-role-field-coordination
+      display_name: Field coordination work and handovers
+    - name: a-staff-maintenance-and-engineering
+      display_name: Maintenance and engineering contacts
+    - name: a-staff-role-mechanical-maintenance
+      display_name: Mechanical maintenance work and handovers
+    - name: a-staff-role-electrical-and-controls
+      display_name: Electrical and controls work and handovers
+    - name: a-staff-role-maintenance-planning
+      display_name: Maintenance planning work and handovers
+    - name: a-staff-role-capital-projects
+      display_name: Capital projects work and handovers
+    - name: a-staff-planning-quality-and-compliance
+      display_name: Planning, quality, and compliance contacts
+    - name: a-staff-role-resource-planning
+      display_name: Resource planning work and handovers
+    - name: a-staff-role-laboratory
+      display_name: Laboratory work and handovers
+    - name: a-staff-role-quality-systems
+      display_name: Quality systems work and handovers
+    - name: a-staff-role-compliance-reporting
+      display_name: Compliance reporting work and handovers
+    - name: a-staff-information-technology
+      display_name: Information technology contacts
+    - name: a-staff-role-service-desk
+      display_name: Service desk work and handovers
+    - name: a-staff-role-business-applications
+      display_name: Business applications work and handovers
+    - name: a-staff-role-identity-services
+      display_name: Identity services work and handovers
+    - name: a-staff-customer-service-and-business-support
+      display_name: Customer service and business support contacts
+    - name: a-staff-role-customer-contact
+      display_name: Customer contact work and handovers
+    - name: a-staff-role-accounts
+      display_name: Accounts work and handovers
+    - name: a-staff-role-procurement
+      display_name: Procurement work and handovers
+    - name: a-staff-role-records-and-scheduling
+      display_name: Records and scheduling work and handovers
+    - name: a-staff-leadership-and-finance
+      display_name: Leadership and finance contacts
+    - name: a-staff-role-executive
+      display_name: Executive work and handovers
+    - name: a-staff-role-finance
+      display_name: Finance work and handovers
+    - name: a-staff-role-people-and-board-support
+      display_name: People and board support work and handovers
+    - name: arwc-directory
+      display_name: Staff contacts
+    sensitive: false
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.a-corporate.a-business.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - directory-visible
+      evidence_requirement_refs:
+      - directory-visible
+      observation_boundary_refs:
+      - directory-visible
+  employment:
+    type: dataset
+    target: a-corporate.a-business
+    format: cinder-employment-records/v1
+    source:
+      name: cinder-typhoon/narrative/arwc-employment
+      version: sha256-7a7f22c92ccfaa31a3bed71126f7a2787bdb11184372b061e51823587015094b
+    description: arwc workplace employment. Require an individual staff identity; Exact named personnel readers.
+      Preserve authored readers and opening state.
+    items:
+    - name: a-personnel-register
+      display_name: Current personnel and assignment register
+    - name: a-onboard-awm012
+      display_name: Starting arrangements — Sela Lestrel
+    - name: a-onboard-awm029
+      display_name: Starting arrangements — Amara Fennard
+    - name: a-onboard-awm046
+      display_name: Starting arrangements — Eira Bravelle
+    - name: a-onboard-awm063
+      display_name: Starting arrangements — Jamie Telmire
+    - name: a-onboard-awm080
+      display_name: Starting arrangements — Mira Orvel
+    - name: a-onboard-awm097
+      display_name: Starting arrangements — Silas Iversen
+    - name: a-onboard-awm114
+      display_name: Starting arrangements — Anika Delmont
+    - name: a-onboard-awm131
+      display_name: Starting arrangements — Elias Yervan
+    - name: a-onboard-awm148
+      display_name: Starting arrangements — Jonas Sarnell
+    - name: a-onboard-awm165
+      display_name: Starting arrangements — Morgan Mavell
+    - name: a-onboard-awm182
+      display_name: Starting arrangements — Soren Garsen
+    - name: a-onboard-awm199
+      display_name: Starting arrangements — Ari Cernault
+    - name: a-move-awm009
+      display_name: Assignment change — Ren Larmont
+    - name: a-move-awm018
+      display_name: Assignment change — Thane Marrent
+    - name: a-move-awm022
+      display_name: Assignment change — Vera Velswick
+    - name: a-move-awm031
+      display_name: Assignment change — Ari Wernick
+    - name: a-move-awm040
+      display_name: Assignment change — Corin Aldren
+    - name: a-move-awm050
+      display_name: Assignment change — Farah Jorrel
+    - name: a-move-awm059
+      display_name: Assignment change — Imani Lestrel
+    - name: a-move-awm063
+      display_name: Assignment change — Jamie Telmire
+    - name: a-move-awm072
+      display_name: Assignment change — Lila Verrin
+    - name: a-move-awm081
+      display_name: Assignment change — Morgan Wernick
+    - name: a-move-awm085
+      display_name: Assignment change — Nina Garsen
+    - name: a-move-awm093
+      display_name: Assignment change — Ren Belsart
+    - name: a-move-awm102
+      display_name: Assignment change — Thane Cavelin
+    - name: a-move-awm116
+      display_name: Assignment change — Avery Velswick
+    - name: a-move-awm126
+      display_name: Assignment change — Dario Fennard
+    - name: a-move-awm127
+      display_name: Assignment change — Della Orvel
+    - name: a-move-awm136
+      display_name: Assignment change — Finn Quillan
+    - name: a-equipment-a-0011-26
+      display_name: Equipment request A-0011-26
+    - name: a-equipment-a-0012-26
+      display_name: Equipment request A-0012-26
+    - name: a-equipment-a-0013-26
+      display_name: Equipment request A-0013-26
+    - name: a-equipment-a-0014-26
+      display_name: Equipment request A-0014-26
+    - name: a-equipment-a-0015-26
+      display_name: Equipment request A-0015-26
+    - name: a-equipment-a-0016-26
+      display_name: Equipment request A-0016-26
+    - name: a-equipment-a-0017-26
+      display_name: Equipment request A-0017-26
+    - name: a-equipment-a-0018-26
+      display_name: Equipment request A-0018-26
+    - name: a-equipment-a-0019-26
+      display_name: Equipment request A-0019-26
+    - name: a-equipment-a-0020-26
+      display_name: Equipment request A-0020-26
+    - name: a-equipment-a-0021-26
+      display_name: Equipment request A-0021-26
+    - name: a-equipment-a-0022-26
+      display_name: Equipment request A-0022-26
+    - name: a-equipment-a-0023-26
+      display_name: Equipment request A-0023-26
+    - name: a-equipment-a-0024-26
+      display_name: Equipment request A-0024-26
+    - name: a-equipment-a-0025-26
+      display_name: Equipment request A-0025-26
+    - name: a-equipment-a-0026-26
+      display_name: Equipment request A-0026-26
+    - name: a-equipment-a-0027-26
+      display_name: Equipment request A-0027-26
+    - name: a-equipment-a-0028-26
+      display_name: Equipment request A-0028-26
+    - name: a-equipment-a-0029-26
+      display_name: Equipment request A-0029-26
+    - name: a-equipment-a-0030-26
+      display_name: Equipment request A-0030-26
+    - name: a-equipment-a-0031-26
+      display_name: Equipment request A-0031-26
+    - name: a-equipment-a-0032-26
+      display_name: Equipment request A-0032-26
+    - name: a-equipment-a-0033-26
+      display_name: Equipment request A-0033-26
+    - name: a-equipment-a-0034-26
+      display_name: Equipment request A-0034-26
+    - name: a-equipment-a-0035-26
+      display_name: Equipment request A-0035-26
+    - name: a-equipment-a-0036-26
+      display_name: Equipment request A-0036-26
+    - name: a-equipment-a-0037-26
+      display_name: Equipment request A-0037-26
+    - name: a-equipment-a-0038-26
+      display_name: Equipment request A-0038-26
+    - name: a-equipment-a-0039-26
+      display_name: Equipment request A-0039-26
+    - name: a-equipment-a-0040-26
+      display_name: Equipment request A-0040-26
+    - name: a-induction-awm012
+      display_name: Site and shift induction
+    - name: a-induction-awm029
+      display_name: Site and shift induction
+    - name: a-induction-awm046
+      display_name: Site and shift induction
+    - name: a-induction-awm063
+      display_name: Site and shift induction
+    - name: a-induction-awm080
+      display_name: Site and shift induction
+    - name: a-induction-awm097
+      display_name: Site and shift induction
+    - name: a-induction-awm114
+      display_name: New colleague induction
+    - name: a-induction-awm131
+      display_name: New colleague induction
+    - name: a-induction-awm148
+      display_name: New colleague induction
+    - name: a-induction-awm165
+      display_name: New colleague induction
+    - name: a-induction-awm182
+      display_name: New colleague induction
+    - name: a-induction-awm199
+      display_name: New colleague induction
+    sensitive: true
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.a-corporate.a-business.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - employment-visible
+      evidence_requirement_refs:
+      - employment-visible
+      observation_boundary_refs:
+      - employment-visible
 propositions:
   mail-visible:
     description: The declared mail can be read through the workplace service with the authored audience boundaries.
@@ -211,12 +2543,44 @@ propositions:
       expected: true
     evidence_requirements:
     - documents-visible
+  directory-visible:
+    description: The declared directory can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.directory
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.arwc.directory.visible
+      semantic_ref: urn:cinder-typhoon:world:arwc:directory:visible
+      expected: true
+    evidence_requirements:
+    - directory-visible
+  employment-visible:
+    description: The declared employment can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.employment
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.arwc.employment.visible
+      semantic_ref: urn:cinder-typhoon:world:arwc:employment:visible
+      expected: true
+    evidence_requirements:
+    - employment-visible
 assertions:
   mail-visible:
     proposition: mail-visible
     role: postcondition
   documents-visible:
     proposition: documents-visible
+    role: postcondition
+  directory-visible:
+    proposition: directory-visible
+    role: postcondition
+  employment-visible:
+    proposition: employment-visible
     role: postcondition
 evidence_requirements:
   mail-visible:
@@ -283,6 +2647,70 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.world.arwc.documents.visible
+  directory-visible:
+    source_refs:
+    - content.directory
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.arwc.directory.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-arwc.directory
+        data_kind: artifact
+        names:
+        - cinder.world.arwc.directory.visible
+  employment-visible:
+    source_refs:
+    - content.employment
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.arwc.employment.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-arwc.employment
+        data_kind: artifact
+        names:
+        - cinder.world.arwc.employment.visible
 observation_boundaries:
   mail-visible:
     projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
@@ -296,5 +2724,19 @@ observation_boundaries:
       their own authorized collection.
     observable_refs:
     - content.documents
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  directory-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.directory
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  employment-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.employment
     redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
     latency_profile: Initial content available before participant admission.

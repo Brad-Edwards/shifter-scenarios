@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:e71c8ec0-33b1-5281-871c-140de47ed477@keplerops.com
+DTSTAMP:20260103T130000Z
+DTSTART:20260110T140000Z
+DTEND:20260110T144500Z
+ORGANIZER:mailto:mira.belsart@keplerops.com
+ATTENDEE:mailto:jalen.warden@keplerops.com
+ATTENDEE:mailto:iris.edran@keplerops.com
+SUMMARY:New colleague induction
+DESCRIPTION:Jalen Warden: meet Iris Edran\; check local handover and first
+  work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

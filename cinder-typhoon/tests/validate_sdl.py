@@ -621,7 +621,7 @@ def main():
         adversarial_checks(scenario, briefs, expected_graph, expected_model)
         adversarial_compiled_checks(scenario, runtime)
         self_test(graph, model)
-    print('PASS: four narrative collections retain compiled source and service bindings', flush=True)
+    print('PASS: eight narrative collections retain compiled source and service bindings', flush=True)
     print('Static proof only: assets are authored; runtime materialization and deployment remain untested.', flush=True)
 
 

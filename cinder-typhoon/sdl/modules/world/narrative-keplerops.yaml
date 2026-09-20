@@ -10,18 +10,28 @@ module:
     content:
     - mail
     - documents
+    - directory
+    - employment
     propositions:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     assertions:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     evidence_requirements:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
     observation_boundaries:
     - mail-visible
     - documents-visible
+    - directory-visible
+    - employment-visible
 content:
   mail:
     type: dataset
@@ -29,64 +39,802 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-d0acea09205ba11eb253bccabbbfe9160123c3910903a6e03ba55e4bd08c62ea
-    description: keplerops workplace mail. Preserve authored content, mailbox membership or document readers,
-      and declared opening state.
+      version: sha256-dfcf6d2f97cc81d21492f07992e204095398b23a5da77f92aa225cfb3a8c3f61
+    description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
+      Preserve authored readers and opening state.
     items:
+    - name: wm-0001
+      display_name: Cover for Core product [K-WS-001]
+    - name: wm-0002
+      display_name: 'Re: Cover for Core product [K-WS-001]'
+    - name: wm-0183
+      display_name: Learning slot for Executive [K-WS-053]
+    - name: wm-0184
+      display_name: 'Re: Learning slot for Executive [K-WS-053]'
+    - name: wm-0101
+      display_name: Learning slot for Implementation [K-WS-030]
+    - name: wm-0102
+      display_name: 'Re: Learning slot for Implementation [K-WS-030]'
+    - name: wm-0103
+      display_name: 'Re: Learning slot for Implementation [K-WS-030]'
+    - name: wm-1341
+      display_name: 'K-WS-001: staff record open'
+    - name: wm-1354
+      display_name: 'K-WS-053: staff record confirmed'
+    - name: wm-0122
+      display_name: Learning slot for Service operations [K-WS-036]
+    - name: wm-0123
+      display_name: 'Re: Learning slot for Service operations [K-WS-036]'
+    - name: wm-0043
+      display_name: Role note for Experience [K-WS-013]
+    - name: wm-0020
+      display_name: Kit handover for Connectors [K-WS-007]
+    - name: wm-0124
+      display_name: 'Re: Learning slot for Service operations [K-WS-036]'
+    - name: wm-0044
+      display_name: 'Re: Role note for Experience [K-WS-013]'
+    - name: wm-0021
+      display_name: 'Re: Kit handover for Connectors [K-WS-007]'
+    - name: wm-0022
+      display_name: 'Re: Kit handover for Connectors [K-WS-007]'
+    - name: wm-0125
+      display_name: 'Re: Learning slot for Service operations [K-WS-036]'
+    - name: wm-0126
+      display_name: 'Re: Learning slot for Service operations [K-WS-036]'
+    - name: wm-0023
+      display_name: 'Re: Kit handover for Connectors [K-WS-007]'
+    - name: wm-0143
+      display_name: Role note for Quality assurance [K-WS-042]
+    - name: wm-0144
+      display_name: 'Re: Role note for Quality assurance [K-WS-042]'
+    - name: wm-0062
+      display_name: Cover for Customer integrations [K-WS-019]
+    - name: wm-0145
+      display_name: 'Re: Role note for Quality assurance [K-WS-042]'
+    - name: wm-0063
+      display_name: 'Re: Cover for Customer integrations [K-WS-019]'
+    - name: wm-1344
+      display_name: 'K-WS-013: staff record confirmed'
+    - name: wm-0064
+      display_name: 'Re: Cover for Customer integrations [K-WS-019]'
+    - name: wm-0065
+      display_name: 'Re: Cover for Customer integrations [K-WS-019]'
+    - name: wm-0164
+      display_name: Learning slot for Accounts [K-WS-048]
+    - name: wm-0165
+      display_name: 'Re: Learning slot for Accounts [K-WS-048]'
+    - name: wm-0085
+      display_name: Learning slot for Customer support [K-WS-025]
+    - name: wm-0166
+      display_name: 'Re: Learning slot for Accounts [K-WS-048]'
+    - name: wm-0086
+      display_name: 'Re: Learning slot for Customer support [K-WS-025]'
+    - name: wm-0003
+      display_name: Contact route for Core product [K-WS-002]
+    - name: wm-0167
+      display_name: 'Re: Learning slot for Accounts [K-WS-048]'
+    - name: wm-0004
+      display_name: 'Re: Contact route for Core product [K-WS-002]'
+    - name: wm-0005
+      display_name: 'Re: Contact route for Core product [K-WS-002]'
+    - name: wm-0168
+      display_name: 'Re: Learning slot for Accounts [K-WS-048]'
+    - name: wm-0185
+      display_name: Role note for People operations [K-WS-054]
+    - name: wm-0186
+      display_name: 'Re: Role note for People operations [K-WS-054]'
+    - name: wm-0104
+      display_name: Role note for Enablement [K-WS-031]
+    - name: wm-0187
+      display_name: 'Re: Role note for People operations [K-WS-054]'
+    - name: wm-0105
+      display_name: 'Re: Role note for Enablement [K-WS-031]'
+    - name: wm-1347
+      display_name: 'K-WS-025: staff record confirmed'
+    - name: wm-0024
+      display_name: Role note for Connectors [K-WS-008]
+    - name: wm-0106
+      display_name: 'Re: Role note for Enablement [K-WS-031]'
+    - name: wm-0025
+      display_name: 'Re: Role note for Connectors [K-WS-008]'
+    - name: wm-0026
+      display_name: 'Re: Role note for Connectors [K-WS-008]'
+    - name: wm-0107
+      display_name: 'Re: Role note for Enablement [K-WS-031]'
+    - name: wm-0027
+      display_name: 'Re: Role note for Connectors [K-WS-008]'
+    - name: wm-0127
+      display_name: Cover for Service operations [K-WS-037]
+    - name: wm-0028
+      display_name: 'Re: Role note for Connectors [K-WS-008]'
+    - name: wm-0128
+      display_name: 'Re: Cover for Service operations [K-WS-037]'
+    - name: wm-0045
+      display_name: Learning slot for Experience [K-WS-014]
+    - name: wm-0046
+      display_name: 'Re: Learning slot for Experience [K-WS-014]'
+    - name: wm-0047
+      display_name: 'Re: Learning slot for Experience [K-WS-014]'
+    - name: wm-0146
+      display_name: Contact route for Quality assurance [K-WS-043]
+    - name: wm-0147
+      display_name: 'Re: Contact route for Quality assurance [K-WS-043]'
+    - name: wm-1350
+      display_name: 'K-WS-037: staff record confirmed'
+    - name: wm-0066
+      display_name: Contact route for Customer integrations [K-WS-020]
+    - name: wm-0148
+      display_name: 'Re: Contact route for Quality assurance [K-WS-043]'
+    - name: wm-0067
+      display_name: 'Re: Contact route for Customer integrations [K-WS-020]'
+    - name: wm-0068
+      display_name: 'Re: Contact route for Customer integrations [K-WS-020]'
+    - name: wm-0149
+      display_name: 'Re: Contact route for Quality assurance [K-WS-043]'
+    - name: wm-0069
+      display_name: 'Re: Contact route for Customer integrations [K-WS-020]'
+    - name: wm-0169
+      display_name: 'Next team slot: Accounts [K-WS-049]'
+    - name: wm-0070
+      display_name: 'Re: Contact route for Customer integrations [K-WS-020]'
+    - name: wm-0170
+      display_name: 'Re: Next team slot: Accounts [K-WS-049]'
+    - name: wm-0087
+      display_name: Kit handover for Implementation [K-WS-026]
+    - name: wm-0088
+      display_name: 'Re: Kit handover for Implementation [K-WS-026]'
+    - name: wm-0006
+      display_name: Learning slot for Core product [K-WS-003]
+    - name: wm-0089
+      display_name: 'Re: Kit handover for Implementation [K-WS-026]'
+    - name: wm-0007
+      display_name: 'Re: Learning slot for Core product [K-WS-003]'
+    - name: wm-0008
+      display_name: 'Re: Learning slot for Core product [K-WS-003]'
+    - name: wm-0188
+      display_name: Cover for People operations [K-WS-055]
+    - name: wm-0009
+      display_name: 'Re: Learning slot for Core product [K-WS-003]'
+    - name: wm-0189
+      display_name: 'Re: Cover for People operations [K-WS-055]'
+    - name: wm-1353
+      display_name: 'K-WS-049: staff record confirmed'
+    - name: wm-0108
+      display_name: Cover for Enablement [K-WS-032]
+    - name: wm-0190
+      display_name: 'Re: Cover for People operations [K-WS-055]'
+    - name: wm-0109
+      display_name: 'Re: Cover for Enablement [K-WS-032]'
+    - name: wm-0029
+      display_name: Handover note for Connectors [K-WS-009]
+    - name: wm-0110
+      display_name: 'Re: Cover for Enablement [K-WS-032]'
+    - name: wm-0030
+      display_name: 'Re: Handover note for Connectors [K-WS-009]'
+    - name: wm-0191
+      display_name: 'Re: Cover for People operations [K-WS-055]'
+    - name: wm-0111
+      display_name: 'Re: Cover for Enablement [K-WS-032]'
+    - name: wm-0112
+      display_name: 'Re: Cover for Enablement [K-WS-032]'
+    - name: wm-0129
+      display_name: Kit handover for Service operations [K-WS-038]
+    - name: wm-1128
+      display_name: 'Autumn cover: Office [K-TEAM-OFFICE-2]'
+    - name: wm-1119
+      display_name: 'Autumn cover: Finance [K-TEAM-FINANCE-2]'
+    - name: wm-1083
+      display_name: 'Autumn cover: Accounts [K-TEAM-ACCOUNTS-2]'
+    - name: wm-1092
+      display_name: 'Autumn cover: Proposals [K-TEAM-PROPOSALS-2]'
+    - name: wm-1101
+      display_name: 'Autumn cover: Executive [K-TEAM-EXECUTIVE-2]'
+    - name: wm-0993
+      display_name: 'Autumn cover: Connectors [K-TEAM-CONNECTORS-2]'
+    - name: wm-1002
+      display_name: 'Autumn cover: Experience [K-TEAM-EXPERIENCE-2]'
+    - name: wm-1038
+      display_name: 'Autumn cover: Enablement [K-TEAM-ENABLEMENT-2]'
+    - name: wm-0984
+      display_name: 'Autumn cover: Core product [K-TEAM-CORE-PRODUCT-2]'
+    - name: wm-1029
+      display_name: 'Autumn cover: Implementation [K-TEAM-IMPLEMENTATION-2]'
+    - name: wm-1020
+      display_name: 'Autumn cover: Customer support [K-TEAM-CUSTOMER-SUPPORT-2]'
+    - name: wm-1074
+      display_name: 'Autumn cover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-2]'
+    - name: wm-1110
+      display_name: 'Autumn cover: People operations [K-TEAM-PEOPLE-OPERATIONS-2]'
+    - name: wm-1056
+      display_name: 'Autumn cover: Service operations [K-TEAM-SERVICE-OPERATIONS-2]'
+    - name: wm-1065
+      display_name: 'Autumn cover: Product management [K-TEAM-PRODUCT-MANAGEMENT-2]'
+    - name: wm-1047
+      display_name: 'Autumn cover: Release engineering [K-TEAM-RELEASE-ENGINEERING-2]'
+    - name: wm-1011
+      display_name: 'Autumn cover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-2]'
+    - name: wm-0130
+      display_name: 'Re: Kit handover for Service operations [K-WS-038]'
+    - name: wm-1129
+      display_name: 'Re: Autumn cover: Office [K-TEAM-OFFICE-2]'
+    - name: wm-1120
+      display_name: 'Re: Autumn cover: Finance [K-TEAM-FINANCE-2]'
+    - name: wm-1084
+      display_name: 'Re: Autumn cover: Accounts [K-TEAM-ACCOUNTS-2]'
+    - name: wm-1093
+      display_name: 'Re: Autumn cover: Proposals [K-TEAM-PROPOSALS-2]'
+    - name: wm-1102
+      display_name: 'Re: Autumn cover: Executive [K-TEAM-EXECUTIVE-2]'
+    - name: wm-0994
+      display_name: 'Re: Autumn cover: Connectors [K-TEAM-CONNECTORS-2]'
+    - name: wm-1003
+      display_name: 'Re: Autumn cover: Experience [K-TEAM-EXPERIENCE-2]'
+    - name: wm-1039
+      display_name: 'Re: Autumn cover: Enablement [K-TEAM-ENABLEMENT-2]'
+    - name: wm-0985
+      display_name: 'Re: Autumn cover: Core product [K-TEAM-CORE-PRODUCT-2]'
+    - name: wm-1030
+      display_name: 'Re: Autumn cover: Implementation [K-TEAM-IMPLEMENTATION-2]'
+    - name: wm-1021
+      display_name: 'Re: Autumn cover: Customer support [K-TEAM-CUSTOMER-SUPPORT-2]'
+    - name: wm-1075
+      display_name: 'Re: Autumn cover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-2]'
+    - name: wm-1111
+      display_name: 'Re: Autumn cover: People operations [K-TEAM-PEOPLE-OPERATIONS-2]'
+    - name: wm-1057
+      display_name: 'Re: Autumn cover: Service operations [K-TEAM-SERVICE-OPERATIONS-2]'
+    - name: wm-1066
+      display_name: 'Re: Autumn cover: Product management [K-TEAM-PRODUCT-MANAGEMENT-2]'
+    - name: wm-1048
+      display_name: 'Re: Autumn cover: Release engineering [K-TEAM-RELEASE-ENGINEERING-2]'
+    - name: wm-1012
+      display_name: 'Re: Autumn cover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-2]'
+    - name: wm-0048
+      display_name: Contact route for Experience [K-WS-015]
+    - name: wm-0131
+      display_name: 'Re: Kit handover for Service operations [K-WS-038]'
+    - name: wm-1130
+      display_name: 'Re: Autumn cover: Office [K-TEAM-OFFICE-2]'
+    - name: wm-1121
+      display_name: 'Re: Autumn cover: Finance [K-TEAM-FINANCE-2]'
+    - name: wm-1085
+      display_name: 'Re: Autumn cover: Accounts [K-TEAM-ACCOUNTS-2]'
+    - name: wm-1094
+      display_name: 'Re: Autumn cover: Proposals [K-TEAM-PROPOSALS-2]'
+    - name: wm-1103
+      display_name: 'Re: Autumn cover: Executive [K-TEAM-EXECUTIVE-2]'
+    - name: wm-0995
+      display_name: 'Re: Autumn cover: Connectors [K-TEAM-CONNECTORS-2]'
+    - name: wm-1004
+      display_name: 'Re: Autumn cover: Experience [K-TEAM-EXPERIENCE-2]'
+    - name: wm-1040
+      display_name: 'Re: Autumn cover: Enablement [K-TEAM-ENABLEMENT-2]'
+    - name: wm-0986
+      display_name: 'Re: Autumn cover: Core product [K-TEAM-CORE-PRODUCT-2]'
+    - name: wm-1031
+      display_name: 'Re: Autumn cover: Implementation [K-TEAM-IMPLEMENTATION-2]'
+    - name: wm-1022
+      display_name: 'Re: Autumn cover: Customer support [K-TEAM-CUSTOMER-SUPPORT-2]'
+    - name: wm-1076
+      display_name: 'Re: Autumn cover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-2]'
+    - name: wm-1112
+      display_name: 'Re: Autumn cover: People operations [K-TEAM-PEOPLE-OPERATIONS-2]'
+    - name: wm-1058
+      display_name: 'Re: Autumn cover: Service operations [K-TEAM-SERVICE-OPERATIONS-2]'
+    - name: wm-1067
+      display_name: 'Re: Autumn cover: Product management [K-TEAM-PRODUCT-MANAGEMENT-2]'
+    - name: wm-1049
+      display_name: 'Re: Autumn cover: Release engineering [K-TEAM-RELEASE-ENGINEERING-2]'
+    - name: wm-1013
+      display_name: 'Re: Autumn cover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-2]'
+    - name: wm-0049
+      display_name: 'Re: Contact route for Experience [K-WS-015]'
+    - name: wm-1343
+      display_name: 'K-WS-009: staff record confirmed'
+    - name: wm-0050
+      display_name: 'Re: Contact route for Experience [K-WS-015]'
+    - name: wm-0051
+      display_name: 'Re: Contact route for Experience [K-WS-015]'
+    - name: wm-0150
+      display_name: 'Next team slot: Quality assurance [K-WS-044]'
+    - name: wm-0151
+      display_name: 'Re: Next team slot: Quality assurance [K-WS-044]'
+    - name: wm-0071
+      display_name: Kit handover for Customer integrations [K-WS-021]
+    - name: wm-0152
+      display_name: 'Re: Next team slot: Quality assurance [K-WS-044]'
+    - name: wm-0072
+      display_name: 'Re: Kit handover for Customer integrations [K-WS-021]'
+    - name: wm-0153
+      display_name: 'Re: Next team slot: Quality assurance [K-WS-044]'
+    - name: wm-0154
+      display_name: 'Re: Next team slot: Quality assurance [K-WS-044]'
+    - name: wm-0171
+      display_name: Handover note for Accounts [K-WS-050]
+    - name: wm-0172
+      display_name: 'Re: Handover note for Accounts [K-WS-050]'
+    - name: wm-0090
+      display_name: Handover note for Implementation [K-WS-027]
+    - name: wm-0173
+      display_name: 'Re: Handover note for Accounts [K-WS-050]'
+    - name: wm-0091
+      display_name: 'Re: Handover note for Implementation [K-WS-027]'
+    - name: wm-1346
+      display_name: 'K-WS-021: staff record confirmed'
+    - name: wm-0010
+      display_name: Handover note for Core product [K-WS-004]
+    - name: wm-0092
+      display_name: 'Re: Handover note for Implementation [K-WS-027]'
+    - name: wm-0011
+      display_name: 'Re: Handover note for Core product [K-WS-004]'
+    - name: wm-0012
+      display_name: 'Re: Handover note for Core product [K-WS-004]'
+    - name: wm-0093
+      display_name: 'Re: Handover note for Implementation [K-WS-027]'
+    - name: wm-0192
+      display_name: Role note for Finance [K-WS-056]
+    - name: wm-0193
+      display_name: 'Re: Role note for Finance [K-WS-056]'
+    - name: wm-0013
+      display_name: 'Re: Handover note for Core product [K-WS-004]'
+    - name: wm-0113
+      display_name: Kit handover for Enablement [K-WS-033]
+    - name: wm-0194
+      display_name: 'Re: Role note for Finance [K-WS-056]'
+    - name: wm-0014
+      display_name: 'Re: Handover note for Core product [K-WS-004]'
+    - name: wm-0114
+      display_name: 'Re: Kit handover for Enablement [K-WS-033]'
+    - name: wm-0031
+      display_name: Kit handover for Connectors [K-WS-010]
+    - name: wm-0195
+      display_name: 'Re: Role note for Finance [K-WS-056]'
+    - name: wm-0032
+      display_name: 'Re: Kit handover for Connectors [K-WS-010]'
+    - name: wm-0033
+      display_name: 'Re: Kit handover for Connectors [K-WS-010]'
+    - name: wm-0196
+      display_name: 'Re: Role note for Finance [K-WS-056]'
+    - name: wm-0132
+      display_name: Role note for Product management [K-WS-039]
+    - name: wm-0133
+      display_name: 'Re: Role note for Product management [K-WS-039]'
+    - name: wm-1349
+      display_name: 'K-WS-033: staff record confirmed'
+    - name: wm-0052
+      display_name: 'Next team slot: Experience [K-WS-016]'
+    - name: wm-0134
+      display_name: 'Re: Role note for Product management [K-WS-039]'
+    - name: wm-0053
+      display_name: 'Re: Next team slot: Experience [K-WS-016]'
+    - name: wm-0054
+      display_name: 'Re: Next team slot: Experience [K-WS-016]'
+    - name: wm-0135
+      display_name: 'Re: Role note for Product management [K-WS-039]'
+    - name: wm-0055
+      display_name: 'Re: Next team slot: Experience [K-WS-016]'
+    - name: wm-0155
+      display_name: Kit handover for Quality assurance [K-WS-045]
+    - name: wm-0056
+      display_name: 'Re: Next team slot: Experience [K-WS-016]'
+    - name: wm-0156
+      display_name: 'Re: Kit handover for Quality assurance [K-WS-045]'
+    - name: wm-0073
+      display_name: Handover note for Customer support [K-WS-022]
+    - name: wm-0074
+      display_name: 'Re: Handover note for Customer support [K-WS-022]'
+    - name: wm-0075
+      display_name: 'Re: Handover note for Customer support [K-WS-022]'
+    - name: wm-0174
+      display_name: Role note for Proposals [K-WS-051]
+    - name: wm-0175
+      display_name: 'Re: Role note for Proposals [K-WS-051]'
+    - name: wm-1352
+      display_name: 'K-WS-045: staff record confirmed'
+    - name: wm-0094
+      display_name: Kit handover for Implementation [K-WS-028]
+    - name: wm-0176
+      display_name: 'Re: Role note for Proposals [K-WS-051]'
+    - name: wm-0095
+      display_name: 'Re: Kit handover for Implementation [K-WS-028]'
+    - name: wm-0015
+      display_name: Kit handover for Core product [K-WS-005]
+    - name: wm-0096
+      display_name: 'Re: Kit handover for Implementation [K-WS-028]'
+    - name: wm-0016
+      display_name: 'Re: Kit handover for Core product [K-WS-005]'
+    - name: wm-0177
+      display_name: 'Re: Role note for Proposals [K-WS-051]'
+    - name: wm-0097
+      display_name: 'Re: Kit handover for Implementation [K-WS-028]'
+    - name: wm-0197
+      display_name: Follow-up on Finance [K-WS-057]
+    - name: wm-0098
+      display_name: 'Re: Kit handover for Implementation [K-WS-028]'
+    - name: wm-0198
+      display_name: 'Re: Follow-up on Finance [K-WS-057]'
+    - name: wm-0115
+      display_name: Follow-up on Release engineering [K-WS-034]
+    - name: wm-0116
+      display_name: 'Re: Follow-up on Release engineering [K-WS-034]'
+    - name: wm-0034
+      display_name: Follow-up on Connectors [K-WS-011]
+    - name: wm-0117
+      display_name: 'Re: Follow-up on Release engineering [K-WS-034]'
+    - name: wm-0035
+      display_name: 'Re: Follow-up on Connectors [K-WS-011]'
+    - name: wm-1342
+      display_name: 'K-WS-005: staff record confirmed'
+    - name: wm-0036
+      display_name: 'Re: Follow-up on Connectors [K-WS-011]'
+    - name: wm-0037
+      display_name: 'Re: Follow-up on Connectors [K-WS-011]'
+    - name: wm-1355
+      display_name: 'K-WS-057: staff record deferred'
+    - name: wm-0136
+      display_name: Handover note for Product management [K-WS-040]
+    - name: wm-0137
+      display_name: 'Re: Handover note for Product management [K-WS-040]'
+    - name: wm-0057
+      display_name: Learning slot for Experience [K-WS-017]
     - name: k-anniversary-1
       display_name: Ten years — what do you remember?
+    - name: wm-0138
+      display_name: 'Re: Handover note for Product management [K-WS-040]'
+    - name: wm-0058
+      display_name: 'Re: Learning slot for Experience [K-WS-017]'
+    - name: wm-0139
+      display_name: 'Re: Handover note for Product management [K-WS-040]'
     - name: k-anniversary-2
       display_name: 'Re: Ten years — what do you remember?'
     - name: k-anniversary-3
       display_name: 'Re: Ten years — what do you remember?'
     - name: k-anniversary-4
       display_name: 'Re: Ten years — what do you remember?'
+    - name: wm-0140
+      display_name: 'Re: Handover note for Product management [K-WS-040]'
     - name: k-memory-1
       display_name: 'Re: Ten years — what do you remember?'
+    - name: wm-0157
+      display_name: Kit handover for Quality assurance [K-WS-046]
+    - name: wm-0158
+      display_name: 'Re: Kit handover for Quality assurance [K-WS-046]'
+    - name: wm-0076
+      display_name: Kit handover for Customer support [K-WS-023]
+    - name: wm-0159
+      display_name: 'Re: Kit handover for Quality assurance [K-WS-046]'
+    - name: wm-0077
+      display_name: 'Re: Kit handover for Customer support [K-WS-023]'
+    - name: wm-1345
+      display_name: 'K-WS-017: staff record confirmed'
+    - name: wm-0078
+      display_name: 'Re: Kit handover for Customer support [K-WS-023]'
     - name: k-anniversary-5
       display_name: Anniversary contributions
+    - name: wm-0079
+      display_name: 'Re: Kit handover for Customer support [K-WS-023]'
+    - name: wm-0178
+      display_name: Kit handover for Proposals [K-WS-052]
+    - name: wm-0179
+      display_name: 'Re: Kit handover for Proposals [K-WS-052]'
+    - name: wm-0099
+      display_name: Follow-up on Implementation [K-WS-029]
+    - name: wm-0180
+      display_name: 'Re: Kit handover for Proposals [K-WS-052]'
+    - name: wm-0100
+      display_name: 'Re: Follow-up on Implementation [K-WS-029]'
+    - name: wm-0017
+      display_name: Follow-up on Core product [K-WS-006]
     - name: b-kepler-arwc-1
       display_name: Reference conversation next month
+    - name: wm-0181
+      display_name: 'Re: Kit handover for Proposals [K-WS-052]'
+    - name: wm-0018
+      display_name: 'Re: Follow-up on Core product [K-WS-006]'
     - name: b-kepler-arwc-2
       display_name: 'Re: Reference conversation next month'
+    - name: wm-0019
+      display_name: 'Re: Follow-up on Core product [K-WS-006]'
+    - name: wm-0182
+      display_name: 'Re: Kit handover for Proposals [K-WS-052]'
+    - name: wm-0199
+      display_name: Learning slot for Office [K-WS-058]
+    - name: wm-0200
+      display_name: 'Re: Learning slot for Office [K-WS-058]'
+    - name: wm-0118
+      display_name: Learning slot for Release engineering [K-WS-035]
+    - name: wm-0201
+      display_name: 'Re: Learning slot for Office [K-WS-058]'
+    - name: wm-0119
+      display_name: 'Re: Learning slot for Release engineering [K-WS-035]'
+    - name: wm-1348
+      display_name: 'K-WS-029: staff record deferred'
+    - name: wm-0038
+      display_name: Learning slot for Connectors [K-WS-012]
+    - name: wm-0120
+      display_name: 'Re: Learning slot for Release engineering [K-WS-035]'
+    - name: wm-0039
+      display_name: 'Re: Learning slot for Connectors [K-WS-012]'
+    - name: wm-0040
+      display_name: 'Re: Learning slot for Connectors [K-WS-012]'
+    - name: wm-0121
+      display_name: 'Re: Learning slot for Release engineering [K-WS-035]'
     - name: k-growth-1
       display_name: Planning note for the next two years
+    - name: wm-0041
+      display_name: 'Re: Learning slot for Connectors [K-WS-012]'
     - name: k-growth-2
       display_name: 'Re: Planning note for the next two years'
+    - name: wm-0141
+      display_name: Role note for Product management [K-WS-041]
+    - name: wm-1125
+      display_name: 'Shared handover: Office [K-TEAM-OFFICE-1]'
+    - name: wm-1116
+      display_name: 'Shared handover: Finance [K-TEAM-FINANCE-1]'
+    - name: wm-1080
+      display_name: 'Shared handover: Accounts [K-TEAM-ACCOUNTS-1]'
+    - name: wm-1089
+      display_name: 'Shared handover: Proposals [K-TEAM-PROPOSALS-1]'
+    - name: wm-1098
+      display_name: 'Shared handover: Executive [K-TEAM-EXECUTIVE-1]'
+    - name: wm-0990
+      display_name: 'Shared handover: Connectors [K-TEAM-CONNECTORS-1]'
+    - name: wm-0999
+      display_name: 'Shared handover: Experience [K-TEAM-EXPERIENCE-1]'
+    - name: wm-1035
+      display_name: 'Shared handover: Enablement [K-TEAM-ENABLEMENT-1]'
+    - name: wm-0981
+      display_name: 'Shared handover: Core product [K-TEAM-CORE-PRODUCT-1]'
+    - name: wm-1026
+      display_name: 'Shared handover: Implementation [K-TEAM-IMPLEMENTATION-1]'
+    - name: wm-1017
+      display_name: 'Shared handover: Customer support [K-TEAM-CUSTOMER-SUPPORT-1]'
+    - name: wm-1071
+      display_name: 'Shared handover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-1]'
+    - name: wm-1107
+      display_name: 'Shared handover: People operations [K-TEAM-PEOPLE-OPERATIONS-1]'
+    - name: wm-1053
+      display_name: 'Shared handover: Service operations [K-TEAM-SERVICE-OPERATIONS-1]'
+    - name: wm-1062
+      display_name: 'Shared handover: Product management [K-TEAM-PRODUCT-MANAGEMENT-1]'
+    - name: wm-1044
+      display_name: 'Shared handover: Release engineering [K-TEAM-RELEASE-ENGINEERING-1]'
+    - name: wm-1008
+      display_name: 'Shared handover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-1]'
+    - name: wm-0042
+      display_name: 'Re: Learning slot for Connectors [K-WS-012]'
+    - name: wm-0142
+      display_name: 'Re: Role note for Product management [K-WS-041]'
     - name: k-growth-3
       display_name: 'Re: Planning note for the next two years'
     - name: b-orren-1
       display_name: Service review completed
+    - name: wm-1126
+      display_name: 'Re: Shared handover: Office [K-TEAM-OFFICE-1]'
+    - name: wm-1117
+      display_name: 'Re: Shared handover: Finance [K-TEAM-FINANCE-1]'
+    - name: wm-1081
+      display_name: 'Re: Shared handover: Accounts [K-TEAM-ACCOUNTS-1]'
+    - name: wm-1090
+      display_name: 'Re: Shared handover: Proposals [K-TEAM-PROPOSALS-1]'
+    - name: wm-1099
+      display_name: 'Re: Shared handover: Executive [K-TEAM-EXECUTIVE-1]'
+    - name: wm-0991
+      display_name: 'Re: Shared handover: Connectors [K-TEAM-CONNECTORS-1]'
+    - name: wm-1000
+      display_name: 'Re: Shared handover: Experience [K-TEAM-EXPERIENCE-1]'
+    - name: wm-1036
+      display_name: 'Re: Shared handover: Enablement [K-TEAM-ENABLEMENT-1]'
+    - name: wm-0982
+      display_name: 'Re: Shared handover: Core product [K-TEAM-CORE-PRODUCT-1]'
+    - name: wm-1027
+      display_name: 'Re: Shared handover: Implementation [K-TEAM-IMPLEMENTATION-1]'
+    - name: wm-1018
+      display_name: 'Re: Shared handover: Customer support [K-TEAM-CUSTOMER-SUPPORT-1]'
+    - name: wm-1072
+      display_name: 'Re: Shared handover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-1]'
+    - name: wm-1108
+      display_name: 'Re: Shared handover: People operations [K-TEAM-PEOPLE-OPERATIONS-1]'
+    - name: wm-1054
+      display_name: 'Re: Shared handover: Service operations [K-TEAM-SERVICE-OPERATIONS-1]'
+    - name: wm-1063
+      display_name: 'Re: Shared handover: Product management [K-TEAM-PRODUCT-MANAGEMENT-1]'
+    - name: wm-1045
+      display_name: 'Re: Shared handover: Release engineering [K-TEAM-RELEASE-ENGINEERING-1]'
+    - name: wm-1009
+      display_name: 'Re: Shared handover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-1]'
     - name: b-orren-2
       display_name: 'Re: Service review completed'
     - name: k-bike-1
       display_name: Bicycle, if your offer still stands
+    - name: wm-0059
+      display_name: Role note for Customer integrations [K-WS-018]
     - name: b-rillhaven-1
       display_name: Seasonal handover complete; workshop on the 24th
+    - name: wm-1127
+      display_name: 'Re: Shared handover: Office [K-TEAM-OFFICE-1]'
+    - name: wm-1118
+      display_name: 'Re: Shared handover: Finance [K-TEAM-FINANCE-1]'
+    - name: wm-1082
+      display_name: 'Re: Shared handover: Accounts [K-TEAM-ACCOUNTS-1]'
+    - name: wm-1091
+      display_name: 'Re: Shared handover: Proposals [K-TEAM-PROPOSALS-1]'
+    - name: wm-1100
+      display_name: 'Re: Shared handover: Executive [K-TEAM-EXECUTIVE-1]'
+    - name: wm-0992
+      display_name: 'Re: Shared handover: Connectors [K-TEAM-CONNECTORS-1]'
+    - name: wm-1001
+      display_name: 'Re: Shared handover: Experience [K-TEAM-EXPERIENCE-1]'
+    - name: wm-1037
+      display_name: 'Re: Shared handover: Enablement [K-TEAM-ENABLEMENT-1]'
+    - name: wm-0983
+      display_name: 'Re: Shared handover: Core product [K-TEAM-CORE-PRODUCT-1]'
+    - name: wm-1028
+      display_name: 'Re: Shared handover: Implementation [K-TEAM-IMPLEMENTATION-1]'
+    - name: wm-1019
+      display_name: 'Re: Shared handover: Customer support [K-TEAM-CUSTOMER-SUPPORT-1]'
+    - name: wm-1073
+      display_name: 'Re: Shared handover: Quality assurance [K-TEAM-QUALITY-ASSURANCE-1]'
+    - name: wm-1109
+      display_name: 'Re: Shared handover: People operations [K-TEAM-PEOPLE-OPERATIONS-1]'
+    - name: wm-1055
+      display_name: 'Re: Shared handover: Service operations [K-TEAM-SERVICE-OPERATIONS-1]'
+    - name: wm-1064
+      display_name: 'Re: Shared handover: Product management [K-TEAM-PRODUCT-MANAGEMENT-1]'
+    - name: wm-1046
+      display_name: 'Re: Shared handover: Release engineering [K-TEAM-RELEASE-ENGINEERING-1]'
+    - name: wm-1010
+      display_name: 'Re: Shared handover: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-1]'
+    - name: wm-0060
+      display_name: 'Re: Role note for Customer integrations [K-WS-018]'
     - name: k-bike-2
       display_name: 'Re: Bicycle, if your offer still stands'
+    - name: wm-0061
+      display_name: 'Re: Role note for Customer integrations [K-WS-018]'
+    - name: wm-0160
+      display_name: Learning slot for Accounts [K-WS-047]
     - name: k-onboarding-1
       display_name: New-starter guide corrections are in
+    - name: wm-0161
+      display_name: 'Re: Learning slot for Accounts [K-WS-047]'
+    - name: wm-1351
+      display_name: 'K-WS-041: staff record confirmed'
     - name: b-rillhaven-2
       display_name: 'Re: Seasonal handover complete; workshop on the 24th'
+    - name: wm-0080
+      display_name: Follow-up on Customer support [K-WS-024]
+    - name: wm-0162
+      display_name: 'Re: Learning slot for Accounts [K-WS-047]'
     - name: k-workshop-1
       display_name: Rillhaven rehearsal tomorrow
+    - name: wm-0081
+      display_name: 'Re: Follow-up on Customer support [K-WS-024]'
     - name: k-workshop-2
       display_name: 'Re: Rillhaven rehearsal tomorrow'
     - name: k-lunch-1
       display_name: Can we keep Thursday?
     - name: k-lunch-2
       display_name: 'Re: Can we keep Thursday?'
+    - name: wm-0082
+      display_name: 'Re: Follow-up on Customer support [K-WS-024]'
+    - name: wm-0163
+      display_name: 'Re: Learning slot for Accounts [K-WS-047]'
     - name: k-workshop-3
       display_name: 'Re: Rillhaven rehearsal tomorrow'
     - name: k-workshop-4
       display_name: 'Re: Rillhaven rehearsal tomorrow'
+    - name: wm-1131
+      display_name: 'Contact page: Office [K-TEAM-OFFICE-3]'
+    - name: wm-1122
+      display_name: 'Contact page: Finance [K-TEAM-FINANCE-3]'
+    - name: wm-1086
+      display_name: 'Contact page: Accounts [K-TEAM-ACCOUNTS-3]'
+    - name: wm-1095
+      display_name: 'Contact page: Proposals [K-TEAM-PROPOSALS-3]'
+    - name: wm-1104
+      display_name: 'Contact page: Executive [K-TEAM-EXECUTIVE-3]'
+    - name: wm-0996
+      display_name: 'Contact page: Connectors [K-TEAM-CONNECTORS-3]'
+    - name: wm-1005
+      display_name: 'Contact page: Experience [K-TEAM-EXPERIENCE-3]'
+    - name: wm-1041
+      display_name: 'Contact page: Enablement [K-TEAM-ENABLEMENT-3]'
+    - name: wm-0987
+      display_name: 'Contact page: Core product [K-TEAM-CORE-PRODUCT-3]'
+    - name: wm-1032
+      display_name: 'Contact page: Implementation [K-TEAM-IMPLEMENTATION-3]'
+    - name: wm-1023
+      display_name: 'Contact page: Customer support [K-TEAM-CUSTOMER-SUPPORT-3]'
+    - name: wm-1077
+      display_name: 'Contact page: Quality assurance [K-TEAM-QUALITY-ASSURANCE-3]'
+    - name: wm-1113
+      display_name: 'Contact page: People operations [K-TEAM-PEOPLE-OPERATIONS-3]'
+    - name: wm-1059
+      display_name: 'Contact page: Service operations [K-TEAM-SERVICE-OPERATIONS-3]'
+    - name: wm-1068
+      display_name: 'Contact page: Product management [K-TEAM-PRODUCT-MANAGEMENT-3]'
+    - name: wm-1050
+      display_name: 'Contact page: Release engineering [K-TEAM-RELEASE-ENGINEERING-3]'
+    - name: wm-1014
+      display_name: 'Contact page: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-3]'
     - name: k-bike-3
       display_name: 'Re: Bicycle, if your offer still stands'
+    - name: wm-0083
+      display_name: 'Re: Follow-up on Customer support [K-WS-024]'
+    - name: wm-1132
+      display_name: 'Re: Contact page: Office [K-TEAM-OFFICE-3]'
+    - name: wm-1123
+      display_name: 'Re: Contact page: Finance [K-TEAM-FINANCE-3]'
+    - name: wm-1087
+      display_name: 'Re: Contact page: Accounts [K-TEAM-ACCOUNTS-3]'
+    - name: wm-1096
+      display_name: 'Re: Contact page: Proposals [K-TEAM-PROPOSALS-3]'
+    - name: wm-1105
+      display_name: 'Re: Contact page: Executive [K-TEAM-EXECUTIVE-3]'
+    - name: wm-0997
+      display_name: 'Re: Contact page: Connectors [K-TEAM-CONNECTORS-3]'
+    - name: wm-1006
+      display_name: 'Re: Contact page: Experience [K-TEAM-EXPERIENCE-3]'
+    - name: wm-1042
+      display_name: 'Re: Contact page: Enablement [K-TEAM-ENABLEMENT-3]'
+    - name: wm-0988
+      display_name: 'Re: Contact page: Core product [K-TEAM-CORE-PRODUCT-3]'
+    - name: wm-1033
+      display_name: 'Re: Contact page: Implementation [K-TEAM-IMPLEMENTATION-3]'
+    - name: wm-1024
+      display_name: 'Re: Contact page: Customer support [K-TEAM-CUSTOMER-SUPPORT-3]'
+    - name: wm-1078
+      display_name: 'Re: Contact page: Quality assurance [K-TEAM-QUALITY-ASSURANCE-3]'
+    - name: wm-1114
+      display_name: 'Re: Contact page: People operations [K-TEAM-PEOPLE-OPERATIONS-3]'
+    - name: wm-1060
+      display_name: 'Re: Contact page: Service operations [K-TEAM-SERVICE-OPERATIONS-3]'
+    - name: wm-1069
+      display_name: 'Re: Contact page: Product management [K-TEAM-PRODUCT-MANAGEMENT-3]'
+    - name: wm-1051
+      display_name: 'Re: Contact page: Release engineering [K-TEAM-RELEASE-ENGINEERING-3]'
+    - name: wm-1015
+      display_name: 'Re: Contact page: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-3]'
     - name: k-lunch-3
       display_name: 'Re: Can we keep Thursday?'
     - name: k-lunch-4
       display_name: 'Re: Can we keep Thursday?'
+    - name: wm-1133
+      display_name: 'Re: Contact page: Office [K-TEAM-OFFICE-3]'
+    - name: wm-1124
+      display_name: 'Re: Contact page: Finance [K-TEAM-FINANCE-3]'
+    - name: wm-1088
+      display_name: 'Re: Contact page: Accounts [K-TEAM-ACCOUNTS-3]'
+    - name: wm-1097
+      display_name: 'Re: Contact page: Proposals [K-TEAM-PROPOSALS-3]'
+    - name: wm-1106
+      display_name: 'Re: Contact page: Executive [K-TEAM-EXECUTIVE-3]'
+    - name: wm-0998
+      display_name: 'Re: Contact page: Connectors [K-TEAM-CONNECTORS-3]'
+    - name: wm-1007
+      display_name: 'Re: Contact page: Experience [K-TEAM-EXPERIENCE-3]'
+    - name: wm-1043
+      display_name: 'Re: Contact page: Enablement [K-TEAM-ENABLEMENT-3]'
+    - name: wm-0084
+      display_name: 'Re: Follow-up on Customer support [K-WS-024]'
+    - name: wm-0989
+      display_name: 'Re: Contact page: Core product [K-TEAM-CORE-PRODUCT-3]'
+    - name: wm-1034
+      display_name: 'Re: Contact page: Implementation [K-TEAM-IMPLEMENTATION-3]'
+    - name: wm-1025
+      display_name: 'Re: Contact page: Customer support [K-TEAM-CUSTOMER-SUPPORT-3]'
+    - name: wm-1079
+      display_name: 'Re: Contact page: Quality assurance [K-TEAM-QUALITY-ASSURANCE-3]'
+    - name: wm-1115
+      display_name: 'Re: Contact page: People operations [K-TEAM-PEOPLE-OPERATIONS-3]'
+    - name: wm-1061
+      display_name: 'Re: Contact page: Service operations [K-TEAM-SERVICE-OPERATIONS-3]'
+    - name: wm-1070
+      display_name: 'Re: Contact page: Product management [K-TEAM-PRODUCT-MANAGEMENT-3]'
+    - name: wm-1052
+      display_name: 'Re: Contact page: Release engineering [K-TEAM-RELEASE-ENGINEERING-3]'
+    - name: wm-1016
+      display_name: 'Re: Contact page: Customer integrations [K-TEAM-CUSTOMER-INTEGRATIONS-3]'
     - name: k-bike-4
       display_name: 'Re: Bicycle, if your offer still stands'
     - name: k-bike-5
@@ -99,6 +847,7 @@ content:
       display_name: 'Re: How much detail in the review summary?'
     - name: k-rehearsal-1
       display_name: The introduction has escaped the office
+    sensitive: true
     tags:
     - world-content
     - synthetic
@@ -122,9 +871,9 @@ content:
     format: cinder-document-library/v1
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323
-    description: keplerops workplace documents. Preserve authored content, mailbox membership or document readers,
-      and declared opening state.
+      version: sha256-d2eff4f1c0969d0d680c19ab1e3db09218f52bd10d70703348ddb0e62d32bdf2
+    description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
+      Preserve authored readers and opening state.
     items:
     - name: k-company-direction
       display_name: A specialist company with room to grow
@@ -140,12 +889,11 @@ content:
       display_name: Working with established utility customers
     - name: k-workshop-outline-draft
       display_name: Rillhaven maintenance workshop — draft for rehearsal
-    - name: keplerops-directory
-      display_name: Staff contacts
     - name: rillhaven-workshop
       display_name: Rillhaven maintenance workshop
     - name: evan-noor-lunch
       display_name: Lunch with Evan
+    sensitive: true
     tags:
     - world-content
     - synthetic
@@ -163,6 +911,178 @@ content:
       - documents-visible
       observation_boundary_refs:
       - documents-visible
+  directory:
+    type: dataset
+    target: k-corporate.k-staff
+    format: cinder-staff-directory/v1
+    source:
+      name: cinder-typhoon/narrative/keplerops-directory
+      version: sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931
+    description: keplerops workplace directory. Require an individual staff identity; Same-employer staff readers.
+      Preserve authored readers and opening state.
+    items:
+    - name: k-staff-product-engineering
+      display_name: Product engineering contacts
+    - name: k-staff-role-core-product
+      display_name: Core product work and handovers
+    - name: k-staff-role-connectors
+      display_name: Connectors work and handovers
+    - name: k-staff-role-experience
+      display_name: Experience work and handovers
+    - name: k-staff-role-customer-integrations
+      display_name: Customer integrations work and handovers
+    - name: k-staff-support-and-implementation
+      display_name: Support and implementation contacts
+    - name: k-staff-role-customer-support
+      display_name: Customer support work and handovers
+    - name: k-staff-role-implementation
+      display_name: Implementation work and handovers
+    - name: k-staff-role-enablement
+      display_name: Enablement work and handovers
+    - name: k-staff-platform-and-release
+      display_name: Platform and release contacts
+    - name: k-staff-role-release-engineering
+      display_name: Release engineering work and handovers
+    - name: k-staff-role-service-operations
+      display_name: Service operations work and handovers
+    - name: k-staff-product-management-and-quality
+      display_name: Product management and quality contacts
+    - name: k-staff-role-product-management
+      display_name: Product management work and handovers
+    - name: k-staff-role-quality-assurance
+      display_name: Quality assurance work and handovers
+    - name: k-staff-commercial
+      display_name: Commercial contacts
+    - name: k-staff-role-accounts
+      display_name: Accounts work and handovers
+    - name: k-staff-role-proposals
+      display_name: Proposals work and handovers
+    - name: k-staff-leadership-and-business-operations
+      display_name: Leadership and business operations contacts
+    - name: k-staff-role-executive
+      display_name: Executive work and handovers
+    - name: k-staff-role-people-operations
+      display_name: People operations work and handovers
+    - name: k-staff-role-finance
+      display_name: Finance work and handovers
+    - name: k-staff-role-office
+      display_name: Office work and handovers
+    - name: keplerops-directory
+      display_name: Staff contacts
+    sensitive: false
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.k-corporate.k-staff.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - directory-visible
+      evidence_requirement_refs:
+      - directory-visible
+      observation_boundary_refs:
+      - directory-visible
+  employment:
+    type: dataset
+    target: k-corporate.k-staff
+    format: cinder-employment-records/v1
+    source:
+      name: cinder-typhoon/narrative/keplerops-employment
+      version: sha256-4589964ff3cb0d60e83a9fdff8652eedf0fd89008214b7eed8f72709e3a758ee
+    description: keplerops workplace employment. Require an individual staff identity; Exact named personnel
+      readers. Preserve authored readers and opening state.
+    items:
+    - name: k-personnel-register
+      display_name: Current personnel and assignment register
+    - name: k-onboard-kwm003
+      display_name: Starting arrangements — Amara Radvell
+    - name: k-onboard-kwm014
+      display_name: Starting arrangements — Corin Kelswick
+    - name: k-onboard-kwm025
+      display_name: Starting arrangements — Felix Darsell
+    - name: k-onboard-kwm036
+      display_name: Starting arrangements — Jalen Warden
+    - name: k-onboard-kwm047
+      display_name: Starting arrangements — Lina Peveran
+    - name: k-onboard-kwm058
+      display_name: Starting arrangements — Niko Rensart
+    - name: k-move-kwm007
+      display_name: Assignment change — Beatrice Bravelle
+    - name: k-move-kwm013
+      display_name: Assignment change — Cian Cavelin
+    - name: k-move-kwm018
+      display_name: Assignment change — Dev Senvard
+    - name: k-move-kwm026
+      display_name: Assignment change — Finn Marrent
+    - name: k-move-kwm031
+      display_name: Assignment change — Hugo Dravik
+    - name: k-move-kwm039
+      display_name: Assignment change — Jory Wellard
+    - name: k-move-kwm042
+      display_name: Assignment change — Lara Velswick
+    - name: k-move-kwm047
+      display_name: Assignment change — Lina Peveran
+    - name: k-move-kwm051
+      display_name: Assignment change — Margot Aldren
+    - name: k-move-kwm054
+      display_name: Assignment change — Mira Belsart
+    - name: k-move-kwm056
+      display_name: Assignment change — Nella Renshaw
+    - name: k-equipment-k-0001-26
+      display_name: Equipment request K-0001-26
+    - name: k-equipment-k-0002-26
+      display_name: Equipment request K-0002-26
+    - name: k-equipment-k-0003-26
+      display_name: Equipment request K-0003-26
+    - name: k-equipment-k-0004-26
+      display_name: Equipment request K-0004-26
+    - name: k-equipment-k-0005-26
+      display_name: Equipment request K-0005-26
+    - name: k-equipment-k-0006-26
+      display_name: Equipment request K-0006-26
+    - name: k-equipment-k-0007-26
+      display_name: Equipment request K-0007-26
+    - name: k-equipment-k-0008-26
+      display_name: Equipment request K-0008-26
+    - name: k-equipment-k-0009-26
+      display_name: Equipment request K-0009-26
+    - name: k-equipment-k-0010-26
+      display_name: Equipment request K-0010-26
+    - name: k-induction-kwm003
+      display_name: New colleague induction
+    - name: k-induction-kwm014
+      display_name: New colleague induction
+    - name: k-induction-kwm025
+      display_name: New colleague induction
+    - name: k-induction-kwm036
+      display_name: New colleague induction
+    - name: k-induction-kwm047
+      display_name: New colleague induction
+    - name: k-induction-kwm058
+      display_name: New colleague induction
+    sensitive: true
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.k-corporate.k-staff.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - employment-visible
+      evidence_requirement_refs:
+      - employment-visible
+      observation_boundary_refs:
+      - employment-visible
 propositions:
   mail-visible:
     description: The declared mail can be read through the workplace service with the authored audience boundaries.
@@ -189,12 +1109,44 @@ propositions:
       expected: true
     evidence_requirements:
     - documents-visible
+  directory-visible:
+    description: The declared directory can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.directory
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.keplerops.directory.visible
+      semantic_ref: urn:cinder-typhoon:world:keplerops:directory:visible
+      expected: true
+    evidence_requirements:
+    - directory-visible
+  employment-visible:
+    description: The declared employment can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.employment
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.keplerops.employment.visible
+      semantic_ref: urn:cinder-typhoon:world:keplerops:employment:visible
+      expected: true
+    evidence_requirements:
+    - employment-visible
 assertions:
   mail-visible:
     proposition: mail-visible
     role: postcondition
   documents-visible:
     proposition: documents-visible
+    role: postcondition
+  directory-visible:
+    proposition: directory-visible
+    role: postcondition
+  employment-visible:
+    proposition: employment-visible
     role: postcondition
 evidence_requirements:
   mail-visible:
@@ -261,6 +1213,70 @@ evidence_requirements:
         data_kind: artifact
         names:
         - cinder.world.keplerops.documents.visible
+  directory-visible:
+    source_refs:
+    - content.directory
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.keplerops.directory.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-keplerops.directory
+        data_kind: artifact
+        names:
+        - cinder.world.keplerops.directory.visible
+  employment-visible:
+    source_refs:
+    - content.employment
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.keplerops.employment.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-keplerops.employment
+        data_kind: artifact
+        names:
+        - cinder.world.keplerops.employment.visible
 observation_boundaries:
   mail-visible:
     projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
@@ -274,5 +1290,19 @@ observation_boundaries:
       their own authorized collection.
     observable_refs:
     - content.documents
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  directory-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.directory
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  employment-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.employment
     redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
     latency_profile: Initial content available before participant admission.

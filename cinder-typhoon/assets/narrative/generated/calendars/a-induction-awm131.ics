@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:349dd848-f521-5f41-8e36-7c84adff4599@alterrawaterco.com
+DTSTAMP:20260313T130000Z
+DTSTART:20260320T140000Z
+DTEND:20260320T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:elias.yervan@alterrawaterco.com
+ATTENDEE:mailto:della.orvel@alterrawaterco.com
+SUMMARY:New colleague induction
+DESCRIPTION:Elias Yervan: meet Della Orvel\; check local handover and first
+  work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

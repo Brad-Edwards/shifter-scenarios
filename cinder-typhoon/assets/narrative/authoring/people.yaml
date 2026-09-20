@@ -101,6 +101,14 @@ people:
     job: Field specialist
     actor_id: A-FIELD-01
 correspondents:
+  k_workplace:
+    name: KeplerOps Workplace Updates
+    email: workplace-updates@keplerops.com
+    employer: keplerops
+  a_workplace:
+    name: ARWC Workplace Updates
+    email: workplace-updates@alterrawaterco.com
+    employer: arwc
   ardenvale:
     name: Ardenvale Instrument Services — Customer Service
     email: service@ardenvale.test
