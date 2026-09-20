@@ -73,9 +73,11 @@ model policy separately. Never substitute an image tag or fabricated digest.
 
 This is a **local qualification candidate**, not a live-qualified release.
 Core AWS and GCP realization are now wired, and `../runtime-pack/` produces the
-separate tenant-uploadable launch package. The participant container has been
-rebuilt locally with the pinned client and passes the loopback wire test; its
-cloud guest image bakes still need the assigned deployment targets. The worker
+separate tenant-uploadable launch package. The previously recorded participant
+container candidate used client 2.1.273 and is superseded: that package no
+longer contains the `cli.js` entry point required by this adapter. The source
+recipe now pins 2.1.108, which passes the isolated loopback wire test; a new
+container build and cloud guest image bake remain pending. The worker
 candidate is now available by digest: authenticated pull and isolated inspection
 passed. The upload manifest is
 `../migration/runtime-adapter-candidate-manifest.json`, with registry readback in
