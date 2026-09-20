@@ -53,7 +53,10 @@ or real bank details are supplied. Monthly recurring revenue is earned evenly
 within the month; September 1–15 is half a month. Selected service accruals use
 monthly thirds of quarterly fees, with cents adjusted in the last month.
 Capital items are outside this slice; the small purchases below are expensed.
-Opening equity represents accumulated founder capital and retained earnings;
+Document references are allocated by account and billing stream; the dated
+records, rather than numeric reference order, establish chronology. The journal
+extract is grouped by source. Opening equity represents accumulated founder
+capital and retained earnings;
 there is no borrowing or new equity during the period.
 
 New licence schedules are authored historical authority, not facts found in
@@ -218,3 +221,39 @@ the scenario overlay remains empty. No challenge proof, route, actor, technical
 constraint, or default-open realization changes. The delivered accounts are
 fictional management records, not a live accounting system, statutory filing,
 bank integration, or runtime deployment proof.
+
+## Verification evidence
+
+The final content revision is `6425906`. Subsequent changes to this review only
+record accounting conventions and completed checks.
+
+- Deterministic rendering: all 156 generated outputs reproduce byte for byte.
+- Narrative checks: 24,660 RFC 5322 messages, exact MIME types and attachment
+  bytes, 5,171 source documents, all 294 employees, and eight source collections.
+- Full unit suite: ten tests passed in 191 seconds. This includes 78 deliberate
+  integrity failures, of which 26 target finance authority, arithmetic,
+  chronology, readers, PDF content, and workbook formula/cached-value agreement.
+- Baseline comparison: all 28,923 pre-existing package records and every prior
+  mailbox membership are unchanged. Native module changes are limited to item
+  inventories, content-source versions, and formats for the three collections
+  containing binaries.
+- Local Vale: zero errors, warnings, or suggestions in all five changed Markdown
+  files. GitHub Vale and Semgrep both passed on the final content revision.
+- Removed-file verification: all eighteen duplicate induction files are absent,
+  and their exact bytes remain in their existing native calendar items.
+- Pack size: 1,011 local members, including validation caches, below the pinned
+  1,024-member limit. The binary archive contains no extra or unbound members.
+- Final pinned native validation passed with `raes==5.0.0` and
+  `raes-env-packs==6.1.0`: pack author validation, 96 modules, 240 challenges,
+  33 capabilities, 36 targets plus Kali, nine subnets, 83 authority domains,
+  1,209 prerequisite closures, and all sixteen route combinations.
+- Compilation retained all 3,450 realization requirements and 281 observation
+  bindings. Four workplace SDL mutations, 28 challenge SDL mutations, an invalid
+  posture spelling, two compiled-observation mutations, and 26 broken
+  topologies/events were rejected. All eight source/service bindings survived.
+
+The final commands were `render_narrative.py --check`, the complete
+`unittest discover` suite under `tests/`, and
+`validate_sdl.py --self-test --pack-check`. Native validation also runs the full
+narrative asset checks. No runtime materialization, payment execution, outbound
+mail, or deployment was performed.
