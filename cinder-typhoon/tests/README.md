@@ -62,6 +62,7 @@ python cinder-typhoon/tests/validate_narrative.py
 python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.py
 python -m unittest discover -s cinder-typhoon/tests -p test_release_platform.py
 python -m unittest discover -s cinder-typhoon/tests -p test_customer_followup.py
+python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -91,6 +92,14 @@ history, false test results, completed future work, missing parents, and
 premature closure notices. Current case projections retain the original intake
 history and unchanged record identity. These checks validate fictional records;
 they do not execute the product tests described in those records.
+
+Commercial checks join sixty histories to the twelve-account contract book,
+signed versions, finance schedules, private pricing worksheets, delivery
+evidence, and finite project reservations. Twenty mutations reject false
+commitments, changed fees, premature final billing or completion, private
+material sent to customers, missing capacity, corrupted evidence, and a falsely
+confirmed reference call. Calendar checks include existing support appointments.
+Billing authority remains distinct from an issued invoice or payment.
 
 ## Prose checks
 

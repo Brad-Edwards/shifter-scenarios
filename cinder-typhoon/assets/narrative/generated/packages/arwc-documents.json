@@ -2,6 +2,149 @@
   "schema_version": "cinder-document-library/v1",
   "documents": [
     {
+      "name": "com-2026-001-offer-r2-arwc",
+      "title": "Alterra service budget review — offer 2",
+      "path": "com-2026-001-offer-r2-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-12T10:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# Alterra service budget review\n\nBudget clarification COM-2026-001, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: offer only; customer and KeplerOps acceptance required\n\n## Requested work\n\nThe standing service covers field contractor submissions, maintenance handovers, and supported asset-record integration.\n\n## Boundary\n\nExisting supported scope continues. No new interface, plant control, or open-ended project is included.\n\n## Price and acceptance\n\nOffered service amount: USD 0.00. Currency: USD. Current annual service: USD 154,000.00, four instalments of USD 38,500.00; current term ends 2028-03-31. This review adds no charge.\n\nThis is a budget review within the current agreement, with no change to the fee or term.\n\nA discussion does not authorize work or billing. Existing support remains governed by the current agreement.\n\n## Revision note\n\nThe draft heading says renewal. There is no renewal decision for us this year. The revised copy separates current service, next-term planning, and optional projects.\n"
+    },
+    {
+      "name": "com-2026-001-base-billing-arwc",
+      "title": "Alterra Regional Water Company — remaining service billing",
+      "path": "com-2026-001-base-billing-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-17T16:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com"
+      ],
+      "text": "# Remaining service schedule — K-C-001\n\nAuthority: K-C-001-AGR-01\nCurrent term ends: 2028-03-31\nAnnual fee: USD 154,000.00\nQuarterly instalment: USD 38,500.00\n\nOnly billing dates after 16 September 2026 and within the existing term are listed. This is billing authority, not proof that an invoice was issued or paid. Payment due dates and any applicable tax belong on the actual invoice.\n\n| Service period | Billing date | Service amount |\n| --- | --- | ---: |\n| 2026-10-01 to 2026-12-31 | 2026-10-01 | USD 38,500.00 |\n| 2027-01-01 to 2027-03-31 | 2027-01-01 | USD 38,500.00 |\n| 2027-04-01 to 2027-06-30 | 2027-04-01 | USD 38,500.00 |\n| 2027-07-01 to 2027-09-30 | 2027-07-01 | USD 38,500.00 |\n| 2027-10-01 to 2027-12-31 | 2027-10-01 | USD 38,500.00 |\n| 2028-01-01 to 2028-03-31 | 2028-01-01 | USD 38,500.00 |\n"
+    },
+    {
+      "name": "com-2026-002-offer-r2-arwc",
+      "title": "River contractor archive guide — offer 2",
+      "path": "com-2026-002-offer-r2-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-17T10:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# River contractor archive guide\n\nStatement of work COM-2026-002, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: offer only; customer and KeplerOps acceptance required\n\n## Requested work\n\nMap twelve retained contractor packages into one approved archive index and write the handover guide.\n\n## Boundary\n\nTwelve samples establish the mapping; bulk migration would need a separate count and order.\n\n## Price and acceptance\n\nOffered service amount: USD 2,400.00. Currency: USD. Fixed service fee USD 2,400.00 for 16 hours at USD 150.00 per hour. Half on accepted order; half only on customer acceptance of the deliverable. Ordinary defect support is not charged under this order. Proposed work window: 2026-07-20 to 2026-07-31. The window is provisional until this revision is signed. Customer samples and an acceptance owner are required before work starts.\n\nAll twelve package IDs and their accepted revisions appear in the index; Clara can locate each source from the guide.\n\nA discussion does not authorize work or billing. Existing support remains governed by the current agreement.\n\n## Revision note\n\nThe optional four-hour observation clinic is removed. The named samples, handover guide, and acceptance check remain included.\n"
+    },
+    {
+      "name": "com-2026-002-accepted-arwc",
+      "title": "River contractor archive guide — accepted schedule",
+      "path": "com-2026-002-accepted-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-22T14:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# River contractor archive guide\n\nStatement of work COM-2026-002, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: accepted\n\n## Requested work\n\nMap twelve retained contractor packages into one approved archive index and write the handover guide.\n\n## Boundary\n\nTwelve samples establish the mapping; bulk migration would need a separate count and order.\n\n## Price and acceptance\n\nAgreed service amount: USD 2,400.00. Currency: USD. Fixed service fee USD 2,400.00 for 16 hours at USD 150.00 per hour. Half on accepted order; half only on customer acceptance of the deliverable. Ordinary defect support is not charged under this order. Agreed work window: 2026-07-20 to 2026-07-31. Customer samples and an acceptance owner are required before work starts.\n\nAll twelve package IDs and their accepted revisions appear in the index; Clara can locate each source from the guide.\n\nExisting support remains governed by the current agreement.\n\n## Accepted schedule\n\nAccepted version: com-2026-002-offer-r2\nOffer SHA-256: 154057ddf8de3cd63475b7b6d3fa575ab6938c78d2b4d4760868873b9ad19307\nAccepted at: 2026-06-22T14:00:00-04:00\n/s/ Priya Naravel, for Alterra Regional Water Company\n/s/ Leah Calder-Voss, for KeplerOps Software\n"
+    },
+    {
+      "name": "com-2026-002-project-billing-arwc",
+      "title": "River contractor archive guide — agreed billing schedule",
+      "path": "com-2026-002-project-billing-arwc.csv",
+      "media_type": "text/csv",
+      "published_at": "2026-08-03T13:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "authority,account,milestone,amount_usd,trigger_at,billing_date,state,invoice_status\nCOM-2026-002,K-C-001,accepted order,1200.00,2026-06-22T14:00:00-04:00,2026-06-22,authorized,not evidenced here\nCOM-2026-002,K-C-001,customer accepts deliverable,1200.00,2026-08-03T11:00:00-04:00,2026-08-03,authorized,not evidenced here\n"
+    },
+    {
+      "name": "com-2026-002-handover-record-arwc",
+      "title": "River contractor archive guide — accepted handover",
+      "path": "com-2026-002-handover-record-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-03T11:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# River contractor archive guide — accepted handover\n\nOrder: COM-2026-002\nAccount: K-C-001\nDelivery window: 2026-07-20 to 2026-07-31\nCustomer acceptance: 2026-08-03T11:00:00-04:00\n\n## Delivered check\n\nAll twelve package IDs and their accepted revisions appear in the index; Clara can locate each source from the guide.\n\nClara found one heading that called the contractor the reviewer. We corrected that before she accepted the guide.\n\nAccepted by: Clara Morivelle, delegated by Priya Naravel in the order handover.\nSupport owner: Maya Ranscombe\n\nDelivered index: com-2026-002-delivered-index.csv\nSHA-256: 9ec96d4bd4f5be3d96085b25c933e516cec03f5f4fc0b7bf1cff3dfc41fc5d5c\n\n## Using the index\n\nKeep the source package and accepted revision together when citing an entry. The index label is a display aid; it does not replace the source reference. Review group identifies the intended readers, not permission to open another group’s records. A customer-source exception stays with its named owner.\n\nTwelve samples establish the mapping; bulk migration would need a separate count and order.\nThe retained source records stay with their existing readers. This closes only the agreed project deliverable.\n"
+    },
+    {
+      "name": "com-2026-002-delivered-index-arwc",
+      "title": "River contractor archive guide — delivered comparison index",
+      "path": "com-2026-002-delivered-index-arwc.csv",
+      "media_type": "text/csv",
+      "published_at": "2026-07-31T09:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "sample,source_package,accepted_revision,index_label,review_group,contractor_field,comparison,exception_owner\n1,K-C-001-ARCH-001,r2,River contractor archive guide / 01,agreed review team,contractor organization,reference and heading matched,\n2,K-C-001-ARCH-002,r2,River contractor archive guide / 02,agreed review team,contractor organization,reference and heading matched,\n3,K-C-001-ARCH-003,r2,River contractor archive guide / 03,agreed review team,contractor organization,reference and heading matched,\n4,K-C-001-ARCH-004,r2,River contractor archive guide / 04,agreed review team,contractor organization,reference and heading matched,\n5,K-C-001-ARCH-005,r2,River contractor archive guide / 05,agreed review team,contractor organization,reference and heading matched,\n6,K-C-001-ARCH-006,r2,River contractor archive guide / 06,agreed review team,contractor organization,reference and heading matched,\n7,K-C-001-ARCH-007,r2,River contractor archive guide / 07,agreed review team,contractor organization,reference and heading matched,\n8,K-C-001-ARCH-008,r2,River contractor archive guide / 08,agreed review team,contractor organization,reference and heading matched,\n9,K-C-001-ARCH-009,r2,River contractor archive guide / 09,agreed review team,contractor organization,reference and heading matched,\n10,K-C-001-ARCH-010,r2,River contractor archive guide / 10,agreed review team,contractor organization,reference and heading matched,\n11,K-C-001-ARCH-011,r2,River contractor archive guide / 11,agreed review team,contractor organization,reference and heading matched,\n12,K-C-001-ARCH-012,r2,River contractor archive guide / 12,agreed review team,contractor organization,reference and heading matched,\n"
+    },
+    {
+      "name": "com-2026-003-offer-r2-arwc",
+      "title": "Unattended contractor acceptance — offer 2",
+      "path": "com-2026-003-offer-r2-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T10:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# Unattended contractor acceptance\n\nScope response COM-2026-003, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: requested extension declined; no offer\n\n## Requested work\n\nAn upload is not a customer acceptance decision. We can explain the existing review queue, but cannot sell unattended acceptance.\n\n## Boundary\n\nAn upload is not a customer acceptance decision. We can explain the existing review queue, but cannot sell unattended acceptance.\n\n## Price and acceptance\n\nNo supported offer or fee for the requested function.\n\nThe customer keeps its review owner; no automatic approval change is offered.\n\nA discussion does not authorize work or billing. Existing support remains governed by the current agreement.\n\n## Revision note\n\nThe revised response separates the supported work from the requested extension. An upload is not a customer acceptance decision. We can explain the existing review queue, but cannot sell unattended acceptance.\n"
+    },
+    {
+      "name": "com-2026-004-offer-r2-arwc",
+      "title": "Quarterly billing reference — offer 2",
+      "path": "com-2026-004-offer-r2-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T10:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# Quarterly billing reference\n\nContract annex COM-2026-004, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: offer only; customer and KeplerOps acceptance required\n\n## Requested work\n\nUse the regional purchase reference on the invoice cover while keeping the existing district allocation internal.\n\n## Boundary\n\nNo automatic fifty-fifty district split is added; the annual fee and instalments remain unchanged.\n\n## Price and acceptance\n\nOffered service amount: USD 0.00. Currency: USD. Zero additional service charge. Existing agreement amounts, quarterly frequency, payer, and term remain unchanged.\n\nThe zero-fee annex is accepted. The existing annual fee, quarterly instalments, and end date remain unchanged.\n\nA discussion does not authorize work or billing. Existing support remains governed by the current agreement.\n\n## Revision note\n\nNo automatic fifty-fifty district split is added; the annual fee and instalments remain unchanged. The revised annex explicitly preserves the existing price and term.\n"
+    },
+    {
+      "name": "com-2026-004-accepted-arwc",
+      "title": "Quarterly billing reference — accepted schedule",
+      "path": "com-2026-004-accepted-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T14:00:00-04:00",
+      "readers": [
+        "priya.naravel@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com"
+      ],
+      "text": "# Quarterly billing reference\n\nContract annex COM-2026-004, revision 2\n\nAccount: K-C-001 — Alterra Regional Water Company\nAgreement: K-C-001-AGR-01\nStatus: accepted\n\n## Requested work\n\nUse the regional purchase reference on the invoice cover while keeping the existing district allocation internal.\n\n## Boundary\n\nNo automatic fifty-fifty district split is added; the annual fee and instalments remain unchanged.\n\n## Price and acceptance\n\nAgreed service amount: USD 0.00. Currency: USD. Zero additional service charge. Existing agreement amounts, quarterly frequency, payer, and term remain unchanged.\n\nThe zero-fee annex is accepted. The existing annual fee, quarterly instalments, and end date remain unchanged.\n\nExisting support remains governed by the current agreement.\n\n## Accepted schedule\n\nAccepted version: com-2026-004-offer-r2\nOffer SHA-256: f305be48b5e5910a62a8cd923cb7ae334f0894ecd413497622ee566f87398a32\nAccepted at: 2026-08-24T14:00:00-04:00\n/s/ Priya Naravel, for Alterra Regional Water Company\n/s/ Leah Calder-Voss, for KeplerOps Software\n"
+    },
+    {
+      "name": "commercial-arwc-reference-agenda-arwc",
+      "title": "ARWC reference conversation — agenda",
+      "path": "commercial-arwc-reference-agenda-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T09:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com"
+      ],
+      "text": "# ARWC reference conversation — proposed agenda\n\n29 September 2026, 10:00–10:30 (UTC−04:00). Hold only; the prospective utility has not confirmed its participants.\n\n1. Maintenance process before FieldKest: 5 minutes.\n2. Avoiding repeated collection of field material: 10 minutes.\n3. Learning the support route: 10 minutes.\n4. Questions and finish: 5 minutes.\n\nTheo and Clara may describe their own experience, including what was difficult. No slides, endorsement script, customer records, or permission to quote publicly. Each party keeps its own records private. ARWC staff allocation: two people for thirty minutes, sixty person-minutes total.\n"
+    },
+    {
       "name": "a-outreach-preparation",
       "title": "Community water-service explanation — preparation",
       "path": "outreach-preparation.md",

@@ -18,6 +18,7 @@ import sys
 import yaml
 from validate_release_platform import check_release_platform
 from validate_customer_followup import check_customer_followup
+from validate_commercial import check_commercial
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -36,12 +37,14 @@ RELEASE_PLATFORM_MESSAGE_COUNT = 1572
 RELEASE_PLATFORM_DOCUMENT_COUNT = 530
 CUSTOMER_FOLLOWUP_MESSAGE_COUNT = 2504
 CUSTOMER_FOLLOWUP_DOCUMENT_COUNT = 310
+COMMERCIAL_MESSAGE_COUNT = 1376
+COMMERCIAL_DOCUMENT_COUNT = 251
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -772,6 +775,7 @@ def check_assets():
     check_product_quality(identity, roster, mail, docs)
     check_release_platform(ROOT, identity, roster, mail, docs, events)
     check_customer_followup(ROOT, identity, roster, mail, docs, events)
+    check_commercial(ROOT, identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -893,7 +897,7 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if event['id'].startswith(('rel-2026-', 'chg-2026-')):
+                if event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()

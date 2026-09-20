@@ -1,7 +1,8 @@
 # KeplerOps and Alterra: the enterprise world
 
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
-support-intake, engineering, product-quality, release/platform, and customer-follow-up slices added on 20
+support-intake, engineering, product-quality, release/platform, customer-follow-up,
+and commercial slices added on 20
 September. These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -44,6 +45,8 @@ and unfinished plans of their own.
 | [Release and platform voices](release-platform-voices.md) | Writing guidance for the seven platform and release staff. |
 | [Customer follow-up review](customer-followup-review.md) | Case outcomes, shared engineering corrections, customer delivery evidence, workshop preparations, and volume adjustment. |
 | [Customer follow-up voices](customer-followup-voices.md) | Writing guidance for customer replies and private workshop preparations. |
+| [Commercial content review](commercial-review.md) | Sixty account histories, agreed billing, finite delivery capacity, editorial corrections, and volume adjustment. |
+| [Commercial voices](commercial-voices.md) | Writing guidance for the six existing commercial employees. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -99,6 +102,9 @@ engineering-case closures, and six cases awaiting customer checks. It also adds
 ordinary follow-ups, accepted handovers, revised knowledge, and completed
 preparations for the still-future Rillhaven workshop. Earlier deferral and
 decline records remain part of the history.
+The commercial slice develops sixty histories across those same twelve utility
+customers, with signed and unaccepted terms kept distinct, finance schedules,
+private pricing, accepted project handovers, and a future ARWC reference hold.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

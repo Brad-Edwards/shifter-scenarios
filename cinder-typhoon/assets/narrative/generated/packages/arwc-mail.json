@@ -218,6 +218,11 @@
       "sha256": "c83f4fd56e95a0aeb2261904a80380abbb49427b50f829810cc9186f3c8a8e58"
     },
     {
+      "message_id": "<58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 08 Jun 2026 09:00:00 -0400\r\nMessage-ID: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe would like a fixed-price proposal for river contractor archive guide. The =\r\nstanding service is continuing; this request is for the separate mapping or p=\r\nreparation work.\r\n\r\nPriya\r\n",
+      "sha256": "39d50e5614bc940d07ac78552e4042e212fcb864fca91a442ee9d4dc92c90b4a"
+    },
+    {
       "message_id": "<ba32b31d-e209-5c2d-b548-76226fe01be6@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Mon, 08 Jun 2026 09:02:00 -0400\r\nMessage-ID: <ba32b31d-e209-5c2d-b548-76226fe01be6@alterrawaterco.com>\r\nSubject: Archive index =?utf-8?b?4oCU?= River distribution [K-C-001-26-02]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe archive team wants a stable reference to the contractor handover from Riv=\r\ner distribution. Which identifier survives a correction?\r\n\r\nThanks,\r\nClara\r\n",
       "sha256": "6c448ecea33eef099305ee93648782561b5d469f5de6d13e222276058985e049"
@@ -398,6 +403,11 @@
       "sha256": "351156fd51f5eab18d4e4afdb759abb37dc4c30e63e3af881ff7c8ce24039e85"
     },
     {
+      "message_id": "<f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 09 Jun 2026 10:00:00 -0400\r\nMessage-ID: <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-660e19ea4be369b7ad4e5106\"\r\n\r\n--workplace-660e19ea4be369b7ad4e5106\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe first copy is attached. Map twelve retained contractor packages into one =\r\napproved archive index and write the handover guide. Please check the boundar=\r\ny as well as the heading.\r\n\r\nLouis\r\n\r\n--workplace-660e19ea4be369b7ad4e5106\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-002-draft-r1.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUKClN0YXRlbWVudCBvZiB3b3JrIENPTS0y\r\nMDI2LTAwMiwgcmV2aXNpb24gMQoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25h\r\nbCBXYXRlciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBvZmZlciBv\r\nbmx5OyBjdXN0b21lciBhbmQgS2VwbGVyT3BzIGFjY2VwdGFuY2UgcmVxdWlyZWQKCiMjIFJlcXVl\r\nc3RlZCB3b3JrCgpNYXAgdHdlbHZlIHJldGFpbmVkIGNvbnRyYWN0b3IgcGFja2FnZXMgaW50byBv\r\nbmUgYXBwcm92ZWQgYXJjaGl2ZSBpbmRleCBhbmQgd3JpdGUgdGhlIGhhbmRvdmVyIGd1aWRlLgoK\r\nIyMgQm91bmRhcnkKClR3ZWx2ZSBzYW1wbGVzIGVzdGFibGlzaCB0aGUgbWFwcGluZzsgYnVsayBt\r\naWdyYXRpb24gd291bGQgbmVlZCBhIHNlcGFyYXRlIGNvdW50IGFuZCBvcmRlci4KCiMjIFByaWNl\r\nIGFuZCBhY2NlcHRhbmNlCgpPZmZlcmVkIHNlcnZpY2UgYW1vdW50OiBVU0QgMywwMDAuMDAuIEN1\r\ncnJlbmN5OiBVU0QuIEZpeGVkIHNlcnZpY2UgZmVlIFVTRCAzLDAwMC4wMCBmb3IgMjAgaG91cnMg\r\nYXQgVVNEIDE1MC4wMCBwZXIgaG91ci4gSGFsZiBvbiBhY2NlcHRlZCBvcmRlcjsgaGFsZiBvbmx5\r\nIG9uIGN1c3RvbWVyIGFjY2VwdGFuY2Ugb2YgdGhlIGRlbGl2ZXJhYmxlLiBPcmRpbmFyeSBkZWZl\r\nY3Qgc3VwcG9ydCBpcyBub3QgY2hhcmdlZCB1bmRlciB0aGlzIG9yZGVyLiBQcm9wb3NlZCB3b3Jr\r\nIHdpbmRvdzogMjAyNi0wNy0yMCB0byAyMDI2LTA3LTMxLiBUaGUgd2luZG93IGlzIHByb3Zpc2lv\r\nbmFsIHVudGlsIHRoaXMgcmV2aXNpb24gaXMgc2lnbmVkLiBDdXN0b21lciBzYW1wbGVzIGFuZCBh\r\nbiBhY2NlcHRhbmNlIG93bmVyIGFyZSByZXF1aXJlZCBiZWZvcmUgd29yayBzdGFydHMuCgpBbGwg\r\ndHdlbHZlIHBhY2thZ2UgSURzIGFuZCB0aGVpciBhY2NlcHRlZCByZXZpc2lvbnMgYXBwZWFyIGlu\r\nIHRoZSBpbmRleDsgQ2xhcmEgY2FuIGxvY2F0ZSBlYWNoIHNvdXJjZSBmcm9tIHRoZSBndWlkZS4K\r\nCkEgZGlzY3Vzc2lvbiBkb2VzIG5vdCBhdXRob3JpemUgd29yayBvciBiaWxsaW5nLiBFeGlzdGlu\r\nZyBzdXBwb3J0IHJlbWFpbnMgZ292ZXJuZWQgYnkgdGhlIGN1cnJlbnQgYWdyZWVtZW50LgoKRHJh\r\nZnQgb3B0aW9uOiAyMCBob3VycywgaW5jbHVkaW5nIGEgZm91ci1ob3VyIG9ic2VydmF0aW9uIGNs\r\naW5pYy4K\r\n\r\n--workplace-660e19ea4be369b7ad4e5106--\r\n",
+      "sha256": "8f63870d67fb735e7655c8688eaf31900ddcd24ad48c86af8f256a24d1b7f117"
+    },
+    {
       "message_id": "<d50dba30-77af-567b-a3c3-93617a97ed8d@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Tue, 09 Jun 2026 10:02:00 -0400\r\nMessage-ID: <d50dba30-77af-567b-a3c3-93617a97ed8d@alterrawaterco.com>\r\nSubject: Re: Archive index =?utf-8?b?4oCU?= River distribution [K-C-001-26-02]\r\nIn-Reply-To: <9fb565d2-4d9c-5867-a4a7-2a9ce337c28b@keplerops.com>\r\nReferences: <ba32b31d-e209-5c2d-b548-76226fe01be6@alterrawaterco.com>\r\n <9fb565d2-4d9c-5867-a4a7-2a9ce337c28b@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nGot it. The K-C-001-26-02 explanation is enough for our reviewer to proceed.\r\n\r\nClara\r\n",
       "sha256": "b06b5e4c8f5fa34e2d4dff012a403a267cc0868f6d623a67ebc717923d56a6c9"
@@ -506,6 +516,11 @@
       "message_id": "<75c46a89-2bab-53e2-80ab-f4d291331d6d@alterrawaterco.com>",
       "rfc822": "From: Quinn Odrin <quinn.odrin@alterrawaterco.com>\r\nTo: Omar Edran <omar.edran@alterrawaterco.com>\r\nDate: Wed, 10 Jun 2026 08:52:00 -0400\r\nMessage-ID: <75c46a89-2bab-53e2-80ab-f4d291331d6d@alterrawaterco.com>\r\nSubject: Handover note for Service desk [A-WS-232]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nBefore the next team picks up the work at Regional office, I want to put the =\r\nreceiving owner beside the dated entry. Who is it?\r\nQuinn\r\n",
       "sha256": "ab74fa15dd0a0412d1c6832da73471086b9a16dcff877ef57446251fb994110f"
+    },
+    {
+      "message_id": "<b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Wed, 10 Jun 2026 09:00:00 -0400\r\nMessage-ID: <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould we have the whole River archive in that price?\r\n\r\nPriya\r\n",
+      "sha256": "2b6b26f434740cd3af4b1bbf77a3697712c48b1edff09ee14bc0f115c2dc1cf4"
     },
     {
       "message_id": "<8874c0c4-f51f-5ccd-a03f-1f1662d5518c@alterrawaterco.com>",
@@ -723,6 +738,11 @@
       "sha256": "459b48a5fcc251a124ef6f35140f4657df76cac492146b41e962b15e09c829a6"
     },
     {
+      "message_id": "<e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 11 Jun 2026 13:00:00 -0400\r\nMessage-ID: <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTwelve samples establish the mapping; bulk migration would need a separate co=\r\nunt and order. The optional four-hour observation clinic is removed. The name=\r\nd samples, handover guide, and acceptance check remain included.\r\n\r\nLouis\r\n",
+      "sha256": "180ace9f69b7a4f299f1ba3cbd4569839ef30c702ddc3c0d1747666b3e47344e"
+    },
+    {
       "message_id": "<f5fa6617-3bc2-54dc-9e3c-70789b032032@keplerops.com>",
       "rfc822": "From: Gabriel Delmont <gabriel.delmont@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Thu, 11 Jun 2026 14:33:00 -0400\r\nMessage-ID: <f5fa6617-3bc2-54dc-9e3c-70789b032032@keplerops.com>\r\nSubject: Re: Date display [SUP-2026-0037]\r\nIn-Reply-To: <050257b6-6116-5b1a-8aec-54a3216f5861@alterrawaterco.com>\r\nReferences: <8cfe498e-f76d-5505-8617-2ab880e05511@alterrawaterco.com>\r\n <2a31a6d7-fbd5-50e4-ba55-44c89f1ef07d@keplerops.com>\r\n <1e54c9ad-dbaf-50e5-9d8a-047c683a745a@keplerops.com>\r\n <5e66b081-3f8e-59bc-9cb6-bf70b2077674@keplerops.com>\r\n <050257b6-6116-5b1a-8aec-54a3216f5861@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe check is complete and SUP-2026-0037 can close. The customer reissued the =\r\nexport with the agreed locale and confirmed the printed dates. This result ap=\r\nplies to the printed review summary on Alterra Regional Water Company=E2=80=\r\n=99s account.\r\n\r\nA small practical adjustment should be enough.\r\n\r\nGabriel\r\n",
       "sha256": "9d627a60890dfaea5b34d142ab31b002ce8c5ad786e4f792e3898ddad68b0de8"
@@ -796,6 +816,11 @@
       "message_id": "<0890422c-aade-5561-9363-99ce23051835@keplerops.com>",
       "rfc822": "From: Harriet Velswick <harriet.velswick@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Fri, 12 Jun 2026 09:40:00 -0400\r\nMessage-ID: <0890422c-aade-5561-9363-99ce23051835@keplerops.com>\r\nSubject: Re: Notice routing [SUP-2026-0361]\r\nIn-Reply-To: <de874ca3-5983-5c6b-88d9-ae078962492f@alterrawaterco.com>\r\nReferences: <26cfe541-96c5-5f9a-ad44-5fc807f11d85@alterrawaterco.com>\r\n <3ee060f7-4d27-5277-8230-ba112a73b762@keplerops.com>\r\n <aa4c291e-9c93-53f5-8624-0256341fb46e@keplerops.com>\r\n <293819a4-72d7-5c04-a482-e8c7f909581c@keplerops.com>\r\n <de874ca3-5983-5c6b-88d9-ae078962492f@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI have separated the immediate review question from any product suggestion an=\r\nd recorded it as SUP-2026-0361.\r\n\r\nThe second recorded check was: Checked another record in the same workspace; =\r\nthat record behaved normally.\r\n\r\nException: the source is sound; the presentation differs.\r\n\r\nHarriet\r\n",
       "sha256": "8cf229d55ee28c58ad4bfd078cb40ccab5d46aafde9c8de3d4d329ead10af923"
+    },
+    {
+      "message_id": "<fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Fri, 12 Jun 2026 10:00:00 -0400\r\nMessage-ID: <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nLeave the optional observation clinic out of this order. We need the agreed s=\r\namples and the handover material for river contractor archive guide; another =\r\nclinic can wait.\r\n\r\nPriya\r\n",
+      "sha256": "fda494d50c3c4d8ac3f0fb49b2592d897bc44a06350377eae8674bcff52da6af"
     },
     {
       "message_id": "<33711cf2-5f93-5048-b863-df5fff7bc734@alterrawaterco.com>",
@@ -1173,6 +1198,11 @@
       "sha256": "69f7a904961e35a7d792964d1a6537fb6d892031e5e1fdb6bfa9fd6ad43c58b4"
     },
     {
+      "message_id": "<6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 17 Jun 2026 11:00:00 -0400\r\nMessage-ID: <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-ab8617a0837372a40f28e32b\"\r\n\r\n--workplace-ab8617a0837372a40f28e32b\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nRevision 2 is attached. The optional four-hour observation clinic is removed.=\r\n The named samples, handover guide, and acceptance check remain included. The=\r\n offered amount is USD 2,400.00. Please identify this revision in any accepta=\r\nnce.\r\n\r\nLouis\r\n\r\n--workplace-ab8617a0837372a40f28e32b\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-002-offer-r2.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUKClN0YXRlbWVudCBvZiB3b3JrIENPTS0y\r\nMDI2LTAwMiwgcmV2aXNpb24gMgoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25h\r\nbCBXYXRlciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBvZmZlciBv\r\nbmx5OyBjdXN0b21lciBhbmQgS2VwbGVyT3BzIGFjY2VwdGFuY2UgcmVxdWlyZWQKCiMjIFJlcXVl\r\nc3RlZCB3b3JrCgpNYXAgdHdlbHZlIHJldGFpbmVkIGNvbnRyYWN0b3IgcGFja2FnZXMgaW50byBv\r\nbmUgYXBwcm92ZWQgYXJjaGl2ZSBpbmRleCBhbmQgd3JpdGUgdGhlIGhhbmRvdmVyIGd1aWRlLgoK\r\nIyMgQm91bmRhcnkKClR3ZWx2ZSBzYW1wbGVzIGVzdGFibGlzaCB0aGUgbWFwcGluZzsgYnVsayBt\r\naWdyYXRpb24gd291bGQgbmVlZCBhIHNlcGFyYXRlIGNvdW50IGFuZCBvcmRlci4KCiMjIFByaWNl\r\nIGFuZCBhY2NlcHRhbmNlCgpPZmZlcmVkIHNlcnZpY2UgYW1vdW50OiBVU0QgMiw0MDAuMDAuIEN1\r\ncnJlbmN5OiBVU0QuIEZpeGVkIHNlcnZpY2UgZmVlIFVTRCAyLDQwMC4wMCBmb3IgMTYgaG91cnMg\r\nYXQgVVNEIDE1MC4wMCBwZXIgaG91ci4gSGFsZiBvbiBhY2NlcHRlZCBvcmRlcjsgaGFsZiBvbmx5\r\nIG9uIGN1c3RvbWVyIGFjY2VwdGFuY2Ugb2YgdGhlIGRlbGl2ZXJhYmxlLiBPcmRpbmFyeSBkZWZl\r\nY3Qgc3VwcG9ydCBpcyBub3QgY2hhcmdlZCB1bmRlciB0aGlzIG9yZGVyLiBQcm9wb3NlZCB3b3Jr\r\nIHdpbmRvdzogMjAyNi0wNy0yMCB0byAyMDI2LTA3LTMxLiBUaGUgd2luZG93IGlzIHByb3Zpc2lv\r\nbmFsIHVudGlsIHRoaXMgcmV2aXNpb24gaXMgc2lnbmVkLiBDdXN0b21lciBzYW1wbGVzIGFuZCBh\r\nbiBhY2NlcHRhbmNlIG93bmVyIGFyZSByZXF1aXJlZCBiZWZvcmUgd29yayBzdGFydHMuCgpBbGwg\r\ndHdlbHZlIHBhY2thZ2UgSURzIGFuZCB0aGVpciBhY2NlcHRlZCByZXZpc2lvbnMgYXBwZWFyIGlu\r\nIHRoZSBpbmRleDsgQ2xhcmEgY2FuIGxvY2F0ZSBlYWNoIHNvdXJjZSBmcm9tIHRoZSBndWlkZS4K\r\nCkEgZGlzY3Vzc2lvbiBkb2VzIG5vdCBhdXRob3JpemUgd29yayBvciBiaWxsaW5nLiBFeGlzdGlu\r\nZyBzdXBwb3J0IHJlbWFpbnMgZ292ZXJuZWQgYnkgdGhlIGN1cnJlbnQgYWdyZWVtZW50LgoKIyMg\r\nUmV2aXNpb24gbm90ZQoKVGhlIG9wdGlvbmFsIGZvdXItaG91ciBvYnNlcnZhdGlvbiBjbGluaWMg\r\naXMgcmVtb3ZlZC4gVGhlIG5hbWVkIHNhbXBsZXMsIGhhbmRvdmVyIGd1aWRlLCBhbmQgYWNjZXB0\r\nYW5jZSBjaGVjayByZW1haW4gaW5jbHVkZWQuCg==\r\n\r\n--workplace-ab8617a0837372a40f28e32b--\r\n",
+      "sha256": "122739bad25438bd56df8c61f2a382d0b3e8321457e22b396f717e5b01090bb3"
+    },
+    {
       "message_id": "<27567773-aa76-5ae7-a643-54a4e15e54a5@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Wed, 17 Jun 2026 11:06:00 -0400\r\nMessage-ID: <27567773-aa76-5ae7-a643-54a4e15e54a5@alterrawaterco.com>\r\nSubject: Re: Quarterly record =?utf-8?b?4oCU?= controls review [K-C-001-26-04]\r\nIn-Reply-To: <e40d881a-8271-56b1-ae02-b71f5db551d8@keplerops.com>\r\nReferences: <01d46a05-7d9b-58a7-b5de-10f5133be123@keplerops.com>\r\n <048253e4-a82b-5119-8448-a21e84423e59@keplerops.com>\r\n <93db5922-9683-5a53-8bf7-d34fcd7185de@alterrawaterco.com>\r\n <e40d881a-8271-56b1-ae02-b71f5db551d8@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI can carry K-C-001-26-04 into our next local review. I have the controls rev=\r\niew contractor handover reference from Theo; no need to start a fresh thread.\r\n\r\nClara\r\n",
       "sha256": "ce704629439ccf6e38b0422b3ad02b0b5ff8f160e271e236108bfb019b5c8afb"
@@ -1201,6 +1231,11 @@
       "message_id": "<34322a85-207c-52a3-b8d2-2e3179e80e4f@alterrawaterco.com>",
       "rfc822": "From: Thane Quillan <thane.quillan@alterrawaterco.com>\r\nTo: Soren Garsen <soren.garsen@alterrawaterco.com>\r\nDate: Thu, 18 Jun 2026 08:20:00 -0400\r\nMessage-ID: <34322a85-207c-52a3-b8d2-2e3179e80e4f@alterrawaterco.com>\r\nSubject: Follow-up on Customer contact [A-WS-244]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWho took the last part of last week's Customer contact work at Regional offic=\r\ne? I can close my piece once that owner is written down.\r\nThane\r\n",
       "sha256": "e5447eb7a6eb65c2c4191730a225e05130879abb25e27149653b1c193428b314"
+    },
+    {
+      "message_id": "<17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Thu, 18 Jun 2026 09:00:00 -0400\r\nMessage-ID: <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nIf an example is missing when river contractor archive guide starts, does the=\r\n fixed price silently grow?\r\n\r\nPriya\r\n",
+      "sha256": "13c6b4d58f38cf912fcafc5572324f5d6b1528edde976f0b247fa17715f3ac56"
     },
     {
       "message_id": "<8df3989a-d69b-5481-a0f2-2219f89c07ab@alterrawaterco.com>",
@@ -1236,6 +1271,11 @@
       "message_id": "<1f557dba-d367-510e-8670-0339a5c378f9@keplerops.com>",
       "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Thu, 18 Jun 2026 13:08:00 -0400\r\nMessage-ID: <1f557dba-d367-510e-8670-0339a5c378f9@keplerops.com>\r\nSubject: Re: Missing date =?utf-8?b?4oCU?= field coordination [K-C-001-26-05]\r\nIn-Reply-To: <ed4b5fb6-9cdf-5997-b12c-08154a44da98@alterrawaterco.com>\r\nReferences: <ed4b5fb6-9cdf-5997-b12c-08154a44da98@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI have the K-C-001-26-05 account record open. I=E2=80=99ll ask the contractor=\r\n for the visit date; do not infer it from upload time.\r\n\r\nMaya\r\n",
       "sha256": "3d68afe3fbafb043fe292cceb21ebad363f9cf1fd396a079f84fe002508fda7e"
+    },
+    {
+      "message_id": "<bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 18 Jun 2026 14:00:00 -0400\r\nMessage-ID: <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nNo. We record the missing input and agree a revised window or scope before ex=\r\ntra work. There is no automatic extra charge.\r\n\r\nLouis\r\n",
+      "sha256": "cd3188ffc8228efec2b790f13de4b2fe66840938f700981df77d4e76a3ae189f"
     },
     {
       "message_id": "<9d844d2e-7ff1-5ea2-be80-b76368441fbf@alterrawaterco.com>",
@@ -1448,6 +1488,11 @@
       "sha256": "985412de5c4e70ce6e4a6f8c6b043c4839ac88b30de750820423788ba241053f"
     },
     {
+      "message_id": "<aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 22 Jun 2026 11:00:00 -0400\r\nMessage-ID: <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nFor K-C-001, we accept COM-2026-002 revision 2 at USD 2,400.00. The 16-hour s=\r\ncope and its two billing triggers are agreed. The work window is 2026-07-20 t=\r\no 2026-07-31.\r\n\r\nPriya\r\n",
+      "sha256": "f0a74dc5df0559d293aebb0fa47302039b7a54199d25ac76d8457051a603e188"
+    },
+    {
       "message_id": "<0b668f61-2725-5db5-8437-40c103a3ec1b@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Mon, 22 Jun 2026 11:08:00 -0400\r\nMessage-ID: <0b668f61-2725-5db5-8437-40c103a3ec1b@alterrawaterco.com>\r\nSubject: Re: Missing date =?utf-8?b?4oCU?= field coordination [K-C-001-26-05]\r\nIn-Reply-To: <a7dcfb45-f9a6-5560-ac8e-e866402cd7cc@keplerops.com>\r\nReferences: <ed4b5fb6-9cdf-5997-b12c-08154a44da98@alterrawaterco.com>\r\n <1f557dba-d367-510e-8670-0339a5c378f9@keplerops.com>\r\n <1bd180d2-facb-5bdb-a3bc-23f7c798acce@keplerops.com>\r\n <a7dcfb45-f9a6-5560-ac8e-e866402cd7cc@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nGood, that is enough for us to use the field coordination contractor handover=\r\n in the next review of K-C-001-26-05. Thanks.\r\n\r\nClara\r\n",
       "sha256": "2f53cc29eee0aaa188f7f165e0d9d536c93bb63dadbf4f739c9621513e489c80"
@@ -1503,6 +1548,11 @@
       "sha256": "7f30cc22c017f505d34de2b272c4c4802011ec5057c7cdf795e0f18addde0e6e"
     },
     {
+      "message_id": "<3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>",
+      "rfc822": "From: Martin Harlowe <martin.harlowe@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Mon, 22 Jun 2026 15:00:00 -0400\r\nMessage-ID: <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-ec61f158032670fd5266eefd\"\r\n\r\n--workplace-ec61f158032670fd5266eefd\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nAccepted copy for COM-2026-002, revision 2. The draft is retained for the his=\r\ntory; this is the agreed version.\r\n\r\n--workplace-ec61f158032670fd5266eefd\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-002-accepted.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUKClN0YXRlbWVudCBvZiB3b3JrIENPTS0y\r\nMDI2LTAwMiwgcmV2aXNpb24gMgoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25h\r\nbCBXYXRlciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBhY2NlcHRl\r\nZAoKIyMgUmVxdWVzdGVkIHdvcmsKCk1hcCB0d2VsdmUgcmV0YWluZWQgY29udHJhY3RvciBwYWNr\r\nYWdlcyBpbnRvIG9uZSBhcHByb3ZlZCBhcmNoaXZlIGluZGV4IGFuZCB3cml0ZSB0aGUgaGFuZG92\r\nZXIgZ3VpZGUuCgojIyBCb3VuZGFyeQoKVHdlbHZlIHNhbXBsZXMgZXN0YWJsaXNoIHRoZSBtYXBw\r\naW5nOyBidWxrIG1pZ3JhdGlvbiB3b3VsZCBuZWVkIGEgc2VwYXJhdGUgY291bnQgYW5kIG9yZGVy\r\nLgoKIyMgUHJpY2UgYW5kIGFjY2VwdGFuY2UKCkFncmVlZCBzZXJ2aWNlIGFtb3VudDogVVNEIDIs\r\nNDAwLjAwLiBDdXJyZW5jeTogVVNELiBGaXhlZCBzZXJ2aWNlIGZlZSBVU0QgMiw0MDAuMDAgZm9y\r\nIDE2IGhvdXJzIGF0IFVTRCAxNTAuMDAgcGVyIGhvdXIuIEhhbGYgb24gYWNjZXB0ZWQgb3JkZXI7\r\nIGhhbGYgb25seSBvbiBjdXN0b21lciBhY2NlcHRhbmNlIG9mIHRoZSBkZWxpdmVyYWJsZS4gT3Jk\r\naW5hcnkgZGVmZWN0IHN1cHBvcnQgaXMgbm90IGNoYXJnZWQgdW5kZXIgdGhpcyBvcmRlci4gQWdy\r\nZWVkIHdvcmsgd2luZG93OiAyMDI2LTA3LTIwIHRvIDIwMjYtMDctMzEuIEN1c3RvbWVyIHNhbXBs\r\nZXMgYW5kIGFuIGFjY2VwdGFuY2Ugb3duZXIgYXJlIHJlcXVpcmVkIGJlZm9yZSB3b3JrIHN0YXJ0\r\ncy4KCkFsbCB0d2VsdmUgcGFja2FnZSBJRHMgYW5kIHRoZWlyIGFjY2VwdGVkIHJldmlzaW9ucyBh\r\ncHBlYXIgaW4gdGhlIGluZGV4OyBDbGFyYSBjYW4gbG9jYXRlIGVhY2ggc291cmNlIGZyb20gdGhl\r\nIGd1aWRlLgoKRXhpc3Rpbmcgc3VwcG9ydCByZW1haW5zIGdvdmVybmVkIGJ5IHRoZSBjdXJyZW50\r\nIGFncmVlbWVudC4KCiMjIEFjY2VwdGVkIHNjaGVkdWxlCgpBY2NlcHRlZCB2ZXJzaW9uOiBjb20t\r\nMjAyNi0wMDItb2ZmZXItcjIKT2ZmZXIgU0hBLTI1NjogMTU0MDU3ZGRmOGRlM2NkNjM0NzViN2I2\r\nZDNmYTU3NWFiNjkzOGM3OGQyYjRkNDc2MDg2ODg3M2I5YWQxOTMwNwpBY2NlcHRlZCBhdDogMjAy\r\nNi0wNi0yMlQxNDowMDowMC0wNDowMAovcy8gUHJpeWEgTmFyYXZlbCwgZm9yIEFsdGVycmEgUmVn\r\naW9uYWwgV2F0ZXIgQ29tcGFueQovcy8gTGVhaCBDYWxkZXItVm9zcywgZm9yIEtlcGxlck9wcyBT\r\nb2Z0d2FyZQo=\r\n\r\n--workplace-ec61f158032670fd5266eefd--\r\n",
+      "sha256": "48f1c18b7c4b45d22128e7fbf4d8dd5d5e609d3e6ce0769ea20071deefdd9445"
+    },
+    {
       "message_id": "<f443e543-520d-5155-976f-a392e3dc5d12@alterrawaterco.com>",
       "rfc822": "From: Leo Narsen <leo.narsen@alterrawaterco.com>\r\nTo: Jamie Telmire <jamie.telmire@alterrawaterco.com>\r\nDate: Tue, 23 Jun 2026 08:29:00 -0400\r\nMessage-ID: <f443e543-520d-5155-976f-a392e3dc5d12@alterrawaterco.com>\r\nSubject: Cover for River distribution [A-WS-129]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI can take the first period of River distribution cover on 03 July. Who has t=\r\nhe later one?\r\nLeo\r\n",
       "sha256": "f3217e9ae3170dcab03861ef27877eed4f642fa2e5aa1b13c1ca8847c394780a"
@@ -1521,6 +1571,11 @@
       "message_id": "<54c5f37b-bf4e-5180-8091-82860c981242@alterrawaterco.com>",
       "rfc822": "From: Yara Renshaw <yara.renshaw@alterrawaterco.com>\r\nTo: Soren Garsen <soren.garsen@alterrawaterco.com>\r\nDate: Tue, 23 Jun 2026 09:51:00 -0400\r\nMessage-ID: <54c5f37b-bf4e-5180-8091-82860c981242@alterrawaterco.com>\r\nSubject: Re: Learning slot for Customer contact [A-WS-250]\r\nIn-Reply-To: <861b4ffb-3b54-5393-97fa-549f47479a62@alterrawaterco.com>\r\nReferences: <4b30f160-860d-5e1a-b695-fbdeb646e0dd@alterrawaterco.com>\r\n <861b4ffb-3b54-5393-97fa-549f47479a62@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe learning time and the ordinary work cover are recorded separately.\r\nYara\r\n",
       "sha256": "000361c984cb02c1caed99f92eda76798e69e732c4414d924cd72cfb94d46e2b"
+    },
+    {
+      "message_id": "<f593ad11-4a9f-51fe-928d-7201bd60609a@keplerops.com>",
+      "rfc822": "From: Martin Harlowe <martin.harlowe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Tue, 23 Jun 2026 10:00:00 -0400\r\nMessage-ID: <f593ad11-4a9f-51fe-928d-7201bd60609a@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-fdefb0d4457b27f87a77df9a\"\r\n\r\n--workplace-fdefb0d4457b27f87a77df9a\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nInvitation for COM-2026-002: 2026-07-31, 15:00=E2=80=9316:00 (UTC=E2=88=9204:=\r\n00). The meeting is part of the agreed work window; delivery acceptance is a =\r\nseparate check.\r\n\r\n--workplace-fdefb0d4457b27f87a77df9a\r\nContent-Type: text/calendar\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"com-2026-002-handover-invitation.ics\"\r\nMIME-Version: 1.0\r\n\r\nQkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL1dvcmtwbGFjZSBDYWxlbmRh\r\nci8vRU4NCkNBTFNDQUxFOkdSRUdPUklBTg0KQkVHSU46VkVWRU5UDQpVSUQ6ZDE2MDQ0OTQtNjBh\r\nZC01NjA5LWFhYWMtY2NhOTZkOGM3ZTJhQGtlcGxlcm9wcy5jb20NCkRUU1RBTVA6MjAyNjA2MjJU\r\nMTkwMDAwWg0KRFRTVEFSVDoyMDI2MDczMVQxOTAwMDBaDQpEVEVORDoyMDI2MDczMVQyMDAwMDBa\r\nDQpPUkdBTklaRVI6bWFpbHRvOm1heWEucmFuc2NvbWJlQGtlcGxlcm9wcy5jb20NCkFUVEVOREVF\r\nOm1haWx0bzpjbGFyYS5tb3JpdmVsbGVAYWx0ZXJyYXdhdGVyY28uY29tDQpTVU1NQVJZOlJpdmVy\r\nIGNvbnRyYWN0b3IgYXJjaGl2ZSBndWlkZSBoYW5kb3Zlcg0KREVTQ1JJUFRJT046Q09NLTIwMjYt\r\nMDAyLiBSZXZpZXcgdGhlIG5hbWVkIHNhbXBsZXMgYW5kIGhhbmRvdmVyIGd1aWRlLiBDdXN0DQog\r\nb21lciBhY2NlcHRhbmNlIGlzIHJlY29yZGVkIHNlcGFyYXRlbHkgYWZ0ZXIgdGhlIGNoZWNrLg0K\r\nU1RBVFVTOkNPTkZJUk1FRA0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg0K\r\n\r\n--workplace-fdefb0d4457b27f87a77df9a--\r\n",
+      "sha256": "d7a500aa78cc08c6aec56f998123ac46b4a837c7022f1fe2c5a88b7e355f4cb6"
     },
     {
       "message_id": "<d8dd7e66-8f56-58b0-9ac3-ecc53a421476@belvarn.test>",
@@ -1711,6 +1766,11 @@
       "message_id": "<5a28c0ac-9892-562b-8c90-67b6f3e8853d@alterrawaterco.com>",
       "rfc822": "From: Flora Odrin <flora.odrin@alterrawaterco.com>\r\nTo: Finn Elvarn <finn.elvarn@alterrawaterco.com>\r\nDate: Thu, 25 Jun 2026 08:52:00 -0400\r\nMessage-ID: <5a28c0ac-9892-562b-8c90-67b6f3e8853d@alterrawaterco.com>\r\nSubject: Kit handover for People and board support [A-WS-279]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe the shared kit at Regional office has an issue record. Where should the i=\r\ntem be returned? I can add that to the handover.\r\nFlora\r\n",
       "sha256": "fa261dc7bce881e3e4c8f50fe8d4ef15d5e87ba422d6960084d622ca4d66e04a"
+    },
+    {
+      "message_id": "<90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Thu, 25 Jun 2026 09:00:00 -0400\r\nMessage-ID: <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nClara Morivelle will perform our acceptance check against revision 2. They ca=\r\nn accept the named deliverable on our behalf; any wider work still comes back=\r\n to me.\r\n\r\nPriya\r\n",
+      "sha256": "c12cf4c03c3515fcc9e73e4b81ee5bd215eee074e80db58ef881f0a683ce5ff0"
     },
     {
       "message_id": "<34973fc2-2c43-53c7-b320-38e8bbf91761@alterrawaterco.com>",
@@ -2563,6 +2623,11 @@
       "sha256": "07d06481e9610749bcda8bf787510baa5b39ba7894d9601e48d670e2d7ad8437"
     },
     {
+      "message_id": "<e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 06 Jul 2026 09:00:00 -0400\r\nMessage-ID: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould FieldKest accept every contractor submission automatically once the upl=\r\noad is complete?\r\n\r\nPriya\r\n",
+      "sha256": "c787387d543e396cd24ae2c9749b5f69a5a934859d24a93ade4e10aed51316b7"
+    },
+    {
       "message_id": "<4b9d683c-a968-5f18-867c-cc62d8c33b2a@alterrawaterco.com>",
       "rfc822": "From: ARWC Account Notices <account-notices@alterrawaterco.com>\r\nTo: Rosa Nerivet <rosa.nerivet@alterrawaterco.com>,\r\n Bram Vellard <bram.vellard@belvarn.test>\r\nDate: Mon, 06 Jul 2026 09:05:00 -0400\r\nMessage-ID: <4b9d683c-a968-5f18-867c-cc62d8c33b2a@alterrawaterco.com>\r\nSubject: Account check =?utf-8?b?4oCU?= packing hall [A-B-001-26-06]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nRecord A-B-001-26-06 =E2=80=94 Account check =E2=80=94 packing hall.\r\n\r\nThe current account record for packing hall is ready for review. This status =\r\nnotice does not change the agreed service or close an open question. Please r=\r\neply to the account contact if a detail differs.\r\n",
       "sha256": "913ff149824c1e61854c93331a0b3c016c0b99ac294342e188d9b8e4c114b439"
@@ -2718,6 +2783,11 @@
       "sha256": "df0d518642422ce62c9e7bfd7431ab4758afc3d1c798a4ba8a71bb571e476ff6"
     },
     {
+      "message_id": "<b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 07 Jul 2026 10:00:00 -0400\r\nMessage-ID: <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-20237d78e81219e2af8f4d7e\"\r\n\r\n--workplace-20237d78e81219e2af8f4d7e\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe first copy is attached. An upload is not a customer acceptance decision. =\r\nWe can explain the existing review queue, but cannot sell unattended acceptan=\r\nce. Please check the boundary as well as the heading.\r\n\r\nLouis\r\n\r\n--workplace-20237d78e81219e2af8f4d7e\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-003-draft-r1.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBVbmF0dGVuZGVkIGNvbnRyYWN0b3IgYWNjZXB0YW5jZQoKU2NvcGUgcmVzcG9uc2UgQ09NLTIw\r\nMjYtMDAzLCByZXZpc2lvbiAxCgpBY2NvdW50OiBLLUMtMDAxIOKAlCBBbHRlcnJhIFJlZ2lvbmFs\r\nIFdhdGVyIENvbXBhbnkKQWdyZWVtZW50OiBLLUMtMDAxLUFHUi0wMQpTdGF0dXM6IHJlcXVlc3Rl\r\nZCBleHRlbnNpb24gZGVjbGluZWQ7IG5vIG9mZmVyCgojIyBSZXF1ZXN0ZWQgd29yawoKQW4gdXBs\r\nb2FkIGlzIG5vdCBhIGN1c3RvbWVyIGFjY2VwdGFuY2UgZGVjaXNpb24uIFdlIGNhbiBleHBsYWlu\r\nIHRoZSBleGlzdGluZyByZXZpZXcgcXVldWUsIGJ1dCBjYW5ub3Qgc2VsbCB1bmF0dGVuZGVkIGFj\r\nY2VwdGFuY2UuCgojIyBCb3VuZGFyeQoKQW4gdXBsb2FkIGlzIG5vdCBhIGN1c3RvbWVyIGFjY2Vw\r\ndGFuY2UgZGVjaXNpb24uIFdlIGNhbiBleHBsYWluIHRoZSBleGlzdGluZyByZXZpZXcgcXVldWUs\r\nIGJ1dCBjYW5ub3Qgc2VsbCB1bmF0dGVuZGVkIGFjY2VwdGFuY2UuCgojIyBQcmljZSBhbmQgYWNj\r\nZXB0YW5jZQoKTm8gc3VwcG9ydGVkIG9mZmVyIG9yIGZlZSBmb3IgdGhlIHJlcXVlc3RlZCBmdW5j\r\ndGlvbi4KClRoZSBjdXN0b21lciBrZWVwcyBpdHMgcmV2aWV3IG93bmVyOyBubyBhdXRvbWF0aWMg\r\nYXBwcm92YWwgY2hhbmdlIGlzIG9mZmVyZWQuCgpBIGRpc2N1c3Npb24gZG9lcyBub3QgYXV0aG9y\r\naXplIHdvcmsgb3IgYmlsbGluZy4gRXhpc3Rpbmcgc3VwcG9ydCByZW1haW5zIGdvdmVybmVkIGJ5\r\nIHRoZSBjdXJyZW50IGFncmVlbWVudC4KCkRyYWZ0IGZvciByZXZpZXc7IHdvcmRpbmcgbWF5IGNo\r\nYW5nZSBiZWZvcmUgYWNjZXB0YW5jZS4K\r\n\r\n--workplace-20237d78e81219e2af8f4d7e--\r\n",
+      "sha256": "3170a8f586c7e7909fcff718d42a134a7975232a2fdca48222ce3079a83a2a18"
+    },
+    {
       "message_id": "<d03a2fb5-2def-5569-aeee-9d4a0f3ff96d@alterrawaterco.com>",
       "rfc822": "From: Soren Danwick <soren.danwick@alterrawaterco.com>\r\nTo: Nina Rivelin <nina.rivelin@alterrawaterco.com>\r\nDate: Tue, 07 Jul 2026 10:40:00 -0400\r\nMessage-ID: <d03a2fb5-2def-5569-aeee-9d4a0f3ff96d@alterrawaterco.com>\r\nSubject: Re: Role note for Pine treatment [A-WS-072]\r\nIn-Reply-To: <05cbe609-97eb-5074-9a29-7c9a8b088bfb@alterrawaterco.com>\r\nReferences: <ee5c804c-7133-5535-b8ba-3d841db944f9@alterrawaterco.com>\r\n <0a566707-0d91-57b6-9e6a-f445e2549963@alterrawaterco.com>\r\n <dc5e8c4f-5e1e-5b8e-91c0-5ab675f5bb38@alterrawaterco.com>\r\n <05cbe609-97eb-5074-9a29-7c9a8b088bfb@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThanks. I will use the current role note at the next handover.\r\nSoren\r\n",
       "sha256": "7d5cbf30dbe1e4a73d2692a99d106bfce0ad9ab30f255566b4298eaec592faa3"
@@ -2791,6 +2861,11 @@
       "message_id": "<76bb0c68-882a-5783-aadf-745e8cbef36c@alterrawaterco.com>",
       "rfc822": "From: Elin Verrin <elin.verrin@alterrawaterco.com>\r\nTo: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nDate: Wed, 08 Jul 2026 08:34:00 -0400\r\nMessage-ID: <76bb0c68-882a-5783-aadf-745e8cbef36c@alterrawaterco.com>\r\nSubject: Role note for Executive [A-WS-274]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould you check the handover wording for the Executive work description? The =\r\nold work should keep its original author.\r\nElin\r\n",
       "sha256": "47acbaaf3a56126615e4d9aaece449ef0518c380f12133ec8cead94dc842694b"
+    },
+    {
+      "message_id": "<b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Wed, 08 Jul 2026 09:00:00 -0400\r\nMessage-ID: <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWould the standing service cover this, or is it another order?\r\n\r\nPriya\r\n",
+      "sha256": "d53c37fd77f91ee99543ff87477a32bc2efbca1c1d7d4d0d193d0cbcdaa647f9"
     },
     {
       "message_id": "<f6cc082a-7956-5b8e-983b-a34defb1ecb2@alterrawaterco.com>",
@@ -2963,6 +3038,11 @@
       "sha256": "80bec27455b755c128cd0166f29332b9dbe651d764c09da94b3df3c9d966295d"
     },
     {
+      "message_id": "<206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 09 Jul 2026 13:00:00 -0400\r\nMessage-ID: <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\n <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nAn upload is not a customer acceptance decision. We can explain the existing =\r\nreview queue, but cannot sell unattended acceptance. The revised response sep=\r\narates the supported work from the requested extension. An upload is not a cu=\r\nstomer acceptance decision. We can explain the existing review queue, but can=\r\nnot sell unattended acceptance.\r\n\r\nLouis\r\n",
+      "sha256": "0e8e33977bbc55cb264954a5e3ba6b1d711a41d5ebd4a7b057304767a57920ef"
+    },
+    {
       "message_id": "<849810f1-0bcf-588e-b077-72d964c4b781@alterrawaterco.com>",
       "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Mabel Dornell <mabel.dornell@merewick.test>\r\nDate: Thu, 09 Jul 2026 13:04:00 -0400\r\nMessage-ID: <849810f1-0bcf-588e-b077-72d964c4b781@alterrawaterco.com>\r\nSubject: Re: Capacity outlook =?utf-8?b?4oCU?= August capacity [A-S-003-26-07]\r\nIn-Reply-To: <f9dd0a91-5c77-56a6-90a5-226012011a74@merewick.test>\r\nReferences: <f9dd0a91-5c77-56a6-90a5-226012011a74@merewick.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nUnderstood on A-S-003-26-07. I=E2=80=99ll keep the forecast separate and send=\r\n the exact quantity request to Merewick account services. I=E2=80=99ll write =\r\nback if the record says something different.\r\n\r\nPriya\r\n",
       "sha256": "8c466dfb66250128252d823e86ac84fb8b2c52318552c8b359704ed90752785d"
@@ -3026,6 +3106,11 @@
       "message_id": "<cef59d34-5227-5f3c-8947-8abbcb37c0ad@alterrawaterco.com>",
       "rfc822": "From: Yasmin Bravelle <yasmin.bravelle@alterrawaterco.com>\r\nTo: Soren Garsen <soren.garsen@alterrawaterco.com>\r\nDate: Fri, 10 Jul 2026 09:17:00 -0400\r\nMessage-ID: <cef59d34-5227-5f3c-8947-8abbcb37c0ad@alterrawaterco.com>\r\nSubject: Re: Role note for Customer contact [A-WS-251]\r\nIn-Reply-To: <d0e41c05-1f43-50e1-b045-a229ad548181@alterrawaterco.com>\r\nReferences: <dac60748-0ec2-50fa-8bdc-f9a951fe9967@alterrawaterco.com>\r\n <d0e41c05-1f43-50e1-b045-a229ad548181@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe role note names the receiving team and where the working record lives.\r\nYasmin\r\n",
       "sha256": "752128bd0284bd27a4a26c2020d4f96fbe38145a843a1a42e64eb1ce05139795"
+    },
+    {
+      "message_id": "<90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Fri, 10 Jul 2026 10:00:00 -0400\r\nMessage-ID: <90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\n <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\n <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nUnderstood. The amount alone was not the question; we needed to know who woul=\r\nd own the remaining work.\r\n\r\nPriya\r\n",
+      "sha256": "5047be5e7bf7ad30f4422d9bf8acc9ff264243606778a220653e97764b3c4a61"
     },
     {
       "message_id": "<acfdf90e-6148-5df4-8767-7526fed2aef6@alterrawaterco.com>",
@@ -3753,6 +3838,11 @@
       "sha256": "0958a7d9e3e62d6635719da4d1524889b637dae8cc87d914ebb682627f94ffa5"
     },
     {
+      "message_id": "<8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 15 Jul 2026 11:00:00 -0400\r\nMessage-ID: <8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\n <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\n <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\n <90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-20917842541719d9317a5fe2\"\r\n\r\n--workplace-20917842541719d9317a5fe2\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nRevision 2 is attached. The revised response separates the supported work fro=\r\nm the requested extension. An upload is not a customer acceptance decision. W=\r\ne can explain the existing review queue, but cannot sell unattended acceptanc=\r\ne. The offered amount is USD 0.00. Please identify this revision in any accep=\r\ntance.\r\n\r\nLouis\r\n\r\n--workplace-20917842541719d9317a5fe2\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-003-offer-r2.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBVbmF0dGVuZGVkIGNvbnRyYWN0b3IgYWNjZXB0YW5jZQoKU2NvcGUgcmVzcG9uc2UgQ09NLTIw\r\nMjYtMDAzLCByZXZpc2lvbiAyCgpBY2NvdW50OiBLLUMtMDAxIOKAlCBBbHRlcnJhIFJlZ2lvbmFs\r\nIFdhdGVyIENvbXBhbnkKQWdyZWVtZW50OiBLLUMtMDAxLUFHUi0wMQpTdGF0dXM6IHJlcXVlc3Rl\r\nZCBleHRlbnNpb24gZGVjbGluZWQ7IG5vIG9mZmVyCgojIyBSZXF1ZXN0ZWQgd29yawoKQW4gdXBs\r\nb2FkIGlzIG5vdCBhIGN1c3RvbWVyIGFjY2VwdGFuY2UgZGVjaXNpb24uIFdlIGNhbiBleHBsYWlu\r\nIHRoZSBleGlzdGluZyByZXZpZXcgcXVldWUsIGJ1dCBjYW5ub3Qgc2VsbCB1bmF0dGVuZGVkIGFj\r\nY2VwdGFuY2UuCgojIyBCb3VuZGFyeQoKQW4gdXBsb2FkIGlzIG5vdCBhIGN1c3RvbWVyIGFjY2Vw\r\ndGFuY2UgZGVjaXNpb24uIFdlIGNhbiBleHBsYWluIHRoZSBleGlzdGluZyByZXZpZXcgcXVldWUs\r\nIGJ1dCBjYW5ub3Qgc2VsbCB1bmF0dGVuZGVkIGFjY2VwdGFuY2UuCgojIyBQcmljZSBhbmQgYWNj\r\nZXB0YW5jZQoKTm8gc3VwcG9ydGVkIG9mZmVyIG9yIGZlZSBmb3IgdGhlIHJlcXVlc3RlZCBmdW5j\r\ndGlvbi4KClRoZSBjdXN0b21lciBrZWVwcyBpdHMgcmV2aWV3IG93bmVyOyBubyBhdXRvbWF0aWMg\r\nYXBwcm92YWwgY2hhbmdlIGlzIG9mZmVyZWQuCgpBIGRpc2N1c3Npb24gZG9lcyBub3QgYXV0aG9y\r\naXplIHdvcmsgb3IgYmlsbGluZy4gRXhpc3Rpbmcgc3VwcG9ydCByZW1haW5zIGdvdmVybmVkIGJ5\r\nIHRoZSBjdXJyZW50IGFncmVlbWVudC4KCiMjIFJldmlzaW9uIG5vdGUKClRoZSByZXZpc2VkIHJl\r\nc3BvbnNlIHNlcGFyYXRlcyB0aGUgc3VwcG9ydGVkIHdvcmsgZnJvbSB0aGUgcmVxdWVzdGVkIGV4\r\ndGVuc2lvbi4gQW4gdXBsb2FkIGlzIG5vdCBhIGN1c3RvbWVyIGFjY2VwdGFuY2UgZGVjaXNpb24u\r\nIFdlIGNhbiBleHBsYWluIHRoZSBleGlzdGluZyByZXZpZXcgcXVldWUsIGJ1dCBjYW5ub3Qgc2Vs\r\nbCB1bmF0dGVuZGVkIGFjY2VwdGFuY2UuCg==\r\n\r\n--workplace-20917842541719d9317a5fe2--\r\n",
+      "sha256": "b7379e9ddcbcaa1e3efc4064390148f72b009a28b4fbd3f1beae0777532c5b84"
+    },
+    {
       "message_id": "<5b1fd10f-9787-5c42-9cd7-9a4a0c39e0d6@alterrawaterco.com>",
       "rfc822": "From: Gabriel Selwyn <gabriel.selwyn@alterrawaterco.com>\r\nTo: Dario Radvell <dario.radvell@alterrawaterco.com>\r\nDate: Wed, 15 Jul 2026 11:00:00 -0400\r\nMessage-ID: <5b1fd10f-9787-5c42-9cd7-9a4a0c39e0d6@alterrawaterco.com>\r\nSubject: Re: Kit handover for Pine distribution [A-WS-112]\r\nIn-Reply-To: <59201ab5-491d-541b-81e7-2ff4308db52c@alterrawaterco.com>\r\nReferences: <7f16033a-ef05-52b6-8d68-28373541efea@alterrawaterco.com>\r\n <a8fd4f37-dbde-5a5a-94c5-39bfa2b89c8c@alterrawaterco.com>\r\n <59201ab5-491d-541b-81e7-2ff4308db52c@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe return point at Pine depot is in the equipment note.\r\nGabriel\r\n",
       "sha256": "acf521c3936fde18c3708a37c89adf4efa1d905c4daf82c67e71b1ab252799e1"
@@ -4133,9 +4223,19 @@
       "sha256": "c9d326ac559805768dbf753a57f7e39edd273f04893b3a19f4ccb85d467a88a3"
     },
     {
+      "message_id": "<7bb2ad0f-7f98-5ff0-84ae-817c53beee01@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 20 Jul 2026 11:00:00 -0400\r\nMessage-ID: <7bb2ad0f-7f98-5ff0-84ae-817c53beee01@alterrawaterco.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\n <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\n <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\n <90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>\r\n <8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nUnderstood. Keep the existing review owner; there is no order for automatic a=\r\ncceptance.\r\n\r\nPriya\r\n",
+      "sha256": "6684a87549247c100806dbf933f6343bbd8289890fba3aa17426fb3d85f21fba"
+    },
+    {
       "message_id": "<9ee17f93-c861-5289-a3e4-6329d0b8eaea@keplerops.com>",
       "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Mon, 20 Jul 2026 13:24:00 -0400\r\nMessage-ID: <9ee17f93-c861-5289-a3e4-6329d0b8eaea@keplerops.com>\r\nSubject: Re: Field note wording =?utf-8?b?4oCU?= regional maintenance\r\n [K-C-001-26-13]\r\nIn-Reply-To: <1391b2f0-e00b-5812-a29e-cb5e5e809220@alterrawaterco.com>\r\nReferences: <1391b2f0-e00b-5812-a29e-cb5e5e809220@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe should request the completed-work detail from the field lead before changi=\r\nng the acceptance note. There is no need to resend the whole K-C-001-26-13 pa=\r\nckage.\r\n\r\nMaya\r\n",
       "sha256": "450c74c0473f9021d04be204396423d4061750b8406cbf2612252d106e765754"
+    },
+    {
+      "message_id": "<45ee7622-3a88-53ee-b88c-a18cfbd97fc1@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Mon, 20 Jul 2026 14:00:00 -0400\r\nMessage-ID: <45ee7622-3a88-53ee-b88c-a18cfbd97fc1@keplerops.com>\r\nSubject: Unattended contractor acceptance [COM-2026-003]\r\nIn-Reply-To: <7bb2ad0f-7f98-5ff0-84ae-817c53beee01@alterrawaterco.com>\r\nReferences: <e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>\r\n <b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>\r\n <b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>\r\n <206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>\r\n <90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>\r\n <8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>\r\n <7bb2ad0f-7f98-5ff0-84ae-817c53beee01@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe customer keeps its review owner; no automatic approval change is offered.\r\n\r\nLouis\r\n",
+      "sha256": "0d6d9097164105866e12ea5773fda3968fac8b5346aec5d14087e6f2c7b4d737"
     },
     {
       "message_id": "<71a4c136-f107-5491-be70-3fb81895a8c6@alterrawaterco.com>",
@@ -5183,6 +5283,11 @@
       "sha256": "8a9c0d278278ea3ace6afa4204d87560a9914e8a6705d23ebf2f30627dad7738"
     },
     {
+      "message_id": "<4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>",
+      "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Thu, 30 Jul 2026 10:00:00 -0400\r\nMessage-ID: <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\n <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nOne heading calls the contractor the reviewer. Those are different people on =\r\nour side.\r\n\r\nClara\r\n",
+      "sha256": "fb81665c1f2c1c61fef7426a264f8e595141170097d9d1d6dff933b9de1e13fa"
+    },
+    {
       "message_id": "<91074797-8cad-525e-ba5e-1e567876f2e5@alterrawaterco.com>",
       "rfc822": "From: Amara Kelswick <amara.kelswick@alterrawaterco.com>\r\nTo: Avery Larmont <avery.larmont@alterrawaterco.com>\r\nDate: Thu, 30 Jul 2026 10:14:00 -0400\r\nMessage-ID: <91074797-8cad-525e-ba5e-1e567876f2e5@alterrawaterco.com>\r\nSubject: Re: Contact route for Accounts [A-WS-258]\r\nIn-Reply-To: <23187f73-85fd-51cb-9485-2d1055135a45@alterrawaterco.com>\r\nReferences: <23187f73-85fd-51cb-9485-2d1055135a45@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nGo ahead with your part of the draft Accounts contact page. Put the result in=\r\n the contact page for the next person.\r\nAmara\r\n",
       "sha256": "57ce854c683949131d36adc13fbac064c91405166cd7cbe0cac2e1840af822e5"
@@ -5216,6 +5321,11 @@
       "message_id": "<63ab169d-c2d5-5618-ba74-01ab3c1254fd@alterrawaterco.com>",
       "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Thu, 30 Jul 2026 11:28:00 -0400\r\nMessage-ID: <63ab169d-c2d5-5618-ba74-01ab3c1254fd@alterrawaterco.com>\r\nSubject: Re: Handover correction =?utf-8?b?4oCU?= field coordination\r\n [K-C-001-26-15]\r\nIn-Reply-To: <bbe1f507-b8c3-58f4-8b48-1b2a1c1ca803@keplerops.com>\r\nReferences: <1067765e-327e-542d-ae2c-6aa14a8c75f8@alterrawaterco.com>\r\n <ee90bb0d-05d0-5914-8037-a550c03680dc@keplerops.com>\r\n <df8db150-cbab-51e8-8e00-96a35ec0fb35@alterrawaterco.com>\r\n <bbe1f507-b8c3-58f4-8b48-1b2a1c1ca803@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nMaya,\r\n\r\nUnderstood. I had read the earlier note too quickly; K-C-001-26-15 makes the =\r\nposition clear.\r\n\r\nPriya\r\n",
       "sha256": "5714fd08f88b98fecd44049be135b31d4a2686f8cb4c02563a22ed5a28602c4c"
+    },
+    {
+      "message_id": "<5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Thu, 30 Jul 2026 14:00:00 -0400\r\nMessage-ID: <5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\n <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\n <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nClara,\r\n\r\nI have changed the heading to contractor organization and kept the reviewer g=\r\nroup separate.\r\n\r\nMaya\r\n",
+      "sha256": "6cf1057721eac4cbb8519a19b113c824182d9747b5d68a464740ce589b31ef98"
     },
     {
       "message_id": "<d57841ad-5e74-5ef3-9c32-fbafe0bf5908@alterrawaterco.com>",
@@ -5383,6 +5493,11 @@
       "sha256": "e72a398e75e9ff6ca7d265c21288dd7a026bc312de41eea5dada78bd1e19ae18"
     },
     {
+      "message_id": "<485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Fri, 31 Jul 2026 16:00:00 -0400\r\nMessage-ID: <485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\n <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\n <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\n <5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-c4b21e016974aff44d1f3439\"\r\n\r\n--workplace-c4b21e016974aff44d1f3439\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nClara,\r\n\r\nThe handover check is ready for your review. All twelve package IDs and their=\r\n accepted revisions appear in the index; Clara can locate each source from th=\r\ne guide. Please tell me which item, if any, still fails the agreed comparison.\r\n\r\nMaya\r\n\r\n--workplace-c4b21e016974aff44d1f3439\r\nContent-Type: text/csv\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-002-delivered-index.csv\"\r\nMIME-Version: 1.0\r\n\r\nc2FtcGxlLHNvdXJjZV9wYWNrYWdlLGFjY2VwdGVkX3JldmlzaW9uLGluZGV4X2xhYmVsLHJldmll\r\nd19ncm91cCxjb250cmFjdG9yX2ZpZWxkLGNvbXBhcmlzb24sZXhjZXB0aW9uX293bmVyCjEsSy1D\r\nLTAwMS1BUkNILTAwMSxyMixSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwMSxhZ3Jl\r\nZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFk\r\naW5nIG1hdGNoZWQsCjIsSy1DLTAwMS1BUkNILTAwMixyMixSaXZlciBjb250cmFjdG9yIGFyY2hp\r\ndmUgZ3VpZGUgLyAwMixhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24s\r\ncmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjMsSy1DLTAwMS1BUkNILTAwMyxyMixSaXZl\r\nciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwMyxhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJh\r\nY3RvciBvcmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjQsSy1DLTAw\r\nMS1BUkNILTAwNCxyMixSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwNCxhZ3JlZWQg\r\ncmV2aWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5n\r\nIG1hdGNoZWQsCjUsSy1DLTAwMS1BUkNILTAwNSxyMixSaXZlciBjb250cmFjdG9yIGFyY2hpdmUg\r\nZ3VpZGUgLyAwNSxhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24scmVm\r\nZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjYsSy1DLTAwMS1BUkNILTAwNixyMixSaXZlciBj\r\nb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwNixhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3Rv\r\nciBvcmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjcsSy1DLTAwMS1B\r\nUkNILTAwNyxyMixSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwNyxhZ3JlZWQgcmV2\r\naWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1h\r\ndGNoZWQsCjgsSy1DLTAwMS1BUkNILTAwOCxyMixSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3Vp\r\nZGUgLyAwOCxhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBvcmdhbml6YXRpb24scmVmZXJl\r\nbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjksSy1DLTAwMS1BUkNILTAwOSxyMixSaXZlciBjb250\r\ncmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAwOSxhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBv\r\ncmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCjEwLEstQy0wMDEtQVJD\r\nSC0wMTAscjIsUml2ZXIgY29udHJhY3RvciBhcmNoaXZlIGd1aWRlIC8gMTAsYWdyZWVkIHJldmll\r\ndyB0ZWFtLGNvbnRyYWN0b3Igb3JnYW5pemF0aW9uLHJlZmVyZW5jZSBhbmQgaGVhZGluZyBtYXRj\r\naGVkLAoxMSxLLUMtMDAxLUFSQ0gtMDExLHIyLFJpdmVyIGNvbnRyYWN0b3IgYXJjaGl2ZSBndWlk\r\nZSAvIDExLGFncmVlZCByZXZpZXcgdGVhbSxjb250cmFjdG9yIG9yZ2FuaXphdGlvbixyZWZlcmVu\r\nY2UgYW5kIGhlYWRpbmcgbWF0Y2hlZCwKMTIsSy1DLTAwMS1BUkNILTAxMixyMixSaXZlciBjb250\r\ncmFjdG9yIGFyY2hpdmUgZ3VpZGUgLyAxMixhZ3JlZWQgcmV2aWV3IHRlYW0sY29udHJhY3RvciBv\r\ncmdhbml6YXRpb24scmVmZXJlbmNlIGFuZCBoZWFkaW5nIG1hdGNoZWQsCg==\r\n\r\n--workplace-c4b21e016974aff44d1f3439--\r\n",
+      "sha256": "057170d38a391c50f18a3d00c3f85860f33c053d525894abd6d8cd899e7d3028"
+    },
+    {
       "message_id": "<38350e68-3d88-5a93-b14f-070917b5b598@alterrawaterco.com>",
       "rfc822": "From: Harriet Larmont <harriet.larmont@alterrawaterco.com>\r\nTo: Dario Radvell <dario.radvell@alterrawaterco.com>\r\nDate: Sat, 01 Aug 2026 08:22:00 -0400\r\nMessage-ID: <38350e68-3d88-5a93-b14f-070917b5b598@alterrawaterco.com>\r\nSubject: Handover note for Pine distribution [A-WS-114]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nBefore the next team picks up the work at Pine depot, I want to put the recei=\r\nving owner beside the dated entry. Who is it?\r\nHarriet\r\n",
       "sha256": "e8b869c5578c33114cbf253ef2c45832526ccb2f3217c36a00f71ddcfff91a5e"
@@ -5478,6 +5593,11 @@
       "sha256": "bc31d73c9276c4232fbe33313940a93518d7aaac7e600ccf7033e75127809700"
     },
     {
+      "message_id": "<737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 03 Aug 2026 09:00:00 -0400\r\nMessage-ID: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nOur agreement runs to March 2028. Can you give Priya a service-cost view for =\r\nnext year without calling it a renewal?\r\n\r\nPriya\r\n",
+      "sha256": "6483ccc763f443f33c76e97289608fb37a74b3e50a5c0921ad442f486b06baf9"
+    },
+    {
       "message_id": "<01beb71a-1bc8-5b80-a465-a72b414ffdcc@veybridge.test>",
       "rfc822": "From: Dana Veskell <dana.veskell@veybridge.test>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Mon, 03 Aug 2026 09:06:00 -0400\r\nMessage-ID: <01beb71a-1bc8-5b80-a465-a72b414ffdcc@veybridge.test>\r\nSubject: Inspection report =?utf-8?b?4oCU?= south valve chamber\r\n [A-S-001-26-11]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe south valve chamber visit is complete. Jules has left the signed field ob=\r\nservations with dispatch; is the acceptance address still the maintenance off=\r\nice?\r\n\r\nDana Veskell\r\n",
       "sha256": "881ed4485d447cd9949c240d2d6b4c6788e17eff9b13edc70122d78c1100f984"
@@ -5563,6 +5683,16 @@
       "sha256": "cab4c9f71733712fa29c3044aa471aa518bee2879fb2d3968f11b14f93be80b0"
     },
     {
+      "message_id": "<81ec8abe-ed80-58e8-a18f-c9b8cecc2d43@alterrawaterco.com>",
+      "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Mon, 03 Aug 2026 11:00:00 -0400\r\nMessage-ID: <81ec8abe-ed80-58e8-a18f-c9b8cecc2d43@alterrawaterco.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\n <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\n <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\n <5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>\r\n <485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCOM-2026-002 checked. All twelve references resolve. The heading now says con=\r\ntractor organization; the reviewer is separate. I can use this guide.\r\n\r\nClara\r\n",
+      "sha256": "221731468d91dc4ced08b2aa5e6df13ce885aae680c8501820829cd47a0220b3"
+    },
+    {
+      "message_id": "<bd6fb2e6-7dbb-564f-ad9f-80e83b57767e@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Mon, 03 Aug 2026 12:00:00 -0400\r\nMessage-ID: <bd6fb2e6-7dbb-564f-ad9f-80e83b57767e@keplerops.com>\r\nSubject: River contractor archive guide [COM-2026-002]\r\nIn-Reply-To: <81ec8abe-ed80-58e8-a18f-c9b8cecc2d43@alterrawaterco.com>\r\nReferences: <58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>\r\n <f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>\r\n <b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>\r\n <e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>\r\n <fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>\r\n <6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>\r\n <17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>\r\n <bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>\r\n <aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>\r\n <3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>\r\n <90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>\r\n <4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>\r\n <5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>\r\n <485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>\r\n <81ec8abe-ed80-58e8-a18f-c9b8cecc2d43@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-d05cf27da536d0a7f9b657f6\"\r\n\r\n--workplace-d05cf27da536d0a7f9b657f6\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nClara,\r\n\r\nThe accepted handover is attached with the scope and remaining boundary recor=\r\nded.\r\n\r\nMaya\r\n\r\n--workplace-d05cf27da536d0a7f9b657f6\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-002-handover-record.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSaXZlciBjb250cmFjdG9yIGFyY2hpdmUgZ3VpZGUg4oCUIGFjY2VwdGVkIGhhbmRvdmVyCgpP\r\ncmRlcjogQ09NLTIwMjYtMDAyCkFjY291bnQ6IEstQy0wMDEKRGVsaXZlcnkgd2luZG93OiAyMDI2\r\nLTA3LTIwIHRvIDIwMjYtMDctMzEKQ3VzdG9tZXIgYWNjZXB0YW5jZTogMjAyNi0wOC0wM1QxMTow\r\nMDowMC0wNDowMAoKIyMgRGVsaXZlcmVkIGNoZWNrCgpBbGwgdHdlbHZlIHBhY2thZ2UgSURzIGFu\r\nZCB0aGVpciBhY2NlcHRlZCByZXZpc2lvbnMgYXBwZWFyIGluIHRoZSBpbmRleDsgQ2xhcmEgY2Fu\r\nIGxvY2F0ZSBlYWNoIHNvdXJjZSBmcm9tIHRoZSBndWlkZS4KCkNsYXJhIGZvdW5kIG9uZSBoZWFk\r\naW5nIHRoYXQgY2FsbGVkIHRoZSBjb250cmFjdG9yIHRoZSByZXZpZXdlci4gV2UgY29ycmVjdGVk\r\nIHRoYXQgYmVmb3JlIHNoZSBhY2NlcHRlZCB0aGUgZ3VpZGUuCgpBY2NlcHRlZCBieTogQ2xhcmEg\r\nTW9yaXZlbGxlLCBkZWxlZ2F0ZWQgYnkgUHJpeWEgTmFyYXZlbCBpbiB0aGUgb3JkZXIgaGFuZG92\r\nZXIuClN1cHBvcnQgb3duZXI6IE1heWEgUmFuc2NvbWJlCgpEZWxpdmVyZWQgaW5kZXg6IGNvbS0y\r\nMDI2LTAwMi1kZWxpdmVyZWQtaW5kZXguY3N2ClNIQS0yNTY6IDllYzk2ZDRiZDRmNWJlM2Q5NjA4\r\nNWIyNWM5MzNlNTE2Y2VjMDNmNWY0ZmMwYjdiZjFjZmYzZGZjNDFmYzVkNWMKCiMjIFVzaW5nIHRo\r\nZSBpbmRleAoKS2VlcCB0aGUgc291cmNlIHBhY2thZ2UgYW5kIGFjY2VwdGVkIHJldmlzaW9uIHRv\r\nZ2V0aGVyIHdoZW4gY2l0aW5nIGFuIGVudHJ5LiBUaGUgaW5kZXggbGFiZWwgaXMgYSBkaXNwbGF5\r\nIGFpZDsgaXQgZG9lcyBub3QgcmVwbGFjZSB0aGUgc291cmNlIHJlZmVyZW5jZS4gUmV2aWV3IGdy\r\nb3VwIGlkZW50aWZpZXMgdGhlIGludGVuZGVkIHJlYWRlcnMsIG5vdCBwZXJtaXNzaW9uIHRvIG9w\r\nZW4gYW5vdGhlciBncm91cOKAmXMgcmVjb3Jkcy4gQSBjdXN0b21lci1zb3VyY2UgZXhjZXB0aW9u\r\nIHN0YXlzIHdpdGggaXRzIG5hbWVkIG93bmVyLgoKVHdlbHZlIHNhbXBsZXMgZXN0YWJsaXNoIHRo\r\nZSBtYXBwaW5nOyBidWxrIG1pZ3JhdGlvbiB3b3VsZCBuZWVkIGEgc2VwYXJhdGUgY291bnQgYW5k\r\nIG9yZGVyLgpUaGUgcmV0YWluZWQgc291cmNlIHJlY29yZHMgc3RheSB3aXRoIHRoZWlyIGV4aXN0\r\naW5nIHJlYWRlcnMuIFRoaXMgY2xvc2VzIG9ubHkgdGhlIGFncmVlZCBwcm9qZWN0IGRlbGl2ZXJh\r\nYmxlLgo=\r\n\r\n--workplace-d05cf27da536d0a7f9b657f6--\r\n",
+      "sha256": "2de1be813fae817fc80c3fdf94741b467ffe0f34ce41b9ed60916f58d13a52cd"
+    },
+    {
       "message_id": "<f901e0f1-8177-5564-9af5-81b521bcc70a@alterrawaterco.com>",
       "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Dana Veskell <dana.veskell@veybridge.test>\r\nDate: Mon, 03 Aug 2026 13:06:00 -0400\r\nMessage-ID: <f901e0f1-8177-5564-9af5-81b521bcc70a@alterrawaterco.com>\r\nSubject: Re: Inspection report =?utf-8?b?4oCU?= south valve chamber\r\n [A-S-001-26-11]\r\nIn-Reply-To: <01beb71a-1bc8-5b80-a465-a72b414ffdcc@veybridge.test>\r\nReferences: <01beb71a-1bc8-5b80-a465-a72b414ffdcc@veybridge.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nAgreed on A-S-001-26-11. I=E2=80=99ll check the signed observations against t=\r\nhe work order and acknowledge the accepted report. I=E2=80=99ll leave the ori=\r\nginal record in place.\r\n\r\nTheo\r\n",
       "sha256": "5a679af22245867e639ae487a53125b312748d02ef5b6ff2a876a21815650f83"
@@ -5643,6 +5773,11 @@
       "sha256": "a326cc9fdae1a77bd89981116a101bec2ab86652309eeafe4c263bc791116604"
     },
     {
+      "message_id": "<e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 04 Aug 2026 10:00:00 -0400\r\nMessage-ID: <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-7adda4721abe58b544ab630a\"\r\n\r\n--workplace-7adda4721abe58b544ab630a\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe first copy is attached. The standing service covers field contractor subm=\r\nissions, maintenance handovers, and supported asset-record integration. Pleas=\r\ne check the boundary as well as the heading.\r\n\r\nLouis\r\n\r\n--workplace-7adda4721abe58b544ab630a\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-001-draft-r1.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBBUldDIHJlbmV3YWwgcGxhbm5pbmcKCkJ1ZGdldCBjbGFyaWZpY2F0aW9uIENPTS0yMDI2LTAw\r\nMSwgcmV2aXNpb24gMQoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25hbCBXYXRl\r\nciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBvZmZlciBvbmx5OyBj\r\ndXN0b21lciBhbmQgS2VwbGVyT3BzIGFjY2VwdGFuY2UgcmVxdWlyZWQKCiMjIFJlcXVlc3RlZCB3\r\nb3JrCgpUaGUgc3RhbmRpbmcgc2VydmljZSBjb3ZlcnMgZmllbGQgY29udHJhY3RvciBzdWJtaXNz\r\naW9ucywgbWFpbnRlbmFuY2UgaGFuZG92ZXJzLCBhbmQgc3VwcG9ydGVkIGFzc2V0LXJlY29yZCBp\r\nbnRlZ3JhdGlvbi4KCiMjIEJvdW5kYXJ5CgpFeGlzdGluZyBzdXBwb3J0ZWQgc2NvcGUgY29udGlu\r\ndWVzLiBObyBuZXcgaW50ZXJmYWNlLCBwbGFudCBjb250cm9sLCBvciBvcGVuLWVuZGVkIHByb2pl\r\nY3QgaXMgaW5jbHVkZWQuCgojIyBQcmljZSBhbmQgYWNjZXB0YW5jZQoKT2ZmZXJlZCBzZXJ2aWNl\r\nIGFtb3VudDogVVNEIDAuMDAuIEN1cnJlbmN5OiBVU0QuIEN1cnJlbnQgYW5udWFsIHNlcnZpY2U6\r\nIFVTRCAxNTQsMDAwLjAwLCBmb3VyIGluc3RhbG1lbnRzIG9mIFVTRCAzOCw1MDAuMDA7IGN1cnJl\r\nbnQgdGVybSBlbmRzIDIwMjgtMDMtMzEuIFRoaXMgcmV2aWV3IGFkZHMgbm8gY2hhcmdlLgoKVGhp\r\ncyBpcyBhIGJ1ZGdldCByZXZpZXcgd2l0aGluIHRoZSBjdXJyZW50IGFncmVlbWVudCwgd2l0aCBu\r\nbyBjaGFuZ2UgdG8gdGhlIGZlZSBvciB0ZXJtLgoKQSBkaXNjdXNzaW9uIGRvZXMgbm90IGF1dGhv\r\ncml6ZSB3b3JrIG9yIGJpbGxpbmcuIEV4aXN0aW5nIHN1cHBvcnQgcmVtYWlucyBnb3Zlcm5lZCBi\r\neSB0aGUgY3VycmVudCBhZ3JlZW1lbnQuCgpEcmFmdCBmb3IgcmV2aWV3OyB3b3JkaW5nIG1heSBj\r\naGFuZ2UgYmVmb3JlIGFjY2VwdGFuY2UuCg==\r\n\r\n--workplace-7adda4721abe58b544ab630a--\r\n",
+      "sha256": "c0d0cc063f6f6e572adc8dfbb964d2059e7f9ad66161f5da3a9a0cf0cb647915"
+    },
+    {
       "message_id": "<fa6e2a6a-e269-5399-90f9-3862ffe3ca2e@alterrawaterco.com>",
       "rfc822": "From: Nina Rivelin <nina.rivelin@alterrawaterco.com>\r\nTo: Nina Garsen <nina.garsen@alterrawaterco.com>\r\nDate: Tue, 04 Aug 2026 10:23:00 -0400\r\nMessage-ID: <fa6e2a6a-e269-5399-90f9-3862ffe3ca2e@alterrawaterco.com>\r\nSubject: Re: Role note for Field coordination [A-WS-143]\r\nIn-Reply-To: <9330bb6e-7438-54c3-a291-9b20bac46d2a@alterrawaterco.com>\r\nReferences: <9330bb6e-7438-54c3-a291-9b20bac46d2a@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes, please check the handover wording. Leave the dated result in the role no=\r\nte; I will check the other owner.\r\nNina\r\n",
       "sha256": "8c5424812a216261c23030fe3f380c34c114c3508e277dbf08c34cb22b4ef0e6"
@@ -5691,6 +5826,11 @@
       "message_id": "<c01deb08-48b2-5020-8719-8ad6e1932d77@alterrawaterco.com>",
       "rfc822": "From: Jalen Maraven <jalen.maraven@alterrawaterco.com>\r\nTo: Dario Radvell <dario.radvell@alterrawaterco.com>\r\nDate: Wed, 05 Aug 2026 08:53:00 -0400\r\nMessage-ID: <c01deb08-48b2-5020-8719-8ad6e1932d77@alterrawaterco.com>\r\nSubject: Contact route for Pine distribution [A-WS-120]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe draft pine distribution contact page is nearly ready. I can check my exte=\r\nnsion and base; who signs off the team contact?\r\nJalen\r\n",
       "sha256": "aa094a1d6ab275fcf6649a3353c8fec07fe6787c23d33697c4db31886e80b710"
+    },
+    {
+      "message_id": "<02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Wed, 05 Aug 2026 09:00:00 -0400\r\nMessage-ID: <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe draft heading says renewal. There is no renewal decision for us this year.\r\n\r\nPriya\r\n",
+      "sha256": "3a6bd5e52bee3140db63eb90d90866c869509635b20ad2b64702aadea1dfd498"
     },
     {
       "message_id": "<7680f313-ad08-5f3e-8a7c-d7bcb503ad75@alterrawaterco.com>",
@@ -5818,6 +5958,11 @@
       "sha256": "495cfa25b602656878c964e0fdecab90b2aa4cbee7db75195534fea1a163fcf1"
     },
     {
+      "message_id": "<9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 06 Aug 2026 13:00:00 -0400\r\nMessage-ID: <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nExisting supported scope continues. No new interface, plant control, or open-=\r\nended project is included. The draft heading says renewal. There is no renewa=\r\nl decision for us this year. The revised copy separates current service, next=\r\n-term planning, and optional projects.\r\n\r\nLouis\r\n",
+      "sha256": "a610e5cde0bc30c8ff7d56815b6908270489ea604cbdc3eb8e990b6641f91fb5"
+    },
+    {
       "message_id": "<203688d4-9606-595a-bfd4-ba84fca77a70@alterrawaterco.com>",
       "rfc822": "From: Tariq Telmire <tariq.telmire@alterrawaterco.com>\r\nTo: Nina Rivelin <nina.rivelin@alterrawaterco.com>\r\nDate: Fri, 07 Aug 2026 08:19:00 -0400\r\nMessage-ID: <203688d4-9606-595a-bfd4-ba84fca77a70@alterrawaterco.com>\r\nSubject: Kit handover for Pine treatment [A-WS-074]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nBefore I finish the kit handover for the shared kit at Pine plant, please con=\r\nfirm the return point.\r\nTariq\r\n",
       "sha256": "141201ea277c8439797bd4c2e60e8926507052c3f61a275dfbd845f2591a1995"
@@ -5856,6 +6001,11 @@
       "message_id": "<95f49437-e84b-5aa2-ada0-b4a5650a4311@alterrawaterco.com>",
       "rfc822": "From: Flora Aldren <flora.aldren@alterrawaterco.com>\r\nTo: Della Orvel <della.orvel@alterrawaterco.com>\r\nDate: Fri, 07 Aug 2026 09:41:00 -0400\r\nMessage-ID: <95f49437-e84b-5aa2-ada0-b4a5650a4311@alterrawaterco.com>\r\nSubject: Re: Next team slot: Capital projects [A-WS-195]\r\nIn-Reply-To: <b29e628d-63cd-539c-9ce4-c636133cefe9@alterrawaterco.com>\r\nReferences: <72655d23-6325-5fca-b535-b40aa0cfb68e@alterrawaterco.com>\r\n <b29e628d-63cd-539c-9ce4-c636133cefe9@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe proposed overlap is on the team calendar with its owner.\r\nFlora\r\n",
       "sha256": "519901f9801886f3bb8bf6a1f3ca08fd6b06dcac12bbf82f65a4353185b99881"
+    },
+    {
+      "message_id": "<315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Fri, 07 Aug 2026 10:00:00 -0400\r\nMessage-ID: <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI can work with that boundary. Send the revised wording; I still need to take=\r\n it through our local review.\r\n\r\nPriya\r\n",
+      "sha256": "e993af034538fb91d9efdc4e426816db785b4fb38caae775c9577d23ab9bd95b"
     },
     {
       "message_id": "<30f0efd7-2843-57fa-b85e-82f0be2d0218@alterrawaterco.com>",
@@ -5996,6 +6146,11 @@
       "message_id": "<69b98cf4-f3f6-5f55-8467-8336352b6009@alterrawaterco.com>",
       "rfc822": "From: Imani Bravelle <imani.bravelle@alterrawaterco.com>\r\nTo: Hana Radvell <hana.radvell@alterrawaterco.com>\r\nDate: Mon, 10 Aug 2026 08:25:00 -0400\r\nMessage-ID: <69b98cf4-f3f6-5f55-8467-8336352b6009@alterrawaterco.com>\r\nSubject: Handover note for Resource planning [A-WS-201]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe Resource planning handover has the work but no receiving name. Can I add =\r\nthat before the next overlap?\r\nImani\r\n",
       "sha256": "fac633a49703c1adfdf662debd47a14485623211dd198c599c5c6cacb231a972"
+    },
+    {
+      "message_id": "<afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 10 Aug 2026 09:00:00 -0400\r\nMessage-ID: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease prepare an annex for K-C-001-AGR-01. Use the regional purchase referen=\r\nce on the invoice cover while keeping the existing district allocation intern=\r\nal.\r\n\r\nPriya\r\n",
+      "sha256": "05f882fd3c9a7a0b6b45352e22f6fdf769a67161db355ef99c728dfd19c69a1f"
     },
     {
       "message_id": "<c9b6f412-72c6-54e9-84fa-998c1a00bae0@veybridge.test>",
@@ -6168,6 +6323,11 @@
       "sha256": "fa3859717856ae9762d9a178649087871c169b7b6223b60a510e7f466bbf8ae6"
     },
     {
+      "message_id": "<97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 11 Aug 2026 10:00:00 -0400\r\nMessage-ID: <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-3cebbafe5a596d8c1091c0e5\"\r\n\r\n--workplace-3cebbafe5a596d8c1091c0e5\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe first copy is attached. Use the regional purchase reference on the invoic=\r\ne cover while keeping the existing district allocation internal. Please check=\r\n the boundary as well as the heading.\r\n\r\nLouis\r\n\r\n--workplace-3cebbafe5a596d8c1091c0e5\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-004-draft-r1.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBRdWFydGVybHkgYmlsbGluZyByZWZlcmVuY2UKCkNvbnRyYWN0IGFubmV4IENPTS0yMDI2LTAw\r\nNCwgcmV2aXNpb24gMQoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25hbCBXYXRl\r\nciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBvZmZlciBvbmx5OyBj\r\ndXN0b21lciBhbmQgS2VwbGVyT3BzIGFjY2VwdGFuY2UgcmVxdWlyZWQKCiMjIFJlcXVlc3RlZCB3\r\nb3JrCgpVc2UgdGhlIHJlZ2lvbmFsIHB1cmNoYXNlIHJlZmVyZW5jZSBvbiB0aGUgaW52b2ljZSBj\r\nb3ZlciB3aGlsZSBrZWVwaW5nIHRoZSBleGlzdGluZyBkaXN0cmljdCBhbGxvY2F0aW9uIGludGVy\r\nbmFsLgoKIyMgQm91bmRhcnkKCk5vIGF1dG9tYXRpYyBmaWZ0eS1maWZ0eSBkaXN0cmljdCBzcGxp\r\ndCBpcyBhZGRlZDsgdGhlIGFubnVhbCBmZWUgYW5kIGluc3RhbG1lbnRzIHJlbWFpbiB1bmNoYW5n\r\nZWQuCgojIyBQcmljZSBhbmQgYWNjZXB0YW5jZQoKT2ZmZXJlZCBzZXJ2aWNlIGFtb3VudDogVVNE\r\nIDAuMDAuIEN1cnJlbmN5OiBVU0QuIFplcm8gYWRkaXRpb25hbCBzZXJ2aWNlIGNoYXJnZS4gRXhp\r\nc3RpbmcgYWdyZWVtZW50IGFtb3VudHMsIHF1YXJ0ZXJseSBmcmVxdWVuY3ksIHBheWVyLCBhbmQg\r\ndGVybSByZW1haW4gdW5jaGFuZ2VkLgoKVGhlIHplcm8tZmVlIGFubmV4IGlzIGFjY2VwdGVkLiBU\r\naGUgZXhpc3RpbmcgYW5udWFsIGZlZSwgcXVhcnRlcmx5IGluc3RhbG1lbnRzLCBhbmQgZW5kIGRh\r\ndGUgcmVtYWluIHVuY2hhbmdlZC4KCkEgZGlzY3Vzc2lvbiBkb2VzIG5vdCBhdXRob3JpemUgd29y\r\nayBvciBiaWxsaW5nLiBFeGlzdGluZyBzdXBwb3J0IHJlbWFpbnMgZ292ZXJuZWQgYnkgdGhlIGN1\r\ncnJlbnQgYWdyZWVtZW50LgoKRHJhZnQgZm9yIHJldmlldzsgd29yZGluZyBtYXkgY2hhbmdlIGJl\r\nZm9yZSBhY2NlcHRhbmNlLgo=\r\n\r\n--workplace-3cebbafe5a596d8c1091c0e5--\r\n",
+      "sha256": "61ef4c2b9d34b10a3997292c71c6c006e3304f3618012824da1fca1f97bc9982"
+    },
+    {
       "message_id": "<90db320f-8565-5ee6-8178-f5ab28493b71@veybridge.test>",
       "rfc822": "From: Aiden Rellard <aiden.rellard@veybridge.test>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Tue, 11 Aug 2026 10:08:00 -0400\r\nMessage-ID: <90db320f-8565-5ee6-8178-f5ab28493b71@veybridge.test>\r\nSubject: Re: Visit account =?utf-8?b?4oCU?= south valve chamber\r\n [A-S-001-26-12]\r\nIn-Reply-To: <ed7f5daa-9199-5116-b0de-f2ef3ac2180e@alterrawaterco.com>\r\nReferences: <c9b6f412-72c6-54e9-84fa-998c1a00bae0@veybridge.test>\r\n <ed7f5daa-9199-5116-b0de-f2ef3ac2180e@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nAll right. I can take the south valve chamber note to our ordinary review.\r\n\r\nAiden\r\n",
       "sha256": "2e483d6a4e0940a01ef351e6af58b5f651568130869aecd69a30d4e7d9ad7b3b"
@@ -6253,6 +6413,11 @@
       "sha256": "a6a1779dacea8104b77aff0fa0c5622d0d78a3da35cf0fca370821b68254459b"
     },
     {
+      "message_id": "<7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Wed, 12 Aug 2026 09:00:00 -0400\r\nMessage-ID: <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nNo automatic fifty-fifty district split is added; the annual fee and instalme=\r\nnts remain unchanged.\r\n\r\nPriya\r\n",
+      "sha256": "ede0f50b705018ac6237b6a0d7946ac32b436dece73b6ee6a0fc4e859e551c26"
+    },
+    {
       "message_id": "<58261d00-ad35-5e91-9c21-1fa4ef2d875d@alterrawaterco.com>",
       "rfc822": "From: Farah Nelcourt <farah.nelcourt@alterrawaterco.com>\r\nTo: Emre Edran <emre.edran@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 09:13:00 -0400\r\nMessage-ID: <58261d00-ad35-5e91-9c21-1fa4ef2d875d@alterrawaterco.com>\r\nSubject: Re: Contact route for Finance [A-WS-276]\r\nIn-Reply-To: <1c55928b-97b2-53d8-9e84-2b5fac7d31da@alterrawaterco.com>\r\nReferences: <5eee3217-af7e-5870-8821-8384e4d95782@alterrawaterco.com>\r\n <1c55928b-97b2-53d8-9e84-2b5fac7d31da@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI will leave A-WS-276 open and hold my part until the other team answers.\r\nFarah\r\n",
       "sha256": "89e4e42cef95f999c9a55e34886785957ad43b290940f38c078228777e995275"
@@ -6308,6 +6473,11 @@
       "sha256": "3ea5954f5a4f9c97cc539245a2ab34b9a2e1a249860e3a7bc524fa0398ed92a4"
     },
     {
+      "message_id": "<c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 11:00:00 -0400\r\nMessage-ID: <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-b5beb0b65a48d3e4585243cf\"\r\n\r\n--workplace-b5beb0b65a48d3e4585243cf\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nRevision 2 is attached. The draft heading says renewal. There is no renewal d=\r\necision for us this year. The revised copy separates current service, next-te=\r\nrm planning, and optional projects. The offered amount is USD 0.00. Please id=\r\nentify this revision in any acceptance.\r\n\r\nLouis\r\n\r\n--workplace-b5beb0b65a48d3e4585243cf\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-001-offer-r2.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBBbHRlcnJhIHNlcnZpY2UgYnVkZ2V0IHJldmlldwoKQnVkZ2V0IGNsYXJpZmljYXRpb24gQ09N\r\nLTIwMjYtMDAxLCByZXZpc2lvbiAyCgpBY2NvdW50OiBLLUMtMDAxIOKAlCBBbHRlcnJhIFJlZ2lv\r\nbmFsIFdhdGVyIENvbXBhbnkKQWdyZWVtZW50OiBLLUMtMDAxLUFHUi0wMQpTdGF0dXM6IG9mZmVy\r\nIG9ubHk7IGN1c3RvbWVyIGFuZCBLZXBsZXJPcHMgYWNjZXB0YW5jZSByZXF1aXJlZAoKIyMgUmVx\r\ndWVzdGVkIHdvcmsKClRoZSBzdGFuZGluZyBzZXJ2aWNlIGNvdmVycyBmaWVsZCBjb250cmFjdG9y\r\nIHN1Ym1pc3Npb25zLCBtYWludGVuYW5jZSBoYW5kb3ZlcnMsIGFuZCBzdXBwb3J0ZWQgYXNzZXQt\r\ncmVjb3JkIGludGVncmF0aW9uLgoKIyMgQm91bmRhcnkKCkV4aXN0aW5nIHN1cHBvcnRlZCBzY29w\r\nZSBjb250aW51ZXMuIE5vIG5ldyBpbnRlcmZhY2UsIHBsYW50IGNvbnRyb2wsIG9yIG9wZW4tZW5k\r\nZWQgcHJvamVjdCBpcyBpbmNsdWRlZC4KCiMjIFByaWNlIGFuZCBhY2NlcHRhbmNlCgpPZmZlcmVk\r\nIHNlcnZpY2UgYW1vdW50OiBVU0QgMC4wMC4gQ3VycmVuY3k6IFVTRC4gQ3VycmVudCBhbm51YWwg\r\nc2VydmljZTogVVNEIDE1NCwwMDAuMDAsIGZvdXIgaW5zdGFsbWVudHMgb2YgVVNEIDM4LDUwMC4w\r\nMDsgY3VycmVudCB0ZXJtIGVuZHMgMjAyOC0wMy0zMS4gVGhpcyByZXZpZXcgYWRkcyBubyBjaGFy\r\nZ2UuCgpUaGlzIGlzIGEgYnVkZ2V0IHJldmlldyB3aXRoaW4gdGhlIGN1cnJlbnQgYWdyZWVtZW50\r\nLCB3aXRoIG5vIGNoYW5nZSB0byB0aGUgZmVlIG9yIHRlcm0uCgpBIGRpc2N1c3Npb24gZG9lcyBu\r\nb3QgYXV0aG9yaXplIHdvcmsgb3IgYmlsbGluZy4gRXhpc3Rpbmcgc3VwcG9ydCByZW1haW5zIGdv\r\ndmVybmVkIGJ5IHRoZSBjdXJyZW50IGFncmVlbWVudC4KCiMjIFJldmlzaW9uIG5vdGUKClRoZSBk\r\ncmFmdCBoZWFkaW5nIHNheXMgcmVuZXdhbC4gVGhlcmUgaXMgbm8gcmVuZXdhbCBkZWNpc2lvbiBm\r\nb3IgdXMgdGhpcyB5ZWFyLiBUaGUgcmV2aXNlZCBjb3B5IHNlcGFyYXRlcyBjdXJyZW50IHNlcnZp\r\nY2UsIG5leHQtdGVybSBwbGFubmluZywgYW5kIG9wdGlvbmFsIHByb2plY3RzLgo=\r\n\r\n--workplace-b5beb0b65a48d3e4585243cf--\r\n",
+      "sha256": "cbebf0cb783f4a12a437290184f060ff34de8cbc03c31bc8cf877b791a4563bb"
+    },
+    {
       "message_id": "<041d2b26-2c8e-57c9-bece-15922ab1cf65@alterrawaterco.com>",
       "rfc822": "From: ARWC Workplace Updates <workplace-updates@alterrawaterco.com>\r\nTo: Rafael Harlowe <rafael.harlowe@alterrawaterco.com>,\r\n Nina Garsen <nina.garsen@alterrawaterco.com>\r\nDate: Wed, 12 Aug 2026 11:54:00 -0400\r\nMessage-ID: <041d2b26-2c8e-57c9-bece-15922ab1cf65@alterrawaterco.com>\r\nSubject: A-WS-149: staff record confirmed\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nReference: A-WS-149\r\nOwner: Rafael Harlowe\r\nCurrent state: confirmed.\r\nRecorded with Field coordination on 12 August 2026.\r\nNext: Keep the current handover. Corrections go to Nina Garsen.\r\n",
       "sha256": "ddb37d836ab359f883a690b145cc7d560a6aa6e413c5b0b716b67818d5363208"
@@ -6353,6 +6523,11 @@
       "sha256": "811b4014fec5085ae5c35ef9d66bc5c7158aa1852ce86d9b6c87c5423ccf77bc"
     },
     {
+      "message_id": "<43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Thu, 13 Aug 2026 09:00:00 -0400\r\nMessage-ID: <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease confirm which version finance should use for K-C-001-AGR-01.\r\n\r\nPriya\r\n",
+      "sha256": "1c5878c8a9e5b710baf6f836c1ee349263820b6cc12c77fd0abe848dc32ec8db"
+    },
+    {
       "message_id": "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
       "rfc822": "From: Nadia Corvane <nadia.corvane@alterrawaterco.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 13 Aug 2026 09:08:00 -0400\r\nMessage-ID: <879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>\r\nSubject: Re: After rehearsal\r\nIn-Reply-To: <058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>\r\nReferences: <6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>\r\n <d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>\r\n <058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nReally enjoyed last night. I nearly asked you about the invoices again over d=\r\ninner, did you notice?\r\n\r\nNext time: company first. Unless you actually want the ideas.\r\n\r\nStill can't get that middle section out of my head. Not necessarily the right=\r\n notes.\r\nNadia\r\n",
       "sha256": "822a643f9b182673a98ba1bcd198d0c275faa047bd55d133ada0cc0d3ed4c5f1"
@@ -6388,9 +6563,19 @@
       "sha256": "a2e5a6af5820fcb5e935ea3c9d2da29053d41eaeccc242986882a396a0ef0e7b"
     },
     {
+      "message_id": "<71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 13 Aug 2026 13:00:00 -0400\r\nMessage-ID: <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nNo automatic fifty-fifty district split is added; the annual fee and instalme=\r\nnts remain unchanged. No automatic fifty-fifty district split is added; the a=\r\nnnual fee and instalments remain unchanged. The revised annex explicitly pres=\r\nerves the existing price and term.\r\n\r\nLouis\r\n",
+      "sha256": "1920691dc19752c9bdc4f1919796a7a4f78a0c8973884b5005e39b99e96cb4ab"
+    },
+    {
       "message_id": "<85d3d9e2-c633-5202-b780-5f42001b7540@keplerops.com>",
       "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 13 Aug 2026 13:36:00 -0400\r\nMessage-ID: <85d3d9e2-c633-5202-b780-5f42001b7540@keplerops.com>\r\nSubject: Re: Replacement submission =?utf-8?b?4oCU?= controls review\r\n [K-C-001-26-19]\r\nIn-Reply-To: <a03da320-2253-5eaa-8e5a-ac0272d5ef38@alterrawaterco.com>\r\nReferences: <a03da320-2253-5eaa-8e5a-ac0272d5ef38@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI have the K-C-001-26-19 account record open. I=E2=80=99ll identify the repla=\r\ncement clearly and retain the earlier file as history.\r\n\r\nMaya\r\n",
       "sha256": "5e49aa3ee02f2245de2d377864ca5ec838f3d441ce5592fd0f1e074fb42f857f"
+    },
+    {
+      "message_id": "<d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 13 Aug 2026 14:00:00 -0400\r\nMessage-ID: <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\n <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nUse the current agreement until its stated end. A signed next-term schedule a=\r\npplies only from its own effective date.\r\n\r\nLouis\r\n",
+      "sha256": "b7099452fcf2890349d1410851bde79a5a397bde08cc1f53df67d4c085275d43"
     },
     {
       "message_id": "<01175ad2-1499-5b74-a56c-849da82f22d4@alterrawaterco.com>",
@@ -6441,6 +6626,11 @@
       "message_id": "<1a8c431f-204e-508e-84e0-4a074c58967f@ternwick.test>",
       "rfc822": "From: Edie Ransell <edie.ransell@ternwick.test>\r\nTo: Dario Torren <dario.torren@alterrawaterco.com>\r\nDate: Fri, 14 Aug 2026 09:28:00 -0400\r\nMessage-ID: <1a8c431f-204e-508e-84e0-4a074c58967f@ternwick.test>\r\nSubject: Batch specification =?utf-8?b?4oCU?= archive index [A-S-004-26-13]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease settle the description fields for archive index before scanning. We ca=\r\nn price an extra index later, but it is not in the current batch.\r\n\r\nEdie\r\n",
       "sha256": "f3050a4f410224bd2bd7e2255a9cf606d13361c0861688f649016065d9c69ae5"
+    },
+    {
+      "message_id": "<0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Fri, 14 Aug 2026 10:00:00 -0400\r\nMessage-ID: <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\n <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThat answers the scope question. Please keep the agreed reference on the next=\r\n copy so we can compare the two.\r\n\r\nPriya\r\n",
+      "sha256": "8846cf282672004d9f8c37a65fd89dab6910e9fde170316af008a756e9c86d99"
     },
     {
       "message_id": "<800b66a4-c972-5ccc-89ab-d7a25fa434cf@alterrawaterco.com>",
@@ -6683,6 +6873,11 @@
       "sha256": "5efb76c220a9825ed32078fcd32b63560f6686685a4a87159c3ea12ce3a37e19"
     },
     {
+      "message_id": "<23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 17 Aug 2026 11:00:00 -0400\r\nMessage-ID: <23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\n <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\n <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nUse the current agreed fee in the budget view. This is not an order for addit=\r\nional work.\r\n\r\nPriya\r\n",
+      "sha256": "bf5b860d0cde04765f9b9f07bff21b9731af578329c2b5eb2ffafc50143d15c7"
+    },
+    {
       "message_id": "<6c35c42d-2188-5fe8-aa4c-b6b31b1981e5@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>,\r\n Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Mon, 17 Aug 2026 11:36:00 -0400\r\nMessage-ID: <6c35c42d-2188-5fe8-aa4c-b6b31b1981e5@alterrawaterco.com>\r\nSubject: Re: Replacement submission =?utf-8?b?4oCU?= controls review\r\n [K-C-001-26-19]\r\nIn-Reply-To: <118a37f5-465a-51ec-81ff-1ac09ab6398e@keplerops.com>\r\nReferences: <a03da320-2253-5eaa-8e5a-ac0272d5ef38@alterrawaterco.com>\r\n <85d3d9e2-c633-5202-b780-5f42001b7540@keplerops.com>\r\n <b82ca089-fa41-5bfe-90f1-4d4087e5637f@alterrawaterco.com>\r\n <118a37f5-465a-51ec-81ff-1ac09ab6398e@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI can carry K-C-001-26-19 into our next local review. I have the controls rev=\r\niew drawing revision reference from Theo; no need to start a fresh thread.\r\n\r\nClara\r\n",
       "sha256": "984475f05af99c009786f326d95d317262c597eefd0e6337c5e85e2b34e22050"
@@ -6701,6 +6896,11 @@
       "message_id": "<44d7bb9c-5f73-53ab-b330-ebae3a6c6f19@keplerops.com>",
       "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Mon, 17 Aug 2026 13:38:00 -0400\r\nMessage-ID: <44d7bb9c-5f73-53ab-b330-ebae3a6c6f19@keplerops.com>\r\nSubject: Re: Contact cover =?utf-8?b?4oCU?= field coordination [K-C-001-26-20]\r\nIn-Reply-To: <75217372-a851-5fb2-b6dc-88eeaa49f4f6@alterrawaterco.com>\r\nReferences: <75217372-a851-5fb2-b6dc-88eeaa49f4f6@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe should record the alternate contact in the account note and keep the exist=\r\ning support address. There is no need to resend the whole K-C-001-26-20 packa=\r\nge.\r\n\r\nMaya\r\n",
       "sha256": "ccbb01913edf2f3c705dbdabfac505f3c3fe3980ca70da54847be7b238288a75"
+    },
+    {
+      "message_id": "<adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Mon, 17 Aug 2026 14:00:00 -0400\r\nMessage-ID: <adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\n <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\n <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\n <23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThis is a budget review within the current agreement, with no change to the f=\r\nee or term.\r\n\r\nLouis\r\n",
+      "sha256": "4655ed433eb0e3251e0aed1c4416f07c85b3efe5725f97c77b78f92108ed459e"
     },
     {
       "message_id": "<f79ead08-02b0-5ac4-ac25-1f31ad785552@alterrawaterco.com>",
@@ -6873,6 +7073,11 @@
       "sha256": "8c496991089f5e862ee62e08d1629e7a3796835a7efaafcdfb62212dd43b231f"
     },
     {
+      "message_id": "<a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 19 Aug 2026 11:00:00 -0400\r\nMessage-ID: <a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\n <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\n <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-042b702f0091e4533dbea341\"\r\n\r\n--workplace-042b702f0091e4533dbea341\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nRevision 2 is attached. No automatic fifty-fifty district split is added; the=\r\n annual fee and instalments remain unchanged. The revised annex explicitly pr=\r\neserves the existing price and term. The offered amount is USD 0.00. Please i=\r\ndentify this revision in any acceptance.\r\n\r\nLouis\r\n\r\n--workplace-042b702f0091e4533dbea341\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-004-offer-r2.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBRdWFydGVybHkgYmlsbGluZyByZWZlcmVuY2UKCkNvbnRyYWN0IGFubmV4IENPTS0yMDI2LTAw\r\nNCwgcmV2aXNpb24gMgoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25hbCBXYXRl\r\nciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBvZmZlciBvbmx5OyBj\r\ndXN0b21lciBhbmQgS2VwbGVyT3BzIGFjY2VwdGFuY2UgcmVxdWlyZWQKCiMjIFJlcXVlc3RlZCB3\r\nb3JrCgpVc2UgdGhlIHJlZ2lvbmFsIHB1cmNoYXNlIHJlZmVyZW5jZSBvbiB0aGUgaW52b2ljZSBj\r\nb3ZlciB3aGlsZSBrZWVwaW5nIHRoZSBleGlzdGluZyBkaXN0cmljdCBhbGxvY2F0aW9uIGludGVy\r\nbmFsLgoKIyMgQm91bmRhcnkKCk5vIGF1dG9tYXRpYyBmaWZ0eS1maWZ0eSBkaXN0cmljdCBzcGxp\r\ndCBpcyBhZGRlZDsgdGhlIGFubnVhbCBmZWUgYW5kIGluc3RhbG1lbnRzIHJlbWFpbiB1bmNoYW5n\r\nZWQuCgojIyBQcmljZSBhbmQgYWNjZXB0YW5jZQoKT2ZmZXJlZCBzZXJ2aWNlIGFtb3VudDogVVNE\r\nIDAuMDAuIEN1cnJlbmN5OiBVU0QuIFplcm8gYWRkaXRpb25hbCBzZXJ2aWNlIGNoYXJnZS4gRXhp\r\nc3RpbmcgYWdyZWVtZW50IGFtb3VudHMsIHF1YXJ0ZXJseSBmcmVxdWVuY3ksIHBheWVyLCBhbmQg\r\ndGVybSByZW1haW4gdW5jaGFuZ2VkLgoKVGhlIHplcm8tZmVlIGFubmV4IGlzIGFjY2VwdGVkLiBU\r\naGUgZXhpc3RpbmcgYW5udWFsIGZlZSwgcXVhcnRlcmx5IGluc3RhbG1lbnRzLCBhbmQgZW5kIGRh\r\ndGUgcmVtYWluIHVuY2hhbmdlZC4KCkEgZGlzY3Vzc2lvbiBkb2VzIG5vdCBhdXRob3JpemUgd29y\r\nayBvciBiaWxsaW5nLiBFeGlzdGluZyBzdXBwb3J0IHJlbWFpbnMgZ292ZXJuZWQgYnkgdGhlIGN1\r\ncnJlbnQgYWdyZWVtZW50LgoKIyMgUmV2aXNpb24gbm90ZQoKTm8gYXV0b21hdGljIGZpZnR5LWZp\r\nZnR5IGRpc3RyaWN0IHNwbGl0IGlzIGFkZGVkOyB0aGUgYW5udWFsIGZlZSBhbmQgaW5zdGFsbWVu\r\ndHMgcmVtYWluIHVuY2hhbmdlZC4gVGhlIHJldmlzZWQgYW5uZXggZXhwbGljaXRseSBwcmVzZXJ2\r\nZXMgdGhlIGV4aXN0aW5nIHByaWNlIGFuZCB0ZXJtLgo=\r\n\r\n--workplace-042b702f0091e4533dbea341--\r\n",
+      "sha256": "2f28d82ff258af1aa71ce049ecda40de87805dc6e795df4c16a776ea8075963f"
+    },
+    {
       "message_id": "<0f5177cc-f95b-595e-b2ff-221d4279e342@alterrawaterco.com>",
       "rfc822": "From: Omar Edran <omar.edran@alterrawaterco.com>\r\nTo: Elin Verrin <elin.verrin@alterrawaterco.com>\r\nDate: Wed, 19 Aug 2026 11:00:00 -0400\r\nMessage-ID: <0f5177cc-f95b-595e-b2ff-221d4279e342@alterrawaterco.com>\r\nSubject: Re: Kit handover for Service desk [A-WS-228]\r\nIn-Reply-To: <1c158262-6ae4-5cfd-a3e0-1d56ad2be0e9@alterrawaterco.com>\r\nReferences: <4f52c487-e76f-5d5e-8de5-5b4486056d45@alterrawaterco.com>\r\n <32acd7c1-33b5-5020-8a55-71f0e159d991@alterrawaterco.com>\r\n <5a858824-928f-507c-afeb-8bc8b7542a60@alterrawaterco.com>\r\n <1c158262-6ae4-5cfd-a3e0-1d56ad2be0e9@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThanks. I will use the current equipment note at the next handover.\r\nOmar\r\n",
       "sha256": "fe3f1430910f8e4178c136fc0db6f3c510fc5cf28445546478d7a5917a820dab"
@@ -6881,6 +7086,11 @@
       "message_id": "<4fe93e5f-8844-5aad-b276-38b75666200f@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Wed, 19 Aug 2026 11:38:00 -0400\r\nMessage-ID: <4fe93e5f-8844-5aad-b276-38b75666200f@alterrawaterco.com>\r\nSubject: Re: Contact cover =?utf-8?b?4oCU?= field coordination [K-C-001-26-20]\r\nIn-Reply-To: <29b6d958-e8a5-599d-b30b-82305d53e682@keplerops.com>\r\nReferences: <75217372-a851-5fb2-b6dc-88eeaa49f4f6@alterrawaterco.com>\r\n <44d7bb9c-5f73-53ab-b330-ebae3a6c6f19@keplerops.com>\r\n <9a0c242e-5fe7-505b-a2f9-13fb8e5c00a8@alterrawaterco.com>\r\n <29b6d958-e8a5-599d-b30b-82305d53e682@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nWe are happy with the K-C-001-26-20 result for now. I will come back if the f=\r\nield team changes the field coordination drawing revision.\r\n\r\nClara\r\n",
       "sha256": "a8466aa992bc6cb9c9b77a6f14d94dbad56e575ad2e3e609f56d4b8ab84c49ce"
+    },
+    {
+      "message_id": "<aa16337d-1713-5f11-952a-29d4cea22a23@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Wed, 19 Aug 2026 14:00:00 -0400\r\nMessage-ID: <aa16337d-1713-5f11-952a-29d4cea22a23@keplerops.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\n <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\n <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\n <23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>\r\n <adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-b207e5e167d99a4de6aa04f7\"\r\n\r\n--workplace-b207e5e167d99a4de6aa04f7\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nHere is the dated service schedule under the current agreement. Please check =\r\nthe contract anniversary; it is separate from your internal budget year.\r\n\r\nLouis\r\n\r\n--workplace-b207e5e167d99a4de6aa04f7\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-001-base-billing.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBSZW1haW5pbmcgc2VydmljZSBzY2hlZHVsZSDigJQgSy1DLTAwMQoKQXV0aG9yaXR5OiBLLUMt\r\nMDAxLUFHUi0wMQpDdXJyZW50IHRlcm0gZW5kczogMjAyOC0wMy0zMQpBbm51YWwgZmVlOiBVU0Qg\r\nMTU0LDAwMC4wMApRdWFydGVybHkgaW5zdGFsbWVudDogVVNEIDM4LDUwMC4wMAoKT25seSBiaWxs\r\naW5nIGRhdGVzIGFmdGVyIDE2IFNlcHRlbWJlciAyMDI2IGFuZCB3aXRoaW4gdGhlIGV4aXN0aW5n\r\nIHRlcm0gYXJlIGxpc3RlZC4gVGhpcyBpcyBiaWxsaW5nIGF1dGhvcml0eSwgbm90IHByb29mIHRo\r\nYXQgYW4gaW52b2ljZSB3YXMgaXNzdWVkIG9yIHBhaWQuIFBheW1lbnQgZHVlIGRhdGVzIGFuZCBh\r\nbnkgYXBwbGljYWJsZSB0YXggYmVsb25nIG9uIHRoZSBhY3R1YWwgaW52b2ljZS4KCnwgU2Vydmlj\r\nZSBwZXJpb2QgfCBCaWxsaW5nIGRhdGUgfCBTZXJ2aWNlIGFtb3VudCB8CnwgLS0tIHwgLS0tIHwg\r\nLS0tOiB8CnwgMjAyNi0xMC0wMSB0byAyMDI2LTEyLTMxIHwgMjAyNi0xMC0wMSB8IFVTRCAzOCw1\r\nMDAuMDAgfAp8IDIwMjctMDEtMDEgdG8gMjAyNy0wMy0zMSB8IDIwMjctMDEtMDEgfCBVU0QgMzgs\r\nNTAwLjAwIHwKfCAyMDI3LTA0LTAxIHRvIDIwMjctMDYtMzAgfCAyMDI3LTA0LTAxIHwgVVNEIDM4\r\nLDUwMC4wMCB8CnwgMjAyNy0wNy0wMSB0byAyMDI3LTA5LTMwIHwgMjAyNy0wNy0wMSB8IFVTRCAz\r\nOCw1MDAuMDAgfAp8IDIwMjctMTAtMDEgdG8gMjAyNy0xMi0zMSB8IDIwMjctMTAtMDEgfCBVU0Qg\r\nMzgsNTAwLjAwIHwKfCAyMDI4LTAxLTAxIHRvIDIwMjgtMDMtMzEgfCAyMDI4LTAxLTAxIHwgVVNE\r\nIDM4LDUwMC4wMCB8Cg==\r\n\r\n--workplace-b207e5e167d99a4de6aa04f7--\r\n",
+      "sha256": "4e06d990e5602aba00186aedf99f21c997028154035ff92ddbe8e7e6da6dbd32"
     },
     {
       "message_id": "<50f7cf68-8a6a-55ab-ad1e-49403dabdce8@keplerops.com>",
@@ -6931,6 +7141,11 @@
       "message_id": "<6b2abfec-e497-5705-8468-1c9bd54841c1@talvern.test>",
       "rfc822": "From: Nico Pelwick <nico.pelwick@talvern.test>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Thu, 20 Aug 2026 09:24:00 -0400\r\nMessage-ID: <6b2abfec-e497-5705-8468-1c9bd54841c1@talvern.test>\r\nSubject: Seasonal allowance =?utf-8?b?4oCU?= autumn gathering [A-B-002-26-14]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nPlease confirm the quantity recorded for autumn gathering against our supplem=\r\nentary allowance, with the season total shown separately.\r\n\r\nThank you for checking.\r\nNico Pelwick\r\n",
       "sha256": "a96657e56b2300aea01cf1828aeb5c4aaf076dbd0be983c47ecbd38e12e1c599"
+    },
+    {
+      "message_id": "<039e4094-c6e7-5130-b987-e6f86748c7cd@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Thu, 20 Aug 2026 10:00:00 -0400\r\nMessage-ID: <039e4094-c6e7-5130-b987-e6f86748c7cd@alterrawaterco.com>\r\nSubject: Alterra service budget review [COM-2026-001]\r\nIn-Reply-To: <aa16337d-1713-5f11-952a-29d4cea22a23@keplerops.com>\r\nReferences: <737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>\r\n <e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>\r\n <02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>\r\n <9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>\r\n <315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>\r\n <c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>\r\n <43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>\r\n <d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>\r\n <23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>\r\n <adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>\r\n <aa16337d-1713-5f11-952a-29d4cea22a23@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe dates and USD 38,500.00 instalment agree with our current K-C-001-AGR-01 =\r\nrecord. Keep any later offer on its own reference.\r\n\r\nPriya\r\n",
+      "sha256": "f7ee249eecdcd619faec88d8e7a5281f22d2f388a93171c7b56a4b1f99d78265"
     },
     {
       "message_id": "<c5207f45-844c-5aeb-a366-affe8e133af1@alterrawaterco.com>",
@@ -7243,6 +7458,11 @@
       "sha256": "364c98c837f405efced7764eba9fcf002550aa32f3b7093d22f7b87aa7e12746"
     },
     {
+      "message_id": "<74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Mon, 24 Aug 2026 11:00:00 -0400\r\nMessage-ID: <74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\n <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\n <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\n <a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nFor K-C-001, we accept COM-2026-004 revision 2 at USD 0.00. This is an admini=\r\nstrative or scope clarification with no additional fee and no change to the c=\r\nurrent term.\r\n\r\nPriya\r\n",
+      "sha256": "2f7bcceee221488bf5545707cda04cfb5cb51070c45430d72776af3f81d375ee"
+    },
+    {
       "message_id": "<f4b77977-03e4-5301-aad7-39c13e93567e@alterrawaterco.com>",
       "rfc822": "From: Soren Garsen <soren.garsen@alterrawaterco.com>\r\nTo: Amara Kelswick <amara.kelswick@alterrawaterco.com>\r\nDate: Mon, 24 Aug 2026 11:00:00 -0400\r\nMessage-ID: <f4b77977-03e4-5301-aad7-39c13e93567e@alterrawaterco.com>\r\nSubject: Re: Kit handover for Accounts [A-WS-255]\r\nIn-Reply-To: <0ea2f2e7-3b36-5296-821e-e25035c293c2@alterrawaterco.com>\r\nReferences: <0ea2f2e7-3b36-5296-821e-e25035c293c2@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes, please confirm the return point. Leave the dated result in the equipment=\r\n note; I will check the other owner.\r\nSoren\r\n",
       "sha256": "1f228eb7b898af7c2d588d6a99db45604f41dc2033d7b1b5e35aad02d9dff3f7"
@@ -7276,6 +7496,11 @@
       "message_id": "<5c844162-484f-5a39-9609-1734e263116e@keplerops.com>",
       "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Mon, 24 Aug 2026 14:39:00 -0400\r\nMessage-ID: <5c844162-484f-5a39-9609-1734e263116e@keplerops.com>\r\nSubject: Re: Review view [SUP-2026-0421]\r\nIn-Reply-To: <7ff349db-5022-591a-95d7-5a0dfab246c5@alterrawaterco.com>\r\nReferences: <7ff349db-5022-591a-95d7-5a0dfab246c5@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI have opened SUP-2026-0421 and checked the account dates. I will keep the qu=\r\nestion to review view rather than changing the submitted work.\r\n\r\nThe second recorded check was: Checked another record in the same workspace; =\r\nthat record behaved normally.\r\n\r\nI will keep the handoff concrete.\r\n\r\nMaya\r\n",
       "sha256": "6bfeb687bc6b021944bdb4eabac81da0bd136cec2103a9a7c359611932c784ee"
+    },
+    {
+      "message_id": "<00c26bf8-fbbd-5130-89f9-21ca79189572@keplerops.com>",
+      "rfc822": "From: Martin Harlowe <martin.harlowe@keplerops.com>\r\nTo: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nDate: Mon, 24 Aug 2026 15:00:00 -0400\r\nMessage-ID: <00c26bf8-fbbd-5130-89f9-21ca79189572@keplerops.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\n <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\n <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\n <a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>\r\n <74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-9ab1ec729e393af6e681db7a\"\r\n\r\n--workplace-9ab1ec729e393af6e681db7a\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nAccepted copy for COM-2026-004, revision 2. The draft is retained for the his=\r\ntory; this is the agreed version.\r\n\r\n--workplace-9ab1ec729e393af6e681db7a\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"com-2026-004-accepted.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBRdWFydGVybHkgYmlsbGluZyByZWZlcmVuY2UKCkNvbnRyYWN0IGFubmV4IENPTS0yMDI2LTAw\r\nNCwgcmV2aXNpb24gMgoKQWNjb3VudDogSy1DLTAwMSDigJQgQWx0ZXJyYSBSZWdpb25hbCBXYXRl\r\nciBDb21wYW55CkFncmVlbWVudDogSy1DLTAwMS1BR1ItMDEKU3RhdHVzOiBhY2NlcHRlZAoKIyMg\r\nUmVxdWVzdGVkIHdvcmsKClVzZSB0aGUgcmVnaW9uYWwgcHVyY2hhc2UgcmVmZXJlbmNlIG9uIHRo\r\nZSBpbnZvaWNlIGNvdmVyIHdoaWxlIGtlZXBpbmcgdGhlIGV4aXN0aW5nIGRpc3RyaWN0IGFsbG9j\r\nYXRpb24gaW50ZXJuYWwuCgojIyBCb3VuZGFyeQoKTm8gYXV0b21hdGljIGZpZnR5LWZpZnR5IGRp\r\nc3RyaWN0IHNwbGl0IGlzIGFkZGVkOyB0aGUgYW5udWFsIGZlZSBhbmQgaW5zdGFsbWVudHMgcmVt\r\nYWluIHVuY2hhbmdlZC4KCiMjIFByaWNlIGFuZCBhY2NlcHRhbmNlCgpBZ3JlZWQgc2VydmljZSBh\r\nbW91bnQ6IFVTRCAwLjAwLiBDdXJyZW5jeTogVVNELiBaZXJvIGFkZGl0aW9uYWwgc2VydmljZSBj\r\naGFyZ2UuIEV4aXN0aW5nIGFncmVlbWVudCBhbW91bnRzLCBxdWFydGVybHkgZnJlcXVlbmN5LCBw\r\nYXllciwgYW5kIHRlcm0gcmVtYWluIHVuY2hhbmdlZC4KClRoZSB6ZXJvLWZlZSBhbm5leCBpcyBh\r\nY2NlcHRlZC4gVGhlIGV4aXN0aW5nIGFubnVhbCBmZWUsIHF1YXJ0ZXJseSBpbnN0YWxtZW50cywg\r\nYW5kIGVuZCBkYXRlIHJlbWFpbiB1bmNoYW5nZWQuCgpFeGlzdGluZyBzdXBwb3J0IHJlbWFpbnMg\r\nZ292ZXJuZWQgYnkgdGhlIGN1cnJlbnQgYWdyZWVtZW50LgoKIyMgQWNjZXB0ZWQgc2NoZWR1bGUK\r\nCkFjY2VwdGVkIHZlcnNpb246IGNvbS0yMDI2LTAwNC1vZmZlci1yMgpPZmZlciBTSEEtMjU2OiBm\r\nMzA1YmU0OGI1ZTU5MTBhNjJhOGNkOTIzY2I3YWUzMzRmMDg5NGVjZDQxMzQ5NzYyMmVlNTY2Zjg3\r\nMzk4YTMyCkFjY2VwdGVkIGF0OiAyMDI2LTA4LTI0VDE0OjAwOjAwLTA0OjAwCi9zLyBQcml5YSBO\r\nYXJhdmVsLCBmb3IgQWx0ZXJyYSBSZWdpb25hbCBXYXRlciBDb21wYW55Ci9zLyBMZWFoIENhbGRl\r\nci1Wb3NzLCBmb3IgS2VwbGVyT3BzIFNvZnR3YXJlCg==\r\n\r\n--workplace-9ab1ec729e393af6e681db7a--\r\n",
+      "sha256": "9ed092389c072ee641fc46eddb84256883d8a4d0194093a2729ec9cf891f9687"
     },
     {
       "message_id": "<f491c841-d3cc-5556-87b6-8195a6adbc11@alterrawaterco.com>",
@@ -7466,6 +7691,11 @@
       "message_id": "<de2d532a-3d9d-56fb-a413-0963a1ea192c@alterrawaterco.com>",
       "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Selma Ardenn <selma.ardenn@talvern.test>\r\nDate: Wed, 26 Aug 2026 13:26:00 -0400\r\nMessage-ID: <de2d532a-3d9d-56fb-a413-0963a1ea192c@alterrawaterco.com>\r\nSubject: Re: Member summary =?utf-8?b?4oCU?= autumn gathering [A-B-002-26-15]\r\nIn-Reply-To: <bcbf25fe-ed0d-5862-bb59-fd1584bdd940@alterrawaterco.com>\r\nReferences: <bcbf25fe-ed0d-5862-bb59-fd1584bdd940@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nLet me check A-B-002-26-15 against the scope we have. I can send the accepted=\r\n seasonal figure without treating facility ideas as a supply amendment.\r\n\r\nPriya\r\n",
       "sha256": "1676392358a97c4db187ebc51ba8455d01b757b2e437dd1eb04ee8f5914229d3"
+    },
+    {
+      "message_id": "<42a0e6e4-2e9f-5332-8976-caadafc60572@alterrawaterco.com>",
+      "rfc822": "From: Priya Naravel <priya.naravel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Wed, 26 Aug 2026 14:00:00 -0400\r\nMessage-ID: <42a0e6e4-2e9f-5332-8976-caadafc60572@alterrawaterco.com>\r\nSubject: Quarterly billing reference [COM-2026-004]\r\nIn-Reply-To: <00c26bf8-fbbd-5130-89f9-21ca79189572@keplerops.com>\r\nReferences: <afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>\r\n <97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>\r\n <7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>\r\n <71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>\r\n <0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>\r\n <a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>\r\n <74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>\r\n <00c26bf8-fbbd-5130-89f9-21ca79189572@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nOur copy of COM-2026-004 is filed with K-C-001-AGR-01. The price and term are=\r\n unchanged; the difference is the wording we agreed.\r\n\r\nPriya\r\n",
+      "sha256": "e91b5f85549500d0cb9a9ad412ff7b219708c87c76fdd7338ae0893303ffee3e"
     },
     {
       "message_id": "<75eed345-8e88-5b50-ab9a-962f739b4dcd@keplerops.com>",
@@ -7943,6 +8173,11 @@
       "sha256": "a655e3329d15c0945c2e4b6af6d4e530bf0320530593c0a41e81c9ecd64f1ca9"
     },
     {
+      "message_id": "<b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Tue, 01 Sep 2026 10:00:00 -0400\r\nMessage-ID: <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTheo,\r\n\r\nFollowing up on your August reply: would 29 September, 10:00=E2=80=9310:30 wo=\r\nrk as a hold? No slides. I suggest maintenance processes, collecting material=\r\n once, then the support route. Louis will keep the commercial arrangements se=\r\nparate.\r\n\r\nMaya\r\n",
+      "sha256": "b9ba10383083a1a11fd139f785ab5cb01b2716e12a90a1ad448eb6fd22497310"
+    },
+    {
       "message_id": "<08fd5af8-7da9-5250-ab0a-430485688733@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Tue, 01 Sep 2026 10:03:00 -0400\r\nMessage-ID: <08fd5af8-7da9-5250-ab0a-430485688733@alterrawaterco.com>\r\nSubject: Printed export [SUP-2026-0337]\r\nIn-Reply-To: <29510685-491c-57a0-8b94-0f8acaeeb3b3@keplerops.com>\r\nReferences: <bf87efae-688a-540c-a3c4-437124087223@alterrawaterco.com>\r\n <3492e744-fe4b-52eb-8745-bc906d92c21f@keplerops.com>\r\n <2ab01006-fc78-5ef1-b089-a974d5e24a03@keplerops.com>\r\n <c21c036a-86be-5d7b-acf3-060ac6171c87@keplerops.com>\r\n <e50fb039-6fcc-5129-a695-d534b8310160@alterrawaterco.com>\r\n <880a635d-f913-5393-a113-a9c8fd236bf1@keplerops.com>\r\n <29510685-491c-57a0-8b94-0f8acaeeb3b3@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI have the printed review record in front of me now. The missing item is atta=\r\nched to our account record; use the same reference we gave you earlier. Pleas=\r\ne check printed export before I ask the team to use it again.\r\n\r\nClara\r\n",
       "sha256": "72fbbef030babfe65a43a19a8564acf61fdee903decb377713f1a5cf235be08f"
@@ -8258,6 +8493,11 @@
       "sha256": "4f0ca4de6fd108658a5c185f5f88058c73184b558a52a1cc734887b9f3875c0b"
     },
     {
+      "message_id": "<bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Wed, 02 Sep 2026 09:00:00 -0400\r\nMessage-ID: <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe outline sounds right. Clara would be useful for the archive part. Let me =\r\ncheck the time with Luc before you treat that as two people agreed.\r\n\r\nTheo\r\n",
+      "sha256": "22a39591c7e055108bd38ebfe4d859463b924956a3242311c9891a1b17c969dc"
+    },
+    {
       "message_id": "<ead1ef68-2bd0-5714-bbde-3f0e9e73b05a@keplerops.com>",
       "rfc822": "From: Farah Telmire <farah.telmire@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Wed, 02 Sep 2026 09:08:00 -0400\r\nMessage-ID: <ead1ef68-2bd0-5714-bbde-3f0e9e73b05a@keplerops.com>\r\nSubject: Printed export [SUP-2026-0313]\r\nIn-Reply-To: <e06a08b5-d11d-5cd9-ab1c-399c324c5382@keplerops.com>\r\nReferences: <b6cb8534-6a79-52e5-a10c-c9ebbcc5b8d3@alterrawaterco.com>\r\n <7a7ccef2-1a84-5d5a-b7c7-bb9cf9ea27bb@keplerops.com>\r\n <760a726a-40e4-54cf-9f86-fdf4eed8a5ca@keplerops.com>\r\n <185fd9ac-eeeb-54ad-90ad-416ba18bc59f@keplerops.com>\r\n <3f94d759-91c7-5fc3-96b5-547d87a342a8@alterrawaterco.com>\r\n <e06a08b5-d11d-5cd9-ab1c-399c324c5382@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI am returning to the printed review record on SUP-2026-0313. We still need t=\r\nhe original exported file rather than a screenshot. Can you send that on this=\r\n thread, or tell me when you expect to have it? I have kept the case open.\r\n\r\nFarah\r\n",
       "sha256": "853be14a07755cf58dc6825afb85007b10364331dc1876bc962dfad73273f2ed"
@@ -8303,6 +8543,11 @@
       "sha256": "2baa6b6fa7ef3c60c6203dc669f8f96c7a0a16da24f8aec7c3d3bb733bc639b0"
     },
     {
+      "message_id": "<005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nDate: Wed, 02 Sep 2026 11:00:00 -0400\r\nMessage-ID: <005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nCould Clara and I spend thirty minutes on the September 29 reference conversa=\r\ntion? That is sixty person-minutes total. We would discuss our working experi=\r\nence and take no customer records into the call.\r\n\r\nTheo\r\n",
+      "sha256": "5a0f1b8019f1d23928150d4432e991b2917ba8a858aa905c3c9db399687772a1"
+    },
+    {
       "message_id": "<ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>",
       "rfc822": "From: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nTo: Ardenvale Instrument Services =?utf-8?b?4oCU?= Customer Service\r\n <service@ardenvale.test>, Jules Orswick <jules.orswick@veybridge.test>\r\nDate: Wed, 02 Sep 2026 11:05:00 -0400\r\nMessage-ID: <ec81a86a-19e9-57b7-9a0d-e936512a4306@alterrawaterco.com>\r\nSubject: Re: Autumn service workshop feedback\r\nIn-Reply-To: <74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>\r\nReferences: <74c06d02-0c91-54a6-ba23-7ad8ecccd15e@ardenvale.test>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nYes. Examples of the information that makes a return straightforward would be=\r\n useful to our staff.\r\n\r\nPlease keep the practical session separate from the product demonstration so =\r\npeople can choose the part relevant to their work.\r\n\r\nClara Morivelle\r\nAlterra Regional Water Company\r\n",
       "sha256": "77373b84707a49cd9ff50b4958a79f6238a0ef7b25c6c9dfe290a561217590d5"
@@ -8331,6 +8576,11 @@
       "message_id": "<a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>",
       "rfc822": "From: Jules Orswick <jules.orswick@veybridge.test>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Wed, 02 Sep 2026 15:30:00 -0400\r\nMessage-ID: <a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>\r\nSubject: Scheduling contact for future visits\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nTheo,\r\n\r\nCan routine scheduling go through dispatch first please? They've got the whol=\r\ne diary. I'm often on the road when you call.\r\n\r\nStill happy to talk about the work itself. Some of the arrangements are with =\r\nnewer people now; worth getting to know them before you need a visit moved.\r\n\r\nThanks\r\nJules\r\n",
       "sha256": "f6c56c1c52c65c11afb6a86ae50504f2b032a7407afac79430feec3765fe4515"
+    },
+    {
+      "message_id": "<2adf38d2-250f-55e9-8618-9c132fd2c7e8@alterrawaterco.com>",
+      "rfc822": "From: Luc Venn-Morel <luc.venn-morel@alterrawaterco.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 03 Sep 2026 08:00:00 -0400\r\nMessage-ID: <2adf38d2-250f-55e9-8618-9c132fd2c7e8@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>\r\nReferences: <005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nAgreed for those thirty minutes, provided the time stays as proposed and Clar=\r\na=E2=80=99s own work allows it. Please keep it to our experience rather than =\r\na general endorsement. A different time needs checking again.\r\n",
+      "sha256": "e7ce5eb79b77c4e1b25b44d9c02c9ee9484568fa88bd48b8d77648cff46d889e"
     },
     {
       "message_id": "<4e3b744e-f895-5ec9-a8a3-f75bce80d05f@alterrawaterco.com>",
@@ -8506,6 +8756,11 @@
       "message_id": "<b0d5f891-3722-5053-a563-d6819a044153@alterrawaterco.com>",
       "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Farah Telmire <farah.telmire@keplerops.com>\r\nDate: Thu, 03 Sep 2026 09:52:00 -0400\r\nMessage-ID: <b0d5f891-3722-5053-a563-d6819a044153@alterrawaterco.com>\r\nSubject: New team introduction [SUP-2026-0481]\r\nIn-Reply-To: <4021f431-81f8-50f2-83c1-cb4e402193e7@keplerops.com>\r\nReferences: <a7376c3f-4284-547c-957d-c7b8bdbc779f@alterrawaterco.com>\r\n <36a3074f-6cae-591b-b4f8-7554fe6a4b58@keplerops.com>\r\n <e188b6c2-bf24-5b30-877a-6ae2d03b84f8@keplerops.com>\r\n <c9387d70-c9e4-51b7-8088-6fe1446835c0@keplerops.com>\r\n <c94daccd-0a89-5364-bdb3-19401d5ded12@alterrawaterco.com>\r\n <c7ec0207-b8b2-5669-b38a-700637483d10@keplerops.com>\r\n <71a4c136-f107-5491-be70-3fb81895a8c6@alterrawaterco.com>\r\n <42d53d2e-2294-5120-8b17-2f12cdfb81fe@keplerops.com>\r\n <7cf9ce53-5695-5d31-addf-31d1840d80e6@alterrawaterco.com>\r\n <450c876a-f632-5967-b185-b36c301ba7ba@keplerops.com>\r\n <a8bc188e-4317-510b-ac18-4f95b991b903@alterrawaterco.com>\r\n <856f23b7-123b-5975-848d-50c3cd5eb658@keplerops.com>\r\n <827303f1-b93c-5925-bc83-31da49deb54f@alterrawaterco.com>\r\n <67eb0fbf-9e8d-502e-a280-e49c09b75bb7@keplerops.com>\r\n <9c4a72a2-e803-5073-87bc-0275e0ae619b@alterrawaterco.com>\r\n <0ef3d7a7-ce85-5c00-b125-099bc1265aa0@keplerops.com>\r\n <4021f431-81f8-50f2-83c1-cb4e402193e7@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI am still the contact for the handover batch. The agreed new team introducti=\r\non work is the handover I expected; keep anything new on a separate request.\r\n\r\nTheo\r\n",
       "sha256": "16560d5c885164d34772baad9f7c0ecff575caa059a382cd58b08060e0c794ab"
+    },
+    {
+      "message_id": "<4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>",
+      "rfc822": "From: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 03 Sep 2026 10:00:00 -0400\r\nMessage-ID: <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-e3628f3561f43a6e0337b66a\"\r\n\r\n--workplace-e3628f3561f43a6e0337b66a\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nTheo,\r\n\r\nThe proposed agenda is attached. The four parts total thirty minutes. The oth=\r\ner side still needs to name its participants, so this remains a hold.\r\n\r\nMaya\r\n\r\n--workplace-e3628f3561f43a6e0337b66a\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"commercial-arwc-reference-agenda.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBBUldDIHJlZmVyZW5jZSBjb252ZXJzYXRpb24g4oCUIHByb3Bvc2VkIGFnZW5kYQoKMjkgU2Vw\r\ndGVtYmVyIDIwMjYsIDEwOjAw4oCTMTA6MzAgKFVUQ+KIkjA0OjAwKS4gSG9sZCBvbmx5OyB0aGUg\r\ncHJvc3BlY3RpdmUgdXRpbGl0eSBoYXMgbm90IGNvbmZpcm1lZCBpdHMgcGFydGljaXBhbnRzLgoK\r\nMS4gTWFpbnRlbmFuY2UgcHJvY2VzcyBiZWZvcmUgRmllbGRLZXN0OiA1IG1pbnV0ZXMuCjIuIEF2\r\nb2lkaW5nIHJlcGVhdGVkIGNvbGxlY3Rpb24gb2YgZmllbGQgbWF0ZXJpYWw6IDEwIG1pbnV0ZXMu\r\nCjMuIExlYXJuaW5nIHRoZSBzdXBwb3J0IHJvdXRlOiAxMCBtaW51dGVzLgo0LiBRdWVzdGlvbnMg\r\nYW5kIGZpbmlzaDogNSBtaW51dGVzLgoKVGhlbyBhbmQgQ2xhcmEgbWF5IGRlc2NyaWJlIHRoZWly\r\nIG93biBleHBlcmllbmNlLCBpbmNsdWRpbmcgd2hhdCB3YXMgZGlmZmljdWx0LiBObyBzbGlkZXMs\r\nIGVuZG9yc2VtZW50IHNjcmlwdCwgY3VzdG9tZXIgcmVjb3Jkcywgb3IgcGVybWlzc2lvbiB0byBx\r\ndW90ZSBwdWJsaWNseS4gRWFjaCBwYXJ0eSBrZWVwcyBpdHMgb3duIHJlY29yZHMgcHJpdmF0ZS4g\r\nQVJXQyBzdGFmZiBhbGxvY2F0aW9uOiB0d28gcGVvcGxlIGZvciB0aGlydHkgbWludXRlcywgc2l4\r\ndHkgcGVyc29uLW1pbnV0ZXMgdG90YWwuCg==\r\n\r\n--workplace-e3628f3561f43a6e0337b66a--\r\n",
+      "sha256": "d8d580ee41e16844e97efef22531366af6c1de0bdc1df8f2e637e3589c729701"
     },
     {
       "message_id": "<cabb880c-0506-5106-a92f-65ae41f3b553@alterrawaterco.com>",
@@ -8731,6 +8986,11 @@
       "message_id": "<50896107-1b5f-53f8-a390-14c87a99e4c8@alterrawaterco.com>",
       "rfc822": "From: Lila Lestrel <lila.lestrel@alterrawaterco.com>\r\nTo: Jalen Carsten <jalen.carsten@alterrawaterco.com>\r\nDate: Fri, 04 Sep 2026 08:53:00 -0400\r\nMessage-ID: <50896107-1b5f-53f8-a390-14c87a99e4c8@alterrawaterco.com>\r\nSubject: Kit handover for Laboratory [A-WS-214]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nBefore I finish the kit handover for equipment request A-0033-26 at Regional =\r\noffice, please confirm the return point.\r\nLila\r\n",
       "sha256": "94b851f6a64c44008bb40d5672f47e1922dc5786c13f603b895498d3805587b4"
+    },
+    {
+      "message_id": "<80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Maya Ranscombe <maya.ranscombe@keplerops.com>\r\nDate: Fri, 04 Sep 2026 09:00:00 -0400\r\nMessage-ID: <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nLuc has agreed the staff time. Clara has the slot free. The agenda works; lea=\r\nve the support section in, including the part where we stopped calling whiche=\r\nver engineer we happened to know.\r\n\r\nTheo\r\n",
+      "sha256": "75ce24f770dfa16c6c59f8a57c33636a62f0c0616cb9b356853a5c3dfa453a9d"
     },
     {
       "message_id": "<09b16013-41cb-5ebc-b509-059bb57a792b@keplerops.com>",
@@ -9118,6 +9378,11 @@
       "sha256": "1b4d45db43d15002c4de4d9eca5670518d0541779ed8b8dd24a99b7b605ba7fc"
     },
     {
+      "message_id": "<b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>",
+      "rfc822": "From: Louis Zorrel <louis.zorrel@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Mon, 07 Sep 2026 11:00:00 -0400\r\nMessage-ID: <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\n <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nI will handle the other party=E2=80=99s confirmation. Your account terms and =\r\nsupport arrangements are unaffected; this is a voluntary reference conversati=\r\non, not a condition of service.\r\n\r\nLouis\r\n",
+      "sha256": "72b4dd284329c30d45f23d1ac4e775e74fb563761fbbf906746505d0daef6594"
+    },
+    {
       "message_id": "<6ac665c5-0ed2-50bb-ad99-37a338cd1344@keplerops.com>",
       "rfc822": "From: Elin Danwick <elin.danwick@keplerops.com>\r\nTo: Clara Morivelle <clara.morivelle@alterrawaterco.com>\r\nDate: Mon, 07 Sep 2026 11:12:00 -0400\r\nMessage-ID: <6ac665c5-0ed2-50bb-ad99-37a338cd1344@keplerops.com>\r\nSubject: Date display [SUP-2026-0073]\r\nIn-Reply-To: <3910229c-cf33-5845-8d1f-81db8571e002@alterrawaterco.com>\r\nReferences: <e2beba36-695b-53bf-96b5-df647228af7a@alterrawaterco.com>\r\n <87bc581f-5f20-5d7c-97f0-6bb06633a833@keplerops.com>\r\n <c94ec50f-f5fc-5710-bc5c-ada0059d0137@keplerops.com>\r\n <13761e43-6a2e-5cba-a088-540140f8526b@keplerops.com>\r\n <669922ec-562e-5d11-aa25-916b6cf97359@alterrawaterco.com>\r\n <e6d5c5f8-f4fb-575c-ab0b-8e1426e3d7a0@keplerops.com>\r\n <9ecb16fc-db27-56a8-8e20-e0230d406c01@alterrawaterco.com>\r\n <5e5d4d00-e37d-5293-b51c-fb04e5b2be3f@keplerops.com>\r\n <3910229c-cf33-5845-8d1f-81db8571e002@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-b1fcc316f6600cb19059783d\"\r\n\r\n--workplace-b1fcc316f6600cb19059783d\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe original bytes need further review; the screenshot-based conclusion is no=\r\n longer enough. The attached guidance is revision 2 of the article used on SU=\r\nP-2026-0073. It does not erase the earlier report.\r\n\r\nElin\r\n\r\n--workplace-b1fcc316f6600cb19059783d\r\nContent-Type: text/markdown\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment; filename=\"support-kb-date-display-v2.md\"\r\nMIME-Version: 1.0\r\n\r\nIyBEYXRlcyBpbiBGaWVsZEtlc3QKCioqQXBwbGllcyB0bzoqKiBzdXBwb3J0ZWQgRmllbGRLZXN0\r\nIHdvcmtzcGFjZXMKCldvcmtzcGFjZSBwYWdlcyB1c2UgdGhlIGN1c3RvbWVyIGRpc3BsYXkgcHJl\r\nZmVyZW5jZS4gTWFjaGluZSBleHBvcnRzIGNhcnJ5IGFuIHVuYW1iaWd1b3VzIGRhdGUgYW5kIHRp\r\nbWUgdmFsdWUgZm9yIGxhdGVyIHByb2Nlc3NpbmcuCgpJZiB0aGUgcmVjb3JkIHN0aWxsIGRpZmZl\r\ncnMgYWZ0ZXIgdGhpcyBjaGVjaywgcmVwbHkgb24gdGhlIGV4aXN0aW5nIGNhc2Ugd2l0aCB0aGUg\r\ncGFja2FnZSBJRCwgcHJvZHVjdCB2ZXJzaW9uLCBhbmQgd2hhdCB5b3UgZXhwZWN0ZWQgdG8gc2Vl\r\nLiBEbyBub3Qgc2VuZCBwYXNzd29yZHMgb3IgdW5yZWxhdGVkIGN1c3RvbWVyIHJlY29yZHMuCgoj\r\nIyBSZXZpc2lvbiAyIOKAlCAyOCBBdWd1c3QgMjAyNgoKQ29tcGFyZSB0aGUgd29ya3NwYWNlIGRp\r\nc3BsYXkgc2V0dGluZyB3aXRoIHRoZSBleHBsaWNpdCBkYXRlIGFuZCBvZmZzZXQgaW4gdGhlIGV4\r\ncG9ydGVkIHZhbHVlLgoKRG8gbm90IGluZmVyIGEgZGF0ZSBmcm9tIGEgc2hvcnRlbmVkIGZpbGVu\r\nYW1lIG9yIHNpbGVudGx5IHN3YXAgZGF5IGFuZCBtb250aC4KCkFwcGxpZXMgdG8gc3VwcG9ydGVk\r\nIEZpZWxkS2VzdCA0LjguMiwgNC45LjAsIGFuZCA0LjkuMSB3b3Jrc3BhY2VzLiBUaGlzIGlzIGNs\r\nYXJpZmljYXRpb24gb2YgZXhpc3RpbmcgZ3VpZGFuY2UsIG5vdCBhIHByb2R1Y3QgcmVsZWFzZSBh\r\nbm5vdW5jZW1lbnQuIElmIHRoZSBjaGVjayBzdGlsbCBkaWZmZXJzLCBrZWVwIHRoZSBjYXNlIG9w\r\nZW4gd2l0aCB0aGUgZXhhY3QgcmVjb3JkIGFuZCBvYnNlcnZlZCB2ZXJzaW9uLgo=\r\n\r\n--workplace-b1fcc316f6600cb19059783d--\r\n",
       "sha256": "cfa1f92885f57185b541060cdea3585bbf23fdd66a1945e5643055ed4a86dec6"
@@ -9191,6 +9456,11 @@
       "message_id": "<a9353576-6cab-5044-8510-27d10ce3b6fd@alterrawaterco.com>",
       "rfc822": "From: Martin Marrent <martin.marrent@alterrawaterco.com>\r\nTo: Louis Danwick <louis.danwick@alterrawaterco.com>\r\nDate: Tue, 08 Sep 2026 08:37:00 -0400\r\nMessage-ID: <a9353576-6cab-5044-8510-27d10ce3b6fd@alterrawaterco.com>\r\nSubject: Kit handover for Quality systems [A-WS-220]\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nBefore I finish the kit handover for the shared kit at Regional office, pleas=\r\ne confirm the return point.\r\nMartin\r\n",
       "sha256": "a15e2846489e544cc0771f373dc2d748120b3559c82754eced9ce8d73ff3127a"
+    },
+    {
+      "message_id": "<d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Louis Zorrel <louis.zorrel@keplerops.com>\r\nDate: Tue, 08 Sep 2026 09:00:00 -0400\r\nMessage-ID: <d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\n <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\n <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nGood. Keep the agenda to that half-hour. If the date changes, ask again rathe=\r\nr than moving the invitation and assuming we can follow it.\r\n\r\nTheo\r\n",
+      "sha256": "e0467037f73af258164322977cccacd55720f2de4301c81d5eb67f086da6bb07"
     },
     {
       "message_id": "<9b2b1448-b9ef-5e9a-9128-aa28e0168461@alterrawaterco.com>",
@@ -9513,6 +9783,11 @@
       "sha256": "b838644bbbbce85db010b3264ce6f18c988deed7375ea62df7b40bc5cc921715"
     },
     {
+      "message_id": "<d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>",
+      "rfc822": "From: Martin Harlowe <martin.harlowe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Thu, 10 Sep 2026 10:00:00 -0400\r\nMessage-ID: <d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\n <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\n <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\n <d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe calendar hold keeps 29 September, 10:00=E2=80=9310:30. It is tentative be=\r\ncause the prospective utility has not confirmed attendance. I will send an up=\r\ndate on this thread when there is a decision.\r\n",
+      "sha256": "083406630c9accb8518595917cad69fa57debe092d2c2af53eb4519f0d8740f0"
+    },
+    {
       "message_id": "<50d2e562-ae80-5e49-bbbf-28e224c750a4@alterrawaterco.com>",
       "rfc822": "From: Louis Danwick <louis.danwick@alterrawaterco.com>\r\nTo: Martin Marrent <martin.marrent@alterrawaterco.com>\r\nDate: Thu, 10 Sep 2026 10:37:00 -0400\r\nMessage-ID: <50d2e562-ae80-5e49-bbbf-28e224c750a4@alterrawaterco.com>\r\nSubject: Re: Kit handover for Quality systems [A-WS-220]\r\nIn-Reply-To: <641a51ae-f00f-5320-b869-042009c6ab9f@alterrawaterco.com>\r\nReferences: <a9353576-6cab-5044-8510-27d10ce3b6fd@alterrawaterco.com>\r\n <3fbde99c-5454-5351-a284-2b6b4f9d6db4@alterrawaterco.com>\r\n <641a51ae-f00f-5320-b869-042009c6ab9f@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe equipment note gives Regional office as the return point.\r\nLouis\r\n",
       "sha256": "ff3028b0decbe36a61e223b0ecbd2fa60c4bb7e7b5ae24773a144a40c8c8ee95"
@@ -9653,6 +9928,11 @@
       "sha256": "9749910106ae3c457fd398a731b3c2b5fc9deb3061c3d06a33bfe39d95ede08d"
     },
     {
+      "message_id": "<be8469ef-56f3-53af-aa9b-a5760d684bde@alterrawaterco.com>",
+      "rfc822": "From: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nTo: Martin Harlowe <martin.harlowe@keplerops.com>\r\nDate: Fri, 11 Sep 2026 09:00:00 -0400\r\nMessage-ID: <be8469ef-56f3-53af-aa9b-a5760d684bde@alterrawaterco.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\n <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\n <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\n <d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>\r\n <d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nHold received. The date is still clear here. Please tell us promptly if the o=\r\nther side cannot make it.\r\n\r\nTheo\r\n",
+      "sha256": "24732dfe3fcaf9a985efad81e766e9ac8c2c7f2070172ad47c98c7de7dc8ee57"
+    },
+    {
       "message_id": "<72d5ee85-982a-5e3e-9d7d-863383e5310c@alterrawaterco.com>",
       "rfc822": "From: Felix Warden <felix.warden@alterrawaterco.com>\r\nTo: Emre Edran <emre.edran@alterrawaterco.com>,\r\n Farah Nelcourt <farah.nelcourt@alterrawaterco.com>\r\nDate: Fri, 11 Sep 2026 10:22:00 -0400\r\nMessage-ID: <72d5ee85-982a-5e3e-9d7d-863383e5310c@alterrawaterco.com>\r\nSubject: Re: Contact page: Finance [A-TEAM-FINANCE-3]\r\nIn-Reply-To: <69a37512-2148-59db-aaad-4a2ea9e3ddf8@alterrawaterco.com>\r\nReferences: <4f461867-21da-5363-880d-bd6d78dcce15@alterrawaterco.com>\r\n <69a37512-2148-59db-aaad-4a2ea9e3ddf8@alterrawaterco.com>\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nThe page is clearer now. We can ask the rest of the team at the next huddle.\r\nFelix\r\n",
       "sha256": "9e00ff581091e1a8d51dd74a5ef829e7512ce695c1444b5da2c3b191e09b7453"
@@ -9781,6 +10061,11 @@
       "message_id": "<fba7edc5-4f7a-51ed-ab0c-79d227690d97@alterrawaterco.com>",
       "rfc822": "From: ARWC Workplace Updates <workplace-updates@alterrawaterco.com>\r\nTo: Orla Zorrel <orla.zorrel@alterrawaterco.com>,\r\n Nina Garsen <nina.garsen@alterrawaterco.com>\r\nDate: Fri, 11 Sep 2026 11:49:00 -0400\r\nMessage-ID: <fba7edc5-4f7a-51ed-ab0c-79d227690d97@alterrawaterco.com>\r\nSubject: A-WS-145: staff record confirmed\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\nMIME-Version: 1.0\r\n\r\nReference: A-WS-145\r\nOwner: Orla Zorrel\r\nCurrent state: confirmed.\r\nRecorded with Field coordination on 11 September 2026.\r\nNext: Keep the current handover. Corrections go to Nina Garsen.\r\n",
       "sha256": "4fa0a392149ebfd4393abe333d7ed6b6f961fc30380e541df266dfe7951ff420"
+    },
+    {
+      "message_id": "<971451b1-e895-5f44-b982-f305c41f773e@keplerops.com>",
+      "rfc822": "From: Martin Harlowe <martin.harlowe@keplerops.com>\r\nTo: Theo Marrivel <theo.marrivel@alterrawaterco.com>\r\nDate: Mon, 14 Sep 2026 10:00:00 -0400\r\nMessage-ID: <971451b1-e895-5f44-b982-f305c41f773e@keplerops.com>\r\nSubject: ARWC reference conversation [COM-2026-005]\r\nIn-Reply-To: <be8469ef-56f3-53af-aa9b-a5760d684bde@alterrawaterco.com>\r\nReferences: <c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>\r\n <fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>\r\n <b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>\r\n <bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>\r\n <4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>\r\n <80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>\r\n <b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>\r\n <d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>\r\n <d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>\r\n <be8469ef-56f3-53af-aa9b-a5760d684bde@alterrawaterco.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=\"workplace-08b77656b3b938272697f2dd\"\r\n\r\n--workplace-08b77656b3b938272697f2dd\r\nContent-Type: text/plain; charset=\"utf-8\"\r\nContent-Transfer-Encoding: quoted-printable\r\n\r\nThe retained tentative invitation is attached, with the same thirty-minute ti=\r\nme and agreed agenda boundary.\r\n\r\n--workplace-08b77656b3b938272697f2dd\r\nContent-Type: text/calendar\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n filename=\"commercial-arwc-reference-hold-invitation.ics\"\r\nMIME-Version: 1.0\r\n\r\nQkVHSU46VkNBTEVOREFSDQpWRVJTSU9OOjIuMA0KUFJPRElEOi0vL1dvcmtwbGFjZSBDYWxlbmRh\r\nci8vRU4NCkNBTFNDQUxFOkdSRUdPUklBTg0KQkVHSU46VkVWRU5UDQpVSUQ6YjM0MmE3YWQtMzA3\r\nZi01NTYzLWExNTctZmY5MWFkODkzOWVhQGtlcGxlcm9wcy5jb20NCkRUU1RBTVA6MjAyNjA5MTBU\r\nMTMwMDAwWg0KRFRTVEFSVDoyMDI2MDkyOVQxNDAwMDBaDQpEVEVORDoyMDI2MDkyOVQxNDMwMDBa\r\nDQpPUkdBTklaRVI6bWFpbHRvOm1hcnRpbi5oYXJsb3dlQGtlcGxlcm9wcy5jb20NCkFUVEVOREVF\r\nOm1haWx0bzp0aGVvLm1hcnJpdmVsQGFsdGVycmF3YXRlcmNvLmNvbQ0KQVRURU5ERUU6bWFpbHRv\r\nOmNsYXJhLm1vcml2ZWxsZUBhbHRlcnJhd2F0ZXJjby5jb20NCkFUVEVOREVFOm1haWx0bzptYXlh\r\nLnJhbnNjb21iZUBrZXBsZXJvcHMuY29tDQpBVFRFTkRFRTptYWlsdG86bG91aXMuem9ycmVsQGtl\r\ncGxlcm9wcy5jb20NClNVTU1BUlk6QVJXQyByZWZlcmVuY2UgY29udmVyc2F0aW9uIC0gdGVudGF0\r\naXZlIGhvbGQNCkRFU0NSSVBUSU9OOkNPTS0yMDI2LTAwNS4gVGhpcnR5LW1pbnV0ZSBhZ2VuZGEg\r\nYW5kIEFSV0Mgc3RhZmYgdGltZSBhZ3JlZWQuDQogIFByb3NwZWN0aXZlIHV0aWxpdHkgcGFydGlj\r\naXBhbnRzIHVuY29uZmlybWVkLiBObyBzbGlkZXMgb3IgcHVibGljIHF1b3RhdGkNCiBvbiBwZXJt\r\naXNzaW9uLiBBIGNoYW5nZWQgdGltZSBuZWVkcyBmcmVzaCBhZ3JlZW1lbnQuDQpTVEFUVVM6VEVO\r\nVEFUSVZFDQpFTkQ6VkVWRU5UDQpFTkQ6VkNBTEVOREFSDQo=\r\n\r\n--workplace-08b77656b3b938272697f2dd--\r\n",
+      "sha256": "29fb058bf396287cc7e346f45a2813581bd02556f9556663ba8b21c6d5dcefa9"
     },
     {
       "message_id": "<50bdae32-3065-59a1-8b23-d0a1a1dfc2fc@alterrawaterco.com>",
@@ -9963,11 +10248,14 @@
           "<c377f310-5eaf-525d-9e07-e026134f8200@keplerops.com>",
           "<4bf65094-9e87-553f-b532-bb8f4e86b432@keplerops.com>",
           "<a54e01ed-cef2-56c4-8c8e-eaa00e1eb229@keplerops.com>",
+          "<b8f5a8c8-f140-5a0a-8f45-dc37f9f78a2c@keplerops.com>",
           "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
           "<1a234b50-3d23-5eea-86a9-0716c9cefeb8@keplerops.com>",
           "<a992bc84-6d99-5c52-aba1-fae5d4535013@veybridge.test>",
+          "<2adf38d2-250f-55e9-8618-9c132fd2c7e8@alterrawaterco.com>",
           "<5fceb98f-f2ec-57d8-b9a9-d5526cd27b50@keplerops.com>",
           "<4021f431-81f8-50f2-83c1-cb4e402193e7@keplerops.com>",
+          "<4664acd2-448a-5663-9126-28f485fd1d99@keplerops.com>",
           "<978383b3-a85a-56e9-908b-bcdb9131f6b3@keplerops.com>",
           "<839f7345-d1bd-5731-980d-e504dac3278c@keplerops.com>",
           "<f013bbe6-63f7-5991-9e37-32b83df4bb05@keplerops.com>",
@@ -9975,6 +10263,7 @@
           "<71dd1a3f-803c-5753-98e7-bf98594e5b81@keplerops.com>",
           "<428bd3b9-7115-545d-a2c3-0355982deb5b@veybridge.test>",
           "<09b16013-41cb-5ebc-b509-059bb57a792b@keplerops.com>",
+          "<b403121e-e904-5c21-bed4-9b96f843f931@keplerops.com>",
           "<43b5c4cc-fcd0-588e-8f0a-6a132a77d2b1@keplerops.com>",
           "<c1fd41be-36ba-551d-8887-a312890c6796@keplerops.com>",
           "<60dd9826-ed84-5683-b065-01b0fc84ced9@alterrawaterco.com>",
@@ -9993,8 +10282,10 @@
           "<c7ce6139-8cbe-5b00-b495-9a2cf999d122@keplerops.com>",
           "<08846283-f347-5ab6-b4f8-4bf3175b29fb@keplerops.com>",
           "<9b523e56-0025-5ffc-bbce-6adf41763065@keplerops.com>",
+          "<d276928b-b00b-546c-b3dd-1946bbf6118f@keplerops.com>",
           "<945f1c12-a3bf-5adb-8fa3-aee47ee9ba61@keplerops.com>",
           "<4e3d7f4f-3ff7-50a5-aec6-99d5cf51d022@keplerops.com>",
+          "<971451b1-e895-5f44-b982-f305c41f773e@keplerops.com>",
           "<3eb9a036-24d6-5726-90eb-dbab17f05553@alterrawaterco.com>",
           "<a1f16444-55c7-55e5-b00d-85c8fc6953ad@alterrawaterco.com>",
           "<930ac0fb-6338-52ff-b483-9bd6700b2d17@keplerops.com>",
@@ -10063,14 +10354,18 @@
           "<fc73fb9a-f141-53c7-b3c9-23ed1319c6bc@alterrawaterco.com>",
           "<b1ecc27b-0729-54f1-9370-d75ef5b1790f@alterrawaterco.com>",
           "<4f0455b8-892b-52bc-bab9-b97f44e133e8@alterrawaterco.com>",
+          "<bdd04c30-6159-52f7-884f-4739afdbc77c@alterrawaterco.com>",
+          "<005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>",
           "<b0a9c9b0-a11f-5536-8f36-a973d7eeddc9@alterrawaterco.com>",
           "<5ba80efc-904a-5d66-9944-51b353efc611@alterrawaterco.com>",
           "<d39f33fd-8c1a-5726-bc1a-cafeb83a3995@alterrawaterco.com>",
           "<b0d5f891-3722-5053-a563-d6819a044153@alterrawaterco.com>",
           "<f59250ea-b436-5167-af16-2923ba8f3412@alterrawaterco.com>",
           "<2678857b-5a25-5258-9717-8a6fad381fbe@alterrawaterco.com>",
+          "<80faeeaf-c39a-5c39-a5d3-0d33e78c049a@alterrawaterco.com>",
           "<cf3a0c88-acfb-50af-8793-301c584ebc69@alterrawaterco.com>",
           "<22d85de2-780a-54f0-9b98-c65c73e97f98@alterrawaterco.com>",
+          "<d4e24ba2-bc14-5715-b68c-6fedb16601c4@alterrawaterco.com>",
           "<6fd64358-4bf6-5b45-824a-6d680dfa26fc@alterrawaterco.com>",
           "<4bd4c627-f170-551d-ba2c-b5c41f134a54@alterrawaterco.com>",
           "<69fb31b9-3045-551d-b935-7506488c3885@alterrawaterco.com>",
@@ -10080,6 +10375,7 @@
           "<73dfcb52-1af9-5761-9497-dc2e250a4e6c@alterrawaterco.com>",
           "<e24667ca-2daa-5e24-be16-cab7a4dd87e3@alterrawaterco.com>",
           "<c92b0409-34ef-56d3-9e6f-c3bceced2320@alterrawaterco.com>",
+          "<be8469ef-56f3-53af-aa9b-a5760d684bde@alterrawaterco.com>",
           "<0cedf0d3-be41-5993-a0e6-85f9a603d4f5@alterrawaterco.com>",
           "<18445206-4724-5cc5-a1d3-1c0304e81a3a@alterrawaterco.com>",
           "<e04216d6-64e9-5326-acdb-dec7f69d1cff@alterrawaterco.com>"
@@ -10148,6 +10444,7 @@
           "<44ac2e0e-3f13-5787-809a-1b44ddfe6136@ardenvale.test>",
           "<efd87cee-0d5e-5499-b71a-b2893b9ca90b@keplerops.com>",
           "<3492e744-fe4b-52eb-8745-bc906d92c21f@keplerops.com>",
+          "<f593ad11-4a9f-51fe-928d-7201bd60609a@keplerops.com>",
           "<84a94fd8-a9a5-5944-86f1-ef9655056810@ardenvale.test>",
           "<d7252ea9-3be2-57f1-9066-eda6e0c3cf97@keplerops.com>",
           "<2ab01006-fc78-5ef1-b089-a974d5e24a03@keplerops.com>",
@@ -10248,6 +10545,7 @@
           "<95f062fe-b818-50b5-8eb6-d032646c3262@keplerops.com>",
           "<532396b2-c5a7-5f47-8a12-c27b1e41ca6b@keplerops.com>",
           "<b0bb579e-eb13-5b70-9464-74238b3fb2dc@ardenvale.test>",
+          "<5b03c87d-6d2b-57be-8e3e-03a7eae33b6e@keplerops.com>",
           "<11d2e2e1-dceb-52b1-8285-e4ea723922c9@keplerops.com>",
           "<fd3758f0-fb61-520f-891c-637763445edc@keplerops.com>",
           "<b47c92b1-7207-5fe6-9442-cd9094497c40@keplerops.com>",
@@ -10259,9 +10557,11 @@
           "<8da5f373-dd42-5f6b-a5ae-ea9191b1d809@keplerops.com>",
           "<52200d11-de38-57de-a291-18460af0858d@keplerops.com>",
           "<628adac0-45e7-5b3e-8742-8418ba03a9c0@keplerops.com>",
+          "<485c61fa-cfaa-5a66-841e-da3ab0a3c24b@keplerops.com>",
           "<40ddc7e9-3648-59f3-8a30-93bca048bb4f@ardenvale.test>",
           "<bf9adc6c-51fc-5b13-ae9b-97dc492ea4ea@keplerops.com>",
           "<298710b5-e7c3-5ed5-be84-6c152fa291dd@keplerops.com>",
+          "<bd6fb2e6-7dbb-564f-ad9f-80e83b57767e@keplerops.com>",
           "<cc61e39f-94c3-5c5f-b61c-446ded62ccf0@keplerops.com>",
           "<3ac20393-af2e-578f-a7cc-5154ee7ff7a4@keplerops.com>",
           "<37cacc7a-b8a9-51dd-804b-69af786b9946@keplerops.com>",
@@ -10441,6 +10741,7 @@
           "<711b451d-5011-531e-aa2e-9f2838712167@alterrawaterco.com>",
           "<aa5fd1a3-3199-527d-bc27-293e283bac20@alterrawaterco.com>",
           "<2b9e3043-370f-5181-8801-9a8de5b9423f@alterrawaterco.com>",
+          "<4ae190d2-df67-5d09-bc36-3f64df094816@alterrawaterco.com>",
           "<0c75db50-6125-5393-911a-594318e64024@alterrawaterco.com>",
           "<e99ca8f1-50bb-57a9-b9d4-c123f818d058@alterrawaterco.com>",
           "<0e722abb-0196-55c0-be35-4cc575574644@alterrawaterco.com>",
@@ -10448,6 +10749,7 @@
           "<d06d9dea-a551-519d-9262-71cf71d5e8d2@alterrawaterco.com>",
           "<44ceaf94-e543-5bfe-ab1b-c8e1ce4d3977@alterrawaterco.com>",
           "<e8af1259-7029-55a4-92d5-291730075a65@alterrawaterco.com>",
+          "<81ec8abe-ed80-58e8-a18f-c9b8cecc2d43@alterrawaterco.com>",
           "<0b4c174d-2ce1-5ef7-a84b-5e4445c4d5ee@alterrawaterco.com>",
           "<171b1150-d4e4-5ec0-8934-0f9b549f273a@alterrawaterco.com>",
           "<cc98e427-17fa-561f-9744-d6ff07d95ba0@alterrawaterco.com>",
@@ -10550,9 +10852,11 @@
           "<f08132ba-ecb6-5a62-b8b9-e5da600afa37@talvern.test>",
           "<ec59dcb4-c57c-5d15-a2b6-5ae7e05caabd@talvern.test>",
           "<8761826b-e79f-545b-83c0-9be2022ed4ae@merewick.test>",
+          "<f29f4b6c-1fc5-5d92-95c1-4b49f9ecd500@keplerops.com>",
           "<071cc89b-2f1f-5ec9-aa9f-aceb3c5e4413@talvern.test>",
           "<7c6d791b-f3c8-5c23-8dd2-bdc8dc462e40@merewick.test>",
           "<5b4df630-c2c5-55c7-b06a-979618e27eb4@keplerops.com>",
+          "<e062e951-3425-52b7-98e8-c7005c02f6f2@keplerops.com>",
           "<2188d8e2-d91a-571a-a5cc-1c0cd00394ad@keplerops.com>",
           "<0cc29027-e6af-5dda-8798-897e43032500@alterrawaterco.com>",
           "<ca905392-83dc-5d00-b657-b688586c5b2e@veybridge.test>",
@@ -10562,9 +10866,12 @@
           "<aa60f7ee-3fe6-5356-8614-5fbb03dabd76@veybridge.test>",
           "<9d25d03a-ddc5-5b7c-889d-6f0e07d43f19@merewick.test>",
           "<da1da993-dfe3-5e46-b606-c56e4ba94056@ardenvale.test>",
+          "<6f9f5cb8-155f-5512-932b-1fa117e0e239@keplerops.com>",
+          "<bab3b666-36c1-5903-89a3-7ab3cdb468e9@keplerops.com>",
           "<6d95eb71-0e86-5581-83ca-b6c33fce847e@talvern.test>",
           "<9d6e55b7-5c88-59fa-b165-00ccb2f30bb7@merewick.test>",
           "<498b3fdc-e9c7-5d2c-93a5-1894c9088cee@keplerops.com>",
+          "<3cbd14a0-82b8-5024-802c-5a3970e3685f@keplerops.com>",
           "<afc3ba16-94f8-53b1-b87f-c4d6f0f1fc8a@talvern.test>",
           "<e8511faa-9af7-5f7d-845d-5fde8c1591b0@merewick.test>",
           "<3b3e9263-132f-51a0-8c5d-11a13e02fc95@talvern.test>",
@@ -10581,16 +10888,20 @@
           "<82bce106-d972-5035-9c6b-758a4a9c420e@keplerops.com>",
           "<ef25190a-793f-53ae-a210-8d6b439f6792@ardenvale.test>",
           "<8121787c-2e11-5a9e-8a32-c814395041a6@keplerops.com>",
+          "<b9f1decb-86e5-5d9d-ad66-34d99f0a94b9@keplerops.com>",
           "<724888b3-be98-5ff7-9d2e-ae37e500f095@keplerops.com>",
           "<f9dd0a91-5c77-56a6-90a5-226012011a74@merewick.test>",
           "<1d06f0d1-cf83-557a-afdc-8d2519589ecc@talvern.test>",
+          "<206c3b71-3947-52ba-add7-f882714e8eda@keplerops.com>",
           "<6e077fe6-1ecd-52bf-806c-e1642c48d0ea@merewick.test>",
           "<dfd79ca1-fda5-563c-a6d8-e862aba8ef39@talvern.test>",
           "<b0789072-ff39-5bf4-9166-54268dbc67c5@merewick.test>",
           "<0911d147-a9f9-54fb-9287-f0ede4263964@talvern.test>",
+          "<8dca3bce-49e0-56f2-a64d-b9d62b090779@keplerops.com>",
           "<3411cbce-67b8-557e-865a-070ca0e4f719@merewick.test>",
           "<16bf53cd-0549-5219-a069-76825b8797e9@talvern.test>",
           "<2f508d51-f878-5c66-b9df-240ebbf5b7e2@keplerops.com>",
+          "<45ee7622-3a88-53ee-b88c-a18cfbd97fc1@keplerops.com>",
           "<a07585db-09ff-535b-bc80-818c3bb45f25@veybridge.test>",
           "<1948e2b8-2960-58a5-ac2d-655065069160@merewick.test>",
           "<53a8a833-f461-51f2-a747-1826c35e4481@alterrawaterco.com>",
@@ -10614,22 +10925,31 @@
           "<d84e8ed3-685e-5108-8802-30224b713c3d@keplerops.com>",
           "<aa8b727a-0d18-57b1-bb10-e0bd73b33852@merewick.test>",
           "<0fa27e9c-4b3f-53e5-9a3f-b43fc39224dd@talvern.test>",
+          "<e8062d54-e5cf-53b9-b388-ea91b3947689@keplerops.com>",
+          "<9837ba67-62a1-5890-8edd-27dfbdd8b293@keplerops.com>",
           "<c9b6f412-72c6-54e9-84fa-998c1a00bae0@veybridge.test>",
           "<4ed5c698-91d3-531d-a536-56a022532ddc@ardenvale.test>",
           "<5badfdbe-2bb1-5ce5-b7ae-422a912ba2c5@merewick.test>",
           "<cd0a41a5-bb4f-5420-aeee-ffafb3e685df@alterrawaterco.com>",
           "<a4ea46e5-959c-557d-bdd9-ba32596d6f37@keplerops.com>",
+          "<97300a7d-6d94-5359-ae0a-e9aa87ff2d40@keplerops.com>",
           "<90db320f-8565-5ee6-8178-f5ab28493b71@veybridge.test>",
           "<d32a35be-6991-57ae-9e7e-c6c53d2929ed@ardenvale.test>",
           "<6b25ca91-41fd-563a-84ec-593ba7361807@merewick.test>",
           "<a7d3f770-5f1a-5b5c-beb1-5d241b89e5f1@talvern.test>",
           "<b85f17cb-9f48-557f-b42f-5513609324d6@keplerops.com>",
+          "<c89f776a-ed24-55d1-a871-5ade03a7a6ed@keplerops.com>",
           "<d110e742-6b11-55d9-b414-8f11b8031ec7@alterrawaterco.com>",
           "<879be2e9-d747-5c99-9109-ac5343f99105@alterrawaterco.com>",
+          "<71379a9a-5f0b-5041-bcd5-ef73b4ca3501@keplerops.com>",
+          "<d8ac0af4-2e11-5793-a4c7-5b261b9e17db@keplerops.com>",
           "<dfda35d3-9a3e-562f-b5bb-23a00ac110a1@merewick.test>",
           "<1ef06133-3341-50b3-855c-4fa1d76a0adb@talvern.test>",
           "<9aadd56c-a661-5a3e-8eda-d57341cb8e47@merewick.test>",
           "<d20d7d1f-53eb-5bb3-94be-0432d91829d7@talvern.test>",
+          "<adc557d2-79d9-5b32-8dc1-2a5a3dfa3028@keplerops.com>",
+          "<a7939f87-05e3-5c0a-a07d-9059c4f88064@keplerops.com>",
+          "<aa16337d-1713-5f11-952a-29d4cea22a23@keplerops.com>",
           "<a837d451-1d64-52a8-93a1-8deb18ee36e0@merewick.test>",
           "<6b2abfec-e497-5705-8468-1c9bd54841c1@talvern.test>",
           "<1569d437-c445-5911-9736-777a30259f7a@merewick.test>",
@@ -10637,6 +10957,7 @@
           "<6188fd58-ab3b-5077-8bf2-8335d02ac2b2@keplerops.com>",
           "<5c08c411-081e-5559-9873-df89e03e53bd@merewick.test>",
           "<3c096693-bfee-557c-9064-d85bb2d27df5@talvern.test>",
+          "<00c26bf8-fbbd-5130-89f9-21ca79189572@keplerops.com>",
           "<b2d4281e-6202-5dd1-8fb3-8025ff5b6ebf@merewick.test>",
           "<0224b75d-3ac6-5b5d-ad26-fc18524e9bb9@veybridge.test>",
           "<a3d7444e-5429-5ca8-9624-afcb23e6dcef@merewick.test>",
@@ -10662,10 +10983,13 @@
         "Sent": [
           "<bef72b51-788b-5fd8-8a9b-f0cace0faa9c@alterrawaterco.com>",
           "<4c420897-a0e1-56d1-98d2-bd70a12a102d@alterrawaterco.com>",
+          "<58e34b02-d7de-5c5a-9f92-52c85f6a0fb4@alterrawaterco.com>",
           "<55c27930-9d82-56bc-903d-d4d516523bfb@alterrawaterco.com>",
           "<3e47eee8-3d7f-58e3-81b5-33511e96455e@alterrawaterco.com>",
+          "<b6fb4519-a549-51a1-83a3-77cf75956062@alterrawaterco.com>",
           "<8874c0c4-f51f-5ccd-a03f-1f1662d5518c@alterrawaterco.com>",
           "<e63bc69f-1b39-5fef-8888-2b1de3b42bd1@alterrawaterco.com>",
+          "<fdf269d4-5e29-5972-b390-b3ab4b2fe36f@alterrawaterco.com>",
           "<54209321-8db2-5409-9e1a-bab3487f0565@alterrawaterco.com>",
           "<5fbe04d3-07a2-5166-b551-46a63472231b@alterrawaterco.com>",
           "<6615e2ec-4a0c-5132-b2fe-0e8edbd1ebeb@alterrawaterco.com>",
@@ -10674,11 +10998,14 @@
           "<827e5201-dfc9-549c-804b-8674cb7b2848@alterrawaterco.com>",
           "<cb4ecd3b-424e-5b9f-9b99-3dfed1738d85@alterrawaterco.com>",
           "<37fe386a-67b1-594f-8460-4b37df04ff61@alterrawaterco.com>",
+          "<17885a5f-c936-51da-8019-84b14c874525@alterrawaterco.com>",
           "<6e763ea7-49ba-517b-a3ac-256a40a12d3f@alterrawaterco.com>",
+          "<aa5970ed-7a4d-5ffa-b1cd-7c6ab3854ed6@alterrawaterco.com>",
           "<56d47481-c22d-5fe7-ac11-2f04a4448ae0@alterrawaterco.com>",
           "<f139388d-a9b1-5c2c-998d-282392d116ec@alterrawaterco.com>",
           "<d920cdf2-ec7a-562c-8ca0-a45c66274bf6@alterrawaterco.com>",
           "<4e82ccf1-648f-595a-a73c-2ff93a03852c@alterrawaterco.com>",
+          "<90114b00-c70c-5c19-9d7c-99887a8322eb@alterrawaterco.com>",
           "<727edc79-8b2c-525d-8e89-9084419f6136@alterrawaterco.com>",
           "<02efdaab-b545-5f15-9db9-b71e136db5e1@alterrawaterco.com>",
           "<6eabd350-f5d6-5151-8f25-b3e465d6a46f@alterrawaterco.com>",
@@ -10688,16 +11015,20 @@
           "<171a3d36-ac7e-5c13-aad3-b5eb6c45c870@alterrawaterco.com>",
           "<883b1e0f-0898-5ea8-8348-50f35bd2ed0b@alterrawaterco.com>",
           "<30708263-1d2f-5432-bc56-2e4d60a09dc3@alterrawaterco.com>",
+          "<e0f9fa62-ae74-56f0-8251-c9fe1c783ef6@alterrawaterco.com>",
           "<c33c59c7-131a-59c4-8f23-051cc7f27fa9@alterrawaterco.com>",
+          "<b5c403f0-4707-5f02-94d3-2bf2437f464d@alterrawaterco.com>",
           "<1fb83c94-1a84-5537-b509-6d12a39ca832@alterrawaterco.com>",
           "<849810f1-0bcf-588e-b077-72d964c4b781@alterrawaterco.com>",
           "<25cc0073-ffad-5995-8151-ececf9d33984@alterrawaterco.com>",
+          "<90ac3222-398d-5d8d-a3b6-8dbd1a261ff8@alterrawaterco.com>",
           "<8c20dcd6-352e-5e8c-b551-8e1771e0d563@alterrawaterco.com>",
           "<b2c27442-6ff7-57f4-a8ac-fcedae07f547@alterrawaterco.com>",
           "<7e3b13f9-5bec-54be-b0e2-cb4012d40fa9@alterrawaterco.com>",
           "<84a2a460-07ac-5a9e-8d45-71efda6e71d6@alterrawaterco.com>",
           "<8b1bc30c-9bb6-5ea2-b21d-1d01247e58b7@alterrawaterco.com>",
           "<8c0f81b0-a85e-5dff-b8ee-de7094d0f9e2@alterrawaterco.com>",
+          "<7bb2ad0f-7f98-5ff0-84ae-817c53beee01@alterrawaterco.com>",
           "<c1e71964-687a-5a92-abad-1e3ea16cc93b@alterrawaterco.com>",
           "<15ffa93b-a42d-56cd-8ea8-b77791e4fdea@alterrawaterco.com>",
           "<ec29047e-7abf-5aaf-9203-61f371b0f67f@alterrawaterco.com>",
@@ -10715,29 +11046,40 @@
           "<63ab169d-c2d5-5618-ba74-01ab3c1254fd@alterrawaterco.com>",
           "<a6d9ce89-de17-5296-819d-8cf0e4e0d8c8@alterrawaterco.com>",
           "<03750430-6308-501c-b755-d795eec2680e@alterrawaterco.com>",
+          "<737c3ecf-f7d4-59a8-9e2e-0cfe534f0d03@alterrawaterco.com>",
           "<517355c1-8381-59f3-ac0d-62f329688082@alterrawaterco.com>",
           "<d019ac66-17cd-576e-afd9-8c5f90f6c5fe@alterrawaterco.com>",
+          "<02273837-ff61-557e-8d40-2ec0c24dc71c@alterrawaterco.com>",
+          "<315e7666-766a-5145-b7a0-0a1414e163aa@alterrawaterco.com>",
+          "<afc82452-1f82-5926-81b8-51e5dbc37cbf@alterrawaterco.com>",
           "<c85b0b20-f569-5eda-9b18-d172f2d6be2d@alterrawaterco.com>",
           "<ed7f5daa-9199-5116-b0de-f2ef3ac2180e@alterrawaterco.com>",
           "<63291ac4-9bb2-53bb-b4f1-170bbcc7fa03@alterrawaterco.com>",
           "<432b1557-5cc3-56d5-abc3-2abc09b21c9e@alterrawaterco.com>",
           "<83349635-d001-5d81-8d20-79c4e5276f7c@alterrawaterco.com>",
           "<baf52fbd-c822-571c-9f8c-09589a611aad@alterrawaterco.com>",
+          "<7a1a5b75-45f9-5351-8924-b976a45e88d7@alterrawaterco.com>",
           "<6ed07c1d-1fd3-5dbf-905d-a91fb2ad882a@alterrawaterco.com>",
           "<058492b4-03d4-5f85-9477-abf1bf4abf43@alterrawaterco.com>",
+          "<43dcd526-79fe-5b91-83fd-5951760306d5@alterrawaterco.com>",
+          "<0047d279-401c-531d-a516-bfe8e328b400@alterrawaterco.com>",
           "<59726577-51d2-5907-b646-3fba6e348836@alterrawaterco.com>",
           "<3da2a746-287a-5833-b124-20263c706f5e@alterrawaterco.com>",
+          "<23d49abd-61aa-57ee-a476-b75459848646@alterrawaterco.com>",
           "<67c414b3-a12c-5f0b-a04c-2a9dda492ff8@alterrawaterco.com>",
           "<2371d1ab-9889-551f-a249-541a2da6bcc7@alterrawaterco.com>",
+          "<039e4094-c6e7-5130-b987-e6f86748c7cd@alterrawaterco.com>",
           "<7af313bf-711c-5439-93f7-35653336db10@alterrawaterco.com>",
           "<be1d8937-9b46-5045-8856-24d9cb93fa61@alterrawaterco.com>",
           "<c90d6be3-cb41-5668-b7d6-beaeb3e5d4c3@alterrawaterco.com>",
           "<f1756abe-8c38-53a7-8819-70a3471c8e6b@alterrawaterco.com>",
           "<2c4fde76-a6a0-5122-ae04-2cd32dd50a8c@alterrawaterco.com>",
+          "<74c5d823-ed4a-5a45-8082-0b21226a7956@alterrawaterco.com>",
           "<36acfbd6-e4c8-5f74-a22b-a9375d5a1547@alterrawaterco.com>",
           "<0cc8a714-33f2-5fd2-afba-6e92072c7a85@alterrawaterco.com>",
           "<18d9a3af-f0e9-58d8-ba3c-d4dee61a42e5@alterrawaterco.com>",
           "<de2d532a-3d9d-56fb-a413-0963a1ea192c@alterrawaterco.com>",
+          "<42a0e6e4-2e9f-5332-8976-caadafc60572@alterrawaterco.com>",
           "<4af64273-6e0b-5228-9338-ff97c1f63a3a@alterrawaterco.com>",
           "<4897ce1a-5b92-59f2-9200-b70f9b3a95cf@alterrawaterco.com>",
           "<2f8746c6-88a8-529f-bcbe-5013bdf45f10@alterrawaterco.com>",
@@ -10768,6 +11110,7 @@
           "<76bb0c68-882a-5783-aadf-745e8cbef36c@alterrawaterco.com>",
           "<c329758c-bbef-5a3d-8f2d-e6dbeab3de5c@alterrawaterco.com>",
           "<e62145fa-3f42-5c92-8687-91eec7be3076@alterrawaterco.com>",
+          "<005cc736-8ac3-5bbd-835e-505487b92861@alterrawaterco.com>",
           "<270a2824-d150-5c1d-8140-1a9c9f34eefa@alterrawaterco.com>",
           "<12f5d413-886b-5d52-98d8-f76adaf066a4@alterrawaterco.com>",
           "<61dec487-12db-5049-adff-9f0523c1ac2b@alterrawaterco.com>",
@@ -10781,6 +11124,7 @@
           "<90d6f2f8-a0fd-57cf-bc14-f0ca188abf52@alterrawaterco.com>",
           "<843151c2-c890-5de8-b269-7cf7185b87fe@alterrawaterco.com>",
           "<33d8146a-3690-5630-9ca6-8e24fa880b05@alterrawaterco.com>",
+          "<2adf38d2-250f-55e9-8618-9c132fd2c7e8@alterrawaterco.com>",
           "<f107bbba-2924-5621-8b57-4d7b4808aaaf@alterrawaterco.com>",
           "<42238829-47ad-5fda-9c89-b4257a783953@alterrawaterco.com>",
           "<b0227d4b-449c-568f-8a88-8d1088d9ecec@alterrawaterco.com>",

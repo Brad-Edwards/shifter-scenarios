@@ -1,0 +1,147 @@
+events:
+- id: com-2026-002-handover
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - clara
+  summary: River contractor archive guide handover
+  description: COM-2026-002. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-06-22T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-007-handover
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - bc_rillhaven_2
+  summary: Winter handover mapping handover
+  description: COM-2026-007. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-10-23T15:00:00-04:00'
+  end: '2026-10-23T16:00:00-04:00'
+  created_at: '2026-08-25T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-012-handover
+  employer: keplerops
+  organizer: kwm023
+  attendees:
+  - bc_davenmoor_2
+  summary: Reservoir return catalogue handover
+  description: COM-2026-012. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-06-24T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-017-handover
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - bc_elverden_2
+  summary: Two-district archive handover handover
+  description: COM-2026-017. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-06-25T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-022-handover
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_fennor_2
+  summary: Coastal inspection export guide handover
+  description: COM-2026-022. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-06-26T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-027-handover
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - bc_haveril_2
+  summary: Reviewer sign-off induction pack handover
+  description: COM-2026-027. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-10-23T15:00:00-04:00'
+  end: '2026-10-23T16:00:00-04:00'
+  created_at: '2026-08-24T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-032-handover
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_mirrenfold_2
+  summary: Regional comparison index handover
+  description: COM-2026-032. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-06-30T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-037-handover
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_orvellan_2
+  summary: Heat-network return checklist handover
+  description: COM-2026-037. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-10-23T15:00:00-04:00'
+  end: '2026-10-23T16:00:00-04:00'
+  created_at: '2026-08-26T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-042-handover
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_pellhaven_2
+  summary: Municipal export reconciliation handover
+  description: COM-2026-042. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-07-31T15:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  created_at: '2026-07-02T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: com-2026-047-handover
+  employer: keplerops
+  organizer: kwm030
+  attendees:
+  - bc_roskelle_2
+  summary: Water and heat onboarding comparison handover
+  description: COM-2026-047. Review the named samples and handover guide. Customer acceptance is recorded separately
+    after the check.
+  start: '2026-10-23T15:00:00-04:00'
+  end: '2026-10-23T16:00:00-04:00'
+  created_at: '2026-08-28T15:00:00-04:00'
+  status: CONFIRMED
+  story: commercial
+- id: commercial-arwc-reference-hold
+  employer: keplerops
+  organizer: kwm052
+  attendees:
+  - theo
+  - clara
+  - maya
+  - kwm048
+  summary: ARWC reference conversation - tentative hold
+  description: COM-2026-005. Thirty-minute agenda and ARWC staff time agreed. Prospective utility participants unconfirmed.
+    No slides or public quotation permission. A changed time needs fresh agreement.
+  start: '2026-09-29T10:00:00-04:00'
+  end: '2026-09-29T10:30:00-04:00'
+  created_at: '2026-09-10T09:00:00-04:00'
+  status: TENTATIVE
+  story: commercial

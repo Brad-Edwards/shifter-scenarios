@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 22,151 distinct authored messages, 4,358 source documents,
-staff directories for all 294 employees, and 169 calendar items. The
+The collection contains 23,527 distinct authored messages, 4,609 source documents,
+staff directories for all 294 employees, and 180 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -21,6 +21,11 @@ case documents, and adds 60 child cases. Its ten shared corrections cover all
 thirty engineering escalations: 24 cases close after verification and six await
 customer checks. Its [review record](../../docs/narrative/customer-followup-review.md)
 documents the scope and volume adjustments. The Rillhaven workshop remains future.
+Commercial adds 1,376 messages, 251 documents, and eleven calendar items across
+sixty histories for the existing twelve customers. Its
+[review record](../../docs/narrative/commercial-review.md) explains accepted
+renewals, project orders, unsuccessful opportunities, private pricing, billing
+authority, capacity, and the smaller message allocation.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -42,11 +47,12 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/support-intake.yaml` | Author-only joins for support cases, separate customer/internal threads, attachments, and appointments. |
 | `authoring/release-platform.yaml` | Author-only release acceptance joins, operating states, recovery samples, logical service owners, and counts. |
 | `authoring/customer-followup.yaml` | Current case dispositions over the original intake history, child-case parents, knowledge revisions, correction/release/delivery joins, and workshop preparations. |
+| `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
 | `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
-| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating calendars are complete items in the document source package. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating and commercial calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |

@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-9242ab422c76cf5928f44b95a33b7d9c9176c63541fcd073935f4ff7ba65fb4a
+      version: sha256-7f82bcd9e6e52858f56341d64b1afcd37f509aa3f5cc80a92289d1e92db110ea
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state.
     items:
@@ -129,6 +129,8 @@ content:
       display_name: Role note for River treatment [A-WS-082]
     - name: wm-0969
       display_name: Handover note for People and board support [A-WS-278]
+    - name: cm-0309
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-0003
       display_name: Archive index — River distribution [K-C-001-26-02]
     - name: si-0001
@@ -201,6 +203,8 @@ content:
       display_name: 'Re: Handover note for People and board support [A-WS-278]'
     - name: bn-1323
       display_name: Reservation MW-26-0612 [A-S-003-26-02]
+    - name: cm-0312
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-0005
       display_name: 'Re: Archive index — River distribution [K-C-001-26-02]'
     - name: wm-0203
@@ -245,6 +249,8 @@ content:
       display_name: Follow-up on River distribution [A-WS-134]
     - name: wm-0808
       display_name: Handover note for Service desk [A-WS-232]
+    - name: cm-0313
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-0006
       display_name: Billing contact — regional maintenance [K-C-001-26-03]
     - name: si-0327
@@ -331,6 +337,8 @@ content:
       display_name: 'Re: Return note — flow meter AV-28 [A-S-002-26-02]'
     - name: bn-1385
       display_name: 'Re: Meter note — short-run line [A-B-001-26-02]'
+    - name: cm-0316
+      display_name: River contractor archive guide [COM-2026-002]
     - name: si-0330
       display_name: 'Re: Date display [SUP-2026-0037]'
     - name: si-0653
@@ -361,6 +369,8 @@ content:
       display_name: 'Re: Date display [SUP-2026-0289]'
     - name: si-3249
       display_name: 'Re: Notice routing [SUP-2026-0361]'
+    - name: cm-0317
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0305
       display_name: 'Re: Follow-up on River treatment [A-WS-088]'
     - name: wm-0648
@@ -511,6 +521,8 @@ content:
       display_name: 'Re: Service order — flow meter AV-28 [A-S-002-26-03]'
     - name: bn-1388
       display_name: 'Re: Account check — short-run line [A-B-001-26-03]'
+    - name: cm-0322
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-0014
       display_name: 'Re: Quarterly record — controls review [K-C-001-26-04]'
     - name: wm-1357
@@ -523,6 +535,8 @@ content:
       display_name: Role note for Field coordination [A-WS-146]
     - name: wm-0850
       display_name: Follow-up on Customer contact [A-WS-244]
+    - name: cm-0323
+      display_name: River contractor archive guide [COM-2026-002]
     - name: si-4114
       display_name: 'Re: Visit date export [SUP-2026-0433]'
     - name: bn-0015
@@ -537,6 +551,8 @@ content:
       display_name: 'Re: Kit handover for Capital projects [A-WS-192]'
     - name: bn-0016
       display_name: 'Re: Missing date — field coordination [K-C-001-26-05]'
+    - name: cm-0324
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0426
       display_name: Role note for River distribution [A-WS-123]
     - name: wm-0509
@@ -621,6 +637,8 @@ content:
       display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
     - name: wm-0872
       display_name: 'Re: Learning slot for Customer contact [A-WS-250]'
+    - name: cm-0325
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-0019
       display_name: 'Re: Missing date — field coordination [K-C-001-26-05]'
     - name: bn-1391
@@ -643,6 +661,8 @@ content:
       display_name: 'Re: Printed export [SUP-2026-0337]'
     - name: si-4119
       display_name: 'Re: Visit date export [SUP-2026-0433]'
+    - name: cm-0328
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0449
       display_name: Cover for River distribution [A-WS-129]
     - name: wm-0790
@@ -651,6 +671,8 @@ content:
       display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
     - name: wm-0873
       display_name: 'Re: Learning slot for Customer contact [A-WS-250]'
+    - name: cm-1366
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-1392
       display_name: 'Re: Plant diary — packing hall [A-B-001-26-04]'
     - name: bn-1452
@@ -727,6 +749,8 @@ content:
       display_name: Learning slot for Maintenance planning [A-WS-181]
     - name: wm-0972
       display_name: Kit handover for People and board support [A-WS-279]
+    - name: cm-0334
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0369
       display_name: 'Re: Cover for Pine distribution [A-WS-106]'
     - name: wm-0712
@@ -1067,6 +1091,8 @@ content:
       display_name: Cover for River distribution [A-WS-124]
     - name: wm-0773
       display_name: Learning slot for Compliance reporting [A-WS-222]
+    - name: cm-0677
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: bn-1401
       display_name: Account check — packing hall [A-B-001-26-06]
     - name: bn-0030
@@ -1129,6 +1155,8 @@ content:
       display_name: 'Re: Cover for River distribution [A-WS-124]'
     - name: wm-0775
       display_name: 'Re: Learning slot for Compliance reporting [A-WS-222]'
+    - name: cm-0680
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: wm-0252
       display_name: 'Re: Role note for Pine treatment [A-WS-072]'
     - name: wm-0352
@@ -1159,6 +1187,8 @@ content:
       display_name: Learning slot for Maintenance planning [A-WS-176]
     - name: wm-0955
       display_name: Role note for Executive [A-WS-274]
+    - name: cm-0681
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: bn-0035
       display_name: Export title — field coordination [K-C-001-26-10]
     - name: si-1194
@@ -1227,6 +1257,8 @@ content:
       display_name: 'Re: Learning slot for Resource planning [A-WS-199]'
     - name: wm-0343
       display_name: 'Re: Kit handover for River treatment [A-WS-099]'
+    - name: cm-0684
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: bn-1344
       display_name: 'Re: Capacity outlook — August capacity [A-S-003-26-07]'
     - name: bn-1464
@@ -1253,6 +1285,8 @@ content:
       display_name: 'Re: Comment ordering [SUP-2026-0457]'
     - name: wm-0876
       display_name: 'Re: Role note for Customer contact [A-WS-251]'
+    - name: cm-0685
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: wm-0344
       display_name: 'Re: Kit handover for River treatment [A-WS-099]'
     - name: bn-1345
@@ -1543,6 +1577,8 @@ content:
       display_name: 'Re: Contact route for River treatment [A-WS-084]'
     - name: wm-0394
       display_name: 'Re: Next team slot: Pine distribution [A-WS-113]'
+    - name: cm-0690
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: wm-0391
       display_name: 'Re: Kit handover for Pine distribution [A-WS-112]'
     - name: wm-1392
@@ -1695,8 +1731,12 @@ content:
       display_name: 'Re: Learning slot for Customer contact [A-WS-240]'
     - name: wm-0333
       display_name: 'Re: Cover for River treatment [A-WS-096]'
+    - name: cm-0691
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: bn-0047
       display_name: 'Re: Field note wording — regional maintenance [K-C-001-26-13]'
+    - name: cm-0692
+      display_name: Unattended contractor acceptance [COM-2026-003]
     - name: si-5010
       display_name: 'Re: New team introduction [SUP-2026-0481]'
     - name: wm-0594
@@ -2115,6 +2155,8 @@ content:
       display_name: 'Re: Field mapping [SUP-2026-0373]'
     - name: si-3820
       display_name: 'Re: Sample import [SUP-2026-0409]'
+    - name: cm-0337
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0900
       display_name: 'Re: Contact route for Accounts [A-WS-258]'
     - name: wm-0377
@@ -2129,6 +2171,8 @@ content:
       display_name: 'Re: Plant diary — meter bay [A-B-001-26-10]'
     - name: bn-0059
       display_name: 'Re: Handover correction — field coordination [K-C-001-26-15]'
+    - name: cm-0338
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-1240
       display_name: 'Re: Visit diary — south valve chamber [A-S-001-26-10]'
     - name: si-0113
@@ -2195,6 +2239,8 @@ content:
       display_name: 'Re: Sample import [SUP-2026-0409]'
     - name: bn-0060
       display_name: 'Re: Handover correction — field coordination [K-C-001-26-15]'
+    - name: cm-0339
+      display_name: River contractor archive guide [COM-2026-002]
     - name: wm-0395
       display_name: Handover note for Pine distribution [A-WS-114]
     - name: wm-0738
@@ -2233,6 +2279,8 @@ content:
       display_name: Contact route for Electrical and controls [A-WS-166]
     - name: wm-0920
       display_name: Role note for Procurement [A-WS-264]
+    - name: cm-0001
+      display_name: Alterra service budget review [COM-2026-001]
     - name: bn-1241
       display_name: Inspection report — south valve chamber [A-S-001-26-11]
     - name: bn-1301
@@ -2267,6 +2315,10 @@ content:
       display_name: 'Re: Contact route for Electrical and controls [A-WS-166]'
     - name: wm-0921
       display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: cm-0340
+      display_name: River contractor archive guide [COM-2026-002]
+    - name: cm-0341
+      display_name: River contractor archive guide [COM-2026-002]
     - name: bn-1242
       display_name: 'Re: Inspection report — south valve chamber [A-S-001-26-11]'
     - name: bn-1302
@@ -2299,6 +2351,8 @@ content:
       display_name: 'Re: Contact route for Electrical and controls [A-WS-166]'
     - name: wm-0922
       display_name: 'Re: Role note for Procurement [A-WS-264]'
+    - name: cm-0004
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-0497
       display_name: 'Re: Role note for Field coordination [A-WS-143]'
     - name: bn-1591
@@ -2319,6 +2373,8 @@ content:
       display_name: 'Next team slot: Quality systems [A-WS-218]'
     - name: wm-0416
       display_name: Contact route for Pine distribution [A-WS-120]
+    - name: cm-0005
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-0498
       display_name: 'Re: Role note for Field coordination [A-WS-143]'
     - name: bn-0063
@@ -2369,6 +2425,8 @@ content:
       display_name: 'Re: Kit handover for Capital projects [A-WS-194]'
     - name: wm-1388
       display_name: 'A-WS-189: staff record confirmed'
+    - name: cm-0008
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-0255
       display_name: Kit handover for Pine treatment [A-WS-074]
     - name: wm-0598
@@ -2385,6 +2443,8 @@ content:
       display_name: 'Re: Restored saved view [SUP-2026-0445]'
     - name: wm-0680
       display_name: 'Re: Next team slot: Capital projects [A-WS-195]'
+    - name: cm-0009
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-0677
       display_name: 'Re: Kit handover for Capital projects [A-WS-194]'
     - name: wm-0256
@@ -2441,6 +2501,8 @@ content:
       display_name: 'Next team slot: Pine distribution [A-WS-103]'
     - name: wm-0701
       display_name: Handover note for Resource planning [A-WS-201]
+    - name: cm-0933
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: bn-1243
       display_name: Visit account — south valve chamber [A-S-001-26-12]
     - name: bn-1303
@@ -2509,6 +2571,8 @@ content:
       display_name: 'Re: Reviewer orientation [SUP-2026-0469]'
     - name: wm-0358
       display_name: 'Re: Next team slot: Pine distribution [A-WS-103]'
+    - name: cm-0936
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: bn-1245
       display_name: 'Re: Visit account — south valve chamber [A-S-001-26-12]'
     - name: bn-1305
@@ -2543,6 +2607,8 @@ content:
       display_name: Learning slot for Mechanical maintenance [A-WS-155]
     - name: wm-0883
       display_name: Contact route for Customer contact [A-WS-253]
+    - name: cm-0937
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: wm-0964
       display_name: 'Re: Contact route for Finance [A-WS-276]'
     - name: si-2815
@@ -2565,6 +2631,8 @@ content:
       display_name: 'Re: Cover for Compliance reporting [A-WS-224]'
     - name: wm-0884
       display_name: 'Re: Contact route for Customer contact [A-WS-253]'
+    - name: cm-0014
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-1378
       display_name: 'A-WS-149: staff record confirmed'
     - name: si-2816
@@ -2583,6 +2651,8 @@ content:
       display_name: Handover note for River distribution [A-WS-132]
     - name: wm-0801
       display_name: Contact route for Service desk [A-WS-230]
+    - name: cm-0015
+      display_name: Alterra service budget review [COM-2026-001]
     - name: a-choir-4
       display_name: 'Re: After rehearsal'
     - name: bn-0070
@@ -2597,8 +2667,12 @@ content:
       display_name: 'Re: Contact route for Service desk [A-WS-230]'
     - name: wm-0279
       display_name: 'Re: Role note for River treatment [A-WS-080]'
+    - name: cm-0940
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: bn-0071
       display_name: 'Re: Replacement submission — controls review [K-C-001-26-19]'
+    - name: cm-0016
+      display_name: Alterra service budget review [COM-2026-001]
     - name: si-4710
       display_name: 'Re: Reviewer orientation [SUP-2026-0469]'
     - name: wm-0379
@@ -2619,6 +2693,8 @@ content:
       display_name: 'Re: Contact route for Service desk [A-WS-230]'
     - name: bn-1596
       display_name: Batch specification — archive index [A-S-004-26-13]
+    - name: cm-0941
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: wm-0966
       display_name: 'Re: Contact route for Finance [A-WS-276]'
     - name: bn-0072
@@ -2715,6 +2791,8 @@ content:
       display_name: 'Re: Role note for Maintenance planning [A-WS-184]'
     - name: wm-0480
       display_name: 'Re: Learning slot for River distribution [A-WS-138]'
+    - name: cm-0017
+      display_name: Alterra service budget review [COM-2026-001]
     - name: bn-0074
       display_name: 'Re: Replacement submission — controls review [K-C-001-26-19]'
     - name: bn-1307
@@ -2723,6 +2801,8 @@ content:
       display_name: 'Re: Plant diary — apprentice open day [A-B-001-26-13]'
     - name: bn-0076
       display_name: 'Re: Contact cover — field coordination [K-C-001-26-20]'
+    - name: cm-0018
+      display_name: Alterra service budget review [COM-2026-001]
     - name: bn-1249
       display_name: 'Re: Visit diary — training visit [A-S-001-26-13]'
     - name: bn-1369
@@ -2791,10 +2871,14 @@ content:
       display_name: 'Re: Kit handover for River treatment [A-WS-092]'
     - name: wm-0662
       display_name: 'Re: Next team slot: Capital projects [A-WS-190]'
+    - name: cm-0946
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: wm-0798
       display_name: 'Re: Kit handover for Service desk [A-WS-228]'
     - name: bn-0079
       display_name: 'Re: Contact cover — field coordination [K-C-001-26-20]'
+    - name: cm-0024
+      display_name: Alterra service budget review [COM-2026-001]
     - name: si-4718
       display_name: 'Re: Reviewer orientation [SUP-2026-0469]'
     - name: wm-0925
@@ -2815,6 +2899,8 @@ content:
       display_name: 'Re: Next team slot: Capital projects [A-WS-190]'
     - name: bn-1490
       display_name: Seasonal allowance — autumn gathering [A-B-002-26-14]
+    - name: cm-0025
+      display_name: Alterra service budget review [COM-2026-001]
     - name: wm-0826
       display_name: 'Re: Next team slot: Business applications [A-WS-236]'
     - name: wm-0926
@@ -2939,6 +3025,8 @@ content:
       display_name: 'Re: Handover note for Electrical and controls [A-WS-173]'
     - name: wm-0945
       display_name: 'Re: Contact route for Records and scheduling [A-WS-271]'
+    - name: cm-0947
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: wm-0889
       display_name: 'Re: Kit handover for Accounts [A-WS-255]'
     - name: bn-1254
@@ -2953,6 +3041,8 @@ content:
       display_name: 'Re: Reviewer orientation [SUP-2026-0469]'
     - name: si-3962
       display_name: 'Re: Review view [SUP-2026-0421]'
+    - name: cm-0950
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: bn-1313
       display_name: 'Re: Return note — training bench [A-S-002-26-14]'
     - name: bn-1433
@@ -3029,6 +3119,8 @@ content:
       display_name: 'Re: Bulk-supply statement — annual contact review [A-S-003-26-15]'
     - name: bn-1496
       display_name: 'Re: Member summary — autumn gathering [A-B-002-26-15]'
+    - name: cm-0956
+      display_name: Quarterly billing reference [COM-2026-004]
     - name: si-3966
       display_name: 'Re: Review view [SUP-2026-0421]'
     - name: si-5302
@@ -3219,6 +3311,8 @@ content:
       display_name: Sample import [SUP-2026-0409]
     - name: cf-1565
       display_name: Next-batch date display [SUP-2026-0501]
+    - name: cm-1207
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: cf-0290
       display_name: Printed export [SUP-2026-0337]
     - name: cf-1661
@@ -3345,6 +3439,8 @@ content:
       display_name: Follow-up on Mechanical maintenance [A-WS-162]
     - name: wm-0906
       display_name: Handover note for Accounts [A-WS-260]
+    - name: cm-1208
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: cf-0097
       display_name: Printed export [SUP-2026-0313]
     - name: cf-0098
@@ -3363,6 +3459,8 @@ content:
       display_name: 'Re: Handover note for Accounts [A-WS-260]'
     - name: cf-0101
       display_name: Printed export [SUP-2026-0313]
+    - name: cm-1209
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: b-ardenvale-2
       display_name: 'Re: Autumn service workshop feedback'
     - name: cf-0102
@@ -3375,6 +3473,8 @@ content:
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: b-veybridge-1
       display_name: Scheduling contact for future visits
+    - name: cm-1210
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: wm-0482
       display_name: Role note for River distribution [A-WS-139]
     - name: wm-0827
@@ -3445,6 +3545,8 @@ content:
       display_name: Reviewer orientation [SUP-2026-0469]
     - name: cf-1142
       display_name: New team introduction [SUP-2026-0481]
+    - name: cm-1211
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: cf-0386
       display_name: Printed export [SUP-2026-0349]
     - name: wm-0483
@@ -3535,6 +3637,8 @@ content:
       display_name: Follow-up on Pine distribution [A-WS-116]
     - name: wm-0745
       display_name: Kit handover for Laboratory [A-WS-214]
+    - name: cm-1212
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: si-5315
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: cf-0193
@@ -3689,6 +3793,8 @@ content:
       display_name: 'Re: Kit handover for Customer contact [A-WS-243]'
     - name: cf-1270
       display_name: Date display [SUP-2026-0061]
+    - name: cm-1215
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: cf-1390
       display_name: Date display [SUP-2026-0073]
     - name: wm-1400
@@ -3719,6 +3825,8 @@ content:
       display_name: Learning slot for River distribution [A-WS-122]
     - name: wm-0766
       display_name: Kit handover for Quality systems [A-WS-220]
+    - name: cm-1216
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: a-walk-2
       display_name: 'Re: A walk for your weekend'
     - name: wm-0848
@@ -3847,6 +3955,8 @@ content:
       display_name: 'Contact page: Electrical and controls [A-TEAM-ELECTRICAL-AND-CONTROLS-3]'
     - name: wm-1338
       display_name: 'Contact page: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-3]'
+    - name: cm-1219
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: wm-0769
       display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
     - name: wm-1330
@@ -3903,6 +4013,8 @@ content:
       display_name: 'Re: Suggested improvement — field coordination [K-C-001-26-25]'
     - name: a-outreach-4
       display_name: Your comparison this afternoon
+    - name: cm-1220
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: wm-1331
       display_name: 'Re: Contact page: Finance [A-TEAM-FINANCE-3]'
     - name: wm-1295
@@ -3955,6 +4067,8 @@ content:
       display_name: 'Re: Contact page: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-3]'
     - name: wm-1377
       display_name: 'A-WS-145: staff record confirmed'
+    - name: cm-1376
+      display_name: ARWC reference conversation [COM-2026-005]
     - name: a-explanation-1
       display_name: 'Re: The billing-period explanation'
     - name: a-learning-1
@@ -4017,10 +4131,32 @@ content:
     format: cinder-document-library/v1
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-0e1b5caf5cc622ff38b3ec8d0f22a1cfe1a3a90d90394a7608900b11afdb87b8
+      version: sha256-04f0a1eb9ce340316adb7dd1358b3132f97a97ab3f1fc948463f388e1a601476
     description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
       authored readers and opening state.
     items:
+    - name: com-2026-001-offer-r2-arwc
+      display_name: Alterra service budget review — offer 2
+    - name: com-2026-001-base-billing-arwc
+      display_name: Alterra Regional Water Company — remaining service billing
+    - name: com-2026-002-offer-r2-arwc
+      display_name: River contractor archive guide — offer 2
+    - name: com-2026-002-accepted-arwc
+      display_name: River contractor archive guide — accepted schedule
+    - name: com-2026-002-project-billing-arwc
+      display_name: River contractor archive guide — agreed billing schedule
+    - name: com-2026-002-handover-record-arwc
+      display_name: River contractor archive guide — accepted handover
+    - name: com-2026-002-delivered-index-arwc
+      display_name: River contractor archive guide — delivered comparison index
+    - name: com-2026-003-offer-r2-arwc
+      display_name: Unattended contractor acceptance — offer 2
+    - name: com-2026-004-offer-r2-arwc
+      display_name: Quarterly billing reference — offer 2
+    - name: com-2026-004-accepted-arwc
+      display_name: Quarterly billing reference — accepted schedule
+    - name: commercial-arwc-reference-agenda-arwc
+      display_name: ARWC reference conversation — agenda
     - name: a-outreach-preparation
       display_name: Community water-service explanation — preparation
     - name: a-outreach-outline
