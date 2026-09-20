@@ -1,9 +1,9 @@
 # KeplerOps and Alterra: the enterprise world
 
-Worldbuilding draft 2, 19 September 2026, with the workforce content slice added
-on 20 September. These documents establish two fictional companies, the region
-around them, and the people who work there. The authored records are in
-`assets/narrative/`.
+Worldbuilding draft 2, 19 September 2026, with the workforce and business
+content slices added on 20 September. These documents establish two fictional
+companies, the region around them, and the people who work there. The authored
+records are in `assets/narrative/`.
 
 **KeplerOps Software** is a successful specialist deciding what kind of company
 it wants to become. Early employees remember making a living by being
@@ -31,8 +31,10 @@ and unfinished plans of their own.
 | [People and relationships](people.md) | Fifteen recurring people, distinct voices, personal motives, friendships, and professional relationships. |
 | [Character writing review](voice-review.md) | Thirty selected samples, reuse counts, continuity findings, and the author-only ownership inventory. |
 | [Workforce review](workforce-review.md) | Adversarial review of the 294-person roster, employment records, readers, and message coverage. |
-| [Additional workforce voices](workforce-voices.md) | Profiles and samples for twelve new recurring speakers. |
-| [Workforce ownership](workforce-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
+| [Additional workforce voices](workforce-voices.md) | Profiles and samples for 37 new recurring speakers. |
+| [Business content review](business-content-review.md) | Adversarial review, delivered volumes, and consistency checks for customer and supplier records. |
+| [Business correspondents](business-voices.md) | Short profiles and exact mail samples for 47 external contacts. |
+| [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
 | [Direction for ambient content](content-direction.md) | How later correspondence and workplace records should express this world. |
@@ -70,7 +72,8 @@ Further content implementation is tracked in the
 [enterprise content milestone](https://github.com/PaloAltoNetworks/shifter-scenarios/milestone/3).
 Its issues deliver finished content slices, each with fit review, adversarial
 review, assets, and native SDL authoring. The first issue extended the existing
-character profiles; the workforce slice supplies the complete employee roster.
+character profiles; the workforce slice supplies the complete employee roster,
+and the business slice supplies reference accounts and correspondence.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

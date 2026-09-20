@@ -1,0 +1,3657 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+required_base:
+  commit: 350a9b4
+  workforce_commit: cf20e3e
+organizations:
+- key: arwc
+  name: Alterra Regional Water Company
+  domain: alterrawaterco.com
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2019-04-01'
+  end: '2028-03-31'
+  terms: USD 154,000 annual service fee, billed in four equal instalments of USD 38,500
+  scope: field contractor submissions, maintenance handovers, and supported asset-record integration
+  owner: maya
+  commercial_owner: kwm048
+  contact_keys:
+  - theo
+  - clara
+  - priya
+- key: rillhaven
+  name: Rillhaven District Heating
+  domain: rillhaven.test
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2024-11-01'
+  end: '2027-10-31'
+  terms: USD 89,000 annual service fee, billed in four equal instalments of USD 22,250
+  scope: seasonal heat-network maintenance submissions through its supported interface
+  owner: maya
+  commercial_owner: kwm049
+  contact_keys:
+  - bc_rillhaven_1
+  - bc_rillhaven_2
+  - bc_rillhaven_3
+- key: davenmoor
+  name: Davenmoor Water Service
+  domain: davenmoor.test
+  account_id: K-C-003
+  agreement_id: K-C-003-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2023-07-01'
+  end: '2027-06-30'
+  terms: USD 118,000 annual service fee, billed in four equal instalments of USD 29,500
+  scope: field inspection and contractor acceptance records across its reservoirs and mains
+  owner: kwm023
+  commercial_owner: kwm048
+  contact_keys:
+  - bc_davenmoor_1
+  - bc_davenmoor_2
+  - bc_davenmoor_3
+- key: elverden
+  name: Elverden District Water
+  domain: elverden.test
+  account_id: K-C-004
+  agreement_id: K-C-004-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2022-10-01'
+  end: '2026-09-30'
+  terms: USD 96,000 annual service fee, billed in four equal instalments of USD 24,000
+  scope: maintenance evidence and asset-register handovers for two district teams
+  owner: kwm024
+  commercial_owner: kwm049
+  contact_keys:
+  - bc_elverden_1
+  - bc_elverden_2
+  - bc_elverden_3
+- key: fennor
+  name: Fennor Bay Water
+  domain: fennor.test
+  account_id: K-C-005
+  agreement_id: K-C-005-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2024-02-01'
+  end: '2027-01-31'
+  terms: USD 104,000 annual service fee, billed in four equal instalments of USD 26,000
+  scope: coastal asset inspections and the evidence trail for contractor work
+  owner: kwm025
+  commercial_owner: kwm050
+  contact_keys:
+  - bc_fennor_1
+  - bc_fennor_2
+  - bc_fennor_3
+- key: haveril
+  name: Haveril District Energy
+  domain: haveril.test
+  account_id: K-C-006
+  agreement_id: K-C-006-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2025-01-01'
+  end: '2027-12-31'
+  terms: USD 77,000 annual service fee, billed in four equal instalments of USD 19,250
+  scope: district-energy maintenance packs and reviewer sign-off records
+  owner: kwm026
+  commercial_owner: kwm048
+  contact_keys:
+  - bc_haveril_1
+  - bc_haveril_2
+  - bc_haveril_3
+- key: mirrenfold
+  name: Mirrenfold Regional Water
+  domain: mirrenfold.test
+  account_id: K-C-007
+  agreement_id: K-C-007-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2023-04-01'
+  end: '2027-03-31'
+  terms: USD 138,000 annual service fee, billed in four equal instalments of USD 34,500
+  scope: regional maintenance packages for treatment and distribution assets
+  owner: kwm027
+  commercial_owner: kwm049
+  contact_keys:
+  - bc_mirrenfold_1
+  - bc_mirrenfold_2
+  - bc_mirrenfold_3
+- key: orvellan
+  name: Orvellan District Heating
+  domain: orvellan.test
+  account_id: K-C-008
+  agreement_id: K-C-008-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2024-09-01'
+  end: '2027-08-31'
+  terms: USD 81,000 annual service fee, billed in four equal instalments of USD 20,250
+  scope: heat-network inspection returns and accepted maintenance packages
+  owner: kwm028
+  commercial_owner: kwm050
+  contact_keys:
+  - bc_orvellan_1
+  - bc_orvellan_2
+  - bc_orvellan_3
+- key: pellhaven
+  name: Pellhaven Municipal Water
+  domain: pellhaven.test
+  account_id: K-C-009
+  agreement_id: K-C-009-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2021-06-01'
+  end: '2027-05-31'
+  terms: USD 127,000 annual service fee, billed in four equal instalments of USD 31,750
+  scope: municipal field submissions, review queues, and archive exports
+  owner: kwm029
+  commercial_owner: kwm048
+  contact_keys:
+  - bc_pellhaven_1
+  - bc_pellhaven_2
+  - bc_pellhaven_3
+- key: roskelle
+  name: Roskelle Utilities
+  domain: roskelle.test
+  account_id: K-C-010
+  agreement_id: K-C-010-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2025-04-01'
+  end: '2028-03-31'
+  terms: USD 112,000 annual service fee, billed in four equal instalments of USD 28,000
+  scope: water and heat-asset maintenance evidence with separate reviewer groups
+  owner: kwm030
+  commercial_owner: kwm049
+  contact_keys:
+  - bc_roskelle_1
+  - bc_roskelle_2
+  - bc_roskelle_3
+- key: sennwick
+  name: Sennwick Water Board
+  domain: sennwick.test
+  account_id: K-C-011
+  agreement_id: K-C-011-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2022-01-01'
+  end: '2027-12-31'
+  terms: USD 121,000 annual service fee, billed in four equal instalments of USD 30,250
+  scope: contractor evidence, planned works review, and board-ready handover summaries
+  owner: kwm031
+  commercial_owner: kwm050
+  contact_keys:
+  - bc_sennwick_1
+  - bc_sennwick_2
+  - bc_sennwick_3
+- key: caldren
+  name: Caldren Reach Utilities
+  domain: caldren.test
+  account_id: K-C-012
+  agreement_id: K-C-012-AGR-01
+  kind: utility_customer
+  holder: keplerops
+  effective: '2024-06-01'
+  end: '2027-05-31'
+  terms: USD 109,000 annual service fee, billed in four equal instalments of USD 27,250
+  scope: multi-site field handovers and maintenance acceptance documentation
+  owner: kwm032
+  commercial_owner: kwm048
+  contact_keys:
+  - bc_caldren_1
+  - bc_caldren_2
+  - bc_caldren_3
+- key: veybridge
+  name: Veybridge Controls and Inspection
+  domain: veybridge.test
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: partner
+  holder: arwc
+  effective: '2025-01-01'
+  end: '2027-12-31'
+  terms: USD 1,240 per standard visit; travel or extra scope requires a written order
+  scope: commissioning witness visits and field inspections on individually accepted work orders
+  owner: theo
+  commercial_owner: priya
+  contact_keys:
+  - jules
+  - bc_veybridge_2
+  - bc_veybridge_3
+- key: ardenvale
+  name: Ardenvale Instrument Services
+  domain: ardenvale.test
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: partner
+  holder: arwc
+  effective: '2025-07-01'
+  end: '2027-06-30'
+  terms: orders up to USD 18,000 each under the service schedule; parts quoted separately
+  scope: instrument calibration, repair, replacement parts, and practical application advice
+  owner: clara
+  commercial_owner: priya
+  contact_keys:
+  - bc_ardenvale_1
+  - bc_ardenvale_2
+- key: merewick
+  name: Merewick Bulk Water Cooperative
+  domain: merewick.test
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: partner
+  holder: arwc
+  effective: '2024-01-01'
+  end: '2027-12-31'
+  terms: maximum 20,000 m³ per calendar year; USD 0.92 per delivered m³; availability confirmed per request
+  scope: supplementary bulk water delivered only against a dated accepted reservation
+  owner: priya
+  commercial_owner: priya
+  contact_keys:
+  - bc_merewick_1
+  - bc_merewick_2
+  settled_activity:
+  - date: '2026-06-12'
+    reference: MW-26-0612
+    quantity: 600
+    unit: m³
+    unit_price_usd: '0.92'
+    accepted_amount_usd: '552.00'
+  - date: '2026-07-02'
+    reference: MW-26-0702
+    quantity: 900
+    unit: m³
+    unit_price_usd: '0.92'
+    accepted_amount_usd: '828.00'
+  - date: '2026-07-20'
+    reference: MW-26-0720
+    quantity: 750
+    unit: m³
+    unit_price_usd: '0.92'
+    accepted_amount_usd: '690.00'
+- key: belvarn
+  name: Belvarn Packaging
+  domain: belvarn.test
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: business_customer
+  holder: arwc
+  effective: '2024-07-01'
+  end: '2027-06-30'
+  terms: standard metered business tariff; planned meter visits by agreed appointment
+  scope: metered industrial water account for the River district packaging plant
+  owner: rosa
+  commercial_owner: priya
+  contact_keys:
+  - bc_belvarn_1
+  - bc_belvarn_2
+- key: talvern
+  name: Talvern Growers Cooperative
+  domain: talvern.test
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: business_customer
+  holder: arwc
+  effective: '2025-05-01'
+  end: '2027-09-30'
+  terms: maximum 7,500 m³ each June–September season; USD 1.15 per delivered m³
+  scope: limited supplementary seasonal irrigation allowance for shared Pine facilities only
+  owner: priya
+  commercial_owner: priya
+  contact_keys:
+  - bc_talvern_1
+  - bc_talvern_2
+  settled_activity:
+  - date: '2026-06-12'
+    reference: TG-26-0612
+    quantity: 450
+    unit: m³
+    unit_price_usd: '1.15'
+    accepted_amount_usd: '517.50'
+  - date: '2026-07-02'
+    reference: TG-26-0702
+    quantity: 620
+    unit: m³
+    unit_price_usd: '1.15'
+    accepted_amount_usd: '713.00'
+  - date: '2026-07-20'
+    reference: TG-26-0720
+    quantity: 500
+    unit: m³
+    unit_price_usd: '1.15'
+    accepted_amount_usd: '575.00'
+- key: orrenvale
+  name: Orren & Vale IT Services
+  domain: orrenvale.test
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: partner
+  holder: keplerops
+  effective: '2025-10-01'
+  end: '2027-09-30'
+  terms: USD 22,800 annually for the stated internal service; change requests by written order
+  scope: internal endpoint support and backup-review assistance, excluding FieldKest production workloads
+  owner: noor
+  commercial_owner: kwm047
+  contact_keys:
+  - bc_orrenvale_1
+  - bc_orrenvale_2
+- key: ternwick
+  name: Ternwick Records Bureau
+  domain: ternwick.test
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: partner
+  holder: arwc
+  effective: '2025-01-01'
+  end: '2027-12-31'
+  terms: USD 0.42 per accepted page plus USD 180 per approved batch; originals returned
+  scope: digitization and description of selected historical records by approved batch
+  owner: awm210
+  commercial_owner: priya
+  contact_keys:
+  - bc_ternwick_1
+  - bc_ternwick_2
+  settled_activity:
+  - date: '2026-06-12'
+    reference: TR-26-04
+    quantity: 120
+    unit: pages
+    unit_price_usd: '0.42'
+    accepted_amount_usd: '230.40'
+  - date: '2026-07-02'
+    reference: TR-26-05
+    quantity: 96
+    unit: pages
+    unit_price_usd: '0.42'
+    accepted_amount_usd: '220.32'
+  - date: '2026-07-20'
+    reference: TR-26-06
+    quantity: 132
+    unit: pages
+    unit_price_usd: '0.42'
+    accepted_amount_usd: '235.44'
+  - date: '2026-08-07'
+    reference: TR-26-07
+    quantity: 88
+    unit: pages
+    unit_price_usd: '0.42'
+    accepted_amount_usd: '216.96'
+contacts:
+- key: bc_rillhaven_1
+  name: Greer Aldervin
+  email: greer.aldervin@rillhaven.test
+  employer: rillhaven
+  role: service lead
+  style: direct
+  context_note: Greer Aldervin works on seasonal heat-network maintenance submissions through its supported interface.
+    Service Lead for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-0101
+- key: bc_rillhaven_2
+  name: Kit Merrowin
+  email: kit.merrowin@rillhaven.test
+  employer: rillhaven
+  role: records reviewer
+  style: curious
+  context_note: Kit Merrowin works on seasonal heat-network maintenance submissions through its supported interface.
+    Records Reviewer for this relationship; has work beyond this account.
+  writing_note: Asks what a record means before requesting a change.
+  sample_message_id: bn-0103
+- key: bc_rillhaven_3
+  name: Arel Vornell
+  email: arel.vornell@rillhaven.test
+  employer: rillhaven
+  role: commercial contact
+  style: careful
+  context_note: Arel Vornell works on seasonal heat-network maintenance submissions through its supported interface.
+    Commercial Contact for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-0106
+- key: bc_davenmoor_1
+  name: Elise Ravent
+  email: elise.ravent@davenmoor.test
+  employer: davenmoor
+  role: service lead
+  style: brief
+  context_note: Elise Ravent works on field inspection and contractor acceptance records across its reservoirs
+    and mains. Service Lead for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-0210
+- key: bc_davenmoor_2
+  name: Tomas Vellin
+  email: tomas.vellin@davenmoor.test
+  employer: davenmoor
+  role: records reviewer
+  style: practical
+  context_note: Tomas Vellin works on field inspection and contractor acceptance records across its reservoirs
+    and mains. Records Reviewer for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-0203
+- key: bc_davenmoor_3
+  name: Mira Hoswick
+  email: mira.hoswick@davenmoor.test
+  employer: davenmoor
+  role: commercial contact
+  style: plain
+  context_note: Mira Hoswick works on field inspection and contractor acceptance records across its reservoirs
+    and mains. Commercial Contact for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-0206
+- key: bc_elverden_1
+  name: Nia Calderin
+  email: nia.calderin@elverden.test
+  employer: elverden
+  role: service lead
+  style: formal
+  context_note: Nia Calderin works on maintenance evidence and asset-register handovers for two district teams.
+    Service Lead for this relationship; has work beyond this account.
+  writing_note: Uses full names and exact references in external mail.
+  sample_message_id: bn-0301
+- key: bc_elverden_2
+  name: Omar Tesswick
+  email: omar.tesswick@elverden.test
+  employer: elverden
+  role: records reviewer
+  style: warm
+  context_note: Omar Tesswick works on maintenance evidence and asset-register handovers for two district teams.
+    Records Reviewer for this relationship; has work beyond this account.
+  writing_note: Remembers the previous exchange and leaves room for a quick reply.
+  sample_message_id: bn-0303
+- key: bc_elverden_3
+  name: Petra Langven
+  email: petra.langven@elverden.test
+  employer: elverden
+  role: commercial contact
+  style: direct
+  context_note: Petra Langven works on maintenance evidence and asset-register handovers for two district teams.
+    Commercial Contact for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-0306
+- key: bc_fennor_1
+  name: Soren Haldell
+  email: soren.haldell@fennor.test
+  employer: fennor
+  role: service lead
+  style: curious
+  context_note: Soren Haldell works on coastal asset inspections and the evidence trail for contractor work. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: Asks what a record means before requesting a change.
+  sample_message_id: bn-0401
+- key: bc_fennor_2
+  name: Iris Morwick
+  email: iris.morwick@fennor.test
+  employer: fennor
+  role: records reviewer
+  style: careful
+  context_note: Iris Morwick works on coastal asset inspections and the evidence trail for contractor work. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-0403
+- key: bc_fennor_3
+  name: Ansel Retven
+  email: ansel.retven@fennor.test
+  employer: fennor
+  role: commercial contact
+  style: brief
+  context_note: Ansel Retven works on coastal asset inspections and the evidence trail for contractor work. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-0406
+- key: bc_haveril_1
+  name: June Pellorin
+  email: june.pellorin@haveril.test
+  employer: haveril
+  role: service lead
+  style: practical
+  context_note: June Pellorin works on district-energy maintenance packs and reviewer sign-off records. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-0501
+- key: bc_haveril_2
+  name: Asha Vervain
+  email: asha.vervain@haveril.test
+  employer: haveril
+  role: records reviewer
+  style: plain
+  context_note: Asha Vervain works on district-energy maintenance packs and reviewer sign-off records. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-0503
+- key: bc_haveril_3
+  name: Leo Sennard
+  email: leo.sennard@haveril.test
+  employer: haveril
+  role: commercial contact
+  style: formal
+  context_note: Leo Sennard works on district-energy maintenance packs and reviewer sign-off records. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Uses full names and exact references in external mail.
+  sample_message_id: bn-0506
+- key: bc_mirrenfold_1
+  name: Eryn Tollmere
+  email: eryn.tollmere@mirrenfold.test
+  employer: mirrenfold
+  role: service lead
+  style: warm
+  context_note: Eryn Tollmere works on regional maintenance packages for treatment and distribution assets. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: Remembers the previous exchange and leaves room for a quick reply.
+  sample_message_id: bn-0601
+- key: bc_mirrenfold_2
+  name: Malik Orsden
+  email: malik.orsden@mirrenfold.test
+  employer: mirrenfold
+  role: records reviewer
+  style: direct
+  context_note: Malik Orsden works on regional maintenance packages for treatment and distribution assets. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-0603
+- key: bc_mirrenfold_3
+  name: Ruth Varendon
+  email: ruth.varendon@mirrenfold.test
+  employer: mirrenfold
+  role: commercial contact
+  style: curious
+  context_note: Ruth Varendon works on regional maintenance packages for treatment and distribution assets. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Asks what a record means before requesting a change.
+  sample_message_id: bn-0606
+- key: bc_orvellan_1
+  name: Bea Larmere
+  email: bea.larmere@orvellan.test
+  employer: orvellan
+  role: service lead
+  style: careful
+  context_note: Bea Larmere works on heat-network inspection returns and accepted maintenance packages. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-0710
+- key: bc_orvellan_2
+  name: Dev Renwick
+  email: dev.renwick@orvellan.test
+  employer: orvellan
+  role: records reviewer
+  style: brief
+  context_note: Dev Renwick works on heat-network inspection returns and accepted maintenance packages. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-0703
+- key: bc_orvellan_3
+  name: Sylvie Dorswick
+  email: sylvie.dorswick@orvellan.test
+  employer: orvellan
+  role: commercial contact
+  style: practical
+  context_note: Sylvie Dorswick works on heat-network inspection returns and accepted maintenance packages. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-0706
+- key: bc_pellhaven_1
+  name: Nell Ardiver
+  email: nell.ardiver@pellhaven.test
+  employer: pellhaven
+  role: service lead
+  style: plain
+  context_note: Nell Ardiver works on municipal field submissions, review queues, and archive exports. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-0801
+- key: bc_pellhaven_2
+  name: Arlo Merwick
+  email: arlo.merwick@pellhaven.test
+  employer: pellhaven
+  role: records reviewer
+  style: formal
+  context_note: Arlo Merwick works on municipal field submissions, review queues, and archive exports. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: Uses full names and exact references in external mail.
+  sample_message_id: bn-0805
+- key: bc_pellhaven_3
+  name: Uma Fellorin
+  email: uma.fellorin@pellhaven.test
+  employer: pellhaven
+  role: commercial contact
+  style: warm
+  context_note: Uma Fellorin works on municipal field submissions, review queues, and archive exports. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Remembers the previous exchange and leaves room for a quick reply.
+  sample_message_id: bn-0806
+- key: bc_roskelle_1
+  name: Cora Vennard
+  email: cora.vennard@roskelle.test
+  employer: roskelle
+  role: service lead
+  style: direct
+  context_note: Cora Vennard works on water and heat-asset maintenance evidence with separate reviewer groups.
+    Service Lead for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-0901
+- key: bc_roskelle_2
+  name: Ilan Tressel
+  email: ilan.tressel@roskelle.test
+  employer: roskelle
+  role: records reviewer
+  style: curious
+  context_note: Ilan Tressel works on water and heat-asset maintenance evidence with separate reviewer groups.
+    Records Reviewer for this relationship; has work beyond this account.
+  writing_note: Asks what a record means before requesting a change.
+  sample_message_id: bn-0903
+- key: bc_roskelle_3
+  name: Mae Delwick
+  email: mae.delwick@roskelle.test
+  employer: roskelle
+  role: commercial contact
+  style: careful
+  context_note: Mae Delwick works on water and heat-asset maintenance evidence with separate reviewer groups.
+    Commercial Contact for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-0906
+- key: bc_sennwick_1
+  name: Lydia Pravell
+  email: lydia.pravell@sennwick.test
+  employer: sennwick
+  role: service lead
+  style: brief
+  context_note: Lydia Pravell works on contractor evidence, planned works review, and board-ready handover summaries.
+    Service Lead for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-1001
+- key: bc_sennwick_2
+  name: Hadi Nolven
+  email: hadi.nolven@sennwick.test
+  employer: sennwick
+  role: records reviewer
+  style: practical
+  context_note: Hadi Nolven works on contractor evidence, planned works review, and board-ready handover summaries.
+    Records Reviewer for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-1003
+- key: bc_sennwick_3
+  name: Felix Dermere
+  email: felix.dermere@sennwick.test
+  employer: sennwick
+  role: commercial contact
+  style: plain
+  context_note: Felix Dermere works on contractor evidence, planned works review, and board-ready handover summaries.
+    Commercial Contact for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-1006
+- key: bc_caldren_1
+  name: Zara Ellovin
+  email: zara.ellovin@caldren.test
+  employer: caldren
+  role: service lead
+  style: formal
+  context_note: Zara Ellovin works on multi-site field handovers and maintenance acceptance documentation. Service
+    Lead for this relationship; has work beyond this account.
+  writing_note: Uses full names and exact references in external mail.
+  sample_message_id: bn-1101
+- key: bc_caldren_2
+  name: Ines Brannell
+  email: ines.brannell@caldren.test
+  employer: caldren
+  role: records reviewer
+  style: warm
+  context_note: Ines Brannell works on multi-site field handovers and maintenance acceptance documentation. Records
+    Reviewer for this relationship; has work beyond this account.
+  writing_note: Remembers the previous exchange and leaves room for a quick reply.
+  sample_message_id: bn-1103
+- key: bc_caldren_3
+  name: Otto Pelliver
+  email: otto.pelliver@caldren.test
+  employer: caldren
+  role: commercial contact
+  style: direct
+  context_note: Otto Pelliver works on multi-site field handovers and maintenance acceptance documentation. Commercial
+    Contact for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-1106
+- key: bc_veybridge_2
+  name: Dana Veskell
+  email: dana.veskell@veybridge.test
+  employer: veybridge
+  role: operations contact
+  style: careful
+  context_note: Dana Veskell works on commissioning witness visits and field inspections on individually accepted
+    work orders. Operations Contact for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-1203
+- key: bc_veybridge_3
+  name: Aiden Rellard
+  email: aiden.rellard@veybridge.test
+  employer: veybridge
+  role: account contact
+  style: brief
+  context_note: Aiden Rellard works on commissioning witness visits and field inspections on individually accepted
+    work orders. Account Contact for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-1206
+- key: bc_ardenvale_1
+  name: Vera Tolwick
+  email: vera.tolwick@ardenvale.test
+  employer: ardenvale
+  role: account contact
+  style: practical
+  context_note: Vera Tolwick works on instrument calibration, repair, replacement parts, and practical application
+    advice. Account Contact for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-1261
+- key: bc_ardenvale_2
+  name: Reece Fendell
+  email: reece.fendell@ardenvale.test
+  employer: ardenvale
+  role: operations contact
+  style: plain
+  context_note: Reece Fendell works on instrument calibration, repair, replacement parts, and practical application
+    advice. Operations Contact for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-1263
+- key: bc_merewick_1
+  name: Mabel Dornell
+  email: mabel.dornell@merewick.test
+  employer: merewick
+  role: account contact
+  style: warm
+  context_note: Mabel Dornell works on supplementary bulk water delivered only against a dated accepted reservation.
+    Account Contact for this relationship; has work beyond this account.
+  writing_note: Remembers the previous exchange and leaves room for a quick reply.
+  sample_message_id: bn-1321
+- key: bc_merewick_2
+  name: Gideon Sarrick
+  email: gideon.sarrick@merewick.test
+  employer: merewick
+  role: operations contact
+  style: direct
+  context_note: Gideon Sarrick works on supplementary bulk water delivered only against a dated accepted reservation.
+    Operations Contact for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-1323
+- key: bc_belvarn_1
+  name: Lila Perrow
+  email: lila.perrow@belvarn.test
+  employer: belvarn
+  role: account contact
+  style: careful
+  context_note: Lila Perrow works on metered industrial water account for the River district packaging plant.
+    Account Contact for this relationship; has work beyond this account.
+  writing_note: Separates a forecast from an agreed commitment.
+  sample_message_id: bn-1381
+- key: bc_belvarn_2
+  name: Bram Vellard
+  email: bram.vellard@belvarn.test
+  employer: belvarn
+  role: operations contact
+  style: brief
+  context_note: Bram Vellard works on metered industrial water account for the River district packaging plant.
+    Operations Contact for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-1383
+- key: bc_talvern_1
+  name: Selma Ardenn
+  email: selma.ardenn@talvern.test
+  employer: talvern
+  role: account contact
+  style: plain
+  context_note: Selma Ardenn works on limited supplementary seasonal irrigation allowance for shared Pine facilities
+    only. Account Contact for this relationship; has work beyond this account.
+  writing_note: States the record and the next action without ceremony.
+  sample_message_id: bn-1441
+- key: bc_talvern_2
+  name: Nico Pelwick
+  email: nico.pelwick@talvern.test
+  employer: talvern
+  role: operations contact
+  style: formal
+  context_note: Nico Pelwick works on limited supplementary seasonal irrigation allowance for shared Pine facilities
+    only. Operations Contact for this relationship; has work beyond this account.
+  writing_note: Uses full names and exact references in external mail.
+  sample_message_id: bn-1443
+- key: bc_orrenvale_1
+  name: Tessa Marrowell
+  email: tessa.marrowell@orrenvale.test
+  employer: orrenvale
+  role: account contact
+  style: direct
+  context_note: Tessa Marrowell works on internal endpoint support and backup-review assistance, excluding FieldKest
+    production workloads. Account Contact for this relationship; has work beyond this account.
+  writing_note: Uses short paragraphs and expects the subject line to carry context.
+  sample_message_id: bn-1501
+- key: bc_orrenvale_2
+  name: Isaac Devren
+  email: isaac.devren@orrenvale.test
+  employer: orrenvale
+  role: operations contact
+  style: curious
+  context_note: Isaac Devren works on internal endpoint support and backup-review assistance, excluding FieldKest
+    production workloads. Operations Contact for this relationship; has work beyond this account.
+  writing_note: Asks what a record means before requesting a change.
+  sample_message_id: bn-1503
+- key: bc_ternwick_1
+  name: Edie Ransell
+  email: edie.ransell@ternwick.test
+  employer: ternwick
+  role: account contact
+  style: brief
+  context_note: Edie Ransell works on digitization and description of selected historical records by approved
+    batch. Account Contact for this relationship; has work beyond this account.
+  writing_note: Keeps the exchange compact, especially on an active thread.
+  sample_message_id: bn-1549
+- key: bc_ternwick_2
+  name: Huw Delvern
+  email: huw.delvern@ternwick.test
+  employer: ternwick
+  role: operations contact
+  style: practical
+  context_note: Huw Delvern works on digitization and description of selected historical records by approved batch.
+    Operations Contact for this relationship; has work beyond this account.
+  writing_note: Names the item to move, inspect, or reconcile.
+  sample_message_id: bn-1551
+cases:
+- id: K-C-001-26-01
+  organization: arwc
+  topic: Receipt order — Pine treatment
+  object: Pine treatment contractor handover
+  opened: bn-0001
+  last_message: bn-0002
+  message_count: 2
+- id: K-C-001-26-02
+  organization: arwc
+  topic: Archive index — River distribution
+  object: River distribution contractor handover
+  opened: bn-0003
+  last_message: bn-0005
+  message_count: 3
+- id: K-C-001-26-03
+  organization: arwc
+  topic: Billing contact — regional maintenance
+  object: regional maintenance contractor handover
+  opened: bn-0006
+  last_message: bn-0009
+  message_count: 4
+- id: K-C-001-26-04
+  organization: arwc
+  topic: Quarterly record — controls review
+  object: controls review contractor handover
+  opened: bn-0010
+  last_message: bn-0014
+  message_count: 5
+- id: K-C-001-26-05
+  organization: arwc
+  topic: Missing date — field coordination
+  object: field coordination contractor handover
+  opened: bn-0015
+  last_message: bn-0020
+  message_count: 6
+- id: K-C-001-26-06
+  organization: arwc
+  topic: Attachment size — Pine treatment
+  object: Pine treatment valve inspection sheet
+  opened: bn-0021
+  last_message: bn-0022
+  message_count: 2
+- id: K-C-001-26-07
+  organization: arwc
+  topic: Scope question — River distribution
+  object: River distribution valve inspection sheet
+  opened: bn-0023
+  last_message: bn-0025
+  message_count: 3
+- id: K-C-001-26-08
+  organization: arwc
+  topic: Open item list — regional maintenance
+  object: regional maintenance valve inspection sheet
+  opened: bn-0026
+  last_message: bn-0029
+  message_count: 4
+- id: K-C-001-26-09
+  organization: arwc
+  topic: Case summary — controls review
+  object: controls review valve inspection sheet
+  opened: bn-0030
+  last_message: bn-0034
+  message_count: 5
+- id: K-C-001-26-10
+  organization: arwc
+  topic: Export title — field coordination
+  object: field coordination valve inspection sheet
+  opened: bn-0035
+  last_message: bn-0040
+  message_count: 6
+- id: K-C-001-26-11
+  organization: arwc
+  topic: Training follow-up — Pine treatment
+  object: Pine treatment pump acceptance record
+  opened: bn-0041
+  last_message: bn-0042
+  message_count: 2
+- id: K-C-001-26-12
+  organization: arwc
+  topic: Reviewer label — River distribution
+  object: River distribution pump acceptance record
+  opened: bn-0043
+  last_message: bn-0045
+  message_count: 3
+- id: K-C-001-26-13
+  organization: arwc
+  topic: Field note wording — regional maintenance
+  object: regional maintenance pump acceptance record
+  opened: bn-0046
+  last_message: bn-0049
+  message_count: 4
+- id: K-C-001-26-14
+  organization: arwc
+  topic: Review meeting — controls review
+  object: controls review pump acceptance record
+  opened: bn-0050
+  last_message: bn-0054
+  message_count: 5
+- id: K-C-001-26-15
+  organization: arwc
+  topic: Handover correction — field coordination
+  object: field coordination pump acceptance record
+  opened: bn-0055
+  last_message: bn-0060
+  message_count: 6
+- id: K-C-001-26-16
+  organization: arwc
+  topic: Workshop example — Pine treatment
+  object: Pine treatment drawing revision
+  opened: bn-0061
+  last_message: bn-0062
+  message_count: 2
+- id: K-C-001-26-17
+  organization: arwc
+  topic: Review sequence — River distribution
+  object: River distribution drawing revision
+  opened: bn-0063
+  last_message: bn-0065
+  message_count: 3
+- id: K-C-001-26-18
+  organization: arwc
+  topic: Acceptance note — regional maintenance
+  object: regional maintenance drawing revision
+  opened: bn-0066
+  last_message: bn-0069
+  message_count: 4
+- id: K-C-001-26-19
+  organization: arwc
+  topic: Replacement submission — controls review
+  object: controls review drawing revision
+  opened: bn-0070
+  last_message: bn-0074
+  message_count: 5
+- id: K-C-001-26-20
+  organization: arwc
+  topic: Contact cover — field coordination
+  object: field coordination drawing revision
+  opened: bn-0075
+  last_message: bn-0080
+  message_count: 6
+- id: K-C-001-26-21
+  organization: arwc
+  topic: Support cover — Pine treatment
+  object: Pine treatment field photograph
+  opened: bn-0081
+  last_message: bn-0082
+  message_count: 2
+- id: K-C-001-26-22
+  organization: arwc
+  topic: Renewal diary — River distribution
+  object: River distribution field photograph
+  opened: bn-0083
+  last_message: bn-0085
+  message_count: 3
+- id: K-C-001-26-23
+  organization: arwc
+  topic: Duplicate image — regional maintenance
+  object: regional maintenance field photograph
+  opened: bn-0086
+  last_message: bn-0089
+  message_count: 4
+- id: K-C-001-26-24
+  organization: arwc
+  topic: Cross-reference — controls review
+  object: controls review field photograph
+  opened: bn-0090
+  last_message: bn-0094
+  message_count: 5
+- id: K-C-001-26-25
+  organization: arwc
+  topic: Suggested improvement — field coordination
+  object: field coordination field photograph
+  opened: bn-0095
+  last_message: bn-0100
+  message_count: 6
+- id: K-C-002-26-01
+  organization: rillhaven
+  topic: Missing date — north heat main
+  object: north heat main valve check
+  opened: bn-0101
+  last_message: bn-0102
+  message_count: 2
+- id: K-C-002-26-02
+  organization: rillhaven
+  topic: Attachment size — central plant
+  object: central plant valve check
+  opened: bn-0103
+  last_message: bn-0105
+  message_count: 3
+- id: K-C-002-26-03
+  organization: rillhaven
+  topic: Scope question — east exchange
+  object: east exchange valve check
+  opened: bn-0106
+  last_message: bn-0109
+  message_count: 4
+- id: K-C-002-26-04
+  organization: rillhaven
+  topic: Open item list — seasonal workshop
+  object: seasonal workshop valve check
+  opened: bn-0110
+  last_message: bn-0114
+  message_count: 5
+- id: K-C-002-26-05
+  organization: rillhaven
+  topic: Case summary — maintenance office
+  object: maintenance office valve check
+  opened: bn-0115
+  last_message: bn-0120
+  message_count: 6
+- id: K-C-002-26-06
+  organization: rillhaven
+  topic: Export title — north heat main
+  object: north heat main heat-exchanger note
+  opened: bn-0121
+  last_message: bn-0122
+  message_count: 2
+- id: K-C-002-26-07
+  organization: rillhaven
+  topic: Training follow-up — central plant
+  object: central plant heat-exchanger note
+  opened: bn-0123
+  last_message: bn-0125
+  message_count: 3
+- id: K-C-002-26-08
+  organization: rillhaven
+  topic: Reviewer label — east exchange
+  object: east exchange heat-exchanger note
+  opened: bn-0126
+  last_message: bn-0129
+  message_count: 4
+- id: K-C-002-26-09
+  organization: rillhaven
+  topic: Field note wording — seasonal workshop
+  object: seasonal workshop heat-exchanger note
+  opened: bn-0130
+  last_message: bn-0134
+  message_count: 5
+- id: K-C-002-26-10
+  organization: rillhaven
+  topic: Review meeting — maintenance office
+  object: maintenance office heat-exchanger note
+  opened: bn-0135
+  last_message: bn-0140
+  message_count: 6
+- id: K-C-002-26-11
+  organization: rillhaven
+  topic: Handover correction — north heat main
+  object: north heat main seasonal maintenance pack
+  opened: bn-0141
+  last_message: bn-0142
+  message_count: 2
+- id: K-C-002-26-12
+  organization: rillhaven
+  topic: Workshop example — central plant
+  object: central plant seasonal maintenance pack
+  opened: bn-0143
+  last_message: bn-0145
+  message_count: 3
+- id: K-C-002-26-13
+  organization: rillhaven
+  topic: Review sequence — east exchange
+  object: east exchange seasonal maintenance pack
+  opened: bn-0146
+  last_message: bn-0149
+  message_count: 4
+- id: K-C-002-26-14
+  organization: rillhaven
+  topic: Acceptance note — seasonal workshop
+  object: seasonal workshop seasonal maintenance pack
+  opened: bn-0150
+  last_message: bn-0154
+  message_count: 5
+- id: K-C-002-26-15
+  organization: rillhaven
+  topic: Replacement submission — maintenance office
+  object: maintenance office seasonal maintenance pack
+  opened: bn-0155
+  last_message: bn-0160
+  message_count: 6
+- id: K-C-002-26-16
+  organization: rillhaven
+  topic: Contact cover — north heat main
+  object: north heat main inspection photograph
+  opened: bn-0161
+  last_message: bn-0162
+  message_count: 2
+- id: K-C-002-26-17
+  organization: rillhaven
+  topic: Support cover — central plant
+  object: central plant inspection photograph
+  opened: bn-0163
+  last_message: bn-0165
+  message_count: 3
+- id: K-C-002-26-18
+  organization: rillhaven
+  topic: Renewal diary — east exchange
+  object: east exchange inspection photograph
+  opened: bn-0166
+  last_message: bn-0169
+  message_count: 4
+- id: K-C-002-26-19
+  organization: rillhaven
+  topic: Duplicate image — seasonal workshop
+  object: seasonal workshop inspection photograph
+  opened: bn-0170
+  last_message: bn-0174
+  message_count: 5
+- id: K-C-002-26-20
+  organization: rillhaven
+  topic: Cross-reference — maintenance office
+  object: maintenance office inspection photograph
+  opened: bn-0175
+  last_message: bn-0180
+  message_count: 6
+- id: K-C-002-26-21
+  organization: rillhaven
+  topic: Suggested improvement — north heat main
+  object: north heat main handover sheet
+  opened: bn-0181
+  last_message: bn-0182
+  message_count: 2
+- id: K-C-002-26-22
+  organization: rillhaven
+  topic: Receipt order — central plant
+  object: central plant handover sheet
+  opened: bn-0183
+  last_message: bn-0185
+  message_count: 3
+- id: K-C-002-26-23
+  organization: rillhaven
+  topic: Archive index — east exchange
+  object: east exchange handover sheet
+  opened: bn-0186
+  last_message: bn-0189
+  message_count: 4
+- id: K-C-002-26-24
+  organization: rillhaven
+  topic: Billing contact — seasonal workshop
+  object: seasonal workshop handover sheet
+  opened: bn-0190
+  last_message: bn-0194
+  message_count: 5
+- id: K-C-002-26-25
+  organization: rillhaven
+  topic: Quarterly record — maintenance office
+  object: maintenance office handover sheet
+  opened: bn-0195
+  last_message: bn-0200
+  message_count: 6
+- id: K-C-003-26-01
+  organization: davenmoor
+  topic: Case summary — west reservoir
+  object: west reservoir reservoir inspection
+  opened: bn-0201
+  last_message: bn-0202
+  message_count: 2
+- id: K-C-003-26-02
+  organization: davenmoor
+  topic: Export title — mains renewal team
+  object: mains renewal team reservoir inspection
+  opened: bn-0203
+  last_message: bn-0205
+  message_count: 3
+- id: K-C-003-26-03
+  organization: davenmoor
+  topic: Training follow-up — south pump station
+  object: south pump station reservoir inspection
+  opened: bn-0206
+  last_message: bn-0209
+  message_count: 4
+- id: K-C-003-26-04
+  organization: davenmoor
+  topic: Reviewer label — inspection office
+  object: inspection office reservoir inspection
+  opened: bn-0210
+  last_message: bn-0214
+  message_count: 5
+- id: K-C-003-26-05
+  organization: davenmoor
+  topic: Field note wording — asset planning
+  object: asset planning reservoir inspection
+  opened: bn-0215
+  last_message: bn-0220
+  message_count: 6
+- id: K-C-003-26-06
+  organization: davenmoor
+  topic: Review meeting — west reservoir
+  object: west reservoir pipe renewal packet
+  opened: bn-0221
+  last_message: bn-0222
+  message_count: 2
+- id: K-C-003-26-07
+  organization: davenmoor
+  topic: Handover correction — mains renewal team
+  object: mains renewal team pipe renewal packet
+  opened: bn-0223
+  last_message: bn-0225
+  message_count: 3
+- id: K-C-003-26-08
+  organization: davenmoor
+  topic: Workshop example — south pump station
+  object: south pump station pipe renewal packet
+  opened: bn-0226
+  last_message: bn-0229
+  message_count: 4
+- id: K-C-003-26-09
+  organization: davenmoor
+  topic: Review sequence — inspection office
+  object: inspection office pipe renewal packet
+  opened: bn-0230
+  last_message: bn-0234
+  message_count: 5
+- id: K-C-003-26-10
+  organization: davenmoor
+  topic: Acceptance note — asset planning
+  object: asset planning pipe renewal packet
+  opened: bn-0235
+  last_message: bn-0240
+  message_count: 6
+- id: K-C-003-26-11
+  organization: davenmoor
+  topic: Replacement submission — west reservoir
+  object: west reservoir pump service sheet
+  opened: bn-0241
+  last_message: bn-0242
+  message_count: 2
+- id: K-C-003-26-12
+  organization: davenmoor
+  topic: Contact cover — mains renewal team
+  object: mains renewal team pump service sheet
+  opened: bn-0243
+  last_message: bn-0245
+  message_count: 3
+- id: K-C-003-26-13
+  organization: davenmoor
+  topic: Support cover — south pump station
+  object: south pump station pump service sheet
+  opened: bn-0246
+  last_message: bn-0249
+  message_count: 4
+- id: K-C-003-26-14
+  organization: davenmoor
+  topic: Renewal diary — inspection office
+  object: inspection office pump service sheet
+  opened: bn-0250
+  last_message: bn-0254
+  message_count: 5
+- id: K-C-003-26-15
+  organization: davenmoor
+  topic: Duplicate image — asset planning
+  object: asset planning pump service sheet
+  opened: bn-0255
+  last_message: bn-0260
+  message_count: 6
+- id: K-C-003-26-16
+  organization: davenmoor
+  topic: Cross-reference — west reservoir
+  object: west reservoir contractor photograph
+  opened: bn-0261
+  last_message: bn-0262
+  message_count: 2
+- id: K-C-003-26-17
+  organization: davenmoor
+  topic: Suggested improvement — mains renewal team
+  object: mains renewal team contractor photograph
+  opened: bn-0263
+  last_message: bn-0265
+  message_count: 3
+- id: K-C-003-26-18
+  organization: davenmoor
+  topic: Receipt order — south pump station
+  object: south pump station contractor photograph
+  opened: bn-0266
+  last_message: bn-0269
+  message_count: 4
+- id: K-C-003-26-19
+  organization: davenmoor
+  topic: Archive index — inspection office
+  object: inspection office contractor photograph
+  opened: bn-0270
+  last_message: bn-0274
+  message_count: 5
+- id: K-C-003-26-20
+  organization: davenmoor
+  topic: Billing contact — asset planning
+  object: asset planning contractor photograph
+  opened: bn-0275
+  last_message: bn-0280
+  message_count: 6
+- id: K-C-003-26-21
+  organization: davenmoor
+  topic: Quarterly record — west reservoir
+  object: west reservoir acceptance note
+  opened: bn-0281
+  last_message: bn-0282
+  message_count: 2
+- id: K-C-003-26-22
+  organization: davenmoor
+  topic: Missing date — mains renewal team
+  object: mains renewal team acceptance note
+  opened: bn-0283
+  last_message: bn-0285
+  message_count: 3
+- id: K-C-003-26-23
+  organization: davenmoor
+  topic: Attachment size — south pump station
+  object: south pump station acceptance note
+  opened: bn-0286
+  last_message: bn-0289
+  message_count: 4
+- id: K-C-003-26-24
+  organization: davenmoor
+  topic: Scope question — inspection office
+  object: inspection office acceptance note
+  opened: bn-0290
+  last_message: bn-0294
+  message_count: 5
+- id: K-C-003-26-25
+  organization: davenmoor
+  topic: Open item list — asset planning
+  object: asset planning acceptance note
+  opened: bn-0295
+  last_message: bn-0300
+  message_count: 6
+- id: K-C-004-26-01
+  organization: elverden
+  topic: Field note wording — north district
+  object: north district meter chamber note
+  opened: bn-0301
+  last_message: bn-0302
+  message_count: 2
+- id: K-C-004-26-02
+  organization: elverden
+  topic: Review meeting — south district
+  object: south district meter chamber note
+  opened: bn-0303
+  last_message: bn-0305
+  message_count: 3
+- id: K-C-004-26-03
+  organization: elverden
+  topic: Handover correction — depot review
+  object: depot review meter chamber note
+  opened: bn-0306
+  last_message: bn-0309
+  message_count: 4
+- id: K-C-004-26-04
+  organization: elverden
+  topic: Workshop example — capital handover
+  object: capital handover meter chamber note
+  opened: bn-0310
+  last_message: bn-0314
+  message_count: 5
+- id: K-C-004-26-05
+  organization: elverden
+  topic: Review sequence — records office
+  object: records office meter chamber note
+  opened: bn-0315
+  last_message: bn-0320
+  message_count: 6
+- id: K-C-004-26-06
+  organization: elverden
+  topic: Acceptance note — north district
+  object: north district service inspection
+  opened: bn-0321
+  last_message: bn-0322
+  message_count: 2
+- id: K-C-004-26-07
+  organization: elverden
+  topic: Replacement submission — south district
+  object: south district service inspection
+  opened: bn-0323
+  last_message: bn-0325
+  message_count: 3
+- id: K-C-004-26-08
+  organization: elverden
+  topic: Contact cover — depot review
+  object: depot review service inspection
+  opened: bn-0326
+  last_message: bn-0329
+  message_count: 4
+- id: K-C-004-26-09
+  organization: elverden
+  topic: Support cover — capital handover
+  object: capital handover service inspection
+  opened: bn-0330
+  last_message: bn-0334
+  message_count: 5
+- id: K-C-004-26-10
+  organization: elverden
+  topic: Renewal diary — records office
+  object: records office service inspection
+  opened: bn-0335
+  last_message: bn-0340
+  message_count: 6
+- id: K-C-004-26-11
+  organization: elverden
+  topic: Duplicate image — north district
+  object: north district plant checklist
+  opened: bn-0341
+  last_message: bn-0342
+  message_count: 2
+- id: K-C-004-26-12
+  organization: elverden
+  topic: Cross-reference — south district
+  object: south district plant checklist
+  opened: bn-0343
+  last_message: bn-0345
+  message_count: 3
+- id: K-C-004-26-13
+  organization: elverden
+  topic: Suggested improvement — depot review
+  object: depot review plant checklist
+  opened: bn-0346
+  last_message: bn-0349
+  message_count: 4
+- id: K-C-004-26-14
+  organization: elverden
+  topic: Receipt order — capital handover
+  object: capital handover plant checklist
+  opened: bn-0350
+  last_message: bn-0354
+  message_count: 5
+- id: K-C-004-26-15
+  organization: elverden
+  topic: Archive index — records office
+  object: records office plant checklist
+  opened: bn-0355
+  last_message: bn-0360
+  message_count: 6
+- id: K-C-004-26-16
+  organization: elverden
+  topic: Billing contact — north district
+  object: north district asset handover
+  opened: bn-0361
+  last_message: bn-0362
+  message_count: 2
+- id: K-C-004-26-17
+  organization: elverden
+  topic: Quarterly record — south district
+  object: south district asset handover
+  opened: bn-0363
+  last_message: bn-0365
+  message_count: 3
+- id: K-C-004-26-18
+  organization: elverden
+  topic: Missing date — depot review
+  object: depot review asset handover
+  opened: bn-0366
+  last_message: bn-0369
+  message_count: 4
+- id: K-C-004-26-19
+  organization: elverden
+  topic: Attachment size — capital handover
+  object: capital handover asset handover
+  opened: bn-0370
+  last_message: bn-0374
+  message_count: 5
+- id: K-C-004-26-20
+  organization: elverden
+  topic: Scope question — records office
+  object: records office asset handover
+  opened: bn-0375
+  last_message: bn-0380
+  message_count: 6
+- id: K-C-004-26-21
+  organization: elverden
+  topic: Open item list — north district
+  object: north district field sketch
+  opened: bn-0381
+  last_message: bn-0382
+  message_count: 2
+- id: K-C-004-26-22
+  organization: elverden
+  topic: Case summary — south district
+  object: south district field sketch
+  opened: bn-0383
+  last_message: bn-0385
+  message_count: 3
+- id: K-C-004-26-23
+  organization: elverden
+  topic: Export title — depot review
+  object: depot review field sketch
+  opened: bn-0386
+  last_message: bn-0389
+  message_count: 4
+- id: K-C-004-26-24
+  organization: elverden
+  topic: Training follow-up — capital handover
+  object: capital handover field sketch
+  opened: bn-0390
+  last_message: bn-0394
+  message_count: 5
+- id: K-C-004-26-25
+  organization: elverden
+  topic: Reviewer label — records office
+  object: records office field sketch
+  opened: bn-0395
+  last_message: bn-0400
+  message_count: 6
+- id: K-C-005-26-01
+  organization: fennor
+  topic: Review sequence — harbour zone
+  object: harbour zone coastal inspection
+  opened: bn-0401
+  last_message: bn-0402
+  message_count: 2
+- id: K-C-005-26-02
+  organization: fennor
+  topic: Acceptance note — upland works
+  object: upland works coastal inspection
+  opened: bn-0403
+  last_message: bn-0405
+  message_count: 3
+- id: K-C-005-26-03
+  organization: fennor
+  topic: Replacement submission — coastal mains
+  object: coastal mains coastal inspection
+  opened: bn-0406
+  last_message: bn-0409
+  message_count: 4
+- id: K-C-005-26-04
+  organization: fennor
+  topic: Contact cover — contractor desk
+  object: contractor desk coastal inspection
+  opened: bn-0410
+  last_message: bn-0414
+  message_count: 5
+- id: K-C-005-26-05
+  organization: fennor
+  topic: Support cover — asset assurance
+  object: asset assurance coastal inspection
+  opened: bn-0415
+  last_message: bn-0420
+  message_count: 6
+- id: K-C-005-26-06
+  organization: fennor
+  topic: Renewal diary — harbour zone
+  object: harbour zone repair photograph
+  opened: bn-0421
+  last_message: bn-0422
+  message_count: 2
+- id: K-C-005-26-07
+  organization: fennor
+  topic: Duplicate image — upland works
+  object: upland works repair photograph
+  opened: bn-0423
+  last_message: bn-0425
+  message_count: 3
+- id: K-C-005-26-08
+  organization: fennor
+  topic: Cross-reference — coastal mains
+  object: coastal mains repair photograph
+  opened: bn-0426
+  last_message: bn-0429
+  message_count: 4
+- id: K-C-005-26-09
+  organization: fennor
+  topic: Suggested improvement — contractor desk
+  object: contractor desk repair photograph
+  opened: bn-0430
+  last_message: bn-0434
+  message_count: 5
+- id: K-C-005-26-10
+  organization: fennor
+  topic: Receipt order — asset assurance
+  object: asset assurance repair photograph
+  opened: bn-0435
+  last_message: bn-0440
+  message_count: 6
+- id: K-C-005-26-11
+  organization: fennor
+  topic: Archive index — harbour zone
+  object: harbour zone handover drawing
+  opened: bn-0441
+  last_message: bn-0442
+  message_count: 2
+- id: K-C-005-26-12
+  organization: fennor
+  topic: Billing contact — upland works
+  object: upland works handover drawing
+  opened: bn-0443
+  last_message: bn-0445
+  message_count: 3
+- id: K-C-005-26-13
+  organization: fennor
+  topic: Quarterly record — coastal mains
+  object: coastal mains handover drawing
+  opened: bn-0446
+  last_message: bn-0449
+  message_count: 4
+- id: K-C-005-26-14
+  organization: fennor
+  topic: Missing date — contractor desk
+  object: contractor desk handover drawing
+  opened: bn-0450
+  last_message: bn-0454
+  message_count: 5
+- id: K-C-005-26-15
+  organization: fennor
+  topic: Attachment size — asset assurance
+  object: asset assurance handover drawing
+  opened: bn-0455
+  last_message: bn-0460
+  message_count: 6
+- id: K-C-005-26-16
+  organization: fennor
+  topic: Scope question — harbour zone
+  object: harbour zone sampling note
+  opened: bn-0461
+  last_message: bn-0462
+  message_count: 2
+- id: K-C-005-26-17
+  organization: fennor
+  topic: Open item list — upland works
+  object: upland works sampling note
+  opened: bn-0463
+  last_message: bn-0465
+  message_count: 3
+- id: K-C-005-26-18
+  organization: fennor
+  topic: Case summary — coastal mains
+  object: coastal mains sampling note
+  opened: bn-0466
+  last_message: bn-0469
+  message_count: 4
+- id: K-C-005-26-19
+  organization: fennor
+  topic: Export title — contractor desk
+  object: contractor desk sampling note
+  opened: bn-0470
+  last_message: bn-0474
+  message_count: 5
+- id: K-C-005-26-20
+  organization: fennor
+  topic: Training follow-up — asset assurance
+  object: asset assurance sampling note
+  opened: bn-0475
+  last_message: bn-0480
+  message_count: 6
+- id: K-C-005-26-21
+  organization: fennor
+  topic: Reviewer label — harbour zone
+  object: harbour zone contractor submission
+  opened: bn-0481
+  last_message: bn-0482
+  message_count: 2
+- id: K-C-005-26-22
+  organization: fennor
+  topic: Field note wording — upland works
+  object: upland works contractor submission
+  opened: bn-0483
+  last_message: bn-0485
+  message_count: 3
+- id: K-C-005-26-23
+  organization: fennor
+  topic: Review meeting — coastal mains
+  object: coastal mains contractor submission
+  opened: bn-0486
+  last_message: bn-0489
+  message_count: 4
+- id: K-C-005-26-24
+  organization: fennor
+  topic: Handover correction — contractor desk
+  object: contractor desk contractor submission
+  opened: bn-0490
+  last_message: bn-0494
+  message_count: 5
+- id: K-C-005-26-25
+  organization: fennor
+  topic: Workshop example — asset assurance
+  object: asset assurance contractor submission
+  opened: bn-0495
+  last_message: bn-0500
+  message_count: 6
+- id: K-C-006-26-01
+  organization: haveril
+  topic: Support cover — east loop
+  object: east loop heat main inspection
+  opened: bn-0501
+  last_message: bn-0502
+  message_count: 2
+- id: K-C-006-26-02
+  organization: haveril
+  topic: Renewal diary — central exchange
+  object: central exchange heat main inspection
+  opened: bn-0503
+  last_message: bn-0505
+  message_count: 3
+- id: K-C-006-26-03
+  organization: haveril
+  topic: Duplicate image — west heat store
+  object: west heat store heat main inspection
+  opened: bn-0506
+  last_message: bn-0509
+  message_count: 4
+- id: K-C-006-26-04
+  organization: haveril
+  topic: Cross-reference — service desk
+  object: service desk heat main inspection
+  opened: bn-0510
+  last_message: bn-0514
+  message_count: 5
+- id: K-C-006-26-05
+  organization: haveril
+  topic: Suggested improvement — engineering office
+  object: engineering office heat main inspection
+  opened: bn-0515
+  last_message: bn-0520
+  message_count: 6
+- id: K-C-006-26-06
+  organization: haveril
+  topic: Receipt order — east loop
+  object: east loop meter exchange note
+  opened: bn-0521
+  last_message: bn-0522
+  message_count: 2
+- id: K-C-006-26-07
+  organization: haveril
+  topic: Archive index — central exchange
+  object: central exchange meter exchange note
+  opened: bn-0523
+  last_message: bn-0525
+  message_count: 3
+- id: K-C-006-26-08
+  organization: haveril
+  topic: Billing contact — west heat store
+  object: west heat store meter exchange note
+  opened: bn-0526
+  last_message: bn-0529
+  message_count: 4
+- id: K-C-006-26-09
+  organization: haveril
+  topic: Quarterly record — service desk
+  object: service desk meter exchange note
+  opened: bn-0530
+  last_message: bn-0534
+  message_count: 5
+- id: K-C-006-26-10
+  organization: haveril
+  topic: Missing date — engineering office
+  object: engineering office meter exchange note
+  opened: bn-0535
+  last_message: bn-0540
+  message_count: 6
+- id: K-C-006-26-11
+  organization: haveril
+  topic: Attachment size — east loop
+  object: east loop pump service record
+  opened: bn-0541
+  last_message: bn-0542
+  message_count: 2
+- id: K-C-006-26-12
+  organization: haveril
+  topic: Scope question — central exchange
+  object: central exchange pump service record
+  opened: bn-0543
+  last_message: bn-0545
+  message_count: 3
+- id: K-C-006-26-13
+  organization: haveril
+  topic: Open item list — west heat store
+  object: west heat store pump service record
+  opened: bn-0546
+  last_message: bn-0549
+  message_count: 4
+- id: K-C-006-26-14
+  organization: haveril
+  topic: Case summary — service desk
+  object: service desk pump service record
+  opened: bn-0550
+  last_message: bn-0554
+  message_count: 5
+- id: K-C-006-26-15
+  organization: haveril
+  topic: Export title — engineering office
+  object: engineering office pump service record
+  opened: bn-0555
+  last_message: bn-0560
+  message_count: 6
+- id: K-C-006-26-16
+  organization: haveril
+  topic: Training follow-up — east loop
+  object: east loop commissioning sheet
+  opened: bn-0561
+  last_message: bn-0562
+  message_count: 2
+- id: K-C-006-26-17
+  organization: haveril
+  topic: Reviewer label — central exchange
+  object: central exchange commissioning sheet
+  opened: bn-0563
+  last_message: bn-0565
+  message_count: 3
+- id: K-C-006-26-18
+  organization: haveril
+  topic: Field note wording — west heat store
+  object: west heat store commissioning sheet
+  opened: bn-0566
+  last_message: bn-0569
+  message_count: 4
+- id: K-C-006-26-19
+  organization: haveril
+  topic: Review meeting — service desk
+  object: service desk commissioning sheet
+  opened: bn-0570
+  last_message: bn-0574
+  message_count: 5
+- id: K-C-006-26-20
+  organization: haveril
+  topic: Handover correction — engineering office
+  object: engineering office commissioning sheet
+  opened: bn-0575
+  last_message: bn-0580
+  message_count: 6
+- id: K-C-006-26-21
+  organization: haveril
+  topic: Workshop example — east loop
+  object: east loop reviewer comment
+  opened: bn-0581
+  last_message: bn-0582
+  message_count: 2
+- id: K-C-006-26-22
+  organization: haveril
+  topic: Review sequence — central exchange
+  object: central exchange reviewer comment
+  opened: bn-0583
+  last_message: bn-0585
+  message_count: 3
+- id: K-C-006-26-23
+  organization: haveril
+  topic: Acceptance note — west heat store
+  object: west heat store reviewer comment
+  opened: bn-0586
+  last_message: bn-0589
+  message_count: 4
+- id: K-C-006-26-24
+  organization: haveril
+  topic: Replacement submission — service desk
+  object: service desk reviewer comment
+  opened: bn-0590
+  last_message: bn-0594
+  message_count: 5
+- id: K-C-006-26-25
+  organization: haveril
+  topic: Contact cover — engineering office
+  object: engineering office reviewer comment
+  opened: bn-0595
+  last_message: bn-0600
+  message_count: 6
+- id: K-C-007-26-01
+  organization: mirrenfold
+  topic: Suggested improvement — upper catchment
+  object: upper catchment treatment inspection
+  opened: bn-0601
+  last_message: bn-0602
+  message_count: 2
+- id: K-C-007-26-02
+  organization: mirrenfold
+  topic: Receipt order — central treatment
+  object: central treatment treatment inspection
+  opened: bn-0603
+  last_message: bn-0605
+  message_count: 3
+- id: K-C-007-26-03
+  organization: mirrenfold
+  topic: Archive index — east depot
+  object: east depot treatment inspection
+  opened: bn-0606
+  last_message: bn-0609
+  message_count: 4
+- id: K-C-007-26-04
+  organization: mirrenfold
+  topic: Billing contact — network planning
+  object: network planning treatment inspection
+  opened: bn-0610
+  last_message: bn-0614
+  message_count: 5
+- id: K-C-007-26-05
+  organization: mirrenfold
+  topic: Quarterly record — contractor review
+  object: contractor review treatment inspection
+  opened: bn-0615
+  last_message: bn-0620
+  message_count: 6
+- id: K-C-007-26-06
+  organization: mirrenfold
+  topic: Missing date — upper catchment
+  object: upper catchment main repair record
+  opened: bn-0621
+  last_message: bn-0622
+  message_count: 2
+- id: K-C-007-26-07
+  organization: mirrenfold
+  topic: Attachment size — central treatment
+  object: central treatment main repair record
+  opened: bn-0623
+  last_message: bn-0625
+  message_count: 3
+- id: K-C-007-26-08
+  organization: mirrenfold
+  topic: Scope question — east depot
+  object: east depot main repair record
+  opened: bn-0626
+  last_message: bn-0629
+  message_count: 4
+- id: K-C-007-26-09
+  organization: mirrenfold
+  topic: Open item list — network planning
+  object: network planning main repair record
+  opened: bn-0630
+  last_message: bn-0634
+  message_count: 5
+- id: K-C-007-26-10
+  organization: mirrenfold
+  topic: Case summary — contractor review
+  object: contractor review main repair record
+  opened: bn-0635
+  last_message: bn-0640
+  message_count: 6
+- id: K-C-007-26-11
+  organization: mirrenfold
+  topic: Export title — upper catchment
+  object: upper catchment asset photograph
+  opened: bn-0641
+  last_message: bn-0642
+  message_count: 2
+- id: K-C-007-26-12
+  organization: mirrenfold
+  topic: Training follow-up — central treatment
+  object: central treatment asset photograph
+  opened: bn-0643
+  last_message: bn-0645
+  message_count: 3
+- id: K-C-007-26-13
+  organization: mirrenfold
+  topic: Reviewer label — east depot
+  object: east depot asset photograph
+  opened: bn-0646
+  last_message: bn-0649
+  message_count: 4
+- id: K-C-007-26-14
+  organization: mirrenfold
+  topic: Field note wording — network planning
+  object: network planning asset photograph
+  opened: bn-0650
+  last_message: bn-0654
+  message_count: 5
+- id: K-C-007-26-15
+  organization: mirrenfold
+  topic: Review meeting — contractor review
+  object: contractor review asset photograph
+  opened: bn-0655
+  last_message: bn-0660
+  message_count: 6
+- id: K-C-007-26-16
+  organization: mirrenfold
+  topic: Handover correction — upper catchment
+  object: upper catchment work order attachment
+  opened: bn-0661
+  last_message: bn-0662
+  message_count: 2
+- id: K-C-007-26-17
+  organization: mirrenfold
+  topic: Workshop example — central treatment
+  object: central treatment work order attachment
+  opened: bn-0663
+  last_message: bn-0665
+  message_count: 3
+- id: K-C-007-26-18
+  organization: mirrenfold
+  topic: Review sequence — east depot
+  object: east depot work order attachment
+  opened: bn-0666
+  last_message: bn-0669
+  message_count: 4
+- id: K-C-007-26-19
+  organization: mirrenfold
+  topic: Acceptance note — network planning
+  object: network planning work order attachment
+  opened: bn-0670
+  last_message: bn-0674
+  message_count: 5
+- id: K-C-007-26-20
+  organization: mirrenfold
+  topic: Replacement submission — contractor review
+  object: contractor review work order attachment
+  opened: bn-0675
+  last_message: bn-0680
+  message_count: 6
+- id: K-C-007-26-21
+  organization: mirrenfold
+  topic: Contact cover — upper catchment
+  object: upper catchment acceptance sheet
+  opened: bn-0681
+  last_message: bn-0682
+  message_count: 2
+- id: K-C-007-26-22
+  organization: mirrenfold
+  topic: Support cover — central treatment
+  object: central treatment acceptance sheet
+  opened: bn-0683
+  last_message: bn-0685
+  message_count: 3
+- id: K-C-007-26-23
+  organization: mirrenfold
+  topic: Renewal diary — east depot
+  object: east depot acceptance sheet
+  opened: bn-0686
+  last_message: bn-0689
+  message_count: 4
+- id: K-C-007-26-24
+  organization: mirrenfold
+  topic: Duplicate image — network planning
+  object: network planning acceptance sheet
+  opened: bn-0690
+  last_message: bn-0694
+  message_count: 5
+- id: K-C-007-26-25
+  organization: mirrenfold
+  topic: Cross-reference — contractor review
+  object: contractor review acceptance sheet
+  opened: bn-0695
+  last_message: bn-0700
+  message_count: 6
+- id: K-C-008-26-01
+  organization: orvellan
+  topic: Quarterly record — western loop
+  object: western loop heat main checklist
+  opened: bn-0701
+  last_message: bn-0702
+  message_count: 2
+- id: K-C-008-26-02
+  organization: orvellan
+  topic: Missing date — station three
+  object: station three heat main checklist
+  opened: bn-0703
+  last_message: bn-0705
+  message_count: 3
+- id: K-C-008-26-03
+  organization: orvellan
+  topic: Attachment size — central store
+  object: central store heat main checklist
+  opened: bn-0706
+  last_message: bn-0709
+  message_count: 4
+- id: K-C-008-26-04
+  organization: orvellan
+  topic: Scope question — field records
+  object: field records heat main checklist
+  opened: bn-0710
+  last_message: bn-0714
+  message_count: 5
+- id: K-C-008-26-05
+  organization: orvellan
+  topic: Open item list — seasonal maintenance
+  object: seasonal maintenance heat main checklist
+  opened: bn-0715
+  last_message: bn-0720
+  message_count: 6
+- id: K-C-008-26-06
+  organization: orvellan
+  topic: Case summary — western loop
+  object: western loop exchange inspection
+  opened: bn-0721
+  last_message: bn-0722
+  message_count: 2
+- id: K-C-008-26-07
+  organization: orvellan
+  topic: Export title — station three
+  object: station three exchange inspection
+  opened: bn-0723
+  last_message: bn-0725
+  message_count: 3
+- id: K-C-008-26-08
+  organization: orvellan
+  topic: Training follow-up — central store
+  object: central store exchange inspection
+  opened: bn-0726
+  last_message: bn-0729
+  message_count: 4
+- id: K-C-008-26-09
+  organization: orvellan
+  topic: Reviewer label — field records
+  object: field records exchange inspection
+  opened: bn-0730
+  last_message: bn-0734
+  message_count: 5
+- id: K-C-008-26-10
+  organization: orvellan
+  topic: Field note wording — seasonal maintenance
+  object: seasonal maintenance exchange inspection
+  opened: bn-0735
+  last_message: bn-0740
+  message_count: 6
+- id: K-C-008-26-11
+  organization: orvellan
+  topic: Review meeting — western loop
+  object: western loop maintenance photograph
+  opened: bn-0741
+  last_message: bn-0742
+  message_count: 2
+- id: K-C-008-26-12
+  organization: orvellan
+  topic: Handover correction — station three
+  object: station three maintenance photograph
+  opened: bn-0743
+  last_message: bn-0745
+  message_count: 3
+- id: K-C-008-26-13
+  organization: orvellan
+  topic: Workshop example — central store
+  object: central store maintenance photograph
+  opened: bn-0746
+  last_message: bn-0749
+  message_count: 4
+- id: K-C-008-26-14
+  organization: orvellan
+  topic: Review sequence — field records
+  object: field records maintenance photograph
+  opened: bn-0750
+  last_message: bn-0754
+  message_count: 5
+- id: K-C-008-26-15
+  organization: orvellan
+  topic: Acceptance note — seasonal maintenance
+  object: seasonal maintenance maintenance photograph
+  opened: bn-0755
+  last_message: bn-0760
+  message_count: 6
+- id: K-C-008-26-16
+  organization: orvellan
+  topic: Replacement submission — western loop
+  object: western loop work completion note
+  opened: bn-0761
+  last_message: bn-0762
+  message_count: 2
+- id: K-C-008-26-17
+  organization: orvellan
+  topic: Contact cover — station three
+  object: station three work completion note
+  opened: bn-0763
+  last_message: bn-0765
+  message_count: 3
+- id: K-C-008-26-18
+  organization: orvellan
+  topic: Support cover — central store
+  object: central store work completion note
+  opened: bn-0766
+  last_message: bn-0769
+  message_count: 4
+- id: K-C-008-26-19
+  organization: orvellan
+  topic: Renewal diary — field records
+  object: field records work completion note
+  opened: bn-0770
+  last_message: bn-0774
+  message_count: 5
+- id: K-C-008-26-20
+  organization: orvellan
+  topic: Duplicate image — seasonal maintenance
+  object: seasonal maintenance work completion note
+  opened: bn-0775
+  last_message: bn-0780
+  message_count: 6
+- id: K-C-008-26-21
+  organization: orvellan
+  topic: Cross-reference — western loop
+  object: western loop review sheet
+  opened: bn-0781
+  last_message: bn-0782
+  message_count: 2
+- id: K-C-008-26-22
+  organization: orvellan
+  topic: Suggested improvement — station three
+  object: station three review sheet
+  opened: bn-0783
+  last_message: bn-0785
+  message_count: 3
+- id: K-C-008-26-23
+  organization: orvellan
+  topic: Receipt order — central store
+  object: central store review sheet
+  opened: bn-0786
+  last_message: bn-0789
+  message_count: 4
+- id: K-C-008-26-24
+  organization: orvellan
+  topic: Archive index — field records
+  object: field records review sheet
+  opened: bn-0790
+  last_message: bn-0794
+  message_count: 5
+- id: K-C-008-26-25
+  organization: orvellan
+  topic: Billing contact — seasonal maintenance
+  object: seasonal maintenance review sheet
+  opened: bn-0795
+  last_message: bn-0800
+  message_count: 6
+- id: K-C-009-26-01
+  organization: pellhaven
+  topic: Open item list — north works
+  object: north works hydrant inspection
+  opened: bn-0801
+  last_message: bn-0802
+  message_count: 2
+- id: K-C-009-26-02
+  organization: pellhaven
+  topic: Case summary — western water unit
+  object: western water unit hydrant inspection
+  opened: bn-0803
+  last_message: bn-0805
+  message_count: 3
+- id: K-C-009-26-03
+  organization: pellhaven
+  topic: Export title — mains office
+  object: mains office hydrant inspection
+  opened: bn-0806
+  last_message: bn-0809
+  message_count: 4
+- id: K-C-009-26-04
+  organization: pellhaven
+  topic: Training follow-up — records team
+  object: records team hydrant inspection
+  opened: bn-0810
+  last_message: bn-0814
+  message_count: 5
+- id: K-C-009-26-05
+  organization: pellhaven
+  topic: Reviewer label — contractor desk
+  object: contractor desk hydrant inspection
+  opened: bn-0815
+  last_message: bn-0820
+  message_count: 6
+- id: K-C-009-26-06
+  organization: pellhaven
+  topic: Field note wording — north works
+  object: north works asset replacement record
+  opened: bn-0821
+  last_message: bn-0822
+  message_count: 2
+- id: K-C-009-26-07
+  organization: pellhaven
+  topic: Review meeting — western water unit
+  object: western water unit asset replacement record
+  opened: bn-0823
+  last_message: bn-0825
+  message_count: 3
+- id: K-C-009-26-08
+  organization: pellhaven
+  topic: Handover correction — mains office
+  object: mains office asset replacement record
+  opened: bn-0826
+  last_message: bn-0829
+  message_count: 4
+- id: K-C-009-26-09
+  organization: pellhaven
+  topic: Workshop example — records team
+  object: records team asset replacement record
+  opened: bn-0830
+  last_message: bn-0834
+  message_count: 5
+- id: K-C-009-26-10
+  organization: pellhaven
+  topic: Review sequence — contractor desk
+  object: contractor desk asset replacement record
+  opened: bn-0835
+  last_message: bn-0840
+  message_count: 6
+- id: K-C-009-26-11
+  organization: pellhaven
+  topic: Acceptance note — north works
+  object: north works service photograph
+  opened: bn-0841
+  last_message: bn-0842
+  message_count: 2
+- id: K-C-009-26-12
+  organization: pellhaven
+  topic: Replacement submission — western water unit
+  object: western water unit service photograph
+  opened: bn-0843
+  last_message: bn-0845
+  message_count: 3
+- id: K-C-009-26-13
+  organization: pellhaven
+  topic: Contact cover — mains office
+  object: mains office service photograph
+  opened: bn-0846
+  last_message: bn-0849
+  message_count: 4
+- id: K-C-009-26-14
+  organization: pellhaven
+  topic: Support cover — records team
+  object: records team service photograph
+  opened: bn-0850
+  last_message: bn-0854
+  message_count: 5
+- id: K-C-009-26-15
+  organization: pellhaven
+  topic: Renewal diary — contractor desk
+  object: contractor desk service photograph
+  opened: bn-0855
+  last_message: bn-0860
+  message_count: 6
+- id: K-C-009-26-16
+  organization: pellhaven
+  topic: Duplicate image — north works
+  object: north works handover register
+  opened: bn-0861
+  last_message: bn-0862
+  message_count: 2
+- id: K-C-009-26-17
+  organization: pellhaven
+  topic: Cross-reference — western water unit
+  object: western water unit handover register
+  opened: bn-0863
+  last_message: bn-0865
+  message_count: 3
+- id: K-C-009-26-18
+  organization: pellhaven
+  topic: Suggested improvement — mains office
+  object: mains office handover register
+  opened: bn-0866
+  last_message: bn-0869
+  message_count: 4
+- id: K-C-009-26-19
+  organization: pellhaven
+  topic: Receipt order — records team
+  object: records team handover register
+  opened: bn-0870
+  last_message: bn-0874
+  message_count: 5
+- id: K-C-009-26-20
+  organization: pellhaven
+  topic: Archive index — contractor desk
+  object: contractor desk handover register
+  opened: bn-0875
+  last_message: bn-0880
+  message_count: 6
+- id: K-C-009-26-21
+  organization: pellhaven
+  topic: Billing contact — north works
+  object: north works review note
+  opened: bn-0881
+  last_message: bn-0882
+  message_count: 2
+- id: K-C-009-26-22
+  organization: pellhaven
+  topic: Quarterly record — western water unit
+  object: western water unit review note
+  opened: bn-0883
+  last_message: bn-0885
+  message_count: 3
+- id: K-C-009-26-23
+  organization: pellhaven
+  topic: Missing date — mains office
+  object: mains office review note
+  opened: bn-0886
+  last_message: bn-0889
+  message_count: 4
+- id: K-C-009-26-24
+  organization: pellhaven
+  topic: Attachment size — records team
+  object: records team review note
+  opened: bn-0890
+  last_message: bn-0894
+  message_count: 5
+- id: K-C-009-26-25
+  organization: pellhaven
+  topic: Scope question — contractor desk
+  object: contractor desk review note
+  opened: bn-0895
+  last_message: bn-0900
+  message_count: 6
+- id: K-C-010-26-01
+  organization: roskelle
+  topic: Reviewer label — water works
+  object: water works field inspection
+  opened: bn-0901
+  last_message: bn-0902
+  message_count: 2
+- id: K-C-010-26-02
+  organization: roskelle
+  topic: Field note wording — heat network
+  object: heat network field inspection
+  opened: bn-0903
+  last_message: bn-0905
+  message_count: 3
+- id: K-C-010-26-03
+  organization: roskelle
+  topic: Review meeting — central depot
+  object: central depot field inspection
+  opened: bn-0906
+  last_message: bn-0909
+  message_count: 4
+- id: K-C-010-26-04
+  organization: roskelle
+  topic: Handover correction — quality office
+  object: quality office field inspection
+  opened: bn-0910
+  last_message: bn-0914
+  message_count: 5
+- id: K-C-010-26-05
+  organization: roskelle
+  topic: Workshop example — asset planning
+  object: asset planning field inspection
+  opened: bn-0915
+  last_message: bn-0920
+  message_count: 6
+- id: K-C-010-26-06
+  organization: roskelle
+  topic: Review sequence — water works
+  object: water works pump replacement pack
+  opened: bn-0921
+  last_message: bn-0922
+  message_count: 2
+- id: K-C-010-26-07
+  organization: roskelle
+  topic: Acceptance note — heat network
+  object: heat network pump replacement pack
+  opened: bn-0923
+  last_message: bn-0925
+  message_count: 3
+- id: K-C-010-26-08
+  organization: roskelle
+  topic: Replacement submission — central depot
+  object: central depot pump replacement pack
+  opened: bn-0926
+  last_message: bn-0929
+  message_count: 4
+- id: K-C-010-26-09
+  organization: roskelle
+  topic: Contact cover — quality office
+  object: quality office pump replacement pack
+  opened: bn-0930
+  last_message: bn-0934
+  message_count: 5
+- id: K-C-010-26-10
+  organization: roskelle
+  topic: Support cover — asset planning
+  object: asset planning pump replacement pack
+  opened: bn-0935
+  last_message: bn-0940
+  message_count: 6
+- id: K-C-010-26-11
+  organization: roskelle
+  topic: Renewal diary — water works
+  object: water works heat-loop check
+  opened: bn-0941
+  last_message: bn-0942
+  message_count: 2
+- id: K-C-010-26-12
+  organization: roskelle
+  topic: Duplicate image — heat network
+  object: heat network heat-loop check
+  opened: bn-0943
+  last_message: bn-0945
+  message_count: 3
+- id: K-C-010-26-13
+  organization: roskelle
+  topic: Cross-reference — central depot
+  object: central depot heat-loop check
+  opened: bn-0946
+  last_message: bn-0949
+  message_count: 4
+- id: K-C-010-26-14
+  organization: roskelle
+  topic: Suggested improvement — quality office
+  object: quality office heat-loop check
+  opened: bn-0950
+  last_message: bn-0954
+  message_count: 5
+- id: K-C-010-26-15
+  organization: roskelle
+  topic: Receipt order — asset planning
+  object: asset planning heat-loop check
+  opened: bn-0955
+  last_message: bn-0960
+  message_count: 6
+- id: K-C-010-26-16
+  organization: roskelle
+  topic: Archive index — water works
+  object: water works contractor image
+  opened: bn-0961
+  last_message: bn-0962
+  message_count: 2
+- id: K-C-010-26-17
+  organization: roskelle
+  topic: Billing contact — heat network
+  object: heat network contractor image
+  opened: bn-0963
+  last_message: bn-0965
+  message_count: 3
+- id: K-C-010-26-18
+  organization: roskelle
+  topic: Quarterly record — central depot
+  object: central depot contractor image
+  opened: bn-0966
+  last_message: bn-0969
+  message_count: 4
+- id: K-C-010-26-19
+  organization: roskelle
+  topic: Missing date — quality office
+  object: quality office contractor image
+  opened: bn-0970
+  last_message: bn-0974
+  message_count: 5
+- id: K-C-010-26-20
+  organization: roskelle
+  topic: Attachment size — asset planning
+  object: asset planning contractor image
+  opened: bn-0975
+  last_message: bn-0980
+  message_count: 6
+- id: K-C-010-26-21
+  organization: roskelle
+  topic: Scope question — water works
+  object: water works acceptance register
+  opened: bn-0981
+  last_message: bn-0982
+  message_count: 2
+- id: K-C-010-26-22
+  organization: roskelle
+  topic: Open item list — heat network
+  object: heat network acceptance register
+  opened: bn-0983
+  last_message: bn-0985
+  message_count: 3
+- id: K-C-010-26-23
+  organization: roskelle
+  topic: Case summary — central depot
+  object: central depot acceptance register
+  opened: bn-0986
+  last_message: bn-0989
+  message_count: 4
+- id: K-C-010-26-24
+  organization: roskelle
+  topic: Export title — quality office
+  object: quality office acceptance register
+  opened: bn-0990
+  last_message: bn-0994
+  message_count: 5
+- id: K-C-010-26-25
+  organization: roskelle
+  topic: Training follow-up — asset planning
+  object: asset planning acceptance register
+  opened: bn-0995
+  last_message: bn-1000
+  message_count: 6
+- id: K-C-011-26-01
+  organization: sennwick
+  topic: Workshop example — south treatment
+  object: south treatment works photograph
+  opened: bn-1001
+  last_message: bn-1002
+  message_count: 2
+- id: K-C-011-26-02
+  organization: sennwick
+  topic: Review sequence — north reservoir
+  object: north reservoir works photograph
+  opened: bn-1003
+  last_message: bn-1005
+  message_count: 3
+- id: K-C-011-26-03
+  organization: sennwick
+  topic: Acceptance note — distribution office
+  object: distribution office works photograph
+  opened: bn-1006
+  last_message: bn-1009
+  message_count: 4
+- id: K-C-011-26-04
+  organization: sennwick
+  topic: Replacement submission — board records
+  object: board records works photograph
+  opened: bn-1010
+  last_message: bn-1014
+  message_count: 5
+- id: K-C-011-26-05
+  organization: sennwick
+  topic: Contact cover — field works
+  object: field works works photograph
+  opened: bn-1015
+  last_message: bn-1020
+  message_count: 6
+- id: K-C-011-26-06
+  organization: sennwick
+  topic: Support cover — south treatment
+  object: south treatment filter inspection
+  opened: bn-1021
+  last_message: bn-1022
+  message_count: 2
+- id: K-C-011-26-07
+  organization: sennwick
+  topic: Renewal diary — north reservoir
+  object: north reservoir filter inspection
+  opened: bn-1023
+  last_message: bn-1025
+  message_count: 3
+- id: K-C-011-26-08
+  organization: sennwick
+  topic: Duplicate image — distribution office
+  object: distribution office filter inspection
+  opened: bn-1026
+  last_message: bn-1029
+  message_count: 4
+- id: K-C-011-26-09
+  organization: sennwick
+  topic: Cross-reference — board records
+  object: board records filter inspection
+  opened: bn-1030
+  last_message: bn-1034
+  message_count: 5
+- id: K-C-011-26-10
+  organization: sennwick
+  topic: Suggested improvement — field works
+  object: field works filter inspection
+  opened: bn-1035
+  last_message: bn-1040
+  message_count: 6
+- id: K-C-011-26-11
+  organization: sennwick
+  topic: Receipt order — south treatment
+  object: south treatment valve replacement sheet
+  opened: bn-1041
+  last_message: bn-1042
+  message_count: 2
+- id: K-C-011-26-12
+  organization: sennwick
+  topic: Archive index — north reservoir
+  object: north reservoir valve replacement sheet
+  opened: bn-1043
+  last_message: bn-1045
+  message_count: 3
+- id: K-C-011-26-13
+  organization: sennwick
+  topic: Billing contact — distribution office
+  object: distribution office valve replacement sheet
+  opened: bn-1046
+  last_message: bn-1049
+  message_count: 4
+- id: K-C-011-26-14
+  organization: sennwick
+  topic: Quarterly record — board records
+  object: board records valve replacement sheet
+  opened: bn-1050
+  last_message: bn-1054
+  message_count: 5
+- id: K-C-011-26-15
+  organization: sennwick
+  topic: Missing date — field works
+  object: field works valve replacement sheet
+  opened: bn-1055
+  last_message: bn-1060
+  message_count: 6
+- id: K-C-011-26-16
+  organization: sennwick
+  topic: Attachment size — south treatment
+  object: south treatment handover index
+  opened: bn-1061
+  last_message: bn-1062
+  message_count: 2
+- id: K-C-011-26-17
+  organization: sennwick
+  topic: Scope question — north reservoir
+  object: north reservoir handover index
+  opened: bn-1063
+  last_message: bn-1065
+  message_count: 3
+- id: K-C-011-26-18
+  organization: sennwick
+  topic: Open item list — distribution office
+  object: distribution office handover index
+  opened: bn-1066
+  last_message: bn-1069
+  message_count: 4
+- id: K-C-011-26-19
+  organization: sennwick
+  topic: Case summary — board records
+  object: board records handover index
+  opened: bn-1070
+  last_message: bn-1074
+  message_count: 5
+- id: K-C-011-26-20
+  organization: sennwick
+  topic: Export title — field works
+  object: field works handover index
+  opened: bn-1075
+  last_message: bn-1080
+  message_count: 6
+- id: K-C-011-26-21
+  organization: sennwick
+  topic: Training follow-up — south treatment
+  object: south treatment review finding
+  opened: bn-1081
+  last_message: bn-1082
+  message_count: 2
+- id: K-C-011-26-22
+  organization: sennwick
+  topic: Reviewer label — north reservoir
+  object: north reservoir review finding
+  opened: bn-1083
+  last_message: bn-1085
+  message_count: 3
+- id: K-C-011-26-23
+  organization: sennwick
+  topic: Field note wording — distribution office
+  object: distribution office review finding
+  opened: bn-1086
+  last_message: bn-1089
+  message_count: 4
+- id: K-C-011-26-24
+  organization: sennwick
+  topic: Review meeting — board records
+  object: board records review finding
+  opened: bn-1090
+  last_message: bn-1094
+  message_count: 5
+- id: K-C-011-26-25
+  organization: sennwick
+  topic: Handover correction — field works
+  object: field works review finding
+  opened: bn-1095
+  last_message: bn-1100
+  message_count: 6
+- id: K-C-012-26-01
+  organization: caldren
+  topic: Contact cover — river intake
+  object: river intake intake inspection
+  opened: bn-1101
+  last_message: bn-1102
+  message_count: 2
+- id: K-C-012-26-02
+  organization: caldren
+  topic: Support cover — upland station
+  object: upland station intake inspection
+  opened: bn-1103
+  last_message: bn-1105
+  message_count: 3
+- id: K-C-012-26-03
+  organization: caldren
+  topic: Renewal diary — east service area
+  object: east service area intake inspection
+  opened: bn-1106
+  last_message: bn-1109
+  message_count: 4
+- id: K-C-012-26-04
+  organization: caldren
+  topic: Duplicate image — planning office
+  object: planning office intake inspection
+  opened: bn-1110
+  last_message: bn-1114
+  message_count: 5
+- id: K-C-012-26-05
+  organization: caldren
+  topic: Cross-reference — contractor coordination
+  object: contractor coordination intake inspection
+  opened: bn-1115
+  last_message: bn-1120
+  message_count: 6
+- id: K-C-012-26-06
+  organization: caldren
+  topic: Suggested improvement — river intake
+  object: river intake pump maintenance note
+  opened: bn-1121
+  last_message: bn-1122
+  message_count: 2
+- id: K-C-012-26-07
+  organization: caldren
+  topic: Receipt order — upland station
+  object: upland station pump maintenance note
+  opened: bn-1123
+  last_message: bn-1125
+  message_count: 3
+- id: K-C-012-26-08
+  organization: caldren
+  topic: Archive index — east service area
+  object: east service area pump maintenance note
+  opened: bn-1126
+  last_message: bn-1129
+  message_count: 4
+- id: K-C-012-26-09
+  organization: caldren
+  topic: Billing contact — planning office
+  object: planning office pump maintenance note
+  opened: bn-1130
+  last_message: bn-1134
+  message_count: 5
+- id: K-C-012-26-10
+  organization: caldren
+  topic: Quarterly record — contractor coordination
+  object: contractor coordination pump maintenance note
+  opened: bn-1135
+  last_message: bn-1140
+  message_count: 6
+- id: K-C-012-26-11
+  organization: caldren
+  topic: Missing date — river intake
+  object: river intake service photograph
+  opened: bn-1141
+  last_message: bn-1142
+  message_count: 2
+- id: K-C-012-26-12
+  organization: caldren
+  topic: Attachment size — upland station
+  object: upland station service photograph
+  opened: bn-1143
+  last_message: bn-1145
+  message_count: 3
+- id: K-C-012-26-13
+  organization: caldren
+  topic: Scope question — east service area
+  object: east service area service photograph
+  opened: bn-1146
+  last_message: bn-1149
+  message_count: 4
+- id: K-C-012-26-14
+  organization: caldren
+  topic: Open item list — planning office
+  object: planning office service photograph
+  opened: bn-1150
+  last_message: bn-1154
+  message_count: 5
+- id: K-C-012-26-15
+  organization: caldren
+  topic: Case summary — contractor coordination
+  object: contractor coordination service photograph
+  opened: bn-1155
+  last_message: bn-1160
+  message_count: 6
+- id: K-C-012-26-16
+  organization: caldren
+  topic: Export title — river intake
+  object: river intake contractor handover
+  opened: bn-1161
+  last_message: bn-1162
+  message_count: 2
+- id: K-C-012-26-17
+  organization: caldren
+  topic: Training follow-up — upland station
+  object: upland station contractor handover
+  opened: bn-1163
+  last_message: bn-1165
+  message_count: 3
+- id: K-C-012-26-18
+  organization: caldren
+  topic: Reviewer label — east service area
+  object: east service area contractor handover
+  opened: bn-1166
+  last_message: bn-1169
+  message_count: 4
+- id: K-C-012-26-19
+  organization: caldren
+  topic: Field note wording — planning office
+  object: planning office contractor handover
+  opened: bn-1170
+  last_message: bn-1174
+  message_count: 5
+- id: K-C-012-26-20
+  organization: caldren
+  topic: Review meeting — contractor coordination
+  object: contractor coordination contractor handover
+  opened: bn-1175
+  last_message: bn-1180
+  message_count: 6
+- id: K-C-012-26-21
+  organization: caldren
+  topic: Handover correction — river intake
+  object: river intake accepted drawing
+  opened: bn-1181
+  last_message: bn-1182
+  message_count: 2
+- id: K-C-012-26-22
+  organization: caldren
+  topic: Workshop example — upland station
+  object: upland station accepted drawing
+  opened: bn-1183
+  last_message: bn-1185
+  message_count: 3
+- id: K-C-012-26-23
+  organization: caldren
+  topic: Review sequence — east service area
+  object: east service area accepted drawing
+  opened: bn-1186
+  last_message: bn-1189
+  message_count: 4
+- id: K-C-012-26-24
+  organization: caldren
+  topic: Acceptance note — planning office
+  object: planning office accepted drawing
+  opened: bn-1190
+  last_message: bn-1194
+  message_count: 5
+- id: K-C-012-26-25
+  organization: caldren
+  topic: Replacement submission — contractor coordination
+  object: contractor coordination accepted drawing
+  opened: bn-1195
+  last_message: bn-1200
+  message_count: 6
+- id: A-S-001-26-01
+  organization: veybridge
+  topic: Visit diary — Pine pump hall
+  object: Pine pump hall
+  opened: bn-1201
+  last_message: bn-1202
+  message_count: 2
+- id: A-S-001-26-02
+  organization: veybridge
+  topic: Inspection report — Pine pump hall
+  object: Pine pump hall
+  opened: bn-1203
+  last_message: bn-1205
+  message_count: 3
+- id: A-S-001-26-03
+  organization: veybridge
+  topic: Visit account — Pine pump hall
+  object: Pine pump hall
+  opened: bn-1206
+  last_message: bn-1209
+  message_count: 4
+- id: A-S-001-26-04
+  organization: veybridge
+  topic: Visit diary — River booster
+  object: River booster
+  opened: bn-1210
+  last_message: bn-1214
+  message_count: 5
+- id: A-S-001-26-05
+  organization: veybridge
+  topic: Inspection report — River booster
+  object: River booster
+  opened: bn-1215
+  last_message: bn-1220
+  message_count: 6
+- id: A-S-001-26-06
+  organization: veybridge
+  topic: Visit account — River booster
+  object: River booster
+  opened: bn-1221
+  last_message: bn-1222
+  message_count: 2
+- id: A-S-001-26-07
+  organization: veybridge
+  topic: Visit diary — control panel eight
+  object: control panel eight
+  opened: bn-1223
+  last_message: bn-1225
+  message_count: 3
+- id: A-S-001-26-08
+  organization: veybridge
+  topic: Inspection report — control panel eight
+  object: control panel eight
+  opened: bn-1226
+  last_message: bn-1229
+  message_count: 4
+- id: A-S-001-26-09
+  organization: veybridge
+  topic: Visit account — control panel eight
+  object: control panel eight
+  opened: bn-1230
+  last_message: bn-1234
+  message_count: 5
+- id: A-S-001-26-10
+  organization: veybridge
+  topic: Visit diary — south valve chamber
+  object: south valve chamber
+  opened: bn-1235
+  last_message: bn-1240
+  message_count: 6
+- id: A-S-001-26-11
+  organization: veybridge
+  topic: Inspection report — south valve chamber
+  object: south valve chamber
+  opened: bn-1241
+  last_message: bn-1242
+  message_count: 2
+- id: A-S-001-26-12
+  organization: veybridge
+  topic: Visit account — south valve chamber
+  object: south valve chamber
+  opened: bn-1243
+  last_message: bn-1245
+  message_count: 3
+- id: A-S-001-26-13
+  organization: veybridge
+  topic: Visit diary — training visit
+  object: training visit
+  opened: bn-1246
+  last_message: bn-1249
+  message_count: 4
+- id: A-S-001-26-14
+  organization: veybridge
+  topic: Inspection report — training visit
+  object: training visit
+  opened: bn-1250
+  last_message: bn-1254
+  message_count: 5
+- id: A-S-001-26-15
+  organization: veybridge
+  topic: Visit account — training visit
+  object: training visit
+  opened: bn-1255
+  last_message: bn-1260
+  message_count: 6
+- id: A-S-002-26-01
+  organization: ardenvale
+  topic: Service booking — flow meter AV-28
+  object: flow meter AV-28
+  opened: bn-1261
+  last_message: bn-1262
+  message_count: 2
+- id: A-S-002-26-02
+  organization: ardenvale
+  topic: Return note — flow meter AV-28
+  object: flow meter AV-28
+  opened: bn-1263
+  last_message: bn-1265
+  message_count: 3
+- id: A-S-002-26-03
+  organization: ardenvale
+  topic: Service order — flow meter AV-28
+  object: flow meter AV-28
+  opened: bn-1266
+  last_message: bn-1269
+  message_count: 4
+- id: A-S-002-26-04
+  organization: ardenvale
+  topic: Service booking — bench sensor AV-41
+  object: bench sensor AV-41
+  opened: bn-1270
+  last_message: bn-1274
+  message_count: 5
+- id: A-S-002-26-05
+  organization: ardenvale
+  topic: Return note — bench sensor AV-41
+  object: bench sensor AV-41
+  opened: bn-1275
+  last_message: bn-1280
+  message_count: 6
+- id: A-S-002-26-06
+  organization: ardenvale
+  topic: Service order — bench sensor AV-41
+  object: bench sensor AV-41
+  opened: bn-1281
+  last_message: bn-1282
+  message_count: 2
+- id: A-S-002-26-07
+  organization: ardenvale
+  topic: Service booking — portable logger AV-17
+  object: portable logger AV-17
+  opened: bn-1283
+  last_message: bn-1285
+  message_count: 3
+- id: A-S-002-26-08
+  organization: ardenvale
+  topic: Return note — portable logger AV-17
+  object: portable logger AV-17
+  opened: bn-1286
+  last_message: bn-1289
+  message_count: 4
+- id: A-S-002-26-09
+  organization: ardenvale
+  topic: Service order — portable logger AV-17
+  object: portable logger AV-17
+  opened: bn-1290
+  last_message: bn-1294
+  message_count: 5
+- id: A-S-002-26-10
+  organization: ardenvale
+  topic: Service booking — pressure kit AV-09
+  object: pressure kit AV-09
+  opened: bn-1295
+  last_message: bn-1300
+  message_count: 6
+- id: A-S-002-26-11
+  organization: ardenvale
+  topic: Return note — pressure kit AV-09
+  object: pressure kit AV-09
+  opened: bn-1301
+  last_message: bn-1302
+  message_count: 2
+- id: A-S-002-26-12
+  organization: ardenvale
+  topic: Service order — pressure kit AV-09
+  object: pressure kit AV-09
+  opened: bn-1303
+  last_message: bn-1305
+  message_count: 3
+- id: A-S-002-26-13
+  organization: ardenvale
+  topic: Service booking — training bench
+  object: training bench
+  opened: bn-1306
+  last_message: bn-1309
+  message_count: 4
+- id: A-S-002-26-14
+  organization: ardenvale
+  topic: Return note — training bench
+  object: training bench
+  opened: bn-1310
+  last_message: bn-1314
+  message_count: 5
+- id: A-S-002-26-15
+  organization: ardenvale
+  topic: Service order — training bench
+  object: training bench
+  opened: bn-1315
+  last_message: bn-1320
+  message_count: 6
+- id: A-S-003-26-01
+  organization: merewick
+  topic: Capacity outlook — June forecast
+  object: June forecast
+  opened: bn-1321
+  last_message: bn-1322
+  message_count: 2
+- id: A-S-003-26-02
+  organization: merewick
+  topic: Reservation MW-26-0612
+  object: June forecast
+  opened: bn-1323
+  last_message: bn-1325
+  message_count: 3
+- id: A-S-003-26-03
+  organization: merewick
+  topic: Delivery statement MW-26-0612
+  object: June forecast
+  opened: bn-1326
+  last_message: bn-1329
+  message_count: 4
+- id: A-S-003-26-04
+  organization: merewick
+  topic: Capacity outlook — July reservation
+  object: July reservation
+  opened: bn-1330
+  last_message: bn-1334
+  message_count: 5
+- id: A-S-003-26-05
+  organization: merewick
+  topic: Reservation MW-26-0702
+  object: July reservation
+  opened: bn-1335
+  last_message: bn-1340
+  message_count: 6
+- id: A-S-003-26-06
+  organization: merewick
+  topic: Delivery statement MW-26-0702
+  object: July reservation
+  opened: bn-1341
+  last_message: bn-1342
+  message_count: 2
+- id: A-S-003-26-07
+  organization: merewick
+  topic: Capacity outlook — August capacity
+  object: August capacity
+  opened: bn-1343
+  last_message: bn-1345
+  message_count: 3
+- id: A-S-003-26-08
+  organization: merewick
+  topic: Reservation MW-26-0720
+  object: August capacity
+  opened: bn-1346
+  last_message: bn-1349
+  message_count: 4
+- id: A-S-003-26-09
+  organization: merewick
+  topic: Delivery statement MW-26-0720
+  object: August capacity
+  opened: bn-1350
+  last_message: bn-1354
+  message_count: 5
+- id: A-S-003-26-10
+  organization: merewick
+  topic: Capacity outlook — September plan
+  object: September plan
+  opened: bn-1355
+  last_message: bn-1360
+  message_count: 6
+- id: A-S-003-26-11
+  organization: merewick
+  topic: Reservation check — September plan
+  object: September plan
+  opened: bn-1361
+  last_message: bn-1362
+  message_count: 2
+- id: A-S-003-26-12
+  organization: merewick
+  topic: Bulk-supply statement — September plan
+  object: September plan
+  opened: bn-1363
+  last_message: bn-1365
+  message_count: 3
+- id: A-S-003-26-13
+  organization: merewick
+  topic: Capacity outlook — annual contact review
+  object: annual contact review
+  opened: bn-1366
+  last_message: bn-1369
+  message_count: 4
+- id: A-S-003-26-14
+  organization: merewick
+  topic: Reservation check — annual contact review
+  object: annual contact review
+  opened: bn-1370
+  last_message: bn-1374
+  message_count: 5
+- id: A-S-003-26-15
+  organization: merewick
+  topic: Bulk-supply statement — annual contact review
+  object: annual contact review
+  opened: bn-1375
+  last_message: bn-1380
+  message_count: 6
+- id: A-B-001-26-01
+  organization: belvarn
+  topic: Plant diary — short-run line
+  object: short-run line
+  opened: bn-1381
+  last_message: bn-1382
+  message_count: 2
+- id: A-B-001-26-02
+  organization: belvarn
+  topic: Meter note — short-run line
+  object: short-run line
+  opened: bn-1383
+  last_message: bn-1385
+  message_count: 3
+- id: A-B-001-26-03
+  organization: belvarn
+  topic: Account check — short-run line
+  object: short-run line
+  opened: bn-1386
+  last_message: bn-1389
+  message_count: 4
+- id: A-B-001-26-04
+  organization: belvarn
+  topic: Plant diary — packing hall
+  object: packing hall
+  opened: bn-1390
+  last_message: bn-1394
+  message_count: 5
+- id: A-B-001-26-05
+  organization: belvarn
+  topic: Meter note — packing hall
+  object: packing hall
+  opened: bn-1395
+  last_message: bn-1400
+  message_count: 6
+- id: A-B-001-26-06
+  organization: belvarn
+  topic: Account check — packing hall
+  object: packing hall
+  opened: bn-1401
+  last_message: bn-1402
+  message_count: 2
+- id: A-B-001-26-07
+  organization: belvarn
+  topic: Plant diary — washdown area
+  object: washdown area
+  opened: bn-1403
+  last_message: bn-1405
+  message_count: 3
+- id: A-B-001-26-08
+  organization: belvarn
+  topic: Meter note — washdown area
+  object: washdown area
+  opened: bn-1406
+  last_message: bn-1409
+  message_count: 4
+- id: A-B-001-26-09
+  organization: belvarn
+  topic: Account check — washdown area
+  object: washdown area
+  opened: bn-1410
+  last_message: bn-1414
+  message_count: 5
+- id: A-B-001-26-10
+  organization: belvarn
+  topic: Plant diary — meter bay
+  object: meter bay
+  opened: bn-1415
+  last_message: bn-1420
+  message_count: 6
+- id: A-B-001-26-11
+  organization: belvarn
+  topic: Meter note — meter bay
+  object: meter bay
+  opened: bn-1421
+  last_message: bn-1422
+  message_count: 2
+- id: A-B-001-26-12
+  organization: belvarn
+  topic: Account check — meter bay
+  object: meter bay
+  opened: bn-1423
+  last_message: bn-1425
+  message_count: 3
+- id: A-B-001-26-13
+  organization: belvarn
+  topic: Plant diary — apprentice open day
+  object: apprentice open day
+  opened: bn-1426
+  last_message: bn-1429
+  message_count: 4
+- id: A-B-001-26-14
+  organization: belvarn
+  topic: Meter note — apprentice open day
+  object: apprentice open day
+  opened: bn-1430
+  last_message: bn-1434
+  message_count: 5
+- id: A-B-001-26-15
+  organization: belvarn
+  topic: Account check — apprentice open day
+  object: apprentice open day
+  opened: bn-1435
+  last_message: bn-1440
+  message_count: 6
+- id: A-B-002-26-01
+  organization: talvern
+  topic: Shared-facility plan — shared nursery
+  object: shared nursery
+  opened: bn-1441
+  last_message: bn-1442
+  message_count: 2
+- id: A-B-002-26-02
+  organization: talvern
+  topic: Allowance TG-26-0612
+  object: shared nursery
+  opened: bn-1443
+  last_message: bn-1445
+  message_count: 3
+- id: A-B-002-26-03
+  organization: talvern
+  topic: Seasonal statement TG-26-0612
+  object: shared nursery
+  opened: bn-1446
+  last_message: bn-1449
+  message_count: 4
+- id: A-B-002-26-04
+  organization: talvern
+  topic: Shared-facility plan — packing shed
+  object: packing shed
+  opened: bn-1450
+  last_message: bn-1454
+  message_count: 5
+- id: A-B-002-26-05
+  organization: talvern
+  topic: Allowance TG-26-0702
+  object: packing shed
+  opened: bn-1455
+  last_message: bn-1460
+  message_count: 6
+- id: A-B-002-26-06
+  organization: talvern
+  topic: Seasonal statement TG-26-0702
+  object: packing shed
+  opened: bn-1461
+  last_message: bn-1462
+  message_count: 2
+- id: A-B-002-26-07
+  organization: talvern
+  topic: Shared-facility plan — west storage
+  object: west storage
+  opened: bn-1463
+  last_message: bn-1465
+  message_count: 3
+- id: A-B-002-26-08
+  organization: talvern
+  topic: Allowance TG-26-0720
+  object: west storage
+  opened: bn-1466
+  last_message: bn-1469
+  message_count: 4
+- id: A-B-002-26-09
+  organization: talvern
+  topic: Seasonal statement TG-26-0720
+  object: west storage
+  opened: bn-1470
+  last_message: bn-1474
+  message_count: 5
+- id: A-B-002-26-10
+  organization: talvern
+  topic: Member plan — member session
+  object: member session
+  opened: bn-1475
+  last_message: bn-1480
+  message_count: 6
+- id: A-B-002-26-11
+  organization: talvern
+  topic: Seasonal allowance — member session
+  object: member session
+  opened: bn-1481
+  last_message: bn-1482
+  message_count: 2
+- id: A-B-002-26-12
+  organization: talvern
+  topic: Member summary — member session
+  object: member session
+  opened: bn-1483
+  last_message: bn-1485
+  message_count: 3
+- id: A-B-002-26-13
+  organization: talvern
+  topic: Member plan — autumn gathering
+  object: autumn gathering
+  opened: bn-1486
+  last_message: bn-1489
+  message_count: 4
+- id: A-B-002-26-14
+  organization: talvern
+  topic: Seasonal allowance — autumn gathering
+  object: autumn gathering
+  opened: bn-1490
+  last_message: bn-1494
+  message_count: 5
+- id: A-B-002-26-15
+  organization: talvern
+  topic: Member summary — autumn gathering
+  object: autumn gathering
+  opened: bn-1495
+  last_message: bn-1500
+  message_count: 6
+- id: K-S-001-26-01
+  organization: orrenvale
+  topic: Internal service diary — office laptops
+  object: office laptops
+  opened: bn-1501
+  last_message: bn-1502
+  message_count: 2
+- id: K-S-001-26-02
+  organization: orrenvale
+  topic: Service check — office laptops
+  object: office laptops
+  opened: bn-1503
+  last_message: bn-1505
+  message_count: 3
+- id: K-S-001-26-03
+  organization: orrenvale
+  topic: Quarterly review — office laptops
+  object: office laptops
+  opened: bn-1506
+  last_message: bn-1509
+  message_count: 4
+- id: K-S-001-26-04
+  organization: orrenvale
+  topic: Internal service diary — meeting room kit
+  object: meeting room kit
+  opened: bn-1510
+  last_message: bn-1514
+  message_count: 5
+- id: K-S-001-26-05
+  organization: orrenvale
+  topic: Service check — meeting room kit
+  object: meeting room kit
+  opened: bn-1515
+  last_message: bn-1520
+  message_count: 6
+- id: K-S-001-26-06
+  organization: orrenvale
+  topic: Quarterly review — meeting room kit
+  object: meeting room kit
+  opened: bn-1521
+  last_message: bn-1522
+  message_count: 2
+- id: K-S-001-26-07
+  organization: orrenvale
+  topic: Internal service diary — file archive
+  object: file archive
+  opened: bn-1523
+  last_message: bn-1525
+  message_count: 3
+- id: K-S-001-26-08
+  organization: orrenvale
+  topic: Service check — file archive
+  object: file archive
+  opened: bn-1526
+  last_message: bn-1529
+  message_count: 4
+- id: K-S-001-26-09
+  organization: orrenvale
+  topic: Quarterly review — file archive
+  object: file archive
+  opened: bn-1530
+  last_message: bn-1534
+  message_count: 5
+- id: K-S-001-26-10
+  organization: orrenvale
+  topic: Internal service diary — staff backup check
+  object: staff backup check
+  opened: bn-1535
+  last_message: bn-1540
+  message_count: 6
+- id: K-S-001-26-11
+  organization: orrenvale
+  topic: Service check — staff backup check
+  object: staff backup check
+  opened: bn-1541
+  last_message: bn-1543
+  message_count: 3
+- id: K-S-001-26-12
+  organization: orrenvale
+  topic: Quarterly review — staff backup check
+  object: staff backup check
+  opened: bn-1544
+  last_message: bn-1548
+  message_count: 5
+- id: A-S-004-26-01
+  organization: ternwick
+  topic: Batch specification — ledger batch 04
+  object: ledger batch 04
+  opened: bn-1549
+  last_message: bn-1550
+  message_count: 2
+- id: A-S-004-26-02
+  organization: ternwick
+  topic: Proof set — ledger batch 04
+  object: ledger batch 04
+  opened: bn-1551
+  last_message: bn-1553
+  message_count: 3
+- id: A-S-004-26-03
+  organization: ternwick
+  topic: Accepted pages TR-26-04
+  object: ledger batch 04
+  opened: bn-1554
+  last_message: bn-1557
+  message_count: 4
+- id: A-S-004-26-04
+  organization: ternwick
+  topic: Batch specification — drawings batch 05
+  object: drawings batch 05
+  opened: bn-1558
+  last_message: bn-1562
+  message_count: 5
+- id: A-S-004-26-05
+  organization: ternwick
+  topic: Proof set — drawings batch 05
+  object: drawings batch 05
+  opened: bn-1563
+  last_message: bn-1568
+  message_count: 6
+- id: A-S-004-26-06
+  organization: ternwick
+  topic: Accepted pages TR-26-05
+  object: drawings batch 05
+  opened: bn-1569
+  last_message: bn-1570
+  message_count: 2
+- id: A-S-004-26-07
+  organization: ternwick
+  topic: Batch specification — service cards batch 06
+  object: service cards batch 06
+  opened: bn-1571
+  last_message: bn-1573
+  message_count: 3
+- id: A-S-004-26-08
+  organization: ternwick
+  topic: Proof set — service cards batch 06
+  object: service cards batch 06
+  opened: bn-1574
+  last_message: bn-1577
+  message_count: 4
+- id: A-S-004-26-09
+  organization: ternwick
+  topic: Accepted pages TR-26-06
+  object: service cards batch 06
+  opened: bn-1578
+  last_message: bn-1582
+  message_count: 5
+- id: A-S-004-26-10
+  organization: ternwick
+  topic: Batch specification — board minutes batch 07
+  object: board minutes batch 07
+  opened: bn-1583
+  last_message: bn-1588
+  message_count: 6
+- id: A-S-004-26-11
+  organization: ternwick
+  topic: Proof set — board minutes batch 07
+  object: board minutes batch 07
+  opened: bn-1589
+  last_message: bn-1591
+  message_count: 3
+- id: A-S-004-26-12
+  organization: ternwick
+  topic: Accepted pages TR-26-07
+  object: board minutes batch 07
+  opened: bn-1592
+  last_message: bn-1595
+  message_count: 4
+- id: A-S-004-26-13
+  organization: ternwick
+  topic: Batch specification — archive index
+  object: archive index
+  opened: bn-1596
+  last_message: bn-1600
+  message_count: 5

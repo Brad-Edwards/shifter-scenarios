@@ -1,0 +1,19 @@
+# Agreement summary: Sennwick Water Board
+
+Agreement **K-C-011-AGR-01** | Account **K-C-011** | Status: accepted
+
+Effective: 2022-01-01
+
+Current end date: 2027-12-31
+
+## Agreed service
+
+Contractor evidence, planned works review, and board-ready handover summaries.
+
+## Commercial schedule
+
+USD 121,000 annual service fee, billed in four equal instalments of USD 30,250. Charges are measured only against accepted work or the stated service period. Additional scope requires a separate written order.
+
+## Administration
+
+Mara Quillan is the company commercial contact; Hugo Dravik holds the operational relationship. The signed or accepted agreement is the controlling document. This summary contains settled terms only.

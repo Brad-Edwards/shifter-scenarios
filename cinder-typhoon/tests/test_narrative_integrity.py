@@ -49,15 +49,22 @@ class NarrativeIntegrityTests(unittest.TestCase):
             head['manager'] = 'rowan'
             p.write_text(yaml.safe_dump(workforce, sort_keys=False))
 
+        def alter_accepted_delivery_amount(root):
+            p = root / 'authoring/business-network.yaml'
+            network = yaml.safe_load(p.read_text())
+            merewick = next(org for org in network['organizations'] if org['key'] == 'merewick')
+            merewick['settled_activity'][0]['accepted_amount_usd'] = '552.01'
+            p.write_text(yaml.safe_dump(network, sort_keys=False))
+
         for mutate in (alter_attachment, add_unrelated_mailbox_copy, change_source,
-                       detach_reply, create_reporting_loop):
+                       detach_reply, create_reporting_loop, alter_accepted_delivery_amount):
             with self.subTest(mutation=mutate.__name__), tempfile.TemporaryDirectory() as temp:
                 pack = Path(temp)
                 root = pack / 'assets/narrative'
                 shutil.copytree(validator.ROOT, root)
                 review = pack / 'docs/narrative'
                 review.mkdir(parents=True)
-                shutil.copy(validator.PACK / 'docs/narrative/workforce-ownership.json', review)
+                shutil.copy(validator.PACK / 'docs/narrative/content-ownership.json', review)
                 mutate(root)
                 with patch.object(validator, 'ROOT', root), patch.object(validator, 'PACK', pack):
                     with self.assertRaises(ValueError):

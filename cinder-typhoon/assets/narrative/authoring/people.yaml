@@ -145,3 +145,293 @@ correspondents:
     name: ARWC Staff Activities
     email: staff-activities@alterrawaterco.com
     employer: arwc
+  k_case_updates:
+    name: FieldKest Service Desk
+    email: case-updates@keplerops.com
+    employer: keplerops
+  a_account_updates:
+    name: ARWC Account Notices
+    email: account-notices@alterrawaterco.com
+    employer: arwc
+  bc_rillhaven_1:
+    name: Greer Aldervin
+    email: greer.aldervin@rillhaven.test
+    employer: rillhaven
+    department: Service Lead
+    job: Service Lead
+  bc_rillhaven_2:
+    name: Kit Merrowin
+    email: kit.merrowin@rillhaven.test
+    employer: rillhaven
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_rillhaven_3:
+    name: Arel Vornell
+    email: arel.vornell@rillhaven.test
+    employer: rillhaven
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_davenmoor_1:
+    name: Elise Ravent
+    email: elise.ravent@davenmoor.test
+    employer: davenmoor
+    department: Service Lead
+    job: Service Lead
+  bc_davenmoor_2:
+    name: Tomas Vellin
+    email: tomas.vellin@davenmoor.test
+    employer: davenmoor
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_davenmoor_3:
+    name: Mira Hoswick
+    email: mira.hoswick@davenmoor.test
+    employer: davenmoor
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_elverden_1:
+    name: Nia Calderin
+    email: nia.calderin@elverden.test
+    employer: elverden
+    department: Service Lead
+    job: Service Lead
+  bc_elverden_2:
+    name: Omar Tesswick
+    email: omar.tesswick@elverden.test
+    employer: elverden
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_elverden_3:
+    name: Petra Langven
+    email: petra.langven@elverden.test
+    employer: elverden
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_fennor_1:
+    name: Soren Haldell
+    email: soren.haldell@fennor.test
+    employer: fennor
+    department: Service Lead
+    job: Service Lead
+  bc_fennor_2:
+    name: Iris Morwick
+    email: iris.morwick@fennor.test
+    employer: fennor
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_fennor_3:
+    name: Ansel Retven
+    email: ansel.retven@fennor.test
+    employer: fennor
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_haveril_1:
+    name: June Pellorin
+    email: june.pellorin@haveril.test
+    employer: haveril
+    department: Service Lead
+    job: Service Lead
+  bc_haveril_2:
+    name: Asha Vervain
+    email: asha.vervain@haveril.test
+    employer: haveril
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_haveril_3:
+    name: Leo Sennard
+    email: leo.sennard@haveril.test
+    employer: haveril
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_mirrenfold_1:
+    name: Eryn Tollmere
+    email: eryn.tollmere@mirrenfold.test
+    employer: mirrenfold
+    department: Service Lead
+    job: Service Lead
+  bc_mirrenfold_2:
+    name: Malik Orsden
+    email: malik.orsden@mirrenfold.test
+    employer: mirrenfold
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_mirrenfold_3:
+    name: Ruth Varendon
+    email: ruth.varendon@mirrenfold.test
+    employer: mirrenfold
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_orvellan_1:
+    name: Bea Larmere
+    email: bea.larmere@orvellan.test
+    employer: orvellan
+    department: Service Lead
+    job: Service Lead
+  bc_orvellan_2:
+    name: Dev Renwick
+    email: dev.renwick@orvellan.test
+    employer: orvellan
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_orvellan_3:
+    name: Sylvie Dorswick
+    email: sylvie.dorswick@orvellan.test
+    employer: orvellan
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_pellhaven_1:
+    name: Nell Ardiver
+    email: nell.ardiver@pellhaven.test
+    employer: pellhaven
+    department: Service Lead
+    job: Service Lead
+  bc_pellhaven_2:
+    name: Arlo Merwick
+    email: arlo.merwick@pellhaven.test
+    employer: pellhaven
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_pellhaven_3:
+    name: Uma Fellorin
+    email: uma.fellorin@pellhaven.test
+    employer: pellhaven
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_roskelle_1:
+    name: Cora Vennard
+    email: cora.vennard@roskelle.test
+    employer: roskelle
+    department: Service Lead
+    job: Service Lead
+  bc_roskelle_2:
+    name: Ilan Tressel
+    email: ilan.tressel@roskelle.test
+    employer: roskelle
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_roskelle_3:
+    name: Mae Delwick
+    email: mae.delwick@roskelle.test
+    employer: roskelle
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_sennwick_1:
+    name: Lydia Pravell
+    email: lydia.pravell@sennwick.test
+    employer: sennwick
+    department: Service Lead
+    job: Service Lead
+  bc_sennwick_2:
+    name: Hadi Nolven
+    email: hadi.nolven@sennwick.test
+    employer: sennwick
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_sennwick_3:
+    name: Felix Dermere
+    email: felix.dermere@sennwick.test
+    employer: sennwick
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_caldren_1:
+    name: Zara Ellovin
+    email: zara.ellovin@caldren.test
+    employer: caldren
+    department: Service Lead
+    job: Service Lead
+  bc_caldren_2:
+    name: Ines Brannell
+    email: ines.brannell@caldren.test
+    employer: caldren
+    department: Records Reviewer
+    job: Records Reviewer
+  bc_caldren_3:
+    name: Otto Pelliver
+    email: otto.pelliver@caldren.test
+    employer: caldren
+    department: Commercial Contact
+    job: Commercial Contact
+  bc_veybridge_2:
+    name: Dana Veskell
+    email: dana.veskell@veybridge.test
+    employer: veybridge
+    department: Operations Contact
+    job: Operations Contact
+  bc_veybridge_3:
+    name: Aiden Rellard
+    email: aiden.rellard@veybridge.test
+    employer: veybridge
+    department: Account Contact
+    job: Account Contact
+  bc_ardenvale_1:
+    name: Vera Tolwick
+    email: vera.tolwick@ardenvale.test
+    employer: ardenvale
+    department: Account Contact
+    job: Account Contact
+  bc_ardenvale_2:
+    name: Reece Fendell
+    email: reece.fendell@ardenvale.test
+    employer: ardenvale
+    department: Operations Contact
+    job: Operations Contact
+  bc_merewick_1:
+    name: Mabel Dornell
+    email: mabel.dornell@merewick.test
+    employer: merewick
+    department: Account Contact
+    job: Account Contact
+  bc_merewick_2:
+    name: Gideon Sarrick
+    email: gideon.sarrick@merewick.test
+    employer: merewick
+    department: Operations Contact
+    job: Operations Contact
+  bc_belvarn_1:
+    name: Lila Perrow
+    email: lila.perrow@belvarn.test
+    employer: belvarn
+    department: Account Contact
+    job: Account Contact
+  bc_belvarn_2:
+    name: Bram Vellard
+    email: bram.vellard@belvarn.test
+    employer: belvarn
+    department: Operations Contact
+    job: Operations Contact
+  bc_talvern_1:
+    name: Selma Ardenn
+    email: selma.ardenn@talvern.test
+    employer: talvern
+    department: Account Contact
+    job: Account Contact
+  bc_talvern_2:
+    name: Nico Pelwick
+    email: nico.pelwick@talvern.test
+    employer: talvern
+    department: Operations Contact
+    job: Operations Contact
+  bc_orrenvale_1:
+    name: Tessa Marrowell
+    email: tessa.marrowell@orrenvale.test
+    employer: orrenvale
+    department: Account Contact
+    job: Account Contact
+  bc_orrenvale_2:
+    name: Isaac Devren
+    email: isaac.devren@orrenvale.test
+    employer: orrenvale
+    department: Operations Contact
+    job: Operations Contact
+  bc_ternwick_1:
+    name: Edie Ransell
+    email: edie.ransell@ternwick.test
+    employer: ternwick
+    department: Account Contact
+    job: Account Contact
+  bc_ternwick_2:
+    name: Huw Delvern
+    email: huw.delvern@ternwick.test
+    employer: ternwick
+    department: Operations Contact
+    job: Operations Contact

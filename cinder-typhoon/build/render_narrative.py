@@ -126,8 +126,8 @@ def render():
         raw = msg.as_bytes()
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
-        # workforce slice stays in its source package to respect pack member limits.
-        path = None if m['id'].startswith('wm-') else f'generated/messages/{m["id"]}.eml'
+        # workforce and business slices stay in source packages to respect pack member limits.
+        path = None if m['id'].startswith(('wm-', 'bn-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 from datetime import datetime
 from datetime import timezone
+from decimal import Decimal
 import csv
 import io
 from email.parser import BytesParser
@@ -20,6 +21,9 @@ TARGETS = {'keplerops': 'k-corporate.k-staff', 'arwc': 'a-corporate.a-business'}
 KINDS = ('mail', 'documents', 'directory', 'employment')
 NARRATIVE_EVIDENCE = {f'narrative-{org}.{kind}-visible' for org in TARGETS for kind in KINDS}
 STORIES = {'bicycle', 'lunch', 'workshop', 'anniversary', 'choir', 'photography', 'outreach', 'billing'}
+BUSINESS_MESSAGE_COUNT = 1600
+TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT
+TOTAL_DOCUMENT_COUNT = 155 + 89
 
 
 def require(value, message):
@@ -29,6 +33,142 @@ def require(value, message):
 
 def read_json(path):
     return json.loads(path.read_text())
+
+
+def check_business_network(identity, roster, mail, docs):
+    network = yaml.safe_load((ROOT / 'authoring/business-network.yaml').read_text())
+    require(network['snapshot'] == identity['snapshot'], 'Business snapshot drift')
+    organizations = network['organizations']
+    contacts = network['contacts']
+    cases = network['cases']
+    require(len(organizations) == 19 and len({o['key'] for o in organizations}) == 19,
+            'Business organization inventory drift')
+    require(sum(o['kind'] == 'utility_customer' for o in organizations) == 12,
+            'Utility customer inventory drift')
+    require(len(contacts) == 47 and len({c['key'] for c in contacts}) == 47,
+            'Business contact inventory drift')
+    require(len(cases) == 400 and len({c['id'] for c in cases}) == 400,
+            'Business case inventory drift')
+    business_mail = {m['id']: m for m in mail if m['id'].startswith('bn-')}
+    require(len(business_mail) == BUSINESS_MESSAGE_COUNT, 'Business message inventory drift')
+    business_docs = {d['id']: d for d in docs if d['story'] == 'business-network'}
+    require(len(business_docs) == 89, 'Business document inventory drift')
+    require(sum(d['title'].endswith('accepted service schedule') for d in business_docs.values()) == 10,
+            'Signed/accepted schedule inventory drift')
+    for document in business_docs.values():
+        if not document['title'].endswith('accepted service schedule'):
+            continue
+        agreement = (ROOT / document['file']).read_text()
+        company_signer = 'Leah Calder-Voss' if document['employer'] == 'keplerops' else 'Priya Naravel'
+        require('/s/ ' + company_signer in agreement,
+                'Accepted schedule signed by the wrong company representative')
+        accepted = datetime.fromisoformat(agreement.split('Accepted: **')[1].split('**')[0])
+        signer = next(p for p in roster if p['name'] == company_signer)
+        require(datetime.fromisoformat(signer['start_date']) <= accepted
+                and document['published_at'].startswith(accepted.date().isoformat()),
+                'Accepted schedule date or representative tenure drift')
+    source_contacts = identity['people'] | identity['correspondents']
+    staff_keys = {p['key'] for p in roster}
+    keys = {o['key'] for o in organizations}
+    account_ids = {o['account_id'] for o in organizations}
+    require(len(account_ids) == 19 and len({o['agreement_id'] for o in organizations}) == 19,
+            'Duplicate business identifier')
+    require(all(o['holder'] in ('arwc', 'keplerops') and o['owner'] in staff_keys
+                and o['commercial_owner'] in staff_keys for o in organizations),
+            'Unknown company account owner')
+    require(all(next(p for p in roster if p['key'] == o['owner'])['employer'] == o['holder']
+                and next(p for p in roster if p['key'] == o['commercial_owner'])['employer'] == o['holder']
+                for o in organizations), 'Cross-company account owner')
+    require(all(datetime.fromisoformat(o['effective']) < datetime.fromisoformat(o['end'])
+                and datetime.fromisoformat(o['effective']).date() <=
+                    datetime.fromisoformat(identity['snapshot']).date() for o in organizations),
+            'Business agreement dates invalid')
+    for org in organizations:
+        require(org['domain'] in ('keplerops.com', 'alterrawaterco.com') or org['domain'].endswith('.test'),
+                'Nonfictional supporting domain')
+        require(all(key in source_contacts and source_contacts[key]['employer'] == org['key']
+                    for key in org['contact_keys']), 'Contact employment or account join drift')
+        related = [d for d in business_docs.values() if org['account_id'] in (ROOT / d['file']).read_text()]
+        require(len(related) >= 3, f'Missing account, contract, or contact record: {org["key"]}')
+        summaries = [d for d in related if d['title'].endswith('agreement summary')]
+        require(any(org['agreement_id'] in (ROOT / d['file']).read_text()
+                    and org['effective'] in (ROOT / d['file']).read_text()
+                    and org['end'] in (ROOT / d['file']).read_text()
+                    for d in summaries), f'Agreement summary drift: {org["key"]}')
+        if org['kind'] == 'utility_customer':
+            require(org['holder'] == 'keplerops' and 'annual service fee' in org['terms'],
+                    'Utility contract type drift')
+            fee = int(org['terms'].split('USD ')[1].split(' annual')[0].replace(',', ''))
+            instalment = int(org['terms'].split('instalments of USD ')[1].replace(',', ''))
+            require(4 * instalment == fee, 'Quarterly instalments do not total annual fee')
+        if org['key'] == 'merewick':
+            require('20,000 m³' in org['terms'] and 'reservation' in org['scope'],
+                    'Bulk supply limit or condition drift')
+        if org['key'] == 'talvern':
+            require('7,500 m³' in org['terms'] and 'supplementary' in org['scope'],
+                    'Talvern allowance drift')
+        if org['key'] == 'orrenvale':
+            require('excluding FieldKest production workloads' in org['scope'],
+                    'Internal IT service scope drift')
+        if 'settled_activity' in org:
+            ledger = org['settled_activity']
+            require(len({row['reference'] for row in ledger}) == len(ledger),
+                    'Duplicate accepted activity reference')
+            unit = 'pages' if org['key'] == 'ternwick' else 'm³'
+            expected_rate = {'merewick': Decimal('0.92'), 'talvern': Decimal('1.15'),
+                             'ternwick': Decimal('0.42')}[org['key']]
+            account_text = '\n'.join((ROOT / d['file']).read_text() for d in related)
+            for row in ledger:
+                day = datetime.fromisoformat(row['date'])
+                charge = Decimal(row['quantity']) * Decimal(row['unit_price_usd'])
+                if org['key'] == 'ternwick':
+                    charge += Decimal('180')
+                require(day.date() <= datetime.fromisoformat(identity['snapshot']).date()
+                        and row['quantity'] > 0 and row['unit'] == unit
+                        and Decimal(row['unit_price_usd']) == expected_rate
+                        and Decimal(row['accepted_amount_usd']) == charge,
+                        'Accepted activity arithmetic or date drift')
+                require(row['reference'] in account_text
+                        and any(row['reference'] in m['body']
+                                and datetime.fromisoformat(m['date']).date() >= day.date()
+                                for m in business_mail.values()),
+                        'Accepted activity absent from account or correspondence')
+            volume = sum(row['quantity'] for row in ledger)
+            require(volume <= (20000 if org['key'] == 'merewick' else 7500 if org['key'] == 'talvern'
+                               else 100000), 'Accepted activity exceeds contract ceiling')
+    for contact in contacts:
+        require(contact['key'] in identity['correspondents'] and contact['key'] not in staff_keys,
+                'External contact entered staff roster')
+        source = identity['correspondents'][contact['key']]
+        require(source['name'] == contact['name'] and source['email'] == contact['email']
+                and source['employer'] == contact['employer'], 'Contact identity drift')
+        require(contact['sample_message_id'] in business_mail
+                and business_mail[contact['sample_message_id']]['from'] == contact['key']
+                and contact['context_note'] and contact['writing_note'], 'Business voice sample missing')
+    seen_messages = set()
+    org_by_key = {o['key']: o for o in organizations}
+    for case in cases:
+        require(case['organization'] in keys and case['id'].startswith(org_by_key[case['organization']]['account_id']),
+                'Business case account join drift')
+        chain = []
+        current = case['last_message']
+        while current:
+            require(current in business_mail and current not in chain, 'Missing or cyclic business thread')
+            chain.append(current)
+            item = business_mail[current]
+            require(item['story'] == case['organization'] and case['id'] in item['subject'],
+                    'Business message organization or reference drift')
+            current = item.get('reply_to')
+        require(chain[-1] == case['opened'] and len(chain) == case['message_count'],
+                'Business thread inventory drift')
+        seen_messages.update(chain)
+    require(seen_messages == set(business_mail), 'Unjoined business message')
+    visible = [m['subject'] + '\n' + m['body'] for m in business_mail.values()]
+    visible += [(ROOT / d['file']).read_text() for d in business_docs.values()]
+    leak = ('cinder typhoon', 'issue 113', 'scenario layer', 'author-only', 'openrae',
+            'shifter-scenarios', 'challenge-specific')
+    require(all(not any(term in text.lower() for term in leak) for text in visible),
+            'Authoring or challenge language in business content')
 
 
 def check_assets():
@@ -116,8 +256,9 @@ def check_assets():
                     'Retained exchange differs between organizations')
             packaged_messages[mid] = raw
     require(len(identity['people']) == 295, 'Cast or workforce differs from reviewed world')
-    require(len(mail) == len({m['id'] for m in mail}) == 1475, 'Authored message inventory drift')
-    require(len(docs) == len(doc_by_id) == 155, 'Authored document inventory drift')
+    require(len(mail) == len({m['id'] for m in mail}) == TOTAL_MESSAGE_COUNT, 'Authored message inventory drift')
+    require(len(docs) == len(doc_by_id) == TOTAL_DOCUMENT_COUNT, 'Authored document inventory drift')
+    check_business_network(identity, roster, mail, docs)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs} == {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()}, 'Uncatalogued document')
     parsed = {}
@@ -273,7 +414,7 @@ def check_assets():
                     for p in hires), 'Onboarding record disagrees with roster')
         require((ROOT / 'generated/directories' / (org + '.csv')).read_text() ==
                 directory[org + '-directory']['text'], 'CSV directory differs from source package')
-    ownership = read_json(PACK / 'docs/narrative/workforce-ownership.json')
+    ownership = read_json(PACK / 'docs/narrative/content-ownership.json')
     require(ownership['required_base']['snapshot'] == identity['snapshot'], 'Ownership base snapshot drift')
     require(ownership['source_versions'] == {e['source']['name']: e['source']['version'] for e in catalog},
             'Ownership source versions drift')
@@ -334,7 +475,8 @@ def check_narrative_runtime(scenario, runtime):
 
 if __name__ == '__main__':
     check_assets()
-    print('PASS: 1475 RFC822 messages, exact attachments and mailbox copies, 294 employees, 155 documents, eight source collections')
+    print(f'PASS: {TOTAL_MESSAGE_COUNT} RFC822 messages, exact attachments and mailbox copies, '
+          f'294 employees, {TOTAL_DOCUMENT_COUNT} documents, eight source collections')
 
 
 def adversarial_narrative_checks(scenario):
