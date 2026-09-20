@@ -435,3 +435,15 @@ correspondents:
     employer: ternwick
     department: Operations Contact
     job: Operations Contact
+  k_build_updates:
+    name: FieldKest Build Service
+    email: build-updates@keplerops.com
+    employer: keplerops
+  k_release_updates:
+    name: FieldKest Release Register
+    email: release-updates@keplerops.com
+    employer: keplerops
+  k_recovery_updates:
+    name: Workplace Recovery Checks
+    email: recovery-checks@keplerops.com
+    employer: keplerops

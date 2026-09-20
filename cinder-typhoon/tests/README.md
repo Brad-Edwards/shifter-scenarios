@@ -60,6 +60,7 @@ The same validation environment can check the authored assets independently:
 python cinder-typhoon/build/render_narrative.py --check
 python cinder-typhoon/tests/validate_narrative.py
 python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.py
+python -m unittest discover -s cinder-typhoon/tests -p test_release_platform.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -73,6 +74,13 @@ mailbox, changed source bytes, a detached reply, a reporting loop, and an
 altered accepted-delivery amount. They also reject a customer/internal thread
 bridge and a fabricated engineering resolution. The full SDL check also verifies the eight native
 materialization contracts.
+
+Release and platform checks join the 120 operating histories to their accepted
+quality evidence, exact revisions, source bytes, and calendars. Ten targeted
+mutations reject premature release, unaccepted evidence, publication of a held
+bundle, changed readback bytes, fabricated recovery hashes, altered machine
+values, overbooked capacity, unrelated readers, confirmed cancelled windows,
+and invented service owners. Attachment checks include declared MIME types.
 
 ## Prose checks
 

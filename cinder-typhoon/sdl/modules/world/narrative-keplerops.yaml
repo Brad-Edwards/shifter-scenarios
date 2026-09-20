@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-77b5c012c909ce742823b9ba177df0ed2e4aef37190ab53120ea416e9e3ec617
+      version: sha256-4e161c43d7b4d26073826d23ecc6e819f6542b94b6959a91c34dd5b5431bf125
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v1
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-196981ce59bd849a2fe9f0ae6faf9e2b2ad0e2d4e9673ee3c0034f17e21ab631
+      version: sha256-4e4a29686eaf84307d5be69bb20f6ad5e1da2d61e1b7c0ee806e8d402ef1d958
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
@@ -5462,6 +5462,1066 @@ content:
       display_name: Outstanding product limitations
     - name: product-quality-review-calendar
       display_name: Product and quality review calendar
+    - name: rel-2026-001-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-001
+    - name: rel-2026-001-notes-v1
+      display_name: REL-2026-001 release notes, proposed
+    - name: rel-2026-001-change
+      display_name: REL-2026-001 change request
+    - name: rel-2026-001-events
+      display_name: REL-2026-001 build and qualification events
+    - name: rel-2026-001-notes-v2
+      display_name: REL-2026-001 release notes, disposition
+    - name: rel-2026-001-handover
+      display_name: REL-2026-001 operating handover
+    - name: rel-2026-002-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-002
+    - name: rel-2026-002-notes-v1
+      display_name: REL-2026-002 release notes, proposed
+    - name: rel-2026-002-change
+      display_name: REL-2026-002 change request
+    - name: rel-2026-002-events
+      display_name: REL-2026-002 build and qualification events
+    - name: rel-2026-002-notes-v2
+      display_name: REL-2026-002 release notes, disposition
+    - name: rel-2026-002-handover
+      display_name: REL-2026-002 operating handover
+    - name: rel-2026-003-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-003
+    - name: rel-2026-003-notes-v1
+      display_name: REL-2026-003 release notes, proposed
+    - name: rel-2026-003-change
+      display_name: REL-2026-003 change request
+    - name: rel-2026-003-events
+      display_name: REL-2026-003 build and qualification events
+    - name: rel-2026-003-notes-v2
+      display_name: REL-2026-003 release notes, disposition
+    - name: rel-2026-003-handover
+      display_name: REL-2026-003 operating handover
+    - name: rel-2026-004-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-004
+    - name: rel-2026-004-notes-v1
+      display_name: REL-2026-004 release notes, proposed
+    - name: rel-2026-004-change
+      display_name: REL-2026-004 change request
+    - name: rel-2026-004-events
+      display_name: REL-2026-004 build and qualification events
+    - name: rel-2026-004-notes-v2
+      display_name: REL-2026-004 release notes, disposition
+    - name: rel-2026-004-handover
+      display_name: REL-2026-004 operating handover
+    - name: rel-2026-005-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-005
+    - name: rel-2026-005-notes-v1
+      display_name: REL-2026-005 release notes, proposed
+    - name: rel-2026-005-change
+      display_name: REL-2026-005 change request
+    - name: rel-2026-005-events
+      display_name: REL-2026-005 build and qualification events
+    - name: rel-2026-005-notes-v2
+      display_name: REL-2026-005 release notes, disposition
+    - name: rel-2026-005-handover
+      display_name: REL-2026-005 operating handover
+    - name: rel-2026-006-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-006
+    - name: rel-2026-006-notes-v1
+      display_name: REL-2026-006 release notes, proposed
+    - name: rel-2026-006-change
+      display_name: REL-2026-006 change request
+    - name: rel-2026-006-events
+      display_name: REL-2026-006 build and qualification events
+    - name: rel-2026-006-notes-v2
+      display_name: REL-2026-006 release notes, disposition
+    - name: rel-2026-006-handover
+      display_name: REL-2026-006 operating handover
+    - name: rel-2026-007-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-007
+    - name: rel-2026-007-notes-v1
+      display_name: REL-2026-007 release notes, proposed
+    - name: rel-2026-007-change
+      display_name: REL-2026-007 change request
+    - name: rel-2026-007-events
+      display_name: REL-2026-007 build and qualification events
+    - name: rel-2026-007-notes-v2
+      display_name: REL-2026-007 release notes, disposition
+    - name: rel-2026-007-handover
+      display_name: REL-2026-007 operating handover
+    - name: rel-2026-008-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-008
+    - name: rel-2026-008-notes-v1
+      display_name: REL-2026-008 release notes, proposed
+    - name: rel-2026-008-change
+      display_name: REL-2026-008 change request
+    - name: rel-2026-008-events
+      display_name: REL-2026-008 build and qualification events
+    - name: rel-2026-008-notes-v2
+      display_name: REL-2026-008 release notes, disposition
+    - name: rel-2026-008-handover
+      display_name: REL-2026-008 operating handover
+    - name: rel-2026-009-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-009
+    - name: rel-2026-009-notes-v1
+      display_name: REL-2026-009 release notes, proposed
+    - name: rel-2026-009-change
+      display_name: REL-2026-009 change request
+    - name: rel-2026-009-events
+      display_name: REL-2026-009 build and qualification events
+    - name: rel-2026-009-notes-v2
+      display_name: REL-2026-009 release notes, disposition
+    - name: rel-2026-009-handover
+      display_name: REL-2026-009 operating handover
+    - name: rel-2026-010-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-010
+    - name: rel-2026-010-notes-v1
+      display_name: REL-2026-010 release notes, proposed
+    - name: rel-2026-010-change
+      display_name: REL-2026-010 change request
+    - name: rel-2026-010-events
+      display_name: REL-2026-010 build and qualification events
+    - name: rel-2026-010-notes-v2
+      display_name: REL-2026-010 release notes, disposition
+    - name: rel-2026-010-handover
+      display_name: REL-2026-010 operating handover
+    - name: rel-2026-011-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-011
+    - name: rel-2026-011-notes-v1
+      display_name: REL-2026-011 release notes, proposed
+    - name: rel-2026-011-change
+      display_name: REL-2026-011 change request
+    - name: rel-2026-011-events
+      display_name: REL-2026-011 build and qualification events
+    - name: rel-2026-011-notes-v2
+      display_name: REL-2026-011 release notes, disposition
+    - name: rel-2026-011-handover
+      display_name: REL-2026-011 operating handover
+    - name: rel-2026-012-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-012
+    - name: rel-2026-012-notes-v1
+      display_name: REL-2026-012 release notes, proposed
+    - name: rel-2026-012-change
+      display_name: REL-2026-012 change request
+    - name: rel-2026-012-events
+      display_name: REL-2026-012 build and qualification events
+    - name: rel-2026-012-notes-v2
+      display_name: REL-2026-012 release notes, disposition
+    - name: rel-2026-012-handover
+      display_name: REL-2026-012 operating handover
+    - name: rel-2026-013-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-013
+    - name: rel-2026-013-notes-v1
+      display_name: REL-2026-013 release notes, proposed
+    - name: rel-2026-013-change
+      display_name: REL-2026-013 change request
+    - name: rel-2026-013-events
+      display_name: REL-2026-013 build and qualification events
+    - name: rel-2026-013-notes-v2
+      display_name: REL-2026-013 release notes, disposition
+    - name: rel-2026-013-handover
+      display_name: REL-2026-013 operating handover
+    - name: rel-2026-014-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-014
+    - name: rel-2026-014-notes-v1
+      display_name: REL-2026-014 release notes, proposed
+    - name: rel-2026-014-change
+      display_name: REL-2026-014 change request
+    - name: rel-2026-014-events
+      display_name: REL-2026-014 build and qualification events
+    - name: rel-2026-014-notes-v2
+      display_name: REL-2026-014 release notes, disposition
+    - name: rel-2026-014-handover
+      display_name: REL-2026-014 operating handover
+    - name: rel-2026-015-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-015
+    - name: rel-2026-015-notes-v1
+      display_name: REL-2026-015 release notes, proposed
+    - name: rel-2026-015-change
+      display_name: REL-2026-015 change request
+    - name: rel-2026-015-events
+      display_name: REL-2026-015 build and qualification events
+    - name: rel-2026-015-notes-v2
+      display_name: REL-2026-015 release notes, disposition
+    - name: rel-2026-015-handover
+      display_name: REL-2026-015 operating handover
+    - name: rel-2026-016-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-016
+    - name: rel-2026-016-notes-v1
+      display_name: REL-2026-016 release notes, proposed
+    - name: rel-2026-016-change
+      display_name: REL-2026-016 change request
+    - name: rel-2026-016-events
+      display_name: REL-2026-016 build and qualification events
+    - name: rel-2026-016-notes-v2
+      display_name: REL-2026-016 release notes, disposition
+    - name: rel-2026-016-handover
+      display_name: REL-2026-016 operating handover
+    - name: rel-2026-017-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-017
+    - name: rel-2026-017-notes-v1
+      display_name: REL-2026-017 release notes, proposed
+    - name: rel-2026-017-change
+      display_name: REL-2026-017 change request
+    - name: rel-2026-017-events
+      display_name: REL-2026-017 build and qualification events
+    - name: rel-2026-017-notes-v2
+      display_name: REL-2026-017 release notes, disposition
+    - name: rel-2026-017-handover
+      display_name: REL-2026-017 operating handover
+    - name: rel-2026-018-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-018
+    - name: rel-2026-018-notes-v1
+      display_name: REL-2026-018 release notes, proposed
+    - name: rel-2026-018-change
+      display_name: REL-2026-018 change request
+    - name: rel-2026-018-events
+      display_name: REL-2026-018 build and qualification events
+    - name: rel-2026-018-notes-v2
+      display_name: REL-2026-018 release notes, disposition
+    - name: rel-2026-018-handover
+      display_name: REL-2026-018 operating handover
+    - name: rel-2026-019-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-019
+    - name: rel-2026-019-notes-v1
+      display_name: REL-2026-019 release notes, proposed
+    - name: rel-2026-019-change
+      display_name: REL-2026-019 change request
+    - name: rel-2026-019-events
+      display_name: REL-2026-019 build and qualification events
+    - name: rel-2026-019-notes-v2
+      display_name: REL-2026-019 release notes, disposition
+    - name: rel-2026-019-handover
+      display_name: REL-2026-019 operating handover
+    - name: rel-2026-020-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-020
+    - name: rel-2026-020-notes-v1
+      display_name: REL-2026-020 release notes, proposed
+    - name: rel-2026-020-change
+      display_name: REL-2026-020 change request
+    - name: rel-2026-020-events
+      display_name: REL-2026-020 build and qualification events
+    - name: rel-2026-020-notes-v2
+      display_name: REL-2026-020 release notes, disposition
+    - name: rel-2026-020-handover
+      display_name: REL-2026-020 operating handover
+    - name: rel-2026-021-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-021
+    - name: rel-2026-021-notes-v1
+      display_name: REL-2026-021 release notes, proposed
+    - name: rel-2026-021-change
+      display_name: REL-2026-021 change request
+    - name: rel-2026-021-events
+      display_name: REL-2026-021 build and qualification events
+    - name: rel-2026-021-notes-v2
+      display_name: REL-2026-021 release notes, disposition
+    - name: rel-2026-021-handover
+      display_name: REL-2026-021 operating handover
+    - name: rel-2026-022-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-022
+    - name: rel-2026-022-notes-v1
+      display_name: REL-2026-022 release notes, proposed
+    - name: rel-2026-022-change
+      display_name: REL-2026-022 change request
+    - name: rel-2026-022-events
+      display_name: REL-2026-022 build and qualification events
+    - name: rel-2026-022-notes-v2
+      display_name: REL-2026-022 release notes, disposition
+    - name: rel-2026-022-handover
+      display_name: REL-2026-022 operating handover
+    - name: rel-2026-023-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-023
+    - name: rel-2026-023-notes-v1
+      display_name: REL-2026-023 release notes, proposed
+    - name: rel-2026-023-change
+      display_name: REL-2026-023 change request
+    - name: rel-2026-023-events
+      display_name: REL-2026-023 build and qualification events
+    - name: rel-2026-023-notes-v2
+      display_name: REL-2026-023 release notes, disposition
+    - name: rel-2026-023-handover
+      display_name: REL-2026-023 operating handover
+    - name: rel-2026-024-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-024
+    - name: rel-2026-024-notes-v1
+      display_name: REL-2026-024 release notes, proposed
+    - name: rel-2026-024-change
+      display_name: REL-2026-024 change request
+    - name: rel-2026-024-events
+      display_name: REL-2026-024 build and qualification events
+    - name: rel-2026-024-notes-v2
+      display_name: REL-2026-024 release notes, disposition
+    - name: rel-2026-024-handover
+      display_name: REL-2026-024 operating handover
+    - name: rel-2026-025-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-025
+    - name: rel-2026-025-notes-v1
+      display_name: REL-2026-025 release notes, proposed
+    - name: rel-2026-025-change
+      display_name: REL-2026-025 change request
+    - name: rel-2026-025-events
+      display_name: REL-2026-025 build and qualification events
+    - name: rel-2026-025-notes-v2
+      display_name: REL-2026-025 release notes, disposition
+    - name: rel-2026-025-handover
+      display_name: REL-2026-025 operating handover
+    - name: rel-2026-026-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-026
+    - name: rel-2026-026-notes-v1
+      display_name: REL-2026-026 release notes, proposed
+    - name: rel-2026-026-change
+      display_name: REL-2026-026 change request
+    - name: rel-2026-026-events
+      display_name: REL-2026-026 build and qualification events
+    - name: rel-2026-026-notes-v2
+      display_name: REL-2026-026 release notes, disposition
+    - name: rel-2026-026-handover
+      display_name: REL-2026-026 operating handover
+    - name: rel-2026-027-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-027
+    - name: rel-2026-027-notes-v1
+      display_name: REL-2026-027 release notes, proposed
+    - name: rel-2026-027-change
+      display_name: REL-2026-027 change request
+    - name: rel-2026-027-events
+      display_name: REL-2026-027 build and qualification events
+    - name: rel-2026-027-notes-v2
+      display_name: REL-2026-027 release notes, disposition
+    - name: rel-2026-027-handover
+      display_name: REL-2026-027 operating handover
+    - name: rel-2026-028-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-028
+    - name: rel-2026-028-notes-v1
+      display_name: REL-2026-028 release notes, proposed
+    - name: rel-2026-028-change
+      display_name: REL-2026-028 change request
+    - name: rel-2026-028-events
+      display_name: REL-2026-028 build and qualification events
+    - name: rel-2026-028-notes-v2
+      display_name: REL-2026-028 release notes, disposition
+    - name: rel-2026-028-handover
+      display_name: REL-2026-028 operating handover
+    - name: rel-2026-029-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-029
+    - name: rel-2026-029-notes-v1
+      display_name: REL-2026-029 release notes, proposed
+    - name: rel-2026-029-change
+      display_name: REL-2026-029 change request
+    - name: rel-2026-029-events
+      display_name: REL-2026-029 build and qualification events
+    - name: rel-2026-029-notes-v2
+      display_name: REL-2026-029 release notes, disposition
+    - name: rel-2026-029-handover
+      display_name: REL-2026-029 operating handover
+    - name: rel-2026-030-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-030
+    - name: rel-2026-030-notes-v1
+      display_name: REL-2026-030 release notes, proposed
+    - name: rel-2026-030-change
+      display_name: REL-2026-030 change request
+    - name: rel-2026-030-events
+      display_name: REL-2026-030 build and qualification events
+    - name: rel-2026-030-notes-v2
+      display_name: REL-2026-030 release notes, disposition
+    - name: rel-2026-030-handover
+      display_name: REL-2026-030 operating handover
+    - name: rel-2026-031-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-031
+    - name: rel-2026-031-notes-v1
+      display_name: REL-2026-031 release notes, proposed
+    - name: rel-2026-031-change
+      display_name: REL-2026-031 change request
+    - name: rel-2026-031-events
+      display_name: REL-2026-031 build and qualification events
+    - name: rel-2026-031-notes-v2
+      display_name: REL-2026-031 release notes, disposition
+    - name: rel-2026-031-handover
+      display_name: REL-2026-031 operating handover
+    - name: rel-2026-032-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-032
+    - name: rel-2026-032-notes-v1
+      display_name: REL-2026-032 release notes, proposed
+    - name: rel-2026-032-change
+      display_name: REL-2026-032 change request
+    - name: rel-2026-032-events
+      display_name: REL-2026-032 build and qualification events
+    - name: rel-2026-032-notes-v2
+      display_name: REL-2026-032 release notes, disposition
+    - name: rel-2026-032-handover
+      display_name: REL-2026-032 operating handover
+    - name: rel-2026-033-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-033
+    - name: rel-2026-033-notes-v1
+      display_name: REL-2026-033 release notes, proposed
+    - name: rel-2026-033-change
+      display_name: REL-2026-033 change request
+    - name: rel-2026-033-events
+      display_name: REL-2026-033 build and qualification events
+    - name: rel-2026-033-notes-v2
+      display_name: REL-2026-033 release notes, disposition
+    - name: rel-2026-033-handover
+      display_name: REL-2026-033 operating handover
+    - name: rel-2026-034-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-034
+    - name: rel-2026-034-notes-v1
+      display_name: REL-2026-034 release notes, proposed
+    - name: rel-2026-034-change
+      display_name: REL-2026-034 change request
+    - name: rel-2026-034-events
+      display_name: REL-2026-034 build and qualification events
+    - name: rel-2026-034-notes-v2
+      display_name: REL-2026-034 release notes, disposition
+    - name: rel-2026-034-handover
+      display_name: REL-2026-034 operating handover
+    - name: rel-2026-035-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-035
+    - name: rel-2026-035-notes-v1
+      display_name: REL-2026-035 release notes, proposed
+    - name: rel-2026-035-change
+      display_name: REL-2026-035 change request
+    - name: rel-2026-035-events
+      display_name: REL-2026-035 build and qualification events
+    - name: rel-2026-035-notes-v2
+      display_name: REL-2026-035 release notes, disposition
+    - name: rel-2026-035-handover
+      display_name: REL-2026-035 operating handover
+    - name: rel-2026-036-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-036
+    - name: rel-2026-036-notes-v1
+      display_name: REL-2026-036 release notes, proposed
+    - name: rel-2026-036-change
+      display_name: REL-2026-036 change request
+    - name: rel-2026-036-events
+      display_name: REL-2026-036 build and qualification events
+    - name: rel-2026-036-notes-v2
+      display_name: REL-2026-036 release notes, disposition
+    - name: rel-2026-036-handover
+      display_name: REL-2026-036 operating handover
+    - name: rel-2026-037-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-037
+    - name: rel-2026-037-notes-v1
+      display_name: REL-2026-037 release notes, proposed
+    - name: rel-2026-037-change
+      display_name: REL-2026-037 change request
+    - name: rel-2026-037-events
+      display_name: REL-2026-037 build and qualification events
+    - name: rel-2026-037-notes-v2
+      display_name: REL-2026-037 release notes, disposition
+    - name: rel-2026-037-handover
+      display_name: REL-2026-037 operating handover
+    - name: rel-2026-038-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-038
+    - name: rel-2026-038-notes-v1
+      display_name: REL-2026-038 release notes, proposed
+    - name: rel-2026-038-change
+      display_name: REL-2026-038 change request
+    - name: rel-2026-038-events
+      display_name: REL-2026-038 build and qualification events
+    - name: rel-2026-038-notes-v2
+      display_name: REL-2026-038 release notes, disposition
+    - name: rel-2026-038-handover
+      display_name: REL-2026-038 operating handover
+    - name: rel-2026-039-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-039
+    - name: rel-2026-039-notes-v1
+      display_name: REL-2026-039 release notes, proposed
+    - name: rel-2026-039-change
+      display_name: REL-2026-039 change request
+    - name: rel-2026-039-events
+      display_name: REL-2026-039 build and qualification events
+    - name: rel-2026-039-notes-v2
+      display_name: REL-2026-039 release notes, disposition
+    - name: rel-2026-039-handover
+      display_name: REL-2026-039 operating handover
+    - name: rel-2026-040-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-040
+    - name: rel-2026-040-notes-v1
+      display_name: REL-2026-040 release notes, proposed
+    - name: rel-2026-040-change
+      display_name: REL-2026-040 change request
+    - name: rel-2026-040-events
+      display_name: REL-2026-040 build and qualification events
+    - name: rel-2026-040-notes-v2
+      display_name: REL-2026-040 release notes, disposition
+    - name: rel-2026-040-handover
+      display_name: REL-2026-040 operating handover
+    - name: rel-2026-041-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-041
+    - name: rel-2026-041-notes-v1
+      display_name: REL-2026-041 release notes, proposed
+    - name: rel-2026-041-change
+      display_name: REL-2026-041 change request
+    - name: rel-2026-041-events
+      display_name: REL-2026-041 build and qualification events
+    - name: rel-2026-041-notes-v2
+      display_name: REL-2026-041 release notes, disposition
+    - name: rel-2026-041-handover
+      display_name: REL-2026-041 operating handover
+    - name: rel-2026-042-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-042
+    - name: rel-2026-042-notes-v1
+      display_name: REL-2026-042 release notes, proposed
+    - name: rel-2026-042-change
+      display_name: REL-2026-042 change request
+    - name: rel-2026-042-events
+      display_name: REL-2026-042 build and qualification events
+    - name: rel-2026-042-notes-v2
+      display_name: REL-2026-042 release notes, disposition
+    - name: rel-2026-042-handover
+      display_name: REL-2026-042 operating handover
+    - name: rel-2026-043-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-043
+    - name: rel-2026-043-notes-v1
+      display_name: REL-2026-043 release notes, proposed
+    - name: rel-2026-043-change
+      display_name: REL-2026-043 change request
+    - name: rel-2026-043-events
+      display_name: REL-2026-043 build and qualification events
+    - name: rel-2026-043-notes-v2
+      display_name: REL-2026-043 release notes, disposition
+    - name: rel-2026-043-handover
+      display_name: REL-2026-043 operating handover
+    - name: rel-2026-044-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-044
+    - name: rel-2026-044-notes-v1
+      display_name: REL-2026-044 release notes, proposed
+    - name: rel-2026-044-change
+      display_name: REL-2026-044 change request
+    - name: rel-2026-044-events
+      display_name: REL-2026-044 build and qualification events
+    - name: rel-2026-044-notes-v2
+      display_name: REL-2026-044 release notes, disposition
+    - name: rel-2026-044-handover
+      display_name: REL-2026-044 operating handover
+    - name: rel-2026-045-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-045
+    - name: rel-2026-045-notes-v1
+      display_name: REL-2026-045 release notes, proposed
+    - name: rel-2026-045-change
+      display_name: REL-2026-045 change request
+    - name: rel-2026-045-events
+      display_name: REL-2026-045 build and qualification events
+    - name: rel-2026-045-notes-v2
+      display_name: REL-2026-045 release notes, disposition
+    - name: rel-2026-045-handover
+      display_name: REL-2026-045 operating handover
+    - name: rel-2026-046-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-046
+    - name: rel-2026-046-notes-v1
+      display_name: REL-2026-046 release notes, proposed
+    - name: rel-2026-046-change
+      display_name: REL-2026-046 change request
+    - name: rel-2026-046-events
+      display_name: REL-2026-046 build and qualification events
+    - name: rel-2026-046-notes-v2
+      display_name: REL-2026-046 release notes, disposition
+    - name: rel-2026-046-handover
+      display_name: REL-2026-046 operating handover
+    - name: rel-2026-047-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-047
+    - name: rel-2026-047-notes-v1
+      display_name: REL-2026-047 release notes, proposed
+    - name: rel-2026-047-change
+      display_name: REL-2026-047 change request
+    - name: rel-2026-047-events
+      display_name: REL-2026-047 build and qualification events
+    - name: rel-2026-047-notes-v2
+      display_name: REL-2026-047 release notes, disposition
+    - name: rel-2026-047-handover
+      display_name: REL-2026-047 operating handover
+    - name: rel-2026-048-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-048
+    - name: rel-2026-048-notes-v1
+      display_name: REL-2026-048 release notes, proposed
+    - name: rel-2026-048-change
+      display_name: REL-2026-048 change request
+    - name: rel-2026-048-events
+      display_name: REL-2026-048 build and qualification events
+    - name: rel-2026-048-notes-v2
+      display_name: REL-2026-048 release notes, disposition
+    - name: rel-2026-048-handover
+      display_name: REL-2026-048 operating handover
+    - name: rel-2026-049-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-049
+    - name: rel-2026-049-notes-v1
+      display_name: REL-2026-049 release notes, proposed
+    - name: rel-2026-049-change
+      display_name: REL-2026-049 change request
+    - name: rel-2026-049-events
+      display_name: REL-2026-049 build and qualification events
+    - name: rel-2026-049-notes-v2
+      display_name: REL-2026-049 release notes, disposition
+    - name: rel-2026-049-handover
+      display_name: REL-2026-049 operating handover
+    - name: rel-2026-050-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-050
+    - name: rel-2026-050-notes-v1
+      display_name: REL-2026-050 release notes, proposed
+    - name: rel-2026-050-change
+      display_name: REL-2026-050 change request
+    - name: rel-2026-050-events
+      display_name: REL-2026-050 build and qualification events
+    - name: rel-2026-050-notes-v2
+      display_name: REL-2026-050 release notes, disposition
+    - name: rel-2026-050-handover
+      display_name: REL-2026-050 operating handover
+    - name: rel-2026-051-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-051
+    - name: rel-2026-051-notes-v1
+      display_name: REL-2026-051 release notes, proposed
+    - name: rel-2026-051-change
+      display_name: REL-2026-051 change request
+    - name: rel-2026-051-events
+      display_name: REL-2026-051 build and qualification events
+    - name: rel-2026-051-notes-v2
+      display_name: REL-2026-051 release notes, disposition
+    - name: rel-2026-051-handover
+      display_name: REL-2026-051 operating handover
+    - name: rel-2026-052-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-052
+    - name: rel-2026-052-notes-v1
+      display_name: REL-2026-052 release notes, proposed
+    - name: rel-2026-052-change
+      display_name: REL-2026-052 change request
+    - name: rel-2026-052-events
+      display_name: REL-2026-052 build and qualification events
+    - name: rel-2026-052-notes-v2
+      display_name: REL-2026-052 release notes, disposition
+    - name: rel-2026-052-handover
+      display_name: REL-2026-052 operating handover
+    - name: rel-2026-053-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-053
+    - name: rel-2026-053-notes-v1
+      display_name: REL-2026-053 release notes, proposed
+    - name: rel-2026-053-change
+      display_name: REL-2026-053 change request
+    - name: rel-2026-053-events
+      display_name: REL-2026-053 build and qualification events
+    - name: rel-2026-053-notes-v2
+      display_name: REL-2026-053 release notes, disposition
+    - name: rel-2026-053-handover
+      display_name: REL-2026-053 operating handover
+    - name: rel-2026-054-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-054
+    - name: rel-2026-054-notes-v1
+      display_name: REL-2026-054 release notes, proposed
+    - name: rel-2026-054-change
+      display_name: REL-2026-054 change request
+    - name: rel-2026-054-events
+      display_name: REL-2026-054 build and qualification events
+    - name: rel-2026-054-notes-v2
+      display_name: REL-2026-054 release notes, disposition
+    - name: rel-2026-054-handover
+      display_name: REL-2026-054 operating handover
+    - name: rel-2026-055-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-055
+    - name: rel-2026-055-notes-v1
+      display_name: REL-2026-055 release notes, proposed
+    - name: rel-2026-055-change
+      display_name: REL-2026-055 change request
+    - name: rel-2026-055-events
+      display_name: REL-2026-055 build and qualification events
+    - name: rel-2026-055-notes-v2
+      display_name: REL-2026-055 release notes, disposition
+    - name: rel-2026-055-handover
+      display_name: REL-2026-055 operating handover
+    - name: rel-2026-056-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-056
+    - name: rel-2026-056-notes-v1
+      display_name: REL-2026-056 release notes, proposed
+    - name: rel-2026-056-change
+      display_name: REL-2026-056 change request
+    - name: rel-2026-056-events
+      display_name: REL-2026-056 build and qualification events
+    - name: rel-2026-056-notes-v2
+      display_name: REL-2026-056 release notes, disposition
+    - name: rel-2026-056-handover
+      display_name: REL-2026-056 operating handover
+    - name: rel-2026-057-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-057
+    - name: rel-2026-057-notes-v1
+      display_name: REL-2026-057 release notes, proposed
+    - name: rel-2026-057-change
+      display_name: REL-2026-057 change request
+    - name: rel-2026-057-events
+      display_name: REL-2026-057 build and qualification events
+    - name: rel-2026-057-notes-v2
+      display_name: REL-2026-057 release notes, disposition
+    - name: rel-2026-057-handover
+      display_name: REL-2026-057 operating handover
+    - name: rel-2026-058-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-058
+    - name: rel-2026-058-notes-v1
+      display_name: REL-2026-058 release notes, proposed
+    - name: rel-2026-058-change
+      display_name: REL-2026-058 change request
+    - name: rel-2026-058-events
+      display_name: REL-2026-058 build and qualification events
+    - name: rel-2026-058-notes-v2
+      display_name: REL-2026-058 release notes, disposition
+    - name: rel-2026-058-handover
+      display_name: REL-2026-058 operating handover
+    - name: rel-2026-059-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-059
+    - name: rel-2026-059-notes-v1
+      display_name: REL-2026-059 release notes, proposed
+    - name: rel-2026-059-change
+      display_name: REL-2026-059 change request
+    - name: rel-2026-059-events
+      display_name: REL-2026-059 build and qualification events
+    - name: rel-2026-059-notes-v2
+      display_name: REL-2026-059 release notes, disposition
+    - name: rel-2026-059-handover
+      display_name: REL-2026-059 operating handover
+    - name: rel-2026-060-manifest
+      display_name: FieldKest 4.9.1 qualification manifest REL-2026-060
+    - name: rel-2026-060-notes-v1
+      display_name: REL-2026-060 release notes, proposed
+    - name: rel-2026-060-change
+      display_name: REL-2026-060 change request
+    - name: rel-2026-060-events
+      display_name: REL-2026-060 build and qualification events
+    - name: rel-2026-060-notes-v2
+      display_name: REL-2026-060 release notes, disposition
+    - name: rel-2026-060-handover
+      display_name: REL-2026-060 operating handover
+    - name: chg-2026-001-request
+      display_name: CHG-2026-001 maintenance request
+    - name: chg-2026-001-notice
+      display_name: CHG-2026-001 staff maintenance notice
+    - name: chg-2026-001-result
+      display_name: CHG-2026-001 maintenance result
+    - name: chg-2026-001-handover
+      display_name: CHG-2026-001 maintenance handover
+    - name: chg-2026-002-request
+      display_name: CHG-2026-002 maintenance request
+    - name: chg-2026-002-notice
+      display_name: CHG-2026-002 staff maintenance notice
+    - name: chg-2026-002-result
+      display_name: CHG-2026-002 maintenance result
+    - name: chg-2026-002-handover
+      display_name: CHG-2026-002 maintenance handover
+    - name: chg-2026-003-request
+      display_name: CHG-2026-003 maintenance request
+    - name: chg-2026-003-notice
+      display_name: CHG-2026-003 staff maintenance notice
+    - name: chg-2026-003-result
+      display_name: CHG-2026-003 maintenance result
+    - name: chg-2026-003-handover
+      display_name: CHG-2026-003 maintenance handover
+    - name: chg-2026-004-request
+      display_name: CHG-2026-004 maintenance request
+    - name: chg-2026-004-notice
+      display_name: CHG-2026-004 staff maintenance notice
+    - name: chg-2026-004-result
+      display_name: CHG-2026-004 maintenance result
+    - name: chg-2026-004-handover
+      display_name: CHG-2026-004 maintenance handover
+    - name: chg-2026-005-request
+      display_name: CHG-2026-005 maintenance request
+    - name: chg-2026-005-notice
+      display_name: CHG-2026-005 staff maintenance notice
+    - name: chg-2026-005-result
+      display_name: CHG-2026-005 maintenance result
+    - name: chg-2026-005-handover
+      display_name: CHG-2026-005 maintenance handover
+    - name: chg-2026-006-request
+      display_name: CHG-2026-006 maintenance request
+    - name: chg-2026-006-notice
+      display_name: CHG-2026-006 staff maintenance notice
+    - name: chg-2026-006-result
+      display_name: CHG-2026-006 maintenance result
+    - name: chg-2026-006-handover
+      display_name: CHG-2026-006 maintenance handover
+    - name: chg-2026-007-request
+      display_name: CHG-2026-007 maintenance request
+    - name: chg-2026-007-notice
+      display_name: CHG-2026-007 staff maintenance notice
+    - name: chg-2026-007-result
+      display_name: CHG-2026-007 maintenance result
+    - name: chg-2026-007-handover
+      display_name: CHG-2026-007 maintenance handover
+    - name: chg-2026-008-request
+      display_name: CHG-2026-008 maintenance request
+    - name: chg-2026-008-notice
+      display_name: CHG-2026-008 staff maintenance notice
+    - name: chg-2026-008-result
+      display_name: CHG-2026-008 maintenance result
+    - name: chg-2026-008-handover
+      display_name: CHG-2026-008 maintenance handover
+    - name: chg-2026-009-request
+      display_name: CHG-2026-009 maintenance request
+    - name: chg-2026-009-notice
+      display_name: CHG-2026-009 staff maintenance notice
+    - name: chg-2026-009-result
+      display_name: CHG-2026-009 maintenance result
+    - name: chg-2026-009-handover
+      display_name: CHG-2026-009 maintenance handover
+    - name: chg-2026-010-request
+      display_name: CHG-2026-010 maintenance request
+    - name: chg-2026-010-notice
+      display_name: CHG-2026-010 staff maintenance notice
+    - name: chg-2026-010-result
+      display_name: CHG-2026-010 maintenance result
+    - name: chg-2026-010-handover
+      display_name: CHG-2026-010 maintenance handover
+    - name: chg-2026-011-request
+      display_name: CHG-2026-011 maintenance request
+    - name: chg-2026-011-notice
+      display_name: CHG-2026-011 staff maintenance notice
+    - name: chg-2026-011-result
+      display_name: CHG-2026-011 maintenance result
+    - name: chg-2026-011-handover
+      display_name: CHG-2026-011 maintenance handover
+    - name: chg-2026-012-request
+      display_name: CHG-2026-012 maintenance request
+    - name: chg-2026-012-notice
+      display_name: CHG-2026-012 staff maintenance notice
+    - name: chg-2026-012-result
+      display_name: CHG-2026-012 maintenance result
+    - name: chg-2026-012-handover
+      display_name: CHG-2026-012 maintenance handover
+    - name: chg-2026-013-request
+      display_name: CHG-2026-013 maintenance request
+    - name: chg-2026-013-notice
+      display_name: CHG-2026-013 staff maintenance notice
+    - name: chg-2026-013-result
+      display_name: CHG-2026-013 maintenance result
+    - name: chg-2026-013-handover
+      display_name: CHG-2026-013 maintenance handover
+    - name: chg-2026-014-request
+      display_name: CHG-2026-014 maintenance request
+    - name: chg-2026-014-notice
+      display_name: CHG-2026-014 staff maintenance notice
+    - name: chg-2026-014-result
+      display_name: CHG-2026-014 maintenance result
+    - name: chg-2026-014-handover
+      display_name: CHG-2026-014 maintenance handover
+    - name: chg-2026-015-request
+      display_name: CHG-2026-015 maintenance request
+    - name: chg-2026-015-notice
+      display_name: CHG-2026-015 staff maintenance notice
+    - name: chg-2026-015-result
+      display_name: CHG-2026-015 maintenance result
+    - name: chg-2026-015-handover
+      display_name: CHG-2026-015 maintenance handover
+    - name: chg-2026-016-request
+      display_name: CHG-2026-016 maintenance request
+    - name: chg-2026-016-notice
+      display_name: CHG-2026-016 staff maintenance notice
+    - name: chg-2026-016-result
+      display_name: CHG-2026-016 maintenance result
+    - name: chg-2026-016-handover
+      display_name: CHG-2026-016 maintenance handover
+    - name: chg-2026-017-request
+      display_name: CHG-2026-017 maintenance request
+    - name: chg-2026-017-notice
+      display_name: CHG-2026-017 staff maintenance notice
+    - name: chg-2026-017-result
+      display_name: CHG-2026-017 maintenance result
+    - name: chg-2026-017-handover
+      display_name: CHG-2026-017 maintenance handover
+    - name: chg-2026-018-request
+      display_name: CHG-2026-018 maintenance request
+    - name: chg-2026-018-notice
+      display_name: CHG-2026-018 staff maintenance notice
+    - name: chg-2026-018-result
+      display_name: CHG-2026-018 maintenance result
+    - name: chg-2026-018-handover
+      display_name: CHG-2026-018 maintenance handover
+    - name: chg-2026-019-request
+      display_name: CHG-2026-019 maintenance request
+    - name: chg-2026-019-notice
+      display_name: CHG-2026-019 staff maintenance notice
+    - name: chg-2026-019-result
+      display_name: CHG-2026-019 maintenance result
+    - name: chg-2026-019-handover
+      display_name: CHG-2026-019 maintenance handover
+    - name: chg-2026-020-request
+      display_name: CHG-2026-020 maintenance request
+    - name: chg-2026-020-notice
+      display_name: CHG-2026-020 staff maintenance notice
+    - name: chg-2026-020-result
+      display_name: CHG-2026-020 maintenance result
+    - name: chg-2026-020-handover
+      display_name: CHG-2026-020 maintenance handover
+    - name: chg-2026-021-request
+      display_name: CHG-2026-021 maintenance request
+    - name: chg-2026-021-notice
+      display_name: CHG-2026-021 staff maintenance notice
+    - name: chg-2026-021-result
+      display_name: CHG-2026-021 maintenance result
+    - name: chg-2026-021-handover
+      display_name: CHG-2026-021 maintenance handover
+    - name: chg-2026-022-request
+      display_name: CHG-2026-022 maintenance request
+    - name: chg-2026-022-notice
+      display_name: CHG-2026-022 staff maintenance notice
+    - name: chg-2026-022-result
+      display_name: CHG-2026-022 maintenance result
+    - name: chg-2026-022-handover
+      display_name: CHG-2026-022 maintenance handover
+    - name: chg-2026-023-request
+      display_name: CHG-2026-023 maintenance request
+    - name: chg-2026-023-notice
+      display_name: CHG-2026-023 staff maintenance notice
+    - name: chg-2026-023-result
+      display_name: CHG-2026-023 maintenance result
+    - name: chg-2026-023-handover
+      display_name: CHG-2026-023 maintenance handover
+    - name: chg-2026-024-request
+      display_name: CHG-2026-024 maintenance request
+    - name: chg-2026-024-notice
+      display_name: CHG-2026-024 staff maintenance notice
+    - name: chg-2026-024-result
+      display_name: CHG-2026-024 maintenance result
+    - name: chg-2026-024-handover
+      display_name: CHG-2026-024 maintenance handover
+    - name: bak-2026-001-sample
+      display_name: BAK-2026-001 recovery sample manifest
+    - name: bak-2026-001-report
+      display_name: BAK-2026-001 sample restore report
+    - name: bak-2026-002-sample
+      display_name: BAK-2026-002 recovery sample manifest
+    - name: bak-2026-002-report
+      display_name: BAK-2026-002 sample restore report
+    - name: bak-2026-003-sample
+      display_name: BAK-2026-003 recovery sample manifest
+    - name: bak-2026-003-report
+      display_name: BAK-2026-003 sample restore report
+    - name: bak-2026-004-sample
+      display_name: BAK-2026-004 recovery sample manifest
+    - name: bak-2026-004-report
+      display_name: BAK-2026-004 sample restore report
+    - name: bak-2026-005-sample
+      display_name: BAK-2026-005 recovery sample manifest
+    - name: bak-2026-005-report
+      display_name: BAK-2026-005 sample restore report
+    - name: bak-2026-006-sample
+      display_name: BAK-2026-006 recovery sample manifest
+    - name: bak-2026-006-report
+      display_name: BAK-2026-006 sample restore report
+    - name: bak-2026-007-sample
+      display_name: BAK-2026-007 recovery sample manifest
+    - name: bak-2026-007-report
+      display_name: BAK-2026-007 sample restore report
+    - name: bak-2026-008-sample
+      display_name: BAK-2026-008 recovery sample manifest
+    - name: bak-2026-008-report
+      display_name: BAK-2026-008 sample restore report
+    - name: bak-2026-009-sample
+      display_name: BAK-2026-009 recovery sample manifest
+    - name: bak-2026-009-report
+      display_name: BAK-2026-009 sample restore report
+    - name: bak-2026-010-sample
+      display_name: BAK-2026-010 recovery sample manifest
+    - name: bak-2026-010-report
+      display_name: BAK-2026-010 sample restore report
+    - name: bak-2026-011-sample
+      display_name: BAK-2026-011 recovery sample manifest
+    - name: bak-2026-011-report
+      display_name: BAK-2026-011 sample restore report
+    - name: bak-2026-012-sample
+      display_name: BAK-2026-012 recovery sample manifest
+    - name: bak-2026-012-report
+      display_name: BAK-2026-012 sample restore report
+    - name: bak-2026-013-sample
+      display_name: BAK-2026-013 recovery sample manifest
+    - name: bak-2026-013-report
+      display_name: BAK-2026-013 sample restore report
+    - name: bak-2026-014-sample
+      display_name: BAK-2026-014 recovery sample manifest
+    - name: bak-2026-014-report
+      display_name: BAK-2026-014 sample restore report
+    - name: bak-2026-015-sample
+      display_name: BAK-2026-015 recovery sample manifest
+    - name: bak-2026-015-report
+      display_name: BAK-2026-015 sample restore report
+    - name: bak-2026-016-sample
+      display_name: BAK-2026-016 recovery sample manifest
+    - name: bak-2026-016-report
+      display_name: BAK-2026-016 sample restore report
+    - name: bak-2026-017-sample
+      display_name: BAK-2026-017 recovery sample manifest
+    - name: bak-2026-017-report
+      display_name: BAK-2026-017 sample restore report
+    - name: bak-2026-018-sample
+      display_name: BAK-2026-018 recovery sample manifest
+    - name: bak-2026-018-report
+      display_name: BAK-2026-018 sample restore report
+    - name: bak-2026-019-sample
+      display_name: BAK-2026-019 recovery sample manifest
+    - name: bak-2026-019-report
+      display_name: BAK-2026-019 sample restore report
+    - name: bak-2026-020-sample
+      display_name: BAK-2026-020 recovery sample manifest
+    - name: bak-2026-020-report
+      display_name: BAK-2026-020 sample restore report
+    - name: bak-2026-021-sample
+      display_name: BAK-2026-021 recovery sample manifest
+    - name: bak-2026-021-report
+      display_name: BAK-2026-021 sample restore report
+    - name: bak-2026-022-sample
+      display_name: BAK-2026-022 recovery sample manifest
+    - name: bak-2026-022-report
+      display_name: BAK-2026-022 sample restore report
+    - name: bak-2026-023-sample
+      display_name: BAK-2026-023 recovery sample manifest
+    - name: bak-2026-023-report
+      display_name: BAK-2026-023 sample restore report
+    - name: bak-2026-024-sample
+      display_name: BAK-2026-024 recovery sample manifest
+    - name: bak-2026-024-report
+      display_name: BAK-2026-024 sample restore report
+    - name: cap-2026-001-capacity
+      display_name: CAP-2026-001 weekly build and recovery capacity
+    - name: cap-2026-001-decision
+      display_name: CAP-2026-001 capacity decision
+    - name: cap-2026-002-capacity
+      display_name: CAP-2026-002 weekly build and recovery capacity
+    - name: cap-2026-002-decision
+      display_name: CAP-2026-002 capacity decision
+    - name: cap-2026-003-capacity
+      display_name: CAP-2026-003 weekly build and recovery capacity
+    - name: cap-2026-003-decision
+      display_name: CAP-2026-003 capacity decision
+    - name: cap-2026-004-capacity
+      display_name: CAP-2026-004 weekly build and recovery capacity
+    - name: cap-2026-004-decision
+      display_name: CAP-2026-004 capacity decision
+    - name: cap-2026-005-capacity
+      display_name: CAP-2026-005 weekly build and recovery capacity
+    - name: cap-2026-005-decision
+      display_name: CAP-2026-005 capacity decision
+    - name: cap-2026-006-capacity
+      display_name: CAP-2026-006 weekly build and recovery capacity
+    - name: cap-2026-006-decision
+      display_name: CAP-2026-006 capacity decision
+    - name: cap-2026-007-capacity
+      display_name: CAP-2026-007 weekly build and recovery capacity
+    - name: cap-2026-007-decision
+      display_name: CAP-2026-007 capacity decision
+    - name: cap-2026-008-capacity
+      display_name: CAP-2026-008 weekly build and recovery capacity
+    - name: cap-2026-008-decision
+      display_name: CAP-2026-008 capacity decision
+    - name: cap-2026-009-capacity
+      display_name: CAP-2026-009 weekly build and recovery capacity
+    - name: cap-2026-009-decision
+      display_name: CAP-2026-009 capacity decision
+    - name: cap-2026-010-capacity
+      display_name: CAP-2026-010 weekly build and recovery capacity
+    - name: cap-2026-010-decision
+      display_name: CAP-2026-010 capacity decision
+    - name: cap-2026-011-capacity
+      display_name: CAP-2026-011 weekly build and recovery capacity
+    - name: cap-2026-011-decision
+      display_name: CAP-2026-011 capacity decision
+    - name: cap-2026-012-capacity
+      display_name: CAP-2026-012 weekly build and recovery capacity
+    - name: cap-2026-012-decision
+      display_name: CAP-2026-012 capacity decision
+    - name: ops-2026-services
+      display_name: Platform service inventory
+    - name: ops-2026-register
+      display_name: Release and operating change register
     - name: support-kb-accepted-revisions
       display_name: Finding the accepted revision
     - name: support-kb-archive-references
@@ -6750,6 +7810,174 @@ content:
       display_name: Orren & Vale IT Services accepted service schedule
     - name: kc-account-index
       display_name: Business account index
+    - name: rel-2026-001-window
+      display_name: REL-2026-001 FieldKest qualification
+    - name: rel-2026-002-window
+      display_name: REL-2026-002 FieldKest qualification
+    - name: rel-2026-003-window
+      display_name: REL-2026-003 FieldKest qualification
+    - name: rel-2026-004-window
+      display_name: REL-2026-004 FieldKest qualification
+    - name: rel-2026-005-window
+      display_name: REL-2026-005 FieldKest qualification
+    - name: rel-2026-006-window
+      display_name: REL-2026-006 FieldKest qualification
+    - name: rel-2026-007-window
+      display_name: REL-2026-007 FieldKest qualification
+    - name: rel-2026-008-window
+      display_name: REL-2026-008 FieldKest qualification
+    - name: rel-2026-009-window
+      display_name: REL-2026-009 FieldKest qualification
+    - name: rel-2026-010-window
+      display_name: REL-2026-010 FieldKest qualification
+    - name: rel-2026-011-window
+      display_name: REL-2026-011 FieldKest qualification
+    - name: rel-2026-012-window
+      display_name: REL-2026-012 FieldKest qualification
+    - name: rel-2026-013-window
+      display_name: REL-2026-013 FieldKest qualification
+    - name: rel-2026-014-window
+      display_name: REL-2026-014 FieldKest qualification
+    - name: rel-2026-015-window
+      display_name: REL-2026-015 FieldKest qualification
+    - name: rel-2026-016-window
+      display_name: REL-2026-016 FieldKest qualification
+    - name: rel-2026-017-window
+      display_name: REL-2026-017 FieldKest qualification
+    - name: rel-2026-018-window
+      display_name: REL-2026-018 FieldKest qualification
+    - name: rel-2026-019-window
+      display_name: REL-2026-019 FieldKest qualification
+    - name: rel-2026-020-window
+      display_name: REL-2026-020 FieldKest qualification
+    - name: rel-2026-021-window
+      display_name: REL-2026-021 FieldKest qualification
+    - name: rel-2026-022-window
+      display_name: REL-2026-022 FieldKest qualification
+    - name: rel-2026-023-window
+      display_name: REL-2026-023 FieldKest qualification
+    - name: rel-2026-024-window
+      display_name: REL-2026-024 FieldKest qualification
+    - name: rel-2026-025-window
+      display_name: REL-2026-025 FieldKest qualification
+    - name: rel-2026-026-window
+      display_name: REL-2026-026 FieldKest qualification
+    - name: rel-2026-027-window
+      display_name: REL-2026-027 FieldKest qualification
+    - name: rel-2026-028-window
+      display_name: REL-2026-028 FieldKest qualification
+    - name: rel-2026-029-window
+      display_name: REL-2026-029 FieldKest qualification
+    - name: rel-2026-030-window
+      display_name: REL-2026-030 FieldKest qualification
+    - name: rel-2026-031-window
+      display_name: REL-2026-031 FieldKest qualification
+    - name: rel-2026-032-window
+      display_name: REL-2026-032 FieldKest qualification
+    - name: rel-2026-033-window
+      display_name: REL-2026-033 FieldKest qualification
+    - name: rel-2026-034-window
+      display_name: REL-2026-034 FieldKest qualification
+    - name: rel-2026-035-window
+      display_name: REL-2026-035 FieldKest qualification
+    - name: rel-2026-036-window
+      display_name: REL-2026-036 FieldKest qualification
+    - name: rel-2026-037-window
+      display_name: REL-2026-037 FieldKest qualification
+    - name: rel-2026-038-window
+      display_name: REL-2026-038 FieldKest qualification
+    - name: rel-2026-039-window
+      display_name: REL-2026-039 FieldKest qualification
+    - name: rel-2026-040-window
+      display_name: REL-2026-040 FieldKest qualification
+    - name: rel-2026-041-window
+      display_name: REL-2026-041 FieldKest qualification
+    - name: rel-2026-042-window
+      display_name: REL-2026-042 FieldKest qualification
+    - name: rel-2026-043-window
+      display_name: REL-2026-043 FieldKest qualification
+    - name: rel-2026-044-window
+      display_name: REL-2026-044 FieldKest qualification
+    - name: rel-2026-045-window
+      display_name: REL-2026-045 FieldKest qualification
+    - name: rel-2026-046-window
+      display_name: REL-2026-046 FieldKest qualification
+    - name: rel-2026-047-window
+      display_name: REL-2026-047 FieldKest qualification
+    - name: rel-2026-048-window
+      display_name: REL-2026-048 FieldKest qualification
+    - name: rel-2026-049-window
+      display_name: REL-2026-049 FieldKest qualification
+    - name: rel-2026-050-window
+      display_name: REL-2026-050 FieldKest qualification
+    - name: rel-2026-051-window
+      display_name: REL-2026-051 FieldKest qualification
+    - name: rel-2026-052-window
+      display_name: REL-2026-052 FieldKest qualification
+    - name: rel-2026-053-window
+      display_name: REL-2026-053 FieldKest qualification
+    - name: rel-2026-054-window
+      display_name: REL-2026-054 FieldKest qualification
+    - name: rel-2026-055-window
+      display_name: REL-2026-055 FieldKest qualification
+    - name: rel-2026-056-window
+      display_name: REL-2026-056 FieldKest qualification
+    - name: rel-2026-057-window
+      display_name: REL-2026-057 FieldKest qualification
+    - name: rel-2026-058-window
+      display_name: REL-2026-058 FieldKest qualification
+    - name: rel-2026-059-window
+      display_name: REL-2026-059 FieldKest qualification
+    - name: rel-2026-060-window
+      display_name: REL-2026-060 FieldKest qualification
+    - name: chg-2026-001-window
+      display_name: CHG-2026-001 build queue limit
+    - name: chg-2026-002-window
+      display_name: CHG-2026-002 retention inventory
+    - name: chg-2026-003-window
+      display_name: CHG-2026-003 preview scratch cleanup
+    - name: chg-2026-004-window
+      display_name: CHG-2026-004 document export rotation
+    - name: chg-2026-005-window
+      display_name: CHG-2026-005 source index refresh
+    - name: chg-2026-006-window
+      display_name: CHG-2026-006 catalog reconciliation
+    - name: chg-2026-007-window
+      display_name: CHG-2026-007 build queue limit
+    - name: chg-2026-008-window
+      display_name: CHG-2026-008 retention inventory
+    - name: chg-2026-009-window
+      display_name: CHG-2026-009 preview scratch cleanup
+    - name: chg-2026-010-window
+      display_name: CHG-2026-010 document export rotation
+    - name: chg-2026-011-window
+      display_name: CHG-2026-011 source index refresh
+    - name: chg-2026-012-window
+      display_name: CHG-2026-012 catalog reconciliation
+    - name: chg-2026-013-window
+      display_name: CHG-2026-013 build queue limit
+    - name: chg-2026-014-window
+      display_name: CHG-2026-014 retention inventory
+    - name: chg-2026-015-window
+      display_name: CHG-2026-015 preview scratch cleanup
+    - name: chg-2026-016-window
+      display_name: CHG-2026-016 document export rotation
+    - name: chg-2026-017-window
+      display_name: CHG-2026-017 source index refresh
+    - name: chg-2026-018-window
+      display_name: CHG-2026-018 catalog reconciliation
+    - name: chg-2026-019-window
+      display_name: CHG-2026-019 build queue limit
+    - name: chg-2026-020-window
+      display_name: CHG-2026-020 retention inventory
+    - name: chg-2026-021-window
+      display_name: CHG-2026-021 preview scratch cleanup
+    - name: chg-2026-022-window
+      display_name: CHG-2026-022 document export rotation
+    - name: chg-2026-023-window
+      display_name: CHG-2026-023 source index refresh
+    - name: chg-2026-024-window
+      display_name: CHG-2026-024 catalog reconciliation
     - name: support-appointment-sup-2026-0361
       display_name: 'Alterra Regional Water Company: notice routing'
     - name: support-appointment-sup-2026-0362

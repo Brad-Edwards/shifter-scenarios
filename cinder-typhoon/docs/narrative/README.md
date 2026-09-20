@@ -40,6 +40,8 @@ and unfinished plans of their own.
 | [FieldKest engineering review](fieldkest-engineering-review.md) | Fit review, adversarial findings, repository work histories, and support-escalation boundaries for issue 115. |
 | [Product and quality review](product-quality-review.md) | Roadmap history, intake decisions, acceptance evidence, adversarial findings, and delivered volumes for issue 116. |
 | [Product and quality voices](product-quality-voices.md) | Current voice guidance and exact correspondence samples for the eight product and quality staff. |
+| [Release and platform review](release-platform-review.md) | Release acceptance, operating histories, recovery evidence, counts, and message-allocation adjustment. |
+| [Release and platform voices](release-platform-voices.md) | Writing guidance for the seven platform and release staff. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -86,6 +88,10 @@ engineering repositories and work histories.
 The product and quality slice continues that history with versioned roadmaps,
 accepted evidence for 220 completed or accepted engineering revisions, and 30
 support-linked assessments that remain explicitly deferred or declined.
+The release and platform slice adds 120 histories, including 54 published
+internal qualification bundles, six held bundles, maintenance, recovery
+samples, and capacity reviews. Customer deployment and support closure remain
+separate downstream decisions.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

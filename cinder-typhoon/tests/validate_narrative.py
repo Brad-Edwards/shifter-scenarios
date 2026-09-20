@@ -16,6 +16,7 @@ from pathlib import Path
 import re
 import sys
 import yaml
+from validate_release_platform import check_release_platform
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -30,10 +31,13 @@ FIELDKEST_MESSAGE_COUNT = 5500
 FIELDKEST_DOCUMENT_COUNT = 720
 PRODUCT_QUALITY_MESSAGE_COUNT = 4000
 PRODUCT_QUALITY_DOCUMENT_COUNT = 1976
+RELEASE_PLATFORM_MESSAGE_COUNT = 1572
+RELEASE_PLATFORM_DOCUMENT_COUNT = 530
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
-                       FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT)
+                       FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
+                       RELEASE_PLATFORM_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
-                        PRODUCT_QUALITY_DOCUMENT_COUNT)
+                        PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -762,6 +766,7 @@ def check_assets():
     check_support_intake(identity, roster, mail, docs, events)
     check_fieldkest_engineering(identity, roster, mail, docs)
     check_product_quality(identity, roster, mail, docs)
+    check_release_platform(ROOT, identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -782,6 +787,10 @@ def check_assets():
         expected = {document_path(doc_by_id[d]): document_text(doc_by_id[d]).encode()
                     for d in m.get('attachments', [])}
         require(attachments == expected, f'Attachment mismatch: {m["id"]}')
+        expected_types = {document_path(doc_by_id[d]): doc_by_id[d].get('media_type', 'text/markdown')
+                          for d in m.get('attachments', [])}
+        require({p.get_filename(): p.get_content_type() for p in message.iter_attachments()} == expected_types,
+                f'Attachment media type mismatch: {m["id"]}')
         if m.get('reply_to'):
             parent = coverage['messages'][m['reply_to']]['message_id']
             require(message['In-Reply-To'] == parent and parent in str(message['References']), f'Thread mismatch: {m["id"]}')
@@ -879,7 +888,10 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()
+                if event['id'].startswith(('rel-2026-', 'chg-2026-')):
+                    raw_calendar = item['text'].encode()
+                else:
+                    raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()
                 require(raw_calendar == item['text'].encode(), 'Calendar bytes differ')
                 require(all(len(line) <= 75 for line in raw_calendar.split(b'\r\n')), 'Calendar line folding invalid')
                 text = item['text'].replace('\r\n ', '')
