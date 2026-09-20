@@ -8,7 +8,8 @@
 
 [CmdletBinding()]
 param(
-    [string]$AdminPassword = "CortexSavesTheDay!"
+    [string]$AdminPassword = "CortexSavesTheDay!",
+    [string]$DnsForwarder = "169.254.169.253"
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,21 +29,12 @@ for ($i = 0; $i -lt 60; $i++) {
     }
 }
 
-# Forward non-boreas.local DNS queries to the AWS VPC resolver. Without
-# this, the DC's local DNS server (which the DC itself queries via
-# 127.0.0.1) has no upstream and external lookups fail. Specifically the
-# SSM agent can't resolve ssm.us-east-2.amazonaws.com so it never registers,
-# and the engine provisioner times out waiting for SSM and tears the
-# range down.
-#
-# 169.254.169.253 is the link-local AWS Route 53 Resolver address that
-# works in any VPC (vs. the VPC-CIDR+2 form which only works in the VPC
-# the AMI was baked in). When a private SSM VPC endpoint exists in the
-# range VPC with PrivateDnsEnabled=true, the resolver returns the
-# endpoint's private IP automatically.
-Write-Host "Setting DNS forwarder to AWS VPC resolver (169.254.169.253)..."
+# Forward non-boreas.local DNS queries to the provider resolver supplied by
+# the image build. AWS callers retain the link-local Route 53 default; the GCP
+# pre-promoted image build passes its VPC resolver explicitly.
+Write-Host "Setting DNS forwarder to provider resolver ($DnsForwarder)..."
 try {
-    Set-DnsServerForwarder -IPAddress 169.254.169.253 -PassThru -ErrorAction Stop | Out-Null
+    Set-DnsServerForwarder -IPAddress $DnsForwarder -PassThru -ErrorAction Stop | Out-Null
     Write-Host "  forwarder set"
 } catch {
     Write-Host "  forwarder set FAILED: $($_.Exception.Message)"
