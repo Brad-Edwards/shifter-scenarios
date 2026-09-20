@@ -65,10 +65,11 @@ python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.
 These check deterministic rendering, source hashes, message headers and bodies,
 reply chains, MIME attachment bytes and publication dates, retained mailbox copies,
 document readers, roster and reporting joins, directory entries, calendar times
-and audiences, employment records, ownership, and story coverage. Corruption
-checks reject an altered attachment, a private
-message copied to an unrelated mailbox, changed source bytes, a detached
-reply, and a reporting loop. The full SDL check also verifies the eight native
+and audiences, employment records, business account and contact joins,
+accepted-activity arithmetic, ownership, and story coverage. Corruption
+checks reject an altered attachment, a private message copied to an unrelated
+mailbox, changed source bytes, a detached reply, a reporting loop, and an
+altered accepted-delivery amount. The full SDL check also verifies the eight native
 materialization contracts.
 
 ## Prose checks

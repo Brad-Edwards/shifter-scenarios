@@ -1,11 +1,13 @@
 # Enterprise content requirements
 
 Planning draft, 19 September 2026. This document specifies the complete
-enterprise-content programme; the [workforce slice](workforce-review.md) now
-realizes its population and employment-record portion. The [generation
-plan](content-generation-plan.md) records earlier sizing proposals. The pack now
-contains 1,475 messages and 155 source documents, including the earlier story
-collection. Other departmental business histories remain future content work.
+enterprise-content programme; the [workforce slice](workforce-review.md)
+realizes its population and employment-record portion, and the
+[business slice](business-content-review.md) realizes customer, supplier, and
+contract references. The [generation plan](content-generation-plan.md) records
+earlier sizing proposals. The pack now contains 3,075 messages and 244 source
+documents, including the earlier story collection. Other departmental business
+histories remain future content work.
 
 ## A reusable world
 

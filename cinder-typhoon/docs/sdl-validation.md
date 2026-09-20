@@ -107,8 +107,8 @@ the original AND/OR formulas. Collection scope does not require completing all
 alternative paths or writing to every producer. Native default-open posture
 remains present in all 97 documents.
 
-The [workplace collection](../assets/narrative/README.md) contains 1,475 unique
-messages, 3,399 retained message copies, 155 authored documents, directories
+The [workplace collection](../assets/narrative/README.md) contains 3,075 unique
+messages, 5,170 retained message copies, 244 authored documents, directories
 for all 294 company employees, and 21 calendar invitations. Jules remains an
 external correspondent outside both company rosters. The eight native content
 declarations identify exact source names and digest-based
@@ -133,9 +133,10 @@ or challenge prerequisite. Backend and software choices remain open.
 
 Asset checks compare RFC822 headers and bodies, reply relationships, MIME
 attachment bytes and publication dates, mailbox membership, document readers,
-staff contacts, and calendar dates, status, and audiences. Five corruption cases
-alter an attachment, expose a private message to an unrelated mailbox, change
-source bytes, detach a reply, or introduce a reporting loop; all are rejected.
+staff contacts, business account and accepted-activity joins, and calendar dates,
+status, and audiences. Six corruption cases alter an attachment, expose a
+private message to an unrelated mailbox, change source bytes, detach a reply,
+introduce a reporting loop, or change an accepted delivery amount; all are rejected.
 Four native type-valid SDL
 mutations change a content owner, source version, observed-state requirement,
 or selected readback content; all are rejected as well.

@@ -46,8 +46,9 @@ python3 cinder-typhoon/docs/design/model_topology.py --self-test
 For SDL validation, follow [tests/README.md](tests/README.md). The checker reads
 the graph back from composed SDL and replays it against the existing design
 contracts. The design ledgers remain independent authoring expectations.
-The [workplace collection](assets/narrative/README.md) includes 1,475 messages,
-155 source documents, contacts for 294 employees, and 21 calendar invitations.
+The [workplace collection](assets/narrative/README.md) includes 3,075 messages,
+244 source documents, contacts for 294 employees and 47 additional external
+business correspondents, and 21 calendar invitations.
 Eight native SDL content declarations bind the source artifacts to existing
 workplace systems.
 The runtime adapter, hosting layout, and consumer delivery bundle remain pending.

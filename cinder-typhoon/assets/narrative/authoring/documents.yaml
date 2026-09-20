@@ -1618,3 +1618,886 @@ documents:
   - awm204
   - awm197
   - awm170
+- id: kc001-account
+  employer: keplerops
+  file: documents/business/kc001-account.md
+  title: Alterra Regional Water Company account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm048
+  - kwm047
+- id: kc001-agreement-summary
+  employer: keplerops
+  file: documents/business/kc001-agreement-summary.md
+  title: Alterra Regional Water Company agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - maya
+  - kwm048
+  - kwm047
+- id: kc001-service
+  employer: keplerops
+  file: documents/business/kc001-service.md
+  title: Alterra Regional Water Company service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc001-contact-review
+  employer: keplerops
+  file: documents/business/kc001-contact-review.md
+  title: Alterra Regional Water Company contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm048
+  - kwm047
+- id: kc001-accepted-schedule
+  employer: keplerops
+  file: documents/business/kc001-accepted-schedule.md
+  title: Alterra Regional Water Company accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2019-03-27T15:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm048
+  - kwm047
+- id: a-fieldkest-agreement-summary
+  employer: arwc
+  file: documents/business/a-fieldkest-agreement-summary.md
+  title: FieldKest supplier agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - priya
+  - theo
+  - awm205
+- id: a-fieldkest-accepted-schedule
+  employer: arwc
+  file: documents/business/a-fieldkest-accepted-schedule.md
+  title: FieldKest accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2019-03-27T15:00:00-04:00'
+  reader_keys:
+  - priya
+  - theo
+  - awm205
+- id: kc002-account
+  employer: keplerops
+  file: documents/business/kc002-account.md
+  title: Rillhaven District Heating account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm049
+  - kwm047
+- id: kc002-agreement-summary
+  employer: keplerops
+  file: documents/business/kc002-agreement-summary.md
+  title: Rillhaven District Heating agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - maya
+  - kwm049
+  - kwm047
+- id: kc002-service
+  employer: keplerops
+  file: documents/business/kc002-service.md
+  title: Rillhaven District Heating service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc002-contact-review
+  employer: keplerops
+  file: documents/business/kc002-contact-review.md
+  title: Rillhaven District Heating contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm049
+  - kwm047
+- id: kc002-accepted-schedule
+  employer: keplerops
+  file: documents/business/kc002-accepted-schedule.md
+  title: Rillhaven District Heating accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2024-10-27T15:00:00-04:00'
+  reader_keys:
+  - maya
+  - kwm049
+  - kwm047
+- id: kc003-account
+  employer: keplerops
+  file: documents/business/kc003-account.md
+  title: Davenmoor Water Service account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm023
+  - kwm048
+  - kwm047
+- id: kc003-agreement-summary
+  employer: keplerops
+  file: documents/business/kc003-agreement-summary.md
+  title: Davenmoor Water Service agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm023
+  - kwm048
+  - kwm047
+- id: kc003-service
+  employer: keplerops
+  file: documents/business/kc003-service.md
+  title: Davenmoor Water Service service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc003-contact-review
+  employer: keplerops
+  file: documents/business/kc003-contact-review.md
+  title: Davenmoor Water Service contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm023
+  - kwm048
+  - kwm047
+- id: kc003-accepted-schedule
+  employer: keplerops
+  file: documents/business/kc003-accepted-schedule.md
+  title: Davenmoor Water Service accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2023-06-26T15:00:00-04:00'
+  reader_keys:
+  - kwm023
+  - kwm048
+  - kwm047
+- id: kc004-account
+  employer: keplerops
+  file: documents/business/kc004-account.md
+  title: Elverden District Water account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm024
+  - kwm049
+  - kwm047
+- id: kc004-agreement-summary
+  employer: keplerops
+  file: documents/business/kc004-agreement-summary.md
+  title: Elverden District Water agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm024
+  - kwm049
+  - kwm047
+- id: kc004-service
+  employer: keplerops
+  file: documents/business/kc004-service.md
+  title: Elverden District Water service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc004-contact-review
+  employer: keplerops
+  file: documents/business/kc004-contact-review.md
+  title: Elverden District Water contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm024
+  - kwm049
+  - kwm047
+- id: kc005-account
+  employer: keplerops
+  file: documents/business/kc005-account.md
+  title: Fennor Bay Water account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm025
+  - kwm050
+  - kwm047
+- id: kc005-agreement-summary
+  employer: keplerops
+  file: documents/business/kc005-agreement-summary.md
+  title: Fennor Bay Water agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm025
+  - kwm050
+  - kwm047
+- id: kc005-service
+  employer: keplerops
+  file: documents/business/kc005-service.md
+  title: Fennor Bay Water service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc005-contact-review
+  employer: keplerops
+  file: documents/business/kc005-contact-review.md
+  title: Fennor Bay Water contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm025
+  - kwm050
+  - kwm047
+- id: kc006-account
+  employer: keplerops
+  file: documents/business/kc006-account.md
+  title: Haveril District Energy account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm048
+  - kwm047
+- id: kc006-agreement-summary
+  employer: keplerops
+  file: documents/business/kc006-agreement-summary.md
+  title: Haveril District Energy agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm048
+  - kwm047
+- id: kc006-service
+  employer: keplerops
+  file: documents/business/kc006-service.md
+  title: Haveril District Energy service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc006-contact-review
+  employer: keplerops
+  file: documents/business/kc006-contact-review.md
+  title: Haveril District Energy contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm048
+  - kwm047
+- id: kc006-accepted-schedule
+  employer: keplerops
+  file: documents/business/kc006-accepted-schedule.md
+  title: Haveril District Energy accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2024-12-27T15:00:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm048
+  - kwm047
+- id: kc007-account
+  employer: keplerops
+  file: documents/business/kc007-account.md
+  title: Mirrenfold Regional Water account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm027
+  - kwm049
+  - kwm047
+- id: kc007-agreement-summary
+  employer: keplerops
+  file: documents/business/kc007-agreement-summary.md
+  title: Mirrenfold Regional Water agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm027
+  - kwm049
+  - kwm047
+- id: kc007-service
+  employer: keplerops
+  file: documents/business/kc007-service.md
+  title: Mirrenfold Regional Water service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc007-contact-review
+  employer: keplerops
+  file: documents/business/kc007-contact-review.md
+  title: Mirrenfold Regional Water contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm027
+  - kwm049
+  - kwm047
+- id: kc008-account
+  employer: keplerops
+  file: documents/business/kc008-account.md
+  title: Orvellan District Heating account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm028
+  - kwm050
+  - kwm047
+- id: kc008-agreement-summary
+  employer: keplerops
+  file: documents/business/kc008-agreement-summary.md
+  title: Orvellan District Heating agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm028
+  - kwm050
+  - kwm047
+- id: kc008-service
+  employer: keplerops
+  file: documents/business/kc008-service.md
+  title: Orvellan District Heating service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc008-contact-review
+  employer: keplerops
+  file: documents/business/kc008-contact-review.md
+  title: Orvellan District Heating contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm028
+  - kwm050
+  - kwm047
+- id: kc009-account
+  employer: keplerops
+  file: documents/business/kc009-account.md
+  title: Pellhaven Municipal Water account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm029
+  - kwm048
+  - kwm047
+- id: kc009-agreement-summary
+  employer: keplerops
+  file: documents/business/kc009-agreement-summary.md
+  title: Pellhaven Municipal Water agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm029
+  - kwm048
+  - kwm047
+- id: kc009-service
+  employer: keplerops
+  file: documents/business/kc009-service.md
+  title: Pellhaven Municipal Water service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc009-contact-review
+  employer: keplerops
+  file: documents/business/kc009-contact-review.md
+  title: Pellhaven Municipal Water contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm029
+  - kwm048
+  - kwm047
+- id: kc010-account
+  employer: keplerops
+  file: documents/business/kc010-account.md
+  title: Roskelle Utilities account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm030
+  - kwm049
+  - kwm047
+- id: kc010-agreement-summary
+  employer: keplerops
+  file: documents/business/kc010-agreement-summary.md
+  title: Roskelle Utilities agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm030
+  - kwm049
+  - kwm047
+- id: kc010-service
+  employer: keplerops
+  file: documents/business/kc010-service.md
+  title: Roskelle Utilities service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc010-contact-review
+  employer: keplerops
+  file: documents/business/kc010-contact-review.md
+  title: Roskelle Utilities contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm030
+  - kwm049
+  - kwm047
+- id: kc011-account
+  employer: keplerops
+  file: documents/business/kc011-account.md
+  title: Sennwick Water Board account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm031
+  - kwm050
+  - kwm047
+- id: kc011-agreement-summary
+  employer: keplerops
+  file: documents/business/kc011-agreement-summary.md
+  title: Sennwick Water Board agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm031
+  - kwm050
+  - kwm047
+- id: kc011-service
+  employer: keplerops
+  file: documents/business/kc011-service.md
+  title: Sennwick Water Board service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc011-contact-review
+  employer: keplerops
+  file: documents/business/kc011-contact-review.md
+  title: Sennwick Water Board contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm031
+  - kwm050
+  - kwm047
+- id: kc011-accepted-schedule
+  employer: keplerops
+  file: documents/business/kc011-accepted-schedule.md
+  title: Sennwick Water Board accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2021-12-27T15:00:00-04:00'
+  reader_keys:
+  - kwm031
+  - kwm050
+  - kwm047
+- id: kc012-account
+  employer: keplerops
+  file: documents/business/kc012-account.md
+  title: Caldren Reach Utilities account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - kwm032
+  - kwm048
+  - kwm047
+- id: kc012-agreement-summary
+  employer: keplerops
+  file: documents/business/kc012-agreement-summary.md
+  title: Caldren Reach Utilities agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - kwm032
+  - kwm048
+  - kwm047
+- id: kc012-service
+  employer: keplerops
+  file: documents/business/kc012-service.md
+  title: Caldren Reach Utilities service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: kc012-contact-review
+  employer: keplerops
+  file: documents/business/kc012-contact-review.md
+  title: Caldren Reach Utilities contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - kwm032
+  - kwm048
+  - kwm047
+- id: as001-account
+  employer: arwc
+  file: documents/business/as001-account.md
+  title: Veybridge Controls and Inspection account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - theo
+  - priya
+  - awm205
+- id: as001-agreement-summary
+  employer: arwc
+  file: documents/business/as001-agreement-summary.md
+  title: Veybridge Controls and Inspection agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - theo
+  - priya
+  - awm205
+- id: as001-service
+  employer: arwc
+  file: documents/business/as001-service.md
+  title: Veybridge Controls and Inspection service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: as001-contact-review
+  employer: arwc
+  file: documents/business/as001-contact-review.md
+  title: Veybridge Controls and Inspection contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - theo
+  - priya
+  - awm205
+- id: as002-account
+  employer: arwc
+  file: documents/business/as002-account.md
+  title: Ardenvale Instrument Services account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - clara
+  - priya
+  - awm205
+- id: as002-agreement-summary
+  employer: arwc
+  file: documents/business/as002-agreement-summary.md
+  title: Ardenvale Instrument Services agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - clara
+  - priya
+  - awm205
+- id: as002-service
+  employer: arwc
+  file: documents/business/as002-service.md
+  title: Ardenvale Instrument Services service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: as002-contact-review
+  employer: arwc
+  file: documents/business/as002-contact-review.md
+  title: Ardenvale Instrument Services contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - clara
+  - priya
+  - awm205
+- id: as003-account
+  employer: arwc
+  file: documents/business/as003-account.md
+  title: Merewick Bulk Water Cooperative account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: as003-agreement-summary
+  employer: arwc
+  file: documents/business/as003-agreement-summary.md
+  title: Merewick Bulk Water Cooperative agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: as003-service
+  employer: arwc
+  file: documents/business/as003-service.md
+  title: Merewick Bulk Water Cooperative service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: as003-contact-review
+  employer: arwc
+  file: documents/business/as003-contact-review.md
+  title: Merewick Bulk Water Cooperative contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: as003-accepted-schedule
+  employer: arwc
+  file: documents/business/as003-accepted-schedule.md
+  title: Merewick Bulk Water Cooperative accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2023-12-27T15:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: ab001-account
+  employer: arwc
+  file: documents/business/ab001-account.md
+  title: Belvarn Packaging account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - rosa
+  - priya
+  - awm205
+- id: ab001-agreement-summary
+  employer: arwc
+  file: documents/business/ab001-agreement-summary.md
+  title: Belvarn Packaging agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - rosa
+  - priya
+  - awm205
+- id: ab001-service
+  employer: arwc
+  file: documents/business/ab001-service.md
+  title: Belvarn Packaging service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: ab001-contact-review
+  employer: arwc
+  file: documents/business/ab001-contact-review.md
+  title: Belvarn Packaging contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - rosa
+  - priya
+  - awm205
+- id: ab002-account
+  employer: arwc
+  file: documents/business/ab002-account.md
+  title: Talvern Growers Cooperative account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: ab002-agreement-summary
+  employer: arwc
+  file: documents/business/ab002-agreement-summary.md
+  title: Talvern Growers Cooperative agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: ab002-service
+  employer: arwc
+  file: documents/business/ab002-service.md
+  title: Talvern Growers Cooperative service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: ab002-contact-review
+  employer: arwc
+  file: documents/business/ab002-contact-review.md
+  title: Talvern Growers Cooperative contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: ab002-accepted-schedule
+  employer: arwc
+  file: documents/business/ab002-accepted-schedule.md
+  title: Talvern Growers Cooperative accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2025-04-26T15:00:00-04:00'
+  reader_keys:
+  - priya
+  - awm205
+- id: ks001-account
+  employer: keplerops
+  file: documents/business/ks001-account.md
+  title: Orren & Vale IT Services account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - noor
+  - kwm047
+- id: ks001-agreement-summary
+  employer: keplerops
+  file: documents/business/ks001-agreement-summary.md
+  title: Orren & Vale IT Services agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - noor
+  - kwm047
+- id: ks001-service
+  employer: keplerops
+  file: documents/business/ks001-service.md
+  title: Orren & Vale IT Services service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: ks001-contact-review
+  employer: keplerops
+  file: documents/business/ks001-contact-review.md
+  title: Orren & Vale IT Services contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - noor
+  - kwm047
+- id: ks001-accepted-schedule
+  employer: keplerops
+  file: documents/business/ks001-accepted-schedule.md
+  title: Orren & Vale IT Services accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2025-09-26T15:00:00-04:00'
+  reader_keys:
+  - noor
+  - kwm047
+- id: as004-account
+  employer: arwc
+  file: documents/business/as004-account.md
+  title: Ternwick Records Bureau account reference
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:00:00-04:00'
+  reader_keys:
+  - awm210
+  - priya
+  - awm205
+- id: as004-agreement-summary
+  employer: arwc
+  file: documents/business/as004-agreement-summary.md
+  title: Ternwick Records Bureau agreement summary
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-01T09:10:00-04:00'
+  reader_keys:
+  - awm210
+  - priya
+  - awm205
+- id: as004-service
+  employer: arwc
+  file: documents/business/as004-service.md
+  title: Ternwick Records Bureau service description
+  audience: staff
+  story: business-network
+  published_at: '2026-09-02T09:00:00-04:00'
+- id: as004-contact-review
+  employer: arwc
+  file: documents/business/as004-contact-review.md
+  title: Ternwick Records Bureau contact review
+  audience: restricted
+  story: business-network
+  published_at: '2026-09-14T15:00:00-04:00'
+  reader_keys:
+  - awm210
+  - priya
+  - awm205
+- id: as004-accepted-schedule
+  employer: arwc
+  file: documents/business/as004-accepted-schedule.md
+  title: Ternwick Records Bureau accepted service schedule
+  audience: restricted
+  story: business-network
+  published_at: '2024-12-27T15:00:00-04:00'
+  reader_keys:
+  - awm210
+  - priya
+  - awm205
+- id: kc-account-index
+  employer: keplerops
+  file: documents/business/kc-account-index.md
+  title: Business account index
+  audience: staff
+  story: business-network
+  published_at: '2026-09-14T16:00:00-04:00'
+- id: as-business-index
+  employer: arwc
+  file: documents/business/as-business-index.md
+  title: Business account index
+  audience: staff
+  story: business-network
+  published_at: '2026-09-14T16:00:00-04:00'
