@@ -39,10 +39,14 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-7f82bcd9e6e52858f56341d64b1afcd37f509aa3f5cc80a92289d1e92db110ea
+      version: sha256-5df1463941fd824fbc68a35a8a001064851eee888789a4d7b0941e315336c617
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state.
     items:
+    - name: fn-0001
+      display_name: Enterprise licence / K-C-001
+    - name: fn-0002
+      display_name: 'Re: Enterprise licence / K-C-001'
     - name: bn-0001
       display_name: Receipt order — Pine treatment [K-C-001-26-01]
     - name: bn-0002
@@ -693,6 +697,8 @@ content:
       display_name: 'Re: Service booking — bench sensor AV-41 [A-S-002-26-04]'
     - name: bn-1332
       display_name: 'Re: Capacity outlook — July reservation [A-S-003-26-04]'
+    - name: fn-0143
+      display_name: Invoice KO-26-0054 / K-C-001
     - name: si-2704
       display_name: Service case update [SUP-2026-0301] printed export
     - name: si-3028
@@ -731,6 +737,8 @@ content:
       display_name: 'Re: Learning slot for Laboratory [A-WS-204]'
     - name: wm-0531
       display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-152]'
+    - name: fn-0144
+      display_name: 'Re: Invoice KO-26-0054'
     - name: bn-1394
       display_name: 'Re: Plant diary — packing hall [A-B-001-26-04]'
     - name: bn-1454
@@ -923,6 +931,10 @@ content:
       display_name: 'Re: Follow-up on Identity services [A-WS-239]'
     - name: bn-1339
       display_name: 'Re: Reservation MW-26-0702 [A-S-003-26-05]'
+    - name: fn-0037
+      display_name: Invoice KO-26-0001 / K-C-001
+    - name: fn-0071
+      display_name: Invoice KO-26-0018 / K-C-001
     - name: wm-0245
       display_name: 'Re: Kit handover for Pine treatment [A-WS-071]'
     - name: bn-1399
@@ -971,6 +983,10 @@ content:
       display_name: 'Re: Role note for Pine distribution [A-WS-118]'
     - name: wm-0753
       display_name: 'Re: Follow-up on Quality systems [A-WS-216]'
+    - name: fn-0038
+      display_name: 'Re: Invoice KO-26-0001'
+    - name: fn-0072
+      display_name: 'Re: Invoice KO-26-0018'
     - name: bn-1340
       display_name: 'Re: Reservation MW-26-0702 [A-S-003-26-05]'
     - name: bn-1400
@@ -1207,6 +1223,8 @@ content:
       display_name: 'Re: Learning slot for Maintenance planning [A-WS-176]'
     - name: wm-0956
       display_name: 'Re: Role note for Executive [A-WS-274]'
+    - name: fn-0253
+      display_name: Remittance RC-0040 / KO-26-0054
     - name: bn-0034
       display_name: 'Re: Case summary — controls review [K-C-001-26-09]'
     - name: bn-0036
@@ -1221,6 +1239,8 @@ content:
       display_name: 'Re: Checklist configuration [SUP-2026-0385]'
     - name: si-4445
       display_name: 'Re: Comment ordering [SUP-2026-0457]'
+    - name: fn-0254
+      display_name: 'Re: Remittance RC-0040'
     - name: wm-0533
       display_name: Contact route for Mechanical maintenance [A-WS-153]
     - name: wm-0874
@@ -1769,6 +1789,8 @@ content:
       display_name: 'Re: Kit handover for Pine distribution [A-WS-119]'
     - name: wm-0254
       display_name: 'Re: Handover note for Pine treatment [A-WS-073]'
+    - name: fn-0175
+      display_name: Remittance RC-0001 / KO-26-0001
     - name: wm-0487
       display_name: 'Re: Kit handover for River distribution [A-WS-140]'
     - name: wm-1382
@@ -1783,6 +1805,8 @@ content:
       display_name: 'Re: Accepted pages TR-26-06 [A-S-004-26-09]'
     - name: si-5012
       display_name: 'Re: New team introduction [SUP-2026-0481]'
+    - name: fn-0176
+      display_name: 'Re: Remittance RC-0001'
     - name: bn-0049
       display_name: 'Re: Field note wording — regional maintenance [K-C-001-26-13]'
     - name: wm-0514
@@ -1849,6 +1873,8 @@ content:
       display_name: 'Re: Contact route for River distribution [A-WS-125]'
     - name: wm-0777
       display_name: 'Re: Learning slot for Compliance reporting [A-WS-223]'
+    - name: fn-0203
+      display_name: Remittance RC-0015 / KO-26-0018
     - name: wm-0489
       display_name: 'Re: Kit handover for River distribution [A-WS-140]'
     - name: wm-0511
@@ -1863,6 +1889,8 @@ content:
       display_name: 'Re: Accepted pages TR-26-06 [A-S-004-26-09]'
     - name: wm-1395
       display_name: 'A-WS-217: staff record confirmed'
+    - name: fn-0204
+      display_name: 'Re: Remittance RC-0015'
     - name: bn-1293
       display_name: 'Re: Service order — portable logger AV-17 [A-S-002-26-09]'
     - name: bn-1413
@@ -1971,6 +1999,8 @@ content:
       display_name: 'Re: Cover for Finance [A-WS-275]'
     - name: wm-0455
       display_name: 'Re: Next team slot: River distribution [A-WS-131]'
+    - name: fn-0205
+      display_name: Remittance RC-0016 / KO-26-0018
     - name: wm-1372
       display_name: 'A-WS-125: staff record confirmed'
     - name: bn-1236
@@ -2003,6 +2033,8 @@ content:
       display_name: 'Re: Sample import [SUP-2026-0409]'
     - name: si-5020
       display_name: 'Re: New team introduction [SUP-2026-0481]'
+    - name: fn-0206
+      display_name: 'Re: Remittance RC-0016'
     - name: bn-0053
       display_name: 'Re: Review meeting — controls review [K-C-001-26-14]'
     - name: wm-0374
@@ -2253,6 +2285,8 @@ content:
       display_name: 'Re: Contact route for Laboratory [A-WS-212]'
     - name: wm-0559
       display_name: 'Re: Role note for Mechanical maintenance [A-WS-160]'
+    - name: fn-0073
+      display_name: Invoice KO-26-0019 / K-C-001
     - name: wm-0659
       display_name: Learning slot for Capital projects [A-WS-189]
     - name: wm-0314
@@ -2317,6 +2351,8 @@ content:
       display_name: 'Re: Role note for Procurement [A-WS-264]'
     - name: cm-0340
       display_name: River contractor archive guide [COM-2026-002]
+    - name: fn-0074
+      display_name: 'Re: Invoice KO-26-0019'
     - name: cm-0341
       display_name: River contractor archive guide [COM-2026-002]
     - name: bn-1242
@@ -2361,6 +2397,8 @@ content:
       display_name: 'Re: Contact route for Laboratory [A-WS-212]'
     - name: wm-0317
       display_name: 'Re: Handover note for River treatment [A-WS-091]'
+    - name: fn-0145
+      display_name: Invoice KO-26-0055 / K-C-001
     - name: wm-0629
       display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
     - name: wm-0651
@@ -2391,6 +2429,8 @@ content:
       display_name: 'Re: Role note for Procurement [A-WS-264]'
     - name: wm-0417
       display_name: 'Re: Contact route for Pine distribution [A-WS-120]'
+    - name: fn-0146
+      display_name: 'Re: Invoice KO-26-0055'
     - name: wm-0630
       display_name: 'Re: Kit handover for Maintenance planning [A-WS-180]'
     - name: bn-0064
@@ -2951,6 +2991,8 @@ content:
       display_name: 'Re: Next team slot: Field coordination [A-WS-144]'
     - name: wm-0844
       display_name: 'Re: Handover note for Customer contact [A-WS-242]'
+    - name: fn-0207
+      display_name: Remittance RC-0017 / KO-26-0019
     - name: bn-1311
       display_name: 'Re: Return note — training bench [A-S-002-26-14]'
     - name: bn-1431
@@ -2959,6 +3001,8 @@ content:
       display_name: 'Re: Support cover — Pine treatment [K-C-001-26-21]'
     - name: si-4722
       display_name: 'Re: Reviewer orientation [SUP-2026-0469]'
+    - name: fn-0208
+      display_name: 'Re: Remittance RC-0017'
     - name: bn-1253
       display_name: 'Re: Inspection report — training visit [A-S-001-26-14]'
     - name: bn-1373
@@ -3027,6 +3071,8 @@ content:
       display_name: 'Re: Contact route for Records and scheduling [A-WS-271]'
     - name: cm-0947
       display_name: Quarterly billing reference [COM-2026-004]
+    - name: fn-0255
+      display_name: Remittance RC-0041 / KO-26-0055
     - name: wm-0889
       display_name: 'Re: Kit handover for Accounts [A-WS-255]'
     - name: bn-1254
@@ -3043,6 +3089,8 @@ content:
       display_name: 'Re: Review view [SUP-2026-0421]'
     - name: cm-0950
       display_name: Quarterly billing reference [COM-2026-004]
+    - name: fn-0256
+      display_name: 'Re: Remittance RC-0041'
     - name: bn-1313
       display_name: 'Re: Return note — training bench [A-S-002-26-14]'
     - name: bn-1433
@@ -3363,6 +3411,8 @@ content:
       display_name: 'Re: Role note for Capital projects [A-WS-185]'
     - name: a-photo-1
       display_name: Staff photographs — ordinary light
+    - name: fn-0075
+      display_name: Invoice KO-26-0020 / K-C-001
     - name: cf-1950
       display_name: Next-batch date display [SUP-2026-0549]
     - name: cf-0293
@@ -3461,6 +3511,8 @@ content:
       display_name: Printed export [SUP-2026-0313]
     - name: cm-1209
       display_name: ARWC reference conversation [COM-2026-005]
+    - name: fn-0076
+      display_name: 'Re: Invoice KO-26-0020'
     - name: b-ardenvale-2
       display_name: 'Re: Autumn service workshop feedback'
     - name: cf-0102
@@ -4081,6 +4133,8 @@ content:
       display_name: 'Re: The billing-period explanation'
     - name: a-photo-4
       display_name: Staff photography results and display
+    - name: fn-1106
+      display_name: K-C-001 statement to September 15
     - name: a-billing-4
       display_name: Lunch next week?
     - name: a-photo-5
@@ -4128,10 +4182,10 @@ content:
   documents:
     type: dataset
     target: a-corporate.a-business
-    format: cinder-document-library/v1
+    format: cinder-document-library/v2
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-04f0a1eb9ce340316adb7dd1358b3132f97a97ab3f1fc948463f388e1a601476
+      version: sha256-97757ceb3bcbfa4f7e0b293cbe1eda1cdb28295e97230fd49e24343bb0cb5cb7
     description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
       authored readers and opening state.
     items:
@@ -4157,6 +4211,20 @@ content:
       display_name: Quarterly billing reference — accepted schedule
     - name: commercial-arwc-reference-agenda-arwc
       display_name: ARWC reference conversation — agenda
+    - name: ko-26-0001-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0001
+    - name: ko-26-0018-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0018
+    - name: ko-26-0019-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0019
+    - name: ko-26-0020-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0020
+    - name: ko-26-0054-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0054
+    - name: ko-26-0055-arwc
+      display_name: Alterra Regional Water Company invoice KO-26-0055
+    - name: statement-arwc-arwc
+      display_name: Alterra Regional Water Company account statement
     - name: a-outreach-preparation
       display_name: Community water-service explanation — preparation
     - name: a-outreach-outline

@@ -63,6 +63,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.
 python -m unittest discover -s cinder-typhoon/tests -p test_release_platform.py
 python -m unittest discover -s cinder-typhoon/tests -p test_customer_followup.py
 python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
+python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -100,6 +101,16 @@ commitments, changed fees, premature final billing or completion, private
 material sent to customers, missing capacity, corrupted evidence, and a falsely
 confirmed reference call. Calendar checks include existing support appointments.
 Billing authority remains distinct from an issued invoice or payment.
+
+Finance checks reconstruct the journal from invoice, acceptance, receipt,
+claim, payroll, and allocation events; they reconcile opening and closing
+balances, supplier/customer statements, PDF text, and actual workbook cells.
+The pinned `pypdf` dependency parses all PDFs. Office ZIP/XML parsing and formula
+evaluation use the Python standard library. Twenty-six mutations reject false
+authority, changed fees, premature payments, incomplete deliveries, self-approved
+claims, payroll leaks, altered opening balances, and binary corruption. One
+mutation rewrites an actual XLSX formula and updates its digest, proving that a
+valid checksum alone cannot hide an incorrect cached result.
 
 ## Prose checks
 

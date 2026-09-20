@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-4f9b288ba82ec2a817afbdc65648b64403388a49df39ed872e0119bb642c106c
+      version: sha256-6f50a0a68dc232d912a98b35af388f013aace0aba61ca57a61f6f255199fd271
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -63,10 +63,10 @@ content:
   documents:
     type: dataset
     target: k-corporate.k-staff
-    format: cinder-document-library/v1
+    format: cinder-document-library/v2
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-ec566c8fb7d437c4206ba2521a92cc854f4a024ac32f939d12d679bf2d96ae38
+      version: sha256-440f28257d4830e255ea4be3e829eb4efa7b697bc029e99fec57ad9423b3c66b
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
@@ -2610,6 +2610,1106 @@ content:
       display_name: FieldKest retained decision 09
     - name: engineering-history-10
       display_name: FieldKest retained decision 10
+    - name: k-c-001-lic-2026
+      display_name: Alterra Regional Water Company enterprise licence schedule
+    - name: k-c-002-lic-2026
+      display_name: Rillhaven District Heating enterprise licence schedule
+    - name: k-c-003-lic-2026
+      display_name: Davenmoor Water Service enterprise licence schedule
+    - name: k-c-004-lic-2026
+      display_name: Elverden District Water enterprise licence schedule
+    - name: k-c-005-lic-2026
+      display_name: Fennor Bay Water enterprise licence schedule
+    - name: k-c-006-lic-2026
+      display_name: Haveril District Energy enterprise licence schedule
+    - name: k-c-007-lic-2026
+      display_name: Mirrenfold Regional Water enterprise licence schedule
+    - name: k-c-008-lic-2026
+      display_name: Orvellan District Heating enterprise licence schedule
+    - name: k-c-009-lic-2026
+      display_name: Pellhaven Municipal Water enterprise licence schedule
+    - name: k-c-010-lic-2026
+      display_name: Roskelle Utilities enterprise licence schedule
+    - name: k-c-011-lic-2026
+      display_name: Sennwick Water Board enterprise licence schedule
+    - name: k-c-012-lic-2026
+      display_name: Caldren Reach Utilities enterprise licence schedule
+    - name: ko-26-0001
+      display_name: Alterra Regional Water Company invoice KO-26-0001
+    - name: ko-26-0002
+      display_name: Rillhaven District Heating invoice KO-26-0002
+    - name: ko-26-0003
+      display_name: Rillhaven District Heating invoice KO-26-0003
+    - name: ko-26-0004
+      display_name: Davenmoor Water Service invoice KO-26-0004
+    - name: ko-26-0005
+      display_name: Elverden District Water invoice KO-26-0005
+    - name: ko-26-0006
+      display_name: Fennor Bay Water invoice KO-26-0006
+    - name: ko-26-0007
+      display_name: Fennor Bay Water invoice KO-26-0007
+    - name: ko-26-0008
+      display_name: Haveril District Energy invoice KO-26-0008
+    - name: ko-26-0009
+      display_name: Mirrenfold Regional Water invoice KO-26-0009
+    - name: ko-26-0010
+      display_name: Orvellan District Heating invoice KO-26-0010
+    - name: ko-26-0011
+      display_name: Orvellan District Heating invoice KO-26-0011
+    - name: ko-26-0012
+      display_name: Pellhaven Municipal Water invoice KO-26-0012
+    - name: ko-26-0013
+      display_name: Pellhaven Municipal Water invoice KO-26-0013
+    - name: ko-26-0014
+      display_name: Roskelle Utilities invoice KO-26-0014
+    - name: ko-26-0015
+      display_name: Sennwick Water Board invoice KO-26-0015
+    - name: ko-26-0016
+      display_name: Caldren Reach Utilities invoice KO-26-0016
+    - name: ko-26-0017
+      display_name: Caldren Reach Utilities invoice KO-26-0017
+    - name: ko-26-0018
+      display_name: Alterra Regional Water Company invoice KO-26-0018
+    - name: ko-26-0019
+      display_name: Alterra Regional Water Company invoice KO-26-0019
+    - name: ko-26-0020
+      display_name: Alterra Regional Water Company invoice KO-26-0020
+    - name: ko-26-0021
+      display_name: Rillhaven District Heating invoice KO-26-0021
+    - name: ko-26-0022
+      display_name: Rillhaven District Heating invoice KO-26-0022
+    - name: ko-26-0023
+      display_name: Rillhaven District Heating invoice KO-26-0023
+    - name: ko-26-0024
+      display_name: Davenmoor Water Service invoice KO-26-0024
+    - name: ko-26-0025
+      display_name: Davenmoor Water Service invoice KO-26-0025
+    - name: ko-26-0026
+      display_name: Davenmoor Water Service invoice KO-26-0026
+    - name: ko-26-0027
+      display_name: Elverden District Water invoice KO-26-0027
+    - name: ko-26-0028
+      display_name: Elverden District Water invoice KO-26-0028
+    - name: ko-26-0029
+      display_name: Elverden District Water invoice KO-26-0029
+    - name: ko-26-0030
+      display_name: Fennor Bay Water invoice KO-26-0030
+    - name: ko-26-0031
+      display_name: Fennor Bay Water invoice KO-26-0031
+    - name: ko-26-0032
+      display_name: Fennor Bay Water invoice KO-26-0032
+    - name: ko-26-0033
+      display_name: Haveril District Energy invoice KO-26-0033
+    - name: ko-26-0034
+      display_name: Haveril District Energy invoice KO-26-0034
+    - name: ko-26-0035
+      display_name: Haveril District Energy invoice KO-26-0035
+    - name: ko-26-0036
+      display_name: Mirrenfold Regional Water invoice KO-26-0036
+    - name: ko-26-0037
+      display_name: Mirrenfold Regional Water invoice KO-26-0037
+    - name: ko-26-0038
+      display_name: Mirrenfold Regional Water invoice KO-26-0038
+    - name: ko-26-0039
+      display_name: Orvellan District Heating invoice KO-26-0039
+    - name: ko-26-0040
+      display_name: Orvellan District Heating invoice KO-26-0040
+    - name: ko-26-0041
+      display_name: Orvellan District Heating invoice KO-26-0041
+    - name: ko-26-0042
+      display_name: Pellhaven Municipal Water invoice KO-26-0042
+    - name: ko-26-0043
+      display_name: Pellhaven Municipal Water invoice KO-26-0043
+    - name: ko-26-0044
+      display_name: Pellhaven Municipal Water invoice KO-26-0044
+    - name: ko-26-0045
+      display_name: Roskelle Utilities invoice KO-26-0045
+    - name: ko-26-0046
+      display_name: Roskelle Utilities invoice KO-26-0046
+    - name: ko-26-0047
+      display_name: Roskelle Utilities invoice KO-26-0047
+    - name: ko-26-0048
+      display_name: Sennwick Water Board invoice KO-26-0048
+    - name: ko-26-0049
+      display_name: Sennwick Water Board invoice KO-26-0049
+    - name: ko-26-0050
+      display_name: Sennwick Water Board invoice KO-26-0050
+    - name: ko-26-0051
+      display_name: Caldren Reach Utilities invoice KO-26-0051
+    - name: ko-26-0052
+      display_name: Caldren Reach Utilities invoice KO-26-0052
+    - name: ko-26-0053
+      display_name: Caldren Reach Utilities invoice KO-26-0053
+    - name: ko-26-0054
+      display_name: Alterra Regional Water Company invoice KO-26-0054
+    - name: ko-26-0055
+      display_name: Alterra Regional Water Company invoice KO-26-0055
+    - name: ko-26-0056
+      display_name: Rillhaven District Heating invoice KO-26-0056
+    - name: ko-26-0057
+      display_name: Davenmoor Water Service invoice KO-26-0057
+    - name: ko-26-0058
+      display_name: Davenmoor Water Service invoice KO-26-0058
+    - name: ko-26-0059
+      display_name: Elverden District Water invoice KO-26-0059
+    - name: ko-26-0060
+      display_name: Elverden District Water invoice KO-26-0060
+    - name: ko-26-0061
+      display_name: Fennor Bay Water invoice KO-26-0061
+    - name: ko-26-0062
+      display_name: Fennor Bay Water invoice KO-26-0062
+    - name: ko-26-0063
+      display_name: Haveril District Energy invoice KO-26-0063
+    - name: ko-26-0064
+      display_name: Mirrenfold Regional Water invoice KO-26-0064
+    - name: ko-26-0065
+      display_name: Mirrenfold Regional Water invoice KO-26-0065
+    - name: ko-26-0066
+      display_name: Orvellan District Heating invoice KO-26-0066
+    - name: ko-26-0067
+      display_name: Pellhaven Municipal Water invoice KO-26-0067
+    - name: ko-26-0068
+      display_name: Pellhaven Municipal Water invoice KO-26-0068
+    - name: ko-26-0069
+      display_name: Roskelle Utilities invoice KO-26-0069
+    - name: po-26-001
+      display_name: PO-26-001 approved purchase
+    - name: po-26-001-receipt
+      display_name: PO-26-001 receipt
+    - name: po-26-001-invoice
+      display_name: Orren & Vale IT Services invoice PO-26-001
+    - name: po-26-002
+      display_name: PO-26-002 approved purchase
+    - name: po-26-002-receipt
+      display_name: PO-26-002 receipt
+    - name: po-26-002-invoice
+      display_name: Orren & Vale IT Services invoice PO-26-002
+    - name: po-26-003
+      display_name: PO-26-003 approved purchase
+    - name: po-26-003-receipt
+      display_name: PO-26-003 receipt
+    - name: po-26-003-invoice
+      display_name: Orren & Vale IT Services invoice PO-26-003
+    - name: po-26-004
+      display_name: PO-26-004 approved purchase
+    - name: po-26-004-receipt
+      display_name: PO-26-004 receipt
+    - name: po-26-004-invoice
+      display_name: Velquorin Rooms invoice PO-26-004
+    - name: po-26-005
+      display_name: PO-26-005 approved purchase
+    - name: po-26-005-receipt
+      display_name: PO-26-005 receipt
+    - name: po-26-005-invoice
+      display_name: Velquorin Rooms invoice PO-26-005
+    - name: po-26-006
+      display_name: PO-26-006 approved purchase
+    - name: po-26-006-receipt
+      display_name: PO-26-006 receipt
+    - name: po-26-006-invoice
+      display_name: Velquorin Rooms invoice PO-26-006
+    - name: po-26-007
+      display_name: PO-26-007 approved purchase
+    - name: po-26-007-receipt
+      display_name: PO-26-007 receipt
+    - name: po-26-007-invoice
+      display_name: Darsovell Compute invoice PO-26-007
+    - name: po-26-008
+      display_name: PO-26-008 approved purchase
+    - name: po-26-008-receipt
+      display_name: PO-26-008 receipt
+    - name: po-26-008-invoice
+      display_name: Darsovell Compute invoice PO-26-008
+    - name: po-26-009
+      display_name: PO-26-009 approved purchase
+    - name: po-26-009-receipt
+      display_name: PO-26-009 receipt
+    - name: po-26-009-invoice
+      display_name: Darsovell Compute invoice PO-26-009
+    - name: po-26-010
+      display_name: PO-26-010 approved purchase
+    - name: po-26-010-receipt
+      display_name: PO-26-010 receipt
+    - name: po-26-010-invoice
+      display_name: Pelravin Communications invoice PO-26-010
+    - name: po-26-011
+      display_name: PO-26-011 approved purchase
+    - name: po-26-011-receipt
+      display_name: PO-26-011 receipt
+    - name: po-26-011-invoice
+      display_name: Pelravin Communications invoice PO-26-011
+    - name: po-26-012
+      display_name: PO-26-012 approved purchase
+    - name: po-26-012-receipt
+      display_name: PO-26-012 receipt
+    - name: po-26-012-invoice
+      display_name: Pelravin Communications invoice PO-26-012
+    - name: po-26-013
+      display_name: PO-26-013 approved purchase
+    - name: po-26-013-receipt
+      display_name: PO-26-013 receipt
+    - name: po-26-013-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-013
+    - name: po-26-014
+      display_name: PO-26-014 approved purchase
+    - name: po-26-014-receipt
+      display_name: PO-26-014 receipt
+    - name: po-26-014-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-014
+    - name: po-26-015
+      display_name: PO-26-015 approved purchase
+    - name: po-26-015-receipt
+      display_name: PO-26-015 receipt
+    - name: po-26-015-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-015
+    - name: po-26-016
+      display_name: PO-26-016 approved purchase
+    - name: po-26-016-receipt
+      display_name: PO-26-016 receipt
+    - name: po-26-016-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-016
+    - name: po-26-017
+      display_name: PO-26-017 approved purchase
+    - name: po-26-017-receipt
+      display_name: PO-26-017 receipt
+    - name: po-26-017-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-017
+    - name: po-26-018
+      display_name: PO-26-018 approved purchase
+    - name: po-26-018-receipt
+      display_name: PO-26-018 receipt
+    - name: po-26-018-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-018
+    - name: po-26-019
+      display_name: PO-26-019 approved purchase
+    - name: po-26-019-receipt
+      display_name: PO-26-019 receipt
+    - name: po-26-019-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-019
+    - name: po-26-020
+      display_name: PO-26-020 approved purchase
+    - name: po-26-020-receipt
+      display_name: PO-26-020 receipt
+    - name: po-26-020-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-020
+    - name: po-26-021
+      display_name: PO-26-021 approved purchase
+    - name: po-26-021-receipt
+      display_name: PO-26-021 receipt
+    - name: po-26-021-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-021
+    - name: po-26-022
+      display_name: PO-26-022 approved purchase
+    - name: po-26-022-receipt
+      display_name: PO-26-022 receipt
+    - name: po-26-022-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-022
+    - name: po-26-023
+      display_name: PO-26-023 approved purchase
+    - name: po-26-023-receipt
+      display_name: PO-26-023 receipt
+    - name: po-26-023-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-023
+    - name: po-26-024
+      display_name: PO-26-024 approved purchase
+    - name: po-26-024-receipt
+      display_name: PO-26-024 receipt
+    - name: po-26-024-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-024
+    - name: po-26-025
+      display_name: PO-26-025 approved purchase
+    - name: po-26-025-receipt
+      display_name: PO-26-025 receipt
+    - name: po-26-025-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-025
+    - name: po-26-026
+      display_name: PO-26-026 approved purchase
+    - name: po-26-026-receipt
+      display_name: PO-26-026 receipt
+    - name: po-26-026-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-026
+    - name: po-26-027
+      display_name: PO-26-027 approved purchase
+    - name: po-26-027-receipt
+      display_name: PO-26-027 receipt
+    - name: po-26-027-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-027
+    - name: po-26-028
+      display_name: PO-26-028 approved purchase
+    - name: po-26-028-receipt
+      display_name: PO-26-028 receipt
+    - name: po-26-028-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-028
+    - name: po-26-029
+      display_name: PO-26-029 approved purchase
+    - name: po-26-029-receipt
+      display_name: PO-26-029 receipt
+    - name: po-26-029-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-029
+    - name: po-26-030
+      display_name: PO-26-030 approved purchase
+    - name: po-26-030-receipt
+      display_name: PO-26-030 receipt
+    - name: po-26-030-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-030
+    - name: po-26-031
+      display_name: PO-26-031 approved purchase
+    - name: po-26-031-receipt
+      display_name: PO-26-031 receipt
+    - name: po-26-031-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-031
+    - name: po-26-032
+      display_name: PO-26-032 approved purchase
+    - name: po-26-032-receipt
+      display_name: PO-26-032 receipt
+    - name: po-26-032-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-032
+    - name: po-26-033
+      display_name: PO-26-033 approved purchase
+    - name: po-26-033-receipt
+      display_name: PO-26-033 receipt
+    - name: po-26-033-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-033
+    - name: po-26-034
+      display_name: PO-26-034 approved purchase
+    - name: po-26-034-receipt
+      display_name: PO-26-034 receipt
+    - name: po-26-034-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-034
+    - name: po-26-035
+      display_name: PO-26-035 approved purchase
+    - name: po-26-035-receipt
+      display_name: PO-26-035 receipt
+    - name: po-26-035-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-035
+    - name: po-26-036
+      display_name: PO-26-036 approved purchase
+    - name: po-26-036-receipt
+      display_name: PO-26-036 receipt
+    - name: po-26-036-invoice
+      display_name: Kelvorset Office Supply invoice PO-26-036
+    - name: po-26-037
+      display_name: PO-26-037 approved purchase
+    - name: po-26-037-receipt
+      display_name: PO-26-037 receipt
+    - name: po-26-037-invoice
+      display_name: Orvessan Learning invoice PO-26-037
+    - name: po-26-038
+      display_name: PO-26-038 approved purchase
+    - name: po-26-038-receipt
+      display_name: PO-26-038 receipt
+    - name: po-26-038-invoice
+      display_name: Orvessan Learning invoice PO-26-038
+    - name: po-26-039
+      display_name: PO-26-039 approved purchase
+    - name: po-26-039-receipt
+      display_name: PO-26-039 receipt
+    - name: po-26-039-invoice
+      display_name: Orvessan Learning invoice PO-26-039
+    - name: po-26-040
+      display_name: PO-26-040 approved purchase
+    - name: po-26-040-receipt
+      display_name: PO-26-040 receipt
+    - name: po-26-040-invoice
+      display_name: Orvessan Learning invoice PO-26-040
+    - name: po-26-041
+      display_name: PO-26-041 approved purchase
+    - name: po-26-041-receipt
+      display_name: PO-26-041 receipt
+    - name: po-26-041-invoice
+      display_name: Orvessan Learning invoice PO-26-041
+    - name: po-26-042
+      display_name: PO-26-042 approved purchase
+    - name: po-26-042-receipt
+      display_name: PO-26-042 receipt
+    - name: po-26-042-invoice
+      display_name: Orvessan Learning invoice PO-26-042
+    - name: po-26-043
+      display_name: PO-26-043 approved purchase
+    - name: po-26-043-receipt
+      display_name: PO-26-043 receipt
+    - name: po-26-043-invoice
+      display_name: Orvessan Learning invoice PO-26-043
+    - name: po-26-044
+      display_name: PO-26-044 approved purchase
+    - name: po-26-044-receipt
+      display_name: PO-26-044 receipt
+    - name: po-26-044-invoice
+      display_name: Orvessan Learning invoice PO-26-044
+    - name: po-26-045
+      display_name: PO-26-045 approved purchase
+    - name: po-26-045-receipt
+      display_name: PO-26-045 receipt
+    - name: po-26-045-invoice
+      display_name: Orvessan Learning invoice PO-26-045
+    - name: po-26-046
+      display_name: PO-26-046 approved purchase
+    - name: po-26-046-receipt
+      display_name: PO-26-046 receipt
+    - name: po-26-046-invoice
+      display_name: Orvessan Learning invoice PO-26-046
+    - name: po-26-047
+      display_name: PO-26-047 approved purchase
+    - name: po-26-047-receipt
+      display_name: PO-26-047 receipt
+    - name: po-26-047-invoice
+      display_name: Orvessan Learning invoice PO-26-047
+    - name: po-26-048
+      display_name: PO-26-048 approved purchase
+    - name: po-26-048-receipt
+      display_name: PO-26-048 receipt
+    - name: po-26-048-invoice
+      display_name: Orvessan Learning invoice PO-26-048
+    - name: po-26-049
+      display_name: PO-26-049 approved purchase
+    - name: po-26-049-receipt
+      display_name: PO-26-049 receipt
+    - name: po-26-049-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-049
+    - name: po-26-050
+      display_name: PO-26-050 approved purchase
+    - name: po-26-050-receipt
+      display_name: PO-26-050 receipt
+    - name: po-26-050-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-050
+    - name: po-26-051
+      display_name: PO-26-051 approved purchase
+    - name: po-26-051-receipt
+      display_name: PO-26-051 receipt
+    - name: po-26-051-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-051
+    - name: po-26-052
+      display_name: PO-26-052 approved purchase
+    - name: po-26-052-receipt
+      display_name: PO-26-052 receipt
+    - name: po-26-052-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-052
+    - name: po-26-053
+      display_name: PO-26-053 approved purchase
+    - name: po-26-053-receipt
+      display_name: PO-26-053 receipt
+    - name: po-26-053-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-053
+    - name: po-26-054
+      display_name: PO-26-054 approved purchase
+    - name: po-26-054-receipt
+      display_name: PO-26-054 receipt
+    - name: po-26-054-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-054
+    - name: po-26-055
+      display_name: PO-26-055 approved purchase
+    - name: po-26-055-receipt
+      display_name: PO-26-055 receipt
+    - name: po-26-055-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-055
+    - name: po-26-056
+      display_name: PO-26-056 approved purchase
+    - name: po-26-056-receipt
+      display_name: PO-26-056 receipt
+    - name: po-26-056-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-056
+    - name: po-26-057
+      display_name: PO-26-057 approved purchase
+    - name: po-26-057-receipt
+      display_name: PO-26-057 receipt
+    - name: po-26-057-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-057
+    - name: po-26-058
+      display_name: PO-26-058 approved purchase
+    - name: po-26-058-receipt
+      display_name: PO-26-058 receipt
+    - name: po-26-058-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-058
+    - name: po-26-059
+      display_name: PO-26-059 approved purchase
+    - name: po-26-059-receipt
+      display_name: PO-26-059 receipt
+    - name: po-26-059-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-059
+    - name: po-26-060
+      display_name: PO-26-060 approved purchase
+    - name: po-26-060-receipt
+      display_name: PO-26-060 receipt
+    - name: po-26-060-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-060
+    - name: po-26-061
+      display_name: PO-26-061 approved purchase
+    - name: po-26-061-receipt
+      display_name: PO-26-061 receipt
+    - name: po-26-061-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-061
+    - name: po-26-062
+      display_name: PO-26-062 approved purchase
+    - name: po-26-062-receipt
+      display_name: PO-26-062 receipt
+    - name: po-26-062-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-062
+    - name: po-26-063
+      display_name: PO-26-063 approved purchase
+    - name: po-26-063-receipt
+      display_name: PO-26-063 receipt
+    - name: po-26-063-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-063
+    - name: po-26-064
+      display_name: PO-26-064 approved purchase
+    - name: po-26-064-receipt
+      display_name: PO-26-064 receipt
+    - name: po-26-064-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-064
+    - name: po-26-065
+      display_name: PO-26-065 approved purchase
+    - name: po-26-065-receipt
+      display_name: PO-26-065 receipt
+    - name: po-26-065-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-065
+    - name: po-26-066
+      display_name: PO-26-066 approved purchase
+    - name: po-26-066-receipt
+      display_name: PO-26-066 receipt
+    - name: po-26-066-invoice
+      display_name: Tavrelon Travel Desk invoice PO-26-066
+    - name: po-26-067
+      display_name: PO-26-067 approved purchase
+    - name: po-26-067-receipt
+      display_name: PO-26-067 receipt
+    - name: po-26-067-invoice
+      display_name: Melqorin Kitchen invoice PO-26-067
+    - name: po-26-068
+      display_name: PO-26-068 approved purchase
+    - name: po-26-068-receipt
+      display_name: PO-26-068 receipt
+    - name: po-26-068-invoice
+      display_name: Melqorin Kitchen invoice PO-26-068
+    - name: po-26-069
+      display_name: PO-26-069 approved purchase
+    - name: po-26-069-receipt
+      display_name: PO-26-069 receipt
+    - name: po-26-069-invoice
+      display_name: Melqorin Kitchen invoice PO-26-069
+    - name: po-26-070
+      display_name: PO-26-070 approved purchase
+    - name: po-26-070-receipt
+      display_name: PO-26-070 receipt
+    - name: po-26-070-invoice
+      display_name: Melqorin Kitchen invoice PO-26-070
+    - name: po-26-071
+      display_name: PO-26-071 approved purchase
+    - name: po-26-071-receipt
+      display_name: PO-26-071 receipt
+    - name: po-26-071-invoice
+      display_name: Melqorin Kitchen invoice PO-26-071
+    - name: po-26-072
+      display_name: PO-26-072 approved purchase
+    - name: po-26-072-receipt
+      display_name: PO-26-072 receipt
+    - name: po-26-072-invoice
+      display_name: Melqorin Kitchen invoice PO-26-072
+    - name: po-26-073
+      display_name: PO-26-073 approved purchase
+    - name: po-26-073-receipt
+      display_name: PO-26-073 receipt
+    - name: po-26-073-invoice
+      display_name: Melqorin Kitchen invoice PO-26-073
+    - name: po-26-074
+      display_name: PO-26-074 approved purchase
+    - name: po-26-074-receipt
+      display_name: PO-26-074 receipt
+    - name: po-26-074-invoice
+      display_name: Melqorin Kitchen invoice PO-26-074
+    - name: po-26-075
+      display_name: PO-26-075 approved purchase
+    - name: po-26-075-receipt
+      display_name: PO-26-075 receipt
+    - name: po-26-075-invoice
+      display_name: Melqorin Kitchen invoice PO-26-075
+    - name: po-26-076
+      display_name: PO-26-076 approved purchase
+    - name: po-26-076-receipt
+      display_name: PO-26-076 receipt
+    - name: po-26-076-invoice
+      display_name: Melqorin Kitchen invoice PO-26-076
+    - name: po-26-077
+      display_name: PO-26-077 approved purchase
+    - name: po-26-077-receipt
+      display_name: PO-26-077 receipt
+    - name: po-26-077-invoice
+      display_name: Melqorin Kitchen invoice PO-26-077
+    - name: po-26-078
+      display_name: PO-26-078 approved purchase
+    - name: po-26-078-receipt
+      display_name: PO-26-078 receipt
+    - name: po-26-078-invoice
+      display_name: Melqorin Kitchen invoice PO-26-078
+    - name: po-26-079
+      display_name: PO-26-079 approved purchase
+    - name: po-26-079-receipt
+      display_name: PO-26-079 receipt
+    - name: po-26-079-invoice
+      display_name: Melqorin Kitchen invoice PO-26-079
+    - name: po-26-080
+      display_name: PO-26-080 approved purchase
+    - name: po-26-080-receipt
+      display_name: PO-26-080 receipt
+    - name: po-26-080-invoice
+      display_name: Melqorin Kitchen invoice PO-26-080
+    - name: po-26-081
+      display_name: PO-26-081 approved purchase
+    - name: po-26-081-receipt
+      display_name: PO-26-081 receipt
+    - name: po-26-081-invoice
+      display_name: Melqorin Kitchen invoice PO-26-081
+    - name: po-26-082
+      display_name: PO-26-082 approved purchase
+    - name: po-26-082-receipt
+      display_name: PO-26-082 receipt
+    - name: po-26-082-invoice
+      display_name: Melqorin Kitchen invoice PO-26-082
+    - name: po-26-083
+      display_name: PO-26-083 approved purchase
+    - name: po-26-083-receipt
+      display_name: PO-26-083 receipt
+    - name: po-26-083-invoice
+      display_name: Melqorin Kitchen invoice PO-26-083
+    - name: po-26-084
+      display_name: PO-26-084 approved purchase
+    - name: po-26-084-receipt
+      display_name: PO-26-084 receipt
+    - name: po-26-084-invoice
+      display_name: Melqorin Kitchen invoice PO-26-084
+    - name: ex-26-001-receipt
+      display_name: EX-26-001 purchase receipt
+    - name: ex-26-001
+      display_name: EX-26-001 approved claim
+    - name: ex-26-002-receipt
+      display_name: EX-26-002 purchase receipt
+    - name: ex-26-002
+      display_name: EX-26-002 approved claim
+    - name: ex-26-003-receipt
+      display_name: EX-26-003 purchase receipt
+    - name: ex-26-003
+      display_name: EX-26-003 approved claim
+    - name: ex-26-004-receipt
+      display_name: EX-26-004 purchase receipt
+    - name: ex-26-004
+      display_name: EX-26-004 approved claim
+    - name: ex-26-005-receipt
+      display_name: EX-26-005 purchase receipt
+    - name: ex-26-005
+      display_name: EX-26-005 approved claim
+    - name: ex-26-006-receipt
+      display_name: EX-26-006 purchase receipt
+    - name: ex-26-006
+      display_name: EX-26-006 approved claim
+    - name: ex-26-007-receipt
+      display_name: EX-26-007 purchase receipt
+    - name: ex-26-007
+      display_name: EX-26-007 approved claim
+    - name: ex-26-008-receipt
+      display_name: EX-26-008 purchase receipt
+    - name: ex-26-008
+      display_name: EX-26-008 approved claim
+    - name: ex-26-009-receipt
+      display_name: EX-26-009 purchase receipt
+    - name: ex-26-009
+      display_name: EX-26-009 approved claim
+    - name: ex-26-010-receipt
+      display_name: EX-26-010 purchase receipt
+    - name: ex-26-010
+      display_name: EX-26-010 approved claim
+    - name: ex-26-011-receipt
+      display_name: EX-26-011 purchase receipt
+    - name: ex-26-011
+      display_name: EX-26-011 approved claim
+    - name: ex-26-012-receipt
+      display_name: EX-26-012 purchase receipt
+    - name: ex-26-012
+      display_name: EX-26-012 approved claim
+    - name: ex-26-013-receipt
+      display_name: EX-26-013 purchase receipt
+    - name: ex-26-013
+      display_name: EX-26-013 approved claim
+    - name: ex-26-014-receipt
+      display_name: EX-26-014 purchase receipt
+    - name: ex-26-014
+      display_name: EX-26-014 approved claim
+    - name: ex-26-015-receipt
+      display_name: EX-26-015 purchase receipt
+    - name: ex-26-015
+      display_name: EX-26-015 approved claim
+    - name: ex-26-016-receipt
+      display_name: EX-26-016 purchase receipt
+    - name: ex-26-016
+      display_name: EX-26-016 approved claim
+    - name: ex-26-017-receipt
+      display_name: EX-26-017 purchase receipt
+    - name: ex-26-017
+      display_name: EX-26-017 approved claim
+    - name: ex-26-018-receipt
+      display_name: EX-26-018 purchase receipt
+    - name: ex-26-018
+      display_name: EX-26-018 approved claim
+    - name: ex-26-019-receipt
+      display_name: EX-26-019 purchase receipt
+    - name: ex-26-019
+      display_name: EX-26-019 approved claim
+    - name: ex-26-020-receipt
+      display_name: EX-26-020 purchase receipt
+    - name: ex-26-020
+      display_name: EX-26-020 approved claim
+    - name: ex-26-021-receipt
+      display_name: EX-26-021 purchase receipt
+    - name: ex-26-021
+      display_name: EX-26-021 approved claim
+    - name: ex-26-022-receipt
+      display_name: EX-26-022 purchase receipt
+    - name: ex-26-022
+      display_name: EX-26-022 approved claim
+    - name: ex-26-023-receipt
+      display_name: EX-26-023 purchase receipt
+    - name: ex-26-023
+      display_name: EX-26-023 approved claim
+    - name: ex-26-024-receipt
+      display_name: EX-26-024 purchase receipt
+    - name: ex-26-024
+      display_name: EX-26-024 approved claim
+    - name: ex-26-025-receipt
+      display_name: EX-26-025 purchase receipt
+    - name: ex-26-025
+      display_name: EX-26-025 approved claim
+    - name: ex-26-026-receipt
+      display_name: EX-26-026 purchase receipt
+    - name: ex-26-026
+      display_name: EX-26-026 approved claim
+    - name: ex-26-027-receipt
+      display_name: EX-26-027 purchase receipt
+    - name: ex-26-027
+      display_name: EX-26-027 approved claim
+    - name: ex-26-028-receipt
+      display_name: EX-26-028 purchase receipt
+    - name: ex-26-028
+      display_name: EX-26-028 approved claim
+    - name: ex-26-029-receipt
+      display_name: EX-26-029 purchase receipt
+    - name: ex-26-029
+      display_name: EX-26-029 approved claim
+    - name: ex-26-030-receipt
+      display_name: EX-26-030 purchase receipt
+    - name: ex-26-030
+      display_name: EX-26-030 approved claim
+    - name: ex-26-031-receipt
+      display_name: EX-26-031 purchase receipt
+    - name: ex-26-031
+      display_name: EX-26-031 approved claim
+    - name: ex-26-032-receipt
+      display_name: EX-26-032 purchase receipt
+    - name: ex-26-032
+      display_name: EX-26-032 approved claim
+    - name: ex-26-033-receipt
+      display_name: EX-26-033 purchase receipt
+    - name: ex-26-033
+      display_name: EX-26-033 approved claim
+    - name: ex-26-034-receipt
+      display_name: EX-26-034 purchase receipt
+    - name: ex-26-034
+      display_name: EX-26-034 approved claim
+    - name: ex-26-035-receipt
+      display_name: EX-26-035 purchase receipt
+    - name: ex-26-035
+      display_name: EX-26-035 approved claim
+    - name: ex-26-036-receipt
+      display_name: EX-26-036 purchase receipt
+    - name: ex-26-036
+      display_name: EX-26-036 approved claim
+    - name: ex-26-037-receipt
+      display_name: EX-26-037 purchase receipt
+    - name: ex-26-037
+      display_name: EX-26-037 approved claim
+    - name: ex-26-038-receipt
+      display_name: EX-26-038 purchase receipt
+    - name: ex-26-038
+      display_name: EX-26-038 approved claim
+    - name: ex-26-039-receipt
+      display_name: EX-26-039 purchase receipt
+    - name: ex-26-039
+      display_name: EX-26-039 approved claim
+    - name: ex-26-040-receipt
+      display_name: EX-26-040 purchase receipt
+    - name: ex-26-040
+      display_name: EX-26-040 approved claim
+    - name: ex-26-041-receipt
+      display_name: EX-26-041 purchase receipt
+    - name: ex-26-041
+      display_name: EX-26-041 approved claim
+    - name: ex-26-042-receipt
+      display_name: EX-26-042 purchase receipt
+    - name: ex-26-042
+      display_name: EX-26-042 approved claim
+    - name: ex-26-043-receipt
+      display_name: EX-26-043 purchase receipt
+    - name: ex-26-043
+      display_name: EX-26-043 approved claim
+    - name: ex-26-044-receipt
+      display_name: EX-26-044 purchase receipt
+    - name: ex-26-044
+      display_name: EX-26-044 approved claim
+    - name: ex-26-045-receipt
+      display_name: EX-26-045 purchase receipt
+    - name: ex-26-045
+      display_name: EX-26-045 approved claim
+    - name: ex-26-046-receipt
+      display_name: EX-26-046 purchase receipt
+    - name: ex-26-046
+      display_name: EX-26-046 approved claim
+    - name: ex-26-047-receipt
+      display_name: EX-26-047 purchase receipt
+    - name: ex-26-047
+      display_name: EX-26-047 approved claim
+    - name: ex-26-048-receipt
+      display_name: EX-26-048 purchase receipt
+    - name: ex-26-048
+      display_name: EX-26-048 approved claim
+    - name: ex-26-049-receipt
+      display_name: EX-26-049 purchase receipt
+    - name: ex-26-049
+      display_name: EX-26-049 approved claim
+    - name: ex-26-050-receipt
+      display_name: EX-26-050 purchase receipt
+    - name: ex-26-050
+      display_name: EX-26-050 approved claim
+    - name: ex-26-051-receipt
+      display_name: EX-26-051 purchase receipt
+    - name: ex-26-051
+      display_name: EX-26-051 approved claim
+    - name: ex-26-052-receipt
+      display_name: EX-26-052 purchase receipt
+    - name: ex-26-052
+      display_name: EX-26-052 approved claim
+    - name: ex-26-053-receipt
+      display_name: EX-26-053 purchase receipt
+    - name: ex-26-053
+      display_name: EX-26-053 approved claim
+    - name: ex-26-054-receipt
+      display_name: EX-26-054 purchase receipt
+    - name: ex-26-054
+      display_name: EX-26-054 approved claim
+    - name: ex-26-055-receipt
+      display_name: EX-26-055 purchase receipt
+    - name: ex-26-055
+      display_name: EX-26-055 approved claim
+    - name: ex-26-056-receipt
+      display_name: EX-26-056 purchase receipt
+    - name: ex-26-056
+      display_name: EX-26-056 approved claim
+    - name: ex-26-057-receipt
+      display_name: EX-26-057 purchase receipt
+    - name: ex-26-057
+      display_name: EX-26-057 approved claim
+    - name: ex-26-058-receipt
+      display_name: EX-26-058 purchase receipt
+    - name: ex-26-058
+      display_name: EX-26-058 approved claim
+    - name: ex-26-059-receipt
+      display_name: EX-26-059 purchase receipt
+    - name: ex-26-059
+      display_name: EX-26-059 approved claim
+    - name: ex-26-060-receipt
+      display_name: EX-26-060 purchase receipt
+    - name: ex-26-060
+      display_name: EX-26-060 approved claim
+    - name: ex-26-061-receipt
+      display_name: EX-26-061 purchase receipt
+    - name: ex-26-061
+      display_name: EX-26-061 approved claim
+    - name: ex-26-062-receipt
+      display_name: EX-26-062 purchase receipt
+    - name: ex-26-062
+      display_name: EX-26-062 approved claim
+    - name: ex-26-063-receipt
+      display_name: EX-26-063 purchase receipt
+    - name: ex-26-063
+      display_name: EX-26-063 approved claim
+    - name: ex-26-064-receipt
+      display_name: EX-26-064 purchase receipt
+    - name: ex-26-064
+      display_name: EX-26-064 approved claim
+    - name: ex-26-065-receipt
+      display_name: EX-26-065 purchase receipt
+    - name: ex-26-065
+      display_name: EX-26-065 approved claim
+    - name: ex-26-066-receipt
+      display_name: EX-26-066 purchase receipt
+    - name: ex-26-066
+      display_name: EX-26-066 approved claim
+    - name: ex-26-067-receipt
+      display_name: EX-26-067 purchase receipt
+    - name: ex-26-067
+      display_name: EX-26-067 approved claim
+    - name: ex-26-068-receipt
+      display_name: EX-26-068 purchase receipt
+    - name: ex-26-068
+      display_name: EX-26-068 approved claim
+    - name: ex-26-069-receipt
+      display_name: EX-26-069 purchase receipt
+    - name: ex-26-069
+      display_name: EX-26-069 approved claim
+    - name: ex-26-070-receipt
+      display_name: EX-26-070 purchase receipt
+    - name: ex-26-070
+      display_name: EX-26-070 approved claim
+    - name: ex-26-071-receipt
+      display_name: EX-26-071 purchase receipt
+    - name: ex-26-071
+      display_name: EX-26-071 approved claim
+    - name: ex-26-072-receipt
+      display_name: EX-26-072 purchase receipt
+    - name: ex-26-072
+      display_name: EX-26-072 approved claim
+    - name: ex-26-073-receipt
+      display_name: EX-26-073 purchase receipt
+    - name: ex-26-073
+      display_name: EX-26-073 approved claim
+    - name: ex-26-074-receipt
+      display_name: EX-26-074 purchase receipt
+    - name: ex-26-074
+      display_name: EX-26-074 approved claim
+    - name: ex-26-075-receipt
+      display_name: EX-26-075 purchase receipt
+    - name: ex-26-075
+      display_name: EX-26-075 approved claim
+    - name: ex-26-076-receipt
+      display_name: EX-26-076 purchase receipt
+    - name: ex-26-076
+      display_name: EX-26-076 approved claim
+    - name: ex-26-077-receipt
+      display_name: EX-26-077 purchase receipt
+    - name: ex-26-077
+      display_name: EX-26-077 approved claim
+    - name: ex-26-078-receipt
+      display_name: EX-26-078 purchase receipt
+    - name: ex-26-078
+      display_name: EX-26-078 approved claim
+    - name: ex-26-079-receipt
+      display_name: EX-26-079 purchase receipt
+    - name: ex-26-079
+      display_name: EX-26-079 approved claim
+    - name: ex-26-080-receipt
+      display_name: EX-26-080 purchase receipt
+    - name: ex-26-080
+      display_name: EX-26-080 approved claim
+    - name: ex-26-081-receipt
+      display_name: EX-26-081 purchase receipt
+    - name: ex-26-081
+      display_name: EX-26-081 approved claim
+    - name: ex-26-082-receipt
+      display_name: EX-26-082 purchase receipt
+    - name: ex-26-082
+      display_name: EX-26-082 approved claim
+    - name: ex-26-083-receipt
+      display_name: EX-26-083 purchase receipt
+    - name: ex-26-083
+      display_name: EX-26-083 approved claim
+    - name: ex-26-084-receipt
+      display_name: EX-26-084 purchase receipt
+    - name: ex-26-084
+      display_name: EX-26-084 approved claim
+    - name: ex-26-085-receipt
+      display_name: EX-26-085 purchase receipt
+    - name: ex-26-085
+      display_name: EX-26-085 approved claim
+    - name: ex-26-086-receipt
+      display_name: EX-26-086 purchase receipt
+    - name: ex-26-086
+      display_name: EX-26-086 approved claim
+    - name: ex-26-087-receipt
+      display_name: EX-26-087 purchase receipt
+    - name: ex-26-087
+      display_name: EX-26-087 approved claim
+    - name: ex-26-088-receipt
+      display_name: EX-26-088 purchase receipt
+    - name: ex-26-088
+      display_name: EX-26-088 approved claim
+    - name: ex-26-089-receipt
+      display_name: EX-26-089 purchase receipt
+    - name: ex-26-089
+      display_name: EX-26-089 approved claim
+    - name: ex-26-090-receipt
+      display_name: EX-26-090 purchase receipt
+    - name: ex-26-090
+      display_name: EX-26-090 approved claim
+    - name: ex-26-091-receipt
+      display_name: EX-26-091 purchase receipt
+    - name: ex-26-091
+      display_name: EX-26-091 approved claim
+    - name: ex-26-092-receipt
+      display_name: EX-26-092 purchase receipt
+    - name: ex-26-092
+      display_name: EX-26-092 approved claim
+    - name: ex-26-093-receipt
+      display_name: EX-26-093 purchase receipt
+    - name: ex-26-093
+      display_name: EX-26-093 approved claim
+    - name: ex-26-094-receipt
+      display_name: EX-26-094 purchase receipt
+    - name: ex-26-094
+      display_name: EX-26-094 approved claim
+    - name: ex-26-095-receipt
+      display_name: EX-26-095 purchase receipt
+    - name: ex-26-095
+      display_name: EX-26-095 approved claim
+    - name: ex-26-096-receipt
+      display_name: EX-26-096 purchase receipt
+    - name: ex-26-096
+      display_name: EX-26-096 approved claim
+    - name: ov-jun-26
+      display_name: OV-JUN-26 opening supplier invoice
+    - name: vr-jun-26
+      display_name: VR-JUN-26 opening supplier invoice
+    - name: statement-arwc
+      display_name: Alterra Regional Water Company account statement
+    - name: statement-rillhaven
+      display_name: Rillhaven District Heating account statement
+    - name: statement-davenmoor
+      display_name: Davenmoor Water Service account statement
+    - name: statement-elverden
+      display_name: Elverden District Water account statement
+    - name: statement-fennor
+      display_name: Fennor Bay Water account statement
+    - name: statement-haveril
+      display_name: Haveril District Energy account statement
+    - name: statement-mirrenfold
+      display_name: Mirrenfold Regional Water account statement
+    - name: statement-orvellan
+      display_name: Orvellan District Heating account statement
+    - name: statement-pellhaven
+      display_name: Pellhaven Municipal Water account statement
+    - name: statement-roskelle
+      display_name: Roskelle Utilities account statement
+    - name: statement-sennwick
+      display_name: Sennwick Water Board account statement
+    - name: statement-caldren
+      display_name: Caldren Reach Utilities account statement
+    - name: finance-journal
+      display_name: General journal through September 15
+    - name: finance-ar
+      display_name: Accounts receivable
+    - name: finance-ap
+      display_name: Accounts payable
+    - name: finance-cash-allocations
+      display_name: Customer cash allocations
+    - name: finance-opening
+      display_name: June 30 opening balances
+    - name: finance-management-accounts
+      display_name: Management accounts through September 15
+    - name: finance-accounts-budget
+      display_name: Accounts and Q3 budget review
+    - name: finance-purchasing-rules
+      display_name: Purchasing and reimbursement limits
+    - name: finance-quarter-payment-authority
+      display_name: Quarter payment controls and release authority
+    - name: finance-supplier-statement
+      display_name: Supplier balance statement
+    - name: finance-cash-statement
+      display_name: Cash movement statement
     - name: product-quality-pq-2026-0001-decision
       display_name: PQ-2026-0001 decision
     - name: product-quality-pq-2026-0001-research
@@ -9329,13 +10429,23 @@ content:
   employment:
     type: dataset
     target: k-corporate.k-staff
-    format: cinder-employment-records/v1
+    format: cinder-employment-records/v2
     source:
       name: cinder-typhoon/narrative/keplerops-employment
-      version: sha256-4589964ff3cb0d60e83a9fdff8652eedf0fd89008214b7eed8f72709e3a758ee
+      version: sha256-6e130c1b3160f35200ab7a250cc0e5ed90e5e62505d8bc2632a3c59860b5e1b1
     description: keplerops workplace employment. Require an individual staff identity; Exact named personnel
       readers. Preserve authored readers and opening state.
     items:
+    - name: pay-2026-07
+      display_name: PAY-2026-07 approved payroll summary
+    - name: pay-2026-07-proposal
+      display_name: PAY-2026-07 proposed payroll release
+    - name: pay-2026-08
+      display_name: PAY-2026-08 approved payroll summary
+    - name: pay-2026-08-proposal
+      display_name: PAY-2026-08 proposed payroll release
+    - name: finance-payroll-control
+      display_name: Payroll department control
     - name: k-personnel-register
       display_name: Current personnel and assignment register
     - name: k-onboard-kwm003

@@ -2,7 +2,7 @@
 
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
-and commercial slices added on 20
+commercial, and finance slices added on 20
 September. These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -46,6 +46,8 @@ and unfinished plans of their own.
 | [Customer follow-up review](customer-followup-review.md) | Case outcomes, shared engineering corrections, customer delivery evidence, workshop preparations, and volume adjustment. |
 | [Customer follow-up voices](customer-followup-voices.md) | Writing guidance for customer replies and private workshop preparations. |
 | [Commercial content review](commercial-review.md) | Sixty account histories, agreed billing, finite delivery capacity, editorial corrections, and volume adjustment. |
+| [Finance content review](finance-review.md) | Reconciled invoices, purchases, claims, payroll, accounts, binary files, authority completion, and volume adjustment. |
+| [Finance voices](finance-voices.md) | Finance, people, purchasing, and departmental supplier writing guidance. |
 | [Commercial voices](commercial-voices.md) | Writing guidance for the six existing commercial employees. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
@@ -105,6 +107,10 @@ decline records remain part of the history.
 The commercial slice develops sixty histories across those same twelve utility
 customers, with signed and unaccepted terms kept distinct, finance schedules,
 private pricing, accepted project handovers, and a future ARWC reference hold.
+The finance slice realizes billing and settlement with 180 supplier/expense
+transactions, dated licence authority, customer invoices, restricted payroll
+summaries, and reconciled accounts through September 15. Its PDFs and workbooks
+retain exact binary content in the existing native collections.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

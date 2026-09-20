@@ -6,6 +6,7 @@ Source packages are self-contained; artifact catalog paths are pack-relative.
 """
 from __future__ import annotations
 import argparse
+import base64
 import csv
 from datetime import datetime, timezone
 from email.message import EmailMessage
@@ -16,6 +17,7 @@ import io
 import json
 from pathlib import Path
 import uuid
+import zipfile
 import yaml
 
 PACK = Path(__file__).resolve().parents[1]
@@ -40,6 +42,15 @@ def sha(data):
 
 def document_text(document):
     return document['text'] if 'text' in document else (ROOT / document['file']).read_text()
+
+
+def document_bytes(document):
+    if 'archive' in document:
+        with zipfile.ZipFile(ROOT / document['archive']) as archive:
+            raw = archive.read(document['member'])
+        assert sha(raw) == document['binary_sha256'], document['id']
+        return raw
+    return document_text(document).encode()
 
 
 def document_path(document):
@@ -132,7 +143,7 @@ def render():
             d = docs_by_id[attachment]
             assert datetime.fromisoformat(d['published_at']) <= datetime.fromisoformat(m['date']), ('Attachment from the future', m['id'], attachment)
             maintype, subtype = d.get('media_type', 'text/markdown').split('/', 1)
-            msg.add_attachment(document_text(d).encode(), maintype=maintype, subtype=subtype,
+            msg.add_attachment(document_bytes(d), maintype=maintype, subtype=subtype,
                                filename=document_path(d))
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
@@ -140,7 +151,7 @@ def render():
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -169,6 +180,12 @@ def render():
         libraries[d['employer']][kind]['documents'].append({'name': d['id'], 'title': d['title'], 'path': document_path(d),
             'media_type': d.get('media_type', 'text/markdown'), 'published_at': d['published_at'],
             'readers': audience, 'text': document_text(d)})
+        if 'archive' in d:
+            library = libraries[d['employer']][kind]
+            library['schema_version'] = library['schema_version'].replace('/v1', '/v2')
+            library['documents'][-1].update(
+                content_base64=base64.b64encode(document_bytes(d)).decode('ascii'),
+                sha256=d['binary_sha256'])
     for org in ORGS:
         rows = [{'name': p['name'], 'email': p['email'], 'department': p['department'],
                  'team': p['team'], 'job': p['job'],
@@ -208,7 +225,7 @@ def render():
         text = '\r\n'.join(folded) + '\r\n'
         # Bulk operating calendars are complete items in the source package.
         # Avoid redundant standalone members, as with bulk RFC822 messages.
-        if not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
+        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
             output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
         kind = 'employment' if '-induction-' in event['id'] else 'documents'
