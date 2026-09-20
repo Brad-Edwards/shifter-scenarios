@@ -1,9 +1,10 @@
 # KeplerOps and Alterra: the enterprise world
 
-Worldbuilding draft 2, 19 September 2026, with the workforce, business, and
-support-intake content slices added on 20 September. These documents establish two fictional
-companies, the region around them, and the people who work there. The authored
-records are in `assets/narrative/`.
+Worldbuilding draft 2, 19 September 2026, with the workforce, business,
+support-intake, engineering, and product-quality content slices added on 20
+September. These documents establish two fictional companies, the region around
+them, and the people who work there. The authored records are in
+`assets/narrative/`.
 
 **KeplerOps Software** is a successful specialist deciding what kind of company
 it wants to become. Early employees remember making a living by being
@@ -37,6 +38,8 @@ and unfinished plans of their own.
 | [Support content review](support-content-review.md) | Fit review, adversarial findings, delivered case states, joins, and volume evidence for issue 114. |
 | [Support and implementation voices](support-voices.md) | Current writing guidance and exact support-mail samples for all fourteen staff. |
 | [FieldKest engineering review](fieldkest-engineering-review.md) | Fit review, adversarial findings, repository work histories, and support-escalation boundaries for issue 115. |
+| [Product and quality review](product-quality-review.md) | Roadmap history, intake decisions, acceptance evidence, adversarial findings, and delivered volumes for issue 116. |
+| [Product and quality voices](product-quality-voices.md) | Current voice guidance and exact correspondence samples for the eight product and quality staff. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -80,6 +83,9 @@ the business slice supplies reference accounts and correspondence, the support
 slice supplies customer intake, onboarding, and stable unresolved engineering
 escalations, and the FieldKest slice supplies the corresponding ordinary
 engineering repositories and work histories.
+The product and quality slice continues that history with versioned roadmaps,
+accepted evidence for 220 completed or accepted engineering revisions, and 30
+support-linked assessments that remain explicitly deferred or declined.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

@@ -132,6 +132,12 @@ document showing the final plan from the outset.
 **What should convince a reader:** the company's priorities have a history and
 consequences for engineering, release, support, and sales.
 
+The accepted product-quality corpus now implements this section with three
+dated roadmap revisions, 250 joined decisions, exact compatibility workbooks,
+test plans and results, documentation reviews, decision minutes, and the
+correspondence that led to each outcome. Proposed windows remain distinct from
+approved acceptance; downstream release scheduling remains open.
+
 ### Commercial: 6
 
 Create an account register reflecting roughly twelve substantial utility

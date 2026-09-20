@@ -28,8 +28,12 @@ SUPPORT_MESSAGE_COUNT = 5500
 SUPPORT_DOCUMENT_COUNT = 578
 FIELDKEST_MESSAGE_COUNT = 5500
 FIELDKEST_DOCUMENT_COUNT = 720
-TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT + FIELDKEST_MESSAGE_COUNT
-TOTAL_DOCUMENT_COUNT = 155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT
+PRODUCT_QUALITY_MESSAGE_COUNT = 4000
+PRODUCT_QUALITY_DOCUMENT_COUNT = 1976
+TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
+                       FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT)
+TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
+                        PRODUCT_QUALITY_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -494,6 +498,175 @@ def check_fieldkest_engineering(identity, roster, mail, docs):
             'Authoring or challenge language in FieldKest content')
 
 
+def check_product_quality(identity, roster, mail, docs):
+    """Check product decisions, evidence, and correspondence against shipped engineering history."""
+    manifest = yaml.safe_load((ROOT / 'authoring/product-quality.yaml').read_text())
+    engineering = yaml.safe_load((ROOT / 'authoring/fieldkest-engineering.yaml').read_text())['work_items']
+    support = yaml.safe_load((ROOT / 'authoring/support-intake.yaml').read_text())['cases']
+    require(manifest['snapshot'] == identity['snapshot'], 'Product-quality snapshot drift')
+    require(manifest['required_base'] == {'fieldkest_engineering_commit': 'da8e33e',
+                                          'support_commit': 'aa48fa8',
+                                          'workforce_commit': 'cf20e3e'},
+            'Product-quality source base drift')
+    require(manifest['counts'] == {'decision_records': 250, 'accepted': 220, 'deferred': 20,
+                                   'declined': 10, 'messages': 4000, 'documents': 1976,
+                                   'roadmap_revisions': 3, 'compatibility_workbooks': 250,
+                                   'test_results': 220},
+            'Product-quality declared inventory drift')
+    records = manifest['records']
+    require([item['id'] for item in records] == [f'PQ-2026-{n:04d}' for n in range(1, 251)],
+            'Product-quality identifiers are not stable and contiguous')
+    require(Counter(item['decision'] for item in records) ==
+            Counter({'accepted': 220, 'deferred': 20, 'declined': 10}),
+            'Product-quality decision allocation drift')
+
+    work_by_id = {item['id']: item for item in engineering}
+    accepted_work = [item for item in engineering if item['id'].startswith('FK-')
+                     and item['state'] in {'completed', 'accepted'}][:220]
+    assessed_work = [item for item in engineering if item['id'].startswith('ENG-')]
+    require([item['engineering_work'] for item in records] ==
+            [item['id'] for item in accepted_work + assessed_work],
+            'Product-quality engineering selection drift')
+    support_by_change = {item['engineering_change_id']: item for item in support
+                         if item['category'] == 'engineering_escalation'}
+    product_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Product management'}
+    quality_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Quality assurance'}
+    release_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Release engineering'}
+    engineering_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                        and person['department'] == 'Product engineering'}
+    require(len(product_keys) == 3 and len(quality_keys) == 5,
+            'Product or quality roster allocation drift')
+
+    product_docs = {item['id']: item for item in docs if item['story'] == 'product-quality'}
+    require(len(product_docs) == PRODUCT_QUALITY_DOCUMENT_COUNT,
+            'Product-quality document inventory drift')
+    global_ids = {'product-quality-roadmap-v1', 'product-quality-roadmap-v2',
+                  'product-quality-roadmap-v3', 'product-quality-acceptance-register',
+                  'product-quality-limitations-register', 'product-quality-review-calendar'}
+    require(global_ids <= set(product_docs), 'Product-quality roadmap or register missing')
+    require('proposal, not commitment' in document_text(product_docs['product-quality-roadmap-v1']).lower()
+            and 'working revision, not a release schedule' in
+            document_text(product_docs['product-quality-roadmap-v2']).lower()
+            and '220 accepted engineering revisions, 20 deferred assessments, and 10 declined assessments'
+            in document_text(product_docs['product-quality-roadmap-v3']),
+            'Roadmap history loses proposal or revision state')
+    acceptance_rows = list(csv.DictReader(io.StringIO(
+        document_text(product_docs['product-quality-acceptance-register']))))
+    limitation_rows = list(csv.DictReader(io.StringIO(
+        document_text(product_docs['product-quality-limitations-register']))))
+    require(len(acceptance_rows) == 250 and {row['record_id'] for row in acceptance_rows} ==
+            {item['id'] for item in records}, 'Acceptance register inventory drift')
+    require(len(limitation_rows) == sum(item['outstanding_limitation'] is not None for item in records),
+            'Outstanding-limitation register drift')
+
+    product_mail = {item['id']: item for item in mail if item['id'].startswith('pq-')}
+    require(len(product_mail) == PRODUCT_QUALITY_MESSAGE_COUNT
+            and list(product_mail) == [f'pq-{n:04d}' for n in range(1, 4001)],
+            'Product-quality message inventory drift')
+    require(len({item['body'] for item in product_mail.values()}) == PRODUCT_QUALITY_MESSAGE_COUNT,
+            'Product-quality correspondence contains repeated bodies')
+    normalized = []
+    for item in product_mail.values():
+        body = item['body'].lower()
+        body = re.sub(r'pq-2026-\d{4}|(?:fk|eng)-2026-\d{3,4}|sup-2026-\d{4}|fk-\d{4}-[a-z]+-r\d',
+                      '<id>', body)
+        body = re.sub(r'\d{4}-\d{2}-\d{2}', '<date>', body)
+        normalized.append(body)
+    normalized_counts = Counter(normalized)
+    require(len(normalized_counts) >= 500 and normalized_counts.most_common(1)[0][1] <= 20,
+            'Product-quality prose is repetitive after identifiers and dates are removed')
+
+    seen_messages = set()
+    for position, item in enumerate(records):
+        work = work_by_id[item['engineering_work']]
+        require(item['engineering_revision'] == work['revision']
+                and item['repository'] == work['repository'] and item['topic'] == work['topic'],
+                f'Product-quality engineering join drift: {item["id"]}')
+        require(item['product_owner'] in product_keys and item['quality_owner'] in quality_keys
+                and item['engineering_owner'] == work['owner']
+                and item['engineering_reviewer'] == work['reviewer']
+                and item['release_owner'] in release_keys,
+                f'Product-quality role drift: {item["id"]}')
+        require(datetime.fromisoformat(work['opened_at']) < datetime.fromisoformat(item['opened_at'])
+                <= datetime.fromisoformat(item['decided_at']) <= datetime.fromisoformat(identity['snapshot']),
+                f'Product-quality chronology drift: {item["id"]}')
+        expected_readers = (product_keys | quality_keys | {work['owner'], work['reviewer'],
+                                                           work['release_owner']})
+        if item['support_case']:
+            expected_readers.add(support_by_change[item['engineering_work']]['owner'])
+        record_docs = [product_docs.get(document_id) for document_id in item['documents']]
+        require(all(record_docs) and len(record_docs) == (8 if item['decision'] == 'accepted' else 7),
+                f'Product-quality record document set drift: {item["id"]}')
+        require(all(set(document['reader_keys']) == expected_readers for document in record_docs),
+                f'Product-quality document audience drift: {item["id"]}')
+        require(all(item['id'] in document_text(document) or
+                    document['id'].endswith('-compatibility') for document in record_docs),
+                f'Product-quality document join drift: {item["id"]}')
+        workbook = next(document for document in record_docs
+                        if document['id'].endswith('-compatibility'))
+        rows = list(csv.DictReader(io.StringIO(document_text(workbook))))
+        require(len(rows) == 3 and {row['fieldkest_version'] for row in rows} ==
+                {'4.8.2', '4.9.0', '4.9.1'}
+                and all(row['record_id'] == item['id'] and row['engineering_work'] == work['id']
+                        and row['revision'] == work['revision'] for row in rows),
+                f'Compatibility workbook facts drift: {item["id"]}')
+        if item['decision'] == 'accepted':
+            require(work['state'] in {'completed', 'accepted'} and item['support_case'] is None
+                    and item['acceptance_baseline'] == work['product_version']
+                    and item['test_outcome'] in {'passed', 'passed_after_correction',
+                                                'passed_with_limitation'}
+                    and item['approved_commitment']
+                    and sum(document['id'].endswith('-test-result') for document in record_docs) == 1
+                    and any(row['fieldkest_version'] == item['acceptance_baseline']
+                            and row['result'] == 'PASS' for row in rows),
+                    f'Accepted product record lacks engineering or quality evidence: {item["id"]}')
+        else:
+            case = support_by_change[item['engineering_work']]
+            require(work['state'] == 'assessment' and item['support_case'] == case['id']
+                    and item['acceptance_baseline'] is None and item['test_outcome'] == 'not_run'
+                    and item['approved_commitment'] is None and item['outstanding_limitation']
+                    and not any(document['id'].endswith('-test-result') for document in record_docs)
+                    and all(row['result'] == 'NOT_RUN' for row in rows),
+                    f'Deferred or declined assessment invents product acceptance: {item["id"]}')
+
+        related = [message for message in product_mail.values()
+                   if '[' + item['id'] + ' / ' + item['engineering_work'] + ']' in message['subject']]
+        require(len(related) == item['message_count'] == 16,
+                f'Product-quality message allocation drift: {item["id"]}')
+        roots = [message for message in related if not message.get('reply_to')]
+        require(len(roots) == 1 and roots[0]['id'] == item['message_root'],
+                f'Product-quality thread root drift: {item["id"]}')
+        current = roots[0]
+        chain = [current['id']]
+        while True:
+            children = [message for message in related if message.get('reply_to') == current['id']]
+            require(len(children) <= 1, f'Product-quality reply fanout drift: {item["id"]}')
+            if not children:
+                break
+            current = children[0]
+            require(datetime.fromisoformat(current['date']) >
+                    datetime.fromisoformat(product_mail[chain[-1]]['date']),
+                    f'Product-quality reply chronology drift: {item["id"]}')
+            chain.append(current['id'])
+        require(len(chain) == 16 and chain[-1] == item['last_message'],
+                f'Product-quality thread join drift: {item["id"]}')
+        require({attachment for message in related for attachment in message.get('attachments', [])}
+                == set(item['documents']), f'Product-quality attachment set drift: {item["id"]}')
+        require(all(message['from'] in expected_readers and set(message['to']) <= expected_readers
+                    for message in related), f'Product-quality mail audience drift: {item["id"]}')
+        seen_messages.update(chain)
+    require(seen_messages == set(product_mail), 'Unjoined product-quality correspondence')
+    visible = [message['subject'] + '\n' + message['body'] for message in product_mail.values()]
+    visible += [document_text(document) for document in product_docs.values()]
+    leak = ('cinder typhoon', 'issue 116', 'scenario layer', 'author-only', 'openrae',
+            'shifter-scenarios', 'challenge-specific')
+    require(all(not any(term in text.lower() for term in leak) for text in visible),
+            'Authoring or challenge language in product-quality content')
+
+
 def check_assets():
     identity = yaml.safe_load((ROOT / 'authoring/people.yaml').read_text())
     workforce = yaml.safe_load((ROOT / 'authoring/workforce.yaml').read_text())
@@ -588,6 +761,7 @@ def check_assets():
     check_business_network(identity, roster, mail, docs)
     check_support_intake(identity, roster, mail, docs, events)
     check_fieldkest_engineering(identity, roster, mail, docs)
+    check_product_quality(identity, roster, mail, docs)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -781,6 +955,9 @@ def check_narrative_sdl(scenario):
         c = scenario.content[key]
         readback = key + '-visible'
         require(c.target == entry['target'] and c.source.model_dump(exclude_none=True) == entry['source'], 'SDL asset source or owner drift')
+        if not c.items:
+            require('Source package is the complete item inventory.' in c.description,
+                    'Large SDL inventory omitted without an authoritative package declaration')
         require(c.sensitive == (key.split('.')[1] != 'directory'), 'Native content sensitivity drift')
         binding = c.service_materialization
         require(binding and binding.target_service_ref == 'nodes.' + entry['target'] + '.services.workplace', 'Wrong service materialization')

@@ -27,6 +27,7 @@ ORGS = {
 }
 AUDIENCES = {'support': ['rowan', 'maya', 'talia'], 'platform': ['noor', 'evan'],
              'outreach': ['mina', 'owen', 'rosa']}
+SDL_ITEM_ENUMERATION_LIMIT = 10000
 
 
 def json_text(value):
@@ -137,7 +138,7 @@ def render():
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -226,13 +227,23 @@ def render():
                       'Same-employer staff readers' if kind == 'directory' else
                       'Exact named personnel readers' if kind == 'employment' else
                       'Exact document readers')
-            module['content'][kind] = {'type': 'dataset', 'target': node, 'format': payload['schema_version'], 'source': source,
-                'description': f'{org} workplace {kind}. Require an individual staff identity; {access}. Preserve authored readers and opening state.',
-                'items': item_names, 'sensitive': kind != 'directory',
+            description = (f'{org} workplace {kind}. Require an individual staff identity; {access}. '
+                           'Preserve authored readers and opening state.')
+            content_decl = {'type': 'dataset', 'target': node, 'format': payload['schema_version'], 'source': source,
+                'description': description}
+            # The package source is authoritative. Very large display-name lists duplicate
+            # that inventory and can exceed RAE's per-source YAML graph limit without
+            # changing what is materialized or read back.
+            if len(item_names) <= SDL_ITEM_ENUMERATION_LIMIT:
+                content_decl['items'] = item_names
+            else:
+                content_decl['description'] += ' Source package is the complete item inventory.'
+            content_decl.update({'sensitive': kind != 'directory',
                 'tags': ['world-content', 'synthetic'], 'service_materialization': {
                     'target_service_ref': f'nodes.{node}.services.workplace', 'interface_profile': 'service-content', 'profile_version': '1',
                     'requirements': {'operation': 'ensure-owned-items', 'conflict_policy': 'reject-unowned-collision', 'readback': 'canonical-content-digest'},
-                    'readback_assertion_refs': [key], 'evidence_requirement_refs': [key], 'observation_boundary_refs': [key]}}
+                    'readback_assertion_refs': [key], 'evidence_requirement_refs': [key], 'observation_boundary_refs': [key]}})
+            module['content'][kind] = content_decl
             prop = 'cinder.world.' + org + '.' + kind + '.visible'
             module['propositions'][key] = {'description': f'The declared {kind} can be read through the workplace service with the authored audience boundaries.',
                 'subjects': ['content.' + kind], 'basis': 'observed_state',
