@@ -1,0 +1,2801 @@
+actions:
+- reference: K-WS-001
+  employee: kwm001
+  manager: leah
+  department: Product engineering
+  team: Core product
+  topic: coverage
+  opened: '2026-06-03T08:10:00-04:00'
+  last_message: wm-0002
+  record_state: open
+  subject: Cover for Core product [K-WS-001]
+- reference: K-WS-002
+  employee: kwm002
+  manager: kwm001
+  department: Product engineering
+  team: Core product
+  topic: contact
+  opened: '2026-06-20T08:23:00-04:00'
+  last_message: wm-0005
+  record_state: confirmed
+  subject: Contact route for Core product [K-WS-002]
+- reference: K-WS-003
+  employee: kwm003
+  manager: kwm001
+  department: Product engineering
+  team: Core product
+  topic: learning
+  opened: '2026-07-07T08:36:00-04:00'
+  last_message: wm-0009
+  record_state: confirmed
+  subject: Learning slot for Core product [K-WS-003]
+- reference: K-WS-004
+  employee: kwm004
+  manager: kwm001
+  department: Product engineering
+  team: Core product
+  topic: handover
+  opened: '2026-07-24T08:49:00-04:00'
+  last_message: wm-0014
+  record_state: confirmed
+  subject: Handover note for Core product [K-WS-004]
+- reference: K-WS-005
+  employee: kwm005
+  manager: kwm001
+  department: Product engineering
+  team: Core product
+  topic: kit
+  opened: '2026-08-10T08:15:00-04:00'
+  last_message: wm-0016
+  record_state: confirmed
+  subject: Kit handover for Core product [K-WS-005]
+- reference: K-WS-006
+  employee: kwm006
+  manager: kwm001
+  department: Product engineering
+  team: Core product
+  topic: followup
+  opened: '2026-08-27T08:28:00-04:00'
+  last_message: wm-0019
+  record_state: confirmed
+  subject: Follow-up on Core product [K-WS-006]
+- reference: K-WS-007
+  employee: kwm007
+  manager: kwm001
+  department: Product engineering
+  team: Connectors
+  topic: kit
+  opened: '2026-06-11T09:00:00-04:00'
+  last_message: wm-0023
+  record_state: confirmed
+  subject: Kit handover for Connectors [K-WS-007]
+- reference: K-WS-008
+  employee: kwm008
+  manager: kwm007
+  department: Product engineering
+  team: Connectors
+  topic: review
+  opened: '2026-06-24T08:54:00-04:00'
+  last_message: wm-0028
+  record_state: deferred
+  subject: Role note for Connectors [K-WS-008]
+- reference: K-WS-009
+  employee: kwm009
+  manager: kwm007
+  department: Product engineering
+  team: Connectors
+  topic: handover
+  opened: '2026-07-11T08:20:00-04:00'
+  last_message: wm-0030
+  record_state: confirmed
+  subject: Handover note for Connectors [K-WS-009]
+- reference: K-WS-010
+  employee: kwm010
+  manager: kwm007
+  department: Product engineering
+  team: Connectors
+  topic: kit
+  opened: '2026-07-28T08:33:00-04:00'
+  last_message: wm-0033
+  record_state: confirmed
+  subject: Kit handover for Connectors [K-WS-010]
+- reference: K-WS-011
+  employee: kwm011
+  manager: kwm007
+  department: Product engineering
+  team: Connectors
+  topic: followup
+  opened: '2026-08-14T08:46:00-04:00'
+  last_message: wm-0037
+  record_state: confirmed
+  subject: Follow-up on Connectors [K-WS-011]
+- reference: K-WS-012
+  employee: kwm012
+  manager: kwm007
+  department: Product engineering
+  team: Connectors
+  topic: learning
+  opened: '2026-08-31T08:12:00-04:00'
+  last_message: wm-0042
+  record_state: open
+  subject: Learning slot for Connectors [K-WS-012]
+- reference: K-WS-013
+  employee: kwm013
+  manager: kwm001
+  department: Product engineering
+  team: Experience
+  topic: review
+  opened: '2026-06-11T08:25:00-04:00'
+  last_message: wm-0044
+  record_state: confirmed
+  subject: Role note for Experience [K-WS-013]
+- reference: K-WS-014
+  employee: kwm014
+  manager: kwm013
+  department: Product engineering
+  team: Experience
+  topic: learning
+  opened: '2026-06-28T08:38:00-04:00'
+  last_message: wm-0047
+  record_state: confirmed
+  subject: Learning slot for Experience [K-WS-014]
+- reference: K-WS-015
+  employee: kwm015
+  manager: kwm013
+  department: Product engineering
+  team: Experience
+  topic: contact
+  opened: '2026-07-15T08:51:00-04:00'
+  last_message: wm-0051
+  record_state: deferred
+  subject: Contact route for Experience [K-WS-015]
+- reference: K-WS-016
+  employee: kwm016
+  manager: kwm013
+  department: Product engineering
+  team: Experience
+  topic: schedule
+  opened: '2026-08-01T08:17:00-04:00'
+  last_message: wm-0056
+  record_state: confirmed
+  subject: 'Next team slot: Experience [K-WS-016]'
+- reference: K-WS-017
+  employee: kwm017
+  manager: kwm013
+  department: Product engineering
+  team: Experience
+  topic: learning
+  opened: '2026-08-18T08:30:00-04:00'
+  last_message: wm-0058
+  record_state: confirmed
+  subject: Learning slot for Experience [K-WS-017]
+- reference: K-WS-018
+  employee: kwm018
+  manager: kwm001
+  department: Product engineering
+  team: Customer integrations
+  topic: review
+  opened: '2026-09-04T08:43:00-04:00'
+  last_message: wm-0061
+  record_state: confirmed
+  subject: Role note for Customer integrations [K-WS-018]
+- reference: K-WS-019
+  employee: kwm019
+  manager: kwm018
+  department: Product engineering
+  team: Customer integrations
+  topic: coverage
+  opened: '2026-06-15T08:56:00-04:00'
+  last_message: wm-0065
+  record_state: confirmed
+  subject: Cover for Customer integrations [K-WS-019]
+- reference: K-WS-020
+  employee: kwm020
+  manager: kwm018
+  department: Product engineering
+  team: Customer integrations
+  topic: contact
+  opened: '2026-07-02T08:22:00-04:00'
+  last_message: wm-0070
+  record_state: confirmed
+  subject: Contact route for Customer integrations [K-WS-020]
+- reference: K-WS-021
+  employee: kwm021
+  manager: kwm018
+  department: Product engineering
+  team: Customer integrations
+  topic: kit
+  opened: '2026-07-19T08:35:00-04:00'
+  last_message: wm-0072
+  record_state: confirmed
+  subject: Kit handover for Customer integrations [K-WS-021]
+- reference: K-WS-022
+  employee: kwm022
+  manager: leah
+  department: Support and implementation
+  team: Customer support
+  topic: handover
+  opened: '2026-08-05T08:48:00-04:00'
+  last_message: wm-0075
+  record_state: deferred
+  subject: Handover note for Customer support [K-WS-022]
+- reference: K-WS-023
+  employee: kwm023
+  manager: kwm022
+  department: Support and implementation
+  team: Customer support
+  topic: kit
+  opened: '2026-08-22T08:14:00-04:00'
+  last_message: wm-0079
+  record_state: open
+  subject: Kit handover for Customer support [K-WS-023]
+- reference: K-WS-024
+  employee: kwm024
+  manager: kwm022
+  department: Support and implementation
+  team: Customer support
+  topic: followup
+  opened: '2026-09-08T08:27:00-04:00'
+  last_message: wm-0084
+  record_state: confirmed
+  subject: Follow-up on Customer support [K-WS-024]
+- reference: K-WS-025
+  employee: kwm025
+  manager: kwm022
+  department: Support and implementation
+  team: Customer support
+  topic: learning
+  opened: '2026-06-19T08:40:00-04:00'
+  last_message: wm-0086
+  record_state: confirmed
+  subject: Learning slot for Customer support [K-WS-025]
+- reference: K-WS-026
+  employee: kwm026
+  manager: kwm022
+  department: Support and implementation
+  team: Implementation
+  topic: kit
+  opened: '2026-07-06T08:53:00-04:00'
+  last_message: wm-0089
+  record_state: confirmed
+  subject: Kit handover for Implementation [K-WS-026]
+- reference: K-WS-027
+  employee: kwm027
+  manager: kwm026
+  department: Support and implementation
+  team: Implementation
+  topic: handover
+  opened: '2026-07-23T08:19:00-04:00'
+  last_message: wm-0093
+  record_state: confirmed
+  subject: Handover note for Implementation [K-WS-027]
+- reference: K-WS-028
+  employee: kwm028
+  manager: kwm026
+  department: Support and implementation
+  team: Implementation
+  topic: kit
+  opened: '2026-08-09T08:32:00-04:00'
+  last_message: wm-0098
+  record_state: confirmed
+  subject: Kit handover for Implementation [K-WS-028]
+- reference: K-WS-029
+  employee: kwm029
+  manager: kwm026
+  department: Support and implementation
+  team: Implementation
+  topic: followup
+  opened: '2026-08-26T08:45:00-04:00'
+  last_message: wm-0100
+  record_state: deferred
+  subject: Follow-up on Implementation [K-WS-029]
+- reference: K-WS-030
+  employee: kwm030
+  manager: kwm026
+  department: Support and implementation
+  team: Implementation
+  topic: learning
+  opened: '2026-06-06T08:11:00-04:00'
+  last_message: wm-0103
+  record_state: confirmed
+  subject: Learning slot for Implementation [K-WS-030]
+- reference: K-WS-031
+  employee: kwm031
+  manager: kwm022
+  department: Support and implementation
+  team: Enablement
+  topic: review
+  opened: '2026-06-23T08:24:00-04:00'
+  last_message: wm-0107
+  record_state: confirmed
+  subject: Role note for Enablement [K-WS-031]
+- reference: K-WS-032
+  employee: kwm032
+  manager: kwm031
+  department: Support and implementation
+  team: Enablement
+  topic: coverage
+  opened: '2026-07-10T08:37:00-04:00'
+  last_message: wm-0112
+  record_state: confirmed
+  subject: Cover for Enablement [K-WS-032]
+- reference: K-WS-033
+  employee: kwm033
+  manager: kwm031
+  department: Support and implementation
+  team: Enablement
+  topic: kit
+  opened: '2026-07-27T08:50:00-04:00'
+  last_message: wm-0114
+  record_state: confirmed
+  subject: Kit handover for Enablement [K-WS-033]
+- reference: K-WS-034
+  employee: kwm034
+  manager: leah
+  department: Platform and release
+  team: Release engineering
+  topic: followup
+  opened: '2026-08-13T08:16:00-04:00'
+  last_message: wm-0117
+  record_state: open
+  subject: Follow-up on Release engineering [K-WS-034]
+- reference: K-WS-035
+  employee: kwm035
+  manager: kwm034
+  department: Platform and release
+  team: Release engineering
+  topic: learning
+  opened: '2026-08-30T08:29:00-04:00'
+  last_message: wm-0121
+  record_state: confirmed
+  subject: Learning slot for Release engineering [K-WS-035]
+- reference: K-WS-036
+  employee: kwm036
+  manager: kwm034
+  department: Platform and release
+  team: Service operations
+  topic: learning
+  opened: '2026-06-10T08:42:00-04:00'
+  last_message: wm-0126
+  record_state: confirmed
+  subject: Learning slot for Service operations [K-WS-036]
+- reference: K-WS-037
+  employee: kwm037
+  manager: kwm036
+  department: Platform and release
+  team: Service operations
+  topic: coverage
+  opened: '2026-06-27T08:55:00-04:00'
+  last_message: wm-0128
+  record_state: confirmed
+  subject: Cover for Service operations [K-WS-037]
+- reference: K-WS-038
+  employee: kwm038
+  manager: kwm036
+  department: Platform and release
+  team: Service operations
+  topic: kit
+  opened: '2026-07-14T08:21:00-04:00'
+  last_message: wm-0131
+  record_state: confirmed
+  subject: Kit handover for Service operations [K-WS-038]
+- reference: K-WS-039
+  employee: kwm039
+  manager: leah
+  department: Product management and quality
+  team: Product management
+  topic: review
+  opened: '2026-07-31T08:34:00-04:00'
+  last_message: wm-0135
+  record_state: confirmed
+  subject: Role note for Product management [K-WS-039]
+- reference: K-WS-040
+  employee: kwm040
+  manager: kwm039
+  department: Product management and quality
+  team: Product management
+  topic: handover
+  opened: '2026-08-17T08:47:00-04:00'
+  last_message: wm-0140
+  record_state: confirmed
+  subject: Handover note for Product management [K-WS-040]
+- reference: K-WS-041
+  employee: kwm041
+  manager: kwm039
+  department: Product management and quality
+  team: Product management
+  topic: review
+  opened: '2026-09-03T08:13:00-04:00'
+  last_message: wm-0142
+  record_state: confirmed
+  subject: Role note for Product management [K-WS-041]
+- reference: K-WS-042
+  employee: kwm042
+  manager: kwm039
+  department: Product management and quality
+  team: Quality assurance
+  topic: review
+  opened: '2026-06-14T08:26:00-04:00'
+  last_message: wm-0145
+  record_state: confirmed
+  subject: Role note for Quality assurance [K-WS-042]
+- reference: K-WS-043
+  employee: kwm043
+  manager: kwm042
+  department: Product management and quality
+  team: Quality assurance
+  topic: contact
+  opened: '2026-07-01T08:39:00-04:00'
+  last_message: wm-0149
+  record_state: deferred
+  subject: Contact route for Quality assurance [K-WS-043]
+- reference: K-WS-044
+  employee: kwm044
+  manager: kwm042
+  department: Product management and quality
+  team: Quality assurance
+  topic: schedule
+  opened: '2026-07-18T08:52:00-04:00'
+  last_message: wm-0154
+  record_state: confirmed
+  subject: 'Next team slot: Quality assurance [K-WS-044]'
+- reference: K-WS-045
+  employee: kwm045
+  manager: kwm042
+  department: Product management and quality
+  team: Quality assurance
+  topic: kit
+  opened: '2026-08-04T08:18:00-04:00'
+  last_message: wm-0156
+  record_state: confirmed
+  subject: Kit handover for Quality assurance [K-WS-045]
+- reference: K-WS-046
+  employee: kwm046
+  manager: kwm042
+  department: Product management and quality
+  team: Quality assurance
+  topic: kit
+  opened: '2026-08-21T08:31:00-04:00'
+  last_message: wm-0159
+  record_state: confirmed
+  subject: Kit handover for Quality assurance [K-WS-046]
+- reference: K-WS-047
+  employee: kwm047
+  manager: leah
+  department: Commercial
+  team: Accounts
+  topic: learning
+  opened: '2026-09-07T08:44:00-04:00'
+  last_message: wm-0163
+  record_state: confirmed
+  subject: Learning slot for Accounts [K-WS-047]
+- reference: K-WS-048
+  employee: kwm048
+  manager: kwm047
+  department: Commercial
+  team: Accounts
+  topic: learning
+  opened: '2026-06-18T08:10:00-04:00'
+  last_message: wm-0168
+  record_state: confirmed
+  subject: Learning slot for Accounts [K-WS-048]
+- reference: K-WS-049
+  employee: kwm049
+  manager: kwm047
+  department: Commercial
+  team: Accounts
+  topic: schedule
+  opened: '2026-07-05T08:23:00-04:00'
+  last_message: wm-0170
+  record_state: confirmed
+  subject: 'Next team slot: Accounts [K-WS-049]'
+- reference: K-WS-050
+  employee: kwm050
+  manager: kwm047
+  department: Commercial
+  team: Accounts
+  topic: handover
+  opened: '2026-07-22T08:36:00-04:00'
+  last_message: wm-0173
+  record_state: deferred
+  subject: Handover note for Accounts [K-WS-050]
+- reference: K-WS-051
+  employee: kwm051
+  manager: kwm047
+  department: Commercial
+  team: Proposals
+  topic: review
+  opened: '2026-08-08T08:49:00-04:00'
+  last_message: wm-0177
+  record_state: confirmed
+  subject: Role note for Proposals [K-WS-051]
+- reference: K-WS-052
+  employee: kwm052
+  manager: kwm051
+  department: Commercial
+  team: Proposals
+  topic: kit
+  opened: '2026-08-25T08:15:00-04:00'
+  last_message: wm-0182
+  record_state: confirmed
+  subject: Kit handover for Proposals [K-WS-052]
+- reference: K-WS-053
+  employee: kwm053
+  manager: leah
+  department: Leadership and business operations
+  team: Executive
+  topic: learning
+  opened: '2026-06-05T08:28:00-04:00'
+  last_message: wm-0184
+  record_state: confirmed
+  subject: Learning slot for Executive [K-WS-053]
+- reference: K-WS-054
+  employee: kwm054
+  manager: leah
+  department: Leadership and business operations
+  team: People operations
+  topic: review
+  opened: '2026-06-22T08:41:00-04:00'
+  last_message: wm-0187
+  record_state: confirmed
+  subject: Role note for People operations [K-WS-054]
+- reference: K-WS-055
+  employee: kwm055
+  manager: kwm054
+  department: Leadership and business operations
+  team: People operations
+  topic: coverage
+  opened: '2026-07-09T08:54:00-04:00'
+  last_message: wm-0191
+  record_state: confirmed
+  subject: Cover for People operations [K-WS-055]
+- reference: K-WS-056
+  employee: kwm056
+  manager: leah
+  department: Leadership and business operations
+  team: Finance
+  topic: review
+  opened: '2026-07-26T08:20:00-04:00'
+  last_message: wm-0196
+  record_state: confirmed
+  subject: Role note for Finance [K-WS-056]
+- reference: K-WS-057
+  employee: kwm057
+  manager: kwm056
+  department: Leadership and business operations
+  team: Finance
+  topic: followup
+  opened: '2026-08-12T08:33:00-04:00'
+  last_message: wm-0198
+  record_state: deferred
+  subject: Follow-up on Finance [K-WS-057]
+- reference: K-WS-058
+  employee: kwm058
+  manager: leah
+  department: Leadership and business operations
+  team: Office
+  topic: learning
+  opened: '2026-08-29T08:46:00-04:00'
+  last_message: wm-0201
+  record_state: confirmed
+  subject: Learning slot for Office [K-WS-058]
+- reference: A-WS-059
+  employee: awm001
+  manager: luc
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: review
+  opened: '2026-06-09T08:12:00-04:00'
+  last_message: wm-0205
+  record_state: confirmed
+  subject: Role note for Pine treatment [A-WS-059]
+- reference: A-WS-060
+  employee: awm002
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: coverage
+  opened: '2026-06-26T08:25:00-04:00'
+  last_message: wm-0210
+  record_state: confirmed
+  subject: Cover for Pine treatment [A-WS-060]
+- reference: A-WS-061
+  employee: awm003
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: contact
+  opened: '2026-07-13T08:38:00-04:00'
+  last_message: wm-0212
+  record_state: confirmed
+  subject: Contact route for Pine treatment [A-WS-061]
+- reference: A-WS-062
+  employee: awm004
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: schedule
+  opened: '2026-07-30T08:51:00-04:00'
+  last_message: wm-0215
+  record_state: confirmed
+  subject: 'Next team slot: Pine treatment [A-WS-062]'
+- reference: A-WS-063
+  employee: awm005
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: handover
+  opened: '2026-08-16T08:17:00-04:00'
+  last_message: wm-0219
+  record_state: confirmed
+  subject: Handover note for Pine treatment [A-WS-063]
+- reference: A-WS-064
+  employee: awm006
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: kit
+  opened: '2026-09-02T08:30:00-04:00'
+  last_message: wm-0224
+  record_state: confirmed
+  subject: Kit handover for Pine treatment [A-WS-064]
+- reference: A-WS-065
+  employee: awm007
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: coverage
+  opened: '2026-06-13T08:43:00-04:00'
+  last_message: wm-0226
+  record_state: confirmed
+  subject: Cover for Pine treatment [A-WS-065]
+- reference: A-WS-066
+  employee: awm008
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: contact
+  opened: '2026-06-30T08:56:00-04:00'
+  last_message: wm-0229
+  record_state: confirmed
+  subject: Contact route for Pine treatment [A-WS-066]
+- reference: A-WS-067
+  employee: awm009
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: review
+  opened: '2026-07-17T08:22:00-04:00'
+  last_message: wm-0233
+  record_state: confirmed
+  subject: Role note for Pine treatment [A-WS-067]
+- reference: A-WS-068
+  employee: awm010
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: handover
+  opened: '2026-08-03T08:35:00-04:00'
+  last_message: wm-0238
+  record_state: confirmed
+  subject: Handover note for Pine treatment [A-WS-068]
+- reference: A-WS-069
+  employee: awm011
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: kit
+  opened: '2026-08-20T08:48:00-04:00'
+  last_message: wm-0240
+  record_state: confirmed
+  subject: Kit handover for Pine treatment [A-WS-069]
+- reference: A-WS-070
+  employee: awm012
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: learning
+  opened: '2026-09-06T08:14:00-04:00'
+  last_message: wm-0243
+  record_state: confirmed
+  subject: Learning slot for Pine treatment [A-WS-070]
+- reference: A-WS-071
+  employee: awm013
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: kit
+  opened: '2026-07-01T09:00:00-04:00'
+  last_message: wm-0247
+  record_state: confirmed
+  subject: Kit handover for Pine treatment [A-WS-071]
+- reference: A-WS-072
+  employee: awm014
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: review
+  opened: '2026-07-04T08:40:00-04:00'
+  last_message: wm-0252
+  record_state: confirmed
+  subject: Role note for Pine treatment [A-WS-072]
+- reference: A-WS-073
+  employee: awm015
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: handover
+  opened: '2026-07-21T08:53:00-04:00'
+  last_message: wm-0254
+  record_state: confirmed
+  subject: Handover note for Pine treatment [A-WS-073]
+- reference: A-WS-074
+  employee: awm016
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: kit
+  opened: '2026-08-07T08:19:00-04:00'
+  last_message: wm-0257
+  record_state: confirmed
+  subject: Kit handover for Pine treatment [A-WS-074]
+- reference: A-WS-075
+  employee: awm017
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: followup
+  opened: '2026-08-24T08:32:00-04:00'
+  last_message: wm-0261
+  record_state: confirmed
+  subject: Follow-up on Pine treatment [A-WS-075]
+- reference: A-WS-076
+  employee: awm018
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: review
+  opened: '2026-06-04T08:45:00-04:00'
+  last_message: wm-0266
+  record_state: confirmed
+  subject: Role note for Pine treatment [A-WS-076]
+- reference: A-WS-077
+  employee: awm019
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: review
+  opened: '2026-06-21T08:11:00-04:00'
+  last_message: wm-0268
+  record_state: confirmed
+  subject: Role note for Pine treatment [A-WS-077]
+- reference: A-WS-078
+  employee: awm020
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: kit
+  opened: '2026-07-08T08:24:00-04:00'
+  last_message: wm-0271
+  record_state: confirmed
+  subject: Kit handover for Pine treatment [A-WS-078]
+- reference: A-WS-079
+  employee: awm021
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine treatment
+  topic: contact
+  opened: '2026-07-25T08:37:00-04:00'
+  last_message: wm-0275
+  record_state: confirmed
+  subject: Contact route for Pine treatment [A-WS-079]
+- reference: A-WS-080
+  employee: awm022
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: review
+  opened: '2026-08-11T08:50:00-04:00'
+  last_message: wm-0280
+  record_state: confirmed
+  subject: Role note for River treatment [A-WS-080]
+- reference: A-WS-081
+  employee: awm023
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: learning
+  opened: '2026-08-28T08:16:00-04:00'
+  last_message: wm-0282
+  record_state: confirmed
+  subject: Learning slot for River treatment [A-WS-081]
+- reference: A-WS-082
+  employee: awm024
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: review
+  opened: '2026-06-08T08:29:00-04:00'
+  last_message: wm-0285
+  record_state: confirmed
+  subject: Role note for River treatment [A-WS-082]
+- reference: A-WS-083
+  employee: awm025
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: coverage
+  opened: '2026-06-25T08:42:00-04:00'
+  last_message: wm-0289
+  record_state: confirmed
+  subject: Cover for River treatment [A-WS-083]
+- reference: A-WS-084
+  employee: awm026
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: contact
+  opened: '2026-07-12T08:55:00-04:00'
+  last_message: wm-0294
+  record_state: confirmed
+  subject: Contact route for River treatment [A-WS-084]
+- reference: A-WS-085
+  employee: awm027
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: kit
+  opened: '2026-07-29T08:21:00-04:00'
+  last_message: wm-0296
+  record_state: confirmed
+  subject: Kit handover for River treatment [A-WS-085]
+- reference: A-WS-086
+  employee: awm028
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: handover
+  opened: '2026-08-15T08:34:00-04:00'
+  last_message: wm-0299
+  record_state: confirmed
+  subject: Handover note for River treatment [A-WS-086]
+- reference: A-WS-087
+  employee: awm029
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: learning
+  opened: '2026-09-01T08:47:00-04:00'
+  last_message: wm-0303
+  record_state: confirmed
+  subject: Learning slot for River treatment [A-WS-087]
+- reference: A-WS-088
+  employee: awm030
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: followup
+  opened: '2026-06-12T08:13:00-04:00'
+  last_message: wm-0308
+  record_state: confirmed
+  subject: Follow-up on River treatment [A-WS-088]
+- reference: A-WS-089
+  employee: awm031
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: review
+  opened: '2026-06-29T08:26:00-04:00'
+  last_message: wm-0310
+  record_state: confirmed
+  subject: Role note for River treatment [A-WS-089]
+- reference: A-WS-090
+  employee: awm032
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: schedule
+  opened: '2026-07-16T08:39:00-04:00'
+  last_message: wm-0313
+  record_state: confirmed
+  subject: 'Next team slot: River treatment [A-WS-090]'
+- reference: A-WS-091
+  employee: awm033
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: handover
+  opened: '2026-08-02T08:52:00-04:00'
+  last_message: wm-0317
+  record_state: confirmed
+  subject: Handover note for River treatment [A-WS-091]
+- reference: A-WS-092
+  employee: awm034
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: kit
+  opened: '2026-08-19T08:18:00-04:00'
+  last_message: wm-0322
+  record_state: confirmed
+  subject: Kit handover for River treatment [A-WS-092]
+- reference: A-WS-093
+  employee: awm035
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: followup
+  opened: '2026-09-05T08:31:00-04:00'
+  last_message: wm-0324
+  record_state: confirmed
+  subject: Follow-up on River treatment [A-WS-093]
+- reference: A-WS-094
+  employee: awm036
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: learning
+  opened: '2026-06-16T08:44:00-04:00'
+  last_message: wm-0327
+  record_state: confirmed
+  subject: Learning slot for River treatment [A-WS-094]
+- reference: A-WS-095
+  employee: awm037
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: review
+  opened: '2026-07-03T08:10:00-04:00'
+  last_message: wm-0331
+  record_state: confirmed
+  subject: Role note for River treatment [A-WS-095]
+- reference: A-WS-096
+  employee: awm038
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: coverage
+  opened: '2026-07-20T08:23:00-04:00'
+  last_message: wm-0336
+  record_state: confirmed
+  subject: Cover for River treatment [A-WS-096]
+- reference: A-WS-097
+  employee: awm039
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: kit
+  opened: '2026-08-06T08:36:00-04:00'
+  last_message: wm-0338
+  record_state: confirmed
+  subject: Kit handover for River treatment [A-WS-097]
+- reference: A-WS-098
+  employee: awm040
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: review
+  opened: '2026-08-23T08:49:00-04:00'
+  last_message: wm-0341
+  record_state: confirmed
+  subject: Role note for River treatment [A-WS-098]
+- reference: A-WS-099
+  employee: awm041
+  manager: awm022
+  department: Operations, treatment, and distribution
+  team: River treatment
+  topic: kit
+  opened: '2026-07-09T09:00:00-04:00'
+  last_message: wm-0345
+  record_state: confirmed
+  subject: Kit handover for River treatment [A-WS-099]
+- reference: A-WS-100
+  employee: awm042
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: review
+  opened: '2026-06-20T08:28:00-04:00'
+  last_message: wm-0350
+  record_state: open
+  subject: Role note for Pine distribution [A-WS-100]
+- reference: A-WS-101
+  employee: awm043
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: coverage
+  opened: '2026-07-07T08:41:00-04:00'
+  last_message: wm-0352
+  record_state: confirmed
+  subject: Cover for Pine distribution [A-WS-101]
+- reference: A-WS-102
+  employee: awm044
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: contact
+  opened: '2026-07-24T08:54:00-04:00'
+  last_message: wm-0355
+  record_state: confirmed
+  subject: Contact route for Pine distribution [A-WS-102]
+- reference: A-WS-103
+  employee: awm045
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: schedule
+  opened: '2026-08-10T08:20:00-04:00'
+  last_message: wm-0359
+  record_state: confirmed
+  subject: 'Next team slot: Pine distribution [A-WS-103]'
+- reference: A-WS-104
+  employee: awm046
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: learning
+  opened: '2026-08-27T08:33:00-04:00'
+  last_message: wm-0364
+  record_state: confirmed
+  subject: Learning slot for Pine distribution [A-WS-104]
+- reference: A-WS-105
+  employee: awm047
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: kit
+  opened: '2026-07-11T09:00:00-04:00'
+  last_message: wm-0366
+  record_state: confirmed
+  subject: Kit handover for Pine distribution [A-WS-105]
+- reference: A-WS-106
+  employee: awm048
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: coverage
+  opened: '2026-06-24T08:12:00-04:00'
+  last_message: wm-0369
+  record_state: deferred
+  subject: Cover for Pine distribution [A-WS-106]
+- reference: A-WS-107
+  employee: awm049
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: contact
+  opened: '2026-07-11T08:25:00-04:00'
+  last_message: wm-0373
+  record_state: confirmed
+  subject: Contact route for Pine distribution [A-WS-107]
+- reference: A-WS-108
+  employee: awm050
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: review
+  opened: '2026-07-28T08:38:00-04:00'
+  last_message: wm-0378
+  record_state: confirmed
+  subject: Role note for Pine distribution [A-WS-108]
+- reference: A-WS-109
+  employee: awm051
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: handover
+  opened: '2026-08-14T08:51:00-04:00'
+  last_message: wm-0380
+  record_state: confirmed
+  subject: Handover note for Pine distribution [A-WS-109]
+- reference: A-WS-110
+  employee: awm052
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: kit
+  opened: '2026-08-31T08:17:00-04:00'
+  last_message: wm-0383
+  record_state: confirmed
+  subject: Kit handover for Pine distribution [A-WS-110]
+- reference: A-WS-111
+  employee: awm053
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: followup
+  opened: '2026-06-11T08:30:00-04:00'
+  last_message: wm-0387
+  record_state: open
+  subject: Follow-up on Pine distribution [A-WS-111]
+- reference: A-WS-112
+  employee: awm054
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: kit
+  opened: '2026-07-13T09:00:00-04:00'
+  last_message: wm-0392
+  record_state: confirmed
+  subject: Kit handover for Pine distribution [A-WS-112]
+- reference: A-WS-113
+  employee: awm055
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: schedule
+  opened: '2026-07-15T08:56:00-04:00'
+  last_message: wm-0394
+  record_state: deferred
+  subject: 'Next team slot: Pine distribution [A-WS-113]'
+- reference: A-WS-114
+  employee: awm056
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: handover
+  opened: '2026-08-01T08:22:00-04:00'
+  last_message: wm-0397
+  record_state: confirmed
+  subject: Handover note for Pine distribution [A-WS-114]
+- reference: A-WS-115
+  employee: awm057
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: kit
+  opened: '2026-08-18T08:35:00-04:00'
+  last_message: wm-0401
+  record_state: confirmed
+  subject: Kit handover for Pine distribution [A-WS-115]
+- reference: A-WS-116
+  employee: awm058
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: followup
+  opened: '2026-09-04T08:48:00-04:00'
+  last_message: wm-0406
+  record_state: confirmed
+  subject: Follow-up on Pine distribution [A-WS-116]
+- reference: A-WS-117
+  employee: awm059
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: review
+  opened: '2026-06-15T08:14:00-04:00'
+  last_message: wm-0408
+  record_state: confirmed
+  subject: Role note for Pine distribution [A-WS-117]
+- reference: A-WS-118
+  employee: awm060
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: review
+  opened: '2026-07-02T08:27:00-04:00'
+  last_message: wm-0411
+  record_state: confirmed
+  subject: Role note for Pine distribution [A-WS-118]
+- reference: A-WS-119
+  employee: awm061
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: kit
+  opened: '2026-07-19T08:40:00-04:00'
+  last_message: wm-0415
+  record_state: confirmed
+  subject: Kit handover for Pine distribution [A-WS-119]
+- reference: A-WS-120
+  employee: awm062
+  manager: awm042
+  department: Operations, treatment, and distribution
+  team: Pine distribution
+  topic: contact
+  opened: '2026-08-05T08:53:00-04:00'
+  last_message: wm-0420
+  record_state: deferred
+  subject: Contact route for Pine distribution [A-WS-120]
+- reference: A-WS-121
+  employee: awm063
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: learning
+  opened: '2026-08-22T08:19:00-04:00'
+  last_message: wm-0422
+  record_state: confirmed
+  subject: Learning slot for River distribution [A-WS-121]
+- reference: A-WS-122
+  employee: awm064
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: learning
+  opened: '2026-09-08T08:32:00-04:00'
+  last_message: wm-0425
+  record_state: open
+  subject: Learning slot for River distribution [A-WS-122]
+- reference: A-WS-123
+  employee: awm065
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: review
+  opened: '2026-06-19T08:45:00-04:00'
+  last_message: wm-0429
+  record_state: confirmed
+  subject: Role note for River distribution [A-WS-123]
+- reference: A-WS-124
+  employee: awm066
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: coverage
+  opened: '2026-07-06T08:11:00-04:00'
+  last_message: wm-0434
+  record_state: confirmed
+  subject: Cover for River distribution [A-WS-124]
+- reference: A-WS-125
+  employee: awm067
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: contact
+  opened: '2026-07-23T08:24:00-04:00'
+  last_message: wm-0436
+  record_state: confirmed
+  subject: Contact route for River distribution [A-WS-125]
+- reference: A-WS-126
+  employee: awm068
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: kit
+  opened: '2026-08-09T08:37:00-04:00'
+  last_message: wm-0439
+  record_state: confirmed
+  subject: Kit handover for River distribution [A-WS-126]
+- reference: A-WS-127
+  employee: awm069
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: handover
+  opened: '2026-08-26T08:50:00-04:00'
+  last_message: wm-0443
+  record_state: deferred
+  subject: Handover note for River distribution [A-WS-127]
+- reference: A-WS-128
+  employee: awm070
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: kit
+  opened: '2026-06-06T08:16:00-04:00'
+  last_message: wm-0448
+  record_state: confirmed
+  subject: Kit handover for River distribution [A-WS-128]
+- reference: A-WS-129
+  employee: awm071
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: coverage
+  opened: '2026-06-23T08:29:00-04:00'
+  last_message: wm-0450
+  record_state: confirmed
+  subject: Cover for River distribution [A-WS-129]
+- reference: A-WS-130
+  employee: awm072
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: review
+  opened: '2026-07-10T08:42:00-04:00'
+  last_message: wm-0453
+  record_state: confirmed
+  subject: Role note for River distribution [A-WS-130]
+- reference: A-WS-131
+  employee: awm073
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: schedule
+  opened: '2026-07-27T08:55:00-04:00'
+  last_message: wm-0457
+  record_state: confirmed
+  subject: 'Next team slot: River distribution [A-WS-131]'
+- reference: A-WS-132
+  employee: awm074
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: handover
+  opened: '2026-08-13T08:21:00-04:00'
+  last_message: wm-0462
+  record_state: confirmed
+  subject: Handover note for River distribution [A-WS-132]
+- reference: A-WS-133
+  employee: awm075
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: kit
+  opened: '2026-08-30T08:34:00-04:00'
+  last_message: wm-0464
+  record_state: confirmed
+  subject: Kit handover for River distribution [A-WS-133]
+- reference: A-WS-134
+  employee: awm076
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: followup
+  opened: '2026-06-10T08:47:00-04:00'
+  last_message: wm-0467
+  record_state: deferred
+  subject: Follow-up on River distribution [A-WS-134]
+- reference: A-WS-135
+  employee: awm077
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: learning
+  opened: '2026-06-27T08:13:00-04:00'
+  last_message: wm-0471
+  record_state: confirmed
+  subject: Learning slot for River distribution [A-WS-135]
+- reference: A-WS-136
+  employee: awm078
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: review
+  opened: '2026-07-14T08:26:00-04:00'
+  last_message: wm-0476
+  record_state: confirmed
+  subject: Role note for River distribution [A-WS-136]
+- reference: A-WS-137
+  employee: awm079
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: handover
+  opened: '2026-07-31T08:39:00-04:00'
+  last_message: wm-0478
+  record_state: confirmed
+  subject: Handover note for River distribution [A-WS-137]
+- reference: A-WS-138
+  employee: awm080
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: learning
+  opened: '2026-08-17T08:52:00-04:00'
+  last_message: wm-0481
+  record_state: confirmed
+  subject: Learning slot for River distribution [A-WS-138]
+- reference: A-WS-139
+  employee: awm081
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: review
+  opened: '2026-09-03T08:18:00-04:00'
+  last_message: wm-0485
+  record_state: confirmed
+  subject: Role note for River distribution [A-WS-139]
+- reference: A-WS-140
+  employee: awm082
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: kit
+  opened: '2026-07-21T09:00:00-04:00'
+  last_message: wm-0490
+  record_state: confirmed
+  subject: Kit handover for River distribution [A-WS-140]
+- reference: A-WS-141
+  employee: awm083
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: review
+  opened: '2026-07-01T08:44:00-04:00'
+  last_message: wm-0492
+  record_state: deferred
+  subject: Role note for River distribution [A-WS-141]
+- reference: A-WS-142
+  employee: awm084
+  manager: awm063
+  department: Operations, treatment, and distribution
+  team: River distribution
+  topic: coverage
+  opened: '2026-07-18T08:10:00-04:00'
+  last_message: wm-0495
+  record_state: confirmed
+  subject: Cover for River distribution [A-WS-142]
+- reference: A-WS-143
+  employee: awm085
+  manager: awm001
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: review
+  opened: '2026-08-04T08:23:00-04:00'
+  last_message: wm-0499
+  record_state: confirmed
+  subject: Role note for Field coordination [A-WS-143]
+- reference: A-WS-144
+  employee: awm086
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: schedule
+  opened: '2026-08-21T08:36:00-04:00'
+  last_message: wm-0504
+  record_state: open
+  subject: 'Next team slot: Field coordination [A-WS-144]'
+- reference: A-WS-145
+  employee: awm087
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: learning
+  opened: '2026-09-07T08:49:00-04:00'
+  last_message: wm-0506
+  record_state: confirmed
+  subject: Learning slot for Field coordination [A-WS-145]
+- reference: A-WS-146
+  employee: awm088
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: review
+  opened: '2026-06-18T08:15:00-04:00'
+  last_message: wm-0509
+  record_state: confirmed
+  subject: Role note for Field coordination [A-WS-146]
+- reference: A-WS-147
+  employee: awm089
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: kit
+  opened: '2026-07-23T09:00:00-04:00'
+  last_message: wm-0513
+  record_state: confirmed
+  subject: Kit handover for Field coordination [A-WS-147]
+- reference: A-WS-148
+  employee: awm090
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: contact
+  opened: '2026-07-22T08:41:00-04:00'
+  last_message: wm-0518
+  record_state: deferred
+  subject: Contact route for Field coordination [A-WS-148]
+- reference: A-WS-149
+  employee: awm091
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: schedule
+  opened: '2026-08-08T08:54:00-04:00'
+  last_message: wm-0520
+  record_state: confirmed
+  subject: 'Next team slot: Field coordination [A-WS-149]'
+- reference: A-WS-150
+  employee: awm092
+  manager: awm085
+  department: Operations, treatment, and distribution
+  team: Field coordination
+  topic: handover
+  opened: '2026-08-25T08:20:00-04:00'
+  last_message: wm-0523
+  record_state: confirmed
+  subject: Handover note for Field coordination [A-WS-150]
+- reference: A-WS-151
+  employee: awm093
+  manager: luc
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: review
+  opened: '2026-06-05T08:33:00-04:00'
+  last_message: wm-0527
+  record_state: confirmed
+  subject: Role note for Mechanical maintenance [A-WS-151]
+- reference: A-WS-152
+  employee: awm094
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: followup
+  opened: '2026-06-22T08:46:00-04:00'
+  last_message: wm-0532
+  record_state: confirmed
+  subject: Follow-up on Mechanical maintenance [A-WS-152]
+- reference: A-WS-153
+  employee: awm095
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: contact
+  opened: '2026-07-09T08:12:00-04:00'
+  last_message: wm-0534
+  record_state: confirmed
+  subject: Contact route for Mechanical maintenance [A-WS-153]
+- reference: A-WS-154
+  employee: awm096
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: kit
+  opened: '2026-07-26T08:25:00-04:00'
+  last_message: wm-0537
+  record_state: confirmed
+  subject: Kit handover for Mechanical maintenance [A-WS-154]
+- reference: A-WS-155
+  employee: awm097
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: learning
+  opened: '2026-08-12T08:38:00-04:00'
+  last_message: wm-0541
+  record_state: confirmed
+  subject: Learning slot for Mechanical maintenance [A-WS-155]
+- reference: A-WS-156
+  employee: awm098
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: kit
+  opened: '2026-08-29T08:51:00-04:00'
+  last_message: wm-0546
+  record_state: confirmed
+  subject: Kit handover for Mechanical maintenance [A-WS-156]
+- reference: A-WS-157
+  employee: awm099
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: followup
+  opened: '2026-06-09T08:17:00-04:00'
+  last_message: wm-0548
+  record_state: confirmed
+  subject: Follow-up on Mechanical maintenance [A-WS-157]
+- reference: A-WS-158
+  employee: awm100
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: learning
+  opened: '2026-06-26T08:30:00-04:00'
+  last_message: wm-0551
+  record_state: confirmed
+  subject: Learning slot for Mechanical maintenance [A-WS-158]
+- reference: A-WS-159
+  employee: awm101
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: review
+  opened: '2026-07-13T08:43:00-04:00'
+  last_message: wm-0555
+  record_state: confirmed
+  subject: Role note for Mechanical maintenance [A-WS-159]
+- reference: A-WS-160
+  employee: awm102
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: review
+  opened: '2026-07-30T08:56:00-04:00'
+  last_message: wm-0560
+  record_state: confirmed
+  subject: Role note for Mechanical maintenance [A-WS-160]
+- reference: A-WS-161
+  employee: awm103
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: kit
+  opened: '2026-08-16T08:22:00-04:00'
+  last_message: wm-0562
+  record_state: confirmed
+  subject: Kit handover for Mechanical maintenance [A-WS-161]
+- reference: A-WS-162
+  employee: awm104
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: followup
+  opened: '2026-09-02T08:35:00-04:00'
+  last_message: wm-0565
+  record_state: deferred
+  subject: Follow-up on Mechanical maintenance [A-WS-162]
+- reference: A-WS-163
+  employee: awm105
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: learning
+  opened: '2026-06-13T08:48:00-04:00'
+  last_message: wm-0569
+  record_state: confirmed
+  subject: Learning slot for Mechanical maintenance [A-WS-163]
+- reference: A-WS-164
+  employee: awm106
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: review
+  opened: '2026-06-30T08:14:00-04:00'
+  last_message: wm-0574
+  record_state: confirmed
+  subject: Role note for Mechanical maintenance [A-WS-164]
+- reference: A-WS-165
+  employee: awm107
+  manager: awm093
+  department: Maintenance and engineering
+  team: Mechanical maintenance
+  topic: coverage
+  opened: '2026-07-17T08:27:00-04:00'
+  last_message: wm-0576
+  record_state: confirmed
+  subject: Cover for Mechanical maintenance [A-WS-165]
+- reference: A-WS-166
+  employee: awm108
+  manager: awm093
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: contact
+  opened: '2026-08-03T08:40:00-04:00'
+  last_message: wm-0579
+  record_state: open
+  subject: Contact route for Electrical and controls [A-WS-166]
+- reference: A-WS-167
+  employee: awm109
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: kit
+  opened: '2026-08-20T08:53:00-04:00'
+  last_message: wm-0583
+  record_state: confirmed
+  subject: Kit handover for Electrical and controls [A-WS-167]
+- reference: A-WS-168
+  employee: awm110
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: handover
+  opened: '2026-09-06T08:19:00-04:00'
+  last_message: wm-0588
+  record_state: confirmed
+  subject: Handover note for Electrical and controls [A-WS-168]
+- reference: A-WS-169
+  employee: awm111
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: review
+  opened: '2026-06-17T08:32:00-04:00'
+  last_message: wm-0590
+  record_state: deferred
+  subject: Role note for Electrical and controls [A-WS-169]
+- reference: A-WS-170
+  employee: awm112
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: coverage
+  opened: '2026-07-04T08:45:00-04:00'
+  last_message: wm-0593
+  record_state: confirmed
+  subject: Cover for Electrical and controls [A-WS-170]
+- reference: A-WS-171
+  employee: awm113
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: contact
+  opened: '2026-07-21T08:11:00-04:00'
+  last_message: wm-0597
+  record_state: confirmed
+  subject: Contact route for Electrical and controls [A-WS-171]
+- reference: A-WS-172
+  employee: awm114
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: learning
+  opened: '2026-08-07T08:24:00-04:00'
+  last_message: wm-0602
+  record_state: confirmed
+  subject: Learning slot for Electrical and controls [A-WS-172]
+- reference: A-WS-173
+  employee: awm115
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: handover
+  opened: '2026-08-24T08:37:00-04:00'
+  last_message: wm-0604
+  record_state: confirmed
+  subject: Handover note for Electrical and controls [A-WS-173]
+- reference: A-WS-174
+  employee: awm116
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: kit
+  opened: '2026-07-31T09:00:00-04:00'
+  last_message: wm-0607
+  record_state: confirmed
+  subject: Kit handover for Electrical and controls [A-WS-174]
+- reference: A-WS-175
+  employee: awm117
+  manager: awm108
+  department: Maintenance and engineering
+  team: Electrical and controls
+  topic: followup
+  opened: '2026-06-21T08:16:00-04:00'
+  last_message: wm-0611
+  record_state: confirmed
+  subject: Follow-up on Electrical and controls [A-WS-175]
+- reference: A-WS-176
+  employee: awm118
+  manager: awm093
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: learning
+  opened: '2026-07-08T08:29:00-04:00'
+  last_message: wm-0616
+  record_state: deferred
+  subject: Learning slot for Maintenance planning [A-WS-176]
+- reference: A-WS-177
+  employee: awm119
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: schedule
+  opened: '2026-07-25T08:42:00-04:00'
+  last_message: wm-0618
+  record_state: open
+  subject: 'Next team slot: Maintenance planning [A-WS-177]'
+- reference: A-WS-178
+  employee: awm120
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: handover
+  opened: '2026-08-11T08:55:00-04:00'
+  last_message: wm-0621
+  record_state: confirmed
+  subject: Handover note for Maintenance planning [A-WS-178]
+- reference: A-WS-179
+  employee: awm121
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: kit
+  opened: '2026-08-28T08:21:00-04:00'
+  last_message: wm-0625
+  record_state: confirmed
+  subject: Kit handover for Maintenance planning [A-WS-179]
+- reference: A-WS-180
+  employee: awm122
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: kit
+  opened: '2026-08-02T09:00:00-04:00'
+  last_message: wm-0630
+  record_state: confirmed
+  subject: Kit handover for Maintenance planning [A-WS-180]
+- reference: A-WS-181
+  employee: awm123
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: learning
+  opened: '2026-06-25T08:47:00-04:00'
+  last_message: wm-0632
+  record_state: confirmed
+  subject: Learning slot for Maintenance planning [A-WS-181]
+- reference: A-WS-182
+  employee: awm124
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: review
+  opened: '2026-07-12T08:13:00-04:00'
+  last_message: wm-0635
+  record_state: confirmed
+  subject: Role note for Maintenance planning [A-WS-182]
+- reference: A-WS-183
+  employee: awm125
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: coverage
+  opened: '2026-07-29T08:26:00-04:00'
+  last_message: wm-0639
+  record_state: deferred
+  subject: Cover for Maintenance planning [A-WS-183]
+- reference: A-WS-184
+  employee: awm126
+  manager: awm118
+  department: Maintenance and engineering
+  team: Maintenance planning
+  topic: review
+  opened: '2026-08-15T08:39:00-04:00'
+  last_message: wm-0644
+  record_state: confirmed
+  subject: Role note for Maintenance planning [A-WS-184]
+- reference: A-WS-185
+  employee: awm127
+  manager: awm093
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: review
+  opened: '2026-09-01T08:52:00-04:00'
+  last_message: wm-0646
+  record_state: confirmed
+  subject: Role note for Capital projects [A-WS-185]
+- reference: A-WS-186
+  employee: awm128
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: learning
+  opened: '2026-06-12T08:18:00-04:00'
+  last_message: wm-0649
+  record_state: confirmed
+  subject: Learning slot for Capital projects [A-WS-186]
+- reference: A-WS-187
+  employee: awm129
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: kit
+  opened: '2026-08-04T09:00:00-04:00'
+  last_message: wm-0653
+  record_state: confirmed
+  subject: Kit handover for Capital projects [A-WS-187]
+- reference: A-WS-188
+  employee: awm130
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: coverage
+  opened: '2026-07-16T08:44:00-04:00'
+  last_message: wm-0658
+  record_state: open
+  subject: Cover for Capital projects [A-WS-188]
+- reference: A-WS-189
+  employee: awm131
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: learning
+  opened: '2026-08-02T08:10:00-04:00'
+  last_message: wm-0660
+  record_state: confirmed
+  subject: Learning slot for Capital projects [A-WS-189]
+- reference: A-WS-190
+  employee: awm132
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: schedule
+  opened: '2026-08-19T08:23:00-04:00'
+  last_message: wm-0663
+  record_state: deferred
+  subject: 'Next team slot: Capital projects [A-WS-190]'
+- reference: A-WS-191
+  employee: awm133
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: handover
+  opened: '2026-09-05T08:36:00-04:00'
+  last_message: wm-0667
+  record_state: confirmed
+  subject: Handover note for Capital projects [A-WS-191]
+- reference: A-WS-192
+  employee: awm134
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: kit
+  opened: '2026-06-16T08:49:00-04:00'
+  last_message: wm-0672
+  record_state: confirmed
+  subject: Kit handover for Capital projects [A-WS-192]
+- reference: A-WS-193
+  employee: awm135
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: coverage
+  opened: '2026-07-03T08:15:00-04:00'
+  last_message: wm-0674
+  record_state: confirmed
+  subject: Cover for Capital projects [A-WS-193]
+- reference: A-WS-194
+  employee: awm136
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: kit
+  opened: '2026-08-06T09:00:00-04:00'
+  last_message: wm-0677
+  record_state: confirmed
+  subject: Kit handover for Capital projects [A-WS-194]
+- reference: A-WS-195
+  employee: awm137
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: schedule
+  opened: '2026-08-06T08:41:00-04:00'
+  last_message: wm-0681
+  record_state: confirmed
+  subject: 'Next team slot: Capital projects [A-WS-195]'
+- reference: A-WS-196
+  employee: awm138
+  manager: awm127
+  department: Maintenance and engineering
+  team: Capital projects
+  topic: handover
+  opened: '2026-08-23T08:54:00-04:00'
+  last_message: wm-0686
+  record_state: confirmed
+  subject: Handover note for Capital projects [A-WS-196]
+- reference: A-WS-197
+  employee: awm139
+  manager: luc
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: kit
+  opened: '2026-06-03T08:20:00-04:00'
+  last_message: wm-0688
+  record_state: deferred
+  subject: Kit handover for Resource planning [A-WS-197]
+- reference: A-WS-198
+  employee: awm140
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: followup
+  opened: '2026-06-20T08:33:00-04:00'
+  last_message: wm-0691
+  record_state: confirmed
+  subject: Follow-up on Resource planning [A-WS-198]
+- reference: A-WS-199
+  employee: awm141
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: learning
+  opened: '2026-07-07T08:46:00-04:00'
+  last_message: wm-0695
+  record_state: open
+  subject: Learning slot for Resource planning [A-WS-199]
+- reference: A-WS-200
+  employee: awm142
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: kit
+  opened: '2026-08-08T09:00:00-04:00'
+  last_message: wm-0700
+  record_state: confirmed
+  subject: Kit handover for Resource planning [A-WS-200]
+- reference: A-WS-201
+  employee: awm143
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: handover
+  opened: '2026-08-10T08:25:00-04:00'
+  last_message: wm-0702
+  record_state: confirmed
+  subject: Handover note for Resource planning [A-WS-201]
+- reference: A-WS-202
+  employee: awm144
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: kit
+  opened: '2026-08-27T08:38:00-04:00'
+  last_message: wm-0705
+  record_state: confirmed
+  subject: Kit handover for Resource planning [A-WS-202]
+- reference: A-WS-203
+  employee: awm145
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Resource planning
+  topic: followup
+  opened: '2026-06-07T08:51:00-04:00'
+  last_message: wm-0709
+  record_state: confirmed
+  subject: Follow-up on Resource planning [A-WS-203]
+- reference: A-WS-204
+  employee: awm146
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: learning
+  opened: '2026-06-24T08:17:00-04:00'
+  last_message: wm-0714
+  record_state: deferred
+  subject: Learning slot for Laboratory [A-WS-204]
+- reference: A-WS-205
+  employee: awm147
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: review
+  opened: '2026-07-11T08:30:00-04:00'
+  last_message: wm-0716
+  record_state: confirmed
+  subject: Role note for Laboratory [A-WS-205]
+- reference: A-WS-206
+  employee: awm148
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: learning
+  opened: '2026-07-28T08:43:00-04:00'
+  last_message: wm-0719
+  record_state: confirmed
+  subject: Learning slot for Laboratory [A-WS-206]
+- reference: A-WS-207
+  employee: awm149
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: kit
+  opened: '2026-08-14T08:56:00-04:00'
+  last_message: wm-0723
+  record_state: confirmed
+  subject: Kit handover for Laboratory [A-WS-207]
+- reference: A-WS-208
+  employee: awm150
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: schedule
+  opened: '2026-08-31T08:22:00-04:00'
+  last_message: wm-0728
+  record_state: confirmed
+  subject: 'Next team slot: Laboratory [A-WS-208]'
+- reference: A-WS-209
+  employee: awm151
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: learning
+  opened: '2026-06-11T08:35:00-04:00'
+  last_message: wm-0730
+  record_state: confirmed
+  subject: Learning slot for Laboratory [A-WS-209]
+- reference: A-WS-210
+  employee: awm152
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: review
+  opened: '2026-06-28T08:48:00-04:00'
+  last_message: wm-0733
+  record_state: open
+  subject: Role note for Laboratory [A-WS-210]
+- reference: A-WS-211
+  employee: awm153
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: coverage
+  opened: '2026-07-15T08:14:00-04:00'
+  last_message: wm-0737
+  record_state: deferred
+  subject: Cover for Laboratory [A-WS-211]
+- reference: A-WS-212
+  employee: awm154
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: contact
+  opened: '2026-08-01T08:27:00-04:00'
+  last_message: wm-0742
+  record_state: confirmed
+  subject: Contact route for Laboratory [A-WS-212]
+- reference: A-WS-213
+  employee: awm155
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: schedule
+  opened: '2026-08-18T08:40:00-04:00'
+  last_message: wm-0744
+  record_state: confirmed
+  subject: 'Next team slot: Laboratory [A-WS-213]'
+- reference: A-WS-214
+  employee: awm156
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: kit
+  opened: '2026-09-04T08:53:00-04:00'
+  last_message: wm-0747
+  record_state: confirmed
+  subject: Kit handover for Laboratory [A-WS-214]
+- reference: A-WS-215
+  employee: awm157
+  manager: awm146
+  department: Planning, quality, and compliance
+  team: Laboratory
+  topic: kit
+  opened: '2026-06-15T08:19:00-04:00'
+  last_message: wm-0751
+  record_state: confirmed
+  subject: Kit handover for Laboratory [A-WS-215]
+- reference: A-WS-216
+  employee: awm158
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: followup
+  opened: '2026-07-02T08:32:00-04:00'
+  last_message: wm-0756
+  record_state: confirmed
+  subject: Follow-up on Quality systems [A-WS-216]
+- reference: A-WS-217
+  employee: awm159
+  manager: awm158
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: contact
+  opened: '2026-07-19T08:45:00-04:00'
+  last_message: wm-0758
+  record_state: confirmed
+  subject: Contact route for Quality systems [A-WS-217]
+- reference: A-WS-218
+  employee: awm160
+  manager: awm158
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: schedule
+  opened: '2026-08-05T08:11:00-04:00'
+  last_message: wm-0761
+  record_state: deferred
+  subject: 'Next team slot: Quality systems [A-WS-218]'
+- reference: A-WS-219
+  employee: awm161
+  manager: awm158
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: handover
+  opened: '2026-08-22T08:24:00-04:00'
+  last_message: wm-0765
+  record_state: confirmed
+  subject: Handover note for Quality systems [A-WS-219]
+- reference: A-WS-220
+  employee: awm162
+  manager: awm158
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: kit
+  opened: '2026-09-08T08:37:00-04:00'
+  last_message: wm-0770
+  record_state: confirmed
+  subject: Kit handover for Quality systems [A-WS-220]
+- reference: A-WS-221
+  employee: awm163
+  manager: awm158
+  department: Planning, quality, and compliance
+  team: Quality systems
+  topic: kit
+  opened: '2026-08-14T09:00:00-04:00'
+  last_message: wm-0772
+  record_state: confirmed
+  subject: Kit handover for Quality systems [A-WS-221]
+- reference: A-WS-222
+  employee: awm164
+  manager: awm139
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: learning
+  opened: '2026-07-06T08:16:00-04:00'
+  last_message: wm-0775
+  record_state: confirmed
+  subject: Learning slot for Compliance reporting [A-WS-222]
+- reference: A-WS-223
+  employee: awm165
+  manager: awm164
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: learning
+  opened: '2026-07-23T08:29:00-04:00'
+  last_message: wm-0779
+  record_state: confirmed
+  subject: Learning slot for Compliance reporting [A-WS-223]
+- reference: A-WS-224
+  employee: awm166
+  manager: awm164
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: coverage
+  opened: '2026-08-09T08:42:00-04:00'
+  last_message: wm-0784
+  record_state: confirmed
+  subject: Cover for Compliance reporting [A-WS-224]
+- reference: A-WS-225
+  employee: awm167
+  manager: awm164
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: kit
+  opened: '2026-08-26T08:55:00-04:00'
+  last_message: wm-0786
+  record_state: deferred
+  subject: Kit handover for Compliance reporting [A-WS-225]
+- reference: A-WS-226
+  employee: awm168
+  manager: awm164
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: followup
+  opened: '2026-06-06T08:21:00-04:00'
+  last_message: wm-0789
+  record_state: confirmed
+  subject: Follow-up on Compliance reporting [A-WS-226]
+- reference: A-WS-227
+  employee: awm169
+  manager: awm164
+  department: Planning, quality, and compliance
+  team: Compliance reporting
+  topic: learning
+  opened: '2026-06-23T08:34:00-04:00'
+  last_message: wm-0793
+  record_state: confirmed
+  subject: Learning slot for Compliance reporting [A-WS-227]
+- reference: A-WS-228
+  employee: awm170
+  manager: awm216
+  department: Information technology
+  team: Service desk
+  topic: kit
+  opened: '2026-08-16T09:00:00-04:00'
+  last_message: wm-0798
+  record_state: confirmed
+  subject: Kit handover for Service desk [A-WS-228]
+- reference: A-WS-229
+  employee: awm171
+  manager: awm170
+  department: Information technology
+  team: Service desk
+  topic: coverage
+  opened: '2026-07-27T08:13:00-04:00'
+  last_message: wm-0800
+  record_state: confirmed
+  subject: Cover for Service desk [A-WS-229]
+- reference: A-WS-230
+  employee: awm172
+  manager: awm170
+  department: Information technology
+  team: Service desk
+  topic: contact
+  opened: '2026-08-13T08:26:00-04:00'
+  last_message: wm-0803
+  record_state: confirmed
+  subject: Contact route for Service desk [A-WS-230]
+- reference: A-WS-231
+  employee: awm173
+  manager: awm170
+  department: Information technology
+  team: Service desk
+  topic: schedule
+  opened: '2026-08-30T08:39:00-04:00'
+  last_message: wm-0807
+  record_state: confirmed
+  subject: 'Next team slot: Service desk [A-WS-231]'
+- reference: A-WS-232
+  employee: awm174
+  manager: awm170
+  department: Information technology
+  team: Service desk
+  topic: handover
+  opened: '2026-06-10T08:52:00-04:00'
+  last_message: wm-0812
+  record_state: open
+  subject: Handover note for Service desk [A-WS-232]
+- reference: A-WS-233
+  employee: awm175
+  manager: awm170
+  department: Information technology
+  team: Business applications
+  topic: review
+  opened: '2026-06-27T08:18:00-04:00'
+  last_message: wm-0814
+  record_state: confirmed
+  subject: Role note for Business applications [A-WS-233]
+- reference: A-WS-234
+  employee: awm176
+  manager: awm175
+  department: Information technology
+  team: Business applications
+  topic: coverage
+  opened: '2026-07-14T08:31:00-04:00'
+  last_message: wm-0817
+  record_state: confirmed
+  subject: Cover for Business applications [A-WS-234]
+- reference: A-WS-235
+  employee: awm177
+  manager: awm175
+  department: Information technology
+  team: Business applications
+  topic: kit
+  opened: '2026-08-18T09:00:00-04:00'
+  last_message: wm-0821
+  record_state: confirmed
+  subject: Kit handover for Business applications [A-WS-235]
+- reference: A-WS-236
+  employee: awm178
+  manager: awm175
+  department: Information technology
+  team: Business applications
+  topic: schedule
+  opened: '2026-08-17T08:10:00-04:00'
+  last_message: wm-0826
+  record_state: confirmed
+  subject: 'Next team slot: Business applications [A-WS-236]'
+- reference: A-WS-237
+  employee: awm179
+  manager: awm170
+  department: Information technology
+  team: Identity services
+  topic: handover
+  opened: '2026-09-03T08:23:00-04:00'
+  last_message: wm-0828
+  record_state: confirmed
+  subject: Handover note for Identity services [A-WS-237]
+- reference: A-WS-238
+  employee: awm180
+  manager: awm179
+  department: Information technology
+  team: Identity services
+  topic: kit
+  opened: '2026-06-14T08:36:00-04:00'
+  last_message: wm-0831
+  record_state: confirmed
+  subject: Kit handover for Identity services [A-WS-238]
+- reference: A-WS-239
+  employee: awm181
+  manager: awm179
+  department: Information technology
+  team: Identity services
+  topic: followup
+  opened: '2026-07-01T08:49:00-04:00'
+  last_message: wm-0835
+  record_state: deferred
+  subject: Follow-up on Identity services [A-WS-239]
+- reference: A-WS-240
+  employee: awm182
+  manager: awm216
+  department: Customer service and business support
+  team: Customer contact
+  topic: learning
+  opened: '2026-07-18T08:15:00-04:00'
+  last_message: wm-0840
+  record_state: confirmed
+  subject: Learning slot for Customer contact [A-WS-240]
+- reference: A-WS-241
+  employee: awm183
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: kit
+  opened: '2026-08-20T09:00:00-04:00'
+  last_message: wm-0842
+  record_state: confirmed
+  subject: Kit handover for Customer contact [A-WS-241]
+- reference: A-WS-242
+  employee: awm184
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: handover
+  opened: '2026-08-21T08:41:00-04:00'
+  last_message: wm-0845
+  record_state: confirmed
+  subject: Handover note for Customer contact [A-WS-242]
+- reference: A-WS-243
+  employee: awm185
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: kit
+  opened: '2026-09-07T08:54:00-04:00'
+  last_message: wm-0849
+  record_state: open
+  subject: Kit handover for Customer contact [A-WS-243]
+- reference: A-WS-244
+  employee: awm186
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: followup
+  opened: '2026-06-18T08:20:00-04:00'
+  last_message: wm-0854
+  record_state: confirmed
+  subject: Follow-up on Customer contact [A-WS-244]
+- reference: A-WS-245
+  employee: awm187
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: learning
+  opened: '2026-07-05T08:33:00-04:00'
+  last_message: wm-0856
+  record_state: confirmed
+  subject: Learning slot for Customer contact [A-WS-245]
+- reference: A-WS-246
+  employee: awm188
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: review
+  opened: '2026-07-22T08:46:00-04:00'
+  last_message: wm-0859
+  record_state: deferred
+  subject: Role note for Customer contact [A-WS-246]
+- reference: A-WS-247
+  employee: awm189
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: coverage
+  opened: '2026-08-08T08:12:00-04:00'
+  last_message: wm-0863
+  record_state: confirmed
+  subject: Cover for Customer contact [A-WS-247]
+- reference: A-WS-248
+  employee: awm190
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: kit
+  opened: '2026-08-25T08:25:00-04:00'
+  last_message: wm-0868
+  record_state: confirmed
+  subject: Kit handover for Customer contact [A-WS-248]
+- reference: A-WS-249
+  employee: awm191
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: followup
+  opened: '2026-06-05T08:38:00-04:00'
+  last_message: wm-0870
+  record_state: confirmed
+  subject: Follow-up on Customer contact [A-WS-249]
+- reference: A-WS-250
+  employee: awm192
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: learning
+  opened: '2026-06-22T08:51:00-04:00'
+  last_message: wm-0873
+  record_state: confirmed
+  subject: Learning slot for Customer contact [A-WS-250]
+- reference: A-WS-251
+  employee: awm193
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: review
+  opened: '2026-07-09T08:17:00-04:00'
+  last_message: wm-0877
+  record_state: confirmed
+  subject: Role note for Customer contact [A-WS-251]
+- reference: A-WS-252
+  employee: awm194
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: coverage
+  opened: '2026-07-26T08:30:00-04:00'
+  last_message: wm-0882
+  record_state: confirmed
+  subject: Cover for Customer contact [A-WS-252]
+- reference: A-WS-253
+  employee: awm195
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: contact
+  opened: '2026-08-12T08:43:00-04:00'
+  last_message: wm-0884
+  record_state: deferred
+  subject: Contact route for Customer contact [A-WS-253]
+- reference: A-WS-254
+  employee: awm196
+  manager: awm182
+  department: Customer service and business support
+  team: Customer contact
+  topic: schedule
+  opened: '2026-08-29T08:56:00-04:00'
+  last_message: wm-0887
+  record_state: open
+  subject: 'Next team slot: Customer contact [A-WS-254]'
+- reference: A-WS-255
+  employee: awm197
+  manager: awm182
+  department: Customer service and business support
+  team: Accounts
+  topic: kit
+  opened: '2026-08-24T09:00:00-04:00'
+  last_message: wm-0891
+  record_state: confirmed
+  subject: Kit handover for Accounts [A-WS-255]
+- reference: A-WS-256
+  employee: awm198
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: kit
+  opened: '2026-06-26T08:35:00-04:00'
+  last_message: wm-0896
+  record_state: confirmed
+  subject: Kit handover for Accounts [A-WS-256]
+- reference: A-WS-257
+  employee: awm199
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: learning
+  opened: '2026-07-13T08:48:00-04:00'
+  last_message: wm-0898
+  record_state: confirmed
+  subject: Learning slot for Accounts [A-WS-257]
+- reference: A-WS-258
+  employee: awm200
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: contact
+  opened: '2026-07-30T08:14:00-04:00'
+  last_message: wm-0901
+  record_state: confirmed
+  subject: Contact route for Accounts [A-WS-258]
+- reference: A-WS-259
+  employee: awm201
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: schedule
+  opened: '2026-08-16T08:27:00-04:00'
+  last_message: wm-0905
+  record_state: confirmed
+  subject: 'Next team slot: Accounts [A-WS-259]'
+- reference: A-WS-260
+  employee: awm202
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: handover
+  opened: '2026-09-02T08:40:00-04:00'
+  last_message: wm-0910
+  record_state: deferred
+  subject: Handover note for Accounts [A-WS-260]
+- reference: A-WS-261
+  employee: awm203
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: kit
+  opened: '2026-06-13T08:53:00-04:00'
+  last_message: wm-0912
+  record_state: confirmed
+  subject: Kit handover for Accounts [A-WS-261]
+- reference: A-WS-262
+  employee: awm204
+  manager: awm197
+  department: Customer service and business support
+  team: Accounts
+  topic: kit
+  opened: '2026-08-26T09:00:00-04:00'
+  last_message: wm-0915
+  record_state: confirmed
+  subject: Kit handover for Accounts [A-WS-262]
+- reference: A-WS-263
+  employee: awm205
+  manager: awm182
+  department: Customer service and business support
+  team: Procurement
+  topic: learning
+  opened: '2026-07-17T08:32:00-04:00'
+  last_message: wm-0919
+  record_state: confirmed
+  subject: Learning slot for Procurement [A-WS-263]
+- reference: A-WS-264
+  employee: awm206
+  manager: awm205
+  department: Customer service and business support
+  team: Procurement
+  topic: review
+  opened: '2026-08-03T08:45:00-04:00'
+  last_message: wm-0924
+  record_state: confirmed
+  subject: Role note for Procurement [A-WS-264]
+- reference: A-WS-265
+  employee: awm207
+  manager: awm205
+  department: Customer service and business support
+  team: Procurement
+  topic: handover
+  opened: '2026-08-20T08:11:00-04:00'
+  last_message: wm-0926
+  record_state: open
+  subject: Handover note for Procurement [A-WS-265]
+- reference: A-WS-266
+  employee: awm208
+  manager: awm205
+  department: Customer service and business support
+  team: Procurement
+  topic: kit
+  opened: '2026-09-06T08:24:00-04:00'
+  last_message: wm-0929
+  record_state: confirmed
+  subject: Kit handover for Procurement [A-WS-266]
+- reference: A-WS-267
+  employee: awm209
+  manager: awm205
+  department: Customer service and business support
+  team: Procurement
+  topic: followup
+  opened: '2026-06-17T08:37:00-04:00'
+  last_message: wm-0933
+  record_state: deferred
+  subject: Follow-up on Procurement [A-WS-267]
+- reference: A-WS-268
+  employee: awm210
+  manager: awm182
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: learning
+  opened: '2026-07-04T08:50:00-04:00'
+  last_message: wm-0938
+  record_state: confirmed
+  subject: Learning slot for Records and scheduling [A-WS-268]
+- reference: A-WS-269
+  employee: awm211
+  manager: awm210
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: review
+  opened: '2026-07-21T08:16:00-04:00'
+  last_message: wm-0940
+  record_state: confirmed
+  subject: Role note for Records and scheduling [A-WS-269]
+- reference: A-WS-270
+  employee: awm212
+  manager: awm210
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: coverage
+  opened: '2026-08-07T08:29:00-04:00'
+  last_message: wm-0943
+  record_state: confirmed
+  subject: Cover for Records and scheduling [A-WS-270]
+- reference: A-WS-271
+  employee: awm213
+  manager: awm210
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: contact
+  opened: '2026-08-24T08:42:00-04:00'
+  last_message: wm-0947
+  record_state: confirmed
+  subject: Contact route for Records and scheduling [A-WS-271]
+- reference: A-WS-272
+  employee: awm214
+  manager: awm210
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: schedule
+  opened: '2026-06-04T08:55:00-04:00'
+  last_message: wm-0952
+  record_state: confirmed
+  subject: 'Next team slot: Records and scheduling [A-WS-272]'
+- reference: A-WS-273
+  employee: awm215
+  manager: awm210
+  department: Customer service and business support
+  team: Records and scheduling
+  topic: learning
+  opened: '2026-06-21T08:21:00-04:00'
+  last_message: wm-0954
+  record_state: confirmed
+  subject: Learning slot for Records and scheduling [A-WS-273]
+- reference: A-WS-274
+  employee: awm216
+  manager: luc
+  department: Leadership and finance
+  team: Executive
+  topic: review
+  opened: '2026-07-08T08:34:00-04:00'
+  last_message: wm-0957
+  record_state: deferred
+  subject: Role note for Executive [A-WS-274]
+- reference: A-WS-275
+  employee: awm217
+  manager: awm216
+  department: Leadership and finance
+  team: Finance
+  topic: coverage
+  opened: '2026-07-25T08:47:00-04:00'
+  last_message: wm-0961
+  record_state: confirmed
+  subject: Cover for Finance [A-WS-275]
+- reference: A-WS-276
+  employee: awm218
+  manager: awm217
+  department: Leadership and finance
+  team: Finance
+  topic: contact
+  opened: '2026-08-11T08:13:00-04:00'
+  last_message: wm-0966
+  record_state: open
+  subject: Contact route for Finance [A-WS-276]
+- reference: A-WS-277
+  employee: awm219
+  manager: awm217
+  department: Leadership and finance
+  team: Finance
+  topic: schedule
+  opened: '2026-08-28T08:26:00-04:00'
+  last_message: wm-0968
+  record_state: confirmed
+  subject: 'Next team slot: Finance [A-WS-277]'
+- reference: A-WS-278
+  employee: awm220
+  manager: awm216
+  department: Leadership and finance
+  team: People and board support
+  topic: handover
+  opened: '2026-06-08T08:39:00-04:00'
+  last_message: wm-0971
+  record_state: confirmed
+  subject: Handover note for People and board support [A-WS-278]
+- reference: A-WS-279
+  employee: awm221
+  manager: awm220
+  department: Leadership and finance
+  team: People and board support
+  topic: kit
+  opened: '2026-06-25T08:52:00-04:00'
+  last_message: wm-0975
+  record_state: confirmed
+  subject: Kit handover for People and board support [A-WS-279]
+- reference: A-WS-280
+  employee: awm222
+  manager: awm220
+  department: Leadership and finance
+  team: People and board support
+  topic: followup
+  opened: '2026-07-12T08:18:00-04:00'
+  last_message: wm-0980
+  record_state: confirmed
+  subject: Follow-up on People and board support [A-WS-280]

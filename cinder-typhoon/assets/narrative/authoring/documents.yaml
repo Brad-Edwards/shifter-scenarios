@@ -104,3 +104,1517 @@ documents:
   audience: support
   story: workshop
   published_at: '2026-09-08T09:00:00-04:00'
+- id: k-staff-product-engineering
+  employer: keplerops
+  file: documents/workforce/k-staff-product-engineering.md
+  title: Product engineering contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-core-product
+  employer: keplerops
+  file: documents/workforce/k-staff-role-core-product.md
+  title: Core product work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-connectors
+  employer: keplerops
+  file: documents/workforce/k-staff-role-connectors.md
+  title: Connectors work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-experience
+  employer: keplerops
+  file: documents/workforce/k-staff-role-experience.md
+  title: Experience work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-customer-integrations
+  employer: keplerops
+  file: documents/workforce/k-staff-role-customer-integrations.md
+  title: Customer integrations work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-support-and-implementation
+  employer: keplerops
+  file: documents/workforce/k-staff-support-and-implementation.md
+  title: Support and implementation contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-customer-support
+  employer: keplerops
+  file: documents/workforce/k-staff-role-customer-support.md
+  title: Customer support work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-implementation
+  employer: keplerops
+  file: documents/workforce/k-staff-role-implementation.md
+  title: Implementation work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-enablement
+  employer: keplerops
+  file: documents/workforce/k-staff-role-enablement.md
+  title: Enablement work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-platform-and-release
+  employer: keplerops
+  file: documents/workforce/k-staff-platform-and-release.md
+  title: Platform and release contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-release-engineering
+  employer: keplerops
+  file: documents/workforce/k-staff-role-release-engineering.md
+  title: Release engineering work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-service-operations
+  employer: keplerops
+  file: documents/workforce/k-staff-role-service-operations.md
+  title: Service operations work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-product-management-and-quality
+  employer: keplerops
+  file: documents/workforce/k-staff-product-management-and-quality.md
+  title: Product management and quality contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-product-management
+  employer: keplerops
+  file: documents/workforce/k-staff-role-product-management.md
+  title: Product management work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-quality-assurance
+  employer: keplerops
+  file: documents/workforce/k-staff-role-quality-assurance.md
+  title: Quality assurance work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-commercial
+  employer: keplerops
+  file: documents/workforce/k-staff-commercial.md
+  title: Commercial contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-accounts
+  employer: keplerops
+  file: documents/workforce/k-staff-role-accounts.md
+  title: Accounts work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-proposals
+  employer: keplerops
+  file: documents/workforce/k-staff-role-proposals.md
+  title: Proposals work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-leadership-and-business-operations
+  employer: keplerops
+  file: documents/workforce/k-staff-leadership-and-business-operations.md
+  title: Leadership and business operations contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: k-staff-role-executive
+  employer: keplerops
+  file: documents/workforce/k-staff-role-executive.md
+  title: Executive work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-people-operations
+  employer: keplerops
+  file: documents/workforce/k-staff-role-people-operations.md
+  title: People operations work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-finance
+  employer: keplerops
+  file: documents/workforce/k-staff-role-finance.md
+  title: Finance work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-staff-role-office
+  employer: keplerops
+  file: documents/workforce/k-staff-role-office.md
+  title: Office work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-operations-treatment-and-distribution
+  employer: arwc
+  file: documents/workforce/a-staff-operations-treatment-and-distribution.md
+  title: Operations, treatment, and distribution contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-pine-treatment
+  employer: arwc
+  file: documents/workforce/a-staff-role-pine-treatment.md
+  title: Pine treatment work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-river-treatment
+  employer: arwc
+  file: documents/workforce/a-staff-role-river-treatment.md
+  title: River treatment work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-pine-distribution
+  employer: arwc
+  file: documents/workforce/a-staff-role-pine-distribution.md
+  title: Pine distribution work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-river-distribution
+  employer: arwc
+  file: documents/workforce/a-staff-role-river-distribution.md
+  title: River distribution work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-field-coordination
+  employer: arwc
+  file: documents/workforce/a-staff-role-field-coordination.md
+  title: Field coordination work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-maintenance-and-engineering
+  employer: arwc
+  file: documents/workforce/a-staff-maintenance-and-engineering.md
+  title: Maintenance and engineering contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-mechanical-maintenance
+  employer: arwc
+  file: documents/workforce/a-staff-role-mechanical-maintenance.md
+  title: Mechanical maintenance work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-electrical-and-controls
+  employer: arwc
+  file: documents/workforce/a-staff-role-electrical-and-controls.md
+  title: Electrical and controls work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-maintenance-planning
+  employer: arwc
+  file: documents/workforce/a-staff-role-maintenance-planning.md
+  title: Maintenance planning work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-capital-projects
+  employer: arwc
+  file: documents/workforce/a-staff-role-capital-projects.md
+  title: Capital projects work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-planning-quality-and-compliance
+  employer: arwc
+  file: documents/workforce/a-staff-planning-quality-and-compliance.md
+  title: Planning, quality, and compliance contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-resource-planning
+  employer: arwc
+  file: documents/workforce/a-staff-role-resource-planning.md
+  title: Resource planning work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-laboratory
+  employer: arwc
+  file: documents/workforce/a-staff-role-laboratory.md
+  title: Laboratory work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-quality-systems
+  employer: arwc
+  file: documents/workforce/a-staff-role-quality-systems.md
+  title: Quality systems work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-compliance-reporting
+  employer: arwc
+  file: documents/workforce/a-staff-role-compliance-reporting.md
+  title: Compliance reporting work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-information-technology
+  employer: arwc
+  file: documents/workforce/a-staff-information-technology.md
+  title: Information technology contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-service-desk
+  employer: arwc
+  file: documents/workforce/a-staff-role-service-desk.md
+  title: Service desk work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-business-applications
+  employer: arwc
+  file: documents/workforce/a-staff-role-business-applications.md
+  title: Business applications work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-identity-services
+  employer: arwc
+  file: documents/workforce/a-staff-role-identity-services.md
+  title: Identity services work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-customer-service-and-business-support
+  employer: arwc
+  file: documents/workforce/a-staff-customer-service-and-business-support.md
+  title: Customer service and business support contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-customer-contact
+  employer: arwc
+  file: documents/workforce/a-staff-role-customer-contact.md
+  title: Customer contact work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-accounts
+  employer: arwc
+  file: documents/workforce/a-staff-role-accounts.md
+  title: Accounts work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-procurement
+  employer: arwc
+  file: documents/workforce/a-staff-role-procurement.md
+  title: Procurement work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-records-and-scheduling
+  employer: arwc
+  file: documents/workforce/a-staff-role-records-and-scheduling.md
+  title: Records and scheduling work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-leadership-and-finance
+  employer: arwc
+  file: documents/workforce/a-staff-leadership-and-finance.md
+  title: Leadership and finance contacts
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-09-15T16:00:00-04:00'
+- id: a-staff-role-executive
+  employer: arwc
+  file: documents/workforce/a-staff-role-executive.md
+  title: Executive work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-finance
+  employer: arwc
+  file: documents/workforce/a-staff-role-finance.md
+  title: Finance work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: a-staff-role-people-and-board-support
+  employer: arwc
+  file: documents/workforce/a-staff-role-people-and-board-support.md
+  title: People and board support work and handovers
+  audience: staff
+  collection: directory
+  story: workforce
+  published_at: '2026-08-31T09:00:00-04:00'
+- id: k-personnel-register
+  employer: keplerops
+  file: documents/workforce/k-personnel-register.csv
+  title: Current personnel and assignment register
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-09-15T17:00:00-04:00'
+  reader_keys:
+  - leah
+  - kwm054
+  media_type: text/csv
+- id: a-personnel-register
+  employer: arwc
+  file: documents/workforce/a-personnel-register.csv
+  title: Current personnel and assignment register
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-09-15T17:00:00-04:00'
+  reader_keys:
+  - awm216
+  - awm220
+  media_type: text/csv
+- id: k-onboard-kwm003
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm003.md
+  title: Starting arrangements — Amara Radvell
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-01-31T09:00:00-04:00'
+  reader_keys:
+  - kwm003
+  - kwm001
+  - kwm054
+  - kwm036
+- id: k-onboard-kwm014
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm014.md
+  title: Starting arrangements — Corin Kelswick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-03-13T09:00:00-04:00'
+  reader_keys:
+  - kwm014
+  - kwm013
+  - kwm054
+  - kwm036
+- id: k-onboard-kwm025
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm025.md
+  title: Starting arrangements — Felix Darsell
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-01-25T09:00:00-04:00'
+  reader_keys:
+  - kwm025
+  - kwm022
+  - kwm054
+  - kwm036
+- id: k-onboard-kwm036
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm036.md
+  title: Starting arrangements — Jalen Warden
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-01-02T09:00:00-04:00'
+  reader_keys:
+  - kwm036
+  - kwm034
+  - kwm054
+- id: k-onboard-kwm047
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm047.md
+  title: Starting arrangements — Lina Peveran
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-02-15T09:00:00-04:00'
+  reader_keys:
+  - kwm047
+  - leah
+  - kwm054
+  - kwm036
+- id: k-onboard-kwm058
+  employer: keplerops
+  file: documents/workforce/k-onboard-kwm058.md
+  title: Starting arrangements — Niko Rensart
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-12T09:00:00-04:00'
+  reader_keys:
+  - kwm058
+  - leah
+  - kwm054
+  - kwm036
+- id: a-onboard-awm012
+  employer: arwc
+  file: documents/workforce/a-onboard-awm012.md
+  title: Starting arrangements — Sela Lestrel
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-05-20T09:00:00-04:00'
+  reader_keys:
+  - awm012
+  - awm001
+  - awm220
+  - awm170
+- id: a-onboard-awm029
+  employer: arwc
+  file: documents/workforce/a-onboard-awm029.md
+  title: Starting arrangements — Amara Fennard
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-18T09:00:00-04:00'
+  reader_keys:
+  - awm029
+  - awm022
+  - awm220
+  - awm170
+- id: a-onboard-awm046
+  employer: arwc
+  file: documents/workforce/a-onboard-awm046.md
+  title: Starting arrangements — Eira Bravelle
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-05-31T09:00:00-04:00'
+  reader_keys:
+  - awm046
+  - awm042
+  - awm220
+  - awm170
+- id: a-onboard-awm063
+  employer: arwc
+  file: documents/workforce/a-onboard-awm063.md
+  title: Starting arrangements — Jamie Telmire
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2025-12-29T09:00:00-04:00'
+  reader_keys:
+  - awm063
+  - awm001
+  - awm220
+  - awm170
+- id: a-onboard-awm080
+  employer: arwc
+  file: documents/workforce/a-onboard-awm080.md
+  title: Starting arrangements — Mira Orvel
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-03-27T09:00:00-04:00'
+  reader_keys:
+  - awm080
+  - awm063
+  - awm220
+  - awm170
+- id: a-onboard-awm097
+  employer: arwc
+  file: documents/workforce/a-onboard-awm097.md
+  title: Starting arrangements — Silas Iversen
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-24T09:00:00-04:00'
+  reader_keys:
+  - awm097
+  - awm093
+  - awm220
+  - awm170
+- id: a-onboard-awm114
+  employer: arwc
+  file: documents/workforce/a-onboard-awm114.md
+  title: Starting arrangements — Anika Delmont
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-05-03T09:00:00-04:00'
+  reader_keys:
+  - awm114
+  - awm108
+  - awm220
+  - awm170
+- id: a-onboard-awm131
+  employer: arwc
+  file: documents/workforce/a-onboard-awm131.md
+  title: Starting arrangements — Elias Yervan
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-03-12T09:00:00-04:00'
+  reader_keys:
+  - awm131
+  - awm127
+  - awm220
+  - awm170
+- id: a-onboard-awm148
+  employer: arwc
+  file: documents/workforce/a-onboard-awm148.md
+  title: Starting arrangements — Jonas Sarnell
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2025-12-25T09:00:00-04:00'
+  reader_keys:
+  - awm148
+  - awm146
+  - awm220
+  - awm170
+- id: a-onboard-awm165
+  employer: arwc
+  file: documents/workforce/a-onboard-awm165.md
+  title: Starting arrangements — Morgan Mavell
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-04-19T09:00:00-04:00'
+  reader_keys:
+  - awm165
+  - awm164
+  - awm220
+  - awm170
+- id: a-onboard-awm182
+  employer: arwc
+  file: documents/workforce/a-onboard-awm182.md
+  title: Starting arrangements — Soren Garsen
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-02-01T09:00:00-04:00'
+  reader_keys:
+  - awm182
+  - awm216
+  - awm220
+  - awm170
+- id: a-onboard-awm199
+  employer: arwc
+  file: documents/workforce/a-onboard-awm199.md
+  title: Starting arrangements — Ari Cernault
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-04-29T09:00:00-04:00'
+  reader_keys:
+  - awm199
+  - awm197
+  - awm220
+  - awm170
+- id: k-move-kwm007
+  employer: keplerops
+  file: documents/workforce/k-move-kwm007.md
+  title: Assignment change — Beatrice Bravelle
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm007
+  - kwm001
+  - kwm054
+  - kwm036
+- id: k-move-kwm013
+  employer: keplerops
+  file: documents/workforce/k-move-kwm013.md
+  title: Assignment change — Cian Cavelin
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm013
+  - kwm001
+  - kwm054
+  - kwm036
+- id: k-move-kwm018
+  employer: keplerops
+  file: documents/workforce/k-move-kwm018.md
+  title: Assignment change — Dev Senvard
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm018
+  - kwm001
+  - kwm054
+  - kwm036
+- id: k-move-kwm026
+  employer: keplerops
+  file: documents/workforce/k-move-kwm026.md
+  title: Assignment change — Finn Marrent
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm022
+  - kwm054
+  - kwm036
+- id: k-move-kwm031
+  employer: keplerops
+  file: documents/workforce/k-move-kwm031.md
+  title: Assignment change — Hugo Dravik
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm031
+  - kwm022
+  - kwm054
+  - kwm036
+- id: k-move-kwm039
+  employer: keplerops
+  file: documents/workforce/k-move-kwm039.md
+  title: Assignment change — Jory Wellard
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm039
+  - leah
+  - kwm054
+  - kwm036
+- id: k-move-kwm042
+  employer: keplerops
+  file: documents/workforce/k-move-kwm042.md
+  title: Assignment change — Lara Velswick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm042
+  - kwm039
+  - kwm054
+  - kwm036
+- id: k-move-kwm047
+  employer: keplerops
+  file: documents/workforce/k-move-kwm047.md
+  title: Assignment change — Lina Peveran
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm047
+  - leah
+  - kwm054
+  - kwm036
+- id: k-move-kwm051
+  employer: keplerops
+  file: documents/workforce/k-move-kwm051.md
+  title: Assignment change — Margot Aldren
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm051
+  - kwm047
+  - kwm054
+  - kwm036
+- id: k-move-kwm054
+  employer: keplerops
+  file: documents/workforce/k-move-kwm054.md
+  title: Assignment change — Mira Belsart
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm054
+  - leah
+  - kwm036
+- id: k-move-kwm056
+  employer: keplerops
+  file: documents/workforce/k-move-kwm056.md
+  title: Assignment change — Nella Renshaw
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - kwm056
+  - leah
+  - kwm054
+  - kwm036
+- id: a-move-awm009
+  employer: arwc
+  file: documents/workforce/a-move-awm009.md
+  title: Assignment change — Ren Larmont
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm009
+  - awm001
+  - awm220
+  - awm170
+- id: a-move-awm018
+  employer: arwc
+  file: documents/workforce/a-move-awm018.md
+  title: Assignment change — Thane Marrent
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm018
+  - awm001
+  - awm220
+  - awm170
+- id: a-move-awm022
+  employer: arwc
+  file: documents/workforce/a-move-awm022.md
+  title: Assignment change — Vera Velswick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm022
+  - awm001
+  - awm220
+  - awm170
+- id: a-move-awm031
+  employer: arwc
+  file: documents/workforce/a-move-awm031.md
+  title: Assignment change — Ari Wernick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm031
+  - awm022
+  - awm220
+  - awm170
+- id: a-move-awm040
+  employer: arwc
+  file: documents/workforce/a-move-awm040.md
+  title: Assignment change — Corin Aldren
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm040
+  - awm022
+  - awm220
+  - awm170
+- id: a-move-awm050
+  employer: arwc
+  file: documents/workforce/a-move-awm050.md
+  title: Assignment change — Farah Jorrel
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm050
+  - awm042
+  - awm220
+  - awm170
+- id: a-move-awm059
+  employer: arwc
+  file: documents/workforce/a-move-awm059.md
+  title: Assignment change — Imani Lestrel
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm059
+  - awm042
+  - awm220
+  - awm170
+- id: a-move-awm063
+  employer: arwc
+  file: documents/workforce/a-move-awm063.md
+  title: Assignment change — Jamie Telmire
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm063
+  - awm001
+  - awm220
+  - awm170
+- id: a-move-awm072
+  employer: arwc
+  file: documents/workforce/a-move-awm072.md
+  title: Assignment change — Lila Verrin
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm072
+  - awm063
+  - awm220
+  - awm170
+- id: a-move-awm081
+  employer: arwc
+  file: documents/workforce/a-move-awm081.md
+  title: Assignment change — Morgan Wernick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm081
+  - awm063
+  - awm220
+  - awm170
+- id: a-move-awm085
+  employer: arwc
+  file: documents/workforce/a-move-awm085.md
+  title: Assignment change — Nina Garsen
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm085
+  - awm001
+  - awm220
+  - awm170
+- id: a-move-awm093
+  employer: arwc
+  file: documents/workforce/a-move-awm093.md
+  title: Assignment change — Ren Belsart
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm093
+  - luc
+  - awm220
+  - awm170
+- id: a-move-awm102
+  employer: arwc
+  file: documents/workforce/a-move-awm102.md
+  title: Assignment change — Thane Cavelin
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm102
+  - awm093
+  - awm220
+  - awm170
+- id: a-move-awm116
+  employer: arwc
+  file: documents/workforce/a-move-awm116.md
+  title: Assignment change — Avery Velswick
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm116
+  - awm108
+  - awm220
+  - awm170
+- id: a-move-awm126
+  employer: arwc
+  file: documents/workforce/a-move-awm126.md
+  title: Assignment change — Dario Fennard
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm126
+  - awm118
+  - awm220
+  - awm170
+- id: a-move-awm127
+  employer: arwc
+  file: documents/workforce/a-move-awm127.md
+  title: Assignment change — Della Orvel
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm127
+  - awm093
+  - awm220
+  - awm170
+- id: a-move-awm136
+  employer: arwc
+  file: documents/workforce/a-move-awm136.md
+  title: Assignment change — Finn Quillan
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-01T08:00:00-04:00'
+  reader_keys:
+  - awm136
+  - awm127
+  - awm220
+  - awm170
+- id: k-equipment-k-0001-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0001-26.md
+  title: Equipment request K-0001-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-08T10:00:00-04:00'
+  reader_keys:
+  - rowan
+  - kwm001
+  - kwm036
+- id: k-equipment-k-0002-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0002-26.md
+  title: Equipment request K-0002-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-10T10:00:00-04:00'
+  reader_keys:
+  - kwm007
+  - kwm001
+  - kwm036
+- id: k-equipment-k-0003-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0003-26.md
+  title: Equipment request K-0003-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-12T10:00:00-04:00'
+  reader_keys:
+  - kwm014
+  - kwm013
+  - kwm036
+- id: k-equipment-k-0004-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0004-26.md
+  title: Equipment request K-0004-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-14T10:00:00-04:00'
+  reader_keys:
+  - kwm021
+  - kwm018
+  - kwm036
+- id: k-equipment-k-0005-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0005-26.md
+  title: Equipment request K-0005-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-16T10:00:00-04:00'
+  reader_keys:
+  - kwm026
+  - kwm022
+  - kwm036
+- id: k-equipment-k-0006-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0006-26.md
+  title: Equipment request K-0006-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-18T10:00:00-04:00'
+  reader_keys:
+  - kwm033
+  - kwm031
+  - kwm036
+- id: k-equipment-k-0007-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0007-26.md
+  title: Equipment request K-0007-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-20T10:00:00-04:00'
+  reader_keys:
+  - kwm038
+  - kwm036
+- id: k-equipment-k-0008-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0008-26.md
+  title: Equipment request K-0008-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-22T10:00:00-04:00'
+  reader_keys:
+  - kwm045
+  - kwm042
+  - kwm036
+- id: k-equipment-k-0009-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0009-26.md
+  title: Equipment request K-0009-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-24T10:00:00-04:00'
+  reader_keys:
+  - kwm052
+  - kwm051
+  - kwm036
+- id: k-equipment-k-0010-26
+  employer: keplerops
+  file: documents/workforce/k-equipment-k-0010-26.md
+  title: Equipment request K-0010-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-26T10:00:00-04:00'
+  reader_keys:
+  - kwm058
+  - leah
+  - kwm036
+- id: a-equipment-a-0011-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0011-26.md
+  title: Equipment request A-0011-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-28T10:00:00-04:00'
+  reader_keys:
+  - awm006
+  - awm001
+  - awm170
+- id: a-equipment-a-0012-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0012-26.md
+  title: Equipment request A-0012-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-06-30T10:00:00-04:00'
+  reader_keys:
+  - awm013
+  - awm001
+  - awm170
+- id: a-equipment-a-0013-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0013-26.md
+  title: Equipment request A-0013-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-02T10:00:00-04:00'
+  reader_keys:
+  - awm020
+  - awm001
+  - awm170
+- id: a-equipment-a-0014-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0014-26.md
+  title: Equipment request A-0014-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-04T10:00:00-04:00'
+  reader_keys:
+  - awm027
+  - awm022
+  - awm170
+- id: a-equipment-a-0015-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0015-26.md
+  title: Equipment request A-0015-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-06T10:00:00-04:00'
+  reader_keys:
+  - awm034
+  - awm022
+  - awm170
+- id: a-equipment-a-0016-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0016-26.md
+  title: Equipment request A-0016-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-08T10:00:00-04:00'
+  reader_keys:
+  - awm041
+  - awm022
+  - awm170
+- id: a-equipment-a-0017-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0017-26.md
+  title: Equipment request A-0017-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-10T10:00:00-04:00'
+  reader_keys:
+  - awm047
+  - awm042
+  - awm170
+- id: a-equipment-a-0018-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0018-26.md
+  title: Equipment request A-0018-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-12T10:00:00-04:00'
+  reader_keys:
+  - awm054
+  - awm042
+  - awm170
+- id: a-equipment-a-0019-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0019-26.md
+  title: Equipment request A-0019-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-14T10:00:00-04:00'
+  reader_keys:
+  - awm061
+  - awm042
+  - awm170
+- id: a-equipment-a-0020-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0020-26.md
+  title: Equipment request A-0020-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-16T10:00:00-04:00'
+  reader_keys:
+  - awm068
+  - awm063
+  - awm170
+- id: a-equipment-a-0021-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0021-26.md
+  title: Equipment request A-0021-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-18T10:00:00-04:00'
+  reader_keys:
+  - awm075
+  - awm063
+  - awm170
+- id: a-equipment-a-0022-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0022-26.md
+  title: Equipment request A-0022-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-20T10:00:00-04:00'
+  reader_keys:
+  - awm082
+  - awm063
+  - awm170
+- id: a-equipment-a-0023-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0023-26.md
+  title: Equipment request A-0023-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-22T10:00:00-04:00'
+  reader_keys:
+  - awm089
+  - awm085
+  - awm170
+- id: a-equipment-a-0024-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0024-26.md
+  title: Equipment request A-0024-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-24T10:00:00-04:00'
+  reader_keys:
+  - awm096
+  - awm093
+  - awm170
+- id: a-equipment-a-0025-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0025-26.md
+  title: Equipment request A-0025-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-26T10:00:00-04:00'
+  reader_keys:
+  - awm103
+  - awm093
+  - awm170
+- id: a-equipment-a-0026-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0026-26.md
+  title: Equipment request A-0026-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-28T10:00:00-04:00'
+  reader_keys:
+  - awm109
+  - awm108
+  - awm170
+- id: a-equipment-a-0027-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0027-26.md
+  title: Equipment request A-0027-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-07-30T10:00:00-04:00'
+  reader_keys:
+  - awm116
+  - awm108
+  - awm170
+- id: a-equipment-a-0028-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0028-26.md
+  title: Equipment request A-0028-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-01T10:00:00-04:00'
+  reader_keys:
+  - awm122
+  - awm118
+  - awm170
+- id: a-equipment-a-0029-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0029-26.md
+  title: Equipment request A-0029-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-03T10:00:00-04:00'
+  reader_keys:
+  - awm129
+  - awm127
+  - awm170
+- id: a-equipment-a-0030-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0030-26.md
+  title: Equipment request A-0030-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-05T10:00:00-04:00'
+  reader_keys:
+  - awm136
+  - awm127
+  - awm170
+- id: a-equipment-a-0031-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0031-26.md
+  title: Equipment request A-0031-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-07T10:00:00-04:00'
+  reader_keys:
+  - awm142
+  - awm139
+  - awm170
+- id: a-equipment-a-0032-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0032-26.md
+  title: Equipment request A-0032-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-09T10:00:00-04:00'
+  reader_keys:
+  - awm149
+  - awm146
+  - awm170
+- id: a-equipment-a-0033-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0033-26.md
+  title: Equipment request A-0033-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-11T10:00:00-04:00'
+  reader_keys:
+  - awm156
+  - awm146
+  - awm170
+- id: a-equipment-a-0034-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0034-26.md
+  title: Equipment request A-0034-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-13T10:00:00-04:00'
+  reader_keys:
+  - awm163
+  - awm158
+  - awm170
+- id: a-equipment-a-0035-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0035-26.md
+  title: Equipment request A-0035-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-15T10:00:00-04:00'
+  reader_keys:
+  - awm170
+  - awm216
+- id: a-equipment-a-0036-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0036-26.md
+  title: Equipment request A-0036-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-17T10:00:00-04:00'
+  reader_keys:
+  - awm177
+  - awm175
+  - awm170
+- id: a-equipment-a-0037-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0037-26.md
+  title: Equipment request A-0037-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-19T10:00:00-04:00'
+  reader_keys:
+  - awm183
+  - awm182
+  - awm170
+- id: a-equipment-a-0038-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0038-26.md
+  title: Equipment request A-0038-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-21T10:00:00-04:00'
+  reader_keys:
+  - awm190
+  - awm182
+  - awm170
+- id: a-equipment-a-0039-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0039-26.md
+  title: Equipment request A-0039-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-23T10:00:00-04:00'
+  reader_keys:
+  - awm197
+  - awm182
+  - awm170
+- id: a-equipment-a-0040-26
+  employer: arwc
+  file: documents/workforce/a-equipment-a-0040-26.md
+  title: Equipment request A-0040-26
+  audience: restricted
+  collection: employment
+  story: workforce
+  published_at: '2026-08-25T10:00:00-04:00'
+  reader_keys:
+  - awm204
+  - awm197
+  - awm170

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:eb1b6a44-3eee-535f-a938-b9204a2b20f9@alterrawaterco.com
+DTSTAMP:20260504T130000Z
+DTSTART:20260511T140000Z
+DTEND:20260511T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:anika.delmont@alterrawaterco.com
+ATTENDEE:mailto:yara.dalver@alterrawaterco.com
+SUMMARY:New colleague induction
+DESCRIPTION:Anika Delmont: meet Yara Dalver\; check local handover and firs
+ t work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

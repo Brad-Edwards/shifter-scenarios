@@ -4,10 +4,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-mail",
-        "version": "sha256-d0acea09205ba11eb253bccabbbfe9160123c3910903a6e03ba55e4bd08c62ea"
+        "version": "sha256-dfcf6d2f97cc81d21492f07992e204095398b23a5da77f92aa225cfb3a8c3f61"
       },
       "path": "assets/narrative/generated/packages/keplerops-mail.json",
-      "sha256": "d0acea09205ba11eb253bccabbbfe9160123c3910903a6e03ba55e4bd08c62ea",
+      "sha256": "dfcf6d2f97cc81d21492f07992e204095398b23a5da77f92aa225cfb3a8c3f61",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.mail",
       "target": "k-corporate.k-staff",
@@ -16,10 +16,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-documents",
-        "version": "sha256-d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323"
+        "version": "sha256-d2eff4f1c0969d0d680c19ab1e3db09218f52bd10d70703348ddb0e62d32bdf2"
       },
       "path": "assets/narrative/generated/packages/keplerops-documents.json",
-      "sha256": "d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323",
+      "sha256": "d2eff4f1c0969d0d680c19ab1e3db09218f52bd10d70703348ddb0e62d32bdf2",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.documents",
       "target": "k-corporate.k-staff",
@@ -27,11 +27,35 @@
     },
     {
       "source": {
+        "name": "cinder-typhoon/narrative/keplerops-directory",
+        "version": "sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931"
+      },
+      "path": "assets/narrative/generated/packages/keplerops-directory.json",
+      "sha256": "3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931",
+      "media_type": "application/json",
+      "content_ref": "narrative-keplerops.directory",
+      "target": "k-corporate.k-staff",
+      "format": "cinder-staff-directory/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/keplerops-employment",
+        "version": "sha256-4589964ff3cb0d60e83a9fdff8652eedf0fd89008214b7eed8f72709e3a758ee"
+      },
+      "path": "assets/narrative/generated/packages/keplerops-employment.json",
+      "sha256": "4589964ff3cb0d60e83a9fdff8652eedf0fd89008214b7eed8f72709e3a758ee",
+      "media_type": "application/json",
+      "content_ref": "narrative-keplerops.employment",
+      "target": "k-corporate.k-staff",
+      "format": "cinder-employment-records/v1"
+    },
+    {
+      "source": {
         "name": "cinder-typhoon/narrative/arwc-mail",
-        "version": "sha256-4602b2b3c012a8ca91e792fe3f151cf46b161200f49935afa8c6af79cc4cf5b7"
+        "version": "sha256-b966dc27ac8ddc8f982bac4c56c0745f2e34e39fd0366d005b19004f113758c2"
       },
       "path": "assets/narrative/generated/packages/arwc-mail.json",
-      "sha256": "4602b2b3c012a8ca91e792fe3f151cf46b161200f49935afa8c6af79cc4cf5b7",
+      "sha256": "b966dc27ac8ddc8f982bac4c56c0745f2e34e39fd0366d005b19004f113758c2",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.mail",
       "target": "a-corporate.a-business",
@@ -40,14 +64,38 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/arwc-documents",
-        "version": "sha256-983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2"
+        "version": "sha256-9713d7f67dffa44a084893be959e2869f09ef2b00e165b8d796b3d87f6c678a1"
       },
       "path": "assets/narrative/generated/packages/arwc-documents.json",
-      "sha256": "983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2",
+      "sha256": "9713d7f67dffa44a084893be959e2869f09ef2b00e165b8d796b3d87f6c678a1",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.documents",
       "target": "a-corporate.a-business",
       "format": "cinder-document-library/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/arwc-directory",
+        "version": "sha256-24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f"
+      },
+      "path": "assets/narrative/generated/packages/arwc-directory.json",
+      "sha256": "24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f",
+      "media_type": "application/json",
+      "content_ref": "narrative-arwc.directory",
+      "target": "a-corporate.a-business",
+      "format": "cinder-staff-directory/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/arwc-employment",
+        "version": "sha256-7a7f22c92ccfaa31a3bed71126f7a2787bdb11184372b061e51823587015094b"
+      },
+      "path": "assets/narrative/generated/packages/arwc-employment.json",
+      "sha256": "7a7f22c92ccfaa31a3bed71126f7a2787bdb11184372b061e51823587015094b",
+      "media_type": "application/json",
+      "content_ref": "narrative-arwc.employment",
+      "target": "a-corporate.a-business",
+      "format": "cinder-employment-records/v1"
     }
   ]
 }

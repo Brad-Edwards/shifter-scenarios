@@ -1,28 +1,248 @@
 events:
-  - id: rillhaven-workshop
-    employer: keplerops
-    organizer: talia
-    attendees: [maya, rillhaven]
-    start: '2026-09-24T10:00:00-04:00'
-    end: '2026-09-24T11:30:00-04:00'
-    summary: Rillhaven maintenance workshop
-    description: Practical example and discussion. Talia leads; Maya takes ongoing-support questions.
-    status: CONFIRMED
-  - id: evan-noor-lunch
-    employer: keplerops
-    organizer: noor
-    attendees: [evan]
-    start: '2026-10-01T12:15:00-04:00'
-    end: '2026-10-01T13:00:00-04:00'
-    summary: Lunch with Evan
-    description: Our monthly lunch. Noor to choose the place.
-    status: CONFIRMED
-  - id: rosa-nadia-lunch
-    employer: arwc
-    organizer: nadia
-    attendees: [rosa]
-    start: '2026-09-22T12:30:00-04:00'
-    end: '2026-09-22T13:15:00-04:00'
-    summary: Lunch with Rosa
-    description: Time to be confirmed after Rosa checks the team cover.
-    status: TENTATIVE
+- id: rillhaven-workshop
+  employer: keplerops
+  organizer: talia
+  attendees:
+  - maya
+  - rillhaven
+  start: '2026-09-24T10:00:00-04:00'
+  end: '2026-09-24T11:30:00-04:00'
+  summary: Rillhaven maintenance workshop
+  description: Practical example and discussion. Talia leads; Maya takes ongoing-support questions.
+  status: CONFIRMED
+- id: evan-noor-lunch
+  employer: keplerops
+  organizer: noor
+  attendees:
+  - evan
+  start: '2026-10-01T12:15:00-04:00'
+  end: '2026-10-01T13:00:00-04:00'
+  summary: Lunch with Evan
+  description: Our monthly lunch. Noor to choose the place.
+  status: CONFIRMED
+- id: rosa-nadia-lunch
+  employer: arwc
+  organizer: nadia
+  attendees:
+  - rosa
+  start: '2026-09-22T12:30:00-04:00'
+  end: '2026-09-22T13:15:00-04:00'
+  summary: Lunch with Rosa
+  description: Time to be confirmed after Rosa checks the team cover.
+  status: TENTATIVE
+- id: k-induction-kwm003
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm003
+  - kwm001
+  summary: New colleague induction
+  description: 'Amara Radvell: meet Adele Aldren; check local handover and first work assignment.'
+  start: '2026-02-08T10:00:00-04:00'
+  end: '2026-02-08T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-02-01T09:00:00-04:00'
+- id: k-induction-kwm014
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm014
+  - kwm013
+  summary: New colleague induction
+  description: 'Corin Kelswick: meet Cian Cavelin; check local handover and first work assignment.'
+  start: '2026-03-21T10:00:00-04:00'
+  end: '2026-03-21T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-03-14T09:00:00-04:00'
+- id: k-induction-kwm025
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm025
+  - kwm022
+  summary: New colleague induction
+  description: 'Felix Darsell: meet Elin Danwick; check local handover and first work assignment.'
+  start: '2026-02-02T10:00:00-04:00'
+  end: '2026-02-02T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-01-26T09:00:00-04:00'
+- id: k-induction-kwm036
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm036
+  - kwm034
+  summary: New colleague induction
+  description: 'Jalen Warden: meet Iris Edran; check local handover and first work assignment.'
+  start: '2026-01-10T10:00:00-04:00'
+  end: '2026-01-10T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-01-03T09:00:00-04:00'
+- id: k-induction-kwm047
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm047
+  - leah
+  summary: New colleague induction
+  description: 'Lina Peveran: meet Leah Calder-Voss; check local handover and first work assignment.'
+  start: '2026-02-23T10:00:00-04:00'
+  end: '2026-02-23T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-02-16T09:00:00-04:00'
+- id: k-induction-kwm058
+  employer: keplerops
+  organizer: kwm054
+  attendees:
+  - kwm058
+  - leah
+  summary: New colleague induction
+  description: 'Niko Rensart: meet Leah Calder-Voss; check local handover and first work assignment.'
+  start: '2026-06-20T10:00:00-04:00'
+  end: '2026-06-20T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-13T09:00:00-04:00'
+- id: a-induction-awm012
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm012
+  - awm001
+  summary: Site and shift induction
+  description: 'Sela Lestrel: meet Nina Rivelin; check local handover and first work assignment.'
+  start: '2026-05-28T10:00:00-04:00'
+  end: '2026-05-28T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-05-21T09:00:00-04:00'
+- id: a-induction-awm029
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm029
+  - awm022
+  summary: Site and shift induction
+  description: 'Amara Fennard: meet Vera Velswick; check local handover and first work assignment.'
+  start: '2026-08-26T10:00:00-04:00'
+  end: '2026-08-26T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-19T09:00:00-04:00'
+- id: a-induction-awm046
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm046
+  - awm042
+  summary: Site and shift induction
+  description: 'Eira Bravelle: meet Dario Radvell; check local handover and first work assignment.'
+  start: '2026-06-08T10:00:00-04:00'
+  end: '2026-06-08T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-01T09:00:00-04:00'
+- id: a-induction-awm063
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm063
+  - awm001
+  summary: Site and shift induction
+  description: 'Jamie Telmire: meet Nina Rivelin; check local handover and first work assignment.'
+  start: '2026-01-06T10:00:00-04:00'
+  end: '2026-01-06T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2025-12-30T09:00:00-04:00'
+- id: a-induction-awm080
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm080
+  - awm063
+  summary: Site and shift induction
+  description: 'Mira Orvel: meet Jamie Telmire; check local handover and first work assignment.'
+  start: '2026-04-04T10:00:00-04:00'
+  end: '2026-04-04T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-03-28T09:00:00-04:00'
+- id: a-induction-awm097
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm097
+  - awm093
+  summary: Site and shift induction
+  description: 'Silas Iversen: meet Ren Belsart; check local handover and first work assignment.'
+  start: '2026-07-02T10:00:00-04:00'
+  end: '2026-07-02T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-25T09:00:00-04:00'
+- id: a-induction-awm114
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm114
+  - awm108
+  summary: New colleague induction
+  description: 'Anika Delmont: meet Yara Dalver; check local handover and first work assignment.'
+  start: '2026-05-11T10:00:00-04:00'
+  end: '2026-05-11T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-05-04T09:00:00-04:00'
+- id: a-induction-awm131
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm131
+  - awm127
+  summary: New colleague induction
+  description: 'Elias Yervan: meet Della Orvel; check local handover and first work assignment.'
+  start: '2026-03-20T10:00:00-04:00'
+  end: '2026-03-20T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-03-13T09:00:00-04:00'
+- id: a-induction-awm148
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm148
+  - awm146
+  summary: New colleague induction
+  description: 'Jonas Sarnell: meet Jalen Carsten; check local handover and first work assignment.'
+  start: '2026-01-02T10:00:00-04:00'
+  end: '2026-01-02T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2025-12-26T09:00:00-04:00'
+- id: a-induction-awm165
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm165
+  - awm164
+  summary: New colleague induction
+  description: 'Morgan Mavell: meet Mira Delmont; check local handover and first work assignment.'
+  start: '2026-04-27T10:00:00-04:00'
+  end: '2026-04-27T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-04-20T09:00:00-04:00'
+- id: a-induction-awm182
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm182
+  - awm216
+  summary: New colleague induction
+  description: 'Soren Garsen: meet Elin Verrin; check local handover and first work assignment.'
+  start: '2026-02-09T10:00:00-04:00'
+  end: '2026-02-09T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-02-02T09:00:00-04:00'
+- id: a-induction-awm199
+  employer: arwc
+  organizer: awm220
+  attendees:
+  - awm199
+  - awm197
+  summary: New colleague induction
+  description: 'Ari Cernault: meet Amara Kelswick; check local handover and first work assignment.'
+  start: '2026-05-07T10:00:00-04:00'
+  end: '2026-05-07T10:45:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-04-30T09:00:00-04:00'

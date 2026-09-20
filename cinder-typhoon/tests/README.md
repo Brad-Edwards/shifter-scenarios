@@ -24,7 +24,7 @@ The command performs these checks:
    Assertions check that default-open intent survives both steps, that omitted
    substrate/architecture/version choices remain open, and that Linux/Kali
    remains exact. Resource sizing must remain unspecified. The 273 challenge
-   and capability observations retain their producer bindings, and four workplace
+   and capability observations retain their producer bindings, and eight workplace
    readback observations retain exact content ownership. Source artifacts and
    named workplace service bindings survive compilation.
 4. `--self-test` deliberately changes native type-valid SDL structures, including
@@ -64,10 +64,12 @@ python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.
 
 These check deterministic rendering, source hashes, message headers and bodies,
 reply chains, MIME attachment bytes and publication dates, retained mailbox copies,
-document readers, directory entries, calendar times and audiences, and story
-coverage. Corruption checks reject an altered attachment, a private
-message copied to an unrelated mailbox, changed source bytes, and a detached
-reply. The full SDL check also verifies the four native materialization contracts.
+document readers, roster and reporting joins, directory entries, calendar times
+and audiences, employment records, ownership, and story coverage. Corruption
+checks reject an altered attachment, a private
+message copied to an unrelated mailbox, changed source bytes, a detached
+reply, and a reporting loop. The full SDL check also verifies the eight native
+materialization contracts.
 
 ## Prose checks
 

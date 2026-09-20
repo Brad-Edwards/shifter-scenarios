@@ -5,6 +5,7 @@ import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
+import yaml
 import validate_narrative as validator
 
 
@@ -41,11 +42,22 @@ class NarrativeIntegrityTests(unittest.TestCase):
             p = root / 'generated/messages/k-bike-3.eml'
             p.write_bytes(p.read_bytes().replace(b'In-Reply-To:', b'X-Previous-Message:'))
 
-        for mutate in (alter_attachment, add_unrelated_mailbox_copy, change_source, detach_reply):
+        def create_reporting_loop(root):
+            p = root / 'authoring/workforce.yaml'
+            workforce = yaml.safe_load(p.read_text())
+            head = next(person for person in workforce['employees'] if person['key'] == 'leah')
+            head['manager'] = 'rowan'
+            p.write_text(yaml.safe_dump(workforce, sort_keys=False))
+
+        for mutate in (alter_attachment, add_unrelated_mailbox_copy, change_source,
+                       detach_reply, create_reporting_loop):
             with self.subTest(mutation=mutate.__name__), tempfile.TemporaryDirectory() as temp:
                 pack = Path(temp)
                 root = pack / 'assets/narrative'
                 shutil.copytree(validator.ROOT, root)
+                review = pack / 'docs/narrative'
+                review.mkdir(parents=True)
+                shutil.copy(validator.PACK / 'docs/narrative/workforce-ownership.json', review)
                 mutate(root)
                 with patch.object(validator, 'ROOT', root), patch.object(validator, 'PACK', pack):
                     with self.assertRaises(ValueError):

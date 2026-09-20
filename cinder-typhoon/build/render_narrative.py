@@ -51,7 +51,19 @@ def ics_escape(value):
 
 def render():
     identity = yaml.safe_load((AUTHOR / 'people.yaml').read_text())
-    people = identity['people']
+    workforce = yaml.safe_load((AUTHOR / 'workforce.yaml').read_text())
+    assert workforce['snapshot'] == identity['snapshot']
+    roster = workforce['employees']
+    assert len({p['key'] for p in roster}) == len(roster)
+    people = dict(identity['people'])
+    for person in roster:
+        key = person['key']
+        if key in people:
+            assert all(people[key][field] == person[field] for field in
+                       ('name', 'email', 'employer', 'department', 'job')), key
+        else:
+            people[key] = {field: person[field] for field in
+                           ('name', 'email', 'employer', 'department', 'job')}
     contacts = people | identity['correspondents']
     snapshot = datetime.fromisoformat(identity['snapshot'])
     docs = yaml.safe_load((AUTHOR / 'documents.yaml').read_text())['documents']
@@ -67,7 +79,20 @@ def render():
     coverage = {}
     packages = {org: {'schema_version': 'cinder-mailbox-set/v1', 'snapshot': identity['snapshot'],
                       'messages': [], 'mailboxes': {}} for org in ORGS}
-    libraries = {org: {'schema_version': 'cinder-document-library/v1', 'documents': []} for org in ORGS}
+    libraries = {org: {
+        'documents': {'schema_version': 'cinder-document-library/v1', 'documents': []},
+        'directory': {'schema_version': 'cinder-staff-directory/v1', 'documents': [], 'reader_groups': {},
+                      'identity_requirements': {'authentication': 'individual staff identity',
+                                                'access': 'same-employer staff readers'}},
+        'employment': {'schema_version': 'cinder-employment-records/v1', 'documents': [], 'reader_groups': {},
+                       'identity_requirements': {'authentication': 'individual staff identity',
+                                                 'access': 'exact item readers'}},
+    } for org in ORGS}
+    for person in roster:
+        for kind in ('directory', 'employment'):
+            groups = libraries[person['employer']][kind]['reader_groups']
+            for group in person['groups']:
+                groups.setdefault(group, []).append(person['email'])
     for key, person in people.items():
         if person['employer'] in ORGS:
             packages[person['employer']]['mailboxes'][person['email']] = {'owner': person['email'], 'folders': {'INBOX': [], 'Sent': []}}
@@ -99,8 +124,12 @@ def render():
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
         raw = msg.as_bytes()
-        path = f'generated/messages/{m["id"]}.eml'
-        output[path] = raw
+        # The workplace source package carries every exact RFC822 message.
+        # Keep the original story messages as separate review files; the larger
+        # workforce slice stays in its source package to respect pack member limits.
+        path = None if m['id'].startswith('wm-') else f'generated/messages/{m["id"]}.eml'
+        if path:
+            output[path] = raw
         destinations = {}
         for key, folder in [(m['from'], 'Sent')] + [(p, 'INBOX') for p in m['to']]:
             person = contacts[key]
@@ -117,23 +146,36 @@ def render():
                              'retained': destinations, 'attachments': m.get('attachments', [])}
     for d in docs:
         assert datetime.fromisoformat(d['published_at']) <= snapshot, d['id']
-        audience = [p['email'] for p in people.values() if p['employer'] == d['employer']] if d['audience'] == 'staff' else [people[k]['email'] for k in AUDIENCES[d['audience']]]
-        libraries[d['employer']]['documents'].append({'name': d['id'], 'title': d['title'], 'path': Path(d['file']).name,
-            'media_type': 'text/markdown', 'published_at': d['published_at'], 'readers': audience, 'text': (ROOT / d['file']).read_text()})
+        if d['audience'] == 'staff':
+            audience = [p['email'] for p in people.values() if p['employer'] == d['employer']]
+        elif d['audience'] == 'restricted':
+            audience = list(dict.fromkeys(people[k]['email'] for k in d['reader_keys']))
+        else:
+            audience = [people[k]['email'] for k in AUDIENCES[d['audience']]]
+        kind = d.get('collection', 'documents')
+        libraries[d['employer']][kind]['documents'].append({'name': d['id'], 'title': d['title'], 'path': Path(d['file']).name,
+            'media_type': d.get('media_type', 'text/markdown'), 'published_at': d['published_at'],
+            'readers': audience, 'text': (ROOT / d['file']).read_text()})
     for org in ORGS:
-        rows = [{k: p[k] for k in ('name', 'email', 'department', 'job')} for p in people.values() if p['employer'] == org]
+        rows = [{'name': p['name'], 'email': p['email'], 'department': p['department'],
+                 'team': p['team'], 'job': p['job'],
+                 'manager': people[p['manager']]['name'] if p['manager'] else '',
+                 'work_contact': p['extension'], 'base': p['site']}
+                for p in roster if p['employer'] == org]
         buf = io.StringIO(newline='')
-        writer = csv.DictWriter(buf, fieldnames=['name', 'email', 'department', 'job'], lineterminator='\n')
+        writer = csv.DictWriter(buf, fieldnames=['name', 'email', 'department', 'team', 'job',
+                                                'manager', 'work_contact', 'base'], lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
         output[f'generated/directories/{org}.csv'] = buf.getvalue().encode()
-        libraries[org]['documents'].append({'name': org + '-directory', 'title': 'Staff contacts', 'path': 'staff-contacts.csv',
+        libraries[org]['directory']['documents'].append({'name': org + '-directory', 'title': 'Staff contacts', 'path': 'staff-contacts.csv',
             'media_type': 'text/csv', 'readers': [p['email'] for p in people.values() if p['employer'] == org], 'text': buf.getvalue()})
     events = yaml.safe_load((AUTHOR / 'calendars.yaml').read_text())['events']
     for event in events:
         organizer = contacts[event['organizer']]
         lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Workplace Calendar//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
                  'UID:' + message_id(event['id'], ORGS[event['employer']][1])[1:-1],
-                 'DTSTAMP:' + utc(identity['snapshot']), 'DTSTART:' + utc(event['start']), 'DTEND:' + utc(event['end']),
+                 'DTSTAMP:' + utc(event.get('created_at', identity['snapshot'])),
+                 'DTSTART:' + utc(event['start']), 'DTEND:' + utc(event['end']),
                  'ORGANIZER:mailto:' + organizer['email']]
         lines += ['ATTENDEE:mailto:' + contacts[p]['email'] for p in event['attendees']]
         lines += ['SUMMARY:' + ics_escape(event['summary']), 'DESCRIPTION:' + ics_escape(event['description']),
@@ -143,12 +185,16 @@ def render():
             # These calendar fields are ASCII; fold using RFC 5545 octet limits.
             assert line.isascii(), event['id']
             while len(line.encode()) > 75:
-                folded.append(line[:75]); line = ' ' + line[75:]
+                cut = 75
+                while line[cut - 1] == ' ':
+                    cut -= 1
+                folded.append(line[:cut]); line = ' ' + line[cut:]
             folded.append(line)
         text = '\r\n'.join(folded) + '\r\n'
         output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
-        libraries[event['employer']]['documents'].append({'name': event['id'], 'title': event['summary'], 'path': event['id'] + '.ics',
+        kind = 'employment' if '-induction-' in event['id'] else 'documents'
+        libraries[event['employer']][kind]['documents'].append({'name': event['id'], 'title': event['summary'], 'path': event['id'] + '.ics',
             'media_type': 'text/calendar', 'readers': readers, 'text': text})
     catalog = {'schema_version': 'cinder-world-artifacts/v1', 'artifacts': []}
     modules = {}
@@ -157,16 +203,21 @@ def render():
         module = {'name': 'cinder-' + namespace, 'version': '0.1.0', 'semantic_revision': 'raes-progressive-semantics/v1',
                   'realization': {'default': 'open'}, 'module': {'id': 'cinder-typhoon/' + namespace, 'version': '0.1.0', 'exports': {}},
                   'content': {}, 'propositions': {}, 'assertions': {}, 'evidence_requirements': {}, 'observation_boundaries': {}}
-        for kind, payload in [('mail', packages[org]), ('documents', libraries[org])]:
+        for kind, payload in [('mail', packages[org])] + list(libraries[org].items()):
             raw = json_text(payload).encode()
             rel = f'generated/packages/{org}-{kind}.json'
             output[rel] = raw
             source = {'name': f'cinder-typhoon/narrative/{org}-{kind}', 'version': 'sha256-' + sha(raw)}
             key = kind + '-visible'
             item_names = [{'name': m['id'], 'display_name': m['subject']} for m in mail if org in coverage[m['id']]['retained']] if kind == 'mail' else [{'name': d['name'], 'display_name': d['title']} for d in payload['documents']]
+            access = ('Exact mailbox membership' if kind == 'mail' else
+                      'Same-employer staff readers' if kind == 'directory' else
+                      'Exact named personnel readers' if kind == 'employment' else
+                      'Exact document readers')
             module['content'][kind] = {'type': 'dataset', 'target': node, 'format': payload['schema_version'], 'source': source,
-                'description': f'{org} workplace {kind}. Preserve authored content, mailbox membership or document readers, and declared opening state.',
-                'items': item_names, 'tags': ['world-content', 'synthetic'], 'service_materialization': {
+                'description': f'{org} workplace {kind}. Require an individual staff identity; {access}. Preserve authored readers and opening state.',
+                'items': item_names, 'sensitive': kind != 'directory',
+                'tags': ['world-content', 'synthetic'], 'service_materialization': {
                     'target_service_ref': f'nodes.{node}.services.workplace', 'interface_profile': 'service-content', 'profile_version': '1',
                     'requirements': {'operation': 'ensure-owned-items', 'conflict_policy': 'reject-unowned-collision', 'readback': 'canonical-content-digest'},
                     'readback_assertion_refs': [key], 'evidence_requirement_refs': [key], 'observation_boundary_refs': [key]}}

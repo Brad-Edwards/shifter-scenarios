@@ -1,0 +1,700 @@
+{
+  "schema_version": "cinder-employment-records/v1",
+  "documents": [
+    {
+      "name": "k-personnel-register",
+      "title": "Current personnel and assignment register",
+      "path": "k-personnel-register.csv",
+      "media_type": "text/csv",
+      "published_at": "2026-09-15T17:00:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "employee_id,name,work_email,department,team,role,manager,start_date,current_role_effective,previous_team,previous_role,work_pattern,site,distribution_groups\nROWAN,Rowan Ito,rowan.ito@keplerops.com,Product engineering,Core product,FieldKest developer,Adele Aldren,2018-01-01,2018-01-01,,Earlier core product assignment,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM001,Adele Aldren,adele.aldren@keplerops.com,Product engineering,Core product,Core product lead,Leah Calder-Voss,2023-08-12,2023-08-12,,Product engineer,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM002,Alix Harlowe,alix.harlowe@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,2019-03-23,2019-03-23,,Product engineer,remote,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM003,Amara Radvell,amara.radvell@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,2026-02-07,2026-02-07,,,office,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM004,Anika Belsart,anika.belsart@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,2022-05-18,2022-05-18,,Product engineer,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM005,Ari Havelin,ari.havelin@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,2018-12-02,2018-12-02,,Earlier core product assignment,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM006,Avery Renshaw,avery.renshaw@keplerops.com,Product engineering,Core product,Product engineer,Adele Aldren,2025-07-13,2025-07-13,,,remote,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-core-product\nKWM007,Beatrice Bravelle,beatrice.bravelle@keplerops.com,Product engineering,Connectors,Connectors lead,Adele Aldren,2021-02-24,2026-06-01,Experience,\"Team member, experience\",hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM008,Ben Iversen,ben.iversen@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,2017-09-08,2017-09-08,,Connector engineer,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM009,Callum Rivelin,callum.rivelin@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,2024-04-19,2024-04-19,,Connector engineer,remote,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM010,Camille Carsten,camille.carsten@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,2020-11-03,2020-11-03,,Connector engineer,office,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM011,Cara Jorrel,cara.jorrel@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,2016-06-14,2016-06-14,,Connector engineer,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM012,Celia Sarnell,celia.sarnell@keplerops.com,Product engineering,Connectors,Connector engineer,Beatrice Bravelle,2023-01-25,2023-01-25,,Earlier connectors assignment,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-connectors\nKWM013,Cian Cavelin,cian.cavelin@keplerops.com,Product engineering,Experience,Experience lead,Adele Aldren,2019-08-09,2026-06-01,Customer integrations,\"Team member, customer integrations\",hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-experience\nKWM014,Corin Kelswick,corin.kelswick@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,2026-03-20,2026-03-20,,,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-experience\nKWM015,Dana Selwyn,dana.selwyn@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,2022-10-04,2022-10-04,,Interface engineer,remote,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-experience\nKWM016,Dario Cernault,dario.cernault@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,2018-05-15,2018-05-15,,Interface engineer,office,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-experience\nKWM017,Della Larmont,della.larmont@keplerops.com,Product engineering,Experience,Interface engineer,Cian Cavelin,2025-12-26,2025-12-26,,,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-experience\nKWM018,Dev Senvard,dev.senvard@keplerops.com,Product engineering,Customer integrations,Customer integrations lead,Adele Aldren,2021-07-10,2026-06-01,Core product,\"Team member, core product\",hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-customer-integrations\nKWM019,Edda Dalver,edda.dalver@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,2017-02-21,2017-02-21,,Integration engineer,hybrid,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-customer-integrations\nKWM020,Eira Lestrel,eira.lestrel@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,2024-09-05,2024-09-05,,Integration engineer,remote,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-customer-integrations\nKWM021,Elias Tarlowe,elias.tarlowe@keplerops.com,Product engineering,Customer integrations,Integration engineer,Dev Senvard,2020-04-16,2020-04-16,,Integration engineer,office,Regional office,keplerops-staff; keplerops-product-engineering; keplerops-customer-integrations\nMAYA,Maya Ranscombe,maya.ranscombe@keplerops.com,Support and implementation,Customer support,Customer support engineer,Elin Danwick,2019-11-27,2019-11-27,,Earlier customer support assignment,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nTALIA,Talia Mornac,talia.mornac@keplerops.com,Support and implementation,Customer support,Support quality reviewer,Elin Danwick,2023-06-11,2023-06-11,,Support engineer,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nKWM022,Elin Danwick,elin.danwick@keplerops.com,Support and implementation,Customer support,Customer support lead,Leah Calder-Voss,2016-04-22,2016-04-22,,Support engineer,remote,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nKWM023,Emre Maraven,emre.maraven@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,2023-08-06,2023-08-06,,Support engineer,office,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nKWM024,Farah Telmire,farah.telmire@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,2019-03-17,2019-03-17,,Support engineer,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nKWM025,Felix Darsell,felix.darsell@keplerops.com,Support and implementation,Customer support,Support engineer,Elin Danwick,2026-02-01,2026-02-01,,,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-customer-support\nKWM026,Finn Marrent,finn.marrent@keplerops.com,Support and implementation,Implementation,Implementation lead,Elin Danwick,2022-05-12,2026-06-01,Enablement,\"Team member, enablement\",hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-implementation\nKWM027,Flora Torren,flora.torren@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,2018-12-23,2018-12-23,,Implementation specialist,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-implementation\nKWM028,Gabriel Delmont,gabriel.delmont@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,2025-07-07,2025-07-07,,,remote,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-implementation\nKWM029,Hana Mavell,hana.mavell@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,2021-02-18,2021-02-18,,Implementation specialist,office,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-implementation\nKWM030,Harriet Velswick,harriet.velswick@keplerops.com,Support and implementation,Implementation,Implementation specialist,Finn Marrent,2017-09-02,2017-09-02,,Implementation specialist,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-implementation\nKWM031,Hugo Dravik,hugo.dravik@keplerops.com,Support and implementation,Enablement,Enablement lead,Elin Danwick,2024-04-13,2026-06-01,Customer support,\"Team member, customer support\",hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-enablement\nKWM032,Idris Narsen,idris.narsen@keplerops.com,Support and implementation,Enablement,Training specialist,Hugo Dravik,2020-11-24,2020-11-24,,Training specialist,hybrid,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-enablement\nKWM033,Imani Verrin,imani.verrin@keplerops.com,Support and implementation,Enablement,Training specialist,Hugo Dravik,2016-06-08,2016-06-08,,Training specialist,remote,Regional office,keplerops-staff; keplerops-support-and-implementation; keplerops-enablement\nEVAN,Evan Calderoux,evan.calderoux@keplerops.com,Platform and release,Release engineering,Release engineer,Iris Edran,2019-01-19,2019-01-19,,Earlier release engineering assignment,hybrid,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-release-engineering\nKWM034,Iris Edran,iris.edran@keplerops.com,Platform and release,Release engineering,Release engineering lead,Leah Calder-Voss,2023-08-03,2023-08-03,,Release engineer,hybrid,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-release-engineering\nKWM035,Isabel Nelcourt,isabel.nelcourt@keplerops.com,Platform and release,Release engineering,Release engineer,Iris Edran,2019-03-14,2019-03-14,,Release engineer,remote,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-release-engineering\nNOOR,Noor Aveling,noor.aveling@keplerops.com,Platform and release,Service operations,Platform and workload operator,Jalen Warden,2020-10-25,2020-10-25,,Earlier service operations assignment,hybrid,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-service-operations\nKWM036,Jalen Warden,jalen.warden@keplerops.com,Platform and release,Service operations,Service operations lead,Iris Edran,2026-01-09,2026-01-09,,,hybrid,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-service-operations\nKWM037,Jamie Elvarn,jamie.elvarn@keplerops.com,Platform and release,Service operations,Platform operator,Jalen Warden,2022-12-20,2022-12-20,,Platform operator,remote,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-service-operations\nKWM038,Jonas Odrin,jonas.odrin@keplerops.com,Platform and release,Service operations,Platform operator,Jalen Warden,2018-07-04,2018-07-04,,Platform operator,office,Regional office,keplerops-staff; keplerops-platform-and-release; keplerops-service-operations\nKWM039,Jory Wellard,jory.wellard@keplerops.com,Product management and quality,Product management,Head of product management and quality,Leah Calder-Voss,2025-02-15,2026-06-01,Quality assurance,\"Team member, quality assurance\",hybrid,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-product-management\nKWM040,Kaisa Fennard,kaisa.fennard@keplerops.com,Product management and quality,Product management,Product manager,Jory Wellard,2021-09-26,2021-09-26,,Product manager,hybrid,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-product-management\nKWM041,Kiran Orvel,kiran.orvel@keplerops.com,Product management and quality,Product management,Product manager,Jory Wellard,2017-04-10,2017-04-10,,Product manager,remote,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-product-management\nKWM042,Lara Velswick,lara.velswick@keplerops.com,Product management and quality,Quality assurance,Quality assurance lead,Jory Wellard,2024-11-21,2026-06-01,Product management,\"Team member, product management\",hybrid,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-quality-assurance\nKWM043,Leila Ferrell,leila.ferrell@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,2020-06-05,2020-06-05,,Quality analyst,hybrid,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-quality-assurance\nKWM044,Lena Parnell,lena.parnell@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,2016-04-16,2016-04-16,,Quality analyst,remote,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-quality-assurance\nKWM045,Leo Yervan,leo.yervan@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,2023-08-27,2023-08-27,,Quality analyst,office,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-quality-assurance\nKWM046,Lila Garsen,lila.garsen@keplerops.com,Product management and quality,Quality assurance,Quality analyst,Lara Velswick,2019-03-11,2019-03-11,,Quality analyst,hybrid,Regional office,keplerops-staff; keplerops-product-management-and-quality; keplerops-quality-assurance\nKWM047,Lina Peveran,lina.peveran@keplerops.com,Commercial,Accounts,Head of commercial,Leah Calder-Voss,2026-02-22,2026-06-01,Proposals,\"Team member, proposals\",hybrid,Regional office,keplerops-staff; keplerops-commercial; keplerops-accounts\nKWM048,Louis Zorrel,louis.zorrel@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,2022-05-06,2022-05-06,,Account manager,hybrid,Regional office,keplerops-staff; keplerops-commercial; keplerops-accounts\nKWM049,Luca Gervain,luca.gervain@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,2018-12-17,2018-12-17,,Account manager,remote,Regional office,keplerops-staff; keplerops-commercial; keplerops-accounts\nKWM050,Mara Quillan,mara.quillan@keplerops.com,Commercial,Accounts,Account manager,Lina Peveran,2025-07-01,2025-07-01,,,office,Regional office,keplerops-staff; keplerops-commercial; keplerops-accounts\nKWM051,Margot Aldren,margot.aldren@keplerops.com,Commercial,Proposals,Proposals lead,Lina Peveran,2021-02-12,2026-06-01,Accounts,\"Team member, accounts\",hybrid,Regional office,keplerops-staff; keplerops-commercial; keplerops-proposals\nKWM052,Martin Harlowe,martin.harlowe@keplerops.com,Commercial,Proposals,Commercial coordinator,Margot Aldren,2017-09-23,2017-09-23,,Commercial coordinator,hybrid,Regional office,keplerops-staff; keplerops-commercial; keplerops-proposals\nLEAH,Leah Calder-Voss,leah.calder-voss@keplerops.com,Leadership and business operations,Executive,Founder and managing director,,2016-03-14,2016-03-14,,Earlier executive assignment,hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-executive\nKWM053,Mica Radvell,mica.radvell@keplerops.com,Leadership and business operations,Executive,Business director,Leah Calder-Voss,2024-11-18,2024-11-18,,Business director,hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-executive\nKWM054,Mira Belsart,mira.belsart@keplerops.com,Leadership and business operations,People operations,People operations lead,Leah Calder-Voss,2020-06-02,2026-06-01,Finance,\"Team member, finance\",hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-people-operations\nKWM055,Morgan Havelin,morgan.havelin@keplerops.com,Leadership and business operations,People operations,People coordinator,Mira Belsart,2016-04-13,2016-04-13,,People coordinator,hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-people-operations\nKWM056,Nella Renshaw,nella.renshaw@keplerops.com,Leadership and business operations,Finance,Finance lead,Leah Calder-Voss,2023-08-24,2026-06-01,Office,\"Team member, office\",hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-finance\nKWM057,Niamh Bravelle,niamh.bravelle@keplerops.com,Leadership and business operations,Finance,Finance officer,Nella Renshaw,2019-03-08,2019-03-08,,Finance officer,hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-finance\nKWM058,Niko Rensart,niko.rensart@keplerops.com,Leadership and business operations,Office,Office lead,Leah Calder-Voss,2026-06-19,2026-06-19,,,hybrid,Regional office,keplerops-staff; keplerops-leadership-and-business-operations; keplerops-office\n"
+    },
+    {
+      "name": "k-onboard-kwm003",
+      "title": "Starting arrangements — Amara Radvell",
+      "path": "k-onboard-kwm003.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-01-31T09:00:00-04:00",
+      "readers": [
+        "amara.radvell@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Amara Radvell\n\nEmployee: Amara Radvell (KWM003)\nStart: 2026-02-07\nRole: Product engineer, Core product\nManager: Adele Aldren\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-onboard-kwm014",
+      "title": "Starting arrangements — Corin Kelswick",
+      "path": "k-onboard-kwm014.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-03-13T09:00:00-04:00",
+      "readers": [
+        "corin.kelswick@keplerops.com",
+        "cian.cavelin@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Corin Kelswick\n\nEmployee: Corin Kelswick (KWM014)\nStart: 2026-03-20\nRole: Interface engineer, Experience\nManager: Cian Cavelin\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-onboard-kwm025",
+      "title": "Starting arrangements — Felix Darsell",
+      "path": "k-onboard-kwm025.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-01-25T09:00:00-04:00",
+      "readers": [
+        "felix.darsell@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Felix Darsell\n\nEmployee: Felix Darsell (KWM025)\nStart: 2026-02-01\nRole: Support engineer, Customer support\nManager: Elin Danwick\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-onboard-kwm036",
+      "title": "Starting arrangements — Jalen Warden",
+      "path": "k-onboard-kwm036.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-01-02T09:00:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "iris.edran@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Jalen Warden\n\nEmployee: Jalen Warden (KWM036)\nStart: 2026-01-09\nRole: Service operations lead, Service operations\nManager: Iris Edran\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-onboard-kwm047",
+      "title": "Starting arrangements — Lina Peveran",
+      "path": "k-onboard-kwm047.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-02-15T09:00:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Lina Peveran\n\nEmployee: Lina Peveran (KWM047)\nStart: 2026-02-22\nRole: Head of commercial, Accounts\nManager: Leah Calder-Voss\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-onboard-kwm058",
+      "title": "Starting arrangements — Niko Rensart",
+      "path": "k-onboard-kwm058.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-12T09:00:00-04:00",
+      "readers": [
+        "niko.rensart@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Starting arrangements: Niko Rensart\n\nEmployee: Niko Rensart (KWM058)\nStart: 2026-06-19\nRole: Office lead, Office\nManager: Leah Calder-Voss\nBase: Regional office\n\n- Work identity and staff-directory entry checked against the approved role.\n- Equipment to be assigned through the service desk before independent work.\n- Manager to confirm the local handover and the first scheduled task.\n\nThe access request is limited to the recorded job and distribution groups. Completion is recorded by the responsible team; this list is not a grant.\n"
+    },
+    {
+      "name": "k-move-kwm007",
+      "title": "Assignment change — Beatrice Bravelle",
+      "path": "k-move-kwm007.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Beatrice Bravelle\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, experience (Experience).\nCurrent assignment: Connectors lead (Connectors).\nCurrent manager: Adele Aldren.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm013",
+      "title": "Assignment change — Cian Cavelin",
+      "path": "k-move-kwm013.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Cian Cavelin\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, customer integrations (Customer integrations).\nCurrent assignment: Experience lead (Experience).\nCurrent manager: Adele Aldren.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm018",
+      "title": "Assignment change — Dev Senvard",
+      "path": "k-move-kwm018.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Dev Senvard\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, core product (Core product).\nCurrent assignment: Customer integrations lead (Customer integrations).\nCurrent manager: Adele Aldren.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm026",
+      "title": "Assignment change — Finn Marrent",
+      "path": "k-move-kwm026.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Finn Marrent\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, enablement (Enablement).\nCurrent assignment: Implementation lead (Implementation).\nCurrent manager: Elin Danwick.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm031",
+      "title": "Assignment change — Hugo Dravik",
+      "path": "k-move-kwm031.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "hugo.dravik@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Hugo Dravik\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, customer support (Customer support).\nCurrent assignment: Enablement lead (Enablement).\nCurrent manager: Elin Danwick.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm039",
+      "title": "Assignment change — Jory Wellard",
+      "path": "k-move-kwm039.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Jory Wellard\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, quality assurance (Quality assurance).\nCurrent assignment: Head of product management and quality (Product management).\nCurrent manager: Leah Calder-Voss.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm042",
+      "title": "Assignment change — Lara Velswick",
+      "path": "k-move-kwm042.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "jory.wellard@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Lara Velswick\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, product management (Product management).\nCurrent assignment: Quality assurance lead (Quality assurance).\nCurrent manager: Jory Wellard.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm047",
+      "title": "Assignment change — Lina Peveran",
+      "path": "k-move-kwm047.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Lina Peveran\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, proposals (Proposals).\nCurrent assignment: Head of commercial (Accounts).\nCurrent manager: Leah Calder-Voss.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm051",
+      "title": "Assignment change — Margot Aldren",
+      "path": "k-move-kwm051.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "margot.aldren@keplerops.com",
+        "lina.peveran@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Margot Aldren\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, accounts (Accounts).\nCurrent assignment: Proposals lead (Proposals).\nCurrent manager: Lina Peveran.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm054",
+      "title": "Assignment change — Mira Belsart",
+      "path": "k-move-kwm054.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Mira Belsart\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, finance (Finance).\nCurrent assignment: People operations lead (People operations).\nCurrent manager: Leah Calder-Voss.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-move-kwm056",
+      "title": "Assignment change — Nella Renshaw",
+      "path": "k-move-kwm056.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-01T08:00:00-04:00",
+      "readers": [
+        "nella.renshaw@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Assignment change — Nella Renshaw\n\nApproved: 27 May 2026. Effective: 1 June 2026.\n\nPrevious assignment: Team member, office (Office).\nCurrent assignment: Finance lead (Finance).\nCurrent manager: Leah Calder-Voss.\n\nThe previous team's completed records keep their original author. The staff directory reflects the current assignment. Identity services should remove the old team distribution membership and confirm the new one against the approved role. The change does not approve privileged access.\n"
+    },
+    {
+      "name": "k-equipment-k-0001-26",
+      "title": "Equipment request K-0001-26",
+      "path": "k-equipment-k-0001-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-08T10:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0001-26\n\nRequested: 5 June 2026 by Rowan Ito.\nManager: Adele Aldren.\nFor: work laptop, Core product work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against ROWAN and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0002-26",
+      "title": "Equipment request K-0002-26",
+      "path": "k-equipment-k-0002-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-10T10:00:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0002-26\n\nRequested: 7 June 2026 by Beatrice Bravelle.\nManager: Adele Aldren.\nFor: work laptop, Connectors work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM007 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0003-26",
+      "title": "Equipment request K-0003-26",
+      "path": "k-equipment-k-0003-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-12T10:00:00-04:00",
+      "readers": [
+        "corin.kelswick@keplerops.com",
+        "cian.cavelin@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0003-26\n\nRequested: 9 June 2026 by Corin Kelswick.\nManager: Cian Cavelin.\nFor: work laptop, Experience work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM014 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0004-26",
+      "title": "Equipment request K-0004-26",
+      "path": "k-equipment-k-0004-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-14T10:00:00-04:00",
+      "readers": [
+        "elias.tarlowe@keplerops.com",
+        "dev.senvard@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0004-26\n\nRequested: 11 June 2026 by Elias Tarlowe.\nManager: Dev Senvard.\nFor: work laptop, Customer integrations work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM021 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0005-26",
+      "title": "Equipment request K-0005-26",
+      "path": "k-equipment-k-0005-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-16T10:00:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0005-26\n\nRequested: 13 June 2026 by Finn Marrent.\nManager: Elin Danwick.\nFor: work laptop, Implementation work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM026 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0006-26",
+      "title": "Equipment request K-0006-26",
+      "path": "k-equipment-k-0006-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-18T10:00:00-04:00",
+      "readers": [
+        "imani.verrin@keplerops.com",
+        "hugo.dravik@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0006-26\n\nRequested: 15 June 2026 by Imani Verrin.\nManager: Hugo Dravik.\nFor: work laptop, Enablement work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM033 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0007-26",
+      "title": "Equipment request K-0007-26",
+      "path": "k-equipment-k-0007-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-20T10:00:00-04:00",
+      "readers": [
+        "jonas.odrin@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0007-26\n\nRequested: 17 June 2026 by Jonas Odrin.\nManager: Jalen Warden.\nFor: work laptop, Service operations work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM038 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0008-26",
+      "title": "Equipment request K-0008-26",
+      "path": "k-equipment-k-0008-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-22T10:00:00-04:00",
+      "readers": [
+        "leo.yervan@keplerops.com",
+        "lara.velswick@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0008-26\n\nRequested: 19 June 2026 by Leo Yervan.\nManager: Lara Velswick.\nFor: work laptop, Quality assurance work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM045 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0009-26",
+      "title": "Equipment request K-0009-26",
+      "path": "k-equipment-k-0009-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-24T10:00:00-04:00",
+      "readers": [
+        "martin.harlowe@keplerops.com",
+        "margot.aldren@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0009-26\n\nRequested: 21 June 2026 by Martin Harlowe.\nManager: Margot Aldren.\nFor: work laptop, Proposals work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM052 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-equipment-k-0010-26",
+      "title": "Equipment request K-0010-26",
+      "path": "k-equipment-k-0010-26.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-26T10:00:00-04:00",
+      "readers": [
+        "niko.rensart@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "# Equipment request K-0010-26\n\nRequested: 23 June 2026 by Niko Rensart.\nManager: Leah Calder-Voss.\nFor: work laptop, Office work at Regional office.\nStatus: Issued.\n\nThe service desk records the asset against KWM058 and confirms the local handover. If this replaces an older item, the old assignment is closed separately. The request carries no application role change.\n"
+    },
+    {
+      "name": "k-induction-kwm003",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm003.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "amara.radvell@keplerops.com",
+        "adele.aldren@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:6a48b2d3-4406-5ee0-9b9b-72920a6f15ec@keplerops.com\r\nDTSTAMP:20260201T130000Z\r\nDTSTART:20260208T140000Z\r\nDTEND:20260208T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:amara.radvell@keplerops.com\r\nATTENDEE:mailto:adele.aldren@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Amara Radvell: meet Adele Aldren\\; check local handover and fir\r\n st work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "k-induction-kwm014",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm014.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "corin.kelswick@keplerops.com",
+        "cian.cavelin@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:c7d23186-f896-5aaa-bf13-9aab585448db@keplerops.com\r\nDTSTAMP:20260314T130000Z\r\nDTSTART:20260321T140000Z\r\nDTEND:20260321T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:corin.kelswick@keplerops.com\r\nATTENDEE:mailto:cian.cavelin@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Corin Kelswick: meet Cian Cavelin\\; check local handover and fi\r\n rst work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "k-induction-kwm025",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm025.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "felix.darsell@keplerops.com",
+        "elin.danwick@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:70e1bb11-7109-5177-a974-d88386cb362d@keplerops.com\r\nDTSTAMP:20260126T130000Z\r\nDTSTART:20260202T140000Z\r\nDTEND:20260202T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:felix.darsell@keplerops.com\r\nATTENDEE:mailto:elin.danwick@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Felix Darsell: meet Elin Danwick\\; check local handover and fir\r\n st work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "k-induction-kwm036",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm036.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "jalen.warden@keplerops.com",
+        "iris.edran@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:e71c8ec0-33b1-5281-871c-140de47ed477@keplerops.com\r\nDTSTAMP:20260103T130000Z\r\nDTSTART:20260110T140000Z\r\nDTEND:20260110T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:jalen.warden@keplerops.com\r\nATTENDEE:mailto:iris.edran@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Jalen Warden: meet Iris Edran\\; check local handover and first\r\n  work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "k-induction-kwm047",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm047.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "lina.peveran@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:32b431bf-b9d0-52d8-846d-2aae70257b5f@keplerops.com\r\nDTSTAMP:20260216T130000Z\r\nDTSTART:20260223T140000Z\r\nDTEND:20260223T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:lina.peveran@keplerops.com\r\nATTENDEE:mailto:leah.calder-voss@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Lina Peveran: meet Leah Calder-Voss\\; check local handover and\r\n  first work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "k-induction-kwm058",
+      "title": "New colleague induction",
+      "path": "k-induction-kwm058.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "niko.rensart@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:1cbe2181-12ed-505e-a5f5-07a0562917d6@keplerops.com\r\nDTSTAMP:20260613T130000Z\r\nDTSTART:20260620T140000Z\r\nDTEND:20260620T144500Z\r\nORGANIZER:mailto:mira.belsart@keplerops.com\r\nATTENDEE:mailto:niko.rensart@keplerops.com\r\nATTENDEE:mailto:leah.calder-voss@keplerops.com\r\nSUMMARY:New colleague induction\r\nDESCRIPTION:Niko Rensart: meet Leah Calder-Voss\\; check local handover and\r\n  first work assignment.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    }
+  ],
+  "reader_groups": {
+    "keplerops-staff": [
+      "rowan.ito@keplerops.com",
+      "adele.aldren@keplerops.com",
+      "alix.harlowe@keplerops.com",
+      "amara.radvell@keplerops.com",
+      "anika.belsart@keplerops.com",
+      "ari.havelin@keplerops.com",
+      "avery.renshaw@keplerops.com",
+      "beatrice.bravelle@keplerops.com",
+      "ben.iversen@keplerops.com",
+      "callum.rivelin@keplerops.com",
+      "camille.carsten@keplerops.com",
+      "cara.jorrel@keplerops.com",
+      "celia.sarnell@keplerops.com",
+      "cian.cavelin@keplerops.com",
+      "corin.kelswick@keplerops.com",
+      "dana.selwyn@keplerops.com",
+      "dario.cernault@keplerops.com",
+      "della.larmont@keplerops.com",
+      "dev.senvard@keplerops.com",
+      "edda.dalver@keplerops.com",
+      "eira.lestrel@keplerops.com",
+      "elias.tarlowe@keplerops.com",
+      "maya.ranscombe@keplerops.com",
+      "talia.mornac@keplerops.com",
+      "elin.danwick@keplerops.com",
+      "emre.maraven@keplerops.com",
+      "farah.telmire@keplerops.com",
+      "felix.darsell@keplerops.com",
+      "finn.marrent@keplerops.com",
+      "flora.torren@keplerops.com",
+      "gabriel.delmont@keplerops.com",
+      "hana.mavell@keplerops.com",
+      "harriet.velswick@keplerops.com",
+      "hugo.dravik@keplerops.com",
+      "idris.narsen@keplerops.com",
+      "imani.verrin@keplerops.com",
+      "evan.calderoux@keplerops.com",
+      "iris.edran@keplerops.com",
+      "isabel.nelcourt@keplerops.com",
+      "noor.aveling@keplerops.com",
+      "jalen.warden@keplerops.com",
+      "jamie.elvarn@keplerops.com",
+      "jonas.odrin@keplerops.com",
+      "jory.wellard@keplerops.com",
+      "kaisa.fennard@keplerops.com",
+      "kiran.orvel@keplerops.com",
+      "lara.velswick@keplerops.com",
+      "leila.ferrell@keplerops.com",
+      "lena.parnell@keplerops.com",
+      "leo.yervan@keplerops.com",
+      "lila.garsen@keplerops.com",
+      "lina.peveran@keplerops.com",
+      "louis.zorrel@keplerops.com",
+      "luca.gervain@keplerops.com",
+      "mara.quillan@keplerops.com",
+      "margot.aldren@keplerops.com",
+      "martin.harlowe@keplerops.com",
+      "leah.calder-voss@keplerops.com",
+      "mica.radvell@keplerops.com",
+      "mira.belsart@keplerops.com",
+      "morgan.havelin@keplerops.com",
+      "nella.renshaw@keplerops.com",
+      "niamh.bravelle@keplerops.com",
+      "niko.rensart@keplerops.com"
+    ],
+    "keplerops-product-engineering": [
+      "rowan.ito@keplerops.com",
+      "adele.aldren@keplerops.com",
+      "alix.harlowe@keplerops.com",
+      "amara.radvell@keplerops.com",
+      "anika.belsart@keplerops.com",
+      "ari.havelin@keplerops.com",
+      "avery.renshaw@keplerops.com",
+      "beatrice.bravelle@keplerops.com",
+      "ben.iversen@keplerops.com",
+      "callum.rivelin@keplerops.com",
+      "camille.carsten@keplerops.com",
+      "cara.jorrel@keplerops.com",
+      "celia.sarnell@keplerops.com",
+      "cian.cavelin@keplerops.com",
+      "corin.kelswick@keplerops.com",
+      "dana.selwyn@keplerops.com",
+      "dario.cernault@keplerops.com",
+      "della.larmont@keplerops.com",
+      "dev.senvard@keplerops.com",
+      "edda.dalver@keplerops.com",
+      "eira.lestrel@keplerops.com",
+      "elias.tarlowe@keplerops.com"
+    ],
+    "keplerops-core-product": [
+      "rowan.ito@keplerops.com",
+      "adele.aldren@keplerops.com",
+      "alix.harlowe@keplerops.com",
+      "amara.radvell@keplerops.com",
+      "anika.belsart@keplerops.com",
+      "ari.havelin@keplerops.com",
+      "avery.renshaw@keplerops.com"
+    ],
+    "keplerops-connectors": [
+      "beatrice.bravelle@keplerops.com",
+      "ben.iversen@keplerops.com",
+      "callum.rivelin@keplerops.com",
+      "camille.carsten@keplerops.com",
+      "cara.jorrel@keplerops.com",
+      "celia.sarnell@keplerops.com"
+    ],
+    "keplerops-experience": [
+      "cian.cavelin@keplerops.com",
+      "corin.kelswick@keplerops.com",
+      "dana.selwyn@keplerops.com",
+      "dario.cernault@keplerops.com",
+      "della.larmont@keplerops.com"
+    ],
+    "keplerops-customer-integrations": [
+      "dev.senvard@keplerops.com",
+      "edda.dalver@keplerops.com",
+      "eira.lestrel@keplerops.com",
+      "elias.tarlowe@keplerops.com"
+    ],
+    "keplerops-support-and-implementation": [
+      "maya.ranscombe@keplerops.com",
+      "talia.mornac@keplerops.com",
+      "elin.danwick@keplerops.com",
+      "emre.maraven@keplerops.com",
+      "farah.telmire@keplerops.com",
+      "felix.darsell@keplerops.com",
+      "finn.marrent@keplerops.com",
+      "flora.torren@keplerops.com",
+      "gabriel.delmont@keplerops.com",
+      "hana.mavell@keplerops.com",
+      "harriet.velswick@keplerops.com",
+      "hugo.dravik@keplerops.com",
+      "idris.narsen@keplerops.com",
+      "imani.verrin@keplerops.com"
+    ],
+    "keplerops-customer-support": [
+      "maya.ranscombe@keplerops.com",
+      "talia.mornac@keplerops.com",
+      "elin.danwick@keplerops.com",
+      "emre.maraven@keplerops.com",
+      "farah.telmire@keplerops.com",
+      "felix.darsell@keplerops.com"
+    ],
+    "keplerops-implementation": [
+      "finn.marrent@keplerops.com",
+      "flora.torren@keplerops.com",
+      "gabriel.delmont@keplerops.com",
+      "hana.mavell@keplerops.com",
+      "harriet.velswick@keplerops.com"
+    ],
+    "keplerops-enablement": [
+      "hugo.dravik@keplerops.com",
+      "idris.narsen@keplerops.com",
+      "imani.verrin@keplerops.com"
+    ],
+    "keplerops-platform-and-release": [
+      "evan.calderoux@keplerops.com",
+      "iris.edran@keplerops.com",
+      "isabel.nelcourt@keplerops.com",
+      "noor.aveling@keplerops.com",
+      "jalen.warden@keplerops.com",
+      "jamie.elvarn@keplerops.com",
+      "jonas.odrin@keplerops.com"
+    ],
+    "keplerops-release-engineering": [
+      "evan.calderoux@keplerops.com",
+      "iris.edran@keplerops.com",
+      "isabel.nelcourt@keplerops.com"
+    ],
+    "keplerops-service-operations": [
+      "noor.aveling@keplerops.com",
+      "jalen.warden@keplerops.com",
+      "jamie.elvarn@keplerops.com",
+      "jonas.odrin@keplerops.com"
+    ],
+    "keplerops-product-management-and-quality": [
+      "jory.wellard@keplerops.com",
+      "kaisa.fennard@keplerops.com",
+      "kiran.orvel@keplerops.com",
+      "lara.velswick@keplerops.com",
+      "leila.ferrell@keplerops.com",
+      "lena.parnell@keplerops.com",
+      "leo.yervan@keplerops.com",
+      "lila.garsen@keplerops.com"
+    ],
+    "keplerops-product-management": [
+      "jory.wellard@keplerops.com",
+      "kaisa.fennard@keplerops.com",
+      "kiran.orvel@keplerops.com"
+    ],
+    "keplerops-quality-assurance": [
+      "lara.velswick@keplerops.com",
+      "leila.ferrell@keplerops.com",
+      "lena.parnell@keplerops.com",
+      "leo.yervan@keplerops.com",
+      "lila.garsen@keplerops.com"
+    ],
+    "keplerops-commercial": [
+      "lina.peveran@keplerops.com",
+      "louis.zorrel@keplerops.com",
+      "luca.gervain@keplerops.com",
+      "mara.quillan@keplerops.com",
+      "margot.aldren@keplerops.com",
+      "martin.harlowe@keplerops.com"
+    ],
+    "keplerops-accounts": [
+      "lina.peveran@keplerops.com",
+      "louis.zorrel@keplerops.com",
+      "luca.gervain@keplerops.com",
+      "mara.quillan@keplerops.com"
+    ],
+    "keplerops-proposals": [
+      "margot.aldren@keplerops.com",
+      "martin.harlowe@keplerops.com"
+    ],
+    "keplerops-leadership-and-business-operations": [
+      "leah.calder-voss@keplerops.com",
+      "mica.radvell@keplerops.com",
+      "mira.belsart@keplerops.com",
+      "morgan.havelin@keplerops.com",
+      "nella.renshaw@keplerops.com",
+      "niamh.bravelle@keplerops.com",
+      "niko.rensart@keplerops.com"
+    ],
+    "keplerops-executive": [
+      "leah.calder-voss@keplerops.com",
+      "mica.radvell@keplerops.com"
+    ],
+    "keplerops-people-operations": [
+      "mira.belsart@keplerops.com",
+      "morgan.havelin@keplerops.com"
+    ],
+    "keplerops-finance": [
+      "nella.renshaw@keplerops.com",
+      "niamh.bravelle@keplerops.com"
+    ],
+    "keplerops-office": [
+      "niko.rensart@keplerops.com"
+    ]
+  },
+  "identity_requirements": {
+    "authentication": "individual staff identity",
+    "access": "exact item readers"
+  }
+}

@@ -13,23 +13,23 @@ Recorded on **2026-09-20**, using Python 3.12:
 | --- | --- |
 | env-packs author validation | Pass |
 | Native RAE parsing, composition, and semantic validation | Pass |
-| Native instantiation and whole-campaign compilation | Pass; 3,442 realization requirements emitted |
+| Native instantiation and whole-campaign compilation | Pass; 3,450 realization requirements emitted |
 | Default-open provenance and selected compiled open/exact requirements | Pass |
-| Explicit source bindings in all 277 compiled observation selectors | Pass |
-| Four workplace source artifacts and named service materialization bindings | Pass in composed and compiled SDL |
-| Workplace asset rendering, chronology, bytes, and audiences | Pass; 88 outputs reproduce exactly |
+| Explicit source bindings in all 281 compiled observation selectors | Pass |
+| Eight workplace source artifacts and named service materialization bindings | Pass in composed and compiled SDL |
+| Workplace asset rendering, chronology, bytes, and audiences | Pass; 110 outputs reproduce exactly |
 | All 250 technical sections from 50 drafted cards | Preserved and checked against the cards |
 | Separate action, evidence, and seed ownership; six consequence effects | Pass |
 | Design correspondence and 1,209 minimal closures | Pass |
 | All 16 finale route combinations | Pass |
 | 28 SDL mutations and invalid posture spelling | Rejected as expected |
-| Four workplace SDL mutations and four asset corruption cases | Rejected as expected |
+| Four workplace SDL mutations and five asset corruption cases | Rejected as expected |
 | Two compiled observation-selector mutations | Rejected as expected |
 | 26 negative topology/event cases | Rejected as expected |
 | Existing design and challenge-document checks | Pass |
 
 The 97 YAML files (entry point plus modules) have aggregate SHA-256
-`cfa53a4b05c8d9a5ab9706c34bb40498f1ff07e2b9be9f3a9247924478e90066`.
+`f1f56b34acca66bfa5070dc228cfe5f553cabee926686c50cb2e4abd54039e8c`.
 The digest processes paths in sorted order, appending each path relative to
 `sdl/`, a NUL byte, its file bytes, and another NUL byte. This records the
 validated draft; the executable checks remain authoritative after edits.
@@ -50,8 +50,8 @@ The root scenario composes 96 native modules. The inventory is:
 | Explicitly scoped relays | 7 |
 | Challenge surface bindings | 266 |
 | Required record datasets | 269 |
-| Authored workplace source collections | 4 |
-| Explicitly bound observation requirements | 277 (273 challenge/capability; 4 workplace readback) |
+| Authored workplace source collections | 8 |
+| Explicitly bound observation requirements | 281 (273 challenge/capability; 8 workplace readback) |
 | Consequence events | 6 |
 
 The 46 native node declarations are 37 logical compute nodes and nine logical
@@ -107,27 +107,36 @@ the original AND/OR formulas. Collection scope does not require completing all
 alternative paths or writing to every producer. Native default-open posture
 remains present in all 97 documents.
 
-The [workplace collection](../assets/narrative/README.md) contains 75 unique messages,
-179 retained message copies in sixteen mailboxes, fifteen authored documents,
-directories for fourteen company employees, and three calendar invitations.
-Jules is the fifteenth cast member and appears as an external correspondent.
-The four native content declarations identify exact source names and digest-based
+The [workplace collection](../assets/narrative/README.md) contains 1,475 unique
+messages, 3,399 retained message copies, 155 authored documents, directories
+for all 294 company employees, and 21 calendar invitations. Jules remains an
+external correspondent outside both company rosters. The eight native content
+declarations identify exact source names and digest-based
 versions. The pack's artifact catalog resolves those pairs to checked-in files;
 the validator checks their bytes independently of RAE's reference validation.
 This catalog is a pack convention, not a new SDL field.
 
-The native service materialization contracts bind mail and documents to the
-existing KeplerOps staff and ARWC business systems. Compilation preserves the
-source versions, node ownership, and named workplace services. Four observed
+The directory packages enumerate same-employer staff groups; employment
+packages carry exact item readers and individual-identity requirements. Native
+content marks mail, documents, and employment data sensitive. RAE's content
+declaration does not enforce item readers on its own, so the eventual workplace
+adapter must apply the packaged reader sets. These checks verify the authored
+reader requirements and source bytes, not live authorization behavior.
+
+The native service materialization contracts bind mail, documents, staff
+directories, and employment records to the existing KeplerOps staff and ARWC
+business systems. Compilation preserves the source versions, node ownership,
+and named workplace services. Eight observed
 readback requirements select the corresponding `provision.content` addresses.
 The logical TCP 443 service declarations add no node, access route, credential,
 or challenge prerequisite. Backend and software choices remain open.
 
 Asset checks compare RFC822 headers and bodies, reply relationships, MIME
 attachment bytes and publication dates, mailbox membership, document readers,
-staff contacts, and calendar dates, status, and audiences. Four corruption cases
+staff contacts, and calendar dates, status, and audiences. Five corruption cases
 alter an attachment, expose a private message to an unrelated mailbox, change
-source bytes, or detach a reply; all are rejected. Four native type-valid SDL
+source bytes, detach a reply, or introduce a reporting loop; all are rejected.
+Four native type-valid SDL
 mutations change a content owner, source version, observed-state requirement,
 or selected readback content; all are rejected as well.
 

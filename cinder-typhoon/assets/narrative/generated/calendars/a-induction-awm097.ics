@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:6b21878d-9bc1-5a8c-8c6b-f4ffe5542438@alterrawaterco.com
+DTSTAMP:20260625T130000Z
+DTSTART:20260702T140000Z
+DTEND:20260702T144500Z
+ORGANIZER:mailto:finn.elvarn@alterrawaterco.com
+ATTENDEE:mailto:silas.iversen@alterrawaterco.com
+ATTENDEE:mailto:ren.belsart@alterrawaterco.com
+SUMMARY:Site and shift induction
+DESCRIPTION:Silas Iversen: meet Ren Belsart\; check local handover and firs
+ t work assignment.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

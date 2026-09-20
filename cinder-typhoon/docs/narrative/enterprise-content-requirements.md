@@ -1,10 +1,11 @@
 # Enterprise content requirements
 
-Planning draft, 19 September 2026. This document specifies future content
-development. It creates no employees, business records, services, or SDL changes.
-The [generation plan](content-generation-plan.md) covers tools, sizing, and order
-of work. The existing 75 messages and fifteen documents are a small authored
-story collection; they do not constitute the companies' documentary footprint.
+Planning draft, 19 September 2026. This document specifies the complete
+enterprise-content programme; the [workforce slice](workforce-review.md) now
+realizes its population and employment-record portion. The [generation
+plan](content-generation-plan.md) records earlier sizing proposals. The pack now
+contains 1,475 messages and 155 source documents, including the earlier story
+collection. Other departmental business histories remain future content work.
 
 ## A reusable world
 
@@ -33,8 +34,9 @@ companies without inheriting Cinder's events or exposing its solutions.
 | ENV-09: no design leakage | Participant-visible content, filenames, headers, document properties, paths, application fields, and search results contain no authoring labels, challenge mappings, generation instructions, or solution annotations. |
 | ENV-10: build-time history | Generate and freeze the history before deployment. The enterprise content must not require an ongoing population of agents or an expensive live company simulation during the event. |
 
-These are requirements for the future build. The current pack has not yet
-implemented this population, history, separation, or scale.
+The workforce slice implements the 294-person population, its current reporting
+tree, selected employment history, and separate directory and personnel readers.
+The broader business histories and full documentary scale remain to be built.
 
 ## KeplerOps: 64 employees
 
