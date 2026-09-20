@@ -1,0 +1,142 @@
+author_only: true
+issue: 111
+snapshot: '2026-09-16T08:30:00-04:00'
+required_base:
+  repository: PaloAltoNetworks/shifter-scenarios
+  commit: 8e1e0da53df4ae101e1d2a354be27976448416f0
+  sources:
+  - name: cinder-typhoon/narrative/keplerops-mail
+    version: sha256-154c23ef1edfe1a67318bd0dcd828fe9143a9c1f1607f20e496bc41ac51687c8
+  - name: cinder-typhoon/narrative/keplerops-documents
+    version: sha256-d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323
+  - name: cinder-typhoon/narrative/arwc-mail
+    version: sha256-6722e554c633052dd31df20e73951ce3324b9d38e48c93c75e97a6a129686557
+  - name: cinder-typhoon/narrative/arwc-documents
+    version: sha256-983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2
+ownership:
+  scope: All records in the four assets/narrative/artifact-catalog.json collections
+  owner: environment
+  scenario_additions: []
+  scenario_replacements: []
+  challenge_references: Unchanged ordinary records remain environment-owned.
+samples:
+- person: rowan
+  context: Work
+  message: k-review-1
+  disposition: new
+- person: rowan
+  context: Familiar or less formal
+  message: k-bike-4
+  disposition: reused-revised
+- person: maya
+  context: Work
+  message: b-kepler-arwc-1
+  disposition: reused-unchanged
+- person: maya
+  context: Familiar or less formal
+  message: k-bike-3
+  disposition: reused-revised
+- person: evan
+  context: Work
+  message: k-review-2
+  disposition: new
+- person: evan
+  context: Familiar or less formal
+  message: k-lunch-3
+  disposition: reused-unchanged
+- person: noor
+  context: Work
+  message: b-orren-2
+  disposition: reused-revised
+- person: noor
+  context: Familiar or less formal
+  message: k-lunch-4
+  disposition: reused-revised
+- person: talia
+  context: Work
+  message: k-workshop-3
+  disposition: reused-unchanged
+- person: talia
+  context: Familiar or less formal
+  message: k-rehearsal-1
+  disposition: new
+- person: leah
+  context: Work
+  message: k-growth-1
+  disposition: reused-unchanged
+- person: leah
+  context: Familiar or less formal
+  message: k-memory-1
+  disposition: new
+- person: theo
+  context: Work
+  message: b-kepler-arwc-2
+  disposition: reused-revised
+- person: theo
+  context: Familiar or less formal
+  message: a-photo-2
+  disposition: reused-unchanged
+- person: clara
+  context: Work
+  message: b-ardenvale-2
+  disposition: reused-unchanged
+- person: clara
+  context: Familiar or less formal
+  message: a-walk-1
+  disposition: reused-revised
+- person: nadia
+  context: Work
+  message: a-explanation-1
+  disposition: new
+- person: nadia
+  context: Familiar or less formal
+  message: a-choir-4
+  disposition: reused-revised
+- person: priya
+  context: Work
+  message: b-merewick-2
+  disposition: reused-unchanged
+- person: priya
+  context: Familiar or less formal
+  message: a-choir-3
+  disposition: reused-revised
+- person: luc
+  context: Work
+  message: a-learning-2
+  disposition: reused-revised
+- person: luc
+  context: Familiar or less formal
+  message: a-path-1
+  disposition: new
+- person: mina
+  context: Work
+  message: a-learning-1
+  disposition: reused-unchanged
+- person: mina
+  context: Familiar or less formal
+  message: a-photo-3
+  disposition: reused-revised
+- person: owen
+  context: Work
+  message: a-outreach-1
+  disposition: reused-revised
+- person: owen
+  context: Familiar or less formal
+  message: a-photo-6
+  disposition: reused-revised
+- person: rosa
+  context: Work
+  message: a-billing-3
+  disposition: reused-revised
+- person: rosa
+  context: Familiar or less formal
+  message: a-billing-5
+  disposition: reused-unchanged
+- person: jules
+  context: Work
+  message: b-veybridge-1
+  disposition: reused-revised
+- person: jules
+  context: Familiar or less formal
+  message: b-path-1
+  disposition: new

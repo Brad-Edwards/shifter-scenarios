@@ -28,6 +28,7 @@ and unfinished plans of their own.
 | --- | --- |
 | [The two companies](companies.md) | Business models, ownership, histories, ambitions, organization, and workplace customs. |
 | [People and relationships](people.md) | Fifteen recurring people, distinct voices, personal motives, friendships, and professional relationships. |
+| [Character writing review](voice-review.md) | Thirty selected samples, reuse counts, continuity findings, and the author-only ownership inventory. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
 | [Direction for ambient content](content-direction.md) | How later correspondence and workplace records should express this world. |

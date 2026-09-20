@@ -35,10 +35,11 @@ messages:
     body: |
       Theo,
 
-      Could you put routine scheduling requests through dispatch first? I'll still discuss the work with you. They have the full diary, and I am often on the road when a customer calls.
+      Can routine scheduling go through dispatch first please? They've got the whole diary. I'm often on the road when you call.
 
-      We have newer people taking some of those arrangements now. It will help if customers get to know them before they need to move a visit at short notice.
+      Still happy to talk about the work itself. Some of the arrangements are with newer people now; worth getting to know them before you need a visit moved.
 
+      Thanks
       Jules
   - id: b-veybridge-2
     story: veybridge
@@ -196,10 +197,9 @@ messages:
     subject: 'Re: Service review completed'
     reply_to: b-orren-1
     body: |
-      Summary looks right. Thank you for keeping the review to the questions we actually had.
+      Summary looks right, including the split between internal IT and our product workloads. Thanks.
 
-      I will send a week for the next one after planning. Your persistence in putting these in the diary is useful, even when I pretend otherwise.
-
+      No date for the next review yet. I'll send a week after planning.
       Noor
   - id: b-ternwick-1
     story: ternwick
@@ -250,10 +250,24 @@ messages:
     subject: 'Re: Reference conversation next month'
     reply_to: b-kepler-arwc-1
     body: |
-      Probably, subject to the usual agreement on time. Send an outline and I'll find the right colleagues.
+      Maya,
 
-      The useful story is less repeated collection of the same field material. The adjustment has been learning to work with a support process rather than calling whichever engineer we met first. We have both grown since then.
+      Probably. Subject to the usual agreement on staff time. Send the outline and I'll find the right colleagues.
 
-      I can describe that honestly. I would rather not read slides.
+      We can talk about not collecting the same field material twice. And getting used to the support process instead of ringing the first engineer we met. That took a while on our side.
 
+      No slides for me, please.
       Theo
+  - id: b-path-1
+    story: friends
+    from: jules
+    to: [theo]
+    date: '2026-09-15T17:20:00-04:00'
+    subject: Second place
+    body: |
+      Second, then! Nice one. Good to hear about it when we spoke. Only just stopped for a coffee.
+
+      I've tried taking pictures on walks but I always seem to catch the moment just after the light was good. Last time I stood there waiting for it to come back and my coffee went cold. Went home with a picture of a grey path and no useful excuse for being late.
+
+      Send me yours when you get a minute. The actual photo, not a description of the judging.
+      Jules

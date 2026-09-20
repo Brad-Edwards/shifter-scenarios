@@ -28,11 +28,9 @@ messages:
     subject: 'Re: After rehearsal'
     reply_to: a-choir-2
     body: |
-      I was hoping for ten minutes of complaining followed by dinner. No guide required.
+      Dinner, Nadia. Ten minutes of complaining, then dinner.
 
-      You may ask me about the middle section we still haven't got right. That is a problem we have both volunteered to have.
-
-      Priya
+      No guide required. We can talk about the middle section we still can't sing; at least we volunteered for that problem.
   - id: a-choir-4
     story: choir
     from: nadia
@@ -41,10 +39,11 @@ messages:
     subject: 'Re: After rehearsal'
     reply_to: a-choir-3
     body: |
-      Good evening. Thanks for saying what you meant.
+      Really enjoyed last night. I nearly asked you about the invoices again over dinner, did you notice?
 
-      I will ask whether you want help or company next time. I enjoyed the company. I am reserving judgment on that middle section.
+      Next time: company first. Unless you actually want the ideas.
 
+      Still can't get that middle section out of my head. Not necessarily the right notes.
       Nadia
   - id: a-photo-1
     story: photography
@@ -80,13 +79,10 @@ messages:
     subject: 'Re: Have you entered a photograph?'
     reply_to: a-photo-2
     body: |
-      I don't know. You could ask the organizers along with your other very casual questions.
+      Don't know. Ask the organizers, you've probably got their attention by now.
 
-      Mine is a patch of evening light on the garden wall. I like it. That may be the limit of my campaign for office glory.
-
+      Mine's evening light on the garden wall. I'm pleased with it.
       Owen, send yours in.
-
-      Mina
   - id: a-photo-4
     story: photography
     from: arwc_staff
@@ -118,11 +114,9 @@ messages:
     date: '2026-09-15T13:10:00-04:00'
     subject: Mine is going in the display
     body: |
-      Thanks for encouraging me. I didn't place but I'm pleased they are using it.
+      Mine's going in the display! Didn't place, but pleased I sent it in. Thanks both.
 
-      Also, Theo, your footpath picture is very good. I had not realized how early you have to get up to look that relaxed about a competition.
-
-      Owen
+      Theo, that footpath picture is good. What time did you have to get up?
   - id: a-outreach-1
     story: outreach
     from: owen
@@ -130,9 +124,11 @@ messages:
     date: '2026-09-09T15:10:00-04:00'
     subject: Short explanation for the community session
     body: |
-      I have attached my preparation note for tomorrow. I tried to explain the whole journey from source to tap, but it takes longer aloud than it did in my head.
+      Mina, Rosa,
 
-      Mina, could we go over the terms you used for the old district arrangements? I wrote them down, but I am not sure I understood them well enough to explain them to someone else.
+      Preparation note attached for tomorrow. I've tried it aloud now and it's too long. I wanted to get the whole journey from source to tap in, so people could see where each job fits, but I haven't left much space for a question.
+
+      Mina, could you go over the old district names again? I've written them down. Not sure I could explain them to someone else yet.
 
       Owen
     attachments: [a-outreach-preparation]
@@ -208,10 +204,9 @@ messages:
     subject: 'Re: The billing-period explanation'
     reply_to: a-billing-2
     body: |
-      I think we have reached that point. I tried both versions with colleagues and they answered the question equally well.
+      Let's keep this one. I tried both with colleagues and they answered the question equally well.
 
-      The accepted version is attached. Thank you both. This should save customers a second explanation.
-
+      Accepted version attached. Thanks, both.
       Rosa
     attachments: [a-billing-explanation]
   - id: a-billing-4
@@ -285,9 +280,9 @@ messages:
     date: '2026-09-07T17:05:00-04:00'
     subject: A walk for your weekend
     body: |
-      The riverside path would be my first choice. If the weather is clear, the higher route is also lovely, but you would want more of the day for it. I have notes on both and a few ideas about lunch.
+      Nadia, take the riverside path if you want an easy afternoon. Lovely light along there when the cloud lifts. The higher route is good too, though you'd want most of the day and something better than the shoes I wore last time.
 
-      On rereading your question, you asked for one easy walk. Riverside path. I'll stop there unless invited.
+      I've got notes on both somewhere. There's a nice place to stop for lunch near the riverside turn, and another further along if you're still going. Want those?
 
       Clara
   - id: a-walk-2
@@ -323,8 +318,40 @@ messages:
     subject: 'Re: Time for the next orientation group'
     reply_to: a-learning-1
     body: |
-      Agreed. I'll ask the managers to include preparation when they bring their training proposals.
+      Mina,
 
-      Point taken about development. I've been thinking a good deal about succession lately, including my own, and should not assume everyone is asking the same question.
+      Agreed. I'll ask the managers to include preparation time in their training proposals.
 
+      And yes, development as well. I have been thinking about my own succession and let that colour the question. No retirement date assumed for either of us.
+
+      Luc
+  - id: a-explanation-1
+    story: billing
+    from: nadia
+    to: [rosa, priya]
+    date: '2026-09-14T11:10:00-04:00'
+    subject: 'Re: The billing-period explanation'
+    reply_to: a-billing-1
+    body: |
+      Rosa,
+
+      Yes, dates first. The reading date and the billing period aren't the same thing; putting them next to each other should help. Like showing the start and end of a journey before explaining how you measured it.
+
+      Can we try your opening with someone who hasn't worked on this? I know what we mean, which isn't much of a test.
+
+      Nadia
+  - id: a-path-1
+    story: friends
+    from: luc
+    to: [mina]
+    date: '2026-09-08T12:40:00-04:00'
+    subject: Your garden photograph
+    body: |
+      Mina,
+
+      Theo mentioned you'd entered a photograph from the garden. I hope I get to see it when the display goes up.
+
+      I've started going for a walk without measuring how far I've gone. On Sunday I stopped to look at a wall with a tree growing over it, then caught myself checking my watch. Nothing to get back for. Still checked it.
+
+      Hope the garden's doing well.
       Luc

@@ -161,6 +161,24 @@
       },
       "attachments": []
     },
+    "k-memory-1": {
+      "story": "anniversary",
+      "file": "generated/messages/k-memory-1.eml",
+      "message_id": "<9ce40d99-8ca2-5071-bffe-7abecb015384@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "leah.calder-voss@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "k-anniversary-5": {
       "story": "anniversary",
       "file": "generated/messages/k-anniversary-5.eml",
@@ -845,6 +863,24 @@
       },
       "attachments": []
     },
+    "a-path-1": {
+      "story": "friends",
+      "file": "generated/messages/a-path-1.eml",
+      "message_id": "<502f64a3-e227-5895-a345-6176bec25e40@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "k-lunch-2": {
       "story": "lunch",
       "file": "generated/messages/k-lunch-2.eml",
@@ -1147,6 +1183,64 @@
       },
       "attachments": []
     },
+    "a-explanation-1": {
+      "story": "billing",
+      "file": "generated/messages/a-explanation-1.eml",
+      "message_id": "<50bdae32-3065-59a1-8b23-d0a1a1dfc2fc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "priya.naravel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-review-1": {
+      "story": "routine-keplerops",
+      "file": "generated/messages/k-review-1.eml",
+      "message_id": "<f26fd36b-b88f-505a-adf4-b194ff42146a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-review-2": {
+      "story": "routine-keplerops",
+      "file": "generated/messages/k-review-2.eml",
+      "message_id": "<5d08c0b4-5ca4-5ba3-a749-f34ccfa0b3e5@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "evan.calderoux@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rowan.ito@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "a-learning-1": {
       "story": "workforce",
       "file": "generated/messages/a-learning-1.eml",
@@ -1181,6 +1275,24 @@
           },
           {
             "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "k-rehearsal-1": {
+      "story": "workshop",
+      "file": "generated/messages/k-rehearsal-1.eml",
+      "message_id": "<3b1d2247-6cce-5c5c-9451-47d9a746580a@keplerops.com>",
+      "retained": {
+        "keplerops": [
+          {
+            "mailbox": "talia.mornac@keplerops.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "maya.ranscombe@keplerops.com",
             "folder": "INBOX"
           }
         ]
@@ -1357,6 +1469,20 @@
           },
           {
             "mailbox": "mina.selverin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "b-path-1": {
+      "story": "friends",
+      "file": "generated/messages/b-path-1.eml",
+      "message_id": "<1f44a952-68f7-5ca4-9a85-b6a4ebff606d@veybridge.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "theo.marrivel@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]

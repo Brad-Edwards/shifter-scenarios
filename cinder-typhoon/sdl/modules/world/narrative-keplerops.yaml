@@ -29,7 +29,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-154c23ef1edfe1a67318bd0dcd828fe9143a9c1f1607f20e496bc41ac51687c8
+      version: sha256-d0acea09205ba11eb253bccabbbfe9160123c3910903a6e03ba55e4bd08c62ea
     description: keplerops workplace mail. Preserve authored content, mailbox membership or document readers,
       and declared opening state.
     items:
@@ -40,6 +40,8 @@ content:
     - name: k-anniversary-3
       display_name: 'Re: Ten years — what do you remember?'
     - name: k-anniversary-4
+      display_name: 'Re: Ten years — what do you remember?'
+    - name: k-memory-1
       display_name: 'Re: Ten years — what do you remember?'
     - name: k-anniversary-5
       display_name: Anniversary contributions
@@ -91,6 +93,12 @@ content:
       display_name: 'Re: Bicycle, if your offer still stands'
     - name: k-family-1
       display_name: Thanks for checking the rota
+    - name: k-review-1
+      display_name: How much detail in the review summary?
+    - name: k-review-2
+      display_name: 'Re: How much detail in the review summary?'
+    - name: k-rehearsal-1
+      display_name: The introduction has escaped the office
     tags:
     - world-content
     - synthetic

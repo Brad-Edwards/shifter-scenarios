@@ -7,7 +7,7 @@ uses `raes-env-packs==6.1.0`, from
 [OpenRAE/env-packs](https://github.com/OpenRAE/env-packs/tree/679356d762971600f22e6ff3228f4c2b48376eee),
 which depends on `raes==5.0.0`.
 
-Recorded on **2026-09-19**, using Python 3.12:
+Recorded on **2026-09-20**, using Python 3.12:
 
 | Check | Result |
 | --- | --- |
@@ -17,7 +17,7 @@ Recorded on **2026-09-19**, using Python 3.12:
 | Default-open provenance and selected compiled open/exact requirements | Pass |
 | Explicit source bindings in all 277 compiled observation selectors | Pass |
 | Four workplace source artifacts and named service materialization bindings | Pass in composed and compiled SDL |
-| Workplace asset rendering, chronology, bytes, and audiences | Pass; 81 outputs reproduce exactly |
+| Workplace asset rendering, chronology, bytes, and audiences | Pass; 88 outputs reproduce exactly |
 | All 250 technical sections from 50 drafted cards | Preserved and checked against the cards |
 | Separate action, evidence, and seed ownership; six consequence effects | Pass |
 | Design correspondence and 1,209 minimal closures | Pass |
@@ -29,7 +29,7 @@ Recorded on **2026-09-19**, using Python 3.12:
 | Existing design and challenge-document checks | Pass |
 
 The 97 YAML files (entry point plus modules) have aggregate SHA-256
-`5393f6d9a4c40dde370da52e3db66acd4295d3171ad5cf0657d093fe212b2d0a`.
+`cfa53a4b05c8d9a5ab9706c34bb40498f1ff07e2b9be9f3a9247924478e90066`.
 The digest processes paths in sorted order, appending each path relative to
 `sdl/`, a NUL byte, its file bytes, and another NUL byte. This records the
 validated draft; the executable checks remain authoritative after edits.
@@ -107,8 +107,8 @@ the original AND/OR formulas. Collection scope does not require completing all
 alternative paths or writing to every producer. Native default-open posture
 remains present in all 97 documents.
 
-The [workplace collection](../assets/narrative/README.md) adds 68 unique messages,
-165 retained message copies in sixteen mailboxes, fifteen authored documents,
+The [workplace collection](../assets/narrative/README.md) contains 75 unique messages,
+179 retained message copies in sixteen mailboxes, fifteen authored documents,
 directories for fourteen company employees, and three calendar invitations.
 Jules is the fifteenth cast member and appears as an external correspondent.
 The four native content declarations identify exact source names and digest-based
