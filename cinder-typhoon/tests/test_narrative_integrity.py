@@ -56,8 +56,23 @@ class NarrativeIntegrityTests(unittest.TestCase):
             merewick['settled_activity'][0]['accepted_amount_usd'] = '552.01'
             p.write_text(yaml.safe_dump(network, sort_keys=False))
 
+        def bridge_support_visibility_threads(root):
+            p = root / 'authoring/support-intake.yaml'
+            support = yaml.safe_load(p.read_text())
+            case = support['cases'][0]
+            case['threads']['internal']['last'] = case['threads']['customer_visible']['last']
+            p.write_text(yaml.safe_dump(support, sort_keys=False))
+
+        def fabricate_engineering_resolution(root):
+            p = root / 'authoring/support-intake.yaml'
+            support = yaml.safe_load(p.read_text())
+            case = next(c for c in support['cases'] if c['category'] == 'engineering_escalation')
+            case['outcome'] = 'Engineering fixed the behavior and released it to the customer.'
+            p.write_text(yaml.safe_dump(support, sort_keys=False))
+
         for mutate in (alter_attachment, add_unrelated_mailbox_copy, change_source,
-                       detach_reply, create_reporting_loop, alter_accepted_delivery_amount):
+                       detach_reply, create_reporting_loop, alter_accepted_delivery_amount,
+                       bridge_support_visibility_threads, fabricate_engineering_resolution):
             with self.subTest(mutation=mutate.__name__), tempfile.TemporaryDirectory() as temp:
                 pack = Path(temp)
                 root = pack / 'assets/narrative'

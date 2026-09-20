@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:2ac036e6-c5fd-526c-8949-3a5369e24012@keplerops.com
+DTSTAMP:20260828T134400Z
+DTSTART:20260926T170000Z
+DTEND:20260926T181500Z
+ORGANIZER:mailto:imani.verrin@keplerops.com
+ATTENDEE:mailto:otto.pelliver@caldren.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Caldren Reach Utilities: checklist configuration
+DESCRIPTION:SUP-2026-0420. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:bbcd8ff4-28ec-5717-a4bb-a3b2859dd902@keplerops.com
+DTSTAMP:20260827T134100Z
+DTSTART:20260925T140000Z
+DTEND:20260925T151500Z
+ORGANIZER:mailto:gabriel.delmont@keplerops.com
+ATTENDEE:mailto:uma.fellorin@pellhaven.test
+ATTENDEE:mailto:emre.maraven@keplerops.com
+SUMMARY:Pellhaven Municipal Water: field mapping
+DESCRIPTION:SUP-2026-0429. Map the district and site fields for the first i
+ mport. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

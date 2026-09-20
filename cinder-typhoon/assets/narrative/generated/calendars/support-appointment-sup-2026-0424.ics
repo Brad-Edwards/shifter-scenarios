@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:ed215738-1465-56b3-a00b-97e0710164bc@keplerops.com
+DTSTAMP:20260827T134100Z
+DTSTART:20260920T170000Z
+DTEND:20260920T181500Z
+ORGANIZER:mailto:emre.maraven@keplerops.com
+ATTENDEE:mailto:omar.tesswick@elverden.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Elverden District Water: notice routing
+DESCRIPTION:SUP-2026-0424. Set the customer notice route for service and re
+ cords contacts. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

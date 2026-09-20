@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:93d0ecdd-3063-5d69-bc12-334845413b2b@keplerops.com
+DTSTAMP:20260629T130400Z
+DTSTART:20260710T150000Z
+DTEND:20260710T161500Z
+ORGANIZER:mailto:elin.danwick@keplerops.com
+ATTENDEE:mailto:arlo.merwick@pellhaven.test
+ATTENDEE:mailto:farah.telmire@keplerops.com
+SUMMARY:Pellhaven Municipal Water: reviewer orientation
+DESCRIPTION:SUP-2026-0465. Map the district and site fields for the first i
+ mport. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

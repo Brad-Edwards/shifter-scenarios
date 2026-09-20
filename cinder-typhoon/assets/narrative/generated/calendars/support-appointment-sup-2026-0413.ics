@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:2ad4bc85-7cb0-53cc-990c-23037c78353f@keplerops.com
+DTSTAMP:20260826T133800Z
+DTSTART:20260919T140000Z
+DTEND:20260919T151500Z
+ORGANIZER:mailto:finn.marrent@keplerops.com
+ATTENDEE:mailto:soren.haldell@fennor.test
+ATTENDEE:mailto:emre.maraven@keplerops.com
+SUMMARY:Fennor Bay Water: checklist configuration
+DESCRIPTION:SUP-2026-0413. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

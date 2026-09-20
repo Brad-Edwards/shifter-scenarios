@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:86ec3e0b-2954-597e-a18e-ac72d5092ab4@keplerops.com
+DTSTAMP:20260604T131500Z
+DTSTART:20260617T150000Z
+DTEND:20260617T161500Z
+ORGANIZER:mailto:maya.ranscombe@keplerops.com
+ATTENDEE:mailto:arlo.merwick@pellhaven.test
+ATTENDEE:mailto:farah.telmire@keplerops.com
+SUMMARY:Pellhaven Municipal Water: new team introduction
+DESCRIPTION:SUP-2026-0477. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

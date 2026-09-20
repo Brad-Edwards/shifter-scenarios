@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:81d33f30-8cdc-52a4-8a03-02f6e7de91a7@keplerops.com
+DTSTAMP:20260720T132000Z
+DTSTART:20260803T140000Z
+DTEND:20260803T151500Z
+ORGANIZER:mailto:farah.telmire@keplerops.com
+ATTENDEE:mailto:felix.dermere@sennwick.test
+ATTENDEE:mailto:harriet.velswick@keplerops.com
+SUMMARY:Sennwick Water Board: seasonal handover workshop
+DESCRIPTION:SUP-2026-0467. Set the customer notice route for service and re
+ cords contacts. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

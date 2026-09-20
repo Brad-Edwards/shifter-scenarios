@@ -1,7 +1,7 @@
 # KeplerOps and Alterra: the enterprise world
 
-Worldbuilding draft 2, 19 September 2026, with the workforce and business
-content slices added on 20 September. These documents establish two fictional
+Worldbuilding draft 2, 19 September 2026, with the workforce, business, and
+support-intake content slices added on 20 September. These documents establish two fictional
 companies, the region around them, and the people who work there. The authored
 records are in `assets/narrative/`.
 
@@ -34,6 +34,8 @@ and unfinished plans of their own.
 | [Additional workforce voices](workforce-voices.md) | Profiles and samples for 37 new recurring speakers. |
 | [Business content review](business-content-review.md) | Adversarial review, delivered volumes, and consistency checks for customer and supplier records. |
 | [Business correspondents](business-voices.md) | Short profiles and exact mail samples for 47 external contacts. |
+| [Support content review](support-content-review.md) | Fit review, adversarial findings, delivered case states, joins, and volume evidence for issue 114. |
+| [Support and implementation voices](support-voices.md) | Current writing guidance and exact support-mail samples for all fourteen staff. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -73,7 +75,9 @@ Further content implementation is tracked in the
 Its issues deliver finished content slices, each with fit review, adversarial
 review, assets, and native SDL authoring. The first issue extended the existing
 character profiles; the workforce slice supplies the complete employee roster,
-and the business slice supplies reference accounts and correspondence.
+the business slice supplies reference accounts and correspondence, and the
+support slice supplies customer intake, onboarding, and stable unresolved
+engineering escalations.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

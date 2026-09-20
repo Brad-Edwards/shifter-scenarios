@@ -1,0 +1,833 @@
+events:
+- id: support-appointment-sup-2026-0361
+  employer: keplerops
+  organizer: kwm030
+  attendees:
+  - clara
+  - kwm024
+  summary: 'Alterra Regional Water Company: notice routing'
+  description: SUP-2026-0361. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-06-10T10:00:00-04:00'
+  end: '2026-06-10T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-08T09:27:00-04:00'
+- id: support-appointment-sup-2026-0362
+  employer: keplerops
+  organizer: kwm031
+  attendees:
+  - bc_rillhaven_1
+  - kwm027
+  summary: 'Rillhaven District Heating: archive references'
+  description: SUP-2026-0362. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-06-23T11:00:00-04:00'
+  end: '2026-06-23T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-18T09:14:00-04:00'
+- id: support-appointment-sup-2026-0363
+  employer: keplerops
+  organizer: kwm032
+  attendees:
+  - bc_davenmoor_3
+  - kwm030
+  summary: 'Davenmoor Water Service: reviewer roles'
+  description: SUP-2026-0363. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-07-03T12:00:00-04:00'
+  end: '2026-07-03T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-29T09:04:00-04:00'
+- id: support-appointment-sup-2026-0364
+  employer: keplerops
+  organizer: kwm033
+  attendees:
+  - bc_elverden_2
+  - maya
+  summary: 'Elverden District Water: checklist configuration'
+  description: SUP-2026-0364. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-07-14T10:00:00-04:00'
+  end: '2026-07-14T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-08T09:27:00-04:00'
+- id: support-appointment-sup-2026-0411
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - bc_davenmoor_3
+  - kwm031
+  summary: 'Davenmoor Water Service: archive references'
+  description: SUP-2026-0411. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-09-17T12:00:00-04:00'
+  end: '2026-09-17T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0412
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_elverden_2
+  - maya
+  summary: 'Elverden District Water: reviewer roles'
+  description: SUP-2026-0412. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-09-18T13:00:00-04:00'
+  end: '2026-09-18T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0413
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - bc_fennor_1
+  - kwm023
+  summary: 'Fennor Bay Water: checklist configuration'
+  description: SUP-2026-0413. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-09-19T10:00:00-04:00'
+  end: '2026-09-19T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0414
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_haveril_3
+  - kwm028
+  summary: 'Haveril District Energy: review view'
+  description: SUP-2026-0414. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-09-20T11:00:00-04:00'
+  end: '2026-09-20T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0415
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_mirrenfold_2
+  - kwm031
+  summary: 'Mirrenfold Regional Water: field mapping'
+  description: SUP-2026-0415. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-09-21T12:00:00-04:00'
+  end: '2026-09-21T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0416
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_orvellan_1
+  - maya
+  summary: 'Orvellan District Heating: sample import'
+  description: SUP-2026-0416. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-09-22T13:00:00-04:00'
+  end: '2026-09-22T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0417
+  employer: keplerops
+  organizer: kwm030
+  attendees:
+  - bc_pellhaven_3
+  - kwm023
+  summary: 'Pellhaven Municipal Water: notice routing'
+  description: SUP-2026-0417. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-09-23T10:00:00-04:00'
+  end: '2026-09-23T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0418
+  employer: keplerops
+  organizer: kwm031
+  attendees:
+  - bc_roskelle_2
+  - kwm026
+  summary: 'Roskelle Utilities: archive references'
+  description: SUP-2026-0418. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-09-24T11:00:00-04:00'
+  end: '2026-09-24T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0419
+  employer: keplerops
+  organizer: kwm032
+  attendees:
+  - bc_sennwick_1
+  - kwm029
+  summary: 'Sennwick Water Board: reviewer roles'
+  description: SUP-2026-0419. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-09-25T12:00:00-04:00'
+  end: '2026-09-25T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0420
+  employer: keplerops
+  organizer: kwm033
+  attendees:
+  - bc_caldren_3
+  - maya
+  summary: 'Caldren Reach Utilities: checklist configuration'
+  description: SUP-2026-0420. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-09-26T13:00:00-04:00'
+  end: '2026-09-26T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0421
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - clara
+  - kwm023
+  summary: 'Alterra Regional Water Company: review view'
+  description: SUP-2026-0421. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-09-17T10:00:00-04:00'
+  end: '2026-09-17T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0422
+  employer: keplerops
+  organizer: talia
+  attendees:
+  - bc_rillhaven_1
+  - kwm028
+  summary: 'Rillhaven District Heating: field mapping'
+  description: SUP-2026-0422. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-09-18T11:00:00-04:00'
+  end: '2026-09-18T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0423
+  employer: keplerops
+  organizer: kwm022
+  attendees:
+  - bc_davenmoor_3
+  - kwm031
+  summary: 'Davenmoor Water Service: sample import'
+  description: SUP-2026-0423. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-09-19T12:00:00-04:00'
+  end: '2026-09-19T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0424
+  employer: keplerops
+  organizer: kwm023
+  attendees:
+  - bc_elverden_2
+  - maya
+  summary: 'Elverden District Water: notice routing'
+  description: SUP-2026-0424. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-09-20T13:00:00-04:00'
+  end: '2026-09-20T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0425
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - bc_fennor_1
+  - kwm023
+  summary: 'Fennor Bay Water: archive references'
+  description: SUP-2026-0425. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-09-21T10:00:00-04:00'
+  end: '2026-09-21T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0426
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_haveril_3
+  - kwm028
+  summary: 'Haveril District Energy: reviewer roles'
+  description: SUP-2026-0426. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-09-22T11:00:00-04:00'
+  end: '2026-09-22T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0427
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - bc_mirrenfold_2
+  - kwm031
+  summary: 'Mirrenfold Regional Water: checklist configuration'
+  description: SUP-2026-0427. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-09-23T12:00:00-04:00'
+  end: '2026-09-23T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0428
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_orvellan_1
+  - maya
+  summary: 'Orvellan District Heating: review view'
+  description: SUP-2026-0428. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-09-24T13:00:00-04:00'
+  end: '2026-09-24T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0429
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_pellhaven_3
+  - kwm023
+  summary: 'Pellhaven Municipal Water: field mapping'
+  description: SUP-2026-0429. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-09-25T10:00:00-04:00'
+  end: '2026-09-25T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0430
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_roskelle_2
+  - kwm026
+  summary: 'Roskelle Utilities: sample import'
+  description: SUP-2026-0430. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-09-26T11:00:00-04:00'
+  end: '2026-09-26T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0461
+  employer: keplerops
+  organizer: kwm032
+  attendees:
+  - bc_fennor_3
+  - kwm023
+  summary: 'Fennor Bay Water: reviewer orientation'
+  description: SUP-2026-0461. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-08-12T10:00:00-04:00'
+  end: '2026-08-12T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-30T09:07:00-04:00'
+- id: support-appointment-sup-2026-0462
+  employer: keplerops
+  organizer: kwm033
+  attendees:
+  - bc_haveril_2
+  - kwm027
+  summary: 'Haveril District Energy: new team introduction'
+  description: SUP-2026-0462. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-08-24T11:00:00-04:00'
+  end: '2026-08-24T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-10T09:33:00-04:00'
+- id: support-appointment-sup-2026-0463
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - bc_mirrenfold_1
+  - kwm031
+  summary: 'Mirrenfold Regional Water: seasonal handover workshop'
+  description: SUP-2026-0463. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-06-22T12:00:00-04:00'
+  end: '2026-06-22T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-08T09:27:00-04:00'
+- id: support-appointment-sup-2026-0464
+  employer: keplerops
+  organizer: talia
+  attendees:
+  - bc_orvellan_3
+  - maya
+  summary: 'Orvellan District Heating: records review refresher'
+  description: SUP-2026-0464. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-07-03T10:00:00-04:00'
+  end: '2026-07-03T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-18T09:14:00-04:00'
+- id: support-appointment-sup-2026-0465
+  employer: keplerops
+  organizer: kwm022
+  attendees:
+  - bc_pellhaven_2
+  - kwm024
+  summary: 'Pellhaven Municipal Water: reviewer orientation'
+  description: SUP-2026-0465. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-07-10T11:00:00-04:00'
+  end: '2026-07-10T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-29T09:04:00-04:00'
+- id: support-appointment-sup-2026-0466
+  employer: keplerops
+  organizer: kwm023
+  attendees:
+  - bc_roskelle_1
+  - kwm027
+  summary: 'Roskelle Utilities: new team introduction'
+  description: SUP-2026-0466. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-07-22T12:00:00-04:00'
+  end: '2026-07-22T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-08T09:27:00-04:00'
+- id: support-appointment-sup-2026-0467
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - bc_sennwick_3
+  - kwm030
+  summary: 'Sennwick Water Board: seasonal handover workshop'
+  description: SUP-2026-0467. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-08-03T10:00:00-04:00'
+  end: '2026-08-03T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-20T09:20:00-04:00'
+- id: support-appointment-sup-2026-0468
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_caldren_2
+  - maya
+  summary: 'Caldren Reach Utilities: records review refresher'
+  description: SUP-2026-0468. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-08-11T11:00:00-04:00'
+  end: '2026-08-11T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0469
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - theo
+  - kwm024
+  summary: 'Alterra Regional Water Company: reviewer orientation'
+  description: SUP-2026-0469. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-08-21T12:00:00-04:00'
+  end: '2026-08-21T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-07T09:24:00-04:00'
+- id: support-appointment-sup-2026-0470
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_rillhaven_3
+  - kwm028
+  summary: 'Rillhaven District Heating: new team introduction'
+  description: SUP-2026-0470. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-06-22T10:00:00-04:00'
+  end: '2026-06-22T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-08T09:27:00-04:00'
+- id: support-appointment-sup-2026-0471
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_davenmoor_2
+  - kwm031
+  summary: 'Davenmoor Water Service: seasonal handover workshop'
+  description: SUP-2026-0471. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-06-30T11:00:00-04:00'
+  end: '2026-06-30T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-16T09:08:00-04:00'
+- id: support-appointment-sup-2026-0472
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_elverden_1
+  - maya
+  summary: 'Elverden District Water: records review refresher'
+  description: SUP-2026-0472. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-07-10T12:00:00-04:00'
+  end: '2026-07-10T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0473
+  employer: keplerops
+  organizer: kwm030
+  attendees:
+  - bc_fennor_3
+  - kwm023
+  summary: 'Fennor Bay Water: new team introduction'
+  description: SUP-2026-0473. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-07-17T10:00:00-04:00'
+  end: '2026-07-17T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-06T09:21:00-04:00'
+- id: support-appointment-sup-2026-0474
+  employer: keplerops
+  organizer: kwm031
+  attendees:
+  - bc_haveril_2
+  - kwm027
+  summary: 'Haveril District Energy: seasonal handover workshop'
+  description: SUP-2026-0474. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-07-31T11:00:00-04:00'
+  end: '2026-07-31T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-16T09:08:00-04:00'
+- id: support-appointment-sup-2026-0475
+  employer: keplerops
+  organizer: kwm032
+  attendees:
+  - bc_mirrenfold_1
+  - kwm030
+  summary: 'Mirrenfold Regional Water: records review refresher'
+  description: SUP-2026-0475. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-08-10T12:00:00-04:00'
+  end: '2026-08-10T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0476
+  employer: keplerops
+  organizer: kwm033
+  attendees:
+  - bc_orvellan_3
+  - maya
+  summary: 'Orvellan District Heating: reviewer orientation'
+  description: SUP-2026-0476. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-08-19T10:00:00-04:00'
+  end: '2026-08-19T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-05T09:18:00-04:00'
+- id: support-appointment-sup-2026-0477
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - bc_pellhaven_2
+  - kwm024
+  summary: 'Pellhaven Municipal Water: new team introduction'
+  description: SUP-2026-0477. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-06-17T11:00:00-04:00'
+  end: '2026-06-17T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-04T09:15:00-04:00'
+- id: support-appointment-sup-2026-0478
+  employer: keplerops
+  organizer: talia
+  attendees:
+  - bc_roskelle_1
+  - kwm027
+  summary: 'Roskelle Utilities: seasonal handover workshop'
+  description: SUP-2026-0478. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-06-29T12:00:00-04:00'
+  end: '2026-06-29T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-15T09:05:00-04:00'
+- id: support-appointment-sup-2026-0479
+  employer: keplerops
+  organizer: kwm022
+  attendees:
+  - bc_sennwick_3
+  - kwm030
+  summary: 'Sennwick Water Board: records review refresher'
+  description: SUP-2026-0479. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-07-08T10:00:00-04:00'
+  end: '2026-07-08T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0480
+  employer: keplerops
+  organizer: kwm023
+  attendees:
+  - bc_caldren_2
+  - maya
+  summary: 'Caldren Reach Utilities: reviewer orientation'
+  description: SUP-2026-0480. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-07-20T11:00:00-04:00'
+  end: '2026-07-20T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-06T09:21:00-04:00'
+- id: support-appointment-sup-2026-0481
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - theo
+  - kwm025
+  summary: 'Alterra Regional Water Company: new team introduction'
+  description: SUP-2026-0481. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-07-27T12:00:00-04:00'
+  end: '2026-07-27T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-14T09:45:00-04:00'
+- id: support-appointment-sup-2026-0482
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_rillhaven_3
+  - kwm028
+  summary: 'Rillhaven District Heating: records review refresher'
+  description: SUP-2026-0482. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-08-07T10:00:00-04:00'
+  end: '2026-08-07T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0483
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - bc_davenmoor_2
+  - kwm031
+  summary: 'Davenmoor Water Service: records review refresher'
+  description: SUP-2026-0483. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-08-17T11:00:00-04:00'
+  end: '2026-08-17T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-03T09:12:00-04:00'
+- id: support-appointment-sup-2026-0484
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_elverden_1
+  - maya
+  summary: 'Elverden District Water: reviewer orientation'
+  description: SUP-2026-0484. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-06-16T12:00:00-04:00'
+  end: '2026-06-16T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-02T09:09:00-04:00'
+- id: support-appointment-sup-2026-0485
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_fennor_3
+  - kwm023
+  summary: 'Fennor Bay Water: seasonal handover workshop'
+  description: SUP-2026-0485. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-06-26T10:00:00-04:00'
+  end: '2026-06-26T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-12T09:39:00-04:00'
+- id: support-appointment-sup-2026-0486
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_haveril_2
+  - kwm027
+  summary: 'Haveril District Energy: records review refresher'
+  description: SUP-2026-0486. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-07-06T11:00:00-04:00'
+  end: '2026-07-06T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-22T09:26:00-04:00'
+- id: support-appointment-sup-2026-0487
+  employer: keplerops
+  organizer: kwm030
+  attendees:
+  - bc_mirrenfold_1
+  - kwm031
+  summary: 'Mirrenfold Regional Water: reviewer orientation'
+  description: SUP-2026-0487. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-07-17T12:00:00-04:00'
+  end: '2026-07-17T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-07-02T09:09:00-04:00'
+- id: support-appointment-sup-2026-0488
+  employer: keplerops
+  organizer: kwm031
+  attendees:
+  - bc_orvellan_3
+  - maya
+  summary: 'Orvellan District Heating: new team introduction'
+  description: SUP-2026-0488. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-09-24T13:00:00-04:00'
+  end: '2026-09-24T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0489
+  employer: keplerops
+  organizer: kwm032
+  attendees:
+  - bc_pellhaven_2
+  - kwm023
+  summary: 'Pellhaven Municipal Water: seasonal handover workshop'
+  description: SUP-2026-0489. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-09-25T10:00:00-04:00'
+  end: '2026-09-25T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0490
+  employer: keplerops
+  organizer: kwm033
+  attendees:
+  - bc_roskelle_1
+  - kwm026
+  summary: 'Roskelle Utilities: records review refresher'
+  description: SUP-2026-0490. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-09-26T11:00:00-04:00'
+  end: '2026-09-26T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0491
+  employer: keplerops
+  organizer: maya
+  attendees:
+  - bc_sennwick_3
+  - kwm030
+  summary: 'Sennwick Water Board: reviewer orientation'
+  description: SUP-2026-0491. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-09-17T12:00:00-04:00'
+  end: '2026-09-17T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0492
+  employer: keplerops
+  organizer: talia
+  attendees:
+  - bc_caldren_2
+  - maya
+  summary: 'Caldren Reach Utilities: new team introduction'
+  description: SUP-2026-0492. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-09-18T13:00:00-04:00'
+  end: '2026-09-18T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0493
+  employer: keplerops
+  organizer: kwm022
+  attendees:
+  - theo
+  - kwm025
+  summary: 'Alterra Regional Water Company: seasonal handover workshop'
+  description: SUP-2026-0493. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-09-19T10:00:00-04:00'
+  end: '2026-09-19T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0494
+  employer: keplerops
+  organizer: kwm023
+  attendees:
+  - bc_rillhaven_3
+  - kwm028
+  summary: 'Rillhaven District Heating: reviewer orientation'
+  description: SUP-2026-0494. Run a small handover import before the seasonal batch. Record decisions on the existing
+    case.
+  start: '2026-07-14T10:00:00-04:00'
+  end: '2026-07-14T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-06-30T09:07:00-04:00'
+- id: support-appointment-sup-2026-0495
+  employer: keplerops
+  organizer: kwm024
+  attendees:
+  - bc_davenmoor_2
+  - kwm031
+  summary: 'Davenmoor Water Service: reviewer orientation'
+  description: SUP-2026-0495. Set the customer notice route for service and records contacts. Record decisions on
+    the existing case.
+  start: '2026-09-21T12:00:00-04:00'
+  end: '2026-09-21T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'
+- id: support-appointment-sup-2026-0496
+  employer: keplerops
+  organizer: kwm025
+  attendees:
+  - bc_elverden_1
+  - maya
+  summary: 'Elverden District Water: new team introduction'
+  description: SUP-2026-0496. Walk through export naming and archive references. Record decisions on the existing
+    case.
+  start: '2026-09-22T13:00:00-04:00'
+  end: '2026-09-22T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-24T09:32:00-04:00'
+- id: support-appointment-sup-2026-0497
+  employer: keplerops
+  organizer: kwm026
+  attendees:
+  - bc_fennor_3
+  - kwm023
+  summary: 'Fennor Bay Water: records review refresher'
+  description: SUP-2026-0497. Agree reviewer roles without widening account access. Record decisions on the existing
+    case.
+  start: '2026-09-23T10:00:00-04:00'
+  end: '2026-09-23T11:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-25T09:35:00-04:00'
+- id: support-appointment-sup-2026-0498
+  employer: keplerops
+  organizer: kwm027
+  attendees:
+  - bc_haveril_2
+  - kwm028
+  summary: 'Haveril District Energy: reviewer orientation'
+  description: SUP-2026-0498. Adapt the accepted checklist while preserving required fields. Record decisions on
+    the existing case.
+  start: '2026-09-24T11:00:00-04:00'
+  end: '2026-09-24T12:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-26T09:38:00-04:00'
+- id: support-appointment-sup-2026-0499
+  employer: keplerops
+  organizer: kwm028
+  attendees:
+  - bc_mirrenfold_1
+  - kwm031
+  summary: 'Mirrenfold Regional Water: new team introduction'
+  description: SUP-2026-0499. Prepare a review view for two operating districts. Record decisions on the existing
+    case.
+  start: '2026-09-25T12:00:00-04:00'
+  end: '2026-09-25T13:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-27T09:41:00-04:00'
+- id: support-appointment-sup-2026-0500
+  employer: keplerops
+  organizer: kwm029
+  attendees:
+  - bc_orvellan_3
+  - maya
+  summary: 'Orvellan District Heating: seasonal handover workshop'
+  description: SUP-2026-0500. Map the district and site fields for the first import. Record decisions on the existing
+    case.
+  start: '2026-09-26T13:00:00-04:00'
+  end: '2026-09-26T14:15:00-04:00'
+  status: CONFIRMED
+  created_at: '2026-08-28T09:44:00-04:00'

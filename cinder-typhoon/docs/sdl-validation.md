@@ -107,9 +107,9 @@ the original AND/OR formulas. Collection scope does not require completing all
 alternative paths or writing to every producer. Native default-open posture
 remains present in all 97 documents.
 
-The [workplace collection](../assets/narrative/README.md) contains 3,075 unique
-messages, 5,170 retained message copies, 244 authored documents, directories
-for all 294 company employees, and 21 calendar invitations. Jules remains an
+The [workplace collection](../assets/narrative/README.md) contains 8,575 unique
+messages, 13,229 retained message copies, 822 authored documents, directories
+for all 294 company employees, and 85 calendar invitations. Jules remains an
 external correspondent outside both company rosters. The eight native content
 declarations identify exact source names and digest-based
 versions. The pack's artifact catalog resolves those pairs to checked-in files;
@@ -133,10 +133,13 @@ or challenge prerequisite. Backend and software choices remain open.
 
 Asset checks compare RFC822 headers and bodies, reply relationships, MIME
 attachment bytes and publication dates, mailbox membership, document readers,
-staff contacts, business account and accepted-activity joins, and calendar dates,
-status, and audiences. Six corruption cases alter an attachment, expose a
-private message to an unrelated mailbox, change source bytes, detach a reply,
-introduce a reporting loop, or change an accepted delivery amount; all are rejected.
+staff contacts, business account and accepted-activity joins, support case and
+visibility-thread joins, entitlement dates, normalized prose diversity, stable
+unresolved engineering references, and calendar dates, status, and audiences.
+Eight corruption cases alter an attachment, expose a private message to an
+unrelated mailbox, change source bytes, detach a reply, introduce a reporting
+loop, change an accepted delivery amount, bridge customer and internal support
+threads, or fabricate an engineering resolution; all are rejected.
 Four native type-valid SDL
 mutations change a content owner, source version, observed-state requirement,
 or selected readback content; all are rejected as well.

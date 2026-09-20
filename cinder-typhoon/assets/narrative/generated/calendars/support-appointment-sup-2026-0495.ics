@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:75a83962-05c5-5615-8c1f-b7dd37fcc0ce@keplerops.com
+DTSTAMP:20260828T134400Z
+DTSTART:20260921T160000Z
+DTEND:20260921T171500Z
+ORGANIZER:mailto:farah.telmire@keplerops.com
+ATTENDEE:mailto:tomas.vellin@davenmoor.test
+ATTENDEE:mailto:hugo.dravik@keplerops.com
+SUMMARY:Davenmoor Water Service: reviewer orientation
+DESCRIPTION:SUP-2026-0495. Set the customer notice route for service and re
+ cords contacts. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

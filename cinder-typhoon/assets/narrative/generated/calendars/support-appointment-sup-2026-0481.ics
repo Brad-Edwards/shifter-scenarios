@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:8e26a704-dd69-5324-9174-11d7507f32e7@keplerops.com
+DTSTAMP:20260714T134500Z
+DTSTART:20260727T160000Z
+DTEND:20260727T171500Z
+ORGANIZER:mailto:farah.telmire@keplerops.com
+ATTENDEE:mailto:theo.marrivel@alterrawaterco.com
+ATTENDEE:mailto:felix.darsell@keplerops.com
+SUMMARY:Alterra Regional Water Company: new team introduction
+DESCRIPTION:SUP-2026-0481. Set the customer notice route for service and re
+ cords contacts. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

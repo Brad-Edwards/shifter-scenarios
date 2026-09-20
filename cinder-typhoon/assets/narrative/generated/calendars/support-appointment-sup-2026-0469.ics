@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:8d062e49-b5be-5904-9bfe-8dcff01d976c@keplerops.com
+DTSTAMP:20260807T132400Z
+DTSTART:20260821T160000Z
+DTEND:20260821T171500Z
+ORGANIZER:mailto:finn.marrent@keplerops.com
+ATTENDEE:mailto:theo.marrivel@alterrawaterco.com
+ATTENDEE:mailto:farah.telmire@keplerops.com
+SUMMARY:Alterra Regional Water Company: reviewer orientation
+DESCRIPTION:SUP-2026-0469. Agree reviewer roles without widening account ac
+ cess. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

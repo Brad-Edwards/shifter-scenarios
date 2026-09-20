@@ -37,6 +37,14 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def document_text(document):
+    return document['text'] if 'text' in document else (ROOT / document['file']).read_text()
+
+
+def document_path(document):
+    return document['path'] if 'path' in document else Path(document['file']).name
+
+
 def message_id(key, domain):
     return f'<{uuid.uuid5(uuid.NAMESPACE_URL, "urn:cinder-workplace:" + key)}@{domain}>'
 
@@ -66,7 +74,9 @@ def render():
                            ('name', 'email', 'employer', 'department', 'job')}
     contacts = people | identity['correspondents']
     snapshot = datetime.fromisoformat(identity['snapshot'])
-    docs = yaml.safe_load((AUTHOR / 'documents.yaml').read_text())['documents']
+    docs = []
+    for path in sorted(AUTHOR.glob('documents*.yaml')):
+        docs.extend(yaml.safe_load(path.read_text())['documents'])
     docs_by_id = {d['id']: d for d in docs}
     mail = []
     for path in sorted(AUTHOR.glob('mail-*.yaml')):
@@ -120,14 +130,14 @@ def render():
         for attachment in m.get('attachments', []):
             d = docs_by_id[attachment]
             assert datetime.fromisoformat(d['published_at']) <= datetime.fromisoformat(m['date']), ('Attachment from the future', m['id'], attachment)
-            msg.add_attachment((ROOT / d['file']).read_bytes(), maintype='text', subtype='markdown', filename=Path(d['file']).name)
+            msg.add_attachment(document_text(d).encode(), maintype='text', subtype='markdown', filename=document_path(d))
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
         raw = msg.as_bytes()
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -153,9 +163,9 @@ def render():
         else:
             audience = [people[k]['email'] for k in AUDIENCES[d['audience']]]
         kind = d.get('collection', 'documents')
-        libraries[d['employer']][kind]['documents'].append({'name': d['id'], 'title': d['title'], 'path': Path(d['file']).name,
+        libraries[d['employer']][kind]['documents'].append({'name': d['id'], 'title': d['title'], 'path': document_path(d),
             'media_type': d.get('media_type', 'text/markdown'), 'published_at': d['published_at'],
-            'readers': audience, 'text': (ROOT / d['file']).read_text()})
+            'readers': audience, 'text': document_text(d)})
     for org in ORGS:
         rows = [{'name': p['name'], 'email': p['email'], 'department': p['department'],
                  'team': p['team'], 'job': p['job'],
@@ -169,7 +179,9 @@ def render():
         output[f'generated/directories/{org}.csv'] = buf.getvalue().encode()
         libraries[org]['directory']['documents'].append({'name': org + '-directory', 'title': 'Staff contacts', 'path': 'staff-contacts.csv',
             'media_type': 'text/csv', 'readers': [p['email'] for p in people.values() if p['employer'] == org], 'text': buf.getvalue()})
-    events = yaml.safe_load((AUTHOR / 'calendars.yaml').read_text())['events']
+    events = []
+    for path in sorted(AUTHOR.glob('calendars*.yaml')):
+        events.extend(yaml.safe_load(path.read_text())['events'])
     for event in events:
         organizer = contacts[event['organizer']]
         lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Workplace Calendar//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
@@ -243,7 +255,8 @@ def render():
         modules[org] = yaml.safe_dump(module, sort_keys=False, allow_unicode=True, width=105).encode()
     output['artifact-catalog.json'] = json_text(catalog).encode()
     output['story-coverage.json'] = json_text({'snapshot': identity['snapshot'], 'messages': coverage,
-        'documents': {d['id']: {'story': d['story'], 'file': d['file'], 'employer': d['employer']} for d in docs}}).encode()
+        'documents': {d['id']: {'story': d['story'], 'file': d.get('file'), 'path': document_path(d),
+                                'employer': d['employer']} for d in docs}}).encode()
     return output, modules
 
 

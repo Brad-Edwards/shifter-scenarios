@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:c2f5f955-3082-553c-854a-3ca28d4fa1dd@keplerops.com
+DTSTAMP:20260716T130800Z
+DTSTART:20260731T150000Z
+DTEND:20260731T161500Z
+ORGANIZER:mailto:hugo.dravik@keplerops.com
+ATTENDEE:mailto:asha.vervain@haveril.test
+ATTENDEE:mailto:flora.torren@keplerops.com
+SUMMARY:Haveril District Energy: seasonal handover workshop
+DESCRIPTION:SUP-2026-0474. Set the customer notice route for service and re
+ cords contacts. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

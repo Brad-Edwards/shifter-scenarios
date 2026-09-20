@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:7cf13251-b595-57d4-80c2-1e3959d48569@keplerops.com
+DTSTAMP:20260708T132700Z
+DTSTART:20260722T160000Z
+DTEND:20260722T171500Z
+ORGANIZER:mailto:emre.maraven@keplerops.com
+ATTENDEE:mailto:cora.vennard@roskelle.test
+ATTENDEE:mailto:flora.torren@keplerops.com
+SUMMARY:Roskelle Utilities: new team introduction
+DESCRIPTION:SUP-2026-0466. Run a small handover import before the seasonal
+  batch. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
