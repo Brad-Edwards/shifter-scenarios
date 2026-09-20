@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-6941c77f283252156c4e143e440395f78ccc0b4125a24497341946fbc98b364b
+      version: sha256-4f9b288ba82ec2a817afbdc65648b64403388a49df39ed872e0119bb642c106c
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,10 +66,490 @@ content:
     format: cinder-document-library/v1
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-c5bb19b3dffe2fc96b961a93c64ab547d6928c9261535cc03bd4da976543aa79
+      version: sha256-ec566c8fb7d437c4206ba2521a92cc854f4a024ac32f939d12d679bf2d96ae38
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
+    - name: com-2026-001-draft-r1
+      display_name: Alterra service budget review — draft 1
+    - name: com-2026-001-offer-r2
+      display_name: Alterra service budget review — offer 2
+    - name: com-2026-001-internal
+      display_name: Alterra service budget review — internal decision
+    - name: com-2026-001-base-billing
+      display_name: Alterra Regional Water Company — remaining service billing
+    - name: com-2026-006-draft-r1
+      display_name: Rillhaven service budget review — draft 1
+    - name: com-2026-006-offer-r2
+      display_name: Rillhaven service budget review — offer 2
+    - name: com-2026-006-internal
+      display_name: Rillhaven service budget review — internal decision
+    - name: com-2026-006-base-billing
+      display_name: Rillhaven District Heating — remaining service billing
+    - name: com-2026-011-draft-r1
+      display_name: Davenmoor next service term — draft 1
+    - name: com-2026-011-offer-r2
+      display_name: Davenmoor next service term — offer 2
+    - name: com-2026-011-internal
+      display_name: Davenmoor next service term — internal decision
+    - name: com-2026-011-base-billing
+      display_name: Davenmoor Water Service — remaining service billing
+    - name: com-2026-016-draft-r1
+      display_name: Elverden next service term — draft 1
+    - name: com-2026-016-offer-r2
+      display_name: Elverden next service term — offer 2
+    - name: com-2026-016-internal
+      display_name: Elverden next service term — internal decision
+    - name: com-2026-016-accepted
+      display_name: Elverden next service term — accepted schedule
+    - name: com-2026-016-base-billing
+      display_name: Elverden District Water — remaining service billing
+    - name: com-2026-016-renewal-billing
+      display_name: Elverden next service term — agreed billing schedule
+    - name: com-2026-021-draft-r1
+      display_name: Fennor next service term — draft 1
+    - name: com-2026-021-offer-r2
+      display_name: Fennor next service term — offer 2
+    - name: com-2026-021-internal
+      display_name: Fennor next service term — internal decision
+    - name: com-2026-021-accepted
+      display_name: Fennor next service term — accepted schedule
+    - name: com-2026-021-base-billing
+      display_name: Fennor Bay Water — remaining service billing
+    - name: com-2026-021-renewal-billing
+      display_name: Fennor next service term — agreed billing schedule
+    - name: com-2026-026-draft-r1
+      display_name: Haveril service budget review — draft 1
+    - name: com-2026-026-offer-r2
+      display_name: Haveril service budget review — offer 2
+    - name: com-2026-026-internal
+      display_name: Haveril service budget review — internal decision
+    - name: com-2026-026-base-billing
+      display_name: Haveril District Energy — remaining service billing
+    - name: com-2026-031-draft-r1
+      display_name: Mirrenfold next service term — draft 1
+    - name: com-2026-031-offer-r2
+      display_name: Mirrenfold next service term — offer 2
+    - name: com-2026-031-internal
+      display_name: Mirrenfold next service term — internal decision
+    - name: com-2026-031-base-billing
+      display_name: Mirrenfold Regional Water — remaining service billing
+    - name: com-2026-036-draft-r1
+      display_name: Orvellan service budget review — draft 1
+    - name: com-2026-036-offer-r2
+      display_name: Orvellan service budget review — offer 2
+    - name: com-2026-036-internal
+      display_name: Orvellan service budget review — internal decision
+    - name: com-2026-036-base-billing
+      display_name: Orvellan District Heating — remaining service billing
+    - name: com-2026-041-draft-r1
+      display_name: Pellhaven next service term — draft 1
+    - name: com-2026-041-offer-r2
+      display_name: Pellhaven next service term — offer 2
+    - name: com-2026-041-internal
+      display_name: Pellhaven next service term — internal decision
+    - name: com-2026-041-base-billing
+      display_name: Pellhaven Municipal Water — remaining service billing
+    - name: com-2026-046-draft-r1
+      display_name: Roskelle service budget review — draft 1
+    - name: com-2026-046-offer-r2
+      display_name: Roskelle service budget review — offer 2
+    - name: com-2026-046-internal
+      display_name: Roskelle service budget review — internal decision
+    - name: com-2026-046-base-billing
+      display_name: Roskelle Utilities — remaining service billing
+    - name: com-2026-051-draft-r1
+      display_name: Sennwick service budget review — draft 1
+    - name: com-2026-051-offer-r2
+      display_name: Sennwick service budget review — offer 2
+    - name: com-2026-051-internal
+      display_name: Sennwick service budget review — internal decision
+    - name: com-2026-051-base-billing
+      display_name: Sennwick Water Board — remaining service billing
+    - name: com-2026-056-draft-r1
+      display_name: Caldren next service term — draft 1
+    - name: com-2026-056-offer-r2
+      display_name: Caldren next service term — offer 2
+    - name: com-2026-056-internal
+      display_name: Caldren next service term — internal decision
+    - name: com-2026-056-base-billing
+      display_name: Caldren Reach Utilities — remaining service billing
+    - name: com-2026-002-draft-r1
+      display_name: River contractor archive guide — draft 1
+    - name: com-2026-002-offer-r2
+      display_name: River contractor archive guide — offer 2
+    - name: com-2026-002-internal
+      display_name: River contractor archive guide — internal decision
+    - name: com-2026-002-accepted
+      display_name: River contractor archive guide — accepted schedule
+    - name: com-2026-002-costing
+      display_name: River contractor archive guide — private pricing worksheet
+    - name: com-2026-002-project-billing
+      display_name: River contractor archive guide — agreed billing schedule
+    - name: com-2026-002-delivered-index
+      display_name: River contractor archive guide — delivered comparison index
+    - name: com-2026-002-handover-record
+      display_name: River contractor archive guide — accepted handover
+    - name: com-2026-007-draft-r1
+      display_name: Winter handover mapping — draft 1
+    - name: com-2026-007-offer-r2
+      display_name: Winter handover mapping — offer 2
+    - name: com-2026-007-internal
+      display_name: Winter handover mapping — internal decision
+    - name: com-2026-007-accepted
+      display_name: Winter handover mapping — accepted schedule
+    - name: com-2026-007-costing
+      display_name: Winter handover mapping — private pricing worksheet
+    - name: com-2026-007-project-billing
+      display_name: Winter handover mapping — agreed billing schedule
+    - name: com-2026-012-draft-r1
+      display_name: Reservoir return catalogue — draft 1
+    - name: com-2026-012-offer-r2
+      display_name: Reservoir return catalogue — offer 2
+    - name: com-2026-012-internal
+      display_name: Reservoir return catalogue — internal decision
+    - name: com-2026-012-accepted
+      display_name: Reservoir return catalogue — accepted schedule
+    - name: com-2026-012-costing
+      display_name: Reservoir return catalogue — private pricing worksheet
+    - name: com-2026-012-project-billing
+      display_name: Reservoir return catalogue — agreed billing schedule
+    - name: com-2026-012-delivered-index
+      display_name: Reservoir return catalogue — delivered comparison index
+    - name: com-2026-012-handover-record
+      display_name: Reservoir return catalogue — accepted handover
+    - name: com-2026-017-draft-r1
+      display_name: Two-district archive handover — draft 1
+    - name: com-2026-017-offer-r2
+      display_name: Two-district archive handover — offer 2
+    - name: com-2026-017-internal
+      display_name: Two-district archive handover — internal decision
+    - name: com-2026-017-accepted
+      display_name: Two-district archive handover — accepted schedule
+    - name: com-2026-017-costing
+      display_name: Two-district archive handover — private pricing worksheet
+    - name: com-2026-017-project-billing
+      display_name: Two-district archive handover — agreed billing schedule
+    - name: com-2026-017-delivered-index
+      display_name: Two-district archive handover — delivered comparison index
+    - name: com-2026-017-handover-record
+      display_name: Two-district archive handover — accepted handover
+    - name: com-2026-022-draft-r1
+      display_name: Coastal inspection export guide — draft 1
+    - name: com-2026-022-offer-r2
+      display_name: Coastal inspection export guide — offer 2
+    - name: com-2026-022-internal
+      display_name: Coastal inspection export guide — internal decision
+    - name: com-2026-022-accepted
+      display_name: Coastal inspection export guide — accepted schedule
+    - name: com-2026-022-costing
+      display_name: Coastal inspection export guide — private pricing worksheet
+    - name: com-2026-022-project-billing
+      display_name: Coastal inspection export guide — agreed billing schedule
+    - name: com-2026-022-delivered-index
+      display_name: Coastal inspection export guide — delivered comparison index
+    - name: com-2026-022-handover-record
+      display_name: Coastal inspection export guide — accepted handover
+    - name: com-2026-027-draft-r1
+      display_name: Reviewer sign-off induction pack — draft 1
+    - name: com-2026-027-offer-r2
+      display_name: Reviewer sign-off induction pack — offer 2
+    - name: com-2026-027-internal
+      display_name: Reviewer sign-off induction pack — internal decision
+    - name: com-2026-027-accepted
+      display_name: Reviewer sign-off induction pack — accepted schedule
+    - name: com-2026-027-costing
+      display_name: Reviewer sign-off induction pack — private pricing worksheet
+    - name: com-2026-027-project-billing
+      display_name: Reviewer sign-off induction pack — agreed billing schedule
+    - name: com-2026-032-draft-r1
+      display_name: Regional comparison index — draft 1
+    - name: com-2026-032-offer-r2
+      display_name: Regional comparison index — offer 2
+    - name: com-2026-032-internal
+      display_name: Regional comparison index — internal decision
+    - name: com-2026-032-accepted
+      display_name: Regional comparison index — accepted schedule
+    - name: com-2026-032-costing
+      display_name: Regional comparison index — private pricing worksheet
+    - name: com-2026-032-project-billing
+      display_name: Regional comparison index — agreed billing schedule
+    - name: com-2026-032-delivered-index
+      display_name: Regional comparison index — delivered comparison index
+    - name: com-2026-032-handover-record
+      display_name: Regional comparison index — accepted handover
+    - name: com-2026-037-draft-r1
+      display_name: Heat-network return checklist — draft 1
+    - name: com-2026-037-offer-r2
+      display_name: Heat-network return checklist — offer 2
+    - name: com-2026-037-internal
+      display_name: Heat-network return checklist — internal decision
+    - name: com-2026-037-accepted
+      display_name: Heat-network return checklist — accepted schedule
+    - name: com-2026-037-costing
+      display_name: Heat-network return checklist — private pricing worksheet
+    - name: com-2026-037-project-billing
+      display_name: Heat-network return checklist — agreed billing schedule
+    - name: com-2026-042-draft-r1
+      display_name: Municipal export reconciliation — draft 1
+    - name: com-2026-042-offer-r2
+      display_name: Municipal export reconciliation — offer 2
+    - name: com-2026-042-internal
+      display_name: Municipal export reconciliation — internal decision
+    - name: com-2026-042-accepted
+      display_name: Municipal export reconciliation — accepted schedule
+    - name: com-2026-042-costing
+      display_name: Municipal export reconciliation — private pricing worksheet
+    - name: com-2026-042-project-billing
+      display_name: Municipal export reconciliation — agreed billing schedule
+    - name: com-2026-042-delivered-index
+      display_name: Municipal export reconciliation — delivered comparison index
+    - name: com-2026-042-handover-record
+      display_name: Municipal export reconciliation — accepted handover
+    - name: com-2026-047-draft-r1
+      display_name: Water and heat onboarding comparison — draft 1
+    - name: com-2026-047-offer-r2
+      display_name: Water and heat onboarding comparison — offer 2
+    - name: com-2026-047-internal
+      display_name: Water and heat onboarding comparison — internal decision
+    - name: com-2026-047-accepted
+      display_name: Water and heat onboarding comparison — accepted schedule
+    - name: com-2026-047-costing
+      display_name: Water and heat onboarding comparison — private pricing worksheet
+    - name: com-2026-047-project-billing
+      display_name: Water and heat onboarding comparison — agreed billing schedule
+    - name: com-2026-052-draft-r1
+      display_name: Board handover summary clinic — draft 1
+    - name: com-2026-052-offer-r2
+      display_name: Board handover summary clinic — offer 2
+    - name: com-2026-052-internal
+      display_name: Board handover summary clinic — internal decision
+    - name: com-2026-052-costing
+      display_name: Board handover summary clinic — private pricing worksheet
+    - name: com-2026-057-draft-r1
+      display_name: Multi-site archive migration sample — draft 1
+    - name: com-2026-057-offer-r2
+      display_name: Multi-site archive migration sample — offer 2
+    - name: com-2026-057-internal
+      display_name: Multi-site archive migration sample — internal decision
+    - name: com-2026-057-costing
+      display_name: Multi-site archive migration sample — private pricing worksheet
+    - name: com-2026-003-draft-r1
+      display_name: Unattended contractor acceptance — draft 1
+    - name: com-2026-003-offer-r2
+      display_name: Unattended contractor acceptance — offer 2
+    - name: com-2026-003-internal
+      display_name: Unattended contractor acceptance — internal decision
+    - name: com-2026-008-draft-r1
+      display_name: Extra winter mapping workshop — draft 1
+    - name: com-2026-008-offer-r2
+      display_name: Extra winter mapping workshop — offer 2
+    - name: com-2026-008-internal
+      display_name: Extra winter mapping workshop — internal decision
+    - name: com-2026-013-draft-r1
+      display_name: Live telemetry connection — draft 1
+    - name: com-2026-013-offer-r2
+      display_name: Live telemetry connection — offer 2
+    - name: com-2026-013-internal
+      display_name: Live telemetry connection — internal decision
+    - name: com-2026-018-draft-r1
+      display_name: Third district discovery — draft 1
+    - name: com-2026-018-offer-r2
+      display_name: Third district discovery — offer 2
+    - name: com-2026-018-internal
+      display_name: Third district discovery — internal decision
+    - name: com-2026-023-draft-r1
+      display_name: Full coastal archive conversion — draft 1
+    - name: com-2026-023-offer-r2
+      display_name: Full coastal archive conversion — offer 2
+    - name: com-2026-023-internal
+      display_name: Full coastal archive conversion — internal decision
+    - name: com-2026-028-draft-r1
+      display_name: Plant set-point write-back — draft 1
+    - name: com-2026-028-offer-r2
+      display_name: Plant set-point write-back — offer 2
+    - name: com-2026-028-internal
+      display_name: Plant set-point write-back — internal decision
+    - name: com-2026-033-draft-r1
+      display_name: Second archive comparison — draft 1
+    - name: com-2026-033-offer-r2
+      display_name: Second archive comparison — offer 2
+    - name: com-2026-033-internal
+      display_name: Second archive comparison — internal decision
+    - name: com-2026-038-draft-r1
+      display_name: Weekend reviewer clinic — draft 1
+    - name: com-2026-038-offer-r2
+      display_name: Weekend reviewer clinic — offer 2
+    - name: com-2026-038-internal
+      display_name: Weekend reviewer clinic — internal decision
+    - name: com-2026-043-draft-r1
+      display_name: Unbounded historical clean-up — draft 1
+    - name: com-2026-043-offer-r2
+      display_name: Unbounded historical clean-up — offer 2
+    - name: com-2026-043-internal
+      display_name: Unbounded historical clean-up — internal decision
+    - name: com-2026-048-draft-r1
+      display_name: Common export glossary — draft 1
+    - name: com-2026-048-offer-r2
+      display_name: Common export glossary — offer 2
+    - name: com-2026-048-internal
+      display_name: Common export glossary — internal decision
+    - name: com-2026-053-draft-r1
+      display_name: Quarterly summary coaching — draft 1
+    - name: com-2026-053-offer-r2
+      display_name: Quarterly summary coaching — offer 2
+    - name: com-2026-053-internal
+      display_name: Quarterly summary coaching — internal decision
+    - name: com-2026-058-draft-r1
+      display_name: Site template comparison — draft 1
+    - name: com-2026-058-offer-r2
+      display_name: Site template comparison — offer 2
+    - name: com-2026-058-internal
+      display_name: Site template comparison — internal decision
+    - name: com-2026-004-draft-r1
+      display_name: Quarterly billing reference — draft 1
+    - name: com-2026-004-offer-r2
+      display_name: Quarterly billing reference — offer 2
+    - name: com-2026-004-internal
+      display_name: Quarterly billing reference — internal decision
+    - name: com-2026-004-accepted
+      display_name: Quarterly billing reference — accepted schedule
+    - name: com-2026-009-draft-r1
+      display_name: Included workshop boundary — draft 1
+    - name: com-2026-009-offer-r2
+      display_name: Included workshop boundary — offer 2
+    - name: com-2026-009-internal
+      display_name: Included workshop boundary — internal decision
+    - name: com-2026-009-accepted
+      display_name: Included workshop boundary — accepted schedule
+    - name: com-2026-014-draft-r1
+      display_name: Billing contact routing — draft 1
+    - name: com-2026-014-offer-r2
+      display_name: Billing contact routing — offer 2
+    - name: com-2026-014-internal
+      display_name: Billing contact routing — internal decision
+    - name: com-2026-014-accepted
+      display_name: Billing contact routing — accepted schedule
+    - name: com-2026-019-draft-r1
+      display_name: Two district cost references — draft 1
+    - name: com-2026-019-offer-r2
+      display_name: Two district cost references — offer 2
+    - name: com-2026-019-internal
+      display_name: Two district cost references — internal decision
+    - name: com-2026-019-accepted
+      display_name: Two district cost references — accepted schedule
+    - name: com-2026-024-draft-r1
+      display_name: Accepted export terminology — draft 1
+    - name: com-2026-024-offer-r2
+      display_name: Accepted export terminology — offer 2
+    - name: com-2026-024-internal
+      display_name: Accepted export terminology — internal decision
+    - name: com-2026-024-accepted
+      display_name: Accepted export terminology — accepted schedule
+    - name: com-2026-029-draft-r1
+      display_name: Reviewer succession annex — draft 1
+    - name: com-2026-029-offer-r2
+      display_name: Reviewer succession annex — offer 2
+    - name: com-2026-029-internal
+      display_name: Reviewer succession annex — internal decision
+    - name: com-2026-034-draft-r1
+      display_name: Separate reviewer groups — draft 1
+    - name: com-2026-034-offer-r2
+      display_name: Separate reviewer groups — offer 2
+    - name: com-2026-034-internal
+      display_name: Separate reviewer groups — internal decision
+    - name: com-2026-034-accepted
+      display_name: Separate reviewer groups — accepted schedule
+    - name: com-2026-039-draft-r1
+      display_name: Quarterly purchase reference — draft 1
+    - name: com-2026-039-offer-r2
+      display_name: Quarterly purchase reference — offer 2
+    - name: com-2026-039-internal
+      display_name: Quarterly purchase reference — internal decision
+    - name: com-2026-044-draft-r1
+      display_name: Archive exception ownership — draft 1
+    - name: com-2026-044-offer-r2
+      display_name: Archive exception ownership — offer 2
+    - name: com-2026-044-internal
+      display_name: Archive exception ownership — internal decision
+    - name: com-2026-044-accepted
+      display_name: Archive exception ownership — accepted schedule
+    - name: com-2026-049-draft-r1
+      display_name: Water and heat service annex — draft 1
+    - name: com-2026-049-offer-r2
+      display_name: Water and heat service annex — offer 2
+    - name: com-2026-049-internal
+      display_name: Water and heat service annex — internal decision
+    - name: com-2026-054-draft-r1
+      display_name: Board-pack acceptance wording — draft 1
+    - name: com-2026-054-offer-r2
+      display_name: Board-pack acceptance wording — offer 2
+    - name: com-2026-054-internal
+      display_name: Board-pack acceptance wording — internal decision
+    - name: com-2026-059-draft-r1
+      display_name: Site correspondence register — draft 1
+    - name: com-2026-059-offer-r2
+      display_name: Site correspondence register — offer 2
+    - name: com-2026-059-internal
+      display_name: Site correspondence register — internal decision
+    - name: com-2026-059-accepted
+      display_name: Site correspondence register — accepted schedule
+    - name: com-2026-005-account-plan
+      display_name: Alterra Regional Water Company — internal account plan
+    - name: commercial-arwc-reference-agenda
+      display_name: ARWC reference conversation — agenda
+    - name: com-2026-010-account-plan
+      display_name: Rillhaven District Heating — internal account plan
+    - name: com-2026-015-account-plan
+      display_name: Davenmoor Water Service — internal account plan
+    - name: com-2026-020-account-plan
+      display_name: Elverden District Water — internal account plan
+    - name: com-2026-025-account-plan
+      display_name: Fennor Bay Water — internal account plan
+    - name: com-2026-030-account-plan
+      display_name: Haveril District Energy — internal account plan
+    - name: com-2026-035-account-plan
+      display_name: Mirrenfold Regional Water — internal account plan
+    - name: com-2026-040-account-plan
+      display_name: Orvellan District Heating — internal account plan
+    - name: com-2026-045-account-plan
+      display_name: Pellhaven Municipal Water — internal account plan
+    - name: com-2026-050-account-plan
+      display_name: Roskelle Utilities — internal account plan
+    - name: com-2026-055-account-plan
+      display_name: Sennwick Water Board — internal account plan
+    - name: com-2026-060-account-plan
+      display_name: Caldren Reach Utilities — internal account plan
+    - name: com-2026-002-handover-invitation
+      display_name: River contractor archive guide handover — invitation
+    - name: com-2026-007-handover-invitation
+      display_name: Winter handover mapping handover — invitation
+    - name: com-2026-012-handover-invitation
+      display_name: Reservoir return catalogue handover — invitation
+    - name: com-2026-017-handover-invitation
+      display_name: Two-district archive handover handover — invitation
+    - name: com-2026-022-handover-invitation
+      display_name: Coastal inspection export guide handover — invitation
+    - name: com-2026-027-handover-invitation
+      display_name: Reviewer sign-off induction pack handover — invitation
+    - name: com-2026-032-handover-invitation
+      display_name: Regional comparison index handover — invitation
+    - name: com-2026-037-handover-invitation
+      display_name: Heat-network return checklist handover — invitation
+    - name: com-2026-042-handover-invitation
+      display_name: Municipal export reconciliation handover — invitation
+    - name: com-2026-047-handover-invitation
+      display_name: Water and heat onboarding comparison handover — invitation
+    - name: commercial-arwc-reference-hold-invitation
+      display_name: ARWC reference conversation - tentative hold — invitation
+    - name: commercial-agreed-billing-register
+      display_name: Agreed commercial billing register
+    - name: commercial-project-capacity
+      display_name: Accepted project capacity allocation
+    - name: commercial-capacity-basis
+      display_name: Project allocation and capacity basis
+    - name: commercial-authority-notes
+      display_name: Using the commercial billing register
     - name: support-kb-accepted-revisions-v2
       display_name: Finding the accepted revision — revision 2
     - name: support-kb-archive-references-v2
@@ -8430,6 +8910,28 @@ content:
       display_name: Orren & Vale IT Services accepted service schedule
     - name: kc-account-index
       display_name: Business account index
+    - name: com-2026-002-handover
+      display_name: River contractor archive guide handover
+    - name: com-2026-007-handover
+      display_name: Winter handover mapping handover
+    - name: com-2026-012-handover
+      display_name: Reservoir return catalogue handover
+    - name: com-2026-017-handover
+      display_name: Two-district archive handover handover
+    - name: com-2026-022-handover
+      display_name: Coastal inspection export guide handover
+    - name: com-2026-027-handover
+      display_name: Reviewer sign-off induction pack handover
+    - name: com-2026-032-handover
+      display_name: Regional comparison index handover
+    - name: com-2026-037-handover
+      display_name: Heat-network return checklist handover
+    - name: com-2026-042-handover
+      display_name: Municipal export reconciliation handover
+    - name: com-2026-047-handover
+      display_name: Water and heat onboarding comparison handover
+    - name: commercial-arwc-reference-hold
+      display_name: ARWC reference conversation - tentative hold
     - name: rel-2026-001-window
       display_name: REL-2026-001 FieldKest qualification
     - name: rel-2026-002-window
