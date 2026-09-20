@@ -4,10 +4,12 @@ Planning draft, 19 September 2026. This document specifies the complete
 enterprise-content programme; the [workforce slice](workforce-review.md)
 realizes its population and employment-record portion, the
 [business slice](business-content-review.md) realizes customer, supplier, and
-contract references, and the [support slice](support-content-review.md) realizes
-support intake, onboarding, appointments, and unresolved engineering escalations.
+contract references, the [support slice](support-content-review.md) realizes
+support intake, onboarding, appointments, and unresolved engineering escalations,
+and the [FieldKest slice](fieldkest-engineering-review.md) realizes the linked
+engineering repositories and work history.
 The [generation plan](content-generation-plan.md) records earlier sizing proposals.
-The pack now contains 8,575 messages and 822 source documents, including the
+The pack now contains 14,075 messages and 1,542 source documents, including the
 earlier story collection. Other departmental business histories remain future
 content work.
 

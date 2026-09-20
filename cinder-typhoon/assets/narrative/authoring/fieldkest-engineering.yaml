@@ -1,0 +1,5278 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+required_base:
+  support_commit: aa48fa8
+  business_commit: ef9c89f
+  workforce_commit: cf20e3e
+counts:
+  work_items: 350
+  messages: 5500
+  documents: 720
+  repositories: 5
+  accepted_support_escalations: 30
+repositories:
+- name: fieldkest-core
+  workstream: core
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+- name: fieldkest-connectors
+  workstream: connectors
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+- name: fieldkest-workspace
+  workstream: experience
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+- name: fieldkest-integration-kit
+  workstream: integrations
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+- name: fieldkest-verification
+  workstream: quality
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+work_items:
+- id: FK-2026-0001
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: rowan
+  reviewer: kwm003
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-02T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0001-core-r2
+- id: FK-2026-0002
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm008
+  reviewer: kwm006
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-02T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0002-connectors-r3
+- id: FK-2026-0003
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: accepted
+  owner: kwm015
+  reviewer: kwm009
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-02T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0003-experience-r4
+- id: FK-2026-0004
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: deferred
+  owner: kwm021
+  reviewer: kwm012
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-02T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0004-integrations-r1
+- id: FK-2026-0005
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: rejected
+  owner: kwm004
+  reviewer: kwm015
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-03T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0005-quality-r2
+- id: FK-2026-0006
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm005
+  reviewer: kwm018
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-03T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0006-core-r3
+- id: FK-2026-0007
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm007
+  reviewer: kwm021
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-03T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0007-connectors-r4
+- id: FK-2026-0008
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm002
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-03T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0008-experience-r1
+- id: FK-2026-0009
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm005
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-04T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0009-integrations-r2
+- id: FK-2026-0010
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: accepted
+  owner: kwm002
+  reviewer: kwm008
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-04T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0010-quality-r3
+- id: FK-2026-0011
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: deferred
+  owner: kwm003
+  reviewer: kwm011
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-04T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0011-core-r4
+- id: FK-2026-0012
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: rejected
+  owner: kwm012
+  reviewer: kwm014
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-04T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0012-connectors-r1
+- id: FK-2026-0013
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm017
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-05T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0013-experience-r2
+- id: FK-2026-0014
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm020
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-05T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0014-integrations-r3
+- id: FK-2026-0015
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: rowan
+  reviewer: kwm001
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-05T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0015-quality-r4
+- id: FK-2026-0016
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm001
+  reviewer: kwm004
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-05T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0016-core-r1
+- id: FK-2026-0017
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: accepted
+  owner: kwm011
+  reviewer: kwm007
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-06T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0017-connectors-r2
+- id: FK-2026-0018
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: deferred
+  owner: kwm015
+  reviewer: kwm010
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-06T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0018-experience-r3
+- id: FK-2026-0019
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: rejected
+  owner: kwm020
+  reviewer: kwm013
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-06T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0019-integrations-r4
+- id: FK-2026-0020
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm005
+  reviewer: kwm016
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-06T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0020-quality-r1
+- id: FK-2026-0021
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm006
+  reviewer: kwm019
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-07T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0021-core-r2
+- id: FK-2026-0022
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm010
+  reviewer: rowan
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-07T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0022-connectors-r3
+- id: FK-2026-0023
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm003
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-07T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0023-experience-r4
+- id: FK-2026-0024
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: accepted
+  owner: kwm021
+  reviewer: kwm006
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-07T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0024-integrations-r1
+- id: FK-2026-0025
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: deferred
+  owner: kwm003
+  reviewer: kwm009
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-08T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0025-quality-r2
+- id: FK-2026-0026
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: rejected
+  owner: kwm004
+  reviewer: kwm012
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-08T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0026-core-r3
+- id: FK-2026-0027
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm009
+  reviewer: kwm015
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-08T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0027-connectors-r4
+- id: FK-2026-0028
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm018
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-08T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0028-experience-r1
+- id: FK-2026-0029
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm021
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-09T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0029-integrations-r2
+- id: FK-2026-0030
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm001
+  reviewer: kwm002
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-09T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0030-quality-r3
+- id: FK-2026-0031
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: accepted
+  owner: kwm002
+  reviewer: kwm005
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-09T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0031-core-r4
+- id: FK-2026-0032
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: deferred
+  owner: kwm008
+  reviewer: kwm008
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-09T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0032-connectors-r1
+- id: FK-2026-0033
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: rejected
+  owner: kwm015
+  reviewer: kwm011
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-10T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0033-experience-r2
+- id: FK-2026-0034
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm014
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-10T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0034-integrations-r3
+- id: FK-2026-0035
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm006
+  reviewer: kwm017
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-10T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0035-quality-r4
+- id: FK-2026-0036
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: rowan
+  reviewer: kwm020
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-10T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0036-core-r1
+- id: FK-2026-0037
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm007
+  reviewer: kwm001
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-11T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0037-connectors-r2
+- id: FK-2026-0038
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: accepted
+  owner: kwm015
+  reviewer: kwm004
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-11T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0038-experience-r3
+- id: FK-2026-0039
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: deferred
+  owner: kwm020
+  reviewer: kwm007
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-11T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0039-integrations-r4
+- id: FK-2026-0040
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: rejected
+  owner: kwm004
+  reviewer: kwm010
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-11T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0040-quality-r1
+- id: FK-2026-0041
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm005
+  reviewer: kwm013
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-12T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0041-core-r2
+- id: FK-2026-0042
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm012
+  reviewer: kwm016
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-12T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0042-connectors-r3
+- id: FK-2026-0043
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm019
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-12T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0043-experience-r4
+- id: FK-2026-0044
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: rowan
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-12T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0044-integrations-r1
+- id: FK-2026-0045
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: accepted
+  owner: kwm002
+  reviewer: kwm003
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-13T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0045-quality-r2
+- id: FK-2026-0046
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: deferred
+  owner: kwm003
+  reviewer: kwm006
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-13T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0046-core-r3
+- id: FK-2026-0047
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: rejected
+  owner: kwm011
+  reviewer: kwm009
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-13T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0047-connectors-r4
+- id: FK-2026-0048
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm012
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-13T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0048-experience-r1
+- id: FK-2026-0049
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm015
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-14T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0049-integrations-r2
+- id: FK-2026-0050
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: rowan
+  reviewer: kwm018
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-14T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0050-quality-r3
+- id: FK-2026-0051
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm001
+  reviewer: kwm021
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-14T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0051-core-r4
+- id: FK-2026-0052
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: accepted
+  owner: kwm010
+  reviewer: kwm002
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-14T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0052-connectors-r1
+- id: FK-2026-0053
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: deferred
+  owner: kwm015
+  reviewer: kwm005
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-15T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0053-experience-r2
+- id: FK-2026-0054
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: rejected
+  owner: kwm019
+  reviewer: kwm008
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-15T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0054-integrations-r3
+- id: FK-2026-0055
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm005
+  reviewer: kwm011
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-15T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0055-quality-r4
+- id: FK-2026-0056
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm006
+  reviewer: kwm014
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-15T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0056-core-r1
+- id: FK-2026-0057
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm009
+  reviewer: kwm017
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-16T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0057-connectors-r2
+- id: FK-2026-0058
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm020
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-16T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0058-experience-r3
+- id: FK-2026-0059
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: accepted
+  owner: kwm020
+  reviewer: kwm001
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-16T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0059-integrations-r4
+- id: FK-2026-0060
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: deferred
+  owner: kwm003
+  reviewer: kwm004
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-16T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0060-quality-r1
+- id: FK-2026-0061
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: rejected
+  owner: kwm004
+  reviewer: kwm007
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-17T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0061-core-r2
+- id: FK-2026-0062
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm008
+  reviewer: kwm010
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-17T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0062-connectors-r3
+- id: FK-2026-0063
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm013
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-17T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0063-experience-r4
+- id: FK-2026-0064
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm016
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-17T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0064-integrations-r1
+- id: FK-2026-0065
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm001
+  reviewer: kwm019
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-18T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0065-quality-r2
+- id: FK-2026-0066
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: accepted
+  owner: kwm002
+  reviewer: rowan
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-18T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0066-core-r3
+- id: FK-2026-0067
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: deferred
+  owner: kwm007
+  reviewer: kwm003
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-18T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0067-connectors-r4
+- id: FK-2026-0068
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: rejected
+  owner: kwm015
+  reviewer: kwm006
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-18T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0068-experience-r1
+- id: FK-2026-0069
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm009
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-19T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0069-integrations-r2
+- id: FK-2026-0070
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm006
+  reviewer: kwm012
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-19T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0070-quality-r3
+- id: FK-2026-0071
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: rowan
+  reviewer: kwm015
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-19T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0071-core-r4
+- id: FK-2026-0072
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm012
+  reviewer: kwm018
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-19T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0072-connectors-r1
+- id: FK-2026-0073
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: accepted
+  owner: kwm015
+  reviewer: kwm021
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-20T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0073-experience-r2
+- id: FK-2026-0074
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: deferred
+  owner: kwm019
+  reviewer: kwm002
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-20T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0074-integrations-r3
+- id: FK-2026-0075
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: rejected
+  owner: kwm004
+  reviewer: kwm005
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-20T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0075-quality-r4
+- id: FK-2026-0076
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm005
+  reviewer: kwm008
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-20T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0076-core-r1
+- id: FK-2026-0077
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm011
+  reviewer: kwm011
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-21T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0077-connectors-r2
+- id: FK-2026-0078
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm014
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-21T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0078-experience-r3
+- id: FK-2026-0079
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm017
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-21T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0079-integrations-r4
+- id: FK-2026-0080
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: accepted
+  owner: kwm002
+  reviewer: kwm020
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-21T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0080-quality-r1
+- id: FK-2026-0081
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: deferred
+  owner: kwm003
+  reviewer: kwm001
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-22T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0081-core-r2
+- id: FK-2026-0082
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: rejected
+  owner: kwm010
+  reviewer: kwm004
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-22T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0082-connectors-r3
+- id: FK-2026-0083
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm007
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-22T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0083-experience-r4
+- id: FK-2026-0084
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm010
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-22T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0084-integrations-r1
+- id: FK-2026-0085
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: rowan
+  reviewer: kwm013
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-23T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0085-quality-r2
+- id: FK-2026-0086
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm001
+  reviewer: kwm016
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-23T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0086-core-r3
+- id: FK-2026-0087
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: accepted
+  owner: kwm009
+  reviewer: kwm019
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-23T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0087-connectors-r4
+- id: FK-2026-0088
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: deferred
+  owner: kwm015
+  reviewer: rowan
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-23T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0088-experience-r1
+- id: FK-2026-0089
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: rejected
+  owner: kwm018
+  reviewer: kwm003
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-24T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0089-integrations-r2
+- id: FK-2026-0090
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm005
+  reviewer: kwm006
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-24T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0090-quality-r3
+- id: FK-2026-0091
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm006
+  reviewer: kwm009
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-24T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0091-core-r4
+- id: FK-2026-0092
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm008
+  reviewer: kwm012
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-24T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0092-connectors-r1
+- id: FK-2026-0093
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm015
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-25T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0093-experience-r2
+- id: FK-2026-0094
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: accepted
+  owner: kwm019
+  reviewer: kwm018
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-25T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0094-integrations-r3
+- id: FK-2026-0095
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: deferred
+  owner: kwm003
+  reviewer: kwm021
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-25T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0095-quality-r4
+- id: FK-2026-0096
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: rejected
+  owner: kwm004
+  reviewer: kwm002
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-25T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0096-core-r1
+- id: FK-2026-0097
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm007
+  reviewer: kwm005
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-26T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0097-connectors-r2
+- id: FK-2026-0098
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm008
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-26T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0098-experience-r3
+- id: FK-2026-0099
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm011
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-26T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0099-integrations-r4
+- id: FK-2026-0100
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm001
+  reviewer: kwm014
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-26T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0100-quality-r1
+- id: FK-2026-0101
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: accepted
+  owner: kwm002
+  reviewer: kwm017
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-27T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0101-core-r2
+- id: FK-2026-0102
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: deferred
+  owner: kwm012
+  reviewer: kwm020
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-27T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0102-connectors-r3
+- id: FK-2026-0103
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: rejected
+  owner: kwm015
+  reviewer: kwm001
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-27T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0103-experience-r4
+- id: FK-2026-0104
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm004
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-27T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0104-integrations-r1
+- id: FK-2026-0105
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm006
+  reviewer: kwm007
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-28T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0105-quality-r2
+- id: FK-2026-0106
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: rowan
+  reviewer: kwm010
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-03-28T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0106-core-r3
+- id: FK-2026-0107
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm011
+  reviewer: kwm013
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-03-28T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0107-connectors-r4
+- id: FK-2026-0108
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: accepted
+  owner: kwm015
+  reviewer: kwm016
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-03-28T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0108-experience-r1
+- id: FK-2026-0109
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: deferred
+  owner: kwm018
+  reviewer: kwm019
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-03-29T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0109-integrations-r2
+- id: FK-2026-0110
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: rejected
+  owner: kwm004
+  reviewer: rowan
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-03-29T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0110-quality-r3
+- id: FK-2026-0111
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm005
+  reviewer: kwm003
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-03-29T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0111-core-r4
+- id: FK-2026-0112
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm010
+  reviewer: kwm006
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-03-29T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0112-connectors-r1
+- id: FK-2026-0113
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm009
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-03-30T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0113-experience-r2
+- id: FK-2026-0114
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm012
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-03-30T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0114-integrations-r3
+- id: FK-2026-0115
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: accepted
+  owner: kwm002
+  reviewer: kwm015
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-03-30T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0115-quality-r4
+- id: FK-2026-0116
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: deferred
+  owner: kwm003
+  reviewer: kwm018
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-03-30T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0116-core-r1
+- id: FK-2026-0117
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: rejected
+  owner: kwm009
+  reviewer: kwm021
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-03-31T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0117-connectors-r2
+- id: FK-2026-0118
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm002
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-03-31T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0118-experience-r3
+- id: FK-2026-0119
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm005
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-03-31T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0119-integrations-r4
+- id: FK-2026-0120
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: rowan
+  reviewer: kwm008
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-03-31T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0120-quality-r1
+- id: FK-2026-0121
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm001
+  reviewer: kwm011
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-01T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0121-core-r2
+- id: FK-2026-0122
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: accepted
+  owner: kwm008
+  reviewer: kwm014
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-01T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0122-connectors-r3
+- id: FK-2026-0123
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: deferred
+  owner: kwm015
+  reviewer: kwm017
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-01T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0123-experience-r4
+- id: FK-2026-0124
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: rejected
+  owner: kwm021
+  reviewer: kwm020
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-01T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0124-integrations-r1
+- id: FK-2026-0125
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm005
+  reviewer: kwm001
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-02T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0125-quality-r2
+- id: FK-2026-0126
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm006
+  reviewer: kwm004
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-02T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0126-core-r3
+- id: FK-2026-0127
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm007
+  reviewer: kwm007
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-02T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0127-connectors-r4
+- id: FK-2026-0128
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm010
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-02T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0128-experience-r1
+- id: FK-2026-0129
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: accepted
+  owner: kwm018
+  reviewer: kwm013
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-03T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0129-integrations-r2
+- id: FK-2026-0130
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: deferred
+  owner: kwm003
+  reviewer: kwm016
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-03T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0130-quality-r3
+- id: FK-2026-0131
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: rejected
+  owner: kwm004
+  reviewer: kwm019
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-03T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0131-core-r4
+- id: FK-2026-0132
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm012
+  reviewer: rowan
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-03T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0132-connectors-r1
+- id: FK-2026-0133
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm003
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-04T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0133-experience-r2
+- id: FK-2026-0134
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm006
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-04T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0134-integrations-r3
+- id: FK-2026-0135
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm001
+  reviewer: kwm009
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-04T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0135-quality-r4
+- id: FK-2026-0136
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: accepted
+  owner: kwm002
+  reviewer: kwm012
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-04T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0136-core-r1
+- id: FK-2026-0137
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: deferred
+  owner: kwm011
+  reviewer: kwm015
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-05T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0137-connectors-r2
+- id: FK-2026-0138
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: rejected
+  owner: kwm015
+  reviewer: kwm018
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-05T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0138-experience-r3
+- id: FK-2026-0139
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm021
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-05T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0139-integrations-r4
+- id: FK-2026-0140
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm006
+  reviewer: kwm002
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-05T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0140-quality-r1
+- id: FK-2026-0141
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: rowan
+  reviewer: kwm005
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-06T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0141-core-r2
+- id: FK-2026-0142
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm010
+  reviewer: kwm008
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-06T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0142-connectors-r3
+- id: FK-2026-0143
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: accepted
+  owner: kwm015
+  reviewer: kwm011
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-06T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0143-experience-r4
+- id: FK-2026-0144
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: deferred
+  owner: kwm021
+  reviewer: kwm014
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-06T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0144-integrations-r1
+- id: FK-2026-0145
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: rejected
+  owner: kwm004
+  reviewer: kwm017
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-07T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0145-quality-r2
+- id: FK-2026-0146
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm005
+  reviewer: kwm020
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-07T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0146-core-r3
+- id: FK-2026-0147
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm009
+  reviewer: kwm001
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-07T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0147-connectors-r4
+- id: FK-2026-0148
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm004
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-07T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0148-experience-r1
+- id: FK-2026-0149
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm007
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-08T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0149-integrations-r2
+- id: FK-2026-0150
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: accepted
+  owner: kwm002
+  reviewer: kwm010
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-08T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0150-quality-r3
+- id: FK-2026-0151
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: deferred
+  owner: kwm003
+  reviewer: kwm013
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-08T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0151-core-r4
+- id: FK-2026-0152
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: rejected
+  owner: kwm008
+  reviewer: kwm016
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-08T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0152-connectors-r1
+- id: FK-2026-0153
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm019
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-09T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0153-experience-r2
+- id: FK-2026-0154
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: rowan
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-09T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0154-integrations-r3
+- id: FK-2026-0155
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: rowan
+  reviewer: kwm003
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-09T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0155-quality-r4
+- id: FK-2026-0156
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm001
+  reviewer: kwm006
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-09T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0156-core-r1
+- id: FK-2026-0157
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: accepted
+  owner: kwm007
+  reviewer: kwm009
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-10T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0157-connectors-r2
+- id: FK-2026-0158
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: deferred
+  owner: kwm015
+  reviewer: kwm012
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-10T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0158-experience-r3
+- id: FK-2026-0159
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: rejected
+  owner: kwm020
+  reviewer: kwm015
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-10T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0159-integrations-r4
+- id: FK-2026-0160
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm005
+  reviewer: kwm018
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-10T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0160-quality-r1
+- id: FK-2026-0161
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm006
+  reviewer: kwm021
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-11T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0161-core-r2
+- id: FK-2026-0162
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm012
+  reviewer: kwm002
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-11T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0162-connectors-r3
+- id: FK-2026-0163
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm005
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-11T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0163-experience-r4
+- id: FK-2026-0164
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: accepted
+  owner: kwm021
+  reviewer: kwm008
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-11T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0164-integrations-r1
+- id: FK-2026-0165
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: deferred
+  owner: kwm003
+  reviewer: kwm011
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-12T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0165-quality-r2
+- id: FK-2026-0166
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: rejected
+  owner: kwm004
+  reviewer: kwm014
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-12T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0166-core-r3
+- id: FK-2026-0167
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm011
+  reviewer: kwm017
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-12T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0167-connectors-r4
+- id: FK-2026-0168
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm020
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-12T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0168-experience-r1
+- id: FK-2026-0169
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm001
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-13T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0169-integrations-r2
+- id: FK-2026-0170
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm001
+  reviewer: kwm004
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-13T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0170-quality-r3
+- id: FK-2026-0171
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: accepted
+  owner: kwm002
+  reviewer: kwm007
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-13T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0171-core-r4
+- id: FK-2026-0172
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: deferred
+  owner: kwm010
+  reviewer: kwm010
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-13T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0172-connectors-r1
+- id: FK-2026-0173
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: rejected
+  owner: kwm015
+  reviewer: kwm013
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-14T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0173-experience-r2
+- id: FK-2026-0174
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm016
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-14T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0174-integrations-r3
+- id: FK-2026-0175
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm006
+  reviewer: kwm019
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-14T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0175-quality-r4
+- id: FK-2026-0176
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: rowan
+  reviewer: rowan
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-14T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0176-core-r1
+- id: FK-2026-0177
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm009
+  reviewer: kwm003
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-15T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0177-connectors-r2
+- id: FK-2026-0178
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: accepted
+  owner: kwm015
+  reviewer: kwm006
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-15T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0178-experience-r3
+- id: FK-2026-0179
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: deferred
+  owner: kwm020
+  reviewer: kwm009
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-15T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0179-integrations-r4
+- id: FK-2026-0180
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: rejected
+  owner: kwm004
+  reviewer: kwm012
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-15T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0180-quality-r1
+- id: FK-2026-0181
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm005
+  reviewer: kwm015
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-16T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0181-core-r2
+- id: FK-2026-0182
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm008
+  reviewer: kwm018
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-16T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0182-connectors-r3
+- id: FK-2026-0183
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm021
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-16T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0183-experience-r4
+- id: FK-2026-0184
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm002
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-16T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0184-integrations-r1
+- id: FK-2026-0185
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: accepted
+  owner: kwm002
+  reviewer: kwm005
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-17T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0185-quality-r2
+- id: FK-2026-0186
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: deferred
+  owner: kwm003
+  reviewer: kwm008
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-17T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0186-core-r3
+- id: FK-2026-0187
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: rejected
+  owner: kwm007
+  reviewer: kwm011
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-17T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0187-connectors-r4
+- id: FK-2026-0188
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm014
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-17T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0188-experience-r1
+- id: FK-2026-0189
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm017
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-18T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0189-integrations-r2
+- id: FK-2026-0190
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: rowan
+  reviewer: kwm020
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-18T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0190-quality-r3
+- id: FK-2026-0191
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm001
+  reviewer: kwm001
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-18T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0191-core-r4
+- id: FK-2026-0192
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: accepted
+  owner: kwm012
+  reviewer: kwm004
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-18T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0192-connectors-r1
+- id: FK-2026-0193
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: deferred
+  owner: kwm015
+  reviewer: kwm007
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-19T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0193-experience-r2
+- id: FK-2026-0194
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: rejected
+  owner: kwm019
+  reviewer: kwm010
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-19T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0194-integrations-r3
+- id: FK-2026-0195
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm005
+  reviewer: kwm013
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-19T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0195-quality-r4
+- id: FK-2026-0196
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm006
+  reviewer: kwm016
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-19T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0196-core-r1
+- id: FK-2026-0197
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm011
+  reviewer: kwm019
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-20T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0197-connectors-r2
+- id: FK-2026-0198
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: rowan
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-20T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0198-experience-r3
+- id: FK-2026-0199
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: accepted
+  owner: kwm020
+  reviewer: kwm003
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-20T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0199-integrations-r4
+- id: FK-2026-0200
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: deferred
+  owner: kwm003
+  reviewer: kwm006
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-20T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0200-quality-r1
+- id: FK-2026-0201
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: rejected
+  owner: kwm004
+  reviewer: kwm009
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-21T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0201-core-r2
+- id: FK-2026-0202
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm010
+  reviewer: kwm012
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-21T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0202-connectors-r3
+- id: FK-2026-0203
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm015
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-21T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0203-experience-r4
+- id: FK-2026-0204
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm018
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-21T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0204-integrations-r1
+- id: FK-2026-0205
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm001
+  reviewer: kwm021
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-22T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0205-quality-r2
+- id: FK-2026-0206
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: accepted
+  owner: kwm002
+  reviewer: kwm002
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-22T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0206-core-r3
+- id: FK-2026-0207
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: deferred
+  owner: kwm009
+  reviewer: kwm005
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-22T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0207-connectors-r4
+- id: FK-2026-0208
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: rejected
+  owner: kwm015
+  reviewer: kwm008
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-22T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0208-experience-r1
+- id: FK-2026-0209
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm011
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-23T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0209-integrations-r2
+- id: FK-2026-0210
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm006
+  reviewer: kwm014
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-23T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0210-quality-r3
+- id: FK-2026-0211
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: rowan
+  reviewer: kwm017
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-23T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0211-core-r4
+- id: FK-2026-0212
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm008
+  reviewer: kwm020
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-23T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0212-connectors-r1
+- id: FK-2026-0213
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: accepted
+  owner: kwm015
+  reviewer: kwm001
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-24T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0213-experience-r2
+- id: FK-2026-0214
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: deferred
+  owner: kwm019
+  reviewer: kwm004
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-24T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0214-integrations-r3
+- id: FK-2026-0215
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: rejected
+  owner: kwm004
+  reviewer: kwm007
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-24T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0215-quality-r4
+- id: FK-2026-0216
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm005
+  reviewer: kwm010
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-24T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0216-core-r1
+- id: FK-2026-0217
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm007
+  reviewer: kwm013
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-25T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0217-connectors-r2
+- id: FK-2026-0218
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm016
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-25T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0218-experience-r3
+- id: FK-2026-0219
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm019
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-25T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0219-integrations-r4
+- id: FK-2026-0220
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: accepted
+  owner: kwm002
+  reviewer: rowan
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-25T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0220-quality-r1
+- id: FK-2026-0221
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: deferred
+  owner: kwm003
+  reviewer: kwm003
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-26T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0221-core-r2
+- id: FK-2026-0222
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: rejected
+  owner: kwm012
+  reviewer: kwm006
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-26T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0222-connectors-r3
+- id: FK-2026-0223
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm009
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-26T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0223-experience-r4
+- id: FK-2026-0224
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm012
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-26T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0224-integrations-r1
+- id: FK-2026-0225
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: rowan
+  reviewer: kwm015
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-27T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0225-quality-r2
+- id: FK-2026-0226
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm001
+  reviewer: kwm018
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-04-27T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0226-core-r3
+- id: FK-2026-0227
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: accepted
+  owner: kwm011
+  reviewer: kwm021
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-04-27T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0227-connectors-r4
+- id: FK-2026-0228
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: deferred
+  owner: kwm015
+  reviewer: kwm002
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-04-27T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0228-experience-r1
+- id: FK-2026-0229
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: rejected
+  owner: kwm018
+  reviewer: kwm005
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-04-28T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0229-integrations-r2
+- id: FK-2026-0230
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm005
+  reviewer: kwm008
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-04-28T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0230-quality-r3
+- id: FK-2026-0231
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm006
+  reviewer: kwm011
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-04-28T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0231-core-r4
+- id: FK-2026-0232
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm010
+  reviewer: kwm014
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-04-28T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0232-connectors-r1
+- id: FK-2026-0233
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm017
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-04-29T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0233-experience-r2
+- id: FK-2026-0234
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: accepted
+  owner: kwm019
+  reviewer: kwm020
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-04-29T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0234-integrations-r3
+- id: FK-2026-0235
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: deferred
+  owner: kwm003
+  reviewer: kwm001
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-04-29T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0235-quality-r4
+- id: FK-2026-0236
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: rejected
+  owner: kwm004
+  reviewer: kwm004
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-04-29T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0236-core-r1
+- id: FK-2026-0237
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm009
+  reviewer: kwm007
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-04-30T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0237-connectors-r2
+- id: FK-2026-0238
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm010
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-04-30T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0238-experience-r3
+- id: FK-2026-0239
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm013
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-04-30T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0239-integrations-r4
+- id: FK-2026-0240
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm001
+  reviewer: kwm016
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-04-30T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0240-quality-r1
+- id: FK-2026-0241
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: accepted
+  owner: kwm002
+  reviewer: kwm019
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-01T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0241-core-r2
+- id: FK-2026-0242
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: deferred
+  owner: kwm008
+  reviewer: rowan
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-01T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0242-connectors-r3
+- id: FK-2026-0243
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: rejected
+  owner: kwm015
+  reviewer: kwm003
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-01T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0243-experience-r4
+- id: FK-2026-0244
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: completed
+  owner: kwm021
+  reviewer: kwm006
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-01T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0244-integrations-r1
+- id: FK-2026-0245
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm006
+  reviewer: kwm009
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-02T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0245-quality-r2
+- id: FK-2026-0246
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: rowan
+  reviewer: kwm012
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-05-02T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0246-core-r3
+- id: FK-2026-0247
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm007
+  reviewer: kwm015
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-05-02T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0247-connectors-r4
+- id: FK-2026-0248
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: accepted
+  owner: kwm015
+  reviewer: kwm018
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-05-02T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0248-experience-r1
+- id: FK-2026-0249
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: deferred
+  owner: kwm018
+  reviewer: kwm021
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-05-03T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0249-integrations-r2
+- id: FK-2026-0250
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: rejected
+  owner: kwm004
+  reviewer: kwm002
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-05-03T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0250-quality-r3
+- id: FK-2026-0251
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: completed
+  owner: kwm005
+  reviewer: kwm005
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-05-03T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0251-core-r4
+- id: FK-2026-0252
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm012
+  reviewer: kwm008
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-05-03T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0252-connectors-r1
+- id: FK-2026-0253
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm011
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-05-04T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0253-experience-r2
+- id: FK-2026-0254
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm014
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-05-04T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0254-integrations-r3
+- id: FK-2026-0255
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: accepted
+  owner: kwm002
+  reviewer: kwm017
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-05-04T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0255-quality-r4
+- id: FK-2026-0256
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: deferred
+  owner: kwm003
+  reviewer: kwm020
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-04T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0256-core-r1
+- id: FK-2026-0257
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: rejected
+  owner: kwm011
+  reviewer: kwm001
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-05T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0257-connectors-r2
+- id: FK-2026-0258
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: completed
+  owner: kwm015
+  reviewer: kwm004
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-05T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0258-experience-r3
+- id: FK-2026-0259
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm007
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-05T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0259-integrations-r4
+- id: FK-2026-0260
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: rowan
+  reviewer: kwm010
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-05T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0260-quality-r1
+- id: FK-2026-0261
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm001
+  reviewer: kwm013
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-05-06T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0261-core-r2
+- id: FK-2026-0262
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: accepted
+  owner: kwm010
+  reviewer: kwm016
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-05-06T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0262-connectors-r3
+- id: FK-2026-0263
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: deferred
+  owner: kwm015
+  reviewer: kwm019
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-05-06T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0263-experience-r4
+- id: FK-2026-0264
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: rejected
+  owner: kwm021
+  reviewer: rowan
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-05-06T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0264-integrations-r1
+- id: FK-2026-0265
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: completed
+  owner: kwm005
+  reviewer: kwm003
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-05-07T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0265-quality-r2
+- id: FK-2026-0266
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm006
+  reviewer: kwm006
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-05-07T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0266-core-r3
+- id: FK-2026-0267
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm009
+  reviewer: kwm009
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-05-07T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0267-connectors-r4
+- id: FK-2026-0268
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm012
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-05-07T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0268-experience-r1
+- id: FK-2026-0269
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: accepted
+  owner: kwm018
+  reviewer: kwm015
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-05-08T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0269-integrations-r2
+- id: FK-2026-0270
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: deferred
+  owner: kwm003
+  reviewer: kwm018
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-05-08T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0270-quality-r3
+- id: FK-2026-0271
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: rejected
+  owner: kwm004
+  reviewer: kwm021
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-08T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0271-core-r4
+- id: FK-2026-0272
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: completed
+  owner: kwm008
+  reviewer: kwm002
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-08T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0272-connectors-r1
+- id: FK-2026-0273
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm005
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-09T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0273-experience-r2
+- id: FK-2026-0274
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm008
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-09T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0274-integrations-r3
+- id: FK-2026-0275
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm001
+  reviewer: kwm011
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-09T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0275-quality-r4
+- id: FK-2026-0276
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: accepted
+  owner: kwm002
+  reviewer: kwm014
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-05-09T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0276-core-r1
+- id: FK-2026-0277
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: deferred
+  owner: kwm007
+  reviewer: kwm017
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-05-10T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0277-connectors-r2
+- id: FK-2026-0278
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: rejected
+  owner: kwm015
+  reviewer: kwm020
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-05-10T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0278-experience-r3
+- id: FK-2026-0279
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: completed
+  owner: kwm020
+  reviewer: kwm001
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-05-10T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0279-integrations-r4
+- id: FK-2026-0280
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm006
+  reviewer: kwm004
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-05-10T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0280-quality-r1
+- id: FK-2026-0281
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: rowan
+  reviewer: kwm007
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-05-11T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0281-core-r2
+- id: FK-2026-0282
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm012
+  reviewer: kwm010
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-05-11T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0282-connectors-r3
+- id: FK-2026-0283
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: accepted
+  owner: kwm015
+  reviewer: kwm013
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-05-11T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0283-experience-r4
+- id: FK-2026-0284
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: deferred
+  owner: kwm021
+  reviewer: kwm016
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-05-11T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0284-integrations-r1
+- id: FK-2026-0285
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: rejected
+  owner: kwm004
+  reviewer: kwm019
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-05-12T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0285-quality-r2
+- id: FK-2026-0286
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: completed
+  owner: kwm005
+  reviewer: rowan
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-12T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0286-core-r3
+- id: FK-2026-0287
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm011
+  reviewer: kwm003
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-12T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0287-connectors-r4
+- id: FK-2026-0288
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: kwm006
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-12T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0288-experience-r1
+- id: FK-2026-0289
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm009
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-13T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0289-integrations-r2
+- id: FK-2026-0290
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: accepted
+  owner: kwm002
+  reviewer: kwm012
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-13T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0290-quality-r3
+- id: FK-2026-0291
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: deferred
+  owner: kwm003
+  reviewer: kwm015
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-05-13T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0291-core-r4
+- id: FK-2026-0292
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: rejected
+  owner: kwm010
+  reviewer: kwm018
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-05-13T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0292-connectors-r1
+- id: FK-2026-0293
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: completed
+  owner: kwm015
+  reviewer: kwm021
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-05-14T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0293-experience-r2
+- id: FK-2026-0294
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm002
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-05-14T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0294-integrations-r3
+- id: FK-2026-0295
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: rowan
+  reviewer: kwm005
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-05-14T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0295-quality-r4
+- id: FK-2026-0296
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: kwm001
+  reviewer: kwm008
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-05-14T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0296-core-r1
+- id: FK-2026-0297
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: accepted
+  owner: kwm009
+  reviewer: kwm011
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-05-15T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0297-connectors-r2
+- id: FK-2026-0298
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: deferred
+  owner: kwm015
+  reviewer: kwm014
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-05-15T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0298-experience-r3
+- id: FK-2026-0299
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: rejected
+  owner: kwm020
+  reviewer: kwm017
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-05-15T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0299-integrations-r4
+- id: FK-2026-0300
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: completed
+  owner: kwm005
+  reviewer: kwm020
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-05-15T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0300-quality-r1
+- id: FK-2026-0301
+  title: Accepted revision labels in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: accepted revision labels
+  state: completed
+  owner: kwm006
+  reviewer: kwm001
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-16T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0301-core-r2
+- id: FK-2026-0302
+  title: Same-day history order in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: same-day history order
+  state: completed
+  owner: kwm008
+  reviewer: kwm004
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-16T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0302-connectors-r3
+- id: FK-2026-0303
+  title: Export column names in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: export column names
+  state: completed
+  owner: kwm015
+  reviewer: kwm007
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-16T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0303-experience-r4
+- id: FK-2026-0304
+  title: Attachment preview limits in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: attachment preview limits
+  state: accepted
+  owner: kwm021
+  reviewer: kwm010
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-16T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0304-integrations-r1
+- id: FK-2026-0305
+  title: Saved review filters in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: saved review filters
+  state: deferred
+  owner: kwm003
+  reviewer: kwm013
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-17T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0305-quality-r2
+- id: FK-2026-0306
+  title: Connector retry notes in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: connector retry notes
+  state: rejected
+  owner: kwm004
+  reviewer: kwm016
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-05-17T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0306-core-r3
+- id: FK-2026-0307
+  title: Record reference display in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: record reference display
+  state: completed
+  owner: kwm007
+  reviewer: kwm019
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-05-17T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0307-connectors-r4
+- id: FK-2026-0308
+  title: Reviewer assignment history in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: reviewer assignment history
+  state: completed
+  owner: kwm015
+  reviewer: rowan
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-05-17T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0308-experience-r1
+- id: FK-2026-0309
+  title: Csv quoting in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: CSV quoting
+  state: completed
+  owner: kwm018
+  reviewer: kwm003
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-05-18T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0309-integrations-r2
+- id: FK-2026-0310
+  title: Package ordering in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: package ordering
+  state: completed
+  owner: kwm001
+  reviewer: kwm006
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-05-18T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0310-quality-r3
+- id: FK-2026-0311
+  title: Archive search result in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: archive search result
+  state: accepted
+  owner: kwm002
+  reviewer: kwm009
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-05-18T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0311-core-r4
+- id: FK-2026-0312
+  title: Customer contact effective dates in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: customer contact effective dates
+  state: deferred
+  owner: kwm012
+  reviewer: kwm012
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-05-18T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0312-connectors-r1
+- id: FK-2026-0313
+  title: Notification grouping in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: notification grouping
+  state: rejected
+  owner: kwm015
+  reviewer: kwm015
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-05-19T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0313-experience-r2
+- id: FK-2026-0314
+  title: Submission validation in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: submission validation
+  state: completed
+  owner: kwm019
+  reviewer: kwm018
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-05-19T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0314-integrations-r3
+- id: FK-2026-0315
+  title: Comparison panel wording in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: comparison panel wording
+  state: completed
+  owner: kwm006
+  reviewer: kwm021
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-05-19T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0315-quality-r4
+- id: FK-2026-0316
+  title: Work queue pagination in the record review and retention path
+  repository: fieldkest-core
+  workstream: core
+  topic: work queue pagination
+  state: completed
+  owner: rowan
+  reviewer: kwm002
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-05-19T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0316-core-r1
+- id: FK-2026-0317
+  title: Template copy defaults in the customer import boundary path
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: template copy defaults
+  state: completed
+  owner: kwm011
+  reviewer: kwm005
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-05-20T09:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0317-connectors-r2
+- id: FK-2026-0318
+  title: Closed record visibility in the review workspace clarity path
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: closed record visibility
+  state: accepted
+  owner: kwm015
+  reviewer: kwm008
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-05-20T11:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0318-experience-r3
+- id: FK-2026-0319
+  title: Timezone display in the handover mapping path
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: timezone display
+  state: deferred
+  owner: kwm020
+  reviewer: kwm011
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-05-20T13:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0319-integrations-r4
+- id: FK-2026-0320
+  title: Document title normalization in the compatibility verification path
+  repository: fieldkest-verification
+  workstream: quality
+  topic: document title normalization
+  state: rejected
+  owner: kwm004
+  reviewer: kwm014
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-05-20T15:00:00-04:00'
+  support_case: null
+  product_version: 4.9.1
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0320-quality-r1
+- id: ENG-2026-001
+  title: Assess export encoding reported through SUP-2026-0431
+  repository: fieldkest-core
+  workstream: core
+  topic: export encoding
+  state: assessment
+  owner: kwm005
+  reviewer: kwm017
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-08-13T11:16:00-04:00'
+  support_case: SUP-2026-0431
+  product_version: 4.9.0
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0321-core-r2
+- id: ENG-2026-002
+  title: Assess reviewer reminders reported through SUP-2026-0432
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: reviewer reminders
+  state: assessment
+  owner: kwm010
+  reviewer: kwm020
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-06-12T16:20:00-04:00'
+  support_case: SUP-2026-0432
+  product_version: 4.8.2
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0322-connectors-r3
+- id: ENG-2026-003
+  title: Assess visit date export reported through SUP-2026-0433
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: visit date export
+  state: assessment
+  owner: kwm015
+  reviewer: kwm001
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-06-24T11:17:00-04:00'
+  support_case: SUP-2026-0433
+  product_version: 4.8.2
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0323-experience-r4
+- id: ENG-2026-004
+  title: Assess PDF preview order reported through SUP-2026-0434
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: PDF preview order
+  state: assessment
+  owner: kwm021
+  reviewer: kwm004
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-07-02T11:30:00-04:00'
+  support_case: SUP-2026-0434
+  product_version: 4.8.2
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0324-integrations-r1
+- id: ENG-2026-005
+  title: Assess restored saved view reported through SUP-2026-0435
+  repository: fieldkest-verification
+  workstream: quality
+  topic: restored saved view
+  state: assessment
+  owner: kwm002
+  reviewer: kwm007
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-07-14T16:26:00-04:00'
+  support_case: SUP-2026-0435
+  product_version: 4.8.2
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0325-quality-r2
+- id: ENG-2026-006
+  title: Assess multiline CSV note reported through SUP-2026-0436
+  repository: fieldkest-core
+  workstream: core
+  topic: multiline CSV note
+  state: assessment
+  owner: kwm003
+  reviewer: kwm010
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-07-23T11:14:00-04:00'
+  support_case: SUP-2026-0436
+  product_version: 4.8.2
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0326-core-r3
+- id: ENG-2026-007
+  title: Assess comment ordering reported through SUP-2026-0437
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: comment ordering
+  state: assessment
+  owner: kwm009
+  reviewer: kwm013
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-08-03T11:30:00-04:00'
+  support_case: SUP-2026-0437
+  product_version: 4.9.0
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0327-connectors-r4
+- id: ENG-2026-008
+  title: Assess archived template picker reported through SUP-2026-0438
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: archived template picker
+  state: assessment
+  owner: kwm015
+  reviewer: kwm016
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-08-11T16:17:00-04:00'
+  support_case: SUP-2026-0438
+  product_version: 4.9.0
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0328-experience-r1
+- id: ENG-2026-009
+  title: Assess blank reviewer import reported through SUP-2026-0439
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: blank reviewer import
+  state: assessment
+  owner: kwm018
+  reviewer: kwm019
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-06-11T11:21:00-04:00'
+  support_case: SUP-2026-0439
+  product_version: 4.8.2
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0329-integrations-r2
+- id: ENG-2026-010
+  title: Assess acceptance revision link reported through SUP-2026-0440
+  repository: fieldkest-verification
+  workstream: quality
+  topic: acceptance revision link
+  state: assessment
+  owner: rowan
+  reviewer: rowan
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-06-22T11:37:00-04:00'
+  support_case: SUP-2026-0440
+  product_version: 4.8.2
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0330-quality-r3
+- id: ENG-2026-011
+  title: Assess export encoding reported through SUP-2026-0441
+  repository: fieldkest-core
+  workstream: core
+  topic: export encoding
+  state: assessment
+  owner: kwm001
+  reviewer: kwm003
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-06-30T16:31:00-04:00'
+  support_case: SUP-2026-0441
+  product_version: 4.8.2
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0331-core-r4
+- id: ENG-2026-012
+  title: Assess reviewer reminders reported through SUP-2026-0442
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: reviewer reminders
+  state: assessment
+  owner: kwm008
+  reviewer: kwm006
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-07-13T11:21:00-04:00'
+  support_case: SUP-2026-0442
+  product_version: 4.8.2
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0332-connectors-r1
+- id: ENG-2026-013
+  title: Assess visit date export reported through SUP-2026-0443
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: visit date export
+  state: assessment
+  owner: kwm015
+  reviewer: kwm009
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-07-21T11:40:00-04:00'
+  support_case: SUP-2026-0443
+  product_version: 4.8.2
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0333-experience-r2
+- id: ENG-2026-014
+  title: Assess PDF preview order reported through SUP-2026-0444
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: PDF preview order
+  state: assessment
+  owner: kwm019
+  reviewer: kwm012
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-07-30T16:31:00-04:00'
+  support_case: SUP-2026-0444
+  product_version: 4.9.0
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0334-integrations-r3
+- id: ENG-2026-015
+  title: Assess restored saved view reported through SUP-2026-0445
+  repository: fieldkest-verification
+  workstream: quality
+  topic: restored saved view
+  state: assessment
+  owner: kwm005
+  reviewer: kwm015
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-08-12T11:24:00-04:00'
+  support_case: SUP-2026-0445
+  product_version: 4.9.0
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0335-quality-r4
+- id: ENG-2026-016
+  title: Assess multiline CSV note reported through SUP-2026-0446
+  repository: fieldkest-core
+  workstream: core
+  topic: multiline CSV note
+  state: assessment
+  owner: kwm006
+  reviewer: kwm018
+  quality_owner: kwm043
+  release_owner: evan
+  opened_at: '2026-08-19T11:34:00-04:00'
+  support_case: SUP-2026-0446
+  product_version: 4.9.0
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0336-core-r1
+- id: ENG-2026-017
+  title: Assess comment ordering reported through SUP-2026-0447
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: comment ordering
+  state: assessment
+  owner: kwm007
+  reviewer: kwm021
+  quality_owner: kwm044
+  release_owner: kwm034
+  opened_at: '2026-06-18T16:38:00-04:00'
+  support_case: SUP-2026-0447
+  product_version: 4.8.2
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0337-connectors-r2
+- id: ENG-2026-018
+  title: Assess archived template picker reported through SUP-2026-0448
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: archived template picker
+  state: assessment
+  owner: kwm015
+  reviewer: kwm002
+  quality_owner: kwm045
+  release_owner: kwm035
+  opened_at: '2026-07-01T11:38:00-04:00'
+  support_case: SUP-2026-0448
+  product_version: 4.8.2
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0338-experience-r3
+- id: ENG-2026-019
+  title: Assess blank reviewer import reported through SUP-2026-0449
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: blank reviewer import
+  state: assessment
+  owner: kwm020
+  reviewer: kwm005
+  quality_owner: kwm046
+  release_owner: evan
+  opened_at: '2026-07-08T11:05:00-04:00'
+  support_case: SUP-2026-0449
+  product_version: 4.8.2
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0339-integrations-r4
+- id: ENG-2026-020
+  title: Assess acceptance revision link reported through SUP-2026-0450
+  repository: fieldkest-verification
+  workstream: quality
+  topic: acceptance revision link
+  state: assessment
+  owner: kwm003
+  reviewer: kwm008
+  quality_owner: kwm042
+  release_owner: kwm034
+  opened_at: '2026-07-20T16:38:00-04:00'
+  support_case: SUP-2026-0450
+  product_version: 4.8.2
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0340-quality-r1
+- id: ENG-2026-021
+  title: Assess export encoding reported through SUP-2026-0451
+  repository: fieldkest-core
+  workstream: core
+  topic: export encoding
+  state: assessment
+  owner: kwm004
+  reviewer: kwm011
+  quality_owner: kwm043
+  release_owner: kwm035
+  opened_at: '2026-07-29T11:32:00-04:00'
+  support_case: SUP-2026-0451
+  product_version: 4.9.0
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0341-core-r2
+- id: ENG-2026-022
+  title: Assess reviewer reminders reported through SUP-2026-0452
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: reviewer reminders
+  state: assessment
+  owner: kwm012
+  reviewer: kwm014
+  quality_owner: kwm044
+  release_owner: evan
+  opened_at: '2026-08-07T11:05:00-04:00'
+  support_case: SUP-2026-0452
+  product_version: 4.9.0
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0342-connectors-r3
+- id: ENG-2026-023
+  title: Assess visit date export reported through SUP-2026-0453
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: visit date export
+  state: assessment
+  owner: kwm015
+  reviewer: kwm017
+  quality_owner: kwm045
+  release_owner: kwm034
+  opened_at: '2026-08-18T16:38:00-04:00'
+  support_case: SUP-2026-0453
+  product_version: 4.9.0
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0343-experience-r4
+- id: ENG-2026-024
+  title: Assess PDF preview order reported through SUP-2026-0454
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: PDF preview order
+  state: assessment
+  owner: kwm021
+  reviewer: kwm020
+  quality_owner: kwm046
+  release_owner: kwm035
+  opened_at: '2026-06-17T11:39:00-04:00'
+  support_case: SUP-2026-0454
+  product_version: 4.8.2
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0344-integrations-r1
+- id: ENG-2026-025
+  title: Assess restored saved view reported through SUP-2026-0455
+  repository: fieldkest-verification
+  workstream: quality
+  topic: restored saved view
+  state: assessment
+  owner: kwm001
+  reviewer: kwm001
+  quality_owner: kwm042
+  release_owner: evan
+  opened_at: '2026-06-26T11:12:00-04:00'
+  support_case: SUP-2026-0455
+  product_version: 4.8.2
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0345-quality-r2
+- id: ENG-2026-026
+  title: Assess multiline CSV note reported through SUP-2026-0456
+  repository: fieldkest-core
+  workstream: core
+  topic: multiline CSV note
+  state: assessment
+  owner: kwm002
+  reviewer: kwm004
+  quality_owner: kwm043
+  release_owner: kwm034
+  opened_at: '2026-07-07T16:09:00-04:00'
+  support_case: SUP-2026-0456
+  product_version: 4.8.2
+  purpose: Make the accepted record easier to follow without changing its ownership rules.
+  revision: fk-0346-core-r3
+- id: ENG-2026-027
+  title: Assess comment ordering reported through SUP-2026-0457
+  repository: fieldkest-connectors
+  workstream: connectors
+  topic: comment ordering
+  state: assessment
+  owner: kwm011
+  reviewer: kwm007
+  quality_owner: kwm044
+  release_owner: kwm035
+  opened_at: '2026-07-17T11:39:00-04:00'
+  support_case: SUP-2026-0457
+  product_version: 4.8.2
+  purpose: Keep connector input explicit and preserve a useful result when a source row is incomplete.
+  revision: fk-0347-connectors-r4
+- id: ENG-2026-028
+  title: Assess archived template picker reported through SUP-2026-0458
+  repository: fieldkest-workspace
+  workstream: experience
+  topic: archived template picker
+  state: assessment
+  owner: kwm015
+  reviewer: kwm010
+  quality_owner: kwm045
+  release_owner: evan
+  opened_at: '2026-07-28T11:18:00-04:00'
+  support_case: SUP-2026-0458
+  product_version: 4.9.0
+  purpose: Give reviewers the state they need without making a saved view behave like a different record.
+  revision: fk-0348-experience-r1
+- id: ENG-2026-029
+  title: Assess blank reviewer import reported through SUP-2026-0459
+  repository: fieldkest-integration-kit
+  workstream: integrations
+  topic: blank reviewer import
+  state: assessment
+  owner: kwm018
+  reviewer: kwm013
+  quality_owner: kwm046
+  release_owner: kwm034
+  opened_at: '2026-08-05T16:06:00-04:00'
+  support_case: SUP-2026-0459
+  product_version: 4.9.0
+  purpose: Make a customer handover traceable through a stable mapping and a small, reversible change.
+  revision: fk-0349-integrations-r2
+- id: ENG-2026-030
+  title: Assess acceptance revision link reported through SUP-2026-0460
+  repository: fieldkest-verification
+  workstream: quality
+  topic: acceptance revision link
+  state: assessment
+  owner: kwm006
+  reviewer: kwm016
+  quality_owner: kwm042
+  release_owner: kwm035
+  opened_at: '2026-08-18T11:36:00-04:00'
+  support_case: SUP-2026-0460
+  product_version: 4.9.0
+  purpose: Exercise a released behaviour against a representative fixture and record the boundary of the check.
+  revision: fk-0350-quality-r3

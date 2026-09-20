@@ -26,8 +26,10 @@ STORIES = {'bicycle', 'lunch', 'workshop', 'anniversary', 'choir', 'photography'
 BUSINESS_MESSAGE_COUNT = 1600
 SUPPORT_MESSAGE_COUNT = 5500
 SUPPORT_DOCUMENT_COUNT = 578
-TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT
-TOTAL_DOCUMENT_COUNT = 155 + 89 + SUPPORT_DOCUMENT_COUNT
+FIELDKEST_MESSAGE_COUNT = 5500
+FIELDKEST_DOCUMENT_COUNT = 720
+TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT + FIELDKEST_MESSAGE_COUNT
+TOTAL_DOCUMENT_COUNT = 155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT
 
 
 def require(value, message):
@@ -387,6 +389,111 @@ def check_support_intake(identity, roster, mail, docs, events):
             'Authoring or challenge language in support content')
 
 
+def check_fieldkest_engineering(identity, roster, mail, docs):
+    """Check the completed engineering corpus joins support without inventing resolutions."""
+    manifest = yaml.safe_load((ROOT / 'authoring/fieldkest-engineering.yaml').read_text())
+    support = yaml.safe_load((ROOT / 'authoring/support-intake.yaml').read_text())['cases']
+    require(manifest['snapshot'] == identity['snapshot'], 'FieldKest snapshot drift')
+    require(manifest['required_base'] == {'support_commit': 'aa48fa8', 'business_commit': 'ef9c89f',
+                                          'workforce_commit': 'cf20e3e'},
+            'FieldKest source base drift')
+    require(manifest['counts'] == {'work_items': 350, 'messages': 5500, 'documents': 720,
+                                   'repositories': 5, 'accepted_support_escalations': 30},
+            'FieldKest declared inventory drift')
+    repositories = {item['name'] for item in manifest['repositories']}
+    require(repositories == {'fieldkest-core', 'fieldkest-connectors', 'fieldkest-workspace',
+                             'fieldkest-integration-kit', 'fieldkest-verification'},
+            'FieldKest repository inventory drift')
+    work = manifest['work_items']
+    require(len(work) == len({item['id'] for item in work}) == 350, 'FieldKest work-item inventory drift')
+    ordinary = [item for item in work if item['id'].startswith('FK-')]
+    escalated = [item for item in work if item['id'].startswith('ENG-')]
+    require([item['id'] for item in ordinary] == [f'FK-2026-{n:04d}' for n in range(1, 321)],
+            'FieldKest ordinary work identifiers drift')
+    require([item['id'] for item in escalated] == [f'ENG-2026-{n:03d}' for n in range(1, 31)],
+            'FieldKest engineering escalation identifiers drift')
+    support_by_change = {item['engineering_change_id']: item for item in support
+                         if item['category'] == 'engineering_escalation'}
+    require(set(support_by_change) == {item['id'] for item in escalated},
+            'Support escalation or FieldKest assessment inventory drift')
+    engineering_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                        and person['department'] == 'Product engineering'}
+    quality_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Quality assurance'}
+    release_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Release engineering'}
+    product_keys = {person['key'] for person in roster if person['employer'] == 'keplerops'
+                    and person['team'] == 'Product management'}
+    expected_readers = engineering_keys | quality_keys | release_keys | product_keys
+    fieldkest_docs = {item['id']: item for item in docs if item['story'] == 'fieldkest-engineering'}
+    require(len(fieldkest_docs) == FIELDKEST_DOCUMENT_COUNT, 'FieldKest document inventory drift')
+    fieldkest_mail = {item['id']: item for item in mail if item['id'].startswith('fe-')}
+    require(len(fieldkest_mail) == FIELDKEST_MESSAGE_COUNT
+            and list(fieldkest_mail) == [f'fe-{n:04d}' for n in range(1, FIELDKEST_MESSAGE_COUNT + 1)],
+            'FieldKest message inventory drift')
+    require(len({item['body'] for item in fieldkest_mail.values()}) == FIELDKEST_MESSAGE_COUNT,
+            'FieldKest correspondence contains repeated bodies')
+    seen_messages = set()
+    for item in work:
+        require(item['repository'] in repositories and item['owner'] in engineering_keys
+                and item['reviewer'] in engineering_keys and item['quality_owner'] in quality_keys
+                and item['release_owner'] in release_keys, f'FieldKest role drift: {item["id"]}')
+        require(datetime.fromisoformat(item['opened_at']) <= datetime.fromisoformat(identity['snapshot']),
+                f'FieldKest work after snapshot: {item["id"]}')
+        require(item['revision'].startswith('fk-') and item['topic'] and item['purpose'],
+                f'Incomplete FieldKest work record: {item["id"]}')
+        work_doc = fieldkest_docs.get('engineering-work-' + item['id'].lower())
+        change_doc = fieldkest_docs.get('engineering-change-' + item['id'].lower())
+        require(work_doc and change_doc and set(work_doc['reader_keys']) == expected_readers
+                and set(change_doc['reader_keys']) == expected_readers,
+                f'FieldKest work or change audience drift: {item["id"]}')
+        require(all(value in document_text(work_doc) for value in (item['id'], item['repository'], item['topic']))
+                and all(value in document_text(change_doc) for value in (item['id'], item['revision'], item['repository'])),
+                f'FieldKest document join drift: {item["id"]}')
+        related = [message for message in fieldkest_mail.values() if '[' + item['id'] + ']' in message['subject']]
+        expected_count = 16 if item['id'].startswith('FK-') and int(item['id'][-4:]) <= 250 else 15
+        require(len(related) == expected_count, f'FieldKest correspondence allocation drift: {item["id"]}')
+        roots = [message for message in related if not message.get('reply_to')]
+        require(len(roots) == 1, f'FieldKest thread root drift: {item["id"]}')
+        current = roots[0]
+        chain = [current['id']]
+        while True:
+            children = [message for message in related if message.get('reply_to') == current['id']]
+            require(len(children) <= 1, f'FieldKest reply fanout drift: {item["id"]}')
+            if not children:
+                break
+            current = children[0]
+            require(current['id'] not in chain and datetime.fromisoformat(current['date']) >
+                    datetime.fromisoformat(fieldkest_mail[chain[-1]]['date']),
+                    f'FieldKest reply chronology drift: {item["id"]}')
+            chain.append(current['id'])
+        require(len(chain) == expected_count, f'FieldKest thread join drift: {item["id"]}')
+        seen_messages.update(chain)
+        attached = [message for message in related if message.get('attachments')]
+        require(len(attached) == 1 and attached[0]['attachments'] == [change_doc['id']],
+                f'FieldKest revision attachment drift: {item["id"]}')
+        if item['id'].startswith('ENG-'):
+            case = support_by_change[item['id']]
+            require(item['state'] == 'assessment' and item['support_case'] == case['id']
+                    and item['product_version'] == case['product_version'] and item['topic'] == case['topic'],
+                    f'FieldKest escalation fact drift: {item["id"]}')
+            text = document_text(work_doc).lower() + '\n' + document_text(change_doc).lower()
+            require('no fix, acceptance result, or release date is recorded here' in text
+                    and 'status:** assessment' in text,
+                    f'FieldKest escalation falsely resolves support work: {item["id"]}')
+        else:
+            require(item['support_case'] is None and item['state'] in
+                    {'completed', 'accepted', 'deferred', 'rejected'},
+                    f'FieldKest ordinary work-state drift: {item["id"]}')
+    require(seen_messages == set(fieldkest_mail), 'Unjoined FieldKest correspondence')
+    visible = [message['subject'] + '\n' + message['body'] for message in fieldkest_mail.values()]
+    visible += [document_text(document) for document in fieldkest_docs.values()]
+    leak = ('cinder typhoon', 'issue 115', 'scenario layer', 'author-only', 'openrae',
+            'shifter-scenarios', 'challenge-specific')
+    require(all(not any(term in text.lower() for term in leak) for text in visible),
+            'Authoring or challenge language in FieldKest content')
+
+
 def check_assets():
     identity = yaml.safe_load((ROOT / 'authoring/people.yaml').read_text())
     workforce = yaml.safe_load((ROOT / 'authoring/workforce.yaml').read_text())
@@ -480,6 +587,7 @@ def check_assets():
     require(len(docs) == len(doc_by_id) == TOTAL_DOCUMENT_COUNT, 'Authored document inventory drift')
     check_business_network(identity, roster, mail, docs)
     check_support_intake(identity, roster, mail, docs, events)
+    check_fieldkest_engineering(identity, roster, mail, docs)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
