@@ -146,6 +146,15 @@ delivery checks. Native source versions and inventories follow the shipped
 bytes. Existing logical owners, materialization/readback contracts, challenge
 proofs, access routes, and default-open realization retain their meaning.
 
+All delivery checks passed on 20 September 2026: 174 rendered outputs reproduce
+byte-for-byte; complete narrative validation confirms 22,151 messages and 4,358
+documents; five tests exercise 32 content-corruption mutations. RAE 5.0.0 and
+env-packs 6.1.0 parse, compile, and validate the pack, preserving 3,450 realization
+requirements and 281 observation bindings. The native self-test rejects four
+workplace SDL mutations, 28 other SDL mutations, two compiled-observation
+mutations, and 26 broken topologies/events. Vale reports no findings in the five
+changed Markdown files. Python compilation and whitespace checks also pass.
+
 The environment world version is `customer-followup-2026-09-16/v1`, based on
 `fbf4cdc`. `content-ownership.json` inventories the finished records and exact
 source versions. The scenario overlay remains empty and pins this world base.
