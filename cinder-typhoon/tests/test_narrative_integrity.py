@@ -77,6 +77,7 @@ class NarrativeIntegrityTests(unittest.TestCase):
                 pack = Path(temp)
                 root = pack / 'assets/narrative'
                 shutil.copytree(validator.ROOT, root)
+                shutil.copytree(validator.PACK / 'sdl', pack / 'sdl')
                 review = pack / 'docs/narrative'
                 review.mkdir(parents=True)
                 shutil.copy(validator.PACK / 'docs/narrative/content-ownership.json', review)

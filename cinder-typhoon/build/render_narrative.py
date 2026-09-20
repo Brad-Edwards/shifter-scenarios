@@ -131,14 +131,16 @@ def render():
         for attachment in m.get('attachments', []):
             d = docs_by_id[attachment]
             assert datetime.fromisoformat(d['published_at']) <= datetime.fromisoformat(m['date']), ('Attachment from the future', m['id'], attachment)
-            msg.add_attachment(document_text(d).encode(), maintype='text', subtype='markdown', filename=document_path(d))
+            maintype, subtype = d.get('media_type', 'text/markdown').split('/', 1)
+            msg.add_attachment(document_text(d).encode(), maintype=maintype, subtype=subtype,
+                               filename=document_path(d))
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
         raw = msg.as_bytes()
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -204,7 +206,10 @@ def render():
                 folded.append(line[:cut]); line = ' ' + line[cut:]
             folded.append(line)
         text = '\r\n'.join(folded) + '\r\n'
-        output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
+        # Bulk operating calendars are complete items in the source package.
+        # Avoid redundant standalone members, as with bulk RFC822 messages.
+        if not event['id'].startswith(('rel-2026-', 'chg-2026-')):
+            output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
         kind = 'employment' if '-induction-' in event['id'] else 'documents'
         libraries[event['employer']][kind]['documents'].append({'name': event['id'], 'title': event['summary'], 'path': event['id'] + '.ics',
