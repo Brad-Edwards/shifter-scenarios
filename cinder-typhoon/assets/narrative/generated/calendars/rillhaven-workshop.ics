@@ -4,15 +4,16 @@ PRODID:-//Workplace Calendar//EN
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
 UID:5a4aa102-5bdb-536f-a292-b3946d49f9e4@keplerops.com
-DTSTAMP:20260916T123000Z
+DTSTAMP:20260915T200000Z
 DTSTART:20260924T140000Z
 DTEND:20260924T153000Z
 ORGANIZER:mailto:talia.mornac@keplerops.com
 ATTENDEE:mailto:maya.ranscombe@keplerops.com
 ATTENDEE:mailto:maintenance@rillhaven.test
 SUMMARY:Rillhaven maintenance workshop
-DESCRIPTION:Practical example and discussion. Talia leads\; Maya takes ongo
- ing-support questions.
+DESCRIPTION:Participant outline revision 3. Talia leads the example and dis
+ cussion\; Maya takes ongoing-support questions. Printed and screen copies
+  use RH-WORKSHOP-026. Session still planned for 24 September.
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR

@@ -17,6 +17,7 @@ import re
 import sys
 import yaml
 from validate_release_platform import check_release_platform
+from validate_customer_followup import check_customer_followup
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -33,11 +34,14 @@ PRODUCT_QUALITY_MESSAGE_COUNT = 4000
 PRODUCT_QUALITY_DOCUMENT_COUNT = 1976
 RELEASE_PLATFORM_MESSAGE_COUNT = 1572
 RELEASE_PLATFORM_DOCUMENT_COUNT = 530
+CUSTOMER_FOLLOWUP_MESSAGE_COUNT = 2504
+CUSTOMER_FOLLOWUP_DOCUMENT_COUNT = 310
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
-                        PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT)
+                        PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -767,6 +771,7 @@ def check_assets():
     check_fieldkest_engineering(identity, roster, mail, docs)
     check_product_quality(identity, roster, mail, docs)
     check_release_platform(ROOT, identity, roster, mail, docs, events)
+    check_customer_followup(ROOT, identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
