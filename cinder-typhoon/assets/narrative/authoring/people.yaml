@@ -447,3 +447,45 @@ correspondents:
     name: Workplace Recovery Checks
     email: recovery-checks@keplerops.com
     employer: keplerops
+  fv_rooms:
+    name: Velquorin Rooms accounts
+    email: accounts@velquorin.test
+    employer: velquorin
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_compute:
+    name: Darsovell Compute accounts
+    email: accounts@darsovell.test
+    employer: darsovell
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_comms:
+    name: Pelravin Communications accounts
+    email: accounts@pelravin.test
+    employer: pelravin
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_supply:
+    name: Kelvorset Office Supply accounts
+    email: accounts@kelvorset.test
+    employer: kelvorset
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_learning:
+    name: Orvessan Learning accounts
+    email: accounts@orvessan.test
+    employer: orvessan
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_travel:
+    name: Tavrelon Travel Desk accounts
+    email: accounts@tavrelon.test
+    employer: tavrelon
+    department: Customer accounts
+    job: Orders and accounts correspondent
+  fv_food:
+    name: Melqorin Kitchen accounts
+    email: accounts@melqorin.test
+    employer: melqorin
+    department: Customer accounts
+    job: Orders and accounts correspondent

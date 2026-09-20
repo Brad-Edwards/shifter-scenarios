@@ -3,7 +3,7 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 23,527 distinct authored messages, 4,609 source documents,
+The collection contains 24,660 distinct authored messages, 5,171 source documents,
 staff directories for all 294 employees, and 180 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
@@ -26,6 +26,11 @@ sixty histories for the existing twelve customers. Its
 [review record](../../docs/narrative/commercial-review.md) explains accepted
 renewals, project orders, unsuccessful opportunities, private pricing, billing
 authority, capacity, and the smaller message allocation.
+Finance adds 1,133 messages and 562 document items for 84 supplier purchases,
+96 employee claims, and 69 customer invoices. Its
+[review record](../../docs/narrative/finance-review.md) documents the added licence
+authority, reconciled accounts, restricted payroll records, and volume adjustment.
+The finished binary bundle contains 281 PDFs and two XLSX workbooks.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -47,12 +52,13 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/support-intake.yaml` | Author-only joins for support cases, separate customer/internal threads, attachments, and appointments. |
 | `authoring/release-platform.yaml` | Author-only release acceptance joins, operating states, recovery samples, logical service owners, and counts. |
 | `authoring/customer-followup.yaml` | Current case dispositions over the original intake history, child-case parents, knowledge revisions, correction/release/delivery joins, and workshop preparations. |
+| `authoring/finance.yaml` | Invoice authority, supplier and claim evidence, cash allocations, balanced journal, payroll controls, and workbook formula inventory. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
 | `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
-| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating and commercial calendars are complete items in the document source package. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating, commercial, and induction calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |
@@ -125,6 +131,17 @@ one item. The directory and employment packages carry exact department and team
 reader-group memberships and an individual-identity requirement. Native RAE
 marks mail, documents, and employment sensitive; source-package readers are the
 pack's detailed access contract for the eventual workplace adapter.
+`cinder-document-library/v2` and `cinder-employment-records/v2` extend these
+formats for the collections containing finance binaries. Text-only items retain
+their exact `text`. Binary items also carry `content_base64` and a `sha256` of
+the decoded bytes. Their `text` is a search surface: extracted PDF text or a
+workbook sheet summary. Materialize the decoded binary under its `path` and
+`media_type`; do not substitute the search text for the PDF or spreadsheet.
+Both representations have the same exact readers. The source archive
+`documents/finance-records.zip` contains the finished review files, individually
+extractable with ordinary ZIP tools; it is not bound as a separate document.
+No PDF or spreadsheet generation dependency is needed to render these bytes.
+
 These data formats are defined by this pack; RAE supplies their source, owner,
 materialization, observation, and compilation semantics.
 

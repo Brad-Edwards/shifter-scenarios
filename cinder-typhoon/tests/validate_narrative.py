@@ -2,6 +2,7 @@
 """Check narrative source bytes, correspondence, audience, and native SDL bindings."""
 from __future__ import annotations
 from collections import Counter
+import base64
 from datetime import datetime
 from datetime import timezone
 from decimal import Decimal
@@ -16,9 +17,11 @@ from pathlib import Path
 import re
 import sys
 import yaml
+import zipfile
 from validate_release_platform import check_release_platform
 from validate_customer_followup import check_customer_followup
 from validate_commercial import check_commercial
+from validate_finance import check_finance
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -39,12 +42,14 @@ CUSTOMER_FOLLOWUP_MESSAGE_COUNT = 2504
 CUSTOMER_FOLLOWUP_DOCUMENT_COUNT = 310
 COMMERCIAL_MESSAGE_COUNT = 1376
 COMMERCIAL_DOCUMENT_COUNT = 251
+FINANCE_MESSAGE_COUNT = 1133
+FINANCE_DOCUMENT_COUNT = 562
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -58,6 +63,15 @@ def read_json(path):
 
 def document_text(document):
     return document['text'] if 'text' in document else (ROOT / document['file']).read_text()
+
+
+def document_bytes(document):
+    if 'archive' in document:
+        with zipfile.ZipFile(ROOT / document['archive']) as archive:
+            raw = archive.read(document['member'])
+        require(hashlib.sha256(raw).hexdigest() == document['binary_sha256'], 'Binary digest drift')
+        return raw
+    return document_text(document).encode()
 
 
 def document_path(document):
@@ -776,8 +790,9 @@ def check_assets():
     check_release_platform(ROOT, identity, roster, mail, docs, events)
     check_customer_followup(ROOT, identity, roster, mail, docs, events)
     check_commercial(ROOT, identity, roster, mail, docs, events)
+    check_finance(ROOT, identity, roster, mail, docs)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
-    require({d['file'] for d in docs if 'file' in d} ==
+    require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
             'Uncatalogued document')
     parsed = {}
@@ -793,7 +808,7 @@ def check_assets():
         require(message.get_body(preferencelist=('plain',)).get_content().replace('\r\n', '\n') == m['body'], f'Body mismatch: {m["id"]}')
         attachments = {p.get_filename(): p.get_payload(decode=True) for p in message.iter_attachments()}
         require(all(datetime.fromisoformat(doc_by_id[d]['published_at']) <= datetime.fromisoformat(m['date']) for d in m.get('attachments', [])), f'Attachment from the future: {m["id"]}')
-        expected = {document_path(doc_by_id[d]): document_text(doc_by_id[d]).encode()
+        expected = {document_path(doc_by_id[d]): document_bytes(doc_by_id[d])
                     for d in m.get('attachments', [])}
         require(attachments == expected, f'Attachment mismatch: {m["id"]}')
         expected_types = {document_path(doc_by_id[d]): doc_by_id[d].get('media_type', 'text/markdown')
@@ -866,6 +881,12 @@ def check_assets():
                 match = [item for item in payload['documents'] if item['name'] == d['id']]
                 require(len(match) == 1 and match[0]['text'] == document_text(d),
                         'Library omitted or changed document')
+                if 'archive' in d:
+                    require(payload['schema_version'].endswith('/v2'), 'Binary library schema drift')
+                    require(base64.b64decode(match[0]['content_base64'], validate=True) == document_bytes(d)
+                            and match[0]['sha256'] == d['binary_sha256'], 'Library binary bytes drift')
+                else:
+                    require('content_base64' not in match[0], 'Unexpected binary payload')
                 groups = {'support': {'rowan', 'maya', 'talia'}, 'platform': {'noor', 'evan'}, 'outreach': {'mina', 'owen', 'rosa'}}
                 if d['audience'] == 'staff':
                     readers = allowed
@@ -897,7 +918,7 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()
