@@ -1,0 +1,53 @@
+{
+  "schema_version": "cinder-world-artifacts/v1",
+  "artifacts": [
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/keplerops-mail",
+        "version": "sha256-154c23ef1edfe1a67318bd0dcd828fe9143a9c1f1607f20e496bc41ac51687c8"
+      },
+      "path": "assets/narrative/generated/packages/keplerops-mail.json",
+      "sha256": "154c23ef1edfe1a67318bd0dcd828fe9143a9c1f1607f20e496bc41ac51687c8",
+      "media_type": "application/json",
+      "content_ref": "narrative-keplerops.mail",
+      "target": "k-corporate.k-staff",
+      "format": "cinder-mailbox-set/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/keplerops-documents",
+        "version": "sha256-d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323"
+      },
+      "path": "assets/narrative/generated/packages/keplerops-documents.json",
+      "sha256": "d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323",
+      "media_type": "application/json",
+      "content_ref": "narrative-keplerops.documents",
+      "target": "k-corporate.k-staff",
+      "format": "cinder-document-library/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/arwc-mail",
+        "version": "sha256-6722e554c633052dd31df20e73951ce3324b9d38e48c93c75e97a6a129686557"
+      },
+      "path": "assets/narrative/generated/packages/arwc-mail.json",
+      "sha256": "6722e554c633052dd31df20e73951ce3324b9d38e48c93c75e97a6a129686557",
+      "media_type": "application/json",
+      "content_ref": "narrative-arwc.mail",
+      "target": "a-corporate.a-business",
+      "format": "cinder-mailbox-set/v1"
+    },
+    {
+      "source": {
+        "name": "cinder-typhoon/narrative/arwc-documents",
+        "version": "sha256-983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2"
+      },
+      "path": "assets/narrative/generated/packages/arwc-documents.json",
+      "sha256": "983762fdba1fa1d6842abf377f0366c9249dbea3397fc7eb0afc7a4a5412cfe2",
+      "media_type": "application/json",
+      "content_ref": "narrative-arwc.documents",
+      "target": "a-corporate.a-business",
+      "format": "cinder-document-library/v1"
+    }
+  ]
+}

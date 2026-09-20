@@ -1,0 +1,672 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k12
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k12
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Demonstrate the controlled preview being processed in the intended privileged review
+      context. A visit by an ordinary account is insufficient.
+    source_refs: &id001
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k12-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k12-1.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Complete the protected action with the current value and correct review binding. Disclosure
+      and scoped use form one achievement.
+    source_refs: &id002
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k12-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k12-2.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
+      the preceding privileged action does not suffice.
+    source_refs: &id003
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k12-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k12-3.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: |-
+      Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
+
+      The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
+    source_refs: &id004
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k12-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k12-4.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Demonstrate the controlled preview being processed in the intended privileged review
+      context. A visit by an ordinary account is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k12-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K12.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Complete the protected action with the current value and correct review binding. Disclosure
+      and scoped use form one achievement.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k12-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K12.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
+      the preceding privileged action does not suffice.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k12-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K12.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: |-
+      Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
+
+      The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k12-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K12.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K12.1: The reviewer arrives second'
+    description: |-
+      Place your controlled preview content in the privileged reviewer's effective workflow despite the account and review-state boundaries.
+
+      Establishes a useful browser position rather than merely submitting an attachment.
+    agent: participant.operator
+    actions:
+    - k12.c1
+    targets: &id005
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k12.c1
+  c2:
+    name: 'K12.2: A value across the action boundary'
+    description: |-
+      Recover the protected browser value required for a privileged preview action and make that separate action accept it.
+
+      Turns browser access into a new application capability.
+    agent: participant.operator
+    actions:
+    - k12.c2
+    targets: &id006
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k12.c2
+  c3:
+    name: 'K12.3: The worker changes sides'
+    description: |-
+      Take control of the preview worker's contribution to the support review while preserving the expected review interface.
+
+      Adds control of an active processing component.
+    agent: participant.operator
+    actions:
+    - k12.c3
+    targets: &id007
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k12.c3
+  c4:
+    name: 'K12.4: The preview is ours'
+    description: |-
+      Complete the chain into the constrained renderer and make the support engineer's release preview reflect Cinder's chosen result.
+
+      Delivers a memorable local conclusion to the long browser investigation.
+    agent: participant.operator
+    actions:
+    - k12.c4
+    targets: &id008
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k12.c4
+workflows:
+  c1:
+    description: 'K12.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k12.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K12.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k12.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k12.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K12.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k12.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k12.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K12.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k12.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k12.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Place your controlled preview content in the privileged reviewer's effective workflow
+      despite the account and review-state boundaries.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k12.c1
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the controlled preview being processed in the intended privileged review
+        context. A visit by an ordinary account is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k12.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the protected browser value required for a privileged preview action and
+      make that separate action accept it.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k12.c2
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Complete the protected action with the current value and correct review binding. Disclosure
+        and scoped use form one achievement.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k12.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Take control of the preview worker's contribution to the support review while preserving
+      the expected review interface.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k12.c3
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the worker producing Cinder's chosen compatible preview behavior. Replaying
+        the preceding privileged action does not suffice.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k12.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Complete the chain into the constrained renderer and make the support engineer's
+      release preview reflect Cinder's chosen result.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k12.c4
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: |-
+        Demonstrate execution in the renderer's actual context and the changed consumed preview. Its scope remains the supplier's preview workflow.
+
+        The conclusion lets the player inspect the release document as the support engineer actually received it, alongside the ordinary version. The chosen change survives the privileged rendering path and appears inside the otherwise recognizable document. The comparison uses the proven renderer result; a local mock-up or decorative completion banner cannot substitute for it. This is a complete specialist payoff even if the player never reaches ARWC.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k12.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K12.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k12.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K12.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k12.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K12.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k12.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K12.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k12.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K12.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k12
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: An ordinary release-preview account, preview application material, and a private support-review
+        rehearsal.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K12.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k12
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: An ordinary release-preview account, preview application material, and a private support-review
+        rehearsal.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K12.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k12
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: An ordinary release-preview account, preview application material, and a private support-review
+        rehearsal.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K12.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      An ordinary release-preview account, preview application material, and a private support-review rehearsal.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k12
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: An ordinary release-preview account, preview application material, and a private support-review
+        rehearsal.

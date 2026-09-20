@@ -1,0 +1,83 @@
+schema_version: "environment-pack-provenance/v3"
+pack:
+  name: cinder-typhoon
+sources:
+  - source_id: original-design
+    name: "Cinder Typhoon scenario design"
+    license: proprietary
+    usage: reused
+    attribution_required: false
+    used: "Existing campaign design documents and authoring checks; design citations remain in their reference catalog and research documents."
+  - source_id: env-packs-template
+    name: "OpenRAE environment-pack template"
+    url: https://github.com/OpenRAE/env-packs
+    ref: "679356d762971600f22e6ff3228f4c2b48376eee"
+    license: MIT
+    usage: adapted
+    attribution_required: true
+    attribution: "Copyright (c) 2026 Brad Edwards. MIT notice retained in docs/template-license.txt."
+    used: "Folder structure and draft manifest, compatibility, provenance, and empty flag/challenge scaffold."
+artifacts:
+  - artifact_id: docs
+    path: docs/
+    classification: commercial-only
+    sources: [original-design, env-packs-template]
+    description: "Preserved design material and scaffold documentation."
+  - artifact_id: pack-manifest
+    path: pack.yaml
+    classification: commercial-only
+    sources: [original-design, env-packs-template]
+    description: "Draft pack identity."
+  - artifact_id: compatibility
+    path: pack.compatibility.yaml
+    classification: commercial-only
+    sources: [env-packs-template]
+    description: "Draft compatibility projection with no runtime profiles."
+  - artifact_id: sdl
+    path: sdl/
+    classification: commercial-only
+    sources: [original-design, env-packs-template]
+    description: "Original campaign translated into native modular RAE SDL, with authoring documentation."
+  - artifact_id: author-validation
+    path: tests/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Native SDL validation and graph correspondence checks."
+  - artifact_id: workplace-assets
+    path: assets/narrative/
+    classification: commercial-only
+    sources: [original-design]
+    description: "Original fictional correspondence, documents, directories, calendars, and content source artifacts."
+  - artifact_id: workplace-renderer
+    path: build/render_narrative.py
+    classification: commercial-only
+    sources: [original-design]
+    description: "Deterministic local rendering of authored workplace content and native SDL declarations."
+  - artifact_id: reserved-content
+    path: challenges/
+    classification: commercial-only
+    sources: [env-packs-template]
+    description: "Empty delivery catalog."
+  - artifact_id: reserved-flags
+    path: flags/
+    classification: commercial-only
+    sources: [env-packs-template]
+    description: "Empty placement map."
+content_safety:
+  no_real_malware: true
+  no_real_third_party_targets: true
+  no_real_credentials: true
+  no_sensitive_data: true
+  offensive_tooling_boundary: true
+  notes: "Original fictional world assets, design documents, SDL declarations and static checks. No runtime implementation or outbound communication."
+review:
+  status: pending
+  gates:
+    - gate_id: licensing
+      status: pending
+    - gate_id: attribution
+      status: pending
+    - gate_id: sensitive-data
+      status: pending
+    - gate_id: offensive-tooling
+      status: pending

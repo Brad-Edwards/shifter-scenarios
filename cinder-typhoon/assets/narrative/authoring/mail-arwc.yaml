@@ -1,0 +1,330 @@
+messages:
+  - id: a-choir-1
+    story: choir
+    from: priya
+    to: [nadia]
+    date: '2026-08-12T16:40:00-04:00'
+    subject: After rehearsal
+    body: |
+      Still time for something to eat after choir? I have had a day made entirely of small questions about invoices and would like to discuss anything with a tune.
+
+      Priya
+  - id: a-choir-2
+    story: choir
+    from: nadia
+    to: [priya]
+    date: '2026-08-12T17:02:00-04:00'
+    subject: 'Re: After rehearsal'
+    reply_to: a-choir-1
+    body: |
+      Yes. And perhaps we could look at where those questions are coming from? If there are a few common patterns, a short guide might take some of them out of your day.
+
+      Nadia
+  - id: a-choir-3
+    story: choir
+    from: priya
+    to: [nadia]
+    date: '2026-08-12T17:15:00-04:00'
+    subject: 'Re: After rehearsal'
+    reply_to: a-choir-2
+    body: |
+      I was hoping for ten minutes of complaining followed by dinner. No guide required.
+
+      You may ask me about the middle section we still haven't got right. That is a problem we have both volunteered to have.
+
+      Priya
+  - id: a-choir-4
+    story: choir
+    from: nadia
+    to: [priya]
+    date: '2026-08-13T09:08:00-04:00'
+    subject: 'Re: After rehearsal'
+    reply_to: a-choir-3
+    body: |
+      Good evening. Thanks for saying what you meant.
+
+      I will ask whether you want help or company next time. I enjoyed the company. I am reserving judgment on that middle section.
+
+      Nadia
+  - id: a-photo-1
+    story: photography
+    from: arwc_staff
+    to: [theo, clara, nadia, priya, luc, mina, owen, rosa, arwc_lab]
+    date: '2026-09-01T11:00:00-04:00'
+    subject: Staff photographs — ordinary light
+    body: |
+      This year's voluntary staff photography display is open for entries through Monday, 14 September. The theme is ordinary light. Please use photographs from your own time and only submit work you are happy to have displayed to colleagues.
+
+      Phone photographs are welcome. There is no requirement to take part in the competition to have a photograph included in the display.
+
+      Results will be circulated on Tuesday, 15 September. The October staff walk is being arranged separately.
+
+      Staff Activities
+  - id: a-photo-2
+    story: photography
+    from: theo
+    to: [mina, owen]
+    date: '2026-09-08T12:02:00-04:00'
+    subject: Have you entered a photograph?
+    body: |
+      Owen, you should put in the picture you showed us. Phones count.
+
+      Mina, do you know whether they are judging the prints or the originals? Only asking because the colours look a bit different. It's all just a bit of fun, obviously.
+
+      Theo
+  - id: a-photo-3
+    story: photography
+    from: mina
+    to: [theo, owen]
+    date: '2026-09-08T12:25:00-04:00'
+    subject: 'Re: Have you entered a photograph?'
+    reply_to: a-photo-2
+    body: |
+      I don't know. You could ask the organizers along with your other very casual questions.
+
+      Mine is a patch of evening light on the garden wall. I like it. That may be the limit of my campaign for office glory.
+
+      Owen, send yours in.
+
+      Mina
+  - id: a-photo-4
+    story: photography
+    from: arwc_staff
+    to: [theo, clara, nadia, priya, luc, mina, owen, rosa, arwc_lab]
+    date: '2026-09-15T10:00:00-04:00'
+    subject: Staff photography results and display
+    body: |
+      Thank you to everyone who contributed. The first-place photograph came from a laboratory colleague: rain catching the light on a kitchen window. Theo Marrivel's early-morning footpath placed second.
+
+      All accepted entries, including the photographs from Mina Selverin and Owen Vardell, will be included in the staff display. Thank you also to colleagues who helped prepare it around different shifts.
+
+      Staff Activities
+  - id: a-photo-5
+    story: photography
+    from: theo
+    to: [mina, owen, arwc_lab]
+    date: '2026-09-15T12:15:00-04:00'
+    subject: Congratulations on the photograph
+    body: |
+      Please pass my congratulations to the winner. Lovely picture. The light really does make it.
+
+      I am happy with second. Have they chosen next year's theme yet?
+
+      Theo
+  - id: a-photo-6
+    story: photography
+    from: owen
+    to: [theo, mina]
+    date: '2026-09-15T13:10:00-04:00'
+    subject: Mine is going in the display
+    body: |
+      Thanks for encouraging me. I didn't place but I'm pleased they are using it.
+
+      Also, Theo, your footpath picture is very good. I had not realized how early you have to get up to look that relaxed about a competition.
+
+      Owen
+  - id: a-outreach-1
+    story: outreach
+    from: owen
+    to: [mina, rosa]
+    date: '2026-09-09T15:10:00-04:00'
+    subject: Short explanation for the community session
+    body: |
+      I have attached my preparation note for tomorrow. I tried to explain the whole journey from source to tap, but it takes longer aloud than it did in my head.
+
+      Mina, could we go over the terms you used for the old district arrangements? I wrote them down, but I am not sure I understood them well enough to explain them to someone else.
+
+      Owen
+    attachments: [a-outreach-preparation]
+  - id: a-outreach-2
+    story: outreach
+    from: mina
+    to: [owen, rosa]
+    date: '2026-09-09T16:00:00-04:00'
+    subject: 'Re: Short explanation for the community session'
+    reply_to: a-outreach-1
+    body: |
+      Yes. Those were names people used before the services joined. I forget how much local shorthand is in that explanation.
+
+      For a visitor, start with what the water company does today. We can keep the history for anyone who asks. Bring the note; we'll cut it down together.
+
+      Mina
+  - id: a-outreach-3
+    story: outreach
+    from: rosa
+    to: [owen, mina]
+    date: '2026-09-10T14:05:00-04:00'
+    subject: 'Re: Short explanation for the community session'
+    reply_to: a-outreach-2
+    body: |
+      The shorter version works. Owen's opening question — what happens before the water reaches our tap? — gives people somewhere to start.
+
+      I've attached the agreed outline. The community group's date is still being arranged, so please don't promise a session time yet.
+
+      Rosa
+    attachments: [a-outreach-outline]
+  - id: a-outreach-4
+    story: outreach
+    from: mina
+    to: [owen]
+    date: '2026-09-10T15:12:00-04:00'
+    subject: Your comparison this afternoon
+    body: |
+      Could I use your relay comparison in the next orientation? It made the difference between the jobs clear without making one sound more important than another.
+
+      Good work asking again yesterday. I had given you an explanation that assumed you had already worked here for years.
+
+      Mina
+  - id: a-billing-1
+    story: billing
+    from: rosa
+    to: [nadia, priya]
+    date: '2026-09-11T10:30:00-04:00'
+    subject: The billing-period explanation
+    body: |
+      Could we look at this on Monday? Customers ask which dates their bill covers. We start by explaining how the reading gets into our account process.
+
+      Both are true, but only one is the question they asked. I'd like to move the dates to the opening sentence and keep the process explanation underneath.
+
+      Rosa
+  - id: a-billing-2
+    story: billing
+    from: priya
+    to: [rosa, nadia]
+    date: '2026-09-14T15:22:00-04:00'
+    subject: 'Re: The billing-period explanation'
+    reply_to: a-billing-1
+    body: |
+      The revised explanation is clear. I have one more suggestion about the wording of the last paragraph, although I concede it may simply be how I would write it.
+
+      Does it help the customer, or have we reached the point where I should leave it alone?
+
+      Priya
+  - id: a-billing-3
+    story: billing
+    from: rosa
+    to: [priya, nadia]
+    date: '2026-09-15T09:20:00-04:00'
+    subject: 'Re: The billing-period explanation'
+    reply_to: a-billing-2
+    body: |
+      I think we have reached that point. I tried both versions with colleagues and they answered the question equally well.
+
+      The accepted version is attached. Thank you both. This should save customers a second explanation.
+
+      Rosa
+    attachments: [a-billing-explanation]
+  - id: a-billing-4
+    story: billing
+    from: nadia
+    to: [rosa]
+    date: '2026-09-15T11:35:00-04:00'
+    subject: Lunch next week?
+    body: |
+      Would you like to get lunch next week? I've enjoyed these writing sessions.
+
+      We can leave the next explanation until we're back. I am trying to get better at making that distinction.
+
+      Nadia
+  - id: a-billing-5
+    story: billing
+    from: rosa
+    to: [nadia]
+    date: '2026-09-15T13:05:00-04:00'
+    subject: 'Re: Lunch next week?'
+    reply_to: a-billing-4
+    body: |
+      Yes, Tuesday suits me if we go after the morning cover changes. I'll check the time with the team.
+
+      Looking forward to it.
+
+      Rosa
+  - id: a-history-1
+    story: utility-history
+    from: luc
+    to: [mina, clara, theo]
+    date: '2026-09-03T11:40:00-04:00'
+    subject: Refurbishment account for the induction material
+    body: |
+      The new induction pack includes the treatment refurbishment completed in 2023. I've attached the short account.
+
+      Mina, would you be willing to say a few words at an induction session about what the staged work was like for the crews? I think people would appreciate hearing it from somebody who was there.
+
+      Luc
+    attachments: [a-refurbishment-history]
+  - id: a-history-2
+    story: utility-history
+    from: mina
+    to: [luc]
+    date: '2026-09-04T08:15:00-04:00'
+    subject: 'Re: Refurbishment account for the induction material'
+    reply_to: a-history-1
+    body: |
+      Happy to help with the account. I would prefer a small visit and questions to giving a speech.
+
+      The part I remember is how many people made each stage fit around the work already happening. The report gets the result right. I'd like the new starters to meet some of the people who made it work.
+
+      Mina
+  - id: a-history-3
+    story: utility-history
+    from: luc
+    to: [mina]
+    date: '2026-09-04T10:12:00-04:00'
+    subject: 'Re: Refurbishment account for the induction material'
+    reply_to: a-history-2
+    body: |
+      A small visit sounds better. Thank you for saying so.
+
+      I sometimes assume that recognition ought to involve a microphone. We can recognize the work by making enough time to hear about it properly.
+
+      Luc
+  - id: a-walk-1
+    story: friends
+    from: clara
+    to: [nadia]
+    date: '2026-09-07T17:05:00-04:00'
+    subject: A walk for your weekend
+    body: |
+      The riverside path would be my first choice. If the weather is clear, the higher route is also lovely, but you would want more of the day for it. I have notes on both and a few ideas about lunch.
+
+      On rereading your question, you asked for one easy walk. Riverside path. I'll stop there unless invited.
+
+      Clara
+  - id: a-walk-2
+    story: friends
+    from: nadia
+    to: [clara]
+    date: '2026-09-08T09:18:00-04:00'
+    subject: 'Re: A walk for your weekend'
+    reply_to: a-walk-1
+    body: |
+      Riverside it is. Thank you.
+
+      I would still like the lunch ideas. I can be persuaded to plan that portion of the day in some detail.
+
+      Nadia
+  - id: a-learning-1
+    story: workforce
+    from: mina
+    to: [luc]
+    date: '2026-09-14T14:00:00-04:00'
+    subject: Time for the next orientation group
+    body: |
+      Could the next planning round include the preparation time for orientations, as well as the sessions themselves? I'm glad to teach, but the preparation is real work too.
+
+      And please keep me in the development conversation. Long service doesn't mean I have already fixed a retirement date. There are still things I would like to learn here.
+
+      Mina
+  - id: a-learning-2
+    story: workforce
+    from: luc
+    to: [mina]
+    date: '2026-09-15T08:10:00-04:00'
+    subject: 'Re: Time for the next orientation group'
+    reply_to: a-learning-1
+    body: |
+      Agreed. I'll ask the managers to include preparation when they bring their training proposals.
+
+      Point taken about development. I've been thinking a good deal about succession lately, including my own, and should not assume everyone is asking the same question.
+
+      Luc

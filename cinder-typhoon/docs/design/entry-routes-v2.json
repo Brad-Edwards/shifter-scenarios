@@ -1,0 +1,120 @@
+{
+  "status": "design contract; not runtime or cognitive-difficulty validation",
+  "scope": "Only the two ordinary ARWC entry routes. Other operation dependencies remain in the portfolio briefs.",
+  "starting_state": "supplied developer foothold; training optional",
+  "join_ceiling": "medium",
+  "nodes": [
+    {
+      "id": "G01",
+      "operation": "K01",
+      "tier": "easy",
+      "requires_all": [],
+      "model_inference_required": false
+    },
+    {
+      "id": "G02",
+      "operation": "K25",
+      "tier": "medium",
+      "requires_all": [
+        "G01"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "G03",
+      "operation": "K05",
+      "tier": "easy",
+      "requires_all": [
+        "G01"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "A01",
+      "operation": "K06",
+      "tier": "medium",
+      "requires_all": [
+        "G03"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "A02",
+      "operation": "K06",
+      "tier": "medium",
+      "requires_all": [
+        "A01"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "A03",
+      "operation": "K26",
+      "tier": "medium",
+      "requires_all": [
+        "A02",
+        "G02"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "A04",
+      "operation": "K26",
+      "tier": "medium",
+      "requires_all": [
+        "A03"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "B01",
+      "operation": "K17",
+      "tier": "easy",
+      "requires_all": [
+        "G01"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "B02",
+      "operation": "K27",
+      "tier": "medium",
+      "requires_all": [
+        "B01",
+        "G02"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "B03",
+      "operation": "K27",
+      "tier": "medium",
+      "requires_all": [
+        "B02",
+        "G03"
+      ],
+      "model_inference_required": false
+    },
+    {
+      "id": "B04",
+      "operation": "K27",
+      "tier": "medium",
+      "requires_all": [
+        "B03"
+      ],
+      "model_inference_required": false
+    }
+  ],
+  "entry_routes": [
+    {
+      "id": "package",
+      "terminal": "A04",
+      "effect": "ARWC corporate connector execution"
+    },
+    {
+      "id": "diagnostic",
+      "terminal": "B04",
+      "effect": "ARWC corporate connector execution"
+    }
+  ]
+}

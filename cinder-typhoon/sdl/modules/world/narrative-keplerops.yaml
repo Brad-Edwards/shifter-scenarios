@@ -1,0 +1,270 @@
+name: cinder-narrative-keplerops
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+realization:
+  default: open
+module:
+  id: cinder-typhoon/narrative-keplerops
+  version: 0.1.0
+  exports:
+    content:
+    - mail
+    - documents
+    propositions:
+    - mail-visible
+    - documents-visible
+    assertions:
+    - mail-visible
+    - documents-visible
+    evidence_requirements:
+    - mail-visible
+    - documents-visible
+    observation_boundaries:
+    - mail-visible
+    - documents-visible
+content:
+  mail:
+    type: dataset
+    target: k-corporate.k-staff
+    format: cinder-mailbox-set/v1
+    source:
+      name: cinder-typhoon/narrative/keplerops-mail
+      version: sha256-154c23ef1edfe1a67318bd0dcd828fe9143a9c1f1607f20e496bc41ac51687c8
+    description: keplerops workplace mail. Preserve authored content, mailbox membership or document readers,
+      and declared opening state.
+    items:
+    - name: k-anniversary-1
+      display_name: Ten years — what do you remember?
+    - name: k-anniversary-2
+      display_name: 'Re: Ten years — what do you remember?'
+    - name: k-anniversary-3
+      display_name: 'Re: Ten years — what do you remember?'
+    - name: k-anniversary-4
+      display_name: 'Re: Ten years — what do you remember?'
+    - name: k-anniversary-5
+      display_name: Anniversary contributions
+    - name: b-kepler-arwc-1
+      display_name: Reference conversation next month
+    - name: b-kepler-arwc-2
+      display_name: 'Re: Reference conversation next month'
+    - name: k-growth-1
+      display_name: Planning note for the next two years
+    - name: k-growth-2
+      display_name: 'Re: Planning note for the next two years'
+    - name: k-growth-3
+      display_name: 'Re: Planning note for the next two years'
+    - name: b-orren-1
+      display_name: Service review completed
+    - name: b-orren-2
+      display_name: 'Re: Service review completed'
+    - name: k-bike-1
+      display_name: Bicycle, if your offer still stands
+    - name: b-rillhaven-1
+      display_name: Seasonal handover complete; workshop on the 24th
+    - name: k-bike-2
+      display_name: 'Re: Bicycle, if your offer still stands'
+    - name: k-onboarding-1
+      display_name: New-starter guide corrections are in
+    - name: b-rillhaven-2
+      display_name: 'Re: Seasonal handover complete; workshop on the 24th'
+    - name: k-workshop-1
+      display_name: Rillhaven rehearsal tomorrow
+    - name: k-workshop-2
+      display_name: 'Re: Rillhaven rehearsal tomorrow'
+    - name: k-lunch-1
+      display_name: Can we keep Thursday?
+    - name: k-lunch-2
+      display_name: 'Re: Can we keep Thursday?'
+    - name: k-workshop-3
+      display_name: 'Re: Rillhaven rehearsal tomorrow'
+    - name: k-workshop-4
+      display_name: 'Re: Rillhaven rehearsal tomorrow'
+    - name: k-bike-3
+      display_name: 'Re: Bicycle, if your offer still stands'
+    - name: k-lunch-3
+      display_name: 'Re: Can we keep Thursday?'
+    - name: k-lunch-4
+      display_name: 'Re: Can we keep Thursday?'
+    - name: k-bike-4
+      display_name: 'Re: Bicycle, if your offer still stands'
+    - name: k-bike-5
+      display_name: 'Re: Bicycle, if your offer still stands'
+    - name: k-family-1
+      display_name: Thanks for checking the rota
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.k-corporate.k-staff.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - mail-visible
+      evidence_requirement_refs:
+      - mail-visible
+      observation_boundary_refs:
+      - mail-visible
+  documents:
+    type: dataset
+    target: k-corporate.k-staff
+    format: cinder-document-library/v1
+    source:
+      name: cinder-typhoon/narrative/keplerops-documents
+      version: sha256-d9e1670ecf34af09e29fa4c66a229e3f4950b695f0ab027267ab8bdd1429f323
+    description: keplerops workplace documents. Preserve authored content, mailbox membership or document readers,
+      and declared opening state.
+    items:
+    - name: k-company-direction
+      display_name: A specialist company with room to grow
+    - name: k-working-guide
+      display_name: Working at KeplerOps
+    - name: k-workshop-outline
+      display_name: Rillhaven maintenance workshop
+    - name: k-service-review
+      display_name: KeplerOps service review
+    - name: k-company-history
+      display_name: Ten years of KeplerOps
+    - name: k-customer-relationships
+      display_name: Working with established utility customers
+    - name: k-workshop-outline-draft
+      display_name: Rillhaven maintenance workshop — draft for rehearsal
+    - name: keplerops-directory
+      display_name: Staff contacts
+    - name: rillhaven-workshop
+      display_name: Rillhaven maintenance workshop
+    - name: evan-noor-lunch
+      display_name: Lunch with Evan
+    tags:
+    - world-content
+    - synthetic
+    service_materialization:
+      target_service_ref: nodes.k-corporate.k-staff.services.workplace
+      interface_profile: service-content
+      profile_version: '1'
+      requirements:
+        operation: ensure-owned-items
+        conflict_policy: reject-unowned-collision
+        readback: canonical-content-digest
+      readback_assertion_refs:
+      - documents-visible
+      evidence_requirement_refs:
+      - documents-visible
+      observation_boundary_refs:
+      - documents-visible
+propositions:
+  mail-visible:
+    description: The declared mail can be read through the workplace service with the authored audience boundaries.
+    subjects:
+    - content.mail
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.keplerops.mail.visible
+      semantic_ref: urn:cinder-typhoon:world:keplerops:mail:visible
+      expected: true
+    evidence_requirements:
+    - mail-visible
+  documents-visible:
+    description: The declared documents can be read through the workplace service with the authored audience
+      boundaries.
+    subjects:
+    - content.documents
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.world.keplerops.documents.visible
+      semantic_ref: urn:cinder-typhoon:world:keplerops:documents:visible
+      expected: true
+    evidence_requirements:
+    - documents-visible
+assertions:
+  mail-visible:
+    proposition: mail-visible
+    role: postcondition
+  documents-visible:
+    proposition: documents-visible
+    role: postcondition
+evidence_requirements:
+  mail-visible:
+    source_refs:
+    - content.mail
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.keplerops.mail.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-keplerops.mail
+        data_kind: artifact
+        names:
+        - cinder.world.keplerops.mail.visible
+  documents-visible:
+    source_refs:
+    - content.documents
+    scope: Native workplace service readback
+    boundary_kind: participant_equivalent
+    channel: api_response
+    artifact_role: service_materialization_readback
+    media_types:
+    - application/json
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: cinder.world.keplerops.documents.visible
+      scope: /content
+      mode: selected
+      purpose: experimental
+      collection: require
+      retention: require
+      basis: observed
+      required: true
+      integrity: checksum
+      redaction: redact-secrets
+      selector:
+        semantic_scope: /content
+        component_refs:
+        - content.narrative-keplerops.documents
+        data_kind: artifact
+        names:
+        - cinder.world.keplerops.documents.visible
+observation_boundaries:
+  mail-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.mail
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.
+  documents-visible:
+    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
+      their own authorized collection.
+    observable_refs:
+    - content.documents
+    redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
+    latency_profile: Initial content available before participant admission.

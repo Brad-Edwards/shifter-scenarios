@@ -1,0 +1,288 @@
+{
+  "status": "Architecture contracts only; not a complete scored-challenge DAG or runtime proof.",
+  "semantics": "requires_any is OR over alternatives; every inner list is AND. Nodes denote capability outputs, not extra flags. conditional_ceiling covers work inside the owning operation from the declared access; entry nodes come from entry-routes.json.",
+  "external_nodes": [
+    "A04",
+    "B04"
+  ],
+  "nodes": [
+    {
+      "id": "CORPORATE",
+      "operation": null,
+      "conditional_ceiling": null,
+      "requires_any": [
+        [
+          "A04"
+        ],
+        [
+          "B04"
+        ]
+      ],
+      "output": "Execution in the ARWC corporate connector, with preserved package interface."
+    },
+    {
+      "id": "W03.READ",
+      "operation": "W03",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "CORPORATE"
+        ]
+      ],
+      "output": "Read-integration configuration; no control authority."
+    },
+    {
+      "id": "W09.DATA",
+      "operation": "W09",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "CORPORATE"
+        ]
+      ],
+      "output": "Current allocation ledger reconciled with meter export; time and unit provenance retained."
+    },
+    {
+      "id": "W13.SESSION",
+      "operation": "W13",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "CORPORATE"
+        ]
+      ],
+      "output": "Scoped contractor session earned through the appointment flaw."
+    },
+    {
+      "id": "W14.READ",
+      "operation": "W14",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "W13.SESSION"
+        ]
+      ],
+      "output": "Active read endpoint and contractor authorization."
+    },
+    {
+      "id": "OT_READ",
+      "operation": null,
+      "conditional_ceiling": null,
+      "requires_any": [
+        [
+          "W03.READ",
+          "W09.DATA"
+        ],
+        [
+          "W14.READ"
+        ]
+      ],
+      "output": "Read-only process visibility."
+    },
+    {
+      "id": "W17.OBS",
+      "operation": "W17",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "OT_READ"
+        ]
+      ],
+      "output": "Current independent observations correlated with the recorded routine commissioning event; read access is sufficient."
+    },
+    {
+      "id": "W18.MAP",
+      "operation": "W18",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "W17.OBS"
+        ]
+      ],
+      "output": "Tag/scale mapping tied to observed outlet behavior."
+    },
+    {
+      "id": "W19.MAP",
+      "operation": "W19",
+      "conditional_ceiling": "expert",
+      "requires_any": [
+        [
+          "OT_READ"
+        ]
+      ],
+      "output": "Alternative tag mapping from mixed-mode diagnostic logic; no current revision or allocation data."
+    },
+    {
+      "id": "MAPPING",
+      "operation": null,
+      "conditional_ceiling": null,
+      "requires_any": [
+        [
+          "W18.MAP"
+        ],
+        [
+          "W19.MAP"
+        ]
+      ],
+      "output": "Mapping component only."
+    },
+    {
+      "id": "W21.REVISION",
+      "operation": "W21",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "OT_READ"
+        ]
+      ],
+      "output": "Project/commissioning records compared with deployed revision."
+    },
+    {
+      "id": "W25.ENVELOPE",
+      "operation": "W25",
+      "conditional_ceiling": "easy",
+      "requires_any": [
+        [
+          "OT_READ"
+        ]
+      ],
+      "output": "Documented channel/rate/volume envelope, distinct from allocation targets."
+    },
+    {
+      "id": "W25.MODE",
+      "operation": "W25",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "W17.OBS",
+          "W25.ENVELOPE"
+        ]
+      ],
+      "output": "Observed mode/interlocks and validated practice sequence."
+    },
+    {
+      "id": "PROCESS_INTERPRETATION",
+      "operation": null,
+      "conditional_ceiling": null,
+      "requires_any": [
+        [
+          "MAPPING",
+          "W09.DATA",
+          "W21.REVISION",
+          "W25.ENVELOPE"
+        ]
+      ],
+      "output": "Correct outlet, current revision, allocation context, and valid operating envelope."
+    },
+    {
+      "id": "W15.APPROVAL",
+      "operation": "W15",
+      "conditional_ceiling": "expert",
+      "requires_any": [
+        [
+          "W13.SESSION"
+        ],
+        [
+          "W03.READ"
+        ]
+      ],
+      "output": "Maintenance approval artifact earned through the cache/token chain."
+    },
+    {
+      "id": "W26.CONTROL",
+      "operation": "W26",
+      "conditional_ceiling": "expert",
+      "requires_any": [
+        [
+          "W13.SESSION",
+          "W15.APPROVAL"
+        ]
+      ],
+      "output": "Scoped live control client through maintenance renderer compromise."
+    },
+    {
+      "id": "W28.CONTROL",
+      "operation": "W28",
+      "conditional_ceiling": "hard",
+      "requires_any": [
+        [
+          "W21.REVISION"
+        ]
+      ],
+      "output": "Equivalent scoped live control through engineering utility exploitation."
+    },
+    {
+      "id": "CONTROL",
+      "operation": null,
+      "conditional_ceiling": null,
+      "requires_any": [
+        [
+          "W26.CONTROL"
+        ],
+        [
+          "W28.CONTROL"
+        ]
+      ],
+      "output": "Authority to issue the intended commands, without bypassing process constraints."
+    },
+    {
+      "id": "W29.PLAN",
+      "operation": "W29",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "PROCESS_INTERPRETATION",
+          "W25.MODE"
+        ]
+      ],
+      "output": "Predicted bounded release, usable-reserve change, and economic consequence from current inputs."
+    },
+    {
+      "id": "W30.RESULT",
+      "operation": "W30",
+      "conditional_ceiling": "medium",
+      "requires_any": [
+        [
+          "PROCESS_INTERPRETATION",
+          "CONTROL",
+          "W25.MODE",
+          "W29.PLAN"
+        ]
+      ],
+      "output": "Gate opening and volume effect verified outside the compromised reporting path."
+    }
+  ],
+  "invariants": {
+    "entry_ceiling": "medium",
+    "ordinary_ot_visibility_ceiling": "medium",
+    "ordinary_process_interpretation_ceiling": "medium",
+    "minimum_control_ceiling": "hard",
+    "no_inference_required": true
+  },
+  "required_final_evidence": [
+    "MAPPING",
+    "W09.DATA",
+    "W21.REVISION",
+    "W25.ENVELOPE",
+    "W25.MODE",
+    "W29.PLAN"
+  ],
+  "optional_operations_excluded_from_final": [
+    "K29",
+    "K30",
+    "K31",
+    "W16",
+    "W22",
+    "W23",
+    "W24",
+    "W27",
+    "W33",
+    "W34",
+    "W35"
+  ],
+  "aliases": {
+    "ENVELOPE": "W25.ENVELOPE",
+    "MODE": "W25.MODE",
+    "CONSEQUENCE_PLAN": "W29.PLAN"
+  }
+}

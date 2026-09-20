@@ -1,0 +1,666 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w13
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w13
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the actual appointment record. Its timing is scenario state, so reaching this
+      challenge does not require waiting for a real clock.
+    source_refs: &id001
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w13-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w13-1.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Recover the current roster entry and assignment binding. The appointment document does
+      not contain the full roster.
+    source_refs: &id002
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w13-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w13-2.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
+      asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
+    source_refs: &id003
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w13-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w13-3.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Demonstrate the scoped contractor session against its protected field-work record. This
+      supplies W13.SESSION; appointment ownership alone does not count.
+    source_refs: &id004
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w13-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w13-4.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the actual appointment record. Its timing is scenario state, so reaching this
+      challenge does not require waiting for a real clock.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w13-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W13.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the current roster entry and assignment binding. The appointment document does
+      not contain the full roster.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w13-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W13.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
+      asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w13-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W13.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate the scoped contractor session against its protected field-work record. This
+      supplies W13.SESSION; appointment ownership alone does not count.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w13-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W13.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W13.1: Window on Thursday'
+    description: |-
+      Recover the upcoming outlet-inspection appointment and its maintenance reference.
+
+      Gives the planner's inspection a concrete schedule and purpose.
+    agent: participant.operator
+    actions:
+    - w13.c1
+    targets: &id005
+    - features.a-maintenance.a-contractors
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w13.c1
+  c2:
+    name: 'W13.2: Who is expected at the gate'
+    description: |-
+      Recover the separate access roster for the inspection crew and identify the relevant contractor assignment.
+
+      Adds independent identity evidence for the appointment.
+    agent: participant.operator
+    actions:
+    - w13.c2
+    targets: &id006
+    - features.a-maintenance.a-contractors
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w13.c2
+  c3:
+    name: 'W13.3: An appointment we do not own'
+    description: |-
+      Replace the registered attendee on the outlet-inspection appointment with the contractor identity in Cinder's assignment, despite lacking the appointment owner's rights.
+
+      Crosses an administrative boundary before credential issuance.
+    agent: participant.operator
+    actions:
+    - w13.c3
+    targets: &id007
+    - features.a-maintenance.a-contractors
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w13.c3
+  c4:
+    name: 'W13.4: Checked in as the contractor'
+    description: |-
+      Cross the check-in service's separate identity boundary and establish the contractor session for the correct inspection scope.
+
+      Completes the alternative contractor route's identity stage.
+    agent: participant.operator
+    actions:
+    - w13.c4
+    targets: &id008
+    - features.a-maintenance.a-contractors
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w13.c4
+workflows:
+  c1:
+    description: 'W13.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w13.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W13.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w13.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W13.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w13.c1-ready
+            - w13.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w13.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W13.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w13.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w13.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the upcoming outlet-inspection appointment and its maintenance reference.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w13.c1
+      - features.a-maintenance.a-contractors
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual appointment record. Its timing is scenario state, so reaching this
+        challenge does not require waiting for a real clock.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w13.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the separate access roster for the inspection crew and identify the relevant
+      contractor assignment.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w13.c2
+      - features.a-maintenance.a-contractors
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the current roster entry and assignment binding. The appointment document does
+        not contain the full roster.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w13.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Replace the registered attendee on the outlet-inspection appointment with the contractor
+      identity in Cinder's assignment, despite lacking the appointment owner's rights.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w13.c3
+      - features.a-maintenance.a-contractors
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the attendee change on the correct appointment while preserving the inspection,
+        asset, and scheduled window. This supplies appointment authority, not yet a contractor session.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w13.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Cross the check-in service's separate identity boundary and establish the contractor
+      session for the correct inspection scope.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w13.c4
+      - features.a-maintenance.a-contractors
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the scoped contractor session against its protected field-work record.
+        This supplies W13.SESSION; appointment ownership alone does not count.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w13.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-contractors
+    description: W13.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w13.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-contractors
+    description: W13.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w13.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-contractors
+    description: W13.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w13.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-contractors
+    description: W13.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w13.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W13.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
+    target: a-maintenance.a-contractors
+    tags:
+    - synthetic
+    - w13
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Maintenance appointment records, a separately held access roster, and the contractor
+        check-in workflow.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W13.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
+    target: a-maintenance.a-contractors
+    tags:
+    - synthetic
+    - w13
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Maintenance appointment records, a separately held access roster, and the contractor
+        check-in workflow.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W13.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
+    target: a-maintenance.a-contractors
+    tags:
+    - synthetic
+    - w13
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Maintenance appointment records, a separately held access roster, and the contractor
+        check-in workflow.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W13.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Maintenance appointment records, a separately held access roster, and the contractor check-in workflow.
+    target: a-maintenance.a-contractors
+    tags:
+    - synthetic
+    - w13
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Maintenance appointment records, a separately held access roster, and the contractor
+        check-in workflow.

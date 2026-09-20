@@ -1,0 +1,104 @@
+# Workplace story assets
+
+This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
+as correspondence and records people can encounter inside the companies.
+
+The first collection contains 68 authored messages, 15 company documents,
+contact directories for the fourteen principal-company employees in the cast,
+and three calendar invitations. There are sixteen retained mailboxes, including
+the laboratory and staff-activities shared correspondence. It covers the eight ordinary stories, the
+companies' histories and ambitions, and relationships with all eight supporting
+businesses. Jules appears as a Veybridge correspondent.
+
+## Sources and outputs
+
+| Location | Purpose |
+| --- | --- |
+| `authoring/people.yaml` | Fictional people, addresses, and departmental correspondents. |
+| `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
+| `authoring/documents.yaml`, `documents/` | Authored documents, titles, and intended readers. |
+| `authoring/calendars.yaml` | Agreed and tentative future arrangements as of the snapshot. |
+| `generated/messages/` | Individual RFC 5322 messages with MIME attachments. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and RFC 5545 calendar files. |
+| `generated/packages/` | Four self-contained JSON source artifacts for native RAE content declarations. |
+| `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
+| `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |
+
+Only the four package payloads are bound into the world. Authoring metadata,
+coverage records, and this README are not part of a staff mailbox or document
+library. The RFC822 files and original documents are also available here for
+review and reuse by the eventual adapter.
+
+Rebuild from the repository root using the validation environment:
+
+```sh
+python cinder-typhoon/build/render_narrative.py
+python cinder-typhoon/build/render_narrative.py --check
+python cinder-typhoon/tests/validate_narrative.py
+```
+
+PyYAML is included in the existing pinned SDL validation requirements. Rendering
+is deterministic and local; it sends no mail and creates no target accounts.
+
+## Native RAE binding
+
+The `narrative-keplerops` and `narrative-arwc` modules each declare two native
+`content` datasets: mail and documents. They target the existing staff and business
+systems respectively. Each uses RAE's `service_materialization` contract for a
+named `workplace` service, with `ensure-owned-items`, rejection of unowned
+collisions, and canonical content-digest readback.
+
+A native `Source` identifies a package by name and version. The version includes
+the SHA-256 of the package bytes; `artifact-catalog.json` resolves that exact pair
+to a shipped file. This catalog is the pack's artifact lookup convention, not an
+additional RAE field or an assumption that the parser fetches source bytes.
+The author validator joins those references to the actual files and the compiled
+content placements.
+
+The named service has a logical TCP 443 binding on each existing node. It adds
+no node, subnet, access route, or supplied credential. RAE's service declaration
+does not itself authorize traffic. Host operating systems, software products,
+physical hosting, and participant replication retain their open declarations.
+
+Four observed-state readback assertions require ordinary-reader visibility of
+the exact content collections. They are materialization checks, separate from
+challenge completion; they add no objectives or prerequisite gates. The eventual
+adapter must implement the formats below and prove readback. Static validation
+establishes the authored and compiled contracts, not a running workplace service.
+
+## Payload formats
+
+`cinder-mailbox-set/v1` is a pack-specific content format carried by native RAE
+`dataset` and `Source` fields. The JSON object contains:
+
+- `snapshot`: the authored opening time, with an explicit fictional local offset.
+- `messages`: unique Message-IDs, the exact ASCII RFC822 serialization including
+  encoded Unicode and MIME attachments, and each message's SHA-256.
+- `mailboxes`: owners and their `INBOX`/`Sent` memberships by Message-ID.
+
+The same exchange has identical bytes wherever retained. The materializer must
+preserve ownership, folder membership, headers, bodies, reply chains, and
+attachments. Access to one mailbox does not reveal the whole source collection.
+External correspondence is retained at the principal companies; no supplier
+mail environment is created by this collection.
+
+`cinder-document-library/v1` contains named items with title, relative display
+path, media type, exact text, and explicit reader addresses. It includes Markdown
+documents, CSV contact directories, and calendar items. A materializer must retain
+the reader sets and keep personal calendar items with their intended audience.
+These data formats are defined by this pack; RAE supplies their source, owner,
+materialization, observation, and compilation semantics.
+
+## Opening state and editorial scope
+
+The snapshot is 08:30 on 16 September 2026, with a fictional local UTC−04:00
+offset. Messages precede that instant. Invitations can concern later dates;
+a tentative lunch remains tentative, and a planned workshop is not already over.
+No timer runs these social events.
+
+The documents and mail contain worldbuilding rather than required challenge
+secrets. Personal interests do not become password clues. Private conversations
+are kept with their participants, and general company documents have appropriate
+staff audiences. Original actor and business identifiers remain stable while
+screened display names and personal login spellings are aligned in the active
+SDL, challenge cards, and technical data contract.

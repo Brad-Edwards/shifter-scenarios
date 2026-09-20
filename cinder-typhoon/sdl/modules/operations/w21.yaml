@@ -1,0 +1,372 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w21
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w21
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    propositions:
+    - c1
+    - c2
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    objectives:
+    - c1
+    - c2
+    workflows:
+    - c1
+    - c2
+    action_contracts:
+    - c1
+    - c2
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c2-surface-2
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c2-records-2
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
+    source_refs: &id001
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w21-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w21-1.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
+      diagnostic or historical migration record cannot replace the deployed observation.
+    source_refs: &id002
+    - features.a-engineering.a-engineering
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w21-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w21-2.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w21-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W21.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
+      diagnostic or historical migration record cannot replace the deployed observation.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w21-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W21.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W21.1: The project and the note'
+    description: |-
+      Recover the engineering project and its commissioning note for the outlet group.
+
+      Gives the controls engineer's records a concrete place in the campaign.
+    agent: participant.operator
+    actions:
+    - w21.c1
+    targets: &id003
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w21.c1
+  c2:
+    name: 'W21.2: Which project is running'
+    description: |-
+      Compare the recovered project claims with the independently observed deployed revision. Establish which version is actually in use.
+
+      Supplies current engineering context for control and the final consequence.
+    agent: participant.operator
+    actions:
+    - w21.c2
+    targets: &id004
+    - features.a-engineering.a-engineering
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w21.c2
+workflows:
+  c1:
+    description: 'W21.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.ot-read-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w21.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W21.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w21.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w21.c2
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the engineering project and its commissioning note for the outlet group.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w21.c1
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the project and note as one bundle. Neither alone proves the deployed revision.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.w21.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Compare the recovered project claims with the independently observed deployed revision.
+      Establish which version is actually in use.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w21.c2
+      - features.a-engineering.a-engineering
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the correct project/deployment comparison. This supplies W21.REVISION; an old
+        diagnostic or historical migration record cannot replace the deployed observation.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w21.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W21.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w21.c1
+      mode: artifact
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W21.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w21.c2
+      mode: artifact
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W21.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w21.c2
+      mode: read
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W21.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w21
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The engineering project bundle, its commissioning note, and an independently readable
+        deployed-revision record.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W21.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w21
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The engineering project bundle, its commissioning note, and an independently readable
+        deployed-revision record.
+  c2-records-2:
+    type: dataset
+    description: |-
+      W21.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The engineering project bundle, its commissioning note, and an independently readable deployed-revision record.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w21
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The engineering project bundle, its commissioning note, and an independently readable
+        deployed-revision record.

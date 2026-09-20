@@ -1,0 +1,662 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w31
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w31
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the correct boundary evidence and case reference. A malformed request without
+      an interpretable result is insufficient.
+    source_refs: &id001
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w31-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w31-1.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating
+      a length discrepancy does not count.
+    source_refs: &id002
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w31-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w31-2.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate controlled saved-state influence while preserving the conditions needed for
+      continued service execution. A crash is insufficient.
+    source_refs: &id003
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w31-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w31-3.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Demonstrate service-context execution and recover the approval history. This supplies
+      a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
+    source_refs: &id004
+    - features.a-engineering.a-diagnostics
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w31-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w31-4.satisfied
+        component_refs:
+        - features.a-engineering.a-diagnostics
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the correct boundary evidence and case reference. A malformed request without
+      an interpretable result is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w31-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W31.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate the specified protected access in the actual diagnostic service. Merely repeating
+      a length discrepancy does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w31-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W31.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate controlled saved-state influence while preserving the conditions needed for
+      continued service execution. A crash is insufficient.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w31-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W31.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate service-context execution and recover the approval history. This supplies
+      a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w31-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W31.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W31.1: The vault''s misleading length'
+    description: |-
+      Recover the diagnostic vault's actual record-boundary behavior and the protected diagnostic reference associated with the supplied case.
+
+      Establishes useful evidence about the service's input contract.
+    agent: participant.operator
+    actions:
+    - w31.c1
+    targets: &id005
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w31.c1
+  c2:
+    name: 'W31.2: Past the parser''s boundary'
+    description: |-
+      Combine the observed record behavior into a controlled access beyond the parser's intended boundary.
+
+      Creates a substantive native capability.
+    agent: participant.operator
+    actions:
+    - w31.c2
+    targets: &id006
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w31.c2
+  c3:
+    name: 'W31.3: The state execution returns to'
+    description: |-
+      Establish controlled influence over the saved execution state under the vault's remaining constraints.
+
+      Advances from data access to a distinct execution primitive.
+    agent: participant.operator
+    actions:
+    - w31.c3
+    targets: &id007
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w31.c3
+  c4:
+    name: 'W31.4: The diagnostic service''s authority'
+    description: |-
+      Complete the diagnostic-vault compromise and recover the restricted maintenance approval history under the diagnostic service's execution identity.
+
+      Provides a complete local ending for the alternate native branch.
+    agent: participant.operator
+    actions:
+    - w31.c4
+    targets: &id008
+    - features.a-engineering.a-diagnostics
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w31.c4
+workflows:
+  c1:
+    description: 'W31.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w21-revision-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w31.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W31.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w31.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w31.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W31.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w31.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w31.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W31.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w31.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w31.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the diagnostic vault's actual record-boundary behavior and the protected
+      diagnostic reference associated with the supplied case.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w31.c1
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the correct boundary evidence and case reference. A malformed request without
+        an interpretable result is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w31.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Combine the observed record behavior into a controlled access beyond the parser's
+      intended boundary.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w31.c2
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the specified protected access in the actual diagnostic service. Merely
+        repeating a length discrepancy does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w31.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Establish controlled influence over the saved execution state under the vault's remaining
+      constraints.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w31.c3
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate controlled saved-state influence while preserving the conditions needed
+        for continued service execution. A crash is insufficient.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w31.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Complete the diagnostic-vault compromise and recover the restricted maintenance approval
+      history under the diagnostic service's execution identity.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w31.c4
+      - features.a-engineering.a-diagnostics
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate service-context execution and recover the approval history. This supplies
+        a local explanation of earlier maintenance decisions, not a current approval or CONTROL capability.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w31.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W31.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w31.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W31.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w31.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W31.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w31.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-diagnostics
+    description: W31.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w31.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W31.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The optional diagnostic vault, ordinary record examples, and its native analysis material.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w31
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W31.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The optional diagnostic vault, ordinary record examples, and its native analysis material.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w31
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W31.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The optional diagnostic vault, ordinary record examples, and its native analysis material.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w31
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W31.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The optional diagnostic vault, ordinary record examples, and its native analysis material.
+    target: a-engineering.a-diagnostics
+    tags:
+    - synthetic
+    - w31
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The optional diagnostic vault, ordinary record examples, and its native analysis material.

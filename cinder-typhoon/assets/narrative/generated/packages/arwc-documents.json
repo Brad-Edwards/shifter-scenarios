@@ -1,0 +1,167 @@
+{
+  "schema_version": "cinder-document-library/v1",
+  "documents": [
+    {
+      "name": "a-outreach-preparation",
+      "title": "Community water-service explanation — preparation",
+      "path": "outreach-preparation.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T14:00:00-04:00",
+      "readers": [
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Community water-service explanation — preparation\n\nOwen Vardell • 9 September 2026 • Draft for rehearsal\n\nThe original outline tried to cover source water, treatment, distribution,\ncustomer service, the company merger, and the difference between several teams.\nIt is too long for the short explanation we have been asked to prepare.\n\nFor the rehearsal, I want to test a simpler opening: what happens before water\nreaches our tap?\n\nI need to check the old district terminology with Mina before using any of it.\nIt may be more history than the audience needs for this explanation. Rosa can\nhelp decide what the opening question should lead to next.\n\nOne comparison that may work is a relay: different people contribute different\nparts of a continuous service. I want to keep it accurate without making it\nsound as though one job only begins after another team has stopped working.\n"
+    },
+    {
+      "name": "a-outreach-outline",
+      "title": "Before water reaches the tap",
+      "path": "outreach-outline.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-10T13:30:00-04:00",
+      "readers": [
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Before water reaches the tap\n\nCommunity session outline • Agreed at rehearsal, 10 September 2026\n\n**Opening question:** What happens before water reaches our tap?\n\nExplain that ARWC looks after a connected service: obtaining source water,\ntreating it, keeping the distribution system working, and helping customers\nunderstand the service they receive. People with different skills do those jobs\nalongside one another.\n\nOwen's relay comparison is useful for explaining that different responsibilities\ncontribute to the same result. Make clear that the work continues throughout\nthe day; one department does not finish permanently when another takes over.\n\nUse an everyday example such as arranging a meter visit. A customer-service\ncolleague helps agree the appointment, field staff do the practical work, and\nthe account records the result. Leave time for the audience's questions.\n\nThe separate Pine and River services joined in 2009. Mention that history if\nit helps answer a question, rather than making it the introduction everyone\nmust sit through.\n\nMina has checked the explanation's accuracy. Rosa has helped with its order.\nOwen will practise the shorter version. The community session's final date\nremains to be arranged.\n"
+    },
+    {
+      "name": "a-billing-explanation",
+      "title": "Which period does my water bill cover?",
+      "path": "billing-explanation.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-15T09:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Which period does my water bill cover?\n\nCustomer-service explanation • Accepted 15 September 2026\n\nThe billing period is the interval identified on your bill. It tells you which\npart of your service history the bill covers. The date a bill is issued is a\nseparate date and can be later than the end of that interval.\n\nYour bill identifies the readings used to calculate metered consumption and\nwhether a reading is actual or estimated. If a date or reading is unclear,\ncustomer service can explain the entries on your individual account.\n\nWhen contacting us, tell us which bill and which part you would like explained.\nThere is no need to reconstruct our internal process before asking the question.\nWe can explain the billing period first, then discuss how the relevant reading\nwas obtained or applied if that would help.\n\nFor an appointment concerning your meter, customer service will work with the\nappointments team to agree the practical arrangements. A question about your\nbill does not itself book a meter visit.\n"
+    },
+    {
+      "name": "a-refurbishment-history",
+      "title": "The treatment refurbishment 2021–2023",
+      "path": "refurbishment-history.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T10:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# The treatment refurbishment, 2021–2023\n\nStaff induction background • September 2026\n\nThe refurbishment was completed in planned stages while the service continued.\nIt is an achievement involving operations, maintenance, engineering, planning,\nand the colleagues who kept other routine work moving at the same time.\n\nPublic reporting recorded progress and the completed result. Staff who worked\nthrough the stages remember the practical coordination: preparing work, fitting\nit around existing responsibilities, asking questions early, and leaving a\nuseful account for the people taking over.\n\nThe induction programme should give newer colleagues an opportunity to meet\nsome of the people behind the work and ask what the experience was like.\nThe practical arrangements still need to be discussed with the staff involved.\n\nA colleague who joined after 2023 may know the completed facilities without\nknowing their history. Both experiences belong in the company. Nobody needs to\nhave been here for a particular project to take pride in the service now.\n"
+    },
+    {
+      "name": "a-company-and-governance",
+      "title": "Your regional water company",
+      "path": "company-and-governance.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T08:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Your regional water company\n\nStaff and public reference • September 2026\n\nAlterra Regional Water Company is jointly owned by Pine and River municipal\ndistricts and serves approximately 160,000 residents and local businesses.\nThe company formed in 2009 by bringing the districts' water-service functions\ntogether. It supplies drinking water from source through treatment and\ndistribution, including household billing and meter services. Wastewater remains\nwith separate municipal services.\n\nThe owners appoint a joint board with district representatives and independent\nmembers. The board considers the service plan, budget, and rate proposals through\nthe public approval process. A general manager leads the company. The director\nof regional operations, Luc Venn-Morel, reports to the general manager and\npresents the service implications of major operational decisions.\n\nPine and River remain service and cost centres within one company. Shared costs\nfollow the agreed allocation method. District-specific commitments are accounted\nfor against the district receiving the specified service. Joint ownership does\nnot mean every charge is automatically split equally.\n\nWater charges support ordinary operations and planned renewal. Longer-lived\nprojects have separately approved capital funding. Annual service results,\nboard reporting, explanations to customers, and consultation over planned work\nare part of the company's normal public responsibilities.\n\nARWC has about 230 staff. Our next five-year programme combines steady renewal,\nworkforce development, and service for modest regional growth. The aim is a\nservice the next generation can maintain and customers can continue to rely on.\n"
+    },
+    {
+      "name": "a-working-at-arwc",
+      "title": "Working at ARWC",
+      "path": "working-at-arwc.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T08:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Working at ARWC\n\nStaff induction reference • September 2026\n\n| Function | Colleagues | Work |\n| --- | ---: | --- |\n| Operations, treatment, and distribution | 94 | Plant work, field operations, service, and shift handovers |\n| Maintenance and engineering | 48 | Inspections, projects, equipment condition, and commissioning |\n| Planning, quality, and compliance | 32 | Demand, allocation, laboratory work, quality, and reporting |\n| Information technology | 12 | Business applications, identity, integration, and internal services |\n| Customer service and business support | 36 | Accounts, procurement, records, correspondence, and scheduling |\n| Leadership and finance | 8 | Governance, budgets, finance, and organizational leadership |\n\nOur service has overlapping working days. Some colleagues work plant shifts,\nsome travel between field assignments, and others provide customer-service or\noffice coverage. Check those arrangements when organizing a meeting or staff\nevent. Main-office hours do not describe everyone's day.\n\nMost operational and customer-service positions are covered by established\ncollective agreements. Management and some professional roles have separate\nemployment arrangements. Your manager and the appropriate staff representative\ncan explain the arrangements for your position.\n\nDevelopment can mean deeper technical expertise, training work, a different\nspecialism, or a supervisory role. Apprentices work through planned assignments\nunder supervision. They arrive with different prior experience and should feel\nable to ask questions, including asking for an explanation a second time.\n\nExperienced colleagues also have development goals. Planning for succession\nincludes time to prepare and teach, as well as the teaching session itself.\nLong service is not a substitute for asking somebody about their plans.\n\nVoluntary staff activities include the autumn photography display and staff\nwalk. Some colleagues participate; others have different interests or commitments.\nThere are many ways to belong to the company.\n"
+    },
+    {
+      "name": "a-regional-history",
+      "title": "Becoming a regional service",
+      "path": "regional-history.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T08:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Becoming a regional service\n\nRecords and staff induction note • September 2026\n\nBefore 2009, Pine and River operated separate water services. Bringing them\ntogether made it possible to share planning, purchasing, and management while\nlocal depots continued their practical work. It also allowed the company to\ndevelop specialist expertise that the districts had often bought separately.\n\nThe change took time. Staff learned colleagues' routines, and records retained\nnames and descriptions from the services that produced them. Some of those\nnames still occur in conversation. Many employees joined after the merger and\nidentify more strongly with their team or profession than a predecessor service.\n\nBetween 2014 and 2017, staged distribution renewal completed several neighbourhood\njobs that staff still remember with pride. Customer service adopted common\naccount procedures during 2018–2019. FieldKest was introduced during the same\nperiod for selected external handovers, reducing repeated collection of records.\n\nThe treatment refurbishment completed between 2021 and 2023 is another shared\nachievement. More recently, training and succession have received attention as\nexperienced employees consider their next career stages. The 2025 apprentice\nintake is part of that continuing development.\n\nThe staff-history scanning project has preserved photographs and other material\nfrom earlier offices. Descriptions identify where and when an item belongs so\nsomeone can understand it without finding a colleague who remembers it personally.\n"
+    },
+    {
+      "name": "a-regional-service",
+      "title": "Regional service and customer relationships",
+      "path": "regional-service-and-customers.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T08:00:00-04:00",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "# Regional service and customer relationships\n\nCustomer-service reference • September 2026\n\nMost customers encounter ARWC through their ordinary water service, bills, meter\nappointments, planned work, and information about seasonal use. Municipal\nfacilities are customers alongside households and businesses.\n\nCairn Reach Reservoir is one important reserve within a wider source portfolio.\nARWC also has an established supplementary bulk-supply agreement with Merewick\nBulk Water Cooperative. Merewick serves neighbouring systems from a larger,\ndifferent source and storage portfolio. ARWC is a contract customer, rather\nthan a member owner. Available deliveries depend on Merewick's commitments and\nconditions, and are limited by the agreement.\n\nBelvarn Packaging is a River district manufacturer whose shorter production\nruns make clear scheduling useful. Its staff are considering an efficiency\nproject and ask practical questions about metering and ordinary bills. Belvarn\nalso works with the local training college on apprenticeships.\n\nTalvern Growers Cooperative represents Pine district growers, including nurseries\nand producers of high-value horticultural crops. ARWC provides a limited,\nsupplementary seasonal irrigation allowance through the treated distribution\nservice. Members' other water arrangements are outside that contract. Talvern\nhelps members understand the allowance and arrange common information sessions.\n\nDifferent customers need different explanations. A useful response starts with\nthe question they asked and the service involved. Customer-service staff can\nbring in planning or other colleagues when a question needs their expertise.\n"
+    },
+    {
+      "name": "arwc-directory",
+      "title": "Staff contacts",
+      "path": "staff-contacts.csv",
+      "media_type": "text/csv",
+      "readers": [
+        "theo.marrivel@alterrawaterco.com",
+        "clara.morivelle@alterrawaterco.com",
+        "nadia.corvane@alterrawaterco.com",
+        "priya.naravel@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com",
+        "owen.vardell@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "name,email,department,job\nTheo Marrivel,theo.marrivel@alterrawaterco.com,Maintenance and engineering,Maintenance planner\nClara Morivelle,clara.morivelle@alterrawaterco.com,Maintenance and engineering,Controls engineer\nNadia Corvane,nadia.corvane@alterrawaterco.com,\"Planning, quality, and compliance\",Regional water planner\nPriya Naravel,priya.naravel@alterrawaterco.com,Customer service and business support,District procurement officer\nLuc Venn-Morel,luc.venn-morel@alterrawaterco.com,Leadership and finance,Director of regional operations\nMina Selverin,mina.selverin@alterrawaterco.com,\"Operations, treatment, and distribution\",Senior water treatment operator\nOwen Vardell,owen.vardell@alterrawaterco.com,\"Operations, treatment, and distribution\",Water distribution apprentice\nRosa Nerivet,rosa.nerivet@alterrawaterco.com,Customer service and business support,Customer-service adviser\n"
+    },
+    {
+      "name": "rosa-nadia-lunch",
+      "title": "Lunch with Rosa",
+      "path": "rosa-nadia-lunch.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "nadia.corvane@alterrawaterco.com",
+        "rosa.nerivet@alterrawaterco.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:d7adddba-6fee-5ced-a14f-6f3b278731d7@alterrawaterco.com\r\nDTSTAMP:20260916T123000Z\r\nDTSTART:20260922T163000Z\r\nDTEND:20260922T171500Z\r\nORGANIZER:mailto:nadia.corvane@alterrawaterco.com\r\nATTENDEE:mailto:rosa.nerivet@alterrawaterco.com\r\nSUMMARY:Lunch with Rosa\r\nDESCRIPTION:Time to be confirmed after Rosa checks the team cover.\r\nSTATUS:TENTATIVE\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    }
+  ]
+}

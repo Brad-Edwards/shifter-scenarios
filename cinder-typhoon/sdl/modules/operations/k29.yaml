@@ -1,0 +1,721 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k29
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k29
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c3-surface-2
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c3-records-2
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Cross the build-record boundary and demonstrate the recovered principal against its protected
+      release dossier. The dossier also supplies the package-interface examples used by K29.3. A credential
+      string alone is insufficient.
+    source_refs: &id001
+    - features.k-delivery.k-ci
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k29-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k29-1.satisfied
+        component_refs:
+        - features.k-delivery.k-ci
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Establish signing authority that matches the consumer's accepted release lineage. The
+      current checkout or an unrelated old key does not satisfy the objective.
+    source_refs: &id002
+    - features.k-delivery.k-source
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k29-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k29-2.satisfied
+        component_refs:
+        - features.k-delivery.k-source
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Produce fresh customer test results tying the signed revision to its actual consumed
+      content. ARWC must exhibit the chosen change; the supplied reference customer and both supported
+      interfaces must retain their required behavior. Merely signing an artifact with K29.2's key does
+      not count.
+    source_refs: &id003
+    - features.k-delivery.k-ci--rehearsals
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k29-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k29-3.satisfied
+        component_refs:
+        - features.k-delivery.k-ci--rehearsals
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Demonstrate a fresh post-rollover delivery with the old credential rejected and the unrelated
+      customer's behavior preserved. The rehearsal does not revoke main-campaign access.
+    source_refs: &id004
+    - features.k-delivery.k-ci--rehearsals
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k29-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k29-4.satisfied
+        component_refs:
+        - features.k-delivery.k-ci--rehearsals
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Cross the build-record boundary and demonstrate the recovered principal against its protected
+      release dossier. The dossier also supplies the package-interface examples used by K29.3. A credential
+      string alone is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k29-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K29.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Establish signing authority that matches the consumer's accepted release lineage. The
+      current checkout or an unrelated old key does not satisfy the objective.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k29-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K29.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Produce fresh customer test results tying the signed revision to its actual consumed
+      content. ARWC must exhibit the chosen change; the supplied reference customer and both supported
+      interfaces must retain their required behavior. Merely signing an artifact with K29.2's key does
+      not count.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k29-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K29.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Demonstrate a fresh post-rollover delivery with the old credential rejected and the unrelated
+      customer's behavior preserved. The rehearsal does not revoke main-campaign access.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k29-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K29.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K29.1: The build record''s principal'
+    description: |-
+      Recover the limited release principal behind the protected build dossier and establish what it can actually access.
+
+      Starts the durable-delivery branch with a scoped cloud capability.
+    agent: participant.operator
+    actions:
+    - k29.c1
+    targets: &id005
+    - features.k-delivery.k-ci
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k29.c1
+  c2:
+    name: 'K29.2: The signer in the history'
+    description: |-
+      Recover usable signing authority for the accepted release lineage from the protected source history and release records.
+
+      Connects cloud access to historical source and signing trust.
+    agent: participant.operator
+    actions:
+    - k29.c2
+    targets: &id006
+    - features.k-delivery.k-source
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k29.c2
+  c3:
+    name: 'K29.3: Signed, compatible, consumed'
+    description: |-
+      Deliver one signed support release that carries Cinder's change for ARWC while preserving the unrelated reference customer's behavior. Both the current and retained supported connector interfaces must continue to accept the release.
+
+      Demonstrates a complete trusted-delivery compromise.
+    agent: participant.operator
+    actions:
+    - k29.c3
+    targets: &id007
+    - features.k-delivery.k-ci--rehearsals
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k29.c3
+  c4:
+    name: 'K29.4: After the old key expires'
+    description: |-
+      Carry your delivery capability through the disclosed release-credential rollover. Make the replacement release work after the old credential stops being accepted.
+
+      Closes the support ticket on a release Cinder can reproduce.
+    agent: participant.operator
+    actions:
+    - k29.c4
+    targets: &id008
+    - features.k-delivery.k-ci--rehearsals
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k29.c4
+workflows:
+  c1:
+    description: 'K29.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+            - capabilities.g02-ready
+            - k09.c1-ready
+          next: attempt
+        - when:
+            assertions:
+            - capabilities.g01-ready
+            - capabilities.g02-ready
+            - k13.c1-ready
+          next: attempt
+        - when:
+            assertions:
+            - capabilities.g01-ready
+            - capabilities.g02-ready
+            - k04.c4-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k29.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K29.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k29.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k29.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K29.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k29.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k29.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K29.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k29.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k29.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the limited release principal behind the protected build dossier and establish
+      what it can actually access.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k29.c1
+      - features.k-delivery.k-ci
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Cross the build-record boundary and demonstrate the recovered principal against its
+        protected release dossier. The dossier also supplies the package-interface examples used by K29.3.
+        A credential string alone is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k29.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover usable signing authority for the accepted release lineage from the protected
+      source history and release records.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k29.c2
+      - features.k-delivery.k-source
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Establish signing authority that matches the consumer's accepted release lineage. The
+        current checkout or an unrelated old key does not satisfy the objective.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k29.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Deliver one signed support release that carries Cinder's change for ARWC while preserving
+      the unrelated reference customer's behavior. Both the current and retained supported connector interfaces
+      must continue to accept the release.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k29.c3
+      - features.k-delivery.k-ci--rehearsals
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce fresh customer test results tying the signed revision to its actual consumed
+        content. ARWC must exhibit the chosen change; the supplied reference customer and both supported
+        interfaces must retain their required behavior. Merely signing an artifact with K29.2's key does
+        not count.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k29.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Carry your delivery capability through the disclosed release-credential rollover.
+      Make the replacement release work after the old credential stops being accepted.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k29.c4
+      - features.k-delivery.k-ci--rehearsals
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate a fresh post-rollover delivery with the old credential rejected and the
+        unrelated customer's behavior preserved. The rehearsal does not revoke main-campaign access.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k29.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci
+    description: K29.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k29.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-source
+    description: K29.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k29.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci--rehearsals
+    description: K29.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k29.c3
+      mode: service
+  c3-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K29.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k29.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-ci--rehearsals
+    description: K29.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k29.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K29.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      G02's current customer binding, a developer-facing release-dossier interface identified by the earned lead, build records, and the dossier's package-interface examples. A dossier lead supplies a location, not a cloud principal.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k29
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: G02's current customer binding, a developer-facing release-dossier interface identified
+        by the earned lead, build records, and the dossier's package-interface examples. A dossier lead
+        supplies a location, not a cloud principal.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K29.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current customer binding, a release-dossier lead, build records, and a private release-rollover rehearsal.
+    target: k-delivery.k-source
+    tags:
+    - synthetic
+    - k29
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current customer binding, a release-dossier lead, build records, and a private
+        release-rollover rehearsal.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K29.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current customer binding, a release-dossier lead, build records, and a private release-rollover rehearsal.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k29
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current customer binding, a release-dossier lead, build records, and a private
+        release-rollover rehearsal.
+  c3-records-2:
+    type: dataset
+    description: |-
+      K29.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current customer binding, a release-dossier lead, build records, and a private release-rollover rehearsal.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k29
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current customer binding, a release-dossier lead, build records, and a private
+        release-rollover rehearsal.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K29.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The current customer binding, a release-dossier lead, build records, and a private release-rollover rehearsal.
+    target: k-delivery.k-ci
+    tags:
+    - synthetic
+    - k29
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The current customer binding, a release-dossier lead, build records, and a private
+        release-rollover rehearsal.

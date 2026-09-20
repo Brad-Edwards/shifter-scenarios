@@ -1,0 +1,94 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-training
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/training
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - t-workbench
+    - t-accounts
+    - t-developer
+    - t-state
+    infrastructure:
+    - subnet
+    - t-workbench
+    - t-accounts
+    - t-developer
+    - t-state
+    entities:
+    - organization
+    features:
+    - t-workbench
+    - t-accounts
+    - t-developer
+    - t-state
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'Training: Training. Logical network segment; physical realization and addressing remain
+      open.'
+  t-workbench:
+    type: compute
+    description: Workbench
+    features:
+      t-workbench: ''
+  t-accounts:
+    type: compute
+    description: Accounts
+    features:
+      t-accounts: ''
+  t-developer:
+    type: compute
+    description: Developer artifacts
+    features:
+      t-developer: ''
+  t-state:
+    type: compute
+    description: State exercise
+    features:
+      t-state: ''
+infrastructure:
+  subnet: {}
+  t-workbench:
+    links:
+    - subnet
+  t-accounts:
+    links:
+    - subnet
+  t-developer:
+    links:
+    - subnet
+  t-state:
+    links:
+    - subnet
+entities:
+  organization:
+    name: Training
+    description: Training
+    role: green
+features:
+  t-workbench:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on t-workbench. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  t-accounts:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on t-accounts. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  t-developer:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on t-developer. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  t-state:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on t-state. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.

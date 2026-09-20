@@ -1,0 +1,591 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k10
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k10
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Recover the protected association and bind it to the supplied attachment. Public viewer documentation is only starting material.
+
+      Required technical proof: The queue returns the viewer's document identity, source attachment version, and restricted case binding as player evidence for K10.2.
+    source_refs: &id001
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k10-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k10-1.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal own-case association, one supplied restricted association, denied unrelated
+      attachment metadata, correct source/derived binding, and reset.'
+  c2:
+    description: |-
+      Produce a reproducible ambiguous association between the two documents. Merely giving them the same visible title does not count.
+
+      Required technical proof: The service records both source versions, the shared derived identity, and distinct owner cases, providing the collision proof needed by K10.3.
+    source_refs: &id002
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k10-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k10-2.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify distinct normal identities, the intended collision pair, malformed document
+      rejection, no content disclosure at this stage, audit consistency, and reset.'
+  c3:
+    description: |-
+      Recover the protected content through a fresh preview interaction. A binding collision without access to the other document is insufficient.
+
+      Required technical proof: The preview queue emits a source-to-derived collision event and a protected-content read with the target document version; both are required for scoring.
+    source_refs: &id003
+    - features.k-delivery.k-preview
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k10-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k10-3.satisfied
+        component_refs:
+        - features.k-delivery.k-preview
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test normal own preview, collision prerequisite, intended protected output, no access
+      to a third document, no external navigation, and upload/worker reset.'
+propositions:
+  c1:
+    description: Recover the protected association and bind it to the supplied attachment. Public viewer
+      documentation is only starting material.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k10-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K10.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce a reproducible ambiguous association between the two documents. Merely giving
+      them the same visible title does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k10-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K10.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Recover the protected content through a fresh preview interaction. A binding collision
+      without access to the other document is insufficient.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k10-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K10.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K10.1: Whose preview is this'
+    description: |-
+      Recover the restricted preview association for the supplied support attachment. Establish which document identity the viewer believes it is presenting.
+
+      Gives the preview investigation a concrete identity question.
+    agent: participant.operator
+    actions:
+    - k10.c1
+    targets: &id004
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k10.c1
+  c2:
+    name: 'K10.2: Two inputs, one identity'
+    description: |-
+      Find distinct preview inputs that the viewer treats as the same protected document identity. Demonstrate the ambiguity with the supplied rehearsal documents.
+
+      Develops an input-binding capability before the final isolation crossing.
+    agent: participant.operator
+    actions:
+    - k10.c2
+    targets: &id005
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k10.c2
+  c3:
+    name: 'K10.3: The other document''s contents'
+    description: |-
+      Deliver a crafted support document that crosses the viewer's intended isolation boundary and recovers the protected preview content.
+
+      Completes an application-exploitation branch with actual restricted information.
+    agent: participant.operator
+    actions:
+    - k10.c3
+    targets: &id006
+    - features.k-delivery.k-preview
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k10.c3
+workflows:
+  c1:
+    description: 'K10.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k10.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K10.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k10.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k10.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K10.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k10.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k10.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The association lookup exposes the restricted derived identity for the supplied attachment
+      without confirming that the requester owns its case. The intended solution recovers and validates
+      that association.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k10.c1
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The FieldKest preview queue renders support attachments in an isolated Playwright worker
+        and records source attachment, derived document identity, viewer request, and owner case.
+      support_refs: *id004
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        This card is metadata-only: no preview content, worker action, or cross-case document read results. Reset clears player events.
+      support_refs:
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the protected association and bind it to the supplied attachment. Public viewer
+        documentation is only starting material.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k10.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The queue returns the viewer's document identity, source attachment version, and restricted
+        case binding as player evidence for K10.2.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k10.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Canonicalization collapses one deliberate pair of distinct inputs into the same derived
+      identity. The intended solution identifies the pair and demonstrates the collision using ordinary
+      preview requests.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k10.c2
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The preview worker derives a protected identity from document fields before it loads
+        rendered content; two supplied rehearsal attachments carry different source IDs and owners.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Only the authored two-document pair can collide; previews remain content-redacted and no worker execution is available. Reset removes requests.
+      support_refs:
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce a reproducible ambiguous association between the two documents. Merely giving
+        them the same visible title does not count.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k10.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The service records both source versions, the shared derived identity, and distinct
+        owner cases, providing the collision proof needed by K10.3.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k10.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: K10.2's identity collision lets a crafted attachment select the protected document's
+      derived identity. The intended solution crosses that precise isolation boundary and recovers the
+      other document's content.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k10.c3
+      - features.k-delivery.k-preview
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The support gateway accepts a player-uploaded preview document and returns the rendered
+        content belonging to the derived document identity under the preview worker's constrained service
+        context.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The worker can render only fixed document fixtures, has no network/browser persistence, and cannot reach tickets, packages, identities, or ARWC. Reset purges player uploads and outputs.
+      support_refs:
+      - features.k-delivery.k-preview
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the protected content through a fresh preview interaction. A binding collision
+        without access to the other document is insufficient.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k10.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The preview queue emits a source-to-derived collision event and a protected-content
+        read with the target document version; both are required for scoring.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k10.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K10.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k10.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K10.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k10.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-preview
+    description: K10.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k10.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K10.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
+
+      The FieldKest preview queue renders support attachments in an isolated Playwright worker and records source attachment, derived document identity, viewer request, and owner case.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k10
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The document-preview source, an ordinary preview account, representative attachments,
+        and the preview boundary's observable behavior.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K10.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
+
+      The preview worker derives a protected identity from document fields before it loads rendered content; two supplied rehearsal attachments carry different source IDs and owners.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k10
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The document-preview source, an ordinary preview account, representative attachments,
+        and the preview boundary's observable behavior.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K10.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The document-preview source, an ordinary preview account, representative attachments, and the preview boundary's observable behavior.
+
+      The support gateway accepts a player-uploaded preview document and returns the rendered content belonging to the derived document identity under the preview worker's constrained service context.
+    target: k-delivery.k-preview
+    tags:
+    - synthetic
+    - k10
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The document-preview source, an ordinary preview account, representative attachments,
+        and the preview boundary's observable behavior.

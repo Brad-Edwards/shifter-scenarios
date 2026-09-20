@@ -1,0 +1,506 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w05
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w05
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the actual starter pack and assignment binding. It contains no ready-made privileged
+      session.
+    source_refs: &id001
+    - features.a-corporate.a-identity
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w05-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w05-1.satisfied
+        component_refs:
+        - features.a-corporate.a-identity
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Recover the roster entry for the intended temporary employee. The starter pack does not
+      contain this record.
+    source_refs: &id002
+    - features.a-corporate.a-identity
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w05-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w05-2.satisfied
+        component_refs:
+        - features.a-corporate.a-identity
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate the limited staff identity against its protected assignment. Both records
+      support the binding; copying their names is insufficient. This is one route into W06.
+    source_refs: &id003
+    - features.a-corporate.a-identity
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w05-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w05-3.satisfied
+        component_refs:
+        - features.a-corporate.a-identity
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the actual starter pack and assignment binding. It contains no ready-made privileged
+      session.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w05-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W05.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the roster entry for the intended temporary employee. The starter pack does not
+      contain this record.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w05-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W05.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the limited staff identity against its protected assignment. Both records
+      support the binding; copying their names is insufficient. This is one route into W06.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w05-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W05.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W05.1: A starter pack left open'
+    description: |-
+      Recover the temporary employee's exposed starter pack and the corporate assignment it names.
+
+      Introduces a believable new-starter workflow.
+    agent: participant.operator
+    actions:
+    - w05.c1
+    targets: &id004
+    - features.a-corporate.a-identity
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w05.c1
+  c2:
+    name: 'W05.2: The activation roster'
+    description: |-
+      Recover the separate activation roster that the onboarding portal should keep internal.
+
+      Provides a second independent identity artifact.
+    agent: participant.operator
+    actions:
+    - w05.c2
+    targets: &id005
+    - features.a-corporate.a-identity
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w05.c2
+  c3:
+    name: 'W05.3: Temporary, with the wrong rights'
+    description: |-
+      Establish the temporary employee's usable corporate identity with the restricted assignment the onboarding workflow should deny.
+
+      Turns onboarding data into a meaningful identity compromise.
+    agent: participant.operator
+    actions:
+    - w05.c3
+    targets: &id006
+    - features.a-corporate.a-identity
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w05.c3
+workflows:
+  c1:
+    description: 'W05.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w05.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W05.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w05.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W05.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w05.c1-ready
+            - w05.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w05.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the temporary employee's exposed starter pack and the corporate assignment
+      it names.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w05.c1
+      - features.a-corporate.a-identity
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual starter pack and assignment binding. It contains no ready-made privileged
+        session.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w05.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the separate activation roster that the onboarding portal should keep internal.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w05.c2
+      - features.a-corporate.a-identity
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the roster entry for the intended temporary employee. The starter pack does
+        not contain this record.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w05.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Establish the temporary employee's usable corporate identity with the restricted
+      assignment the onboarding workflow should deny.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w05.c3
+      - features.a-corporate.a-identity
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the limited staff identity against its protected assignment. Both records
+        support the binding; copying their names is insufficient. This is one route into W06.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w05.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-identity
+    description: W05.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w05.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-identity
+    description: W05.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w05.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-identity
+    description: W05.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w05.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W05.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The temporary-staff onboarding portal, two separately exposed onboarding artifacts, and its ordinary assignment workflow.
+    target: a-corporate.a-identity
+    tags:
+    - synthetic
+    - w05
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The temporary-staff onboarding portal, two separately exposed onboarding artifacts,
+        and its ordinary assignment workflow.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W05.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The temporary-staff onboarding portal, two separately exposed onboarding artifacts, and its ordinary assignment workflow.
+    target: a-corporate.a-identity
+    tags:
+    - synthetic
+    - w05
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The temporary-staff onboarding portal, two separately exposed onboarding artifacts,
+        and its ordinary assignment workflow.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W05.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The temporary-staff onboarding portal, two separately exposed onboarding artifacts, and its ordinary assignment workflow.
+    target: a-corporate.a-identity
+    tags:
+    - synthetic
+    - w05
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The temporary-staff onboarding portal, two separately exposed onboarding artifacts,
+        and its ordinary assignment workflow.

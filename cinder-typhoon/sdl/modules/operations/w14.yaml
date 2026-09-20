@@ -1,0 +1,509 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w14
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w14
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the actual field export with its inspection binding. It supplies references,
+      not proof that every referenced service is current.
+    source_refs: &id001
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w14-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w14-1.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Recover the active service and revision binding supported by the field evidence. A reachable
+      obsolete service is insufficient.
+    source_refs: &id002
+    - features.a-dmz.a-contractor-bridge
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w14-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w14-2.satisfied
+        component_refs:
+        - features.a-dmz.a-contractor-bridge
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate a compatible client request yielding fresh observations for the correct inspection
+      and asset. This supplies W14.READ and OT_READ. Locating the current service or logging in without
+      adapting the retained client is not a second achievement.
+    source_refs: &id003
+    - features.a-dmz.a-contractor-bridge
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w14-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w14-3.satisfied
+        component_refs:
+        - features.a-dmz.a-contractor-bridge
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the actual field export with its inspection binding. It supplies references,
+      not proof that every referenced service is current.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w14-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W14.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the active service and revision binding supported by the field evidence. A reachable
+      obsolete service is insufficient.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w14-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W14.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate a compatible client request yielding fresh observations for the correct inspection
+      and asset. This supplies W14.READ and OT_READ. Locating the current service or logging in without
+      adapting the retained client is not a second achievement.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w14-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W14.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W14.1: The field bag'
+    description: |-
+      Recover the inspection's field export from the contractor workspace.
+
+      Provides engineering material after the identity pivot.
+    agent: participant.operator
+    actions:
+    - w14.c1
+    targets: &id004
+    - features.a-maintenance.a-contractors
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w14.c1
+  c2:
+    name: 'W14.2: The service that replaced it'
+    description: |-
+      Distinguish the obsolete field-service reference from the active process-data service and identify the current read contract.
+
+      Makes the player resolve product history before relying on an endpoint.
+    agent: participant.operator
+    actions:
+    - w14.c2
+    targets: &id005
+    - features.a-dmz.a-contractor-bridge
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w14.c2
+  c3:
+    name: 'W14.3: A fresh reading from the field'
+    description: |-
+      Adapt the contractor's retained field client to the current read interface. Recover fresh outlet observations under the inspection's correct asset scope.
+
+      Completes the second ordinary route to OT visibility.
+    agent: participant.operator
+    actions:
+    - w14.c3
+    targets: &id006
+    - features.a-dmz.a-contractor-bridge
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w14.c3
+workflows:
+  c1:
+    description: 'W14.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w13-session-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w14.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W14.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w14.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w14.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W14.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w14.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w14.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the inspection's field export from the contractor workspace.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w14.c1
+      - features.a-maintenance.a-contractors
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the actual field export with its inspection binding. It supplies references,
+        not proof that every referenced service is current.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w14.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Distinguish the obsolete field-service reference from the active process-data service
+      and identify the current read contract.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w14.c2
+      - features.a-dmz.a-contractor-bridge
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the active service and revision binding supported by the field evidence. A
+        reachable obsolete service is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w14.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Adapt the contractor's retained field client to the current read interface. Recover
+      fresh outlet observations under the inspection's correct asset scope.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w14.c3
+      - features.a-dmz.a-contractor-bridge
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate a compatible client request yielding fresh observations for the correct
+        inspection and asset. This supplies W14.READ and OT_READ. Locating the current service or logging
+        in without adapting the retained client is not a second achievement.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w14.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-maintenance.a-contractors
+    description: W14.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w14.c1
+      mode: artifact
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-dmz.a-contractor-bridge
+    description: W14.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w14.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-dmz.a-contractor-bridge
+    description: W14.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w14.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W14.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The contractor's field-work view, a retained field export, service revision records, and the documented read interface.
+    target: a-maintenance.a-contractors
+    tags:
+    - synthetic
+    - w14
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The contractor's field-work view, a retained field export, service revision records,
+        and the documented read interface.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W14.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The contractor's field-work view, a retained field export, service revision records, and the documented read interface.
+    target: a-dmz.a-contractor-bridge
+    tags:
+    - synthetic
+    - w14
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The contractor's field-work view, a retained field export, service revision records,
+        and the documented read interface.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W14.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned contractor identity, current read contract from W14.2, and a retained client example for the obsolete interface. The example cannot retrieve the required current observation unchanged.
+    target: a-dmz.a-contractor-bridge
+    tags:
+    - synthetic
+    - w14
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned contractor identity, current read contract from W14.2, and a retained client
+        example for the obsolete interface. The example cannot retrieve the required current observation
+        unchanged.

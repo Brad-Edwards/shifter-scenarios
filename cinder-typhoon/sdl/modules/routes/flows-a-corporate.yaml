@@ -1,0 +1,418 @@
+name: cinder-flows-a-corporate
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/flows-a-corporate
+  version: 0.1.0
+  exports:
+    relationships:
+    - corporate-a-business
+    - corporate-a-data
+    - corporate-a-archive
+    - corporate-a-identity
+    - corporate-a-contractors
+    - corporate-a-approval
+    - corporate-a-renderer
+    - archive-helper-handover
+    - archive-helper-dispatch
+    - planner-query
+    - query-job-dispatch
+    - query-reconciliation
+    - business-planning-view
+    - integration-entry
+    - contractor-entry
+    - control-entry
+    workflows:
+    - corporate-a-business
+    - corporate-a-data
+    - corporate-a-archive
+    - corporate-a-identity
+    - corporate-a-contractors
+    - corporate-a-approval
+    - corporate-a-renderer
+    - archive-helper-handover
+    - archive-helper-dispatch
+    - planner-query
+    - query-job-dispatch
+    - query-reconciliation
+    - business-planning-view
+    - integration-entry
+    - contractor-entry
+    - control-entry
+realization:
+  default: open
+relationships:
+  corporate-a-business:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-corporate.a-business
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-business
+  corporate-a-data:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-corporate.a-data
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-data
+  corporate-a-archive:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-corporate.a-archive
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-archive
+  corporate-a-identity:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-corporate.a-identity
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-identity
+  corporate-a-contractors:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-maintenance.a-contractors
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-contractors
+  corporate-a-approval:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-maintenance.a-approval
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-approval
+  corporate-a-renderer:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-maintenance.a-renderer
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-a-corporate.corporate-a-renderer
+  archive-helper-handover:
+    type: connects_to
+    source: features.a-corporate.a-archive--helper
+    target: features.a-corporate.a-archive--handover
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: artifact
+      guard: workflows.flows-a-corporate.archive-helper-handover
+  archive-helper-dispatch:
+    type: connects_to
+    source: features.a-corporate.a-archive
+    target: features.a-corporate.a-archive--helper
+    description: Archive invokes its restricted helper
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: service
+      guard: workflows.flows-a-corporate.archive-helper-dispatch
+  planner-query:
+    type: connects_to
+    source: features.a-corporate.a-connector--planner-client
+    target: features.a-corporate.a-data--query
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-a-corporate.planner-query
+  query-job-dispatch:
+    type: connects_to
+    source: features.a-corporate.a-data--query
+    target: features.a-corporate.a-data--query-worker
+    description: Database executes a reconciliation job
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: service
+      guard: workflows.flows-a-corporate.query-job-dispatch
+  query-reconciliation:
+    type: connects_to
+    source: features.a-corporate.a-data--query-worker
+    target: features.a-corporate.a-data--reconciliation
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: artifact
+      guard: workflows.flows-a-corporate.query-reconciliation
+  business-planning-view:
+    type: connects_to
+    source: features.a-corporate.a-business
+    target: features.a-corporate.a-data--planning
+    description: Allocation workflow consumes planning decisions
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: read
+      guard: workflows.flows-a-corporate.business-planning-view
+  integration-entry:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-dmz.a-data-bridge
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact,read
+      guard: workflows.flows-a-corporate.integration-entry
+  contractor-entry:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-dmz.a-contractor-bridge
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact,read
+      guard: workflows.flows-a-corporate.contractor-entry
+  control-entry:
+    type: connects_to
+    source: features.a-corporate.a-connector
+    target: features.a-dmz.a-control-broker
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: control
+      guard: workflows.flows-a-corporate.control-entry
+workflows:
+  corporate-a-business:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-data:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-archive:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-identity:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-contractors:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-approval:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  corporate-a-renderer:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  archive-helper-handover:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  archive-helper-dispatch:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  planner-query:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  query-job-dispatch:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  query-reconciliation:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  business-planning-view:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  integration-entry:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w03-read-ready
+            - capabilities.w09-data-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  contractor-entry:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w13-session-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  control-entry:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.control-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end

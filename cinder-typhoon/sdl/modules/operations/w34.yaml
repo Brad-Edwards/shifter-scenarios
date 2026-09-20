@@ -1,0 +1,625 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w34
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w34
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c1-surface-2
+    - c2-surface-1
+    - c2-surface-2
+    - c3-surface-1
+    - c3-surface-2
+    - c3-surface-3
+    - c3-surface-4
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c3-records-2
+    - c3-records-3
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
+      estimator or program compromise earns no additional credit here.
+    source_refs: &id001
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w34-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w34-1.satisfied
+        component_refs:
+        - features.a-corporate.a-data--planning
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate both the changed planning decision and consistency with unaffected observations.
+      A green dashboard without a different decision does not count.
+    source_refs: &id002
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w34-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w34-2.satisfied
+        component_refs:
+        - features.a-corporate.a-data--planning
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: |-
+      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+
+      The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
+    source_refs: &id003
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    - features.a-control.a-reservoir
+    - features.a-control.a-instruments
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w34-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w34-3.satisfied
+        component_refs:
+        - features.a-corporate.a-data--planning
+        - features.a-corporate.a-data
+        - features.a-control.a-reservoir
+        - features.a-control.a-instruments
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
+      estimator or program compromise earns no additional credit here.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w34-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W34.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate both the changed planning decision and consistency with unaffected observations.
+      A green dashboard without a different decision does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w34-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W34.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: |-
+      Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+
+      The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w34-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W34.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W34.1: Which view the planner trusts'
+    description: |-
+      Establish which planning consumer receives your controlled estimate and demonstrate a harmless change reaching it without altering raw measurements.
+
+      Connects the optional elite capability to a real business decision.
+    agent: participant.operator
+    actions:
+    - w34.c1
+    targets: &id004
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w34.c1
+  c2:
+    name: 'W34.2: A reassuring decision'
+    description: |-
+      Construct a plausible false planning view that makes the planner select a different allocation while satisfying the declared consistency checks.
+
+      Makes reporting deception consequential rather than cosmetic.
+    agent: participant.operator
+    actions:
+    - w34.c2
+    targets: &id005
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w34.c2
+  c3:
+    name: 'W34.3: Still reassuring after the handover'
+    description: |-
+      Couple the false planning view to the bounded release through the disclosed reporting handover. Preserve the convincing report while establishing the actual reserve loss.
+
+      Creates an optional deeper ending that pays off the controls engineer's warning.
+    agent: participant.operator
+    actions:
+    - w34.c3
+    targets: &id006
+    - features.a-corporate.a-data--planning
+    - features.a-corporate.a-data
+    - features.a-control.a-reservoir
+    - features.a-control.a-instruments
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w34.c3
+workflows:
+  c1:
+    description: 'W34.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.process-interpretation-ready
+            - w23.c3-ready
+          next: attempt
+        - when:
+            assertions:
+            - capabilities.process-interpretation-ready
+            - w27.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w34.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W34.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w34.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w34.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W34.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w34.c2-ready
+            - capabilities.control-ready
+            - capabilities.mode-ready
+            - capabilities.consequence-plan-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w34.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Establish which planning consumer receives your controlled estimate and demonstrate
+      a harmless change reaching it without altering raw measurements.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w34.c1
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the bound consumer effect and its actual input/refresh context. The earlier
+        estimator or program compromise earns no additional credit here.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w34.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Construct a plausible false planning view that makes the planner select a different
+      allocation while satisfying the declared consistency checks.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w34.c2
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate both the changed planning decision and consistency with unaffected observations.
+        A green dashboard without a different decision does not count.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w34.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Couple the false planning view to the bounded release through the disclosed reporting
+      handover. Preserve the convincing report while establishing the actual reserve loss.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w34.c3
+      - features.a-corporate.a-data--planning
+      - features.a-corporate.a-data
+      - features.a-control.a-reservoir
+      - features.a-control.a-instruments
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: |-
+        Demonstrate the changed decision, bounded volume loss, and continued reporting consistency across the handover, using evidence, authority, and the release calculation for the same earned checkpoint. Live control is required here; independent process truth and prior campaign results remain intact.
+
+        The conclusion places the planner's reassuring handover beside the independently measured reserve loss and the different allocation decision the player caused. Both accounts concern the same interval. The contrast is the payoff: ARWC's planning view remains convincing while Cinder can show what actually happened. It deepens the reporting theme without enlarging the disaster or superseding the main ending; the controls engineer's warning is quoted only if the player recovered it.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w34.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--planning
+    description: W34.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c1
+      mode: report
+  c1-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W34.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--planning
+    description: W34.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c2
+      mode: report
+  c2-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W34.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data--planning
+    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c3
+      mode: report
+  c3-surface-2:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-data
+    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c3
+      mode: service
+  c3-surface-3:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-reservoir
+    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c3
+      mode: control
+  c3-surface-4:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-control.a-instruments
+    description: W34.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w34.c3
+      mode: read
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W34.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planning-view capability, current process interpretation, the planner's input/refresh records, and independent observations. This reporting-only stage needs no live control client, operating sequence, or release plan.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w34
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planning-view capability, current process interpretation, the planner's
+        input/refresh records, and independent observations. This reporting-only stage needs no live control
+        client, operating sequence, or release plan.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W34.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The planning consumer bound in W34.1, its declared consistency rules, current allocation evidence, and unaffected observations. A release or live control client is not required to influence the planning decision.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w34
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The planning consumer bound in W34.1, its declared consistency rules, current allocation
+        evidence, and unaffected observations. A release or live control client is not required to influence
+        the planning decision.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
+    target: a-corporate.a-data
+    tags:
+    - synthetic
+    - w34
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planning-view capability, the planner's input and refresh records, independent
+        process observations, and a private rehearsal from earned state.
+  c3-records-2:
+    type: dataset
+    description: |-
+      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
+    target: a-control.a-reservoir
+    tags:
+    - synthetic
+    - w34
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planning-view capability, the planner's input and refresh records, independent
+        process observations, and a private rehearsal from earned state.
+  c3-records-3:
+    type: dataset
+    description: |-
+      W34.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The earned planning-view capability, the planner's input and refresh records, independent process observations, and a private rehearsal from earned state.
+    target: a-control.a-instruments
+    tags:
+    - synthetic
+    - w34
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The earned planning-view capability, the planner's input and refresh records, independent
+        process observations, and a private rehearsal from earned state.

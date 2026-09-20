@@ -1,0 +1,199 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k-cloud
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k-cloud
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - k-cloud-api
+    - k-workload
+    - k-data
+    - k-assistant
+    infrastructure:
+    - subnet
+    - k-cloud-api
+    - k-workload
+    - k-data
+    - k-assistant
+    entities:
+    - organization
+    features:
+    - k-cloud-api
+    - k-data
+    - k-assistant
+    - k-cloud-api--workload-client
+    - k-cloud-api--delegated-client
+    - k-cloud-api--authority
+    - k-cloud-api--build-records
+    - k-workload--scheduler
+    - k-workload--manage
+    - k-workload--task
+    - k-workload--runtime
+    - k-data--export-client
+    - k-data--backup-client
+    - k-data--backup
+    - k-data--source-db
+    - k-data--field-archive
+    - k-assistant--completion
+    - k-assistant--handover
+    - k-assistant--review-tool
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'KeplerOps: Cloud services / workloads. Logical network segment; physical realization
+      and addressing remain open.'
+  k-cloud-api:
+    type: compute
+    description: Cloud authority / job metadata
+    features:
+      k-cloud-api: ''
+      k-cloud-api--workload-client: ''
+      k-cloud-api--delegated-client: ''
+      k-cloud-api--authority: ''
+      k-cloud-api--build-records: ''
+  k-workload:
+    type: compute
+    description: Workload execution
+    features:
+      k-workload--scheduler: ''
+      k-workload--manage: ''
+      k-workload--task: ''
+      k-workload--runtime: ''
+  k-data:
+    type: compute
+    description: Cloud data / backup services
+    features:
+      k-data: ''
+      k-data--export-client: ''
+      k-data--backup-client: ''
+      k-data--backup: ''
+      k-data--source-db: ''
+      k-data--field-archive: ''
+  k-assistant:
+    type: compute
+    description: Assistant services
+    features:
+      k-assistant: ''
+      k-assistant--completion: ''
+      k-assistant--handover: ''
+      k-assistant--review-tool: ''
+infrastructure:
+  subnet: {}
+  k-cloud-api:
+    links:
+    - subnet
+  k-workload:
+    links:
+    - subnet
+  k-data:
+    links:
+    - subnet
+  k-assistant:
+    links:
+    - subnet
+entities:
+  organization:
+    name: KeplerOps
+    description: Cloud services / workloads
+    role: green
+features:
+  k-cloud-api:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-cloud-api. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-data:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-assistant:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on k-assistant. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-cloud-api--workload-client:
+    name: Limited workload identity
+    type: service
+    description: Limited workload identity on k-cloud-api. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-cloud-api--delegated-client:
+    name: Scoped cloud role
+    type: service
+    description: Scoped cloud role on k-cloud-api. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-cloud-api--authority:
+    name: Role and scheduling policy
+    type: service
+    description: Role and scheduling policy on k-cloud-api. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-cloud-api--build-records:
+    name: Authenticated build metadata
+    type: service
+    description: Authenticated build metadata on k-cloud-api. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-workload--scheduler:
+    name: Support schedule configuration
+    type: service
+    description: Support schedule configuration on k-workload. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  k-workload--manage:
+    name: Maintenance workload management
+    type: service
+    description: Maintenance workload management on k-workload. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.
+  k-workload--task:
+    name: Scheduled support execution
+    type: service
+    description: Scheduled support execution on k-workload. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-workload--runtime:
+    name: Maintenance runtime identity
+    type: service
+    description: Maintenance runtime identity on k-workload. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-data--export-client:
+    name: Export destination delegation
+    type: service
+    description: Export destination delegation on k-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-data--backup-client:
+    name: Backup recovery principal
+    type: service
+    description: Backup recovery principal on k-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-data--backup:
+    name: Backup recovery interface
+    type: service
+    description: Backup recovery interface on k-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-data--source-db:
+    name: Protected source history
+    type: service
+    description: Protected source history on k-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-data--field-archive:
+    name: Runtime-protected field archive
+    type: service
+    description: Runtime-protected field archive on k-data. A separately scoped in-world interface or
+      principal; access does not imply ownership of the other authorities on this system.
+  k-assistant--completion:
+    name: Completion job execution
+    type: service
+    description: Completion job execution on k-assistant. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-assistant--handover:
+    name: Completion handover
+    type: service
+    description: Completion handover on k-assistant. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  k-assistant--review-tool:
+    name: Duplicate-review tool identity
+    type: service
+    description: Duplicate-review tool identity on k-assistant. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.

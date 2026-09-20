@@ -1,0 +1,441 @@
+name: cinder-flows-k-delivery
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/flows-k-delivery
+  version: 0.1.0
+  exports:
+    relationships:
+    - source-build
+    - build-job-dispatch
+    - runner-source
+    - runner-package-read
+    - build-publication
+    - release-rehearsal
+    - consumer-state
+    - release-client
+    - k-ci--runner-k-staff
+    - k-ci--runner-k-cert
+    - k-support--staff-client-k-staff
+    - k-support--staff-client-k-cert
+    - k-ci--runner-k-cloud-api--authority
+    - k-ci--runner-k-cloud-api--build-records
+    - k-ci--runner-maintenance
+    - k-ci--runner-policy
+    - indexer-queue
+    - preview-result
+    - package-delivery
+    - diagnostic-delivery
+    workflows:
+    - source-build
+    - build-job-dispatch
+    - runner-source
+    - runner-package-read
+    - build-publication
+    - release-rehearsal
+    - consumer-state
+    - release-client
+    - k-ci--runner-k-staff
+    - k-ci--runner-k-cert
+    - k-support--staff-client-k-staff
+    - k-support--staff-client-k-cert
+    - k-ci--runner-k-cloud-api--authority
+    - k-ci--runner-k-cloud-api--build-records
+    - k-ci--runner-maintenance
+    - k-ci--runner-policy
+    - indexer-queue
+    - preview-result
+    - package-delivery
+    - diagnostic-delivery
+realization:
+  default: open
+relationships:
+  source-build:
+    type: connects_to
+    source: features.k-delivery.k-source
+    target: features.k-delivery.k-ci
+    description: Source selected by build
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: artifact
+      guard: workflows.flows-k-delivery.source-build
+  build-job-dispatch:
+    type: connects_to
+    source: features.k-delivery.k-ci
+    target: features.k-delivery.k-ci--runner
+    description: Build service starts a job
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: service
+      guard: workflows.flows-k-delivery.build-job-dispatch
+  runner-source:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-delivery.k-source
+    description: Runner source checkout
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: artifact
+      guard: workflows.flows-k-delivery.runner-source
+  runner-package-read:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-delivery.k-registry
+    description: Build dependency reads
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: artifact
+      guard: workflows.flows-k-delivery.runner-package-read
+  build-publication:
+    type: connects_to
+    source: features.k-delivery.k-ci
+    target: features.k-delivery.k-registry
+    description: Separately approved build publication
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: delivery
+      guard: workflows.flows-k-delivery.build-publication
+  release-rehearsal:
+    type: connects_to
+    source: features.k-delivery.k-registry
+    target: features.k-delivery.k-ci--rehearsals
+    description: Candidate delivered to private consumers
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: delivery
+      guard: workflows.flows-k-delivery.release-rehearsal
+  consumer-state:
+    type: connects_to
+    source: features.k-delivery.k-ci--rehearsals
+    target: features.k-delivery.k-ci--consumer-state
+    description: Evaluator owns its private reference state
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: artifact
+      guard: workflows.flows-k-delivery.consumer-state
+  release-client:
+    type: connects_to
+    source: features.k-delivery.k-ci--release-client
+    target: features.k-delivery.k-ci--rehearsals
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-k-delivery.release-client
+  k-ci--runner-k-staff:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-corporate.k-staff
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-k-delivery.k-ci--runner-k-staff
+  k-ci--runner-k-cert:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-corporate.k-cert
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-k-delivery.k-ci--runner-k-cert
+  k-support--staff-client-k-staff:
+    type: connects_to
+    source: features.k-delivery.k-support--staff-client
+    target: features.k-corporate.k-staff
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-k-delivery.k-support--staff-client-k-staff
+  k-support--staff-client-k-cert:
+    type: connects_to
+    source: features.k-delivery.k-support--staff-client
+    target: features.k-corporate.k-cert
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service,artifact
+      guard: workflows.flows-k-delivery.k-support--staff-client-k-cert
+  k-ci--runner-k-cloud-api--authority:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-cloud.k-cloud-api--authority
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-k-delivery.k-ci--runner-k-cloud-api--authority
+  k-ci--runner-k-cloud-api--build-records:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-cloud.k-cloud-api--build-records
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-k-delivery.k-ci--runner-k-cloud-api--build-records
+  k-ci--runner-maintenance:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-cloud.k-workload--manage
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-k-delivery.k-ci--runner-maintenance
+  k-ci--runner-policy:
+    type: connects_to
+    source: features.k-delivery.k-ci--runner
+    target: features.k-cloud.k-cloud-api--authority
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: service
+      guard: workflows.flows-k-delivery.k-ci--runner-policy
+  indexer-queue:
+    type: connects_to
+    source: features.k-delivery.k-indexer--worker
+    target: features.k-delivery.k-indexer--queue
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: artifact
+      guard: workflows.flows-k-delivery.indexer-queue
+  preview-result:
+    type: connects_to
+    source: features.k-delivery.k-preview--renderer
+    target: features.k-delivery.k-preview
+    description: Compatible preview output
+    properties:
+      cinder_kind: flow
+      flow_kind: operation
+      modes: report
+      guard: workflows.flows-k-delivery.preview-result
+  package-delivery:
+    type: connects_to
+    source: features.k-delivery.k-registry
+    target: features.a-corporate.a-connector
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: delivery
+      guard: workflows.flows-k-delivery.package-delivery
+  diagnostic-delivery:
+    type: connects_to
+    source: features.k-delivery.k-support
+    target: features.a-corporate.a-connector
+    description: ''
+    properties:
+      cinder_kind: flow
+      flow_kind: access
+      modes: delivery
+      guard: workflows.flows-k-delivery.diagnostic-delivery
+workflows:
+  source-build:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  build-job-dispatch:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  runner-source:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  runner-package-read:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  build-publication:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.a01-ready
+          next: available
+        - when:
+            assertions:
+            - k20.c3-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  release-rehearsal:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k29.c2-ready
+          next: available
+        - when:
+            assertions:
+            - k20.c2-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  consumer-state:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  release-client:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-k-staff:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-k-cert:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-support--staff-client-k-staff:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-support--staff-client-k-cert:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-k-cloud-api--authority:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-k-cloud-api--build-records:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-maintenance:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  k-ci--runner-policy:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  indexer-queue:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  preview-result:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: available
+    steps:
+      available:
+        type: end
+  package-delivery:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.a03-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+  diagnostic-delivery:
+    description: Eligibility of this named business flow. Available is an authorization state, not permission
+      for general transit.
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.b03-ready
+          next: available
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end

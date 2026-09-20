@@ -1,0 +1,3 @@
+# Preserve protocol line endings and the exact bytes referenced by content hashes.
+assets/narrative/generated/messages/*.eml -text whitespace=cr-at-eol
+assets/narrative/generated/calendars/*.ics -text whitespace=cr-at-eol

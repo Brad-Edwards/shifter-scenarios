@@ -1,0 +1,141 @@
+{
+  "schema_version": "cinder-document-library/v1",
+  "documents": [
+    {
+      "name": "k-company-direction",
+      "title": "A specialist company with room to grow",
+      "path": "company-direction.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-02T08:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "evan.calderoux@keplerops.com",
+        "noor.aveling@keplerops.com",
+        "talia.mornac@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "# A specialist company with room to grow\n\nLeah Calder-Voss • Company planning note • 2 September 2026\n\nKeplerOps is profitable. We have a working cash reserve and intend to fund the\nnext stage of growth from retained earnings and work we have contracted to do.\nWe remain privately held and founder-controlled, with minority ownership among\nsome early employees. There is no investor deadline requiring us to become a\ndifferent size by a particular year.\n\nOur roughly twelve utility customers buy substantial organizational services.\nSubscriptions and ongoing support provide most revenue. Implementation,\nmigrations, and scoped integration work provide the remainder. Several customer\ncontracts cover more than one department or site. Renewals, procurement exercises,\nand expansion within customers are a substantial part of the commercial team's\nwork.\n\nOver the next two years, I want us to add a few suitable customers and reduce\nthe share of engineering that must be repeated for each one. That requires\nchoices. A bespoke project can pay for useful capacity while consuming the\npeople who would otherwise make the product easier to maintain.\n\nWe should consider proposals against three questions:\n\n- Does the work suit the product we intend to support?\n- Can we meet the commitment while keeping our existing commitments?\n- What will remain in our ordinary workload after the project closes?\n\nThe last question includes maintenance, support, documentation, and the work\nan experienced person keeps doing after moving to a different role. Please\nbring examples to your manager. An improvement need not be a new feature to\nbe worth funding.\n\nWe have 64 colleagues now. I would like this to remain somewhere people can\nbuild a long career, including those who want to remain specialists. A good\nnext year should make the company more durable as well as larger.\n"
+    },
+    {
+      "name": "k-working-guide",
+      "title": "Working at KeplerOps",
+      "path": "working-guide.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T08:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "evan.calderoux@keplerops.com",
+        "noor.aveling@keplerops.com",
+        "talia.mornac@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "# Working at KeplerOps\n\nNew-starter guide • Revised 7 September 2026\n\nWelcome. Your buddy can help you find the people behind the names you encounter\nin your first weeks. Ask questions as they arise; nobody expects the company\nto become familiar all at once.\n\n## What we make\n\nFieldKest connects field submissions, maintenance packages, asset records, and\noperational reports with the processes customers already use. We began as an\nintegration consultancy in 2016. The product grew out of repeatedly collecting\nthe same pieces of information so a customer could accept completed work.\n\nWe still earn our reputation through useful software and people who understand\nits use. Our customers operate utilities. Their working day, procurement process,\nand definition of a completed job may differ from ours.\n\n## The people around you\n\n| Function | Colleagues | Work |\n| --- | ---: | --- |\n| Product engineering | 22 | Product behaviour and customer compatibility |\n| Support and implementation | 14 | Onboarding, cases, migration, and customer relationships |\n| Platform and release | 7 | Build, release, service operation, and recoverability |\n| Product management and quality | 8 | Priorities, testing, and acceptance |\n| Commercial | 6 | Bids, renewals, and customer commitments |\n| Leadership and business operations | 7 | Finance, people, purchasing, and running the company |\n\n## Working together\n\nMost locally based colleagues use Wednesday and Thursday as common office days.\nAgree your own arrangements with your manager. Remote colleagues participate in\ndecisions and demonstrations; leave a useful written account when a conversation\nproduces a decision others need to know about.\n\nBring an example when it helps explain a question. You do not need a presentation\nfor every discussion. Release meetings normally have an agenda and an ending;\nproduct discussions sometimes need a follow-up when an example raises another\nquestion.\n\nYour manager will discuss development with you. Specialist progression and\nmanagement are both available paths. Asking about a future role does not commit\nyou to applying for the next vacancy.\n\nSocial arrangements are optional. Some colleagues lunch together; others use\nthe break for errands or quiet time. Introductions across functions are part\nof getting to know the work, and your buddy can arrange them.\n"
+    },
+    {
+      "name": "k-workshop-outline",
+      "title": "Rillhaven maintenance workshop",
+      "path": "workshop-outline.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T14:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "# Rillhaven maintenance workshop\n\nPreparation outline • Talia Mornac • Revised 9 September 2026\n\n**Planned date:** Thursday, 24 September 2026\n\n**Lead:** Talia Mornac. Maya Ranscombe will take questions about ongoing support.\n\nRillhaven's seasonal handover is complete. The workshop is an opportunity for\nits staff to work through an example, discuss their experience, and offer product\nfeedback before the busiest part of the heating season.\n\n## Proposed shape\n\n1. Ask what each group wants to get from the session.\n2. Work through one ordinary submission and its place in a maintenance package.\n3. Let the customer explain which parts fit their own working day and which\n   parts still take more effort than they should.\n4. Discuss support questions with Maya.\n5. Record product suggestions separately from commitments to deliver work.\n\nThe example should make clear who needs the result and what they do with it.\nThe introduction can be short. We should preserve time for questions rather\nthan trying to demonstrate every part of the product.\n\n## After the rehearsal\n\nThe opening remains organized around the example. Maya's suggestion to explain\nits intended audience earlier was useful and is included. Talia will lead the\npresentation; Maya will support the discussion in the agreed part.\n\nThe workshop has not yet taken place. The follow-up will record questions,\nagreed work, and suggestions once the customer has had the session.\n"
+    },
+    {
+      "name": "k-service-review",
+      "title": "KeplerOps service review",
+      "path": "service-review.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T11:00:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com",
+        "evan.calderoux@keplerops.com"
+      ],
+      "text": "# KeplerOps service review\n\nOrren & Vale IT Services • 3 September 2026 • Review complete\n\nThe review covered the internal IT and backup-support work retained under the\ncurrent service arrangement. Completed routine maintenance was acknowledged,\nand no further question remained against those completed items at the meeting.\n\nKeplerOps' platform team continues to own product workloads. The managed-service\narrangement supports the agreed internal services; it does not transfer ownership\nof the product platform to Orren & Vale.\n\nBoth parties agreed that account documentation should let a colleague pick up\nan ordinary question without depending on one person's memory of earlier reviews.\nFuture scope changes will be described explicitly when proposed.\n\nKeplerOps will suggest a suitable week for the next account review after its\nplanning calendar is settled. The next review has not yet been booked.\n"
+    },
+    {
+      "name": "k-company-history",
+      "title": "Ten years of KeplerOps",
+      "path": "company-history.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T08:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "evan.calderoux@keplerops.com",
+        "noor.aveling@keplerops.com",
+        "talia.mornac@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "# Ten years of KeplerOps\n\nBackground for anniversary contributions • August 2026\n\nLeah founded KeplerOps in 2016 to solve a repeated customer problem: field work\nwas complete, but the information needed to accept it was scattered among people\nand systems. The first team worked from rented rooms and spent a good deal of\ntime visiting customers.\n\nDuring 2018 and 2019, that work became FieldKest, a product we could support and\nimprove across customers. ARWC was among the utilities that helped us learn\nwhat a substantial, repeated integration needed to do. Rowan joined in 2018;\nMaya joined in 2019.\n\nRemote working became established during 2020 and 2021. We also tried a simplified\nself-service edition. Demand was limited: customers generally needed help with\ntheir actual integrations. We wound down the edition while supporting existing\ncustomers through the transition. Some of its design ideas remain fondly remembered.\n\nIn 2022 we moved to the current office and kept the hybrid model. The new space\nmade smaller conversations easier, although opinions about the old office remain\ndivided.\n\nA substantial multi-site implementation finished in 2024, during a period when\nwe deliberately kept growth modest. The project photograph captures a result\nworth being proud of. Other colleagues remember the routine work they kept\nmoving while that project received attention.\n\nHiring resumed selectively in 2025 and 2026. We have 64 colleagues and a clearer\nframework for development. Newer employees now own work that used to depend on\nsomeone knowing its whole history.\n\nFor the anniversary gathering, contributions from different years will sit\nalongside this chronology. Please obtain the contributor's agreement before\nsharing a personal account. The gathering is being arranged for November.\n"
+    },
+    {
+      "name": "k-customer-relationships",
+      "title": "Working with established utility customers",
+      "path": "customer-relationships.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T08:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "# Working with established utility customers\n\nSupport and implementation reference • September 2026\n\nARWC adopted FieldKest during 2018–2019 to improve the receipt of external field\nand maintenance records. The early work reduced repeated collection of material\nand helped us understand how a supported integration fits an established utility.\n\nThe relationship has matured. ARWC expects continuity when an individual colleague\nis away. We support a product and agreed implementation work, rather than assuming\nevery request is a continuation of the original consultancy. Maya and Theo keep\nmuch of the daily relationship moving, with Rowan and Clara contributing technical\nexpertise and commercial and procurement colleagues managing the contract.\n\nARWC is an important reference and renewal customer. A reference conversation\nrequires an agreed agenda and staff time. The customer should describe its own\nexperience in its own words.\n\nRillhaven District Heating uses a different supported interface and prepares\nseasonal maintenance records ahead of increased heating demand. Its staff offer\nconstructive product feedback and appreciate practical workshops. A good idea\nraised at a workshop is recorded as a suggestion until the appropriate work has\nbeen agreed.\n\nOur other utility customers have their own calendars, supported interfaces,\nand habits. Keeping a useful account of those differences is part of the work.\n"
+    },
+    {
+      "name": "k-workshop-outline-draft",
+      "title": "Rillhaven maintenance workshop — draft for rehearsal",
+      "path": "workshop-outline-draft.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-08T09:00:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "# Rillhaven maintenance workshop — draft for rehearsal\n\nTalia Mornac • 8 September 2026\n\nThe workshop is planned for Thursday, 24 September. Rillhaven's seasonal handover\nis complete, and its staff have asked to work through an example and discuss\ntheir experience.\n\nI propose opening with one ordinary submission and explaining where it belongs\nin a maintenance package. The customer should then have time to describe how\nthat fits their working day and what still takes unnecessary effort.\n\nMaya can help with the questions about ongoing support. I would like to lead\nthe presentation myself. We should record product suggestions separately from\nwork we agree to deliver.\n\nFor tomorrow's rehearsal, I particularly want to check whether the example is\nclear and whether enough time remains for questions. The introduction has already\nbeen shortened; I do not think a longer product tour will help this audience.\n"
+    },
+    {
+      "name": "keplerops-directory",
+      "title": "Staff contacts",
+      "path": "staff-contacts.csv",
+      "media_type": "text/csv",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "evan.calderoux@keplerops.com",
+        "noor.aveling@keplerops.com",
+        "talia.mornac@keplerops.com",
+        "leah.calder-voss@keplerops.com"
+      ],
+      "text": "name,email,department,job\nRowan Ito,rowan.ito@keplerops.com,Product engineering,FieldKest developer\nMaya Ranscombe,maya.ranscombe@keplerops.com,Support and implementation,Customer support engineer\nEvan Calderoux,evan.calderoux@keplerops.com,Platform and release,Release engineer\nNoor Aveling,noor.aveling@keplerops.com,Platform and release,Platform and workload operator\nTalia Mornac,talia.mornac@keplerops.com,Support and implementation,Support quality reviewer\nLeah Calder-Voss,leah.calder-voss@keplerops.com,Leadership and business operations,Founder and managing director\n"
+    },
+    {
+      "name": "rillhaven-workshop",
+      "title": "Rillhaven maintenance workshop",
+      "path": "rillhaven-workshop.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "talia.mornac@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:5a4aa102-5bdb-536f-a292-b3946d49f9e4@keplerops.com\r\nDTSTAMP:20260916T123000Z\r\nDTSTART:20260924T140000Z\r\nDTEND:20260924T153000Z\r\nORGANIZER:mailto:talia.mornac@keplerops.com\r\nATTENDEE:mailto:maya.ranscombe@keplerops.com\r\nATTENDEE:mailto:maintenance@rillhaven.test\r\nSUMMARY:Rillhaven maintenance workshop\r\nDESCRIPTION:Practical example and discussion. Talia leads\\; Maya takes ongo\r\n ing-support questions.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    },
+    {
+      "name": "evan-noor-lunch",
+      "title": "Lunch with Evan",
+      "path": "evan-noor-lunch.ics",
+      "media_type": "text/calendar",
+      "readers": [
+        "noor.aveling@keplerops.com",
+        "evan.calderoux@keplerops.com"
+      ],
+      "text": "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nBEGIN:VEVENT\r\nUID:4781598b-ac1c-5ab1-8546-2d9d732beaf5@keplerops.com\r\nDTSTAMP:20260916T123000Z\r\nDTSTART:20261001T161500Z\r\nDTEND:20261001T170000Z\r\nORGANIZER:mailto:noor.aveling@keplerops.com\r\nATTENDEE:mailto:evan.calderoux@keplerops.com\r\nSUMMARY:Lunch with Evan\r\nDESCRIPTION:Our monthly lunch. Noor to choose the place.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    }
+  ]
+}

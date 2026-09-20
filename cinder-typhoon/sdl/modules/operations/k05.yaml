@@ -1,0 +1,776 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k05
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k05
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: |-
+      Identify the consumed package and exercise its expected interface. This supplies G03 without requiring the other K05 challenges.
+
+      Required technical proof: The consumer records a valid request, package name, resolved version range, and expected baseline result, awarding `G03`.
+    source_refs: &id001
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k05-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k05-1.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test documented example success, malformed interface failure, correct package/version
+      recording, no registry authority, and reset.'
+  c2:
+    description: |-
+      Recover the missing version record and note. It informs the package dispute but is not a hidden prerequisite for ordinary entry.
+
+      Required technical proof: Completion binds the retained version metadata and maintenance note to `FLK-6.9.8`; it grants context only.
+    source_refs: &id002
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k05-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k05-2.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify current listing omits the version, ticket/release history gives a lead, one
+      record resolves, active and obsolete revisions differ visibly, and no authority results.'
+  c3:
+    description: |-
+      Produce a correctly bound comparison of package, version, and consumer revision. It must identify the actual disagreement, not just differing text.
+
+      Required technical proof: The scorer verifies a four-field comparison with both record IDs and makes the discrepancy available to K05.4.
+    source_refs: &id003
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k05-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k05-3.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Test clear active/obsolete labeling, a unique discrepancy, rejection of text-only
+      comparison, correct provenance references, and reset.'
+  c4:
+    description: |-
+      Make the intended check consumer identify its selected dependency through a fresh result. This is optional selection intelligence; K26 retains its own production delivery problem.
+
+      Required technical proof: The report binds resolved dependency, candidate set, consumer revision, and result digest; it is optional intelligence only.
+    source_refs: &id004
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k05-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k05-4.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'Author checks: Verify labels can disagree with resolution, intended candidate is selected, incompatible
+      candidates fail, a fresh receipt is required, and reset restores baseline.'
+propositions:
+  c1:
+    description: Identify the consumed package and exercise its expected interface. This supplies G03
+      without requiring the other K05 challenges.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k05-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K05.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Recover the missing version record and note. It informs the package dispute but is not
+      a hidden prerequisite for ordinary entry.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k05-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K05.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Produce a correctly bound comparison of package, version, and consumer revision. It must
+      identify the actual disagreement, not just differing text.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k05-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K05.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Make the intended check consumer identify its selected dependency through a fresh result.
+      This is optional selection intelligence; K26 retains its own production delivery problem.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k05-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K05.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K05.1: Speak the package''s language'
+    description: |-
+      Find the package interface used by the ARWC connector and make its documented example produce a valid result.
+
+      Establishes the package contract needed by either ordinary delivery route.
+    agent: participant.operator
+    actions:
+    - k05.c1
+    targets: &id005
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k05.c1
+  c2:
+    name: 'K05.2: The version they kept'
+    description: |-
+      The visible package listing skips an older release mentioned in the support ticket. Recover the retained version record and its maintenance note.
+
+      Adds product history with its own information payoff.
+    agent: participant.operator
+    actions:
+    - k05.c2
+    targets: &id006
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k05.c2
+  c3:
+    name: 'K05.3: Two manifests disagree'
+    description: |-
+      The release manifest and the customer's recorded selection do not describe the same dependency. Reconcile the two and recover the exact discrepancy.
+
+      Turns release metadata into an operationally useful finding.
+    agent: participant.operator
+    actions:
+    - k05.c3
+    targets: &id007
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - k05.c3
+  c4:
+    name: 'K05.4: Selection has consequences'
+    description: |-
+      Demonstrate which dependency the check consumer really chooses from the available candidates. The answer must come from consumed behavior, not the release label.
+
+      Distinguishes publisher intention from consumer behavior.
+    agent: participant.operator
+    actions:
+    - k05.c4
+    targets: &id008
+    - features.k-delivery.k-registry
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - k05.c4
+workflows:
+  c1:
+    description: 'K05.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k05.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K05.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k05.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'K05.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g03-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k05.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'K05.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - k05.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k05.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: 'This is an orientation task: inspect the earned source and run the documented interface
+      against the fixture consumer to identify the consumed package.'
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k05.c1
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The FieldKest Gitea project documents the connector's package interface and supplies
+        a fixture consumer with a valid example request.
+      support_refs: *id005
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The fixture consumer is player-local, read-only outside its request log, and cannot publish or contact ARWC; reset clears requests.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Identify the consumed package and exercise its expected interface. This supplies G03
+        without requiring the other K05 challenges.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.k05.c1
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The consumer records a valid request, package name, resolved version range, and expected
+        baseline result, awarding `G03`.
+      target_refs: *id001
+      evidence_refs:
+      - evidence_requirements.k05.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Registry search suppresses yanked maintenance versions while its versioned release
+      manifest remains normally recoverable through the named historical reference. The intended solution
+      is revision-led recovery.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k05.c2
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The Forge release history and support case expose a visible gap in the current registry
+        listing for an older FieldKest release.
+      support_refs: *id006
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Historical records are read-only and distinguishable from `FLK-7.4.2`; reset clears player evidence.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the missing version record and note. It informs the package dispute but is
+        not a hidden prerequisite for ordinary entry.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.k05.c2
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: Completion binds the retained version metadata and maintenance note to `FLK-6.9.8`;
+        it grants context only.
+      target_refs: *id002
+      evidence_refs:
+      - evidence_requirements.k05.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: This is a structured reconciliation task. The intended solution joins the two authoritative
+      records and identifies the exact dependency discrepancy, excluding stale tenant and package values.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k05.c3
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The release manifest and active tenant record each declare package, version, consumer
+        revision, timestamp, and provenance for `TEN-ARWC-047`.
+      support_refs: *id007
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        Records cannot be edited and the comparison runs against a fixed synthetic dataset; reset removes only player evidence.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce a correctly bound comparison of package, version, and consumer revision. It
+        must identify the actual disagreement, not just differing text.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.k05.c3
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The scorer verifies a four-field comparison with both record IDs and makes the discrepancy
+        available to K05.4.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k05.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: The release label is deliberately not authoritative. The intended solution is controlled
+      behavioral validation of the reconciliation result through the consumer, not a guess from package
+      names.
+    realization_profile: backend-declared
+    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
+      are required. Hosting and their implementation remain backend-declared.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k05.c4
+      - features.k-delivery.k-registry
+    - precondition_id: normal-surface
+      precondition_class: target
+      description: The isolated check consumer resolves the candidate dependencies using its real lock
+        and range policy and emits a fresh resolution report.
+      support_refs: *id008
+    - precondition_id: boundaries-and-reset
+      precondition_class: realization
+      description: |-
+        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+
+        The consumer is player-scoped and has no customer delivery identity; reset restores its lock and report history.
+      support_refs:
+      - features.k-delivery.k-registry
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Make the intended check consumer identify its selected dependency through a fresh result.
+        This is optional selection intelligence; K26 retains its own production delivery problem.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.k05.c4
+    - effect_id: verified-evidence
+      effect_class: evidence_effect
+      description: The report binds resolved dependency, candidate set, consumer revision, and result
+        digest; it is optional intelligence only.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k05.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K05.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k05.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K05.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k05.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K05.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k05.c3
+      mode: service
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-registry
+    description: K05.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k05.c4
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K05.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The readable FieldKest package workspace, interface examples, release records, and an ordinary consumer-check facility.
+
+      The FieldKest Gitea project documents the connector's package interface and supplies a fixture consumer with a valid example request.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k05
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The readable FieldKest package workspace, interface examples, release records, and
+        an ordinary consumer-check facility.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K05.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The readable FieldKest package workspace, interface examples, release records, and an ordinary consumer-check facility.
+
+      The Forge release history and support case expose a visible gap in the current registry listing for an older FieldKest release.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k05
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The readable FieldKest package workspace, interface examples, release records, and
+        an ordinary consumer-check facility.
+  c3-records-1:
+    type: dataset
+    description: |-
+      K05.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The readable FieldKest package workspace, interface examples, release records, and an ordinary consumer-check facility.
+
+      The release manifest and active tenant record each declare package, version, consumer revision, timestamp, and provenance for `TEN-ARWC-047`.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k05
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The readable FieldKest package workspace, interface examples, release records, and
+        an ordinary consumer-check facility.
+  c4-records-1:
+    type: dataset
+    description: |-
+      K05.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The readable FieldKest package workspace, interface examples, release records, and an ordinary consumer-check facility.
+
+      The isolated check consumer resolves the candidate dependencies using its real lock and range policy and emits a fresh resolution report.
+    target: k-delivery.k-registry
+    tags:
+    - synthetic
+    - k05
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The readable FieldKest package workspace, interface examples, release records, and
+        an ordinary consumer-check facility.

@@ -1,0 +1,666 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w16
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w16
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
+      or its version string is insufficient.
+    source_refs: &id001
+    - features.a-corporate.a-archive
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w16-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w16-1.satisfied
+        component_refs:
+        - features.a-corporate.a-archive
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
+      in-window reading does not count.
+    source_refs: &id002
+    - features.a-corporate.a-archive
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w16-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w16-2.satisfied
+        component_refs:
+        - features.a-corporate.a-archive
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
+      differences or repeated ordinary sequences are insufficient.
+    source_refs: &id003
+    - features.a-corporate.a-archive
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w16-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w16-3.satisfied
+        component_refs:
+        - features.a-corporate.a-archive
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
+      It is an optional W33 input; ordinary commissioning records supply an easier alternative.
+    source_refs: &id004
+    - features.a-corporate.a-archive
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w16-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w16-4.satisfied
+        component_refs:
+        - features.a-corporate.a-archive
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
+      or its version string is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w16-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W16.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
+      in-window reading does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w16-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W16.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
+      differences or repeated ordinary sequences are insufficient.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w16-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W16.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: Recover the complete correctly bound calibration record under the stated diagnostic constraints.
+      It is an optional W33 input; ordinary commissioning records supply an easier alternative.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w16-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W16.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W16.1: The sequencer''s vocabulary'
+    description: |-
+      Recover the instrument's restricted sequence descriptor and reproduce the designated ordinary diagnostic observation.
+
+      Gives the experimental branch a usable interface and baseline.
+    agent: participant.operator
+    actions:
+    - w16.c1
+    targets: &id005
+    - features.a-corporate.a-archive
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w16.c1
+  c2:
+    name: 'W16.2: An observation outside the window'
+    description: |-
+      Demonstrate a controlled observation beyond the instrument's intended data window without abandoning its diagnostic interface.
+
+      Establishes the first substantive observation capability.
+    agent: participant.operator
+    actions:
+    - w16.c2
+    targets: &id006
+    - features.a-corporate.a-archive
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w16.c2
+  c3:
+    name: 'W16.3: An experiment with a signal'
+    description: |-
+      Construct a sequencer experiment that distinguishes the specified protected conditions through its measurements. Establish an interpretation that holds across the supplied reference cases.
+
+      Turns a narrow observation flaw into a usable experimental capability.
+    agent: participant.operator
+    actions:
+    - w16.c3
+    targets: &id007
+    - features.a-corporate.a-archive
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w16.c3
+  c4:
+    name: 'W16.4: What the instrument remembers'
+    description: |-
+      Recover the protected calibration record through the constrained instrument interface and bind it to the retained field revision.
+
+      Concludes the research branch with a meaningful engineering discovery.
+    agent: participant.operator
+    actions:
+    - w16.c4
+    targets: &id008
+    - features.a-corporate.a-archive
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w16.c4
+workflows:
+  c1:
+    description: 'W16.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.corporate-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w16.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W16.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w16.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w16.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W16.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w16.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w16.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W16.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w16.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w16.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the instrument's restricted sequence descriptor and reproduce the designated
+      ordinary diagnostic observation.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w16.c1
+      - features.a-corporate.a-archive
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the descriptor and a correctly bound baseline observation. Finding the binary
+        or its version string is insufficient.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w16.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Demonstrate a controlled observation beyond the instrument's intended data window
+      without abandoning its diagnostic interface.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w16.c2
+      - features.a-corporate.a-archive
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce evidence of the specified boundary crossing. An unexplained crash or ordinary
+        in-window reading does not count.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w16.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Construct a sequencer experiment that distinguishes the specified protected conditions
+      through its measurements. Establish an interpretation that holds across the supplied reference cases.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w16.c3
+      - features.a-corporate.a-archive
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate correct discrimination of the designated independent conditions. Raw timing
+        differences or repeated ordinary sequences are insufficient.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w16.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the protected calibration record through the constrained instrument interface
+      and bind it to the retained field revision.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w16.c4
+      - features.a-corporate.a-archive
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the complete correctly bound calibration record under the stated diagnostic
+        constraints. It is an optional W33 input; ordinary commissioning records supply an easier alternative.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w16.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-archive
+    description: W16.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w16.c1
+      mode: artifact
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-archive
+    description: W16.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w16.c2
+      mode: artifact
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-archive
+    description: W16.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w16.c3
+      mode: artifact
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-corporate.a-archive
+    description: W16.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w16.c4
+      mode: artifact
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W16.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
+    target: a-corporate.a-archive
+    tags:
+    - synthetic
+    - w16
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
+        examples, and protected calibration references.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W16.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
+    target: a-corporate.a-archive
+    tags:
+    - synthetic
+    - w16
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
+        examples, and protected calibration references.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W16.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
+    target: a-corporate.a-archive
+    tags:
+    - synthetic
+    - w16
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
+        examples, and protected calibration references.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W16.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      A retained diagnostic instrument artifact, its sequencer interface, ordinary observation examples, and protected calibration references.
+    target: a-corporate.a-archive
+    tags:
+    - synthetic
+    - w16
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: A retained diagnostic instrument artifact, its sequencer interface, ordinary observation
+        examples, and protected calibration references.

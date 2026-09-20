@@ -1,0 +1,164 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-a-corporate
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/a-corporate
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - a-connector
+    - a-business
+    - a-data
+    - a-archive
+    - a-identity
+    infrastructure:
+    - subnet
+    - a-connector
+    - a-business
+    - a-data
+    - a-archive
+    - a-identity
+    entities:
+    - organization
+    features:
+    - a-connector
+    - a-business
+    - a-data
+    - a-archive
+    - a-identity
+    - a-connector--planner-client
+    - a-archive--helper
+    - a-archive--handover
+    - a-data--query
+    - a-data--query-worker
+    - a-data--reconciliation
+    - a-data--planning
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'ARWC: Corporate IT. Logical network segment; physical realization and addressing remain
+      open.'
+  a-connector:
+    type: compute
+    description: FieldKest customer connector
+    features:
+      a-connector: ''
+      a-connector--planner-client: ''
+  a-business:
+    type: compute
+    description: Business applications
+    services:
+    - name: workplace
+      port: 443
+      protocol: tcp
+      description: Authenticated staff workplace for mailboxes and company records; software and hosting remain open.
+    features:
+      a-business: ''
+  a-data:
+    type: compute
+    description: Business data / planning
+    features:
+      a-data: ''
+      a-data--query: ''
+      a-data--query-worker: ''
+      a-data--reconciliation: ''
+      a-data--planning: ''
+  a-archive:
+    type: compute
+    description: Corporate archive / retained artifacts
+    features:
+      a-archive: ''
+      a-archive--helper: ''
+      a-archive--handover: ''
+  a-identity:
+    type: compute
+    description: Staff identity / browser workflow
+    features:
+      a-identity: ''
+infrastructure:
+  subnet: {}
+  a-connector:
+    links:
+    - subnet
+  a-business:
+    links:
+    - subnet
+  a-data:
+    links:
+    - subnet
+  a-archive:
+    links:
+    - subnet
+  a-identity:
+    links:
+    - subnet
+entities:
+  organization:
+    name: ARWC
+    description: Corporate IT
+    role: green
+features:
+  a-connector:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-connector. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-business:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-business. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-data:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-archive:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-archive. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-identity:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-identity. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-connector--planner-client:
+    name: Earned planner session
+    type: service
+    description: Earned planner session on a-connector. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-archive--helper:
+    name: Archive helper execution
+    type: service
+    description: Archive helper execution on a-archive. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-archive--handover:
+    name: Archive helper handover
+    type: service
+    description: Archive helper handover on a-archive. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-data--query:
+    name: Planner query interface
+    type: service
+    description: Planner query interface on a-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-data--query-worker:
+    name: Reconciliation job execution
+    type: service
+    description: Reconciliation job execution on a-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-data--reconciliation:
+    name: Protected reconciliation log
+    type: service
+    description: Protected reconciliation log on a-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-data--planning:
+    name: Estimate-consuming planner
+    type: service
+    description: Estimate-consuming planner on a-data. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.

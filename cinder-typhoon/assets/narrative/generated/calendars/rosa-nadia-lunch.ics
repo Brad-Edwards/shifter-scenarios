@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:d7adddba-6fee-5ced-a14f-6f3b278731d7@alterrawaterco.com
+DTSTAMP:20260916T123000Z
+DTSTART:20260922T163000Z
+DTEND:20260922T171500Z
+ORGANIZER:mailto:nadia.corvane@alterrawaterco.com
+ATTENDEE:mailto:rosa.nerivet@alterrawaterco.com
+SUMMARY:Lunch with Rosa
+DESCRIPTION:Time to be confirmed after Rosa checks the team cover.
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR

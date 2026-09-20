@@ -1,0 +1,672 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w19
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w19
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    - c4
+    propositions:
+    - c1
+    - c2
+    - c3
+    - c4
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    - c4-ready
+    - c4-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    - c4
+    workflows:
+    - c1
+    - c2
+    - c3
+    - c4
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    - c4
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    - c4-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+    - c4-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
+      is not a prerequisite.
+    source_refs: &id001
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w19-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w19-1.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Produce the correct alternate-path result for the supplied input. Naming an execution
+      mode without recovering behavior is insufficient.
+    source_refs: &id002
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w19-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w19-2.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input
+      does not count.
+    source_refs: &id003
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w19-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w19-3.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c4:
+    description: |-
+      Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
+
+      The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
+    source_refs: &id004
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w19-4
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w19-4.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
+      is not a prerequisite.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w19-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W19.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Produce the correct alternate-path result for the supplied input. Naming an execution
+      mode without recovering behavior is insufficient.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w19-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W19.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate the correct decisions and record bindings. Replaying one known accepted input
+      does not count.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w19-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W19.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+  c4:
+    description: |-
+      Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
+
+      The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
+    subjects: *id004
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w19-4.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W19.4
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c4
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+  c4-ready:
+    proposition: c4
+    role: precondition
+    polarity: positive
+  c4-done:
+    proposition: c4
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W19.1: The diagnostic nobody retired'
+    description: |-
+      Recover the retained engineering diagnostic associated with the outlet records and identify its actual project family.
+
+      Opens an optional reverse-engineering route through product history.
+    agent: participant.operator
+    actions:
+    - w19.c1
+    targets: &id005
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w19.c1
+  c2:
+    name: 'W19.2: A second interpretation'
+    description: |-
+      Reconstruct the diagnostic behavior that its initial analysis view does not explain and reproduce the supplied distinguishing result.
+
+      Reveals that the apparent program is incomplete.
+    agent: participant.operator
+    actions:
+    - w19.c2
+    targets: &id006
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w19.c2
+  c3:
+    name: 'W19.3: The hidden check'
+    description: |-
+      Recover the diagnostic's hidden validation logic well enough to reproduce its decisions on the specified engineering records.
+
+      Builds a substantive model of the diagnostic's actual checks.
+    agent: participant.operator
+    actions:
+    - w19.c3
+    targets: &id007
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w19.c3
+  c4:
+    name: 'W19.4: A map from the old diagnostic'
+    description: |-
+      Use the reconstructed diagnostic to recover a valid mapping of the current outlet group from the supplied observations.
+
+      Provides an advanced alternative to the ordinary mapping work.
+    agent: participant.operator
+    actions:
+    - w19.c4
+    targets: &id008
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c4-done
+    window:
+      workflows:
+      - w19.c4
+workflows:
+  c1:
+    description: 'W19.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.ot-read-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w19.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W19.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w19.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w19.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W19.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w19.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w19.c3
+        on_success: available
+        on_failure: unavailable
+  c4:
+    description: 'W19.4: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w19.c3-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w19.c4
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the retained engineering diagnostic associated with the outlet records and
+      identify its actual project family.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w19.c1
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the correct diagnostic and project-family binding. K28 can help locate it but
+        is not a prerequisite.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w19.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Reconstruct the diagnostic behavior that its initial analysis view does not explain
+      and reproduce the supplied distinguishing result.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w19.c2
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Produce the correct alternate-path result for the supplied input. Naming an execution
+        mode without recovering behavior is insufficient.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w19.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the diagnostic's hidden validation logic well enough to reproduce its decisions
+      on the specified engineering records.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w19.c3
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate the correct decisions and record bindings. Replaying one known accepted
+        input does not count.
+      target_refs: *id007
+      evidence_refs:
+      - evidence_requirements.w19.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c4:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Use the reconstructed diagnostic to recover a valid mapping of the current outlet
+      group from the supplied observations.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w19.c4
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: |-
+        Recover the actual outlet mapping. This supplies W19.MAP and MAPPING only; W09's allocation evidence and W21's deployed revision remain separate requirements.
+
+        The conclusion connects the reconstructed diagnostic's result to the physical outlet group and the supplied observations. It earns the same recognition as W18.4: the player can identify the part of the reservoir their values describe. This route uses its own recovered evidence and requires neither the ordinary mapping challenges nor a new live actuation.
+      target_refs: *id008
+      evidence_refs:
+      - evidence_requirements.w19.c4
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W19.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w19.c1
+      mode: artifact
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W19.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w19.c2
+      mode: artifact
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W19.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w19.c3
+      mode: artifact
+  c4-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W19.4 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w19.c4
+      mode: artifact
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W19.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w19
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
+        context. K28's note is an optional discovery lead.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W19.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w19
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
+        context. K28's note is an optional discovery lead.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W19.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w19
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
+        context. K28's note is an optional discovery lead.
+  c4-records-1:
+    type: dataset
+    description: |-
+      W19.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The retained engineering diagnostic, ordinary examples, and the current read-only observation context. K28's note is an optional discovery lead.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w19
+    - c4
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The retained engineering diagnostic, ordinary examples, and the current read-only observation
+        context. K28's note is an optional discovery lead.

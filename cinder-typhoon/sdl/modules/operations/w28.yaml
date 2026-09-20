@@ -1,0 +1,506 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-w28
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/w28
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    - c3
+    propositions:
+    - c1
+    - c2
+    - c3
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    - c3-ready
+    - c3-done
+    objectives:
+    - c1
+    - c2
+    - c3
+    workflows:
+    - c1
+    - c2
+    - c3
+    action_contracts:
+    - c1
+    - c2
+    - c3
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    - c3-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+    - c3-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the relevant execution and privilege evidence, bound to the current engineering
+      context. A binary name alone is insufficient.
+    source_refs: &id001
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w28-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w28-1.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using
+      a different unconstrained process does not count.
+    source_refs: &id002
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w28-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w28-2.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c3:
+    description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
+      and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
+    source_refs: &id003
+    - features.a-dmz.a-control-broker--utility-issuer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w28-3
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w28-3.satisfied
+        component_refs:
+        - features.a-dmz.a-control-broker--utility-issuer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the relevant execution and privilege evidence, bound to the current engineering
+      context. A binary name alone is insufficient.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w28-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W28.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or using
+      a different unconstrained process does not count.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w28-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W28.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+  c3:
+    description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
+      and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
+    subjects: *id003
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w28-3.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W28.3
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c3
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+  c3-ready:
+    proposition: c3
+    role: precondition
+    polarity: positive
+  c3-done:
+    proposition: c3
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'W28.1: The utility''s small world'
+    description: |-
+      Recover the utility's actual execution contract and the protected engineering relationship it serves.
+
+      Gives the native investigation a concrete control-related purpose.
+    agent: participant.operator
+    actions:
+    - w28.c1
+    targets: &id004
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - w28.c1
+  c2:
+    name: 'W28.2: Control with very little room'
+    description: |-
+      Gain controlled execution flow in the engineering utility despite its restricted executable surface.
+
+      Develops the substantive exploit capability for the control route.
+    agent: participant.operator
+    actions:
+    - w28.c2
+    targets: &id005
+    - features.a-engineering.a-engineering
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - w28.c2
+  c3:
+    name: 'W28.3: Keep the authority you earned'
+    description: |-
+      Complete the utility compromise while retaining the privilege needed to establish the scoped live control capability.
+
+      Makes the hard exploit useful to the reservoir objective.
+    agent: participant.operator
+    actions:
+    - w28.c3
+    targets: &id006
+    - features.a-dmz.a-control-broker--utility-issuer
+    success:
+      mode: all_of
+      assertions:
+      - c3-done
+    window:
+      workflows:
+      - w28.c3
+workflows:
+  c1:
+    description: 'W28.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.w21-revision-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w28.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'W28.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w28.c1-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w28.c2
+        on_success: available
+        on_failure: unavailable
+  c3:
+    description: 'W28.3: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - w28.c2-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: w28.c3
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the utility's actual execution contract and the protected engineering relationship
+      it serves.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w28.c1
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the relevant execution and privilege evidence, bound to the current engineering
+        context. A binary name alone is insufficient.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.w28.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Gain controlled execution flow in the engineering utility despite its restricted
+      executable surface.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w28.c2
+      - features.a-engineering.a-engineering
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate controlled flow under the utility's stated constraints. Crashing it or
+        using a different unconstrained process does not count.
+      target_refs: *id005
+      evidence_refs:
+      - evidence_requirements.w28.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c3:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Complete the utility compromise while retaining the privilege needed to establish
+      the scoped live control capability.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.w28.c3
+      - features.a-dmz.a-control-broker--utility-issuer
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Demonstrate a control client with the intended live authority. This supplies W28.CONTROL
+        and CONTROL, equivalent in scope to W26's route. Process knowledge remains required.
+      target_refs: *id006
+      evidence_refs:
+      - evidence_requirements.w28.c3
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W28.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w28.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-engineering.a-engineering
+    description: W28.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w28.c2
+      mode: service
+  c3-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.a-dmz.a-control-broker--utility-issuer
+    description: W28.3 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.w28.c3
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      W28.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w28
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The small engineering utility, its ordinary invocation examples, analysis material,
+        and the live command capability it guards.
+  c2-records-1:
+    type: dataset
+    description: |-
+      W28.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
+    target: a-engineering.a-engineering
+    tags:
+    - synthetic
+    - w28
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The small engineering utility, its ordinary invocation examples, analysis material,
+        and the live command capability it guards.
+  c3-records-1:
+    type: dataset
+    description: |-
+      W28.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      The small engineering utility, its ordinary invocation examples, analysis material, and the live command capability it guards.
+    target: a-dmz.a-control-broker
+    tags:
+    - synthetic
+    - w28
+    - c3
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: The small engineering utility, its ordinary invocation examples, analysis material,
+        and the live command capability it guards.

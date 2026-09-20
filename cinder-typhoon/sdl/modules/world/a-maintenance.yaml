@@ -1,0 +1,85 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-a-maintenance
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/a-maintenance
+  version: 0.1.0
+  exports:
+    nodes:
+    - subnet
+    - a-contractors
+    - a-approval
+    - a-renderer
+    infrastructure:
+    - subnet
+    - a-contractors
+    - a-approval
+    - a-renderer
+    entities:
+    - organization
+    features:
+    - a-contractors
+    - a-approval
+    - a-renderer
+    - a-renderer--worker
+realization:
+  default: open
+nodes:
+  subnet:
+    type: switch
+    description: 'ARWC: Maintenance / contractors. Logical network segment; physical realization and addressing
+      remain open.'
+  a-contractors:
+    type: compute
+    description: Contractor portal / field exports
+    features:
+      a-contractors: ''
+  a-approval:
+    type: compute
+    description: Drawing / approval workflow
+    features:
+      a-approval: ''
+  a-renderer:
+    type: compute
+    description: Maintenance renderer
+    features:
+      a-renderer: ''
+      a-renderer--worker: ''
+infrastructure:
+  subnet: {}
+  a-contractors:
+    links:
+    - subnet
+  a-approval:
+    links:
+    - subnet
+  a-renderer:
+    links:
+    - subnet
+entities:
+  organization:
+    name: ARWC
+    description: Maintenance / contractors
+    role: green
+features:
+  a-contractors:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-contractors. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-approval:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-approval. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-renderer:
+    name: Published interfaces
+    type: service
+    description: Published interfaces on a-renderer. A separately scoped in-world interface or principal;
+      access does not imply ownership of the other authorities on this system.
+  a-renderer--worker:
+    name: Approved maintenance renderer execution
+    type: service
+    description: Approved maintenance renderer execution on a-renderer. A separately scoped in-world interface
+      or principal; access does not imply ownership of the other authorities on this system.

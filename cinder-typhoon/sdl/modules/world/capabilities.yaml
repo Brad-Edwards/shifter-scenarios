@@ -1,0 +1,2735 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-capabilities
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/capabilities
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - g01
+    - g02
+    - g03
+    - a01
+    - a03
+    - a04
+    - b01
+    - b02
+    - b03
+    - b04
+    - corporate
+    - w03-read
+    - w09-data
+    - w13-session
+    - w14-read
+    - ot-read
+    - w17-obs
+    - w18-map
+    - w19-map
+    - mapping
+    - w21-revision
+    - w25-envelope
+    - envelope
+    - w25-mode
+    - mode
+    - process-interpretation
+    - w15-approval
+    - w26-control
+    - w28-control
+    - control
+    - w29-plan
+    - consequence-plan
+    - w30-result
+    propositions:
+    - g01
+    - g02
+    - g03
+    - a01
+    - a03
+    - a04
+    - b01
+    - b02
+    - b03
+    - b04
+    - corporate
+    - w03-read
+    - w09-data
+    - w13-session
+    - w14-read
+    - ot-read
+    - w17-obs
+    - w18-map
+    - w19-map
+    - mapping
+    - w21-revision
+    - w25-envelope
+    - envelope
+    - w25-mode
+    - mode
+    - process-interpretation
+    - w15-approval
+    - w26-control
+    - w28-control
+    - control
+    - w29-plan
+    - consequence-plan
+    - w30-result
+    assertions:
+    - g01-ready
+    - g01-done
+    - g02-ready
+    - g02-done
+    - g03-ready
+    - g03-done
+    - a01-ready
+    - a01-done
+    - a03-ready
+    - a03-done
+    - a04-ready
+    - a04-done
+    - b01-ready
+    - b01-done
+    - b02-ready
+    - b02-done
+    - b03-ready
+    - b03-done
+    - b04-ready
+    - b04-done
+    - corporate-ready
+    - corporate-done
+    - w03-read-ready
+    - w03-read-done
+    - w09-data-ready
+    - w09-data-done
+    - w13-session-ready
+    - w13-session-done
+    - w14-read-ready
+    - w14-read-done
+    - ot-read-ready
+    - ot-read-done
+    - w17-obs-ready
+    - w17-obs-done
+    - w18-map-ready
+    - w18-map-done
+    - w19-map-ready
+    - w19-map-done
+    - mapping-ready
+    - mapping-done
+    - w21-revision-ready
+    - w21-revision-done
+    - w25-envelope-ready
+    - w25-envelope-done
+    - envelope-ready
+    - envelope-done
+    - w25-mode-ready
+    - w25-mode-done
+    - mode-ready
+    - mode-done
+    - process-interpretation-ready
+    - process-interpretation-done
+    - w15-approval-ready
+    - w15-approval-done
+    - w26-control-ready
+    - w26-control-done
+    - w28-control-ready
+    - w28-control-done
+    - control-ready
+    - control-done
+    - w29-plan-ready
+    - w29-plan-done
+    - consequence-plan-ready
+    - consequence-plan-done
+    - w30-result-ready
+    - w30-result-done
+    injects:
+    - g01
+    - g02
+    - g03
+    - a01
+    - a03
+    - a04
+    - b01
+    - b02
+    - b03
+    - b04
+    - corporate
+    - w03-read
+    - w09-data
+    - w13-session
+    - w14-read
+    - ot-read
+    - w17-obs
+    - w18-map
+    - w19-map
+    - mapping
+    - w21-revision
+    - w25-envelope
+    - envelope
+    - w25-mode
+    - mode
+    - process-interpretation
+    - w15-approval
+    - w26-control
+    - w28-control
+    - control
+    - w29-plan
+    - consequence-plan
+    - w30-result
+    events:
+    - g01-1
+    - g02-1
+    - g03-1
+    - a01-1
+    - a03-1
+    - a04-1
+    - b01-1
+    - b02-1
+    - b03-1
+    - b04-1
+    - corporate-1
+    - corporate-2
+    - w03-read-1
+    - w09-data-1
+    - w13-session-1
+    - w14-read-1
+    - ot-read-1
+    - ot-read-2
+    - w17-obs-1
+    - w18-map-1
+    - w19-map-1
+    - mapping-1
+    - mapping-2
+    - w21-revision-1
+    - w25-envelope-1
+    - envelope-1
+    - w25-mode-1
+    - mode-1
+    - process-interpretation-1
+    - w15-approval-1
+    - w26-control-1
+    - w28-control-1
+    - control-1
+    - control-2
+    - w29-plan-1
+    - consequence-plan-1
+    - w30-result-1
+realization:
+  default: open
+evidence_requirements:
+  g01:
+    description: 'G01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-source
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-g01
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.g01.satisfied
+        component_refs:
+        - features.k-delivery.k-source
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  g02:
+    description: 'G02: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-g02
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.g02.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  g03:
+    description: 'G03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-g03
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.g03.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  a01:
+    description: 'A01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-a01
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.a01.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  a03:
+    description: 'A03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-registry
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-a03
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.a03.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  a04:
+    description: 'A04: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-connector
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-a04
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.a04.satisfied
+        component_refs:
+        - features.a-corporate.a-connector
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  b01:
+    description: 'B01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-b01
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.b01.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  b02:
+    description: 'B02: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-b02
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.b02.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  b03:
+    description: 'B03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.k-delivery.k-registry
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-b03
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.b03.satisfied
+        component_refs:
+        - features.k-delivery.k-registry
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  b04:
+    description: 'B04: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-connector
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-b04
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.b04.satisfied
+        component_refs:
+        - features.a-corporate.a-connector
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  corporate:
+    description: 'CORPORATE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-connector
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-corporate
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.corporate.satisfied
+        component_refs:
+        - features.a-corporate.a-connector
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w03-read:
+    description: 'W03.READ: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-business
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w03-read
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w03-read.satisfied
+        component_refs:
+        - features.a-corporate.a-business
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w09-data:
+    description: 'W09.DATA: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-data
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w09-data
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w09-data.satisfied
+        component_refs:
+        - features.a-corporate.a-data
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w13-session:
+    description: 'W13.SESSION: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-maintenance.a-contractors
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w13-session
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w13-session.satisfied
+        component_refs:
+        - features.a-maintenance.a-contractors
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w14-read:
+    description: 'W14.READ: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-dmz.a-contractor-bridge
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w14-read
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w14-read.satisfied
+        component_refs:
+        - features.a-dmz.a-contractor-bridge
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  ot-read:
+    description: 'OT_READ: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-dmz.a-contractor-bridge
+    - features.a-dmz.a-data-bridge
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-ot-read
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.ot-read.satisfied
+        component_refs:
+        - features.a-dmz.a-contractor-bridge
+        - features.a-dmz.a-data-bridge
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w17-obs:
+    description: 'W17.OBS: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w17-obs
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w17-obs.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w18-map:
+    description: 'W18.MAP: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-historian
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w18-map
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w18-map.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-historian
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w19-map:
+    description: 'W19.MAP: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w19-map
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w19-map.satisfied
+        component_refs:
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  mapping:
+    description: 'MAPPING: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-historian
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-mapping
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.mapping.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-engineering
+        - features.a-engineering.a-historian
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w21-revision:
+    description: 'W21.REVISION: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-engineering
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w21-revision
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w21-revision.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-engineering
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w25-envelope:
+    description: 'W25.ENVELOPE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w25-envelope
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w25-envelope.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  envelope:
+    description: 'ENVELOPE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-envelope
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.envelope.satisfied
+        component_refs:
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w25-mode:
+    description: 'W25.MODE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w25-mode
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w25-mode.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  mode:
+    description: 'MODE: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-mode
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.mode.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  process-interpretation:
+    description: 'PROCESS_INTERPRETATION: in-world access or evidence derived from the declared acquisition
+      events. It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-corporate.a-data
+    - features.a-engineering.a-engineering
+    - features.a-engineering.a-historian
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-process-interpretation
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.process-interpretation.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-corporate.a-data
+        - features.a-engineering.a-engineering
+        - features.a-engineering.a-historian
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w15-approval:
+    description: 'W15.APPROVAL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-maintenance.a-approval
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w15-approval
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w15-approval.satisfied
+        component_refs:
+        - features.a-maintenance.a-approval
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w26-control:
+    description: 'W26.CONTROL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-dmz.a-control-broker--maintenance-issuer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w26-control
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w26-control.satisfied
+        component_refs:
+        - features.a-dmz.a-control-broker--maintenance-issuer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w28-control:
+    description: 'W28.CONTROL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-dmz.a-control-broker--utility-issuer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w28-control
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w28-control.satisfied
+        component_refs:
+        - features.a-dmz.a-control-broker--utility-issuer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  control:
+    description: 'CONTROL: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-dmz.a-control-broker--maintenance-issuer
+    - features.a-dmz.a-control-broker--utility-issuer
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-control
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.control.satisfied
+        component_refs:
+        - features.a-dmz.a-control-broker--maintenance-issuer
+        - features.a-dmz.a-control-broker--utility-issuer
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w29-plan:
+    description: 'W29.PLAN: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-data
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w29-plan
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w29-plan.satisfied
+        component_refs:
+        - features.a-corporate.a-data
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  consequence-plan:
+    description: 'CONSEQUENCE_PLAN: in-world access or evidence derived from the declared acquisition
+      events. It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-corporate.a-data
+    - features.a-engineering.a-hmi
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-consequence-plan
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.consequence-plan.satisfied
+        component_refs:
+        - features.a-corporate.a-data
+        - features.a-engineering.a-hmi
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+  w30-result:
+    description: 'W30.RESULT: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    source_refs:
+    - features.a-control.a-instruments
+    - features.a-control.a-reservoir
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-w30-result
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.w30-result.satisfied
+        component_refs:
+        - features.a-control.a-instruments
+        - features.a-control.a-reservoir
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+    notes:
+    - 'The selected components bound allowable evidence provenance. Acquisition events alone define AND/OR
+      truth: an alternative does not require evidence from every listed producer, access to every producer,
+      or an additional player task.'
+propositions:
+  g01:
+    description: 'G01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.g01.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:G01
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - g01
+    quantifier: all
+  g02:
+    description: 'G02: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.g02.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:G02
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - g02
+    quantifier: all
+  g03:
+    description: 'G03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.g03.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:G03
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - g03
+    quantifier: all
+  a01:
+    description: 'A01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.a01.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:A01
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - a01
+    quantifier: all
+  a03:
+    description: 'A03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.a03.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:A03
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - a03
+    quantifier: all
+  a04:
+    description: 'A04: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.a04.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:A04
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - a04
+    quantifier: all
+  b01:
+    description: 'B01: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.b01.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:B01
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - b01
+    quantifier: all
+  b02:
+    description: 'B02: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.b02.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:B02
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - b02
+    quantifier: all
+  b03:
+    description: 'B03: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.b03.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:B03
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - b03
+    quantifier: all
+  b04:
+    description: 'B04: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.b04.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:B04
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - b04
+    quantifier: all
+  corporate:
+    description: 'CORPORATE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.corporate.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:CORPORATE
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - corporate
+    quantifier: all
+  w03-read:
+    description: 'W03.READ: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w03-read.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W03.READ
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w03-read
+    quantifier: all
+  w09-data:
+    description: 'W09.DATA: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w09-data.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W09.DATA
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w09-data
+    quantifier: all
+  w13-session:
+    description: 'W13.SESSION: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w13-session.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W13.SESSION
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w13-session
+    quantifier: all
+  w14-read:
+    description: 'W14.READ: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w14-read.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W14.READ
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w14-read
+    quantifier: all
+  ot-read:
+    description: 'OT_READ: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.ot-read.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:OT_READ
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - ot-read
+    quantifier: all
+  w17-obs:
+    description: 'W17.OBS: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w17-obs.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W17.OBS
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w17-obs
+    quantifier: all
+  w18-map:
+    description: 'W18.MAP: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w18-map.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W18.MAP
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w18-map
+    quantifier: all
+  w19-map:
+    description: 'W19.MAP: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w19-map.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W19.MAP
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w19-map
+    quantifier: all
+  mapping:
+    description: 'MAPPING: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.mapping.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:MAPPING
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - mapping
+    quantifier: all
+  w21-revision:
+    description: 'W21.REVISION: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w21-revision.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W21.REVISION
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w21-revision
+    quantifier: all
+  w25-envelope:
+    description: 'W25.ENVELOPE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w25-envelope.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W25.ENVELOPE
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w25-envelope
+    quantifier: all
+  envelope:
+    description: 'ENVELOPE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.envelope.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:ENVELOPE
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - envelope
+    quantifier: all
+  w25-mode:
+    description: 'W25.MODE: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w25-mode.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W25.MODE
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w25-mode
+    quantifier: all
+  mode:
+    description: 'MODE: in-world access or evidence derived from the declared acquisition events. It grants
+      only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.mode.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:MODE
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - mode
+    quantifier: all
+  process-interpretation:
+    description: 'PROCESS_INTERPRETATION: in-world access or evidence derived from the declared acquisition
+      events. It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.process-interpretation.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:PROCESS_INTERPRETATION
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - process-interpretation
+    quantifier: all
+  w15-approval:
+    description: 'W15.APPROVAL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w15-approval.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W15.APPROVAL
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w15-approval
+    quantifier: all
+  w26-control:
+    description: 'W26.CONTROL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w26-control.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W26.CONTROL
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w26-control
+    quantifier: all
+  w28-control:
+    description: 'W28.CONTROL: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w28-control.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W28.CONTROL
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w28-control
+    quantifier: all
+  control:
+    description: 'CONTROL: in-world access or evidence derived from the declared acquisition events. It
+      grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.control.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:CONTROL
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - control
+    quantifier: all
+  w29-plan:
+    description: 'W29.PLAN: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w29-plan.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W29.PLAN
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w29-plan
+    quantifier: all
+  consequence-plan:
+    description: 'CONSEQUENCE_PLAN: in-world access or evidence derived from the declared acquisition
+      events. It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.consequence-plan.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:CONSEQUENCE_PLAN
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - consequence-plan
+    quantifier: all
+  w30-result:
+    description: 'W30.RESULT: in-world access or evidence derived from the declared acquisition events.
+      It grants only its named scope and never an unrelated session.'
+    subjects:
+    - agents.participant.operator
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.w30-result.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:W30.RESULT
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - w30-result
+    quantifier: all
+assertions:
+  g01-ready:
+    proposition: g01
+    role: precondition
+    polarity: positive
+  g01-done:
+    proposition: g01
+    role: postcondition
+    polarity: positive
+  g02-ready:
+    proposition: g02
+    role: precondition
+    polarity: positive
+  g02-done:
+    proposition: g02
+    role: postcondition
+    polarity: positive
+  g03-ready:
+    proposition: g03
+    role: precondition
+    polarity: positive
+  g03-done:
+    proposition: g03
+    role: postcondition
+    polarity: positive
+  a01-ready:
+    proposition: a01
+    role: precondition
+    polarity: positive
+  a01-done:
+    proposition: a01
+    role: postcondition
+    polarity: positive
+  a03-ready:
+    proposition: a03
+    role: precondition
+    polarity: positive
+  a03-done:
+    proposition: a03
+    role: postcondition
+    polarity: positive
+  a04-ready:
+    proposition: a04
+    role: precondition
+    polarity: positive
+  a04-done:
+    proposition: a04
+    role: postcondition
+    polarity: positive
+  b01-ready:
+    proposition: b01
+    role: precondition
+    polarity: positive
+  b01-done:
+    proposition: b01
+    role: postcondition
+    polarity: positive
+  b02-ready:
+    proposition: b02
+    role: precondition
+    polarity: positive
+  b02-done:
+    proposition: b02
+    role: postcondition
+    polarity: positive
+  b03-ready:
+    proposition: b03
+    role: precondition
+    polarity: positive
+  b03-done:
+    proposition: b03
+    role: postcondition
+    polarity: positive
+  b04-ready:
+    proposition: b04
+    role: precondition
+    polarity: positive
+  b04-done:
+    proposition: b04
+    role: postcondition
+    polarity: positive
+  corporate-ready:
+    proposition: corporate
+    role: precondition
+    polarity: positive
+  corporate-done:
+    proposition: corporate
+    role: postcondition
+    polarity: positive
+  w03-read-ready:
+    proposition: w03-read
+    role: precondition
+    polarity: positive
+  w03-read-done:
+    proposition: w03-read
+    role: postcondition
+    polarity: positive
+  w09-data-ready:
+    proposition: w09-data
+    role: precondition
+    polarity: positive
+  w09-data-done:
+    proposition: w09-data
+    role: postcondition
+    polarity: positive
+  w13-session-ready:
+    proposition: w13-session
+    role: precondition
+    polarity: positive
+  w13-session-done:
+    proposition: w13-session
+    role: postcondition
+    polarity: positive
+  w14-read-ready:
+    proposition: w14-read
+    role: precondition
+    polarity: positive
+  w14-read-done:
+    proposition: w14-read
+    role: postcondition
+    polarity: positive
+  ot-read-ready:
+    proposition: ot-read
+    role: precondition
+    polarity: positive
+  ot-read-done:
+    proposition: ot-read
+    role: postcondition
+    polarity: positive
+  w17-obs-ready:
+    proposition: w17-obs
+    role: precondition
+    polarity: positive
+  w17-obs-done:
+    proposition: w17-obs
+    role: postcondition
+    polarity: positive
+  w18-map-ready:
+    proposition: w18-map
+    role: precondition
+    polarity: positive
+  w18-map-done:
+    proposition: w18-map
+    role: postcondition
+    polarity: positive
+  w19-map-ready:
+    proposition: w19-map
+    role: precondition
+    polarity: positive
+  w19-map-done:
+    proposition: w19-map
+    role: postcondition
+    polarity: positive
+  mapping-ready:
+    proposition: mapping
+    role: precondition
+    polarity: positive
+  mapping-done:
+    proposition: mapping
+    role: postcondition
+    polarity: positive
+  w21-revision-ready:
+    proposition: w21-revision
+    role: precondition
+    polarity: positive
+  w21-revision-done:
+    proposition: w21-revision
+    role: postcondition
+    polarity: positive
+  w25-envelope-ready:
+    proposition: w25-envelope
+    role: precondition
+    polarity: positive
+  w25-envelope-done:
+    proposition: w25-envelope
+    role: postcondition
+    polarity: positive
+  envelope-ready:
+    proposition: envelope
+    role: precondition
+    polarity: positive
+  envelope-done:
+    proposition: envelope
+    role: postcondition
+    polarity: positive
+  w25-mode-ready:
+    proposition: w25-mode
+    role: precondition
+    polarity: positive
+  w25-mode-done:
+    proposition: w25-mode
+    role: postcondition
+    polarity: positive
+  mode-ready:
+    proposition: mode
+    role: precondition
+    polarity: positive
+  mode-done:
+    proposition: mode
+    role: postcondition
+    polarity: positive
+  process-interpretation-ready:
+    proposition: process-interpretation
+    role: precondition
+    polarity: positive
+  process-interpretation-done:
+    proposition: process-interpretation
+    role: postcondition
+    polarity: positive
+  w15-approval-ready:
+    proposition: w15-approval
+    role: precondition
+    polarity: positive
+  w15-approval-done:
+    proposition: w15-approval
+    role: postcondition
+    polarity: positive
+  w26-control-ready:
+    proposition: w26-control
+    role: precondition
+    polarity: positive
+  w26-control-done:
+    proposition: w26-control
+    role: postcondition
+    polarity: positive
+  w28-control-ready:
+    proposition: w28-control
+    role: precondition
+    polarity: positive
+  w28-control-done:
+    proposition: w28-control
+    role: postcondition
+    polarity: positive
+  control-ready:
+    proposition: control
+    role: precondition
+    polarity: positive
+  control-done:
+    proposition: control
+    role: postcondition
+    polarity: positive
+  w29-plan-ready:
+    proposition: w29-plan
+    role: precondition
+    polarity: positive
+  w29-plan-done:
+    proposition: w29-plan
+    role: postcondition
+    polarity: positive
+  consequence-plan-ready:
+    proposition: consequence-plan
+    role: precondition
+    polarity: positive
+  consequence-plan-done:
+    proposition: consequence-plan
+    role: postcondition
+    polarity: positive
+  w30-result-ready:
+    proposition: w30-result
+    role: precondition
+    polarity: positive
+  w30-result-done:
+    proposition: w30-result
+    role: postcondition
+    polarity: positive
+injects:
+  g01:
+    name: G01 acquired
+    description: Retain the G01 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  g02:
+    name: G02 acquired
+    description: Retain the G02 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  g03:
+    name: G03 acquired
+    description: Retain the G03 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  a01:
+    name: A01 acquired
+    description: Retain the A01 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  a03:
+    name: A03 acquired
+    description: Retain the A03 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  a04:
+    name: A04 acquired
+    description: Retain the A04 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  b01:
+    name: B01 acquired
+    description: Retain the B01 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  b02:
+    name: B02 acquired
+    description: Retain the B02 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  b03:
+    name: B03 acquired
+    description: Retain the B03 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  b04:
+    name: B04 acquired
+    description: Retain the B04 capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  corporate:
+    name: CORPORATE acquired
+    description: Retain the CORPORATE capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w03-read:
+    name: W03.READ acquired
+    description: Retain the W03.READ capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w09-data:
+    name: W09.DATA acquired
+    description: Retain the W09.DATA capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w13-session:
+    name: W13.SESSION acquired
+    description: Retain the W13.SESSION capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w14-read:
+    name: W14.READ acquired
+    description: Retain the W14.READ capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  ot-read:
+    name: OT_READ acquired
+    description: Retain the OT_READ capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w17-obs:
+    name: W17.OBS acquired
+    description: Retain the W17.OBS capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w18-map:
+    name: W18.MAP acquired
+    description: Retain the W18.MAP capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w19-map:
+    name: W19.MAP acquired
+    description: Retain the W19.MAP capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  mapping:
+    name: MAPPING acquired
+    description: Retain the MAPPING capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w21-revision:
+    name: W21.REVISION acquired
+    description: Retain the W21.REVISION capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w25-envelope:
+    name: W25.ENVELOPE acquired
+    description: Retain the W25.ENVELOPE capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  envelope:
+    name: ENVELOPE acquired
+    description: Retain the ENVELOPE capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w25-mode:
+    name: W25.MODE acquired
+    description: Retain the W25.MODE capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  mode:
+    name: MODE acquired
+    description: Retain the MODE capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  process-interpretation:
+    name: PROCESS_INTERPRETATION acquired
+    description: Retain the PROCESS_INTERPRETATION capability/evidence for this participant after one
+      complete acquisition alternative is verified. This updates participant state only; it does not write
+      to every possible evidence producer. It is a derived state update, not an extra player action or
+      a progress message.
+    environment:
+    - agents.participant.operator
+  w15-approval:
+    name: W15.APPROVAL acquired
+    description: Retain the W15.APPROVAL capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w26-control:
+    name: W26.CONTROL acquired
+    description: Retain the W26.CONTROL capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w28-control:
+    name: W28.CONTROL acquired
+    description: Retain the W28.CONTROL capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  control:
+    name: CONTROL acquired
+    description: Retain the CONTROL capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  w29-plan:
+    name: W29.PLAN acquired
+    description: Retain the W29.PLAN capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+  consequence-plan:
+    name: CONSEQUENCE_PLAN acquired
+    description: Retain the CONSEQUENCE_PLAN capability/evidence for this participant after one complete
+      acquisition alternative is verified. This updates participant state only; it does not write to every
+      possible evidence producer. It is a derived state update, not an extra player action or a progress
+      message.
+    environment:
+    - agents.participant.operator
+  w30-result:
+    name: W30.RESULT acquired
+    description: Retain the W30.RESULT capability/evidence for this participant after one complete acquisition
+      alternative is verified. This updates participant state only; it does not write to every possible
+      evidence producer. It is a derived state update, not an extra player action or a progress message.
+    environment:
+    - agents.participant.operator
+events:
+  g01-1:
+    name: G01
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k01.c1-ready
+    injects:
+    - g01
+  g02-1:
+    name: G02
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k25.c2-ready
+    injects:
+    - g02
+  g03-1:
+    name: G03
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k05.c1-ready
+    injects:
+    - g03
+  a01-1:
+    name: A01
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k06.c1-ready
+    injects:
+    - a01
+  a03-1:
+    name: A03
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k26.c1-ready
+    injects:
+    - a03
+  a04-1:
+    name: A04
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k26.c2-ready
+    injects:
+    - a04
+  b01-1:
+    name: B01
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k17.c1-ready
+    injects:
+    - b01
+  b02-1:
+    name: B02
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k27.c1-ready
+    injects:
+    - b02
+  b03-1:
+    name: B03
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k27.c2-ready
+    injects:
+    - b03
+  b04-1:
+    name: B04
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - k27.c3-ready
+    injects:
+    - b04
+  corporate-1:
+    name: CORPORATE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.a04-ready
+    injects:
+    - corporate
+  corporate-2:
+    name: CORPORATE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.b04-ready
+    injects:
+    - corporate
+  w03-read-1:
+    name: W03.READ
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w03.c3-ready
+    injects:
+    - w03-read
+  w09-data-1:
+    name: W09.DATA
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w09.c3-ready
+    injects:
+    - w09-data
+  w13-session-1:
+    name: W13.SESSION
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w13.c4-ready
+    injects:
+    - w13-session
+  w14-read-1:
+    name: W14.READ
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w14.c3-ready
+    injects:
+    - w14-read
+  ot-read-1:
+    name: OT_READ
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w09.c4-ready
+    injects:
+    - ot-read
+  ot-read-2:
+    name: OT_READ
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w14-read-ready
+    injects:
+    - ot-read
+  w17-obs-1:
+    name: W17.OBS
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w17.c4-ready
+    injects:
+    - w17-obs
+  w18-map-1:
+    name: W18.MAP
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w18.c4-ready
+    injects:
+    - w18-map
+  w19-map-1:
+    name: W19.MAP
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w19.c4-ready
+    injects:
+    - w19-map
+  mapping-1:
+    name: MAPPING
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w18-map-ready
+    injects:
+    - mapping
+  mapping-2:
+    name: MAPPING
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w19-map-ready
+    injects:
+    - mapping
+  w21-revision-1:
+    name: W21.REVISION
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w21.c2-ready
+    injects:
+    - w21-revision
+  w25-envelope-1:
+    name: W25.ENVELOPE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w25.c1-ready
+    injects:
+    - w25-envelope
+  envelope-1:
+    name: ENVELOPE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w25-envelope-ready
+    injects:
+    - envelope
+  w25-mode-1:
+    name: W25.MODE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w25.c4-ready
+    injects:
+    - w25-mode
+  mode-1:
+    name: MODE
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w25-mode-ready
+    injects:
+    - mode
+  process-interpretation-1:
+    name: PROCESS_INTERPRETATION
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.mapping-ready
+    - capabilities.w09-data-ready
+    - capabilities.w21-revision-ready
+    - capabilities.envelope-ready
+    injects:
+    - process-interpretation
+  w15-approval-1:
+    name: W15.APPROVAL
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w15.c4-ready
+    injects:
+    - w15-approval
+  w26-control-1:
+    name: W26.CONTROL
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w26.c4-ready
+    injects:
+    - w26-control
+  w28-control-1:
+    name: W28.CONTROL
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w28.c3-ready
+    injects:
+    - w28-control
+  control-1:
+    name: CONTROL
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w26-control-ready
+    injects:
+    - control
+  control-2:
+    name: CONTROL
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w28-control-ready
+    injects:
+    - control
+  w29-plan-1:
+    name: W29.PLAN
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w29.c3-ready
+    injects:
+    - w29-plan
+  consequence-plan-1:
+    name: CONSEQUENCE_PLAN
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - capabilities.w29-plan-ready
+    injects:
+    - consequence-plan
+  w30-result-1:
+    name: W30.RESULT
+    description: All listed preconditions are required; separate events are alternate acquisition routes.
+      Idempotent per participant.
+    assertions:
+    - w30.c2-ready
+    injects:
+    - w30-result

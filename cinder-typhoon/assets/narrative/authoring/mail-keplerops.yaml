@@ -1,0 +1,312 @@
+messages:
+  - id: k-bike-1
+    story: bicycle
+    from: maya
+    to: [rowan]
+    date: '2026-09-03T16:20:00-04:00'
+    subject: Bicycle, if your offer still stands
+    body: |
+      Rowan,
+
+      You offered to look at the rear brake. Does that still suit you? It has started rubbing again and I would like to use the bike for the station run.
+
+      I can bring it in tomorrow. Please tell me if this is a bigger job than you meant to volunteer for. I am very happy to take it to a shop.
+
+      Maya
+  - id: k-bike-2
+    story: bicycle
+    from: rowan
+    to: [maya]
+    date: '2026-09-04T15:40:00-04:00'
+    subject: 'Re: Bicycle, if your offer still stands'
+    reply_to: k-bike-1
+    body: |
+      Found the rubbing. Straightforward adjustment.
+
+      While looking at it I noticed a couple of things we could improve. Nothing that stops you riding it. I have opinions about the cable routing, which probably surprises nobody.
+
+      Let me price the small parts before you decide.
+
+      Rowan
+  - id: k-bike-3
+    story: bicycle
+    from: maya
+    to: [rowan]
+    date: '2026-09-10T10:05:00-04:00'
+    subject: 'Re: Bicycle, if your offer still stands'
+    reply_to: k-bike-2
+    body: |
+      Could we stop at the adjustment for now? I mainly need my bicycle back for Monday.
+
+      This is a very generous amount of thought to put into it. I would also quite like to ride it.
+
+      Maya
+  - id: k-bike-4
+    story: bicycle
+    from: rowan
+    to: [maya]
+    date: '2026-09-11T14:10:00-04:00'
+    subject: 'Re: Bicycle, if your offer still stands'
+    reply_to: k-bike-3
+    body: |
+      Done. Brake adjusted, checked, bicycle returned to the rack.
+
+      You asked for a repair and I started designing the winter edition. Sorry. No parts ordered.
+
+      Rowan
+  - id: k-bike-5
+    story: bicycle
+    from: maya
+    to: [rowan]
+    date: '2026-09-14T09:12:00-04:00'
+    subject: 'Re: Bicycle, if your offer still stands'
+    reply_to: k-bike-4
+    body: |
+      Rode it this morning. Much better. Thank you.
+
+      I am not accepting a winter roadmap at this time.
+
+      Maya
+  - id: k-lunch-1
+    story: lunch
+    from: evan
+    to: [noor]
+    date: '2026-09-08T12:15:00-04:00'
+    subject: Can we keep Thursday?
+    body: |
+      Noor,
+
+      Could we keep Thursday's lunch this time? I know each cancellation has made sense on its own. Taken together, I miss seeing you without discussing a release.
+
+      When we moved out of the house I thought this was the bit we would keep. I probably never actually said that.
+
+      Evan
+  - id: k-lunch-2
+    story: lunch
+    from: noor
+    to: [evan]
+    date: '2026-09-08T13:02:00-04:00'
+    subject: 'Re: Can we keep Thursday?'
+    reply_to: k-lunch-1
+    body: |
+      I didn't understand it that way. I'm sorry.
+
+      Thursday is clear. Could we do one lunch a month that we actually keep, and leave the other invitations flexible? I would rather promise something I turn up for.
+
+      I'll choose somewhere. You chose the last several.
+
+      Noor
+  - id: k-lunch-3
+    story: lunch
+    from: evan
+    to: [noor]
+    date: '2026-09-10T15:32:00-04:00'
+    subject: 'Re: Can we keep Thursday?'
+    reply_to: k-lunch-2
+    body: |
+      That was lovely. Monthly works.
+
+      Also, please send me the film you were trying to remember. I have now described half of its apparent plot to the discussion group and would like to establish that it exists.
+
+      Evan
+  - id: k-lunch-4
+    story: lunch
+    from: noor
+    to: [evan]
+    date: '2026-09-10T16:06:00-04:00'
+    subject: 'Re: Can we keep Thursday?'
+    reply_to: k-lunch-3
+    body: |
+      I think I combined two films. I'll check at home before I invent a third.
+
+      Good lunch. Let's keep the first Thursday next month.
+
+      Also: the clarinet group has got through an entire piece together. Slowly. I am choosing to count it.
+
+      Noor
+  - id: k-workshop-1
+    story: workshop
+    from: talia
+    to: [maya]
+    date: '2026-09-08T10:00:00-04:00'
+    subject: Rillhaven rehearsal tomorrow
+    body: |
+      I've attached the workshop outline for the 24th. Could you listen to the opening tomorrow?
+
+      I'd particularly like feedback on whether the example is clear and whether I've left enough time for the customer's questions. I have already shortened the introduction twice.
+
+      Talia
+    attachments: [k-workshop-outline-draft]
+  - id: k-workshop-2
+    story: workshop
+    from: maya
+    to: [talia]
+    date: '2026-09-08T11:20:00-04:00'
+    subject: 'Re: Rillhaven rehearsal tomorrow'
+    reply_to: k-workshop-1
+    body: |
+      Yes. I have a few thoughts about the order as well. We used to start these with a quick tour of the support process, which might save some questions later.
+
+      I'll bring the old outline so you can see what I mean.
+
+      Maya
+  - id: k-workshop-3
+    story: workshop
+    from: talia
+    to: [maya]
+    date: '2026-09-09T14:08:00-04:00'
+    subject: 'Re: Rillhaven rehearsal tomorrow'
+    reply_to: k-workshop-2
+    body: |
+      Thank you for listening. The point about explaining who the example is for helped.
+
+      I'd like to keep my opening and lead the session myself. Could you take the questions about ongoing support, rather than sharing the presentation? I know you have done more of these. I need to find out how I do one.
+
+      Talia
+    attachments: [k-workshop-outline]
+  - id: k-workshop-4
+    story: workshop
+    from: maya
+    to: [talia]
+    date: '2026-09-09T15:01:00-04:00'
+    subject: 'Re: Rillhaven rehearsal tomorrow'
+    reply_to: k-workshop-3
+    body: |
+      You're right. You asked me to listen to two things and I arrived with the museum collection.
+
+      Keep your opening. I'll take the support questions and otherwise let you run it.
+
+      Maya
+  - id: k-anniversary-1
+    story: anniversary
+    from: leah
+    to: [rowan, maya, evan, noor, talia]
+    date: '2026-08-18T09:30:00-04:00'
+    subject: Ten years — what do you remember?
+    body: |
+      We're planning a small gathering in November for the company's tenth anniversary. My first idea was to tell the story from the rented rooms onward. On reflection, you have all heard me tell that story.
+
+      I'd like memories from different years instead. A project, a person who helped, something that changed your working day. It needn't be impressive enough for a sales presentation.
+
+      Reply to me if you'd like to contribute. Taking part is optional.
+
+      Leah
+  - id: k-anniversary-2
+    story: anniversary
+    from: talia
+    to: [leah]
+    date: '2026-08-19T11:25:00-04:00'
+    subject: 'Re: Ten years — what do you remember?'
+    reply_to: k-anniversary-1
+    body: |
+      I remember Maya asking what I thought about a support review during my first month. Until then I had mostly been trying to remember how everything worked. It was the first time I felt I was here to contribute, rather than finish being new.
+
+      It's a very small memory, but I would be happy to include it.
+
+      Talia
+  - id: k-anniversary-3
+    story: anniversary
+    from: rowan
+    to: [leah]
+    date: '2026-08-19T15:35:00-04:00'
+    subject: 'Re: Ten years — what do you remember?'
+    reply_to: k-anniversary-1
+    body: |
+      I still have a fondness for the little self-service edition we stopped selling. Customers wanted help with their actual integrations, not a smaller box of software. Closing it was the right call.
+
+      The screen for comparing submissions was good, though. I am prepared to defend exactly that part over lunch.
+
+      Rowan
+  - id: k-anniversary-4
+    story: anniversary
+    from: evan
+    to: [leah]
+    date: '2026-08-20T10:40:00-04:00'
+    subject: 'Re: Ten years — what do you remember?'
+    reply_to: k-anniversary-1
+    body: |
+      The 2022 move. We finally had rooms for conversations, which was an excellent development for those of us who were not in the conversation happening beside us.
+
+      And the 2024 implementation photograph. We look exhausted, but the customer was using the result and we were properly finished. I would include that.
+
+      Evan
+  - id: k-anniversary-5
+    story: anniversary
+    from: leah
+    to: [rowan, maya, evan, noor, talia]
+    date: '2026-08-24T09:10:00-04:00'
+    subject: Anniversary contributions
+    body: |
+      Thank you for the memories. There are several moments in these replies I would never have thought to include.
+
+      We'll have a small group from different hiring years choose contributions, with each person's agreement before sharing their account. I'll keep my part brief. That is now in writing.
+
+      The gathering is still being arranged for November. Business operations will circulate details once the booking is settled.
+
+      Leah
+  - id: k-growth-1
+    story: company-direction
+    from: leah
+    to: [rowan, maya, evan, noor, talia]
+    date: '2026-09-02T09:20:00-04:00'
+    subject: Planning note for the next two years
+    body: |
+      I've attached the note discussed with the managers. Please read it before Thursday's company update.
+
+      We can fund careful growth from the business we have. The question is how much additional customer-specific work we should accept while making the product easier to support. Those are real choices, even in a profitable year.
+
+      I'd especially like examples of work that keeps following someone after their role has changed.
+
+      Leah
+    attachments: [k-company-direction]
+  - id: k-growth-2
+    story: company-direction
+    from: noor
+    to: [leah]
+    date: '2026-09-02T14:05:00-04:00'
+    subject: 'Re: Planning note for the next two years'
+    reply_to: k-growth-1
+    body: |
+      Please include maintenance capacity when comparing the choices. We can make room for a new customer by deferring work once. Doing it in every planning round becomes a different operating model.
+
+      I can put together a short account of what we completed this quarter and what is already committed. No new presentation required.
+
+      Noor
+  - id: k-growth-3
+    story: company-direction
+    from: maya
+    to: [leah]
+    date: '2026-09-03T10:30:00-04:00'
+    subject: 'Re: Planning note for the next two years'
+    reply_to: k-growth-1
+    body: |
+      Support needs time to turn repeated customer questions into something the rest of the company can use. That work gets squeezed between cases because it rarely has one customer waiting for it.
+
+      Also, could we include the progression guide in the new-starter material? It took me too long to understand that discussing a future leadership role wasn't the same as promising to apply for the next vacancy.
+
+      Maya
+  - id: k-onboarding-1
+    story: routine-keplerops
+    from: talia
+    to: [rowan, maya, evan, noor]
+    date: '2026-09-07T09:05:00-04:00'
+    subject: New-starter guide corrections are in
+    body: |
+      The revised guide is attached. Wednesday and Thursday arrangements now have a written explanation, and the old meeting-room directions are gone.
+
+      Please introduce the new starters to someone outside their own function this week. They have buddies; this is just a chance to connect a name with the person who does the work.
+
+      Talia
+    attachments: [k-working-guide]
+  - id: k-family-1
+    story: family-swap
+    from: maya
+    to: [talia]
+    date: '2026-09-14T10:05:00-04:00'
+    subject: Thanks for checking the rota
+    body: |
+      The swap was on the rota and the dinner went ahead on Saturday. Thank you for checking when I started doubting whether I had done everything.
+
+      My sister was very pleased to get everyone around one table. We spent longer choosing the photograph to keep than eating dessert.
+
+      Maya

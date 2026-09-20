@@ -1,0 +1,346 @@
+# In-world draft. Unspecified realization remains open.
+name: cinder-k25
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/k25
+  version: 0.1.0
+  exports:
+    evidence_requirements:
+    - c1
+    - c2
+    propositions:
+    - c1
+    - c2
+    assertions:
+    - c1-ready
+    - c1-done
+    - c2-ready
+    - c2-done
+    objectives:
+    - c1
+    - c2
+    workflows:
+    - c1
+    - c2
+    action_contracts:
+    - c1
+    - c2
+    relationships:
+    - c1-surface-1
+    - c2-surface-1
+    content:
+    - c1-records-1
+    - c2-records-1
+realization:
+  default: open
+evidence_requirements:
+  c1:
+    description: Recover the dossier and attachment as one disclosure. Their historical narrative is useful
+      but not required to reconcile the current integration in K25.2.
+    source_refs: &id001
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k25-1
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k25-1.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+  c2:
+    description: Reconcile the current tenant and connector revision using the repository-visible integration
+      records. This supplies G02; the optional historical dossier is not a prerequisite.
+    source_refs: &id002
+    - features.k-delivery.k-support
+    scope: Per-participant in-world evidence; no other participant state.
+    boundary_kind: assertion_evaluation
+    channel: other
+    artifact_role: proposition_truth_evidence
+    sensitivity: plain
+    redaction: redact_secrets
+    integrity: checksum
+    retention: run_lifetime
+    loss_disclosure: required
+    observation_demand:
+      rule_id: fact-k25-2
+      scope: /features
+      purpose: experimental
+      mode: selected
+      selector:
+        semantic_scope: /features
+        data_kind: artifact
+        names:
+        - cinder.k25-2.satisfied
+        component_refs:
+        - features.k-delivery.k-support
+      collection: require
+      retention: require
+      redaction: redact-secrets
+      integrity: checksum
+      required: true
+      basis: observed
+propositions:
+  c1:
+    description: Recover the dossier and attachment as one disclosure. Their historical narrative is useful
+      but not required to reconcile the current integration in K25.2.
+    subjects: *id001
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k25-1.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K25.1
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c1
+    quantifier: all
+  c2:
+    description: Reconcile the current tenant and connector revision using the repository-visible integration
+      records. This supplies G02; the optional historical dossier is not a prerequisite.
+    subjects: *id002
+    basis: observed_state
+    predicate:
+      kind: boolean
+      property: cinder.k25-2.satisfied
+      semantic_ref: urn:cinder-typhoon:fact:K25.2
+      operator: equals
+      expected: true
+    evidence_requirements:
+    - c2
+    quantifier: all
+assertions:
+  c1-ready:
+    proposition: c1
+    role: precondition
+    polarity: positive
+  c1-done:
+    proposition: c1
+    role: postcondition
+    polarity: positive
+  c2-ready:
+    proposition: c2
+    role: precondition
+    polarity: positive
+  c2-done:
+    proposition: c2
+    role: postcondition
+    polarity: positive
+objectives:
+  c1:
+    name: 'K25.1: A customer with a history'
+    description: |-
+      Recover the ARWC support dossier and its retained attachment. Find out why the same maintenance ticket keeps returning to the developer.
+
+      Introduces the customer and recurring support dispute through a complete document recovery.
+    agent: participant.operator
+    actions:
+    - k25.c1
+    targets: &id003
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c1-done
+    window:
+      workflows:
+      - k25.c1
+  c2:
+    name: 'K25.2: Which ARWC is current'
+    description: |-
+      KeplerOps retains more than one ARWC integration record. Establish the active tenant and the connector revision that actually belongs to the current customer.
+
+      Provides the shared customer binding for both ordinary entry routes.
+    agent: participant.operator
+    actions:
+    - k25.c2
+    targets: &id004
+    - features.k-delivery.k-support
+    success:
+      mode: all_of
+      assertions:
+      - c2-done
+    window:
+      workflows:
+      - k25.c2
+workflows:
+  c1:
+    description: 'K25.1: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k25.c1
+        on_success: available
+        on_failure: unavailable
+  c2:
+    description: 'K25.2: availability follows the evidence/authority alternatives. This independent objective
+      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    start: requirements
+    steps:
+      requirements:
+        type: switch
+        cases:
+        - when:
+            assertions:
+            - capabilities.g01-ready
+          next: attempt
+        default: unavailable
+      available:
+        type: end
+      unavailable:
+        type: end
+      attempt:
+        type: objective
+        execution_mode: objective
+        objective: k25.c2
+        on_success: available
+        on_failure: unavailable
+action_contracts:
+  c1:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: Recover the ARWC support dossier and its retained attachment. Find out why the same
+      maintenance ticket keeps returning to the developer.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k25.c1
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Recover the dossier and attachment as one disclosure. Their historical narrative is
+        useful but not required to reconcile the current integration in K25.2.
+      target_refs: *id003
+      evidence_refs:
+      - evidence_requirements.k25.c1
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+  c2:
+    semantic_version: 1.0.0
+    lifecycle_state: draft
+    behavioral_granularity: aggregate
+    procedure_basis: KeplerOps retains more than one ARWC integration record. Establish the active tenant
+      and the connector revision that actually belongs to the current customer.
+    realization_profile: backend-declared
+    fidelity_claim: Authored challenge outcome and authority boundaries. Runtime mechanism and evidence
+      evaluation are not implemented by this declaration.
+    preconditions:
+    - precondition_id: eligibility
+      precondition_class: authority
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required
+        scoped access to every listed surface.
+      support_refs:
+      - workflows.k25.c2
+      - features.k-delivery.k-support
+    effects:
+    - effect_id: outcome
+      effect_class: intended_effect
+      description: Reconcile the current tenant and connector revision using the repository-visible integration
+        records. This supplies G02; the optional historical dossier is not a prerequisite.
+      target_refs: *id004
+      evidence_refs:
+      - evidence_requirements.k25.c2
+    failure_classes:
+    - precondition_unsatisfied
+    - authority_denied
+    - target_unavailable
+    - partial_success
+    - backend_error
+    - unknown
+relationships:
+  c1-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K25.1 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k25.c1
+      mode: service
+  c2-surface-1:
+    type: depends_on
+    source: agents.participant.operator
+    target: features.k-delivery.k-support
+    description: K25.2 requires this scoped interaction; it does not confer forwarding or a shell.
+    properties:
+      cinder_kind: challenge_surface
+      objective: objectives.k25.c2
+      mode: service
+content:
+  c1-records-1:
+    type: dataset
+    description: |-
+      K25.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Repository-visible customer integration records, the current connector manifest, and references to the older ARWC support dossier.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k25
+    - c1
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Repository-visible customer integration records, the current connector manifest, and
+        references to the older ARWC support dossier.
+  c2-records-1:
+    type: dataset
+    description: |-
+      K25.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
+      Repository-visible customer integration records, the current connector manifest, and references to the older ARWC support dossier.
+    target: k-delivery.k-support
+    tags:
+    - synthetic
+    - k25
+    - c2
+    - seed-requirement
+    items:
+    - name: starting-records
+      description: Repository-visible customer integration records, the current connector manifest, and
+        references to the older ARWC support dossier.

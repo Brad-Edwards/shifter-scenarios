@@ -11,6 +11,7 @@ on:
     paths:
       - "**/*.md"
       - ".vale.ini"
+      - "cinder-typhoon/.vale.ini"
       - ".vale/**"
       - ".github/workflows/vale.yml"
 
@@ -48,10 +49,34 @@ jobs:
           set -euo pipefail
           git fetch --no-tags --depth=1 origin "$BASE_REF"
           mapfile -t files < <(git diff --name-only --diff-filter=d "origin/${BASE_REF}...HEAD" -- '*.md')
+          # A pack-policy-only change must exercise the existing prose too.
+          if ! git diff --quiet "origin/${BASE_REF}...HEAD" -- cinder-typhoon/.vale.ini; then
+            mapfile -t pack_files < <(git ls-files -- ':(glob)cinder-typhoon/**/*.md')
+            files+=("${pack_files[@]}")
+            mapfile -t files < <(printf '%s\n' "${files[@]}" | sort -u)
+          fi
           if [ "${#files[@]}" -eq 0 ]; then
             echo "No changed Markdown files; nothing to lint."
             exit 0
           fi
           printf 'Linting %d changed Markdown file(s):\n' "${#files[@]}"
           printf '  %s\n' "${files[@]}"
-          vale "${files[@]}"
+          docs=()
+          cinder_docs=()
+          for file in "${files[@]}"; do
+            case "$file" in
+              cinder-typhoon/*) cinder_docs+=("$file") ;;
+              *) docs+=("$file") ;;
+            esac
+          done
+
+          # The pack has fictional voices and mixed player/author documents.
+          # Its scoped config leaves the repository's other prose policy intact.
+          result=0
+          if [ "${#docs[@]}" -gt 0 ]; then
+            vale "${docs[@]}" || result=$?
+          fi
+          if [ "${#cinder_docs[@]}" -gt 0 ]; then
+            vale --config=cinder-typhoon/.vale.ini "${cinder_docs[@]}" || result=$?
+          fi
+          exit "$result"
