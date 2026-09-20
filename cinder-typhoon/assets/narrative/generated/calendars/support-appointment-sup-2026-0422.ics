@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:dc6fe39d-6edf-571d-af7a-196ecdb2e415@keplerops.com
+DTSTAMP:20260825T133500Z
+DTSTART:20260918T150000Z
+DTEND:20260918T161500Z
+ORGANIZER:mailto:talia.mornac@keplerops.com
+ATTENDEE:mailto:greer.aldervin@rillhaven.test
+ATTENDEE:mailto:gabriel.delmont@keplerops.com
+SUMMARY:Rillhaven District Heating: field mapping
+DESCRIPTION:SUP-2026-0422. Map the district and site fields for the first i
+ mport. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

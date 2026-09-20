@@ -3,11 +3,14 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 3,075 distinct authored messages, 244 source documents,
-staff directories for all 294 employees, and 21 calendar invitations. The
+The collection contains 8,575 distinct authored messages, 822 source documents,
+staff directories for all 294 employees, and 85 calendar invitations. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
+The support slice adds 5,500 messages, 500 case records, 78 supporting
+documents, and 64 implementation or onboarding appointments for the twelve
+utility customers. Its 30 accepted engineering escalations remain unresolved.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -26,10 +29,11 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/workforce.yaml` | Full employee roster, reporting tree, distribution groups, tenure, and author-only writing notes. |
 | `authoring/workforce-actions.yaml` | Author-only join index for the workforce correspondence. |
 | `authoring/business-network.yaml` | Author-only organizations, contact profiles, agreement terms, and accepted activity. |
+| `authoring/support-intake.yaml` | Author-only joins for support cases, separate customer/internal threads, attachments, and appointments. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
-| `authoring/documents.yaml`, `documents/` | Authored documents, titles, and intended readers. |
-| `authoring/calendars.yaml` | Agreed and tentative future arrangements as of the snapshot. |
-| `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce and business RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
+| `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
+| `authoring/calendars*.yaml` | Agreed and tentative future arrangements as of the snapshot. |
+| `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
 | `generated/directories/`, `generated/calendars/` | CSV contacts and RFC 5545 calendar files. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |

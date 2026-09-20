@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:b75fea5e-0536-5e47-84b6-dd462e38e45f@keplerops.com
+DTSTAMP:20260728T134400Z
+DTSTART:20260811T150000Z
+DTEND:20260811T161500Z
+ORGANIZER:mailto:felix.darsell@keplerops.com
+ATTENDEE:mailto:ines.brannell@caldren.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Caldren Reach Utilities: records review refresher
+DESCRIPTION:SUP-2026-0468. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:7afd428b-9e39-5031-ac70-6e30fd35dd1d@keplerops.com
+DTSTAMP:20260608T132700Z
+DTSTART:20260622T160000Z
+DTEND:20260622T171500Z
+ORGANIZER:mailto:maya.ranscombe@keplerops.com
+ATTENDEE:mailto:eryn.tollmere@mirrenfold.test
+ATTENDEE:mailto:hugo.dravik@keplerops.com
+SUMMARY:Mirrenfold Regional Water: seasonal handover workshop
+DESCRIPTION:SUP-2026-0463. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

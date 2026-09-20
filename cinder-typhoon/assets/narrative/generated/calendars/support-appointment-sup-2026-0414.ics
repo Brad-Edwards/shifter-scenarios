@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:21f35f51-e387-53a3-9ba8-2dc341978fae@keplerops.com
+DTSTAMP:20260827T134100Z
+DTSTART:20260920T150000Z
+DTEND:20260920T161500Z
+ORGANIZER:mailto:flora.torren@keplerops.com
+ATTENDEE:mailto:leo.sennard@haveril.test
+ATTENDEE:mailto:gabriel.delmont@keplerops.com
+SUMMARY:Haveril District Energy: review view
+DESCRIPTION:SUP-2026-0414. Prepare a review view for two operating district
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

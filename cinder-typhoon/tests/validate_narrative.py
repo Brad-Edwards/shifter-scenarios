@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check narrative source bytes, correspondence, audience, and native SDL bindings."""
 from __future__ import annotations
+from collections import Counter
 from datetime import datetime
 from datetime import timezone
 from decimal import Decimal
@@ -12,6 +13,7 @@ from email.utils import getaddresses, parsedate_to_datetime
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
 import yaml
 
@@ -22,8 +24,10 @@ KINDS = ('mail', 'documents', 'directory', 'employment')
 NARRATIVE_EVIDENCE = {f'narrative-{org}.{kind}-visible' for org in TARGETS for kind in KINDS}
 STORIES = {'bicycle', 'lunch', 'workshop', 'anniversary', 'choir', 'photography', 'outreach', 'billing'}
 BUSINESS_MESSAGE_COUNT = 1600
-TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT
-TOTAL_DOCUMENT_COUNT = 155 + 89
+SUPPORT_MESSAGE_COUNT = 5500
+SUPPORT_DOCUMENT_COUNT = 578
+TOTAL_MESSAGE_COUNT = 1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT
+TOTAL_DOCUMENT_COUNT = 155 + 89 + SUPPORT_DOCUMENT_COUNT
 
 
 def require(value, message):
@@ -33,6 +37,14 @@ def require(value, message):
 
 def read_json(path):
     return json.loads(path.read_text())
+
+
+def document_text(document):
+    return document['text'] if 'text' in document else (ROOT / document['file']).read_text()
+
+
+def document_path(document):
+    return document['path'] if 'path' in document else Path(document['file']).name
 
 
 def check_business_network(identity, roster, mail, docs):
@@ -58,7 +70,7 @@ def check_business_network(identity, roster, mail, docs):
     for document in business_docs.values():
         if not document['title'].endswith('accepted service schedule'):
             continue
-        agreement = (ROOT / document['file']).read_text()
+        agreement = document_text(document)
         company_signer = 'Leah Calder-Voss' if document['employer'] == 'keplerops' else 'Priya Naravel'
         require('/s/ ' + company_signer in agreement,
                 'Accepted schedule signed by the wrong company representative')
@@ -88,12 +100,12 @@ def check_business_network(identity, roster, mail, docs):
                 'Nonfictional supporting domain')
         require(all(key in source_contacts and source_contacts[key]['employer'] == org['key']
                     for key in org['contact_keys']), 'Contact employment or account join drift')
-        related = [d for d in business_docs.values() if org['account_id'] in (ROOT / d['file']).read_text()]
+        related = [d for d in business_docs.values() if org['account_id'] in document_text(d)]
         require(len(related) >= 3, f'Missing account, contract, or contact record: {org["key"]}')
         summaries = [d for d in related if d['title'].endswith('agreement summary')]
-        require(any(org['agreement_id'] in (ROOT / d['file']).read_text()
-                    and org['effective'] in (ROOT / d['file']).read_text()
-                    and org['end'] in (ROOT / d['file']).read_text()
+        require(any(org['agreement_id'] in document_text(d)
+                    and org['effective'] in document_text(d)
+                    and org['end'] in document_text(d)
                     for d in summaries), f'Agreement summary drift: {org["key"]}')
         if org['kind'] == 'utility_customer':
             require(org['holder'] == 'keplerops' and 'annual service fee' in org['terms'],
@@ -117,7 +129,7 @@ def check_business_network(identity, roster, mail, docs):
             unit = 'pages' if org['key'] == 'ternwick' else 'm³'
             expected_rate = {'merewick': Decimal('0.92'), 'talvern': Decimal('1.15'),
                              'ternwick': Decimal('0.42')}[org['key']]
-            account_text = '\n'.join((ROOT / d['file']).read_text() for d in related)
+            account_text = '\n'.join(document_text(d) for d in related)
             for row in ledger:
                 day = datetime.fromisoformat(row['date'])
                 charge = Decimal(row['quantity']) * Decimal(row['unit_price_usd'])
@@ -164,11 +176,215 @@ def check_business_network(identity, roster, mail, docs):
         seen_messages.update(chain)
     require(seen_messages == set(business_mail), 'Unjoined business message')
     visible = [m['subject'] + '\n' + m['body'] for m in business_mail.values()]
-    visible += [(ROOT / d['file']).read_text() for d in business_docs.values()]
+    visible += [document_text(d) for d in business_docs.values()]
     leak = ('cinder typhoon', 'issue 113', 'scenario layer', 'author-only', 'openrae',
             'shifter-scenarios', 'challenge-specific')
     require(all(not any(term in text.lower() for term in leak) for text in visible),
             'Authoring or challenge language in business content')
+
+
+def check_support_intake(identity, roster, mail, docs, events):
+    manifest = yaml.safe_load((ROOT / 'authoring/support-intake.yaml').read_text())
+    network = yaml.safe_load((ROOT / 'authoring/business-network.yaml').read_text())
+    require(manifest['snapshot'] == identity['snapshot'], 'Support snapshot drift')
+    require(manifest['required_base']['business_commit'] == 'ef9c89f',
+            'Support slice is not pinned to the accepted business content')
+    require(manifest['counts'] == {'cases': 500, 'messages': 5500, 'case_documents': 500,
+                                   'supporting_documents': 78, 'appointments': 64},
+            'Support declared counts drift')
+    cases = manifest['cases']
+    require(len(cases) == len({c['id'] for c in cases}) == 500,
+            'Support case inventory drift')
+    expected_categories = {'routine': 300, 'customer_waiting': 60, 'implementation': 70,
+                           'engineering_escalation': 30, 'onboarding': 40}
+    expected_statuses = {'resolved_support': 300, 'waiting_customer': 60,
+                         'implementation_complete': 50, 'implementation_scheduled': 20,
+                         'engineering_accepted': 30, 'onboarding_complete': 28,
+                         'onboarding_scheduled': 12}
+    require(Counter(c['category'] for c in cases) == Counter(expected_categories),
+            'Support case-category allocation drift')
+    require(Counter(c['status'] for c in cases) == Counter(expected_statuses),
+            'Support case-state allocation drift')
+    require([c['id'] for c in cases] == [f'SUP-2026-{n:04d}' for n in range(1, 501)],
+            'Support case identifiers are not stable and contiguous')
+
+    support_keys = {p['key'] for p in roster if p['employer'] == 'keplerops'
+                    and p['department'] == 'Support and implementation'}
+    require(len(support_keys) == 14, 'Support staff allocation drift')
+    organizations = {o['key']: o for o in network['organizations'] if o['kind'] == 'utility_customer'}
+    require(len(organizations) == 12, 'Support customer book drift')
+    support_mail = {m['id']: m for m in mail if m['id'].startswith('si-')}
+    require(len(support_mail) == SUPPORT_MESSAGE_COUNT
+            and list(support_mail) == [f'si-{n:04d}' for n in range(1, SUPPORT_MESSAGE_COUNT + 1)],
+            'Support message inventory drift')
+    require(len({m['body'] for m in support_mail.values()}) == SUPPORT_MESSAGE_COUNT,
+            'Support mail contains repeated bodies')
+    system_notices = [m for m in support_mail.values() if m['from'] == 'k_case_updates']
+    require(len(system_notices) == 500
+            and all(m['body'].startswith('Case: SUP-2026-')
+                    and 'This automated notice records the current service-desk state.' in m['body']
+                    for m in system_notices),
+            'Support system-notice inventory or format drift')
+    normalized_bodies = []
+    for message in support_mail.values():
+        body = message['body'].lower()
+        body = re.sub(r'sup-2026-\d{4}|eng-2026-\d{3}|\b4\.[0-9]+\.[0-9]+\b', '<id>', body)
+        body = re.sub(r'\n\n[a-z]+\n$', '\n<signature>\n', body)
+        normalized_bodies.append(body)
+    normalized_counts = Counter(normalized_bodies)
+    require(len(normalized_counts) >= 3400 and normalized_counts.most_common(1)[0][1] <= 25,
+            'Support prose is repetitive after identifiers and signatures are removed')
+    support_docs = {d['id']: d for d in docs if d['story'] == 'support-intake'}
+    require(len(support_docs) == SUPPORT_DOCUMENT_COUNT,
+            'Support document inventory drift')
+    require(sum(k.startswith('support-case-') for k in support_docs) == 500
+            and sum(k.startswith('support-kb-') for k in support_docs) == 24
+            and sum(k.startswith('support-onboarding-') for k in support_docs) == 12
+            and sum(k.startswith('support-implementation-') for k in support_docs) == 12
+            and sum(k.startswith('support-escalation-') for k in support_docs) == 30,
+            'Support document-family allocation drift')
+    support_events = {e['id']: e for e in events if e['id'].startswith('support-appointment-')}
+    require(len(support_events) == 64, 'Support appointment inventory drift')
+
+    contacts = identity['people'] | identity['correspondents']
+    snapshot = datetime.fromisoformat(identity['snapshot'])
+    seen_messages = set()
+    seen_appointments = set()
+    engineering_ids = set()
+    for case in cases:
+        require(case['organization'] in organizations, f'Unknown support customer: {case["id"]}')
+        org = organizations[case['organization']]
+        require(case['account_id'] == org['account_id']
+                and case['entitlement_effective'] == org['effective']
+                and case['account_owner'] == org['owner'],
+                f'Support account join drift: {case["id"]}')
+        require(case['owner'] in support_keys and case['customer_contact'] in org['contact_keys']
+                and case['customer_contact'] in contacts,
+                f'Support owner or customer contact drift: {case["id"]}')
+        opened = datetime.fromisoformat(case['opened_at'])
+        last = datetime.fromisoformat(case['last_activity'])
+        require(datetime.fromisoformat(case['entitlement_effective']).date() <= opened.date()
+                and opened <= last <= snapshot,
+                f'Support case outside entitlement or snapshot: {case["id"]}')
+        require(case['product_version'] in {'4.8.2', '4.9.0', '4.9.1'}
+                and len(case['prior_attempts']) == 2 and len(set(case['prior_attempts'])) == 2,
+                f'Incomplete support facts: {case["id"]}')
+        closed = case['status'].endswith(('_support', '_complete'))
+        require((case['closed_at'] == case['last_activity']) if closed else case['closed_at'] is None,
+                f'Support closure state drift: {case["id"]}')
+        require(set(case['threads']) == {'customer_visible', 'internal'},
+                f'Support visibility threads missing: {case["id"]}')
+
+        case_messages = {}
+        thread_messages = {}
+        for boundary, thread in case['threads'].items():
+            chain = []
+            current = thread['last']
+            while current:
+                require(current in support_mail and current not in chain and current not in seen_messages,
+                        f'Missing, cyclic, or cross-case support thread: {case["id"]}')
+                item = support_mail[current]
+                chain.append(current)
+                require(item['story'] == 'support-intake' and case['id'] in item['subject'],
+                        f'Support message case join drift: {current}')
+                participants = [item['from']] + item['to']
+                employers = {contacts[k]['employer'] for k in participants}
+                if boundary == 'internal':
+                    require(employers == {'keplerops'}, f'Customer included in internal thread: {current}')
+                else:
+                    require(case['organization'] in employers and 'keplerops' in employers,
+                            f'Customer-visible thread lacks both parties: {current}')
+                current = item.get('reply_to')
+            chain.reverse()
+            require(chain[0] == thread['root'] and len(chain) == thread['message_count'],
+                    f'Support thread count or root drift: {case["id"]}/{boundary}')
+            require(all(datetime.fromisoformat(support_mail[mid]['date']) <
+                        datetime.fromisoformat(support_mail[next_mid]['date'])
+                        for mid, next_mid in zip(chain, chain[1:])),
+                    f'Support reply chronology drift: {case["id"]}/{boundary}')
+            thread_messages[boundary] = chain
+            case_messages.update({mid: support_mail[mid] for mid in chain})
+            seen_messages.update(chain)
+        require(len(case_messages) == case['message_count']
+                == sum(t['message_count'] for t in case['threads'].values()),
+                f'Support case message count drift: {case["id"]}')
+        case_notices = [m for m in case_messages.values() if m['from'] == 'k_case_updates']
+        require(len(case_notices) == 1
+                and set(case_notices[0]['to']) == {case['owner'], case['customer_contact']},
+                f'Support system notice audience drift: {case["id"]}')
+        require(case['opened_at'] == min(m['date'] for m in case_messages.values())
+                and case['last_activity'] == max(m['date'] for m in case_messages.values()),
+                f'Support case activity bounds drift: {case["id"]}')
+
+        customer_attachments = {a for mid in thread_messages['customer_visible']
+                                for a in support_mail[mid].get('attachments', [])}
+        internal_attachments = {a for mid in thread_messages['internal']
+                                for a in support_mail[mid].get('attachments', [])}
+        require(customer_attachments == set(case['customer_visible_attachments'])
+                and internal_attachments == set(case['internal_attachments'])
+                and not customer_attachments & internal_attachments,
+                f'Support attachment visibility drift: {case["id"]}')
+        require(customer_attachments | internal_attachments <= set(support_docs),
+                f'Support attachment missing from document source: {case["id"]}')
+
+        document = support_docs[case['case_document']]
+        expected_readers = support_keys | ({'rowan'} if case['category'] == 'engineering_escalation' else set())
+        require(document['audience'] == 'restricted' and set(document['reader_keys']) == expected_readers,
+                f'Support case reader boundary drift: {case["id"]}')
+        text = document_text(document)
+        require(all(value in text for value in (case['id'], case['account_id'], case['product_version'],
+                                                case['observed_behavior'].capitalize(), case['expected_follow_up'])),
+                f'Support case document facts drift: {case["id"]}')
+        require(case['case_document'] not in customer_attachments | internal_attachments,
+                f'Internal support case attached to mail: {case["id"]}')
+
+        if case['category'] == 'engineering_escalation':
+            engineering_ids.add(case['engineering_change_id'])
+            require(case['status'] == 'engineering_accepted'
+                    and case['engineering_change_id'] in case['expected_follow_up']
+                    and len(internal_attachments) == 1
+                    and next(iter(internal_attachments)).endswith(case['engineering_change_id'].lower())
+                    and not customer_attachments,
+                    f'Engineering escalation contract drift: {case["id"]}')
+            require('no fix is recorded' in case['outcome'].lower()
+                    and 'release date' not in case['outcome'].lower(),
+                    f'Engineering outcome fabricated: {case["id"]}')
+        elif case['category'] in {'routine', 'customer_waiting', 'implementation', 'onboarding'}:
+            require(len(customer_attachments) == 1 and not internal_attachments,
+                    f'Customer material allocation drift: {case["id"]}')
+
+        appointment = case.get('appointment_id')
+        if appointment:
+            require(appointment in support_events and appointment not in seen_appointments,
+                    f'Support appointment join drift: {case["id"]}')
+            event = support_events[appointment]
+            require(event['organizer'] == case['owner']
+                    and case['customer_contact'] in event['attendees']
+                    and case['id'] in event['description'],
+                    f'Support appointment facts drift: {case["id"]}')
+            event_start = datetime.fromisoformat(event['start'])
+            require((event_start > snapshot) if case['status'].endswith('_scheduled')
+                    else (opened <= event_start <= last),
+                    f'Support appointment chronology drift: {case["id"]}')
+            seen_appointments.add(appointment)
+        else:
+            require(not case['status'].endswith('_scheduled'),
+                    f'Scheduled support work lacks appointment: {case["id"]}')
+
+    require(seen_messages == set(support_mail), 'Unjoined support message')
+    require(seen_appointments == set(support_events), 'Unjoined support appointment')
+    require(engineering_ids == {f'ENG-2026-{n:03d}' for n in range(1, 31)},
+            'Engineering escalation identifiers drift')
+    require({c['owner'] for c in cases} == support_keys,
+            'Support case ownership does not cover all fourteen staff')
+    require(all(any(m['from'] == key for m in support_mail.values()) for key in support_keys),
+            'A support staff member has no authored correspondence')
+    visible = [m['subject'] + '\n' + m['body'] for m in support_mail.values()]
+    visible += [document_text(d) for d in support_docs.values()]
+    leak = ('cinder typhoon', 'issue 114', 'scenario layer', 'author-only', 'openrae',
+            'shifter-scenarios', 'challenge-specific')
+    require(all(not any(term in text.lower() for term in leak) for text in visible),
+            'Authoring or challenge language in support content')
 
 
 def check_assets():
@@ -231,8 +447,12 @@ def check_assets():
     mail = []
     for p in sorted((ROOT / 'authoring').glob('mail-*.yaml')):
         mail.extend(yaml.safe_load(p.read_text())['messages'])
-    docs = yaml.safe_load((ROOT / 'authoring/documents.yaml').read_text())['documents']
-    events = yaml.safe_load((ROOT / 'authoring/calendars.yaml').read_text())['events']
+    docs = []
+    for path in sorted((ROOT / 'authoring').glob('documents*.yaml')):
+        docs.extend(yaml.safe_load(path.read_text())['documents'])
+    events = []
+    for path in sorted((ROOT / 'authoring').glob('calendars*.yaml')):
+        events.extend(yaml.safe_load(path.read_text())['events'])
     doc_by_id = {d['id']: d for d in docs}
     coverage = read_json(ROOT / 'story-coverage.json')
     workforce_actions = yaml.safe_load((ROOT / 'authoring/workforce-actions.yaml').read_text())['actions']
@@ -259,8 +479,11 @@ def check_assets():
     require(len(mail) == len({m['id'] for m in mail}) == TOTAL_MESSAGE_COUNT, 'Authored message inventory drift')
     require(len(docs) == len(doc_by_id) == TOTAL_DOCUMENT_COUNT, 'Authored document inventory drift')
     check_business_network(identity, roster, mail, docs)
+    check_support_intake(identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
-    require({d['file'] for d in docs} == {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()}, 'Uncatalogued document')
+    require({d['file'] for d in docs if 'file' in d} ==
+            {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
+            'Uncatalogued document')
     parsed = {}
     for m in mail:
         c = coverage['messages'][m['id']]
@@ -274,7 +497,8 @@ def check_assets():
         require(message.get_body(preferencelist=('plain',)).get_content().replace('\r\n', '\n') == m['body'], f'Body mismatch: {m["id"]}')
         attachments = {p.get_filename(): p.get_payload(decode=True) for p in message.iter_attachments()}
         require(all(datetime.fromisoformat(doc_by_id[d]['published_at']) <= datetime.fromisoformat(m['date']) for d in m.get('attachments', [])), f'Attachment from the future: {m["id"]}')
-        expected = {Path(doc_by_id[d]['file']).name: (ROOT / doc_by_id[d]['file']).read_bytes() for d in m.get('attachments', [])}
+        expected = {document_path(doc_by_id[d]): document_text(doc_by_id[d]).encode()
+                    for d in m.get('attachments', [])}
         require(attachments == expected, f'Attachment mismatch: {m["id"]}')
         if m.get('reply_to'):
             parent = coverage['messages'][m['reply_to']]['message_id']
@@ -340,7 +564,8 @@ def check_assets():
                 if kind == 'directory':
                     require(d['audience'] == 'staff', 'Directory document has inconsistent reader scope')
                 match = [item for item in payload['documents'] if item['name'] == d['id']]
-                require(len(match) == 1 and match[0]['text'] == (ROOT / d['file']).read_text(), 'Library omitted or changed document')
+                require(len(match) == 1 and match[0]['text'] == document_text(d),
+                        'Library omitted or changed document')
                 groups = {'support': {'rowan', 'maya', 'talia'}, 'platform': {'noor', 'evan'}, 'outreach': {'mina', 'owen', 'rosa'}}
                 if d['audience'] == 'staff':
                     readers = allowed

@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:44c538f7-dc78-5bbb-905d-9a8ca7ddb8d2@keplerops.com
+DTSTAMP:20260828T134400Z
+DTSTART:20260921T140000Z
+DTEND:20260921T151500Z
+ORGANIZER:mailto:farah.telmire@keplerops.com
+ATTENDEE:mailto:soren.haldell@fennor.test
+ATTENDEE:mailto:emre.maraven@keplerops.com
+SUMMARY:Fennor Bay Water: archive references
+DESCRIPTION:SUP-2026-0425. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

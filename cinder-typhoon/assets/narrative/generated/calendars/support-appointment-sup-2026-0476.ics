@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:04210435-c101-5add-a0ea-921115b1b7ed@keplerops.com
+DTSTAMP:20260805T131800Z
+DTSTART:20260819T140000Z
+DTEND:20260819T151500Z
+ORGANIZER:mailto:imani.verrin@keplerops.com
+ATTENDEE:mailto:sylvie.dorswick@orvellan.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Orvellan District Heating: reviewer orientation
+DESCRIPTION:SUP-2026-0476. Agree reviewer roles without widening account ac
+ cess. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

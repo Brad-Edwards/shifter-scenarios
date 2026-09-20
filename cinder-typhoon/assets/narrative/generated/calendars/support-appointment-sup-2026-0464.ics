@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:0baae570-ed6c-5907-8066-9df3d56abe04@keplerops.com
+DTSTAMP:20260618T131400Z
+DTSTART:20260703T140000Z
+DTEND:20260703T151500Z
+ORGANIZER:mailto:talia.mornac@keplerops.com
+ATTENDEE:mailto:sylvie.dorswick@orvellan.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Orvellan District Heating: records review refresher
+DESCRIPTION:SUP-2026-0464. Prepare a review view for two operating district
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

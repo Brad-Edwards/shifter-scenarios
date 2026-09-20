@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:14eed669-8538-5111-83e2-bf1edd4a8959@keplerops.com
+DTSTAMP:20260708T132700Z
+DTSTART:20260714T140000Z
+DTEND:20260714T151500Z
+ORGANIZER:mailto:imani.verrin@keplerops.com
+ATTENDEE:mailto:omar.tesswick@elverden.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Elverden District Water: checklist configuration
+DESCRIPTION:SUP-2026-0364. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

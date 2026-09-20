@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:46c0deab-79af-59d5-9d1c-9ecb7be2cf95@keplerops.com
+DTSTAMP:20260827T134100Z
+DTSTART:20260925T140000Z
+DTEND:20260925T151500Z
+ORGANIZER:mailto:idris.narsen@keplerops.com
+ATTENDEE:mailto:arlo.merwick@pellhaven.test
+ATTENDEE:mailto:emre.maraven@keplerops.com
+SUMMARY:Pellhaven Municipal Water: seasonal handover workshop
+DESCRIPTION:SUP-2026-0489. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

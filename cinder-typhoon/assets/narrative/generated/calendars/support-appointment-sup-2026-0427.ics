@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:069fc68e-acef-55be-b987-703ff5344f62@keplerops.com
+DTSTAMP:20260825T133500Z
+DTSTART:20260923T160000Z
+DTEND:20260923T171500Z
+ORGANIZER:mailto:finn.marrent@keplerops.com
+ATTENDEE:mailto:malik.orsden@mirrenfold.test
+ATTENDEE:mailto:hugo.dravik@keplerops.com
+SUMMARY:Mirrenfold Regional Water: checklist configuration
+DESCRIPTION:SUP-2026-0427. Adapt the accepted checklist while preserving re
+ quired fields. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

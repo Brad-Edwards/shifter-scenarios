@@ -4,10 +4,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-mail",
-        "version": "sha256-614301918597ee7fae24f4113c3e2f2e47f4c3766789cb03ab10b1c148023e29"
+        "version": "sha256-a8423d853245f2b8ef79b218d578d30f1722aa63add51bcb76ff281face18cba"
       },
       "path": "assets/narrative/generated/packages/keplerops-mail.json",
-      "sha256": "614301918597ee7fae24f4113c3e2f2e47f4c3766789cb03ab10b1c148023e29",
+      "sha256": "a8423d853245f2b8ef79b218d578d30f1722aa63add51bcb76ff281face18cba",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.mail",
       "target": "k-corporate.k-staff",
@@ -16,10 +16,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-documents",
-        "version": "sha256-da6190ea92474695292440ac516a94e79dbdc67bc46f54511d49d42908c7372f"
+        "version": "sha256-388f351c76367ca54969bea847ea0f30ebb50219a440e342c5e47608fa6deb29"
       },
       "path": "assets/narrative/generated/packages/keplerops-documents.json",
-      "sha256": "da6190ea92474695292440ac516a94e79dbdc67bc46f54511d49d42908c7372f",
+      "sha256": "388f351c76367ca54969bea847ea0f30ebb50219a440e342c5e47608fa6deb29",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.documents",
       "target": "k-corporate.k-staff",
@@ -52,10 +52,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/arwc-mail",
-        "version": "sha256-aa292ed20af6cf178ec341df7442d1afdbdfaf96a919c134331bd03451f76ee4"
+        "version": "sha256-7f1cb45c494e9c5ba256d3b019fab430d912b3db82b2b71691d77d3cf5070b99"
       },
       "path": "assets/narrative/generated/packages/arwc-mail.json",
-      "sha256": "aa292ed20af6cf178ec341df7442d1afdbdfaf96a919c134331bd03451f76ee4",
+      "sha256": "7f1cb45c494e9c5ba256d3b019fab430d912b3db82b2b71691d77d3cf5070b99",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.mail",
       "target": "a-corporate.a-business",

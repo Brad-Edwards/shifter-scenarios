@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:25eee8b0-7366-5bf6-a156-128109df87c8@keplerops.com
+DTSTAMP:20260824T133200Z
+DTSTART:20260917T160000Z
+DTEND:20260917T171500Z
+ORGANIZER:mailto:farah.telmire@keplerops.com
+ATTENDEE:mailto:mira.hoswick@davenmoor.test
+ATTENDEE:mailto:hugo.dravik@keplerops.com
+SUMMARY:Davenmoor Water Service: archive references
+DESCRIPTION:SUP-2026-0411. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

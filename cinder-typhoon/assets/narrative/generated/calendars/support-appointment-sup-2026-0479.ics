@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:bac95a86-9be2-5661-a9b6-ce5e8f22832a@keplerops.com
+DTSTAMP:20260624T133200Z
+DTSTART:20260708T140000Z
+DTEND:20260708T151500Z
+ORGANIZER:mailto:elin.danwick@keplerops.com
+ATTENDEE:mailto:felix.dermere@sennwick.test
+ATTENDEE:mailto:harriet.velswick@keplerops.com
+SUMMARY:Sennwick Water Board: records review refresher
+DESCRIPTION:SUP-2026-0479. Map the district and site fields for the first i
+ mport. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

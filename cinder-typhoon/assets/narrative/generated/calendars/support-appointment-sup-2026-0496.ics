@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:258d5c73-7c6c-5dc4-b7f4-9ec588d730b5@keplerops.com
+DTSTAMP:20260824T133200Z
+DTSTART:20260922T170000Z
+DTEND:20260922T181500Z
+ORGANIZER:mailto:felix.darsell@keplerops.com
+ATTENDEE:mailto:nia.calderin@elverden.test
+ATTENDEE:mailto:maya.ranscombe@keplerops.com
+SUMMARY:Elverden District Water: new team introduction
+DESCRIPTION:SUP-2026-0496. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

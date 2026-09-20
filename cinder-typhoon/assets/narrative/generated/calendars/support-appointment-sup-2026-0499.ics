@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:e1dc9d60-ad5e-570f-a3a6-4335af45fb9f@keplerops.com
+DTSTAMP:20260827T134100Z
+DTSTART:20260925T160000Z
+DTEND:20260925T171500Z
+ORGANIZER:mailto:gabriel.delmont@keplerops.com
+ATTENDEE:mailto:eryn.tollmere@mirrenfold.test
+ATTENDEE:mailto:hugo.dravik@keplerops.com
+SUMMARY:Mirrenfold Regional Water: new team introduction
+DESCRIPTION:SUP-2026-0499. Prepare a review view for two operating district
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

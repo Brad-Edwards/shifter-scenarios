@@ -1,0 +1,18 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:038632cf-7a90-5fc0-8889-a5779540b289@keplerops.com
+DTSTAMP:20260727T134100Z
+DTSTART:20260810T160000Z
+DTEND:20260810T171500Z
+ORGANIZER:mailto:idris.narsen@keplerops.com
+ATTENDEE:mailto:eryn.tollmere@mirrenfold.test
+ATTENDEE:mailto:harriet.velswick@keplerops.com
+SUMMARY:Mirrenfold Regional Water: records review refresher
+DESCRIPTION:SUP-2026-0475. Walk through export naming and archive reference
+ s. Record decisions on the existing case.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR
