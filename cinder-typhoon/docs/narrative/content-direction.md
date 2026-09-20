@@ -21,6 +21,23 @@ without repeating its origin. A newcomer may reasonably need more explanation.
 Some messages are short because nothing else needs saying. Not every reply
 contains a joke, a disagreement, or a significant character moment.
 
+### Prose lint and character voice
+
+The pack's [Vale configuration](../../.vale.ini) exempts authored workplace records,
+rendered narrative content, and character profiles with their writing samples
+from developer-documentation style rules. Challenge descriptions and hints
+are also exempt; the technical and other authoring sections remain checked.
+Asset READMEs and the other worldbuilding guides remain authoring documentation.
+
+Review character writing against the person's profile, audience, and situation.
+Keep plausible fragments, misspellings, punctuation habits, and differences in
+English fluency where they serve that voice. Do not normalize these to satisfy
+a prose linter, or add mistakes as a quota. Check chronology, factual consistency,
+attachments, and who can read a record independently of its writing style.
+
+Keep lint exclusions in the pack configuration. Do not add lint-control
+comments or authoring explanations to assets that participants can inspect.
+
 ## Give the companies ordinary documentary lives
 
 | Company and family | People and business | What later content should make recognizable |

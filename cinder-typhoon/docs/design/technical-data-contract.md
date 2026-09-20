@@ -85,10 +85,10 @@ The asset hierarchy is stable throughout the campaign:
 
 | Field | Value |
 | --- | --- |
-| `site_id` | `CRR-01` — Cairn Reach Reservoir |
-| `outlet_group_id` | `CRR-OG2` — east outlet group |
+| `site_id` | `CRR-01`: Cairn Reach Reservoir |
+| `outlet_group_id` | `CRR-OG2`: east outlet group |
 | `actuator_ids` | `CRR-OG2-GA`, `CRR-OG2-GB` |
-| `work_order_id` | `MWO-7742` — outlet inspection |
+| `work_order_id` | `MWO-7742`: outlet inspection |
 | `appointment_id` | `APT-CRR-7742` |
 | `current_project_revision` | `CRR-5.4.2` |
 | `obsolete_project_revision` | `CRR-5.3.7` |

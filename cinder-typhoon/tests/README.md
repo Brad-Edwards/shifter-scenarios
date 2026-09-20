@@ -68,3 +68,22 @@ document readers, directory entries, calendar times and audiences, and story
 coverage. Corruption checks reject an altered attachment, a private
 message copied to an unrelated mailbox, changed source bytes, and a detached
 reply. The full SDL check also verifies the four native materialization contracts.
+
+## Prose checks
+
+Use Vale 3.9.1 with the pack configuration from the repository root:
+
+```sh
+vale sync
+vale --config=cinder-typhoon/.vale.ini cinder-typhoon/
+```
+
+CI selects this configuration for changed pack documents. Other repository
+documents retain the root configuration. The pack configuration exempts
+workplace assets, character profiles, and the player-facing description and
+hint sections of challenge cards. Technical sections and authoring guides
+remain linted. See the [editorial boundary](../docs/narrative/content-direction.md#prose-lint-and-character-voice).
+
+These exemptions protect writing choices; they do not replace asset integrity,
+continuity, audience, or challenge-contract checks. Keep lint directives out of
+participant-visible content.

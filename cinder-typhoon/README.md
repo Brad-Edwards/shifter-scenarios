@@ -1,4 +1,4 @@
-# Cinder Typhoon — environment pack
+# Cinder Typhoon: environment pack
 
 Draft scenario for BSides Ottawa: approximately 300 individual players over
 sixteen hours, with a provided agent and optional bring-your-own agents.

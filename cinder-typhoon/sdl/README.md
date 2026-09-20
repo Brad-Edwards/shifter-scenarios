@@ -26,9 +26,9 @@ packages, and hosting are not selected here.
 | --- | --- |
 | [world/participant.yaml](modules/world/participant.yaml) | Cinder operator, Kali, supplied training access and separate KeplerOps developer foothold. |
 | `world/training.yaml`, `world/k-*.yaml`, `world/a-*.yaml` | Nine logical network groups, 36 target systems, and 83 scoped service/principal features. |
-| `operations/t01.yaml`–`t04.yaml` | Training objectives and evidence. |
-| `operations/k01.yaml`–`k31.yaml` | KeplerOps objectives and evidence. |
-| `operations/w01.yaml`–`w35.yaml` | ARWC objectives and evidence. |
+| `operations/t01.yaml` through `t04.yaml` | Training objectives and evidence. |
+| `operations/k01.yaml` through `k31.yaml` | KeplerOps objectives and evidence. |
+| `operations/w01.yaml` through `w35.yaml` | ARWC objectives and evidence. |
 | [world/capabilities.yaml](modules/world/capabilities.yaml) | 33 named access/evidence outputs, acquired through assertion-gated events. These are automatic derivations, not additional player tasks. |
 | `routes/flows-*.yaml` | Business and access conduits, grouped by source network. |
 | [routes/contexts.yaml](modules/routes/contexts.yaml), [routes/relays.yaml](modules/routes/relays.yaml) | Earned execution/delegation contexts and explicitly scoped forwarding. |
