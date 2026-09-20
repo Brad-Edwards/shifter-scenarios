@@ -1,7 +1,7 @@
 {
   "client": {
     "name": "@anthropic-ai/claude-code",
-    "version": "2.1.273"
+    "version": "2.1.108"
   },
   "participant_user": "kali",
   "schema_version": "participant-readiness/v1",

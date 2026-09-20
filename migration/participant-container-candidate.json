@@ -1,4 +1,5 @@
 {
+  "candidate_status": "superseded; source recipe now pins client 2.1.108 and requires a new build and cloud image bake",
   "client_wire": {
     "client_version": "2.1.273",
     "status": "pending live broker qualification"

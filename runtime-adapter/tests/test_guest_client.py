@@ -3,9 +3,37 @@
 import importlib.util
 import json
 import os
+import re
+import tarfile
 from pathlib import Path
 
 import pytest
+
+
+def test_participant_image_uses_adapter_pinned_client():
+    """A baked participant must expose the exact client the adapter can launch."""
+    repo_root = Path(__file__).resolve().parents[2]
+    asset = repo_root / "runtime-adapter/src/shifter_panw_adapter/assets/model-client.py"
+    spec = importlib.util.spec_from_file_location("guest_launcher", asset)
+    launcher = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(launcher)
+
+    dockerfile_path = repo_root / "polaris/build/a14/Dockerfile"
+    dockerfile = dockerfile_path.read_text()
+    match = re.search(r"npm install -g @anthropic-ai/claude-code@(\d+\.\d+\.\d+)", dockerfile)
+    assert match is not None
+    assert match.group(1) == launcher.VERSION
+
+    readiness = json.loads((repo_root / "polaris/build/a14/participant-readiness.json").read_text())
+    assert readiness["client"]["version"] == launcher.VERSION
+    canary = (repo_root / "polaris/build/a14/shifter-participant-readiness").read_text()
+    assert f'"version": "{launcher.VERSION}"' in canary
+
+    archive = repo_root / "polaris/build/build-v1.tar.gz"
+    with tarfile.open(archive, "r:gz") as package:
+        archived_dockerfile = package.extractfile("polaris/build/a14/Dockerfile")
+        assert archived_dockerfile is not None
+        assert archived_dockerfile.read().decode() == dockerfile
 
 
 def module():
