@@ -14,8 +14,8 @@
     "accepted_commercial_commit": "9c0e210"
   },
   "source_versions": {
-    "cinder-typhoon/narrative/keplerops-mail": "sha256-8d92b9485f59711939cfeaa91eff8c4038a9fc794fb1139344e0a80e7f4514a6",
-    "cinder-typhoon/narrative/keplerops-documents": "sha256-4accbc9ac04a636391163067531a504a2a53a3936720053a7928d59207bf14c8",
+    "cinder-typhoon/narrative/keplerops-mail": "sha256-6f50a0a68dc232d912a98b35af388f013aace0aba61ca57a61f6f255199fd271",
+    "cinder-typhoon/narrative/keplerops-documents": "sha256-440f28257d4830e255ea4be3e829eb4efa7b697bc029e99fec57ad9423b3c66b",
     "cinder-typhoon/narrative/keplerops-directory": "sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931",
     "cinder-typhoon/narrative/keplerops-employment": "sha256-6e130c1b3160f35200ab7a250cc0e5ed90e5e62505d8bc2632a3c59860b5e1b1",
     "cinder-typhoon/narrative/arwc-mail": "sha256-5df1463941fd824fbc68a35a8a001064851eee888789a4d7b0941e315336c617",

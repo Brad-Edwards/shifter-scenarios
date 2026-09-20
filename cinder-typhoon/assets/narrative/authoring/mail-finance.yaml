@@ -4762,7 +4762,7 @@ messages:
   date: '2026-08-24T08:00:00-04:00'
   subject: PO-26-032 / Laptop stand
   body: |
-    Three desks still have monitors balanced on paper boxes. Only two of three stands arrived; hold the invoice until the last stand is received. The quote is USD 126.00 for 3.
+    Three desks still have monitors balanced on paper boxes. The quote is USD 126.00 for 3.
 - id: fn-0464
   story: finance
   from: kwm053

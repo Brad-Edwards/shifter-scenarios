@@ -92,7 +92,7 @@ milestone. Neither retained mailbox copies nor attachments increase that count.
 The 180 supplier/expense transactions meet the requested 150–300 range. Their
 ordinary approvals, supplier exchanges, receipt checks, and payment notices
 provide the correspondence; there are no invented customers or padded invoice
-volumes. There are 660 distinct full message bodies. Repeated administrative
+volumes. There are 659 distinct full message bodies. Repeated administrative
 wording is disclosed: different invoice/order/claim references remain distinct
 business events, while a copied attachment is never a new message.
 
@@ -108,8 +108,8 @@ new customers. These licence records supply previously missing authority;
 they do not claim that issue 119 already contained it.
 
 The current six completed projects recognize USD 19,200 after the accepted
-August handovers. The four October projects retain USD 5,400 of deposits as
-deferred revenue. Their remaining USD 5,400 of acceptance milestones is not
+August handovers. The four October projects retain USD 5,400 of invoiced advances as
+deferred revenue and receivables; those advances are still uncollected. Their remaining USD 5,400 of acceptance milestones is not
 invoiced. Elverden's October renewal and Fennor's February renewal are future.
 Rillhaven's September 24 workshop remains included and future; its separately
 ordered October mapping work is not the same charge.
@@ -161,7 +161,8 @@ payroll attachment or vendor access to the accounts workbook.
 - Corrected third-of-quarter rounding. The first two months round to cents;
   the last full month takes the residual. The September half-month is rounded
   after that allocation. Opening deferred revenue uses the same rule.
-- Corrected receipt timing in the held-delivery correspondence. `PO-26-032`
+- Corrected receipt timing in the held-delivery correspondence and removed a
+  premature delivery claim from the earlier order and request. `PO-26-032`
   has two of three stands received, USD 126 payable, and USD 42 awaiting receipt.
   The whole invoice remains unpaid. Four other invoices are approved and unpaid;
   the payable balance is USD 800, not zero.

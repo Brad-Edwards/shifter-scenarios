@@ -4,10 +4,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-mail",
-        "version": "sha256-8d92b9485f59711939cfeaa91eff8c4038a9fc794fb1139344e0a80e7f4514a6"
+        "version": "sha256-6f50a0a68dc232d912a98b35af388f013aace0aba61ca57a61f6f255199fd271"
       },
       "path": "assets/narrative/generated/packages/keplerops-mail.json",
-      "sha256": "8d92b9485f59711939cfeaa91eff8c4038a9fc794fb1139344e0a80e7f4514a6",
+      "sha256": "6f50a0a68dc232d912a98b35af388f013aace0aba61ca57a61f6f255199fd271",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.mail",
       "target": "k-corporate.k-staff",
@@ -16,10 +16,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/keplerops-documents",
-        "version": "sha256-4accbc9ac04a636391163067531a504a2a53a3936720053a7928d59207bf14c8"
+        "version": "sha256-440f28257d4830e255ea4be3e829eb4efa7b697bc029e99fec57ad9423b3c66b"
       },
       "path": "assets/narrative/generated/packages/keplerops-documents.json",
-      "sha256": "4accbc9ac04a636391163067531a504a2a53a3936720053a7928d59207bf14c8",
+      "sha256": "440f28257d4830e255ea4be3e829eb4efa7b697bc029e99fec57ad9423b3c66b",
       "media_type": "application/json",
       "content_ref": "narrative-keplerops.documents",
       "target": "k-corporate.k-staff",
