@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-7f1cb45c494e9c5ba256d3b019fab430d912b3db82b2b71691d77d3cf5070b99
+      version: sha256-9242ab422c76cf5928f44b95a33b7d9c9176c63541fcd073935f4ff7ba65fb4a
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state.
     items:
@@ -3151,6 +3151,10 @@ content:
       display_name: Kit handover for Pine distribution [A-WS-110]
     - name: wm-0724
       display_name: 'Next team slot: Laboratory [A-WS-208]'
+    - name: cf-0001
+      display_name: Printed export [SUP-2026-0301]
+    - name: cf-0002
+      display_name: Printed export [SUP-2026-0301]
     - name: si-5307
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: wm-0806
@@ -3161,12 +3165,18 @@ content:
       display_name: 'Re: Kit handover for Pine distribution [A-WS-110]'
     - name: wm-0725
       display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: cf-0005
+      display_name: Printed export [SUP-2026-0301]
     - name: wm-0545
       display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
     - name: bn-1319
       display_name: 'Re: Service order — training bench [A-S-002-26-15]'
     - name: bn-1439
       display_name: 'Re: Account check — apprentice open day [A-B-001-26-15]'
+    - name: cf-0006
+      display_name: Printed export [SUP-2026-0301]
+    - name: cf-0007
+      display_name: Printed export [SUP-2026-0301]
     - name: bn-0087
       display_name: 'Re: Duplicate image — regional maintenance [K-C-001-26-23]'
     - name: bn-1260
@@ -3181,24 +3191,144 @@ content:
       display_name: Learning slot for River treatment [A-WS-087]
     - name: wm-0645
       display_name: Role note for Capital projects [A-WS-185]
+    - name: cf-0481
+      display_name: Notice routing [SUP-2026-0361]
+    - name: cf-0577
+      display_name: Field mapping [SUP-2026-0373]
+    - name: cf-0673
+      display_name: Checklist configuration [SUP-2026-0385]
+    - name: cf-0769
+      display_name: Archive references [SUP-2026-0397]
+    - name: cf-0865
+      display_name: Sample import [SUP-2026-0409]
     - name: wm-0383
       display_name: 'Re: Kit handover for Pine distribution [A-WS-110]'
     - name: wm-0726
       display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
+    - name: cf-0289
+      display_name: Printed export [SUP-2026-0337]
+    - name: cf-0482
+      display_name: Notice routing [SUP-2026-0361]
+    - name: cf-0578
+      display_name: Field mapping [SUP-2026-0373]
+    - name: cf-0674
+      display_name: Checklist configuration [SUP-2026-0385]
+    - name: cf-0770
+      display_name: Archive references [SUP-2026-0397]
+    - name: cf-0866
+      display_name: Sample import [SUP-2026-0409]
+    - name: cf-1565
+      display_name: Next-batch date display [SUP-2026-0501]
+    - name: cf-0290
+      display_name: Printed export [SUP-2026-0337]
+    - name: cf-1661
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-0484
+      display_name: Notice routing [SUP-2026-0361]
+    - name: cf-0580
+      display_name: Field mapping [SUP-2026-0373]
+    - name: cf-0676
+      display_name: Checklist configuration [SUP-2026-0385]
+    - name: cf-1757
+      display_name: Next-batch date display [SUP-2026-0525]
+    - name: cf-0772
+      display_name: Archive references [SUP-2026-0397]
+    - name: cf-0868
+      display_name: Sample import [SUP-2026-0409]
+    - name: cf-1566
+      display_name: Next-batch date display [SUP-2026-0501]
+    - name: cf-1853
+      display_name: Next-batch date display [SUP-2026-0537]
+    - name: cf-1662
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-1949
+      display_name: Next-batch date display [SUP-2026-0549]
     - name: wm-0807
       display_name: 'Re: Next team slot: Service desk [A-WS-231]'
+    - name: cf-0485
+      display_name: Notice routing [SUP-2026-0361]
+    - name: cf-0581
+      display_name: Field mapping [SUP-2026-0373]
+    - name: cf-1758
+      display_name: Next-batch date display [SUP-2026-0525]
     - name: bn-0088
       display_name: 'Re: Duplicate image — regional maintenance [K-C-001-26-23]'
+    - name: cf-0677
+      display_name: Checklist configuration [SUP-2026-0385]
     - name: wm-0301
       display_name: 'Re: Learning slot for River treatment [A-WS-087]'
+    - name: cf-0773
+      display_name: Archive references [SUP-2026-0397]
     - name: wm-0546
       display_name: 'Re: Kit handover for Mechanical maintenance [A-WS-156]'
+    - name: cf-0869
+      display_name: Sample import [SUP-2026-0409]
+    - name: cf-1854
+      display_name: Next-batch date display [SUP-2026-0537]
     - name: wm-0646
       display_name: 'Re: Role note for Capital projects [A-WS-185]'
     - name: a-photo-1
       display_name: Staff photographs — ordinary light
+    - name: cf-1950
+      display_name: Next-batch date display [SUP-2026-0549]
+    - name: cf-0293
+      display_name: Printed export [SUP-2026-0337]
+    - name: cf-1568
+      display_name: Next-batch date display [SUP-2026-0501]
     - name: wm-1361
       display_name: 'A-WS-081: staff record confirmed'
+    - name: cf-1664
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-0487
+      display_name: Notice routing [SUP-2026-0361]
+    - name: cf-0583
+      display_name: Field mapping [SUP-2026-0373]
+    - name: cf-0679
+      display_name: Checklist configuration [SUP-2026-0385]
+    - name: cf-1760
+      display_name: Next-batch date display [SUP-2026-0525]
+    - name: cf-0775
+      display_name: Archive references [SUP-2026-0397]
+    - name: cf-0871
+      display_name: Sample import [SUP-2026-0409]
+    - name: cf-1856
+      display_name: Next-batch date display [SUP-2026-0537]
+    - name: cf-1569
+      display_name: Next-batch date display [SUP-2026-0501]
+    - name: cf-1952
+      display_name: Next-batch date display [SUP-2026-0549]
+    - name: cf-1665
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-0294
+      display_name: Printed export [SUP-2026-0337]
+    - name: cf-1761
+      display_name: Next-batch date display [SUP-2026-0525]
+    - name: cf-1857
+      display_name: Next-batch date display [SUP-2026-0537]
+    - name: cf-1570
+      display_name: Next-batch date display [SUP-2026-0501]
+    - name: cf-1953
+      display_name: Next-batch date display [SUP-2026-0549]
+    - name: cf-1666
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-0295
+      display_name: Printed export [SUP-2026-0337]
+    - name: cf-1762
+      display_name: Next-batch date display [SUP-2026-0525]
+    - name: cf-1571
+      display_name: Next-batch date display [SUP-2026-0501]
+    - name: cf-1858
+      display_name: Next-batch date display [SUP-2026-0537]
+    - name: cf-1667
+      display_name: Next-batch date display [SUP-2026-0513]
+    - name: cf-1954
+      display_name: Next-batch date display [SUP-2026-0549]
+    - name: cf-1763
+      display_name: Next-batch date display [SUP-2026-0525]
+    - name: cf-1859
+      display_name: Next-batch date display [SUP-2026-0537]
+    - name: cf-1955
+      display_name: Next-batch date display [SUP-2026-0549]
     - name: b-ardenvale-1
       display_name: Autumn service workshop feedback
     - name: si-5310
@@ -3215,6 +3345,10 @@ content:
       display_name: Follow-up on Mechanical maintenance [A-WS-162]
     - name: wm-0906
       display_name: Handover note for Accounts [A-WS-260]
+    - name: cf-0097
+      display_name: Printed export [SUP-2026-0313]
+    - name: cf-0098
+      display_name: Printed export [SUP-2026-0313]
     - name: bn-0090
       display_name: Cross-reference — controls review [K-C-001-26-24]
     - name: wm-0302
@@ -3227,8 +3361,14 @@ content:
       display_name: 'Re: Follow-up on Mechanical maintenance [A-WS-162]'
     - name: wm-0907
       display_name: 'Re: Handover note for Accounts [A-WS-260]'
+    - name: cf-0101
+      display_name: Printed export [SUP-2026-0313]
     - name: b-ardenvale-2
       display_name: 'Re: Autumn service workshop feedback'
+    - name: cf-0102
+      display_name: Printed export [SUP-2026-0313]
+    - name: cf-0103
+      display_name: Printed export [SUP-2026-0313]
     - name: bn-0091
       display_name: 'Re: Cross-reference — controls review [K-C-001-26-24]'
     - name: si-5312
@@ -3241,6 +3381,10 @@ content:
       display_name: Handover note for Identity services [A-WS-237]
     - name: b-veybridge-2
       display_name: 'Re: Scheduling contact for future visits'
+    - name: cf-1045
+      display_name: Reviewer orientation [SUP-2026-0469]
+    - name: cf-1141
+      display_name: New team introduction [SUP-2026-0481]
     - name: wm-1323
       display_name: 'Shared handover: Finance [A-TEAM-FINANCE-1]'
     - name: wm-1287
@@ -3281,6 +3425,8 @@ content:
       display_name: 'Shared handover: Maintenance planning [A-TEAM-MAINTENANCE-PLANNING-1]'
     - name: wm-1242
       display_name: 'Shared handover: Compliance reporting [A-TEAM-COMPLIANCE-REPORTING-1]'
+    - name: cf-0385
+      display_name: Printed export [SUP-2026-0349]
     - name: si-5313
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: wm-1260
@@ -3295,20 +3441,42 @@ content:
       display_name: 'Shared handover: People and board support [A-TEAM-PEOPLE-AND-BOARD-SUPPORT-1]'
     - name: wm-0908
       display_name: 'Re: Handover note for Accounts [A-WS-260]'
+    - name: cf-1046
+      display_name: Reviewer orientation [SUP-2026-0469]
+    - name: cf-1142
+      display_name: New team introduction [SUP-2026-0481]
+    - name: cf-0386
+      display_name: Printed export [SUP-2026-0349]
     - name: wm-0483
       display_name: 'Re: Role note for River distribution [A-WS-139]'
     - name: wm-0728
       display_name: 'Re: Next team slot: Laboratory [A-WS-208]'
     - name: wm-0828
       display_name: 'Re: Handover note for Identity services [A-WS-237]'
+    - name: cf-1048
+      display_name: Reviewer orientation [SUP-2026-0469]
+    - name: cf-1144
+      display_name: New team introduction [SUP-2026-0481]
     - name: bn-0092
       display_name: 'Re: Cross-reference — controls review [K-C-001-26-24]'
     - name: wm-0303
       display_name: 'Re: Learning slot for River treatment [A-WS-087]'
+    - name: cf-1049
+      display_name: Reviewer orientation [SUP-2026-0469]
+    - name: cf-1145
+      display_name: New team introduction [SUP-2026-0481]
+    - name: cf-0389
+      display_name: Printed export [SUP-2026-0349]
     - name: wm-1374
       display_name: 'A-WS-133: staff record confirmed'
+    - name: cf-1051
+      display_name: Reviewer orientation [SUP-2026-0469]
     - name: a-history-1
       display_name: Refurbishment account for the induction material
+    - name: cf-1147
+      display_name: New team introduction [SUP-2026-0481]
+    - name: cf-0390
+      display_name: Printed export [SUP-2026-0349]
     - name: wm-1324
       display_name: 'Re: Shared handover: Finance [A-TEAM-FINANCE-1]'
     - name: wm-1288
@@ -3327,6 +3495,8 @@ content:
       display_name: 'Re: Shared handover: River treatment [A-TEAM-RIVER-TREATMENT-1]'
     - name: wm-1234
       display_name: 'Re: Shared handover: Quality systems [A-TEAM-QUALITY-SYSTEMS-1]'
+    - name: cf-0391
+      display_name: Printed export [SUP-2026-0349]
     - name: wm-1207
       display_name: 'Re: Shared handover: Capital projects [A-TEAM-CAPITAL-PROJECTS-1]'
     - name: wm-1279
@@ -3367,10 +3537,14 @@ content:
       display_name: Kit handover for Laboratory [A-WS-214]
     - name: si-5315
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
+    - name: cf-0193
+      display_name: Printed export [SUP-2026-0325]
     - name: wm-0484
       display_name: 'Re: Role note for River distribution [A-WS-139]'
     - name: b-ternwick-1
       display_name: Staff-history batch accepted
+    - name: cf-0194
+      display_name: Printed export [SUP-2026-0325]
     - name: a-history-3
       display_name: 'Re: Refurbishment account for the induction material'
     - name: wm-1325
@@ -3427,8 +3601,14 @@ content:
       display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
     - name: wm-0746
       display_name: 'Re: Kit handover for Laboratory [A-WS-214]'
+    - name: cf-0197
+      display_name: Printed export [SUP-2026-0325]
     - name: bn-0094
       display_name: 'Re: Cross-reference — controls review [K-C-001-26-24]'
+    - name: cf-0198
+      display_name: Printed export [SUP-2026-0325]
+    - name: cf-0199
+      display_name: Printed export [SUP-2026-0325]
     - name: wm-0323
       display_name: Follow-up on River treatment [A-WS-093]
     - name: wm-0664
@@ -3469,28 +3649,64 @@ content:
       display_name: Learning slot for Field coordination [A-WS-145]
     - name: wm-0846
       display_name: Kit handover for Customer contact [A-WS-243]
+    - name: cf-1265
+      display_name: Date display [SUP-2026-0061]
+    - name: cf-1385
+      display_name: Date display [SUP-2026-0073]
     - name: wm-0243
       display_name: 'Re: Learning slot for Pine treatment [A-WS-070]'
     - name: wm-0586
       display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
     - name: si-5317
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
+    - name: cf-1505
+      display_name: Date display [SUP-2026-0085]
     - name: wm-0929
       display_name: 'Re: Kit handover for Procurement [A-WS-266]'
+    - name: cf-1266
+      display_name: Date display [SUP-2026-0061]
+    - name: cf-1386
+      display_name: Date display [SUP-2026-0073]
     - name: b-ternwick-2
       display_name: 'Re: Staff-history batch accepted'
     - name: bn-0095
       display_name: Suggested improvement — field coordination [K-C-001-26-25]
+    - name: cf-1506
+      display_name: Date display [SUP-2026-0085]
+    - name: cf-1269
+      display_name: Date display [SUP-2026-0061]
     - name: wm-0667
       display_name: 'Re: Handover note for Capital projects [A-WS-191]'
+    - name: cf-1389
+      display_name: Date display [SUP-2026-0073]
     - name: wm-0406
       display_name: 'Re: Follow-up on Pine distribution [A-WS-116]'
     - name: wm-0506
       display_name: 'Re: Learning slot for Field coordination [A-WS-145]'
+    - name: cf-1509
+      display_name: Date display [SUP-2026-0085]
     - name: wm-0847
       display_name: 'Re: Kit handover for Customer contact [A-WS-243]'
+    - name: cf-1270
+      display_name: Date display [SUP-2026-0061]
+    - name: cf-1390
+      display_name: Date display [SUP-2026-0073]
     - name: wm-1400
       display_name: 'A-WS-237: staff record confirmed'
+    - name: cf-1510
+      display_name: Date display [SUP-2026-0085]
+    - name: cf-1271
+      display_name: Date display [SUP-2026-0061]
+    - name: cf-1391
+      display_name: Date display [SUP-2026-0073]
+    - name: cf-1511
+      display_name: Date display [SUP-2026-0085]
+    - name: cf-1273
+      display_name: Date display [SUP-2026-0061]
+    - name: cf-1393
+      display_name: Date display [SUP-2026-0073]
+    - name: cf-1513
+      display_name: Date display [SUP-2026-0085]
     - name: b-belvarn-1
       display_name: Meter visit contact
     - name: bn-0096
@@ -3527,10 +3743,22 @@ content:
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: bn-0098
       display_name: 'Re: Suggested improvement — field coordination [K-C-001-26-25]'
+    - name: cf-2149
+      display_name: Visit date export [SUP-2026-0433]
+    - name: cf-2293
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2150
+      display_name: Visit date export [SUP-2026-0433]
+    - name: cf-2437
+      display_name: Comment ordering [SUP-2026-0457]
     - name: wm-0425
       display_name: 'Re: Learning slot for River distribution [A-WS-122]'
     - name: wm-0768
       display_name: 'Re: Kit handover for Quality systems [A-WS-220]'
+    - name: cf-2294
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2438
+      display_name: Comment ordering [SUP-2026-0457]
     - name: wm-0588
       display_name: 'Re: Handover note for Electrical and controls [A-WS-168]'
     - name: wm-0849
@@ -3539,8 +3767,32 @@ content:
       display_name: 'Re: Information session timing'
     - name: wm-1364
       display_name: 'A-WS-093: staff record confirmed'
+    - name: cf-2155
+      display_name: Visit date export [SUP-2026-0433]
     - name: bn-0099
       display_name: 'Re: Suggested improvement — field coordination [K-C-001-26-25]'
+    - name: cf-2299
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2443
+      display_name: Comment ordering [SUP-2026-0457]
+    - name: cf-2156
+      display_name: Visit date export [SUP-2026-0433]
+    - name: cf-2300
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2444
+      display_name: Comment ordering [SUP-2026-0457]
+    - name: cf-2158
+      display_name: Visit date export [SUP-2026-0433]
+    - name: cf-2302
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2159
+      display_name: Visit date export [SUP-2026-0433]
+    - name: cf-2446
+      display_name: Comment ordering [SUP-2026-0457]
+    - name: cf-2303
+      display_name: Restored saved view [SUP-2026-0445]
+    - name: cf-2447
+      display_name: Comment ordering [SUP-2026-0457]
     - name: si-5322
       display_name: 'Re: Seasonal handover workshop [SUP-2026-0493]'
     - name: a-outreach-1
@@ -3723,6 +3975,22 @@ content:
       display_name: 'Re: Lunch next week?'
     - name: a-photo-6
       display_name: Mine is going in the display
+    - name: cf-0931
+      display_name: Review view [SUP-2026-0421]
+    - name: cf-1222
+      display_name: Seasonal handover workshop [SUP-2026-0493]
+    - name: cf-0932
+      display_name: Review view [SUP-2026-0421]
+    - name: cf-1223
+      display_name: Seasonal handover workshop [SUP-2026-0493]
+    - name: cf-0934
+      display_name: Review view [SUP-2026-0421]
+    - name: cf-1225
+      display_name: Seasonal handover workshop [SUP-2026-0493]
+    - name: cf-0935
+      display_name: Review view [SUP-2026-0421]
+    - name: cf-1226
+      display_name: Seasonal handover workshop [SUP-2026-0493]
     - name: b-path-1
       display_name: Second place
     sensitive: true

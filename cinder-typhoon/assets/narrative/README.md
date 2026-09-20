@@ -3,19 +3,24 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 19,647 distinct authored messages, 4,048 source documents,
+The collection contains 22,151 distinct authored messages, 4,358 source documents,
 staff directories for all 294 employees, and 169 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
 The support slice adds 5,500 messages, 500 case records, 78 supporting
 documents, and 64 implementation or onboarding appointments for the twelve
-utility customers. Its 30 accepted engineering escalations remain unresolved.
+utility customers. Its 30 engineering escalations continue in later slices.
 The engineering slice adds 5,500 messages and 720 documents; product and quality
 adds 4,000 messages and 1,976 documents. Release and platform adds 1,572 messages,
 530 documents, 120 operating histories, and 84 calendars. Its
 [review record](../../docs/narrative/release-platform-review.md) explains the
 message allocation, accepted revisions, held bundles, and validation limits.
+Customer follow-up adds 2,504 messages and 310 documents, updates 230 existing
+case documents, and adds 60 child cases. Its ten shared corrections cover all
+thirty engineering escalations: 24 cases close after verification and six await
+customer checks. Its [review record](../../docs/narrative/customer-followup-review.md)
+documents the scope and volume adjustments. The Rillhaven workshop remains future.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -36,6 +41,7 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/business-network.yaml` | Author-only organizations, contact profiles, agreement terms, and accepted activity. |
 | `authoring/support-intake.yaml` | Author-only joins for support cases, separate customer/internal threads, attachments, and appointments. |
 | `authoring/release-platform.yaml` | Author-only release acceptance joins, operating states, recovery samples, logical service owners, and counts. |
+| `authoring/customer-followup.yaml` | Current case dispositions over the original intake history, child-case parents, knowledge revisions, correction/release/delivery joins, and workshop preparations. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |

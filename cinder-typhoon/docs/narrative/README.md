@@ -1,7 +1,7 @@
 # KeplerOps and Alterra: the enterprise world
 
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
-support-intake, engineering, and product-quality content slices added on 20
+support-intake, engineering, product-quality, release/platform, and customer-follow-up slices added on 20
 September. These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -42,6 +42,8 @@ and unfinished plans of their own.
 | [Product and quality voices](product-quality-voices.md) | Current voice guidance and exact correspondence samples for the eight product and quality staff. |
 | [Release and platform review](release-platform-review.md) | Release acceptance, operating histories, recovery evidence, counts, and message-allocation adjustment. |
 | [Release and platform voices](release-platform-voices.md) | Writing guidance for the seven platform and release staff. |
+| [Customer follow-up review](customer-followup-review.md) | Case outcomes, shared engineering corrections, customer delivery evidence, workshop preparations, and volume adjustment. |
+| [Customer follow-up voices](customer-followup-voices.md) | Writing guidance for customer replies and private workshop preparations. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -91,7 +93,12 @@ support-linked assessments that remain explicitly deferred or declined.
 The release and platform slice adds 120 histories, including 54 published
 internal qualification bundles, six held bundles, maintenance, recovery
 samples, and capacity reviews. Customer deployment and support closure remain
-separate downstream decisions.
+separate downstream decisions. The customer-follow-up slice supplies those
+decisions with ten shared corrections, five later releases, 24 verified
+engineering-case closures, and six cases awaiting customer checks. It also adds
+ordinary follow-ups, accepted handovers, revised knowledge, and completed
+preparations for the still-future Rillhaven workshop. Earlier deferral and
+decline records remain part of the history.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

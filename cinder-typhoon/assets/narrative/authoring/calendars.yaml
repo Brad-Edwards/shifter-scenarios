@@ -8,8 +8,10 @@ events:
   start: '2026-09-24T10:00:00-04:00'
   end: '2026-09-24T11:30:00-04:00'
   summary: Rillhaven maintenance workshop
-  description: Practical example and discussion. Talia leads; Maya takes ongoing-support questions.
+  description: Participant outline revision 3. Talia leads the example and discussion; Maya takes ongoing-support
+    questions. Printed and screen copies use RH-WORKSHOP-026. Session still planned for 24 September.
   status: CONFIRMED
+  created_at: '2026-09-15T16:00:00-04:00'
 - id: evan-noor-lunch
   employer: keplerops
   organizer: noor

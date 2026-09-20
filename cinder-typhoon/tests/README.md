@@ -61,14 +61,15 @@ python cinder-typhoon/build/render_narrative.py --check
 python cinder-typhoon/tests/validate_narrative.py
 python -m unittest discover -s cinder-typhoon/tests -p test_narrative_integrity.py
 python -m unittest discover -s cinder-typhoon/tests -p test_release_platform.py
+python -m unittest discover -s cinder-typhoon/tests -p test_customer_followup.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
 reply chains, MIME attachment bytes and publication dates, retained mailbox copies,
 document readers, roster and reporting joins, directory entries, calendar times
 and audiences, employment records, business account and contact joins, support
-case/thread/entitlement joins, normalized prose diversity, stable unresolved
-engineering escalations, accepted-activity arithmetic, ownership, and story coverage. Corruption
+case/thread/entitlement joins, normalized prose diversity, historical engineering
+assessments and later resolutions, accepted-activity arithmetic, ownership, and story coverage. Corruption
 checks reject an altered attachment, a private message copied to an unrelated
 mailbox, changed source bytes, a detached reply, a reporting loop, and an
 altered accepted-delivery amount. They also reject a customer/internal thread
@@ -81,6 +82,15 @@ mutations reject premature release, unaccepted evidence, publication of a held
 bundle, changed readback bytes, fabricated recovery hashes, altered machine
 values, overbooked capacity, unrelated readers, confirmed cancelled windows,
 and invented service owners. Attachment checks include declared MIME types.
+
+Customer follow-up checks join 290 case histories, ten shared corrections,
+five later releases, 24 knowledge revisions, and the Rillhaven preparations.
+Fourteen targeted mutations reject missing verification, premature delivery or
+acceptance, unrelated evidence, private-thread or attachment leakage, rewritten
+history, false test results, completed future work, missing parents, and
+premature closure notices. Current case projections retain the original intake
+history and unchanged record identity. These checks validate fictional records;
+they do not execute the product tests described in those records.
 
 ## Prose checks
 
