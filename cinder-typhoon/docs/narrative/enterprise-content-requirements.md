@@ -3,7 +3,7 @@
 Planning draft, 19 September 2026. This document specifies future content
 development. It creates no employees, business records, services, or SDL changes.
 The [generation plan](content-generation-plan.md) covers tools, sizing, and order
-of work. The existing 68 messages and fifteen documents are a small authored
+of work. The existing 75 messages and fifteen documents are a small authored
 story collection; they do not constitute the companies' documentary footprint.
 
 ## A reusable world

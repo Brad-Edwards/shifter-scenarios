@@ -29,7 +29,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-6722e554c633052dd31df20e73951ce3324b9d38e48c93c75e97a6a129686557
+      version: sha256-4602b2b3c012a8ca91e792fe3f151cf46b161200f49935afa8c6af79cc4cf5b7
     description: arwc workplace mail. Preserve authored content, mailbox membership or document readers, and
       declared opening state.
     items:
@@ -83,6 +83,8 @@ content:
       display_name: Have you entered a photograph?
     - name: a-photo-3
       display_name: 'Re: Have you entered a photograph?'
+    - name: a-path-1
+      display_name: Your garden photograph
     - name: b-talvern-1
       display_name: Information session timing
     - name: b-talvern-2
@@ -97,6 +99,8 @@ content:
       display_name: Your comparison this afternoon
     - name: a-billing-1
       display_name: The billing-period explanation
+    - name: a-explanation-1
+      display_name: 'Re: The billing-period explanation'
     - name: a-learning-1
       display_name: Time for the next orientation group
     - name: a-billing-2
@@ -115,6 +119,8 @@ content:
       display_name: 'Re: Lunch next week?'
     - name: a-photo-6
       display_name: Mine is going in the display
+    - name: b-path-1
+      display_name: Second place
     tags:
     - world-content
     - synthetic

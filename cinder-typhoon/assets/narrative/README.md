@@ -3,12 +3,18 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The first collection contains 68 authored messages, 15 company documents,
+The collection contains 75 authored messages, 15 company documents,
 contact directories for the fourteen principal-company employees in the cast,
 and three calendar invitations. There are sixteen retained mailboxes, including
 the laboratory and staff-activities shared correspondence. It covers the eight ordinary stories, the
 companies' histories and ambitions, and relationships with all eight supporting
 businesses. Jules appears as a Veybridge correspondent.
+
+The [character writing slice](../../docs/narrative/voice-review.md) selects 30
+samples: nine unchanged messages, fourteen revised messages, and seven new
+messages. It extends the existing fifteen profiles in place. The other 45
+messages remain unchanged. Private profiles, sample annotations, ownership,
+and base-version records stay under `docs/narrative/` and are not deployed.
 
 ## Sources and outputs
 

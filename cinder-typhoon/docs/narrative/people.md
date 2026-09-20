@@ -9,6 +9,14 @@ The ten inherited actor IDs identify established characters. The five people
 without those IDs are narrative additions. Organizational reporting is described
 by function; their names and relationships do not assign technical permissions.
 
+The practical writing profiles and sample annotations below are author-only.
+Only the linked correspondence is included in the workplace payloads. These
+habits describe tendencies, not a template or a requirement to make mistakes.
+All samples use English. Canon does not establish anyone's first language,
+additional languages, or comparative fluency; do not infer those from names.
+The [sample inventory](voice-samples.yaml) distinguishes reused, revised, and
+new records, and the [review](voice-review.md) records the editorial checks.
+
 ## KeplerOps
 
 ### Rowan Ito — FieldKest developer (`K-DEV-01`)
@@ -34,6 +42,33 @@ things with their hands partly because the results leave the screen.
 adds examples and sometimes a second message revising the first. With friends,
 their self-mockery usually arrives after they recognize they have overdone it.
 
+**Practical writing profile:** Wants useful technical influence, not a management job; right now the risk is
+turning a small review or repair into a larger project. With Evan, state the
+question first, then let examples accumulate. With Maya, omit the greeting in
+an active thread and allow an embarrassed aside without a full apology speech.
+Usually 30–120 words, occasionally longer. Workplace English is comfortable;
+there is no established first-language history. Uses contractions, parentheses,
+and a late “actually”; few formal abbreviations. Signs a work request “Rowan”,
+often leaves a friend's reply unsigned. Revises by adding rather than replacing.
+An occasional repeated word or unclear “it” can survive that process; factual
+identifiers and claims still need checking.
+
+**Work sample** ([`k-review-1`](../../assets/narrative/generated/messages/k-review-1.eml), new):
+
+> Evan, could you look at the wording before I send round my review summary?
+>
+> I have "the comparison now shows both submissions". Which tells you what appears, but not why you'd use it. For example, if someone sends a replacement you want to see what they changed without opening both separately. I could put that in the first sentence. Or show the two side by side at the review and keep the written bit short.
+>
+> Actually, we need the written example for people who aren't there. I'll keep that. Is the rest enough?
+> Rowan
+
+**Familiar or less formal sample** ([`k-bike-4`](../../assets/narrative/generated/messages/k-bike-4.eml), reused-revised):
+
+> Back in the rack. Brake adjusted and checked. No parts ordered.
+>
+> Sorry, you asked for a repair and I got interested in the cable routing. Still have opinions. Will keep them to myself until winter.
+
+
 ### Maya Ranscombe — customer support engineer (`K-SUP-01`)
 
 Maya joined in 2019 and owns customer relationships as well as individual
@@ -57,6 +92,35 @@ can tell a short story well. Her public patience has limits: in a familiar
 thread she admits irritation, then decides what to do about it. She does not
 turn every conversation into emotional support for somebody else.
 
+**Practical writing profile:** Wants her knowledge of customers recognized and is considering leadership;
+protecting time for family and ordinary life matters too. A customer gets a
+remembered detail, a bounded request, and room to decline. Rowan gets a direct
+reminder. Use 50–110 words externally and 15–60 with friends. She writes fluent
+workplace English; no other language background is established. External
+openings use the person's name; internal replies often start with the question.
+Signs “Maya”, uses contractions, rarely abbreviates outside familiar threads.
+She edits out blame in customer mail, not every sign of irritation in private.
+Rushed replies may leave out “I” or assume the reader remembers which Monday;
+dates must remain recoverable from the thread.
+
+**Work sample** ([`b-kepler-arwc-1`](../../assets/narrative/generated/messages/b-kepler-arwc-1.eml), reused-unchanged):
+
+> Theo,
+>
+> Would ARWC be willing to join another short reference conversation? The prospective customer wants to hear how FieldKest fits around established maintenance processes. We would agree the agenda and staff time beforehand.
+>
+> It would help to hear what has improved since the early work as well as what you wish had been easier. There is no presentation for you to deliver on our behalf.
+>
+> Maya
+
+**Familiar or less formal sample** ([`k-bike-3`](../../assets/narrative/generated/messages/k-bike-3.eml), reused-revised):
+
+> Could we stop at the brake? I need the bike back for Monday, Rowan. Station run, remember?
+>
+> The other bits can wait. I'd quite like to ride it.
+> Maya
+
+
 ### Evan Calderoux — release engineer (`K-REL-01`)
 
 Evan joined in 2019. They enjoy being the person who can say something is
@@ -79,6 +143,37 @@ happiest when someone recommends something unexpected.
 **Voice and manner:** complete sentences, deliberate openings and endings,
 quietly theatrical enthusiasm about a successful result. Messages to Noor can
 be leisurely and full of tangents; release notes remain concise.
+
+**Practical writing profile:** Wants a release function with clear endings while keeping hands-on work.
+An ambiguous status claim gets a careful question, even from a respected peer.
+Noor gets the leisurely tangent Evan would remove from a review response.
+Work mail is usually 40–90 words; personal mail can reach 150. Their workplace
+English is deliberate, without an established language biography. Names at
+the start, “Thank you” or their name at the end; complete stops and occasional
+semicolons. Uses version labels exactly and few casual abbreviations. Rereads
+work mail for implied commitments. A personal story can double back or leave
+an unclear pronoun. Don't give every message theatrical enthusiasm: a review
+can be entirely plain.
+
+**Work sample** ([`k-review-2`](../../assets/narrative/generated/messages/k-review-2.eml), new):
+
+> Rowan,
+>
+> Keep the replacement example in the written summary. Please say whether you are describing a proposal or something available now; the current opening reads like a release announcement.
+>
+> That is all I need for this review. We can leave the presentation order until you have settled the wording.
+>
+> Thank you,
+> Evan
+
+**Familiar or less formal sample** ([`k-lunch-3`](../../assets/narrative/generated/messages/k-lunch-3.eml), reused-unchanged):
+
+> That was lovely. Monthly works.
+>
+> Also, please send me the film you were trying to remember. I have now described half of its apparent plot to the discussion group and would like to establish that it exists.
+>
+> Evan
+
 
 ### Noor Aveling — platform and workload operator (`K-SRE-01`)
 
@@ -105,6 +200,33 @@ Noor often shows affection by making something easier for a friend, but can
 learn that the friend wanted company rather than a solution. They can be quiet
 without being unhappy or secretly disapproving.
 
+**Practical writing profile:** Wants maintenance capacity taken seriously and fewer avoidable meetings.
+Supplier replies identify scope and the next action. With Evan, a fragment
+or an extra line about clarinet can carry affection without explaining it.
+Usually 10–60 words; a capacity argument can run longer. Uses concise, capable
+English, with no established first language. Often no greeting. Signs external
+mail “Noor”; may omit both name and final punctuation with a friend. Uses “IT”
+with the service desk, not unexplained acronyms with customers. Edits for length,
+sometimes removing a subject or too much context. Lowercase addenda and missing
+full stops are plausible when sending another thought. Bluntness is not a
+permanent mood or a marker of limited fluency.
+
+**Work sample** ([`b-orren-2`](../../assets/narrative/generated/messages/b-orren-2.eml), reused-revised):
+
+> Summary looks right, including the split between internal IT and our product workloads. Thanks.
+>
+> No date for the next review yet. I'll send a week after planning.
+> Noor
+
+**Familiar or less formal sample** ([`k-lunch-4`](../../assets/narrative/generated/messages/k-lunch-4.eml), reused-revised):
+
+> I think that was two films. Will check at home.
+>
+> Good lunch. First Thursday next month, then.
+>
+> also we got through a whole piece at clarinet. Very slowly but nobody stopped
+
+
 ### Talia Mornac — support quality reviewer (`K-REV-01`)
 
 Talia joined support in 2023 with experience from another workplace. Her job
@@ -127,6 +249,33 @@ was newcomers finding the right place, and the joke has mostly run its course.
 playful exchanges with friends. She sometimes qualifies a perfectly good idea
 before anyone has objected. When she finally asks Maya to let her try something
 her own way, the request is polite but unambiguous.
+
+**Practical writing profile:** Wants to lead the Rillhaven workshop herself and have Maya trust the plan.
+Organizes professional requests around what feedback she needs; a familiar
+one-to-one reply can ramble or make a dry observation. Usually 60–120 words
+for work and 25–90 privately. Her workplace English is careful and confident;
+reserve in a meeting is not language difficulty. Often opens on the subject,
+signs “Talia” professionally and sometimes “T” to Maya. Uses contractions and
+question marks, few abbreviations beyond familiar names. Rehearses and trims
+work drafts; a leftover qualifier may soften an otherwise clear request.
+Relaxed replies can omit “I've” or change subject halfway through. Don't
+make every message a polished declaration of independence.
+
+**Work sample** ([`k-workshop-3`](../../assets/narrative/generated/messages/k-workshop-3.eml), reused-unchanged):
+
+> Thank you for listening. The point about explaining who the example is for helped.
+>
+> I'd like to keep my opening and lead the session myself. Could you take the questions about ongoing support, rather than sharing the presentation? I know you have done more of these. I need to find out how I do one.
+>
+> Talia
+
+**Familiar or less formal sample** ([`k-rehearsal-1`](../../assets/narrative/generated/messages/k-rehearsal-1.eml), new):
+
+> I caught myself rehearsing the Rillhaven opening while making tea yesterday. To an empty kitchen. Apparently cutting it down wasn't the same as leaving it alone.
+>
+> Anyway, how was your sister's dinner? Just seen your note about the photo. Did everyone eventually agree on the same one?
+> T
+
 
 ### Leah Calder-Voss — founder and managing director
 
@@ -151,6 +300,36 @@ holiday without checking in to prove she remains useful.
 **Voice and manner:** energetic, conversational, prone to explaining a decision
 through something she remembers. She asks about a colleague's plans and usually
 remembers the answer. Formal commercial writing is more restrained.
+
+**Practical writing profile:** Wants profitable, sustainable growth and decisions that no longer depend
+on her, while still enjoying being consulted. A staff note invites examples;
+one-to-one mail often starts from something she remembers. Commercial prose
+is restrained. Group notes are usually 70–140 words; quick personal replies
+40–100. Uses assured conversational English; no first-language history is
+specified. Often no greeting to a group, a name inline to one person, “Leah”
+at the end. Contractions and occasional exclamations; little management
+abbreviation. Edits commitments carefully but may leave an overlong sentence
+or repeat “I remember”. A recollection can need correcting. Do not turn that
+into an error in the company's dates or ownership.
+
+**Work sample** ([`k-growth-1`](../../assets/narrative/generated/messages/k-growth-1.eml), reused-unchanged):
+
+> I've attached the note discussed with the managers. Please read it before Thursday's company update.
+>
+> We can fund careful growth from the business we have. The question is how much additional customer-specific work we should accept while making the product easier to support. Those are real choices, even in a profitable year.
+>
+> I'd especially like examples of work that keeps following someone after their role has changed.
+>
+> Leah
+
+**Familiar or less formal sample** ([`k-memory-1`](../../assets/narrative/generated/messages/k-memory-1.eml), new):
+
+> Evan, the rooms! I'd been remembering the old office very fondly until I read your bit about everyone hearing the same conversation. Fair point.
+>
+> I would like to see that 2024 photo again. Just for me for now, no need to arrange anything for November yet. I remember being pleased we finally had something to take a picture of that wasn't still waiting for another bit of work.
+>
+> Leah
+
 
 ## ARWC
 
@@ -178,6 +357,37 @@ who takes rather good photographs and is always suggesting another short stop.
 conversation. His humour includes his own habits. He is capable of a simple
 thank-you without attaching another request.
 
+**Practical writing profile:** Wants workable schedules and a say in improving them. Work requests lead
+with the dependency or practical next step; familiar colleagues hear the
+anecdote and the slightly too-interested photography question. Usually 25–90
+words. His everyday English is comfortable, with local shorthand that may
+need unpacking for an outsider; no language background is assigned. Names
+on new external threads, no ceremonial opening on replies, usually “Theo”.
+Fragments, contractions, and direct questions; “appt” is plausible in a diary
+note but spell it out to customers. Checks arrangements more carefully than
+social prose. Can omit an article or send a question before checking his own
+diary. Humour need not accompany a serious work request.
+
+**Work sample** ([`b-kepler-arwc-2`](../../assets/narrative/generated/messages/b-kepler-arwc-2.eml), reused-revised):
+
+> Maya,
+>
+> Probably. Subject to the usual agreement on staff time. Send the outline and I'll find the right colleagues.
+>
+> We can talk about not collecting the same field material twice. And getting used to the support process instead of ringing the first engineer we met. That took a while on our side.
+>
+> No slides for me, please.
+> Theo
+
+**Familiar or less formal sample** ([`a-photo-2`](../../assets/narrative/generated/messages/a-photo-2.eml), reused-unchanged):
+
+> Owen, you should put in the picture you showed us. Phones count.
+>
+> Mina, do you know whether they are judging the prints or the originals? Only asking because the colours look a bit different. It's all just a bit of fun, obviously.
+>
+> Theo
+
+
 ### Clara Morivelle — controls engineer (`A-CTRL-01`)
 
 Clara joined ARWC in 2014. She likes the physical continuity of the work: an
@@ -200,6 +410,35 @@ sharing all the same social circles.
 visible delight about personal interests. When rushed, Clara can sound as
 though the limits of her answer should have been obvious. She can apologize
 for the tone without retracting a necessary qualification.
+
+**Practical writing profile:** Wants time for engineering and useful teaching, not constant coordination.
+A supplier gets the precise limit of her agreement. Nadia gets several ideas
+for a pleasant afternoon. Technical mail is often 30–80 words; personal
+recommendations can run to 150. Her professional English is precise; no other
+language context is established. Replies may begin “Yes” followed by the scope;
+friends get their name inline. Full name and employer externally, “Clara”
+privately. Few abbreviations outside shared technical vocabulary. Checks
+qualifications in work drafts and uses ordinary punctuation. In a relaxed
+message, a long sentence or an unfinished recollection can remain. Rushed work
+may omit the reason for a limit; clarify it without withdrawing the limit.
+
+**Work sample** ([`b-ardenvale-2`](../../assets/narrative/generated/messages/b-ardenvale-2.eml), reused-unchanged):
+
+> Yes. Examples of the information that makes a return straightforward would be useful to our staff.
+>
+> Please keep the practical session separate from the product demonstration so people can choose the part relevant to their work.
+>
+> Clara Morivelle
+> Alterra Regional Water Company
+
+**Familiar or less formal sample** ([`a-walk-1`](../../assets/narrative/generated/messages/a-walk-1.eml), reused-revised):
+
+> Nadia, take the riverside path if you want an easy afternoon. Lovely light along there when the cloud lifts. The higher route is good too, though you'd want most of the day and something better than the shoes I wore last time.
+>
+> I've got notes on both somewhere. There's a nice place to stop for lunch near the riverside turn, and another further along if you're still going. Want those?
+>
+> Clara
+
 
 ### Nadia Corvane — regional water planner (`A-PLAN-01`)
 
@@ -225,6 +464,37 @@ someone's explanation is better than hers. In personal conversation she is
 warmer and more speculative. Rosa's ability to make one point land has become
 something she wants to learn from rather than simply supply facts to.
 
+**Practical writing profile:** Wants people to understand a regional decision and wants to learn from
+Rosa's explanations. A work reply tries an example and asks if it helps;
+Priya gets warmth, speculation, and sometimes an unnecessary proposed plan.
+Usually 50–120 words, shorter for arrangements. Uses fluent workplace English;
+no language biography is assigned. Names on work requests, often none in a
+continuing personal thread, “Nadia” at the end. Contractions, questions, and
+occasional parentheses; little abbreviation. Rereads explanations for order
+but can leave an analogy doing too much work. A personal reply may repeat a
+thought or have a loose sentence fragment. Self-awareness should be partial,
+not a concluding lesson in every conversation.
+
+**Work sample** ([`a-explanation-1`](../../assets/narrative/generated/messages/a-explanation-1.eml), new):
+
+> Rosa,
+>
+> Yes, dates first. The reading date and the billing period aren't the same thing; putting them next to each other should help. Like showing the start and end of a journey before explaining how you measured it.
+>
+> Can we try your opening with someone who hasn't worked on this? I know what we mean, which isn't much of a test.
+>
+> Nadia
+
+**Familiar or less formal sample** ([`a-choir-4`](../../assets/narrative/generated/messages/a-choir-4.eml), reused-revised):
+
+> Really enjoyed last night. I nearly asked you about the invoices again over dinner, did you notice?
+>
+> Next time: company first. Unless you actually want the ideas.
+>
+> Still can't get that middle section out of my head. Not necessarily the right notes.
+> Nadia
+
+
 ### Priya Naravel — district procurement officer (`A-PROC-01`)
 
 Priya works in business services and looks after purchasing matters across the
@@ -247,6 +517,33 @@ and rarely volunteers for its committee; she already administers enough things.
 when recounting a small absurdity to a friend. She can enjoy a beautifully
 worded formal letter and still prefer the person who answers a question simply.
 
+**Practical writing profile:** Wants larger contract responsibilities without inheriting every stray
+administrative question. Supplier mail identifies what is agreed and what
+still needs answering. Nadia gets dry impatience and a longer account when
+Priya actually wants to tell it. Usually 40–100 words at work, 10–100 privately.
+Workplace English is confident; a name does not establish any other language.
+Formal replies often start directly, with full name and employer at the end.
+Friends may get neither greeting nor signoff. Uses contractions socially;
+spells out unfamiliar purchasing terms. Polishes wording, sometimes past its
+useful point. A private message can omit a verb or repeat “dinner” deliberately;
+don't manufacture errors in contractual amounts, dates, or conditions.
+
+**Work sample** ([`b-merewick-2`](../../assets/narrative/generated/messages/b-merewick-2.eml), reused-unchanged):
+
+> I remain the purchasing contact. Please send the general planning correspondence here and I will route it internally.
+>
+> The distinction would help. We are a contract customer, and the references to member meetings have occasionally confused new colleagues. Please include the revised guide with the next account review.
+>
+> Priya Naravel
+> Alterra Regional Water Company
+
+**Familiar or less formal sample** ([`a-choir-3`](../../assets/narrative/generated/messages/a-choir-3.eml), reused-revised):
+
+> Dinner, Nadia. Ten minutes of complaining, then dinner.
+>
+> No guide required. We can talk about the middle section we still can't sing; at least we volunteered for that problem.
+
+
 ### Luc Venn-Morel — director of regional operations
 
 Luc reports to ARWC's general manager. He takes pride in representing work he
@@ -268,6 +565,39 @@ by how often he still checks the time.
 **Voice and manner:** measured in formal writing, more reflective one to one.
 He can tell a long story when relaxed. His colleagues are permitted to respect
 him without finding every story equally interesting.
+
+**Practical writing profile:** Wants renewal and succession to leave a maintainable service, and has not
+set a retirement date. Staff requests get a measured answer and the responsible
+next step. One-to-one mail can be reflective without assuming intimacy or
+asking the recipient to reassure him. Usually 50–120 words, longer when telling
+a story. His formal English is practiced; no language background is established.
+Uses the recipient's name and signs “Luc”; public documents get the formal
+role. Complete sentences, few abbreviations, restrained punctuation. Rereads
+promises and removes casual jokes from public writing. A personal aside can
+repeat a phrase or break into fragments. Respecting a colleague's preference
+does not require explaining his entire change of heart.
+
+**Work sample** ([`a-learning-2`](../../assets/narrative/generated/messages/a-learning-2.eml), reused-revised):
+
+> Mina,
+>
+> Agreed. I'll ask the managers to include preparation time in their training proposals.
+>
+> And yes, development as well. I have been thinking about my own succession and let that colour the question. No retirement date assumed for either of us.
+>
+> Luc
+
+**Familiar or less formal sample** ([`a-path-1`](../../assets/narrative/generated/messages/a-path-1.eml), new):
+
+> Mina,
+>
+> Theo mentioned you'd entered a photograph from the garden. I hope I get to see it when the display goes up.
+>
+> I've started going for a walk without measuring how far I've gone. On Sunday I stopped to look at a wall with a tree growing over it, then caught myself checking my watch. Nothing to get back for. Still checked it.
+>
+> Hope the garden's doing well.
+> Luc
+
 
 ### Mina Selverin — senior water treatment operator
 
@@ -292,6 +622,33 @@ must already be counting down to retirement.
 pauses. Her relaxed break-room conversation differs from her formal shift
 records. She does not need to explain the whole utility whenever she appears.
 
+**Practical writing profile:** Wants teaching preparation counted as work and her own development kept
+open. A request to Luc is direct and specific, not deferential autobiography.
+Theo gets less explanation and a comfortable bit of teasing. Usually 25–100
+words for a work request, 10–50 in a familiar reply. Uses competent workplace
+English; old local terms concern shared knowledge, not fluency. Often starts
+with the point; signs requests “Mina”, may leave social replies unsigned.
+Uses contractions and ordinary stops, avoids ornamental punctuation. Local
+short forms belong with colleagues who know them. Checks formal records more
+closely than mail. A hurried note can omit “I” or an article, or assume someone
+knows an old name. Unpack that reference when asked.
+
+**Work sample** ([`a-learning-1`](../../assets/narrative/generated/messages/a-learning-1.eml), reused-unchanged):
+
+> Could the next planning round include the preparation time for orientations, as well as the sessions themselves? I'm glad to teach, but the preparation is real work too.
+>
+> And please keep me in the development conversation. Long service doesn't mean I have already fixed a retirement date. There are still things I would like to learn here.
+>
+> Mina
+
+**Familiar or less formal sample** ([`a-photo-3`](../../assets/narrative/generated/messages/a-photo-3.eml), reused-revised):
+
+> Don't know. Ask the organizers, you've probably got their attention by now.
+>
+> Mine's evening light on the garden wall. I'm pleased with it.
+> Owen, send yours in.
+
+
 ### Owen Vardell — water distribution apprentice
 
 Owen joined the 2025 intake after working in another practical trade. They are
@@ -314,6 +671,34 @@ and do not expect work to supply their entire social life.
 **Voice and manner:** explanatory when nervous, more concise as they settle
 in. Owen enjoys a joke but does not serve as the permanent innocent newcomer
 for other characters to instruct. They also notice things others have missed.
+
+**Practical writing profile:** Wants to be dependable while learning a new trade. When uncertain, explains
+the preparation before asking the question; with Theo and Mina, can simply
+be pleased about a photograph. Usually 60–140 words when rehearsing an answer,
+15–50 socially. Their English supports clear explanations; unfamiliar utility
+terms are new professional knowledge, not a language deficit. Names at the
+start and “Owen” at the end of a work request, often neither privately.
+Contractions and an occasional exclamation; does not force new acronyms into
+every reply. Rereads to avoid sounding unprepared. May leave a sentence fragment
+or a clumsy transition after cutting a long draft. Keep adult competence and
+prior trade experience visible.
+
+**Work sample** ([`a-outreach-1`](../../assets/narrative/generated/messages/a-outreach-1.eml), reused-revised):
+
+> Mina, Rosa,
+>
+> Preparation note attached for tomorrow. I've tried it aloud now and it's too long. I wanted to get the whole journey from source to tap in, so people could see where each job fits, but I haven't left much space for a question.
+>
+> Mina, could you go over the old district names again? I've written them down. Not sure I could explain them to someone else yet.
+>
+> Owen
+
+**Familiar or less formal sample** ([`a-photo-6`](../../assets/narrative/generated/messages/a-photo-6.eml), reused-revised):
+
+> Mine's going in the display! Didn't place, but pleased I sent it in. Thanks both.
+>
+> Theo, that footpath picture is good. What time did you have to get up?
+
 
 ### Rosa Nerivet — customer-service adviser
 
@@ -338,6 +723,34 @@ she would rather spend a free evening at home.
 example. She can finish a discussion decisively. A customer's gratitude means
 something to her, though she does not expect every caller to provide it.
 
+**Practical writing profile:** Wants more responsibility for customer communications and continued contact
+with customers. At work, answers the opening question before supplying process.
+With Nadia, friendly arrangements stay modest: this is a newer relationship.
+Usually 25–90 words externally and 10–50 to colleagues. Her English is
+conversational and assured; no additional language history is specified.
+Replies often start directly. Full name and employer to a customer, “Rosa”
+or nothing internally. Contractions, ordinary commas, an occasional short
+question; avoids internal abbreviations in customer mail. Reads explanations
+aloud and cuts clauses. A quick reply may omit “the” before “accepted version”
+or leave a time unresolved. Clarify arrangements without pretending they
+are already confirmed.
+
+**Work sample** ([`a-billing-3`](../../assets/narrative/generated/messages/a-billing-3.eml), reused-revised):
+
+> Let's keep this one. I tried both with colleagues and they answered the question equally well.
+>
+> Accepted version attached. Thanks, both.
+> Rosa
+
+**Familiar or less formal sample** ([`a-billing-5`](../../assets/narrative/generated/messages/a-billing-5.eml), reused-unchanged):
+
+> Yes, Tuesday suits me if we go after the morning cover changes. I'll check the time with the team.
+>
+> Looking forward to it.
+>
+> Rosa
+
+
 ## Veybridge
 
 ### Jules Orswick — field specialist (`A-FIELD-01`)
@@ -361,6 +774,38 @@ or turning a purchasing decision into a personal favour.
 **Voice and manner:** short practical messages while travelling; more talkative
 when time permits. They tell a good account of a small inconvenience and know
 when an old work story has already been heard.
+
+**Practical writing profile:** Wants some training work alongside field visits, and personal plans that
+survive the working week. Theo gets a direct scheduling boundary and friendly
+talk; less familiar customers get more explicit context. Travel messages are
+usually 20–70 words, relaxed accounts 70–140. Uses practical, confident English;
+no first language or proficiency difference is established. Often opens with
+a name and closes “Thanks” or “Jules”. Contractions, missing commas, fragments,
+and few abbreviations beyond shared work terms. Checks dates before sending
+arrangements, spends less time editing an anecdote. An omitted subject or a
+slightly tangled sentence is plausible; do not assign a typo to every travel
+message. Warmth does not imply ARWC employment or access.
+
+**Work sample** ([`b-veybridge-1`](../../assets/narrative/generated/messages/b-veybridge-1.eml), reused-revised):
+
+> Theo,
+>
+> Can routine scheduling go through dispatch first please? They've got the whole diary. I'm often on the road when you call.
+>
+> Still happy to talk about the work itself. Some of the arrangements are with newer people now; worth getting to know them before you need a visit moved.
+>
+> Thanks
+> Jules
+
+**Familiar or less formal sample** ([`b-path-1`](../../assets/narrative/generated/messages/b-path-1.eml), new):
+
+> Second, then! Nice one. Good to hear about it when we spoke. Only just stopped for a coffee.
+>
+> I've tried taking pictures on walks but I always seem to catch the moment just after the light was good. Last time I stood there waiting for it to come back and my coffee went cold. Went home with a picture of a grey path and no useful excuse for being late.
+>
+> Send me yours when you get a minute. The actual photo, not a description of the judging.
+> Jules
+
 
 ## The social connections that should remain distinct
 

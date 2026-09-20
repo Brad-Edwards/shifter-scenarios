@@ -42,7 +42,7 @@ def check_assets():
     doc_by_id = {d['id']: d for d in docs}
     coverage = read_json(ROOT / 'story-coverage.json')
     require(len(identity['people']) == 15, 'Cast differs from reviewed world')
-    require(len(mail) == len({m['id'] for m in mail}) == 68, 'Authored message inventory drift')
+    require(len(mail) == len({m['id'] for m in mail}) == 75, 'Authored message inventory drift')
     require(len(docs) == len(doc_by_id) == 15, 'Authored document inventory drift')
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs} == {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*.md')}, 'Uncatalogued document')
@@ -169,7 +169,7 @@ def check_narrative_runtime(scenario, runtime):
 
 if __name__ == '__main__':
     check_assets()
-    print('PASS: 68 RFC822 messages, exact attachments and mailbox copies, 15 people, 15 documents, four source collections')
+    print('PASS: 75 RFC822 messages, exact attachments and mailbox copies, 15 people, 15 documents, four source collections')
 
 
 def adversarial_narrative_checks(scenario):

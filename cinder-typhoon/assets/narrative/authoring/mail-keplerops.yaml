@@ -36,10 +36,9 @@ messages:
     subject: 'Re: Bicycle, if your offer still stands'
     reply_to: k-bike-2
     body: |
-      Could we stop at the adjustment for now? I mainly need my bicycle back for Monday.
+      Could we stop at the brake? I need the bike back for Monday, Rowan. Station run, remember?
 
-      This is a very generous amount of thought to put into it. I would also quite like to ride it.
-
+      The other bits can wait. I'd quite like to ride it.
       Maya
   - id: k-bike-4
     story: bicycle
@@ -49,11 +48,9 @@ messages:
     subject: 'Re: Bicycle, if your offer still stands'
     reply_to: k-bike-3
     body: |
-      Done. Brake adjusted, checked, bicycle returned to the rack.
+      Back in the rack. Brake adjusted and checked. No parts ordered.
 
-      You asked for a repair and I started designing the winter edition. Sorry. No parts ordered.
-
-      Rowan
+      Sorry, you asked for a repair and I got interested in the cable routing. Still have opinions. Will keep them to myself until winter.
   - id: k-bike-5
     story: bicycle
     from: maya
@@ -117,13 +114,11 @@ messages:
     subject: 'Re: Can we keep Thursday?'
     reply_to: k-lunch-3
     body: |
-      I think I combined two films. I'll check at home before I invent a third.
+      I think that was two films. Will check at home.
 
-      Good lunch. Let's keep the first Thursday next month.
+      Good lunch. First Thursday next month, then.
 
-      Also: the clarinet group has got through an entire piece together. Slowly. I am choosing to count it.
-
-      Noor
+      also we got through a whole piece at clarinet. Very slowly but nobody stopped
   - id: k-workshop-1
     story: workshop
     from: talia
@@ -310,3 +305,56 @@ messages:
       My sister was very pleased to get everyone around one table. We spent longer choosing the photograph to keep than eating dessert.
 
       Maya
+  - id: k-review-1
+    story: routine-keplerops
+    from: rowan
+    to: [evan]
+    date: '2026-09-14T11:10:00-04:00'
+    subject: How much detail in the review summary?
+    body: |
+      Evan, could you look at the wording before I send round my review summary?
+
+      I have "the comparison now shows both submissions". Which tells you what appears, but not why you'd use it. For example, if someone sends a replacement you want to see what they changed without opening both separately. I could put that in the first sentence. Or show the two side by side at the review and keep the written bit short.
+
+      Actually, we need the written example for people who aren't there. I'll keep that. Is the rest enough?
+      Rowan
+  - id: k-review-2
+    story: routine-keplerops
+    from: evan
+    to: [rowan]
+    date: '2026-09-14T11:48:00-04:00'
+    subject: 'Re: How much detail in the review summary?'
+    reply_to: k-review-1
+    body: |
+      Rowan,
+
+      Keep the replacement example in the written summary. Please say whether you are describing a proposal or something available now; the current opening reads like a release announcement.
+
+      That is all I need for this review. We can leave the presentation order until you have settled the wording.
+
+      Thank you,
+      Evan
+  - id: k-rehearsal-1
+    story: workshop
+    from: talia
+    to: [maya]
+    date: '2026-09-14T15:25:00-04:00'
+    subject: The introduction has escaped the office
+    body: |
+      I caught myself rehearsing the Rillhaven opening while making tea yesterday. To an empty kitchen. Apparently cutting it down wasn't the same as leaving it alone.
+
+      Anyway, how was your sister's dinner? Just seen your note about the photo. Did everyone eventually agree on the same one?
+      T
+  - id: k-memory-1
+    story: anniversary
+    from: leah
+    to: [evan]
+    date: '2026-08-20T16:35:00-04:00'
+    subject: 'Re: Ten years — what do you remember?'
+    reply_to: k-anniversary-4
+    body: |
+      Evan, the rooms! I'd been remembering the old office very fondly until I read your bit about everyone hearing the same conversation. Fair point.
+
+      I would like to see that 2024 photo again. Just for me for now, no need to arrange anything for November yet. I remember being pleased we finally had something to take a picture of that wasn't still waiting for another bit of work.
+
+      Leah
