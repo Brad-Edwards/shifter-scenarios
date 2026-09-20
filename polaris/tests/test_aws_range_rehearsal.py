@@ -37,6 +37,11 @@ def _driver():
 
 
 class BuildArtifactTests(unittest.TestCase):
+    def test_dc_content_seed_accepts_a_provider_dns_forwarder(self) -> None:
+        seed = (PACK_ROOT / "aws-range" / "a2_setup.ps1").read_text(encoding="utf-8")
+        self.assertIn('[string]$DnsForwarder = "169.254.169.253"', seed)
+        self.assertIn("Set-DnsServerForwarder -IPAddress $DnsForwarder", seed)
+
     def test_event_tarball_matches_its_digest_and_is_safe(self) -> None:
         expected = SIDECAR.read_text(encoding="utf-8").split()[0]
         self.assertEqual(expected, hashlib.sha256(TARBALL.read_bytes()).hexdigest())
