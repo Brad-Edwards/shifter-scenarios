@@ -187,6 +187,16 @@ and document item retains its exact source-package content. The new corpus has
 administrative wording belongs to separate, identified account conversations.
 It is not counted again for retained copies or attachments.
 
+All final checks passed on 20 September 2026. The 174 rendered outputs reproduce
+byte-for-byte, and complete narrative validation confirms 23,527 messages and
+4,609 source documents. Seven tests pass, covering twenty new commercial
+mutations and the existing 32 content mutations. RAE 5.0.0 and env-packs 6.1.0
+parse, compile, and validate the pack with 3,450 realization requirements and
+281 observation bindings preserved. Native checks reject four workplace SDL
+mutations, 28 other SDL mutations, two compiled-observation mutations, and
+26 broken topologies/events. Vale reports no findings in the five changed
+Markdown files; Python compilation and whitespace checks also pass.
+
 The environment release is `commercial-2026-09-16/v1`, based on `8b75ce5`.
 `content-ownership.json` inventories every added record and source version.
 The scenario overlay remains empty and requires this world base. Review notes,

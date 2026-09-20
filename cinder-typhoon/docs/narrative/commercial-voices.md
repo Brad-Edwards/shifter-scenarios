@@ -14,7 +14,7 @@ voices follow the accepted business-contact profiles.
 | Martin Harlowe | Direct administrative notes; explains document and calendar differences when useful. | “Use revision 2. The earlier attachment has the old billing contact.” |
 
 The sample wording is a drafting guide, not a second copy of correspondence.
-The finished review identifies exact shipped examples. No new recurring
+The exact shipped examples are listed below. No new recurring
 speaker or customer is introduced in this slice.
 
 Exact shipped examples include Lina's reference-call boundary in `cm-1214`,
