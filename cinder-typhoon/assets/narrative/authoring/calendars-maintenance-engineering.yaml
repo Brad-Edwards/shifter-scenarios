@@ -1,0 +1,433 @@
+events:
+- id: maintenance-contractor-001
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm098
+  - jules
+  start: '2026-06-12T13:00:00-04:00'
+  end: '2026-06-12T16:00:00-04:00'
+  summary: 'ARWC-CA-26-001: standard commissioning witness visit'
+  description: ARWC-WO-26-0181; ARWC-PO-26-201; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-07T12:15:00-04:00'
+  updated_at: '2026-06-07T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    awm098: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-002
+  employer: arwc
+  organizer: awm125
+  attendees:
+  - awm103
+  - jules
+  start: '2026-06-16T13:00:00-04:00'
+  end: '2026-06-16T16:00:00-04:00'
+  summary: 'ARWC-CA-26-002: standard commissioning witness visit'
+  description: ARWC-WO-26-0199; ARWC-PO-26-202; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-10T12:15:00-04:00'
+  updated_at: '2026-06-10T14:00:00-04:00'
+  sequence: 0
+  location: River West district
+  responses:
+    awm103: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-003
+  employer: arwc
+  organizer: awm123
+  attendees:
+  - clara
+  - jules
+  start: '2026-06-17T13:00:00-04:00'
+  end: '2026-06-17T16:00:00-04:00'
+  summary: 'ARWC-CA-26-003: standard commissioning witness visit'
+  description: ARWC-WO-26-0217; ARWC-PO-26-203; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-13T12:15:00-04:00'
+  updated_at: '2026-06-13T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    clara: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-004
+  employer: arwc
+  organizer: awm121
+  attendees:
+  - awm112
+  - jules
+  start: '2026-06-22T13:00:00-04:00'
+  end: '2026-06-22T16:00:00-04:00'
+  summary: 'ARWC-CA-26-004: standard commissioning witness visit'
+  description: ARWC-WO-26-0235; ARWC-PO-26-204; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-16T12:15:00-04:00'
+  updated_at: '2026-06-16T14:00:00-04:00'
+  sequence: 0
+  location: Pine East district
+  responses:
+    awm112: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-005
+  employer: arwc
+  organizer: awm119
+  attendees:
+  - awm117
+  - jules
+  start: '2026-06-25T13:00:00-04:00'
+  end: '2026-06-25T16:00:00-04:00'
+  summary: 'ARWC-CA-26-005: standard commissioning witness visit'
+  description: ARWC-WO-26-0253; ARWC-PO-26-205; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-19T12:15:00-04:00'
+  updated_at: '2026-06-19T14:00:00-04:00'
+  sequence: 0
+  location: River depot
+  responses:
+    awm117: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-006
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm121
+  - jules
+  start: '2026-06-26T13:00:00-04:00'
+  end: '2026-06-26T16:00:00-04:00'
+  summary: 'ARWC-CA-26-006: standard commissioning witness visit'
+  description: ARWC-WO-26-0271; ARWC-PO-26-206; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-22T12:15:00-04:00'
+  updated_at: '2026-06-22T14:00:00-04:00'
+  sequence: 0
+  location: North reservoir
+  responses:
+    awm121: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-007
+  employer: arwc
+  organizer: awm125
+  attendees:
+  - awm126
+  - jules
+  start: '2026-06-30T13:00:00-04:00'
+  end: '2026-06-30T16:00:00-04:00'
+  summary: 'ARWC-CA-26-007: standard commissioning witness visit'
+  description: ARWC-WO-26-0289; ARWC-PO-26-207; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-25T12:15:00-04:00'
+  updated_at: '2026-06-25T14:00:00-04:00'
+  sequence: 0
+  location: River East district
+  responses:
+    awm126: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-008
+  employer: arwc
+  organizer: awm123
+  attendees:
+  - awm131
+  - jules
+  start: '2026-07-06T13:00:00-04:00'
+  end: '2026-07-06T16:00:00-04:00'
+  summary: 'ARWC-CA-26-008: standard commissioning witness visit'
+  description: ARWC-WO-26-0307; ARWC-PO-26-208; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-28T12:15:00-04:00'
+  updated_at: '2026-06-28T14:00:00-04:00'
+  sequence: 0
+  location: Pine West district
+  responses:
+    awm131: ACCEPTED
+    jules: ACCEPTED
+- id: maintenance-contractor-009
+  employer: arwc
+  organizer: awm121
+  attendees:
+  - awm136
+  - bc_veybridge_2
+  start: '2026-07-06T13:00:00-04:00'
+  end: '2026-07-06T16:00:00-04:00'
+  summary: 'ARWC-CA-26-009: standard commissioning witness visit'
+  description: ARWC-WO-26-0325; ARWC-PO-26-209; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-01T12:15:00-04:00'
+  updated_at: '2026-07-01T14:00:00-04:00'
+  sequence: 0
+  location: Pine treatment plant
+  responses:
+    awm136: ACCEPTED
+    bc_veybridge_2: ACCEPTED
+- id: maintenance-contractor-010
+  employer: arwc
+  organizer: awm119
+  attendees:
+  - awm095
+  - bc_veybridge_2
+  start: '2026-07-09T13:00:00-04:00'
+  end: '2026-07-09T16:00:00-04:00'
+  summary: 'ARWC-CA-26-010: standard commissioning witness visit'
+  description: ARWC-WO-26-0343; ARWC-PO-26-210; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-04T12:15:00-04:00'
+  updated_at: '2026-07-04T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    awm095: ACCEPTED
+    bc_veybridge_2: ACCEPTED
+- id: maintenance-contractor-011
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm100
+  - bc_veybridge_2
+  start: '2026-07-13T13:00:00-04:00'
+  end: '2026-07-13T16:00:00-04:00'
+  summary: 'ARWC-CA-26-011: standard commissioning witness visit'
+  description: ARWC-WO-26-0361; ARWC-PO-26-211; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-07T12:15:00-04:00'
+  updated_at: '2026-07-07T14:00:00-04:00'
+  sequence: 0
+  location: River West district
+  responses:
+    awm100: ACCEPTED
+    bc_veybridge_2: ACCEPTED
+- id: maintenance-contractor-012
+  employer: arwc
+  organizer: awm125
+  attendees:
+  - awm105
+  - bc_veybridge_2
+  start: '2026-07-14T13:00:00-04:00'
+  end: '2026-07-14T16:00:00-04:00'
+  summary: 'ARWC-CA-26-012: standard commissioning witness visit'
+  description: ARWC-WO-26-0379; ARWC-PO-26-212; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-10T12:15:00-04:00'
+  updated_at: '2026-07-10T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    awm105: ACCEPTED
+    bc_veybridge_2: ACCEPTED
+- id: maintenance-contractor-013
+  employer: arwc
+  organizer: awm123
+  attendees:
+  - awm109
+  - bc_ardenvale_1
+  start: '2026-07-20T13:00:00-04:00'
+  end: '2026-07-20T16:00:00-04:00'
+  summary: 'ARWC-CA-26-013: instrument condition and calibration service'
+  description: ARWC-WO-26-0397; ARWC-PO-26-213; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-13T12:15:00-04:00'
+  updated_at: '2026-07-13T14:00:00-04:00'
+  sequence: 0
+  location: Pine East district
+  responses:
+    awm109: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-014
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm114
+  - bc_ardenvale_2
+  start: '2026-07-22T13:00:00-04:00'
+  end: '2026-07-22T16:00:00-04:00'
+  summary: 'ARWC-CA-26-014: instrument condition and calibration service'
+  description: ARWC-WO-26-0415; ARWC-PO-26-214; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-16T12:15:00-04:00'
+  updated_at: '2026-07-16T14:00:00-04:00'
+  sequence: 0
+  location: River depot
+  responses:
+    awm114: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
+- id: maintenance-contractor-015
+  employer: arwc
+  organizer: awm119
+  attendees:
+  - awm118
+  - bc_ardenvale_1
+  start: '2026-07-23T13:00:00-04:00'
+  end: '2026-07-23T16:00:00-04:00'
+  summary: 'ARWC-CA-26-015: instrument condition and calibration service'
+  description: ARWC-WO-26-0433; ARWC-PO-26-215; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-19T12:15:00-04:00'
+  updated_at: '2026-07-19T14:00:00-04:00'
+  sequence: 0
+  location: North reservoir
+  responses:
+    awm118: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-016
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm123
+  - bc_ardenvale_2
+  start: '2026-07-27T13:00:00-04:00'
+  end: '2026-07-27T16:00:00-04:00'
+  summary: 'ARWC-CA-26-016: instrument condition and calibration service'
+  description: ARWC-WO-26-0451; ARWC-PO-26-216; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-22T12:15:00-04:00'
+  updated_at: '2026-07-22T14:00:00-04:00'
+  sequence: 0
+  location: River East district
+  responses:
+    awm123: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
+- id: maintenance-contractor-017
+  employer: arwc
+  organizer: awm125
+  attendees:
+  - awm128
+  - bc_ardenvale_1
+  start: '2026-07-31T13:00:00-04:00'
+  end: '2026-07-31T16:00:00-04:00'
+  summary: 'ARWC-CA-26-017: instrument condition and calibration service'
+  description: ARWC-WO-26-0469; ARWC-PO-26-217; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-25T12:15:00-04:00'
+  updated_at: '2026-07-25T14:00:00-04:00'
+  sequence: 0
+  location: Pine West district
+  responses:
+    awm128: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-018
+  employer: arwc
+  organizer: awm123
+  attendees:
+  - awm133
+  - bc_ardenvale_2
+  start: '2026-08-03T13:00:00-04:00'
+  end: '2026-08-03T16:00:00-04:00'
+  summary: 'ARWC-CA-26-018: instrument condition and calibration service'
+  description: ARWC-WO-26-0487; ARWC-PO-26-218; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-28T12:15:00-04:00'
+  updated_at: '2026-07-28T14:00:00-04:00'
+  sequence: 0
+  location: Pine treatment plant
+  responses:
+    awm133: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
+- id: maintenance-contractor-019
+  employer: arwc
+  organizer: awm121
+  attendees:
+  - awm138
+  - bc_ardenvale_1
+  start: '2026-08-05T13:00:00-04:00'
+  end: '2026-08-05T16:00:00-04:00'
+  summary: 'ARWC-CA-26-019: instrument condition and calibration service'
+  description: ARWC-WO-26-0505; ARWC-PO-26-219; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-31T12:15:00-04:00'
+  updated_at: '2026-07-31T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    awm138: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-020
+  employer: arwc
+  organizer: awm119
+  attendees:
+  - awm097
+  - bc_ardenvale_2
+  start: '2026-08-10T13:00:00-04:00'
+  end: '2026-08-10T16:00:00-04:00'
+  summary: 'ARWC-CA-26-020: instrument condition and calibration service'
+  description: ARWC-WO-26-0523; ARWC-PO-26-220; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-03T12:15:00-04:00'
+  updated_at: '2026-08-03T14:00:00-04:00'
+  sequence: 0
+  location: River West district
+  responses:
+    awm097: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
+- id: maintenance-contractor-021
+  employer: arwc
+  organizer: theo
+  attendees:
+  - awm102
+  - bc_ardenvale_1
+  start: '2026-08-10T13:00:00-04:00'
+  end: '2026-08-10T16:00:00-04:00'
+  summary: 'ARWC-CA-26-021: instrument condition and calibration service'
+  description: ARWC-WO-26-0541; ARWC-PO-26-221; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-06T12:15:00-04:00'
+  updated_at: '2026-08-06T14:00:00-04:00'
+  sequence: 0
+  location: River treatment plant
+  responses:
+    awm102: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-022
+  employer: arwc
+  organizer: awm125
+  attendees:
+  - awm107
+  - bc_ardenvale_2
+  start: '2026-08-14T13:00:00-04:00'
+  end: '2026-08-14T16:00:00-04:00'
+  summary: 'ARWC-CA-26-022: instrument condition and calibration service'
+  description: ARWC-WO-26-0559; ARWC-PO-26-222; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-09T12:15:00-04:00'
+  updated_at: '2026-08-09T14:00:00-04:00'
+  sequence: 0
+  location: Pine East district
+  responses:
+    awm107: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
+- id: maintenance-contractor-023
+  employer: arwc
+  organizer: awm123
+  attendees:
+  - awm111
+  - bc_ardenvale_1
+  start: '2026-08-18T13:00:00-04:00'
+  end: '2026-08-18T16:00:00-04:00'
+  summary: 'ARWC-CA-26-023: instrument condition and calibration service'
+  description: ARWC-WO-26-0577; ARWC-PO-26-223; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-12T12:15:00-04:00'
+  updated_at: '2026-08-12T14:00:00-04:00'
+  sequence: 0
+  location: River depot
+  responses:
+    awm111: ACCEPTED
+    bc_ardenvale_1: ACCEPTED
+- id: maintenance-contractor-024
+  employer: arwc
+  organizer: awm121
+  attendees:
+  - awm116
+  - bc_ardenvale_2
+  start: '2026-08-19T13:00:00-04:00'
+  end: '2026-08-19T16:00:00-04:00'
+  summary: 'ARWC-CA-26-024: instrument condition and calibration service'
+  description: ARWC-WO-26-0595; ARWC-PO-26-224; accepted scope only. Service outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-15T12:15:00-04:00'
+  updated_at: '2026-08-15T14:00:00-04:00'
+  sequence: 0
+  location: North reservoir
+  responses:
+    awm116: ACCEPTED
+    bc_ardenvale_2: ACCEPTED
