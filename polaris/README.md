@@ -37,6 +37,8 @@ authenticity and host-boundary gaps documented below prohibit `built` or
   build, A14 participant surface, automated rehearsal, and walkthroughs.
 - [Manual walkthrough evidence](docs/aws-event-manual-walkthrough-report.md)
   records the sanitized participant-equivalent run.
+- [GCP Shifter operator runbook](docs/gcp-shifter-operator-runbook.md) records
+  the tenant install, event launch, participant acceptance, and teardown path.
 - [Automated rehearsal evidence](docs/aws-event-rehearsal-report.md) records
   the post-fix 38-recovery, reset, and teardown run.
 - [Final reconciliation evidence](docs/final-reconciliation-report.md) joins
