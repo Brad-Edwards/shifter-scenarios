@@ -75,6 +75,14 @@ connection on port 22 as `Administrator`. Record their full project-qualified
 references. The Linux binding uses image kind `machine-image`; the directory
 binding uses its normal Compute Engine image reference.
 
+Before capturing the Linux machine image, stop the bake VM and detach its
+build-time service account (`gcloud compute instances set-service-account`
+with `--no-service-account`). Confirm the stopped VM reports no attached
+service account, then create the machine image. Compute Engine machine images
+otherwise preserve the bake identity, and a range launch will either require an
+unsafe `iam.serviceAccounts.actAs` grant on that build identity or fail. Never
+grant that impersonation permission to the range provisioner.
+
 The Linux build must preserve the participant readiness contract from
 `polaris/build/a14/participant-readiness.json`. Calculate and record the SHA-256
 of the installed readiness document; that value is the adapter binding's
@@ -141,6 +149,20 @@ model-invocation service account. Configure current quota, context-window, and
 price data from the approved deployment catalog, set an explicit price-validity
 date, and permit the event organization to use the sources. Do not store a
 provider API key in the pack or range.
+
+Model-source configuration does not enable a publisher model in Google Cloud.
+In the same tenant project, enable each exact Anthropic model in Vertex AI Model
+Garden and accept the current Marketplace terms using the approved procurement
+operator. Confirm that the Vertex AI API is enabled and that the dedicated
+invocation service account has only the deployment-managed predict permission.
+Do this before creating the event; a Vertex `404 NOT_FOUND` that says the model
+was not found or the project lacks access means Model Garden enablement is still
+missing, even when the model name and region are valid.
+
+Run one bounded prompt against each configured publisher model through the
+approved invocation identity or deployment probe. Require an HTTP success and a
+nonzero output-token count. Listing custom Vertex models is not a valid check:
+managed publisher models do not appear in that inventory.
 
 Before event activation, confirm that the event workspace can see both sources
 and that each alias is bound to the intended source revision.
