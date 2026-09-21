@@ -3,7 +3,8 @@
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
-accounts, field operations, and maintenance/engineering added on 21 September.
+accounts, field operations, maintenance/engineering, and laboratory/quality
+added on 21 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -58,6 +59,8 @@ and unfinished plans of their own.
 | [Field operations voices](field-operations-voices.md) | Operator, supervisor and field-desk writing samples. |
 | [Maintenance and engineering review](maintenance-engineering-review.md) | Work-order, contractor, drawing, commissioning, project and validation evidence. |
 | [Maintenance and engineering voices](maintenance-engineering-voices.md) | Profiles and finished samples for recurring planners, engineers and contractors. |
+| [Laboratory and quality review](laboratory-quality-review.md) | Sample-chain, report, workbook, training, service and validation evidence. |
+| [Laboratory and quality voices](laboratory-quality-voices.md) | Writing guidance and finished samples for laboratory, quality and reporting colleagues. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -136,6 +139,11 @@ accepted maintenance requests. The maintenance and engineering slice carries
 every one of those requests into a work order, develops 720 recent and historical
 orders across all 48 colleagues, and retains four completed refurbishment
 histories with explicit drawing authority and contractor acceptance.
+The laboratory and quality slice carries all sixty accepted sample handoffs into
+960 complete schedule-to-report histories. It retains preliminary runs, open
+recollection decisions, issued summaries, formula-bearing workbooks, equipment
+service, training, and bounded internal quality improvements without presenting
+its fictional operating bands as law.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

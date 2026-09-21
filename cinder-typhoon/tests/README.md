@@ -65,6 +65,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_customer_followup.py
 python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
 python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
 python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineering.py
+python -m unittest discover -s cinder-typhoon/tests -p test_laboratory_quality.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -78,6 +79,12 @@ mailbox, changed source bytes, a detached reply, a reporting loop, and an
 altered accepted-delivery amount. They also reject a customer/internal thread
 bridge and a fabricated engineering resolution. The full SDL check also verifies the eight native
 materialization contracts.
+
+Laboratory and quality checks reconcile 960 schedule/collection/receipt/result/
+review/report histories, all sixty accepted field handoffs, fictional internal
+bands and units, repeat and recollection dispositions, nine real Office
+workbooks and their formula caches, issued reports, equipment service, training,
+quality-review calendars, exact readers, and photography continuity.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted

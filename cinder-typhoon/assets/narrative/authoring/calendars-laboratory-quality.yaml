@@ -1,0 +1,645 @@
+events:
+- id: lq-equipment-service-001
+  employer: arwc
+  organizer: awm148
+  attendees:
+  - awm146
+  - theo
+  start: '2026-06-08T13:00:00-04:00'
+  end: '2026-06-08T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-001: clarity response reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-05-29T13:00:00-04:00'
+  updated_at: '2026-05-31T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-002
+  employer: arwc
+  organizer: awm149
+  attendees:
+  - awm146
+  - theo
+  start: '2026-06-13T13:00:00-04:00'
+  end: '2026-06-13T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-002: mineral balance bench'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-03T13:00:00-04:00'
+  updated_at: '2026-06-05T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-003
+  employer: arwc
+  organizer: awm150
+  attendees:
+  - awm146
+  - theo
+  start: '2026-06-18T13:00:00-04:00'
+  end: '2026-06-18T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-003: reference stability reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-08T13:00:00-04:00'
+  updated_at: '2026-06-10T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-004
+  employer: arwc
+  organizer: awm151
+  attendees:
+  - awm146
+  - theo
+  start: '2026-06-23T13:00:00-04:00'
+  end: '2026-06-23T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-004: sample refrigerator'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-13T13:00:00-04:00'
+  updated_at: '2026-06-15T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-005
+  employer: arwc
+  organizer: awm152
+  attendees:
+  - awm146
+  - theo
+  start: '2026-06-28T13:00:00-04:00'
+  end: '2026-06-28T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-005: seal inspection lamp'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-18T13:00:00-04:00'
+  updated_at: '2026-06-20T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-006
+  employer: arwc
+  organizer: awm153
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-03T13:00:00-04:00'
+  end: '2026-07-03T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-006: receipt temperature logger'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-23T13:00:00-04:00'
+  updated_at: '2026-06-25T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-007
+  employer: arwc
+  organizer: awm154
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-08T13:00:00-04:00'
+  end: '2026-07-08T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-007: clarity response reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-06-28T13:00:00-04:00'
+  updated_at: '2026-06-30T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-008
+  employer: arwc
+  organizer: awm155
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-13T13:00:00-04:00'
+  end: '2026-07-13T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-008: mineral balance bench'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-03T13:00:00-04:00'
+  updated_at: '2026-07-05T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-009
+  employer: arwc
+  organizer: awm156
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-18T13:00:00-04:00'
+  end: '2026-07-18T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-009: reference stability reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-08T13:00:00-04:00'
+  updated_at: '2026-07-10T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-010
+  employer: arwc
+  organizer: awm157
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-23T13:00:00-04:00'
+  end: '2026-07-23T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-010: sample refrigerator'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-13T13:00:00-04:00'
+  updated_at: '2026-07-15T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-011
+  employer: arwc
+  organizer: awm147
+  attendees:
+  - awm146
+  - theo
+  start: '2026-07-28T13:00:00-04:00'
+  end: '2026-07-28T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-011: seal inspection lamp'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-18T13:00:00-04:00'
+  updated_at: '2026-07-20T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-012
+  employer: arwc
+  organizer: awm148
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-02T13:00:00-04:00'
+  end: '2026-08-02T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-012: receipt temperature logger'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-23T13:00:00-04:00'
+  updated_at: '2026-07-25T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-013
+  employer: arwc
+  organizer: awm149
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-07T13:00:00-04:00'
+  end: '2026-08-07T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-013: clarity response reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-07-28T13:00:00-04:00'
+  updated_at: '2026-07-30T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-014
+  employer: arwc
+  organizer: awm150
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-12T13:00:00-04:00'
+  end: '2026-08-12T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-014: mineral balance bench'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-08-02T13:00:00-04:00'
+  updated_at: '2026-08-04T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-015
+  employer: arwc
+  organizer: awm151
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-17T13:00:00-04:00'
+  end: '2026-08-17T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-015: reference stability reader'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-08-07T13:00:00-04:00'
+  updated_at: '2026-08-09T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-016
+  employer: arwc
+  organizer: awm152
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-22T13:00:00-04:00'
+  end: '2026-08-22T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-016: sample refrigerator'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-08-12T13:00:00-04:00'
+  updated_at: '2026-08-14T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-017
+  employer: arwc
+  organizer: awm153
+  attendees:
+  - awm146
+  - theo
+  start: '2026-08-27T13:00:00-04:00'
+  end: '2026-08-27T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-017: seal inspection lamp'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-08-17T13:00:00-04:00'
+  updated_at: '2026-08-19T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-equipment-service-018
+  employer: arwc
+  organizer: awm154
+  attendees:
+  - awm146
+  - theo
+  start: '2026-09-01T13:00:00-04:00'
+  end: '2026-09-01T14:30:00-04:00'
+  summary: 'ARWC-LQS-26-018: receipt temperature logger'
+  description: Routine laboratory equipment service; result records remain unchanged.
+  status: CONFIRMED
+  created_at: '2026-08-22T13:00:00-04:00'
+  updated_at: '2026-08-24T13:00:00-04:00'
+  sequence: 0
+  location: Regional office laboratory
+  responses:
+    awm146: ACCEPTED
+    theo: ACCEPTED
+- id: lq-training-session-01
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm146
+  - awm154
+  - awm162
+  start: '2026-07-07T10:00:00-04:00'
+  end: '2026-07-07T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: sample custody'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-23T11:30:00-04:00'
+  updated_at: '2026-06-30T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm146: ACCEPTED
+    awm154: ACCEPTED
+    awm162: ACCEPTED
+- id: lq-training-session-02
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm147
+  - awm155
+  - awm163
+  start: '2026-07-14T10:00:00-04:00'
+  end: '2026-07-14T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: repeat-run recording'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-06-30T11:30:00-04:00'
+  updated_at: '2026-07-07T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm147: ACCEPTED
+    awm155: ACCEPTED
+    awm163: ACCEPTED
+- id: lq-training-session-03
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm148
+  - awm156
+  - awm164
+  start: '2026-07-21T10:00:00-04:00'
+  end: '2026-07-21T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: weekly report review'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-07T11:30:00-04:00'
+  updated_at: '2026-07-14T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm148: ACCEPTED
+    awm156: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-training-session-04
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm149
+  - awm157
+  - awm165
+  start: '2026-07-28T10:00:00-04:00'
+  end: '2026-07-28T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: workbook traceability'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-14T11:30:00-04:00'
+  updated_at: '2026-07-21T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm149: ACCEPTED
+    awm157: ACCEPTED
+    awm165: ACCEPTED
+- id: lq-training-session-05
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm150
+  - awm158
+  - awm166
+  start: '2026-08-04T10:00:00-04:00'
+  end: '2026-08-04T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: equipment service handover'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-21T11:30:00-04:00'
+  updated_at: '2026-07-28T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm150: ACCEPTED
+    awm158: ACCEPTED
+    awm166: ACCEPTED
+- id: lq-training-session-06
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm151
+  - awm159
+  - awm167
+  start: '2026-08-11T10:00:00-04:00'
+  end: '2026-08-11T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: internal-band wording'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-28T11:30:00-04:00'
+  updated_at: '2026-08-04T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm151: ACCEPTED
+    awm159: ACCEPTED
+    awm167: ACCEPTED
+- id: lq-training-session-07
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm152
+  - awm160
+  - awm168
+  start: '2026-08-18T10:00:00-04:00'
+  end: '2026-08-18T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: receipt exceptions'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-04T11:30:00-04:00'
+  updated_at: '2026-08-11T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm152: ACCEPTED
+    awm160: ACCEPTED
+    awm168: ACCEPTED
+- id: lq-training-session-08
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - awm153
+  - awm161
+  - awm169
+  start: '2026-08-25T10:00:00-04:00'
+  end: '2026-08-25T11:30:00-04:00'
+  summary: 'Laboratory and quality learning: reader boundaries'
+  description: Worked-record session; attendance and individual completion are recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-11T11:30:00-04:00'
+  updated_at: '2026-08-18T11:30:00-04:00'
+  sequence: 0
+  location: Regional office training room
+  responses:
+    awm153: ACCEPTED
+    awm161: ACCEPTED
+    awm169: ACCEPTED
+- id: lq-quality-review-session-01
+  employer: arwc
+  organizer: awm160
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-06-03T14:30:00-04:00'
+  end: '2026-06-03T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-01: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-05-26T15:30:00-04:00'
+  updated_at: '2026-05-29T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-02
+  employer: arwc
+  organizer: awm161
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-06-24T14:30:00-04:00'
+  end: '2026-06-24T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-02: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-06-16T15:30:00-04:00'
+  updated_at: '2026-06-19T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-03
+  employer: arwc
+  organizer: awm162
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-07-15T14:30:00-04:00'
+  end: '2026-07-15T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-03: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-07-07T15:30:00-04:00'
+  updated_at: '2026-07-10T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-04
+  employer: arwc
+  organizer: awm163
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-08-05T14:30:00-04:00'
+  end: '2026-08-05T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-04: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-07-28T15:30:00-04:00'
+  updated_at: '2026-07-31T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-05
+  employer: arwc
+  organizer: awm159
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-08-26T14:30:00-04:00'
+  end: '2026-08-26T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-05: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-08-18T15:30:00-04:00'
+  updated_at: '2026-08-21T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-06
+  employer: arwc
+  organizer: awm160
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-09-02T14:30:00-04:00'
+  end: '2026-09-02T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-06: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-08-25T15:30:00-04:00'
+  updated_at: '2026-08-28T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-07
+  employer: arwc
+  organizer: awm161
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-09-09T14:30:00-04:00'
+  end: '2026-09-09T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-07: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-09-01T15:30:00-04:00'
+  updated_at: '2026-09-04T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED
+- id: lq-quality-review-session-08
+  employer: arwc
+  organizer: awm162
+  attendees:
+  - awm146
+  - awm158
+  - awm164
+  start: '2026-09-14T14:30:00-04:00'
+  end: '2026-09-14T15:30:00-04:00'
+  summary: 'ARWC-LQQ-26-08: routine internal quality review'
+  description: Review one bounded record-form improvement; decision retained in the quality review.
+  status: CONFIRMED
+  created_at: '2026-09-06T15:30:00-04:00'
+  updated_at: '2026-09-09T15:30:00-04:00'
+  sequence: 0
+  location: Regional office meeting room 2
+  responses:
+    awm146: ACCEPTED
+    awm158: ACCEPTED
+    awm164: ACCEPTED

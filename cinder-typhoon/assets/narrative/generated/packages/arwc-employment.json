@@ -2,6 +2,315 @@
   "schema_version": "cinder-employment-records/v1",
   "documents": [
     {
+      "name": "lq-training-001",
+      "title": "ARWC-LQT-26-001 training completion",
+      "path": "lq-training-001.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T11:30:00-04:00",
+      "readers": [
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-001\n\nColleague: Jalen Carsten.\nTopic: sample custody.\nCompleted: 2026-07-07T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-002",
+      "title": "ARWC-LQT-26-002 training completion",
+      "path": "lq-training-002.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T11:30:00-04:00",
+      "readers": [
+        "jamie.jorrel@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-002\n\nColleague: Jamie Jorrel.\nTopic: repeat-run recording.\nCompleted: 2026-07-14T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-003",
+      "title": "ARWC-LQT-26-003 training completion",
+      "path": "lq-training-003.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T11:30:00-04:00",
+      "readers": [
+        "jonas.sarnell@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-003\n\nColleague: Jonas Sarnell.\nTopic: weekly report review.\nCompleted: 2026-07-21T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-004",
+      "title": "ARWC-LQT-26-004 training completion",
+      "path": "lq-training-004.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-28T11:30:00-04:00",
+      "readers": [
+        "jory.cavelin@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-004\n\nColleague: Jory Cavelin.\nTopic: workbook traceability.\nCompleted: 2026-07-28T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-005",
+      "title": "ARWC-LQT-26-005 training completion",
+      "path": "lq-training-005.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T11:30:00-04:00",
+      "readers": [
+        "kaisa.kelswick@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-005\n\nColleague: Kaisa Kelswick.\nTopic: equipment service handover.\nCompleted: 2026-08-04T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-006",
+      "title": "ARWC-LQT-26-006 training completion",
+      "path": "lq-training-006.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-11T11:30:00-04:00",
+      "readers": [
+        "kiran.selwyn@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-006\n\nColleague: Kiran Selwyn.\nTopic: internal-band wording.\nCompleted: 2026-08-11T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-007",
+      "title": "ARWC-LQT-26-007 training completion",
+      "path": "lq-training-007.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T11:30:00-04:00",
+      "readers": [
+        "lara.cernault@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-007\n\nColleague: Lara Cernault.\nTopic: receipt exceptions.\nCompleted: 2026-08-18T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-008",
+      "title": "ARWC-LQT-26-008 training completion",
+      "path": "lq-training-008.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T11:30:00-04:00",
+      "readers": [
+        "leila.larmont@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-008\n\nColleague: Leila Larmont.\nTopic: reader boundaries.\nCompleted: 2026-08-25T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-009",
+      "title": "ARWC-LQT-26-009 training completion",
+      "path": "lq-training-009.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T11:30:00-04:00",
+      "readers": [
+        "lena.senvard@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-009\n\nColleague: Lena Senvard.\nTopic: sample custody.\nCompleted: 2026-07-07T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-010",
+      "title": "ARWC-LQT-26-010 training completion",
+      "path": "lq-training-010.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T11:30:00-04:00",
+      "readers": [
+        "leo.dalver@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-010\n\nColleague: Leo Dalver.\nTopic: repeat-run recording.\nCompleted: 2026-07-14T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-011",
+      "title": "ARWC-LQT-26-011 training completion",
+      "path": "lq-training-011.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T11:30:00-04:00",
+      "readers": [
+        "lila.lestrel@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-011\n\nColleague: Lila Lestrel.\nTopic: weekly report review.\nCompleted: 2026-07-21T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-012",
+      "title": "ARWC-LQT-26-012 training completion",
+      "path": "lq-training-012.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-28T11:30:00-04:00",
+      "readers": [
+        "lina.tarlowe@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-012\n\nColleague: Lina Tarlowe.\nTopic: workbook traceability.\nCompleted: 2026-07-28T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-013",
+      "title": "ARWC-LQT-26-013 training completion",
+      "path": "lq-training-013.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T11:30:00-04:00",
+      "readers": [
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-013\n\nColleague: Louis Danwick.\nTopic: equipment service handover.\nCompleted: 2026-08-04T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-014",
+      "title": "ARWC-LQT-26-014 training completion",
+      "path": "lq-training-014.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-11T11:30:00-04:00",
+      "readers": [
+        "luca.maraven@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-014\n\nColleague: Luca Maraven.\nTopic: internal-band wording.\nCompleted: 2026-08-11T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-015",
+      "title": "ARWC-LQT-26-015 training completion",
+      "path": "lq-training-015.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T11:30:00-04:00",
+      "readers": [
+        "mara.telmire@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-015\n\nColleague: Mara Telmire.\nTopic: receipt exceptions.\nCompleted: 2026-08-18T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-016",
+      "title": "ARWC-LQT-26-016 training completion",
+      "path": "lq-training-016.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T11:30:00-04:00",
+      "readers": [
+        "margot.darsell@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-016\n\nColleague: Margot Darsell.\nTopic: reader boundaries.\nCompleted: 2026-08-25T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-017",
+      "title": "ARWC-LQT-26-017 training completion",
+      "path": "lq-training-017.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T11:30:00-04:00",
+      "readers": [
+        "martin.marrent@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-017\n\nColleague: Martin Marrent.\nTopic: sample custody.\nCompleted: 2026-07-07T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-018",
+      "title": "ARWC-LQT-26-018 training completion",
+      "path": "lq-training-018.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T11:30:00-04:00",
+      "readers": [
+        "mica.torren@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-018\n\nColleague: Mica Torren.\nTopic: repeat-run recording.\nCompleted: 2026-07-14T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-019",
+      "title": "ARWC-LQT-26-019 training completion",
+      "path": "lq-training-019.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T11:30:00-04:00",
+      "readers": [
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-019\n\nColleague: Mira Delmont.\nTopic: weekly report review.\nCompleted: 2026-07-21T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-020",
+      "title": "ARWC-LQT-26-020 training completion",
+      "path": "lq-training-020.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-28T11:30:00-04:00",
+      "readers": [
+        "morgan.mavell@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-020\n\nColleague: Morgan Mavell.\nTopic: workbook traceability.\nCompleted: 2026-07-28T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-021",
+      "title": "ARWC-LQT-26-021 training completion",
+      "path": "lq-training-021.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T11:30:00-04:00",
+      "readers": [
+        "nella.velswick@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-021\n\nColleague: Nella Velswick.\nTopic: equipment service handover.\nCompleted: 2026-08-04T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-022",
+      "title": "ARWC-LQT-26-022 training completion",
+      "path": "lq-training-022.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-11T11:30:00-04:00",
+      "readers": [
+        "niamh.dravik@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-022\n\nColleague: Niamh Dravik.\nTopic: internal-band wording.\nCompleted: 2026-08-11T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-023",
+      "title": "ARWC-LQT-26-023 training completion",
+      "path": "lq-training-023.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T11:30:00-04:00",
+      "readers": [
+        "niko.narsen@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-023\n\nColleague: Niko Narsen.\nTopic: receipt exceptions.\nCompleted: 2026-08-18T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
+      "name": "lq-training-024",
+      "title": "ARWC-LQT-26-024 training completion",
+      "path": "lq-training-024.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T11:30:00-04:00",
+      "readers": [
+        "nina.verrin@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com"
+      ],
+      "text": "# ARWC-LQT-26-024\n\nColleague: Nina Verrin.\nTopic: reader boundaries.\nCompleted: 2026-08-25T11:30:00-04:00.\nOutcome: completed with worked record.\nThis record confirms the session only; it does not confer a new operating or laboratory authority.\n"
+    },
+    {
       "name": "a-personnel-register",
       "title": "Current personnel and assignment register",
       "path": "a-personnel-register.csv",

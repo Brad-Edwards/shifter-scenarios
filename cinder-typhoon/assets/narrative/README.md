@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 28,478 distinct authored messages, 9,414 source documents,
-staff directories for all 294 employees, and 806 calendar items. The
+The collection contains 28,796 distinct authored messages, 9,520 source documents,
+staff directories for all 294 employees, and 840 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -63,6 +63,14 @@ receipt joins. Four 2021–2023 project histories retain working and approved
 drawings, engineering notes, commissioning and handover. Its
 [review record](../../docs/narrative/maintenance-engineering-review.md) documents
 the message adjustment, chronology, revision authority and reader checks.
+ARWC laboratory and quality adds 318 messages, 106 document items and 34 calendar
+occurrences. Its 960 histories join schedule, collection, receipt, analysis,
+review and one of 36 issued weekly summaries. All sixty field-operation handoffs
+retain their accepted identities and times. Nine genuine XLSX workbooks, nine
+completed CSV registers, equipment service, training and routine quality reviews
+remain inside the existing ARWC collections. Its
+[review record](../../docs/narrative/laboratory-quality-review.md) documents the
+fictional internal specification, message adjustment, chronology and readers.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -89,6 +97,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/service-account-records.zip` | Seventeen finished CSV tables, individually extractable for review. |
 | `authoring/maintenance-engineering.yaml` | Author-only equipment, work-order, contractor, project and revision joins. |
 | `documents/maintenance-engineering-records.zip` | Eleven completed CSV registers and twelve actual SVG drawing revisions. |
+| `authoring/laboratory-quality.yaml` | Author-only sample-chain, specification, report, equipment, training, quality-review and count joins. |
+| `documents/laboratory-quality-records.zip` | Nine completed CSV registers and nine actual XLSX monthly workbooks. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
