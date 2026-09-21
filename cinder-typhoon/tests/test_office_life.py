@@ -59,7 +59,7 @@ class OfficeLifeTests(unittest.TestCase):
             p['comments'][0]['author'] = 'leah'
         def draft_staff(f, m, d, e): doc(d, f['drafts'][0]['draft'])['audience'] = 'staff'
         def late_approval(f, m, d, e): msg(m, f['drafts'][0]['approval'])['date'] = '2026-09-15T09:00:00-04:00'
-        def wrong_consent(f, m, d, e): msg(m, f['publication_consents'][0]['approvals'][0])['from'] = 'kwm055'
+        def wrong_consent(f, m, d, e): msg(m, f['publication_consents'][0]['approvals'][0])['from'] = 'rowan'
         def late_consent(f, m, d, e): msg(m, f['publication_consents'][0]['approvals'][1])['date'] = '2026-09-15T09:00:00-04:00'
         def wrong_uid(f, m, d, e):
             h = history(f, 'completed'); key = msg(m, h['invitation'])['attachments'][0]

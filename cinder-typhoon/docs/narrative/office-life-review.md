@@ -243,5 +243,40 @@ unchanged. Static validation does not claim a deployed workplace service.
   consistent-but-conflicting room invitations, conflicts with accepted calendars,
   double-booked cover, false attendance, incorrect response state, missing consent,
   widened private readers, future attachments and mismatched learning claims.
-- Full regression and pinned native SDL/pack results are recorded below after
-  their runs complete.
+- Full regression: 15 tests pass. The office slice contributes five tests and
+  38 deliberate invalid variants, including scheduling MIME errors. The forged
+  consent fixture uses a valid mail sender so it reaches the actual consent check.
+- The local pack has 1,021 members, including directories and validation caches,
+  below the pinned 1,024-member limit.
+- Pinned `raes-env-packs==6.1.0` author validation passes with local imports.
+  `raes==5.0.0` parses and composes all 96 modules, matches 240 challenges,
+  33 capabilities, 36 targets plus Kali, nine subnets and 83 authority domains,
+  and replays 1,209 minimal prerequisite closures and all sixteen routes.
+- Native instantiation and compilation preserve 3,450 realization requirements,
+  the open node defaults, exact Kali intent, 281 named observations, fifty
+  technical drafts, six consequence contracts, and all eight source/service
+  bindings.
+- The native adversarial suite rejects four narrative SDL mutations, 28
+  type-valid challenge SDL mutations, the invalid posture spelling, two compiled
+  observation mutations and 26 broken event/design variants.
+- Vale reports no errors, warnings or suggestions in the four changed Markdown
+  files. GitHub's prose and Semgrep checks pass.
+
+Commands used with the pinned validation environment:
+
+```sh
+python cinder-typhoon/build/render_narrative.py --check
+python cinder-typhoon/tests/validate_narrative.py
+python -m unittest discover -s cinder-typhoon/tests -p 'test_*.py' -v
+python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check
+vale --config=cinder-typhoon/.vale.ini \
+  cinder-typhoon/assets/narrative/README.md \
+  cinder-typhoon/docs/narrative/README.md \
+  cinder-typhoon/docs/narrative/office-life-review.md \
+  cinder-typhoon/docs/narrative/office-life-voices.md
+```
+
+The full SDL/pack run verifies the corrected content from `d6b1f65`. The final
+record update adds these results and sharpens the isolated consent fixture;
+it does not change any authored or generated content. Native proof remains
+static: no hosting, deployment or running workplace adapter is claimed.
