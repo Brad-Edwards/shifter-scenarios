@@ -184,10 +184,27 @@ The focused checks verify duty coverage/rest, effective dates, observations know
 at handover, field and training overlap, resource collisions, service identities,
 appointment/calendar joins, sample custody, stock arithmetic, dispatch counts,
 maintenance receipt, exact audiences, CSV digests and native name uniqueness.
-Negative tests deliberately corrupt those boundaries. Full narrative, native SDL,
-pack, regression and prose results are recorded after their final runs.
+Negative tests deliberately corrupt those boundaries. Final checks on content
+commit `700c43b` passed:
+
+- All 27 regression tests, including six operations test groups, in 273.102 seconds.
+- All 92 rendered outputs reproduce byte for byte. Full narrative validation,
+  including source bytes, ownership, readers and attachments, passes within the
+  native SDL run and its mutation checks.
+- Pinned RAE 5.0.0 and env-packs 6.1.0 validate the pack and compose 96 modules.
+  All 240 challenges, 1,209 prerequisite closures and 16 route combinations agree
+  with the independent design contracts.
+- Compilation retains 3,450 realization requirements with open defaults, exact
+  Kali intent, 281 observation bindings, 50 technical drafts and six consequence
+  contracts. All eight narrative collections retain source and service bindings.
+- Four narrative SDL mutations, 28 challenge SDL mutations, two compiled
+  observation mutations and 26 broken topologies/events are rejected. Invalid
+  realization-posture spelling is also rejected.
+- Scoped Vale and whitespace checks pass. Repository Vale and Semgrep checks are
+  green on the content commit. All 36,550 earlier native records and mailbox
+  memberships remain intact.
 
 These are static authored assets. Runtime deployment, host materialization and
-backend enforcement are not claimed. Process operating logs, subsequent laboratory
+backend enforcement are not claimed. Other process operating logs, subsequent laboratory
 results, later access appointments and future maintenance work remain outside
 this bounded extract.
