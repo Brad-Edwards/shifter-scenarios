@@ -22,6 +22,7 @@ from validate_release_platform import check_release_platform
 from validate_customer_followup import check_customer_followup
 from validate_commercial import check_commercial
 from validate_finance import check_finance
+from validate_office_life import check_office_life
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -44,12 +45,14 @@ COMMERCIAL_MESSAGE_COUNT = 1376
 COMMERCIAL_DOCUMENT_COUNT = 251
 FINANCE_MESSAGE_COUNT = 1133
 FINANCE_DOCUMENT_COUNT = 562
+OFFICE_MESSAGE_COUNT = 1730
+OFFICE_DOCUMENT_COUNT = 1385
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -791,6 +794,7 @@ def check_assets():
     check_customer_followup(ROOT, identity, roster, mail, docs, events)
     check_commercial(ROOT, identity, roster, mail, docs, events)
     check_finance(ROOT, identity, roster, mail, docs)
+    check_office_life(ROOT, identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -918,7 +922,7 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()
@@ -926,10 +930,18 @@ def check_assets():
                 require(all(len(line) <= 75 for line in raw_calendar.split(b'\r\n')), 'Calendar line folding invalid')
                 text = item['text'].replace('\r\n ', '')
                 for field, value in [('DTSTART', event['start']), ('DTEND', event['end']),
-                                     ('DTSTAMP', event.get('created_at', identity['snapshot']))]:
+                                     ('DTSTAMP', event.get('updated_at', event.get('created_at', identity['snapshot'])))]:
                     stamp = datetime.fromisoformat(value).astimezone(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
                     require(field + ':' + stamp + '\r\n' in text, 'Calendar time drift')
                 require('STATUS:' + event['status'] + '\r\n' in text, 'Calendar status drift')
+                if 'responses' in event:
+                    for person, status in event['responses'].items():
+                        require('ATTENDEE;PARTSTAT=' + status + ':mailto:' + contacts[person]['email'] + '\r\n' in text,
+                                'Calendar attendee response drift')
+                    require('SEQUENCE:' + str(event['sequence']) + '\r\n' in text,
+                            'Calendar revision drift')
+                    location = event['location'].replace('\\', '\\\\').replace('\n', '\\n').replace(',', '\\,').replace(';', '\\;')
+                    require('LOCATION:' + location + '\r\n' in text, 'Calendar location drift')
     for org in TARGETS:
         directory = {d['name']: d for d in payloads[f'narrative-{org}.directory']['documents']}
         employment = {d['name']: d for d in payloads[f'narrative-{org}.employment']['documents']}
