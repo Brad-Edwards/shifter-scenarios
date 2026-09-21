@@ -2885,3 +2885,7 @@ correspondents:
     name: Hali U. Quenwick
     email: contact.48800@customers.arwc.test
     employer: retail_customer
+  arwc_field_desk:
+    name: ARWC Field Desk
+    email: field-desk@alterrawaterco.com
+    employer: arwc

@@ -1,0 +1,3926 @@
+messages:
+- id: op-appointment-arwc-ap-p-001
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm042
+  - owen
+  - awm085
+  - rosa
+  date: '2026-07-31T14:05:00-04:00'
+  subject: ARWC-AP-P-001 | 2026-08-03 09:00–11:00 | ARWC-SP-000501
+  body: |
+    Identity and access visit
+
+    106 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000501
+    Meter: ARWC-M-000621 / AW-2019-000621
+    Crew: Dario Radvell, Owen Vardell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260803-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-001
+- id: op-appointment-arwc-ap-p-002
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm085
+  - rosa
+  date: '2026-07-31T14:05:00-04:00'
+  subject: ARWC-AP-P-002 | 2026-08-03 09:00–11:00 | ARWC-SP-000502
+  body: |
+    Identity and access visit
+
+    107 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000502
+    Meter: ARWC-M-000622 / AW-2020-000622
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260803-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-002
+- id: op-appointment-arwc-ap-p-003
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm087
+  - rosa
+  date: '2026-08-03T14:05:00-04:00'
+  subject: ARWC-AP-P-003 | 2026-08-04 09:00–11:00 | ARWC-SP-000503
+  body: |
+    Identity and access visit
+
+    108 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000503
+    Meter: ARWC-M-000623 / AW-2021-000623
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260804-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-003
+- id: op-appointment-arwc-ap-p-004
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm087
+  - rosa
+  date: '2026-08-03T14:05:00-04:00'
+  subject: ARWC-AP-P-004 | 2026-08-04 09:00–11:00 | ARWC-SP-000504
+  body: |
+    Identity and access visit
+
+    109 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000504
+    Meter: ARWC-M-000624 / AW-2022-000624
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260804-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-004
+- id: op-appointment-arwc-ap-p-005
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm089
+  - rosa
+  date: '2026-08-04T14:05:00-04:00'
+  subject: ARWC-AP-P-005 | 2026-08-05 09:00–11:00 | ARWC-SP-000505
+  body: |
+    Identity and access visit
+
+    110 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000505
+    Meter: ARWC-M-000625 / AW-2023-000625
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260805-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-005
+- id: op-appointment-arwc-ap-p-006
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm089
+  - rosa
+  date: '2026-08-04T14:05:00-04:00'
+  subject: ARWC-AP-P-006 | 2026-08-05 09:00–11:00 | ARWC-SP-000506
+  body: |
+    Identity and access visit
+
+    111 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000506
+    Meter: ARWC-M-000626 / AW-2024-000626
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260805-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-006
+- id: op-appointment-arwc-ap-p-007
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm091
+  - rosa
+  date: '2026-08-05T14:05:00-04:00'
+  subject: ARWC-AP-P-007 | 2026-08-06 09:00–11:00 | ARWC-SP-000507
+  body: |
+    Identity and access visit
+
+    112 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000507
+    Meter: ARWC-M-000627 / AW-2014-000627
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260806-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-007
+- id: op-appointment-arwc-ap-p-008
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm091
+  - rosa
+  date: '2026-08-05T14:05:00-04:00'
+  subject: ARWC-AP-P-008 | 2026-08-06 09:00–11:00 | ARWC-SP-000508
+  body: |
+    Identity and access visit
+
+    113 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000508
+    Meter: ARWC-M-000628 / AW-2015-000628
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260806-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-008
+- id: op-appointment-arwc-ap-p-009
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm085
+  - rosa
+  date: '2026-08-06T14:05:00-04:00'
+  subject: ARWC-AP-P-009 | 2026-08-07 09:00–11:00 | ARWC-SP-000509
+  body: |
+    Identity and access visit
+
+    114 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000509
+    Meter: ARWC-M-000629 / AW-2016-000629
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260807-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-009
+- id: op-appointment-arwc-ap-p-010
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm085
+  - rosa
+  date: '2026-08-06T14:05:00-04:00'
+  subject: ARWC-AP-P-010 | 2026-08-07 09:00–11:00 | ARWC-SP-000510
+  body: |
+    Identity and access visit
+
+    115 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000510
+    Meter: ARWC-M-000630 / AW-2017-000630
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260807-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-010
+- id: op-appointment-arwc-ap-p-011
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm087
+  - rosa
+  date: '2026-08-07T14:05:00-04:00'
+  subject: ARWC-AP-P-011 | 2026-08-10 09:00–11:00 | ARWC-SP-000511
+  body: |
+    Identity and access visit
+
+    116 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000511
+    Meter: ARWC-M-000631 / AW-2018-000631
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260810-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-011
+- id: op-appointment-arwc-ap-p-012
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm087
+  - rosa
+  date: '2026-08-07T14:05:00-04:00'
+  subject: ARWC-AP-P-012 | 2026-08-10 09:00–11:00 | ARWC-SP-000512
+  body: |
+    Identity and access visit
+
+    117 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000512
+    Meter: ARWC-M-000632 / AW-2019-000632
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260810-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-012
+- id: op-appointment-arwc-ap-p-013
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm089
+  - rosa
+  date: '2026-08-10T14:05:00-04:00'
+  subject: ARWC-AP-P-013 | 2026-08-11 09:00–11:00 | ARWC-SP-000513
+  body: |
+    Identity and access visit
+
+    118 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000513
+    Meter: ARWC-M-000633 / AW-2020-000633
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260811-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-013
+- id: op-appointment-arwc-ap-p-014
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm089
+  - rosa
+  date: '2026-08-10T14:05:00-04:00'
+  subject: ARWC-AP-P-014 | 2026-08-11 09:00–11:00 | ARWC-SP-000514
+  body: |
+    Identity and access visit
+
+    119 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000514
+    Meter: ARWC-M-000634 / AW-2021-000634
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260811-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-014
+- id: op-appointment-arwc-ap-p-015
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm091
+  - rosa
+  date: '2026-08-11T14:05:00-04:00'
+  subject: ARWC-AP-P-015 | 2026-08-12 09:00–11:00 | ARWC-SP-000515
+  body: |
+    Identity and access visit
+
+    120 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000515
+    Meter: ARWC-M-000635 / AW-2022-000635
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260812-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-015
+- id: op-appointment-arwc-ap-p-016
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm057
+  - awm058
+  - awm091
+  - rosa
+  date: '2026-08-11T14:05:00-04:00'
+  subject: ARWC-AP-P-016 | 2026-08-12 09:00–11:00 | ARWC-SP-000516
+  body: |
+    Identity and access visit
+
+    121 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000516
+    Meter: ARWC-M-000636 / AW-2023-000636
+    Crew: Hugo Senvard, Idris Dalver
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260812-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-016
+- id: op-appointment-arwc-ap-p-017
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm057
+  - awm058
+  - awm085
+  - rosa
+  date: '2026-08-12T14:05:00-04:00'
+  subject: ARWC-AP-P-017 | 2026-08-13 09:00–11:00 | ARWC-SP-000517
+  body: |
+    Identity and access visit
+
+    122 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000517
+    Meter: ARWC-M-000637 / AW-2024-000637
+    Crew: Hugo Senvard, Idris Dalver
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260813-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-017
+- id: op-appointment-arwc-ap-p-018
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm059
+  - awm060
+  - awm085
+  - rosa
+  date: '2026-08-12T14:05:00-04:00'
+  subject: ARWC-AP-P-018 | 2026-08-13 09:00–11:00 | ARWC-SP-000518
+  body: |
+    Identity and access visit
+
+    123 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000518
+    Meter: ARWC-M-000638 / AW-2014-000638
+    Crew: Imani Lestrel, Iris Tarlowe
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260813-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-018
+- id: op-appointment-arwc-ap-p-019
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm059
+  - awm060
+  - awm087
+  - rosa
+  date: '2026-08-13T14:05:00-04:00'
+  subject: ARWC-AP-P-019 | 2026-08-14 09:00–11:00 | ARWC-SP-000519
+  body: |
+    Identity and access visit
+
+    124 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000519
+    Meter: ARWC-M-000639 / AW-2015-000639
+    Crew: Imani Lestrel, Iris Tarlowe
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260814-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-019
+- id: op-appointment-arwc-ap-p-020
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm061
+  - awm062
+  - awm087
+  - rosa
+  date: '2026-08-13T14:05:00-04:00'
+  subject: ARWC-AP-P-020 | 2026-08-14 09:00–11:00 | ARWC-SP-000520
+  body: |
+    Identity and access visit
+
+    125 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000520
+    Meter: ARWC-M-000640 / AW-2016-000640
+    Crew: Isabel Danwick, Jalen Maraven
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260814-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-020
+- id: op-appointment-arwc-ap-p-021
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm061
+  - awm062
+  - awm089
+  - rosa
+  date: '2026-08-14T14:05:00-04:00'
+  subject: ARWC-AP-P-021 | 2026-08-17 09:00–11:00 | ARWC-SP-000521
+  body: |
+    Identity and access visit
+
+    126 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000521
+    Meter: ARWC-M-000641 / AW-2017-000641
+    Crew: Isabel Danwick, Jalen Maraven
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260817-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-021
+- id: op-appointment-arwc-ap-p-022
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm042
+  - owen
+  - awm089
+  - rosa
+  date: '2026-08-14T14:05:00-04:00'
+  subject: ARWC-AP-P-022 | 2026-08-17 09:00–11:00 | ARWC-SP-000522
+  body: |
+    Identity and access visit
+
+    127 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000522
+    Meter: ARWC-M-000642 / AW-2018-000642
+    Crew: Dario Radvell, Owen Vardell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260817-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-022
+- id: op-appointment-arwc-ap-p-023
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm042
+  - owen
+  - awm091
+  - rosa
+  date: '2026-08-17T14:05:00-04:00'
+  subject: ARWC-AP-P-023 | 2026-08-18 09:00–11:00 | ARWC-SP-000523
+  body: |
+    Identity and access visit
+
+    128 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000523
+    Meter: ARWC-M-000643 / AW-2019-000643
+    Crew: Dario Radvell, Owen Vardell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260818-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-023
+- id: op-appointment-arwc-ap-p-024
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm091
+  - rosa
+  date: '2026-08-17T14:05:00-04:00'
+  subject: ARWC-AP-P-024 | 2026-08-18 09:00–11:00 | ARWC-SP-000524
+  body: |
+    Identity and access visit
+
+    129 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000524
+    Meter: ARWC-M-000644 / AW-2020-000644
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260818-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-024
+- id: op-appointment-arwc-ap-p-025
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm085
+  - rosa
+  date: '2026-08-18T14:05:00-04:00'
+  subject: ARWC-AP-P-025 | 2026-08-19 09:00–11:00 | ARWC-SP-000525
+  body: |
+    Identity and access visit
+
+    130 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000525
+    Meter: ARWC-M-000645 / AW-2021-000645
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260819-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-025
+- id: op-appointment-arwc-ap-p-026
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm085
+  - rosa
+  date: '2026-08-18T14:05:00-04:00'
+  subject: ARWC-AP-P-026 | 2026-08-19 09:00–11:00 | ARWC-SP-000526
+  body: |
+    Identity and access visit
+
+    131 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000526
+    Meter: ARWC-M-000646 / AW-2022-000646
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260819-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-026
+- id: op-appointment-arwc-ap-p-027
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm087
+  - rosa
+  date: '2026-08-19T14:05:00-04:00'
+  subject: ARWC-AP-P-027 | 2026-08-20 09:00–11:00 | ARWC-SP-000527
+  body: |
+    Identity and access visit
+
+    132 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000527
+    Meter: ARWC-M-000647 / AW-2023-000647
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260820-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-027
+- id: op-appointment-arwc-ap-p-028
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm087
+  - rosa
+  date: '2026-08-19T14:05:00-04:00'
+  subject: ARWC-AP-P-028 | 2026-08-20 09:00–11:00 | ARWC-SP-000528
+  body: |
+    Identity and access visit
+
+    133 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000528
+    Meter: ARWC-M-000648 / AW-2024-000648
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260820-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-028
+- id: op-appointment-arwc-ap-p-029
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm089
+  - rosa
+  date: '2026-08-20T14:05:00-04:00'
+  subject: ARWC-AP-P-029 | 2026-08-21 09:00–11:00 | ARWC-SP-000529
+  body: |
+    Identity and access visit
+
+    134 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000529
+    Meter: ARWC-M-000649 / AW-2014-000649
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260821-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-029
+- id: op-appointment-arwc-ap-p-030
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm089
+  - rosa
+  date: '2026-08-20T14:05:00-04:00'
+  subject: ARWC-AP-P-030 | 2026-08-21 09:00–11:00 | ARWC-SP-000530
+  body: |
+    Identity and access visit
+
+    135 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000530
+    Meter: ARWC-M-000650 / AW-2015-000650
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260821-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-030
+- id: op-appointment-arwc-ap-p-031
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm091
+  - rosa
+  date: '2026-08-21T14:05:00-04:00'
+  subject: ARWC-AP-P-031 | 2026-08-24 09:00–11:00 | ARWC-SP-000531
+  body: |
+    Identity and access visit
+
+    136 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000531
+    Meter: ARWC-M-000651 / AW-2016-000651
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260824-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-031
+- id: op-appointment-arwc-ap-p-032
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm091
+  - rosa
+  date: '2026-08-21T14:05:00-04:00'
+  subject: ARWC-AP-P-032 | 2026-08-24 09:00–11:00 | ARWC-SP-000532
+  body: |
+    Identity and access visit
+
+    137 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000532
+    Meter: ARWC-M-000652 / AW-2017-000652
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260824-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-032
+- id: op-appointment-arwc-ap-p-033
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm085
+  - rosa
+  date: '2026-08-24T14:05:00-04:00'
+  subject: ARWC-AP-P-033 | 2026-08-25 09:00–11:00 | ARWC-SP-000533
+  body: |
+    Identity and access visit
+
+    138 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000533
+    Meter: ARWC-M-000653 / AW-2018-000653
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260825-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-033
+- id: op-appointment-arwc-ap-p-034
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm085
+  - rosa
+  date: '2026-08-24T14:05:00-04:00'
+  subject: ARWC-AP-P-034 | 2026-08-25 09:00–11:00 | ARWC-SP-000534
+  body: |
+    Identity and access visit
+
+    139 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000534
+    Meter: ARWC-M-000654 / AW-2019-000654
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260825-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-034
+- id: op-appointment-arwc-ap-p-035
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm087
+  - rosa
+  date: '2026-08-25T14:05:00-04:00'
+  subject: ARWC-AP-P-035 | 2026-08-26 09:00–11:00 | ARWC-SP-000535
+  body: |
+    Identity and access visit
+
+    140 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000535
+    Meter: ARWC-M-000655 / AW-2020-000655
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260826-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-035
+- id: op-appointment-arwc-ap-p-036
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm087
+  - rosa
+  date: '2026-08-25T14:05:00-04:00'
+  subject: ARWC-AP-P-036 | 2026-08-26 09:00–11:00 | ARWC-SP-000536
+  body: |
+    Identity and access visit
+
+    141 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000536
+    Meter: ARWC-M-000656 / AW-2021-000656
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260826-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-036
+- id: op-appointment-arwc-ap-p-037
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm089
+  - rosa
+  date: '2026-08-26T14:05:00-04:00'
+  subject: ARWC-AP-P-037 | 2026-08-27 09:00–11:00 | ARWC-SP-000537
+  body: |
+    Identity and access visit
+
+    142 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000537
+    Meter: ARWC-M-000657 / AW-2022-000657
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260827-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-037
+- id: op-appointment-arwc-ap-p-038
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm057
+  - awm058
+  - awm089
+  - rosa
+  date: '2026-08-26T14:05:00-04:00'
+  subject: ARWC-AP-P-038 | 2026-08-27 09:00–11:00 | ARWC-SP-000538
+  body: |
+    Identity and access visit
+
+    143 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000538
+    Meter: ARWC-M-000658 / AW-2023-000658
+    Crew: Hugo Senvard, Idris Dalver
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260827-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-038
+- id: op-appointment-arwc-ap-p-039
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm057
+  - awm058
+  - awm091
+  - rosa
+  date: '2026-08-27T14:05:00-04:00'
+  subject: ARWC-AP-P-039 | 2026-08-28 09:00–11:00 | ARWC-SP-000539
+  body: |
+    Identity and access visit
+
+    144 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000539
+    Meter: ARWC-M-000659 / AW-2024-000659
+    Crew: Hugo Senvard, Idris Dalver
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260828-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-039
+- id: op-appointment-arwc-ap-p-040
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm059
+  - awm060
+  - awm091
+  - rosa
+  date: '2026-08-27T14:05:00-04:00'
+  subject: ARWC-AP-P-040 | 2026-08-28 09:00–11:00 | ARWC-SP-000540
+  body: |
+    Identity and access visit
+
+    145 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000540
+    Meter: ARWC-M-000660 / AW-2014-000660
+    Crew: Imani Lestrel, Iris Tarlowe
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260828-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-040
+- id: op-appointment-arwc-ap-p-041
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm059
+  - awm060
+  - awm085
+  - rosa
+  date: '2026-08-28T14:05:00-04:00'
+  subject: ARWC-AP-P-041 | 2026-08-31 09:00–11:00 | ARWC-SP-000541
+  body: |
+    Identity and access visit
+
+    146 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000541
+    Meter: ARWC-M-000661 / AW-2015-000661
+    Crew: Imani Lestrel, Iris Tarlowe
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260831-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-041
+- id: op-appointment-arwc-ap-p-042
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm061
+  - awm062
+  - awm085
+  - rosa
+  date: '2026-08-28T14:05:00-04:00'
+  subject: ARWC-AP-P-042 | 2026-08-31 09:00–11:00 | ARWC-SP-000542
+  body: |
+    Identity and access visit
+
+    147 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000542
+    Meter: ARWC-M-000662 / AW-2016-000662
+    Crew: Isabel Danwick, Jalen Maraven
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260831-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-042
+- id: op-appointment-arwc-ap-p-043
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm061
+  - awm062
+  - awm087
+  - rosa
+  date: '2026-08-31T14:05:00-04:00'
+  subject: ARWC-AP-P-043 | 2026-09-01 09:00–11:00 | ARWC-SP-000543
+  body: |
+    Identity and access visit
+
+    148 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000543
+    Meter: ARWC-M-000663 / AW-2017-000663
+    Crew: Isabel Danwick, Jalen Maraven
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260901-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-043
+- id: op-appointment-arwc-ap-p-044
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm042
+  - owen
+  - awm087
+  - rosa
+  date: '2026-08-31T14:05:00-04:00'
+  subject: ARWC-AP-P-044 | 2026-09-01 09:00–11:00 | ARWC-SP-000544
+  body: |
+    Identity and access visit
+
+    149 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000544
+    Meter: ARWC-M-000664 / AW-2018-000664
+    Crew: Dario Radvell, Owen Vardell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260901-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-044
+- id: op-appointment-arwc-ap-p-045
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm042
+  - owen
+  - awm089
+  - rosa
+  date: '2026-09-01T14:05:00-04:00'
+  subject: ARWC-AP-P-045 | 2026-09-02 09:00–11:00 | ARWC-SP-000545
+  body: |
+    Identity and access visit
+
+    150 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000545
+    Meter: ARWC-M-000665 / AW-2019-000665
+    Crew: Dario Radvell, Owen Vardell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260902-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-045
+- id: op-appointment-arwc-ap-p-046
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm089
+  - rosa
+  date: '2026-09-01T14:05:00-04:00'
+  subject: ARWC-AP-P-046 | 2026-09-02 09:00–11:00 | ARWC-SP-000546
+  body: |
+    Identity and access visit
+
+    151 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000546
+    Meter: ARWC-M-000666 / AW-2020-000666
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260902-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-046
+- id: op-appointment-arwc-ap-p-047
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm043
+  - awm044
+  - awm091
+  - rosa
+  date: '2026-09-02T14:05:00-04:00'
+  subject: ARWC-AP-P-047 | 2026-09-03 09:00–11:00 | ARWC-SP-000547
+  body: |
+    Identity and access visit
+
+    152 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000547
+    Meter: ARWC-M-000667 / AW-2021-000667
+    Crew: Della Belsart, Dev Havelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260903-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-047
+- id: op-appointment-arwc-ap-p-048
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm091
+  - rosa
+  date: '2026-09-02T14:05:00-04:00'
+  subject: ARWC-AP-P-048 | 2026-09-03 09:00–11:00 | ARWC-SP-000548
+  body: |
+    Identity and access visit
+
+    153 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000548
+    Meter: ARWC-M-000668 / AW-2022-000668
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260903-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-048
+- id: op-appointment-arwc-ap-p-049
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm045
+  - awm046
+  - awm085
+  - rosa
+  date: '2026-09-03T14:05:00-04:00'
+  subject: ARWC-AP-P-049 | 2026-09-04 09:00–11:00 | ARWC-SP-000549
+  body: |
+    Identity and access visit
+
+    154 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000549
+    Meter: ARWC-M-000669 / AW-2023-000669
+    Crew: Edda Renshaw, Eira Bravelle
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260904-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-049
+- id: op-appointment-arwc-ap-p-050
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm085
+  - rosa
+  date: '2026-09-03T14:05:00-04:00'
+  subject: ARWC-AP-P-050 | 2026-09-04 09:00–11:00 | ARWC-SP-000550
+  body: |
+    Identity and access visit
+
+    155 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000550
+    Meter: ARWC-M-000670 / AW-2024-000670
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260904-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-050
+- id: op-appointment-arwc-ap-p-051
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm047
+  - awm048
+  - awm087
+  - rosa
+  date: '2026-09-04T14:05:00-04:00'
+  subject: ARWC-AP-P-051 | 2026-09-07 09:00–11:00 | ARWC-SP-000551
+  body: |
+    Identity and access visit
+
+    156 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000551
+    Meter: ARWC-M-000671 / AW-2014-000671
+    Crew: Elias Iversen, Elin Rivelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260907-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-051
+- id: op-appointment-arwc-ap-p-052
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm087
+  - rosa
+  date: '2026-09-04T14:05:00-04:00'
+  subject: ARWC-AP-P-052 | 2026-09-07 09:00–11:00 | ARWC-SP-000552
+  body: |
+    Identity and access visit
+
+    157 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000552
+    Meter: ARWC-M-000672 / AW-2015-000672
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260907-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-052
+- id: op-appointment-arwc-ap-p-053
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm049
+  - awm050
+  - awm089
+  - rosa
+  date: '2026-09-07T14:05:00-04:00'
+  subject: ARWC-AP-P-053 | 2026-09-08 09:00–11:00 | ARWC-SP-000553
+  body: |
+    Identity and access visit
+
+    158 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000553
+    Meter: ARWC-M-000673 / AW-2016-000673
+    Crew: Emre Carsten, Farah Jorrel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260908-01; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-053
+- id: op-appointment-arwc-ap-p-054
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm089
+  - rosa
+  date: '2026-09-07T14:05:00-04:00'
+  subject: ARWC-AP-P-054 | 2026-09-08 09:00–11:00 | ARWC-SP-000554
+  body: |
+    Identity and access visit
+
+    159 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000554
+    Meter: ARWC-M-000674 / AW-2017-000674
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260908-02; return an access problem to Petra Quillan.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-054
+- id: op-appointment-arwc-ap-p-055
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm051
+  - awm052
+  - awm091
+  - rosa
+  date: '2026-09-08T14:05:00-04:00'
+  subject: ARWC-AP-P-055 | 2026-09-09 09:00–11:00 | ARWC-SP-000555
+  body: |
+    Identity and access visit
+
+    160 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000555
+    Meter: ARWC-M-000675 / AW-2018-000675
+    Crew: Felix Sarnell, Finn Cavelin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260909-01; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-055
+- id: op-appointment-arwc-ap-p-056
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm091
+  - rosa
+  date: '2026-09-08T14:05:00-04:00'
+  subject: ARWC-AP-P-056 | 2026-09-09 09:00–11:00 | ARWC-SP-000556
+  body: |
+    Identity and access visit
+
+    161 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000556
+    Meter: ARWC-M-000676 / AW-2019-000676
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260909-02; return an access problem to Rafael Harlowe.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-056
+- id: op-appointment-arwc-ap-p-057
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm053
+  - awm054
+  - awm085
+  - rosa
+  date: '2026-09-09T14:05:00-04:00'
+  subject: ARWC-AP-P-057 | 2026-09-10 09:00–11:00 | ARWC-SP-000557
+  body: |
+    Identity and access visit
+
+    162 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000557
+    Meter: ARWC-M-000677 / AW-2020-000677
+    Crew: Flora Kelswick, Gabriel Selwyn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260910-01; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-057
+- id: op-appointment-arwc-ap-p-058
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm085
+  - rosa
+  date: '2026-09-09T14:05:00-04:00'
+  subject: ARWC-AP-P-058 | 2026-09-10 09:00–11:00 | ARWC-SP-000558
+  body: |
+    Identity and access visit
+
+    163 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000558
+    Meter: ARWC-M-000678 / AW-2021-000678
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260910-02; return an access problem to Nina Garsen.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-058
+- id: op-appointment-arwc-ap-p-059
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm055
+  - awm056
+  - awm087
+  - rosa
+  date: '2026-09-10T14:05:00-04:00'
+  subject: ARWC-AP-P-059 | 2026-09-11 09:00–11:00 | ARWC-SP-000559
+  body: |
+    Identity and access visit
+
+    164 Cedar Lane, Pine East 1
+    Service point: ARWC-SP-000559
+    Meter: ARWC-M-000679 / AW-2022-000679
+    Crew: Hana Cernault, Harriet Larmont
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260911-01; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-059
+- id: op-appointment-arwc-ap-p-060
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm057
+  - awm058
+  - awm087
+  - rosa
+  date: '2026-09-10T14:05:00-04:00'
+  subject: ARWC-AP-P-060 | 2026-09-11 09:00–11:00 | ARWC-SP-000560
+  body: |
+    Identity and access visit
+
+    165 Cedar Lane, Pine West 1
+    Service point: ARWC-SP-000560
+    Meter: ARWC-M-000680 / AW-2023-000680
+    Crew: Hugo Senvard, Idris Dalver
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-P-20260911-02; return an access problem to Orla Zorrel.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-p-060
+- id: op-appointment-arwc-ap-r-001
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm063
+  - awm064
+  - awm086
+  - rosa
+  date: '2026-07-31T14:05:00-04:00'
+  subject: ARWC-AP-R-001 | 2026-08-03 09:00–11:00 | ARWC-SP-027501
+  body: |
+    Identity and access visit
+
+    178 Maple Reach, River East 9
+    Service point: ARWC-SP-027501
+    Meter: ARWC-M-027621 / AW-2014-027621
+    Crew: Jamie Telmire, Jonas Darsell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260803-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-001
+- id: op-appointment-arwc-ap-r-002
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm086
+  - rosa
+  date: '2026-07-31T14:05:00-04:00'
+  subject: ARWC-AP-R-002 | 2026-08-03 09:00–11:00 | ARWC-SP-027502
+  body: |
+    Identity and access visit
+
+    179 Maple Reach, River West 9
+    Service point: ARWC-SP-027502
+    Meter: ARWC-M-027622 / AW-2015-027622
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260803-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-002
+- id: op-appointment-arwc-ap-r-003
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm088
+  - rosa
+  date: '2026-08-03T14:05:00-04:00'
+  subject: ARWC-AP-R-003 | 2026-08-04 09:00–11:00 | ARWC-SP-027503
+  body: |
+    Identity and access visit
+
+    180 Maple Reach, River East 9
+    Service point: ARWC-SP-027503
+    Meter: ARWC-M-027623 / AW-2016-027623
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260804-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-003
+- id: op-appointment-arwc-ap-r-004
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm088
+  - rosa
+  date: '2026-08-03T14:05:00-04:00'
+  subject: ARWC-AP-R-004 | 2026-08-04 09:00–11:00 | ARWC-SP-027504
+  body: |
+    Identity and access visit
+
+    181 Maple Reach, River West 9
+    Service point: ARWC-SP-027504
+    Meter: ARWC-M-027624 / AW-2017-027624
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260804-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-004
+- id: op-appointment-arwc-ap-r-005
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm090
+  - rosa
+  date: '2026-08-04T14:05:00-04:00'
+  subject: ARWC-AP-R-005 | 2026-08-05 09:00–11:00 | ARWC-SP-027505
+  body: |
+    Identity and access visit
+
+    182 Maple Reach, River East 9
+    Service point: ARWC-SP-027505
+    Meter: ARWC-M-027625 / AW-2018-027625
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260805-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-005
+- id: op-appointment-arwc-ap-r-006
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm090
+  - rosa
+  date: '2026-08-04T14:05:00-04:00'
+  subject: ARWC-AP-R-006 | 2026-08-05 09:00–11:00 | ARWC-SP-027506
+  body: |
+    Identity and access visit
+
+    183 Maple Reach, River West 9
+    Service point: ARWC-SP-027506
+    Meter: ARWC-M-027626 / AW-2019-027626
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260805-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-006
+- id: op-appointment-arwc-ap-r-007
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm092
+  - rosa
+  date: '2026-08-05T14:05:00-04:00'
+  subject: ARWC-AP-R-007 | 2026-08-06 09:00–11:00 | ARWC-SP-027507
+  body: |
+    Identity and access visit
+
+    184 Maple Reach, River East 9
+    Service point: ARWC-SP-027507
+    Meter: ARWC-M-027627 / AW-2020-027627
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260806-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-007
+- id: op-appointment-arwc-ap-r-008
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm092
+  - rosa
+  date: '2026-08-05T14:05:00-04:00'
+  subject: ARWC-AP-R-008 | 2026-08-06 09:00–11:00 | ARWC-SP-027508
+  body: |
+    Identity and access visit
+
+    185 Maple Reach, River West 9
+    Service point: ARWC-SP-027508
+    Meter: ARWC-M-027628 / AW-2021-027628
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260806-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-008
+- id: op-appointment-arwc-ap-r-009
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm086
+  - rosa
+  date: '2026-08-06T14:05:00-04:00'
+  subject: ARWC-AP-R-009 | 2026-08-07 09:00–11:00 | ARWC-SP-027509
+  body: |
+    Identity and access visit
+
+    186 Maple Reach, River East 9
+    Service point: ARWC-SP-027509
+    Meter: ARWC-M-027629 / AW-2022-027629
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260807-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-009
+- id: op-appointment-arwc-ap-r-010
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm086
+  - rosa
+  date: '2026-08-06T14:05:00-04:00'
+  subject: ARWC-AP-R-010 | 2026-08-07 09:00–11:00 | ARWC-SP-027510
+  body: |
+    Identity and access visit
+
+    187 Maple Reach, River West 9
+    Service point: ARWC-SP-027510
+    Meter: ARWC-M-027630 / AW-2023-027630
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260807-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-010
+- id: op-appointment-arwc-ap-r-011
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm088
+  - rosa
+  date: '2026-08-07T14:05:00-04:00'
+  subject: ARWC-AP-R-011 | 2026-08-10 09:00–11:00 | ARWC-SP-027511
+  body: |
+    Identity and access visit
+
+    188 Maple Reach, River East 9
+    Service point: ARWC-SP-027511
+    Meter: ARWC-M-027631 / AW-2024-027631
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260810-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-011
+- id: op-appointment-arwc-ap-r-012
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm088
+  - rosa
+  date: '2026-08-07T14:05:00-04:00'
+  subject: ARWC-AP-R-012 | 2026-08-10 09:00–11:00 | ARWC-SP-027512
+  body: |
+    Identity and access visit
+
+    189 Maple Reach, River West 9
+    Service point: ARWC-SP-027512
+    Meter: ARWC-M-027632 / AW-2014-027632
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260810-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-012
+- id: op-appointment-arwc-ap-r-013
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm090
+  - rosa
+  date: '2026-08-10T14:05:00-04:00'
+  subject: ARWC-AP-R-013 | 2026-08-11 09:00–11:00 | ARWC-SP-027513
+  body: |
+    Identity and access visit
+
+    190 Maple Reach, River East 9
+    Service point: ARWC-SP-027513
+    Meter: ARWC-M-027633 / AW-2015-027633
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260811-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-013
+- id: op-appointment-arwc-ap-r-014
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm090
+  - rosa
+  date: '2026-08-10T14:05:00-04:00'
+  subject: ARWC-AP-R-014 | 2026-08-11 09:00–11:00 | ARWC-SP-027514
+  body: |
+    Identity and access visit
+
+    191 Maple Reach, River West 9
+    Service point: ARWC-SP-027514
+    Meter: ARWC-M-027634 / AW-2016-027634
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260811-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-014
+- id: op-appointment-arwc-ap-r-015
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm092
+  - rosa
+  date: '2026-08-11T14:05:00-04:00'
+  subject: ARWC-AP-R-015 | 2026-08-12 09:00–11:00 | ARWC-SP-027515
+  body: |
+    Identity and access visit
+
+    192 Maple Reach, River East 9
+    Service point: ARWC-SP-027515
+    Meter: ARWC-M-027635 / AW-2017-027635
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260812-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-015
+- id: op-appointment-arwc-ap-r-016
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm079
+  - awm080
+  - awm092
+  - rosa
+  date: '2026-08-11T14:05:00-04:00'
+  subject: ARWC-AP-R-016 | 2026-08-12 09:00–11:00 | ARWC-SP-027516
+  body: |
+    Identity and access visit
+
+    193 Maple Reach, River West 9
+    Service point: ARWC-SP-027516
+    Meter: ARWC-M-027636 / AW-2018-027636
+    Crew: Mica Fennard, Mira Orvel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260812-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-016
+- id: op-appointment-arwc-ap-r-017
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm079
+  - awm080
+  - awm086
+  - rosa
+  date: '2026-08-12T14:05:00-04:00'
+  subject: ARWC-AP-R-017 | 2026-08-13 09:00–11:00 | ARWC-SP-027517
+  body: |
+    Identity and access visit
+
+    194 Maple Reach, River East 9
+    Service point: ARWC-SP-027517
+    Meter: ARWC-M-027637 / AW-2019-027637
+    Crew: Mica Fennard, Mira Orvel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260813-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-017
+- id: op-appointment-arwc-ap-r-018
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm081
+  - awm082
+  - awm086
+  - rosa
+  date: '2026-08-12T14:05:00-04:00'
+  subject: ARWC-AP-R-018 | 2026-08-13 09:00–11:00 | ARWC-SP-027518
+  body: |
+    Identity and access visit
+
+    195 Maple Reach, River West 9
+    Service point: ARWC-SP-027518
+    Meter: ARWC-M-027638 / AW-2020-027638
+    Crew: Morgan Wernick, Nella Ferrell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260813-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-018
+- id: op-appointment-arwc-ap-r-019
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm081
+  - awm082
+  - awm088
+  - rosa
+  date: '2026-08-13T14:05:00-04:00'
+  subject: ARWC-AP-R-019 | 2026-08-14 09:00–11:00 | ARWC-SP-027519
+  body: |
+    Identity and access visit
+
+    196 Maple Reach, River East 9
+    Service point: ARWC-SP-027519
+    Meter: ARWC-M-027639 / AW-2021-027639
+    Crew: Morgan Wernick, Nella Ferrell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260814-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-019
+- id: op-appointment-arwc-ap-r-020
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm083
+  - awm084
+  - awm088
+  - rosa
+  date: '2026-08-13T14:05:00-04:00'
+  subject: ARWC-AP-R-020 | 2026-08-14 09:00–11:00 | ARWC-SP-027520
+  body: |
+    Identity and access visit
+
+    197 Maple Reach, River West 9
+    Service point: ARWC-SP-027520
+    Meter: ARWC-M-027640 / AW-2022-027640
+    Crew: Niamh Parnell, Niko Yervan
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260814-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-020
+- id: op-appointment-arwc-ap-r-021
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm083
+  - awm084
+  - awm090
+  - rosa
+  date: '2026-08-14T14:05:00-04:00'
+  subject: ARWC-AP-R-021 | 2026-08-17 09:00–11:00 | ARWC-SP-027521
+  body: |
+    Identity and access visit
+
+    198 Maple Reach, River East 9
+    Service point: ARWC-SP-027521
+    Meter: ARWC-M-027641 / AW-2023-027641
+    Crew: Niamh Parnell, Niko Yervan
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260817-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-021
+- id: op-appointment-arwc-ap-r-022
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm063
+  - awm064
+  - awm090
+  - rosa
+  date: '2026-08-14T14:05:00-04:00'
+  subject: ARWC-AP-R-022 | 2026-08-17 09:00–11:00 | ARWC-SP-027522
+  body: |
+    Identity and access visit
+
+    1 Orchard Lane, River West 9
+    Service point: ARWC-SP-027522
+    Meter: ARWC-M-027642 / AW-2024-027642
+    Crew: Jamie Telmire, Jonas Darsell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260817-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-022
+- id: op-appointment-arwc-ap-r-023
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm063
+  - awm064
+  - awm092
+  - rosa
+  date: '2026-08-17T14:05:00-04:00'
+  subject: ARWC-AP-R-023 | 2026-08-18 09:00–11:00 | ARWC-SP-027523
+  body: |
+    Identity and access visit
+
+    2 Orchard Lane, River East 9
+    Service point: ARWC-SP-027523
+    Meter: ARWC-M-027643 / AW-2014-027643
+    Crew: Jamie Telmire, Jonas Darsell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260818-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-023
+- id: op-appointment-arwc-ap-r-024
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm092
+  - rosa
+  date: '2026-08-17T14:05:00-04:00'
+  subject: ARWC-AP-R-024 | 2026-08-18 09:00–11:00 | ARWC-SP-027524
+  body: |
+    Identity and access visit
+
+    3 Orchard Lane, River West 9
+    Service point: ARWC-SP-027524
+    Meter: ARWC-M-027644 / AW-2015-027644
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260818-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-024
+- id: op-appointment-arwc-ap-r-025
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm086
+  - rosa
+  date: '2026-08-18T14:05:00-04:00'
+  subject: ARWC-AP-R-025 | 2026-08-19 09:00–11:00 | ARWC-SP-027525
+  body: |
+    Identity and access visit
+
+    4 Orchard Lane, River East 9
+    Service point: ARWC-SP-027525
+    Meter: ARWC-M-027645 / AW-2016-027645
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260819-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-025
+- id: op-appointment-arwc-ap-r-026
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm086
+  - rosa
+  date: '2026-08-18T14:05:00-04:00'
+  subject: ARWC-AP-R-026 | 2026-08-19 09:00–11:00 | ARWC-SP-027526
+  body: |
+    Identity and access visit
+
+    5 Orchard Lane, River West 9
+    Service point: ARWC-SP-027526
+    Meter: ARWC-M-027646 / AW-2017-027646
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260819-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-026
+- id: op-appointment-arwc-ap-r-027
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm088
+  - rosa
+  date: '2026-08-19T14:05:00-04:00'
+  subject: ARWC-AP-R-027 | 2026-08-20 09:00–11:00 | ARWC-SP-027527
+  body: |
+    Identity and access visit
+
+    6 Orchard Lane, River East 9
+    Service point: ARWC-SP-027527
+    Meter: ARWC-M-027647 / AW-2018-027647
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260820-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-027
+- id: op-appointment-arwc-ap-r-028
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm088
+  - rosa
+  date: '2026-08-19T14:05:00-04:00'
+  subject: ARWC-AP-R-028 | 2026-08-20 09:00–11:00 | ARWC-SP-027528
+  body: |
+    Identity and access visit
+
+    7 Orchard Lane, River West 9
+    Service point: ARWC-SP-027528
+    Meter: ARWC-M-027648 / AW-2019-027648
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260820-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-028
+- id: op-appointment-arwc-ap-r-029
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm090
+  - rosa
+  date: '2026-08-20T14:05:00-04:00'
+  subject: ARWC-AP-R-029 | 2026-08-21 09:00–11:00 | ARWC-SP-027529
+  body: |
+    Identity and access visit
+
+    8 Orchard Lane, River East 9
+    Service point: ARWC-SP-027529
+    Meter: ARWC-M-027649 / AW-2020-027649
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260821-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-029
+- id: op-appointment-arwc-ap-r-030
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm090
+  - rosa
+  date: '2026-08-20T14:05:00-04:00'
+  subject: ARWC-AP-R-030 | 2026-08-21 09:00–11:00 | ARWC-SP-027530
+  body: |
+    Identity and access visit
+
+    9 Orchard Lane, River West 9
+    Service point: ARWC-SP-027530
+    Meter: ARWC-M-027650 / AW-2021-027650
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260821-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-030
+- id: op-appointment-arwc-ap-r-031
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm092
+  - rosa
+  date: '2026-08-21T14:05:00-04:00'
+  subject: ARWC-AP-R-031 | 2026-08-24 09:00–11:00 | ARWC-SP-027531
+  body: |
+    Identity and access visit
+
+    10 Orchard Lane, River East 9
+    Service point: ARWC-SP-027531
+    Meter: ARWC-M-027651 / AW-2022-027651
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260824-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-031
+- id: op-appointment-arwc-ap-r-032
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm092
+  - rosa
+  date: '2026-08-21T14:05:00-04:00'
+  subject: ARWC-AP-R-032 | 2026-08-24 09:00–11:00 | ARWC-SP-027532
+  body: |
+    Identity and access visit
+
+    11 Orchard Lane, River West 9
+    Service point: ARWC-SP-027532
+    Meter: ARWC-M-027652 / AW-2023-027652
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260824-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-032
+- id: op-appointment-arwc-ap-r-033
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm086
+  - rosa
+  date: '2026-08-24T14:05:00-04:00'
+  subject: ARWC-AP-R-033 | 2026-08-25 09:00–11:00 | ARWC-SP-027533
+  body: |
+    Identity and access visit
+
+    12 Orchard Lane, River East 9
+    Service point: ARWC-SP-027533
+    Meter: ARWC-M-027653 / AW-2024-027653
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260825-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-033
+- id: op-appointment-arwc-ap-r-034
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm086
+  - rosa
+  date: '2026-08-24T14:05:00-04:00'
+  subject: ARWC-AP-R-034 | 2026-08-25 09:00–11:00 | ARWC-SP-027534
+  body: |
+    Identity and access visit
+
+    13 Orchard Lane, River West 9
+    Service point: ARWC-SP-027534
+    Meter: ARWC-M-027654 / AW-2014-027654
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260825-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-034
+- id: op-appointment-arwc-ap-r-035
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm088
+  - rosa
+  date: '2026-08-25T14:05:00-04:00'
+  subject: ARWC-AP-R-035 | 2026-08-26 09:00–11:00 | ARWC-SP-027535
+  body: |
+    Identity and access visit
+
+    14 Orchard Lane, River East 9
+    Service point: ARWC-SP-027535
+    Meter: ARWC-M-027655 / AW-2015-027655
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260826-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-035
+- id: op-appointment-arwc-ap-r-036
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm088
+  - rosa
+  date: '2026-08-25T14:05:00-04:00'
+  subject: ARWC-AP-R-036 | 2026-08-26 09:00–11:00 | ARWC-SP-027536
+  body: |
+    Identity and access visit
+
+    15 Orchard Lane, River West 9
+    Service point: ARWC-SP-027536
+    Meter: ARWC-M-027656 / AW-2016-027656
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260826-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-036
+- id: op-appointment-arwc-ap-r-037
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm090
+  - rosa
+  date: '2026-08-26T14:05:00-04:00'
+  subject: ARWC-AP-R-037 | 2026-08-27 09:00–11:00 | ARWC-SP-027537
+  body: |
+    Identity and access visit
+
+    16 Orchard Lane, River East 9
+    Service point: ARWC-SP-027537
+    Meter: ARWC-M-027657 / AW-2017-027657
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260827-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-037
+- id: op-appointment-arwc-ap-r-038
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm079
+  - awm080
+  - awm090
+  - rosa
+  date: '2026-08-26T14:05:00-04:00'
+  subject: ARWC-AP-R-038 | 2026-08-27 09:00–11:00 | ARWC-SP-027538
+  body: |
+    Identity and access visit
+
+    17 Orchard Lane, River West 9
+    Service point: ARWC-SP-027538
+    Meter: ARWC-M-027658 / AW-2018-027658
+    Crew: Mica Fennard, Mira Orvel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260827-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-038
+- id: op-appointment-arwc-ap-r-039
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm079
+  - awm080
+  - awm092
+  - rosa
+  date: '2026-08-27T14:05:00-04:00'
+  subject: ARWC-AP-R-039 | 2026-08-28 09:00–11:00 | ARWC-SP-027539
+  body: |
+    Identity and access visit
+
+    18 Orchard Lane, River East 9
+    Service point: ARWC-SP-027539
+    Meter: ARWC-M-027659 / AW-2019-027659
+    Crew: Mica Fennard, Mira Orvel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260828-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-039
+- id: op-appointment-arwc-ap-r-040
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm081
+  - awm082
+  - awm092
+  - rosa
+  date: '2026-08-27T14:05:00-04:00'
+  subject: ARWC-AP-R-040 | 2026-08-28 09:00–11:00 | ARWC-SP-027540
+  body: |
+    Identity and access visit
+
+    19 Orchard Lane, River West 9
+    Service point: ARWC-SP-027540
+    Meter: ARWC-M-027660 / AW-2020-027660
+    Crew: Morgan Wernick, Nella Ferrell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260828-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-040
+- id: op-appointment-arwc-ap-r-041
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm081
+  - awm082
+  - awm086
+  - rosa
+  date: '2026-08-28T14:05:00-04:00'
+  subject: ARWC-AP-R-041 | 2026-08-31 09:00–11:00 | ARWC-SP-027541
+  body: |
+    Identity and access visit
+
+    20 Orchard Lane, River East 9
+    Service point: ARWC-SP-027541
+    Meter: ARWC-M-027661 / AW-2021-027661
+    Crew: Morgan Wernick, Nella Ferrell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260831-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-041
+- id: op-appointment-arwc-ap-r-042
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm083
+  - awm084
+  - awm086
+  - rosa
+  date: '2026-08-28T14:05:00-04:00'
+  subject: ARWC-AP-R-042 | 2026-08-31 09:00–11:00 | ARWC-SP-027542
+  body: |
+    Identity and access visit
+
+    21 Orchard Lane, River West 9
+    Service point: ARWC-SP-027542
+    Meter: ARWC-M-027662 / AW-2022-027662
+    Crew: Niamh Parnell, Niko Yervan
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260831-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-042
+- id: op-appointment-arwc-ap-r-043
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm083
+  - awm084
+  - awm088
+  - rosa
+  date: '2026-08-31T14:05:00-04:00'
+  subject: ARWC-AP-R-043 | 2026-09-01 09:00–11:00 | ARWC-SP-027543
+  body: |
+    Identity and access visit
+
+    22 Orchard Lane, River East 9
+    Service point: ARWC-SP-027543
+    Meter: ARWC-M-027663 / AW-2023-027663
+    Crew: Niamh Parnell, Niko Yervan
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260901-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-043
+- id: op-appointment-arwc-ap-r-044
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm063
+  - awm064
+  - awm088
+  - rosa
+  date: '2026-08-31T14:05:00-04:00'
+  subject: ARWC-AP-R-044 | 2026-09-01 09:00–11:00 | ARWC-SP-027544
+  body: |
+    Identity and access visit
+
+    23 Orchard Lane, River West 9
+    Service point: ARWC-SP-027544
+    Meter: ARWC-M-027664 / AW-2024-027664
+    Crew: Jamie Telmire, Jonas Darsell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260901-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-044
+- id: op-appointment-arwc-ap-r-045
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm063
+  - awm064
+  - awm090
+  - rosa
+  date: '2026-09-01T14:05:00-04:00'
+  subject: ARWC-AP-R-045 | 2026-09-02 09:00–11:00 | ARWC-SP-027545
+  body: |
+    Identity and access visit
+
+    24 Orchard Lane, River East 9
+    Service point: ARWC-SP-027545
+    Meter: ARWC-M-027665 / AW-2014-027665
+    Crew: Jamie Telmire, Jonas Darsell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260902-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-045
+- id: op-appointment-arwc-ap-r-046
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm090
+  - rosa
+  date: '2026-09-01T14:05:00-04:00'
+  subject: ARWC-AP-R-046 | 2026-09-02 09:00–11:00 | ARWC-SP-027546
+  body: |
+    Identity and access visit
+
+    25 Orchard Lane, River West 9
+    Service point: ARWC-SP-027546
+    Meter: ARWC-M-027666 / AW-2015-027666
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260902-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-046
+- id: op-appointment-arwc-ap-r-047
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm065
+  - awm066
+  - awm092
+  - rosa
+  date: '2026-09-02T14:05:00-04:00'
+  subject: ARWC-AP-R-047 | 2026-09-03 09:00–11:00 | ARWC-SP-027547
+  body: |
+    Identity and access visit
+
+    26 Orchard Lane, River East 9
+    Service point: ARWC-SP-027547
+    Meter: ARWC-M-027667 / AW-2016-027667
+    Crew: Jory Marrent, Kaisa Torren
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260903-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-047
+- id: op-appointment-arwc-ap-r-048
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm092
+  - rosa
+  date: '2026-09-02T14:05:00-04:00'
+  subject: ARWC-AP-R-048 | 2026-09-03 09:00–11:00 | ARWC-SP-027548
+  body: |
+    Identity and access visit
+
+    27 Orchard Lane, River West 9
+    Service point: ARWC-SP-027548
+    Meter: ARWC-M-027668 / AW-2017-027668
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260903-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-048
+- id: op-appointment-arwc-ap-r-049
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm067
+  - awm068
+  - awm086
+  - rosa
+  date: '2026-09-03T14:05:00-04:00'
+  subject: ARWC-AP-R-049 | 2026-09-04 09:00–11:00 | ARWC-SP-027549
+  body: |
+    Identity and access visit
+
+    28 Orchard Lane, River East 9
+    Service point: ARWC-SP-027549
+    Meter: ARWC-M-027669 / AW-2018-027669
+    Crew: Kiran Delmont, Lara Mavell
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260904-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-049
+- id: op-appointment-arwc-ap-r-050
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm086
+  - rosa
+  date: '2026-09-03T14:05:00-04:00'
+  subject: ARWC-AP-R-050 | 2026-09-04 09:00–11:00 | ARWC-SP-027550
+  body: |
+    Identity and access visit
+
+    29 Orchard Lane, River West 9
+    Service point: ARWC-SP-027550
+    Meter: ARWC-M-027670 / AW-2019-027670
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260904-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-050
+- id: op-appointment-arwc-ap-r-051
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm069
+  - awm070
+  - awm088
+  - rosa
+  date: '2026-09-04T14:05:00-04:00'
+  subject: ARWC-AP-R-051 | 2026-09-07 09:00–11:00 | ARWC-SP-027551
+  body: |
+    Identity and access visit
+
+    30 Orchard Lane, River East 9
+    Service point: ARWC-SP-027551
+    Meter: ARWC-M-027671 / AW-2020-027671
+    Crew: Leila Velswick, Lena Dravik
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260907-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-051
+- id: op-appointment-arwc-ap-r-052
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm088
+  - rosa
+  date: '2026-09-04T14:05:00-04:00'
+  subject: ARWC-AP-R-052 | 2026-09-07 09:00–11:00 | ARWC-SP-027552
+  body: |
+    Identity and access visit
+
+    31 Orchard Lane, River West 9
+    Service point: ARWC-SP-027552
+    Meter: ARWC-M-027672 / AW-2021-027672
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260907-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-052
+- id: op-appointment-arwc-ap-r-053
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm071
+  - awm072
+  - awm090
+  - rosa
+  date: '2026-09-07T14:05:00-04:00'
+  subject: ARWC-AP-R-053 | 2026-09-08 09:00–11:00 | ARWC-SP-027553
+  body: |
+    Identity and access visit
+
+    32 Orchard Lane, River East 9
+    Service point: ARWC-SP-027553
+    Meter: ARWC-M-027673 / AW-2022-027673
+    Crew: Leo Narsen, Lila Verrin
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260908-01; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-053
+- id: op-appointment-arwc-ap-r-054
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm090
+  - rosa
+  date: '2026-09-07T14:05:00-04:00'
+  subject: ARWC-AP-R-054 | 2026-09-08 09:00–11:00 | ARWC-SP-027554
+  body: |
+    Identity and access visit
+
+    33 Orchard Lane, River West 9
+    Service point: ARWC-SP-027554
+    Meter: ARWC-M-027674 / AW-2023-027674
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260908-02; return an access problem to Quinn Aldren.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-054
+- id: op-appointment-arwc-ap-r-055
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm073
+  - awm074
+  - awm092
+  - rosa
+  date: '2026-09-08T14:05:00-04:00'
+  subject: ARWC-AP-R-055 | 2026-09-09 09:00–11:00 | ARWC-SP-027555
+  body: |
+    Identity and access visit
+
+    34 Orchard Lane, River East 9
+    Service point: ARWC-SP-027555
+    Meter: ARWC-M-027675 / AW-2024-027675
+    Crew: Lina Edran, Louis Nelcourt
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260909-01; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-055
+- id: op-appointment-arwc-ap-r-056
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm092
+  - rosa
+  date: '2026-09-08T14:05:00-04:00'
+  subject: ARWC-AP-R-056 | 2026-09-09 09:00–11:00 | ARWC-SP-027556
+  body: |
+    Identity and access visit
+
+    35 Orchard Lane, River West 9
+    Service point: ARWC-SP-027556
+    Meter: ARWC-M-027676 / AW-2014-027676
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260909-02; return an access problem to Remi Radvell.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-056
+- id: op-appointment-arwc-ap-r-057
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm075
+  - awm076
+  - awm086
+  - rosa
+  date: '2026-09-09T14:05:00-04:00'
+  subject: ARWC-AP-R-057 | 2026-09-10 09:00–11:00 | ARWC-SP-027557
+  body: |
+    Identity and access visit
+
+    36 Orchard Lane, River East 9
+    Service point: ARWC-SP-027557
+    Meter: ARWC-M-027677 / AW-2015-027677
+    Crew: Luca Warden, Mara Elvarn
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260910-01; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-057
+- id: op-appointment-arwc-ap-r-058
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm086
+  - rosa
+  date: '2026-09-09T14:05:00-04:00'
+  subject: ARWC-AP-R-058 | 2026-09-10 09:00–11:00 | ARWC-SP-027558
+  body: |
+    Identity and access visit
+
+    37 Orchard Lane, River West 9
+    Service point: ARWC-SP-027558
+    Meter: ARWC-M-027678 / AW-2016-027678
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260910-02; return an access problem to Omar Peveran.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-058
+- id: op-appointment-arwc-ap-r-059
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm077
+  - awm078
+  - awm088
+  - rosa
+  date: '2026-09-10T14:05:00-04:00'
+  subject: ARWC-AP-R-059 | 2026-09-11 09:00–11:00 | ARWC-SP-027559
+  body: |
+    Identity and access visit
+
+    38 Orchard Lane, River East 9
+    Service point: ARWC-SP-027559
+    Meter: ARWC-M-027679 / AW-2017-027679
+    Crew: Margot Odrin, Martin Wellard
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260911-01; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-059
+- id: op-appointment-arwc-ap-r-060
+  story: field-operations
+  from: arwc_field_desk
+  to:
+  - awm079
+  - awm080
+  - awm088
+  - rosa
+  date: '2026-09-10T14:05:00-04:00'
+  subject: ARWC-AP-R-060 | 2026-09-11 09:00–11:00 | ARWC-SP-027560
+  body: |
+    Identity and access visit
+
+    39 Orchard Lane, River West 9
+    Service point: ARWC-SP-027560
+    Meter: ARWC-M-027680 / AW-2018-027680
+    Crew: Mica Fennard, Mira Orvel
+    Access: Boundary box; no indoor access
+
+    No reading or meter exchange booked. Record the visit outcome against ARWC-FV-R-20260911-02; return an access problem to Pascal Gervain.
+
+    ARWC Field Desk
+  attachments:
+  - op-appointment-arwc-ap-r-060
+- id: op-maint-arwc-omr-0001
+  story: field-operations
+  from: mina
+  to:
+  - theo
+  date: '2026-08-05T19:15:00-04:00'
+  subject: 'ARWC-OMR-0001: Pine Operator stores'
+  body: |
+    Lower shelf label peeling at the right corner.
+
+    Replace the shelf label when stores work is next grouped.
+
+    ARWC-SH-P-20260805-14; observed 2026-08-05T19:00:00-04:00. Request attached.
+    Mina
+  attachments:
+  - op-request-arwc-omr-0001
+- id: op-maint-arwc-omr-0001-reply
+  story: field-operations
+  from: theo
+  to:
+  - mina
+  - awm001
+  date: '2026-08-06T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0001: Pine Operator stores'
+  body: |
+    I have this in the small-works intake. The location is clear. Keep the condition recorded until someone has done the work; I have not allocated a repair slot yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0001
+- id: op-maint-arwc-omr-0002
+  story: field-operations
+  from: awm001
+  to:
+  - theo
+  date: '2026-08-12T19:15:00-04:00'
+  subject: 'ARWC-OMR-0002: Pine Chemical-store exterior'
+  body: |
+    Outside notice-holder edge split; notice remains readable.
+
+    Replace holder without changing the notice text.
+
+    ARWC-SH-P-20260812-14; observed 2026-08-12T19:00:00-04:00. Request attached.
+    Nina
+  attachments:
+  - op-request-arwc-omr-0002
+- id: op-maint-arwc-omr-0002-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm001
+  date: '2026-08-13T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0002: Pine Chemical-store exterior'
+  body: |
+    Recorded for planning. I will group this with the next visit to that area. No completion date to pass back yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0002
+- id: op-maint-arwc-omr-0003
+  story: field-operations
+  from: awm001
+  to:
+  - theo
+  date: '2026-08-19T19:15:00-04:00'
+  subject: 'ARWC-OMR-0003: Pine Intake gallery'
+  body: |
+    Paint on the walkway edge worn near the entrance.
+
+    Assess a small marking touch-up during planned access.
+
+    ARWC-SH-P-20260819-14; observed 2026-08-19T19:00:00-04:00. Request attached.
+    Nina
+  attachments:
+  - op-request-arwc-omr-0003
+- id: op-maint-arwc-omr-0003-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm001
+  date: '2026-08-20T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0003: Pine Intake gallery'
+  body: |
+    Thanks, the observation is enough for intake. I have kept the original reference. There is no work order or repair sign-off behind it yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0003
+- id: op-maint-arwc-omr-0004
+  story: field-operations
+  from: awm002
+  to:
+  - theo
+  date: '2026-08-26T19:15:00-04:00'
+  subject: 'ARWC-OMR-0004: Pine Sample bench'
+  body: |
+    Blank-form drawer runner catches when closed fully.
+
+    Inspect drawer runner; forms moved to the adjacent marked tray.
+
+    ARWC-SH-P-20260826-14; observed 2026-08-26T19:00:00-04:00. Request attached.
+    Omar
+  attachments:
+  - op-request-arwc-omr-0004
+- id: op-maint-arwc-omr-0004-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm002
+  - awm001
+  date: '2026-08-27T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0004: Pine Sample bench'
+  body: |
+    Added to the local jobs list. Leave the request open; I need to check materials before I can give you a date.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0004
+- id: op-maint-arwc-omr-0005
+  story: field-operations
+  from: awm002
+  to:
+  - theo
+  date: '2026-09-02T19:15:00-04:00'
+  subject: 'ARWC-OMR-0005: Pine Pump corridor'
+  body: |
+    Corridor notice board retaining clip loose.
+
+    Refit the clip; notice secured in the remaining clips.
+
+    ARWC-SH-P-20260902-14; observed 2026-09-02T19:00:00-04:00. Request attached.
+    Omar
+  attachments:
+  - op-request-arwc-omr-0005
+- id: op-maint-arwc-omr-0005-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm002
+  - awm001
+  date: '2026-09-03T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0005: Pine Pump corridor'
+  body: |
+    I can use this description without a second visit just to find the item. Assessment is still pending, so the existing condition remains on the record.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0005
+- id: op-maint-arwc-omr-0006
+  story: field-operations
+  from: awm003
+  to:
+  - theo
+  date: '2026-09-09T19:15:00-04:00'
+  subject: 'ARWC-OMR-0006: Pine Filter gallery'
+  body: |
+    Clipboard backing cracked at its lower edge.
+
+    Replace clipboard; current round sheet moved to the spare.
+
+    ARWC-SH-P-20260909-14; observed 2026-09-09T19:00:00-04:00. Request attached.
+    Orla
+  attachments:
+  - op-request-arwc-omr-0006
+- id: op-maint-arwc-omr-0006-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm003
+  - awm001
+  date: '2026-09-10T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0006: Pine Filter gallery'
+  body: |
+    Received. I have separated the minor fixture work from the operating equipment. The repair still needs a planned slot.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0006
+- id: op-maint-arwc-omr-0007
+  story: field-operations
+  from: awm022
+  to:
+  - theo
+  date: '2026-08-05T19:15:00-04:00'
+  subject: 'ARWC-OMR-0007: River Operator stores'
+  body: |
+    Lower shelf label peeling at the right corner.
+
+    Replace the shelf label when stores work is next grouped.
+
+    ARWC-SH-R-20260805-14; observed 2026-08-05T19:00:00-04:00. Request attached.
+    Vera
+  attachments:
+  - op-request-arwc-omr-0007
+- id: op-maint-arwc-omr-0007-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm022
+  date: '2026-08-06T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0007: River Operator stores'
+  body: |
+    I have this in the small-works intake. The location is clear. Keep the condition recorded until someone has done the work; I have not allocated a repair slot yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0007
+- id: op-maint-arwc-omr-0008
+  story: field-operations
+  from: awm023
+  to:
+  - theo
+  date: '2026-08-12T19:15:00-04:00'
+  subject: 'ARWC-OMR-0008: River Chemical-store exterior'
+  body: |
+    Outside notice-holder edge split; notice remains readable.
+
+    Replace holder without changing the notice text.
+
+    ARWC-SH-R-20260812-14; observed 2026-08-12T19:00:00-04:00. Request attached.
+    Willa
+  attachments:
+  - op-request-arwc-omr-0008
+- id: op-maint-arwc-omr-0008-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm023
+  - awm022
+  date: '2026-08-13T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0008: River Chemical-store exterior'
+  body: |
+    Recorded for planning. I will group this with the next visit to that area. No completion date to pass back yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0008
+- id: op-maint-arwc-omr-0009
+  story: field-operations
+  from: awm023
+  to:
+  - theo
+  date: '2026-08-19T19:15:00-04:00'
+  subject: 'ARWC-OMR-0009: River Intake gallery'
+  body: |
+    Paint on the walkway edge worn near the entrance.
+
+    Assess a small marking touch-up during planned access.
+
+    ARWC-SH-R-20260819-14; observed 2026-08-19T19:00:00-04:00. Request attached.
+    Willa
+  attachments:
+  - op-request-arwc-omr-0009
+- id: op-maint-arwc-omr-0009-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm023
+  - awm022
+  date: '2026-08-20T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0009: River Intake gallery'
+  body: |
+    Thanks, the observation is enough for intake. I have kept the original reference. There is no work order or repair sign-off behind it yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0009
+- id: op-maint-arwc-omr-0010
+  story: field-operations
+  from: awm024
+  to:
+  - theo
+  date: '2026-08-26T19:15:00-04:00'
+  subject: 'ARWC-OMR-0010: River Sample bench'
+  body: |
+    Blank-form drawer runner catches when closed fully.
+
+    Inspect drawer runner; forms moved to the adjacent marked tray.
+
+    ARWC-SH-R-20260826-14; observed 2026-08-26T19:00:00-04:00. Request attached.
+    Yara
+  attachments:
+  - op-request-arwc-omr-0010
+- id: op-maint-arwc-omr-0010-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm024
+  - awm022
+  date: '2026-08-27T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0010: River Sample bench'
+  body: |
+    Added to the local jobs list. Leave the request open; I need to check materials before I can give you a date.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0010
+- id: op-maint-arwc-omr-0011
+  story: field-operations
+  from: awm024
+  to:
+  - theo
+  date: '2026-09-02T19:15:00-04:00'
+  subject: 'ARWC-OMR-0011: River Pump corridor'
+  body: |
+    Corridor notice board retaining clip loose.
+
+    Refit the clip; notice secured in the remaining clips.
+
+    ARWC-SH-R-20260902-14; observed 2026-09-02T19:00:00-04:00. Request attached.
+    Yara
+  attachments:
+  - op-request-arwc-omr-0011
+- id: op-maint-arwc-omr-0011-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm024
+  - awm022
+  date: '2026-09-03T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0011: River Pump corridor'
+  body: |
+    I can use this description without a second visit just to find the item. Assessment is still pending, so the existing condition remains on the record.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0011
+- id: op-maint-arwc-omr-0012
+  story: field-operations
+  from: awm025
+  to:
+  - theo
+  date: '2026-09-09T19:15:00-04:00'
+  subject: 'ARWC-OMR-0012: River Filter gallery'
+  body: |
+    Clipboard backing cracked at its lower edge.
+
+    Replace clipboard; current round sheet moved to the spare.
+
+    ARWC-SH-R-20260909-14; observed 2026-09-09T19:00:00-04:00. Request attached.
+    Yasmin
+  attachments:
+  - op-request-arwc-omr-0012
+- id: op-maint-arwc-omr-0012-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm025
+  - awm022
+  date: '2026-09-10T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0012: River Filter gallery'
+  body: |
+    Received. I have separated the minor fixture work from the operating equipment. The repair still needs a planned slot.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0012
+- id: op-maint-arwc-omr-0013
+  story: field-operations
+  from: awm047
+  to:
+  - theo
+  date: '2026-08-04T11:35:00-04:00'
+  subject: 'ARWC-OMR-0013: Pine W Hydrant marker circuit'
+  body: |
+    Marker post has a split at the top; reference still readable.
+
+    Assess a replacement marker post; no hydrant work requested.
+
+    ARWC-FV-P-20260804-03; observed 2026-08-04T11:20:00-04:00. Request attached.
+    Elias
+  attachments:
+  - op-request-arwc-omr-0013
+- id: op-maint-arwc-omr-0013-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm047
+  - awm042
+  date: '2026-08-05T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0013: Pine W Hydrant marker circuit'
+  body: |
+    I have this in the small-works intake. The location is clear. Keep the condition recorded until someone has done the work; I have not allocated a repair slot yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0013
+- id: op-maint-arwc-omr-0014
+  story: field-operations
+  from: awm061
+  to:
+  - theo
+  date: '2026-08-12T11:35:00-04:00'
+  subject: 'ARWC-OMR-0014: Pine W Valve-cover circuit'
+  body: |
+    Cover identification plate worn at one edge; location confirmed on card.
+
+    Renew the external plate when route marking work is grouped.
+
+    ARWC-FV-P-20260812-04; observed 2026-08-12T11:20:00-04:00. Request attached.
+    Isabel
+  attachments:
+  - op-request-arwc-omr-0014
+- id: op-maint-arwc-omr-0014-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm061
+  - awm042
+  date: '2026-08-13T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0014: Pine W Valve-cover circuit'
+  body: |
+    Recorded for planning. I will group this with the next visit to that area. No completion date to pass back yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0014
+- id: op-maint-arwc-omr-0015
+  story: field-operations
+  from: awm055
+  to:
+  - theo
+  date: '2026-08-19T11:35:00-04:00'
+  subject: 'ARWC-OMR-0015: Pine E District pump-house exterior'
+  body: |
+    External notice-holder latch no longer holds the lower corner.
+
+    Repair the notice holder; operating equipment is outside this request.
+
+    ARWC-FV-P-20260819-07; observed 2026-08-19T11:20:00-04:00. Request attached.
+    Hana
+  attachments:
+  - op-request-arwc-omr-0015
+- id: op-maint-arwc-omr-0015-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm055
+  - awm042
+  date: '2026-08-20T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0015: Pine E District pump-house exterior'
+  body: |
+    Thanks, the observation is enough for intake. I have kept the original reference. There is no work order or repair sign-off behind it yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0015
+- id: op-maint-arwc-omr-0016
+  story: field-operations
+  from: awm049
+  to:
+  - theo
+  date: '2026-08-27T11:35:00-04:00'
+  subject: 'ARWC-OMR-0016: Pine E Route notice board'
+  body: |
+    Route board clip bent; current sheet held by the second clip.
+
+    Replace board clip at the next stores run.
+
+    ARWC-FV-P-20260827-09; observed 2026-08-27T11:20:00-04:00. Request attached.
+    Emre
+  attachments:
+  - op-request-arwc-omr-0016
+- id: op-maint-arwc-omr-0016-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm049
+  - awm042
+  date: '2026-08-28T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0016: Pine E Route notice board'
+  body: |
+    Added to the local jobs list. Leave the request open; I need to check materials before I can give you a date.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0016
+- id: op-maint-arwc-omr-0017
+  story: field-operations
+  from: awm055
+  to:
+  - theo
+  date: '2026-09-04T11:35:00-04:00'
+  subject: 'ARWC-OMR-0017: Pine E Depot return bench'
+  body: |
+    Inspection-case outer latch loose; case moved to returns after the route.
+
+    Check the portable case latch; use depot spare next time.
+
+    ARWC-FV-P-20260904-06; observed 2026-09-04T11:20:00-04:00. Request attached.
+    Hana
+  attachments:
+  - op-request-arwc-omr-0017
+- id: op-maint-arwc-omr-0017-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm055
+  - awm042
+  date: '2026-09-07T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0017: Pine E Depot return bench'
+  body: |
+    I can use this description without a second visit just to find the item. Assessment is still pending, so the existing condition remains on the record.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0017
+- id: op-maint-arwc-omr-0018
+  story: field-operations
+  from: awm057
+  to:
+  - theo
+  date: '2026-09-10T11:35:00-04:00'
+  subject: 'ARWC-OMR-0018: Pine E Hydrant marker circuit'
+  body: |
+    Marker sleeve cloudy; number readable at close range.
+
+    Supply a replacement sleeve for the existing marker.
+
+    ARWC-FV-P-20260910-03; observed 2026-09-10T11:20:00-04:00. Request attached.
+    Hugo
+  attachments:
+  - op-request-arwc-omr-0018
+- id: op-maint-arwc-omr-0018-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm057
+  - awm042
+  date: '2026-09-11T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0018: Pine E Hydrant marker circuit'
+  body: |
+    Received. I have separated the minor fixture work from the operating equipment. The repair still needs a planned slot.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0018
+- id: op-maint-arwc-omr-0019
+  story: field-operations
+  from: awm069
+  to:
+  - theo
+  date: '2026-08-04T11:35:00-04:00'
+  subject: 'ARWC-OMR-0019: River W Hydrant marker circuit'
+  body: |
+    Marker post has a split at the top; reference still readable.
+
+    Assess a replacement marker post; no hydrant work requested.
+
+    ARWC-FV-R-20260804-03; observed 2026-08-04T11:20:00-04:00. Request attached.
+    Leila
+  attachments:
+  - op-request-arwc-omr-0019
+- id: op-maint-arwc-omr-0019-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm069
+  - awm063
+  date: '2026-08-05T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0019: River W Hydrant marker circuit'
+  body: |
+    I have this in the small-works intake. The location is clear. Keep the condition recorded until someone has done the work; I have not allocated a repair slot yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0019
+- id: op-maint-arwc-omr-0020
+  story: field-operations
+  from: awm083
+  to:
+  - theo
+  date: '2026-08-12T11:35:00-04:00'
+  subject: 'ARWC-OMR-0020: River W Valve-cover circuit'
+  body: |
+    Cover identification plate worn at one edge; location confirmed on card.
+
+    Renew the external plate when route marking work is grouped.
+
+    ARWC-FV-R-20260812-04; observed 2026-08-12T11:20:00-04:00. Request attached.
+    Niamh
+  attachments:
+  - op-request-arwc-omr-0020
+- id: op-maint-arwc-omr-0020-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm083
+  - awm063
+  date: '2026-08-13T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0020: River W Valve-cover circuit'
+  body: |
+    Recorded for planning. I will group this with the next visit to that area. No completion date to pass back yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0020
+- id: op-maint-arwc-omr-0021
+  story: field-operations
+  from: awm077
+  to:
+  - theo
+  date: '2026-08-19T11:35:00-04:00'
+  subject: 'ARWC-OMR-0021: River E District pump-house exterior'
+  body: |
+    External notice-holder latch no longer holds the lower corner.
+
+    Repair the notice holder; operating equipment is outside this request.
+
+    ARWC-FV-R-20260819-07; observed 2026-08-19T11:20:00-04:00. Request attached.
+    Margot
+  attachments:
+  - op-request-arwc-omr-0021
+- id: op-maint-arwc-omr-0021-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm077
+  - awm063
+  date: '2026-08-20T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0021: River E District pump-house exterior'
+  body: |
+    Thanks, the observation is enough for intake. I have kept the original reference. There is no work order or repair sign-off behind it yet.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0021
+- id: op-maint-arwc-omr-0022
+  story: field-operations
+  from: awm071
+  to:
+  - theo
+  date: '2026-08-27T11:35:00-04:00'
+  subject: 'ARWC-OMR-0022: River E Route notice board'
+  body: |
+    Route board clip bent; current sheet held by the second clip.
+
+    Replace board clip at the next stores run.
+
+    ARWC-FV-R-20260827-09; observed 2026-08-27T11:20:00-04:00. Request attached.
+    Leo
+  attachments:
+  - op-request-arwc-omr-0022
+- id: op-maint-arwc-omr-0022-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm071
+  - awm063
+  date: '2026-08-28T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0022: River E Route notice board'
+  body: |
+    Added to the local jobs list. Leave the request open; I need to check materials before I can give you a date.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0022
+- id: op-maint-arwc-omr-0023
+  story: field-operations
+  from: awm077
+  to:
+  - theo
+  date: '2026-09-04T11:35:00-04:00'
+  subject: 'ARWC-OMR-0023: River E Depot return bench'
+  body: |
+    Inspection-case outer latch loose; case moved to returns after the route.
+
+    Check the portable case latch; use depot spare next time.
+
+    ARWC-FV-R-20260904-06; observed 2026-09-04T11:20:00-04:00. Request attached.
+    Margot
+  attachments:
+  - op-request-arwc-omr-0023
+- id: op-maint-arwc-omr-0023-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm077
+  - awm063
+  date: '2026-09-07T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0023: River E Depot return bench'
+  body: |
+    I can use this description without a second visit just to find the item. Assessment is still pending, so the existing condition remains on the record.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0023
+- id: op-maint-arwc-omr-0024
+  story: field-operations
+  from: awm079
+  to:
+  - theo
+  date: '2026-09-10T11:35:00-04:00'
+  subject: 'ARWC-OMR-0024: River E Hydrant marker circuit'
+  body: |
+    Marker sleeve cloudy; number readable at close range.
+
+    Supply a replacement sleeve for the existing marker.
+
+    ARWC-FV-R-20260910-03; observed 2026-09-10T11:20:00-04:00. Request attached.
+    Mica
+  attachments:
+  - op-request-arwc-omr-0024
+- id: op-maint-arwc-omr-0024-reply
+  story: field-operations
+  from: theo
+  to:
+  - awm079
+  - awm063
+  date: '2026-09-11T11:20:00-04:00'
+  subject: 'Re: ARWC-OMR-0024: River E Hydrant marker circuit'
+  body: |
+    Received. I have separated the minor fixture work from the operating equipment. The repair still needs a planned slot.
+
+    Theo
+  reply_to: op-maint-arwc-omr-0024
+- id: op-week-pine-1
+  story: field-operations
+  from: awm085
+  to:
+  - awm042
+  - awm087
+  - awm089
+  - awm091
+  date: '2026-08-07T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-08-07
+  body: |
+    Dev, keep the dry sleeves in the front of the return bin. The pair on Friday could find the spare without unpacking the whole kit. One access callback is still with the desk; that visit stays uncompleted.
+
+    Nina
+- id: op-week-pine-2
+  story: field-operations
+  from: awm087
+  to:
+  - awm042
+  - awm085
+  - awm089
+  - awm091
+  date: '2026-08-14T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-08-14
+  body: |
+    The route-board and field copies now use the same entrance wording. Leave corrections on the return sheet, not just on the copy in the van. Nothing else for the depot meeting from me.
+
+    Orla
+- id: op-week-pine-3
+  story: field-operations
+  from: awm089
+  to:
+  - awm042
+  - awm085
+  - awm087
+  - awm091
+  date: '2026-08-21T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-08-21
+  body: |
+    Please bring loose marker sleeves back with the kit. We counted them as issued this week; a sleeve still in the van is not a new stores receipt. The return sheet has space for it.
+
+    Petra
+- id: op-week-pine-4
+  story: field-operations
+  from: awm091
+  to:
+  - awm042
+  - awm085
+  - awm087
+  - awm089
+  date: '2026-08-28T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-08-28
+  body: |
+    The desk has kept the no-access visit separate from the completed identity checks. Do not send a second completion just to clear the route list. We need a fresh arrangement first.
+
+    Rafael
+- id: op-week-pine-5
+  story: field-operations
+  from: awm085
+  to:
+  - awm042
+  - awm087
+  - awm089
+  - awm091
+  date: '2026-09-04T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-09-04
+  body: |
+    Training bench time is staying after the routes. Dario has the learner list. If a morning overruns, call the desk so the instructor is not waiting without knowing.
+
+    Nina
+- id: op-week-pine-6
+  story: field-operations
+  from: awm087
+  to:
+  - awm042
+  - awm085
+  - awm089
+  - awm091
+  date: '2026-09-11T14:50:00-04:00'
+  subject: Pine depot / week ending 2026-09-11
+  body: |
+    Next week: the ordinary marker and board requests are still with Maintenance for planning. The return book is current through Friday. Owen’s outreach preparation has not changed their field sign-off.
+
+    Orla
+- id: op-week-river-1
+  story: field-operations
+  from: awm086
+  to:
+  - awm063
+  - awm088
+  - awm090
+  - awm092
+  date: '2026-08-07T14:50:00-04:00'
+  subject: River depot / week ending 2026-08-07
+  body: |
+    Ten route returns each morning are filed. The blocked boundary-box visit needs a new window; it is not a failed meter. Please keep those two things separate when the customer calls.
+
+    Omar
+- id: op-week-river-2
+  story: field-operations
+  from: awm088
+  to:
+  - awm063
+  - awm086
+  - awm090
+  - awm092
+  date: '2026-08-14T14:50:00-04:00'
+  subject: River depot / week ending 2026-08-14
+  body: |
+    Found two old blank return sheets in the spare kit. They have gone to paper recycling; current sheets are in the depot tray. Filled records stay in the return book.
+
+    Pascal
+- id: op-week-river-3
+  story: field-operations
+  from: awm090
+  to:
+  - awm063
+  - awm086
+  - awm088
+  - awm092
+  date: '2026-08-21T14:50:00-04:00'
+  subject: River depot / week ending 2026-08-21
+  body: |
+    The stock count agrees after the marker work. Open the part-used pack first on Monday. There is no need to break another sealed pack for a few sleeves.
+
+    Quinn
+- id: op-week-river-4
+  story: field-operations
+  from: awm092
+  to:
+  - awm063
+  - awm086
+  - awm088
+  - awm090
+  date: '2026-08-28T14:50:00-04:00'
+  subject: River depot / week ending 2026-08-28
+  body: |
+    The sample transport entries have handoff times now, not just departure times. Laboratory results belong with the laboratory record. Our return ends at receipt of the sealed package.
+
+    Remi
+- id: op-week-river-5
+  story: field-operations
+  from: awm086
+  to:
+  - awm063
+  - awm088
+  - awm090
+  - awm092
+  date: '2026-09-04T14:50:00-04:00'
+  subject: River depot / week ending 2026-09-04
+  body: |
+    Please leave the kit case with the loose latch in the returns area. Its request is open. There is a spare case for the next route; do not put the loose one back on the numbered shelf.
+
+    Omar
+- id: op-week-river-6
+  story: field-operations
+  from: awm088
+  to:
+  - awm063
+  - awm086
+  - awm090
+  - awm092
+  date: '2026-09-11T14:50:00-04:00'
+  subject: River depot / week ending 2026-09-11
+  body: |
+    Friday returns are filed. Three access callbacks from earlier weeks remain to arrange. Nothing new to book against it until the desk has an agreed window.
+
+    Pascal
+- id: op-learning-01
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-03T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-01 / practice return
+  body: |
+    Dev,
+
+    I wrote the whole route on the practice return and the bit about the plate got lost. Is “plate and card agree” enough when we both checked it?
+
+    Owen
+- id: op-learning-01-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-03T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-01 / practice return'
+  body: |
+    Yes, with the identifiers and the time in their fields. Keep the extra description for an actual difference.
+  reply_to: op-learning-01
+- id: op-learning-02
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-05T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-02 / practice return
+  body: |
+    Dev,
+
+    The practice card had an entrance and a box location. I could confirm the entrance, but not the box. I left the visit as no access. Just checking that I should not mark the first part complete separately.
+
+    Owen
+- id: op-learning-02-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-05T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-02 / practice return'
+  body: |
+    Keep one outcome for that visit. You can say the entrance was checked in the note. It still does not confirm the meter.
+  reply_to: op-learning-02
+- id: op-learning-03
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-10T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-03 / practice return
+  body: |
+    Dev,
+
+    Dev, the correction was on my practice copy but I had not changed the return copy. I caught it when reading back. Can we use a two-copy example again next time?
+
+    Owen
+- id: op-learning-03-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-10T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-03 / practice return'
+  body: |
+    We can. Bring both copies next time; I want to see where you check, before I prompt you.
+  reply_to: op-learning-03
+- id: op-learning-04
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-12T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-04 / practice return
+  body: |
+    Dev,
+
+    I put the handoff time in the collection field first. Corrected the practice sheet with the original still legible. The bottle label itself was right.
+
+    Owen
+- id: op-learning-04-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-12T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-04 / practice return'
+  body: |
+    Keep that sheet for the next session. We will do the time fields again before another live handoff.
+  reply_to: op-learning-04
+- id: op-learning-05
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-17T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-05 / practice return
+  body: |
+    Dev,
+
+    The spare sleeve was in the side pocket, so it looked like one was missing when I counted the main tray. I have put it back in its marked place.
+
+    Owen
+- id: op-learning-05-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-17T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-05 / practice return'
+  body: |
+    Good. Record the actual count, not a missing-stock adjustment. That adjustment would need a real shortage.
+  reply_to: op-learning-05
+- id: op-learning-06
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-19T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-06 / practice return
+  body: |
+    Dev,
+
+    I have shortened the return, but I still want to suggest replacing the part. Shall I put that under observation?
+
+    Owen
+- id: op-learning-06-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-19T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-06 / practice return'
+  body: |
+    Put what you saw under observation. A proposed repair belongs in the request. Theo decides how it gets planned.
+  reply_to: op-learning-06
+- id: op-learning-07
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-24T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-07 / practice return
+  body: |
+    Dev,
+
+    This plate took me longer to read. I asked for the second check instead of copying the number from the card and calling it a match. We agreed the characters before I entered them.
+
+    Owen
+- id: op-learning-07-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-24T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-07 / practice return'
+  body: |
+    That is the check I wanted. On the next route I will watch again; this is still supervised work.
+  reply_to: op-learning-07
+- id: op-learning-08
+  story: field-operations
+  from: owen
+  to:
+  - awm044
+  date: '2026-08-26T15:10:00-04:00'
+  subject: ARWC-TR-OWEN-08 / practice return
+  body: |
+    Dev,
+
+    For the next practice could we leave the access note wrong on purpose? I know the form now. I want to practise saying what I actually found without quietly fixing the old description.
+
+    Owen
+- id: op-learning-08-reply
+  story: field-operations
+  from: awm044
+  to:
+  - owen
+  date: '2026-08-26T15:40:00-04:00'
+  subject: 'Re: ARWC-TR-OWEN-08 / practice return'
+  body: |
+    Yes. I have not booked the next practice yet. Keep that as the example for when Dario gives us the time.
+  reply_to: op-learning-08

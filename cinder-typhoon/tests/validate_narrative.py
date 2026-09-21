@@ -25,6 +25,7 @@ from validate_commercial import check_commercial
 from validate_finance import check_finance
 from validate_office_life import check_calendar_part, check_office_life
 from validate_service_accounts import check_service_accounts
+from validate_field_operations import check_field_operations
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -51,12 +52,14 @@ OFFICE_MESSAGE_COUNT = 1730
 OFFICE_DOCUMENT_COUNT = 1385
 SERVICE_MESSAGE_COUNT = 1460
 SERVICE_DOCUMENT_COUNT = 872
+OPERATIONS_MESSAGE_COUNT = 196
+OPERATIONS_DOCUMENT_COUNT = 1113
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -800,6 +803,7 @@ def check_assets():
     check_finance(ROOT, identity, roster, mail, docs)
     check_office_life(ROOT, identity, roster, mail, docs, events)
     check_service_accounts(ROOT, identity, roster, mail, docs)
+    check_field_operations(ROOT, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -935,7 +939,7 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()

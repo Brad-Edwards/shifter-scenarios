@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 27,850 distinct authored messages, 7,428 source documents,
-staff directories for all 294 employees, and 638 calendar items. The
+The collection contains 28,046 distinct authored messages, 8,541 source documents,
+staff directories for all 294 employees, and 782 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -44,6 +44,14 @@ points and 51,330 current or retired meters. Opening invoices reconcile to
 readings, tariffs, receipts and allocations. Its
 [review record](../../docs/narrative/service-accounts-review.md) explains the
 population model, customer privacy boundaries and message-volume adjustment.
+ARWC field operations adds 196 messages, 1,113 document items and 144 calendar
+occurrences. Its six-week books cover all 94 operations employees through 936
+primary work records: 252 plant handovers, 600 field visits, 60 dispatch returns
+and 24 supervised training records. The 32 completed CSV tables retain 5,879
+rows, including supporting rosters, observations, appointments, resource
+bookings, stock movements and sample handoffs. Its
+[review record](../../docs/narrative/field-operations-review.md) separates those
+counts and documents the message adjustment, chronology and reader boundaries.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -68,6 +76,7 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/finance.yaml` | Invoice authority, supplier and claim evidence, cash allocations, balanced journal, payroll controls, and workbook formula inventory. |
 | `authoring/office-life.yaml` | Author-only publication, consent, attendance, response, cover, learning and room-booking joins. |
 | `authoring/service-accounts.yaml` | Author-only inventory, account-case joins, statement deliveries and restricted dataset audiences. |
+| `authoring/field-operations.yaml` | Author-only inventory and audiences for completed operating and field books. |
 | `documents/service-account-records.zip` | Seventeen finished CSV tables, individually extractable for review. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |

@@ -1,0 +1,1981 @@
+events:
+- id: op-calendar-appointment-arwc-ap-p-001
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm042
+  - owen
+  start: '2026-08-03T09:00:00-04:00'
+  end: '2026-08-03T11:00:00-04:00'
+  summary: 'ARWC-AP-P-001: identity and access visit'
+  description: ARWC-FV-P-20260803-01; ARWC-SP-000501; ARWC-M-000621. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-31T14:00:00-04:00'
+  location: 106 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-002
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-08-03T09:00:00-04:00'
+  end: '2026-08-03T11:00:00-04:00'
+  summary: 'ARWC-AP-P-002: identity and access visit'
+  description: ARWC-FV-P-20260803-02; ARWC-SP-000502; ARWC-M-000622. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-31T14:00:00-04:00'
+  location: 107 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-003
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-08-04T09:00:00-04:00'
+  end: '2026-08-04T11:00:00-04:00'
+  summary: 'ARWC-AP-P-003: identity and access visit'
+  description: ARWC-FV-P-20260804-01; ARWC-SP-000503; ARWC-M-000623. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-03T14:00:00-04:00'
+  location: 108 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-004
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-08-04T09:00:00-04:00'
+  end: '2026-08-04T11:00:00-04:00'
+  summary: 'ARWC-AP-P-004: identity and access visit'
+  description: ARWC-FV-P-20260804-02; ARWC-SP-000504; ARWC-M-000624. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-03T14:00:00-04:00'
+  location: 109 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-005
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-08-05T09:00:00-04:00'
+  end: '2026-08-05T11:00:00-04:00'
+  summary: 'ARWC-AP-P-005: identity and access visit'
+  description: ARWC-FV-P-20260805-01; ARWC-SP-000505; ARWC-M-000625. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-04T14:00:00-04:00'
+  location: 110 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-006
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-08-05T09:00:00-04:00'
+  end: '2026-08-05T11:00:00-04:00'
+  summary: 'ARWC-AP-P-006: identity and access visit'
+  description: ARWC-FV-P-20260805-02; ARWC-SP-000506; ARWC-M-000626. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-04T14:00:00-04:00'
+  location: 111 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-007
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-08-06T09:00:00-04:00'
+  end: '2026-08-06T11:00:00-04:00'
+  summary: 'ARWC-AP-P-007: identity and access visit'
+  description: ARWC-FV-P-20260806-01; ARWC-SP-000507; ARWC-M-000627. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-05T14:00:00-04:00'
+  location: 112 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-008
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-08-06T09:00:00-04:00'
+  end: '2026-08-06T11:00:00-04:00'
+  summary: 'ARWC-AP-P-008: identity and access visit'
+  description: ARWC-FV-P-20260806-02; ARWC-SP-000508; ARWC-M-000628. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-05T14:00:00-04:00'
+  location: 113 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-009
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-08-07T09:00:00-04:00'
+  end: '2026-08-07T11:00:00-04:00'
+  summary: 'ARWC-AP-P-009: identity and access visit'
+  description: ARWC-FV-P-20260807-01; ARWC-SP-000509; ARWC-M-000629. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-06T14:00:00-04:00'
+  location: 114 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-010
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-08-07T09:00:00-04:00'
+  end: '2026-08-07T11:00:00-04:00'
+  summary: 'ARWC-AP-P-010: identity and access visit'
+  description: ARWC-FV-P-20260807-02; ARWC-SP-000510; ARWC-M-000630. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-06T14:00:00-04:00'
+  location: 115 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-011
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-08-10T09:00:00-04:00'
+  end: '2026-08-10T11:00:00-04:00'
+  summary: 'ARWC-AP-P-011: identity and access visit'
+  description: ARWC-FV-P-20260810-01; ARWC-SP-000511; ARWC-M-000631. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-07T14:00:00-04:00'
+  location: 116 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-012
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-08-10T09:00:00-04:00'
+  end: '2026-08-10T11:00:00-04:00'
+  summary: 'ARWC-AP-P-012: identity and access visit'
+  description: ARWC-FV-P-20260810-02; ARWC-SP-000512; ARWC-M-000632. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-07T14:00:00-04:00'
+  location: 117 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-013
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-08-11T09:00:00-04:00'
+  end: '2026-08-11T11:00:00-04:00'
+  summary: 'ARWC-AP-P-013: identity and access visit'
+  description: ARWC-FV-P-20260811-01; ARWC-SP-000513; ARWC-M-000633. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-10T14:00:00-04:00'
+  location: 118 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-014
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-08-11T09:00:00-04:00'
+  end: '2026-08-11T11:00:00-04:00'
+  summary: 'ARWC-AP-P-014: identity and access visit'
+  description: ARWC-FV-P-20260811-02; ARWC-SP-000514; ARWC-M-000634. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-10T14:00:00-04:00'
+  location: 119 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-015
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-08-12T09:00:00-04:00'
+  end: '2026-08-12T11:00:00-04:00'
+  summary: 'ARWC-AP-P-015: identity and access visit'
+  description: ARWC-FV-P-20260812-01; ARWC-SP-000515; ARWC-M-000635. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-11T14:00:00-04:00'
+  location: 120 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-016
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm057
+  - awm058
+  start: '2026-08-12T09:00:00-04:00'
+  end: '2026-08-12T11:00:00-04:00'
+  summary: 'ARWC-AP-P-016: identity and access visit'
+  description: ARWC-FV-P-20260812-02; ARWC-SP-000516; ARWC-M-000636. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-11T14:00:00-04:00'
+  location: 121 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-017
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm057
+  - awm058
+  start: '2026-08-13T09:00:00-04:00'
+  end: '2026-08-13T11:00:00-04:00'
+  summary: 'ARWC-AP-P-017: identity and access visit'
+  description: ARWC-FV-P-20260813-01; ARWC-SP-000517; ARWC-M-000637. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-12T14:00:00-04:00'
+  location: 122 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-018
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm059
+  - awm060
+  start: '2026-08-13T09:00:00-04:00'
+  end: '2026-08-13T11:00:00-04:00'
+  summary: 'ARWC-AP-P-018: identity and access visit'
+  description: ARWC-FV-P-20260813-02; ARWC-SP-000518; ARWC-M-000638. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-12T14:00:00-04:00'
+  location: 123 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-019
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm059
+  - awm060
+  start: '2026-08-14T09:00:00-04:00'
+  end: '2026-08-14T11:00:00-04:00'
+  summary: 'ARWC-AP-P-019: identity and access visit'
+  description: ARWC-FV-P-20260814-01; ARWC-SP-000519; ARWC-M-000639. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-13T14:00:00-04:00'
+  location: 124 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-020
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm061
+  - awm062
+  start: '2026-08-14T09:00:00-04:00'
+  end: '2026-08-14T11:00:00-04:00'
+  summary: 'ARWC-AP-P-020: identity and access visit'
+  description: ARWC-FV-P-20260814-02; ARWC-SP-000520; ARWC-M-000640. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-13T14:00:00-04:00'
+  location: 125 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-021
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm061
+  - awm062
+  start: '2026-08-17T09:00:00-04:00'
+  end: '2026-08-17T11:00:00-04:00'
+  summary: 'ARWC-AP-P-021: identity and access visit'
+  description: ARWC-FV-P-20260817-01; ARWC-SP-000521; ARWC-M-000641. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-14T14:00:00-04:00'
+  location: 126 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-022
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm042
+  - owen
+  start: '2026-08-17T09:00:00-04:00'
+  end: '2026-08-17T11:00:00-04:00'
+  summary: 'ARWC-AP-P-022: identity and access visit'
+  description: ARWC-FV-P-20260817-02; ARWC-SP-000522; ARWC-M-000642. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-14T14:00:00-04:00'
+  location: 127 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-023
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm042
+  - owen
+  start: '2026-08-18T09:00:00-04:00'
+  end: '2026-08-18T11:00:00-04:00'
+  summary: 'ARWC-AP-P-023: identity and access visit'
+  description: ARWC-FV-P-20260818-01; ARWC-SP-000523; ARWC-M-000643. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-17T14:00:00-04:00'
+  location: 128 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-024
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-08-18T09:00:00-04:00'
+  end: '2026-08-18T11:00:00-04:00'
+  summary: 'ARWC-AP-P-024: identity and access visit'
+  description: ARWC-FV-P-20260818-02; ARWC-SP-000524; ARWC-M-000644. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-17T14:00:00-04:00'
+  location: 129 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-025
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-08-19T09:00:00-04:00'
+  end: '2026-08-19T11:00:00-04:00'
+  summary: 'ARWC-AP-P-025: identity and access visit'
+  description: ARWC-FV-P-20260819-01; ARWC-SP-000525; ARWC-M-000645. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-18T14:00:00-04:00'
+  location: 130 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-026
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-08-19T09:00:00-04:00'
+  end: '2026-08-19T11:00:00-04:00'
+  summary: 'ARWC-AP-P-026: identity and access visit'
+  description: ARWC-FV-P-20260819-02; ARWC-SP-000526; ARWC-M-000646. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-18T14:00:00-04:00'
+  location: 131 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-027
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-08-20T09:00:00-04:00'
+  end: '2026-08-20T11:00:00-04:00'
+  summary: 'ARWC-AP-P-027: identity and access visit'
+  description: ARWC-FV-P-20260820-01; ARWC-SP-000527; ARWC-M-000647. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-19T14:00:00-04:00'
+  location: 132 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-028
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-08-20T09:00:00-04:00'
+  end: '2026-08-20T11:00:00-04:00'
+  summary: 'ARWC-AP-P-028: identity and access visit'
+  description: ARWC-FV-P-20260820-02; ARWC-SP-000528; ARWC-M-000648. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-19T14:00:00-04:00'
+  location: 133 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-029
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-08-21T09:00:00-04:00'
+  end: '2026-08-21T11:00:00-04:00'
+  summary: 'ARWC-AP-P-029: identity and access visit'
+  description: ARWC-FV-P-20260821-01; ARWC-SP-000529; ARWC-M-000649. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-20T14:00:00-04:00'
+  location: 134 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-030
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-08-21T09:00:00-04:00'
+  end: '2026-08-21T11:00:00-04:00'
+  summary: 'ARWC-AP-P-030: identity and access visit'
+  description: ARWC-FV-P-20260821-02; ARWC-SP-000530; ARWC-M-000650. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-20T14:00:00-04:00'
+  location: 135 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-031
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-08-24T09:00:00-04:00'
+  end: '2026-08-24T11:00:00-04:00'
+  summary: 'ARWC-AP-P-031: identity and access visit'
+  description: ARWC-FV-P-20260824-01; ARWC-SP-000531; ARWC-M-000651. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-21T14:00:00-04:00'
+  location: 136 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-032
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-08-24T09:00:00-04:00'
+  end: '2026-08-24T11:00:00-04:00'
+  summary: 'ARWC-AP-P-032: identity and access visit'
+  description: ARWC-FV-P-20260824-02; ARWC-SP-000532; ARWC-M-000652. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-21T14:00:00-04:00'
+  location: 137 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-033
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-08-25T09:00:00-04:00'
+  end: '2026-08-25T11:00:00-04:00'
+  summary: 'ARWC-AP-P-033: identity and access visit'
+  description: ARWC-FV-P-20260825-01; ARWC-SP-000533; ARWC-M-000653. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-24T14:00:00-04:00'
+  location: 138 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-034
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-08-25T09:00:00-04:00'
+  end: '2026-08-25T11:00:00-04:00'
+  summary: 'ARWC-AP-P-034: identity and access visit'
+  description: ARWC-FV-P-20260825-02; ARWC-SP-000534; ARWC-M-000654. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-24T14:00:00-04:00'
+  location: 139 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-035
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-08-26T09:00:00-04:00'
+  end: '2026-08-26T11:00:00-04:00'
+  summary: 'ARWC-AP-P-035: identity and access visit'
+  description: ARWC-FV-P-20260826-01; ARWC-SP-000535; ARWC-M-000655. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-25T14:00:00-04:00'
+  location: 140 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-036
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-08-26T09:00:00-04:00'
+  end: '2026-08-26T11:00:00-04:00'
+  summary: 'ARWC-AP-P-036: identity and access visit'
+  description: ARWC-FV-P-20260826-02; ARWC-SP-000536; ARWC-M-000656. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-25T14:00:00-04:00'
+  location: 141 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-037
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-08-27T09:00:00-04:00'
+  end: '2026-08-27T11:00:00-04:00'
+  summary: 'ARWC-AP-P-037: identity and access visit'
+  description: ARWC-FV-P-20260827-01; ARWC-SP-000537; ARWC-M-000657. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-26T14:00:00-04:00'
+  location: 142 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-038
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm057
+  - awm058
+  start: '2026-08-27T09:00:00-04:00'
+  end: '2026-08-27T11:00:00-04:00'
+  summary: 'ARWC-AP-P-038: identity and access visit'
+  description: ARWC-FV-P-20260827-02; ARWC-SP-000538; ARWC-M-000658. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-26T14:00:00-04:00'
+  location: 143 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-039
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm057
+  - awm058
+  start: '2026-08-28T09:00:00-04:00'
+  end: '2026-08-28T11:00:00-04:00'
+  summary: 'ARWC-AP-P-039: identity and access visit'
+  description: ARWC-FV-P-20260828-01; ARWC-SP-000539; ARWC-M-000659. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-27T14:00:00-04:00'
+  location: 144 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-040
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm059
+  - awm060
+  start: '2026-08-28T09:00:00-04:00'
+  end: '2026-08-28T11:00:00-04:00'
+  summary: 'ARWC-AP-P-040: identity and access visit'
+  description: ARWC-FV-P-20260828-02; ARWC-SP-000540; ARWC-M-000660. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-27T14:00:00-04:00'
+  location: 145 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-041
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm059
+  - awm060
+  start: '2026-08-31T09:00:00-04:00'
+  end: '2026-08-31T11:00:00-04:00'
+  summary: 'ARWC-AP-P-041: identity and access visit'
+  description: ARWC-FV-P-20260831-01; ARWC-SP-000541; ARWC-M-000661. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-28T14:00:00-04:00'
+  location: 146 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-042
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm061
+  - awm062
+  start: '2026-08-31T09:00:00-04:00'
+  end: '2026-08-31T11:00:00-04:00'
+  summary: 'ARWC-AP-P-042: identity and access visit'
+  description: ARWC-FV-P-20260831-02; ARWC-SP-000542; ARWC-M-000662. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-28T14:00:00-04:00'
+  location: 147 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-043
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm061
+  - awm062
+  start: '2026-09-01T09:00:00-04:00'
+  end: '2026-09-01T11:00:00-04:00'
+  summary: 'ARWC-AP-P-043: identity and access visit'
+  description: ARWC-FV-P-20260901-01; ARWC-SP-000543; ARWC-M-000663. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-31T14:00:00-04:00'
+  location: 148 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-044
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm042
+  - owen
+  start: '2026-09-01T09:00:00-04:00'
+  end: '2026-09-01T11:00:00-04:00'
+  summary: 'ARWC-AP-P-044: identity and access visit'
+  description: ARWC-FV-P-20260901-02; ARWC-SP-000544; ARWC-M-000664. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-31T14:00:00-04:00'
+  location: 149 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-045
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm042
+  - owen
+  start: '2026-09-02T09:00:00-04:00'
+  end: '2026-09-02T11:00:00-04:00'
+  summary: 'ARWC-AP-P-045: identity and access visit'
+  description: ARWC-FV-P-20260902-01; ARWC-SP-000545; ARWC-M-000665. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-01T14:00:00-04:00'
+  location: 150 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-046
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-09-02T09:00:00-04:00'
+  end: '2026-09-02T11:00:00-04:00'
+  summary: 'ARWC-AP-P-046: identity and access visit'
+  description: ARWC-FV-P-20260902-02; ARWC-SP-000546; ARWC-M-000666. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-01T14:00:00-04:00'
+  location: 151 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-047
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm043
+  - awm044
+  start: '2026-09-03T09:00:00-04:00'
+  end: '2026-09-03T11:00:00-04:00'
+  summary: 'ARWC-AP-P-047: identity and access visit'
+  description: ARWC-FV-P-20260903-01; ARWC-SP-000547; ARWC-M-000667. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-02T14:00:00-04:00'
+  location: 152 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-048
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-09-03T09:00:00-04:00'
+  end: '2026-09-03T11:00:00-04:00'
+  summary: 'ARWC-AP-P-048: identity and access visit'
+  description: ARWC-FV-P-20260903-02; ARWC-SP-000548; ARWC-M-000668. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-02T14:00:00-04:00'
+  location: 153 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-049
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm045
+  - awm046
+  start: '2026-09-04T09:00:00-04:00'
+  end: '2026-09-04T11:00:00-04:00'
+  summary: 'ARWC-AP-P-049: identity and access visit'
+  description: ARWC-FV-P-20260904-01; ARWC-SP-000549; ARWC-M-000669. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-03T14:00:00-04:00'
+  location: 154 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-050
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-09-04T09:00:00-04:00'
+  end: '2026-09-04T11:00:00-04:00'
+  summary: 'ARWC-AP-P-050: identity and access visit'
+  description: ARWC-FV-P-20260904-02; ARWC-SP-000550; ARWC-M-000670. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-03T14:00:00-04:00'
+  location: 155 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-051
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm047
+  - awm048
+  start: '2026-09-07T09:00:00-04:00'
+  end: '2026-09-07T11:00:00-04:00'
+  summary: 'ARWC-AP-P-051: identity and access visit'
+  description: ARWC-FV-P-20260907-01; ARWC-SP-000551; ARWC-M-000671. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-04T14:00:00-04:00'
+  location: 156 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-052
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-09-07T09:00:00-04:00'
+  end: '2026-09-07T11:00:00-04:00'
+  summary: 'ARWC-AP-P-052: identity and access visit'
+  description: ARWC-FV-P-20260907-02; ARWC-SP-000552; ARWC-M-000672. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-04T14:00:00-04:00'
+  location: 157 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-053
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm049
+  - awm050
+  start: '2026-09-08T09:00:00-04:00'
+  end: '2026-09-08T11:00:00-04:00'
+  summary: 'ARWC-AP-P-053: identity and access visit'
+  description: ARWC-FV-P-20260908-01; ARWC-SP-000553; ARWC-M-000673. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-07T14:00:00-04:00'
+  location: 158 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-054
+  employer: arwc
+  organizer: awm089
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-09-08T09:00:00-04:00'
+  end: '2026-09-08T11:00:00-04:00'
+  summary: 'ARWC-AP-P-054: identity and access visit'
+  description: ARWC-FV-P-20260908-02; ARWC-SP-000554; ARWC-M-000674. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-07T14:00:00-04:00'
+  location: 159 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-055
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm051
+  - awm052
+  start: '2026-09-09T09:00:00-04:00'
+  end: '2026-09-09T11:00:00-04:00'
+  summary: 'ARWC-AP-P-055: identity and access visit'
+  description: ARWC-FV-P-20260909-01; ARWC-SP-000555; ARWC-M-000675. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-08T14:00:00-04:00'
+  location: 160 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-056
+  employer: arwc
+  organizer: awm091
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-09-09T09:00:00-04:00'
+  end: '2026-09-09T11:00:00-04:00'
+  summary: 'ARWC-AP-P-056: identity and access visit'
+  description: ARWC-FV-P-20260909-02; ARWC-SP-000556; ARWC-M-000676. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-08T14:00:00-04:00'
+  location: 161 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-057
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm053
+  - awm054
+  start: '2026-09-10T09:00:00-04:00'
+  end: '2026-09-10T11:00:00-04:00'
+  summary: 'ARWC-AP-P-057: identity and access visit'
+  description: ARWC-FV-P-20260910-01; ARWC-SP-000557; ARWC-M-000677. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-09T14:00:00-04:00'
+  location: 162 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-058
+  employer: arwc
+  organizer: awm085
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-09-10T09:00:00-04:00'
+  end: '2026-09-10T11:00:00-04:00'
+  summary: 'ARWC-AP-P-058: identity and access visit'
+  description: ARWC-FV-P-20260910-02; ARWC-SP-000558; ARWC-M-000678. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-09T14:00:00-04:00'
+  location: 163 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-p-059
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm055
+  - awm056
+  start: '2026-09-11T09:00:00-04:00'
+  end: '2026-09-11T11:00:00-04:00'
+  summary: 'ARWC-AP-P-059: identity and access visit'
+  description: ARWC-FV-P-20260911-01; ARWC-SP-000559; ARWC-M-000679. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-10T14:00:00-04:00'
+  location: 164 Cedar Lane, Pine East 1
+- id: op-calendar-appointment-arwc-ap-p-060
+  employer: arwc
+  organizer: awm087
+  attendees:
+  - awm057
+  - awm058
+  start: '2026-09-11T09:00:00-04:00'
+  end: '2026-09-11T11:00:00-04:00'
+  summary: 'ARWC-AP-P-060: identity and access visit'
+  description: ARWC-FV-P-20260911-02; ARWC-SP-000560; ARWC-M-000680. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-10T14:00:00-04:00'
+  location: 165 Cedar Lane, Pine West 1
+- id: op-calendar-appointment-arwc-ap-r-001
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm063
+  - awm064
+  start: '2026-08-03T09:00:00-04:00'
+  end: '2026-08-03T11:00:00-04:00'
+  summary: 'ARWC-AP-R-001: identity and access visit'
+  description: ARWC-FV-R-20260803-01; ARWC-SP-027501; ARWC-M-027621. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-31T14:00:00-04:00'
+  location: 178 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-002
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-08-03T09:00:00-04:00'
+  end: '2026-08-03T11:00:00-04:00'
+  summary: 'ARWC-AP-R-002: identity and access visit'
+  description: ARWC-FV-R-20260803-02; ARWC-SP-027502; ARWC-M-027622. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-07-31T14:00:00-04:00'
+  location: 179 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-003
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-08-04T09:00:00-04:00'
+  end: '2026-08-04T11:00:00-04:00'
+  summary: 'ARWC-AP-R-003: identity and access visit'
+  description: ARWC-FV-R-20260804-01; ARWC-SP-027503; ARWC-M-027623. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-03T14:00:00-04:00'
+  location: 180 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-004
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-08-04T09:00:00-04:00'
+  end: '2026-08-04T11:00:00-04:00'
+  summary: 'ARWC-AP-R-004: identity and access visit'
+  description: ARWC-FV-R-20260804-02; ARWC-SP-027504; ARWC-M-027624. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-03T14:00:00-04:00'
+  location: 181 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-005
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-08-05T09:00:00-04:00'
+  end: '2026-08-05T11:00:00-04:00'
+  summary: 'ARWC-AP-R-005: identity and access visit'
+  description: ARWC-FV-R-20260805-01; ARWC-SP-027505; ARWC-M-027625. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-04T14:00:00-04:00'
+  location: 182 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-006
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-08-05T09:00:00-04:00'
+  end: '2026-08-05T11:00:00-04:00'
+  summary: 'ARWC-AP-R-006: identity and access visit'
+  description: ARWC-FV-R-20260805-02; ARWC-SP-027506; ARWC-M-027626. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-04T14:00:00-04:00'
+  location: 183 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-007
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-08-06T09:00:00-04:00'
+  end: '2026-08-06T11:00:00-04:00'
+  summary: 'ARWC-AP-R-007: identity and access visit'
+  description: ARWC-FV-R-20260806-01; ARWC-SP-027507; ARWC-M-027627. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-05T14:00:00-04:00'
+  location: 184 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-008
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-08-06T09:00:00-04:00'
+  end: '2026-08-06T11:00:00-04:00'
+  summary: 'ARWC-AP-R-008: identity and access visit'
+  description: ARWC-FV-R-20260806-02; ARWC-SP-027508; ARWC-M-027628. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-05T14:00:00-04:00'
+  location: 185 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-009
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-08-07T09:00:00-04:00'
+  end: '2026-08-07T11:00:00-04:00'
+  summary: 'ARWC-AP-R-009: identity and access visit'
+  description: ARWC-FV-R-20260807-01; ARWC-SP-027509; ARWC-M-027629. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-06T14:00:00-04:00'
+  location: 186 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-010
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-08-07T09:00:00-04:00'
+  end: '2026-08-07T11:00:00-04:00'
+  summary: 'ARWC-AP-R-010: identity and access visit'
+  description: ARWC-FV-R-20260807-02; ARWC-SP-027510; ARWC-M-027630. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-06T14:00:00-04:00'
+  location: 187 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-011
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-08-10T09:00:00-04:00'
+  end: '2026-08-10T11:00:00-04:00'
+  summary: 'ARWC-AP-R-011: identity and access visit'
+  description: ARWC-FV-R-20260810-01; ARWC-SP-027511; ARWC-M-027631. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-07T14:00:00-04:00'
+  location: 188 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-012
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-08-10T09:00:00-04:00'
+  end: '2026-08-10T11:00:00-04:00'
+  summary: 'ARWC-AP-R-012: identity and access visit'
+  description: ARWC-FV-R-20260810-02; ARWC-SP-027512; ARWC-M-027632. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-07T14:00:00-04:00'
+  location: 189 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-013
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-08-11T09:00:00-04:00'
+  end: '2026-08-11T11:00:00-04:00'
+  summary: 'ARWC-AP-R-013: identity and access visit'
+  description: ARWC-FV-R-20260811-01; ARWC-SP-027513; ARWC-M-027633. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-10T14:00:00-04:00'
+  location: 190 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-014
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-08-11T09:00:00-04:00'
+  end: '2026-08-11T11:00:00-04:00'
+  summary: 'ARWC-AP-R-014: identity and access visit'
+  description: ARWC-FV-R-20260811-02; ARWC-SP-027514; ARWC-M-027634. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-10T14:00:00-04:00'
+  location: 191 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-015
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-08-12T09:00:00-04:00'
+  end: '2026-08-12T11:00:00-04:00'
+  summary: 'ARWC-AP-R-015: identity and access visit'
+  description: ARWC-FV-R-20260812-01; ARWC-SP-027515; ARWC-M-027635. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-11T14:00:00-04:00'
+  location: 192 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-016
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm079
+  - awm080
+  start: '2026-08-12T09:00:00-04:00'
+  end: '2026-08-12T11:00:00-04:00'
+  summary: 'ARWC-AP-R-016: identity and access visit'
+  description: ARWC-FV-R-20260812-02; ARWC-SP-027516; ARWC-M-027636. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-11T14:00:00-04:00'
+  location: 193 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-017
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm079
+  - awm080
+  start: '2026-08-13T09:00:00-04:00'
+  end: '2026-08-13T11:00:00-04:00'
+  summary: 'ARWC-AP-R-017: identity and access visit'
+  description: ARWC-FV-R-20260813-01; ARWC-SP-027517; ARWC-M-027637. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-12T14:00:00-04:00'
+  location: 194 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-018
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm081
+  - awm082
+  start: '2026-08-13T09:00:00-04:00'
+  end: '2026-08-13T11:00:00-04:00'
+  summary: 'ARWC-AP-R-018: identity and access visit'
+  description: ARWC-FV-R-20260813-02; ARWC-SP-027518; ARWC-M-027638. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-12T14:00:00-04:00'
+  location: 195 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-019
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm081
+  - awm082
+  start: '2026-08-14T09:00:00-04:00'
+  end: '2026-08-14T11:00:00-04:00'
+  summary: 'ARWC-AP-R-019: identity and access visit'
+  description: ARWC-FV-R-20260814-01; ARWC-SP-027519; ARWC-M-027639. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-13T14:00:00-04:00'
+  location: 196 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-020
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm083
+  - awm084
+  start: '2026-08-14T09:00:00-04:00'
+  end: '2026-08-14T11:00:00-04:00'
+  summary: 'ARWC-AP-R-020: identity and access visit'
+  description: ARWC-FV-R-20260814-02; ARWC-SP-027520; ARWC-M-027640. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-13T14:00:00-04:00'
+  location: 197 Maple Reach, River West 9
+- id: op-calendar-appointment-arwc-ap-r-021
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm083
+  - awm084
+  start: '2026-08-17T09:00:00-04:00'
+  end: '2026-08-17T11:00:00-04:00'
+  summary: 'ARWC-AP-R-021: identity and access visit'
+  description: ARWC-FV-R-20260817-01; ARWC-SP-027521; ARWC-M-027641. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-14T14:00:00-04:00'
+  location: 198 Maple Reach, River East 9
+- id: op-calendar-appointment-arwc-ap-r-022
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm063
+  - awm064
+  start: '2026-08-17T09:00:00-04:00'
+  end: '2026-08-17T11:00:00-04:00'
+  summary: 'ARWC-AP-R-022: identity and access visit'
+  description: ARWC-FV-R-20260817-02; ARWC-SP-027522; ARWC-M-027642. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-14T14:00:00-04:00'
+  location: 1 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-023
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm063
+  - awm064
+  start: '2026-08-18T09:00:00-04:00'
+  end: '2026-08-18T11:00:00-04:00'
+  summary: 'ARWC-AP-R-023: identity and access visit'
+  description: ARWC-FV-R-20260818-01; ARWC-SP-027523; ARWC-M-027643. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-17T14:00:00-04:00'
+  location: 2 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-024
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-08-18T09:00:00-04:00'
+  end: '2026-08-18T11:00:00-04:00'
+  summary: 'ARWC-AP-R-024: identity and access visit'
+  description: ARWC-FV-R-20260818-02; ARWC-SP-027524; ARWC-M-027644. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-17T14:00:00-04:00'
+  location: 3 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-025
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-08-19T09:00:00-04:00'
+  end: '2026-08-19T11:00:00-04:00'
+  summary: 'ARWC-AP-R-025: identity and access visit'
+  description: ARWC-FV-R-20260819-01; ARWC-SP-027525; ARWC-M-027645. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-18T14:00:00-04:00'
+  location: 4 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-026
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-08-19T09:00:00-04:00'
+  end: '2026-08-19T11:00:00-04:00'
+  summary: 'ARWC-AP-R-026: identity and access visit'
+  description: ARWC-FV-R-20260819-02; ARWC-SP-027526; ARWC-M-027646. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-18T14:00:00-04:00'
+  location: 5 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-027
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-08-20T09:00:00-04:00'
+  end: '2026-08-20T11:00:00-04:00'
+  summary: 'ARWC-AP-R-027: identity and access visit'
+  description: ARWC-FV-R-20260820-01; ARWC-SP-027527; ARWC-M-027647. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-19T14:00:00-04:00'
+  location: 6 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-028
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-08-20T09:00:00-04:00'
+  end: '2026-08-20T11:00:00-04:00'
+  summary: 'ARWC-AP-R-028: identity and access visit'
+  description: ARWC-FV-R-20260820-02; ARWC-SP-027528; ARWC-M-027648. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-19T14:00:00-04:00'
+  location: 7 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-029
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-08-21T09:00:00-04:00'
+  end: '2026-08-21T11:00:00-04:00'
+  summary: 'ARWC-AP-R-029: identity and access visit'
+  description: ARWC-FV-R-20260821-01; ARWC-SP-027529; ARWC-M-027649. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-20T14:00:00-04:00'
+  location: 8 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-030
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-08-21T09:00:00-04:00'
+  end: '2026-08-21T11:00:00-04:00'
+  summary: 'ARWC-AP-R-030: identity and access visit'
+  description: ARWC-FV-R-20260821-02; ARWC-SP-027530; ARWC-M-027650. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-20T14:00:00-04:00'
+  location: 9 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-031
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-08-24T09:00:00-04:00'
+  end: '2026-08-24T11:00:00-04:00'
+  summary: 'ARWC-AP-R-031: identity and access visit'
+  description: ARWC-FV-R-20260824-01; ARWC-SP-027531; ARWC-M-027651. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-21T14:00:00-04:00'
+  location: 10 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-032
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-08-24T09:00:00-04:00'
+  end: '2026-08-24T11:00:00-04:00'
+  summary: 'ARWC-AP-R-032: identity and access visit'
+  description: ARWC-FV-R-20260824-02; ARWC-SP-027532; ARWC-M-027652. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-21T14:00:00-04:00'
+  location: 11 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-033
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-08-25T09:00:00-04:00'
+  end: '2026-08-25T11:00:00-04:00'
+  summary: 'ARWC-AP-R-033: identity and access visit'
+  description: ARWC-FV-R-20260825-01; ARWC-SP-027533; ARWC-M-027653. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-24T14:00:00-04:00'
+  location: 12 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-034
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-08-25T09:00:00-04:00'
+  end: '2026-08-25T11:00:00-04:00'
+  summary: 'ARWC-AP-R-034: identity and access visit'
+  description: ARWC-FV-R-20260825-02; ARWC-SP-027534; ARWC-M-027654. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-24T14:00:00-04:00'
+  location: 13 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-035
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-08-26T09:00:00-04:00'
+  end: '2026-08-26T11:00:00-04:00'
+  summary: 'ARWC-AP-R-035: identity and access visit'
+  description: ARWC-FV-R-20260826-01; ARWC-SP-027535; ARWC-M-027655. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-25T14:00:00-04:00'
+  location: 14 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-036
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-08-26T09:00:00-04:00'
+  end: '2026-08-26T11:00:00-04:00'
+  summary: 'ARWC-AP-R-036: identity and access visit'
+  description: ARWC-FV-R-20260826-02; ARWC-SP-027536; ARWC-M-027656. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-25T14:00:00-04:00'
+  location: 15 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-037
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-08-27T09:00:00-04:00'
+  end: '2026-08-27T11:00:00-04:00'
+  summary: 'ARWC-AP-R-037: identity and access visit'
+  description: ARWC-FV-R-20260827-01; ARWC-SP-027537; ARWC-M-027657. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-26T14:00:00-04:00'
+  location: 16 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-038
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm079
+  - awm080
+  start: '2026-08-27T09:00:00-04:00'
+  end: '2026-08-27T11:00:00-04:00'
+  summary: 'ARWC-AP-R-038: identity and access visit'
+  description: ARWC-FV-R-20260827-02; ARWC-SP-027538; ARWC-M-027658. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-26T14:00:00-04:00'
+  location: 17 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-039
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm079
+  - awm080
+  start: '2026-08-28T09:00:00-04:00'
+  end: '2026-08-28T11:00:00-04:00'
+  summary: 'ARWC-AP-R-039: identity and access visit'
+  description: ARWC-FV-R-20260828-01; ARWC-SP-027539; ARWC-M-027659. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-27T14:00:00-04:00'
+  location: 18 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-040
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm081
+  - awm082
+  start: '2026-08-28T09:00:00-04:00'
+  end: '2026-08-28T11:00:00-04:00'
+  summary: 'ARWC-AP-R-040: identity and access visit'
+  description: ARWC-FV-R-20260828-02; ARWC-SP-027540; ARWC-M-027660. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-27T14:00:00-04:00'
+  location: 19 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-041
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm081
+  - awm082
+  start: '2026-08-31T09:00:00-04:00'
+  end: '2026-08-31T11:00:00-04:00'
+  summary: 'ARWC-AP-R-041: identity and access visit'
+  description: ARWC-FV-R-20260831-01; ARWC-SP-027541; ARWC-M-027661. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-28T14:00:00-04:00'
+  location: 20 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-042
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm083
+  - awm084
+  start: '2026-08-31T09:00:00-04:00'
+  end: '2026-08-31T11:00:00-04:00'
+  summary: 'ARWC-AP-R-042: identity and access visit'
+  description: ARWC-FV-R-20260831-02; ARWC-SP-027542; ARWC-M-027662. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-28T14:00:00-04:00'
+  location: 21 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-043
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm083
+  - awm084
+  start: '2026-09-01T09:00:00-04:00'
+  end: '2026-09-01T11:00:00-04:00'
+  summary: 'ARWC-AP-R-043: identity and access visit'
+  description: ARWC-FV-R-20260901-01; ARWC-SP-027543; ARWC-M-027663. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-31T14:00:00-04:00'
+  location: 22 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-044
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm063
+  - awm064
+  start: '2026-09-01T09:00:00-04:00'
+  end: '2026-09-01T11:00:00-04:00'
+  summary: 'ARWC-AP-R-044: identity and access visit'
+  description: ARWC-FV-R-20260901-02; ARWC-SP-027544; ARWC-M-027664. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-08-31T14:00:00-04:00'
+  location: 23 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-045
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm063
+  - awm064
+  start: '2026-09-02T09:00:00-04:00'
+  end: '2026-09-02T11:00:00-04:00'
+  summary: 'ARWC-AP-R-045: identity and access visit'
+  description: ARWC-FV-R-20260902-01; ARWC-SP-027545; ARWC-M-027665. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-01T14:00:00-04:00'
+  location: 24 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-046
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-09-02T09:00:00-04:00'
+  end: '2026-09-02T11:00:00-04:00'
+  summary: 'ARWC-AP-R-046: identity and access visit'
+  description: ARWC-FV-R-20260902-02; ARWC-SP-027546; ARWC-M-027666. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-01T14:00:00-04:00'
+  location: 25 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-047
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm065
+  - awm066
+  start: '2026-09-03T09:00:00-04:00'
+  end: '2026-09-03T11:00:00-04:00'
+  summary: 'ARWC-AP-R-047: identity and access visit'
+  description: ARWC-FV-R-20260903-01; ARWC-SP-027547; ARWC-M-027667. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-02T14:00:00-04:00'
+  location: 26 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-048
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-09-03T09:00:00-04:00'
+  end: '2026-09-03T11:00:00-04:00'
+  summary: 'ARWC-AP-R-048: identity and access visit'
+  description: ARWC-FV-R-20260903-02; ARWC-SP-027548; ARWC-M-027668. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-02T14:00:00-04:00'
+  location: 27 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-049
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm067
+  - awm068
+  start: '2026-09-04T09:00:00-04:00'
+  end: '2026-09-04T11:00:00-04:00'
+  summary: 'ARWC-AP-R-049: identity and access visit'
+  description: ARWC-FV-R-20260904-01; ARWC-SP-027549; ARWC-M-027669. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-03T14:00:00-04:00'
+  location: 28 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-050
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-09-04T09:00:00-04:00'
+  end: '2026-09-04T11:00:00-04:00'
+  summary: 'ARWC-AP-R-050: identity and access visit'
+  description: ARWC-FV-R-20260904-02; ARWC-SP-027550; ARWC-M-027670. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-03T14:00:00-04:00'
+  location: 29 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-051
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm069
+  - awm070
+  start: '2026-09-07T09:00:00-04:00'
+  end: '2026-09-07T11:00:00-04:00'
+  summary: 'ARWC-AP-R-051: identity and access visit'
+  description: ARWC-FV-R-20260907-01; ARWC-SP-027551; ARWC-M-027671. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-04T14:00:00-04:00'
+  location: 30 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-052
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-09-07T09:00:00-04:00'
+  end: '2026-09-07T11:00:00-04:00'
+  summary: 'ARWC-AP-R-052: identity and access visit'
+  description: ARWC-FV-R-20260907-02; ARWC-SP-027552; ARWC-M-027672. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-04T14:00:00-04:00'
+  location: 31 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-053
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm071
+  - awm072
+  start: '2026-09-08T09:00:00-04:00'
+  end: '2026-09-08T11:00:00-04:00'
+  summary: 'ARWC-AP-R-053: identity and access visit'
+  description: ARWC-FV-R-20260908-01; ARWC-SP-027553; ARWC-M-027673. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-07T14:00:00-04:00'
+  location: 32 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-054
+  employer: arwc
+  organizer: awm090
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-09-08T09:00:00-04:00'
+  end: '2026-09-08T11:00:00-04:00'
+  summary: 'ARWC-AP-R-054: identity and access visit'
+  description: ARWC-FV-R-20260908-02; ARWC-SP-027554; ARWC-M-027674. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-07T14:00:00-04:00'
+  location: 33 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-055
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm073
+  - awm074
+  start: '2026-09-09T09:00:00-04:00'
+  end: '2026-09-09T11:00:00-04:00'
+  summary: 'ARWC-AP-R-055: identity and access visit'
+  description: ARWC-FV-R-20260909-01; ARWC-SP-027555; ARWC-M-027675. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-08T14:00:00-04:00'
+  location: 34 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-056
+  employer: arwc
+  organizer: awm092
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-09-09T09:00:00-04:00'
+  end: '2026-09-09T11:00:00-04:00'
+  summary: 'ARWC-AP-R-056: identity and access visit'
+  description: ARWC-FV-R-20260909-02; ARWC-SP-027556; ARWC-M-027676. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-08T14:00:00-04:00'
+  location: 35 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-057
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm075
+  - awm076
+  start: '2026-09-10T09:00:00-04:00'
+  end: '2026-09-10T11:00:00-04:00'
+  summary: 'ARWC-AP-R-057: identity and access visit'
+  description: ARWC-FV-R-20260910-01; ARWC-SP-027557; ARWC-M-027677. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-09T14:00:00-04:00'
+  location: 36 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-058
+  employer: arwc
+  organizer: awm086
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-09-10T09:00:00-04:00'
+  end: '2026-09-10T11:00:00-04:00'
+  summary: 'ARWC-AP-R-058: identity and access visit'
+  description: ARWC-FV-R-20260910-02; ARWC-SP-027558; ARWC-M-027678. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-09T14:00:00-04:00'
+  location: 37 Orchard Lane, River West 9
+- id: op-calendar-appointment-arwc-ap-r-059
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm077
+  - awm078
+  start: '2026-09-11T09:00:00-04:00'
+  end: '2026-09-11T11:00:00-04:00'
+  summary: 'ARWC-AP-R-059: identity and access visit'
+  description: ARWC-FV-R-20260911-01; ARWC-SP-027559; ARWC-M-027679. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-10T14:00:00-04:00'
+  location: 38 Orchard Lane, River East 9
+- id: op-calendar-appointment-arwc-ap-r-060
+  employer: arwc
+  organizer: awm088
+  attendees:
+  - awm079
+  - awm080
+  start: '2026-09-11T09:00:00-04:00'
+  end: '2026-09-11T11:00:00-04:00'
+  summary: 'ARWC-AP-R-060: identity and access visit'
+  description: ARWC-FV-R-20260911-02; ARWC-SP-027560; ARWC-M-027680. Boundary box; no indoor access. Scheduler owns
+    the booking and does not attend. Outcome is recorded separately.
+  status: CONFIRMED
+  created_at: '2026-09-10T14:00:00-04:00'
+  location: 39 Orchard Lane, River West 9
+- id: op-calendar-training-arwc-tr-owen-01
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-03T14:00:00-04:00'
+  end: '2026-08-03T14:45:00-04:00'
+  summary: Record and read back a meter serial
+  description: ARWC-TR-OWEN-01. Depot practice after morning routes. Repeat on a less clear plate; instructor still
+    signs.
+  status: CONFIRMED
+  created_at: '2026-07-31T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-02
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-05T14:00:00-04:00'
+  end: '2026-08-05T14:45:00-04:00'
+  summary: Choose the safe stopping point on an access visit
+  description: ARWC-TR-OWEN-02. Depot practice after morning routes. Keep using no-access status when identity cannot
+    be verified.
+  status: CONFIRMED
+  created_at: '2026-08-02T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-03
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-10T14:00:00-04:00'
+  end: '2026-08-10T14:45:00-04:00'
+  summary: Route-card correction practice
+  description: ARWC-TR-OWEN-03. Depot practice after morning routes. Supervisor checks any live route amendment.
+  status: CONFIRMED
+  created_at: '2026-08-07T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-04
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-12T14:00:00-04:00'
+  end: '2026-08-12T14:45:00-04:00'
+  summary: Sample labels and handoff record
+  description: ARWC-TR-OWEN-04. Depot practice after morning routes. Practise an incomplete label; no collection
+    authority added.
+  status: CONFIRMED
+  created_at: '2026-08-09T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-05
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-17T14:00:00-04:00'
+  end: '2026-08-17T14:45:00-04:00'
+  summary: Portable-kit return and damage note
+  description: ARWC-TR-OWEN-05. Depot practice after morning routes. Repeat the check without a prompt next session.
+  status: CONFIRMED
+  created_at: '2026-08-14T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-06
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-19T14:00:00-04:00'
+  end: '2026-08-19T14:45:00-04:00'
+  summary: Concise visit return
+  description: ARWC-TR-OWEN-06. Depot practice after morning routes. Keep the operational decision with the lead.
+  status: CONFIRMED
+  created_at: '2026-08-16T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-07
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-24T14:00:00-04:00'
+  end: '2026-08-24T14:45:00-04:00'
+  summary: Record and read back a meter serial
+  description: ARWC-TR-OWEN-07. Depot practice after morning routes. Repeat on a less clear plate; instructor still
+    signs.
+  status: CONFIRMED
+  created_at: '2026-08-21T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-08
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-26T14:00:00-04:00'
+  end: '2026-08-26T14:45:00-04:00'
+  summary: Choose the safe stopping point on an access visit
+  description: ARWC-TR-OWEN-08. Depot practice after morning routes. Keep using no-access status when identity cannot
+    be verified.
+  status: CONFIRMED
+  created_at: '2026-08-23T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-09
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-08-31T14:00:00-04:00'
+  end: '2026-08-31T14:45:00-04:00'
+  summary: Route-card correction practice
+  description: ARWC-TR-OWEN-09. Depot practice after morning routes. Supervisor checks any live route amendment.
+  status: CONFIRMED
+  created_at: '2026-08-28T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-10
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-09-02T14:00:00-04:00'
+  end: '2026-09-02T14:45:00-04:00'
+  summary: Sample labels and handoff record
+  description: ARWC-TR-OWEN-10. Depot practice after morning routes. Practise an incomplete label; no collection
+    authority added.
+  status: CONFIRMED
+  created_at: '2026-08-30T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-11
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-09-07T14:00:00-04:00'
+  end: '2026-09-07T14:45:00-04:00'
+  summary: Portable-kit return and damage note
+  description: ARWC-TR-OWEN-11. Depot practice after morning routes. Repeat the check without a prompt next session.
+  status: CONFIRMED
+  created_at: '2026-09-04T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-owen-12
+  employer: arwc
+  organizer: awm044
+  attendees:
+  - owen
+  start: '2026-09-09T14:00:00-04:00'
+  end: '2026-09-09T14:45:00-04:00'
+  summary: Concise visit return
+  description: ARWC-TR-OWEN-12. Depot practice after morning routes. Keep the operational decision with the lead.
+  status: CONFIRMED
+  created_at: '2026-09-06T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-01
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-08-04T14:00:00-04:00'
+  end: '2026-08-04T14:45:00-04:00'
+  summary: Record and read back a meter serial
+  description: ARWC-TR-AWM046-01. Depot practice after morning routes. Repeat on a less clear plate; instructor
+    still signs.
+  status: CONFIRMED
+  created_at: '2026-08-01T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-02
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-08-11T14:00:00-04:00'
+  end: '2026-08-11T14:45:00-04:00'
+  summary: Choose the safe stopping point on an access visit
+  description: ARWC-TR-AWM046-02. Depot practice after morning routes. Keep using no-access status when identity
+    cannot be verified.
+  status: CONFIRMED
+  created_at: '2026-08-08T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-03
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-08-18T14:00:00-04:00'
+  end: '2026-08-18T14:45:00-04:00'
+  summary: Route-card correction practice
+  description: ARWC-TR-AWM046-03. Depot practice after morning routes. Supervisor checks any live route amendment.
+  status: CONFIRMED
+  created_at: '2026-08-15T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-04
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-08-25T14:00:00-04:00'
+  end: '2026-08-25T14:45:00-04:00'
+  summary: Sample labels and handoff record
+  description: ARWC-TR-AWM046-04. Depot practice after morning routes. Practise an incomplete label; no collection
+    authority added.
+  status: CONFIRMED
+  created_at: '2026-08-22T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-05
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-09-01T14:00:00-04:00'
+  end: '2026-09-01T14:45:00-04:00'
+  summary: Portable-kit return and damage note
+  description: ARWC-TR-AWM046-05. Depot practice after morning routes. Repeat the check without a prompt next session.
+  status: CONFIRMED
+  created_at: '2026-08-29T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm046-06
+  employer: arwc
+  organizer: awm047
+  attendees:
+  - awm046
+  start: '2026-09-08T14:00:00-04:00'
+  end: '2026-09-08T14:45:00-04:00'
+  summary: Concise visit return
+  description: ARWC-TR-AWM046-06. Depot practice after morning routes. Keep the operational decision with the lead.
+  status: CONFIRMED
+  created_at: '2026-09-05T13:00:00-04:00'
+  location: Pine depot training bench
+- id: op-calendar-training-arwc-tr-awm080-01
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-08-06T14:00:00-04:00'
+  end: '2026-08-06T14:45:00-04:00'
+  summary: Record and read back a meter serial
+  description: ARWC-TR-AWM080-01. Depot practice after morning routes. Repeat on a less clear plate; instructor
+    still signs.
+  status: CONFIRMED
+  created_at: '2026-08-03T13:00:00-04:00'
+  location: River depot training bench
+- id: op-calendar-training-arwc-tr-awm080-02
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-08-13T14:00:00-04:00'
+  end: '2026-08-13T14:45:00-04:00'
+  summary: Choose the safe stopping point on an access visit
+  description: ARWC-TR-AWM080-02. Depot practice after morning routes. Keep using no-access status when identity
+    cannot be verified.
+  status: CONFIRMED
+  created_at: '2026-08-10T13:00:00-04:00'
+  location: River depot training bench
+- id: op-calendar-training-arwc-tr-awm080-03
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-08-20T14:00:00-04:00'
+  end: '2026-08-20T14:45:00-04:00'
+  summary: Route-card correction practice
+  description: ARWC-TR-AWM080-03. Depot practice after morning routes. Supervisor checks any live route amendment.
+  status: CONFIRMED
+  created_at: '2026-08-17T13:00:00-04:00'
+  location: River depot training bench
+- id: op-calendar-training-arwc-tr-awm080-04
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-08-27T14:00:00-04:00'
+  end: '2026-08-27T14:45:00-04:00'
+  summary: Sample labels and handoff record
+  description: ARWC-TR-AWM080-04. Depot practice after morning routes. Practise an incomplete label; no collection
+    authority added.
+  status: CONFIRMED
+  created_at: '2026-08-24T13:00:00-04:00'
+  location: River depot training bench
+- id: op-calendar-training-arwc-tr-awm080-05
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-09-03T14:00:00-04:00'
+  end: '2026-09-03T14:45:00-04:00'
+  summary: Portable-kit return and damage note
+  description: ARWC-TR-AWM080-05. Depot practice after morning routes. Repeat the check without a prompt next session.
+  status: CONFIRMED
+  created_at: '2026-08-31T13:00:00-04:00'
+  location: River depot training bench
+- id: op-calendar-training-arwc-tr-awm080-06
+  employer: arwc
+  organizer: awm066
+  attendees:
+  - awm080
+  start: '2026-09-10T14:00:00-04:00'
+  end: '2026-09-10T14:45:00-04:00'
+  summary: Concise visit return
+  description: ARWC-TR-AWM080-06. Depot practice after morning routes. Keep the operational decision with the lead.
+  status: CONFIRMED
+  created_at: '2026-09-07T13:00:00-04:00'
+  location: River depot training bench
