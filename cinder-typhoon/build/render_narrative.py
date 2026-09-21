@@ -143,15 +143,23 @@ def render():
             d = docs_by_id[attachment]
             assert datetime.fromisoformat(d['published_at']) <= datetime.fromisoformat(m['date']), ('Attachment from the future', m['id'], attachment)
             maintype, subtype = d.get('media_type', 'text/markdown').split('/', 1)
-            msg.add_attachment(document_bytes(d), maintype=maintype, subtype=subtype,
-                               filename=document_path(d))
+            raw_attachment = document_bytes(d)
+            params = {}
+            if (maintype, subtype) == ('text', 'calendar'):
+                methods = [line[7:] for line in raw_attachment.decode('utf-8').splitlines()
+                           if line.startswith('METHOD:')]
+                assert len(methods) <= 1, d['id']
+                if methods:
+                    params['method'] = methods[0]
+            msg.add_attachment(raw_attachment, maintype=maintype, subtype=subtype,
+                               filename=document_path(d), params=params)
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
         raw = msg.as_bytes()
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -206,10 +214,15 @@ def render():
         organizer = contacts[event['organizer']]
         lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Workplace Calendar//EN', 'CALSCALE:GREGORIAN', 'BEGIN:VEVENT',
                  'UID:' + message_id(event['id'], ORGS[event['employer']][1])[1:-1],
-                 'DTSTAMP:' + utc(event.get('created_at', identity['snapshot'])),
+                 'DTSTAMP:' + utc(event.get('updated_at', event.get('created_at', identity['snapshot']))),
                  'DTSTART:' + utc(event['start']), 'DTEND:' + utc(event['end']),
                  'ORGANIZER:mailto:' + organizer['email']]
-        lines += ['ATTENDEE:mailto:' + contacts[p]['email'] for p in event['attendees']]
+        lines += [('ATTENDEE;PARTSTAT=' + event['responses'][p] if 'responses' in event else 'ATTENDEE') +
+                  ':mailto:' + contacts[p]['email'] for p in event['attendees']]
+        if 'location' in event:
+            lines.append('LOCATION:' + ics_escape(event['location']))
+        if 'sequence' in event:
+            lines.append('SEQUENCE:' + str(event['sequence']))
         lines += ['SUMMARY:' + ics_escape(event['summary']), 'DESCRIPTION:' + ics_escape(event['description']),
                   'STATUS:' + event['status'], 'END:VEVENT', 'END:VCALENDAR']
         folded = []
@@ -225,7 +238,7 @@ def render():
         text = '\r\n'.join(folded) + '\r\n'
         # Bulk operating calendars are complete items in the source package.
         # Avoid redundant standalone members, as with bulk RFC822 messages.
-        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-')):
+        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-')):
             output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
         kind = 'employment' if '-induction-' in event['id'] else 'documents'

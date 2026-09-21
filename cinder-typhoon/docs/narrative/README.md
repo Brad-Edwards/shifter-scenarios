@@ -3,7 +3,7 @@
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20
-September. These documents establish two fictional companies, the region around
+September, and office life added on 21 September. These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
 
@@ -49,6 +49,8 @@ and unfinished plans of their own.
 | [Finance content review](finance-review.md) | Reconciled invoices, purchases, claims, payroll, accounts, binary files, authority completion, and volume adjustment. |
 | [Finance voices](finance-voices.md) | Finance, people, purchasing, and departmental supplier writing guidance. |
 | [Commercial voices](commercial-voices.md) | Writing guidance for the six existing commercial employees. |
+| [Office life review](office-life-review.md) | Publications, private records, meetings, cover, consent, continuity, and volume adjustment. |
+| [Office life voices](office-life-voices.md) | Audience and relationship guidance, with selected finished correspondence. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -111,6 +113,10 @@ The finance slice realizes billing and settlement with 180 supplier/expense
 transactions, dated licence authority, customer invoices, restricted payroll
 summaries, and reconciled accounts through September 15. Its PDFs and workbooks
 retain exact binary content in the existing native collections.
+The office-life slice adds dated intranet publications, staff reference pages,
+private personnel and friendship exchanges, and 458 meeting occurrences. Its
+records distinguish invitation responses from attendance, preserve cancellations,
+check room and cover availability, and keep future gatherings in preparation.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

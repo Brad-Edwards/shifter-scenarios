@@ -83,6 +83,1686 @@
       "sha256": "0be9f487cbc62327a0d83efd217acfc8cdc0cffe52dba5c21aa83c3cdf72ffa3"
     },
     {
+      "name": "office-2026-001-note",
+      "title": "Workshop rehearsal: opening and discussion - meeting note",
+      "path": "office-2026-001-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T12:18:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "Workshop rehearsal: opening and discussion\n2026-09-09 11:15-12:00\nPresent: Talia Mornac, Maya Ranscombe.\n\nTalia ran the opening and discussion transition. The follow-up stays between Maya and Talia; Talia will send the two specific points she wants to retain. The customer workshop remains September 24.\n"
+    },
+    {
+      "name": "office-2026-241-note",
+      "title": "Private check-in: Rowan - July - meeting note",
+      "path": "office-2026-241-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-06T16:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "rowan.ito@keplerops.com"
+      ],
+      "text": "Private check-in: Rowan - July\n2026-07-06 15:15-15:45\nPresent: Adele Aldren, Rowan Ito.\n\nWe discussed the employee's example. Agreed next step: Choose one difficult example to explain well, and keep the optional extensions separate.\n"
+    },
+    {
+      "name": "office-2026-242-note",
+      "title": "Private check-in: Rowan - follow-up - meeting note",
+      "path": "office-2026-242-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-17T16:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "rowan.ito@keplerops.com"
+      ],
+      "text": "Private check-in: Rowan - follow-up\n2026-08-17 16:00-16:30\nPresent: Adele Aldren, Rowan Ito.\n\nThe employee reported: The smaller example helped. I still want a technical path; I do not want teaching one session treated as an application to manage people.\nAgreed follow-up: Keep the next example bounded and revisit specialist development at the next ordinary check-in.\n"
+    },
+    {
+      "name": "office-2026-243-note",
+      "title": "Private check-in: Adele - July - meeting note",
+      "path": "office-2026-243-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T09:48:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "adele.aldren@keplerops.com"
+      ],
+      "text": "Private check-in: Adele - July\n2026-07-07 09:00-09:30\nPresent: Leah Calder-Voss, Adele Aldren.\n\nWe discussed the employee's example. Agreed next step: Put the action and return contact before the background in one internal note.\n"
+    },
+    {
+      "name": "office-2026-244-note",
+      "title": "Private check-in: Adele - follow-up - meeting note",
+      "path": "office-2026-244-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "adele.aldren@keplerops.com"
+      ],
+      "text": "Private check-in: Adele - follow-up\n2026-08-18 09:45-10:15\nPresent: Leah Calder-Voss, Adele Aldren.\n\nThe employee reported: The next reader found the action without a call; the longer history was still useful later.\nAgreed follow-up: Keep that ordering and ask the reader which detail they actually used.\n"
+    },
+    {
+      "name": "office-2026-245-note",
+      "title": "Private check-in: Alix - July - meeting note",
+      "path": "office-2026-245-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T12:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "alix.harlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Alix - July\n2026-07-08 11:15-11:45\nPresent: Adele Aldren, Alix Harlowe.\n\nWe discussed the employee's example. Agreed next step: Offer one bounded code-reading exercise and state its end time.\n"
+    },
+    {
+      "name": "office-2026-246-note",
+      "title": "Private check-in: Alix - follow-up - meeting note",
+      "path": "office-2026-246-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T15:18:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "alix.harlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Alix - follow-up\n2026-08-19 14:30-15:00\nPresent: Adele Aldren, Alix Harlowe.\n\nThe employee reported: The small exercise worked better than leaving the afternoon open. I could still answer one follow-up in writing.\nAgreed follow-up: Keep the teaching slot bounded and agree additional time separately.\n"
+    },
+    {
+      "name": "office-2026-247-note",
+      "title": "Private check-in: Amara - July - meeting note",
+      "path": "office-2026-247-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-09T16:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "amara.radvell@keplerops.com"
+      ],
+      "text": "Private check-in: Amara - July\n2026-07-09 16:00-16:30\nPresent: Adele Aldren, Amara Radvell.\n\nWe discussed the employee's example. Agreed next step: Ask one colleague to try the first step and record the point where they hesitate.\n"
+    },
+    {
+      "name": "office-2026-248-note",
+      "title": "Private check-in: Amara - follow-up - meeting note",
+      "path": "office-2026-248-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-20T16:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "amara.radvell@keplerops.com"
+      ],
+      "text": "Private check-in: Amara - follow-up\n2026-08-20 15:15-15:45\nPresent: Adele Aldren, Amara Radvell.\n\nThe employee reported: The name change was the real obstacle. A short correction helped more than another page.\nAgreed follow-up: Try the corrected opening with a different reader before adding scope.\n"
+    },
+    {
+      "name": "office-2026-249-note",
+      "title": "Private check-in: Anika - July - meeting note",
+      "path": "office-2026-249-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T15:18:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "anika.belsart@keplerops.com"
+      ],
+      "text": "Private check-in: Anika - July\n2026-07-10 14:30-15:00\nPresent: Adele Aldren, Anika Belsart.\n\nWe discussed the employee's example. Agreed next step: Put the exception and its return contact beside the routine action.\n"
+    },
+    {
+      "name": "office-2026-250-note",
+      "title": "Private check-in: Anika - follow-up - meeting note",
+      "path": "office-2026-250-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T16:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "anika.belsart@keplerops.com"
+      ],
+      "text": "Private check-in: Anika - follow-up\n2026-08-21 15:15-15:45\nPresent: Adele Aldren, Anika Belsart.\n\nThe employee reported: The receiver handled the routine and knew where to take the exception.\nAgreed follow-up: Keep the exception explicit without copying every possible edge case.\n"
+    },
+    {
+      "name": "office-2026-251-note",
+      "title": "Private check-in: Ari - July - meeting note",
+      "path": "office-2026-251-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T16:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "ari.havelin@keplerops.com"
+      ],
+      "text": "Private check-in: Ari - July\n2026-07-13 16:00-16:30\nPresent: Adele Aldren, Ari Havelin.\n\nWe discussed the employee's example. Agreed next step: Write the one observed completion step in the internal exercise note.\n"
+    },
+    {
+      "name": "office-2026-252-note",
+      "title": "Private check-in: Ari - follow-up - meeting note",
+      "path": "office-2026-252-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T09:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "ari.havelin@keplerops.com"
+      ],
+      "text": "Private check-in: Ari - follow-up\n2026-08-24 09:00-09:30\nPresent: Adele Aldren, Ari Havelin.\n\nThe employee reported: The receiver could tell what was checked and what remained a question.\nAgreed follow-up: Keep the observed step and leave untested claims out of the note.\n"
+    },
+    {
+      "name": "office-2026-253-note",
+      "title": "Private check-in: Avery - July - meeting note",
+      "path": "office-2026-253-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T10:33:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "avery.renshaw@keplerops.com"
+      ],
+      "text": "Private check-in: Avery - July\n2026-07-13 09:45-10:15\nPresent: Adele Aldren, Avery Renshaw.\n\nWe discussed the employee's example. Agreed next step: Ask for one written decision at the end of the next practice call.\n"
+    },
+    {
+      "name": "office-2026-254-note",
+      "title": "Private check-in: Avery - follow-up - meeting note",
+      "path": "office-2026-254-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T11:18:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "avery.renshaw@keplerops.com"
+      ],
+      "text": "Private check-in: Avery - follow-up\n2026-08-24 10:30-11:00\nPresent: Adele Aldren, Avery Renshaw.\n\nThe employee reported: The short written choice was enough to let me continue alone.\nAgreed follow-up: Keep asking for the decision rather than another full explanation.\n"
+    },
+    {
+      "name": "office-2026-255-note",
+      "title": "Private check-in: Beatrice - July - meeting note",
+      "path": "office-2026-255-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T12:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "beatrice.bravelle@keplerops.com"
+      ],
+      "text": "Private check-in: Beatrice - July\n2026-07-13 11:15-11:45\nPresent: Adele Aldren, Beatrice Bravelle.\n\nWe discussed the employee's example. Agreed next step: Copy the current action and return point into the shared note after one discussion.\n"
+    },
+    {
+      "name": "office-2026-256-note",
+      "title": "Private check-in: Beatrice - follow-up - meeting note",
+      "path": "office-2026-256-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T13:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "beatrice.bravelle@keplerops.com"
+      ],
+      "text": "Private check-in: Beatrice - follow-up\n2026-08-24 13:00-13:30\nPresent: Adele Aldren, Beatrice Bravelle.\n\nThe employee reported: The shared action helped remote colleagues without making me transcribe the notebook.\nAgreed follow-up: Retain the notebook for rough work and the shared note for the agreed action.\n"
+    },
+    {
+      "name": "office-2026-257-note",
+      "title": "Private check-in: Ben - July - meeting note",
+      "path": "office-2026-257-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T14:33:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "ben.iversen@keplerops.com"
+      ],
+      "text": "Private check-in: Ben - July\n2026-07-14 13:45-14:15\nPresent: Beatrice Bravelle, Ben Iversen.\n\nWe discussed the employee's example. Agreed next step: State the starting assumption once and ask the receiver to try it.\n"
+    },
+    {
+      "name": "office-2026-258-note",
+      "title": "Private check-in: Ben - follow-up - meeting note",
+      "path": "office-2026-258-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T15:18:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "ben.iversen@keplerops.com"
+      ],
+      "text": "Private check-in: Ben - follow-up\n2026-08-25 14:30-15:00\nPresent: Beatrice Bravelle, Ben Iversen.\n\nThe employee reported: The receiver began without that extra question, but still needed the limit of the example.\nAgreed follow-up: Keep both the starting assumption and the point where a real case needs its owner.\n"
+    },
+    {
+      "name": "office-2026-259-note",
+      "title": "Private check-in: Callum - July - meeting note",
+      "path": "office-2026-259-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T10:33:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "callum.rivelin@keplerops.com"
+      ],
+      "text": "Private check-in: Callum - July\n2026-07-15 09:45-10:15\nPresent: Beatrice Bravelle, Callum Rivelin.\n\nWe discussed the employee's example. Agreed next step: Choose the one question needing a shared decision and send the others to their owners.\n"
+    },
+    {
+      "name": "office-2026-260-note",
+      "title": "Private check-in: Callum - follow-up - meeting note",
+      "path": "office-2026-260-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-26T16:48:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "callum.rivelin@keplerops.com"
+      ],
+      "text": "Private check-in: Callum - follow-up\n2026-08-26 16:00-16:30\nPresent: Beatrice Bravelle, Callum Rivelin.\n\nThe employee reported: I tried this in the internal exercise but have not used it on live work yet. I want to leave that part open rather than claim a result I do not have.\nAgreed follow-up: Keep the distinction between a group decision and a request to one owner.\n"
+    },
+    {
+      "name": "office-2026-261-note",
+      "title": "Private check-in: Camille - July - meeting note",
+      "path": "office-2026-261-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-16T09:48:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "camille.carsten@keplerops.com"
+      ],
+      "text": "Private check-in: Camille - July\n2026-07-16 09:00-09:30\nPresent: Beatrice Bravelle, Camille Carsten.\n\nWe discussed the employee's example. Agreed next step: Correct the current exercise and leave earlier records visibly dated.\n"
+    },
+    {
+      "name": "office-2026-262-note",
+      "title": "Private check-in: Camille - follow-up - meeting note",
+      "path": "office-2026-262-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-27T15:18:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "camille.carsten@keplerops.com"
+      ],
+      "text": "Private check-in: Camille - follow-up\n2026-08-27 14:30-15:00\nPresent: Beatrice Bravelle, Camille Carsten.\n\nThe employee reported: The current reader found the right heading without losing the older record.\nAgreed follow-up: Continue making a clear current correction instead of rewriting historical authorship.\n"
+    },
+    {
+      "name": "office-2026-263-note",
+      "title": "Private check-in: Cara - July - meeting note",
+      "path": "office-2026-263-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-17T11:18:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "cara.jorrel@keplerops.com"
+      ],
+      "text": "Private check-in: Cara - July\n2026-07-17 10:30-11:00\nPresent: Beatrice Bravelle, Cara Jorrel.\n\nWe discussed the employee's example. Agreed next step: Stop after the learner can take the next step and offer the longer note separately.\n"
+    },
+    {
+      "name": "office-2026-264-note",
+      "title": "Private check-in: Cara - follow-up - meeting note",
+      "path": "office-2026-264-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-28T12:03:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "cara.jorrel@keplerops.com"
+      ],
+      "text": "Private check-in: Cara - follow-up\n2026-08-28 11:15-11:45\nPresent: Beatrice Bravelle, Cara Jorrel.\n\nThe employee reported: The learner continued sooner, and one person asked for the longer note later.\nAgreed follow-up: Keep the short answer first and let the learner choose more detail.\n"
+    },
+    {
+      "name": "office-2026-265-note",
+      "title": "Private check-in: Celia - July - meeting note",
+      "path": "office-2026-265-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T13:48:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "celia.sarnell@keplerops.com"
+      ],
+      "text": "Private check-in: Celia - July\n2026-07-20 13:00-13:30\nPresent: Beatrice Bravelle, Celia Sarnell.\n\nWe discussed the employee's example. Agreed next step: Move the question above the appendix and ask a reader what answer is needed.\n"
+    },
+    {
+      "name": "office-2026-266-note",
+      "title": "Private check-in: Celia - follow-up - meeting note",
+      "path": "office-2026-266-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T14:33:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "celia.sarnell@keplerops.com"
+      ],
+      "text": "Private check-in: Celia - follow-up\n2026-08-31 13:45-14:15\nPresent: Beatrice Bravelle, Celia Sarnell.\n\nThe employee reported: The reader found the request; one appendix heading still needed correction.\nAgreed follow-up: Keep the request first and fix the specific heading without rewriting everything.\n"
+    },
+    {
+      "name": "office-2026-267-note",
+      "title": "Private check-in: Cian - July - meeting note",
+      "path": "office-2026-267-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T15:18:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "cian.cavelin@keplerops.com"
+      ],
+      "text": "Private check-in: Cian - July\n2026-07-20 14:30-15:00\nPresent: Adele Aldren, Cian Cavelin.\n\nWe discussed the employee's example. Agreed next step: Repeat questions from the room and invite a remote response before moving on.\n"
+    },
+    {
+      "name": "office-2026-268-note",
+      "title": "Private check-in: Cian - follow-up - meeting note",
+      "path": "office-2026-268-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T16:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "cian.cavelin@keplerops.com"
+      ],
+      "text": "Private check-in: Cian - follow-up\n2026-08-31 15:15-15:45\nPresent: Adele Aldren, Cian Cavelin.\n\nThe employee reported: The remote colleague could enter the discussion before the decision was settled.\nAgreed follow-up: Keep the spoken pause and leave the final choice in writing.\n"
+    },
+    {
+      "name": "office-2026-269-note",
+      "title": "Private check-in: Corin - July - meeting note",
+      "path": "office-2026-269-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T16:48:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "corin.kelswick@keplerops.com"
+      ],
+      "text": "Private check-in: Corin - July\n2026-07-20 16:00-16:30\nPresent: Cian Cavelin, Corin Kelswick.\n\nWe discussed the employee's example. Agreed next step: Use the borrowed book to revise one internal exercise only.\n"
+    },
+    {
+      "name": "office-2026-270-note",
+      "title": "Private check-in: Corin - follow-up - meeting note",
+      "path": "office-2026-270-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T09:48:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "corin.kelswick@keplerops.com"
+      ],
+      "text": "Private check-in: Corin - follow-up\n2026-08-31 09:00-09:30\nPresent: Cian Cavelin, Corin Kelswick.\n\nThe employee reported: The smaller diagram made the first step clearer, but did not answer every adjacent question.\nAgreed follow-up: Keep the exercise bounded and return other questions to their existing owners.\n"
+    },
+    {
+      "name": "office-2026-271-note",
+      "title": "Private check-in: Dana - July - meeting note",
+      "path": "office-2026-271-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T10:33:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "dana.selwyn@keplerops.com"
+      ],
+      "text": "Private check-in: Dana - July\n2026-07-21 09:45-10:15\nPresent: Cian Cavelin, Dana Selwyn.\n\nWe discussed the employee's example. Agreed next step: Ask the organizer to repeat room questions and send the example in advance.\n"
+    },
+    {
+      "name": "office-2026-272-note",
+      "title": "Private check-in: Dana - follow-up - meeting note",
+      "path": "office-2026-272-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T11:18:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "dana.selwyn@keplerops.com"
+      ],
+      "text": "Private check-in: Dana - follow-up\n2026-09-01 10:30-11:00\nPresent: Cian Cavelin, Dana Selwyn.\n\nThe employee reported: The sound check and repeated questions helped; a final note still matters.\nAgreed follow-up: Retain both the participation arrangement and the short written decision.\n"
+    },
+    {
+      "name": "office-2026-273-note",
+      "title": "Private check-in: Dario - July - meeting note",
+      "path": "office-2026-273-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-22T12:03:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "dario.cernault@keplerops.com"
+      ],
+      "text": "Private check-in: Dario - July\n2026-07-22 11:15-11:45\nPresent: Cian Cavelin, Dario Cernault.\n\nWe discussed the employee's example. Agreed next step: Add a starting sentence and try the exercise with another reader.\n"
+    },
+    {
+      "name": "office-2026-274-note",
+      "title": "Private check-in: Dario - follow-up - meeting note",
+      "path": "office-2026-274-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-02T16:48:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "dario.cernault@keplerops.com"
+      ],
+      "text": "Private check-in: Dario - follow-up\n2026-09-02 16:00-16:30\nPresent: Cian Cavelin, Dario Cernault.\n\nThe employee reported: The reader began correctly without another arrow or spoken introduction.\nAgreed follow-up: Keep the entry sentence and test the next revised example the same way.\n"
+    },
+    {
+      "name": "office-2026-275-note",
+      "title": "Private check-in: Della - July - meeting note",
+      "path": "office-2026-275-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-23T14:33:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "della.larmont@keplerops.com"
+      ],
+      "text": "Private check-in: Della - July\n2026-07-23 13:45-14:15\nPresent: Cian Cavelin, Della Larmont.\n\nWe discussed the employee's example. Agreed next step: Correct one current pointer and ask the guide owner to retain ownership.\n"
+    },
+    {
+      "name": "office-2026-276-note",
+      "title": "Private check-in: Della - follow-up - meeting note",
+      "path": "office-2026-276-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T10:33:00-04:00",
+      "readers": [
+        "cian.cavelin@keplerops.com",
+        "della.larmont@keplerops.com"
+      ],
+      "text": "Private check-in: Della - follow-up\n2026-09-03 09:45-10:15\nPresent: Cian Cavelin, Della Larmont.\n\nThe employee reported: The corrected pointer was useful and the guide owner kept the wider task.\nAgreed follow-up: Use the same bounded agreement for the next small correction.\n"
+    },
+    {
+      "name": "office-2026-277-note",
+      "title": "Private check-in: Dev - July - meeting note",
+      "path": "office-2026-277-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-24T16:03:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "dev.senvard@keplerops.com"
+      ],
+      "text": "Private check-in: Dev - July\n2026-07-24 15:15-15:45\nPresent: Adele Aldren, Dev Senvard.\n\nWe discussed the employee's example. Agreed next step: Separate the transferred routine from each unresolved item and its owner.\n"
+    },
+    {
+      "name": "office-2026-278-note",
+      "title": "Private check-in: Dev - follow-up - meeting note",
+      "path": "office-2026-278-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-04T16:48:00-04:00",
+      "readers": [
+        "adele.aldren@keplerops.com",
+        "dev.senvard@keplerops.com"
+      ],
+      "text": "Private check-in: Dev - follow-up\n2026-09-04 16:00-16:30\nPresent: Adele Aldren, Dev Senvard.\n\nThe employee reported: The receiving colleague knew which part was theirs and where the rest returned.\nAgreed follow-up: Keep the split visible rather than transferring every exception by implication.\n"
+    },
+    {
+      "name": "office-2026-279-note",
+      "title": "Private check-in: Edda - July - meeting note",
+      "path": "office-2026-279-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-27T09:48:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "edda.dalver@keplerops.com"
+      ],
+      "text": "Private check-in: Edda - July\n2026-07-27 09:00-09:30\nPresent: Dev Senvard, Edda Dalver.\n\nWe discussed the employee's example. Agreed next step: Put the requested decision above the explanation.\n"
+    },
+    {
+      "name": "office-2026-280-note",
+      "title": "Private check-in: Edda - follow-up - meeting note",
+      "path": "office-2026-280-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T10:33:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "edda.dalver@keplerops.com"
+      ],
+      "text": "Private check-in: Edda - follow-up\n2026-09-07 09:45-10:15\nPresent: Dev Senvard, Edda Dalver.\n\nThe employee reported: The reader could answer the question before reading every background detail.\nAgreed follow-up: Keep the request first and ask whether any background changes the decision.\n"
+    },
+    {
+      "name": "office-2026-281-note",
+      "title": "Private check-in: Eira - July - meeting note",
+      "path": "office-2026-281-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-06T11:18:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "eira.lestrel@keplerops.com"
+      ],
+      "text": "Private check-in: Eira - July\n2026-07-06 10:30-11:00\nPresent: Dev Senvard, Eira Lestrel.\n\nWe discussed the employee's example. Agreed next step: Leave the final choice and return point in a short written follow-up.\n"
+    },
+    {
+      "name": "office-2026-282-note",
+      "title": "Private check-in: Eira - follow-up - meeting note",
+      "path": "office-2026-282-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T12:03:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "eira.lestrel@keplerops.com"
+      ],
+      "text": "Private check-in: Eira - follow-up\n2026-09-07 11:15-11:45\nPresent: Dev Senvard, Eira Lestrel.\n\nThe employee reported: The next reader used the choice without asking for the whole call again.\nAgreed follow-up: Keep that written ending and offer further teaching only when needed.\n"
+    },
+    {
+      "name": "office-2026-283-note",
+      "title": "Private check-in: Elias - July - meeting note",
+      "path": "office-2026-283-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T13:48:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "elias.tarlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Elias - July\n2026-07-07 13:00-13:30\nPresent: Dev Senvard, Elias Tarlowe.\n\nWe discussed the employee's example. Agreed next step: Expand the two terms that blocked the new reader.\n"
+    },
+    {
+      "name": "office-2026-284-note",
+      "title": "Private check-in: Elias - follow-up - meeting note",
+      "path": "office-2026-284-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T14:33:00-04:00",
+      "readers": [
+        "dev.senvard@keplerops.com",
+        "elias.tarlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Elias - follow-up\n2026-09-07 13:45-14:15\nPresent: Dev Senvard, Elias Tarlowe.\n\nThe employee reported: Those two expansions were enough for the next attempt.\nAgreed follow-up: Keep checking the actual obstacle before adding a larger reference page.\n"
+    },
+    {
+      "name": "office-2026-285-note",
+      "title": "Private check-in: Maya - July - meeting note",
+      "path": "office-2026-285-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T14:33:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "Private check-in: Maya - July\n2026-07-08 13:45-14:15\nPresent: Elin Danwick, Maya Ranscombe.\n\nWe discussed the employee's example. Agreed next step: Discuss one bounded mentoring example with Elin and keep formal role decisions separate.\n"
+    },
+    {
+      "name": "office-2026-286-note",
+      "title": "Private check-in: Maya - follow-up - meeting note",
+      "path": "office-2026-286-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-08T16:03:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "Private check-in: Maya - follow-up\n2026-09-08 15:15-15:45\nPresent: Elin Danwick, Maya Ranscombe.\n\nThe employee reported: I liked helping a colleague prepare, but giving room to their own approach matters. I am still exploring leadership.\nAgreed follow-up: Continue a small mentoring practice with the colleague's agreement; no appointment or pay change is made.\n"
+    },
+    {
+      "name": "office-2026-287-note",
+      "title": "Private check-in: Talia - July - meeting note",
+      "path": "office-2026-287-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-09T11:18:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "Private check-in: Talia - July\n2026-07-09 10:30-11:00\nPresent: Elin Danwick, Talia Mornac.\n\nWe discussed the employee's example. Agreed next step: Choose two rehearsal questions and agree them with the person watching.\n"
+    },
+    {
+      "name": "office-2026-288-note",
+      "title": "Private check-in: Talia - follow-up - meeting note",
+      "path": "office-2026-288-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T10:33:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "Private check-in: Talia - follow-up\n2026-09-09 09:45-10:15\nPresent: Elin Danwick, Talia Mornac.\n\nThe employee reported: The preparation is clearer, and I want to keep leading it. I would like feedback on the example and the time for questions.\nAgreed follow-up: Keep Talia leading preparation and confirm the division of the customer session with Maya in the workshop thread.\n"
+    },
+    {
+      "name": "office-2026-289-note",
+      "title": "Private check-in: Elin - July - meeting note",
+      "path": "office-2026-289-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "elin.danwick@keplerops.com"
+      ],
+      "text": "Private check-in: Elin - July\n2026-07-10 09:45-10:15\nPresent: Leah Calder-Voss, Elin Danwick.\n\nWe discussed the employee's example. Agreed next step: Record the practical learning step separately from formal role decisions.\n"
+    },
+    {
+      "name": "office-2026-290-note",
+      "title": "Private check-in: Elin - follow-up - meeting note",
+      "path": "office-2026-290-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-10T11:18:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "elin.danwick@keplerops.com"
+      ],
+      "text": "Private check-in: Elin - follow-up\n2026-09-10 10:30-11:00\nPresent: Leah Calder-Voss, Elin Danwick.\n\nThe employee reported: The distinction made the discussion clearer and still left room for ambition.\nAgreed follow-up: Keep the private development note and any operational team action separate.\n"
+    },
+    {
+      "name": "office-2026-291-note",
+      "title": "Private check-in: Emre - July - meeting note",
+      "path": "office-2026-291-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T12:03:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "emre.maraven@keplerops.com"
+      ],
+      "text": "Private check-in: Emre - July\n2026-07-13 11:15-11:45\nPresent: Elin Danwick, Emre Maraven.\n\nWe discussed the employee's example. Agreed next step: Leave a short hand-back in the agreed thread at the end of one cover period.\n"
+    },
+    {
+      "name": "office-2026-292-note",
+      "title": "Private check-in: Emre - follow-up - meeting note",
+      "path": "office-2026-292-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-17T13:48:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "emre.maraven@keplerops.com"
+      ],
+      "text": "Private check-in: Emre - follow-up\n2026-08-17 13:00-13:30\nPresent: Elin Danwick, Emre Maraven.\n\nThe employee reported: The next owner saw that nothing was waiting without searching for me.\nAgreed follow-up: Keep the period, return contact and actual open items in the shared hand-back.\n"
+    },
+    {
+      "name": "office-2026-293-note",
+      "title": "Private check-in: Farah - July - meeting note",
+      "path": "office-2026-293-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T14:33:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "farah.telmire@keplerops.com"
+      ],
+      "text": "Private check-in: Farah - July\n2026-07-13 13:45-14:15\nPresent: Elin Danwick, Farah Telmire.\n\nWe discussed the employee's example. Agreed next step: Link the summary to the current question instead of copying it.\n"
+    },
+    {
+      "name": "office-2026-294-note",
+      "title": "Private check-in: Farah - follow-up - meeting note",
+      "path": "office-2026-294-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T15:18:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "farah.telmire@keplerops.com"
+      ],
+      "text": "Private check-in: Farah - follow-up\n2026-08-18 14:30-15:00\nPresent: Elin Danwick, Farah Telmire.\n\nThe employee reported: The correction reached one current place and the summary still made sense.\nAgreed follow-up: Keep one answer location with a useful pointer from the handover.\n"
+    },
+    {
+      "name": "office-2026-295-note",
+      "title": "Private check-in: Felix - July - meeting note",
+      "path": "office-2026-295-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T16:03:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "felix.darsell@keplerops.com"
+      ],
+      "text": "Private check-in: Felix - July\n2026-07-13 15:15-15:45\nPresent: Elin Danwick, Felix Darsell.\n\nWe discussed the employee's example. Agreed next step: Write the agreed next step after the spoken explanation.\n"
+    },
+    {
+      "name": "office-2026-296-note",
+      "title": "Private check-in: Felix - follow-up - meeting note",
+      "path": "office-2026-296-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T09:48:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "felix.darsell@keplerops.com"
+      ],
+      "text": "Private check-in: Felix - follow-up\n2026-08-19 09:00-09:30\nPresent: Elin Danwick, Felix Darsell.\n\nThe employee reported: The receiver continued without another call once the decision was written.\nAgreed follow-up: Retain the short written ending rather than a transcript of the whole discussion.\n"
+    },
+    {
+      "name": "office-2026-297-note",
+      "title": "Private check-in: Finn - July - meeting note",
+      "path": "office-2026-297-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T09:48:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "finn.marrent@keplerops.com"
+      ],
+      "text": "Private check-in: Finn - July\n2026-07-14 09:00-09:30\nPresent: Elin Danwick, Finn Marrent.\n\nWe discussed the employee's example. Agreed next step: Ask the receiver to describe the next action before ending one practice session.\n"
+    },
+    {
+      "name": "office-2026-298-note",
+      "title": "Private check-in: Finn - follow-up - meeting note",
+      "path": "office-2026-298-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T10:33:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "finn.marrent@keplerops.com"
+      ],
+      "text": "Private check-in: Finn - follow-up\n2026-08-21 09:45-10:15\nPresent: Elin Danwick, Finn Marrent.\n\nThe employee reported: The question caught an assumption that my fuller note had missed.\nAgreed follow-up: Try it again in an ordinary handover and keep only what helps the receiver.\n"
+    },
+    {
+      "name": "office-2026-299-note",
+      "title": "Private check-in: Flora - July - meeting note",
+      "path": "office-2026-299-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T11:18:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "flora.torren@keplerops.com"
+      ],
+      "text": "Private check-in: Flora - July\n2026-07-15 10:30-11:00\nPresent: Finn Marrent, Flora Torren.\n\nWe discussed the employee's example. Agreed next step: Put the action on the first page and link the fuller history below.\n"
+    },
+    {
+      "name": "office-2026-300-note",
+      "title": "Private check-in: Flora - follow-up - meeting note",
+      "path": "office-2026-300-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T12:03:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "flora.torren@keplerops.com"
+      ],
+      "text": "Private check-in: Flora - follow-up\n2026-08-21 11:15-11:45\nPresent: Finn Marrent, Flora Torren.\n\nThe employee reported: The receiver found the action and still opened the history when needed.\nAgreed follow-up: Keep the ordering without deleting useful background.\n"
+    },
+    {
+      "name": "office-2026-301-note",
+      "title": "Private check-in: Gabriel - July - meeting note",
+      "path": "office-2026-301-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-16T13:48:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "gabriel.delmont@keplerops.com"
+      ],
+      "text": "Private check-in: Gabriel - July\n2026-07-16 13:00-13:30\nPresent: Finn Marrent, Gabriel Delmont.\n\nWe discussed the employee's example. Agreed next step: Agree the first step a reader should be able to take without help.\n"
+    },
+    {
+      "name": "office-2026-302-note",
+      "title": "Private check-in: Gabriel - follow-up - meeting note",
+      "path": "office-2026-302-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T14:33:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "gabriel.delmont@keplerops.com"
+      ],
+      "text": "Private check-in: Gabriel - follow-up\n2026-08-24 13:45-14:15\nPresent: Finn Marrent, Gabriel Delmont.\n\nThe employee reported: That observed step made the review concrete and left one question for the author.\nAgreed follow-up: Keep the observation separate from broader claims about the whole document.\n"
+    },
+    {
+      "name": "office-2026-303-note",
+      "title": "Private check-in: Hana - July - meeting note",
+      "path": "office-2026-303-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-17T15:18:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "hana.mavell@keplerops.com"
+      ],
+      "text": "Private check-in: Hana - July\n2026-07-17 14:30-15:00\nPresent: Finn Marrent, Hana Mavell.\n\nWe discussed the employee's example. Agreed next step: Test one first action in ten minutes and write the missing return contact.\n"
+    },
+    {
+      "name": "office-2026-304-note",
+      "title": "Private check-in: Hana - follow-up - meeting note",
+      "path": "office-2026-304-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T16:03:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "hana.mavell@keplerops.com"
+      ],
+      "text": "Private check-in: Hana - follow-up\n2026-08-24 15:15-15:45\nPresent: Finn Marrent, Hana Mavell.\n\nThe employee reported: The short rehearsal found the gap without another hour of explanation.\nAgreed follow-up: Keep the bounded question and return broader issues to their owners.\n"
+    },
+    {
+      "name": "office-2026-305-note",
+      "title": "Private check-in: Harriet - July - meeting note",
+      "path": "office-2026-305-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T16:48:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "harriet.velswick@keplerops.com"
+      ],
+      "text": "Private check-in: Harriet - July\n2026-07-20 16:00-16:30\nPresent: Finn Marrent, Harriet Velswick.\n\nWe discussed the employee's example. Agreed next step: Ask which detail the receiver would keep with only a minute to read.\n"
+    },
+    {
+      "name": "office-2026-306-note",
+      "title": "Private check-in: Harriet - follow-up - meeting note",
+      "path": "office-2026-306-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T09:48:00-04:00",
+      "readers": [
+        "finn.marrent@keplerops.com",
+        "harriet.velswick@keplerops.com"
+      ],
+      "text": "Private check-in: Harriet - follow-up\n2026-08-24 09:00-09:30\nPresent: Finn Marrent, Harriet Velswick.\n\nThe employee reported: They chose the action and return contact, so I moved those first.\nAgreed follow-up: Keep the diagram available below the immediate information.\n"
+    },
+    {
+      "name": "office-2026-307-note",
+      "title": "Private check-in: Hugo - July - meeting note",
+      "path": "office-2026-307-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T10:33:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "hugo.dravik@keplerops.com"
+      ],
+      "text": "Private check-in: Hugo - July\n2026-07-20 09:45-10:15\nPresent: Elin Danwick, Hugo Dravik.\n\nWe discussed the employee's example. Agreed next step: Create a participant note with time, exercise and contact.\n"
+    },
+    {
+      "name": "office-2026-308-note",
+      "title": "Private check-in: Hugo - follow-up - meeting note",
+      "path": "office-2026-308-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T11:18:00-04:00",
+      "readers": [
+        "elin.danwick@keplerops.com",
+        "hugo.dravik@keplerops.com"
+      ],
+      "text": "Private check-in: Hugo - follow-up\n2026-08-25 10:30-11:00\nPresent: Elin Danwick, Hugo Dravik.\n\nThe employee reported: The note supplied what people needed and left the supplier thread private.\nAgreed follow-up: Use the participant note again and ask Morgan about changes to purchased seats.\n"
+    },
+    {
+      "name": "office-2026-309-note",
+      "title": "Private check-in: Idris - July - meeting note",
+      "path": "office-2026-309-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T12:03:00-04:00",
+      "readers": [
+        "hugo.dravik@keplerops.com",
+        "idris.narsen@keplerops.com"
+      ],
+      "text": "Private check-in: Idris - July\n2026-07-20 11:15-11:45\nPresent: Hugo Dravik, Idris Narsen.\n\nWe discussed the employee's example. Agreed next step: Keep the open question and its return owner visible in the note.\n"
+    },
+    {
+      "name": "office-2026-310-note",
+      "title": "Private check-in: Idris - follow-up - meeting note",
+      "path": "office-2026-310-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-26T10:33:00-04:00",
+      "readers": [
+        "hugo.dravik@keplerops.com",
+        "idris.narsen@keplerops.com"
+      ],
+      "text": "Private check-in: Idris - follow-up\n2026-08-26 09:45-10:15\nPresent: Hugo Dravik, Idris Narsen.\n\nThe employee reported: The next reader could use the settled part and knew where the rest belonged.\nAgreed follow-up: Keep that distinction instead of calling everything complete or unusable.\n"
+    },
+    {
+      "name": "office-2026-311-note",
+      "title": "Private check-in: Imani - July - meeting note",
+      "path": "office-2026-311-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T14:33:00-04:00",
+      "readers": [
+        "hugo.dravik@keplerops.com",
+        "imani.verrin@keplerops.com"
+      ],
+      "text": "Private check-in: Imani - July\n2026-07-21 13:45-14:15\nPresent: Hugo Dravik, Imani Verrin.\n\nWe discussed the employee's example. Agreed next step: Send the unresolved detail to its owner when the slot ends.\n"
+    },
+    {
+      "name": "office-2026-312-note",
+      "title": "Private check-in: Imani - follow-up - meeting note",
+      "path": "office-2026-312-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-27T09:48:00-04:00",
+      "readers": [
+        "hugo.dravik@keplerops.com",
+        "imani.verrin@keplerops.com"
+      ],
+      "text": "Private check-in: Imani - follow-up\n2026-08-27 09:00-09:30\nPresent: Hugo Dravik, Imani Verrin.\n\nThe employee reported: The written request got a useful answer without taking the next meeting's time.\nAgreed follow-up: Continue separating the shared discussion from one-owner follow-up.\n"
+    },
+    {
+      "name": "office-2026-313-note",
+      "title": "Private check-in: Evan - July - meeting note",
+      "path": "office-2026-313-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-22T16:03:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "evan.calderoux@keplerops.com"
+      ],
+      "text": "Private check-in: Evan - July\n2026-07-22 15:15-15:45\nPresent: Iris Edran, Evan Calderoux.\n\nWe discussed the employee's example. Agreed next step: Use one internal example with a stated question and a half-hour limit.\n"
+    },
+    {
+      "name": "office-2026-314-note",
+      "title": "Private check-in: Evan - follow-up - meeting note",
+      "path": "office-2026-314-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-28T16:48:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "evan.calderoux@keplerops.com"
+      ],
+      "text": "Private check-in: Evan - follow-up\n2026-08-28 16:00-16:30\nPresent: Iris Edran, Evan Calderoux.\n\nThe employee reported: The group finished on time; the last detail was better answered in writing.\nAgreed follow-up: Keep the bounded agenda and avoid a standing follow-up unless a new question needs it.\n"
+    },
+    {
+      "name": "office-2026-315-note",
+      "title": "Private check-in: Iris - July - meeting note",
+      "path": "office-2026-315-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-23T13:48:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "iris.edran@keplerops.com"
+      ],
+      "text": "Private check-in: Iris - July\n2026-07-23 13:00-13:30\nPresent: Leah Calder-Voss, Iris Edran.\n\nWe discussed the employee's example. Agreed next step: State the exercise's purpose and preserve accepted release records as the decision source.\n"
+    },
+    {
+      "name": "office-2026-316-note",
+      "title": "Private check-in: Iris - follow-up - meeting note",
+      "path": "office-2026-316-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "iris.edran@keplerops.com"
+      ],
+      "text": "Private check-in: Iris - follow-up\n2026-08-31 09:45-10:15\nPresent: Leah Calder-Voss, Iris Edran.\n\nThe employee reported: The practice note was easier to reuse without implying an operational approval.\nAgreed follow-up: Keep that boundary when another team borrows the example.\n"
+    },
+    {
+      "name": "office-2026-317-note",
+      "title": "Private check-in: Isabel - July - meeting note",
+      "path": "office-2026-317-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-24T11:18:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "isabel.nelcourt@keplerops.com"
+      ],
+      "text": "Private check-in: Isabel - July\n2026-07-24 10:30-11:00\nPresent: Iris Edran, Isabel Nelcourt.\n\nWe discussed the employee's example. Agreed next step: Write the question, final choice and reason before the background.\n"
+    },
+    {
+      "name": "office-2026-318-note",
+      "title": "Private check-in: Isabel - follow-up - meeting note",
+      "path": "office-2026-318-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T12:03:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "isabel.nelcourt@keplerops.com"
+      ],
+      "text": "Private check-in: Isabel - follow-up\n2026-08-31 11:15-11:45\nPresent: Iris Edran, Isabel Nelcourt.\n\nThe employee reported: I tried this in the internal exercise but have not used it on live work yet. I want to leave that part open rather than claim a result I do not have.\nAgreed follow-up: Keep that short decision note and leave the detail with its owner.\n"
+    },
+    {
+      "name": "office-2026-319-note",
+      "title": "Private check-in: Noor - July - meeting note",
+      "path": "office-2026-319-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-27T16:03:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "Private check-in: Noor - July\n2026-07-27 15:15-15:45\nPresent: Jalen Warden, Noor Aveling.\n\nWe discussed the employee's example. Agreed next step: Remove personal names from the exercise and point actual access questions to the real record.\n"
+    },
+    {
+      "name": "office-2026-320-note",
+      "title": "Private check-in: Noor - follow-up - meeting note",
+      "path": "office-2026-320-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T14:33:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "Private check-in: Noor - follow-up\n2026-08-31 13:45-14:15\nPresent: Jalen Warden, Noor Aveling.\n\nThe employee reported: The exercise still explained the route. Nobody needed a copied access decision to use it.\nAgreed follow-up: Keep the diagram's purpose and the actual record's audience separate.\n"
+    },
+    {
+      "name": "office-2026-321-note",
+      "title": "Private check-in: Jalen - July - meeting note",
+      "path": "office-2026-321-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-06T16:03:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "Private check-in: Jalen - July\n2026-07-06 15:15-15:45\nPresent: Iris Edran, Jalen Warden.\n\nWe discussed the employee's example. Agreed next step: Add the limit and the return point for a real question.\n"
+    },
+    {
+      "name": "office-2026-322-note",
+      "title": "Private check-in: Jalen - follow-up - meeting note",
+      "path": "office-2026-322-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T16:03:00-04:00",
+      "readers": [
+        "iris.edran@keplerops.com",
+        "jalen.warden@keplerops.com"
+      ],
+      "text": "Private check-in: Jalen - follow-up\n2026-09-01 15:15-15:45\nPresent: Iris Edran, Jalen Warden.\n\nThe employee reported: The receiver knew when to stop relying on the example.\nAgreed follow-up: Keep the limit visible instead of adding every exception to the opening.\n"
+    },
+    {
+      "name": "office-2026-323-note",
+      "title": "Private check-in: Jamie - July - meeting note",
+      "path": "office-2026-323-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T16:48:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "jamie.elvarn@keplerops.com"
+      ],
+      "text": "Private check-in: Jamie - July\n2026-07-07 16:00-16:30\nPresent: Jalen Warden, Jamie Elvarn.\n\nWe discussed the employee's example. Agreed next step: Record the period and that no item needs a separate decision.\n"
+    },
+    {
+      "name": "office-2026-324-note",
+      "title": "Private check-in: Jamie - follow-up - meeting note",
+      "path": "office-2026-324-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-02T09:48:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "jamie.elvarn@keplerops.com"
+      ],
+      "text": "Private check-in: Jamie - follow-up\n2026-09-02 09:00-09:30\nPresent: Jalen Warden, Jamie Elvarn.\n\nThe employee reported: The next owner preferred the short true hand-back to a speculative list.\nAgreed follow-up: Keep writing the actual result without manufacturing an exception.\n"
+    },
+    {
+      "name": "office-2026-325-note",
+      "title": "Private check-in: Jonas - July - meeting note",
+      "path": "office-2026-325-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T10:33:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "jonas.odrin@keplerops.com"
+      ],
+      "text": "Private check-in: Jonas - July\n2026-07-08 09:45-10:15\nPresent: Jalen Warden, Jonas Odrin.\n\nWe discussed the employee's example. Agreed next step: Put the exercise owner beside the next action.\n"
+    },
+    {
+      "name": "office-2026-326-note",
+      "title": "Private check-in: Jonas - follow-up - meeting note",
+      "path": "office-2026-326-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T11:18:00-04:00",
+      "readers": [
+        "jalen.warden@keplerops.com",
+        "jonas.odrin@keplerops.com"
+      ],
+      "text": "Private check-in: Jonas - follow-up\n2026-09-03 10:30-11:00\nPresent: Jalen Warden, Jonas Odrin.\n\nThe employee reported: The reader found the right return point without searching the directory twice.\nAgreed follow-up: Keep the contact with the action and recheck it when reusing the example.\n"
+    },
+    {
+      "name": "office-2026-327-note",
+      "title": "Private check-in: Jory - July - meeting note",
+      "path": "office-2026-327-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-09T12:03:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "jory.wellard@keplerops.com"
+      ],
+      "text": "Private check-in: Jory - July\n2026-07-09 11:15-11:45\nPresent: Leah Calder-Voss, Jory Wellard.\n\nWe discussed the employee's example. Agreed next step: Ask for the continuing effort as well as the proposed saving.\n"
+    },
+    {
+      "name": "office-2026-328-note",
+      "title": "Private check-in: Jory - follow-up - meeting note",
+      "path": "office-2026-328-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-04T13:48:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "jory.wellard@keplerops.com"
+      ],
+      "text": "Private check-in: Jory - follow-up\n2026-09-04 13:00-13:30\nPresent: Leah Calder-Voss, Jory Wellard.\n\nThe employee reported: The comparison made one apparently simple change look less attractive.\nAgreed follow-up: Keep no change as a possible answer and ask the affected owner before assigning work.\n"
+    },
+    {
+      "name": "office-2026-329-note",
+      "title": "Private check-in: Kaisa - July - meeting note",
+      "path": "office-2026-329-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T14:33:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "kaisa.fennard@keplerops.com"
+      ],
+      "text": "Private check-in: Kaisa - July\n2026-07-10 13:45-14:15\nPresent: Jory Wellard, Kaisa Fennard.\n\nWe discussed the employee's example. Agreed next step: State the repeated work and who maintains the result first.\n"
+    },
+    {
+      "name": "office-2026-330-note",
+      "title": "Private check-in: Kaisa - follow-up - meeting note",
+      "path": "office-2026-330-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T15:18:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "kaisa.fennard@keplerops.com"
+      ],
+      "text": "Private check-in: Kaisa - follow-up\n2026-09-07 14:30-15:00\nPresent: Jory Wellard, Kaisa Fennard.\n\nThe employee reported: The example was clearer before we chose a solution.\nAgreed follow-up: Keep the problem and continuing owner in the next planning request.\n"
+    },
+    {
+      "name": "office-2026-331-note",
+      "title": "Private check-in: Kiran - July - meeting note",
+      "path": "office-2026-331-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T16:03:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "kiran.orvel@keplerops.com"
+      ],
+      "text": "Private check-in: Kiran - July\n2026-07-13 15:15-15:45\nPresent: Jory Wellard, Kiran Orvel.\n\nWe discussed the employee's example. Agreed next step: Record a request with a proposed date until the colleague accepts it.\n"
+    },
+    {
+      "name": "office-2026-332-note",
+      "title": "Private check-in: Kiran - follow-up - meeting note",
+      "path": "office-2026-332-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T16:48:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "kiran.orvel@keplerops.com"
+      ],
+      "text": "Private check-in: Kiran - follow-up\n2026-09-07 16:00-16:30\nPresent: Jory Wellard, Kiran Orvel.\n\nThe employee reported: The recipient could answer without discovering an already assigned promise.\nAgreed follow-up: Keep the proposed date visible and distinct from an agreed deadline.\n"
+    },
+    {
+      "name": "office-2026-333-note",
+      "title": "Private check-in: Lara - July - meeting note",
+      "path": "office-2026-333-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T09:48:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "lara.velswick@keplerops.com"
+      ],
+      "text": "Private check-in: Lara - July\n2026-07-13 09:00-09:30\nPresent: Jory Wellard, Lara Velswick.\n\nWe discussed the employee's example. Agreed next step: Ask which first step the reader could take unaided.\n"
+    },
+    {
+      "name": "office-2026-334-note",
+      "title": "Private check-in: Lara - follow-up - meeting note",
+      "path": "office-2026-334-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T10:33:00-04:00",
+      "readers": [
+        "jory.wellard@keplerops.com",
+        "lara.velswick@keplerops.com"
+      ],
+      "text": "Private check-in: Lara - follow-up\n2026-09-07 09:45-10:15\nPresent: Jory Wellard, Lara Velswick.\n\nThe employee reported: The observed step gave the author a concrete correction.\nAgreed follow-up: Keep the observation about the document rather than an assessment of the colleague.\n"
+    },
+    {
+      "name": "office-2026-335-note",
+      "title": "Private check-in: Leila - July - meeting note",
+      "path": "office-2026-335-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T11:18:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "leila.ferrell@keplerops.com"
+      ],
+      "text": "Private check-in: Leila - July\n2026-07-13 10:30-11:00\nPresent: Lara Velswick, Leila Ferrell.\n\nWe discussed the employee's example. Agreed next step: Put labels, units and the relevant comparison in the table and caption.\n"
+    },
+    {
+      "name": "office-2026-336-note",
+      "title": "Private check-in: Leila - follow-up - meeting note",
+      "path": "office-2026-336-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-08T12:03:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "leila.ferrell@keplerops.com"
+      ],
+      "text": "Private check-in: Leila - follow-up\n2026-09-08 11:15-11:45\nPresent: Lara Velswick, Leila Ferrell.\n\nThe employee reported: The next reader did not need the spoken introduction to understand the comparison.\nAgreed follow-up: Retain the labels when reusing the layout.\n"
+    },
+    {
+      "name": "office-2026-337-note",
+      "title": "Private check-in: Lena - July - meeting note",
+      "path": "office-2026-337-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T13:48:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "lena.parnell@keplerops.com"
+      ],
+      "text": "Private check-in: Lena - July\n2026-07-14 13:00-13:30\nPresent: Lara Velswick, Lena Parnell.\n\nWe discussed the employee's example. Agreed next step: Record the first attempted step and where the reader hesitated.\n"
+    },
+    {
+      "name": "office-2026-338-note",
+      "title": "Private check-in: Lena - follow-up - meeting note",
+      "path": "office-2026-338-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T14:33:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "lena.parnell@keplerops.com"
+      ],
+      "text": "Private check-in: Lena - follow-up\n2026-09-09 13:45-14:15\nPresent: Lara Velswick, Lena Parnell.\n\nThe employee reported: The author could fix the specific obstacle without rewriting the page.\nAgreed follow-up: Keep the concrete observation and leave broader certification out of it.\n"
+    },
+    {
+      "name": "office-2026-339-note",
+      "title": "Private check-in: Leo - July - meeting note",
+      "path": "office-2026-339-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T15:18:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "leo.yervan@keplerops.com"
+      ],
+      "text": "Private check-in: Leo - July\n2026-07-15 14:30-15:00\nPresent: Lara Velswick, Leo Yervan.\n\nWe discussed the employee's example. Agreed next step: Keep the three questions that found a problem in one internal example.\n"
+    },
+    {
+      "name": "office-2026-340-note",
+      "title": "Private check-in: Leo - follow-up - meeting note",
+      "path": "office-2026-340-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-10T16:03:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "leo.yervan@keplerops.com"
+      ],
+      "text": "Private check-in: Leo - follow-up\n2026-09-10 15:15-15:45\nPresent: Lara Velswick, Leo Yervan.\n\nThe employee reported: The shorter review was easier to repeat and still found the missing action.\nAgreed follow-up: Use the bounded questions again and add one only when the example needs it.\n"
+    },
+    {
+      "name": "office-2026-341-note",
+      "title": "Private check-in: Lila - July - meeting note",
+      "path": "office-2026-341-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-16T12:03:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "lila.garsen@keplerops.com"
+      ],
+      "text": "Private check-in: Lila - July\n2026-07-16 11:15-11:45\nPresent: Lara Velswick, Lila Garsen.\n\nWe discussed the employee's example. Agreed next step: Keep the condition beside the action in the practice paragraph.\n"
+    },
+    {
+      "name": "office-2026-342-note",
+      "title": "Private check-in: Lila - follow-up - meeting note",
+      "path": "office-2026-342-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-17T09:48:00-04:00",
+      "readers": [
+        "lara.velswick@keplerops.com",
+        "lila.garsen@keplerops.com"
+      ],
+      "text": "Private check-in: Lila - follow-up\n2026-08-17 09:00-09:30\nPresent: Lara Velswick, Lila Garsen.\n\nThe employee reported: The reader could see both the request and its limit at once.\nAgreed follow-up: Retain that pairing when the wording is reused.\n"
+    },
+    {
+      "name": "office-2026-343-note",
+      "title": "Private check-in: Lina - July - meeting note",
+      "path": "office-2026-343-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-17T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "lina.peveran@keplerops.com"
+      ],
+      "text": "Private check-in: Lina - July\n2026-07-17 09:45-10:15\nPresent: Leah Calder-Voss, Lina Peveran.\n\nWe discussed the employee's example. Agreed next step: Keep the customer's question and the accepted commitment in separate lines.\n"
+    },
+    {
+      "name": "office-2026-344-note",
+      "title": "Private check-in: Lina - follow-up - meeting note",
+      "path": "office-2026-344-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T11:18:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "lina.peveran@keplerops.com"
+      ],
+      "text": "Private check-in: Lina - follow-up\n2026-08-18 10:30-11:00\nPresent: Leah Calder-Voss, Lina Peveran.\n\nThe employee reported: The receiver did not mistake a request for information for a sale.\nAgreed follow-up: Keep the real commercial reference as authority when leaving the exercise.\n"
+    },
+    {
+      "name": "office-2026-345-note",
+      "title": "Private check-in: Louis - July - meeting note",
+      "path": "office-2026-345-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T12:03:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "louis.zorrel@keplerops.com"
+      ],
+      "text": "Private check-in: Louis - July\n2026-07-20 11:15-11:45\nPresent: Lina Peveran, Louis Zorrel.\n\nWe discussed the employee's example. Agreed next step: Label illustrative dates beside the practice wording.\n"
+    },
+    {
+      "name": "office-2026-346-note",
+      "title": "Private check-in: Louis - follow-up - meeting note",
+      "path": "office-2026-346-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T10:33:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "louis.zorrel@keplerops.com"
+      ],
+      "text": "Private check-in: Louis - follow-up\n2026-08-19 09:45-10:15\nPresent: Lina Peveran, Louis Zorrel.\n\nThe employee reported: The reader could use the structure while returning to the actual accepted date.\nAgreed follow-up: Keep the reminder adjacent to the sample, not in an appendix.\n"
+    },
+    {
+      "name": "office-2026-347-note",
+      "title": "Private check-in: Luca - July - meeting note",
+      "path": "office-2026-347-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T14:33:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "luca.gervain@keplerops.com"
+      ],
+      "text": "Private check-in: Luca - July\n2026-07-20 13:45-14:15\nPresent: Lina Peveran, Luca Gervain.\n\nWe discussed the employee's example. Agreed next step: Leave the question visible with its owner and keep the settled part usable.\n"
+    },
+    {
+      "name": "office-2026-348-note",
+      "title": "Private check-in: Luca - follow-up - meeting note",
+      "path": "office-2026-348-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T15:18:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "luca.gervain@keplerops.com"
+      ],
+      "text": "Private check-in: Luca - follow-up\n2026-08-21 14:30-15:00\nPresent: Lina Peveran, Luca Gervain.\n\nThe employee reported: The receiver could continue with the settled action without losing the open point.\nAgreed follow-up: Keep both states visible rather than choosing an inaccurate single label.\n"
+    },
+    {
+      "name": "office-2026-349-note",
+      "title": "Private check-in: Mara - July - meeting note",
+      "path": "office-2026-349-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-20T16:03:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "mara.quillan@keplerops.com"
+      ],
+      "text": "Private check-in: Mara - July\n2026-07-20 15:15-15:45\nPresent: Lina Peveran, Mara Quillan.\n\nWe discussed the employee's example. Agreed next step: List the original author and current contact separately.\n"
+    },
+    {
+      "name": "office-2026-350-note",
+      "title": "Private check-in: Mara - follow-up - meeting note",
+      "path": "office-2026-350-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T16:48:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "mara.quillan@keplerops.com"
+      ],
+      "text": "Private check-in: Mara - follow-up\n2026-08-21 16:00-16:30\nPresent: Lina Peveran, Mara Quillan.\n\nThe employee reported: The next colleague found the contact without losing the history.\nAgreed follow-up: Retain both lines when the working example changes again.\n"
+    },
+    {
+      "name": "office-2026-351-note",
+      "title": "Private check-in: Margot - July - meeting note",
+      "path": "office-2026-351-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T09:48:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "margot.aldren@keplerops.com"
+      ],
+      "text": "Private check-in: Margot - July\n2026-07-21 09:00-09:30\nPresent: Lina Peveran, Margot Aldren.\n\nWe discussed the employee's example. Agreed next step: Write two short introductions for the same practice background.\n"
+    },
+    {
+      "name": "office-2026-352-note",
+      "title": "Private check-in: Margot - follow-up - meeting note",
+      "path": "office-2026-352-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T10:33:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "margot.aldren@keplerops.com"
+      ],
+      "text": "Private check-in: Margot - follow-up\n2026-08-24 09:45-10:15\nPresent: Lina Peveran, Margot Aldren.\n\nThe employee reported: Each reader could find the relevant request sooner.\nAgreed follow-up: Choose the introduction for the actual reader and check the facts again.\n"
+    },
+    {
+      "name": "office-2026-353-note",
+      "title": "Private check-in: Martin - July - meeting note",
+      "path": "office-2026-353-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-22T11:18:00-04:00",
+      "readers": [
+        "margot.aldren@keplerops.com",
+        "martin.harlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Martin - July\n2026-07-22 10:30-11:00\nPresent: Margot Aldren, Martin Harlowe.\n\nWe discussed the employee's example. Agreed next step: Put the condition back beside the claim.\n"
+    },
+    {
+      "name": "office-2026-354-note",
+      "title": "Private check-in: Martin - follow-up - meeting note",
+      "path": "office-2026-354-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T12:03:00-04:00",
+      "readers": [
+        "margot.aldren@keplerops.com",
+        "martin.harlowe@keplerops.com"
+      ],
+      "text": "Private check-in: Martin - follow-up\n2026-08-24 11:15-11:45\nPresent: Margot Aldren, Martin Harlowe.\n\nThe employee reported: The choice became more honest without needing a longer paragraph.\nAgreed follow-up: Keep the condition visible during later editing.\n"
+    },
+    {
+      "name": "office-2026-355-note",
+      "title": "Private check-in: Mica - July - meeting note",
+      "path": "office-2026-355-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-24T13:48:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "mica.radvell@keplerops.com"
+      ],
+      "text": "Private check-in: Mica - July\n2026-07-24 13:00-13:30\nPresent: Leah Calder-Voss, Mica Radvell.\n\nWe discussed the employee's example. Agreed next step: Agree the routine, return point and retained exception explicitly.\n"
+    },
+    {
+      "name": "office-2026-356-note",
+      "title": "Private check-in: Mica - follow-up - meeting note",
+      "path": "office-2026-356-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-24T14:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "mica.radvell@keplerops.com"
+      ],
+      "text": "Private check-in: Mica - follow-up\n2026-08-24 13:45-14:15\nPresent: Leah Calder-Voss, Mica Radvell.\n\nThe employee reported: The smaller agreement was easier to complete than transferring everything at once.\nAgreed follow-up: Keep the review point and ask before enlarging the assignment.\n"
+    },
+    {
+      "name": "office-2026-357-note",
+      "title": "Private check-in: Mira - July - meeting note",
+      "path": "office-2026-357-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-24T15:18:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private check-in: Mira - July\n2026-07-24 14:30-15:00\nPresent: Leah Calder-Voss, Mira Belsart.\n\nWe discussed the employee's example. Agreed next step: Name the People routine I own and return financial records to their current owner.\n"
+    },
+    {
+      "name": "office-2026-358-note",
+      "title": "Private check-in: Mira - follow-up - meeting note",
+      "path": "office-2026-358-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T16:03:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private check-in: Mira - follow-up\n2026-08-25 15:15-15:45\nPresent: Leah Calder-Voss, Mira Belsart.\n\nThe employee reported: The clarified contact reduced the wrong referrals without rewriting earlier authorship.\nAgreed follow-up: Keep the current directory and dated history distinct.\n"
+    },
+    {
+      "name": "office-2026-359-note",
+      "title": "Private check-in: Morgan - July - meeting note",
+      "path": "office-2026-359-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-27T16:48:00-04:00",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "morgan.havelin@keplerops.com"
+      ],
+      "text": "Private check-in: Morgan - July\n2026-07-27 16:00-16:30\nPresent: Mira Belsart, Morgan Havelin.\n\nWe discussed the employee's example. Agreed next step: Send a participant note and retain the order reference in the intended administration record.\n"
+    },
+    {
+      "name": "office-2026-360-note",
+      "title": "Private check-in: Morgan - follow-up - meeting note",
+      "path": "office-2026-360-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-26T12:03:00-04:00",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "morgan.havelin@keplerops.com"
+      ],
+      "text": "Private check-in: Morgan - follow-up\n2026-08-26 11:15-11:45\nPresent: Mira Belsart, Morgan Havelin.\n\nThe employee reported: The participants got the joining information without receiving the invoice conversation.\nAgreed follow-up: Keep the audiences separate and check substitutions before another purchase.\n"
+    },
+    {
+      "name": "office-2026-361-note",
+      "title": "Private check-in: Nella - July - meeting note",
+      "path": "office-2026-361-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-06T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "nella.renshaw@keplerops.com"
+      ],
+      "text": "Private check-in: Nella - July\n2026-07-06 09:45-10:15\nPresent: Leah Calder-Voss, Nella Renshaw.\n\nWe discussed the employee's example. Agreed next step: State the current contact for each routine and keep the earlier record's author.\n"
+    },
+    {
+      "name": "office-2026-362-note",
+      "title": "Private check-in: Nella - follow-up - meeting note",
+      "path": "office-2026-362-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-27T10:33:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "nella.renshaw@keplerops.com"
+      ],
+      "text": "Private check-in: Nella - follow-up\n2026-08-27 09:45-10:15\nPresent: Leah Calder-Voss, Nella Renshaw.\n\nThe employee reported: The current pointer helped the next request reach the right owner.\nAgreed follow-up: Keep correcting the pointer rather than rewriting historical records.\n"
+    },
+    {
+      "name": "office-2026-363-note",
+      "title": "Private check-in: Niamh - July - meeting note",
+      "path": "office-2026-363-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T12:03:00-04:00",
+      "readers": [
+        "nella.renshaw@keplerops.com",
+        "niamh.bravelle@keplerops.com"
+      ],
+      "text": "Private check-in: Niamh - July\n2026-07-07 11:15-11:45\nPresent: Nella Renshaw, Niamh Bravelle.\n\nWe discussed the employee's example. Agreed next step: Ask privately for the claim and payment reference.\n"
+    },
+    {
+      "name": "office-2026-364-note",
+      "title": "Private check-in: Niamh - follow-up - meeting note",
+      "path": "office-2026-364-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-28T13:48:00-04:00",
+      "readers": [
+        "nella.renshaw@keplerops.com",
+        "niamh.bravelle@keplerops.com"
+      ],
+      "text": "Private check-in: Niamh - follow-up\n2026-08-28 13:00-13:30\nPresent: Nella Renshaw, Niamh Bravelle.\n\nThe employee reported: The private reference was enough to locate the payment question.\nAgreed follow-up: Keep personal receipts with the employee, manager and intended finance readers.\n"
+    },
+    {
+      "name": "office-2026-365-note",
+      "title": "Private check-in: Niko - July - meeting note",
+      "path": "office-2026-365-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T09:48:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "niko.rensart@keplerops.com"
+      ],
+      "text": "Private check-in: Niko - July\n2026-07-08 09:00-09:30\nPresent: Leah Calder-Voss, Niko Rensart.\n\nWe discussed the employee's example. Agreed next step: Replace the current paper pointer and keep a dated old copy for history.\n"
+    },
+    {
+      "name": "office-2026-366-note",
+      "title": "Private check-in: Niko - follow-up - meeting note",
+      "path": "office-2026-366-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-31T15:18:00-04:00",
+      "readers": [
+        "leah.calder-voss@keplerops.com",
+        "niko.rensart@keplerops.com"
+      ],
+      "text": "Private check-in: Niko - follow-up\n2026-08-31 14:30-15:00\nPresent: Leah Calder-Voss, Niko Rensart.\n\nThe employee reported: The new direction helped; another handout still needs a correction from its owner.\nAgreed follow-up: Keep a list of specific pointers and ask their owners to update current copies.\n"
+    },
+    {
+      "name": "office-people-01",
+      "title": "Finding the current guide - private arrangement",
+      "path": "office-people-01.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T09:55:00-04:00",
+      "readers": [
+        "amara.radvell@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Amara Radvell\nManager: Adele Aldren\n\nWorking copy points to the current rooms page. Morgan will return the specific correction to the handout owner.\n\nReaders: Amara Radvell, Adele Aldren, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-02",
+      "title": "Time for one teaching exercise - private arrangement",
+      "path": "office-people-02.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T09:55:00-04:00",
+      "readers": [
+        "avery.renshaw@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Avery Renshaw\nManager: Adele Aldren\n\nA bounded internal exercise is agreed with the manager. It does not create a paid course request or a permanent teaching duty.\n\nReaders: Avery Renshaw, Adele Aldren, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-03",
+      "title": "A remote participation note - private arrangement",
+      "path": "office-people-03.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T09:55:00-04:00",
+      "readers": [
+        "dana.selwyn@keplerops.com",
+        "cian.cavelin@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Dana Selwyn\nManager: Cian Cavelin\n\nThe employee remains remote. The team invitation may include the example, remote option and sound check; private check-in text stays with its intended readers.\n\nReaders: Dana Selwyn, Cian Cavelin, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-04",
+      "title": "Current contact after the June move - private arrangement",
+      "path": "office-people-04.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-21T09:55:00-04:00",
+      "readers": [
+        "beatrice.bravelle@keplerops.com",
+        "adele.aldren@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Beatrice Bravelle\nManager: Adele Aldren\n\nCurrent contact and original authorship remain separate. The roster and effective June move are unchanged.\n\nReaders: Beatrice Bravelle, Adele Aldren, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-05",
+      "title": "The follow-up to internal learning - private arrangement",
+      "path": "office-people-05.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-28T09:55:00-04:00",
+      "readers": [
+        "celia.sarnell@keplerops.com",
+        "beatrice.bravelle@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Celia Sarnell\nManager: Beatrice Bravelle\n\nThe follow-up is the employee's own revised example and a short reflection. Existing travel evidence is not duplicated.\n\nReaders: Celia Sarnell, Beatrice Bravelle, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-06",
+      "title": "Sharing an example, keeping the customer file private - private arrangement",
+      "path": "office-people-06.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T09:55:00-04:00",
+      "readers": [
+        "eira.lestrel@keplerops.com",
+        "dev.senvard@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Eira Lestrel\nManager: Dev Senvard\n\nThe internal exercise uses invented material and its own participant audience. No customer permission or acceptance is inferred.\n\nReaders: Eira Lestrel, Dev Senvard, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-07",
+      "title": "A development note without an appointment - private arrangement",
+      "path": "office-people-07.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-11T09:55:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Maya Ranscombe\nManager: Elin Danwick\n\nLeadership interest remains exploratory. Any mentoring opportunity is bounded and consensual; no promotion, vacancy or pay change is recorded.\n\nReaders: Maya Ranscombe, Elin Danwick, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-08",
+      "title": "Focused feedback as a development step - private arrangement",
+      "path": "office-people-08.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T09:55:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com",
+        "elin.danwick@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Talia Mornac\nManager: Elin Danwick\n\nTalia retains the development aim of leading her own workshop preparation. Formal role and customer commitments remain unchanged.\n\nReaders: Talia Mornac, Elin Danwick, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-09",
+      "title": "Office questions after the first month - private arrangement",
+      "path": "office-people-09.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-25T09:55:00-04:00",
+      "readers": [
+        "niko.rensart@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Niko Rensart\nManager: Leah Calder-Voss\n\nNiko owns the current office plan and returns corrections in other documents to their owners. No wider document ownership is assigned.\n\nReaders: Niko Rensart, Leah Calder-Voss, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-10",
+      "title": "An observer is not the action owner - private arrangement",
+      "path": "office-people-10.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T09:55:00-04:00",
+      "readers": [
+        "kiran.orvel@keplerops.com",
+        "jory.wellard@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Kiran Orvel\nManager: Jory Wellard\n\nThe observation remains a learning opportunity. The follow-up is a request pending the employee's separate agreement, not an assigned responsibility.\n\nReaders: Kiran Orvel, Jory Wellard, Mira Belsart.\n"
+    },
+    {
+      "name": "office-people-11",
+      "title": "Keeping the June handover clear - private arrangement",
+      "path": "office-people-11.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-08T09:55:00-04:00",
+      "readers": [
+        "mira.belsart@keplerops.com",
+        "leah.calder-voss@keplerops.com",
+        "morgan.havelin@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Mira Belsart\nManager: Leah Calder-Voss\n\nThe handover preserves historical authorship and directs current finance questions to Nella. The accepted roster and June move remain unchanged.\n\nReaders: Mira Belsart, Leah Calder-Voss, Morgan Havelin.\n"
+    },
+    {
+      "name": "office-people-12",
+      "title": "An experiment that only partly helped - private arrangement",
+      "path": "office-people-12.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-11T09:55:00-04:00",
+      "readers": [
+        "leo.yervan@keplerops.com",
+        "lara.velswick@keplerops.com",
+        "mira.belsart@keplerops.com"
+      ],
+      "text": "Private arrangement\n\nEmployee: Leo Yervan\nManager: Lara Velswick\n\nThe experiment had a partial result. The employee and manager will try the specific action correction; no new purchase or role change is recorded.\n\nReaders: Leo Yervan, Lara Velswick, Mira Belsart.\n"
+    },
+    {
       "name": "k-personnel-register",
       "title": "Current personnel and assignment register",
       "path": "k-personnel-register.csv",

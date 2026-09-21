@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 24,660 distinct authored messages, 5,171 source documents,
-staff directories for all 294 employees, and 180 calendar items. The
+The collection contains 26,390 distinct authored messages, 6,556 source documents,
+staff directories for all 294 employees, and 638 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -31,6 +31,12 @@ Finance adds 1,133 messages and 562 document items for 84 supplier purchases,
 [review record](../../docs/narrative/finance-review.md) documents the added licence
 authority, reconciled accounts, restricted payroll records, and volume adjustment.
 The finished binary bundle contains 281 PDFs and two XLSX workbooks.
+Office life adds 1,730 messages, 1,385 document items and 458 calendar occurrences.
+It includes 92 HTML publications with 21 comments, 18 reference pages, private
+check-ins, learning arrangements, selective notes and everyday conversations.
+Its [review record](../../docs/narrative/office-life-review.md) documents the
+smaller message allocation, attendance evidence, room and cover checks, and
+preservation of all accepted records.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -53,12 +59,13 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/release-platform.yaml` | Author-only release acceptance joins, operating states, recovery samples, logical service owners, and counts. |
 | `authoring/customer-followup.yaml` | Current case dispositions over the original intake history, child-case parents, knowledge revisions, correction/release/delivery joins, and workshop preparations. |
 | `authoring/finance.yaml` | Invoice authority, supplier and claim evidence, cash allocations, balanced journal, payroll controls, and workbook formula inventory. |
+| `authoring/office-life.yaml` | Author-only publication, consent, attendance, response, cover, learning and room-booking joins. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
 | `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
-| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating, commercial, and induction calendars are complete items in the document source package. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating, commercial, office and induction calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |
@@ -141,6 +148,15 @@ Both representations have the same exact readers. The source archive
 `documents/finance-records.zip` contains the finished review files, individually
 extractable with ordinary ZIP tools; it is not bound as a separate document.
 No PDF or spreadsheet generation dependency is needed to render these bytes.
+
+Office publications use `text/html`, with visible author and publication time
+and dated comments inside the actual page. Drafts and private records retain
+separate readers. The shared room CSV shows only room, time and `Reserved`.
+Office invitations, replies and cancellations are RFC 5545 attachments with
+RFC 5546 methods; the current calendar objects retain location, `PARTSTAT`,
+revision sequence and last-update time. A cancelled occurrence retains its UID;
+a replacement has its own UID. An invitation response does not establish actual
+attendance, which is recorded separately in a completed meeting's note or mail.
 
 These data formats are defined by this pack; RAE supplies their source, owner,
 materialization, observation, and compilation semantics.
