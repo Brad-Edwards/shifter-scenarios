@@ -3,7 +3,7 @@
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
-accounts, field operations, maintenance/engineering, and laboratory/quality
+accounts, field operations, maintenance/engineering, laboratory/quality, and purchasing/stores
 added on 21 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
@@ -61,6 +61,8 @@ and unfinished plans of their own.
 | [Maintenance and engineering voices](maintenance-engineering-voices.md) | Profiles and finished samples for recurring planners, engineers and contractors. |
 | [Laboratory and quality review](laboratory-quality-review.md) | Sample-chain, report, workbook, training, service and validation evidence. |
 | [Laboratory and quality voices](laboratory-quality-voices.md) | Writing guidance and finished samples for laboratory, quality and reporting colleagues. |
+| [Purchasing and stores review](purchasing-stores-review.md) | Requisition-to-payment histories, maintenance and stock joins, supplier PDFs, allocations, counts, and validation evidence. |
+| [Purchasing and stores voices](purchasing-stores-voices.md) | Procurement, accounts, and supplier writing guidance with finished samples. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -144,6 +146,14 @@ The laboratory and quality slice carries all sixty accepted sample handoffs into
 recollection decisions, issued summaries, formula-bearing workbooks, equipment
 service, training, and bounded internal quality improvements without presenting
 its fictional operating bands as law.
+The purchasing and stores slice carries 480 requirements through quotation,
+selection, approval, order, receipt, stock movement, invoice matching, payable,
+and settlement as applicable. It reuses all 24 accepted contractor packages,
+links 156 material histories to actual maintenance work, replenishes all sixty
+field stock movements, and retains twelve accepted Ternwick batches. Genuine
+supplier quotation and invoice PDFs, line-item registers, cost-centre
+allocations, ledger entries, and payment records remain ordinary reusable world
+content rather than scenario evidence.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

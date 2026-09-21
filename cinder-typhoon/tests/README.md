@@ -66,6 +66,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
 python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
 python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineering.py
 python -m unittest discover -s cinder-typhoon/tests -p test_laboratory_quality.py
+python -m unittest discover -s cinder-typhoon/tests -p test_purchasing_stores.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -85,6 +86,12 @@ review/report histories, all sixty accepted field handoffs, fictional internal
 bands and units, repeat and recollection dispositions, nine real Office
 workbooks and their formula caches, issued reports, equipment service, training,
 quality-review calendars, exact readers, and photography continuity.
+
+Purchasing and stores checks reconcile 480 requisition-to-payment histories,
+all 180 maintenance joins, all sixty field-stock replenishments, twelve Ternwick
+batches, district and shared allocations, invoice and payment ledger totals,
+thirteen CSV registers, 885 strictly parsed supplier PDFs, thread separation,
+exact attachments, reader boundaries, and visible provenance leakage.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted

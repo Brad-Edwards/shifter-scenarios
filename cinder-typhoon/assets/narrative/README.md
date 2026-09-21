@@ -3,7 +3,7 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 28,796 distinct authored messages, 9,520 source documents,
+The collection contains 31,121 distinct authored messages, 14,438 source documents,
 staff directories for all 294 employees, and 840 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
@@ -71,6 +71,15 @@ completed CSV registers, equipment service, training and routine quality reviews
 remain inside the existing ARWC collections. Its
 [review record](../../docs/narrative/laboratory-quality-review.md) documents the
 fictional internal specification, message adjustment, chronology and readers.
+ARWC purchasing and stores adds 2,325 messages and 4,918 document items across
+480 requisition-to-payment histories. The delivered archive contains thirteen
+completed CSV registers, 456 genuine quotation PDFs and 429 genuine invoice
+PDFs. One hundred eighty histories join accepted maintenance work, all sixty
+field stock movements lead to replenishment histories, and twelve Ternwick
+batches retain accepted page counts and payment. Its
+[review record](../../docs/narrative/purchasing-stores-review.md) documents
+district allocation, lifecycle states, supplier variation, message adjustment,
+and invoice/payment reconciliation.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -99,6 +108,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/maintenance-engineering-records.zip` | Eleven completed CSV registers and twelve actual SVG drawing revisions. |
 | `authoring/laboratory-quality.yaml` | Author-only sample-chain, specification, report, equipment, training, quality-review and count joins. |
 | `documents/laboratory-quality-records.zip` | Nine completed CSV registers and nine actual XLSX monthly workbooks. |
+| `authoring/purchasing-stores.yaml` | Author-only requisition, quotation, approval, order, receipt, stock, invoice, match, payment, allocation and upstream joins. |
+| `documents/purchasing-stores-records.zip` | Thirteen completed CSV registers and 885 genuine supplier PDFs. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
