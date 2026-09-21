@@ -34,6 +34,7 @@ def launch_command(config: dict, arguments: list[str], environment: dict[str, st
             "CLAUDE_CODE_API_KEY_HELPER_TTL_MS": "1000",
             "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1",
             "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+            "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
             "CLAUDE_CODE_EFFORT_LEVEL": "unset",
             "DISABLE_INTERLEAVED_THINKING": "1",
             "DISABLE_PROMPT_CACHING": "1",
