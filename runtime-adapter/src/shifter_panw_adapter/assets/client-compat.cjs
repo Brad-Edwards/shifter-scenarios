@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('node:fs');
+
 // Compatibility for the pinned private client, not a general-purpose proxy.
 // Model authority, request validation and billing remain in Shifter's broker.
 const METHODS = new Set(['/v1/messages', '/v1/messages/count_tokens']);
@@ -65,6 +67,28 @@ const transport = globalThis.fetch.bind(globalThis);
 globalThis.fetch = async (input, init) => {
   const base = new URL(process.env.ANTHROPIC_BASE_URL);
   if (base.pathname !== '/' || base.search || base.hash || base.username || base.password) unavailable();
-  return transport(await normalize(input, init, base.origin));
+  let request;
+  try {
+    request = await normalize(input, init, base.origin);
+  } catch (error) {
+    fs.writeFileSync('/tmp/polaris-model-client-status', 'request-normalization-failed\n');
+    throw error;
+  }
+  try {
+    const response = await transport(request);
+    let marker = `broker-response-${response.status}`;
+    if (!response.ok) {
+      try {
+        const payload = await response.clone().json();
+        const code = payload?.error?.message;
+        if (typeof code === 'string' && /^[a-z][a-z0-9_.-]{0,63}$/.test(code)) marker += `-${code}`;
+      } catch {}
+    }
+    fs.writeFileSync('/tmp/polaris-model-client-status', marker + '\n');
+    return response;
+  } catch (error) {
+    fs.writeFileSync('/tmp/polaris-model-client-status', 'broker-transport-failed\n');
+    throw error;
+  }
 };
 module.exports = { normalize };

@@ -59,6 +59,7 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
             "directory-firewall-ready",
             "bootstrap-ready",
             "model-client-ready",
+            "model-client-result",
         ]
         assert plan.actions[0].binding == "directory"
         assert "Get-NetFirewallProfile" in plan.actions[0].script

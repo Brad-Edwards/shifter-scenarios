@@ -43,9 +43,24 @@ _DIRECTORY_FIREWALL = (
 _VERIFY_CLIENT = """#!/bin/bash
 set -euo pipefail
 # Exercise the same launcher, helper, TLS, broker and model as participants.
+docker exec --user kali a14-kali rm -f /tmp/polaris-model-client-status
+set +e
 timeout 90 docker exec --user kali --workdir /home/kali a14-kali \\
   /usr/local/bin/claude -p 'Reply with OK.' --tools '' --max-turns 1 \\
   --no-session-persistence >/dev/null 2>&1
+client_status=$?
+set -e
+if test "$client_status" -eq 0; then
+  docker exec --user kali a14-kali sh -c "printf 'model-client-ready\\n' > /tmp/polaris-model-client-status"
+elif ! docker exec --user kali a14-kali test -f /tmp/polaris-model-client-status; then
+  docker exec --user kali a14-kali sh -c "printf 'client-exited-before-request\\n' > /tmp/polaris-model-client-status"
+fi
+docker exec --user kali a14-kali cat /tmp/polaris-model-client-status
+"""
+_CHECK_CLIENT = """#!/bin/bash
+set -euo pipefail
+docker exec --user kali a14-kali grep -qx model-client-ready /tmp/polaris-model-client-status
+docker exec --user kali a14-kali rm -f /tmp/polaris-model-client-status
 """
 _CLEANUP = """#!/bin/bash
 set -euo pipefail
@@ -69,7 +84,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.2",
+        version="0.1.3",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -162,6 +177,7 @@ class PolarisAdapter:
             scripts = [
                 ("bootstrap-ready", VERIFY_POLARIS_BOOTSTRAP_COMMON, 120),
                 ("model-client-ready", _VERIFY_CLIENT, 100),
+                ("model-client-result", _CHECK_CLIENT, 10),
             ]
         elif request.phase == "cleanup":
             scripts = [("private-runtime-cleanup", _CLEANUP, 60)]
