@@ -99,7 +99,7 @@ do not increase the logical-message count.
 
 ## Finished-content adversarial review
 
-- The first workbook publication rule used the 28th for every month, which could
+- The first workbook publication rule used calendar day 28 for every month, which could
   precede late-month samples. Finished workbooks take the last included collection
   time and publish afterward; validation compares their month rows and formulas.
 - Two draft colleague notes crossed the September 16 snapshot. They were moved
