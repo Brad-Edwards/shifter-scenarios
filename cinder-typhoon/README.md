@@ -47,7 +47,7 @@ For SDL validation, follow [tests/README.md](tests/README.md). The checker reads
 the graph back from composed SDL and replays it against the existing design
 contracts. The design ledgers remain independent authoring expectations.
 The [workplace collection](assets/narrative/README.md) includes 28,046 messages,
-8,541 source documents, directories for 294 employees, additional fictional
+8,543 source documents, directories for 294 employees, additional fictional
 business and retail correspondents, and 782 calendar occurrences.
 Eight native SDL content declarations bind the source artifacts to existing
 workplace systems.

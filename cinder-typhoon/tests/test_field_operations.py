@@ -50,6 +50,12 @@ class FieldOperationsIntegrity(unittest.TestCase):
         self.reject('dispatch-P', 0, {'complete': '8'}, 'dispatch reconciliation')
         self.reject('appointments-P', 0, {'serial': 'AW-UNKNOWN'}, 'appointment field extract')
 
+    def test_filter_run_history(self):
+        self.reject('operating-P', 0, {'run_hours': '0.00'}, 'filter run arithmetic')
+        washed = next(i for i, r in enumerate(self.tables['operating-P']) if r['wash_started_at'])
+        self.reject('operating-P', washed, {'returned_to_duty_at': '2026-09-16T10:00:00-04:00'},
+                    'filter wash chronology')
+
     def test_reader_and_calendar_boundaries(self):
         a = ROOT/'authoring'
         mail = yaml.safe_load((a/'mail-field-operations.yaml').read_text())['messages']

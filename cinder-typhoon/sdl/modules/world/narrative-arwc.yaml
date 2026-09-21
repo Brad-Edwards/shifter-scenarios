@@ -7497,7 +7497,7 @@ content:
     format: cinder-document-library/v3
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-484172fa765b7af26075acb5764147fb0be92c5588be5c943f72a7f90a649628
+      version: sha256-cf70b53cc79a941e97ace1769a1e981afcc3030617c68c811aa9eeb1c067d51d
     description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
       authored readers and opening state.
     items:
@@ -9711,6 +9711,10 @@ content:
       display_name: 'Operations book: observations-P'
     - name: op-data-observations-r
       display_name: 'Operations book: observations-R'
+    - name: op-data-operating-p
+      display_name: 'Operations book: operating-P'
+    - name: op-data-operating-r
+      display_name: 'Operations book: operating-R'
     - name: op-data-resources
       display_name: 'Operations book: resources'
     - name: op-data-roster-field-coordination

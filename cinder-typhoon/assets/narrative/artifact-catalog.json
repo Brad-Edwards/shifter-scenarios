@@ -64,10 +64,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/arwc-documents",
-        "version": "sha256-484172fa765b7af26075acb5764147fb0be92c5588be5c943f72a7f90a649628"
+        "version": "sha256-cf70b53cc79a941e97ace1769a1e981afcc3030617c68c811aa9eeb1c067d51d"
       },
       "path": "assets/narrative/generated/packages/arwc-documents.json",
-      "sha256": "484172fa765b7af26075acb5764147fb0be92c5588be5c943f72a7f90a649628",
+      "sha256": "cf70b53cc79a941e97ace1769a1e981afcc3030617c68c811aa9eeb1c067d51d",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.documents",
       "target": "a-corporate.a-business",

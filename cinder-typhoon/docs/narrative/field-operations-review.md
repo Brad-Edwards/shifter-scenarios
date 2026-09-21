@@ -56,16 +56,17 @@ Final evidence is recorded below after checking the completed content.
 | --- | ---: | ---: |
 | Distinct logical messages | 196 | 28,046 |
 | Retained mailbox copies | 809 | 51,338 |
-| Source document items | 1,113 | 8,541 |
+| Source document items | 1,115 | 8,543 |
 | Calendar occurrences | 144 | 782 |
-| Native packaged items | 1,453 added | 38,003 |
+| Native packaged items | 1,455 added | 38,005 |
 | Native source collections | No new collection | Eight |
 | Primary work records | 936 | This slice |
-| Completed CSV tables / rows | 32 / 5,879 | This slice |
+| Completed CSV tables / rows | 34 / 6,387 | This slice |
 
 The 936 primary records are 252 plant handovers, 600 field visits, 60 dispatch
 returns and 24 supervised training records. Every primary record has a completed
-form or note as well as its structured entry. Supporting records include 2,867
+form or note as well as its structured entry. Supporting records include 504 filter-run observations (with 84 completed routine
+washes), 2,867
 individual duty entries, 504 timed round observations, 120 appointments, 960
 resource bookings, 60 sample handoffs, 60 stock movements and 24 maintenance
 requests. Site, asset, resource, crew and staff tables supply reference data.
@@ -74,7 +75,7 @@ they do not count as another 120 visits. Likewise, a form and its CSV row descri
 one business event, not two.
 
 The document count is 936 primary forms, 120 appointment cards, 24 maintenance
-request forms, one local reading guide and 32 CSV items. The 144 calendars are
+request forms, one local reading guide and 34 CSV items. The 144 calendars are
 120 appointment windows and 24 practice sessions. All are actual native calendar
 items; cards record the arrangement and visit forms record the later outcome.
 
@@ -108,7 +109,13 @@ milestone or its remaining departmental coverage is complete.
   sessions with Dev Havelin. Eira and Mira each have six practice records with
   distribution instructors. The private training forms reach only the learner,
   instructor and manager. Mina remains on treatment duties.
-- Two timed observations support each plant handover. Initial drafts listed only
+- An editorial pass found the initial plant books too focused on housekeeping.
+  The finished handovers also record two filter-train observations per turn, with
+  elapsed run hours, differential head in metres of water and 84 completed routine
+  wash/return sequences across both plants. Previous return times carry forward
+  exactly. These historical local observations are neither prescribed operating
+  limits nor laboratory results; they do not change reservoir state.
+- Two timed round observations support each plant handover. Initial drafts listed only
   newly raised requests; the finished forms also carry all earlier open requests
   from that plant's book, cut off at the handover time. They never import a later
   planner reply or a repair that has not happened.
@@ -147,7 +154,7 @@ milestone or its remaining departmental coverage is complete.
 The native owner remains `a-corporate.a-business`, on its existing workplace
 service. The mail collection carries exact RFC 5322 messages and attachments.
 The document library carries actual Markdown forms, native calendar text and
-32 gzip-encoded CSV items. Base64 decoding followed by gzip decoding yields the
+34 gzip-encoded CSV items. Base64 decoding followed by gzip decoding yields the
 finished CSV bytes and their declared SHA-256 digests. Search descriptions and
 materialized files have the same readers. No new parser or generator is shipped.
 
@@ -160,7 +167,7 @@ in the field extracts. The accepted retail register's readership is unchanged.
 
 All 36,550 accepted native items are compared as complete records, including
 content, readers and attachments; all earlier mailbox memberships are preserved.
-The corpus now contains 38,003 unique native items. Calendar entries are counted
+The corpus now contains 38,005 unique native items. Calendar entries are counted
 once in that total. The ordinary source release is
 `field-operations-2026-09-16/v1`, based on `aaa03ee`, retaining the accepted
 service-account version `d8c3d05`. The scenario overlay remains empty. Ownership,

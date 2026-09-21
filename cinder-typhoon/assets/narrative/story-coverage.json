@@ -510404,6 +510404,18 @@
       "path": "observations-R.csv",
       "employer": "arwc"
     },
+    "op-data-operating-p": {
+      "story": "field-operations",
+      "file": null,
+      "path": "operating-P.csv",
+      "employer": "arwc"
+    },
+    "op-data-operating-r": {
+      "story": "field-operations",
+      "file": null,
+      "path": "operating-R.csv",
+      "employer": "arwc"
+    },
     "op-data-resources": {
       "story": "field-operations",
       "file": null,

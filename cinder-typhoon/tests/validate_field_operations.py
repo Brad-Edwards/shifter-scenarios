@@ -1,6 +1,7 @@
 """Check finished operations records, temporal joins, resources and reader boundaries."""
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta
+from decimal import Decimal
 import csv
 import hashlib
 import io
@@ -50,7 +51,7 @@ def check_records(tables, workforce, service):
         require(len(rows(tables, prefix)) == count, 'primary record inventory')
     sites = {r['site_id']: r for r in tables['sites']}
     assets = {r['asset_id']: r for r in tables['assets']}
-    require(len(sites) == 8 and len(assets) == 44, 'site/asset inventory')
+    require(len(sites) == 8 and len(assets) == 48, 'site/asset inventory')
     require(all(a['site_id'] in sites for a in assets.values()), 'asset site')
     duties = defaultdict(list)
     for r in rows(tables, 'roster'):
@@ -92,6 +93,31 @@ def check_records(tables, workforce, service):
         require(coverage[0][0] == '2026-08-03T06:00:00-04:00' and
                 coverage[-1][1] == '2026-09-14T06:00:00-04:00' and
                 all(a[1] == b[0] for a, b in zip(coverage, coverage[1:])), 'plant continuity')
+    operating = rows(tables, 'operating')
+    require(len(operating) == 504 and sum(bool(r['wash_started_at']) for r in operating) == 84,
+            'filter operating inventory')
+    histories = defaultdict(list)
+    for r in operating:
+        sh = shifts[r['shift_id']]
+        require(assets[r['asset_id']]['site_id'] == sh['site_id'] and
+                r['recorded_by'] == sh['lead'] and sh['start'] <= r['observed_at'] <= sh['handover_at'],
+                'filter observation join')
+        elapsed = (datetime.fromisoformat(r['observed_at']) - datetime.fromisoformat(r['previous_return_at'])).total_seconds()
+        require(Decimal(r['run_hours']) == (Decimal(str(elapsed))/3600).quantize(Decimal('.01')) and
+                Decimal(r['run_hours']) >= 0 and Decimal(r['differential_head_m']) > 0,
+                'filter run arithmetic')
+        if r['wash_started_at']:
+            require(r['observed_at'] < r['wash_started_at'] < r['wash_finished_at'] <
+                    r['returned_to_duty_at'] <= sh['handover_at'], 'filter wash chronology')
+        else:
+            require(not r['wash_finished_at'] and not r['returned_to_duty_at'], 'filter wash chronology')
+        histories[r['asset_id']].append(r)
+    for history in histories.values():
+        history.sort(key=lambda r: r['observed_at'])
+        last = history[0]['previous_return_at']
+        for r in history:
+            require(r['previous_return_at'] == last, 'filter run continuity')
+            last = r['returned_to_duty_at'] or last
     visits = {r['visit_id']: r for r in rows(tables, 'visits')}
     work = defaultdict(list)
     meters = {r['meter_id']: r for r in service['meters']}
@@ -203,11 +229,11 @@ def check_field_operations(root, workforce, mail, docs, events):
     messages = {m['id']: m for m in mail if m.get('story') == 'field-operations'}
     calendars = {e['id']: e for e in events if e['id'].startswith('op-')}
     require(not set(documents).intersection(calendars), 'native item name collision')
-    require(len(documents) == manifest['document_count'] == 1113 and
+    require(len(documents) == manifest['document_count'] == 1115 and
             len(messages) == manifest['message_count'] == 196 and
             len(calendars) == manifest['calendar_count'] == 144, 'operations artifact inventory')
     require(sum(1 + len(m['to']) for m in messages.values()) == manifest['retained_copies'] == 809, 'operations retained copies')
-    require(len(tables) == len(manifest['tables']) == 32 and sum(map(len, tables.values())) == 5879, 'operations table inventory')
+    require(len(tables) == len(manifest['tables']) == 34 and sum(map(len, tables.values())) == 6387, 'operations table inventory')
     staff = {p['key']: p for p in workforce}
     with zipfile.ZipFile(root/'documents/field-operations-records.zip') as archive:
         for key, info in manifest['tables'].items():
@@ -241,6 +267,11 @@ def check_field_operations(root, workforce, mail, docs, events):
         d = documents[s['document']]
         require(s['end'] == d['published_at'] and s['handover_at'] in d['text'] and
                 all(ref in d['text'] for ref in filter(None, s['open_requests'].split(';'))), 'handover form readback')
+        readings = [r for r in rows(tables, 'operating') if r['shift_id'] == s['shift_id']]
+        require(len(readings) == 2 and all(r['asset_id'] in d['text'] and
+                r['run_hours'] in d['text'] and r['differential_head_m'] in d['text'] and
+                (not r['returned_to_duty_at'] or r['returned_to_duty_at'] in d['text'])
+                for r in readings), 'filter form readback')
     for r in tables['maintenance']:
         msg = messages['op-maint-'+r['request_id'].lower()]
         reply = messages[msg['id']+'-reply']

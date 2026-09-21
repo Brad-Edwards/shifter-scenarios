@@ -3,7 +3,7 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 28,046 distinct authored messages, 8,541 source documents,
+The collection contains 28,046 distinct authored messages, 8,543 source documents,
 staff directories for all 294 employees, and 782 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
@@ -44,10 +44,10 @@ points and 51,330 current or retired meters. Opening invoices reconcile to
 readings, tariffs, receipts and allocations. Its
 [review record](../../docs/narrative/service-accounts-review.md) explains the
 population model, customer privacy boundaries and message-volume adjustment.
-ARWC field operations adds 196 messages, 1,113 document items and 144 calendar
+ARWC field operations adds 196 messages, 1,115 document items and 144 calendar
 occurrences. Its six-week books cover all 94 operations employees through 936
 primary work records: 252 plant handovers, 600 field visits, 60 dispatch returns
-and 24 supervised training records. The 32 completed CSV tables retain 5,879
+and 24 supervised training records. The 34 completed CSV tables retain 6,387
 rows, including supporting rosters, observations, appointments, resource
 bookings, stock movements and sample handoffs. Its
 [review record](../../docs/narrative/field-operations-review.md) separates those

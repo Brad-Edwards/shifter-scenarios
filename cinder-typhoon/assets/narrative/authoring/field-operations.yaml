@@ -71,8 +71,8 @@ tables:
     primary_key: appointment_id
   assets:
     document: op-data-assets
-    rows: 44
-    sha256: 0e51ddb921730e7851b0b6aa5cd751e22011363d822fe7bc174b1c63792af749
+    rows: 48
+    sha256: 02432eefc01373f7913c89f679459089140cdc944ce67f3b3e78ab63f56c94cd
     readers:
     - awm001
     - awm002
@@ -536,6 +536,62 @@ tables:
     - awm041
     - theo
     primary_key: observation_id
+  operating-P:
+    document: op-data-operating-p
+    rows: 252
+    sha256: 6248a37f93d3b8ceeb18c5a15a0c054d35415e3b46bb02e46a5ff64f9aba50ed
+    readers:
+    - awm001
+    - awm002
+    - awm003
+    - awm004
+    - awm005
+    - awm006
+    - awm007
+    - awm008
+    - awm009
+    - awm010
+    - awm011
+    - awm012
+    - awm013
+    - awm014
+    - awm015
+    - awm016
+    - awm017
+    - awm018
+    - awm019
+    - awm020
+    - awm021
+    - mina
+    - theo
+    primary_key: operating_id
+  operating-R:
+    document: op-data-operating-r
+    rows: 252
+    sha256: 4ac1c75dad3432aa65e3d7aac36ec5dac67f78e44d52227a5f413493b651640e
+    readers:
+    - awm022
+    - awm023
+    - awm024
+    - awm025
+    - awm026
+    - awm027
+    - awm028
+    - awm029
+    - awm030
+    - awm031
+    - awm032
+    - awm033
+    - awm034
+    - awm035
+    - awm036
+    - awm037
+    - awm038
+    - awm039
+    - awm040
+    - awm041
+    - theo
+    primary_key: operating_id
   resources:
     document: op-data-resources
     rows: 40
@@ -1266,5 +1322,5 @@ primary_records:
   training: 24
 message_count: 196
 calendar_count: 144
-document_count: 1113
+document_count: 1115
 retained_copies: 809

@@ -22,7 +22,7 @@
     "cinder-typhoon/narrative/keplerops-directory": "sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931",
     "cinder-typhoon/narrative/keplerops-employment": "sha256-bdc70503e02e848a8ff4793a69b51e376e21b99c65e11030fbf9896685e2dac0",
     "cinder-typhoon/narrative/arwc-mail": "sha256-e1b1ea6ecd8f7c915764de7ef61c3557d6b756ec68c9db118cd9047cfb8bc83c",
-    "cinder-typhoon/narrative/arwc-documents": "sha256-484172fa765b7af26075acb5764147fb0be92c5588be5c943f72a7f90a649628",
+    "cinder-typhoon/narrative/arwc-documents": "sha256-cf70b53cc79a941e97ace1769a1e981afcc3030617c68c811aa9eeb1c067d51d",
     "cinder-typhoon/narrative/arwc-directory": "sha256-24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f",
     "cinder-typhoon/narrative/arwc-employment": "sha256-7a7f22c92ccfaa31a3bed71126f7a2787bdb11184372b061e51823587015094b"
   },
@@ -36616,7 +36616,9 @@
       "op-data-training-awm080": "environment",
       "op-data-training-owen": "environment",
       "op-data-visits-p": "environment",
-      "op-data-visits-r": "environment"
+      "op-data-visits-r": "environment",
+      "op-data-operating-p": "environment",
+      "op-data-operating-r": "environment"
     },
     "calendars": {
       "rillhaven-workshop": "environment",
