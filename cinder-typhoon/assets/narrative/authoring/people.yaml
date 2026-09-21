@@ -2885,6 +2885,42 @@ correspondents:
     name: Hali U. Quenwick
     email: contact.48800@customers.arwc.test
     employer: retail_customer
+  ps_helwick:
+    name: Mara Helwick
+    email: orders@helwick-industrial.test
+    employer: helwick-industrial
+    department: Trade desk
+    job: Senior trade adviser
+  ps_rivermere:
+    name: Colin Fenner
+    email: dispatch@rivermere-depot.test
+    employer: rivermere-depot
+    department: Dispatch
+    job: Depot dispatch coordinator
+  ps_denswick:
+    name: Iona Densell
+    email: service@denswick-safety.test
+    employer: denswick-safety
+    department: Customer service
+    job: Safety-goods account adviser
+  ps_norvale:
+    name: Tess Norvale
+    email: laboratory@norvale-supply.test
+    employer: norvale-laboratory
+    department: Laboratory supply
+    job: Laboratory account specialist
+  ps_pennel:
+    name: Robin Pell
+    email: arwc@pennel-office.test
+    employer: pennel-office
+    department: Member accounts
+    job: Cooperative account adviser
+  ps_larkspur:
+    name: Hester Vale
+    email: records@larkspur-storage.test
+    employer: larkspur-records
+    department: Records supply
+    job: Records-materials coordinator
   arwc_field_desk:
     name: ARWC Field Desk
     email: field-desk@alterrawaterco.com
