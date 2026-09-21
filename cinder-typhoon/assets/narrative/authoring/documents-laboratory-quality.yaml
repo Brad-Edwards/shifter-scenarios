@@ -1,0 +1,5160 @@
+documents:
+- id: lq-specification
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC Laboratory Operating Specification ARWC-LOS-26-01
+  path: lq-specification.md
+  audience: restricted
+  reader_keys: &id001
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - awm164
+  - awm165
+  - awm166
+  - awm167
+  - awm168
+  - awm169
+  - nadia
+  - awm139
+  published_at: '2026-01-05T08:00:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC Laboratory Operating Specification ARWC-LOS-26-01
+
+
+    Effective 5 January 2026. This fictional internal specification supports routine trend review at ARWC. Its response
+    bands are not statutory, regulatory, health, or legal limits and must not be described as such.
+
+
+    | Code | Working measure | Internal working band |
+
+    | --- | --- | --- |
+
+    | CRU | Clarity response, ARWC response units | 0.0 to 4.0 |
+
+    | MBU | Mineral balance, ARWC balance units | 40.0 to 75.0 |
+
+    | RSI | Reference stability, percent of laboratory reference | 92.0 to 108.0 |
+
+
+    Every history retains schedule, collection, receipt, analytical run, review and reporting references. A result
+    outside an internal band is repeated or sent for recollection. It is not, by itself, a public-safety or legal
+    conclusion.
+
+    '
+- id: lq-work-guide
+  story: laboratory-quality
+  employer: arwc
+  title: Routine sample and report guide
+  path: lq-work-guide.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-05T08:05:00-04:00'
+  media_type: text/markdown
+  text: '# Routine sample and report guide
+
+
+    Use the scheduled sample identity at collection. Record the seal and receipt time before analysis. Retain preliminary
+    and repeat runs together. A reviewer may accept a repeat, request recollection, or leave the item open. Weekly
+    summaries state the actual disposition and never turn an open recollection into an accepted result.
+
+
+    The monthly workbook is a working aid. The signed review row and issued weekly report remain the authoritative
+    history.
+
+    '
+- id: lq-register-sampling-schedule
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory sampling schedule
+  path: sampling-schedule.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:00:00-04:00'
+  media_type: text/csv
+  text: 'Completed sampling schedule register. 960 rows; primary key schedule_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/sampling-schedule.csv
+  binary_sha256: d2ead890cdecc46e7d1e1f1dc8805df80c6d085cc93f0942d97a994698a8e69b
+  content_encoding: gzip
+- id: lq-register-samples
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory samples
+  path: samples.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:00:00-04:00'
+  media_type: text/csv
+  text: 'Completed samples register. 960 rows; primary key sample_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/samples.csv
+  binary_sha256: 767f6262d82bc217aef28bd3fe20d6187fb1678a26cb5cd0b20197104ccae444
+  content_encoding: gzip
+- id: lq-register-receipts
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory receipts
+  path: receipts.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:00:00-04:00'
+  media_type: text/csv
+  text: 'Completed receipts register. 960 rows; primary key receipt_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/receipts.csv
+  binary_sha256: d427594022a031998de75be7895938907930de04603582d2d52abbf65f53e42d
+  content_encoding: gzip
+- id: lq-register-results
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory results
+  path: results.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:00:00-04:00'
+  media_type: text/csv
+  text: 'Completed results register. 2916 rows; primary key result_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/results.csv
+  binary_sha256: 73416eda50099774df68c8dfb12feacdba9dae17fa323ad2d6b7f35f03243a62
+  content_encoding: gzip
+- id: lq-register-reviews
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory reviews
+  path: reviews.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:00:00-04:00'
+  media_type: text/csv
+  text: 'Completed reviews register. 960 rows; primary key review_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/reviews.csv
+  binary_sha256: 049bda72e1fdf20ee916ace1f40c51a24eddc3b27a26893988c0fa716416faea
+  content_encoding: gzip
+- id: lq-workbook-2026-01
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-01
+  path: arwc-laboratory-2026-01.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-30T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-01. Sheets: Summary, Samples, Results. 120 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-01.xlsx
+  binary_sha256: d407fb1ffe7d8c139375acedc0d1e117e3688670f143c6af6908a3bc708b52d2
+- id: lq-workbook-2026-02
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-02
+  path: arwc-laboratory-2026-02.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-02-27T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-02. Sheets: Summary, Samples, Results. 120 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-02.xlsx
+  binary_sha256: d93d4e61d583aae2421a0f8d6bb3adc13b6086d19b67115e54d7ad09c099c259
+- id: lq-workbook-2026-03
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-03
+  path: arwc-laboratory-2026-03.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-03-31T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-03. Sheets: Summary, Samples, Results. 132 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-03.xlsx
+  binary_sha256: 1786700bc6896e804f0a796b42bee93ed8d4e5383b1a8b018d9b5c1e6a2a9866
+- id: lq-workbook-2026-04
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-04
+  path: arwc-laboratory-2026-04.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-04-30T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-04. Sheets: Summary, Samples, Results. 132 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-04.xlsx
+  binary_sha256: b6f881d1f7327204b39447d70d2052e3529270b2ae70d5646447a9752b721286
+- id: lq-workbook-2026-05
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-05
+  path: arwc-laboratory-2026-05.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-29T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-05. Sheets: Summary, Samples, Results. 126 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-05.xlsx
+  binary_sha256: f076ce6abe5c9acf0068caadd6f19a1c76170c9f5342a898d20e3a25b4eeeb2d
+- id: lq-workbook-2026-06
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-06
+  path: arwc-laboratory-2026-06.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-30T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-06. Sheets: Summary, Samples, Results. 132 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-06.xlsx
+  binary_sha256: 7dd86d5544006cd9d338f125214647e35b605fb7600e20a3985539e199b5d554
+- id: lq-workbook-2026-07
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-07
+  path: arwc-laboratory-2026-07.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-31T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-07. Sheets: Summary, Samples, Results. 138 sample histories. Formula
+    cells reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-07.xlsx
+  binary_sha256: 6aff34a437240f65342ffeef7c92163fdd9ad7607fbaf5551d53d3a59576a92b
+- id: lq-workbook-2026-08
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-08
+  path: arwc-laboratory-2026-08.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-31T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-08. Sheets: Summary, Samples, Results. 42 sample histories. Formula cells
+    reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-08.xlsx
+  binary_sha256: 6c6d315dc2b103ce65d80977f7f8aa73f7d09461320b7b922cd5db66edcb9805
+- id: lq-workbook-2026-09
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory workbook 2026-09
+  path: arwc-laboratory-2026-09.xlsx
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-11T17:00:00-04:00'
+  media_type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+  text: 'ARWC laboratory workbook for 2026-09. Sheets: Summary, Samples, Results. 18 sample histories. Formula cells
+    reconcile the sample and result row counts. Internal specification ARWC-LOS-26-01.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: workbooks/arwc-laboratory-2026-09.xlsx
+  binary_sha256: 3386dc8a51eaf3b9a36f70cc0c897df2a79f4d461143328b91548caa915ce21f
+- id: lq-weekly-report-01
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W02
+  path: lq-weekly-report-01.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-09T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W02
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-01-09T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260105-01 | Pine treatment plant | 4.5 | 48 | 96 | resample requested |
+
+    | ARWC-LQ-20260105-02 | River East district | 0.7 | 49 | 97 | accepted |
+
+    | ARWC-LQ-20260105-03 | Upland station | 0.8 | 50 | 98 | accepted |
+
+    | ARWC-LQ-20260105-04 | Pine East district | 0.9 | 51 | 99 | accepted |
+
+    | ARWC-LQ-20260105-05 | North reservoir | 1.0 | 52 | 100 | accepted |
+
+    | ARWC-LQ-20260105-06 | Pine treatment plant | 1.1 | 53 | 101 | accepted |
+
+    | ARWC-LQ-20260106-01 | Upland station | 1.2 | 54 | 102 | accepted |
+
+    | ARWC-LQ-20260106-02 | Pine East district | 1.3 | 55 | 103 | accepted |
+
+    | ARWC-LQ-20260106-03 | North reservoir | 1.4 | 56 | 104 | accepted |
+
+    | ARWC-LQ-20260106-04 | Pine treatment plant | 1.5 | 57 | 96 | accepted |
+
+    | ARWC-LQ-20260106-05 | River East district | 1.6 | 58 | 97 | accepted |
+
+    | ARWC-LQ-20260106-06 | Upland station | 1.7 | 59 | 98 | accepted |
+
+    | ARWC-LQ-20260107-01 | North reservoir | 1.8 | 60 | 99 | accepted |
+
+    | ARWC-LQ-20260107-02 | Pine treatment plant | 1.9 | 61 | 100 | accepted |
+
+    | ARWC-LQ-20260107-03 | River East district | 2.0 | 62 | 101 | accepted |
+
+    | ARWC-LQ-20260107-04 | Upland station | 2.1 | 63 | 102 | accepted |
+
+    | ARWC-LQ-20260107-05 | Pine East district | 2.2 | 64 | 103 | accepted |
+
+    | ARWC-LQ-20260107-06 | North reservoir | 2.3 | 65 | 104 | accepted |
+
+    | ARWC-LQ-20260108-01 | River East district | 2.4 | 66 | 96 | accepted |
+
+    | ARWC-LQ-20260108-02 | Upland station | 2.5 | 67 | 97 | accepted |
+
+    | ARWC-LQ-20260108-03 | Pine East district | 2.6 | 48 | 98 | accepted |
+
+    | ARWC-LQ-20260108-04 | North reservoir | 2.7 | 49 | 99 | accepted |
+
+    | ARWC-LQ-20260108-05 | Pine treatment plant | 2.8 | 50 | 100 | accepted |
+
+    | ARWC-LQ-20260108-06 | River East district | 2.9 | 51 | 101 | accepted |
+
+    | ARWC-LQ-20260109-01 | Pine East district | 3.0 | 52 | 102 | accepted |
+
+    | ARWC-LQ-20260109-02 | North reservoir | 3.1 | 53 | 103 | accepted after repeat |
+
+    | ARWC-LQ-20260109-03 | Pine treatment plant | 3.2 | 54 | 104 | accepted |
+
+    | ARWC-LQ-20260109-04 | River East district | 3.3 | 55 | 96 | accepted |
+
+    | ARWC-LQ-20260109-05 | Upland station | 0.6 | 56 | 97 | accepted |
+
+    | ARWC-LQ-20260109-06 | Pine East district | 0.7 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-02
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W03
+  path: lq-weekly-report-02.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-16T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W03
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-01-16T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260112-01 | Pine treatment plant | 0.8 | 58 | 99 | accepted |
+
+    | ARWC-LQ-20260112-02 | River East district | 0.9 | 59 | 100 | accepted |
+
+    | ARWC-LQ-20260112-03 | Upland station | 1.0 | 60 | 101 | accepted |
+
+    | ARWC-LQ-20260112-04 | Pine East district | 1.1 | 61 | 102 | accepted |
+
+    | ARWC-LQ-20260112-05 | North reservoir | 1.2 | 62 | 103 | accepted |
+
+    | ARWC-LQ-20260112-06 | Pine treatment plant | 1.3 | 63 | 104 | accepted |
+
+    | ARWC-LQ-20260113-01 | Upland station | 1.4 | 64 | 96 | accepted |
+
+    | ARWC-LQ-20260113-02 | Pine East district | 1.5 | 65 | 97 | accepted |
+
+    | ARWC-LQ-20260113-03 | North reservoir | 1.6 | 66 | 98 | accepted |
+
+    | ARWC-LQ-20260113-04 | Pine treatment plant | 1.7 | 67 | 99 | accepted |
+
+    | ARWC-LQ-20260113-05 | River East district | 1.8 | 48 | 100 | accepted |
+
+    | ARWC-LQ-20260113-06 | Upland station | 1.9 | 49 | 101 | accepted |
+
+    | ARWC-LQ-20260114-01 | North reservoir | 2.0 | 50 | 102 | accepted |
+
+    | ARWC-LQ-20260114-02 | Pine treatment plant | 2.1 | 51 | 103 | accepted |
+
+    | ARWC-LQ-20260114-03 | River East district | 2.2 | 52 | 104 | accepted |
+
+    | ARWC-LQ-20260114-04 | Upland station | 2.3 | 53 | 96 | accepted |
+
+    | ARWC-LQ-20260114-05 | Pine East district | 2.4 | 54 | 97 | accepted |
+
+    | ARWC-LQ-20260114-06 | North reservoir | 2.5 | 55 | 98 | accepted |
+
+    | ARWC-LQ-20260115-01 | River East district | 2.6 | 56 | 99 | accepted |
+
+    | ARWC-LQ-20260115-02 | Upland station | 2.7 | 57 | 100 | accepted |
+
+    | ARWC-LQ-20260115-03 | Pine East district | 2.8 | 58 | 101 | accepted after repeat |
+
+    | ARWC-LQ-20260115-04 | North reservoir | 2.9 | 59 | 102 | accepted |
+
+    | ARWC-LQ-20260115-05 | Pine treatment plant | 3.0 | 60 | 103 | accepted |
+
+    | ARWC-LQ-20260115-06 | River East district | 3.1 | 61 | 104 | accepted |
+
+    | ARWC-LQ-20260116-01 | Pine East district | 3.2 | 62 | 96 | accepted |
+
+    | ARWC-LQ-20260116-02 | North reservoir | 3.3 | 63 | 97 | accepted |
+
+    | ARWC-LQ-20260116-03 | Pine treatment plant | 0.6 | 64 | 98 | accepted |
+
+    | ARWC-LQ-20260116-04 | River East district | 0.7 | 65 | 99 | accepted |
+
+    | ARWC-LQ-20260116-05 | Upland station | 0.8 | 66 | 100 | accepted |
+
+    | ARWC-LQ-20260116-06 | Pine East district | 0.9 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-03
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W04
+  path: lq-weekly-report-03.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-23T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W04
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-01-23T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260119-01 | Pine treatment plant | 1.0 | 48 | 102 | accepted |
+
+    | ARWC-LQ-20260119-02 | River East district | 1.1 | 49 | 103 | accepted |
+
+    | ARWC-LQ-20260119-03 | Upland station | 1.2 | 50 | 104 | accepted |
+
+    | ARWC-LQ-20260119-04 | Pine East district | 1.3 | 51 | 96 | accepted |
+
+    | ARWC-LQ-20260119-05 | North reservoir | 1.4 | 52 | 97 | accepted |
+
+    | ARWC-LQ-20260119-06 | Pine treatment plant | 1.5 | 53 | 98 | accepted |
+
+    | ARWC-LQ-20260120-01 | Upland station | 1.6 | 54 | 99 | accepted |
+
+    | ARWC-LQ-20260120-02 | Pine East district | 1.7 | 55 | 100 | accepted |
+
+    | ARWC-LQ-20260120-03 | North reservoir | 1.8 | 56 | 101 | accepted |
+
+    | ARWC-LQ-20260120-04 | Pine treatment plant | 1.9 | 57 | 102 | accepted |
+
+    | ARWC-LQ-20260120-05 | River East district | 2.0 | 58 | 103 | accepted |
+
+    | ARWC-LQ-20260120-06 | Upland station | 2.1 | 59 | 104 | accepted |
+
+    | ARWC-LQ-20260121-01 | North reservoir | 2.2 | 60 | 96 | accepted |
+
+    | ARWC-LQ-20260121-02 | Pine treatment plant | 2.3 | 61 | 97 | accepted |
+
+    | ARWC-LQ-20260121-03 | River East district | 2.4 | 62 | 98 | accepted |
+
+    | ARWC-LQ-20260121-04 | Upland station | 2.5 | 63 | 99 | accepted after repeat |
+
+    | ARWC-LQ-20260121-05 | Pine East district | 2.6 | 64 | 100 | accepted |
+
+    | ARWC-LQ-20260121-06 | North reservoir | 2.7 | 65 | 101 | accepted |
+
+    | ARWC-LQ-20260122-01 | River East district | 2.8 | 66 | 102 | accepted |
+
+    | ARWC-LQ-20260122-02 | Upland station | 2.9 | 67 | 103 | accepted |
+
+    | ARWC-LQ-20260122-03 | Pine East district | 4.7 | 48 | 104 | resample requested |
+
+    | ARWC-LQ-20260122-04 | North reservoir | 3.1 | 49 | 96 | accepted |
+
+    | ARWC-LQ-20260122-05 | Pine treatment plant | 3.2 | 50 | 97 | accepted |
+
+    | ARWC-LQ-20260122-06 | River East district | 3.3 | 51 | 98 | accepted |
+
+    | ARWC-LQ-20260123-01 | Pine East district | 0.6 | 52 | 99 | accepted |
+
+    | ARWC-LQ-20260123-02 | North reservoir | 0.7 | 53 | 100 | accepted |
+
+    | ARWC-LQ-20260123-03 | Pine treatment plant | 0.8 | 54 | 101 | accepted |
+
+    | ARWC-LQ-20260123-04 | River East district | 0.9 | 55 | 102 | accepted |
+
+    | ARWC-LQ-20260123-05 | Upland station | 1.0 | 56 | 103 | accepted |
+
+    | ARWC-LQ-20260123-06 | Pine East district | 1.1 | 57 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-04
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W05
+  path: lq-weekly-report-04.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-01-30T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W05
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-01-30T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260126-01 | Pine treatment plant | 1.2 | 58 | 96 | accepted |
+
+    | ARWC-LQ-20260126-02 | River East district | 1.3 | 59 | 97 | accepted |
+
+    | ARWC-LQ-20260126-03 | Upland station | 1.4 | 60 | 98 | accepted |
+
+    | ARWC-LQ-20260126-04 | Pine East district | 1.5 | 61 | 99 | accepted |
+
+    | ARWC-LQ-20260126-05 | North reservoir | 1.6 | 62 | 100 | accepted |
+
+    | ARWC-LQ-20260126-06 | Pine treatment plant | 1.7 | 63 | 101 | accepted |
+
+    | ARWC-LQ-20260127-01 | Upland station | 1.8 | 64 | 102 | accepted |
+
+    | ARWC-LQ-20260127-02 | Pine East district | 1.9 | 65 | 103 | accepted |
+
+    | ARWC-LQ-20260127-03 | North reservoir | 2.0 | 66 | 104 | accepted |
+
+    | ARWC-LQ-20260127-04 | Pine treatment plant | 2.1 | 67 | 96 | accepted |
+
+    | ARWC-LQ-20260127-05 | River East district | 2.2 | 48 | 97 | accepted after repeat |
+
+    | ARWC-LQ-20260127-06 | Upland station | 2.3 | 49 | 98 | accepted |
+
+    | ARWC-LQ-20260128-01 | North reservoir | 2.4 | 50 | 99 | accepted |
+
+    | ARWC-LQ-20260128-02 | Pine treatment plant | 2.5 | 51 | 100 | accepted |
+
+    | ARWC-LQ-20260128-03 | River East district | 2.6 | 52 | 101 | accepted |
+
+    | ARWC-LQ-20260128-04 | Upland station | 2.7 | 53 | 102 | accepted |
+
+    | ARWC-LQ-20260128-05 | Pine East district | 2.8 | 54 | 103 | accepted |
+
+    | ARWC-LQ-20260128-06 | North reservoir | 2.9 | 55 | 104 | accepted |
+
+    | ARWC-LQ-20260129-01 | River East district | 3.0 | 56 | 96 | accepted |
+
+    | ARWC-LQ-20260129-02 | Upland station | 3.1 | 57 | 97 | accepted |
+
+    | ARWC-LQ-20260129-03 | Pine East district | 3.2 | 58 | 98 | accepted |
+
+    | ARWC-LQ-20260129-04 | North reservoir | 3.3 | 59 | 99 | accepted |
+
+    | ARWC-LQ-20260129-05 | Pine treatment plant | 0.6 | 60 | 100 | accepted |
+
+    | ARWC-LQ-20260129-06 | River East district | 0.7 | 61 | 101 | accepted |
+
+    | ARWC-LQ-20260130-01 | Pine East district | 0.8 | 62 | 102 | accepted |
+
+    | ARWC-LQ-20260130-02 | North reservoir | 0.9 | 63 | 103 | accepted |
+
+    | ARWC-LQ-20260130-03 | Pine treatment plant | 1.0 | 64 | 104 | accepted |
+
+    | ARWC-LQ-20260130-04 | River East district | 1.1 | 65 | 96 | accepted |
+
+    | ARWC-LQ-20260130-05 | Upland station | 1.2 | 66 | 97 | accepted |
+
+    | ARWC-LQ-20260130-06 | Pine East district | 1.3 | 67 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-05
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W06
+  path: lq-weekly-report-05.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-02-06T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W06
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-02-06T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260202-01 | Pine treatment plant | 1.4 | 48 | 99 | accepted |
+
+    | ARWC-LQ-20260202-02 | River East district | 1.5 | 49 | 100 | accepted |
+
+    | ARWC-LQ-20260202-03 | Upland station | 1.6 | 50 | 101 | accepted |
+
+    | ARWC-LQ-20260202-04 | Pine East district | 1.7 | 51 | 102 | accepted |
+
+    | ARWC-LQ-20260202-05 | North reservoir | 1.8 | 52 | 103 | accepted |
+
+    | ARWC-LQ-20260202-06 | Pine treatment plant | 1.9 | 53 | 104 | accepted after repeat |
+
+    | ARWC-LQ-20260203-01 | Upland station | 2.0 | 54 | 96 | accepted |
+
+    | ARWC-LQ-20260203-02 | Pine East district | 2.1 | 55 | 97 | accepted |
+
+    | ARWC-LQ-20260203-03 | North reservoir | 2.2 | 56 | 98 | accepted |
+
+    | ARWC-LQ-20260203-04 | Pine treatment plant | 2.3 | 57 | 99 | accepted |
+
+    | ARWC-LQ-20260203-05 | River East district | 2.4 | 58 | 100 | accepted |
+
+    | ARWC-LQ-20260203-06 | Upland station | 2.5 | 59 | 101 | accepted |
+
+    | ARWC-LQ-20260204-01 | North reservoir | 2.6 | 60 | 102 | accepted |
+
+    | ARWC-LQ-20260204-02 | Pine treatment plant | 2.7 | 61 | 103 | accepted |
+
+    | ARWC-LQ-20260204-03 | River East district | 2.8 | 62 | 104 | accepted |
+
+    | ARWC-LQ-20260204-04 | Upland station | 2.9 | 63 | 96 | accepted |
+
+    | ARWC-LQ-20260204-05 | Pine East district | 3.0 | 64 | 97 | accepted |
+
+    | ARWC-LQ-20260204-06 | North reservoir | 3.1 | 65 | 98 | accepted |
+
+    | ARWC-LQ-20260205-01 | River East district | 3.2 | 66 | 99 | accepted |
+
+    | ARWC-LQ-20260205-02 | Upland station | 3.3 | 67 | 100 | accepted |
+
+    | ARWC-LQ-20260205-03 | Pine East district | 0.6 | 48 | 101 | accepted |
+
+    | ARWC-LQ-20260205-04 | North reservoir | 0.7 | 49 | 102 | accepted |
+
+    | ARWC-LQ-20260205-05 | Pine treatment plant | 0.8 | 50 | 103 | accepted |
+
+    | ARWC-LQ-20260205-06 | River East district | 0.9 | 51 | 104 | accepted |
+
+    | ARWC-LQ-20260206-01 | Pine East district | 1.0 | 52 | 96 | accepted |
+
+    | ARWC-LQ-20260206-02 | North reservoir | 1.1 | 53 | 97 | accepted |
+
+    | ARWC-LQ-20260206-03 | Pine treatment plant | 1.2 | 54 | 98 | accepted |
+
+    | ARWC-LQ-20260206-04 | River East district | 1.3 | 55 | 99 | accepted |
+
+    | ARWC-LQ-20260206-05 | Upland station | 1.4 | 56 | 100 | accepted |
+
+    | ARWC-LQ-20260206-06 | Pine East district | 1.5 | 57 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-06
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W07
+  path: lq-weekly-report-06.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-02-13T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W07
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-02-13T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 27; accepted after repeat: 2; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260209-01 | Pine treatment plant | 1.6 | 58 | 102 | accepted after repeat |
+
+    | ARWC-LQ-20260209-02 | River East district | 1.7 | 59 | 103 | accepted |
+
+    | ARWC-LQ-20260209-03 | Upland station | 1.8 | 60 | 104 | accepted |
+
+    | ARWC-LQ-20260209-04 | Pine East district | 1.9 | 61 | 96 | accepted |
+
+    | ARWC-LQ-20260209-05 | North reservoir | 2.0 | 62 | 97 | accepted |
+
+    | ARWC-LQ-20260209-06 | Pine treatment plant | 2.1 | 63 | 98 | accepted |
+
+    | ARWC-LQ-20260210-01 | Upland station | 2.2 | 64 | 99 | accepted |
+
+    | ARWC-LQ-20260210-02 | Pine East district | 2.3 | 65 | 100 | accepted |
+
+    | ARWC-LQ-20260210-03 | North reservoir | 2.4 | 66 | 101 | accepted |
+
+    | ARWC-LQ-20260210-04 | Pine treatment plant | 2.5 | 67 | 102 | accepted |
+
+    | ARWC-LQ-20260210-05 | River East district | 4.6 | 48 | 103 | resample requested |
+
+    | ARWC-LQ-20260210-06 | Upland station | 2.7 | 49 | 104 | accepted |
+
+    | ARWC-LQ-20260211-01 | North reservoir | 2.8 | 50 | 96 | accepted |
+
+    | ARWC-LQ-20260211-02 | Pine treatment plant | 2.9 | 51 | 97 | accepted |
+
+    | ARWC-LQ-20260211-03 | River East district | 3.0 | 52 | 98 | accepted |
+
+    | ARWC-LQ-20260211-04 | Upland station | 3.1 | 53 | 99 | accepted |
+
+    | ARWC-LQ-20260211-05 | Pine East district | 3.2 | 54 | 100 | accepted |
+
+    | ARWC-LQ-20260211-06 | North reservoir | 3.3 | 55 | 101 | accepted |
+
+    | ARWC-LQ-20260212-01 | River East district | 0.6 | 56 | 102 | accepted |
+
+    | ARWC-LQ-20260212-02 | Upland station | 0.7 | 57 | 103 | accepted |
+
+    | ARWC-LQ-20260212-03 | Pine East district | 0.8 | 58 | 104 | accepted |
+
+    | ARWC-LQ-20260212-04 | North reservoir | 0.9 | 59 | 96 | accepted |
+
+    | ARWC-LQ-20260212-05 | Pine treatment plant | 1.0 | 60 | 97 | accepted |
+
+    | ARWC-LQ-20260212-06 | River East district | 1.1 | 61 | 98 | accepted |
+
+    | ARWC-LQ-20260213-01 | Pine East district | 1.2 | 62 | 99 | accepted |
+
+    | ARWC-LQ-20260213-02 | North reservoir | 1.3 | 63 | 100 | accepted after repeat |
+
+    | ARWC-LQ-20260213-03 | Pine treatment plant | 1.4 | 64 | 101 | accepted |
+
+    | ARWC-LQ-20260213-04 | River East district | 1.5 | 65 | 102 | accepted |
+
+    | ARWC-LQ-20260213-05 | Upland station | 1.6 | 66 | 103 | accepted |
+
+    | ARWC-LQ-20260213-06 | Pine East district | 1.7 | 67 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-07
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W08
+  path: lq-weekly-report-07.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-02-20T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W08
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-02-20T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260216-01 | Pine treatment plant | 1.8 | 48 | 96 | accepted |
+
+    | ARWC-LQ-20260216-02 | River East district | 1.9 | 49 | 97 | accepted |
+
+    | ARWC-LQ-20260216-03 | Upland station | 2.0 | 50 | 98 | accepted |
+
+    | ARWC-LQ-20260216-04 | Pine East district | 2.1 | 51 | 99 | accepted |
+
+    | ARWC-LQ-20260216-05 | North reservoir | 2.2 | 52 | 100 | accepted |
+
+    | ARWC-LQ-20260216-06 | Pine treatment plant | 2.3 | 53 | 101 | accepted |
+
+    | ARWC-LQ-20260217-01 | Upland station | 2.4 | 54 | 102 | accepted |
+
+    | ARWC-LQ-20260217-02 | Pine East district | 2.5 | 55 | 103 | accepted |
+
+    | ARWC-LQ-20260217-03 | North reservoir | 2.6 | 56 | 104 | accepted |
+
+    | ARWC-LQ-20260217-04 | Pine treatment plant | 2.7 | 57 | 96 | accepted |
+
+    | ARWC-LQ-20260217-05 | River East district | 2.8 | 58 | 97 | accepted |
+
+    | ARWC-LQ-20260217-06 | Upland station | 2.9 | 59 | 98 | accepted |
+
+    | ARWC-LQ-20260218-01 | North reservoir | 3.0 | 60 | 99 | accepted |
+
+    | ARWC-LQ-20260218-02 | Pine treatment plant | 3.1 | 61 | 100 | accepted |
+
+    | ARWC-LQ-20260218-03 | River East district | 3.2 | 62 | 101 | accepted |
+
+    | ARWC-LQ-20260218-04 | Upland station | 3.3 | 63 | 102 | accepted |
+
+    | ARWC-LQ-20260218-05 | Pine East district | 0.6 | 64 | 103 | accepted |
+
+    | ARWC-LQ-20260218-06 | North reservoir | 0.7 | 65 | 104 | accepted |
+
+    | ARWC-LQ-20260219-01 | River East district | 0.8 | 66 | 96 | accepted |
+
+    | ARWC-LQ-20260219-02 | Upland station | 0.9 | 67 | 97 | accepted |
+
+    | ARWC-LQ-20260219-03 | Pine East district | 1.0 | 48 | 98 | accepted after repeat |
+
+    | ARWC-LQ-20260219-04 | North reservoir | 1.1 | 49 | 99 | accepted |
+
+    | ARWC-LQ-20260219-05 | Pine treatment plant | 1.2 | 50 | 100 | accepted |
+
+    | ARWC-LQ-20260219-06 | River East district | 1.3 | 51 | 101 | accepted |
+
+    | ARWC-LQ-20260220-01 | Pine East district | 1.4 | 52 | 102 | accepted |
+
+    | ARWC-LQ-20260220-02 | North reservoir | 1.5 | 53 | 103 | accepted |
+
+    | ARWC-LQ-20260220-03 | Pine treatment plant | 1.6 | 54 | 104 | accepted |
+
+    | ARWC-LQ-20260220-04 | River East district | 1.7 | 55 | 96 | accepted |
+
+    | ARWC-LQ-20260220-05 | Upland station | 1.8 | 56 | 97 | accepted |
+
+    | ARWC-LQ-20260220-06 | Pine East district | 1.9 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-08
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W09
+  path: lq-weekly-report-08.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-02-27T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W09
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-02-27T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260223-01 | Pine treatment plant | 2.0 | 58 | 99 | accepted |
+
+    | ARWC-LQ-20260223-02 | River East district | 2.1 | 59 | 100 | accepted |
+
+    | ARWC-LQ-20260223-03 | Upland station | 2.2 | 60 | 101 | accepted |
+
+    | ARWC-LQ-20260223-04 | Pine East district | 2.3 | 61 | 102 | accepted |
+
+    | ARWC-LQ-20260223-05 | North reservoir | 2.4 | 62 | 103 | accepted |
+
+    | ARWC-LQ-20260223-06 | Pine treatment plant | 2.5 | 63 | 104 | accepted |
+
+    | ARWC-LQ-20260224-01 | Upland station | 2.6 | 64 | 96 | accepted |
+
+    | ARWC-LQ-20260224-02 | Pine East district | 2.7 | 65 | 97 | accepted |
+
+    | ARWC-LQ-20260224-03 | North reservoir | 2.8 | 66 | 98 | accepted |
+
+    | ARWC-LQ-20260224-04 | Pine treatment plant | 2.9 | 67 | 99 | accepted |
+
+    | ARWC-LQ-20260224-05 | River East district | 3.0 | 48 | 100 | accepted |
+
+    | ARWC-LQ-20260224-06 | Upland station | 3.1 | 49 | 101 | accepted |
+
+    | ARWC-LQ-20260225-01 | North reservoir | 3.2 | 50 | 102 | accepted |
+
+    | ARWC-LQ-20260225-02 | Pine treatment plant | 3.3 | 51 | 103 | accepted |
+
+    | ARWC-LQ-20260225-03 | River East district | 0.6 | 52 | 104 | accepted |
+
+    | ARWC-LQ-20260225-04 | Upland station | 0.7 | 53 | 96 | accepted after repeat |
+
+    | ARWC-LQ-20260225-05 | Pine East district | 0.8 | 54 | 97 | accepted |
+
+    | ARWC-LQ-20260225-06 | North reservoir | 0.9 | 55 | 98 | accepted |
+
+    | ARWC-LQ-20260226-01 | River East district | 1.0 | 56 | 99 | accepted |
+
+    | ARWC-LQ-20260226-02 | Upland station | 1.1 | 57 | 100 | accepted |
+
+    | ARWC-LQ-20260226-03 | Pine East district | 1.2 | 58 | 101 | accepted |
+
+    | ARWC-LQ-20260226-04 | North reservoir | 1.3 | 59 | 102 | accepted |
+
+    | ARWC-LQ-20260226-05 | Pine treatment plant | 1.4 | 60 | 103 | accepted |
+
+    | ARWC-LQ-20260226-06 | River East district | 1.5 | 61 | 104 | accepted |
+
+    | ARWC-LQ-20260227-01 | Pine East district | 1.6 | 62 | 96 | accepted |
+
+    | ARWC-LQ-20260227-02 | North reservoir | 1.7 | 63 | 97 | accepted |
+
+    | ARWC-LQ-20260227-03 | Pine treatment plant | 1.8 | 64 | 98 | accepted |
+
+    | ARWC-LQ-20260227-04 | River East district | 1.9 | 65 | 99 | accepted |
+
+    | ARWC-LQ-20260227-05 | Upland station | 2.0 | 66 | 100 | accepted |
+
+    | ARWC-LQ-20260227-06 | Pine East district | 2.1 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-09
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W10
+  path: lq-weekly-report-09.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-03-06T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W10
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-03-06T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260302-01 | Pine treatment plant | 4.5 | 48 | 102 | resample requested |
+
+    | ARWC-LQ-20260302-02 | River East district | 2.3 | 49 | 103 | accepted |
+
+    | ARWC-LQ-20260302-03 | Upland station | 2.4 | 50 | 104 | accepted |
+
+    | ARWC-LQ-20260302-04 | Pine East district | 2.5 | 51 | 96 | accepted |
+
+    | ARWC-LQ-20260302-05 | North reservoir | 2.6 | 52 | 97 | accepted |
+
+    | ARWC-LQ-20260302-06 | Pine treatment plant | 2.7 | 53 | 98 | accepted |
+
+    | ARWC-LQ-20260303-01 | Upland station | 2.8 | 54 | 99 | accepted |
+
+    | ARWC-LQ-20260303-02 | Pine East district | 2.9 | 55 | 100 | accepted |
+
+    | ARWC-LQ-20260303-03 | North reservoir | 3.0 | 56 | 101 | accepted |
+
+    | ARWC-LQ-20260303-04 | Pine treatment plant | 3.1 | 57 | 102 | accepted |
+
+    | ARWC-LQ-20260303-05 | River East district | 3.2 | 58 | 103 | accepted after repeat |
+
+    | ARWC-LQ-20260303-06 | Upland station | 3.3 | 59 | 104 | accepted |
+
+    | ARWC-LQ-20260304-01 | North reservoir | 0.6 | 60 | 96 | accepted |
+
+    | ARWC-LQ-20260304-02 | Pine treatment plant | 0.7 | 61 | 97 | accepted |
+
+    | ARWC-LQ-20260304-03 | River East district | 0.8 | 62 | 98 | accepted |
+
+    | ARWC-LQ-20260304-04 | Upland station | 0.9 | 63 | 99 | accepted |
+
+    | ARWC-LQ-20260304-05 | Pine East district | 1.0 | 64 | 100 | accepted |
+
+    | ARWC-LQ-20260304-06 | North reservoir | 1.1 | 65 | 101 | accepted |
+
+    | ARWC-LQ-20260305-01 | River East district | 1.2 | 66 | 102 | accepted |
+
+    | ARWC-LQ-20260305-02 | Upland station | 1.3 | 67 | 103 | accepted |
+
+    | ARWC-LQ-20260305-03 | Pine East district | 1.4 | 48 | 104 | accepted |
+
+    | ARWC-LQ-20260305-04 | North reservoir | 1.5 | 49 | 96 | accepted |
+
+    | ARWC-LQ-20260305-05 | Pine treatment plant | 1.6 | 50 | 97 | accepted |
+
+    | ARWC-LQ-20260305-06 | River East district | 1.7 | 51 | 98 | accepted |
+
+    | ARWC-LQ-20260306-01 | Pine East district | 1.8 | 52 | 99 | accepted |
+
+    | ARWC-LQ-20260306-02 | North reservoir | 1.9 | 53 | 100 | accepted |
+
+    | ARWC-LQ-20260306-03 | Pine treatment plant | 2.0 | 54 | 101 | accepted |
+
+    | ARWC-LQ-20260306-04 | River East district | 2.1 | 55 | 102 | accepted |
+
+    | ARWC-LQ-20260306-05 | Upland station | 2.2 | 56 | 103 | accepted |
+
+    | ARWC-LQ-20260306-06 | Pine East district | 2.3 | 57 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-10
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W11
+  path: lq-weekly-report-10.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-03-13T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W11
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-03-13T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260309-01 | Pine treatment plant | 2.4 | 58 | 96 | accepted |
+
+    | ARWC-LQ-20260309-02 | River East district | 2.5 | 59 | 97 | accepted |
+
+    | ARWC-LQ-20260309-03 | Upland station | 2.6 | 60 | 98 | accepted |
+
+    | ARWC-LQ-20260309-04 | Pine East district | 2.7 | 61 | 99 | accepted |
+
+    | ARWC-LQ-20260309-05 | North reservoir | 2.8 | 62 | 100 | accepted |
+
+    | ARWC-LQ-20260309-06 | Pine treatment plant | 2.9 | 63 | 101 | accepted after repeat |
+
+    | ARWC-LQ-20260310-01 | Upland station | 3.0 | 64 | 102 | accepted |
+
+    | ARWC-LQ-20260310-02 | Pine East district | 3.1 | 65 | 103 | accepted |
+
+    | ARWC-LQ-20260310-03 | North reservoir | 3.2 | 66 | 104 | accepted |
+
+    | ARWC-LQ-20260310-04 | Pine treatment plant | 3.3 | 67 | 96 | accepted |
+
+    | ARWC-LQ-20260310-05 | River East district | 0.6 | 48 | 97 | accepted |
+
+    | ARWC-LQ-20260310-06 | Upland station | 0.7 | 49 | 98 | accepted |
+
+    | ARWC-LQ-20260311-01 | North reservoir | 0.8 | 50 | 99 | accepted |
+
+    | ARWC-LQ-20260311-02 | Pine treatment plant | 0.9 | 51 | 100 | accepted |
+
+    | ARWC-LQ-20260311-03 | River East district | 1.0 | 52 | 101 | accepted |
+
+    | ARWC-LQ-20260311-04 | Upland station | 1.1 | 53 | 102 | accepted |
+
+    | ARWC-LQ-20260311-05 | Pine East district | 1.2 | 54 | 103 | accepted |
+
+    | ARWC-LQ-20260311-06 | North reservoir | 1.3 | 55 | 104 | accepted |
+
+    | ARWC-LQ-20260312-01 | River East district | 1.4 | 56 | 96 | accepted |
+
+    | ARWC-LQ-20260312-02 | Upland station | 1.5 | 57 | 97 | accepted |
+
+    | ARWC-LQ-20260312-03 | Pine East district | 1.6 | 58 | 98 | accepted |
+
+    | ARWC-LQ-20260312-04 | North reservoir | 1.7 | 59 | 99 | accepted |
+
+    | ARWC-LQ-20260312-05 | Pine treatment plant | 1.8 | 60 | 100 | accepted |
+
+    | ARWC-LQ-20260312-06 | River East district | 1.9 | 61 | 101 | accepted |
+
+    | ARWC-LQ-20260313-01 | Pine East district | 2.0 | 62 | 102 | accepted |
+
+    | ARWC-LQ-20260313-02 | North reservoir | 2.1 | 63 | 103 | accepted |
+
+    | ARWC-LQ-20260313-03 | Pine treatment plant | 2.2 | 64 | 104 | accepted |
+
+    | ARWC-LQ-20260313-04 | River East district | 2.3 | 65 | 96 | accepted |
+
+    | ARWC-LQ-20260313-05 | Upland station | 2.4 | 66 | 97 | accepted |
+
+    | ARWC-LQ-20260313-06 | Pine East district | 2.5 | 67 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-11
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W12
+  path: lq-weekly-report-11.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-03-20T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W12
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-03-20T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 27; accepted after repeat: 2; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260316-01 | Pine treatment plant | 2.6 | 48 | 99 | accepted after repeat |
+
+    | ARWC-LQ-20260316-02 | River East district | 2.7 | 49 | 100 | accepted |
+
+    | ARWC-LQ-20260316-03 | Upland station | 2.8 | 50 | 101 | accepted |
+
+    | ARWC-LQ-20260316-04 | Pine East district | 2.9 | 51 | 102 | accepted |
+
+    | ARWC-LQ-20260316-05 | North reservoir | 3.0 | 52 | 103 | accepted |
+
+    | ARWC-LQ-20260316-06 | Pine treatment plant | 3.1 | 53 | 104 | accepted |
+
+    | ARWC-LQ-20260317-01 | Upland station | 3.2 | 54 | 96 | accepted |
+
+    | ARWC-LQ-20260317-02 | Pine East district | 3.3 | 55 | 97 | accepted |
+
+    | ARWC-LQ-20260317-03 | North reservoir | 0.6 | 56 | 98 | accepted |
+
+    | ARWC-LQ-20260317-04 | Pine treatment plant | 0.7 | 57 | 99 | accepted |
+
+    | ARWC-LQ-20260317-05 | River East district | 0.8 | 58 | 100 | accepted |
+
+    | ARWC-LQ-20260317-06 | Upland station | 0.9 | 59 | 101 | accepted |
+
+    | ARWC-LQ-20260318-01 | North reservoir | 1.0 | 60 | 102 | accepted |
+
+    | ARWC-LQ-20260318-02 | Pine treatment plant | 1.1 | 61 | 103 | accepted |
+
+    | ARWC-LQ-20260318-03 | River East district | 1.2 | 62 | 104 | accepted |
+
+    | ARWC-LQ-20260318-04 | Upland station | 1.3 | 63 | 96 | accepted |
+
+    | ARWC-LQ-20260318-05 | Pine East district | 1.4 | 64 | 97 | accepted |
+
+    | ARWC-LQ-20260318-06 | North reservoir | 1.5 | 65 | 98 | accepted |
+
+    | ARWC-LQ-20260319-01 | River East district | 1.6 | 66 | 99 | accepted |
+
+    | ARWC-LQ-20260319-02 | Upland station | 1.7 | 67 | 100 | accepted |
+
+    | ARWC-LQ-20260319-03 | Pine East district | 4.7 | 48 | 101 | resample requested |
+
+    | ARWC-LQ-20260319-04 | North reservoir | 1.9 | 49 | 102 | accepted |
+
+    | ARWC-LQ-20260319-05 | Pine treatment plant | 2.0 | 50 | 103 | accepted |
+
+    | ARWC-LQ-20260319-06 | River East district | 2.1 | 51 | 104 | accepted |
+
+    | ARWC-LQ-20260320-01 | Pine East district | 2.2 | 52 | 96 | accepted |
+
+    | ARWC-LQ-20260320-02 | North reservoir | 2.3 | 53 | 97 | accepted after repeat |
+
+    | ARWC-LQ-20260320-03 | Pine treatment plant | 2.4 | 54 | 98 | accepted |
+
+    | ARWC-LQ-20260320-04 | River East district | 2.5 | 55 | 99 | accepted |
+
+    | ARWC-LQ-20260320-05 | Upland station | 2.6 | 56 | 100 | accepted |
+
+    | ARWC-LQ-20260320-06 | Pine East district | 2.7 | 57 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-12
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W13
+  path: lq-weekly-report-12.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-03-27T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W13
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-03-27T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260323-01 | Pine treatment plant | 2.8 | 58 | 102 | accepted |
+
+    | ARWC-LQ-20260323-02 | River East district | 2.9 | 59 | 103 | accepted |
+
+    | ARWC-LQ-20260323-03 | Upland station | 3.0 | 60 | 104 | accepted |
+
+    | ARWC-LQ-20260323-04 | Pine East district | 3.1 | 61 | 96 | accepted |
+
+    | ARWC-LQ-20260323-05 | North reservoir | 3.2 | 62 | 97 | accepted |
+
+    | ARWC-LQ-20260323-06 | Pine treatment plant | 3.3 | 63 | 98 | accepted |
+
+    | ARWC-LQ-20260324-01 | Upland station | 0.6 | 64 | 99 | accepted |
+
+    | ARWC-LQ-20260324-02 | Pine East district | 0.7 | 65 | 100 | accepted |
+
+    | ARWC-LQ-20260324-03 | North reservoir | 0.8 | 66 | 101 | accepted |
+
+    | ARWC-LQ-20260324-04 | Pine treatment plant | 0.9 | 67 | 102 | accepted |
+
+    | ARWC-LQ-20260324-05 | River East district | 1.0 | 48 | 103 | accepted |
+
+    | ARWC-LQ-20260324-06 | Upland station | 1.1 | 49 | 104 | accepted |
+
+    | ARWC-LQ-20260325-01 | North reservoir | 1.2 | 50 | 96 | accepted |
+
+    | ARWC-LQ-20260325-02 | Pine treatment plant | 1.3 | 51 | 97 | accepted |
+
+    | ARWC-LQ-20260325-03 | River East district | 1.4 | 52 | 98 | accepted |
+
+    | ARWC-LQ-20260325-04 | Upland station | 1.5 | 53 | 99 | accepted |
+
+    | ARWC-LQ-20260325-05 | Pine East district | 1.6 | 54 | 100 | accepted |
+
+    | ARWC-LQ-20260325-06 | North reservoir | 1.7 | 55 | 101 | accepted |
+
+    | ARWC-LQ-20260326-01 | River East district | 1.8 | 56 | 102 | accepted |
+
+    | ARWC-LQ-20260326-02 | Upland station | 1.9 | 57 | 103 | accepted |
+
+    | ARWC-LQ-20260326-03 | Pine East district | 2.0 | 58 | 104 | accepted after repeat |
+
+    | ARWC-LQ-20260326-04 | North reservoir | 2.1 | 59 | 96 | accepted |
+
+    | ARWC-LQ-20260326-05 | Pine treatment plant | 2.2 | 60 | 97 | accepted |
+
+    | ARWC-LQ-20260326-06 | River East district | 2.3 | 61 | 98 | accepted |
+
+    | ARWC-LQ-20260327-01 | Pine East district | 2.4 | 62 | 99 | accepted |
+
+    | ARWC-LQ-20260327-02 | North reservoir | 2.5 | 63 | 100 | accepted |
+
+    | ARWC-LQ-20260327-03 | Pine treatment plant | 2.6 | 64 | 101 | accepted |
+
+    | ARWC-LQ-20260327-04 | River East district | 2.7 | 65 | 102 | accepted |
+
+    | ARWC-LQ-20260327-05 | Upland station | 2.8 | 66 | 103 | accepted |
+
+    | ARWC-LQ-20260327-06 | Pine East district | 2.9 | 67 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-13
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W14
+  path: lq-weekly-report-13.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-04-03T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W14
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-04-03T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260330-01 | Pine treatment plant | 3.0 | 48 | 96 | accepted |
+
+    | ARWC-LQ-20260330-02 | River East district | 3.1 | 49 | 97 | accepted |
+
+    | ARWC-LQ-20260330-03 | Upland station | 3.2 | 50 | 98 | accepted |
+
+    | ARWC-LQ-20260330-04 | Pine East district | 3.3 | 51 | 99 | accepted |
+
+    | ARWC-LQ-20260330-05 | North reservoir | 0.6 | 52 | 100 | accepted |
+
+    | ARWC-LQ-20260330-06 | Pine treatment plant | 0.7 | 53 | 101 | accepted |
+
+    | ARWC-LQ-20260331-01 | Upland station | 0.8 | 54 | 102 | accepted |
+
+    | ARWC-LQ-20260331-02 | Pine East district | 0.9 | 55 | 103 | accepted |
+
+    | ARWC-LQ-20260331-03 | North reservoir | 1.0 | 56 | 104 | accepted |
+
+    | ARWC-LQ-20260331-04 | Pine treatment plant | 1.1 | 57 | 96 | accepted |
+
+    | ARWC-LQ-20260331-05 | River East district | 1.2 | 58 | 97 | accepted |
+
+    | ARWC-LQ-20260331-06 | Upland station | 1.3 | 59 | 98 | accepted |
+
+    | ARWC-LQ-20260401-01 | North reservoir | 1.4 | 60 | 99 | accepted |
+
+    | ARWC-LQ-20260401-02 | Pine treatment plant | 1.5 | 61 | 100 | accepted |
+
+    | ARWC-LQ-20260401-03 | River East district | 1.6 | 62 | 101 | accepted |
+
+    | ARWC-LQ-20260401-04 | Upland station | 1.7 | 63 | 102 | accepted after repeat |
+
+    | ARWC-LQ-20260401-05 | Pine East district | 1.8 | 64 | 103 | accepted |
+
+    | ARWC-LQ-20260401-06 | North reservoir | 1.9 | 65 | 104 | accepted |
+
+    | ARWC-LQ-20260402-01 | River East district | 2.0 | 66 | 96 | accepted |
+
+    | ARWC-LQ-20260402-02 | Upland station | 2.1 | 67 | 97 | accepted |
+
+    | ARWC-LQ-20260402-03 | Pine East district | 2.2 | 48 | 98 | accepted |
+
+    | ARWC-LQ-20260402-04 | North reservoir | 2.3 | 49 | 99 | accepted |
+
+    | ARWC-LQ-20260402-05 | Pine treatment plant | 2.4 | 50 | 100 | accepted |
+
+    | ARWC-LQ-20260402-06 | River East district | 2.5 | 51 | 101 | accepted |
+
+    | ARWC-LQ-20260403-01 | Pine East district | 2.6 | 52 | 102 | accepted |
+
+    | ARWC-LQ-20260403-02 | North reservoir | 2.7 | 53 | 103 | accepted |
+
+    | ARWC-LQ-20260403-03 | Pine treatment plant | 2.8 | 54 | 104 | accepted |
+
+    | ARWC-LQ-20260403-04 | River East district | 2.9 | 55 | 96 | accepted |
+
+    | ARWC-LQ-20260403-05 | Upland station | 3.0 | 56 | 97 | accepted |
+
+    | ARWC-LQ-20260403-06 | Pine East district | 3.1 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-14
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W15
+  path: lq-weekly-report-14.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-04-10T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W15
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-04-10T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 0; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260406-01 | Pine treatment plant | 3.2 | 58 | 99 | accepted |
+
+    | ARWC-LQ-20260406-02 | River East district | 3.3 | 59 | 100 | accepted |
+
+    | ARWC-LQ-20260406-03 | Upland station | 0.6 | 60 | 101 | accepted |
+
+    | ARWC-LQ-20260406-04 | Pine East district | 0.7 | 61 | 102 | accepted |
+
+    | ARWC-LQ-20260406-05 | North reservoir | 0.8 | 62 | 103 | accepted |
+
+    | ARWC-LQ-20260406-06 | Pine treatment plant | 0.9 | 63 | 104 | accepted |
+
+    | ARWC-LQ-20260407-01 | Upland station | 1.0 | 64 | 96 | accepted |
+
+    | ARWC-LQ-20260407-02 | Pine East district | 1.1 | 65 | 97 | accepted |
+
+    | ARWC-LQ-20260407-03 | North reservoir | 1.2 | 66 | 98 | accepted |
+
+    | ARWC-LQ-20260407-04 | Pine treatment plant | 1.3 | 67 | 99 | accepted |
+
+    | ARWC-LQ-20260407-05 | River East district | 4.6 | 48 | 100 | resample requested |
+
+    | ARWC-LQ-20260407-06 | Upland station | 1.5 | 49 | 101 | accepted |
+
+    | ARWC-LQ-20260408-01 | North reservoir | 1.6 | 50 | 102 | accepted |
+
+    | ARWC-LQ-20260408-02 | Pine treatment plant | 1.7 | 51 | 103 | accepted |
+
+    | ARWC-LQ-20260408-03 | River East district | 1.8 | 52 | 104 | accepted |
+
+    | ARWC-LQ-20260408-04 | Upland station | 1.9 | 53 | 96 | accepted |
+
+    | ARWC-LQ-20260408-05 | Pine East district | 2.0 | 54 | 97 | accepted |
+
+    | ARWC-LQ-20260408-06 | North reservoir | 2.1 | 55 | 98 | accepted |
+
+    | ARWC-LQ-20260409-01 | River East district | 2.2 | 56 | 99 | accepted |
+
+    | ARWC-LQ-20260409-02 | Upland station | 2.3 | 57 | 100 | accepted |
+
+    | ARWC-LQ-20260409-03 | Pine East district | 2.4 | 58 | 101 | accepted |
+
+    | ARWC-LQ-20260409-04 | North reservoir | 2.5 | 59 | 102 | accepted |
+
+    | ARWC-LQ-20260409-05 | Pine treatment plant | 2.6 | 60 | 103 | accepted |
+
+    | ARWC-LQ-20260409-06 | River East district | 2.7 | 61 | 104 | accepted |
+
+    | ARWC-LQ-20260410-01 | Pine East district | 2.8 | 62 | 96 | accepted |
+
+    | ARWC-LQ-20260410-02 | North reservoir | 2.9 | 63 | 97 | accepted |
+
+    | ARWC-LQ-20260410-03 | Pine treatment plant | 3.0 | 64 | 98 | accepted |
+
+    | ARWC-LQ-20260410-04 | River East district | 3.1 | 65 | 99 | accepted |
+
+    | ARWC-LQ-20260410-05 | Upland station | 3.2 | 66 | 100 | accepted |
+
+    | ARWC-LQ-20260410-06 | Pine East district | 3.3 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-15
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W16
+  path: lq-weekly-report-15.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-04-17T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W16
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-04-17T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260413-01 | Pine treatment plant | 0.6 | 48 | 102 | accepted |
+
+    | ARWC-LQ-20260413-02 | River East district | 0.7 | 49 | 103 | accepted |
+
+    | ARWC-LQ-20260413-03 | Upland station | 0.8 | 50 | 104 | accepted |
+
+    | ARWC-LQ-20260413-04 | Pine East district | 0.9 | 51 | 96 | accepted |
+
+    | ARWC-LQ-20260413-05 | North reservoir | 1.0 | 52 | 97 | accepted |
+
+    | ARWC-LQ-20260413-06 | Pine treatment plant | 1.1 | 53 | 98 | accepted after repeat |
+
+    | ARWC-LQ-20260414-01 | Upland station | 1.2 | 54 | 99 | accepted |
+
+    | ARWC-LQ-20260414-02 | Pine East district | 1.3 | 55 | 100 | accepted |
+
+    | ARWC-LQ-20260414-03 | North reservoir | 1.4 | 56 | 101 | accepted |
+
+    | ARWC-LQ-20260414-04 | Pine treatment plant | 1.5 | 57 | 102 | accepted |
+
+    | ARWC-LQ-20260414-05 | River East district | 1.6 | 58 | 103 | accepted |
+
+    | ARWC-LQ-20260414-06 | Upland station | 1.7 | 59 | 104 | accepted |
+
+    | ARWC-LQ-20260415-01 | North reservoir | 1.8 | 60 | 96 | accepted |
+
+    | ARWC-LQ-20260415-02 | Pine treatment plant | 1.9 | 61 | 97 | accepted |
+
+    | ARWC-LQ-20260415-03 | River East district | 2.0 | 62 | 98 | accepted |
+
+    | ARWC-LQ-20260415-04 | Upland station | 2.1 | 63 | 99 | accepted |
+
+    | ARWC-LQ-20260415-05 | Pine East district | 2.2 | 64 | 100 | accepted |
+
+    | ARWC-LQ-20260415-06 | North reservoir | 2.3 | 65 | 101 | accepted |
+
+    | ARWC-LQ-20260416-01 | River East district | 2.4 | 66 | 102 | accepted |
+
+    | ARWC-LQ-20260416-02 | Upland station | 2.5 | 67 | 103 | accepted |
+
+    | ARWC-LQ-20260416-03 | Pine East district | 2.6 | 48 | 104 | accepted |
+
+    | ARWC-LQ-20260416-04 | North reservoir | 2.7 | 49 | 96 | accepted |
+
+    | ARWC-LQ-20260416-05 | Pine treatment plant | 2.8 | 50 | 97 | accepted |
+
+    | ARWC-LQ-20260416-06 | River East district | 2.9 | 51 | 98 | accepted |
+
+    | ARWC-LQ-20260417-01 | Pine East district | 3.0 | 52 | 99 | accepted |
+
+    | ARWC-LQ-20260417-02 | North reservoir | 3.1 | 53 | 100 | accepted |
+
+    | ARWC-LQ-20260417-03 | Pine treatment plant | 3.2 | 54 | 101 | accepted |
+
+    | ARWC-LQ-20260417-04 | River East district | 3.3 | 55 | 102 | accepted |
+
+    | ARWC-LQ-20260417-05 | Upland station | 0.6 | 56 | 103 | accepted |
+
+    | ARWC-LQ-20260417-06 | Pine East district | 0.7 | 57 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-16
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W17
+  path: lq-weekly-report-16.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-04-24T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W17
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-04-24T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 2; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260420-01 | Pine treatment plant | 0.8 | 58 | 96 | accepted after repeat |
+
+    | ARWC-LQ-20260420-02 | River East district | 0.9 | 59 | 97 | accepted |
+
+    | ARWC-LQ-20260420-03 | Upland station | 1.0 | 60 | 98 | accepted |
+
+    | ARWC-LQ-20260420-04 | Pine East district | 1.1 | 61 | 99 | accepted |
+
+    | ARWC-LQ-20260420-05 | North reservoir | 1.2 | 62 | 100 | accepted |
+
+    | ARWC-LQ-20260420-06 | Pine treatment plant | 1.3 | 63 | 101 | accepted |
+
+    | ARWC-LQ-20260421-01 | Upland station | 1.4 | 64 | 102 | accepted |
+
+    | ARWC-LQ-20260421-02 | Pine East district | 1.5 | 65 | 103 | accepted |
+
+    | ARWC-LQ-20260421-03 | North reservoir | 1.6 | 66 | 104 | accepted |
+
+    | ARWC-LQ-20260421-04 | Pine treatment plant | 1.7 | 67 | 96 | accepted |
+
+    | ARWC-LQ-20260421-05 | River East district | 1.8 | 48 | 97 | accepted |
+
+    | ARWC-LQ-20260421-06 | Upland station | 1.9 | 49 | 98 | accepted |
+
+    | ARWC-LQ-20260422-01 | North reservoir | 2.0 | 50 | 99 | accepted |
+
+    | ARWC-LQ-20260422-02 | Pine treatment plant | 2.1 | 51 | 100 | accepted |
+
+    | ARWC-LQ-20260422-03 | River East district | 2.2 | 52 | 101 | accepted |
+
+    | ARWC-LQ-20260422-04 | Upland station | 2.3 | 53 | 102 | accepted |
+
+    | ARWC-LQ-20260422-05 | Pine East district | 2.4 | 54 | 103 | accepted |
+
+    | ARWC-LQ-20260422-06 | North reservoir | 2.5 | 55 | 104 | accepted |
+
+    | ARWC-LQ-20260423-01 | River East district | 2.6 | 56 | 96 | accepted |
+
+    | ARWC-LQ-20260423-02 | Upland station | 2.7 | 57 | 97 | accepted |
+
+    | ARWC-LQ-20260423-03 | Pine East district | 2.8 | 58 | 98 | accepted |
+
+    | ARWC-LQ-20260423-04 | North reservoir | 2.9 | 59 | 99 | accepted |
+
+    | ARWC-LQ-20260423-05 | Pine treatment plant | 3.0 | 60 | 100 | accepted |
+
+    | ARWC-LQ-20260423-06 | River East district | 3.1 | 61 | 101 | accepted |
+
+    | ARWC-LQ-20260424-01 | Pine East district | 3.2 | 62 | 102 | accepted |
+
+    | ARWC-LQ-20260424-02 | North reservoir | 3.3 | 63 | 103 | accepted after repeat |
+
+    | ARWC-LQ-20260424-03 | Pine treatment plant | 0.6 | 64 | 104 | accepted |
+
+    | ARWC-LQ-20260424-04 | River East district | 0.7 | 65 | 96 | accepted |
+
+    | ARWC-LQ-20260424-05 | Upland station | 0.8 | 66 | 97 | accepted |
+
+    | ARWC-LQ-20260424-06 | Pine East district | 0.9 | 67 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-17
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W18
+  path: lq-weekly-report-17.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-01T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W18
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-05-01T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260427-01 | Pine treatment plant | 4.5 | 48 | 99 | resample requested |
+
+    | ARWC-LQ-20260427-02 | River East district | 1.1 | 49 | 100 | accepted |
+
+    | ARWC-LQ-20260427-03 | Upland station | 1.2 | 50 | 101 | accepted |
+
+    | ARWC-LQ-20260427-04 | Pine East district | 1.3 | 51 | 102 | accepted |
+
+    | ARWC-LQ-20260427-05 | North reservoir | 1.4 | 52 | 103 | accepted |
+
+    | ARWC-LQ-20260427-06 | Pine treatment plant | 1.5 | 53 | 104 | accepted |
+
+    | ARWC-LQ-20260428-01 | Upland station | 1.6 | 54 | 96 | accepted |
+
+    | ARWC-LQ-20260428-02 | Pine East district | 1.7 | 55 | 97 | accepted |
+
+    | ARWC-LQ-20260428-03 | North reservoir | 1.8 | 56 | 98 | accepted |
+
+    | ARWC-LQ-20260428-04 | Pine treatment plant | 1.9 | 57 | 99 | accepted |
+
+    | ARWC-LQ-20260428-05 | River East district | 2.0 | 58 | 100 | accepted |
+
+    | ARWC-LQ-20260428-06 | Upland station | 2.1 | 59 | 101 | accepted |
+
+    | ARWC-LQ-20260429-01 | North reservoir | 2.2 | 60 | 102 | accepted |
+
+    | ARWC-LQ-20260429-02 | Pine treatment plant | 2.3 | 61 | 103 | accepted |
+
+    | ARWC-LQ-20260429-03 | River East district | 2.4 | 62 | 104 | accepted |
+
+    | ARWC-LQ-20260429-04 | Upland station | 2.5 | 63 | 96 | accepted |
+
+    | ARWC-LQ-20260429-05 | Pine East district | 2.6 | 64 | 97 | accepted |
+
+    | ARWC-LQ-20260429-06 | North reservoir | 2.7 | 65 | 98 | accepted |
+
+    | ARWC-LQ-20260430-01 | River East district | 2.8 | 66 | 99 | accepted |
+
+    | ARWC-LQ-20260430-02 | Upland station | 2.9 | 67 | 100 | accepted |
+
+    | ARWC-LQ-20260430-03 | Pine East district | 3.0 | 48 | 101 | accepted after repeat |
+
+    | ARWC-LQ-20260430-04 | North reservoir | 3.1 | 49 | 102 | accepted |
+
+    | ARWC-LQ-20260430-05 | Pine treatment plant | 3.2 | 50 | 103 | accepted |
+
+    | ARWC-LQ-20260430-06 | River East district | 3.3 | 51 | 104 | accepted |
+
+    | ARWC-LQ-20260501-01 | Pine East district | 0.6 | 52 | 96 | accepted |
+
+    | ARWC-LQ-20260501-02 | North reservoir | 0.7 | 53 | 97 | accepted |
+
+    | ARWC-LQ-20260501-03 | Pine treatment plant | 0.8 | 54 | 98 | accepted |
+
+    | ARWC-LQ-20260501-04 | River East district | 0.9 | 55 | 99 | accepted |
+
+    | ARWC-LQ-20260501-05 | Upland station | 1.0 | 56 | 100 | accepted |
+
+    | ARWC-LQ-20260501-06 | Pine East district | 1.1 | 57 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-18
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W19
+  path: lq-weekly-report-18.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-08T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W19
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-05-08T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260504-01 | Pine treatment plant | 1.2 | 58 | 102 | accepted |
+
+    | ARWC-LQ-20260504-02 | River East district | 1.3 | 59 | 103 | accepted |
+
+    | ARWC-LQ-20260504-03 | Upland station | 1.4 | 60 | 104 | accepted |
+
+    | ARWC-LQ-20260504-04 | Pine East district | 1.5 | 61 | 96 | accepted |
+
+    | ARWC-LQ-20260504-05 | North reservoir | 1.6 | 62 | 97 | accepted |
+
+    | ARWC-LQ-20260504-06 | Pine treatment plant | 1.7 | 63 | 98 | accepted |
+
+    | ARWC-LQ-20260505-01 | Upland station | 1.8 | 64 | 99 | accepted |
+
+    | ARWC-LQ-20260505-02 | Pine East district | 1.9 | 65 | 100 | accepted |
+
+    | ARWC-LQ-20260505-03 | North reservoir | 2.0 | 66 | 101 | accepted |
+
+    | ARWC-LQ-20260505-04 | Pine treatment plant | 2.1 | 67 | 102 | accepted |
+
+    | ARWC-LQ-20260505-05 | River East district | 2.2 | 48 | 103 | accepted |
+
+    | ARWC-LQ-20260505-06 | Upland station | 2.3 | 49 | 104 | accepted |
+
+    | ARWC-LQ-20260506-01 | North reservoir | 2.4 | 50 | 96 | accepted |
+
+    | ARWC-LQ-20260506-02 | Pine treatment plant | 2.5 | 51 | 97 | accepted |
+
+    | ARWC-LQ-20260506-03 | River East district | 2.6 | 52 | 98 | accepted |
+
+    | ARWC-LQ-20260506-04 | Upland station | 2.7 | 53 | 99 | accepted after repeat |
+
+    | ARWC-LQ-20260506-05 | Pine East district | 2.8 | 54 | 100 | accepted |
+
+    | ARWC-LQ-20260506-06 | North reservoir | 2.9 | 55 | 101 | accepted |
+
+    | ARWC-LQ-20260507-01 | River East district | 3.0 | 56 | 102 | accepted |
+
+    | ARWC-LQ-20260507-02 | Upland station | 3.1 | 57 | 103 | accepted |
+
+    | ARWC-LQ-20260507-03 | Pine East district | 3.2 | 58 | 104 | accepted |
+
+    | ARWC-LQ-20260507-04 | North reservoir | 3.3 | 59 | 96 | accepted |
+
+    | ARWC-LQ-20260507-05 | Pine treatment plant | 0.6 | 60 | 97 | accepted |
+
+    | ARWC-LQ-20260507-06 | River East district | 0.7 | 61 | 98 | accepted |
+
+    | ARWC-LQ-20260508-01 | Pine East district | 0.8 | 62 | 99 | accepted |
+
+    | ARWC-LQ-20260508-02 | North reservoir | 0.9 | 63 | 100 | accepted |
+
+    | ARWC-LQ-20260508-03 | Pine treatment plant | 1.0 | 64 | 101 | accepted |
+
+    | ARWC-LQ-20260508-04 | River East district | 1.1 | 65 | 102 | accepted |
+
+    | ARWC-LQ-20260508-05 | Upland station | 1.2 | 66 | 103 | accepted |
+
+    | ARWC-LQ-20260508-06 | Pine East district | 1.3 | 67 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-19
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W20
+  path: lq-weekly-report-19.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-15T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W20
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-05-15T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260511-01 | Pine treatment plant | 1.4 | 48 | 96 | accepted |
+
+    | ARWC-LQ-20260511-02 | River East district | 1.5 | 49 | 97 | accepted |
+
+    | ARWC-LQ-20260511-03 | Upland station | 1.6 | 50 | 98 | accepted |
+
+    | ARWC-LQ-20260511-04 | Pine East district | 1.7 | 51 | 99 | accepted |
+
+    | ARWC-LQ-20260511-05 | North reservoir | 1.8 | 52 | 100 | accepted |
+
+    | ARWC-LQ-20260511-06 | Pine treatment plant | 1.9 | 53 | 101 | accepted |
+
+    | ARWC-LQ-20260512-01 | Upland station | 2.0 | 54 | 102 | accepted |
+
+    | ARWC-LQ-20260512-02 | Pine East district | 2.1 | 55 | 103 | accepted |
+
+    | ARWC-LQ-20260512-03 | North reservoir | 2.2 | 56 | 104 | accepted |
+
+    | ARWC-LQ-20260512-04 | Pine treatment plant | 2.3 | 57 | 96 | accepted |
+
+    | ARWC-LQ-20260512-05 | River East district | 2.4 | 58 | 97 | accepted after repeat |
+
+    | ARWC-LQ-20260512-06 | Upland station | 2.5 | 59 | 98 | accepted |
+
+    | ARWC-LQ-20260513-01 | North reservoir | 2.6 | 60 | 99 | accepted |
+
+    | ARWC-LQ-20260513-02 | Pine treatment plant | 2.7 | 61 | 100 | accepted |
+
+    | ARWC-LQ-20260513-03 | River East district | 2.8 | 62 | 101 | accepted |
+
+    | ARWC-LQ-20260513-04 | Upland station | 2.9 | 63 | 102 | accepted |
+
+    | ARWC-LQ-20260513-05 | Pine East district | 3.0 | 64 | 103 | accepted |
+
+    | ARWC-LQ-20260513-06 | North reservoir | 3.1 | 65 | 104 | accepted |
+
+    | ARWC-LQ-20260514-01 | River East district | 3.2 | 66 | 96 | accepted |
+
+    | ARWC-LQ-20260514-02 | Upland station | 3.3 | 67 | 97 | accepted |
+
+    | ARWC-LQ-20260514-03 | Pine East district | 4.7 | 48 | 98 | resample requested |
+
+    | ARWC-LQ-20260514-04 | North reservoir | 0.7 | 49 | 99 | accepted |
+
+    | ARWC-LQ-20260514-05 | Pine treatment plant | 0.8 | 50 | 100 | accepted |
+
+    | ARWC-LQ-20260514-06 | River East district | 0.9 | 51 | 101 | accepted |
+
+    | ARWC-LQ-20260515-01 | Pine East district | 1.0 | 52 | 102 | accepted |
+
+    | ARWC-LQ-20260515-02 | North reservoir | 1.1 | 53 | 103 | accepted |
+
+    | ARWC-LQ-20260515-03 | Pine treatment plant | 1.2 | 54 | 104 | accepted |
+
+    | ARWC-LQ-20260515-04 | River East district | 1.3 | 55 | 96 | accepted |
+
+    | ARWC-LQ-20260515-05 | Upland station | 1.4 | 56 | 97 | accepted |
+
+    | ARWC-LQ-20260515-06 | Pine East district | 1.5 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-20
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W21
+  path: lq-weekly-report-20.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-22T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W21
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-05-22T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260518-01 | Pine treatment plant | 1.6 | 58 | 99 | accepted |
+
+    | ARWC-LQ-20260518-02 | River East district | 1.7 | 59 | 100 | accepted |
+
+    | ARWC-LQ-20260518-03 | Upland station | 1.8 | 60 | 101 | accepted |
+
+    | ARWC-LQ-20260518-04 | Pine East district | 1.9 | 61 | 102 | accepted |
+
+    | ARWC-LQ-20260518-05 | North reservoir | 2.0 | 62 | 103 | accepted |
+
+    | ARWC-LQ-20260518-06 | Pine treatment plant | 2.1 | 63 | 104 | accepted after repeat |
+
+    | ARWC-LQ-20260519-01 | Upland station | 2.2 | 64 | 96 | accepted |
+
+    | ARWC-LQ-20260519-02 | Pine East district | 2.3 | 65 | 97 | accepted |
+
+    | ARWC-LQ-20260519-03 | North reservoir | 2.4 | 66 | 98 | accepted |
+
+    | ARWC-LQ-20260519-04 | Pine treatment plant | 2.5 | 67 | 99 | accepted |
+
+    | ARWC-LQ-20260519-05 | River East district | 2.6 | 48 | 100 | accepted |
+
+    | ARWC-LQ-20260519-06 | Upland station | 2.7 | 49 | 101 | accepted |
+
+    | ARWC-LQ-20260520-01 | North reservoir | 2.8 | 50 | 102 | accepted |
+
+    | ARWC-LQ-20260520-02 | Pine treatment plant | 2.9 | 51 | 103 | accepted |
+
+    | ARWC-LQ-20260520-03 | River East district | 3.0 | 52 | 104 | accepted |
+
+    | ARWC-LQ-20260520-04 | Upland station | 3.1 | 53 | 96 | accepted |
+
+    | ARWC-LQ-20260520-05 | Pine East district | 3.2 | 54 | 97 | accepted |
+
+    | ARWC-LQ-20260520-06 | North reservoir | 3.3 | 55 | 98 | accepted |
+
+    | ARWC-LQ-20260521-01 | River East district | 0.6 | 56 | 99 | accepted |
+
+    | ARWC-LQ-20260521-02 | Upland station | 0.7 | 57 | 100 | accepted |
+
+    | ARWC-LQ-20260521-03 | Pine East district | 0.8 | 58 | 101 | accepted |
+
+    | ARWC-LQ-20260521-04 | North reservoir | 0.9 | 59 | 102 | accepted |
+
+    | ARWC-LQ-20260521-05 | Pine treatment plant | 1.0 | 60 | 103 | accepted |
+
+    | ARWC-LQ-20260521-06 | River East district | 1.1 | 61 | 104 | accepted |
+
+    | ARWC-LQ-20260522-01 | Pine East district | 1.2 | 62 | 96 | accepted |
+
+    | ARWC-LQ-20260522-02 | North reservoir | 1.3 | 63 | 97 | accepted |
+
+    | ARWC-LQ-20260522-03 | Pine treatment plant | 1.4 | 64 | 98 | accepted |
+
+    | ARWC-LQ-20260522-04 | River East district | 1.5 | 65 | 99 | accepted |
+
+    | ARWC-LQ-20260522-05 | Upland station | 1.6 | 66 | 100 | accepted |
+
+    | ARWC-LQ-20260522-06 | Pine East district | 1.7 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-21
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W22
+  path: lq-weekly-report-21.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-05-29T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W22
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-05-29T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 2; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260525-01 | Pine treatment plant | 1.8 | 48 | 102 | accepted after repeat |
+
+    | ARWC-LQ-20260525-02 | River East district | 1.9 | 49 | 103 | accepted |
+
+    | ARWC-LQ-20260525-03 | Upland station | 2.0 | 50 | 104 | accepted |
+
+    | ARWC-LQ-20260525-04 | Pine East district | 2.1 | 51 | 96 | accepted |
+
+    | ARWC-LQ-20260525-05 | North reservoir | 2.2 | 52 | 97 | accepted |
+
+    | ARWC-LQ-20260525-06 | Pine treatment plant | 2.3 | 53 | 98 | accepted |
+
+    | ARWC-LQ-20260526-01 | Upland station | 2.4 | 54 | 99 | accepted |
+
+    | ARWC-LQ-20260526-02 | Pine East district | 2.5 | 55 | 100 | accepted |
+
+    | ARWC-LQ-20260526-03 | North reservoir | 2.6 | 56 | 101 | accepted |
+
+    | ARWC-LQ-20260526-04 | Pine treatment plant | 2.7 | 57 | 102 | accepted |
+
+    | ARWC-LQ-20260526-05 | River East district | 2.8 | 58 | 103 | accepted |
+
+    | ARWC-LQ-20260526-06 | Upland station | 2.9 | 59 | 104 | accepted |
+
+    | ARWC-LQ-20260527-01 | North reservoir | 3.0 | 60 | 96 | accepted |
+
+    | ARWC-LQ-20260527-02 | Pine treatment plant | 3.1 | 61 | 97 | accepted |
+
+    | ARWC-LQ-20260527-03 | River East district | 3.2 | 62 | 98 | accepted |
+
+    | ARWC-LQ-20260527-04 | Upland station | 3.3 | 63 | 99 | accepted |
+
+    | ARWC-LQ-20260527-05 | Pine East district | 0.6 | 64 | 100 | accepted |
+
+    | ARWC-LQ-20260527-06 | North reservoir | 0.7 | 65 | 101 | accepted |
+
+    | ARWC-LQ-20260528-01 | River East district | 0.8 | 66 | 102 | accepted |
+
+    | ARWC-LQ-20260528-02 | Upland station | 0.9 | 67 | 103 | accepted |
+
+    | ARWC-LQ-20260528-03 | Pine East district | 1.0 | 48 | 104 | accepted |
+
+    | ARWC-LQ-20260528-04 | North reservoir | 1.1 | 49 | 96 | accepted |
+
+    | ARWC-LQ-20260528-05 | Pine treatment plant | 1.2 | 50 | 97 | accepted |
+
+    | ARWC-LQ-20260528-06 | River East district | 1.3 | 51 | 98 | accepted |
+
+    | ARWC-LQ-20260529-01 | Pine East district | 1.4 | 52 | 99 | accepted |
+
+    | ARWC-LQ-20260529-02 | North reservoir | 1.5 | 53 | 100 | accepted after repeat |
+
+    | ARWC-LQ-20260529-03 | Pine treatment plant | 1.6 | 54 | 101 | accepted |
+
+    | ARWC-LQ-20260529-04 | River East district | 1.7 | 55 | 102 | accepted |
+
+    | ARWC-LQ-20260529-05 | Upland station | 1.8 | 56 | 103 | accepted |
+
+    | ARWC-LQ-20260529-06 | Pine East district | 1.9 | 57 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-22
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W23
+  path: lq-weekly-report-22.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-05T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W23
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-06-05T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260601-01 | Pine treatment plant | 2.0 | 58 | 96 | accepted |
+
+    | ARWC-LQ-20260601-02 | River East district | 2.1 | 59 | 97 | accepted |
+
+    | ARWC-LQ-20260601-03 | Upland station | 2.2 | 60 | 98 | accepted |
+
+    | ARWC-LQ-20260601-04 | Pine East district | 2.3 | 61 | 99 | accepted |
+
+    | ARWC-LQ-20260601-05 | North reservoir | 2.4 | 62 | 100 | accepted |
+
+    | ARWC-LQ-20260601-06 | Pine treatment plant | 2.5 | 63 | 101 | accepted |
+
+    | ARWC-LQ-20260602-01 | Upland station | 2.6 | 64 | 102 | accepted |
+
+    | ARWC-LQ-20260602-02 | Pine East district | 2.7 | 65 | 103 | accepted |
+
+    | ARWC-LQ-20260602-03 | North reservoir | 2.8 | 66 | 104 | accepted |
+
+    | ARWC-LQ-20260602-04 | Pine treatment plant | 2.9 | 67 | 96 | accepted |
+
+    | ARWC-LQ-20260602-05 | River East district | 4.6 | 48 | 97 | resample requested |
+
+    | ARWC-LQ-20260602-06 | Upland station | 3.1 | 49 | 98 | accepted |
+
+    | ARWC-LQ-20260603-01 | North reservoir | 3.2 | 50 | 99 | accepted |
+
+    | ARWC-LQ-20260603-02 | Pine treatment plant | 3.3 | 51 | 100 | accepted |
+
+    | ARWC-LQ-20260603-03 | River East district | 0.6 | 52 | 101 | accepted |
+
+    | ARWC-LQ-20260603-04 | Upland station | 0.7 | 53 | 102 | accepted |
+
+    | ARWC-LQ-20260603-05 | Pine East district | 0.8 | 54 | 103 | accepted |
+
+    | ARWC-LQ-20260603-06 | North reservoir | 0.9 | 55 | 104 | accepted |
+
+    | ARWC-LQ-20260604-01 | River East district | 1.0 | 56 | 96 | accepted |
+
+    | ARWC-LQ-20260604-02 | Upland station | 1.1 | 57 | 97 | accepted |
+
+    | ARWC-LQ-20260604-03 | Pine East district | 1.2 | 58 | 98 | accepted after repeat |
+
+    | ARWC-LQ-20260604-04 | North reservoir | 1.3 | 59 | 99 | accepted |
+
+    | ARWC-LQ-20260604-05 | Pine treatment plant | 1.4 | 60 | 100 | accepted |
+
+    | ARWC-LQ-20260604-06 | River East district | 1.5 | 61 | 101 | accepted |
+
+    | ARWC-LQ-20260605-01 | Pine East district | 1.6 | 62 | 102 | accepted |
+
+    | ARWC-LQ-20260605-02 | North reservoir | 1.7 | 63 | 103 | accepted |
+
+    | ARWC-LQ-20260605-03 | Pine treatment plant | 1.8 | 64 | 104 | accepted |
+
+    | ARWC-LQ-20260605-04 | River East district | 1.9 | 65 | 96 | accepted |
+
+    | ARWC-LQ-20260605-05 | Upland station | 2.0 | 66 | 97 | accepted |
+
+    | ARWC-LQ-20260605-06 | Pine East district | 2.1 | 67 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-23
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W24
+  path: lq-weekly-report-23.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-12T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W24
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-06-12T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260608-01 | Pine treatment plant | 2.2 | 48 | 99 | accepted |
+
+    | ARWC-LQ-20260608-02 | River East district | 2.3 | 49 | 100 | accepted |
+
+    | ARWC-LQ-20260608-03 | Upland station | 2.4 | 50 | 101 | accepted |
+
+    | ARWC-LQ-20260608-04 | Pine East district | 2.5 | 51 | 102 | accepted |
+
+    | ARWC-LQ-20260608-05 | North reservoir | 2.6 | 52 | 103 | accepted |
+
+    | ARWC-LQ-20260608-06 | Pine treatment plant | 2.7 | 53 | 104 | accepted |
+
+    | ARWC-LQ-20260609-01 | Upland station | 2.8 | 54 | 96 | accepted |
+
+    | ARWC-LQ-20260609-02 | Pine East district | 2.9 | 55 | 97 | accepted |
+
+    | ARWC-LQ-20260609-03 | North reservoir | 3.0 | 56 | 98 | accepted |
+
+    | ARWC-LQ-20260609-04 | Pine treatment plant | 3.1 | 57 | 99 | accepted |
+
+    | ARWC-LQ-20260609-05 | River East district | 3.2 | 58 | 100 | accepted |
+
+    | ARWC-LQ-20260609-06 | Upland station | 3.3 | 59 | 101 | accepted |
+
+    | ARWC-LQ-20260610-01 | North reservoir | 0.6 | 60 | 102 | accepted |
+
+    | ARWC-LQ-20260610-02 | Pine treatment plant | 0.7 | 61 | 103 | accepted |
+
+    | ARWC-LQ-20260610-03 | River East district | 0.8 | 62 | 104 | accepted |
+
+    | ARWC-LQ-20260610-04 | Upland station | 0.9 | 63 | 96 | accepted after repeat |
+
+    | ARWC-LQ-20260610-05 | Pine East district | 1.0 | 64 | 97 | accepted |
+
+    | ARWC-LQ-20260610-06 | North reservoir | 1.1 | 65 | 98 | accepted |
+
+    | ARWC-LQ-20260611-01 | River East district | 1.2 | 66 | 99 | accepted |
+
+    | ARWC-LQ-20260611-02 | Upland station | 1.3 | 67 | 100 | accepted |
+
+    | ARWC-LQ-20260611-03 | Pine East district | 1.4 | 48 | 101 | accepted |
+
+    | ARWC-LQ-20260611-04 | North reservoir | 1.5 | 49 | 102 | accepted |
+
+    | ARWC-LQ-20260611-05 | Pine treatment plant | 1.6 | 50 | 103 | accepted |
+
+    | ARWC-LQ-20260611-06 | River East district | 1.7 | 51 | 104 | accepted |
+
+    | ARWC-LQ-20260612-01 | Pine East district | 1.8 | 52 | 96 | accepted |
+
+    | ARWC-LQ-20260612-02 | North reservoir | 1.9 | 53 | 97 | accepted |
+
+    | ARWC-LQ-20260612-03 | Pine treatment plant | 2.0 | 54 | 98 | accepted |
+
+    | ARWC-LQ-20260612-04 | River East district | 2.1 | 55 | 99 | accepted |
+
+    | ARWC-LQ-20260612-05 | Upland station | 2.2 | 56 | 100 | accepted |
+
+    | ARWC-LQ-20260612-06 | Pine East district | 2.3 | 57 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-24
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W25
+  path: lq-weekly-report-24.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-19T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W25
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-06-19T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260615-01 | Pine treatment plant | 2.4 | 58 | 102 | accepted |
+
+    | ARWC-LQ-20260615-02 | River East district | 2.5 | 59 | 103 | accepted |
+
+    | ARWC-LQ-20260615-03 | Upland station | 2.6 | 60 | 104 | accepted |
+
+    | ARWC-LQ-20260615-04 | Pine East district | 2.7 | 61 | 96 | accepted |
+
+    | ARWC-LQ-20260615-05 | North reservoir | 2.8 | 62 | 97 | accepted |
+
+    | ARWC-LQ-20260615-06 | Pine treatment plant | 2.9 | 63 | 98 | accepted |
+
+    | ARWC-LQ-20260616-01 | Upland station | 3.0 | 64 | 99 | accepted |
+
+    | ARWC-LQ-20260616-02 | Pine East district | 3.1 | 65 | 100 | accepted |
+
+    | ARWC-LQ-20260616-03 | North reservoir | 3.2 | 66 | 101 | accepted |
+
+    | ARWC-LQ-20260616-04 | Pine treatment plant | 3.3 | 67 | 102 | accepted |
+
+    | ARWC-LQ-20260616-05 | River East district | 0.6 | 48 | 103 | accepted after repeat |
+
+    | ARWC-LQ-20260616-06 | Upland station | 0.7 | 49 | 104 | accepted |
+
+    | ARWC-LQ-20260617-01 | North reservoir | 0.8 | 50 | 96 | accepted |
+
+    | ARWC-LQ-20260617-02 | Pine treatment plant | 0.9 | 51 | 97 | accepted |
+
+    | ARWC-LQ-20260617-03 | River East district | 1.0 | 52 | 98 | accepted |
+
+    | ARWC-LQ-20260617-04 | Upland station | 1.1 | 53 | 99 | accepted |
+
+    | ARWC-LQ-20260617-05 | Pine East district | 1.2 | 54 | 100 | accepted |
+
+    | ARWC-LQ-20260617-06 | North reservoir | 1.3 | 55 | 101 | accepted |
+
+    | ARWC-LQ-20260618-01 | River East district | 1.4 | 56 | 102 | accepted |
+
+    | ARWC-LQ-20260618-02 | Upland station | 1.5 | 57 | 103 | accepted |
+
+    | ARWC-LQ-20260618-03 | Pine East district | 1.6 | 58 | 104 | accepted |
+
+    | ARWC-LQ-20260618-04 | North reservoir | 1.7 | 59 | 96 | accepted |
+
+    | ARWC-LQ-20260618-05 | Pine treatment plant | 1.8 | 60 | 97 | accepted |
+
+    | ARWC-LQ-20260618-06 | River East district | 1.9 | 61 | 98 | accepted |
+
+    | ARWC-LQ-20260619-01 | Pine East district | 2.0 | 62 | 99 | accepted |
+
+    | ARWC-LQ-20260619-02 | North reservoir | 2.1 | 63 | 100 | accepted |
+
+    | ARWC-LQ-20260619-03 | Pine treatment plant | 2.2 | 64 | 101 | accepted |
+
+    | ARWC-LQ-20260619-04 | River East district | 2.3 | 65 | 102 | accepted |
+
+    | ARWC-LQ-20260619-05 | Upland station | 2.4 | 66 | 103 | accepted |
+
+    | ARWC-LQ-20260619-06 | Pine East district | 2.5 | 67 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-25
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W26
+  path: lq-weekly-report-25.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-26T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W26
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-06-26T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260622-01 | Pine treatment plant | 4.5 | 48 | 96 | resample requested |
+
+    | ARWC-LQ-20260622-02 | River East district | 2.7 | 49 | 97 | accepted |
+
+    | ARWC-LQ-20260622-03 | Upland station | 2.8 | 50 | 98 | accepted |
+
+    | ARWC-LQ-20260622-04 | Pine East district | 2.9 | 51 | 99 | accepted |
+
+    | ARWC-LQ-20260622-05 | North reservoir | 3.0 | 52 | 100 | accepted |
+
+    | ARWC-LQ-20260622-06 | Pine treatment plant | 3.1 | 53 | 101 | accepted after repeat |
+
+    | ARWC-LQ-20260623-01 | Upland station | 3.2 | 54 | 102 | accepted |
+
+    | ARWC-LQ-20260623-02 | Pine East district | 3.3 | 55 | 103 | accepted |
+
+    | ARWC-LQ-20260623-03 | North reservoir | 0.6 | 56 | 104 | accepted |
+
+    | ARWC-LQ-20260623-04 | Pine treatment plant | 0.7 | 57 | 96 | accepted |
+
+    | ARWC-LQ-20260623-05 | River East district | 0.8 | 58 | 97 | accepted |
+
+    | ARWC-LQ-20260623-06 | Upland station | 0.9 | 59 | 98 | accepted |
+
+    | ARWC-LQ-20260624-01 | North reservoir | 1.0 | 60 | 99 | accepted |
+
+    | ARWC-LQ-20260624-02 | Pine treatment plant | 1.1 | 61 | 100 | accepted |
+
+    | ARWC-LQ-20260624-03 | River East district | 1.2 | 62 | 101 | accepted |
+
+    | ARWC-LQ-20260624-04 | Upland station | 1.3 | 63 | 102 | accepted |
+
+    | ARWC-LQ-20260624-05 | Pine East district | 1.4 | 64 | 103 | accepted |
+
+    | ARWC-LQ-20260624-06 | North reservoir | 1.5 | 65 | 104 | accepted |
+
+    | ARWC-LQ-20260625-01 | River East district | 1.6 | 66 | 96 | accepted |
+
+    | ARWC-LQ-20260625-02 | Upland station | 1.7 | 67 | 97 | accepted |
+
+    | ARWC-LQ-20260625-03 | Pine East district | 1.8 | 48 | 98 | accepted |
+
+    | ARWC-LQ-20260625-04 | North reservoir | 1.9 | 49 | 99 | accepted |
+
+    | ARWC-LQ-20260625-05 | Pine treatment plant | 2.0 | 50 | 100 | accepted |
+
+    | ARWC-LQ-20260625-06 | River East district | 2.1 | 51 | 101 | accepted |
+
+    | ARWC-LQ-20260626-01 | Pine East district | 2.2 | 52 | 102 | accepted |
+
+    | ARWC-LQ-20260626-02 | North reservoir | 2.3 | 53 | 103 | accepted |
+
+    | ARWC-LQ-20260626-03 | Pine treatment plant | 2.4 | 54 | 104 | accepted |
+
+    | ARWC-LQ-20260626-04 | River East district | 2.5 | 55 | 96 | accepted |
+
+    | ARWC-LQ-20260626-05 | Upland station | 2.6 | 56 | 97 | accepted |
+
+    | ARWC-LQ-20260626-06 | Pine East district | 2.7 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-26
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W27
+  path: lq-weekly-report-26.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-03T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W27
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-07-03T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 2; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260629-01 | Pine treatment plant | 2.8 | 58 | 99 | accepted after repeat |
+
+    | ARWC-LQ-20260629-02 | River East district | 2.9 | 59 | 100 | accepted |
+
+    | ARWC-LQ-20260629-03 | Upland station | 3.0 | 60 | 101 | accepted |
+
+    | ARWC-LQ-20260629-04 | Pine East district | 3.1 | 61 | 102 | accepted |
+
+    | ARWC-LQ-20260629-05 | North reservoir | 3.2 | 62 | 103 | accepted |
+
+    | ARWC-LQ-20260629-06 | Pine treatment plant | 3.3 | 63 | 104 | accepted |
+
+    | ARWC-LQ-20260630-01 | Upland station | 0.6 | 64 | 96 | accepted |
+
+    | ARWC-LQ-20260630-02 | Pine East district | 0.7 | 65 | 97 | accepted |
+
+    | ARWC-LQ-20260630-03 | North reservoir | 0.8 | 66 | 98 | accepted |
+
+    | ARWC-LQ-20260630-04 | Pine treatment plant | 0.9 | 67 | 99 | accepted |
+
+    | ARWC-LQ-20260630-05 | River East district | 1.0 | 48 | 100 | accepted |
+
+    | ARWC-LQ-20260630-06 | Upland station | 1.1 | 49 | 101 | accepted |
+
+    | ARWC-LQ-20260701-01 | North reservoir | 1.2 | 50 | 102 | accepted |
+
+    | ARWC-LQ-20260701-02 | Pine treatment plant | 1.3 | 51 | 103 | accepted |
+
+    | ARWC-LQ-20260701-03 | River East district | 1.4 | 52 | 104 | accepted |
+
+    | ARWC-LQ-20260701-04 | Upland station | 1.5 | 53 | 96 | accepted |
+
+    | ARWC-LQ-20260701-05 | Pine East district | 1.6 | 54 | 97 | accepted |
+
+    | ARWC-LQ-20260701-06 | North reservoir | 1.7 | 55 | 98 | accepted |
+
+    | ARWC-LQ-20260702-01 | River East district | 1.8 | 56 | 99 | accepted |
+
+    | ARWC-LQ-20260702-02 | Upland station | 1.9 | 57 | 100 | accepted |
+
+    | ARWC-LQ-20260702-03 | Pine East district | 2.0 | 58 | 101 | accepted |
+
+    | ARWC-LQ-20260702-04 | North reservoir | 2.1 | 59 | 102 | accepted |
+
+    | ARWC-LQ-20260702-05 | Pine treatment plant | 2.2 | 60 | 103 | accepted |
+
+    | ARWC-LQ-20260702-06 | River East district | 2.3 | 61 | 104 | accepted |
+
+    | ARWC-LQ-20260703-01 | Pine East district | 2.4 | 62 | 96 | accepted |
+
+    | ARWC-LQ-20260703-02 | North reservoir | 2.5 | 63 | 97 | accepted after repeat |
+
+    | ARWC-LQ-20260703-03 | Pine treatment plant | 2.6 | 64 | 98 | accepted |
+
+    | ARWC-LQ-20260703-04 | River East district | 2.7 | 65 | 99 | accepted |
+
+    | ARWC-LQ-20260703-05 | Upland station | 2.8 | 66 | 100 | accepted |
+
+    | ARWC-LQ-20260703-06 | Pine East district | 2.9 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-27
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W28
+  path: lq-weekly-report-27.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-10T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W28
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-07-10T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 0; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260706-01 | Pine treatment plant | 3.0 | 48 | 102 | accepted |
+
+    | ARWC-LQ-20260706-02 | River East district | 3.1 | 49 | 103 | accepted |
+
+    | ARWC-LQ-20260706-03 | Upland station | 3.2 | 50 | 104 | accepted |
+
+    | ARWC-LQ-20260706-04 | Pine East district | 3.3 | 51 | 96 | accepted |
+
+    | ARWC-LQ-20260706-05 | North reservoir | 0.6 | 52 | 97 | accepted |
+
+    | ARWC-LQ-20260706-06 | Pine treatment plant | 0.7 | 53 | 98 | accepted |
+
+    | ARWC-LQ-20260707-01 | Upland station | 0.8 | 54 | 99 | accepted |
+
+    | ARWC-LQ-20260707-02 | Pine East district | 0.9 | 55 | 100 | accepted |
+
+    | ARWC-LQ-20260707-03 | North reservoir | 1.0 | 56 | 101 | accepted |
+
+    | ARWC-LQ-20260707-04 | Pine treatment plant | 1.1 | 57 | 102 | accepted |
+
+    | ARWC-LQ-20260707-05 | River East district | 1.2 | 58 | 103 | accepted |
+
+    | ARWC-LQ-20260707-06 | Upland station | 1.3 | 59 | 104 | accepted |
+
+    | ARWC-LQ-20260708-01 | North reservoir | 1.4 | 60 | 96 | accepted |
+
+    | ARWC-LQ-20260708-02 | Pine treatment plant | 1.5 | 61 | 97 | accepted |
+
+    | ARWC-LQ-20260708-03 | River East district | 1.6 | 62 | 98 | accepted |
+
+    | ARWC-LQ-20260708-04 | Upland station | 1.7 | 63 | 99 | accepted |
+
+    | ARWC-LQ-20260708-05 | Pine East district | 1.8 | 64 | 100 | accepted |
+
+    | ARWC-LQ-20260708-06 | North reservoir | 1.9 | 65 | 101 | accepted |
+
+    | ARWC-LQ-20260709-01 | River East district | 2.0 | 66 | 102 | accepted |
+
+    | ARWC-LQ-20260709-02 | Upland station | 2.1 | 67 | 103 | accepted |
+
+    | ARWC-LQ-20260709-03 | Pine East district | 4.7 | 48 | 104 | resample requested |
+
+    | ARWC-LQ-20260709-04 | North reservoir | 2.3 | 49 | 96 | accepted |
+
+    | ARWC-LQ-20260709-05 | Pine treatment plant | 2.4 | 50 | 97 | accepted |
+
+    | ARWC-LQ-20260709-06 | River East district | 2.5 | 51 | 98 | accepted |
+
+    | ARWC-LQ-20260710-01 | Pine East district | 2.6 | 52 | 99 | accepted |
+
+    | ARWC-LQ-20260710-02 | North reservoir | 2.7 | 53 | 100 | accepted |
+
+    | ARWC-LQ-20260710-03 | Pine treatment plant | 2.8 | 54 | 101 | accepted |
+
+    | ARWC-LQ-20260710-04 | River East district | 2.9 | 55 | 102 | accepted |
+
+    | ARWC-LQ-20260710-05 | Upland station | 3.0 | 56 | 103 | accepted |
+
+    | ARWC-LQ-20260710-06 | Pine East district | 3.1 | 57 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-28
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W29
+  path: lq-weekly-report-28.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-17T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W29
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-07-17T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260713-01 | Pine treatment plant | 3.2 | 58 | 96 | accepted |
+
+    | ARWC-LQ-20260713-02 | River East district | 3.3 | 59 | 97 | accepted |
+
+    | ARWC-LQ-20260713-03 | Upland station | 0.6 | 60 | 98 | accepted |
+
+    | ARWC-LQ-20260713-04 | Pine East district | 0.7 | 61 | 99 | accepted |
+
+    | ARWC-LQ-20260713-05 | North reservoir | 0.8 | 62 | 100 | accepted |
+
+    | ARWC-LQ-20260713-06 | Pine treatment plant | 0.9 | 63 | 101 | accepted |
+
+    | ARWC-LQ-20260714-01 | Upland station | 1.0 | 64 | 102 | accepted |
+
+    | ARWC-LQ-20260714-02 | Pine East district | 1.1 | 65 | 103 | accepted |
+
+    | ARWC-LQ-20260714-03 | North reservoir | 1.2 | 66 | 104 | accepted |
+
+    | ARWC-LQ-20260714-04 | Pine treatment plant | 1.3 | 67 | 96 | accepted |
+
+    | ARWC-LQ-20260714-05 | River East district | 1.4 | 48 | 97 | accepted |
+
+    | ARWC-LQ-20260714-06 | Upland station | 1.5 | 49 | 98 | accepted |
+
+    | ARWC-LQ-20260715-01 | North reservoir | 1.6 | 50 | 99 | accepted |
+
+    | ARWC-LQ-20260715-02 | Pine treatment plant | 1.7 | 51 | 100 | accepted |
+
+    | ARWC-LQ-20260715-03 | River East district | 1.8 | 52 | 101 | accepted |
+
+    | ARWC-LQ-20260715-04 | Upland station | 1.9 | 53 | 102 | accepted after repeat |
+
+    | ARWC-LQ-20260715-05 | Pine East district | 2.0 | 54 | 103 | accepted |
+
+    | ARWC-LQ-20260715-06 | North reservoir | 2.1 | 55 | 104 | accepted |
+
+    | ARWC-LQ-20260716-01 | River East district | 2.2 | 56 | 96 | accepted |
+
+    | ARWC-LQ-20260716-02 | Upland station | 2.3 | 57 | 97 | accepted |
+
+    | ARWC-LQ-20260716-03 | Pine East district | 2.4 | 58 | 98 | accepted |
+
+    | ARWC-LQ-20260716-04 | North reservoir | 2.5 | 59 | 99 | accepted |
+
+    | ARWC-LQ-20260716-05 | Pine treatment plant | 2.6 | 60 | 100 | accepted |
+
+    | ARWC-LQ-20260716-06 | River East district | 2.7 | 61 | 101 | accepted |
+
+    | ARWC-LQ-20260717-01 | Pine East district | 2.8 | 62 | 102 | accepted |
+
+    | ARWC-LQ-20260717-02 | North reservoir | 2.9 | 63 | 103 | accepted |
+
+    | ARWC-LQ-20260717-03 | Pine treatment plant | 3.0 | 64 | 104 | accepted |
+
+    | ARWC-LQ-20260717-04 | River East district | 3.1 | 65 | 96 | accepted |
+
+    | ARWC-LQ-20260717-05 | Upland station | 3.2 | 66 | 97 | accepted |
+
+    | ARWC-LQ-20260717-06 | Pine East district | 3.3 | 67 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-29
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W30
+  path: lq-weekly-report-29.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-24T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W30
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-07-24T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 30; accepted first review: 29; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260720-01 | Pine treatment plant | 0.6 | 48 | 99 | accepted |
+
+    | ARWC-LQ-20260720-02 | River East district | 0.7 | 49 | 100 | accepted |
+
+    | ARWC-LQ-20260720-03 | Upland station | 0.8 | 50 | 101 | accepted |
+
+    | ARWC-LQ-20260720-04 | Pine East district | 0.9 | 51 | 102 | accepted |
+
+    | ARWC-LQ-20260720-05 | North reservoir | 1.0 | 52 | 103 | accepted |
+
+    | ARWC-LQ-20260720-06 | Pine treatment plant | 1.1 | 53 | 104 | accepted |
+
+    | ARWC-LQ-20260721-01 | Upland station | 1.2 | 54 | 96 | accepted |
+
+    | ARWC-LQ-20260721-02 | Pine East district | 1.3 | 55 | 97 | accepted |
+
+    | ARWC-LQ-20260721-03 | North reservoir | 1.4 | 56 | 98 | accepted |
+
+    | ARWC-LQ-20260721-04 | Pine treatment plant | 1.5 | 57 | 99 | accepted |
+
+    | ARWC-LQ-20260721-05 | River East district | 1.6 | 58 | 100 | accepted after repeat |
+
+    | ARWC-LQ-20260721-06 | Upland station | 1.7 | 59 | 101 | accepted |
+
+    | ARWC-LQ-20260722-01 | North reservoir | 1.8 | 60 | 102 | accepted |
+
+    | ARWC-LQ-20260722-02 | Pine treatment plant | 1.9 | 61 | 103 | accepted |
+
+    | ARWC-LQ-20260722-03 | River East district | 2.0 | 62 | 104 | accepted |
+
+    | ARWC-LQ-20260722-04 | Upland station | 2.1 | 63 | 96 | accepted |
+
+    | ARWC-LQ-20260722-05 | Pine East district | 2.2 | 64 | 97 | accepted |
+
+    | ARWC-LQ-20260722-06 | North reservoir | 2.3 | 65 | 98 | accepted |
+
+    | ARWC-LQ-20260723-01 | River East district | 2.4 | 66 | 99 | accepted |
+
+    | ARWC-LQ-20260723-02 | Upland station | 2.5 | 67 | 100 | accepted |
+
+    | ARWC-LQ-20260723-03 | Pine East district | 2.6 | 48 | 101 | accepted |
+
+    | ARWC-LQ-20260723-04 | North reservoir | 2.7 | 49 | 102 | accepted |
+
+    | ARWC-LQ-20260723-05 | Pine treatment plant | 2.8 | 50 | 103 | accepted |
+
+    | ARWC-LQ-20260723-06 | River East district | 2.9 | 51 | 104 | accepted |
+
+    | ARWC-LQ-20260724-01 | Pine East district | 3.0 | 52 | 96 | accepted |
+
+    | ARWC-LQ-20260724-02 | North reservoir | 3.1 | 53 | 97 | accepted |
+
+    | ARWC-LQ-20260724-03 | Pine treatment plant | 3.2 | 54 | 98 | accepted |
+
+    | ARWC-LQ-20260724-04 | River East district | 3.3 | 55 | 99 | accepted |
+
+    | ARWC-LQ-20260724-05 | Upland station | 0.6 | 56 | 100 | accepted |
+
+    | ARWC-LQ-20260724-06 | Pine East district | 0.7 | 57 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-30
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W31
+  path: lq-weekly-report-30.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-31T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W31
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-07-31T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 30; accepted first review: 28; accepted after repeat: 1; resample requested: 1.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-LQ-20260727-01 | Pine treatment plant | 0.8 | 58 | 102 | accepted |
+
+    | ARWC-LQ-20260727-02 | River East district | 0.9 | 59 | 103 | accepted |
+
+    | ARWC-LQ-20260727-03 | Upland station | 1.0 | 60 | 104 | accepted |
+
+    | ARWC-LQ-20260727-04 | Pine East district | 1.1 | 61 | 96 | accepted |
+
+    | ARWC-LQ-20260727-05 | North reservoir | 1.2 | 62 | 97 | accepted |
+
+    | ARWC-LQ-20260727-06 | Pine treatment plant | 1.3 | 63 | 98 | accepted after repeat |
+
+    | ARWC-LQ-20260728-01 | Upland station | 1.4 | 64 | 99 | accepted |
+
+    | ARWC-LQ-20260728-02 | Pine East district | 1.5 | 65 | 100 | accepted |
+
+    | ARWC-LQ-20260728-03 | North reservoir | 1.6 | 66 | 101 | accepted |
+
+    | ARWC-LQ-20260728-04 | Pine treatment plant | 1.7 | 67 | 102 | accepted |
+
+    | ARWC-LQ-20260728-05 | River East district | 4.6 | 48 | 103 | resample requested |
+
+    | ARWC-LQ-20260728-06 | Upland station | 1.9 | 49 | 104 | accepted |
+
+    | ARWC-LQ-20260729-01 | North reservoir | 2.0 | 50 | 96 | accepted |
+
+    | ARWC-LQ-20260729-02 | Pine treatment plant | 2.1 | 51 | 97 | accepted |
+
+    | ARWC-LQ-20260729-03 | River East district | 2.2 | 52 | 98 | accepted |
+
+    | ARWC-LQ-20260729-04 | Upland station | 2.3 | 53 | 99 | accepted |
+
+    | ARWC-LQ-20260729-05 | Pine East district | 2.4 | 54 | 100 | accepted |
+
+    | ARWC-LQ-20260729-06 | North reservoir | 2.5 | 55 | 101 | accepted |
+
+    | ARWC-LQ-20260730-01 | River East district | 2.6 | 56 | 102 | accepted |
+
+    | ARWC-LQ-20260730-02 | Upland station | 2.7 | 57 | 103 | accepted |
+
+    | ARWC-LQ-20260730-03 | Pine East district | 2.8 | 58 | 104 | accepted |
+
+    | ARWC-LQ-20260730-04 | North reservoir | 2.9 | 59 | 96 | accepted |
+
+    | ARWC-LQ-20260730-05 | Pine treatment plant | 3.0 | 60 | 97 | accepted |
+
+    | ARWC-LQ-20260730-06 | River East district | 3.1 | 61 | 98 | accepted |
+
+    | ARWC-LQ-20260731-01 | Pine East district | 3.2 | 62 | 99 | accepted |
+
+    | ARWC-LQ-20260731-02 | North reservoir | 3.3 | 63 | 100 | accepted |
+
+    | ARWC-LQ-20260731-03 | Pine treatment plant | 0.6 | 64 | 101 | accepted |
+
+    | ARWC-LQ-20260731-04 | River East district | 0.7 | 65 | 102 | accepted |
+
+    | ARWC-LQ-20260731-05 | Upland station | 0.8 | 66 | 103 | accepted |
+
+    | ARWC-LQ-20260731-06 | Pine East district | 0.9 | 67 | 104 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-31
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W32
+  path: lq-weekly-report-31.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-07T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W32
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-08-07T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 10; accepted first review: 9; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260803 | Pine East district | 1.0 | 48 | 96 | accepted after repeat |
+
+    | ARWC-SMP-R-20260803 | River East district | 1.1 | 49 | 97 | accepted |
+
+    | ARWC-SMP-P-20260804 | Pine West district | 1.2 | 50 | 98 | accepted |
+
+    | ARWC-SMP-R-20260804 | River West district | 1.3 | 51 | 99 | accepted |
+
+    | ARWC-SMP-P-20260805 | Pine East district | 1.4 | 52 | 100 | accepted |
+
+    | ARWC-SMP-R-20260805 | River East district | 1.5 | 53 | 101 | accepted |
+
+    | ARWC-SMP-P-20260806 | Pine West district | 1.6 | 54 | 102 | accepted |
+
+    | ARWC-SMP-R-20260806 | River West district | 1.7 | 55 | 103 | accepted |
+
+    | ARWC-SMP-P-20260807 | Pine East district | 1.8 | 56 | 104 | accepted |
+
+    | ARWC-SMP-R-20260807 | River East district | 1.9 | 57 | 96 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-32
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W33
+  path: lq-weekly-report-32.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-14T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W33
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-08-14T16:30:00-04:00
+
+    Prepared: Niamh Dravik
+
+    Reviewed: Margot Darsell
+
+
+    Samples reviewed: 10; accepted first review: 10; accepted after repeat: 0; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260810 | Pine West district | 2.0 | 58 | 97 | accepted |
+
+    | ARWC-SMP-R-20260810 | River West district | 2.1 | 59 | 98 | accepted |
+
+    | ARWC-SMP-P-20260811 | Pine East district | 2.2 | 60 | 99 | accepted |
+
+    | ARWC-SMP-R-20260811 | River East district | 2.3 | 61 | 100 | accepted |
+
+    | ARWC-SMP-P-20260812 | Pine West district | 2.4 | 62 | 101 | accepted |
+
+    | ARWC-SMP-R-20260812 | River West district | 2.5 | 63 | 102 | accepted |
+
+    | ARWC-SMP-P-20260813 | Pine East district | 2.6 | 64 | 103 | accepted |
+
+    | ARWC-SMP-R-20260813 | River East district | 2.7 | 65 | 104 | accepted |
+
+    | ARWC-SMP-P-20260814 | Pine West district | 2.8 | 66 | 96 | accepted |
+
+    | ARWC-SMP-R-20260814 | River West district | 2.9 | 67 | 97 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-33
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W34
+  path: lq-weekly-report-33.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-21T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W34
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-08-21T16:30:00-04:00
+
+    Prepared: Niko Narsen
+
+    Reviewed: Martin Marrent
+
+
+    Samples reviewed: 10; accepted first review: 9; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260817 | Pine East district | 3.0 | 48 | 98 | accepted |
+
+    | ARWC-SMP-R-20260817 | River East district | 3.1 | 49 | 99 | accepted |
+
+    | ARWC-SMP-P-20260818 | Pine West district | 3.2 | 50 | 100 | accepted |
+
+    | ARWC-SMP-R-20260818 | River West district | 3.3 | 51 | 101 | accepted |
+
+    | ARWC-SMP-P-20260819 | Pine East district | 0.6 | 52 | 102 | accepted |
+
+    | ARWC-SMP-R-20260819 | River East district | 0.7 | 53 | 103 | accepted after repeat |
+
+    | ARWC-SMP-P-20260820 | Pine West district | 0.8 | 54 | 104 | accepted |
+
+    | ARWC-SMP-R-20260820 | River West district | 0.9 | 55 | 96 | accepted |
+
+    | ARWC-SMP-P-20260821 | Pine East district | 1.0 | 56 | 97 | accepted |
+
+    | ARWC-SMP-R-20260821 | River East district | 1.1 | 57 | 98 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-34
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W35
+  path: lq-weekly-report-34.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-28T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W35
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-08-28T16:30:00-04:00
+
+    Prepared: Nina Verrin
+
+    Reviewed: Mica Torren
+
+
+    Samples reviewed: 10; accepted first review: 10; accepted after repeat: 0; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260824 | Pine West district | 1.2 | 58 | 99 | accepted |
+
+    | ARWC-SMP-R-20260824 | River West district | 1.3 | 59 | 100 | accepted |
+
+    | ARWC-SMP-P-20260825 | Pine East district | 1.4 | 60 | 101 | accepted |
+
+    | ARWC-SMP-R-20260825 | River East district | 1.5 | 61 | 102 | accepted |
+
+    | ARWC-SMP-P-20260826 | Pine West district | 1.6 | 62 | 103 | accepted |
+
+    | ARWC-SMP-R-20260826 | River West district | 1.7 | 63 | 104 | accepted |
+
+    | ARWC-SMP-P-20260827 | Pine East district | 1.8 | 64 | 96 | accepted |
+
+    | ARWC-SMP-R-20260827 | River East district | 1.9 | 65 | 97 | accepted |
+
+    | ARWC-SMP-P-20260828 | Pine West district | 2.0 | 66 | 98 | accepted |
+
+    | ARWC-SMP-R-20260828 | River West district | 2.1 | 67 | 99 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-35
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W36
+  path: lq-weekly-report-35.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-04T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W36
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-09-04T16:30:00-04:00
+
+    Prepared: Morgan Mavell
+
+    Reviewed: Luca Maraven
+
+
+    Samples reviewed: 10; accepted first review: 10; accepted after repeat: 0; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260831 | Pine East district | 2.2 | 48 | 100 | accepted |
+
+    | ARWC-SMP-R-20260831 | River East district | 2.3 | 49 | 101 | accepted |
+
+    | ARWC-SMP-P-20260901 | Pine West district | 2.4 | 50 | 102 | accepted |
+
+    | ARWC-SMP-R-20260901 | River West district | 2.5 | 51 | 103 | accepted |
+
+    | ARWC-SMP-P-20260902 | Pine East district | 2.6 | 52 | 104 | accepted |
+
+    | ARWC-SMP-R-20260902 | River East district | 2.7 | 53 | 96 | accepted |
+
+    | ARWC-SMP-P-20260903 | Pine West district | 2.8 | 54 | 97 | accepted |
+
+    | ARWC-SMP-R-20260903 | River West district | 2.9 | 55 | 98 | accepted |
+
+    | ARWC-SMP-P-20260904 | Pine East district | 3.0 | 56 | 99 | accepted |
+
+    | ARWC-SMP-R-20260904 | River East district | 3.1 | 57 | 100 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-weekly-report-36
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC laboratory summary 2026-W37
+  path: lq-weekly-report-36.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-11T16:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC laboratory summary 2026-W37
+
+
+    Internal routine report under ARWC-LOS-26-01. Its bands are ARWC operating aids, not external legal requirements.
+
+
+    Issued: 2026-09-11T16:30:00-04:00
+
+    Prepared: Nella Velswick
+
+    Reviewed: Mara Telmire
+
+
+    Samples reviewed: 10; accepted first review: 9; accepted after repeat: 1; resample requested: 0.
+
+
+    | Sample | Site | CRU | MBU | RSI | Disposition |
+
+    | --- | --- | ---: | ---: | ---: | --- |
+
+    | ARWC-SMP-P-20260907 | Pine West district | 3.2 | 58 | 101 | accepted after repeat |
+
+    | ARWC-SMP-R-20260907 | River West district | 3.3 | 59 | 102 | accepted |
+
+    | ARWC-SMP-P-20260908 | Pine East district | 0.6 | 60 | 103 | accepted |
+
+    | ARWC-SMP-R-20260908 | River East district | 0.7 | 61 | 104 | accepted |
+
+    | ARWC-SMP-P-20260909 | Pine West district | 0.8 | 62 | 96 | accepted |
+
+    | ARWC-SMP-R-20260909 | River West district | 0.9 | 63 | 97 | accepted |
+
+    | ARWC-SMP-P-20260910 | Pine East district | 1.0 | 64 | 98 | accepted |
+
+    | ARWC-SMP-R-20260910 | River East district | 1.1 | 65 | 99 | accepted |
+
+    | ARWC-SMP-P-20260911 | Pine West district | 1.2 | 66 | 100 | accepted |
+
+    | ARWC-SMP-R-20260911 | River West district | 1.3 | 67 | 101 | accepted |
+
+
+    Open resample requests remain open records; this summary does not convert them into accepted results.
+
+    '
+- id: lq-service-001
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-001 equipment service
+  path: lq-service-001.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-06-08T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-001
+
+
+    Equipment: LQ-EQ-01, clarity response reader.
+
+
+    Owner: Jonas Sarnell.
+
+    Completed: 2026-06-08T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-09-06.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-002
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-002 equipment service
+  path: lq-service-002.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-06-13T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-002
+
+
+    Equipment: LQ-EQ-02, mineral balance bench.
+
+
+    Owner: Jory Cavelin.
+
+    Completed: 2026-06-13T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-09-11.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-003
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-003 equipment service
+  path: lq-service-003.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-06-18T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-003
+
+
+    Equipment: LQ-EQ-03, reference stability reader.
+
+
+    Owner: Kaisa Kelswick.
+
+    Completed: 2026-06-18T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-09-16.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-004
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-004 equipment service
+  path: lq-service-004.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-06-23T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-004
+
+
+    Equipment: LQ-EQ-04, sample refrigerator.
+
+
+    Owner: Kiran Selwyn.
+
+    Completed: 2026-06-23T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-09-21.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-005
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-005 equipment service
+  path: lq-service-005.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-06-28T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-005
+
+
+    Equipment: LQ-EQ-05, seal inspection lamp.
+
+
+    Owner: Lara Cernault.
+
+    Completed: 2026-06-28T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-09-26.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-006
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-006 equipment service
+  path: lq-service-006.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-03T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-006
+
+
+    Equipment: LQ-EQ-06, receipt temperature logger.
+
+
+    Owner: Leila Larmont.
+
+    Completed: 2026-07-03T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-10-01.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-007
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-007 equipment service
+  path: lq-service-007.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-08T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-007
+
+
+    Equipment: LQ-EQ-01, clarity response reader.
+
+
+    Owner: Lena Senvard.
+
+    Completed: 2026-07-08T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-10-06.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-008
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-008 equipment service
+  path: lq-service-008.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-13T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-008
+
+
+    Equipment: LQ-EQ-02, mineral balance bench.
+
+
+    Owner: Leo Dalver.
+
+    Completed: 2026-07-13T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-10-11.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-009
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-009 equipment service
+  path: lq-service-009.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-18T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-009
+
+
+    Equipment: LQ-EQ-03, reference stability reader.
+
+
+    Owner: Lila Lestrel.
+
+    Completed: 2026-07-18T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-10-16.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-010
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-010 equipment service
+  path: lq-service-010.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-23T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-010
+
+
+    Equipment: LQ-EQ-04, sample refrigerator.
+
+
+    Owner: Lina Tarlowe.
+
+    Completed: 2026-07-23T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-10-21.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-011
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-011 equipment service
+  path: lq-service-011.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-07-28T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-011
+
+
+    Equipment: LQ-EQ-05, seal inspection lamp.
+
+
+    Owner: Jamie Jorrel.
+
+    Completed: 2026-07-28T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-10-26.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-012
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-012 equipment service
+  path: lq-service-012.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-02T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-012
+
+
+    Equipment: LQ-EQ-06, receipt temperature logger.
+
+
+    Owner: Jonas Sarnell.
+
+    Completed: 2026-08-02T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-10-31.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-013
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-013 equipment service
+  path: lq-service-013.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-07T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-013
+
+
+    Equipment: LQ-EQ-01, clarity response reader.
+
+
+    Owner: Jory Cavelin.
+
+    Completed: 2026-08-07T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-11-05.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-014
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-014 equipment service
+  path: lq-service-014.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-12T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-014
+
+
+    Equipment: LQ-EQ-02, mineral balance bench.
+
+
+    Owner: Kaisa Kelswick.
+
+    Completed: 2026-08-12T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-11-10.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-015
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-015 equipment service
+  path: lq-service-015.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-17T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-015
+
+
+    Equipment: LQ-EQ-03, reference stability reader.
+
+
+    Owner: Kiran Selwyn.
+
+    Completed: 2026-08-17T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-11-15.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-016
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-016 equipment service
+  path: lq-service-016.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-22T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-016
+
+
+    Equipment: LQ-EQ-04, sample refrigerator.
+
+
+    Owner: Lara Cernault.
+
+    Completed: 2026-08-22T14:30:00-04:00.
+
+    Outcome: wear item replaced, reference check passed.
+
+    Next due: 2026-11-20.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-017
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-017 equipment service
+  path: lq-service-017.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-08-27T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-017
+
+
+    Equipment: LQ-EQ-05, seal inspection lamp.
+
+
+    Owner: Leila Larmont.
+
+    Completed: 2026-08-27T14:30:00-04:00.
+
+    Outcome: routine inspection passed.
+
+    Next due: 2026-11-25.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-service-018
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQS-26-018 equipment service
+  path: lq-service-018.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm147
+  - awm148
+  - awm149
+  - awm150
+  - awm151
+  - awm152
+  - awm153
+  - awm154
+  - awm155
+  - awm156
+  - awm157
+  - awm158
+  - awm159
+  - awm160
+  - awm161
+  - awm162
+  - awm163
+  - theo
+  published_at: '2026-09-01T14:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQS-26-018
+
+
+    Equipment: LQ-EQ-06, receipt temperature logger.
+
+
+    Owner: Lena Senvard.
+
+    Completed: 2026-09-01T14:30:00-04:00.
+
+    Outcome: cleaned, reference check passed.
+
+    Next due: 2026-11-30.
+
+
+    This service record changes no sample result or review decision.
+
+    '
+- id: lq-training-001
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-001 training completion
+  path: lq-training-001.md
+  audience: restricted
+  reader_keys:
+  - awm146
+  - awm146
+  - awm139
+  published_at: '2026-07-07T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-001
+
+
+    Colleague: Jalen Carsten.
+
+    Topic: sample custody.
+
+    Completed: 2026-07-07T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-002
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-002 training completion
+  path: lq-training-002.md
+  audience: restricted
+  reader_keys:
+  - awm147
+  - awm146
+  - awm139
+  published_at: '2026-07-14T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-002
+
+
+    Colleague: Jamie Jorrel.
+
+    Topic: repeat-run recording.
+
+    Completed: 2026-07-14T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-003
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-003 training completion
+  path: lq-training-003.md
+  audience: restricted
+  reader_keys:
+  - awm148
+  - awm146
+  - awm139
+  published_at: '2026-07-21T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-003
+
+
+    Colleague: Jonas Sarnell.
+
+    Topic: weekly report review.
+
+    Completed: 2026-07-21T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-004
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-004 training completion
+  path: lq-training-004.md
+  audience: restricted
+  reader_keys:
+  - awm149
+  - awm146
+  - awm139
+  published_at: '2026-07-28T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-004
+
+
+    Colleague: Jory Cavelin.
+
+    Topic: workbook traceability.
+
+    Completed: 2026-07-28T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-005
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-005 training completion
+  path: lq-training-005.md
+  audience: restricted
+  reader_keys:
+  - awm150
+  - awm146
+  - awm139
+  published_at: '2026-08-04T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-005
+
+
+    Colleague: Kaisa Kelswick.
+
+    Topic: equipment service handover.
+
+    Completed: 2026-08-04T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-006
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-006 training completion
+  path: lq-training-006.md
+  audience: restricted
+  reader_keys:
+  - awm151
+  - awm146
+  - awm139
+  published_at: '2026-08-11T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-006
+
+
+    Colleague: Kiran Selwyn.
+
+    Topic: internal-band wording.
+
+    Completed: 2026-08-11T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-007
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-007 training completion
+  path: lq-training-007.md
+  audience: restricted
+  reader_keys:
+  - awm152
+  - awm146
+  - awm139
+  published_at: '2026-08-18T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-007
+
+
+    Colleague: Lara Cernault.
+
+    Topic: receipt exceptions.
+
+    Completed: 2026-08-18T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-008
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-008 training completion
+  path: lq-training-008.md
+  audience: restricted
+  reader_keys:
+  - awm153
+  - awm146
+  - awm139
+  published_at: '2026-08-25T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-008
+
+
+    Colleague: Leila Larmont.
+
+    Topic: reader boundaries.
+
+    Completed: 2026-08-25T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-009
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-009 training completion
+  path: lq-training-009.md
+  audience: restricted
+  reader_keys:
+  - awm154
+  - awm146
+  - awm139
+  published_at: '2026-07-07T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-009
+
+
+    Colleague: Lena Senvard.
+
+    Topic: sample custody.
+
+    Completed: 2026-07-07T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-010
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-010 training completion
+  path: lq-training-010.md
+  audience: restricted
+  reader_keys:
+  - awm155
+  - awm146
+  - awm139
+  published_at: '2026-07-14T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-010
+
+
+    Colleague: Leo Dalver.
+
+    Topic: repeat-run recording.
+
+    Completed: 2026-07-14T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-011
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-011 training completion
+  path: lq-training-011.md
+  audience: restricted
+  reader_keys:
+  - awm156
+  - awm146
+  - awm139
+  published_at: '2026-07-21T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-011
+
+
+    Colleague: Lila Lestrel.
+
+    Topic: weekly report review.
+
+    Completed: 2026-07-21T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-012
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-012 training completion
+  path: lq-training-012.md
+  audience: restricted
+  reader_keys:
+  - awm157
+  - awm146
+  - awm139
+  published_at: '2026-07-28T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-012
+
+
+    Colleague: Lina Tarlowe.
+
+    Topic: workbook traceability.
+
+    Completed: 2026-07-28T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-013
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-013 training completion
+  path: lq-training-013.md
+  audience: restricted
+  reader_keys:
+  - awm158
+  - awm158
+  - awm139
+  published_at: '2026-08-04T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-013
+
+
+    Colleague: Louis Danwick.
+
+    Topic: equipment service handover.
+
+    Completed: 2026-08-04T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-014
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-014 training completion
+  path: lq-training-014.md
+  audience: restricted
+  reader_keys:
+  - awm159
+  - awm158
+  - awm139
+  published_at: '2026-08-11T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-014
+
+
+    Colleague: Luca Maraven.
+
+    Topic: internal-band wording.
+
+    Completed: 2026-08-11T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-015
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-015 training completion
+  path: lq-training-015.md
+  audience: restricted
+  reader_keys:
+  - awm160
+  - awm158
+  - awm139
+  published_at: '2026-08-18T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-015
+
+
+    Colleague: Mara Telmire.
+
+    Topic: receipt exceptions.
+
+    Completed: 2026-08-18T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-016
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-016 training completion
+  path: lq-training-016.md
+  audience: restricted
+  reader_keys:
+  - awm161
+  - awm158
+  - awm139
+  published_at: '2026-08-25T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-016
+
+
+    Colleague: Margot Darsell.
+
+    Topic: reader boundaries.
+
+    Completed: 2026-08-25T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-017
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-017 training completion
+  path: lq-training-017.md
+  audience: restricted
+  reader_keys:
+  - awm162
+  - awm158
+  - awm139
+  published_at: '2026-07-07T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-017
+
+
+    Colleague: Martin Marrent.
+
+    Topic: sample custody.
+
+    Completed: 2026-07-07T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-018
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-018 training completion
+  path: lq-training-018.md
+  audience: restricted
+  reader_keys:
+  - awm163
+  - awm158
+  - awm139
+  published_at: '2026-07-14T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-018
+
+
+    Colleague: Mica Torren.
+
+    Topic: repeat-run recording.
+
+    Completed: 2026-07-14T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-019
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-019 training completion
+  path: lq-training-019.md
+  audience: restricted
+  reader_keys:
+  - awm164
+  - awm164
+  - awm139
+  published_at: '2026-07-21T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-019
+
+
+    Colleague: Mira Delmont.
+
+    Topic: weekly report review.
+
+    Completed: 2026-07-21T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-020
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-020 training completion
+  path: lq-training-020.md
+  audience: restricted
+  reader_keys:
+  - awm165
+  - awm164
+  - awm139
+  published_at: '2026-07-28T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-020
+
+
+    Colleague: Morgan Mavell.
+
+    Topic: workbook traceability.
+
+    Completed: 2026-07-28T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-021
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-021 training completion
+  path: lq-training-021.md
+  audience: restricted
+  reader_keys:
+  - awm166
+  - awm164
+  - awm139
+  published_at: '2026-08-04T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-021
+
+
+    Colleague: Nella Velswick.
+
+    Topic: equipment service handover.
+
+    Completed: 2026-08-04T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-022
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-022 training completion
+  path: lq-training-022.md
+  audience: restricted
+  reader_keys:
+  - awm167
+  - awm164
+  - awm139
+  published_at: '2026-08-11T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-022
+
+
+    Colleague: Niamh Dravik.
+
+    Topic: internal-band wording.
+
+    Completed: 2026-08-11T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-023
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-023 training completion
+  path: lq-training-023.md
+  audience: restricted
+  reader_keys:
+  - awm168
+  - awm164
+  - awm139
+  published_at: '2026-08-18T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-023
+
+
+    Colleague: Niko Narsen.
+
+    Topic: receipt exceptions.
+
+    Completed: 2026-08-18T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-training-024
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQT-26-024 training completion
+  path: lq-training-024.md
+  audience: restricted
+  reader_keys:
+  - awm169
+  - awm164
+  - awm139
+  published_at: '2026-08-25T11:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQT-26-024
+
+
+    Colleague: Nina Verrin.
+
+    Topic: reader boundaries.
+
+    Completed: 2026-08-25T11:30:00-04:00.
+
+    Outcome: completed with worked record.
+
+    This record confirms the session only; it does not confer a new operating or laboratory authority.
+
+    '
+  collection: employment
+- id: lq-quality-review-01
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-01 internal quality review
+  path: lq-quality-review-01.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-03T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-01
+
+
+    Owner: Mara Telmire.
+
+    Reviewed: 2026-06-03T15:30:00-04:00.
+
+    Finding: Add the receipt time beside the seal field.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-02
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-02 internal quality review
+  path: lq-quality-review-02.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-06-24T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-02
+
+
+    Owner: Margot Darsell.
+
+    Reviewed: 2026-06-24T15:30:00-04:00.
+
+    Finding: Keep preliminary and repeat runs on one history.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-03
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-03 internal quality review
+  path: lq-quality-review-03.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-07-15T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-03
+
+
+    Owner: Martin Marrent.
+
+    Reviewed: 2026-07-15T15:30:00-04:00.
+
+    Finding: State the internal specification on every issued summary.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-04
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-04 internal quality review
+  path: lq-quality-review-04.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-05T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-04
+
+
+    Owner: Mica Torren.
+
+    Reviewed: 2026-08-05T15:30:00-04:00.
+
+    Finding: Do not copy field-customer details into the laboratory extract.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-05
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-05 internal quality review
+  path: lq-quality-review-05.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-08-26T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-05
+
+
+    Owner: Luca Maraven.
+
+    Reviewed: 2026-08-26T15:30:00-04:00.
+
+    Finding: Name the reviewer rather than a shared mailbox.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-06
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-06 internal quality review
+  path: lq-quality-review-06.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-02T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-06
+
+
+    Owner: Mara Telmire.
+
+    Reviewed: 2026-09-02T15:30:00-04:00.
+
+    Finding: Keep recollection requests open until a new sample exists.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-07
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-07 internal quality review
+  path: lq-quality-review-07.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-09T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-07
+
+
+    Owner: Margot Darsell.
+
+    Reviewed: 2026-09-09T15:30:00-04:00.
+
+    Finding: Use the reporting owner from the review register.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-quality-review-08
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC-LQQ-26-08 internal quality review
+  path: lq-quality-review-08.md
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-14T15:30:00-04:00'
+  media_type: text/markdown
+  text: '# ARWC-LQQ-26-08
+
+
+    Owner: Martin Marrent.
+
+    Reviewed: 2026-09-14T15:30:00-04:00.
+
+    Finding: Separate workbook formulas from signed review decisions.
+
+    Action: form guidance updated.
+
+    Status: closed.
+
+
+    This is a routine internal improvement, not a misconduct or regulatory finding.
+
+    '
+- id: lq-register-report-register
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC report register
+  path: report-register.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:10:00-04:00'
+  media_type: text/csv
+  text: 'Completed report register. 36 rows; primary key report_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/report-register.csv
+  binary_sha256: 6fb7e444b943733445a8bcf38cc36c7d49f58586ed1980a80f5a187abd488ff2
+  content_encoding: gzip
+- id: lq-register-equipment-services
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC equipment services
+  path: equipment-services.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:10:00-04:00'
+  media_type: text/csv
+  text: 'Completed equipment services. 18 rows; primary key service_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/equipment-services.csv
+  binary_sha256: d49bf1174d9454f22672301443469b2293c773892fdb1c891820c0c636b95b47
+  content_encoding: gzip
+- id: lq-register-training
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC training
+  path: training.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:10:00-04:00'
+  media_type: text/csv
+  text: 'Completed training. 24 rows; primary key training_id.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/training.csv
+  binary_sha256: 4dc9702f47aa2bc900ea31949e8dc688b105983da7501bbc03cf67fc76a51da3
+  content_encoding: gzip
+- id: lq-register-quality-reviews
+  story: laboratory-quality
+  employer: arwc
+  title: ARWC quality reviews
+  path: quality-reviews.csv
+  audience: restricted
+  reader_keys: *id001
+  published_at: '2026-09-15T16:10:00-04:00'
+  media_type: text/csv
+  text: 'Completed quality reviews. 8 rows; primary key quality_review.
+
+    '
+  archive: documents/laboratory-quality-records.zip
+  member: registers/quality-reviews.csv
+  binary_sha256: caf7bbb55aedab5e75fc70cbf10fc2c370d9d0ee58198ae21f3472cd2019f53b
+  content_encoding: gzip

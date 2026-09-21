@@ -1,0 +1,4133 @@
+messages:
+- id: lq-receipt-001
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-03T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260803 received
+  body: 'Receipt complete: ARWC-SMP-P-20260803 from ARWC-FV-P-20260803-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-002
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-03T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260803 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260803 from ARWC-FV-R-20260803-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-003
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-04T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260804 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260804 from ARWC-FV-P-20260804-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-004
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-04T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260804 received
+  body: 'Received and logged: ARWC-SMP-R-20260804 from ARWC-FV-R-20260804-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-005
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-05T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260805 received
+  body: 'Receipt complete: ARWC-SMP-P-20260805 from ARWC-FV-P-20260805-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-006
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-05T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260805 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260805 from ARWC-FV-R-20260805-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-007
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-06T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260806 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260806 from ARWC-FV-P-20260806-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-008
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-06T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260806 received
+  body: 'Received and logged: ARWC-SMP-R-20260806 from ARWC-FV-R-20260806-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-009
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-07T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260807 received
+  body: 'Receipt complete: ARWC-SMP-P-20260807 from ARWC-FV-P-20260807-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-010
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-07T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260807 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260807 from ARWC-FV-R-20260807-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-011
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-10T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260810 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260810 from ARWC-FV-P-20260810-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-012
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-10T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260810 received
+  body: 'Received and logged: ARWC-SMP-R-20260810 from ARWC-FV-R-20260810-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-013
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-11T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260811 received
+  body: 'Receipt complete: ARWC-SMP-P-20260811 from ARWC-FV-P-20260811-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-014
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-11T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260811 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260811 from ARWC-FV-R-20260811-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-015
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-12T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260812 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260812 from ARWC-FV-P-20260812-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-016
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-12T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260812 received
+  body: 'Received and logged: ARWC-SMP-R-20260812 from ARWC-FV-R-20260812-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-017
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-13T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260813 received
+  body: 'Receipt complete: ARWC-SMP-P-20260813 from ARWC-FV-P-20260813-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-018
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-13T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260813 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260813 from ARWC-FV-R-20260813-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-019
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-14T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260814 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260814 from ARWC-FV-P-20260814-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-020
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-14T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260814 received
+  body: 'Received and logged: ARWC-SMP-R-20260814 from ARWC-FV-R-20260814-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-021
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-17T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260817 received
+  body: 'Receipt complete: ARWC-SMP-P-20260817 from ARWC-FV-P-20260817-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-022
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-17T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260817 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260817 from ARWC-FV-R-20260817-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-023
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-18T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260818 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260818 from ARWC-FV-P-20260818-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-024
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-18T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260818 received
+  body: 'Received and logged: ARWC-SMP-R-20260818 from ARWC-FV-R-20260818-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-025
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-19T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260819 received
+  body: 'Receipt complete: ARWC-SMP-P-20260819 from ARWC-FV-P-20260819-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-026
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-19T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260819 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260819 from ARWC-FV-R-20260819-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-027
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-20T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260820 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260820 from ARWC-FV-P-20260820-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-028
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-20T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260820 received
+  body: 'Received and logged: ARWC-SMP-R-20260820 from ARWC-FV-R-20260820-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-029
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-21T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260821 received
+  body: 'Receipt complete: ARWC-SMP-P-20260821 from ARWC-FV-P-20260821-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-030
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-21T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260821 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260821 from ARWC-FV-R-20260821-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-031
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-24T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260824 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260824 from ARWC-FV-P-20260824-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-032
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-24T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260824 received
+  body: 'Received and logged: ARWC-SMP-R-20260824 from ARWC-FV-R-20260824-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-033
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-25T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260825 received
+  body: 'Receipt complete: ARWC-SMP-P-20260825 from ARWC-FV-P-20260825-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-034
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-25T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260825 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260825 from ARWC-FV-R-20260825-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-035
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-26T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260826 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260826 from ARWC-FV-P-20260826-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-036
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-26T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260826 received
+  body: 'Received and logged: ARWC-SMP-R-20260826 from ARWC-FV-R-20260826-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-037
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-27T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260827 received
+  body: 'Receipt complete: ARWC-SMP-P-20260827 from ARWC-FV-P-20260827-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-038
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-27T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260827 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260827 from ARWC-FV-R-20260827-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-039
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-28T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260828 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260828 from ARWC-FV-P-20260828-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-040
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-28T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260828 received
+  body: 'Received and logged: ARWC-SMP-R-20260828 from ARWC-FV-R-20260828-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-041
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-08-31T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260831 received
+  body: 'Receipt complete: ARWC-SMP-P-20260831 from ARWC-FV-P-20260831-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-042
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-08-31T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260831 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260831 from ARWC-FV-R-20260831-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-043
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-01T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260901 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260901 from ARWC-FV-P-20260901-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-044
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-01T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260901 received
+  body: 'Received and logged: ARWC-SMP-R-20260901 from ARWC-FV-R-20260901-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-045
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-02T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260902 received
+  body: 'Receipt complete: ARWC-SMP-P-20260902 from ARWC-FV-P-20260902-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-046
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-02T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260902 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260902 from ARWC-FV-R-20260902-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-047
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-03T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260903 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260903 from ARWC-FV-P-20260903-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-048
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-03T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260903 received
+  body: 'Received and logged: ARWC-SMP-R-20260903 from ARWC-FV-R-20260903-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-049
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-04T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260904 received
+  body: 'Receipt complete: ARWC-SMP-P-20260904 from ARWC-FV-P-20260904-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-050
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-04T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260904 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260904 from ARWC-FV-R-20260904-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-051
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-07T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260907 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260907 from ARWC-FV-P-20260907-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-052
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-07T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260907 received
+  body: 'Received and logged: ARWC-SMP-R-20260907 from ARWC-FV-R-20260907-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-053
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-08T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260908 received
+  body: 'Receipt complete: ARWC-SMP-P-20260908 from ARWC-FV-P-20260908-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-054
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-08T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260908 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260908 from ARWC-FV-R-20260908-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-055
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-09T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260909 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260909 from ARWC-FV-P-20260909-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-056
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-09T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260909 received
+  body: 'Received and logged: ARWC-SMP-R-20260909 from ARWC-FV-R-20260909-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-057
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-10T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260910 received
+  body: 'Receipt complete: ARWC-SMP-P-20260910 from ARWC-FV-P-20260910-08 at 11:45. Seal is intact and the sample
+    identity matches PE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-receipt-058
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-10T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260910 received
+  body: 'Sample is on the bench: ARWC-SMP-R-20260910 from ARWC-FV-R-20260910-08 at 11:45. Seal is intact and the
+    sample identity matches RE-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms
+    receipt only.
+
+    '
+- id: lq-receipt-059
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm147
+  - awm146
+  date: '2026-09-11T11:50:00-04:00'
+  subject: ARWC-SMP-P-20260911 received
+  body: 'Custody entry is complete: ARWC-SMP-P-20260911 from ARWC-FV-P-20260911-08 at 11:45. Seal is intact and
+    the sample identity matches PW-SMP-01. The laboratory result will stay in the laboratory record; this notice
+    confirms receipt only.
+
+    '
+- id: lq-receipt-060
+  story: laboratory-quality
+  from: arwc_lab
+  to:
+  - awm148
+  - awm146
+  date: '2026-09-11T11:50:00-04:00'
+  subject: ARWC-SMP-R-20260911 received
+  body: 'Received and logged: ARWC-SMP-R-20260911 from ARWC-FV-R-20260911-08 at 11:45. Seal is intact and the sample
+    identity matches RW-SMP-01. The laboratory result will stay in the laboratory record; this notice confirms receipt
+    only.
+
+    '
+- id: lq-report-001
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-01-09T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W02 issued
+  body: 'ARWC laboratory summary 2026-W02 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-01
+- id: lq-report-002
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-01-16T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W03 issued
+  body: 'ARWC laboratory summary 2026-W03 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-02
+- id: lq-report-003
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-01-23T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W04 issued
+  body: 'ARWC laboratory summary 2026-W04 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-03
+- id: lq-report-004
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-01-30T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W05 issued
+  body: 'ARWC laboratory summary 2026-W05 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-04
+- id: lq-report-005
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-02-06T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W06 issued
+  body: 'ARWC laboratory summary 2026-W06 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-05
+- id: lq-report-006
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-02-13T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W07 issued
+  body: 'ARWC laboratory summary 2026-W07 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-06
+- id: lq-report-007
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-02-20T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W08 issued
+  body: 'ARWC laboratory summary 2026-W08 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-07
+- id: lq-report-008
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-02-27T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W09 issued
+  body: 'ARWC laboratory summary 2026-W09 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-08
+- id: lq-report-009
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-03-06T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W10 issued
+  body: 'ARWC laboratory summary 2026-W10 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-09
+- id: lq-report-010
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-03-13T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W11 issued
+  body: 'ARWC laboratory summary 2026-W11 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-10
+- id: lq-report-011
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-03-20T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W12 issued
+  body: 'ARWC laboratory summary 2026-W12 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-11
+- id: lq-report-012
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-03-27T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W13 issued
+  body: 'ARWC laboratory summary 2026-W13 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-12
+- id: lq-report-013
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-04-03T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W14 issued
+  body: 'ARWC laboratory summary 2026-W14 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-13
+- id: lq-report-014
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-04-10T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W15 issued
+  body: 'ARWC laboratory summary 2026-W15 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-14
+- id: lq-report-015
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-04-17T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W16 issued
+  body: 'ARWC laboratory summary 2026-W16 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-15
+- id: lq-report-016
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-04-24T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W17 issued
+  body: 'ARWC laboratory summary 2026-W17 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-16
+- id: lq-report-017
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-05-01T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W18 issued
+  body: 'ARWC laboratory summary 2026-W18 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-17
+- id: lq-report-018
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-05-08T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W19 issued
+  body: 'ARWC laboratory summary 2026-W19 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-18
+- id: lq-report-019
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-05-15T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W20 issued
+  body: 'ARWC laboratory summary 2026-W20 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-19
+- id: lq-report-020
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-05-22T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W21 issued
+  body: 'ARWC laboratory summary 2026-W21 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-20
+- id: lq-report-021
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm147
+  - awm159
+  - awm166
+  date: '2026-05-29T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W22 issued
+  body: 'ARWC laboratory summary 2026-W22 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-21
+- id: lq-report-022
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-05T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W23 issued
+  body: 'ARWC laboratory summary 2026-W23 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-22
+- id: lq-report-023
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-12T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W24 issued
+  body: 'ARWC laboratory summary 2026-W24 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-23
+- id: lq-report-024
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-19T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W25 issued
+  body: 'ARWC laboratory summary 2026-W25 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-24
+- id: lq-report-025
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-26T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W26 issued
+  body: 'ARWC laboratory summary 2026-W26 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-25
+- id: lq-report-026
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-03T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W27 issued
+  body: 'ARWC laboratory summary 2026-W27 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-26
+- id: lq-report-027
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-10T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W28 issued
+  body: 'ARWC laboratory summary 2026-W28 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-27
+- id: lq-report-028
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-17T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W29 issued
+  body: 'ARWC laboratory summary 2026-W29 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-28
+- id: lq-report-029
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-24T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W30 issued
+  body: 'ARWC laboratory summary 2026-W30 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-29
+- id: lq-report-030
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-31T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W31 issued
+  body: 'ARWC laboratory summary 2026-W31 is issued with 30 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-30
+- id: lq-report-031
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-07T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W32 issued
+  body: 'ARWC laboratory summary 2026-W32 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-31
+- id: lq-report-032
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-14T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W33 issued
+  body: 'ARWC laboratory summary 2026-W33 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-32
+- id: lq-report-033
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-21T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W34 issued
+  body: 'ARWC laboratory summary 2026-W34 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-33
+- id: lq-report-034
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-28T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W35 issued
+  body: 'ARWC laboratory summary 2026-W35 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-34
+- id: lq-report-035
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-04T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W36 issued
+  body: 'ARWC laboratory summary 2026-W36 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-35
+- id: lq-report-036
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-11T16:35:00-04:00'
+  subject: ARWC laboratory summary 2026-W37 issued
+  body: 'ARWC laboratory summary 2026-W37 is issued with 10 sample histories. The attachment names repeat and recollection
+    items separately; an open recollection has not been counted as accepted.
+
+    '
+  attachments:
+  - lq-weekly-report-36
+- id: lq-check-001-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm159
+  - awm146
+  date: '2026-06-01T11:55:00-04:00'
+  subject: Check ARWC-LQ-20260601-01 before review
+  body: 'Could you hold ARWC-LQ-20260601-01 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-001-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-01T12:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260601-01 before review'
+  body: 'I found the same point in ARWC-LQ-20260601-01. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-001-1
+- id: lq-check-001-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm159
+  date: '2026-06-01T12:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260601-01 before review'
+  body: 'Checked. ARWC-LQ-20260601-01 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-001-2
+- id: lq-check-002-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm160
+  - awm146
+  date: '2026-06-02T14:15:00-04:00'
+  subject: Check ARWC-LQ-20260602-06 before review
+  body: 'Could you hold ARWC-LQ-20260602-06 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-002-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-02T14:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260602-06 before review'
+  body: 'I found the same point in ARWC-LQ-20260602-06. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-002-1
+- id: lq-check-002-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm160
+  date: '2026-06-02T15:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260602-06 before review'
+  body: 'Checked. ARWC-LQ-20260602-06 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-002-2
+- id: lq-check-003-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm161
+  - awm146
+  date: '2026-06-04T13:55:00-04:00'
+  subject: Check ARWC-LQ-20260604-05 before review
+  body: 'Could you hold ARWC-LQ-20260604-05 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-003-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-04T14:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260604-05 before review'
+  body: 'I found the same point in ARWC-LQ-20260604-05. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-003-1
+- id: lq-check-003-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm161
+  date: '2026-06-04T14:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260604-05 before review'
+  body: 'Checked. ARWC-LQ-20260604-05 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-003-2
+- id: lq-check-004-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm162
+  - awm146
+  date: '2026-06-08T13:15:00-04:00'
+  subject: Check ARWC-LQ-20260608-04 before review
+  body: 'Could you hold ARWC-LQ-20260608-04 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-004-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-08T13:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260608-04 before review'
+  body: 'I found the same point in ARWC-LQ-20260608-04. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-004-1
+- id: lq-check-004-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm162
+  date: '2026-06-08T14:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260608-04 before review'
+  body: 'Checked. ARWC-LQ-20260608-04 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-004-2
+- id: lq-check-005-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm163
+  - awm146
+  date: '2026-06-10T12:55:00-04:00'
+  subject: Check ARWC-LQ-20260610-03 before review
+  body: 'Could you hold ARWC-LQ-20260610-03 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-005-2
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-10T13:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260610-03 before review'
+  body: 'I found the same point in ARWC-LQ-20260610-03. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-005-1
+- id: lq-check-005-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm163
+  date: '2026-06-10T13:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260610-03 before review'
+  body: 'Checked. ARWC-LQ-20260610-03 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-005-2
+- id: lq-check-006-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm159
+  - awm146
+  date: '2026-06-12T12:15:00-04:00'
+  subject: Check ARWC-LQ-20260612-02 before review
+  body: 'Could you hold ARWC-LQ-20260612-02 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-006-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-12T12:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260612-02 before review'
+  body: 'I found the same point in ARWC-LQ-20260612-02. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-006-1
+- id: lq-check-006-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm159
+  date: '2026-06-12T13:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260612-02 before review'
+  body: 'Checked. ARWC-LQ-20260612-02 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-006-2
+- id: lq-check-007-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm160
+  - awm146
+  date: '2026-06-16T11:55:00-04:00'
+  subject: Check ARWC-LQ-20260616-01 before review
+  body: 'Could you hold ARWC-LQ-20260616-01 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-007-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-16T12:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260616-01 before review'
+  body: 'I found the same point in ARWC-LQ-20260616-01. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-007-1
+- id: lq-check-007-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm160
+  date: '2026-06-16T12:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260616-01 before review'
+  body: 'Checked. ARWC-LQ-20260616-01 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-007-2
+- id: lq-check-008-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm161
+  - awm146
+  date: '2026-06-17T14:15:00-04:00'
+  subject: Check ARWC-LQ-20260617-06 before review
+  body: 'Could you hold ARWC-LQ-20260617-06 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-008-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-17T14:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260617-06 before review'
+  body: 'I found the same point in ARWC-LQ-20260617-06. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-008-1
+- id: lq-check-008-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm161
+  date: '2026-06-17T15:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260617-06 before review'
+  body: 'Checked. ARWC-LQ-20260617-06 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-008-2
+- id: lq-check-009-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm162
+  - awm146
+  date: '2026-06-19T13:55:00-04:00'
+  subject: Check ARWC-LQ-20260619-05 before review
+  body: 'Could you hold ARWC-LQ-20260619-05 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-009-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-19T14:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260619-05 before review'
+  body: 'I found the same point in ARWC-LQ-20260619-05. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-009-1
+- id: lq-check-009-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm162
+  date: '2026-06-19T14:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260619-05 before review'
+  body: 'Checked. ARWC-LQ-20260619-05 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-009-2
+- id: lq-check-010-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm163
+  - awm146
+  date: '2026-06-23T13:15:00-04:00'
+  subject: Check ARWC-LQ-20260623-04 before review
+  body: 'Could you hold ARWC-LQ-20260623-04 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-010-2
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-23T13:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260623-04 before review'
+  body: 'I found the same point in ARWC-LQ-20260623-04. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-010-1
+- id: lq-check-010-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm163
+  date: '2026-06-23T14:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260623-04 before review'
+  body: 'Checked. ARWC-LQ-20260623-04 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-010-2
+- id: lq-check-011-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm159
+  - awm146
+  date: '2026-06-25T12:55:00-04:00'
+  subject: Check ARWC-LQ-20260625-03 before review
+  body: 'Could you hold ARWC-LQ-20260625-03 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-011-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-25T13:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260625-03 before review'
+  body: 'I found the same point in ARWC-LQ-20260625-03. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-011-1
+- id: lq-check-011-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm159
+  date: '2026-06-25T13:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260625-03 before review'
+  body: 'Checked. ARWC-LQ-20260625-03 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-011-2
+- id: lq-check-012-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm160
+  - awm146
+  date: '2026-06-29T12:15:00-04:00'
+  subject: Check ARWC-LQ-20260629-02 before review
+  body: 'Could you hold ARWC-LQ-20260629-02 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-012-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-29T12:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260629-02 before review'
+  body: 'I found the same point in ARWC-LQ-20260629-02. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-012-1
+- id: lq-check-012-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm160
+  date: '2026-06-29T13:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260629-02 before review'
+  body: 'Checked. ARWC-LQ-20260629-02 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-012-2
+- id: lq-check-013-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm161
+  - awm146
+  date: '2026-07-01T11:55:00-04:00'
+  subject: Check ARWC-LQ-20260701-01 before review
+  body: 'Could you hold ARWC-LQ-20260701-01 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-013-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-01T12:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260701-01 before review'
+  body: 'I found the same point in ARWC-LQ-20260701-01. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-013-1
+- id: lq-check-013-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm161
+  date: '2026-07-01T12:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260701-01 before review'
+  body: 'Checked. ARWC-LQ-20260701-01 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-013-2
+- id: lq-check-014-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm162
+  - awm146
+  date: '2026-07-02T14:15:00-04:00'
+  subject: Check ARWC-LQ-20260702-06 before review
+  body: 'Could you hold ARWC-LQ-20260702-06 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-014-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-02T14:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260702-06 before review'
+  body: 'I found the same point in ARWC-LQ-20260702-06. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-014-1
+- id: lq-check-014-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm162
+  date: '2026-07-02T15:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260702-06 before review'
+  body: 'Checked. ARWC-LQ-20260702-06 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-014-2
+- id: lq-check-015-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm163
+  - awm146
+  date: '2026-07-06T13:55:00-04:00'
+  subject: Check ARWC-LQ-20260706-05 before review
+  body: 'Could you hold ARWC-LQ-20260706-05 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-015-2
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-06T14:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260706-05 before review'
+  body: 'I found the same point in ARWC-LQ-20260706-05. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-015-1
+- id: lq-check-015-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm163
+  date: '2026-07-06T14:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260706-05 before review'
+  body: 'Checked. ARWC-LQ-20260706-05 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-015-2
+- id: lq-check-016-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm159
+  - awm146
+  date: '2026-07-08T13:15:00-04:00'
+  subject: Check ARWC-LQ-20260708-04 before review
+  body: 'Could you hold ARWC-LQ-20260708-04 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-016-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-08T13:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260708-04 before review'
+  body: 'I found the same point in ARWC-LQ-20260708-04. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-016-1
+- id: lq-check-016-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm159
+  date: '2026-07-08T14:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260708-04 before review'
+  body: 'Checked. ARWC-LQ-20260708-04 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-016-2
+- id: lq-check-017-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm160
+  - awm146
+  date: '2026-07-10T12:55:00-04:00'
+  subject: Check ARWC-LQ-20260710-03 before review
+  body: 'Could you hold ARWC-LQ-20260710-03 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-017-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-10T13:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260710-03 before review'
+  body: 'I found the same point in ARWC-LQ-20260710-03. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-017-1
+- id: lq-check-017-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm160
+  date: '2026-07-10T13:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260710-03 before review'
+  body: 'Checked. ARWC-LQ-20260710-03 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-017-2
+- id: lq-check-018-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm161
+  - awm146
+  date: '2026-07-14T12:15:00-04:00'
+  subject: Check ARWC-LQ-20260714-02 before review
+  body: 'Could you hold ARWC-LQ-20260714-02 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-018-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-14T12:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260714-02 before review'
+  body: 'I found the same point in ARWC-LQ-20260714-02. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-018-1
+- id: lq-check-018-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm161
+  date: '2026-07-14T13:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260714-02 before review'
+  body: 'Checked. ARWC-LQ-20260714-02 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-018-2
+- id: lq-check-019-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm162
+  - awm146
+  date: '2026-07-16T11:55:00-04:00'
+  subject: Check ARWC-LQ-20260716-01 before review
+  body: 'Could you hold ARWC-LQ-20260716-01 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-019-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-16T12:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260716-01 before review'
+  body: 'I found the same point in ARWC-LQ-20260716-01. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-019-1
+- id: lq-check-019-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm162
+  date: '2026-07-16T12:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260716-01 before review'
+  body: 'Checked. ARWC-LQ-20260716-01 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-019-2
+- id: lq-check-020-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm163
+  - awm146
+  date: '2026-07-17T14:15:00-04:00'
+  subject: Check ARWC-LQ-20260717-06 before review
+  body: 'Could you hold ARWC-LQ-20260717-06 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-020-2
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-17T14:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260717-06 before review'
+  body: 'I found the same point in ARWC-LQ-20260717-06. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-020-1
+- id: lq-check-020-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm163
+  date: '2026-07-17T15:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260717-06 before review'
+  body: 'Checked. ARWC-LQ-20260717-06 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-020-2
+- id: lq-check-021-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm159
+  - awm146
+  date: '2026-07-21T13:55:00-04:00'
+  subject: Check ARWC-LQ-20260721-05 before review
+  body: 'Could you hold ARWC-LQ-20260721-05 for a short record check? the preliminary run and repeat need one history.
+    I have not changed the analytical entry.
+
+    '
+- id: lq-check-021-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-21T14:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260721-05 before review'
+  body: 'I found the same point in ARWC-LQ-20260721-05. Please update that field and leave the original run visible.
+    The current disposition remains accepted after repeat.
+
+    '
+  reply_to: lq-check-021-1
+- id: lq-check-021-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm159
+  date: '2026-07-21T14:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260721-05 before review'
+  body: 'Checked. ARWC-LQ-20260721-05 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted after repeat; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-021-2
+- id: lq-check-022-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm160
+  - awm146
+  date: '2026-07-23T13:15:00-04:00'
+  subject: Check ARWC-LQ-20260723-04 before review
+  body: 'Could you hold ARWC-LQ-20260723-04 for a short record check? the asset reference is right but the schedule
+    reference is missing from my note. I have not changed the analytical entry.
+
+    '
+- id: lq-check-022-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-23T13:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260723-04 before review'
+  body: 'I found the same point in ARWC-LQ-20260723-04. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-022-1
+- id: lq-check-022-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm160
+  date: '2026-07-23T14:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260723-04 before review'
+  body: 'Checked. ARWC-LQ-20260723-04 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-022-2
+- id: lq-check-023-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm161
+  - awm146
+  date: '2026-07-27T12:55:00-04:00'
+  subject: Check ARWC-LQ-20260727-03 before review
+  body: 'Could you hold ARWC-LQ-20260727-03 for a short record check? the review owner should be named before the
+    weekly report. I have not changed the analytical entry.
+
+    '
+- id: lq-check-023-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-27T13:20:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260727-03 before review'
+  body: 'I found the same point in ARWC-LQ-20260727-03. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-023-1
+- id: lq-check-023-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm161
+  date: '2026-07-27T13:50:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260727-03 before review'
+  body: 'Checked. ARWC-LQ-20260727-03 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-023-2
+- id: lq-check-024-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm162
+  - awm146
+  date: '2026-07-29T12:15:00-04:00'
+  subject: Check ARWC-LQ-20260729-02 before review
+  body: 'Could you hold ARWC-LQ-20260729-02 for a short record check? the receipt minute needs carrying into the
+    review row. I have not changed the analytical entry.
+
+    '
+- id: lq-check-024-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm150
+  - awm146
+  date: '2026-07-29T12:40:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260729-02 before review'
+  body: 'I found the same point in ARWC-LQ-20260729-02. Please update that field and leave the original run visible.
+    The current disposition remains accepted.
+
+    '
+  reply_to: lq-check-024-1
+- id: lq-check-024-3
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm150
+  - awm162
+  date: '2026-07-29T13:10:00-04:00'
+  subject: 'Re: Check ARWC-LQ-20260729-02 before review'
+  body: 'Checked. ARWC-LQ-20260729-02 now carries receipt, run and reviewer references together. Keep the disposition
+    as accepted; nothing in this correction changes the result.
+
+    '
+  reply_to: lq-check-024-2
+- id: lq-service-001-1
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm146
+  - theo
+  date: '2026-05-29T13:00:00-04:00'
+  subject: ARWC-LQS-26-001 service slot
+  body: 'I have reserved 8 June at 13:00 for LQ-EQ-01. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-001-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm148
+  - awm146
+  date: '2026-05-31T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-001 service slot'
+  body: 'ARWC-LQS-26-001 is in the maintenance diary for LQ-EQ-01. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-001-1
+- id: lq-service-001-3
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm146
+  - theo
+  date: '2026-06-08T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-001 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-001-2
+  attachments:
+  - lq-service-001
+- id: lq-service-002-1
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm146
+  - theo
+  date: '2026-06-03T13:00:00-04:00'
+  subject: ARWC-LQS-26-002 service slot
+  body: 'I have reserved 13 June at 13:00 for LQ-EQ-02. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-002-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm149
+  - awm146
+  date: '2026-06-05T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-002 service slot'
+  body: 'ARWC-LQS-26-002 is in the maintenance diary for LQ-EQ-02. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-002-1
+- id: lq-service-002-3
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm146
+  - theo
+  date: '2026-06-13T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-002 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-002-2
+  attachments:
+  - lq-service-002
+- id: lq-service-003-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm146
+  - theo
+  date: '2026-06-08T13:00:00-04:00'
+  subject: ARWC-LQS-26-003 service slot
+  body: 'I have reserved 18 June at 13:00 for LQ-EQ-03. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-003-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm150
+  - awm146
+  date: '2026-06-10T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-003 service slot'
+  body: 'ARWC-LQS-26-003 is in the maintenance diary for LQ-EQ-03. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-003-1
+- id: lq-service-003-3
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm146
+  - theo
+  date: '2026-06-18T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-003 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-003-2
+  attachments:
+  - lq-service-003
+- id: lq-service-004-1
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm146
+  - theo
+  date: '2026-06-13T13:00:00-04:00'
+  subject: ARWC-LQS-26-004 service slot
+  body: 'I have reserved 23 June at 13:00 for LQ-EQ-04. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-004-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm151
+  - awm146
+  date: '2026-06-15T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-004 service slot'
+  body: 'ARWC-LQS-26-004 is in the maintenance diary for LQ-EQ-04. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-004-1
+- id: lq-service-004-3
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm146
+  - theo
+  date: '2026-06-23T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-004 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-004-2
+  attachments:
+  - lq-service-004
+- id: lq-service-005-1
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm146
+  - theo
+  date: '2026-06-18T13:00:00-04:00'
+  subject: ARWC-LQS-26-005 service slot
+  body: 'I have reserved 28 June at 13:00 for LQ-EQ-05. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-005-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm152
+  - awm146
+  date: '2026-06-20T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-005 service slot'
+  body: 'ARWC-LQS-26-005 is in the maintenance diary for LQ-EQ-05. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-005-1
+- id: lq-service-005-3
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm146
+  - theo
+  date: '2026-06-28T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-005 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-005-2
+  attachments:
+  - lq-service-005
+- id: lq-service-006-1
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm146
+  - theo
+  date: '2026-06-23T13:00:00-04:00'
+  subject: ARWC-LQS-26-006 service slot
+  body: 'I have reserved 3 July at 13:00 for LQ-EQ-06. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-006-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm153
+  - awm146
+  date: '2026-06-25T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-006 service slot'
+  body: 'ARWC-LQS-26-006 is in the maintenance diary for LQ-EQ-06. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-006-1
+- id: lq-service-006-3
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm146
+  - theo
+  date: '2026-07-03T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-006 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-006-2
+  attachments:
+  - lq-service-006
+- id: lq-service-007-1
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm146
+  - theo
+  date: '2026-06-28T13:00:00-04:00'
+  subject: ARWC-LQS-26-007 service slot
+  body: 'I have reserved 8 July at 13:00 for LQ-EQ-01. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-007-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm154
+  - awm146
+  date: '2026-06-30T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-007 service slot'
+  body: 'ARWC-LQS-26-007 is in the maintenance diary for LQ-EQ-01. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-007-1
+- id: lq-service-007-3
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm146
+  - theo
+  date: '2026-07-08T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-007 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-007-2
+  attachments:
+  - lq-service-007
+- id: lq-service-008-1
+  story: laboratory-quality
+  from: awm155
+  to:
+  - awm146
+  - theo
+  date: '2026-07-03T13:00:00-04:00'
+  subject: ARWC-LQS-26-008 service slot
+  body: 'I have reserved 13 July at 13:00 for LQ-EQ-02. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-008-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm155
+  - awm146
+  date: '2026-07-05T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-008 service slot'
+  body: 'ARWC-LQS-26-008 is in the maintenance diary for LQ-EQ-02. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-008-1
+- id: lq-service-008-3
+  story: laboratory-quality
+  from: awm155
+  to:
+  - awm146
+  - theo
+  date: '2026-07-13T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-008 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-008-2
+  attachments:
+  - lq-service-008
+- id: lq-service-009-1
+  story: laboratory-quality
+  from: awm156
+  to:
+  - awm146
+  - theo
+  date: '2026-07-08T13:00:00-04:00'
+  subject: ARWC-LQS-26-009 service slot
+  body: 'I have reserved 18 July at 13:00 for LQ-EQ-03. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-009-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm156
+  - awm146
+  date: '2026-07-10T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-009 service slot'
+  body: 'ARWC-LQS-26-009 is in the maintenance diary for LQ-EQ-03. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-009-1
+- id: lq-service-009-3
+  story: laboratory-quality
+  from: awm156
+  to:
+  - awm146
+  - theo
+  date: '2026-07-18T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-009 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-009-2
+  attachments:
+  - lq-service-009
+- id: lq-service-010-1
+  story: laboratory-quality
+  from: awm157
+  to:
+  - awm146
+  - theo
+  date: '2026-07-13T13:00:00-04:00'
+  subject: ARWC-LQS-26-010 service slot
+  body: 'I have reserved 23 July at 13:00 for LQ-EQ-04. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-010-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm157
+  - awm146
+  date: '2026-07-15T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-010 service slot'
+  body: 'ARWC-LQS-26-010 is in the maintenance diary for LQ-EQ-04. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-010-1
+- id: lq-service-010-3
+  story: laboratory-quality
+  from: awm157
+  to:
+  - awm146
+  - theo
+  date: '2026-07-23T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-010 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-010-2
+  attachments:
+  - lq-service-010
+- id: lq-service-011-1
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm146
+  - theo
+  date: '2026-07-18T13:00:00-04:00'
+  subject: ARWC-LQS-26-011 service slot
+  body: 'I have reserved 28 July at 13:00 for LQ-EQ-05. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-011-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm147
+  - awm146
+  date: '2026-07-20T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-011 service slot'
+  body: 'ARWC-LQS-26-011 is in the maintenance diary for LQ-EQ-05. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-011-1
+- id: lq-service-011-3
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm146
+  - theo
+  date: '2026-07-28T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-011 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-011-2
+  attachments:
+  - lq-service-011
+- id: lq-service-012-1
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm146
+  - theo
+  date: '2026-07-23T13:00:00-04:00'
+  subject: ARWC-LQS-26-012 service slot
+  body: 'I have reserved 2 August at 13:00 for LQ-EQ-06. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-012-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm148
+  - awm146
+  date: '2026-07-25T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-012 service slot'
+  body: 'ARWC-LQS-26-012 is in the maintenance diary for LQ-EQ-06. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-012-1
+- id: lq-service-012-3
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm146
+  - theo
+  date: '2026-08-02T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-012 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-012-2
+  attachments:
+  - lq-service-012
+- id: lq-service-013-1
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm146
+  - theo
+  date: '2026-07-28T13:00:00-04:00'
+  subject: ARWC-LQS-26-013 service slot
+  body: 'I have reserved 7 August at 13:00 for LQ-EQ-01. Can we keep that bench clear? Routine samples can use the
+    other readers; no result needs moving.
+
+    '
+- id: lq-service-013-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm149
+  - awm146
+  date: '2026-07-30T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-013 service slot'
+  body: 'ARWC-LQS-26-013 is in the maintenance diary for LQ-EQ-01. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-013-1
+- id: lq-service-013-3
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm146
+  - theo
+  date: '2026-08-07T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-013 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-013-2
+  attachments:
+  - lq-service-013
+- id: lq-service-014-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm146
+  - theo
+  date: '2026-08-02T13:00:00-04:00'
+  subject: ARWC-LQS-26-014 service slot
+  body: 'I have reserved 12 August at 13:00 for LQ-EQ-02. Can we keep that bench clear? Routine samples can use
+    the other readers; no result needs moving.
+
+    '
+- id: lq-service-014-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm150
+  - awm146
+  date: '2026-08-04T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-014 service slot'
+  body: 'ARWC-LQS-26-014 is in the maintenance diary for LQ-EQ-02. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-014-1
+- id: lq-service-014-3
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm146
+  - theo
+  date: '2026-08-12T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-014 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-014-2
+  attachments:
+  - lq-service-014
+- id: lq-service-015-1
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm146
+  - theo
+  date: '2026-08-07T13:00:00-04:00'
+  subject: ARWC-LQS-26-015 service slot
+  body: 'I have reserved 17 August at 13:00 for LQ-EQ-03. Can we keep that bench clear? Routine samples can use
+    the other readers; no result needs moving.
+
+    '
+- id: lq-service-015-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm151
+  - awm146
+  date: '2026-08-09T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-015 service slot'
+  body: 'ARWC-LQS-26-015 is in the maintenance diary for LQ-EQ-03. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-015-1
+- id: lq-service-015-3
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm146
+  - theo
+  date: '2026-08-17T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-015 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-015-2
+  attachments:
+  - lq-service-015
+- id: lq-service-016-1
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm146
+  - theo
+  date: '2026-08-12T13:00:00-04:00'
+  subject: ARWC-LQS-26-016 service slot
+  body: 'I have reserved 22 August at 13:00 for LQ-EQ-04. Can we keep that bench clear? Routine samples can use
+    the other readers; no result needs moving.
+
+    '
+- id: lq-service-016-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm152
+  - awm146
+  date: '2026-08-14T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-016 service slot'
+  body: 'ARWC-LQS-26-016 is in the maintenance diary for LQ-EQ-04. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-016-1
+- id: lq-service-016-3
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm146
+  - theo
+  date: '2026-08-22T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-016 service slot'
+  body: 'Complete: wear item replaced, reference check passed. The service note is attached and the next due date
+    is recorded. Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-016-2
+  attachments:
+  - lq-service-016
+- id: lq-service-017-1
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm146
+  - theo
+  date: '2026-08-17T13:00:00-04:00'
+  subject: ARWC-LQS-26-017 service slot
+  body: 'I have reserved 27 August at 13:00 for LQ-EQ-05. Can we keep that bench clear? Routine samples can use
+    the other readers; no result needs moving.
+
+    '
+- id: lq-service-017-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm153
+  - awm146
+  date: '2026-08-19T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-017 service slot'
+  body: 'ARWC-LQS-26-017 is in the maintenance diary for LQ-EQ-05. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-017-1
+- id: lq-service-017-3
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm146
+  - theo
+  date: '2026-08-27T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-017 service slot'
+  body: 'Complete: routine inspection passed. The service note is attached and the next due date is recorded. Today''s
+    result histories were not changed.
+
+    '
+  reply_to: lq-service-017-2
+  attachments:
+  - lq-service-017
+- id: lq-service-018-1
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm146
+  - theo
+  date: '2026-08-22T13:00:00-04:00'
+  subject: ARWC-LQS-26-018 service slot
+  body: 'I have reserved 1 September at 13:00 for LQ-EQ-06. Can we keep that bench clear? Routine samples can use
+    the other readers; no result needs moving.
+
+    '
+- id: lq-service-018-2
+  story: laboratory-quality
+  from: theo
+  to:
+  - awm154
+  - awm146
+  date: '2026-08-24T13:00:00-04:00'
+  subject: 'Re: ARWC-LQS-26-018 service slot'
+  body: 'ARWC-LQS-26-018 is in the maintenance diary for LQ-EQ-06. This is the named inspection only; put any additional
+    work into a separate request.
+
+    '
+  reply_to: lq-service-018-1
+- id: lq-service-018-3
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm146
+  - theo
+  date: '2026-09-01T14:50:00-04:00'
+  subject: 'Re: ARWC-LQS-26-018 service slot'
+  body: 'Complete: cleaned, reference check passed. The service note is attached and the next due date is recorded.
+    Today''s result histories were not changed.
+
+    '
+  reply_to: lq-service-018-2
+  attachments:
+  - lq-service-018
+- id: lq-training-01-1
+  story: laboratory-quality
+  from: awm146
+  to: &id001
+  - awm146
+  - awm154
+  - awm162
+  date: '2026-06-23T11:30:00-04:00'
+  subject: 'Worked record session: sample custody'
+  body: 'For sample custody, we will use one finished example and one incomplete example. Bring questions from the
+    work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-01-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm146
+  - awm154
+  - awm162
+  date: '2026-06-30T11:30:00-04:00'
+  subject: 'Re: Worked record session: sample custody'
+  body: 'I have a compact sample custody example where the final decision is clear but the earlier correction is
+    hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-01-1
+- id: lq-training-01-3
+  story: laboratory-quality
+  from: awm146
+  to: *id001
+  date: '2026-07-07T11:50:00-04:00'
+  subject: 'After: Worked record session: sample custody'
+  body: 'Thanks for the sample custody session. Individual completion notes are filed with each colleague. The worked
+    examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-001
+  - lq-training-009
+  - lq-training-017
+- id: lq-training-02-1
+  story: laboratory-quality
+  from: awm146
+  to: &id002
+  - awm147
+  - awm155
+  - awm163
+  date: '2026-06-30T11:30:00-04:00'
+  subject: 'Worked record session: repeat-run recording'
+  body: 'For repeat-run recording, we will use one finished example and one incomplete example. Bring questions
+    from the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-02-2
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm146
+  - awm155
+  - awm163
+  date: '2026-07-07T11:30:00-04:00'
+  subject: 'Re: Worked record session: repeat-run recording'
+  body: 'I have a compact repeat-run recording example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-02-1
+- id: lq-training-02-3
+  story: laboratory-quality
+  from: awm146
+  to: *id002
+  date: '2026-07-14T11:50:00-04:00'
+  subject: 'After: Worked record session: repeat-run recording'
+  body: 'Thanks for the repeat-run recording session. Individual completion notes are filed with each colleague.
+    The worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-002
+  - lq-training-010
+  - lq-training-018
+- id: lq-training-03-1
+  story: laboratory-quality
+  from: awm146
+  to: &id003
+  - awm148
+  - awm156
+  - awm164
+  date: '2026-07-07T11:30:00-04:00'
+  subject: 'Worked record session: weekly report review'
+  body: 'For weekly report review, we will use one finished example and one incomplete example. Bring questions
+    from the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-03-2
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm146
+  - awm156
+  - awm164
+  date: '2026-07-14T11:30:00-04:00'
+  subject: 'Re: Worked record session: weekly report review'
+  body: 'I have a compact weekly report review example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-03-1
+- id: lq-training-03-3
+  story: laboratory-quality
+  from: awm146
+  to: *id003
+  date: '2026-07-21T11:50:00-04:00'
+  subject: 'After: Worked record session: weekly report review'
+  body: 'Thanks for the weekly report review session. Individual completion notes are filed with each colleague.
+    The worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-003
+  - lq-training-011
+  - lq-training-019
+- id: lq-training-04-1
+  story: laboratory-quality
+  from: awm146
+  to: &id004
+  - awm149
+  - awm157
+  - awm165
+  date: '2026-07-14T11:30:00-04:00'
+  subject: 'Worked record session: workbook traceability'
+  body: 'For workbook traceability, we will use one finished example and one incomplete example. Bring questions
+    from the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-04-2
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm146
+  - awm157
+  - awm165
+  date: '2026-07-21T11:30:00-04:00'
+  subject: 'Re: Worked record session: workbook traceability'
+  body: 'I have a compact workbook traceability example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-04-1
+- id: lq-training-04-3
+  story: laboratory-quality
+  from: awm146
+  to: *id004
+  date: '2026-07-28T11:50:00-04:00'
+  subject: 'After: Worked record session: workbook traceability'
+  body: 'Thanks for the workbook traceability session. Individual completion notes are filed with each colleague.
+    The worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-004
+  - lq-training-012
+  - lq-training-020
+- id: lq-training-05-1
+  story: laboratory-quality
+  from: awm146
+  to: &id005
+  - awm150
+  - awm158
+  - awm166
+  date: '2026-07-21T11:30:00-04:00'
+  subject: 'Worked record session: equipment service handover'
+  body: 'For equipment service handover, we will use one finished example and one incomplete example. Bring questions
+    from the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-05-2
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm146
+  - awm158
+  - awm166
+  date: '2026-07-28T11:30:00-04:00'
+  subject: 'Re: Worked record session: equipment service handover'
+  body: 'I have a compact equipment service handover example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-05-1
+- id: lq-training-05-3
+  story: laboratory-quality
+  from: awm146
+  to: *id005
+  date: '2026-08-04T11:50:00-04:00'
+  subject: 'After: Worked record session: equipment service handover'
+  body: 'Thanks for the equipment service handover session. Individual completion notes are filed with each colleague.
+    The worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-005
+  - lq-training-013
+  - lq-training-021
+- id: lq-training-06-1
+  story: laboratory-quality
+  from: awm146
+  to: &id006
+  - awm151
+  - awm159
+  - awm167
+  date: '2026-07-28T11:30:00-04:00'
+  subject: 'Worked record session: internal-band wording'
+  body: 'For internal-band wording, we will use one finished example and one incomplete example. Bring questions
+    from the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-06-2
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm146
+  - awm159
+  - awm167
+  date: '2026-08-04T11:30:00-04:00'
+  subject: 'Re: Worked record session: internal-band wording'
+  body: 'I have a compact internal-band wording example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-06-1
+- id: lq-training-06-3
+  story: laboratory-quality
+  from: awm146
+  to: *id006
+  date: '2026-08-11T11:50:00-04:00'
+  subject: 'After: Worked record session: internal-band wording'
+  body: 'Thanks for the internal-band wording session. Individual completion notes are filed with each colleague.
+    The worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-006
+  - lq-training-014
+  - lq-training-022
+- id: lq-training-07-1
+  story: laboratory-quality
+  from: awm146
+  to: &id007
+  - awm152
+  - awm160
+  - awm168
+  date: '2026-08-04T11:30:00-04:00'
+  subject: 'Worked record session: receipt exceptions'
+  body: 'For receipt exceptions, we will use one finished example and one incomplete example. Bring questions from
+    the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-07-2
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm146
+  - awm160
+  - awm168
+  date: '2026-08-11T11:30:00-04:00'
+  subject: 'Re: Worked record session: receipt exceptions'
+  body: 'I have a compact receipt exceptions example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-07-1
+- id: lq-training-07-3
+  story: laboratory-quality
+  from: awm146
+  to: *id007
+  date: '2026-08-18T11:50:00-04:00'
+  subject: 'After: Worked record session: receipt exceptions'
+  body: 'Thanks for the receipt exceptions session. Individual completion notes are filed with each colleague. The
+    worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-007
+  - lq-training-015
+  - lq-training-023
+- id: lq-training-08-1
+  story: laboratory-quality
+  from: awm146
+  to: &id008
+  - awm153
+  - awm161
+  - awm169
+  date: '2026-08-11T11:30:00-04:00'
+  subject: 'Worked record session: reader boundaries'
+  body: 'For reader boundaries, we will use one finished example and one incomplete example. Bring questions from
+    the work you actually do; the session does not add a new authority.
+
+    '
+- id: lq-training-08-2
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm146
+  - awm161
+  - awm169
+  date: '2026-08-18T11:30:00-04:00'
+  subject: 'Re: Worked record session: reader boundaries'
+  body: 'I have a compact reader boundaries example where the final decision is clear but the earlier correction
+    is hard to follow. I will bring that rather than inventing a cleaner case.
+
+    '
+  reply_to: lq-training-08-1
+- id: lq-training-08-3
+  story: laboratory-quality
+  from: awm146
+  to: *id008
+  date: '2026-08-25T11:50:00-04:00'
+  subject: 'After: Worked record session: reader boundaries'
+  body: 'Thanks for the reader boundaries session. Individual completion notes are filed with each colleague. The
+    worked examples remain ordinary training material, not new policy.
+
+    '
+  attachments:
+  - lq-training-008
+  - lq-training-016
+  - lq-training-024
+- id: lq-quality-01-1
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-05-26T15:30:00-04:00'
+  subject: ARWC-LQQ-26-01 bounded form review
+  body: 'For this review I want to stay with one point: Add the receipt time beside the seal field. Please bring
+    one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-01-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm160
+  - awm158
+  - awm164
+  date: '2026-05-29T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-01 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-01 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-01-1
+- id: lq-quality-01-3
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-03T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-01 bounded form review'
+  body: 'ARWC-LQQ-26-01 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-01-2
+  attachments:
+  - lq-quality-review-01
+- id: lq-quality-02-1
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-16T15:30:00-04:00'
+  subject: ARWC-LQQ-26-02 bounded form review
+  body: 'For this review I want to stay with one point: Keep preliminary and repeat runs on one history. Please
+    bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-02-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm161
+  - awm158
+  - awm164
+  date: '2026-06-19T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-02 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-02 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-02-1
+- id: lq-quality-02-3
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-06-24T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-02 bounded form review'
+  body: 'ARWC-LQQ-26-02 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-02-2
+  attachments:
+  - lq-quality-review-02
+- id: lq-quality-03-1
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-07T15:30:00-04:00'
+  subject: ARWC-LQQ-26-03 bounded form review
+  body: 'For this review I want to stay with one point: State the internal specification on every issued summary.
+    Please bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-03-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm162
+  - awm158
+  - awm164
+  date: '2026-07-10T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-03 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-03 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-03-1
+- id: lq-quality-03-3
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-15T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-03 bounded form review'
+  body: 'ARWC-LQQ-26-03 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-03-2
+  attachments:
+  - lq-quality-review-03
+- id: lq-quality-04-1
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-07-28T15:30:00-04:00'
+  subject: ARWC-LQQ-26-04 bounded form review
+  body: 'For this review I want to stay with one point: Do not copy field-customer details into the laboratory extract.
+    Please bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-04-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm163
+  - awm158
+  - awm164
+  date: '2026-07-31T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-04 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-04 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-04-1
+- id: lq-quality-04-3
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-05T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-04 bounded form review'
+  body: 'ARWC-LQQ-26-04 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-04-2
+  attachments:
+  - lq-quality-review-04
+- id: lq-quality-05-1
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-18T15:30:00-04:00'
+  subject: ARWC-LQQ-26-05 bounded form review
+  body: 'For this review I want to stay with one point: Name the reviewer rather than a shared mailbox. Please bring
+    one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-05-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm159
+  - awm158
+  - awm164
+  date: '2026-08-21T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-05 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-05 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-05-1
+- id: lq-quality-05-3
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-26T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-05 bounded form review'
+  body: 'ARWC-LQQ-26-05 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-05-2
+  attachments:
+  - lq-quality-review-05
+- id: lq-quality-06-1
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-08-25T15:30:00-04:00'
+  subject: ARWC-LQQ-26-06 bounded form review
+  body: 'For this review I want to stay with one point: Keep recollection requests open until a new sample exists.
+    Please bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-06-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm160
+  - awm158
+  - awm164
+  date: '2026-08-28T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-06 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-06 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-06-1
+- id: lq-quality-06-3
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-02T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-06 bounded form review'
+  body: 'ARWC-LQQ-26-06 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-06-2
+  attachments:
+  - lq-quality-review-06
+- id: lq-quality-07-1
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-01T15:30:00-04:00'
+  subject: ARWC-LQQ-26-07 bounded form review
+  body: 'For this review I want to stay with one point: Use the reporting owner from the review register. Please
+    bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-07-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm161
+  - awm158
+  - awm164
+  date: '2026-09-04T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-07 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-07 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-07-1
+- id: lq-quality-07-3
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-09T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-07 bounded form review'
+  body: 'ARWC-LQQ-26-07 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-07-2
+  attachments:
+  - lq-quality-review-07
+- id: lq-quality-08-1
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-06T15:30:00-04:00'
+  subject: ARWC-LQQ-26-08 bounded form review
+  body: 'For this review I want to stay with one point: Separate workbook formulas from signed review decisions.
+    Please bring one real example; we do not need a general rewrite.
+
+    '
+- id: lq-quality-08-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm162
+  - awm158
+  - awm164
+  date: '2026-09-09T15:30:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-08 bounded form review'
+  body: 'I have an example for ARWC-LQQ-26-08 from the routine book. The analytical decision is sound; the handoff
+    is what could be easier for the next reader.
+
+    '
+  reply_to: lq-quality-08-1
+- id: lq-quality-08-3
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm146
+  - awm158
+  - awm164
+  date: '2026-09-14T15:50:00-04:00'
+  subject: 'Re: ARWC-LQQ-26-08 bounded form review'
+  body: 'ARWC-LQQ-26-08 is closed: form guidance updated. The review note is attached; this was a routine improvement,
+    not an incident finding.
+
+    '
+  reply_to: lq-quality-08-2
+  attachments:
+  - lq-quality-review-08
+- id: lq-colleague-001-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - theo
+  - mina
+  - owen
+  date: '2026-09-15T14:05:00-04:00'
+  subject: 'Re: Congratulations on the photograph'
+  body: 'I did not expect the kitchen-window picture to win. I nearly left it on my phone. Thank you for the kind
+    message.
+
+    '
+  reply_to: a-photo-5
+- id: lq-colleague-001-2
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm150
+  date: '2026-09-15T14:40:00-04:00'
+  subject: Kitchen-window photograph
+  body: 'You are allowed to enjoy winning it. Also, three people have now asked whether you waited for the rain
+    on purpose.
+
+    '
+- id: lq-colleague-002-1
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm158
+  date: '2026-08-04T12:05:00-04:00'
+  subject: Lunch away from the spreadsheet
+  body: 'Louis, Can we eat somewhere that does not have the weekly report open beside it?
+
+    '
+- id: lq-colleague-002-2
+  story: laboratory-quality
+  from: awm158
+  to:
+  - awm147
+  date: '2026-08-04T12:40:00-04:00'
+  subject: 'Re: Lunch away from the spreadsheet'
+  body: 'Jamie, Yes. I am leaving my notebook at the office, which should count as a firm promise.
+
+    '
+  reply_to: lq-colleague-002-1
+- id: lq-colleague-003-1
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm163
+  date: '2026-08-05T12:05:00-04:00'
+  subject: The paper notebook
+  body: 'Mica, Your margin arrows make more sense than my tidy boxes. Could I borrow the page for ten minutes?
+
+    '
+- id: lq-colleague-003-2
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm148
+  date: '2026-08-05T12:40:00-04:00'
+  subject: 'Re: The paper notebook'
+  body: 'Jonas, Take a photograph of the page. The notebook itself is coming home with me.
+
+    '
+  reply_to: lq-colleague-003-1
+- id: lq-colleague-004-1
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm168
+  date: '2026-08-06T12:05:00-04:00'
+  subject: Friday tea
+  body: 'Niko, I have the tea. Has anyone remembered cups?
+
+    '
+- id: lq-colleague-004-2
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm149
+  date: '2026-08-06T12:40:00-04:00'
+  subject: 'Re: Friday tea'
+  body: 'Jory, Cups are in the small cupboard. Please do not use the labelled sample tray.
+
+    '
+  reply_to: lq-colleague-004-1
+- id: lq-colleague-005-1
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm149
+  date: '2026-08-07T12:05:00-04:00'
+  subject: The riverside walk
+  body: 'Jory, The short path should still be dry after work. Anyone want the slower version?
+
+    '
+- id: lq-colleague-005-2
+  story: laboratory-quality
+  from: awm149
+  to:
+  - awm150
+  date: '2026-08-07T12:40:00-04:00'
+  subject: 'Re: The riverside walk'
+  body: 'Kaisa, Slow version, yes. I have spent enough of today looking at row counts.
+
+    '
+  reply_to: lq-colleague-005-1
+- id: lq-colleague-006-1
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm154
+  date: '2026-08-08T12:05:00-04:00'
+  subject: Training example
+  body: 'Lena, Your awkward example was better than the polished one. It looked like work people actually inherit.
+
+    '
+- id: lq-colleague-006-2
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm151
+  date: '2026-08-08T12:40:00-04:00'
+  subject: 'Re: Training example'
+  body: 'Kiran, That is generous. It looked awkward because I really did inherit it.
+
+    '
+  reply_to: lq-colleague-006-1
+- id: lq-colleague-007-1
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm159
+  date: '2026-08-09T12:05:00-04:00'
+  subject: The photography display
+  body: 'Luca, I did not expect the kitchen-window picture to win. I nearly left it on my phone.
+
+    '
+- id: lq-colleague-007-2
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm152
+  date: '2026-08-09T12:40:00-04:00'
+  subject: 'Re: The photography display'
+  body: 'Lara, It deserved the wall space. The rain line is the part everyone stopped at.
+
+    '
+  reply_to: lq-colleague-007-1
+- id: lq-colleague-008-1
+  story: laboratory-quality
+  from: awm153
+  to:
+  - awm164
+  date: '2026-08-10T12:05:00-04:00'
+  subject: Lunch away from the spreadsheet
+  body: 'Mira, Can we eat somewhere that does not have the weekly report open beside it?
+
+    '
+- id: lq-colleague-008-2
+  story: laboratory-quality
+  from: awm164
+  to:
+  - awm153
+  date: '2026-08-10T12:40:00-04:00'
+  subject: 'Re: Lunch away from the spreadsheet'
+  body: 'Leila, Yes. I am leaving my notebook at the office, which should count as a firm promise.
+
+    '
+  reply_to: lq-colleague-008-1
+- id: lq-colleague-009-1
+  story: laboratory-quality
+  from: awm154
+  to:
+  - awm169
+  date: '2026-08-11T12:05:00-04:00'
+  subject: The paper notebook
+  body: 'Nina, Your margin arrows make more sense than my tidy boxes. Could I borrow the page for ten minutes?
+
+    '
+- id: lq-colleague-009-2
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm154
+  date: '2026-08-11T12:40:00-04:00'
+  subject: 'Re: The paper notebook'
+  body: 'Lena, Take a photograph of the page. The notebook itself is coming home with me.
+
+    '
+  reply_to: lq-colleague-009-1
+- id: lq-colleague-010-1
+  story: laboratory-quality
+  from: awm155
+  to:
+  - awm150
+  date: '2026-08-12T12:05:00-04:00'
+  subject: Friday tea
+  body: 'Kaisa, I have the tea. Has anyone remembered cups?
+
+    '
+- id: lq-colleague-010-2
+  story: laboratory-quality
+  from: awm150
+  to:
+  - awm155
+  date: '2026-08-12T12:40:00-04:00'
+  subject: 'Re: Friday tea'
+  body: 'Leo, Cups are in the small cupboard. Please do not use the labelled sample tray.
+
+    '
+  reply_to: lq-colleague-010-1
+- id: lq-colleague-011-1
+  story: laboratory-quality
+  from: awm156
+  to:
+  - awm155
+  date: '2026-08-13T12:05:00-04:00'
+  subject: The riverside walk
+  body: 'Leo, The short path should still be dry after work. Anyone want the slower version?
+
+    '
+- id: lq-colleague-011-2
+  story: laboratory-quality
+  from: awm155
+  to:
+  - awm156
+  date: '2026-08-13T12:40:00-04:00'
+  subject: 'Re: The riverside walk'
+  body: 'Lila, Slow version, yes. I have spent enough of today looking at row counts.
+
+    '
+  reply_to: lq-colleague-011-1
+- id: lq-colleague-012-1
+  story: laboratory-quality
+  from: awm157
+  to:
+  - awm160
+  date: '2026-08-14T12:05:00-04:00'
+  subject: Training example
+  body: 'Mara, Your awkward example was better than the polished one. It looked like work people actually inherit.
+
+    '
+- id: lq-colleague-012-2
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm157
+  date: '2026-08-14T12:40:00-04:00'
+  subject: 'Re: Training example'
+  body: 'Lina, That is generous. It looked awkward because I really did inherit it.
+
+    '
+  reply_to: lq-colleague-012-1
+- id: lq-colleague-013-1
+  story: laboratory-quality
+  from: awm158
+  to:
+  - awm165
+  date: '2026-08-15T12:05:00-04:00'
+  subject: The photography display
+  body: 'Morgan, I did not expect the kitchen-window picture to win. I nearly left it on my phone.
+
+    '
+- id: lq-colleague-013-2
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm158
+  date: '2026-08-15T12:40:00-04:00'
+  subject: 'Re: The photography display'
+  body: 'Louis, It deserved the wall space. The rain line is the part everyone stopped at.
+
+    '
+  reply_to: lq-colleague-013-1
+- id: lq-colleague-014-1
+  story: laboratory-quality
+  from: awm159
+  to:
+  - awm146
+  date: '2026-08-16T12:05:00-04:00'
+  subject: Lunch away from the spreadsheet
+  body: 'Jalen, Can we eat somewhere that does not have the weekly report open beside it?
+
+    '
+- id: lq-colleague-014-2
+  story: laboratory-quality
+  from: awm146
+  to:
+  - awm159
+  date: '2026-08-16T12:40:00-04:00'
+  subject: 'Re: Lunch away from the spreadsheet'
+  body: 'Luca, Yes. I am leaving my notebook at the office, which should count as a firm promise.
+
+    '
+  reply_to: lq-colleague-014-1
+- id: lq-colleague-015-1
+  story: laboratory-quality
+  from: awm160
+  to:
+  - awm151
+  date: '2026-08-17T12:05:00-04:00'
+  subject: The paper notebook
+  body: 'Kiran, Your margin arrows make more sense than my tidy boxes. Could I borrow the page for ten minutes?
+
+    '
+- id: lq-colleague-015-2
+  story: laboratory-quality
+  from: awm151
+  to:
+  - awm160
+  date: '2026-08-17T12:40:00-04:00'
+  subject: 'Re: The paper notebook'
+  body: 'Mara, Take a photograph of the page. The notebook itself is coming home with me.
+
+    '
+  reply_to: lq-colleague-015-1
+- id: lq-colleague-016-1
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm156
+  date: '2026-08-18T12:05:00-04:00'
+  subject: Friday tea
+  body: 'Lila, I have the tea. Has anyone remembered cups?
+
+    '
+- id: lq-colleague-016-2
+  story: laboratory-quality
+  from: awm156
+  to:
+  - awm161
+  date: '2026-08-18T12:40:00-04:00'
+  subject: 'Re: Friday tea'
+  body: 'Margot, Cups are in the small cupboard. Please do not use the labelled sample tray.
+
+    '
+  reply_to: lq-colleague-016-1
+- id: lq-colleague-017-1
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm161
+  date: '2026-08-19T12:05:00-04:00'
+  subject: The riverside walk
+  body: 'Margot, The short path should still be dry after work. Anyone want the slower version?
+
+    '
+- id: lq-colleague-017-2
+  story: laboratory-quality
+  from: awm161
+  to:
+  - awm162
+  date: '2026-08-19T12:40:00-04:00'
+  subject: 'Re: The riverside walk'
+  body: 'Martin, Slow version, yes. I have spent enough of today looking at row counts.
+
+    '
+  reply_to: lq-colleague-017-1
+- id: lq-colleague-018-1
+  story: laboratory-quality
+  from: awm163
+  to:
+  - awm166
+  date: '2026-08-20T12:05:00-04:00'
+  subject: Training example
+  body: 'Nella, Your awkward example was better than the polished one. It looked like work people actually inherit.
+
+    '
+- id: lq-colleague-018-2
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm163
+  date: '2026-08-20T12:40:00-04:00'
+  subject: 'Re: Training example'
+  body: 'Mica, That is generous. It looked awkward because I really did inherit it.
+
+    '
+  reply_to: lq-colleague-018-1
+- id: lq-colleague-019-1
+  story: laboratory-quality
+  from: awm164
+  to:
+  - awm147
+  date: '2026-08-21T12:05:00-04:00'
+  subject: The photography display
+  body: 'Jamie, I did not expect the kitchen-window picture to win. I nearly left it on my phone.
+
+    '
+- id: lq-colleague-019-2
+  story: laboratory-quality
+  from: awm147
+  to:
+  - awm164
+  date: '2026-08-21T12:40:00-04:00'
+  subject: 'Re: The photography display'
+  body: 'Mira, It deserved the wall space. The rain line is the part everyone stopped at.
+
+    '
+  reply_to: lq-colleague-019-1
+- id: lq-colleague-020-1
+  story: laboratory-quality
+  from: awm165
+  to:
+  - awm152
+  date: '2026-08-22T12:05:00-04:00'
+  subject: Lunch away from the spreadsheet
+  body: 'Lara, Can we eat somewhere that does not have the weekly report open beside it?
+
+    '
+- id: lq-colleague-020-2
+  story: laboratory-quality
+  from: awm152
+  to:
+  - awm165
+  date: '2026-08-22T12:40:00-04:00'
+  subject: 'Re: Lunch away from the spreadsheet'
+  body: 'Morgan, Yes. I am leaving my notebook at the office, which should count as a firm promise.
+
+    '
+  reply_to: lq-colleague-020-1
+- id: lq-colleague-021-1
+  story: laboratory-quality
+  from: awm166
+  to:
+  - awm157
+  date: '2026-08-23T12:05:00-04:00'
+  subject: The paper notebook
+  body: 'Lina, Your margin arrows make more sense than my tidy boxes. Could I borrow the page for ten minutes?
+
+    '
+- id: lq-colleague-021-2
+  story: laboratory-quality
+  from: awm157
+  to:
+  - awm166
+  date: '2026-08-23T12:40:00-04:00'
+  subject: 'Re: The paper notebook'
+  body: 'Nella, Take a photograph of the page. The notebook itself is coming home with me.
+
+    '
+  reply_to: lq-colleague-021-1
+- id: lq-colleague-022-1
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm162
+  date: '2026-08-24T12:05:00-04:00'
+  subject: Friday tea
+  body: 'Martin, I have the tea. Has anyone remembered cups?
+
+    '
+- id: lq-colleague-022-2
+  story: laboratory-quality
+  from: awm162
+  to:
+  - awm167
+  date: '2026-08-24T12:40:00-04:00'
+  subject: 'Re: Friday tea'
+  body: 'Niamh, Cups are in the small cupboard. Please do not use the labelled sample tray.
+
+    '
+  reply_to: lq-colleague-022-1
+- id: lq-colleague-023-1
+  story: laboratory-quality
+  from: awm168
+  to:
+  - awm167
+  date: '2026-08-25T12:05:00-04:00'
+  subject: The riverside walk
+  body: 'Niamh, The short path should still be dry after work. Anyone want the slower version?
+
+    '
+- id: lq-colleague-023-2
+  story: laboratory-quality
+  from: awm167
+  to:
+  - awm168
+  date: '2026-08-25T12:40:00-04:00'
+  subject: 'Re: The riverside walk'
+  body: 'Niko, Slow version, yes. I have spent enough of today looking at row counts.
+
+    '
+  reply_to: lq-colleague-023-1
+- id: lq-colleague-024-1
+  story: laboratory-quality
+  from: awm169
+  to:
+  - awm148
+  date: '2026-08-26T12:05:00-04:00'
+  subject: Training example
+  body: 'Jonas, Your awkward example was better than the polished one. It looked like work people actually inherit.
+
+    '
+- id: lq-colleague-024-2
+  story: laboratory-quality
+  from: awm148
+  to:
+  - awm169
+  date: '2026-08-26T12:40:00-04:00'
+  subject: 'Re: Training example'
+  body: 'Nina, That is generous. It looked awkward because I really did inherit it.
+
+    '
+  reply_to: lq-colleague-024-1
