@@ -24,7 +24,7 @@ messages:
   date: '2026-09-08T14:00:00-04:00'
   subject: 'Re: Workshop rehearsal: opening and discussion'
   body: |
-    I can watch those two parts. I will bring the older outline as a reference if you want it, rather than replacing your opening.
+    I can watch those two parts. I have the older outline with me so we can compare the order after your run-through.
   reply_to: ol-0001
   attachments:
   - office-2026-001-reply-maya
@@ -2279,7 +2279,7 @@ messages:
   body: |
     Thursday, September 03, 14:30-15:00. Common area / remote option.
 
-    Read Leah's September 2 direction note. Bring repeated work, its continuing owner and what would need to stop or become simpler; do not turn the example into a promised feature.
+    I will circulate the direction note on September 2. Please read it before this update. Bring repeated work, its continuing owner and what would need to stop or become simpler; do not turn the example into a promised feature.
 
     Hugo Dravik will cover routine support intake from 14:30 to 15:00; send the hand-back to the usual case owner.
 
@@ -2414,7 +2414,7 @@ messages:
   body: |
     Thursday, September 03, 15:15-15:45. Common area / remote option.
 
-    Read Leah's September 2 direction note. Bring repeated work, its continuing owner and what would need to stop or become simpler; do not turn the example into a promised feature.
+    I will circulate the direction note on September 2. Please read it before this update. Bring repeated work, its continuing owner and what would need to stop or become simpler; do not turn the example into a promised feature.
 
     Please tell me if the time does not work. The attached invitation has the booking.
   attachments:
@@ -6752,7 +6752,7 @@ messages:
   - kwm024
   - kwm025
   date: '2026-09-07T08:45:00-04:00'
-  subject: 'Customer support: After the rehearsal'
+  subject: 'Customer support: Rehearsal preparation'
   body: |
     Wednesday, September 09, 09:00-09:30. Window room / remote option.
 
@@ -6769,9 +6769,9 @@ messages:
   to:
   - kwm022
   date: '2026-09-07T10:45:00-04:00'
-  subject: 'Re: Customer support: After the rehearsal'
+  subject: 'Re: Customer support: Rehearsal preparation'
   body: |
-    My suggestion for after the rehearsal: The customer arrangement keeps Talia leading and Maya taking ongoing support questions. Personal rehearsal discussion remains private.
+    My suggestion for rehearsal preparation: Talia will lead the planned rehearsal. The presenters will confirm their division of the customer session in the workshop thread; personal feedback remains private.
   reply_to: ol-0425
   attachments:
   - office-2026-108-reply-maya
@@ -6781,10 +6781,10 @@ messages:
   to:
   - kwm022
   date: '2026-09-07T11:45:00-04:00'
-  subject: 'Re: Customer support: After the rehearsal'
+  subject: 'Re: Customer support: Rehearsal preparation'
   body: |
     Calendar response: ACCEPTED
-    Customer support: After the rehearsal
+    Customer support: Rehearsal preparation
     September 09, 09:00-09:30. Window room / remote option.
   reply_to: ol-0425
   attachments:
@@ -6795,7 +6795,7 @@ messages:
   to:
   - kwm031
   date: '2026-09-07T12:45:00-04:00'
-  subject: 'Cover for Customer support: After the rehearsal'
+  subject: 'Cover for Customer support: Rehearsal preparation'
   body: |
     Can you take routine support intake on September 09 from 09:00 to 09:30? The invited colleagues have this slot away from the queue. Please route decisions outside routine intake to the established owner; this does not change case ownership.
 - id: ol-0429
@@ -6804,7 +6804,7 @@ messages:
   to:
   - kwm022
   date: '2026-09-07T13:20:00-04:00'
-  subject: 'Re: Cover for Customer support: After the rehearsal'
+  subject: 'Re: Cover for Customer support: Rehearsal preparation'
   body: |
     Agreed for September 09, 09:00-09:30. I have kept that period clear. I will leave anything still needing its usual owner in the hand-back, and say if there is nothing waiting.
   reply_to: ol-0428
@@ -6818,13 +6818,13 @@ messages:
   - kwm024
   - kwm025
   date: '2026-09-09T09:48:00-04:00'
-  subject: 'After: Customer support: After the rehearsal'
+  subject: 'After: Customer support: Rehearsal preparation'
   body: |
-    Customer support: After the rehearsal
+    Customer support: Rehearsal preparation
     2026-09-09 09:00-09:30
     Present: Elin Danwick, Maya Ranscombe, Talia Mornac, Emre Maraven, Farah Telmire, Felix Darsell.
 
-    The customer arrangement keeps Talia leading and Maya taking ongoing support questions. Personal rehearsal discussion remains private.
+    Talia will lead the planned rehearsal. The presenters will confirm their division of the customer session in the workshop thread; personal feedback remains private.
   reply_to: ol-0425
 - id: ol-0431
   story: office-life
@@ -6832,7 +6832,7 @@ messages:
   to:
   - kwm022
   date: '2026-09-09T09:39:00-04:00'
-  subject: 'Hand-back: Customer support: After the rehearsal'
+  subject: 'Hand-back: Customer support: Rehearsal preparation'
   body: |
     The 09:00-09:30 cover period has ended. Routine intake is back with the usual queue owners. No item from this cover needs a separate decision from you.
   reply_to: ol-0429
@@ -15122,7 +15122,7 @@ messages:
   date: '2026-09-07T10:45:00-04:00'
   subject: 'Re: Private check-in: Talia - follow-up'
   body: |
-    I have a clearer opening and still want to run it myself. A borrowed outline is useful as a reference, not a replacement.
+    The preparation is clearer, and I want to keep leading it. I would like feedback on the example and the time for questions.
   reply_to: ol-0997
   attachments:
   - office-2026-288-reply-talia
@@ -15157,8 +15157,8 @@ messages:
     2026-09-09 09:45-10:15
     Present: Elin Danwick, Talia Mornac.
 
-    The employee reported: I have a clearer opening and still want to run it myself. A borrowed outline is useful as a reference, not a replacement.
-    Agreed follow-up: Keep Talia leading the September workshop; Maya supports the ongoing support questions.
+    The employee reported: The preparation is clearer, and I want to keep leading it. I would like feedback on the example and the time for questions.
+    Agreed follow-up: Keep Talia leading preparation and confirm the division of the customer session with Maya in the workshop thread.
   reply_to: ol-0997
   attachments:
   - office-2026-288-note
@@ -23405,11 +23405,11 @@ messages:
   - kwm042
   - kwm007
   date: '2026-08-26T08:45:00-04:00'
-  subject: 'Planning examples: The September direction'
+  subject: 'Planning examples: Preparing a direction discussion'
   body: |
     Friday, August 28, 10:30-11:00. Remote call.
 
-    What effort continues after the first change, and what would the alternative move to another team? Focus: the september direction.
+    What effort continues after the first change, and what would the alternative move to another team? Focus: preparing a direction discussion.
 
     Please tell me if the time does not work. The attached invitation has the booking.
   attachments:
@@ -23420,9 +23420,9 @@ messages:
   to:
   - kwm039
   date: '2026-08-26T10:45:00-04:00'
-  subject: 'Re: Planning examples: The September direction'
+  subject: 'Re: Planning examples: Preparing a direction discussion'
   body: |
-    I will bring the comparison with no change left as a possible answer. A saving here may become upkeep elsewhere. My proposed change: Use the September direction to frame effort and continuing ownership.
+    I will bring the comparison with no change left as a possible answer. A saving here may become upkeep elsewhere. My proposed change: Frame the planning example in repeated effort and continuing ownership before choosing a solution.
   reply_to: ol-1578
   attachments:
   - office-2026-452-reply-kwm053
@@ -23432,10 +23432,10 @@ messages:
   to:
   - kwm039
   date: '2026-08-26T11:45:00-04:00'
-  subject: 'Re: Planning examples: The September direction'
+  subject: 'Re: Planning examples: Preparing a direction discussion'
   body: |
     Calendar response: ACCEPTED
-    Planning examples: The September direction
+    Planning examples: Preparing a direction discussion
     August 28, 10:30-11:00. Remote call.
   reply_to: ol-1578
   attachments:
@@ -23448,13 +23448,13 @@ messages:
   - kwm042
   - kwm007
   date: '2026-08-28T11:18:00-04:00'
-  subject: 'After: Planning examples: The September direction'
+  subject: 'After: Planning examples: Preparing a direction discussion'
   body: |
-    Planning examples: The September direction
+    Planning examples: Preparing a direction discussion
     2026-08-28 10:30-11:00
     Present: Jory Wellard, Mica Radvell, Lara Velswick, Beatrice Bravelle.
 
-    Use the September direction to frame effort and continuing ownership. The example retains continuing effort and a question for the affected owner. No feature, hiring decision or delivery date was approved.
+    Frame the planning example in repeated effort and continuing ownership before choosing a solution. The example retains continuing effort and a question for the affected owner. No feature, hiring decision or delivery date was approved.
   reply_to: ol-1578
 - id: ol-1582
   story: office-life

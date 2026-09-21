@@ -143,8 +143,16 @@ def render():
             d = docs_by_id[attachment]
             assert datetime.fromisoformat(d['published_at']) <= datetime.fromisoformat(m['date']), ('Attachment from the future', m['id'], attachment)
             maintype, subtype = d.get('media_type', 'text/markdown').split('/', 1)
-            msg.add_attachment(document_bytes(d), maintype=maintype, subtype=subtype,
-                               filename=document_path(d))
+            raw_attachment = document_bytes(d)
+            params = {}
+            if (maintype, subtype) == ('text', 'calendar'):
+                methods = [line[7:] for line in raw_attachment.decode('utf-8').splitlines()
+                           if line.startswith('METHOD:')]
+                assert len(methods) <= 1, d['id']
+                if methods:
+                    params['method'] = methods[0]
+            msg.add_attachment(raw_attachment, maintype=maintype, subtype=subtype,
+                               filename=document_path(d), params=params)
         if msg.is_multipart():
             msg.set_boundary('workplace-' + sha(m['id'].encode())[:24])
         raw = msg.as_bytes()

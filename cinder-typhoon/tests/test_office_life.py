@@ -1,10 +1,13 @@
 """Adversarial checks for publications, invitations, privacy and office continuity."""
 import copy
 from datetime import datetime
+from email.parser import BytesParser
+from email.policy import default
+import json
 from pathlib import Path
 import unittest
 import yaml
-from validate_office_life import check_office_life
+from validate_office_life import check_calendar_part, check_office_life
 
 ROOT = Path(__file__).resolve().parents[1] / 'assets/narrative'
 
@@ -39,6 +42,12 @@ class OfficeLifeTests(unittest.TestCase):
             h = next(h for h in f['meetings'] if h['category'] == 'check-in')
             doc(d, h['minutes'])['reader_keys'].append('kwm055')
         def personal_staff_post(f, m, d, e): doc(d, f['publications'][0]['id'])['text'] += '<p>My sister enjoyed the dinner.</p>'
+        def early_recap(f, m, d, e):
+            p = next(p for p in f['publications'] if 'after_event' in p and not p['comments'])
+            old, new = p['posted_at'], event(e, p['after_event'])['start']
+            page = doc(d, p['id'])
+            p['posted_at'] = p['published_at'] = page['published_at'] = new
+            page['text'] = page['text'].replace(old, new).replace(old[:16], new[:16])
         def comment_missing(f, m, d, e):
             p = next(p for p in f['publications'] if p['comments'])
             doc(d, p['id'])['text'] = doc(d, p['id'])['text'].replace(p['comments'][0]['text'], '')
@@ -96,7 +105,7 @@ class OfficeLifeTests(unittest.TestCase):
         def private_rota(f, m, d, e): doc(d, f['support_swap']['document'])['text'] += 'Maya is seeing her sister.\n'
         def future_attachment(f, m, d, e):
             h = history(f, 'completed'); doc(d, msg(m, h['invitation'])['attachments'][0])['published_at'] = '2026-09-15T22:00:00-04:00'
-        cases = [private_note, personal_staff_post, comment_missing, comment_early, comment_wrong_reader,
+        cases = [private_note, personal_staff_post, early_recap, comment_missing, comment_early, comment_wrong_reader,
                  draft_staff, late_approval, wrong_consent, late_consent, wrong_uid, wrong_reply,
                  false_response, early_completion, cancelled_attendance, declined_attendance,
                  cancellation_late, cancelled_revision, lost_reschedule, room_capacity, room_storage,
@@ -138,6 +147,31 @@ class OfficeLifeTests(unittest.TestCase):
                 item['text'] = item['text'].replace('LOCATION:' + before, 'LOCATION:' + after)
         with self.assertRaisesRegex(ValueError, 'booking conflict for room:'):
             self.check(f, m, d, e)
+
+    def test_scheduling_mime_methods(self):
+        package = json.loads((ROOT / 'generated/packages/keplerops-mail.json').read_text())
+        methods, parts = set(), []
+        for record in package['messages']:
+            if 'text/calendar' not in record['rfc822']:
+                continue
+            message = BytesParser(policy=default).parsebytes(record['rfc822'].encode())
+            for part in message.iter_attachments():
+                if (part.get_content_type() == 'text/calendar' and
+                        (part.get_filename() or '').startswith('office-2026-')):
+                    check_calendar_part(part)
+                    methods.add(part.get_param('method'))
+                    parts.append(part)
+        self.assertEqual(methods, {'REQUEST', 'REPLY', 'CANCEL'})
+        self.assertEqual(len(parts), 984)
+        for remove in (False, True):
+            with self.subTest(missing=remove):
+                part = copy.deepcopy(parts[0])
+                if remove:
+                    part.del_param('method')
+                else:
+                    part.set_param('method', 'WRONG')
+                with self.assertRaisesRegex(ValueError, 'scheduling MIME method'):
+                    check_calendar_part(part)
 
 
 if __name__ == '__main__':

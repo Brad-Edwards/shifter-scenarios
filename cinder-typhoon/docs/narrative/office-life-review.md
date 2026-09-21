@@ -141,7 +141,13 @@ calendar bytes retain their original semantics and serialization.
    ends before Talia's 14:08 follow-up. The October 1 lunch remains the existing
    calendar item, and the September 24 workshop retains its accepted future
    arrangement. The September 15 bicycle-free lunch invitation follows Maya's
-   September 14 suggestion.
+   September 14 suggestion. A final read-through also moved the July 29 sketching
+   recap after lunch and linked eight public recaps to their completed occurrences.
+   September 9 support and private check-in notes describe rehearsal preparation;
+   they no longer imply that Maya accepted the division of the customer session
+   before her original 15:01 reply. Advance September-update invitations now
+   say when the direction note will be circulated; August working sessions frame
+   a future planning discussion instead of implying that note is already issued.
 2. **Response state.** Conditional replies in early social drafts were too easily
    treated as acceptances. The finished tentative and declined replies have
    matching `PARTSTAT` evidence; unanswered invitations retain `NEEDS-ACTION`.
@@ -205,7 +211,11 @@ mail source. All items retain individual reader sets.
 
 The renderer adds optional calendar location, attendee response state, sequence
 and last-update timestamps. It leaves those fields absent for earlier records,
-so all 180 accepted calendar objects retain their exact bytes. Bulk office mail
+so all 180 accepted calendar objects retain their exact bytes. Scheduling mail
+also sets the MIME `method` parameter to match the attached iCalendar `METHOD`,
+as required by [RFC 6047, section 2.4](https://www.rfc-editor.org/rfc/rfc6047.html#section-2.4).
+Checks cover all 984 scheduling MIME parts and reject a missing or mismatched
+parameter. Bulk office mail
 and calendars stay inside the existing packages, preserving the pinned pack's
 member limit. No intranet server, calendar platform, host OS or runtime behavior
 is introduced.
@@ -229,7 +239,7 @@ unchanged. Static validation does not claim a deployed workplace service.
 - Narrative checks pass for 26,390 messages, exact attachment bytes and intended
   readers, 6,556 source documents, 294 employees and eight source collections.
 - The 156 generated outputs reproduce byte-for-byte.
-- Office tests pass the finished corpus and reject 35 deliberate errors, including
+- Office tests pass the finished corpus and reject 38 deliberate errors, including
   consistent-but-conflicting room invitations, conflicts with accepted calendars,
   double-booked cover, false attendance, incorrect response state, missing consent,
   widened private readers, future attachments and mismatched learning claims.

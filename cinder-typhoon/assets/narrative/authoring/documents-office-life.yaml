@@ -649,12 +649,12 @@ documents:
   employer: keplerops
   title: Pencils returned
   path: office-post-023.html
-  published_at: '2026-07-29T10:00:00-04:00'
+  published_at: '2026-07-29T17:00:00-04:00'
   audience: staff
   story: office-life
   text: |
     <!doctype html>
-    <html lang="en"><head><meta charset="utf-8"><title>Pencils returned</title></head><body><main><article><h1>Pencils returned</h1><p>Published by Alix Harlowe | <time datetime="2026-07-29T10:00:00-04:00">2026-07-29T10:00</time></p>
+    <html lang="en"><head><meta charset="utf-8"><title>Pencils returned</title></head><body><main><article><h1>Pencils returned</h1><p>Published by Alix Harlowe | <time datetime="2026-07-29T17:00:00-04:00">2026-07-29T17:00</time></p>
     <p>Two of us drew the same mug from different sides at lunch. The drawings are staying with their owners. I have put the spare pencils back in the kitchen drawer; the blue one needs sharpening. There is no recurring booking, but someone else is welcome to suggest another afternoon or lunch.</p>
     </article><section aria-label="Comments"></section></main></body></html>
   media_type: text/html
@@ -4199,10 +4199,11 @@ documents:
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:felix.darsell@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:finn.marrent@keplerops.com\r\
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:flora.torren@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:gabriel.delmont@keplerops.c\r\
     \n om\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:hana.mavell@keplerops.com\r\nLOCATION:Common area /\
-    \ remote option\r\nSUMMARY:Planning examples: repeated work - group 1\r\nDESCRIPTION:Read Leah's September 2\
-    \ direction note. Bring repeated work\\, i\r\n ts continuing owner and what would need to stop or become simpler\\\
-    ; do not\r\n  turn the example into a promised feature.\\nPlease read the question befor\r\n e joining. We will\
-    \ keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \ remote option\r\nSUMMARY:Planning examples: repeated work - group 1\r\nDESCRIPTION:I will circulate the direction\
+    \ note on September 2. Please read\r\n  it before this update. Bring repeated work\\, its continuing owner and\
+    \ wha\r\n t would need to stop or become simpler\\; do not turn the example into a pr\r\n omised feature.\\\
+    nPlease read the question before joining. We will keep the\r\n  agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\
+    \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - leah
   - rowan
@@ -4248,11 +4249,11 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:af7dfd6c-15ff-5d34-9c61-eb63df268581@keplerops.com\r\nDTSTAMP:20260901T144500Z\r\nDTSTART:20260903T183000Z\r\
     \nDTEND:20260903T190000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:leah.calder-voss@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:rowan.ito@keplerops.com\r\
-    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 1\r\nDESCRIPTION:Read\
-    \ Leah's September 2 direction note. Bring repeated work\\, i\r\n ts continuing owner and what would need to\
-    \ stop or become simpler\\; do not\r\n  turn the example into a promised feature.\\nPlease read the question\
-    \ befor\r\n e joining. We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\
-    \nEND:VCALENDAR\r\n"
+    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 1\r\nDESCRIPTION:I\
+    \ will circulate the direction note on September 2. Please read\r\n  it before this update. Bring repeated work\\\
+    , its continuing owner and wha\r\n t would need to stop or become simpler\\; do not turn the example into a\
+    \ pr\r\n omised feature.\\nPlease read the question before joining. We will keep the\r\n  agreed action with\
+    \ this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - leah
   - rowan
@@ -4329,11 +4330,11 @@ documents:
     \n m\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mica.radvell@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mira.belsart@keplerops.com\r\
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:morgan.havelin@keplerops.co\r\n m\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:nella.renshaw@keplerops.com\r\
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:niamh.bravelle@keplerops.co\r\n m\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:niko.rensart@keplerops.com\r\
-    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:Read\
-    \ Leah's September 2 direction note. Bring repeated work\\, i\r\n ts continuing owner and what would need to\
-    \ stop or become simpler\\; do not\r\n  turn the example into a promised feature.\\nPlease read the question\
-    \ befor\r\n e joining. We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\
-    \nEND:VCALENDAR\r\n"
+    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:I\
+    \ will circulate the direction note on September 2. Please read\r\n  it before this update. Bring repeated work\\\
+    , its continuing owner and wha\r\n t would need to stop or become simpler\\; do not turn the example into a\
+    \ pr\r\n omised feature.\\nPlease read the question before joining. We will keep the\r\n  agreed action with\
+    \ this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - leah
   - kwm030
@@ -4378,11 +4379,11 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:abafd356-4ee6-5995-b9f8-402364976dc8@keplerops.com\r\nDTSTAMP:20260901T144500Z\r\nDTSTART:20260903T191500Z\r\
     \nDTEND:20260903T194500Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:leah.calder-voss@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:harriet.velswick@keplerops.com\r\
-    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:Read\
-    \ Leah's September 2 direction note. Bring repeated work\\, i\r\n ts continuing owner and what would need to\
-    \ stop or become simpler\\; do not\r\n  turn the example into a promised feature.\\nPlease read the question\
-    \ befor\r\n e joining. We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\
-    \nEND:VCALENDAR\r\n"
+    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:I\
+    \ will circulate the direction note on September 2. Please read\r\n  it before this update. Bring repeated work\\\
+    , its continuing owner and wha\r\n t would need to stop or become simpler\\; do not turn the example into a\
+    \ pr\r\n omised feature.\\nPlease read the question before joining. We will keep the\r\n  agreed action with\
+    \ this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - leah
   - kwm030
@@ -4397,11 +4398,11 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:abafd356-4ee6-5995-b9f8-402364976dc8@keplerops.com\r\nDTSTAMP:20260901T154500Z\r\nDTSTART:20260903T191500Z\r\
     \nDTEND:20260903T194500Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:leah.calder-voss@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:hugo.dravik@keplerops.com\r\
-    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:Read\
-    \ Leah's September 2 direction note. Bring repeated work\\, i\r\n ts continuing owner and what would need to\
-    \ stop or become simpler\\; do not\r\n  turn the example into a promised feature.\\nPlease read the question\
-    \ befor\r\n e joining. We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\
-    \nEND:VCALENDAR\r\n"
+    \nLOCATION:Common area / remote option\r\nSUMMARY:Planning examples: repeated work - group 2\r\nDESCRIPTION:I\
+    \ will circulate the direction note on September 2. Please read\r\n  it before this update. Bring repeated work\\\
+    , its continuing owner and wha\r\n t would need to stop or become simpler\\; do not turn the example into a\
+    \ pr\r\n omised feature.\\nPlease read the question before joining. We will keep the\r\n  agreed action with\
+    \ this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - leah
   - kwm031
@@ -4693,7 +4694,7 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:ab14b35d-7857-5f65-9d7c-e222040eb083@keplerops.com\r\nDTSTAMP:20260722T154500Z\r\nDTSTART:20260723T161500Z\r\
-    \nDTEND:20260723T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:evan.calderoux@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:noor.aveling@keplerops.com\r\
+    \nDTEND:20260723T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:evan.calderoux@keplerops.com\r\nATTENDEE:mailto:noor.aveling@keplerops.com\r\
     \nLOCATION:Remote call\r\nSUMMARY:Lunch\\, if the day allows\r\nDESCRIPTION:Can we keep a lunch break together?\
     \ I have a film question that\r\n  does not belong in the release discussion.\\nPrivate conversation\\; notes\
     \ \r\n remain with the invitees.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
@@ -4778,7 +4779,7 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:06c96896-0ef1-5ff2-94e1-27b30349d8b9@keplerops.com\r\nDTSTAMP:20260826T154500Z\r\nDTSTART:20260827T161500Z\r\
-    \nDTEND:20260827T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:evan.calderoux@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:noor.aveling@keplerops.com\r\
+    \nDTEND:20260827T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:evan.calderoux@keplerops.com\r\nATTENDEE:mailto:noor.aveling@keplerops.com\r\
     \nLOCATION:Remote call\r\nSUMMARY:Lunch catch-up\r\nDESCRIPTION:Could we have a proper catch-up rather than\
     \ three minutes betwe\r\n en calls?\\nPrivate conversation\\; notes remain with the invitees.\r\nSTATUS:CANCELLED\r\
     \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
@@ -4885,11 +4886,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:566cf0ee-8b0e-5871-a90a-4ad2ab37e8fd@keplerops.com\r\nDTSTAMP:20260811T154500Z\r\nDTSTART:20260812T161500Z\r\
-    \nDTEND:20260812T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:corin.kelswick@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:alix.harlowe@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:della.larmont@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Book\
-    \ conversation\\, maybe\r\nDESCRIPTION:I am considering a short lunchtime conversation about the diagr\r\n amming\
-    \ book. Reply only if you want a place\\; otherwise I will leave the t\r\n ime free.\\nPrivate conversation\\\
-    ; notes remain with the invitees.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260812T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:corin.kelswick@keplerops.com\r\nATTENDEE:mailto:alix.harlowe@keplerops.com\r\
+    \nATTENDEE:mailto:della.larmont@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Book conversation\\, maybe\r\
+    \nDESCRIPTION:I am considering a short lunchtime conversation about the diagr\r\n amming book. Reply only if\
+    \ you want a place\\; otherwise I will leave the t\r\n ime free.\\nPrivate conversation\\; notes remain with\
+    \ the invitees.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm014
   - kwm002
@@ -5413,11 +5414,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:3953102d-5d24-5632-8500-78e1d68aeaab@keplerops.com\r\nDTSTAMP:20260804T154500Z\r\nDTSTART:20260805T161500Z\r\
-    \nDTEND:20260805T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:martin.harlowe@keplerops.co\r\
-    \n m\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mara.quillan@keplerops.com\r\nLOCATION:Remote call\r\
-    \nSUMMARY:Another reading lunch?\r\nDESCRIPTION:Does anyone want another quiet reading lunch? I only need repli\r\
-    \n es from people who want me to keep the slot.\\nPrivate conversation\\; notes\r\n  remain with the invitees.\r\
-    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260805T164500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE:mailto:martin.harlowe@keplerops.com\r\
+    \nATTENDEE:mailto:mara.quillan@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Another reading lunch?\r\nDESCRIPTION:Does\
+    \ anyone want another quiet reading lunch? I only need repli\r\n es from people who want me to keep the slot.\\\
+    nPrivate conversation\\; notes\r\n  remain with the invitees.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\
+    \n"
   reader_keys:
   - kwm051
   - kwm052
@@ -6093,13 +6094,13 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:dd26aba2-b137-5e25-aaf7-74117cd9d843@keplerops.com\r\nDTSTAMP:20260908T154500Z\r\nDTSTART:20260909T134500Z\r\
-    \nDTEND:20260909T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:adele.aldren@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:rowan.ito@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:alix.harlowe@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:amara.radvell@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:anika.belsart@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:ari.havelin@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:avery.renshaw@keplerops.com\r\nLOCATION:Large room / remote\
-    \ option\r\nSUMMARY:Core product: The written answer\r\nDESCRIPTION:Do we need this slot if the remaining example\
-    \ question is alrea\r\n dy answered in writing?\\nPlease read the question before joining. We will \r\n keep\
-    \ the agreed action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260909T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:adele.aldren@keplerops.com\r\nATTENDEE:mailto:rowan.ito@keplerops.com\r\
+    \nATTENDEE:mailto:alix.harlowe@keplerops.com\r\nATTENDEE:mailto:amara.radvell@keplerops.com\r\nATTENDEE:mailto:anika.belsart@keplerops.com\r\
+    \nATTENDEE:mailto:ari.havelin@keplerops.com\r\nATTENDEE:mailto:avery.renshaw@keplerops.com\r\nLOCATION:Large\
+    \ room / remote option\r\nSUMMARY:Core product: The written answer\r\nDESCRIPTION:Do we need this slot if the\
+    \ remaining example question is alrea\r\n dy answered in writing?\\nPlease read the question before joining.\
+    \ We will \r\n keep the agreed action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\
+    \n"
   reader_keys:
   - kwm001
   - rowan
@@ -7801,11 +7802,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:97d86996-c15a-5377-abec-e3d787eed4da@keplerops.com\r\nDTSTAMP:20260909T154500Z\r\nDTSTART:20260910T191500Z\r\
-    \nDTEND:20260910T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:dev.senvard@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:edda.dalver@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:eira.lestrel@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:elias.tarlowe@keplerops.com\r\
-    \nLOCATION:Small room / remote option\r\nSUMMARY:Customer integrations: The current reference\r\nDESCRIPTION:Which\
-    \ of the two working copies should the team use next?\\nPlea\r\n se read the question before joining. We will\
-    \ keep the agreed action with t\r\n his conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260910T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:dev.senvard@keplerops.com\r\nATTENDEE:mailto:edda.dalver@keplerops.com\r\
+    \nATTENDEE:mailto:eira.lestrel@keplerops.com\r\nATTENDEE:mailto:elias.tarlowe@keplerops.com\r\nLOCATION:Small\
+    \ room / remote option\r\nSUMMARY:Customer integrations: The current reference\r\nDESCRIPTION:Which of the two\
+    \ working copies should the team use next?\\nPlea\r\n se read the question before joining. We will keep the\
+    \ agreed action with t\r\n his conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm018
   - kwm019
@@ -8348,7 +8349,7 @@ documents:
   media_type: text/calendar
 - id: office-2026-108-request
   employer: keplerops
-  title: 'Customer support: After the rehearsal - invitation'
+  title: 'Customer support: Rehearsal preparation - invitation'
   path: office-2026-108-request.ics
   published_at: '2026-09-07T08:45:00-04:00'
   audience: restricted
@@ -8358,7 +8359,7 @@ documents:
     \nDTEND:20260909T133000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:elin.danwick@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:maya.ranscombe@keplerops.co\r\
     \n m\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:talia.mornac@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:emre.maraven@keplerops.com\r\
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:farah.telmire@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:felix.darsell@keplerops.com\r\
-    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: After the rehearsal\r\nDESCRIPTION:Which\
+    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: Rehearsal preparation\r\nDESCRIPTION:Which\
     \ workshop preparation detail belongs in the team note and \r\n which stays with the presenters?\\nPlease read\
     \ the question before joining.\r\n  We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\
     \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
@@ -8372,7 +8373,7 @@ documents:
   media_type: text/calendar
 - id: office-2026-108-reply-maya
   employer: keplerops
-  title: 'Customer support: After the rehearsal - response from Maya Ranscombe'
+  title: 'Customer support: Rehearsal preparation - response from Maya Ranscombe'
   path: office-2026-108-reply-maya.ics
   published_at: '2026-09-07T10:45:00-04:00'
   audience: restricted
@@ -8380,7 +8381,7 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:d132449c-e089-5288-9201-e585953121c2@keplerops.com\r\nDTSTAMP:20260907T144500Z\r\nDTSTART:20260909T130000Z\r\
     \nDTEND:20260909T133000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:elin.danwick@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:maya.ranscombe@keplerops.com\r\
-    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: After the rehearsal\r\nDESCRIPTION:Which\
+    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: Rehearsal preparation\r\nDESCRIPTION:Which\
     \ workshop preparation detail belongs in the team note and \r\n which stays with the presenters?\\nPlease read\
     \ the question before joining.\r\n  We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\
     \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
@@ -8390,7 +8391,7 @@ documents:
   media_type: text/calendar
 - id: office-2026-108-reply-talia
   employer: keplerops
-  title: 'Customer support: After the rehearsal - response from Talia Mornac'
+  title: 'Customer support: Rehearsal preparation - response from Talia Mornac'
   path: office-2026-108-reply-talia.ics
   published_at: '2026-09-07T11:45:00-04:00'
   audience: restricted
@@ -8398,7 +8399,7 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:d132449c-e089-5288-9201-e585953121c2@keplerops.com\r\nDTSTAMP:20260907T154500Z\r\nDTSTART:20260909T130000Z\r\
     \nDTEND:20260909T133000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:elin.danwick@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:talia.mornac@keplerops.com\r\
-    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: After the rehearsal\r\nDESCRIPTION:Which\
+    \nLOCATION:Window room / remote option\r\nSUMMARY:Customer support: Rehearsal preparation\r\nDESCRIPTION:Which\
     \ workshop preparation detail belongs in the team note and \r\n which stays with the presenters?\\nPlease read\
     \ the question before joining.\r\n  We will keep the agreed action with this conversation.\r\nSTATUS:CONFIRMED\r\
     \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
@@ -9424,11 +9425,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:f795ac9b-0e71-5324-8699-862674fc8104@keplerops.com\r\nDTSTAMP:20260908T154500Z\r\nDTSTART:20260909T170000Z\r\
-    \nDTEND:20260909T173000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:hugo.dravik@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:idris.narsen@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:imani.verrin@keplerops.com\r\nLOCATION:Small room / remote\
-    \ option\r\nSUMMARY:Enablement: The example after the session\r\nDESCRIPTION:Who will keep the shared exercise\
-    \ current if people continue us\r\n ing it?\\nPlease read the question before joining. We will keep the agreed\
-    \ \r\n action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260909T173000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:hugo.dravik@keplerops.com\r\nATTENDEE:mailto:idris.narsen@keplerops.com\r\
+    \nATTENDEE:mailto:imani.verrin@keplerops.com\r\nLOCATION:Small room / remote option\r\nSUMMARY:Enablement: The\
+    \ example after the session\r\nDESCRIPTION:Who will keep the shared exercise current if people continue us\r\
+    \n ing it?\\nPlease read the question before joining. We will keep the agreed \r\n action with this conversation.\r\
+    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm031
   - kwm032
@@ -10913,11 +10914,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:a51f06ce-5a9d-5d3f-a561-0cd9c0c5f529@keplerops.com\r\nDTSTAMP:20260909T154500Z\r\nDTSTART:20260910T134500Z\r\
-    \nDTEND:20260910T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:kaisa.fennard@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:kiran.orvel@keplerops.com\r\nLOCATION:Small room / remote\
-    \ option\r\nSUMMARY:Product management: A settled internal comparison\r\nDESCRIPTION:Can the written comparison\
-    \ stand without another discussion thi\r\n s week?\\nPlease read the question before joining. We will keep the\
-    \ agreed \r\n action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260910T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE:mailto:kaisa.fennard@keplerops.com\r\
+    \nATTENDEE:mailto:kiran.orvel@keplerops.com\r\nLOCATION:Small room / remote option\r\nSUMMARY:Product management:\
+    \ A settled internal comparison\r\nDESCRIPTION:Can the written comparison stand without another discussion thi\r\
+    \n s week?\\nPlease read the question before joining. We will keep the agreed \r\n action with this conversation.\r\
+    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm039
   - kwm040
@@ -12486,8 +12487,8 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:490cc88f-3403-5cd4-a9c8-8fe00f1882fe@keplerops.com\r\nDTSTAMP:20260908T154500Z\r\nDTSTART:20260909T191500Z\r\
-    \nDTEND:20260909T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:martin.harlowe@keplerops.co\r\
-    \n m\r\nLOCATION:Small room / remote option\r\nSUMMARY:Proposals: A finished practice correction\r\nDESCRIPTION:Is\
+    \nDTEND:20260909T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE:mailto:martin.harlowe@keplerops.com\r\
+    \nLOCATION:Small room / remote option\r\nSUMMARY:Proposals: A finished practice correction\r\nDESCRIPTION:Is\
     \ there another decision for the group after the written corre\r\n ction?\\nPlease read the question before\
     \ joining. We will keep the agreed a\r\n ction with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\n\
     END:VCALENDAR\r\n"
@@ -13818,8 +13819,8 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:b28f084a-80ee-5c61-b354-d5f308e25bb3@keplerops.com\r\nDTSTAMP:20260909T154500Z\r\nDTSTART:20260910T170000Z\r\
-    \nDTEND:20260910T173000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:nella.renshaw@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:niamh.bravelle@keplerops.co\r\
-    \n m\r\nLOCATION:Small room / remote option\r\nSUMMARY:Finance: The short answer\r\nDESCRIPTION:Can the remaining\
+    \nDTEND:20260910T173000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:nella.renshaw@keplerops.com\r\nATTENDEE:mailto:niamh.bravelle@keplerops.com\r\
+    \nLOCATION:Small room / remote option\r\nSUMMARY:Finance: The short answer\r\nDESCRIPTION:Can the remaining\
     \ policy question be answered in writing this w\r\n eek?\\nPlease read the question before joining. We will\
     \ keep the agreed act\r\n ion with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
@@ -16835,8 +16836,8 @@ documents:
     2026-09-09 09:45-10:15
     Present: Elin Danwick, Talia Mornac.
 
-    The employee reported: I have a clearer opening and still want to run it myself. A borrowed outline is useful as a reference, not a replacement.
-    Agreed follow-up: Keep Talia leading the September workshop; Maya supports the ongoing support questions.
+    The employee reported: The preparation is clearer, and I want to keep leading it. I would like feedback on the example and the time for questions.
+    Agreed follow-up: Keep Talia leading preparation and confirm the division of the customer session with Maya in the workshop thread.
   reader_keys:
   - kwm022
   - talia
@@ -21234,12 +21235,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:b672bb0d-784d-5adf-a3f4-897e66c71668@keplerops.com\r\nDTSTAMP:20260731T154500Z\r\nDTSTART:20260803T143000Z\r\
-    \nDTEND:20260803T150000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:leila.ferrell@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:dana.selwyn@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:margot.aldren@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Readable\
-    \ examples: The missing caption\r\nDESCRIPTION:Can another reader use this part of the internal document witho\r\
-    \n ut the author in the room? Focus: the missing caption.\\nPlease read the qu\r\n estion before joining. We\
-    \ will keep the agreed action with this conversati\r\n on.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\
-    \n"
+    \nDTEND:20260803T150000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:leila.ferrell@keplerops.com\r\nATTENDEE:mailto:dana.selwyn@keplerops.com\r\
+    \nATTENDEE:mailto:margot.aldren@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Readable examples: The missing\
+    \ caption\r\nDESCRIPTION:Can another reader use this part of the internal document witho\r\n ut the author in\
+    \ the room? Focus: the missing caption.\\nPlease read the qu\r\n estion before joining. We will keep the agreed\
+    \ action with this conversati\r\n on.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm043
   - kwm015
@@ -21764,12 +21764,12 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:b0ea7db9-2a1c-5d61-80cf-71928a63faec@keplerops.com\r\nDTSTAMP:20260801T154500Z\r\nDTSTART:20260804T191500Z\r\
-    \nDTEND:20260804T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:cian.cavelin@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:avery.renshaw@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:eira.lestrel@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:isabel.nelcourt@keplerops.c\r\
-    \n om\r\nLOCATION:Remote call\r\nSUMMARY:Remote participation: An unreadable shared screen\r\nDESCRIPTION:What\
-    \ must the organizer provide so a remote colleague can parti\r\n cipate before the choice is settled? Focus:\
-    \ an unreadable shared screen.\\n\r\n Please read the question before joining. We will keep the agreed action\
-    \ wi\r\n th this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260804T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:cian.cavelin@keplerops.com\r\nATTENDEE:mailto:avery.renshaw@keplerops.com\r\
+    \nATTENDEE:mailto:eira.lestrel@keplerops.com\r\nATTENDEE:mailto:isabel.nelcourt@keplerops.com\r\nLOCATION:Remote\
+    \ call\r\nSUMMARY:Remote participation: An unreadable shared screen\r\nDESCRIPTION:What must the organizer provide\
+    \ so a remote colleague can parti\r\n cipate before the choice is settled? Focus: an unreadable shared screen.\\\
+    n\r\n Please read the question before joining. We will keep the agreed action wi\r\n th this conversation.\r\
+    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm013
   - kwm006
@@ -22299,12 +22299,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:a881d8ca-dd39-5a7c-99fb-6a85d093009a@keplerops.com\r\nDTSTAMP:20260804T154500Z\r\nDTSTART:20260805T191500Z\r\
-    \nDTEND:20260805T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:finn.marrent@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:dev.senvard@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:lina.peveran@keplerops.com\r\nLOCATION:Small room / remote\
-    \ option\r\nSUMMARY:Useful handovers: The unavailable example\r\nDESCRIPTION:What should the receiving colleague\
-    \ be able to find without ano\r\n ther search or call? Focus: the unavailable example.\\nPlease read the ques\r\
-    \n tion before joining. We will keep the agreed action with this conversation\r\n .\r\nSTATUS:CANCELLED\r\n\
-    END:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260805T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:finn.marrent@keplerops.com\r\nATTENDEE:mailto:dev.senvard@keplerops.com\r\
+    \nATTENDEE:mailto:lina.peveran@keplerops.com\r\nLOCATION:Small room / remote option\r\nSUMMARY:Useful handovers:\
+    \ The unavailable example\r\nDESCRIPTION:What should the receiving colleague be able to find without ano\r\n\
+    \ ther search or call? Focus: the unavailable example.\\nPlease read the ques\r\n tion before joining. We will\
+    \ keep the agreed action with this conversation\r\n .\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm026
   - kwm018
@@ -22807,12 +22806,12 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:27e57c29-614e-50c0-bece-8f761bb857e8@keplerops.com\r\nDTSTAMP:20260806T154500Z\r\nDTSTART:20260807T200000Z\r\
-    \nDTEND:20260807T203000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:morgan.havelin@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:hugo.dravik@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mira.belsart@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Learning\
-    \ arrangements: The draft still needing a reader\r\nDESCRIPTION:What does the named participant need\\, and\
-    \ which administration\r\n  detail belongs with a smaller audience? Focus: the draft still needing a \r\n reader.\\\
-    nPlease read the question before joining. We will keep the agreed \r\n action with this conversation.\r\nSTATUS:CANCELLED\r\
-    \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260807T203000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:morgan.havelin@keplerops.com\r\nATTENDEE:mailto:hugo.dravik@keplerops.com\r\
+    \nATTENDEE:mailto:mira.belsart@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Learning arrangements: The draft\
+    \ still needing a reader\r\nDESCRIPTION:What does the named participant need\\, and which administration\r\n\
+    \  detail belongs with a smaller audience? Focus: the draft still needing a \r\n reader.\\nPlease read the question\
+    \ before joining. We will keep the agreed \r\n action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\
+    \nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm055
   - kwm031
@@ -23296,12 +23295,11 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:f137daa7-6828-542d-b46d-0567fccd3eea@keplerops.com\r\nDTSTAMP:20260731T154500Z\r\nDTSTART:20260803T134500Z\r\
-    \nDTEND:20260803T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:niko.rensart@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:amara.radvell@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:morgan.havelin@keplerops.co\r\n m\r\nLOCATION:Remote call\r\
-    \nSUMMARY:Current office guide: The old handout copy\r\nDESCRIPTION:Does the current guide give a usable direction\
-    \ without rewritin\r\n g the dated history? Focus: the old handout copy.\\nPlease read the questio\r\n n before\
-    \ joining. We will keep the agreed action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\
-    \n"
+    \nDTEND:20260803T141500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:niko.rensart@keplerops.com\r\nATTENDEE:mailto:amara.radvell@keplerops.com\r\
+    \nATTENDEE:mailto:morgan.havelin@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Current office guide: The\
+    \ old handout copy\r\nDESCRIPTION:Does the current guide give a usable direction without rewritin\r\n g the\
+    \ dated history? Focus: the old handout copy.\\nPlease read the questio\r\n n before joining. We will keep the\
+    \ agreed action with this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm058
   - kwm003
@@ -23803,12 +23801,12 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:ceb275d1-8c16-5ec1-ad8b-277d8a8386c4@keplerops.com\r\nDTSTAMP:20260801T154500Z\r\nDTSTART:20260804T151500Z\r\
-    \nDTEND:20260804T154500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:talia.mornac@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:kaisa.fennard@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Writing\
-    \ for a reader: An example needing permission\r\nDESCRIPTION:What is this reader being asked to decide\\, and\
-    \ which condition\r\n  must remain beside that request? Focus: an example needing permission.\\nP\r\n lease\
-    \ read the question before joining. We will keep the agreed action wit\r\n h this conversation.\r\nSTATUS:CANCELLED\r\
-    \nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260804T154500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:margot.aldren@keplerops.com\r\nATTENDEE:mailto:talia.mornac@keplerops.com\r\
+    \nATTENDEE:mailto:kaisa.fennard@keplerops.com\r\nLOCATION:Remote call\r\nSUMMARY:Writing for a reader: An example\
+    \ needing permission\r\nDESCRIPTION:What is this reader being asked to decide\\, and which condition\r\n  must\
+    \ remain beside that request? Focus: an example needing permission.\\nP\r\n lease read the question before joining.\
+    \ We will keep the agreed action wit\r\n h this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\
+    \n"
   reader_keys:
   - kwm051
   - talia
@@ -24293,12 +24291,12 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:ed8642d8-8445-5fb9-aeb8-b2967aa9b2ba@keplerops.com\r\nDTSTAMP:20260804T154500Z\r\nDTSTART:20260805T130000Z\r\
-    \nDTEND:20260805T133000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:alix.harlowe@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:cara.jorrel@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:gabriel.delmont@keplerops.c\r\n om\r\nLOCATION:Small room\
-    \ / remote option\r\nSUMMARY:Bounded peer practice: The exercise not yet ready\r\nDESCRIPTION:What can we learn\
-    \ from one attempt without turning the exercise\r\n  into a larger assignment? Focus: the exercise not yet ready.\\\
-    nPlease read\r\n  the question before joining. We will keep the agreed action with this con\r\n versation.\r\
-    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260805T133000Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:alix.harlowe@keplerops.com\r\nATTENDEE:mailto:cara.jorrel@keplerops.com\r\
+    \nATTENDEE:mailto:gabriel.delmont@keplerops.com\r\nLOCATION:Small room / remote option\r\nSUMMARY:Bounded peer\
+    \ practice: The exercise not yet ready\r\nDESCRIPTION:What can we learn from one attempt without turning the\
+    \ exercise\r\n  into a larger assignment? Focus: the exercise not yet ready.\\nPlease read\r\n  the question\
+    \ before joining. We will keep the agreed action with this con\r\n versation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\
+    \nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm002
   - kwm011
@@ -24843,12 +24841,12 @@ documents:
   story: office-life
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:CANCEL\r\
     \nBEGIN:VEVENT\r\nUID:7eb8a149-a5ec-579b-a7da-59885faea1a0@keplerops.com\r\nDTSTAMP:20260806T154500Z\r\nDTSTART:20260807T191500Z\r\
-    \nDTEND:20260807T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mica.radvell@keplerops.com\r\
-    \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:lara.velswick@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:beatrice.bravelle@keplerops\r\
-    \n .com\r\nLOCATION:Remote call\r\nSUMMARY:Planning examples: A comparison not yet checked\r\nDESCRIPTION:What\
-    \ effort continues after the first change\\, and what would t\r\n he alternative move to another team? Focus:\
-    \ a comparison not yet checked.\\\r\n nPlease read the question before joining. We will keep the agreed action\
-    \ w\r\n ith this conversation.\r\nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nDTEND:20260807T194500Z\r\nSEQUENCE:1\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE:mailto:mica.radvell@keplerops.com\r\
+    \nATTENDEE:mailto:lara.velswick@keplerops.com\r\nATTENDEE:mailto:beatrice.bravelle@keplerops.com\r\nLOCATION:Remote\
+    \ call\r\nSUMMARY:Planning examples: A comparison not yet checked\r\nDESCRIPTION:What effort continues after\
+    \ the first change\\, and what would t\r\n he alternative move to another team? Focus: a comparison not yet\
+    \ checked.\\\r\n nPlease read the question before joining. We will keep the agreed action w\r\n ith this conversation.\r\
+    \nSTATUS:CANCELLED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm039
   - kwm053
@@ -25012,7 +25010,7 @@ documents:
   - kwm007
 - id: office-2026-452-request
   employer: keplerops
-  title: 'Planning examples: The September direction - invitation'
+  title: 'Planning examples: Preparing a direction discussion - invitation'
   path: office-2026-452-request.ics
   published_at: '2026-08-26T08:45:00-04:00'
   audience: restricted
@@ -25021,10 +25019,10 @@ documents:
     \nBEGIN:VEVENT\r\nUID:70ddbdaa-d7e4-5d49-b831-c910936ce52f@keplerops.com\r\nDTSTAMP:20260826T124500Z\r\nDTSTART:20260828T143000Z\r\
     \nDTEND:20260828T150000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:mica.radvell@keplerops.com\r\
     \nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:lara.velswick@keplerops.com\r\nATTENDEE;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:beatrice.bravelle@keplerops\r\
-    \n .com\r\nLOCATION:Remote call\r\nSUMMARY:Planning examples: The September direction\r\nDESCRIPTION:What effort\
-    \ continues after the first change\\, and what would t\r\n he alternative move to another team? Focus: the september\
-    \ direction.\\nPlea\r\n se read the question before joining. We will keep the agreed action with t\r\n his conversation.\r\
-    \nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \n .com\r\nLOCATION:Remote call\r\nSUMMARY:Planning examples: Preparing a direction discussion\r\nDESCRIPTION:What\
+    \ effort continues after the first change\\, and what would t\r\n he alternative move to another team? Focus:\
+    \ preparing a direction discussi\r\n on.\\nPlease read the question before joining. We will keep the agreed\
+    \ acti\r\n on with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm039
   - kwm053
@@ -25033,7 +25031,7 @@ documents:
   media_type: text/calendar
 - id: office-2026-452-reply-kwm053
   employer: keplerops
-  title: 'Planning examples: The September direction - response from Mica Radvell'
+  title: 'Planning examples: Preparing a direction discussion - response from Mica Radvell'
   path: office-2026-452-reply-kwm053.ics
   published_at: '2026-08-26T10:45:00-04:00'
   audience: restricted
@@ -25041,17 +25039,17 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:70ddbdaa-d7e4-5d49-b831-c910936ce52f@keplerops.com\r\nDTSTAMP:20260826T144500Z\r\nDTSTART:20260828T143000Z\r\
     \nDTEND:20260828T150000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:mica.radvell@keplerops.com\r\
-    \nLOCATION:Remote call\r\nSUMMARY:Planning examples: The September direction\r\nDESCRIPTION:What effort continues\
-    \ after the first change\\, and what would t\r\n he alternative move to another team? Focus: the september direction.\\\
-    nPlea\r\n se read the question before joining. We will keep the agreed action with t\r\n his conversation.\r\
-    \nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nLOCATION:Remote call\r\nSUMMARY:Planning examples: Preparing a direction discussion\r\nDESCRIPTION:What effort\
+    \ continues after the first change\\, and what would t\r\n he alternative move to another team? Focus: preparing\
+    \ a direction discussi\r\n on.\\nPlease read the question before joining. We will keep the agreed acti\r\n on\
+    \ with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm039
   - kwm053
   media_type: text/calendar
 - id: office-2026-452-reply-kwm042
   employer: keplerops
-  title: 'Planning examples: The September direction - response from Lara Velswick'
+  title: 'Planning examples: Preparing a direction discussion - response from Lara Velswick'
   path: office-2026-452-reply-kwm042.ics
   published_at: '2026-08-26T11:45:00-04:00'
   audience: restricted
@@ -25059,10 +25057,10 @@ documents:
   text: "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Workplace Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:REPLY\r\
     \nBEGIN:VEVENT\r\nUID:70ddbdaa-d7e4-5d49-b831-c910936ce52f@keplerops.com\r\nDTSTAMP:20260826T154500Z\r\nDTSTART:20260828T143000Z\r\
     \nDTEND:20260828T150000Z\r\nSEQUENCE:0\r\nORGANIZER:mailto:jory.wellard@keplerops.com\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:lara.velswick@keplerops.com\r\
-    \nLOCATION:Remote call\r\nSUMMARY:Planning examples: The September direction\r\nDESCRIPTION:What effort continues\
-    \ after the first change\\, and what would t\r\n he alternative move to another team? Focus: the september direction.\\\
-    nPlea\r\n se read the question before joining. We will keep the agreed action with t\r\n his conversation.\r\
-    \nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+    \nLOCATION:Remote call\r\nSUMMARY:Planning examples: Preparing a direction discussion\r\nDESCRIPTION:What effort\
+    \ continues after the first change\\, and what would t\r\n he alternative move to another team? Focus: preparing\
+    \ a direction discussi\r\n on.\\nPlease read the question before joining. We will keep the agreed acti\r\n on\
+    \ with this conversation.\r\nSTATUS:CONFIRMED\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
   reader_keys:
   - kwm039
   - kwm042

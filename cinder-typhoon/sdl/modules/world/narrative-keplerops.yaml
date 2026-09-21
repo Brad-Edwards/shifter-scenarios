@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-69ae7e877e2558e319abce04fa352f3644ac0242fb041642474afd512bbd4198
+      version: sha256-d6eed4759358e5fcb74aa153c89fef3b11c9fe8fd2f7504f3336f09a52d2369f
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v2
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-6157f8309d8d116dc1f2b36b37a2058932fc54ef7b61b0d021e6901501783a61
+      version: sha256-c37294547a354e8d7e91226ddb4126ccf554058129d6d3fe4669f0a7de820a7e
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
@@ -4537,11 +4537,11 @@ content:
     - name: office-2026-107-reply-maya
       display_name: 'Customer support: The September cover view - response from Maya Ranscombe'
     - name: office-2026-108-request
-      display_name: 'Customer support: After the rehearsal - invitation'
+      display_name: 'Customer support: Rehearsal preparation - invitation'
     - name: office-2026-108-reply-maya
-      display_name: 'Customer support: After the rehearsal - response from Maya Ranscombe'
+      display_name: 'Customer support: Rehearsal preparation - response from Maya Ranscombe'
     - name: office-2026-108-reply-talia
-      display_name: 'Customer support: After the rehearsal - response from Talia Mornac'
+      display_name: 'Customer support: Rehearsal preparation - response from Talia Mornac'
     - name: office-2026-109-request
       display_name: 'Implementation: One page plus background - invitation'
     - name: office-2026-109-reply-kwm027
@@ -6108,11 +6108,11 @@ content:
     - name: office-2026-451-note
       display_name: 'Planning examples: A useful limit - meeting note'
     - name: office-2026-452-request
-      display_name: 'Planning examples: The September direction - invitation'
+      display_name: 'Planning examples: Preparing a direction discussion - invitation'
     - name: office-2026-452-reply-kwm053
-      display_name: 'Planning examples: The September direction - response from Mica Radvell'
+      display_name: 'Planning examples: Preparing a direction discussion - response from Mica Radvell'
     - name: office-2026-452-reply-kwm042
-      display_name: 'Planning examples: The September direction - response from Lara Velswick'
+      display_name: 'Planning examples: Preparing a direction discussion - response from Lara Velswick'
     - name: office-2026-453-request
       display_name: 'Planning examples: A missing cost - invitation'
     - name: office-2026-453-reply-kwm053
@@ -12740,7 +12740,7 @@ content:
     - name: office-2026-107
       display_name: 'Customer support: The September cover view'
     - name: office-2026-108
-      display_name: 'Customer support: After the rehearsal'
+      display_name: 'Customer support: Rehearsal preparation'
     - name: office-2026-109
       display_name: 'Implementation: One page plus background'
     - name: office-2026-110
@@ -13428,7 +13428,7 @@ content:
     - name: office-2026-451
       display_name: 'Planning examples: A useful limit'
     - name: office-2026-452
-      display_name: 'Planning examples: The September direction'
+      display_name: 'Planning examples: Preparing a direction discussion'
     - name: office-2026-453
       display_name: 'Planning examples: A missing cost'
     - name: office-2026-454
@@ -13841,7 +13841,7 @@ content:
     format: cinder-employment-records/v2
     source:
       name: cinder-typhoon/narrative/keplerops-employment
-      version: sha256-b9650db0a78034aedf09cc230ed824c81063c194021c7fdddd72673d961d7dce
+      version: sha256-bdc70503e02e848a8ff4793a69b51e376e21b99c65e11030fbf9896685e2dac0
     description: keplerops workplace employment. Require an individual staff identity; Exact named personnel
       readers. Preserve authored readers and opening state.
     items:

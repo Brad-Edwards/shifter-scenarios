@@ -50,6 +50,15 @@ def calendar(text):
     return result
 
 
+def check_calendar_part(part):
+    """iMIP requires the MIME method parameter to match the scheduling object."""
+    if part.get_content_type() != 'text/calendar':
+        return
+    methods = calendar(part.get_payload(decode=True).decode('utf-8'))['METHOD']
+    parameter = part.get_param('method')
+    require(methods == ([parameter.upper()] if parameter else []), 'scheduling MIME method')
+
+
 def check_office_life(root, identity, roster, mail, docs, events, manifest=None):
     def load(name):
         return yaml.safe_load((root / 'authoring' / name).read_text())
@@ -120,6 +129,10 @@ def check_office_life(root, identity, roster, mail, docs, events, manifest=None)
         require((p['scope'] == 'staff') == (d['audience'] == 'staff'), 'publication scope')
         require(d['published_at'] == p['published_at'] and
                 moment(p['posted_at']) <= moment(p['published_at']) <= snapshot, 'publication chronology')
+        if 'after_event' in p:
+            require(histories[p['after_event']]['state'] == 'completed' and
+                    moment(calendars[p['after_event']]['end']) <= moment(p['posted_at']),
+                    'public recap precedes completed event')
         page = Page(d['text'])
         require(not page.comments and len(' '.join(page.words).split()) >= 45, 'empty or hidden publication')
         require(page.times == [p['posted_at']] + [c['date'] for c in p['comments']], 'HTML comment dates')
@@ -164,7 +177,8 @@ def check_office_life(root, identity, roster, mail, docs, events, manifest=None)
         expected = defaultdict(list)
         for k in ([respondent] if respondent else e['attendees']):
             part = e['responses'][k] if respondent else 'NEEDS-ACTION'
-            field = 'ATTENDEE;PARTSTAT=' + part + (';RSVP=TRUE' if not respondent else '')
+            field = ('ATTENDEE' if method == 'CANCEL' else
+                     'ATTENDEE;PARTSTAT=' + part + (';RSVP=TRUE' if method == 'REQUEST' else ''))
             expected[field].append('mailto:' + people[k]['email'])
         require(actual == dict(expected), 'calendar response participants')
         escaped = lambda s: s.replace('\\', '\\\\').replace('\n', '\\n').replace(',', '\\,').replace(';', '\\;')

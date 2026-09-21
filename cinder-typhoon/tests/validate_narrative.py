@@ -22,7 +22,7 @@ from validate_release_platform import check_release_platform
 from validate_customer_followup import check_customer_followup
 from validate_commercial import check_commercial
 from validate_finance import check_finance
-from validate_office_life import check_office_life
+from validate_office_life import check_calendar_part, check_office_life
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -819,6 +819,8 @@ def check_assets():
                           for d in m.get('attachments', [])}
         require({p.get_filename(): p.get_content_type() for p in message.iter_attachments()} == expected_types,
                 f'Attachment media type mismatch: {m["id"]}')
+        for part in message.iter_attachments():
+            check_calendar_part(part)
         if m.get('reply_to'):
             parent = coverage['messages'][m['reply_to']]['message_id']
             require(message['In-Reply-To'] == parent and parent in str(message['References']), f'Thread mismatch: {m["id"]}')

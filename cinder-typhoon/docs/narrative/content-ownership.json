@@ -15,10 +15,10 @@
     "accepted_finance_commit": "437f1e9"
   },
   "source_versions": {
-    "cinder-typhoon/narrative/keplerops-mail": "sha256-69ae7e877e2558e319abce04fa352f3644ac0242fb041642474afd512bbd4198",
-    "cinder-typhoon/narrative/keplerops-documents": "sha256-6157f8309d8d116dc1f2b36b37a2058932fc54ef7b61b0d021e6901501783a61",
+    "cinder-typhoon/narrative/keplerops-mail": "sha256-d6eed4759358e5fcb74aa153c89fef3b11c9fe8fd2f7504f3336f09a52d2369f",
+    "cinder-typhoon/narrative/keplerops-documents": "sha256-c37294547a354e8d7e91226ddb4126ccf554058129d6d3fe4669f0a7de820a7e",
     "cinder-typhoon/narrative/keplerops-directory": "sha256-3b1778055939e09640ad3cb51459c97dbccabf0854b1eb1a2d832a4cd68ac931",
-    "cinder-typhoon/narrative/keplerops-employment": "sha256-b9650db0a78034aedf09cc230ed824c81063c194021c7fdddd72673d961d7dce",
+    "cinder-typhoon/narrative/keplerops-employment": "sha256-bdc70503e02e848a8ff4793a69b51e376e21b99c65e11030fbf9896685e2dac0",
     "cinder-typhoon/narrative/arwc-mail": "sha256-5df1463941fd824fbc68a35a8a001064851eee888789a4d7b0941e315336c617",
     "cinder-typhoon/narrative/arwc-documents": "sha256-97757ceb3bcbfa4f7e0b293cbe1eda1cdb28295e97230fd49e24343bb0cb5cb7",
     "cinder-typhoon/narrative/arwc-directory": "sha256-24bc2731547d37d09eba8f9765437dce0ba85504a7d143c003db91518c43752f",
