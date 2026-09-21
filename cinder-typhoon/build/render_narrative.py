@@ -13,6 +13,7 @@ from email.message import EmailMessage
 from email.policy import SMTP
 from email.utils import format_datetime, formataddr
 import hashlib
+import gzip
 import io
 import json
 from pathlib import Path
@@ -159,7 +160,7 @@ def render():
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-', 'sa-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -191,8 +192,17 @@ def render():
         if 'archive' in d:
             library = libraries[d['employer']][kind]
             library['schema_version'] = library['schema_version'].replace('/v1', '/v2')
+            content = document_bytes(d)
+            if d.get('content_encoding'):
+                assert d['content_encoding'] == 'gzip', d['id']
+                compressed = io.BytesIO()
+                with gzip.GzipFile(fileobj=compressed, mode='wb', filename='', mtime=0) as stream:
+                    stream.write(content)
+                content = compressed.getvalue()
+                library['schema_version'] = library['schema_version'].replace('/v2', '/v3')
+                library['documents'][-1]['content_encoding'] = 'gzip'
             library['documents'][-1].update(
-                content_base64=base64.b64encode(document_bytes(d)).decode('ascii'),
+                content_base64=base64.b64encode(content).decode('ascii'),
                 sha256=d['binary_sha256'])
     for org in ORGS:
         rows = [{'name': p['name'], 'email': p['email'], 'department': p['department'],
@@ -238,7 +248,7 @@ def render():
         text = '\r\n'.join(folded) + '\r\n'
         # Bulk operating calendars are complete items in the source package.
         # Avoid redundant standalone members, as with bulk RFC822 messages.
-        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-')):
+        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-')):
             output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
         kind = 'employment' if '-induction-' in event['id'] else 'documents'
