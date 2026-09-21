@@ -31,6 +31,9 @@ def launch_command(config: dict, arguments: list[str], environment: dict[str, st
             "ANTHROPIC_DEFAULT_OPUS_MODEL": config["main_model"],
             "ANTHROPIC_DEFAULT_HAIKU_MODEL": config["small_model"],
             "NODE_EXTRA_CA_CERTS": str(CONFIG / "ca.pem"),
+            # Keep Claude's mutable first-run state out of the baked home and
+            # match the isolated config directory used by the wire test.
+            "CLAUDE_CONFIG_DIR": "/tmp/polaris-claude-config",
             "CLAUDE_CODE_API_KEY_HELPER_TTL_MS": "1000",
             "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1",
             "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
