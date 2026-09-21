@@ -1,8 +1,8 @@
 {
   "schema": "private-worker-registry-candidate/v1",
-  "source_revision": "b60933d429a27a2809bf2b31b38285876d97ad6c",
-  "image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
-  "tag": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter:0.1.0-candidate-sdk-1a1d21796b03",
+  "source_revision": "231ad21bc00f4cd4344ffeed4ee86aeed77fbfa1",
+  "image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:29f13f8f80184d4d1549cda17f5bcc9d3e237df773a4c7dac0dbd4022d20b101",
+  "tag": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter:0.1.1-231ad21",
   "visibility": "internal",
   "visibility_decision": "Maintainer confirmed Internal is the intended access level, matching the repository.",
   "source_label": "https://github.com/PaloAltoNetworks/shifter-scenarios",
