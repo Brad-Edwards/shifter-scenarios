@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:816f0bc7-b35e-5c35-b8dc-afb2d4c27019@alterrawaterco.com
+DTSTAMP:20260707T180000Z
+DTSTART:20260713T170000Z
+DTEND:20260713T200000Z
+ORGANIZER:mailto:theo.marrivel@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:tariq.jorrel@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:dana.veskell@veybridge.test
+LOCATION:River West district
+SEQUENCE:0
+SUMMARY:ARWC-CA-26-011: standard commissioning witness visit
+DESCRIPTION:ARWC-WO-26-0361\; ARWC-PO-26-211\; accepted scope only. Service
+  outcome is recorded separately.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

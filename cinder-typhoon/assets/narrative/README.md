@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 28,046 distinct authored messages, 8,543 source documents,
-staff directories for all 294 employees, and 782 calendar items. The
+The collection contains 28,478 distinct authored messages, 9,414 source documents,
+staff directories for all 294 employees, and 806 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -54,6 +54,15 @@ bookings, stock movements and sample handoffs. Its
 counts and documents the message adjustment, chronology and reader boundaries.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
+ARWC maintenance and engineering adds 432 messages, 871 document items and 24
+contractor appointments. Its 720 work orders cover all 48 maintenance and
+engineering employees, including all 24 accepted operations requests, routine
+completed service, waiting parts, deferred work and planned work. Twenty-four
+contractor packages retain quotation, accepted order, appointment, report and
+receipt joins. Four 2021–2023 project histories retain working and approved
+drawings, engineering notes, commissioning and handover. Its
+[review record](../../docs/narrative/maintenance-engineering-review.md) documents
+the message adjustment, chronology, revision authority and reader checks.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -78,6 +87,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/service-accounts.yaml` | Author-only inventory, account-case joins, statement deliveries and restricted dataset audiences. |
 | `authoring/field-operations.yaml` | Author-only inventory and audiences for completed operating and field books. |
 | `documents/service-account-records.zip` | Seventeen finished CSV tables, individually extractable for review. |
+| `authoring/maintenance-engineering.yaml` | Author-only equipment, work-order, contractor, project and revision joins. |
+| `documents/maintenance-engineering-records.zip` | Eleven completed CSV registers and twelve actual SVG drawing revisions. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |

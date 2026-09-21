@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:11ced0e3-cbc0-5175-956a-684ac7d78659@alterrawaterco.com
+DTSTAMP:20260625T180000Z
+DTSTART:20260630T170000Z
+DTEND:20260630T200000Z
+ORGANIZER:mailto:dana.wellard@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:dario.fennard@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:jules.orswick@veybridge.test
+LOCATION:River East district
+SEQUENCE:0
+SUMMARY:ARWC-CA-26-007: standard commissioning witness visit
+DESCRIPTION:ARWC-WO-26-0289\; ARWC-PO-26-207\; accepted scope only. Service
+  outcome is recorded separately.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

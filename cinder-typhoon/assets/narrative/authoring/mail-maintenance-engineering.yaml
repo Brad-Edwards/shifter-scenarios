@@ -1,0 +1,5598 @@
+messages:
+- id: me-contractor-001-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - jules
+  - priya
+  - awm098
+  date: '2026-06-07T12:20:00-04:00'
+  subject: 'ARWC-PO-26-201: visit request for ARWC-WO-26-0181'
+  body: 'I have ARWC-PO-26-201 against ARWC-WO-26-0181. The accepted visit is USD 1240.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-001
+  - me-contractor-quote-001
+- id: me-contractor-001-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - theo
+  - awm098
+  date: '2026-06-07T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-201: visit request for ARWC-WO-26-0181'
+  body: 'Friday 12 June at 13:00 works. I have ARWC-PO-26-201; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-001-1
+- id: me-contractor-001-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - theo
+  - awm098
+  - priya
+  date: '2026-06-12T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-201: visit request for ARWC-WO-26-0181'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-001 covers ARWC-WO-26-0181 only.
+
+    '
+  attachments:
+  - me-contractor-report-001
+  reply_to: me-contractor-001-2
+- id: me-contractor-001-4
+  story: maintenance-engineering
+  from: awm098
+  to:
+  - jules
+  - theo
+  - priya
+  date: '2026-06-15T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-201: visit request for ARWC-WO-26-0181'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-001 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-001
+  reply_to: me-contractor-001-3
+- id: me-contractor-002-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - jules
+  - priya
+  - awm103
+  date: '2026-06-10T12:20:00-04:00'
+  subject: 'ARWC-PO-26-202: visit request for ARWC-WO-26-0199'
+  body: 'Can you confirm the visit for ARWC-WO-26-0199? Priya has accepted ARWC-PO-26-202 at USD 1240.00; there
+    is no allowance for extra scope.
+
+    '
+  attachments:
+  - me-contractor-order-002
+  - me-contractor-quote-002
+- id: me-contractor-002-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm125
+  - awm103
+  date: '2026-06-10T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-202: visit request for ARWC-WO-26-0199'
+  body: 'Tuesday 16 June at 13:00 works. I have ARWC-PO-26-202; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-002-1
+- id: me-contractor-002-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm125
+  - awm103
+  - priya
+  date: '2026-06-16T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-202: visit request for ARWC-WO-26-0199'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-002 covers ARWC-WO-26-0199 only.
+
+    '
+  attachments:
+  - me-contractor-report-002
+  reply_to: me-contractor-002-2
+- id: me-contractor-002-4
+  story: maintenance-engineering
+  from: awm103
+  to:
+  - jules
+  - awm125
+  - priya
+  date: '2026-06-17T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-202: visit request for ARWC-WO-26-0199'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-002 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-002
+  reply_to: me-contractor-002-3
+- id: me-contractor-003-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - jules
+  - priya
+  - clara
+  date: '2026-06-13T12:20:00-04:00'
+  subject: 'ARWC-PO-26-203: visit request for ARWC-WO-26-0217'
+  body: 'Please book the accepted standard commissioning witness visit under ARWC-PO-26-203. The value is USD 1240.00,
+    and that is the full authority for this visit.
+
+    '
+  attachments:
+  - me-contractor-order-003
+  - me-contractor-quote-003
+- id: me-contractor-003-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm123
+  - clara
+  date: '2026-06-13T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-203: visit request for ARWC-WO-26-0217'
+  body: 'Wednesday 17 June at 13:00 works. I have ARWC-PO-26-203; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-003-1
+- id: me-contractor-003-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm123
+  - clara
+  - priya
+  date: '2026-06-17T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-203: visit request for ARWC-WO-26-0217'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-003 covers ARWC-WO-26-0217 only.
+
+    '
+  attachments:
+  - me-contractor-report-003
+  reply_to: me-contractor-003-2
+- id: me-contractor-003-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - jules
+  - awm123
+  - priya
+  date: '2026-06-18T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-203: visit request for ARWC-WO-26-0217'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-003 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-003
+  reply_to: me-contractor-003-3
+- id: me-contractor-004-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - jules
+  - priya
+  - awm112
+  date: '2026-06-16T12:20:00-04:00'
+  subject: 'ARWC-PO-26-204: visit request for ARWC-WO-26-0235'
+  body: 'The quote for ARWC-WO-26-0235 is accepted as ARWC-PO-26-204. Please confirm the visit; parts and additional
+    travel remain outside the USD 1240.00 order.
+
+    '
+  attachments:
+  - me-contractor-order-004
+  - me-contractor-quote-004
+- id: me-contractor-004-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm121
+  - awm112
+  date: '2026-06-16T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-204: visit request for ARWC-WO-26-0235'
+  body: 'Monday 22 June at 13:00 works. I have ARWC-PO-26-204; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-004-1
+- id: me-contractor-004-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm121
+  - awm112
+  - priya
+  date: '2026-06-22T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-204: visit request for ARWC-WO-26-0235'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-004 covers ARWC-WO-26-0235 only.
+
+    '
+  attachments:
+  - me-contractor-report-004
+  reply_to: me-contractor-004-2
+- id: me-contractor-004-4
+  story: maintenance-engineering
+  from: awm112
+  to:
+  - jules
+  - awm121
+  - priya
+  date: '2026-06-23T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-204: visit request for ARWC-WO-26-0235'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-004 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-004
+  reply_to: me-contractor-004-3
+- id: me-contractor-005-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - jules
+  - priya
+  - awm117
+  date: '2026-06-19T12:20:00-04:00'
+  subject: 'ARWC-PO-26-205: visit request for ARWC-WO-26-0253'
+  body: 'ARWC-PO-26-205 is approved for the standard commissioning witness visit, USD 1240.00. Can you hold the
+    proposed time? No extra attendance is included.
+
+    '
+  attachments:
+  - me-contractor-order-005
+  - me-contractor-quote-005
+- id: me-contractor-005-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm119
+  - awm117
+  date: '2026-06-19T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-205: visit request for ARWC-WO-26-0253'
+  body: 'Thursday 25 June at 13:00 works. I have ARWC-PO-26-205; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-005-1
+- id: me-contractor-005-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm119
+  - awm117
+  - priya
+  date: '2026-06-25T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-205: visit request for ARWC-WO-26-0253'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-005 covers ARWC-WO-26-0253 only.
+
+    '
+  attachments:
+  - me-contractor-report-005
+  reply_to: me-contractor-005-2
+- id: me-contractor-005-4
+  story: maintenance-engineering
+  from: awm117
+  to:
+  - jules
+  - awm119
+  - priya
+  date: '2026-06-26T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-205: visit request for ARWC-WO-26-0253'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-005 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-005
+  reply_to: me-contractor-005-3
+- id: me-contractor-006-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - jules
+  - priya
+  - awm121
+  date: '2026-06-22T12:20:00-04:00'
+  subject: 'ARWC-PO-26-206: visit request for ARWC-WO-26-0271'
+  body: 'I have ARWC-PO-26-206 against ARWC-WO-26-0271. The accepted visit is USD 1240.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-006
+  - me-contractor-quote-006
+- id: me-contractor-006-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - theo
+  - awm121
+  date: '2026-06-22T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-206: visit request for ARWC-WO-26-0271'
+  body: 'Friday 26 June at 13:00 works. I have ARWC-PO-26-206; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-006-1
+- id: me-contractor-006-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - theo
+  - awm121
+  - priya
+  date: '2026-06-26T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-206: visit request for ARWC-WO-26-0271'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-006 covers ARWC-WO-26-0271 only.
+
+    '
+  attachments:
+  - me-contractor-report-006
+  reply_to: me-contractor-006-2
+- id: me-contractor-006-4
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - jules
+  - theo
+  - priya
+  date: '2026-06-29T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-206: visit request for ARWC-WO-26-0271'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-006 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-006
+  reply_to: me-contractor-006-3
+- id: me-contractor-007-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - jules
+  - priya
+  - awm126
+  date: '2026-06-25T12:20:00-04:00'
+  subject: 'ARWC-PO-26-207: visit request for ARWC-WO-26-0289'
+  body: 'Can you confirm the visit for ARWC-WO-26-0289? Priya has accepted ARWC-PO-26-207 at USD 1240.00; there
+    is no allowance for extra scope.
+
+    '
+  attachments:
+  - me-contractor-order-007
+  - me-contractor-quote-007
+- id: me-contractor-007-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm125
+  - awm126
+  date: '2026-06-25T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-207: visit request for ARWC-WO-26-0289'
+  body: 'Tuesday 30 June at 13:00 works. I have ARWC-PO-26-207; I''ll leave the signed observations against that
+    scope.
+
+    '
+  reply_to: me-contractor-007-1
+- id: me-contractor-007-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm125
+  - awm126
+  - priya
+  date: '2026-06-30T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-207: visit request for ARWC-WO-26-0289'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-007 covers ARWC-WO-26-0289 only.
+
+    '
+  attachments:
+  - me-contractor-report-007
+  reply_to: me-contractor-007-2
+- id: me-contractor-007-4
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - jules
+  - awm125
+  - priya
+  date: '2026-07-01T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-207: visit request for ARWC-WO-26-0289'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-007 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-007
+  reply_to: me-contractor-007-3
+- id: me-contractor-008-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - jules
+  - priya
+  - awm131
+  date: '2026-06-28T12:20:00-04:00'
+  subject: 'ARWC-PO-26-208: visit request for ARWC-WO-26-0307'
+  body: 'Please book the accepted standard commissioning witness visit under ARWC-PO-26-208. The value is USD 1240.00,
+    and that is the full authority for this visit.
+
+    '
+  attachments:
+  - me-contractor-order-008
+  - me-contractor-quote-008
+- id: me-contractor-008-2
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm123
+  - awm131
+  date: '2026-06-28T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-208: visit request for ARWC-WO-26-0307'
+  body: 'Monday 6 July at 13:00 works. I have ARWC-PO-26-208; I''ll leave the signed observations against that scope.
+
+    '
+  reply_to: me-contractor-008-1
+- id: me-contractor-008-3
+  story: maintenance-engineering
+  from: jules
+  to:
+  - awm123
+  - awm131
+  - priya
+  date: '2026-07-06T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-208: visit request for ARWC-WO-26-0307'
+  body: 'Done. The signed observations are with the report; there was no extra travel or additional work. Report
+    VB-SR-26-008 covers ARWC-WO-26-0307 only.
+
+    '
+  attachments:
+  - me-contractor-report-008
+  reply_to: me-contractor-008-2
+- id: me-contractor-008-4
+  story: maintenance-engineering
+  from: awm131
+  to:
+  - jules
+  - awm123
+  - priya
+  date: '2026-07-07T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-208: visit request for ARWC-WO-26-0307'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-008 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-008
+  reply_to: me-contractor-008-3
+- id: me-contractor-009-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - bc_veybridge_2
+  - priya
+  - awm136
+  date: '2026-07-01T12:20:00-04:00'
+  subject: 'ARWC-PO-26-209: visit request for ARWC-WO-26-0325'
+  body: 'The quote for ARWC-WO-26-0325 is accepted as ARWC-PO-26-209. Please confirm the visit; parts and additional
+    travel remain outside the USD 1240.00 order.
+
+    '
+  attachments:
+  - me-contractor-order-009
+  - me-contractor-quote-009
+- id: me-contractor-009-2
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm121
+  - awm136
+  date: '2026-07-01T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-209: visit request for ARWC-WO-26-0325'
+  body: 'I have held Monday 6 July, 13:00 for ARWC-PO-26-209. That is a confirmed slot, not authority for extra
+    work.
+
+    '
+  reply_to: me-contractor-009-1
+- id: me-contractor-009-3
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm121
+  - awm136
+  - priya
+  date: '2026-07-06T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-209: visit request for ARWC-WO-26-0325'
+  body: 'Visit finished in the booked window. The report distinguishes what was witnessed from the ARWC acceptance.
+    Report VB-SR-26-009 covers ARWC-WO-26-0325 only.
+
+    '
+  attachments:
+  - me-contractor-report-009
+  reply_to: me-contractor-009-2
+- id: me-contractor-009-4
+  story: maintenance-engineering
+  from: awm136
+  to:
+  - bc_veybridge_2
+  - awm121
+  - priya
+  date: '2026-07-07T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-209: visit request for ARWC-WO-26-0325'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-009 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-009
+  reply_to: me-contractor-009-3
+- id: me-contractor-010-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - bc_veybridge_2
+  - priya
+  - awm095
+  date: '2026-07-04T12:20:00-04:00'
+  subject: 'ARWC-PO-26-210: visit request for ARWC-WO-26-0343'
+  body: 'ARWC-PO-26-210 is approved for the standard commissioning witness visit, USD 1240.00. Can you hold the
+    proposed time? No extra attendance is included.
+
+    '
+  attachments:
+  - me-contractor-order-010
+  - me-contractor-quote-010
+- id: me-contractor-010-2
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm119
+  - awm095
+  date: '2026-07-04T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-210: visit request for ARWC-WO-26-0343'
+  body: 'I have held Thursday 9 July, 13:00 for ARWC-PO-26-210. That is a confirmed slot, not authority for extra
+    work.
+
+    '
+  reply_to: me-contractor-010-1
+- id: me-contractor-010-3
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm119
+  - awm095
+  - priya
+  date: '2026-07-09T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-210: visit request for ARWC-WO-26-0343'
+  body: 'Visit finished in the booked window. The report distinguishes what was witnessed from the ARWC acceptance.
+    Report VB-SR-26-010 covers ARWC-WO-26-0343 only.
+
+    '
+  attachments:
+  - me-contractor-report-010
+  reply_to: me-contractor-010-2
+- id: me-contractor-010-4
+  story: maintenance-engineering
+  from: awm095
+  to:
+  - bc_veybridge_2
+  - awm119
+  - priya
+  date: '2026-07-10T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-210: visit request for ARWC-WO-26-0343'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-010 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-010
+  reply_to: me-contractor-010-3
+- id: me-contractor-011-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - bc_veybridge_2
+  - priya
+  - awm100
+  date: '2026-07-07T12:20:00-04:00'
+  subject: 'ARWC-PO-26-211: visit request for ARWC-WO-26-0361'
+  body: 'I have ARWC-PO-26-211 against ARWC-WO-26-0361. The accepted visit is USD 1240.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-011
+  - me-contractor-quote-011
+- id: me-contractor-011-2
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - theo
+  - awm100
+  date: '2026-07-07T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-211: visit request for ARWC-WO-26-0361'
+  body: 'I have held Monday 13 July, 13:00 for ARWC-PO-26-211. That is a confirmed slot, not authority for extra
+    work.
+
+    '
+  reply_to: me-contractor-011-1
+- id: me-contractor-011-3
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - theo
+  - awm100
+  - priya
+  date: '2026-07-13T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-211: visit request for ARWC-WO-26-0361'
+  body: 'Visit finished in the booked window. The report distinguishes what was witnessed from the ARWC acceptance.
+    Report VB-SR-26-011 covers ARWC-WO-26-0361 only.
+
+    '
+  attachments:
+  - me-contractor-report-011
+  reply_to: me-contractor-011-2
+- id: me-contractor-011-4
+  story: maintenance-engineering
+  from: awm100
+  to:
+  - bc_veybridge_2
+  - theo
+  - priya
+  date: '2026-07-14T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-211: visit request for ARWC-WO-26-0361'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-011 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-011
+  reply_to: me-contractor-011-3
+- id: me-contractor-012-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - bc_veybridge_2
+  - priya
+  - awm105
+  date: '2026-07-10T12:20:00-04:00'
+  subject: 'ARWC-PO-26-212: visit request for ARWC-WO-26-0379'
+  body: 'Can you confirm the visit for ARWC-WO-26-0379? Priya has accepted ARWC-PO-26-212 at USD 1240.00; there
+    is no allowance for extra scope.
+
+    '
+  attachments:
+  - me-contractor-order-012
+  - me-contractor-quote-012
+- id: me-contractor-012-2
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm125
+  - awm105
+  date: '2026-07-10T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-212: visit request for ARWC-WO-26-0379'
+  body: 'I have held Tuesday 14 July, 13:00 for ARWC-PO-26-212. That is a confirmed slot, not authority for extra
+    work.
+
+    '
+  reply_to: me-contractor-012-1
+- id: me-contractor-012-3
+  story: maintenance-engineering
+  from: bc_veybridge_2
+  to:
+  - awm125
+  - awm105
+  - priya
+  date: '2026-07-14T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-212: visit request for ARWC-WO-26-0379'
+  body: 'Visit finished in the booked window. The report distinguishes what was witnessed from the ARWC acceptance.
+    Report VB-SR-26-012 covers ARWC-WO-26-0379 only.
+
+    '
+  attachments:
+  - me-contractor-report-012
+  reply_to: me-contractor-012-2
+- id: me-contractor-012-4
+  story: maintenance-engineering
+  from: awm105
+  to:
+  - bc_veybridge_2
+  - awm125
+  - priya
+  date: '2026-07-15T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-212: visit request for ARWC-WO-26-0379'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-012 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-012
+  reply_to: me-contractor-012-3
+- id: me-contractor-013-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm109
+  date: '2026-07-13T12:20:00-04:00'
+  subject: 'ARWC-PO-26-213: visit request for ARWC-WO-26-0397'
+  body: 'Please book the accepted instrument condition and calibration service under ARWC-PO-26-213. The value is
+    USD 955.00, and that is the full authority for this visit.
+
+    '
+  attachments:
+  - me-contractor-order-013
+  - me-contractor-quote-013
+- id: me-contractor-013-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm123
+  - awm109
+  date: '2026-07-13T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-213: visit request for ARWC-WO-26-0397'
+  body: 'Booked for Monday 20 July at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-213.
+
+    '
+  reply_to: me-contractor-013-1
+- id: me-contractor-013-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm123
+  - awm109
+  - priya
+  date: '2026-07-20T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-213: visit request for ARWC-WO-26-0397'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-013 covers ARWC-WO-26-0397 only.
+
+    '
+  attachments:
+  - me-contractor-report-013
+  reply_to: me-contractor-013-2
+- id: me-contractor-013-4
+  story: maintenance-engineering
+  from: awm109
+  to:
+  - bc_ardenvale_1
+  - awm123
+  - priya
+  date: '2026-07-21T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-213: visit request for ARWC-WO-26-0397'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-013 records USD 955.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-013
+  reply_to: me-contractor-013-3
+- id: me-contractor-014-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm114
+  date: '2026-07-16T12:20:00-04:00'
+  subject: 'ARWC-PO-26-214: visit request for ARWC-WO-26-0415'
+  body: 'I have ARWC-PO-26-214 against ARWC-WO-26-0415. The accepted visit is USD 1050.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-014
+  - me-contractor-quote-014
+- id: me-contractor-014-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - theo
+  - awm114
+  date: '2026-07-16T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-214: visit request for ARWC-WO-26-0415'
+  body: 'Confirmed: 22 July, 13:00. The service sheet will carry ARWC-PO-26-214; parts are not included.
+
+    '
+  reply_to: me-contractor-014-1
+- id: me-contractor-014-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - theo
+  - awm114
+  - priya
+  date: '2026-07-22T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-214: visit request for ARWC-WO-26-0415'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-014 covers ARWC-WO-26-0415 only.
+
+    '
+  attachments:
+  - me-contractor-report-014
+  reply_to: me-contractor-014-2
+- id: me-contractor-014-4
+  story: maintenance-engineering
+  from: awm114
+  to:
+  - bc_ardenvale_2
+  - theo
+  - priya
+  date: '2026-07-23T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-214: visit request for ARWC-WO-26-0415'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-014 records USD 1050.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-014
+  reply_to: me-contractor-014-3
+- id: me-contractor-015-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm118
+  date: '2026-07-19T12:20:00-04:00'
+  subject: 'ARWC-PO-26-215: visit request for ARWC-WO-26-0433'
+  body: 'ARWC-PO-26-215 is approved for the instrument condition and calibration service, USD 1145.00. Can you hold
+    the proposed time? No extra attendance is included.
+
+    '
+  attachments:
+  - me-contractor-order-015
+  - me-contractor-quote-015
+- id: me-contractor-015-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm119
+  - awm118
+  date: '2026-07-19T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-215: visit request for ARWC-WO-26-0433'
+  body: 'Booked for Thursday 23 July at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-215.
+
+    '
+  reply_to: me-contractor-015-1
+- id: me-contractor-015-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm119
+  - awm118
+  - priya
+  date: '2026-07-23T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-215: visit request for ARWC-WO-26-0433'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-015 covers ARWC-WO-26-0433 only.
+
+    '
+  attachments:
+  - me-contractor-report-015
+  reply_to: me-contractor-015-2
+- id: me-contractor-015-4
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - bc_ardenvale_1
+  - awm119
+  - priya
+  date: '2026-07-24T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-215: visit request for ARWC-WO-26-0433'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-015 records USD 1145.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-015
+  reply_to: me-contractor-015-3
+- id: me-contractor-016-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm123
+  date: '2026-07-22T12:20:00-04:00'
+  subject: 'ARWC-PO-26-216: visit request for ARWC-WO-26-0451'
+  body: 'I have ARWC-PO-26-216 against ARWC-WO-26-0451. The accepted visit is USD 1240.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-016
+  - me-contractor-quote-016
+- id: me-contractor-016-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - theo
+  - awm123
+  date: '2026-07-22T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-216: visit request for ARWC-WO-26-0451'
+  body: 'Confirmed: 27 July, 13:00. The service sheet will carry ARWC-PO-26-216; parts are not included.
+
+    '
+  reply_to: me-contractor-016-1
+- id: me-contractor-016-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - theo
+  - awm123
+  - priya
+  date: '2026-07-27T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-216: visit request for ARWC-WO-26-0451'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-016 covers ARWC-WO-26-0451 only.
+
+    '
+  attachments:
+  - me-contractor-report-016
+  reply_to: me-contractor-016-2
+- id: me-contractor-016-4
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - bc_ardenvale_2
+  - theo
+  - priya
+  date: '2026-07-28T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-216: visit request for ARWC-WO-26-0451'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-016 records USD 1240.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-016
+  reply_to: me-contractor-016-3
+- id: me-contractor-017-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm128
+  date: '2026-07-25T12:20:00-04:00'
+  subject: 'ARWC-PO-26-217: visit request for ARWC-WO-26-0469'
+  body: 'Can you confirm the visit for ARWC-WO-26-0469? Priya has accepted ARWC-PO-26-217 at USD 1335.00; there
+    is no allowance for extra scope.
+
+    '
+  attachments:
+  - me-contractor-order-017
+  - me-contractor-quote-017
+- id: me-contractor-017-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm125
+  - awm128
+  date: '2026-07-25T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-217: visit request for ARWC-WO-26-0469'
+  body: 'Booked for Friday 31 July at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-217.
+
+    '
+  reply_to: me-contractor-017-1
+- id: me-contractor-017-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm125
+  - awm128
+  - priya
+  date: '2026-07-31T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-217: visit request for ARWC-WO-26-0469'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-017 covers ARWC-WO-26-0469 only.
+
+    '
+  attachments:
+  - me-contractor-report-017
+  reply_to: me-contractor-017-2
+- id: me-contractor-017-4
+  story: maintenance-engineering
+  from: awm128
+  to:
+  - bc_ardenvale_1
+  - awm125
+  - priya
+  date: '2026-08-03T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-217: visit request for ARWC-WO-26-0469'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-017 records USD 1335.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-017
+  reply_to: me-contractor-017-3
+- id: me-contractor-018-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm133
+  date: '2026-07-28T12:20:00-04:00'
+  subject: 'ARWC-PO-26-218: visit request for ARWC-WO-26-0487'
+  body: 'Please book the accepted instrument condition and calibration service under ARWC-PO-26-218. The value is
+    USD 1430.00, and that is the full authority for this visit.
+
+    '
+  attachments:
+  - me-contractor-order-018
+  - me-contractor-quote-018
+- id: me-contractor-018-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm123
+  - awm133
+  date: '2026-07-28T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-218: visit request for ARWC-WO-26-0487'
+  body: 'Confirmed: 3 August, 13:00. The service sheet will carry ARWC-PO-26-218; parts are not included.
+
+    '
+  reply_to: me-contractor-018-1
+- id: me-contractor-018-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm123
+  - awm133
+  - priya
+  date: '2026-08-03T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-218: visit request for ARWC-WO-26-0487'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-018 covers ARWC-WO-26-0487 only.
+
+    '
+  attachments:
+  - me-contractor-report-018
+  reply_to: me-contractor-018-2
+- id: me-contractor-018-4
+  story: maintenance-engineering
+  from: awm133
+  to:
+  - bc_ardenvale_2
+  - awm123
+  - priya
+  date: '2026-08-04T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-218: visit request for ARWC-WO-26-0487'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-018 records USD 1430.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-018
+  reply_to: me-contractor-018-3
+- id: me-contractor-019-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm138
+  date: '2026-07-31T12:20:00-04:00'
+  subject: 'ARWC-PO-26-219: visit request for ARWC-WO-26-0505'
+  body: 'The quote for ARWC-WO-26-0505 is accepted as ARWC-PO-26-219. Please confirm the visit; parts and additional
+    travel remain outside the USD 1525.00 order.
+
+    '
+  attachments:
+  - me-contractor-order-019
+  - me-contractor-quote-019
+- id: me-contractor-019-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm121
+  - awm138
+  date: '2026-07-31T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-219: visit request for ARWC-WO-26-0505'
+  body: 'Booked for Wednesday 5 August at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-219.
+
+    '
+  reply_to: me-contractor-019-1
+- id: me-contractor-019-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm121
+  - awm138
+  - priya
+  date: '2026-08-05T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-219: visit request for ARWC-WO-26-0505'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-019 covers ARWC-WO-26-0505 only.
+
+    '
+  attachments:
+  - me-contractor-report-019
+  reply_to: me-contractor-019-2
+- id: me-contractor-019-4
+  story: maintenance-engineering
+  from: awm138
+  to:
+  - bc_ardenvale_1
+  - awm121
+  - priya
+  date: '2026-08-06T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-219: visit request for ARWC-WO-26-0505'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-019 records USD 1525.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-019
+  reply_to: me-contractor-019-3
+- id: me-contractor-020-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm097
+  date: '2026-08-03T12:20:00-04:00'
+  subject: 'ARWC-PO-26-220: visit request for ARWC-WO-26-0523'
+  body: 'ARWC-PO-26-220 is approved for the instrument condition and calibration service, USD 1620.00. Can you hold
+    the proposed time? No extra attendance is included.
+
+    '
+  attachments:
+  - me-contractor-order-020
+  - me-contractor-quote-020
+- id: me-contractor-020-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm119
+  - awm097
+  date: '2026-08-03T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-220: visit request for ARWC-WO-26-0523'
+  body: 'Confirmed: 10 August, 13:00. The service sheet will carry ARWC-PO-26-220; parts are not included.
+
+    '
+  reply_to: me-contractor-020-1
+- id: me-contractor-020-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm119
+  - awm097
+  - priya
+  date: '2026-08-10T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-220: visit request for ARWC-WO-26-0523'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-020 covers ARWC-WO-26-0523 only.
+
+    '
+  attachments:
+  - me-contractor-report-020
+  reply_to: me-contractor-020-2
+- id: me-contractor-020-4
+  story: maintenance-engineering
+  from: awm097
+  to:
+  - bc_ardenvale_2
+  - awm119
+  - priya
+  date: '2026-08-11T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-220: visit request for ARWC-WO-26-0523'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-020 records USD 1620.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-020
+  reply_to: me-contractor-020-3
+- id: me-contractor-021-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm102
+  date: '2026-08-06T12:20:00-04:00'
+  subject: 'ARWC-PO-26-221: visit request for ARWC-WO-26-0541'
+  body: 'I have ARWC-PO-26-221 against ARWC-WO-26-0541. The accepted visit is USD 1715.00; please confirm the slot.
+    Anything beyond the named scope needs a new written order.
+
+    '
+  attachments:
+  - me-contractor-order-021
+  - me-contractor-quote-021
+- id: me-contractor-021-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - theo
+  - awm102
+  date: '2026-08-06T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-221: visit request for ARWC-WO-26-0541'
+  body: 'Booked for Monday 10 August at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-221.
+
+    '
+  reply_to: me-contractor-021-1
+- id: me-contractor-021-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - theo
+  - awm102
+  - priya
+  date: '2026-08-10T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-221: visit request for ARWC-WO-26-0541'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-021 covers ARWC-WO-26-0541 only.
+
+    '
+  attachments:
+  - me-contractor-report-021
+  reply_to: me-contractor-021-2
+- id: me-contractor-021-4
+  story: maintenance-engineering
+  from: awm102
+  to:
+  - bc_ardenvale_1
+  - theo
+  - priya
+  date: '2026-08-11T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-221: visit request for ARWC-WO-26-0541'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-021 records USD 1715.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-021
+  reply_to: me-contractor-021-3
+- id: me-contractor-022-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm107
+  date: '2026-08-09T12:20:00-04:00'
+  subject: 'ARWC-PO-26-222: visit request for ARWC-WO-26-0559'
+  body: 'Can you confirm the visit for ARWC-WO-26-0559? Priya has accepted ARWC-PO-26-222 at USD 1810.00; there
+    is no allowance for extra scope.
+
+    '
+  attachments:
+  - me-contractor-order-022
+  - me-contractor-quote-022
+- id: me-contractor-022-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm125
+  - awm107
+  date: '2026-08-09T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-222: visit request for ARWC-WO-26-0559'
+  body: 'Confirmed: 14 August, 13:00. The service sheet will carry ARWC-PO-26-222; parts are not included.
+
+    '
+  reply_to: me-contractor-022-1
+- id: me-contractor-022-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm125
+  - awm107
+  - priya
+  date: '2026-08-14T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-222: visit request for ARWC-WO-26-0559'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-022 covers ARWC-WO-26-0559 only.
+
+    '
+  attachments:
+  - me-contractor-report-022
+  reply_to: me-contractor-022-2
+- id: me-contractor-022-4
+  story: maintenance-engineering
+  from: awm107
+  to:
+  - bc_ardenvale_2
+  - awm125
+  - priya
+  date: '2026-08-17T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-222: visit request for ARWC-WO-26-0559'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-022 records USD 1810.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-022
+  reply_to: me-contractor-022-3
+- id: me-contractor-023-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - bc_ardenvale_1
+  - priya
+  - awm111
+  date: '2026-08-12T12:20:00-04:00'
+  subject: 'ARWC-PO-26-223: visit request for ARWC-WO-26-0577'
+  body: 'Please book the accepted instrument condition and calibration service under ARWC-PO-26-223. The value is
+    USD 1905.00, and that is the full authority for this visit.
+
+    '
+  attachments:
+  - me-contractor-order-023
+  - me-contractor-quote-023
+- id: me-contractor-023-2
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm123
+  - awm111
+  date: '2026-08-12T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-223: visit request for ARWC-WO-26-0577'
+  body: 'Booked for Tuesday 18 August at 13:00. We''ll bring the reference kit for the named instrument and report
+    against ARWC-PO-26-223.
+
+    '
+  reply_to: me-contractor-023-1
+- id: me-contractor-023-3
+  story: maintenance-engineering
+  from: bc_ardenvale_1
+  to:
+  - awm123
+  - awm111
+  - priya
+  date: '2026-08-18T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-223: visit request for ARWC-WO-26-0577'
+  body: 'The instrument service is complete and the check values are on the attached sheet. We used no separately
+    priced parts. Report AV-SR-26-023 covers ARWC-WO-26-0577 only.
+
+    '
+  attachments:
+  - me-contractor-report-023
+  reply_to: me-contractor-023-2
+- id: me-contractor-023-4
+  story: maintenance-engineering
+  from: awm111
+  to:
+  - bc_ardenvale_1
+  - awm123
+  - priya
+  date: '2026-08-19T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-223: visit request for ARWC-WO-26-0577'
+  body: 'Received and checked against the work order. Priya, the stated amount can be matched; nothing else is accepted.
+    Receipt ARWC-GR-26-023 records USD 1905.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-023
+  reply_to: me-contractor-023-3
+- id: me-contractor-024-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - bc_ardenvale_2
+  - priya
+  - awm116
+  date: '2026-08-15T12:20:00-04:00'
+  subject: 'ARWC-PO-26-224: visit request for ARWC-WO-26-0595'
+  body: 'The quote for ARWC-WO-26-0595 is accepted as ARWC-PO-26-224. Please confirm the visit; parts and additional
+    travel remain outside the USD 2000.00 order.
+
+    '
+  attachments:
+  - me-contractor-order-024
+  - me-contractor-quote-024
+- id: me-contractor-024-2
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm121
+  - awm116
+  date: '2026-08-15T14:00:00-04:00'
+  subject: 'Re: ARWC-PO-26-224: visit request for ARWC-WO-26-0595'
+  body: 'Confirmed: 19 August, 13:00. The service sheet will carry ARWC-PO-26-224; parts are not included.
+
+    '
+  reply_to: me-contractor-024-1
+- id: me-contractor-024-3
+  story: maintenance-engineering
+  from: bc_ardenvale_2
+  to:
+  - awm121
+  - awm116
+  - priya
+  date: '2026-08-19T18:25:00-04:00'
+  subject: 'Re: ARWC-PO-26-224: visit request for ARWC-WO-26-0595'
+  body: 'Service complete. The attachment has the as-found and return entries; nothing outside the order was fitted.
+    Report AV-SR-26-024 covers ARWC-WO-26-0595 only.
+
+    '
+  attachments:
+  - me-contractor-report-024
+  reply_to: me-contractor-024-2
+- id: me-contractor-024-4
+  story: maintenance-engineering
+  from: awm116
+  to:
+  - bc_ardenvale_2
+  - awm121
+  - priya
+  date: '2026-08-20T09:35:00-04:00'
+  subject: 'Re: ARWC-PO-26-224: visit request for ARWC-WO-26-0595'
+  body: 'Report matches the visit and the asset reference. I have left the receipt with the order; no follow-on
+    is implied. Receipt ARWC-GR-26-024 records USD 2000.00.
+
+    '
+  attachments:
+  - me-contractor-receipt-024
+  reply_to: me-contractor-024-3
+- id: me-drawing-thread-01-p1-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-04-02T11:00:00-04:00'
+  subject: 'ARWC-NR-VLV-05-CTRL-P1: working review'
+  body: 'I have issued P1 for coordination only. Maintain the existing fail-safe direction and local indication.
+    Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-01-p1
+- id: me-drawing-thread-01-p1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-04-02T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P1: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-NR-VLV-05-CTRL-P1.
+
+    '
+  reply_to: me-drawing-thread-01-p1-1
+- id: me-drawing-thread-01-p1-3
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-04-03T11:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P1: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-NR-VLV-05-CTRL-P1.
+
+    '
+  reply_to: me-drawing-thread-01-p1-2
+- id: me-drawing-thread-01-p1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-04-03T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P1: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-NR-VLV-05-CTRL-P1.
+
+    '
+  reply_to: me-drawing-thread-01-p1-3
+- id: me-drawing-thread-01-p2-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-04-23T11:00:00-04:00'
+  subject: 'ARWC-NR-VLV-05-CTRL-P2: working review'
+  body: 'I have issued P2 for coordination only. Maintain the existing fail-safe direction and local indication.
+    Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-01-p2
+- id: me-drawing-thread-01-p2-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-04-23T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P2: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-NR-VLV-05-CTRL-P2.
+
+    '
+  reply_to: me-drawing-thread-01-p2-1
+- id: me-drawing-thread-01-p2-3
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-04-24T11:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P2: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-NR-VLV-05-CTRL-P2.
+
+    '
+  reply_to: me-drawing-thread-01-p2-2
+- id: me-drawing-thread-01-p2-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-04-24T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-P2: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-NR-VLV-05-CTRL-P2.
+
+    '
+  reply_to: me-drawing-thread-01-p2-3
+- id: me-drawing-thread-01-a1-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-05-15T11:00:00-04:00'
+  subject: 'ARWC-NR-VLV-05-CTRL-A1: approved issue'
+  body: 'I have issued A1 for the accepted handover set. Maintain the existing fail-safe direction and local indication.
+    Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-01-a1
+- id: me-drawing-thread-01-a1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-05-15T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-A1: approved issue'
+  body: 'Controls review complete. A1 matches the bounded note and may enter the effective drawing set. I checked
+    ARWC-NR-VLV-05-CTRL-A1.
+
+    '
+  reply_to: me-drawing-thread-01-a1-1
+- id: me-drawing-thread-01-a1-3
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - clara
+  date: '2021-05-16T11:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-A1: approved issue'
+  body: 'Recorded. P1 and P2 stay in history; A1 is the only revision marked effective for work. The register entry
+    is ARWC-NR-VLV-05-CTRL-A1.
+
+    '
+  reply_to: me-drawing-thread-01-a1-2
+- id: me-drawing-thread-01-a1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm129
+  date: '2021-05-16T13:00:00-04:00'
+  subject: 'Re: ARWC-NR-VLV-05-CTRL-A1: approved issue'
+  body: 'A1 is in the handover index with its effective date. No wider scope has been added. Filing reference: ARWC-NR-VLV-05-CTRL-A1.
+
+    '
+  reply_to: me-drawing-thread-01-a1-3
+- id: me-drawing-thread-02-p1-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-03-04T11:00:00-04:00'
+  subject: 'ARWC-PT-PNL-06-VENT-P1: working review'
+  body: 'I have issued P1 for coordination only. The panel cooling path changes; control logic and duty sequence
+    do not. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-02-p1
+- id: me-drawing-thread-02-p1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-03-04T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P1: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-PT-PNL-06-VENT-P1.
+
+    '
+  reply_to: me-drawing-thread-02-p1-1
+- id: me-drawing-thread-02-p1-3
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-03-05T11:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P1: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-PT-PNL-06-VENT-P1.
+
+    '
+  reply_to: me-drawing-thread-02-p1-2
+- id: me-drawing-thread-02-p1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-03-05T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P1: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-PT-PNL-06-VENT-P1.
+
+    '
+  reply_to: me-drawing-thread-02-p1-3
+- id: me-drawing-thread-02-p2-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-03-25T11:00:00-04:00'
+  subject: 'ARWC-PT-PNL-06-VENT-P2: working review'
+  body: 'I have issued P2 for coordination only. The panel cooling path changes; control logic and duty sequence
+    do not. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-02-p2
+- id: me-drawing-thread-02-p2-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-03-25T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P2: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-PT-PNL-06-VENT-P2.
+
+    '
+  reply_to: me-drawing-thread-02-p2-1
+- id: me-drawing-thread-02-p2-3
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-03-26T11:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P2: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-PT-PNL-06-VENT-P2.
+
+    '
+  reply_to: me-drawing-thread-02-p2-2
+- id: me-drawing-thread-02-p2-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-03-26T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-P2: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-PT-PNL-06-VENT-P2.
+
+    '
+  reply_to: me-drawing-thread-02-p2-3
+- id: me-drawing-thread-02-a1-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-04-16T11:00:00-04:00'
+  subject: 'ARWC-PT-PNL-06-VENT-A1: approved issue'
+  body: 'I have issued A1 for the accepted handover set. The panel cooling path changes; control logic and duty
+    sequence do not. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-02-a1
+- id: me-drawing-thread-02-a1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-04-16T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-A1: approved issue'
+  body: 'Controls review complete. A1 matches the bounded note and may enter the effective drawing set. I checked
+    ARWC-PT-PNL-06-VENT-A1.
+
+    '
+  reply_to: me-drawing-thread-02-a1-1
+- id: me-drawing-thread-02-a1-3
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - clara
+  date: '2022-04-17T11:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-A1: approved issue'
+  body: 'Recorded. P1 and P2 stay in history; A1 is the only revision marked effective for work. The register entry
+    is ARWC-PT-PNL-06-VENT-A1.
+
+    '
+  reply_to: me-drawing-thread-02-a1-2
+- id: me-drawing-thread-02-a1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm130
+  date: '2022-04-17T13:00:00-04:00'
+  subject: 'Re: ARWC-PT-PNL-06-VENT-A1: approved issue'
+  body: 'A1 is in the handover index with its effective date. No wider scope has been added. Filing reference: ARWC-PT-PNL-06-VENT-A1.
+
+    '
+  reply_to: me-drawing-thread-02-a1-3
+- id: me-drawing-thread-03-p1-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-10-28T11:00:00-04:00'
+  subject: 'ARWC-RE-PMP-01-GA-P1: working review'
+  body: 'I have issued P1 for coordination only. Retain the established duty/standby selection and downstream protection.
+    Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-03-p1
+- id: me-drawing-thread-03-p1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-10-28T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P1: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-RE-PMP-01-GA-P1.
+
+    '
+  reply_to: me-drawing-thread-03-p1-1
+- id: me-drawing-thread-03-p1-3
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-10-29T11:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P1: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-RE-PMP-01-GA-P1.
+
+    '
+  reply_to: me-drawing-thread-03-p1-2
+- id: me-drawing-thread-03-p1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-10-29T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P1: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-RE-PMP-01-GA-P1.
+
+    '
+  reply_to: me-drawing-thread-03-p1-3
+- id: me-drawing-thread-03-p2-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-11-18T11:00:00-04:00'
+  subject: 'ARWC-RE-PMP-01-GA-P2: working review'
+  body: 'I have issued P2 for coordination only. Retain the established duty/standby selection and downstream protection.
+    Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-03-p2
+- id: me-drawing-thread-03-p2-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-11-18T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P2: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-RE-PMP-01-GA-P2.
+
+    '
+  reply_to: me-drawing-thread-03-p2-1
+- id: me-drawing-thread-03-p2-3
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-11-19T11:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P2: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-RE-PMP-01-GA-P2.
+
+    '
+  reply_to: me-drawing-thread-03-p2-2
+- id: me-drawing-thread-03-p2-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-11-19T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-P2: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-RE-PMP-01-GA-P2.
+
+    '
+  reply_to: me-drawing-thread-03-p2-3
+- id: me-drawing-thread-03-a1-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-12-10T11:00:00-04:00'
+  subject: 'ARWC-RE-PMP-01-GA-A1: approved issue'
+  body: 'I have issued A1 for the accepted handover set. Retain the established duty/standby selection and downstream
+    protection. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-03-a1
+- id: me-drawing-thread-03-a1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-12-10T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-A1: approved issue'
+  body: 'Controls review complete. A1 matches the bounded note and may enter the effective drawing set. I checked
+    ARWC-RE-PMP-01-GA-A1.
+
+    '
+  reply_to: me-drawing-thread-03-a1-1
+- id: me-drawing-thread-03-a1-3
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - clara
+  date: '2022-12-11T11:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-A1: approved issue'
+  body: 'Recorded. P1 and P2 stay in history; A1 is the only revision marked effective for work. The register entry
+    is ARWC-RE-PMP-01-GA-A1.
+
+    '
+  reply_to: me-drawing-thread-03-a1-2
+- id: me-drawing-thread-03-a1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm134
+  date: '2022-12-11T13:00:00-04:00'
+  subject: 'Re: ARWC-RE-PMP-01-GA-A1: approved issue'
+  body: 'A1 is in the handover index with its effective date. No wider scope has been added. Filing reference: ARWC-RE-PMP-01-GA-A1.
+
+    '
+  reply_to: me-drawing-thread-03-a1-3
+- id: me-drawing-thread-04-p1-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-05-05T11:00:00-04:00'
+  subject: 'ARWC-US-PNL-06-IO-P1: working review'
+  body: 'I have issued P1 for coordination only. Map existing points one for one; additions require a separate approved
+    revision. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-04-p1
+- id: me-drawing-thread-04-p1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-05-05T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P1: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-US-PNL-06-IO-P1.
+
+    '
+  reply_to: me-drawing-thread-04-p1-1
+- id: me-drawing-thread-04-p1-3
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-05-06T11:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P1: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-US-PNL-06-IO-P1.
+
+    '
+  reply_to: me-drawing-thread-04-p1-2
+- id: me-drawing-thread-04-p1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-05-06T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P1: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-US-PNL-06-IO-P1.
+
+    '
+  reply_to: me-drawing-thread-04-p1-3
+- id: me-drawing-thread-04-p2-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-05-26T11:00:00-04:00'
+  subject: 'ARWC-US-PNL-06-IO-P2: working review'
+  body: 'I have issued P2 for coordination only. Map existing points one for one; additions require a separate approved
+    revision. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-04-p2
+- id: me-drawing-thread-04-p2-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-05-26T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P2: working review'
+  body: 'Not approved for work yet. Keep this beside the comments, not in the effective drawing set. I checked ARWC-US-PNL-06-IO-P2.
+
+    '
+  reply_to: me-drawing-thread-04-p2-1
+- id: me-drawing-thread-04-p2-3
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-05-27T11:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P2: working review'
+  body: 'Understood. I have kept the working watermark and carried the open comment to the next revision. The register
+    entry is ARWC-US-PNL-06-IO-P2.
+
+    '
+  reply_to: me-drawing-thread-04-p2-2
+- id: me-drawing-thread-04-p2-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-05-27T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-P2: working review'
+  body: 'Filed as a working revision. It does not change the project authority. Filing reference: ARWC-US-PNL-06-IO-P2.
+
+    '
+  reply_to: me-drawing-thread-04-p2-3
+- id: me-drawing-thread-04-a1-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-06-17T11:00:00-04:00'
+  subject: 'ARWC-US-PNL-06-IO-A1: approved issue'
+  body: 'I have issued A1 for the accepted handover set. Map existing points one for one; additions require a separate
+    approved revision. Please check the revision state before using the attachment.
+
+    '
+  attachments:
+  - me-drawing-04-a1
+- id: me-drawing-thread-04-a1-2
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-06-17T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-A1: approved issue'
+  body: 'Controls review complete. A1 matches the bounded note and may enter the effective drawing set. I checked
+    ARWC-US-PNL-06-IO-A1.
+
+    '
+  reply_to: me-drawing-thread-04-a1-1
+- id: me-drawing-thread-04-a1-3
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - clara
+  date: '2023-06-18T11:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-A1: approved issue'
+  body: 'Recorded. P1 and P2 stay in history; A1 is the only revision marked effective for work. The register entry
+    is ARWC-US-PNL-06-IO-A1.
+
+    '
+  reply_to: me-drawing-thread-04-a1-2
+- id: me-drawing-thread-04-a1-4
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm137
+  date: '2023-06-18T13:00:00-04:00'
+  subject: 'Re: ARWC-US-PNL-06-IO-A1: approved issue'
+  body: 'A1 is in the handover index with its effective date. No wider scope has been added. Filing reference: ARWC-US-PNL-06-IO-A1.
+
+    '
+  reply_to: me-drawing-thread-04-a1-3
+- id: me-work-update-001-1
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - theo
+  date: '2026-06-03T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0121: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0121 is for scheduled inspection
+    on PD-LVL-04.
+
+    '
+  attachments:
+  - me-work-order-0121
+- id: me-work-update-001-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm118
+  date: '2026-06-03T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0121: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-001-1
+- id: me-work-update-002-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm118
+  date: '2026-06-04T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0122: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0122 is for
+    coupling and guard check on RD-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0122
+- id: me-work-update-002-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm119
+  date: '2026-06-04T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0122: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-002-1
+- id: me-work-update-003-1
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm119
+  date: '2026-06-05T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0123: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0123 is for
+    label and fixing renewal on PT-CHM-01.
+
+    '
+  attachments:
+  - me-work-order-0123
+- id: me-work-update-003-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm120
+  date: '2026-06-05T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0123: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0123
+    parts entry.
+
+    '
+  reply_to: me-work-update-003-1
+- id: me-work-update-004-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm120
+  date: '2026-06-06T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0124: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0124 is for enclosure
+    seal inspection on PE-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0124
+- id: me-work-update-004-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm121
+  date: '2026-06-06T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0124: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0124
+    parts entry.
+
+    '
+  reply_to: me-work-update-004-1
+- id: me-work-update-005-1
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm121
+  date: '2026-06-07T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0125: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0125 is for external condition
+    check on PW-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0125
+- id: me-work-update-005-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm122
+  date: '2026-06-07T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0125: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-005-1
+- id: me-work-update-006-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm122
+  date: '2026-06-03T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0126: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0126 is for
+    lubrication service on RT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0126
+- id: me-work-update-006-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm123
+  date: '2026-06-03T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0126: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0126
+    parts entry.
+
+    '
+  reply_to: me-work-update-006-1
+- id: me-work-update-007-1
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm123
+  date: '2026-06-05T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0127: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0127 is for
+    fastener and mounting check on RE-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0127
+- id: me-work-update-007-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm124
+  date: '2026-06-05T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0127: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0127
+    parts entry.
+
+    '
+  reply_to: me-work-update-007-1
+- id: me-work-update-008-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm124
+  date: '2026-06-06T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0128: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0128 is for local
+    indication comparison on RW-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0128
+- id: me-work-update-008-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm125
+  date: '2026-06-06T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0128: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-008-1
+- id: me-work-update-009-1
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm125
+  date: '2026-06-07T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0129: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0129 is for ventilation-path
+    clean on RT-FILTER-A.
+
+    '
+  attachments:
+  - me-work-order-0129
+- id: me-work-update-009-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm126
+  date: '2026-06-07T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0129: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0129
+    parts entry.
+
+    '
+  reply_to: me-work-update-009-1
+- id: me-work-update-010-1
+  story: maintenance-engineering
+  from: awm127
+  to:
+  - awm126
+  date: '2026-06-08T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0130: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0130 is for
+    minor leak inspection on RT-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0130
+- id: me-work-update-010-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm127
+  date: '2026-06-08T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0130: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0130
+    parts entry.
+
+    '
+  reply_to: me-work-update-010-1
+- id: me-work-update-011-1
+  story: maintenance-engineering
+  from: awm128
+  to:
+  - theo
+  date: '2026-06-04T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0131: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0131 is for
+    protective coating touch-up on PD-FLW-03.
+
+    '
+  attachments:
+  - me-work-order-0131
+- id: me-work-update-011-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm128
+  date: '2026-06-04T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0131: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0131 parts
+    entry.
+
+    '
+  reply_to: me-work-update-011-1
+- id: me-work-update-012-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - awm118
+  date: '2026-06-05T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0132: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0132 is for serviceability
+    inspection on RD-LVL-04.
+
+    '
+  attachments:
+  - me-work-order-0132
+- id: me-work-update-012-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm129
+  date: '2026-06-05T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0132: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0132
+    parts entry.
+
+    '
+  reply_to: me-work-update-012-1
+- id: me-work-update-013-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - awm119
+  date: '2026-06-07T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0133: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0133 is for scheduled inspection
+    on PT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0133
+- id: me-work-update-013-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm130
+  date: '2026-06-07T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0133: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-013-1
+- id: me-work-update-014-1
+  story: maintenance-engineering
+  from: awm131
+  to:
+  - awm120
+  date: '2026-06-08T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0134: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0134 is for
+    coupling and guard check on PE-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0134
+- id: me-work-update-014-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm131
+  date: '2026-06-08T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0134: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-014-1
+- id: me-work-update-015-1
+  story: maintenance-engineering
+  from: awm132
+  to:
+  - awm121
+  date: '2026-06-09T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0135: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0135 is for
+    label and fixing renewal on PW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0135
+- id: me-work-update-015-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm132
+  date: '2026-06-09T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0135: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0135
+    parts entry.
+
+    '
+  reply_to: me-work-update-015-1
+- id: me-work-update-016-1
+  story: maintenance-engineering
+  from: awm133
+  to:
+  - awm122
+  date: '2026-06-05T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0136: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0136 is for enclosure
+    seal inspection on RT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0136
+- id: me-work-update-016-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm133
+  date: '2026-06-05T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0136: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0136
+    parts entry.
+
+    '
+  reply_to: me-work-update-016-1
+- id: me-work-update-017-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - awm123
+  date: '2026-06-06T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0137: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0137 is for external condition check on RE-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0137
+- id: me-work-update-017-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm134
+  date: '2026-06-06T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0137: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-05 and the ARWC-PR-0137 parts entry.
+
+    '
+  reply_to: me-work-update-017-1
+- id: me-work-update-018-1
+  story: maintenance-engineering
+  from: awm135
+  to:
+  - awm124
+  date: '2026-06-07T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0138: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0138 is for lubrication service on RW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0138
+- id: me-work-update-018-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm135
+  date: '2026-06-07T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0138: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-06 and the ARWC-PR-0138 parts entry.
+
+    '
+  reply_to: me-work-update-018-1
+- id: me-work-update-019-1
+  story: maintenance-engineering
+  from: awm136
+  to:
+  - awm125
+  date: '2026-06-09T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0139: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0139 is for fastener and mounting check on PT-FILTER-B.
+
+    '
+  attachments:
+  - me-work-order-0139
+- id: me-work-update-019-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm136
+  date: '2026-06-09T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0139: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-07
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-019-1
+- id: me-work-update-020-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - awm126
+  date: '2026-06-10T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0140: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0140 is
+    for local indication comparison on PT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0140
+- id: me-work-update-020-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm137
+  date: '2026-06-10T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0140: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-08 and
+    the none parts entry.
+
+    '
+  reply_to: me-work-update-020-1
+- id: me-work-update-021-1
+  story: maintenance-engineering
+  from: awm138
+  to:
+  - theo
+  date: '2026-06-06T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0141: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0141 is for ventilation-path
+    clean on PD-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0141
+- id: me-work-update-021-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm138
+  date: '2026-06-06T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0141: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0141
+    parts entry.
+
+    '
+  reply_to: me-work-update-021-1
+- id: me-work-update-022-1
+  story: maintenance-engineering
+  from: awm093
+  to:
+  - awm118
+  date: '2026-06-07T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0142: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0142 is for
+    minor leak inspection on RD-FLW-03.
+
+    '
+  attachments:
+  - me-work-order-0142
+- id: me-work-update-022-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm093
+  date: '2026-06-07T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0142: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0142
+    parts entry.
+
+    '
+  reply_to: me-work-update-022-1
+- id: me-work-update-023-1
+  story: maintenance-engineering
+  from: awm094
+  to:
+  - awm119
+  date: '2026-06-08T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0143: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0143 is for
+    protective coating touch-up on PT-FLT-01.
+
+    '
+  attachments:
+  - me-work-order-0143
+- id: me-work-update-023-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm094
+  date: '2026-06-08T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0143: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0143 parts
+    entry.
+
+    '
+  reply_to: me-work-update-023-1
+- id: me-work-update-024-1
+  story: maintenance-engineering
+  from: awm095
+  to:
+  - awm120
+  date: '2026-06-09T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0144: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0144 is for serviceability
+    inspection on PE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0144
+- id: me-work-update-024-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm095
+  date: '2026-06-09T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0144: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0144
+    parts entry.
+
+    '
+  reply_to: me-work-update-024-1
+- id: me-work-update-025-1
+  story: maintenance-engineering
+  from: awm096
+  to:
+  - awm121
+  date: '2026-06-11T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0145: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0145 is for scheduled inspection
+    on PW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0145
+- id: me-work-update-025-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm096
+  date: '2026-06-11T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0145: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-025-1
+- id: me-work-update-026-1
+  story: maintenance-engineering
+  from: awm098
+  to:
+  - awm122
+  date: '2026-06-07T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0146: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0146 is for
+    coupling and guard check on RT-FLT-01.
+
+    '
+  attachments:
+  - me-work-order-0146
+- id: me-work-update-026-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm098
+  date: '2026-06-07T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0146: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-026-1
+- id: me-work-update-027-1
+  story: maintenance-engineering
+  from: awm099
+  to:
+  - awm123
+  date: '2026-06-08T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0147: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0147 is for
+    label and fixing renewal on RE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0147
+- id: me-work-update-027-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm099
+  date: '2026-06-08T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0147: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0147
+    parts entry.
+
+    '
+  reply_to: me-work-update-027-1
+- id: me-work-update-028-1
+  story: maintenance-engineering
+  from: awm100
+  to:
+  - awm124
+  date: '2026-06-09T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0148: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0148 is for enclosure
+    seal inspection on RW-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0148
+- id: me-work-update-028-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm100
+  date: '2026-06-09T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0148: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0148
+    parts entry.
+
+    '
+  reply_to: me-work-update-028-1
+- id: me-work-update-029-1
+  story: maintenance-engineering
+  from: awm101
+  to:
+  - awm125
+  date: '2026-06-10T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0149: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0149 is for external condition
+    check on PT-FILTER-A.
+
+    '
+  attachments:
+  - me-work-order-0149
+- id: me-work-update-029-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm101
+  date: '2026-06-10T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0149: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-029-1
+- id: me-work-update-030-1
+  story: maintenance-engineering
+  from: awm102
+  to:
+  - awm126
+  date: '2026-06-11T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0150: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0150 is for
+    lubrication service on US-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0150
+- id: me-work-update-030-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm102
+  date: '2026-06-11T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0150: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0150
+    parts entry.
+
+    '
+  reply_to: me-work-update-030-1
+- id: me-work-update-031-1
+  story: maintenance-engineering
+  from: awm103
+  to:
+  - theo
+  date: '2026-06-08T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0151: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0151 is for
+    fastener and mounting check on PD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0151
+- id: me-work-update-031-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm103
+  date: '2026-06-08T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0151: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0151
+    parts entry.
+
+    '
+  reply_to: me-work-update-031-1
+- id: me-work-update-032-1
+  story: maintenance-engineering
+  from: awm104
+  to:
+  - awm118
+  date: '2026-06-09T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0152: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0152 is for local
+    indication comparison on RD-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0152
+- id: me-work-update-032-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm104
+  date: '2026-06-09T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0152: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-032-1
+- id: me-work-update-033-1
+  story: maintenance-engineering
+  from: awm105
+  to:
+  - awm119
+  date: '2026-06-10T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0153: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0153 is for ventilation-path
+    clean on PT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0153
+- id: me-work-update-033-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm105
+  date: '2026-06-10T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0153: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0153
+    parts entry.
+
+    '
+  reply_to: me-work-update-033-1
+- id: me-work-update-034-1
+  story: maintenance-engineering
+  from: awm106
+  to:
+  - awm120
+  date: '2026-06-11T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0154: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0154 is for
+    minor leak inspection on PE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0154
+- id: me-work-update-034-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm106
+  date: '2026-06-11T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0154: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0154
+    parts entry.
+
+    '
+  reply_to: me-work-update-034-1
+- id: me-work-update-035-1
+  story: maintenance-engineering
+  from: awm107
+  to:
+  - awm121
+  date: '2026-06-12T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0155: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0155 is for
+    protective coating touch-up on PW-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0155
+- id: me-work-update-035-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm107
+  date: '2026-06-12T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0155: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0155 parts
+    entry.
+
+    '
+  reply_to: me-work-update-035-1
+- id: me-work-update-036-1
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm122
+  date: '2026-06-08T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0156: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0156 is for serviceability
+    inspection on RT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0156
+- id: me-work-update-036-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - clara
+  date: '2026-06-08T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0156: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0156
+    parts entry.
+
+    '
+  reply_to: me-work-update-036-1
+- id: me-work-update-037-1
+  story: maintenance-engineering
+  from: awm108
+  to:
+  - awm123
+  date: '2026-06-10T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0157: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0157 is for scheduled inspection on RE-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0157
+- id: me-work-update-037-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm108
+  date: '2026-06-10T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0157: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-01 and the ARWC-PR-0157 parts entry.
+
+    '
+  reply_to: me-work-update-037-1
+- id: me-work-update-038-1
+  story: maintenance-engineering
+  from: awm109
+  to:
+  - awm124
+  date: '2026-06-11T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0158: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0158 is for coupling and guard check on RW-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0158
+- id: me-work-update-038-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm109
+  date: '2026-06-11T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0158: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-02 and the ARWC-PR-0158 parts entry.
+
+    '
+  reply_to: me-work-update-038-1
+- id: me-work-update-039-1
+  story: maintenance-engineering
+  from: awm110
+  to:
+  - awm125
+  date: '2026-06-12T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0159: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0159 is for label and fixing renewal on RW-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0159
+- id: me-work-update-039-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm110
+  date: '2026-06-12T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0159: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-03
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-039-1
+- id: me-work-update-040-1
+  story: maintenance-engineering
+  from: awm111
+  to:
+  - awm126
+  date: '2026-06-13T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0160: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0160 is
+    for enclosure seal inspection on RE-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0160
+- id: me-work-update-040-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm111
+  date: '2026-06-13T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0160: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-04 and
+    the ARWC-PR-0160 parts entry.
+
+    '
+  reply_to: me-work-update-040-1
+- id: me-work-update-041-1
+  story: maintenance-engineering
+  from: awm112
+  to:
+  - theo
+  date: '2026-06-09T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0161: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0161 is for external condition
+    check on RT-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0161
+- id: me-work-update-041-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm112
+  date: '2026-06-09T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0161: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-041-1
+- id: me-work-update-042-1
+  story: maintenance-engineering
+  from: awm113
+  to:
+  - awm118
+  date: '2026-06-10T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0162: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0162 is for
+    lubrication service on RD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0162
+- id: me-work-update-042-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm113
+  date: '2026-06-10T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0162: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0162
+    parts entry.
+
+    '
+  reply_to: me-work-update-042-1
+- id: me-work-update-043-1
+  story: maintenance-engineering
+  from: awm114
+  to:
+  - awm119
+  date: '2026-06-12T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0163: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0163 is for
+    fastener and mounting check on PT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0163
+- id: me-work-update-043-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm114
+  date: '2026-06-12T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0163: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0163
+    parts entry.
+
+    '
+  reply_to: me-work-update-043-1
+- id: me-work-update-044-1
+  story: maintenance-engineering
+  from: awm115
+  to:
+  - awm120
+  date: '2026-06-13T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0164: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0164 is for local
+    indication comparison on PE-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0164
+- id: me-work-update-044-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm115
+  date: '2026-06-13T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0164: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-044-1
+- id: me-work-update-045-1
+  story: maintenance-engineering
+  from: awm116
+  to:
+  - awm121
+  date: '2026-06-14T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0165: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0165 is for ventilation-path
+    clean on PW-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0165
+- id: me-work-update-045-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm116
+  date: '2026-06-14T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0165: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0165
+    parts entry.
+
+    '
+  reply_to: me-work-update-045-1
+- id: me-work-update-046-1
+  story: maintenance-engineering
+  from: awm117
+  to:
+  - awm122
+  date: '2026-06-10T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0166: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0166 is for
+    minor leak inspection on PW-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0166
+- id: me-work-update-046-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm117
+  date: '2026-06-10T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0166: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0166
+    parts entry.
+
+    '
+  reply_to: me-work-update-046-1
+- id: me-work-update-047-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm123
+  date: '2026-06-11T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0167: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0167 is for
+    protective coating touch-up on RE-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0167
+- id: me-work-update-047-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - theo
+  date: '2026-06-11T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0167: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0167 parts
+    entry.
+
+    '
+  reply_to: me-work-update-047-1
+- id: me-work-update-048-1
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm124
+  date: '2026-06-12T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0168: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0168 is for serviceability
+    inspection on RE-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0168
+- id: me-work-update-048-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm118
+  date: '2026-06-12T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0168: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0168
+    parts entry.
+
+    '
+  reply_to: me-work-update-048-1
+- id: me-work-update-049-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm125
+  date: '2026-06-14T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0169: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0169 is for scheduled inspection
+    on RW-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0169
+- id: me-work-update-049-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm119
+  date: '2026-06-14T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0169: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-049-1
+- id: me-work-update-050-1
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm126
+  date: '2026-06-15T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0170: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0170 is for
+    coupling and guard check on PT-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0170
+- id: me-work-update-050-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm120
+  date: '2026-06-15T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0170: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-050-1
+- id: me-work-update-051-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - theo
+  date: '2026-06-11T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0171: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0171 is for
+    label and fixing renewal on RT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0171
+- id: me-work-update-051-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm121
+  date: '2026-06-11T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0171: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0171
+    parts entry.
+
+    '
+  reply_to: me-work-update-051-1
+- id: me-work-update-052-1
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm118
+  date: '2026-06-12T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0172: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0172 is for enclosure
+    seal inspection on RD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0172
+- id: me-work-update-052-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm122
+  date: '2026-06-12T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0172: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0172
+    parts entry.
+
+    '
+  reply_to: me-work-update-052-1
+- id: me-work-update-053-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm119
+  date: '2026-06-13T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0173: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0173 is for external condition
+    check on PE-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0173
+- id: me-work-update-053-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm123
+  date: '2026-06-13T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0173: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-053-1
+- id: me-work-update-054-1
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm120
+  date: '2026-06-14T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0174: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0174 is for
+    lubrication service on PE-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0174
+- id: me-work-update-054-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm124
+  date: '2026-06-14T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0174: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0174
+    parts entry.
+
+    '
+  reply_to: me-work-update-054-1
+- id: me-work-update-055-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm121
+  date: '2026-06-16T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0175: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0175 is for
+    fastener and mounting check on PE-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0175
+- id: me-work-update-055-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm125
+  date: '2026-06-16T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0175: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0175
+    parts entry.
+
+    '
+  reply_to: me-work-update-055-1
+- id: me-work-update-056-1
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm122
+  date: '2026-06-12T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0176: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0176 is for local
+    indication comparison on PW-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0176
+- id: me-work-update-056-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm126
+  date: '2026-06-12T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0176: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-056-1
+- id: me-work-update-057-1
+  story: maintenance-engineering
+  from: awm127
+  to:
+  - awm123
+  date: '2026-06-13T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0177: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0177 is for ventilation-path clean on RT-STO-01.
+
+    '
+  attachments:
+  - me-work-order-0177
+- id: me-work-update-057-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm127
+  date: '2026-06-13T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0177: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-09 and the ARWC-PR-0177 parts entry.
+
+    '
+  reply_to: me-work-update-057-1
+- id: me-work-update-058-1
+  story: maintenance-engineering
+  from: awm128
+  to:
+  - awm124
+  date: '2026-06-14T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0178: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0178 is for minor leak inspection on RE-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0178
+- id: me-work-update-058-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm128
+  date: '2026-06-14T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0178: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-10 and the ARWC-PR-0178 parts entry.
+
+    '
+  reply_to: me-work-update-058-1
+- id: me-work-update-059-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - awm125
+  date: '2026-06-15T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0179: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0179 is for protective coating touch-up on RW-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0179
+- id: me-work-update-059-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm129
+  date: '2026-06-15T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0179: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-11
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-059-1
+- id: me-work-update-060-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - awm126
+  date: '2026-06-16T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0180: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0180 is
+    for serviceability inspection on NR-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0180
+- id: me-work-update-060-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm130
+  date: '2026-06-16T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0180: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-12 and
+    the ARWC-PR-0180 parts entry.
+
+    '
+  reply_to: me-work-update-060-1
+- id: me-work-update-061-1
+  story: maintenance-engineering
+  from: awm131
+  to:
+  - theo
+  date: '2026-06-13T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0181: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0181 is for scheduled inspection
+    on RT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0181
+- id: me-work-update-061-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm131
+  date: '2026-06-13T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0181: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-061-1
+- id: me-work-update-062-1
+  story: maintenance-engineering
+  from: awm132
+  to:
+  - awm118
+  date: '2026-06-14T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0182: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0182 is for
+    coupling and guard check on PD-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0182
+- id: me-work-update-062-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm132
+  date: '2026-06-14T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0182: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-062-1
+- id: me-work-update-063-1
+  story: maintenance-engineering
+  from: awm133
+  to:
+  - awm119
+  date: '2026-06-15T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0183: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0183 is for
+    label and fixing renewal on PE-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0183
+- id: me-work-update-063-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm133
+  date: '2026-06-15T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0183: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0183
+    parts entry.
+
+    '
+  reply_to: me-work-update-063-1
+- id: me-work-update-064-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - awm120
+  date: '2026-06-16T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0184: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0184 is for enclosure
+    seal inspection on PT-STO-01.
+
+    '
+  attachments:
+  - me-work-order-0184
+- id: me-work-update-064-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm134
+  date: '2026-06-16T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0184: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0184
+    parts entry.
+
+    '
+  reply_to: me-work-update-064-1
+- id: me-work-update-065-1
+  story: maintenance-engineering
+  from: awm135
+  to:
+  - awm121
+  date: '2026-06-17T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0185: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0185 is for external condition
+    check on PE-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0185
+- id: me-work-update-065-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm135
+  date: '2026-06-17T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0185: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-065-1
+- id: me-work-update-066-1
+  story: maintenance-engineering
+  from: awm136
+  to:
+  - awm122
+  date: '2026-06-13T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0186: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0186 is for
+    lubrication service on PW-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0186
+- id: me-work-update-066-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm136
+  date: '2026-06-13T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0186: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0186
+    parts entry.
+
+    '
+  reply_to: me-work-update-066-1
+- id: me-work-update-067-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - awm123
+  date: '2026-06-15T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0187: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0187 is for
+    fastener and mounting check on RT-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0187
+- id: me-work-update-067-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm137
+  date: '2026-06-15T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0187: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0187
+    parts entry.
+
+    '
+  reply_to: me-work-update-067-1
+- id: me-work-update-068-1
+  story: maintenance-engineering
+  from: awm138
+  to:
+  - awm124
+  date: '2026-06-16T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0188: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0188 is for local
+    indication comparison on RE-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0188
+- id: me-work-update-068-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm138
+  date: '2026-06-16T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0188: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-068-1
+- id: me-work-update-069-1
+  story: maintenance-engineering
+  from: awm093
+  to:
+  - awm125
+  date: '2026-06-17T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0189: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0189 is for ventilation-path
+    clean on RW-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0189
+- id: me-work-update-069-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm093
+  date: '2026-06-17T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0189: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0189
+    parts entry.
+
+    '
+  reply_to: me-work-update-069-1
+- id: me-work-update-070-1
+  story: maintenance-engineering
+  from: awm094
+  to:
+  - awm126
+  date: '2026-06-18T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0190: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0190 is for
+    minor leak inspection on NR-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0190
+- id: me-work-update-070-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm094
+  date: '2026-06-18T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0190: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0190
+    parts entry.
+
+    '
+  reply_to: me-work-update-070-1
+- id: me-work-update-071-1
+  story: maintenance-engineering
+  from: awm095
+  to:
+  - theo
+  date: '2026-06-14T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0191: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0191 is for
+    protective coating touch-up on RT-LVL-04.
+
+    '
+  attachments:
+  - me-work-order-0191
+- id: me-work-update-071-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm095
+  date: '2026-06-14T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0191: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0191 parts
+    entry.
+
+    '
+  reply_to: me-work-update-071-1
+- id: me-work-update-072-1
+  story: maintenance-engineering
+  from: awm096
+  to:
+  - awm118
+  date: '2026-06-15T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0192: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0192 is for serviceability
+    inspection on PD-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0192
+- id: me-work-update-072-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm096
+  date: '2026-06-15T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0192: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0192
+    parts entry.
+
+    '
+  reply_to: me-work-update-072-1
+- id: me-work-update-073-1
+  story: maintenance-engineering
+  from: awm098
+  to:
+  - awm119
+  date: '2026-06-17T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0193: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0193 is for scheduled inspection
+    on RD-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0193
+- id: me-work-update-073-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm098
+  date: '2026-06-17T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0193: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-073-1
+- id: me-work-update-074-1
+  story: maintenance-engineering
+  from: awm099
+  to:
+  - awm120
+  date: '2026-06-18T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0194: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0194 is for
+    coupling and guard check on PT-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0194
+- id: me-work-update-074-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm099
+  date: '2026-06-18T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0194: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-074-1
+- id: me-work-update-075-1
+  story: maintenance-engineering
+  from: awm100
+  to:
+  - awm121
+  date: '2026-06-19T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0195: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0195 is for
+    label and fixing renewal on PE-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0195
+- id: me-work-update-075-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm100
+  date: '2026-06-19T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0195: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0195
+    parts entry.
+
+    '
+  reply_to: me-work-update-075-1
+- id: me-work-update-076-1
+  story: maintenance-engineering
+  from: awm101
+  to:
+  - awm122
+  date: '2026-06-15T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0196: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0196 is for enclosure
+    seal inspection on PW-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0196
+- id: me-work-update-076-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm101
+  date: '2026-06-15T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0196: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0196
+    parts entry.
+
+    '
+  reply_to: me-work-update-076-1
+- id: me-work-update-077-1
+  story: maintenance-engineering
+  from: awm102
+  to:
+  - awm123
+  date: '2026-06-16T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0197: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0197 is for external condition check on RT-CHM-01.
+
+    '
+  attachments:
+  - me-work-order-0197
+- id: me-work-update-077-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm102
+  date: '2026-06-16T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0197: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-05 and the ARWC-PR-0197 parts entry.
+
+    '
+  reply_to: me-work-update-077-1
+- id: me-work-update-078-1
+  story: maintenance-engineering
+  from: awm103
+  to:
+  - awm124
+  date: '2026-06-17T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0198: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0198 is for lubrication service on RE-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0198
+- id: me-work-update-078-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm103
+  date: '2026-06-17T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0198: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-06 and the ARWC-PR-0198 parts entry.
+
+    '
+  reply_to: me-work-update-078-1
+- id: me-work-update-079-1
+  story: maintenance-engineering
+  from: awm104
+  to:
+  - awm125
+  date: '2026-06-19T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0199: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0199 is for fastener and mounting check on RW-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0199
+- id: me-work-update-079-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm104
+  date: '2026-06-19T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0199: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-07
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-079-1
+- id: me-work-update-080-1
+  story: maintenance-engineering
+  from: awm105
+  to:
+  - awm126
+  date: '2026-06-20T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0200: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0200 is
+    for local indication comparison on RT-FILTER-B.
+
+    '
+  attachments:
+  - me-work-order-0200
+- id: me-work-update-080-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm105
+  date: '2026-06-20T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0200: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-08 and
+    the none parts entry.
+
+    '
+  reply_to: me-work-update-080-1
+- id: me-work-update-081-1
+  story: maintenance-engineering
+  from: awm106
+  to:
+  - theo
+  date: '2026-06-16T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0201: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0201 is for ventilation-path
+    clean on RT-FLW-03.
+
+    '
+  attachments:
+  - me-work-order-0201
+- id: me-work-update-081-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm106
+  date: '2026-06-16T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0201: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0201
+    parts entry.
+
+    '
+  reply_to: me-work-update-081-1
+- id: me-work-update-082-1
+  story: maintenance-engineering
+  from: awm107
+  to:
+  - awm118
+  date: '2026-06-17T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0202: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0202 is for
+    minor leak inspection on PD-LVL-04.
+
+    '
+  attachments:
+  - me-work-order-0202
+- id: me-work-update-082-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm107
+  date: '2026-06-17T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0202: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0202
+    parts entry.
+
+    '
+  reply_to: me-work-update-082-1
+- id: me-work-update-083-1
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm119
+  date: '2026-06-18T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0203: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0203 is for
+    protective coating touch-up on RD-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0203
+- id: me-work-update-083-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - clara
+  date: '2026-06-18T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0203: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0203 parts
+    entry.
+
+    '
+  reply_to: me-work-update-083-1
+- id: me-work-update-084-1
+  story: maintenance-engineering
+  from: awm108
+  to:
+  - awm120
+  date: '2026-06-19T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0204: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0204 is for serviceability
+    inspection on PT-CHM-01.
+
+    '
+  attachments:
+  - me-work-order-0204
+- id: me-work-update-084-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm108
+  date: '2026-06-19T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0204: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0204
+    parts entry.
+
+    '
+  reply_to: me-work-update-084-1
+- id: me-work-update-085-1
+  story: maintenance-engineering
+  from: awm109
+  to:
+  - awm121
+  date: '2026-06-21T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0205: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0205 is for scheduled inspection
+    on PE-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0205
+- id: me-work-update-085-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm109
+  date: '2026-06-21T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0205: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-085-1
+- id: me-work-update-086-1
+  story: maintenance-engineering
+  from: awm110
+  to:
+  - awm122
+  date: '2026-06-17T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0206: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0206 is for
+    coupling and guard check on PW-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0206
+- id: me-work-update-086-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm110
+  date: '2026-06-17T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0206: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-086-1
+- id: me-work-update-087-1
+  story: maintenance-engineering
+  from: awm111
+  to:
+  - awm123
+  date: '2026-06-18T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0207: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0207 is for
+    label and fixing renewal on RT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0207
+- id: me-work-update-087-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm111
+  date: '2026-06-18T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0207: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0207
+    parts entry.
+
+    '
+  reply_to: me-work-update-087-1
+- id: me-work-update-088-1
+  story: maintenance-engineering
+  from: awm112
+  to:
+  - awm124
+  date: '2026-06-19T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0208: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0208 is for enclosure
+    seal inspection on RE-PH-01.
+
+    '
+  attachments:
+  - me-work-order-0208
+- id: me-work-update-088-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm112
+  date: '2026-06-19T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0208: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0208
+    parts entry.
+
+    '
+  reply_to: me-work-update-088-1
+- id: me-work-update-089-1
+  story: maintenance-engineering
+  from: awm113
+  to:
+  - awm125
+  date: '2026-06-20T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0209: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0209 is for external condition
+    check on RW-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0209
+- id: me-work-update-089-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm113
+  date: '2026-06-20T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0209: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-089-1
+- id: me-work-update-090-1
+  story: maintenance-engineering
+  from: awm114
+  to:
+  - awm126
+  date: '2026-06-21T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0210: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0210 is for
+    lubrication service on RT-FILTER-A.
+
+    '
+  attachments:
+  - me-work-order-0210
+- id: me-work-update-090-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm114
+  date: '2026-06-21T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0210: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0210
+    parts entry.
+
+    '
+  reply_to: me-work-update-090-1
+- id: me-work-update-091-1
+  story: maintenance-engineering
+  from: awm115
+  to:
+  - theo
+  date: '2026-06-18T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0211: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0211 is for
+    fastener and mounting check on RT-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0211
+- id: me-work-update-091-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm115
+  date: '2026-06-18T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0211: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0211
+    parts entry.
+
+    '
+  reply_to: me-work-update-091-1
+- id: me-work-update-092-1
+  story: maintenance-engineering
+  from: awm116
+  to:
+  - awm118
+  date: '2026-06-19T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0212: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0212 is for local
+    indication comparison on PD-FLW-03.
+
+    '
+  attachments:
+  - me-work-order-0212
+- id: me-work-update-092-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm116
+  date: '2026-06-19T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0212: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-092-1
+- id: me-work-update-093-1
+  story: maintenance-engineering
+  from: awm117
+  to:
+  - awm119
+  date: '2026-06-20T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0213: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0213 is for ventilation-path
+    clean on RD-LVL-04.
+
+    '
+  attachments:
+  - me-work-order-0213
+- id: me-work-update-093-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm117
+  date: '2026-06-20T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0213: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0213
+    parts entry.
+
+    '
+  reply_to: me-work-update-093-1
+- id: me-work-update-094-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm120
+  date: '2026-06-21T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0214: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0214 is for
+    minor leak inspection on PT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0214
+- id: me-work-update-094-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - theo
+  date: '2026-06-21T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0214: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0214
+    parts entry.
+
+    '
+  reply_to: me-work-update-094-1
+- id: me-work-update-095-1
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm121
+  date: '2026-06-22T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0215: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0215 is for
+    protective coating touch-up on PE-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0215
+- id: me-work-update-095-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm118
+  date: '2026-06-22T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0215: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0215 parts
+    entry.
+
+    '
+  reply_to: me-work-update-095-1
+- id: me-work-update-096-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm122
+  date: '2026-06-18T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0216: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0216 is for serviceability
+    inspection on PW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0216
+- id: me-work-update-096-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm119
+  date: '2026-06-18T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0216: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0216
+    parts entry.
+
+    '
+  reply_to: me-work-update-096-1
+- id: me-work-update-097-1
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm123
+  date: '2026-06-20T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0217: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0217 is for scheduled inspection on RT-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0217
+- id: me-work-update-097-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm120
+  date: '2026-06-20T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0217: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-01 and the ARWC-PR-0217 parts entry.
+
+    '
+  reply_to: me-work-update-097-1
+- id: me-work-update-098-1
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm124
+  date: '2026-06-21T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0218: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0218 is for coupling and guard check on RE-KIT-01.
+
+    '
+  attachments:
+  - me-work-order-0218
+- id: me-work-update-098-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm121
+  date: '2026-06-21T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0218: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-02 and the ARWC-PR-0218 parts entry.
+
+    '
+  reply_to: me-work-update-098-1
+- id: me-work-update-099-1
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm125
+  date: '2026-06-22T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0219: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0219 is for label and fixing renewal on RW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0219
+- id: me-work-update-099-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm122
+  date: '2026-06-22T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0219: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-03
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-099-1
+- id: me-work-update-100-1
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm126
+  date: '2026-06-23T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0220: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0220 is
+    for enclosure seal inspection on PT-FILTER-B.
+
+    '
+  attachments:
+  - me-work-order-0220
+- id: me-work-update-100-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm123
+  date: '2026-06-23T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0220: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-04 and
+    the ARWC-PR-0220 parts entry.
+
+    '
+  reply_to: me-work-update-100-1
+- id: me-work-update-101-1
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - theo
+  date: '2026-06-19T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0221: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0221 is for external condition
+    check on PT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0221
+- id: me-work-update-101-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm124
+  date: '2026-06-19T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0221: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-101-1
+- id: me-work-update-102-1
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm118
+  date: '2026-06-20T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0222: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0222 is for
+    lubrication service on PD-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0222
+- id: me-work-update-102-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm125
+  date: '2026-06-20T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0222: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0222
+    parts entry.
+
+    '
+  reply_to: me-work-update-102-1
+- id: me-work-update-103-1
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm119
+  date: '2026-06-22T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0223: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0223 is for
+    fastener and mounting check on RD-FLW-03.
+
+    '
+  attachments:
+  - me-work-order-0223
+- id: me-work-update-103-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm126
+  date: '2026-06-22T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0223: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0223
+    parts entry.
+
+    '
+  reply_to: me-work-update-103-1
+- id: me-work-update-104-1
+  story: maintenance-engineering
+  from: awm127
+  to:
+  - awm120
+  date: '2026-06-23T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0224: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0224 is for local
+    indication comparison on PT-FLT-01.
+
+    '
+  attachments:
+  - me-work-order-0224
+- id: me-work-update-104-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm127
+  date: '2026-06-23T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0224: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-104-1
+- id: me-work-update-105-1
+  story: maintenance-engineering
+  from: awm128
+  to:
+  - awm121
+  date: '2026-06-24T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0225: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0225 is for ventilation-path
+    clean on PE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0225
+- id: me-work-update-105-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm128
+  date: '2026-06-24T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0225: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0225
+    parts entry.
+
+    '
+  reply_to: me-work-update-105-1
+- id: me-work-update-106-1
+  story: maintenance-engineering
+  from: awm129
+  to:
+  - awm122
+  date: '2026-06-20T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0226: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0226 is for
+    minor leak inspection on PW-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0226
+- id: me-work-update-106-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm129
+  date: '2026-06-20T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0226: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0226
+    parts entry.
+
+    '
+  reply_to: me-work-update-106-1
+- id: me-work-update-107-1
+  story: maintenance-engineering
+  from: awm130
+  to:
+  - awm123
+  date: '2026-06-21T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0227: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0227 is for
+    protective coating touch-up on RT-FLT-01.
+
+    '
+  attachments:
+  - me-work-order-0227
+- id: me-work-update-107-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm130
+  date: '2026-06-21T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0227: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0227 parts
+    entry.
+
+    '
+  reply_to: me-work-update-107-1
+- id: me-work-update-108-1
+  story: maintenance-engineering
+  from: awm131
+  to:
+  - awm124
+  date: '2026-06-22T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0228: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0228 is for serviceability
+    inspection on RE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0228
+- id: me-work-update-108-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm131
+  date: '2026-06-22T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0228: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0228
+    parts entry.
+
+    '
+  reply_to: me-work-update-108-1
+- id: me-work-update-109-1
+  story: maintenance-engineering
+  from: awm132
+  to:
+  - awm125
+  date: '2026-06-24T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0229: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0229 is for scheduled inspection
+    on RW-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0229
+- id: me-work-update-109-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm132
+  date: '2026-06-24T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0229: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-109-1
+- id: me-work-update-110-1
+  story: maintenance-engineering
+  from: awm133
+  to:
+  - awm126
+  date: '2026-06-25T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0230: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0230 is for
+    coupling and guard check on PT-FILTER-A.
+
+    '
+  attachments:
+  - me-work-order-0230
+- id: me-work-update-110-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm133
+  date: '2026-06-25T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0230: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-110-1
+- id: me-work-update-111-1
+  story: maintenance-engineering
+  from: awm134
+  to:
+  - theo
+  date: '2026-06-21T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0231: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0231 is for
+    label and fixing renewal on US-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0231
+- id: me-work-update-111-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm134
+  date: '2026-06-21T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0231: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0231
+    parts entry.
+
+    '
+  reply_to: me-work-update-111-1
+- id: me-work-update-112-1
+  story: maintenance-engineering
+  from: awm135
+  to:
+  - awm118
+  date: '2026-06-22T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0232: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0232 is for enclosure
+    seal inspection on PD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0232
+- id: me-work-update-112-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm135
+  date: '2026-06-22T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0232: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0232
+    parts entry.
+
+    '
+  reply_to: me-work-update-112-1
+- id: me-work-update-113-1
+  story: maintenance-engineering
+  from: awm136
+  to:
+  - awm119
+  date: '2026-06-23T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0233: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0233 is for external condition
+    check on RD-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0233
+- id: me-work-update-113-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm136
+  date: '2026-06-23T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0233: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-113-1
+- id: me-work-update-114-1
+  story: maintenance-engineering
+  from: awm137
+  to:
+  - awm120
+  date: '2026-06-24T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0234: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0234 is for
+    lubrication service on PT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0234
+- id: me-work-update-114-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm137
+  date: '2026-06-24T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0234: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0234
+    parts entry.
+
+    '
+  reply_to: me-work-update-114-1
+- id: me-work-update-115-1
+  story: maintenance-engineering
+  from: awm138
+  to:
+  - awm121
+  date: '2026-06-26T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0235: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0235 is for
+    fastener and mounting check on PE-MRK-01.
+
+    '
+  attachments:
+  - me-work-order-0235
+- id: me-work-update-115-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm138
+  date: '2026-06-26T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0235: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0235
+    parts entry.
+
+    '
+  reply_to: me-work-update-115-1
+- id: me-work-update-116-1
+  story: maintenance-engineering
+  from: awm093
+  to:
+  - awm122
+  date: '2026-06-22T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0236: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0236 is for local
+    indication comparison on PW-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0236
+- id: me-work-update-116-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm093
+  date: '2026-06-22T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0236: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-116-1
+- id: me-work-update-117-1
+  story: maintenance-engineering
+  from: awm094
+  to:
+  - awm123
+  date: '2026-06-23T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0237: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0237 is for ventilation-path clean on RT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0237
+- id: me-work-update-117-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm094
+  date: '2026-06-23T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0237: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-09 and the ARWC-PR-0237 parts entry.
+
+    '
+  reply_to: me-work-update-117-1
+- id: me-work-update-118-1
+  story: maintenance-engineering
+  from: awm095
+  to:
+  - awm124
+  date: '2026-06-24T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0238: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0238 is for minor leak inspection on RE-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0238
+- id: me-work-update-118-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm095
+  date: '2026-06-24T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0238: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-10 and the ARWC-PR-0238 parts entry.
+
+    '
+  reply_to: me-work-update-118-1
+- id: me-work-update-119-1
+  story: maintenance-engineering
+  from: awm096
+  to:
+  - awm125
+  date: '2026-06-25T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0239: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0239 is for protective coating touch-up on RW-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0239
+- id: me-work-update-119-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm096
+  date: '2026-06-25T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0239: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-11
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-119-1
+- id: me-work-update-120-1
+  story: maintenance-engineering
+  from: awm098
+  to:
+  - awm126
+  date: '2026-06-26T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0240: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0240 is
+    for serviceability inspection on RW-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0240
+- id: me-work-update-120-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm098
+  date: '2026-06-26T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0240: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-12 and
+    the ARWC-PR-0240 parts entry.
+
+    '
+  reply_to: me-work-update-120-1
+- id: me-work-update-121-1
+  story: maintenance-engineering
+  from: awm099
+  to:
+  - theo
+  date: '2026-06-23T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0241: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0241 is for scheduled inspection
+    on RE-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0241
+- id: me-work-update-121-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm099
+  date: '2026-06-23T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0241: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-121-1
+- id: me-work-update-122-1
+  story: maintenance-engineering
+  from: awm100
+  to:
+  - awm118
+  date: '2026-06-24T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0242: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0242 is for
+    coupling and guard check on RT-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0242
+- id: me-work-update-122-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm100
+  date: '2026-06-24T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0242: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-122-1
+- id: me-work-update-123-1
+  story: maintenance-engineering
+  from: awm101
+  to:
+  - awm119
+  date: '2026-06-25T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0243: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0243 is for
+    label and fixing renewal on RD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0243
+- id: me-work-update-123-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm101
+  date: '2026-06-25T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0243: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0243
+    parts entry.
+
+    '
+  reply_to: me-work-update-123-1
+- id: me-work-update-124-1
+  story: maintenance-engineering
+  from: awm102
+  to:
+  - awm120
+  date: '2026-06-26T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0244: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0244 is for enclosure
+    seal inspection on PT-INT-01.
+
+    '
+  attachments:
+  - me-work-order-0244
+- id: me-work-update-124-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm102
+  date: '2026-06-26T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0244: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0244
+    parts entry.
+
+    '
+  reply_to: me-work-update-124-1
+- id: me-work-update-125-1
+  story: maintenance-engineering
+  from: awm103
+  to:
+  - awm121
+  date: '2026-06-27T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0245: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0245 is for external condition
+    check on PE-VLV-01.
+
+    '
+  attachments:
+  - me-work-order-0245
+- id: me-work-update-125-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm103
+  date: '2026-06-27T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0245: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-05 and the none parts entry.
+
+    '
+  reply_to: me-work-update-125-1
+- id: me-work-update-126-1
+  story: maintenance-engineering
+  from: awm104
+  to:
+  - awm122
+  date: '2026-06-23T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0246: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0246 is for
+    lubrication service on PW-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0246
+- id: me-work-update-126-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm104
+  date: '2026-06-23T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0246: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-06 and the ARWC-PR-0246
+    parts entry.
+
+    '
+  reply_to: me-work-update-126-1
+- id: me-work-update-127-1
+  story: maintenance-engineering
+  from: awm105
+  to:
+  - awm123
+  date: '2026-06-25T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0247: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0247 is for
+    fastener and mounting check on PW-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0247
+- id: me-work-update-127-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm105
+  date: '2026-06-25T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0247: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-07 and the ARWC-PR-0247
+    parts entry.
+
+    '
+  reply_to: me-work-update-127-1
+- id: me-work-update-128-1
+  story: maintenance-engineering
+  from: awm106
+  to:
+  - awm124
+  date: '2026-06-26T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0248: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0248 is for local
+    indication comparison on RE-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0248
+- id: me-work-update-128-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm106
+  date: '2026-06-26T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0248: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-08 and the none parts entry.
+
+    '
+  reply_to: me-work-update-128-1
+- id: me-work-update-129-1
+  story: maintenance-engineering
+  from: awm107
+  to:
+  - awm125
+  date: '2026-06-27T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0249: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0249 is for ventilation-path
+    clean on RE-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0249
+- id: me-work-update-129-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm107
+  date: '2026-06-27T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0249: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0249
+    parts entry.
+
+    '
+  reply_to: me-work-update-129-1
+- id: me-work-update-130-1
+  story: maintenance-engineering
+  from: clara
+  to:
+  - awm126
+  date: '2026-06-28T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0250: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0250 is for
+    minor leak inspection on RW-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0250
+- id: me-work-update-130-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - clara
+  date: '2026-06-28T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0250: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0250
+    parts entry.
+
+    '
+  reply_to: me-work-update-130-1
+- id: me-work-update-131-1
+  story: maintenance-engineering
+  from: awm108
+  to:
+  - theo
+  date: '2026-06-24T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0251: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0251 is for
+    protective coating touch-up on PT-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0251
+- id: me-work-update-131-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm108
+  date: '2026-06-24T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0251: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0251 parts
+    entry.
+
+    '
+  reply_to: me-work-update-131-1
+- id: me-work-update-132-1
+  story: maintenance-engineering
+  from: awm109
+  to:
+  - awm118
+  date: '2026-06-25T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0252: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0252 is for serviceability
+    inspection on RT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0252
+- id: me-work-update-132-2
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - awm109
+  date: '2026-06-25T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0252: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0252
+    parts entry.
+
+    '
+  reply_to: me-work-update-132-1
+- id: me-work-update-133-1
+  story: maintenance-engineering
+  from: awm110
+  to:
+  - awm119
+  date: '2026-06-27T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0253: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0253 is for scheduled inspection
+    on RD-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0253
+- id: me-work-update-133-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - awm110
+  date: '2026-06-27T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0253: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-01 and the none parts
+    entry.
+
+    '
+  reply_to: me-work-update-133-1
+- id: me-work-update-134-1
+  story: maintenance-engineering
+  from: awm111
+  to:
+  - awm120
+  date: '2026-06-28T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0254: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0254 is for
+    coupling and guard check on PE-MTR-02.
+
+    '
+  attachments:
+  - me-work-order-0254
+- id: me-work-update-134-2
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - awm111
+  date: '2026-06-28T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0254: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-02 and the none parts entry.
+
+    '
+  reply_to: me-work-update-134-1
+- id: me-work-update-135-1
+  story: maintenance-engineering
+  from: awm112
+  to:
+  - awm121
+  date: '2026-06-29T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0255: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0255 is for
+    label and fixing renewal on PE-HYD-01.
+
+    '
+  attachments:
+  - me-work-order-0255
+- id: me-work-update-135-2
+  story: maintenance-engineering
+  from: awm121
+  to:
+  - awm112
+  date: '2026-06-29T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0255: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-03 and the ARWC-PR-0255
+    parts entry.
+
+    '
+  reply_to: me-work-update-135-1
+- id: me-work-update-136-1
+  story: maintenance-engineering
+  from: awm113
+  to:
+  - awm122
+  date: '2026-06-25T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0256: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0256 is for enclosure
+    seal inspection on PE-STK-01.
+
+    '
+  attachments:
+  - me-work-order-0256
+- id: me-work-update-136-2
+  story: maintenance-engineering
+  from: awm122
+  to:
+  - awm113
+  date: '2026-06-25T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0256: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-04 and the ARWC-PR-0256
+    parts entry.
+
+    '
+  reply_to: me-work-update-136-1
+- id: me-work-update-137-1
+  story: maintenance-engineering
+  from: awm114
+  to:
+  - awm123
+  date: '2026-06-26T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0257: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0257 is for external condition check on PW-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0257
+- id: me-work-update-137-2
+  story: maintenance-engineering
+  from: awm123
+  to:
+  - awm114
+  date: '2026-06-26T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0257: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-05 and the ARWC-PR-0257 parts entry.
+
+    '
+  reply_to: me-work-update-137-1
+- id: me-work-update-138-1
+  story: maintenance-engineering
+  from: awm115
+  to:
+  - awm124
+  date: '2026-06-27T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0258: waiting parts'
+  body: 'Inspection is complete, but the order is waiting for the named part. I have not marked the repair complete.
+    ARWC-WO-26-0258 is for lubrication service on RT-STO-01.
+
+    '
+  attachments:
+  - me-work-order-0258
+- id: me-work-update-138-2
+  story: maintenance-engineering
+  from: awm124
+  to:
+  - awm115
+  date: '2026-06-27T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0258: waiting parts'
+  body: 'Right. Keep it at waiting parts; the request is not a receipt and no fitting date is promised. I checked
+    ARWC-JP-06 and the ARWC-PR-0258 parts entry.
+
+    '
+  reply_to: me-work-update-138-1
+- id: me-work-update-139-1
+  story: maintenance-engineering
+  from: awm116
+  to:
+  - awm125
+  date: '2026-06-29T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0259: deferred'
+  body: 'We released the access window back to operations. The work order says deferred and has no completion entry.
+    ARWC-WO-26-0259 is for fastener and mounting check on RE-RTE-01.
+
+    '
+  attachments:
+  - me-work-order-0259
+- id: me-work-update-139-2
+  story: maintenance-engineering
+  from: awm125
+  to:
+  - awm116
+  date: '2026-06-29T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0259: deferred'
+  body: 'Noted. I will group a later access request; this thread does not create a new date. I checked ARWC-JP-07
+    and the none parts entry.
+
+    '
+  reply_to: me-work-update-139-1
+- id: me-work-update-140-1
+  story: maintenance-engineering
+  from: awm117
+  to:
+  - awm126
+  date: '2026-06-30T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0260: planned'
+  body: 'Scope looks workable. This is still planned; I have not added an inspection result. ARWC-WO-26-0260 is
+    for local indication comparison on RW-SMP-01.
+
+    '
+  attachments:
+  - me-work-order-0260
+- id: me-work-update-140-2
+  story: maintenance-engineering
+  from: awm126
+  to:
+  - awm117
+  date: '2026-06-30T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0260: planned'
+  body: 'Agreed. Leave it planned until access and the named parts are both available. I checked ARWC-JP-08 and
+    the none parts entry.
+
+    '
+  reply_to: me-work-update-140-1
+- id: me-work-update-141-1
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm119
+  date: '2026-06-26T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0261: completed'
+  body: 'Work entry is up. Nothing outside the stated asset was touched. ARWC-WO-26-0261 is for ventilation-path
+    clean on NR-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0261
+- id: me-work-update-141-2
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - theo
+  date: '2026-06-26T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0261: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-09 and the ARWC-PR-0261
+    parts entry.
+
+    '
+  reply_to: me-work-update-141-1
+- id: me-work-update-142-1
+  story: maintenance-engineering
+  from: awm118
+  to:
+  - theo
+  date: '2026-06-27T10:30:00-04:00'
+  subject: 'ARWC-WO-26-0262: completed'
+  body: 'Completed during the booked access. I left the next check in the handover line. ARWC-WO-26-0262 is for
+    minor leak inspection on RT-VLV-05.
+
+    '
+  attachments:
+  - me-work-order-0262
+- id: me-work-update-142-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm118
+  date: '2026-06-27T11:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0262: completed'
+  body: 'Thanks. I checked the asset and drawing references; closure stands. I checked ARWC-JP-10 and the ARWC-PR-0262
+    parts entry.
+
+    '
+  reply_to: me-work-update-142-1
+- id: me-work-update-143-1
+  story: maintenance-engineering
+  from: awm119
+  to:
+  - theo
+  date: '2026-06-28T12:30:00-04:00'
+  subject: 'ARWC-WO-26-0263: completed'
+  body: 'This is closed from my side; the order has the observed result, not just ‘done’. ARWC-WO-26-0263 is for
+    protective coating touch-up on PD-PNL-06.
+
+    '
+  attachments:
+  - me-work-order-0263
+- id: me-work-update-143-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm119
+  date: '2026-06-28T13:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0263: completed'
+  body: 'Received. I have left the completed status as recorded. I checked ARWC-JP-11 and the ARWC-PR-0263 parts
+    entry.
+
+    '
+  reply_to: me-work-update-143-1
+- id: me-work-update-144-1
+  story: maintenance-engineering
+  from: awm120
+  to:
+  - theo
+  date: '2026-06-29T14:30:00-04:00'
+  subject: 'ARWC-WO-26-0264: completed'
+  body: 'Finished this one. The condition and what I actually used are in the order. ARWC-WO-26-0264 is for serviceability
+    inspection on PE-PMP-01.
+
+    '
+  attachments:
+  - me-work-order-0264
+- id: me-work-update-144-2
+  story: maintenance-engineering
+  from: theo
+  to:
+  - awm120
+  date: '2026-06-29T15:20:00-04:00'
+  subject: 'Re: ARWC-WO-26-0264: completed'
+  body: 'Accepted. The next mechanic can see the result and the parts entry. I checked ARWC-JP-12 and the ARWC-PR-0264
+    parts entry.
+
+    '
+  reply_to: me-work-update-144-1

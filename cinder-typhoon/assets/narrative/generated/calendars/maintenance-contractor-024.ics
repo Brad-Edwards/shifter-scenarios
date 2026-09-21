@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:022e97f6-778d-5373-a931-b5f4a813fd7f@alterrawaterco.com
+DTSTAMP:20260815T180000Z
+DTSTART:20260819T170000Z
+DTEND:20260819T200000Z
+ORGANIZER:mailto:cara.nelcourt@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:avery.velswick@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:reece.fendell@ardenvale.test
+LOCATION:North reservoir
+SEQUENCE:0
+SUMMARY:ARWC-CA-26-024: instrument condition and calibration service
+DESCRIPTION:ARWC-WO-26-0595\; ARWC-PO-26-224\; accepted scope only. Service
+  outcome is recorded separately.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

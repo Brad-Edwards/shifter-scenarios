@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workplace Calendar//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:c5fe96da-b90a-55ee-bd76-ef93d11e55c3@alterrawaterco.com
+DTSTAMP:20260722T180000Z
+DTSTART:20260727T170000Z
+DTEND:20260727T200000Z
+ORGANIZER:mailto:theo.marrivel@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:cian.elvarn@alterrawaterco.com
+ATTENDEE;PARTSTAT=ACCEPTED:mailto:reece.fendell@ardenvale.test
+LOCATION:River East district
+SEQUENCE:0
+SUMMARY:ARWC-CA-26-016: instrument condition and calibration service
+DESCRIPTION:ARWC-WO-26-0451\; ARWC-PO-26-216\; accepted scope only. Service
+  outcome is recorded separately.
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

@@ -2,8 +2,9 @@
 
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
-commercial, and finance slices added on 20
-September, and office life added on 21 September. These documents establish two fictional companies, the region around
+commercial, and finance slices added on 20 September, and office life, service
+accounts, field operations, and maintenance/engineering added on 21 September.
+These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
 
@@ -55,6 +56,8 @@ and unfinished plans of their own.
 | [Service accounts voices](service-accounts-voices.md) | Customer-account correspondence profiles and samples. |
 | [Field operations review](field-operations-review.md) | Shift, visit, resource, sample and supervision joins, readership and validation evidence. |
 | [Field operations voices](field-operations-voices.md) | Operator, supervisor and field-desk writing samples. |
+| [Maintenance and engineering review](maintenance-engineering-review.md) | Work-order, contractor, drawing, commissioning, project and validation evidence. |
+| [Maintenance and engineering voices](maintenance-engineering-voices.md) | Profiles and finished samples for recurring planners, engineers and contractors. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -128,6 +131,11 @@ accounts serve 60,000 occupied dwellings and 160,000 residents, plus commercial
 and municipal premises. Multi-unit buildings, parallel supplies and private
 check meters remain distinct. Household registers stay with named customer
 accounts staff; field colleagues receive the service and meter records they need.
+The field-operations slice supplies six weeks of shift and field records and 24
+accepted maintenance requests. The maintenance and engineering slice carries
+every one of those requests into a work order, develops 720 recent and historical
+orders across all 48 colleagues, and retains four completed refurbishment
+histories with explicit drawing authority and contractor acceptance.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

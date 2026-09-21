@@ -64,6 +64,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_release_platform.py
 python -m unittest discover -s cinder-typhoon/tests -p test_customer_followup.py
 python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
 python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
+python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineering.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -111,6 +112,13 @@ authority, changed fees, premature payments, incomplete deliveries, self-approve
 claims, payroll leaks, altered opening balances, and binary corruption. One
 mutation rewrites an actual XLSX formula and updates its digest, proving that a
 valid checksum alone cannot hide an incorrect cached result.
+
+Maintenance and engineering checks join 720 work orders to 72 assets, all 48
+employees and the 24 accepted operations requests. They verify employment dates,
+status boundaries, contractor quote/order/appointment/report/receipt chronology,
+amounts, drawing bytes and revision authority, commissioning and handover, exact
+archive tables, message variation and reader scope. P1/P2 remain working copies;
+only A1 can become effective for work.
 
 ## Prose checks
 
