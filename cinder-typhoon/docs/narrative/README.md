@@ -3,7 +3,7 @@
 Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
-accounts, field operations, maintenance/engineering, laboratory/quality, and purchasing/stores
+accounts, field operations, maintenance/engineering, laboratory/quality, purchasing/stores, and retail billing
 added on 21 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
@@ -63,6 +63,8 @@ and unfinished plans of their own.
 | [Laboratory and quality voices](laboratory-quality-voices.md) | Writing guidance and finished samples for laboratory, quality and reporting colleagues. |
 | [Purchasing and stores review](purchasing-stores-review.md) | Requisition-to-payment histories, maintenance and stock joins, supplier PDFs, allocations, counts, and validation evidence. |
 | [Purchasing and stores voices](purchasing-stores-voices.md) | Procurement, accounts, and supplier writing guidance with finished samples. |
+| [Retail billing review](retail-billing-review.md) | Readable bills, payment arithmetic, cases, delivery preferences, appointments, collections, counts, and validation evidence. |
+| [Retail billing voices](retail-billing-voices.md) | Distinct writing habits and finished samples for the customer-contact team. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -154,6 +156,12 @@ field stock movements, and retains twelve accepted Ternwick batches. Genuine
 supplier quotation and invoice PDFs, line-item registers, cost-centre
 allocations, ledger entries, and payment records remain ordinary reusable world
 content rather than scenario evidence.
+The retail-billing slice renders every accepted invoice into one readable bill,
+preserves every source line and issue-date delivery preference, and reconciles
+post-opening payments, adjustments, balances, cases, meter appointments, and
+ordinary collections. It uses the settled 50,100-account model rather than the
+earlier dwelling-level estimate, keeps Belvarn and Talvern within their accepted
+service scope, and reuses Rosa's accepted billing-period explanation.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

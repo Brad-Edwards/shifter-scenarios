@@ -3,7 +3,7 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 31,121 distinct authored messages, 14,438 source documents,
+The collection contains 38,721 distinct authored messages, 15,277 source documents,
 staff directories for all 294 employees, and 840 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
@@ -80,6 +80,14 @@ batches retain accepted page counts and payment. Its
 [review record](../../docs/narrative/purchasing-stores-review.md) documents
 district allocation, lifecycle states, supplier variation, message adjustment,
 and invoice/payment reconciliation.
+ARWC retail billing adds 7,600 messages and 839 document items. It renders all
+50,102 accepted invoices as readable bills, projects all 101,641 authoritative
+lines, records preference-aware delivery, and reconciles 31,920 later payments,
+500 adjustments, and 50,100 snapshot balances. Eight hundred substantive cases
+carry billing, reading, payment, balance, appointment, copy, adjustment, and
+arrangement questions. Its
+[review record](../../docs/narrative/retail-billing-review.md) documents the
+11,398-bill model correction, full ledger equation, voice review, and limits.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -110,6 +118,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/laboratory-quality-records.zip` | Nine completed CSV registers and nine actual XLSX monthly workbooks. |
 | `authoring/purchasing-stores.yaml` | Author-only requisition, quotation, approval, order, receipt, stock, invoice, match, payment, allocation and upstream joins. |
 | `documents/purchasing-stores-records.zip` | Thirteen completed CSV registers and 885 genuine supplier PDFs. |
+| `authoring/retail-billing.yaml` | Author-only bill, delivery, payment, adjustment, balance, case, notice, appointment and collection joins. |
+| `documents/retail-billing-records.zip` | Fourteen completed CSV registers, 50,102 readable NDJSON bill documents and 24 genuine bill PDFs. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
