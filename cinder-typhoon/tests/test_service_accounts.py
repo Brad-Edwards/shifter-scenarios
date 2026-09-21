@@ -65,6 +65,11 @@ class ServiceAccountsIntegrity(unittest.TestCase):
         item['reader_keys'].append('priya')
         with self.assertRaisesRegex(ValueError, 'CSV reader scope'):
             check_service_accounts(ROOT, identity, roster, mail, docs, self.tables)
+        item['reader_keys'].remove('priya')
+        notice = next(m for m in mail if m['from'] == 'arwc_accounts')
+        notice['to'].remove('awm198')
+        with self.assertRaisesRegex(ValueError, 'statement recipient/attachment'):
+            check_service_accounts(ROOT, identity, roster, mail, docs, self.tables)
 
 
 if __name__ == '__main__':

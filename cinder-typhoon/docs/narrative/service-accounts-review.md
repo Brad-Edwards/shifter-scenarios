@@ -65,7 +65,7 @@ business records; they are not messages or individual SDL entities.
 | Record | This slice | Full narrative corpus |
 | --- | ---: | ---: |
 | Logical messages | 1,460 | 27,850 |
-| Retained mailbox copies | 1,460 | 49,929 |
+| Retained mailbox copies | 2,060 | 50,529 |
 | Source document items | 872 | 7,428 |
 | Calendar occurrences | 0 added | 638 |
 | Native source collections | 0 added | Eight |
@@ -205,6 +205,10 @@ remain unchanged after those changes.
 - The 600 opening-statement emails have explicit one-off consent and recipient
   records. This is distinct from ongoing bill delivery. Each includes only its
   own account statement. Bulk registers are never customer attachments.
+  The automated sender retains a Sent copy and Anika receives the same notice
+  as the named Accounts recipient, so staff readback does not depend on signing
+  in as the automated sender. Those 600 additional retained copies do not count
+  as new messages.
 
 Representative reading covered requests and replies in every one of the 24
 case categories, residential/master/business statements, a municipal statement,
@@ -264,6 +268,24 @@ evidence, access routes, snapshot and `realization: {default: open}` are retaine
 
 ## Verification
 
-Final results are recorded here after the full pinned checks finish. Runtime
-materialization, customer portals, live meter collection and outbound delivery
-are outside this static content validation.
+The full content checks passed on `aeb9b36`. The final staff-copy correction is
+being revalidated before the completion record is finalized:
+
+- The full unit suite: 21 tests, including six retail tests and 22 deliberate
+  corruptions of population, meter, financial, consent and privacy boundaries.
+- `validate_service_accounts.py`: all 696,987 business rows, 1,460 messages and
+  872 document items, with exact joins and opening arithmetic.
+- `validate_narrative.py`: 27,850 RFC 5322 messages, exact MIME attachments and
+  mailbox memberships, 294 employees, 7,428 source documents and eight native
+  source collections. Compressed table readback matches the original CSV bytes.
+- `render_narrative.py --check`: all 92 rendered outputs reproduce byte-for-byte.
+- Vale 3.9.1: zero errors, warnings or suggestions in all four changed Markdown
+  files; `git diff --check` is clean.
+- Comparison with the accepted base: all 34,218 earlier native item records and
+  mailbox memberships preserved; all 64 redundant calendar files are absent.
+- Independent meter review: 120 distinct exchange instants across 30 weekdays;
+  serial-year prefixes agree with installation dates.
+
+The full pinned RAE compilation and adversarial run is still in progress.
+Runtime materialization, customer portals, live meter collection and outbound
+delivery are outside this static content validation.

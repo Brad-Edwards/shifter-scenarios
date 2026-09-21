@@ -41,5 +41,6 @@ directories or treated as recurring cast members.
 
 ARWC Account Notices is an automatic sender. Its regular structure is deliberate:
 account, opening invoice, paid amount, balance, due date and a single attachment.
-It asks no question that would force a ritual acknowledgement. Those notices
+Anika receives the same notice for the account record; this does not add an
+external recipient or expose another customer. It asks no question that would force a ritual acknowledgement. Those notices
 are separate from the personal correspondence and counted once per delivery.

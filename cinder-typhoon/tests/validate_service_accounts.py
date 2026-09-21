@@ -222,6 +222,7 @@ def check_service_accounts(root, identity, roster, mail, docs, tables=None):
     messages = {x['id']: x for x in mail if x['id'].startswith('sa-')}
     documents = {d['id']: d for d in docs if d['story'] == 'service-accounts'}
     require(len(messages) == 1460 and len(documents) == 872, 'content counts')
+    require(manifest['counts']['retained_copies'] == 2060, 'retained-copy count')
     require(manifest['counts']['business_records'] == sum(map(len, t.values())) == 696987, 'business record count')
     require(manifest['snapshot'] == identity['snapshot'] and
             manifest['native_source'] == 'cinder-typhoon/narrative/arwc-documents' and
@@ -265,7 +266,7 @@ def check_service_accounts(root, identity, roster, mail, docs, tables=None):
     contacts = identity['correspondents'] | identity['people']
     for notice in manifest['notices']:
         msg = messages[notice['message']]; aid = notice['account_id']; d = documents[notice['document']]
-        require(msg['from'] == 'arwc_accounts' and msg['to'] == [notice['customer_key']] and
+        require(msg['from'] == 'arwc_accounts' and msg['to'] == [notice['customer_key'], 'awm198'] and notice['staff_copy'] == 'awm198' and
                 msg['attachments'] == [d['id']], 'statement recipient/attachment')
         c = next(x for x in t['contacts'] if x['account_id'] == aid)
         require(contacts[notice['customer_key']]['email'] == c['email'], 'wrong statement contact')

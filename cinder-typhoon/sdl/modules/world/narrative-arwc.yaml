@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-e8ded2c078adf5b6556fc70a1f170905cebb94fc758f4f44e4a0138a7f17ae51
+      version: sha256-fc8090298ab8c75249eb76b5dcf694548ecfe031bf58d807f7e64392f5e5809b
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state.
     items:
