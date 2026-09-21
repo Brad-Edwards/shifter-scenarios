@@ -3,7 +3,7 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 26,390 distinct authored messages, 6,556 source documents,
+The collection contains 27,850 distinct authored messages, 7,428 source documents,
 staff directories for all 294 employees, and 638 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
@@ -37,6 +37,13 @@ check-ins, learning arrangements, selective notes and everyday conversations.
 Its [review record](../../docs/narrative/office-life-review.md) documents the
 smaller message allocation, attendance evidence, room and cover checks, and
 preservation of all accepted records.
+ARWC service accounts adds 1,460 messages and 872 document items, including
+17 completed CSV tables with 696,987 business records. The population comprises
+50,100 accounts, 60,000 occupied dwellings, 160,000 residents, 50,460 service
+points and 51,330 current or retired meters. Opening invoices reconcile to
+readings, tariffs, receipts and allocations. Its
+[review record](../../docs/narrative/service-accounts-review.md) explains the
+population model, customer privacy boundaries and message-volume adjustment.
 It keeps the eight ordinary stories. Jules and the new external contacts remain
 outside both employee directories.
 
@@ -60,12 +67,14 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/customer-followup.yaml` | Current case dispositions over the original intake history, child-case parents, knowledge revisions, correction/release/delivery joins, and workshop preparations. |
 | `authoring/finance.yaml` | Invoice authority, supplier and claim evidence, cash allocations, balanced journal, payroll controls, and workbook formula inventory. |
 | `authoring/office-life.yaml` | Author-only publication, consent, attendance, response, cover, learning and room-booking joins. |
+| `authoring/service-accounts.yaml` | Author-only inventory, account-case joins, statement deliveries and restricted dataset audiences. |
+| `documents/service-account-records.zip` | Seventeen finished CSV tables, individually extractable for review. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
 | `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
-| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk operating, commercial, office and induction calendars are complete items in the document source package. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk support, operating, commercial, office and induction calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |
@@ -148,6 +157,17 @@ Both representations have the same exact readers. The source archive
 `documents/finance-records.zip` contains the finished review files, individually
 extractable with ordinary ZIP tools; it is not bound as a separate document.
 No PDF or spreadsheet generation dependency is needed to render these bytes.
+
+`cinder-document-library/v3` adds optional `content_encoding: gzip` to binary
+items. Decode base64, decompress gzip when declared, then verify `sha256`
+against the resulting file bytes. Unmarked binary items retain v2 semantics;
+text items retain v1 semantics. This keeps the large service-account CSV tables
+compact in the native collection without external files or loss of records.
+Each CSV retains its own named item, readers, media type and exact decoded
+bytes. Its `text` is a short register description, not a substitute for its rows.
+Search descriptions, downloadable files and derived table views must enforce
+the same readers. The materializer must support v3 before claiming readback;
+there is no deployment or runtime proof in this content slice.
 
 Office publications use `text/html`, with visible author and publication time
 and dated comments inside the actual page. Drafts and private records retain

@@ -51,6 +51,8 @@ and unfinished plans of their own.
 | [Commercial voices](commercial-voices.md) | Writing guidance for the six existing commercial employees. |
 | [Office life review](office-life-review.md) | Publications, private records, meetings, cover, consent, continuity, and volume adjustment. |
 | [Office life voices](office-life-voices.md) | Audience and relationship guidance, with selected finished correspondence. |
+| [Service accounts review](service-accounts-review.md) | ARWC population, opening ledger, native datasets, privacy and validation evidence. |
+| [Service accounts voices](service-accounts-voices.md) | Customer-account correspondence profiles and samples. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -117,6 +119,13 @@ The office-life slice adds dated intranet publications, staff reference pages,
 private personnel and friendship exchanges, and 458 meeting occurrences. Its
 records distinguish invitation responses from attendance, preserve cancellations,
 check room and cover availability, and keep future gatherings in preparation.
+The ARWC service-account slice supplies the actual retail population and opening
+history: accounts, contacts, service points, meters, readings, tariffs, periods,
+invoices, receipts, allocations, preferences and dated changes. Its 50,100
+accounts serve 60,000 occupied dwellings and 160,000 residents, plus commercial
+and municipal premises. Multi-unit buildings, parallel supplies and private
+check meters remain distinct. Household registers stay with named customer
+accounts staff; field colleagues receive the service and meter records they need.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.
