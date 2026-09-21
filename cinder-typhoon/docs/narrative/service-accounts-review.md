@@ -268,8 +268,8 @@ evidence, access routes, snapshot and `realization: {default: open}` are retaine
 
 ## Verification
 
-The full content checks passed on `aeb9b36`. The final staff-copy correction is
-being revalidated before the completion record is finalized:
+The finished content and code on `7d6d4eb`, including the authorized staff copy
+of each opening-statement notice, pass the following checks:
 
 - The full unit suite: 21 tests, including six retail tests and 22 deliberate
   corruptions of population, meter, financial, consent and privacy boundaries.
@@ -286,6 +286,33 @@ being revalidated before the completion record is finalized:
 - Independent meter review: 120 distinct exchange instants across 30 weekdays;
   serial-year prefixes agree with installation dates.
 
-The full pinned RAE compilation and adversarial run is still in progress.
+The complete pinned command also exits successfully:
+
+```sh
+/tmp/cinder-sdl-check/bin/python -u cinder-typhoon/tests/validate_sdl.py --self-test --pack-check
+```
+
+RAE 5.0.0 and env-packs 6.1.0 verify:
+
+- Environment-pack author validation with local imports and composition of all
+  96 SDL modules.
+- All 240 challenges, 33 capabilities, 36 targets plus Kali, nine subnets and
+  83 authority domains; 1,209 minimal prerequisite closures and all 16 routes.
+- Compilation of 3,450 realization requirements, preserving node open defaults
+  and the exact Kali intent.
+- All 281 named runtime observations, 50 technical drafts, record ownership and
+  six consequence contracts.
+- Rejection of four type-valid narrative SDL mutations, 28 type-valid challenge
+  SDL mutations and an invalid realization-posture spelling.
+- Rejection of two compiled-observation mutations and 26 broken topologies or
+  events, including event replay and independent progress checks.
+- Compiled source and named-service bindings for all eight narrative collections.
+
+The complete unit suite passes 21 tests in 264.250 seconds. Both repository CI
+checks, Vale and Semgrep, pass on the content commit. The final follow-up commit
+only records these verification results.
+
 Runtime materialization, customer portals, live meter collection and outbound
-delivery are outside this static content validation.
+delivery remain outside this static content validation. The eventual workplace
+adapter must implement the documented v3 byte-decoding and reader contract;
+no live deployment is claimed.
