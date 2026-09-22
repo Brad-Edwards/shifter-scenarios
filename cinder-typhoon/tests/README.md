@@ -4,10 +4,16 @@ From the repository root, create an isolated Python 3.12+ environment and instal
 the matching upstream releases:
 
 ```sh
+export PYTHONDONTWRITEBYTECODE=1
 python3.12 -m venv /tmp/cinder-sdl-check
 /tmp/cinder-sdl-check/bin/python -m pip install -r cinder-typhoon/tests/requirements-sdl.txt
 /tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check
 ```
+
+Use a clean checkout or move any existing `__pycache__` directories outside the
+pack before the pack check. The default member limit counts local cache files
+and directories too. Keep bytecode writing disabled for the checks below; do
+not raise the member limit to accommodate development caches.
 
 The command performs these checks:
 
@@ -45,7 +51,8 @@ delivery bundle or flattened ingest artifact is claimed. A future packaging
 step must use the appropriate upstream author-to-consumer handoff.
 
 The full native check is CPU intensive at this campaign size and can take
-several minutes. It does not start targets, contact a cloud, or create assets.
+tens of minutes. Its mutation checks repeat full asset validation for several
+altered models. It does not start targets, contact a cloud, or create assets.
 The [validation record](../docs/sdl-validation.md) states what was established.
 
 The earlier standard-library authoring checks remain beside their inputs in
@@ -68,6 +75,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineer
 python -m unittest discover -s cinder-typhoon/tests -p test_laboratory_quality.py
 python -m unittest discover -s cinder-typhoon/tests -p test_purchasing_stores.py
 python -m unittest discover -s cinder-typhoon/tests -p test_retail_billing.py
+python -m unittest discover -s cinder-typhoon/tests -p test_planning.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -100,6 +108,16 @@ preferences, reconcile 31,920 payments and allocations, 500 adjustments and
 50,100 balances, and validate 800 substantive cases, 200 appointments, 300
 collections histories, 200 arrangements, 7,600 messages, fourteen registers,
 50,102 readable bill renderings, and 24 strictly parsed PDFs.
+
+Planning checks reconstruct source aggregates for forty histories and verify
+232 messages, 230 documents, eight meetings, five registers, and 48 XLSX files.
+They independently evaluate every workbook formula using decimal arithmetic,
+check actual input cells and units, and trace draft and issued summaries to the
+appropriate versions. Fourteen content mutations attack source totals, periods,
+classification, dates, readers, replies, attachments, summaries, and meeting
+records. Three checksum-consistent binary mutations corrupt a formula, a cached
+result, and an open action. These checks do not establish forecast accuracy or
+prove the fictional work described in the records occurred.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted

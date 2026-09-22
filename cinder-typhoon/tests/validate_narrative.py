@@ -30,6 +30,7 @@ from validate_maintenance_engineering import check_maintenance_engineering
 from validate_laboratory_quality import check_laboratory_quality
 from validate_purchasing_stores import check_purchasing_stores
 from validate_retail_billing import check_retail_billing
+from validate_planning import check_planning
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -66,12 +67,14 @@ PURCHASING_STORES_MESSAGE_COUNT = 2325
 PURCHASING_STORES_DOCUMENT_COUNT = 4918
 RETAIL_BILLING_MESSAGE_COUNT = 7600
 RETAIL_BILLING_DOCUMENT_COUNT = 839
+PLANNING_MESSAGE_COUNT = 232
+PLANNING_DOCUMENT_COUNT = 230
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -820,6 +823,7 @@ def check_assets():
     check_laboratory_quality(ROOT, roster, mail, docs, events)
     check_purchasing_stores(ROOT, roster, identity, mail, docs)
     check_retail_billing(ROOT, roster, identity, mail, docs)
+    check_planning(ROOT, roster, identity, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -955,7 +959,7 @@ def check_assets():
                 item = library[event['id']]
                 readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()

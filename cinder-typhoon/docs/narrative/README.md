@@ -4,7 +4,7 @@ Worldbuilding draft 2, 19 September 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
 accounts, field operations, maintenance/engineering, laboratory/quality, purchasing/stores, and retail billing
-added on 21 September.
+added on 21 September, and resource planning added on 22 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -65,6 +65,8 @@ and unfinished plans of their own.
 | [Purchasing and stores voices](purchasing-stores-voices.md) | Procurement, accounts, and supplier writing guidance with finished samples. |
 | [Retail billing review](retail-billing-review.md) | Readable bills, payment arithmetic, cases, delivery preferences, appointments, collections, counts, and validation evidence. |
 | [Retail billing voices](retail-billing-voices.md) | Distinct writing habits and finished samples for the customer-contact team. |
+| [Planning review](planning-review.md) | Demand, seasonal, resource, renewal and project comparisons, workbook lineage, meetings, counts, and validation evidence. |
+| [Planning voices](planning-voices.md) | Writing notes and samples for the eight resource planners, alongside accepted source-owner profiles. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -162,6 +164,14 @@ post-opening payments, adjustments, balances, cases, meter appointments, and
 ordinary collections. It uses the settled 50,100-account model rather than the
 earlier dwelling-level estimate, keeps Belvarn and Talvern within their accepted
 service scope, and reuses Rosa's accepted billing-period explanation.
+The planning slice adds forty histories with work-specific calculations, source
+returns, draft and issued recommendations, reviews, and meeting records. It uses
+accepted service, maintenance, laboratory, field, and agreement records, with
+source facts separated from assumptions. Eight demand workbooks retain their
+earlier sensitivity alongside the reviewed version. The eight resource planners
+remain part of the established 32-person department; other teams retain their
+own responsibilities. Recommendations do not confer operating, funding,
+procurement, project, or reservation authority.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.
