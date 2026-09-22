@@ -30,6 +30,10 @@ _COMPOSE = """
       - /opt/polaris/model-client:/opt/polaris/model-client:ro
       - /run/polaris-model-access/participant:/run/polaris-model-access/participant
 """.rstrip()
+_GCP_COMPOSE = """
+    extra_hosts:
+      - "$(cat /opt/polaris/model-client/broker-host)"
+""".rstrip()
 _DIRECTORY_FIREWALL_VERIFY = """$ErrorActionPreference = 'Stop'
 $profiles = @(Get-NetFirewallProfile)
 if ($profiles.Count -ne 3 -or @($profiles | Where-Object Enabled).Count -ne 0) {
@@ -60,7 +64,9 @@ docker exec --user kali a14-kali cat /tmp/polaris-model-client-status
 _CHECK_CLIENT = """#!/bin/bash
 set -euo pipefail
 docker exec --user kali a14-kali test -f /tmp/polaris-model-client-status
+client_status=$(docker exec --user kali a14-kali cat /tmp/polaris-model-client-status)
 docker exec --user kali a14-kali rm -f /tmp/polaris-model-client-status
+test "$client_status" = "model-client-ready"
 """
 _CLEANUP = """#!/bin/bash
 set -euo pipefail
@@ -84,7 +90,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.4",
+        version="0.1.5",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -103,7 +109,7 @@ def _render(script: str, context: dict[str, str]) -> str:
     return re.sub(r"\{\{\s*([a-z_][a-z0-9_]*)\s*\}\}", lambda match: context[match[1]], script)
 
 
-def _model_files(parameters: dict[str, str]) -> str:
+def _model_files(parameters: dict[str, str], provider: str) -> str:
     script = """#!/bin/bash
 set -euo pipefail
 umask 077
@@ -132,6 +138,32 @@ CLIENT_GID=$(docker exec a14-kali id -g kali)
         'python3 /opt/polaris/model-client/model-client-setup.py "$CLIENT_UID" "$CLIENT_GID" '
         f"'{parameters['main-model']}' '{parameters['small-model']}' '{parameters['max-output-tokens']}'\n"
     )
+    if provider == "gcp":
+        script += """python3 - <<'PY'
+import ipaddress
+import json
+import socket
+import urllib.parse
+from pathlib import Path
+
+config = Path("/opt/polaris/model-client")
+origin = json.loads((config / "client.json").read_text())["broker_url"]
+hostname = urllib.parse.urlsplit(origin).hostname
+addresses = {
+    row[4][0]
+    for row in socket.getaddrinfo(hostname, 443, family=socket.AF_INET, type=socket.SOCK_STREAM)
+}
+if not hostname or len(addresses) != 1:
+    raise SystemExit("model broker private DNS did not resolve uniquely")
+address = ipaddress.ip_address(addresses.pop())
+if not address.is_private:
+    raise SystemExit("model broker did not resolve to a private address")
+temporary = config / ".broker-host"
+temporary.write_text(f"{hostname}:{address}\n")
+temporary.chmod(0o644)
+temporary.replace(config / "broker-host")
+PY
+"""
     return script
 
 
@@ -159,7 +191,7 @@ class PolarisAdapter:
             "splice_credential_helper_b64": base64.b64encode(_asset("polaris-splice-credential.py")).decode("ascii"),
             "aws_agent_setup_block": "",
             "aws_agent_compose_block": _COMPOSE,
-            "gcp_agent_compose_block": "",
+            "gcp_agent_compose_block": _GCP_COMPOSE if request.provider == "gcp" else "",
         }
         scripts = []
         if request.phase == "configure":
@@ -169,7 +201,7 @@ class PolarisAdapter:
             )
             scripts = [
                 ("metadata-firewall", INSTALL_IMDS_FIREWALL_SCRIPT, 60),
-                ("model-client-files", _model_files(params), 60),
+                ("model-client-files", _model_files(params, request.provider), 60),
                 ("container-bootstrap", bootstrap, 300),
                 ("splice-watcher", INSTALL_SPLICE_WATCHER_SCRIPT, 60),
             ]
