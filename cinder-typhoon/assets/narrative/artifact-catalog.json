@@ -52,10 +52,10 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/arwc-mail",
-        "version": "sha256-648bb949e1f99070814469cac8fe37f56aa751304af7a248800c5ead9e20a18b"
+        "version": "sha256-071c49aca967dbf9b7870d584bcf80b05580765a82aa84b6abb0df2e86905750"
       },
       "path": "assets/narrative/generated/packages/arwc-mail.json",
-      "sha256": "648bb949e1f99070814469cac8fe37f56aa751304af7a248800c5ead9e20a18b",
+      "sha256": "071c49aca967dbf9b7870d584bcf80b05580765a82aa84b6abb0df2e86905750",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.mail",
       "target": "a-corporate.a-business",
@@ -64,14 +64,14 @@
     {
       "source": {
         "name": "cinder-typhoon/narrative/arwc-documents",
-        "version": "sha256-5a0f51a3572697f5027254f2a02d8f5bd346c9b56d772eff2b2881f410d42b24"
+        "version": "sha256-408050c184e5a6c90907cefc2b358df191005f659002e143b0e85224ad4700a4"
       },
       "path": "assets/narrative/generated/packages/arwc-documents.json",
-      "sha256": "5a0f51a3572697f5027254f2a02d8f5bd346c9b56d772eff2b2881f410d42b24",
+      "sha256": "408050c184e5a6c90907cefc2b358df191005f659002e143b0e85224ad4700a4",
       "media_type": "application/json",
       "content_ref": "narrative-arwc.documents",
       "target": "a-corporate.a-business",
-      "format": "cinder-document-library/v3"
+      "format": "cinder-document-library/v4"
     },
     {
       "source": {

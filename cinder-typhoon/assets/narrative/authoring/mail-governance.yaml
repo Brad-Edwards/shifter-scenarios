@@ -1,0 +1,1879 @@
+messages:
+- id: fg-close-01-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm217
+  - awm219
+  date: '2026-07-03T09:10:00-04:00'
+  subject: 2026-06-30 close papers
+  body: |
+    Emre, the control schedules are ready. June contains the first seasonal customer invoice. Most household billing belongs to July; a quiet receivables column is not a fall in water use.
+
+    Farah
+  attachments:
+  - fg-close-01-workbook
+  - fg-close-01-summary
+  - fg-close-01-payables
+  - fg-close-01-receivables
+  - fg-close-01-cash
+  - fg-close-01-district
+- id: fg-close-01-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-07-03T09:12:00-04:00'
+  subject: 'Re: 2026-06-30 close papers'
+  body: |
+    June looks very small next to July's expected billing. Can you keep the consumption-period warning beside the customer column?
+  reply_to: fg-close-01-m1
+- id: fg-close-01-m3
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-07-03T09:15:00-04:00'
+  subject: 'Re: 2026-06-30 close papers'
+  body: |
+    Yes. June's seasonal bill stays in June; the household issue is July. I haven't moved either to smooth the chart.
+  reply_to: fg-close-01-m2
+- id: fg-close-01-m4
+  story: arwc-governance
+  from: awm217
+  to:
+  - awm216
+  - luc
+  date: '2026-07-03T09:25:00-04:00'
+  subject: 2026-06-30 review for acceptance
+  body: |
+    Figures checked: cash USD 456,318.10, receivables USD 0.00, payables USD 31,614.50. Two outstanding matters: stock classification and the external bank comparison. Neither changes the source arithmetic. Can you accept this limited close?
+  attachments:
+  - fg-close-01-summary
+  - fg-close-01-review
+- id: fg-close-01-m5
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm217
+  - luc
+  date: '2026-07-03T09:50:00-04:00'
+  subject: 'Re: 2026-06-30 review for acceptance'
+  body: |
+    Accepted on that basis. Keep the limits beside the totals when this goes forward. I do not want another team spending an afternoon explaining a headline we could have corrected here.
+  attachments:
+  - fg-close-01-approval
+  reply_to: fg-close-01-m4
+- id: fg-close-02-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm217
+  - awm219
+  date: '2026-08-04T09:10:00-04:00'
+  subject: 2026-07-31 close papers
+  body: |
+    Emre, the control schedules are ready. July includes the main bill issue and subsequent collections. The bill is a charge for its stated consumption period, not July output.
+
+    Farah
+  attachments:
+  - fg-close-02-workbook
+  - fg-close-02-summary
+  - fg-close-02-payables
+  - fg-close-02-receivables
+  - fg-close-02-cash
+  - fg-close-02-district
+- id: fg-close-02-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-08-04T09:12:00-04:00'
+  subject: 'Re: 2026-07-31 close papers'
+  body: |
+    One thing before I circulate: have you counted allocations as well as receipts? That would flatter the cash line.
+  reply_to: fg-close-02-m1
+- id: fg-close-02-m3
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-08-04T09:15:00-04:00'
+  subject: 'Re: 2026-07-31 close papers'
+  body: |
+    Receipts only. I traced original receipts and the later retail payment book separately; allocation rows do not enter the cash sum.
+  reply_to: fg-close-02-m2
+- id: fg-close-02-m4
+  story: arwc-governance
+  from: awm217
+  to:
+  - awm216
+  - luc
+  date: '2026-08-04T09:25:00-04:00'
+  subject: 2026-07-31 review for acceptance
+  body: |
+    Figures checked: cash USD 4,173,698.66, receivables USD 2,031,505.73, payables USD 9,768.20. Two outstanding matters: stock classification and the external bank comparison. Neither changes the source arithmetic. Can you accept this limited close?
+  attachments:
+  - fg-close-02-summary
+  - fg-close-02-review
+- id: fg-close-02-m5
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm217
+  - luc
+  date: '2026-08-04T09:50:00-04:00'
+  subject: 'Re: 2026-07-31 review for acceptance'
+  body: |
+    Accepted on that basis. Keep the limits beside the totals when this goes forward. I do not want another team spending an afternoon explaining a headline we could have corrected here.
+  attachments:
+  - fg-close-02-approval
+  reply_to: fg-close-02-m4
+- id: fg-close-03-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm217
+  - awm219
+  date: '2026-09-04T09:10:00-04:00'
+  subject: 2026-08-31 close papers
+  body: |
+    Emre, the control schedules are ready. August receipts reduce the existing book; no second monthly household billing run has been invented. Keep the unresolved purchase classifications visible.
+
+    Farah
+  attachments:
+  - fg-close-03-workbook
+  - fg-close-03-summary
+  - fg-close-03-payables
+  - fg-close-03-receivables
+  - fg-close-03-cash
+  - fg-close-03-district
+- id: fg-close-03-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-04T09:12:00-04:00'
+  subject: 'Re: 2026-08-31 close papers'
+  body: |
+    The August cash movement is useful. I need the inventory qualification kept in the heading, not just the endnote.
+  reply_to: fg-close-03-m1
+- id: fg-close-03-m3
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-04T09:15:00-04:00'
+  subject: 'Re: 2026-08-31 close papers'
+  body: |
+    Done. Acquisitions is the label. Stores still owns the inventory classification; this close does not finish that work.
+  reply_to: fg-close-03-m2
+- id: fg-close-03-m4
+  story: arwc-governance
+  from: awm217
+  to:
+  - awm216
+  - luc
+  date: '2026-09-04T09:25:00-04:00'
+  subject: 2026-08-31 review for acceptance
+  body: |
+    Figures checked: cash USD 5,193,302.42, receivables USD 973,631.05, payables USD 28,460.84. Two outstanding matters: stock classification and the external bank comparison. Neither changes the source arithmetic. Can you accept this limited close?
+  attachments:
+  - fg-close-03-summary
+  - fg-close-03-review
+- id: fg-close-03-m5
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm217
+  - luc
+  date: '2026-09-04T09:50:00-04:00'
+  subject: 'Re: 2026-08-31 review for acceptance'
+  body: |
+    Accepted on that basis. Keep the limits beside the totals when this goes forward. I do not want another team spending an afternoon explaining a headline we could have corrected here.
+  attachments:
+  - fg-close-03-approval
+  reply_to: fg-close-03-m4
+- id: fg-close-04-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm217
+  - awm219
+  date: '2026-09-16T06:10:00-04:00'
+  subject: 2026-09-15 close papers
+  body: |
+    Emre, the control schedules are ready. This is an interim close through September 15, not a September month-end. Later payroll and the September 30 planning returns remain outside it.
+
+    Farah
+  attachments:
+  - fg-close-04-workbook
+  - fg-close-04-summary
+  - fg-close-04-payables
+  - fg-close-04-receivables
+  - fg-close-04-cash
+  - fg-close-04-district
+- id: fg-close-04-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-16T06:12:00-04:00'
+  subject: 'Re: 2026-09-15 close papers'
+  body: |
+    Please mark this interim everywhere. It will otherwise turn into 'September accounts' by lunchtime.
+  reply_to: fg-close-04-m1
+- id: fg-close-04-m3
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-16T06:15:00-04:00'
+  subject: 'Re: 2026-09-15 close papers'
+  body: |
+    Interim through the 15th on the summary and workbook. Nothing on the September 30 list has been closed.
+  reply_to: fg-close-04-m2
+- id: fg-close-04-m4
+  story: arwc-governance
+  from: awm217
+  to:
+  - awm216
+  - luc
+  date: '2026-09-16T06:25:00-04:00'
+  subject: 2026-09-15 review for acceptance
+  body: |
+    Figures checked: cash USD 5,173,334.58, receivables USD 973,631.05, payables USD 19,426.60. Two outstanding matters: stock classification and the external bank comparison. Neither changes the source arithmetic. Can you accept this limited close?
+  attachments:
+  - fg-close-04-summary
+  - fg-close-04-review
+- id: fg-close-04-m5
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm217
+  - luc
+  date: '2026-09-16T06:50:00-04:00'
+  subject: 'Re: 2026-09-15 review for acceptance'
+  body: |
+    Accepted on that basis. Keep the limits beside the totals when this goes forward. I do not want another team spending an afternoon explaining a headline we could have corrected here.
+  attachments:
+  - fg-close-04-approval
+  reply_to: fg-close-04-m4
+- id: fg-capital-01-m1
+  story: arwc-governance
+  from: nadia
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:01:00-04:00'
+  subject: Pine sample bench figures for the management pack
+  body: |
+    The issued comparison is attached: USD 1,400.00 retain, USD 2,500.00 replace. Bench dimensions and access must be confirmed before a purchase request.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-01-options
+- id: fg-capital-01-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - nadia
+  date: '2026-09-10T10:01:00-04:00'
+  subject: Pine sample bench direction requested
+  body: |
+    Elin,
+
+    Measure the aisle as well as the bench. A cheap replacement that blocks the sample handover is not the same scope. Ask engineering to measure the bench before seeking a price. Keep the drawer repair with maintenance. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-01-paper
+- id: fg-capital-01-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - nadia
+  date: '2026-09-11T12:01:00-04:00'
+  subject: 'Re: Pine sample bench direction requested'
+  body: |
+    The drawer repair stays with maintenance; keep the survey on the September 30 list. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-01-decision
+  reply_to: fg-capital-01-m2
+- id: fg-capital-02-m1
+  story: arwc-governance
+  from: awm139
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:02:00-04:00'
+  subject: River sample bench figures for the management pack
+  body: |
+    The issued comparison is attached: USD 1,550.00 retain, USD 2,200.00 replace. A River measurement record is still required.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-02-options
+- id: fg-capital-02-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm139
+  date: '2026-09-10T10:02:00-04:00'
+  subject: River sample bench direction requested
+  body: |
+    Elin,
+
+    The River return is complete, but it is not a dimensional survey. Do not copy the Pine price into it. Survey locally and retain the existing bench until the repair and replacement scopes are comparable. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-02-paper
+- id: fg-capital-02-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm139
+  date: '2026-09-11T12:02:00-04:00'
+  subject: 'Re: River sample bench direction requested'
+  body: |
+    Retain locally until we have comparable scopes. No reason to bundle the two purchases now. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-02-decision
+  reply_to: fg-capital-02-m2
+- id: fg-capital-03-m1
+  story: arwc-governance
+  from: awm140
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:03:00-04:00'
+  subject: Pine East notice board figures for the management pack
+  body: |
+    The issued comparison is attached: USD 700.00 retain, USD 605.00 replace. Confirm mounting dimensions and Records retention before ordering.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-03-options
+- id: fg-capital-03-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm140
+  date: '2026-09-10T10:03:00-04:00'
+  subject: Pine East notice board direction requested
+  body: |
+    Elin,
+
+    This is the one comparison that favours replacement. The saving is small; fixing the mounting detail still matters. Take a weatherproof replacement specification to procurement; the cheaper five-year comparator supports a quotation exercise. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-03-paper
+- id: fg-capital-03-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm140
+  date: '2026-09-11T12:03:00-04:00'
+  subject: 'Re: Pine East notice board direction requested'
+  body: |
+    Take a weatherproof specification forward, subject to the route and retention checks. No order released. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-03-decision
+  reply_to: fg-capital-03-m2
+- id: fg-capital-04-m1
+  story: arwc-governance
+  from: awm141
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:04:00-04:00'
+  subject: River West notice board figures for the management pack
+  body: |
+    The issued comparison is attached: USD 450.00 retain, USD 710.00 replace. This is a financial comparator, not a structural inspection.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-04-options
+- id: fg-capital-04-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm141
+  date: '2026-09-10T10:04:00-04:00'
+  subject: River West notice board direction requested
+  body: |
+    Elin,
+
+    The upkeep estimate favours retention. A new board needs a practical benefit before it gets a capital place. Retain and inspect the mounting at the next ordinary visit. Revisit the estimate if upkeep changes. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-04-paper
+- id: fg-capital-04-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm141
+  date: '2026-09-11T12:04:00-04:00'
+  subject: 'Re: River West notice board direction requested'
+  body: |
+    Keep the next ordinary mounting inspection; this paper cannot stand in for it. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-04-decision
+  reply_to: fg-capital-04-m2
+- id: fg-capital-05-m1
+  story: arwc-governance
+  from: awm142
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:05:00-04:00'
+  subject: Pine East hydrant markers figures for the management pack
+  body: |
+    The issued comparison is attached: USD 1,250.00 retain, USD 1,300.00 replace. Survey quantities first; the current allowance is for a bounded pilot.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-05-options
+- id: fg-capital-05-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm142
+  date: '2026-09-10T10:05:00-04:00'
+  subject: Pine East hydrant markers direction requested
+  body: |
+    Elin,
+
+    The fifty-dollar premium is below the uncertainty in the route count. I would not rank it by that number. Develop a marker-only package with a route count before asking for quotations. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-05-paper
+- id: fg-capital-05-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm142
+  date: '2026-09-11T12:05:00-04:00'
+  subject: 'Re: Pine East hydrant markers direction requested'
+  body: |
+    Count the pilot markers first. The missing maintenance completions stay missing. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-05-decision
+  reply_to: fg-capital-05-m2
+- id: fg-capital-06-m1
+  story: arwc-governance
+  from: awm143
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:06:00-04:00'
+  subject: River East hydrant markers figures for the management pack
+  body: |
+    The issued comparison is attached: USD 1,150.00 retain, USD 1,585.00 replace. Readability and exact asset identity remain acceptance conditions.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-06-options
+- id: fg-capital-06-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm143
+  date: '2026-09-10T10:06:00-04:00'
+  subject: River East hydrant markers direction requested
+  body: |
+    Elin,
+
+    River has its own inventory problem. The Pine pilot does not establish River quantities. Retain the current sequence and obtain a marker inventory; replacement is not cheaper within five years here. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-06-paper
+- id: fg-capital-06-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm143
+  date: '2026-09-11T12:06:00-04:00'
+  subject: 'Re: River East hydrant markers direction requested'
+  body: |
+    Retain the sequence and request the inventory; do not promise a common replacement date. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-06-decision
+  reply_to: fg-capital-06-m2
+- id: fg-capital-07-m1
+  story: arwc-governance
+  from: awm144
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:07:00-04:00'
+  subject: Pine West depot return bench figures for the management pack
+  body: |
+    The issued comparison is attached: USD 950.00 retain, USD 1,020.00 replace. Depot agreement is required; this note books no space.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-07-options
+- id: fg-capital-07-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm144
+  date: '2026-09-10T10:07:00-04:00'
+  subject: Pine West depot return bench direction requested
+  body: |
+    Elin,
+
+    Where would returns go while the bench is out? Depot space is the constraint, not only the price. Ask the depot to identify temporary space before comparing supplier offers. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-07-paper
+- id: fg-capital-07-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm144
+  date: '2026-09-11T12:07:00-04:00'
+  subject: 'Re: Pine West depot return bench direction requested'
+  body: |
+    Ask for the temporary-space proposal. No room is reserved by this decision. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-07-decision
+  reply_to: fg-capital-07-m2
+- id: fg-capital-08-m1
+  story: arwc-governance
+  from: awm145
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:08:00-04:00'
+  subject: River East depot return bench figures for the management pack
+  body: |
+    The issued comparison is attached: USD 750.00 retain, USD 1,135.00 replace. No headcount or productivity saving belongs in this estimate.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-08-options
+- id: fg-capital-08-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm145
+  date: '2026-09-10T10:08:00-04:00'
+  subject: River East depot return bench direction requested
+  body: |
+    Elin,
+
+    Half the listed orders are outside completed state. That does not demonstrate a productivity saving from a bench. Retain the bench this cycle and record the layout question for a later depot review. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-08-paper
+- id: fg-capital-08-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm145
+  date: '2026-09-11T12:08:00-04:00'
+  subject: 'Re: River East depot return bench direction requested'
+  body: |
+    Retain for this cycle. Revisit layout after the depot review, with no headcount saving booked. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-08-decision
+  reply_to: fg-capital-08-m2
+- id: fg-capital-09-m1
+  story: arwc-governance
+  from: nadia
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:09:00-04:00'
+  subject: Pine ventilation panel enclosure figures for the management pack
+  body: |
+    The issued comparison is attached: USD 2,100.00 retain, USD 3,750.00 replace. Approved drawing and engineering review are prerequisites to a new design.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-09-options
+- id: fg-capital-09-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - nadia
+  date: '2026-09-10T10:09:00-04:00'
+  subject: Pine ventilation panel enclosure direction requested
+  body: |
+    Elin,
+
+    The old refurbishment cost includes a different scope. Do not use its acceptance as approval for this enclosure. Commission a drawing-based scope check and keep current maintenance in place. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-09-paper
+- id: fg-capital-09-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - nadia
+  date: '2026-09-11T12:09:00-04:00'
+  subject: 'Re: Pine ventilation panel enclosure direction requested'
+  body: |
+    Engineering must check the drawing before any design or procurement request. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-09-decision
+  reply_to: fg-capital-09-m2
+- id: fg-capital-10-m1
+  story: arwc-governance
+  from: awm139
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:10:00-04:00'
+  subject: Upland telemetry cabinet figures for the management pack
+  body: |
+    The issued comparison is attached: USD 2,500.00 retain, USD 3,250.00 replace. No new point, logic change or operating setting is included.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-10-options
+- id: fg-capital-10-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm139
+  date: '2026-09-10T10:10:00-04:00'
+  subject: Upland telemetry cabinet direction requested
+  body: |
+    Elin,
+
+    Like-for-like housing only. I want the exclusion of points and logic printed in the recommendation. Price a like-for-like housing option only after the current arrangement is surveyed. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-10-paper
+- id: fg-capital-10-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm139
+  date: '2026-09-11T12:10:00-04:00'
+  subject: 'Re: Upland telemetry cabinet direction requested'
+  body: |
+    Survey first; no new point, setting or operating instruction is authorized. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-10-decision
+  reply_to: fg-capital-10-m2
+- id: fg-capital-11-m1
+  story: arwc-governance
+  from: awm140
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:11:00-04:00'
+  subject: Pine depot instrument storage figures for the management pack
+  body: |
+    The issued comparison is attached: USD 800.00 retain, USD 865.00 replace. Confirm the instrument dimensions and handling method.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-11-options
+- id: fg-capital-11-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm140
+  date: '2026-09-10T10:11:00-04:00'
+  subject: Pine depot instrument storage direction requested
+  body: |
+    Elin,
+
+    The instrument dimensions decide the useful storage space. An allowance without them is only a placeholder. Develop a storage specification and retain the existing service interval. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-11-paper
+- id: fg-capital-11-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm140
+  date: '2026-09-11T12:11:00-04:00'
+  subject: 'Re: Pine depot instrument storage direction requested'
+  body: |
+    Develop the storage specification; keep the current service interval. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-11-decision
+  reply_to: fg-capital-11-m2
+- id: fg-capital-12-m1
+  story: arwc-governance
+  from: awm141
+  to:
+  - luc
+  - awm218
+  date: '2026-09-09T10:12:00-04:00'
+  subject: River depot motor cover figures for the management pack
+  body: |
+    The issued comparison is attached: USD 600.00 retain, USD 990.00 replace. Engineering suitability must precede a specification.
+
+    Please keep that qualification beside the amounts.
+  attachments:
+  - fg-capital-12-options
+- id: fg-capital-12-m2
+  story: arwc-governance
+  from: luc
+  to:
+  - awm216
+  - awm217
+  - awm141
+  date: '2026-09-10T10:12:00-04:00'
+  subject: River depot motor cover direction requested
+  body: |
+    Elin,
+
+    A cover can make access worse. Cost comparison comes after suitability, not instead of it. Retain current handling while engineering checks whether a cover is suitable. I am asking for agreement to the next preparation step, not a release of funds.
+
+    Luc
+  attachments:
+  - fg-capital-12-paper
+- id: fg-capital-12-m3
+  story: arwc-governance
+  from: awm216
+  to:
+  - luc
+  - awm217
+  - awm141
+  date: '2026-09-11T12:12:00-04:00'
+  subject: 'Re: River depot motor cover direction requested'
+  body: |
+    Retain current handling pending the engineering check. Keep the condition in the board summary.
+  attachments:
+  - fg-capital-12-decision
+  reply_to: fg-capital-12-m2
+- id: fg-completed-01-m1
+  story: arwc-governance
+  from: luc
+  to:
+  - awm129
+  - awm164
+  date: '2026-09-07T10:01:00-04:00'
+  subject: Checking the North reservoir inlet actuator renewal account
+  body: |
+    Edda,
+
+    I would like the report to include this completed work. Please check the date and the description of what stayed unchanged. The accepted figure is USD 181,940.00; it belongs to the historical project, not this year's purchasing total.
+
+    Luc
+  attachments:
+  - fg-completed-01-brief
+- id: fg-completed-01-m2
+  story: arwc-governance
+  from: awm129
+  to:
+  - luc
+  - awm164
+  date: '2026-09-08T09:01:00-04:00'
+  subject: 'Re: Checking the North reservoir inlet actuator renewal account'
+  body: |
+    Handover date 2021-08-02 is right. Maintain the existing fail-safe direction and local indication. Keep that sentence; it explains the boundary of the work.
+  reply_to: fg-completed-01-m1
+- id: fg-completed-02-m1
+  story: arwc-governance
+  from: luc
+  to:
+  - awm130
+  - awm164
+  date: '2026-09-07T10:02:00-04:00'
+  subject: Checking the Pine pump hall ventilation refurbishment account
+  body: |
+    Eira,
+
+    I would like the report to include this completed work. Please check the date and the description of what stayed unchanged. The accepted figure is USD 124,320.00; it belongs to the historical project, not this year's purchasing total.
+
+    Luc
+  attachments:
+  - fg-completed-02-brief
+- id: fg-completed-02-m2
+  story: arwc-governance
+  from: awm130
+  to:
+  - luc
+  - awm164
+  date: '2026-09-08T09:02:00-04:00'
+  subject: 'Re: Checking the Pine pump hall ventilation refurbishment account'
+  body: |
+    Handover date 2022-06-27 is right. The panel cooling path changes; control logic and duty sequence do not. Keep that sentence; it explains the boundary of the work.
+  reply_to: fg-completed-02-m1
+- id: fg-completed-03-m1
+  story: arwc-governance
+  from: luc
+  to:
+  - awm134
+  - awm164
+  date: '2026-09-07T10:03:00-04:00'
+  subject: Checking the River booster duty pump renewal account
+  body: |
+    Farah,
+
+    I would like the report to include this completed work. Please check the date and the description of what stayed unchanged. The accepted figure is USD 235,780.00; it belongs to the historical project, not this year's purchasing total.
+
+    Luc
+  attachments:
+  - fg-completed-03-brief
+- id: fg-completed-03-m2
+  story: arwc-governance
+  from: awm134
+  to:
+  - luc
+  - awm164
+  date: '2026-09-08T09:03:00-04:00'
+  subject: 'Re: Checking the River booster duty pump renewal account'
+  body: |
+    Handover date 2023-02-20 is right. Retain the established duty/standby selection and downstream protection. Keep that sentence; it explains the boundary of the work.
+  reply_to: fg-completed-03-m1
+- id: fg-completed-04-m1
+  story: arwc-governance
+  from: luc
+  to:
+  - awm137
+  - awm164
+  date: '2026-09-07T10:04:00-04:00'
+  subject: Checking the Upland station telemetry panel renewal account
+  body: |
+    Flora,
+
+    I would like the report to include this completed work. Please check the date and the description of what stayed unchanged. The accepted figure is USD 96,840.00; it belongs to the historical project, not this year's purchasing total.
+
+    Luc
+  attachments:
+  - fg-completed-04-brief
+- id: fg-completed-04-m2
+  story: arwc-governance
+  from: awm137
+  to:
+  - luc
+  - awm164
+  date: '2026-09-08T09:04:00-04:00'
+  subject: 'Re: Checking the Upland station telemetry panel renewal account'
+  body: |
+    Handover date 2023-09-18 is right. Map existing points one for one; additions require a separate approved revision. Keep that sentence; it explains the boundary of the work.
+  reply_to: fg-completed-04-m1
+- id: fg-budget-01-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:01:00-04:00'
+  subject: Pine maintenance materials allowance
+  body: |
+    I have used the dated matched acquisitions, USD 36,343.25, as the comparator. The proposal is USD 39,977.58 with the discussion contingency. Separate the cost of parts already received from proposals for replacing the equipment. Waiting parts remain waiting; this envelope does not complete a work order.
+  attachments:
+  - fg-budget-01-workbook
+- id: fg-budget-01-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:01:00-04:00'
+  subject: 'Re: Pine maintenance materials allowance'
+  body: |
+    The district sum checks. Separate the cost of parts already received from proposals for replacing the equipment. Waiting parts remain waiting; this envelope does not complete a work order. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-01-paper
+  reply_to: fg-budget-01-m1
+- id: fg-budget-02-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:02:00-04:00'
+  subject: Pine stores replenishment allowance
+  body: |
+    I have used the dated matched acquisitions, USD 17,457.39, as the comparator. The proposal is USD 19,203.13 with the discussion contingency. The purchasing comparator is stock acquired, not stock consumed. Ask Stores for opening and closing quantities before using it in an expense budget.
+  attachments:
+  - fg-budget-02-workbook
+- id: fg-budget-02-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:02:00-04:00'
+  subject: 'Re: Pine stores replenishment allowance'
+  body: |
+    The district sum checks. The purchasing comparator is stock acquired, not stock consumed. Ask Stores for opening and closing quantities before using it in an expense budget. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-02-paper
+  reply_to: fg-budget-02-m1
+- id: fg-budget-03-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:03:00-04:00'
+  subject: Pine laboratory supplies allowance
+  body: |
+    I have used the dated matched acquisitions, USD 24,954.62, as the comparator. The proposal is USD 27,450.08 with the discussion contingency. Keep the sample workload and supply purchasing periods separate. A repeat analysis may use supplies without being a second sampled customer.
+  attachments:
+  - fg-budget-03-workbook
+- id: fg-budget-03-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:03:00-04:00'
+  subject: 'Re: Pine laboratory supplies allowance'
+  body: |
+    The district sum checks. Keep the sample workload and supply purchasing periods separate. A repeat analysis may use supplies without being a second sampled customer. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-03-paper
+  reply_to: fg-budget-03-m1
+- id: fg-budget-04-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:04:00-04:00'
+  subject: Pine office supplies allowance
+  body: |
+    I have used the dated matched acquisitions, USD 6,003.23, as the comparator. The proposal is USD 6,603.55 with the discussion contingency. The historical district column already includes accepted shared-support allocations. Do not split that column again or assume it reflects district headcount.
+  attachments:
+  - fg-budget-04-workbook
+- id: fg-budget-04-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:04:00-04:00'
+  subject: 'Re: Pine office supplies allowance'
+  body: |
+    The district sum checks. The historical district column already includes accepted shared-support allocations. Do not split that column again or assume it reflects district headcount. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-04-paper
+  reply_to: fg-budget-04-m1
+- id: fg-budget-05-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:05:00-04:00'
+  subject: River maintenance materials allowance
+  body: |
+    I have used the dated matched acquisitions, USD 27,433.45, as the comparator. The proposal is USD 30,176.80 with the discussion contingency. Separate the cost of parts already received from proposals for replacing the equipment. Waiting parts remain waiting; this envelope does not complete a work order.
+  attachments:
+  - fg-budget-05-workbook
+- id: fg-budget-05-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:05:00-04:00'
+  subject: 'Re: River maintenance materials allowance'
+  body: |
+    The district sum checks. Separate the cost of parts already received from proposals for replacing the equipment. Waiting parts remain waiting; this envelope does not complete a work order. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-05-paper
+  reply_to: fg-budget-05-m1
+- id: fg-budget-06-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:06:00-04:00'
+  subject: River stores replenishment allowance
+  body: |
+    I have used the dated matched acquisitions, USD 20,391.36, as the comparator. The proposal is USD 22,430.50 with the discussion contingency. The purchasing comparator is stock acquired, not stock consumed. Ask Stores for opening and closing quantities before using it in an expense budget.
+  attachments:
+  - fg-budget-06-workbook
+- id: fg-budget-06-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:06:00-04:00'
+  subject: 'Re: River stores replenishment allowance'
+  body: |
+    The district sum checks. The purchasing comparator is stock acquired, not stock consumed. Ask Stores for opening and closing quantities before using it in an expense budget. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-06-paper
+  reply_to: fg-budget-06-m1
+- id: fg-budget-07-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:07:00-04:00'
+  subject: River laboratory supplies allowance
+  body: |
+    I have used the dated matched acquisitions, USD 40,933.88, as the comparator. The proposal is USD 45,027.27 with the discussion contingency. Keep the sample workload and supply purchasing periods separate. A repeat analysis may use supplies without being a second sampled customer.
+  attachments:
+  - fg-budget-07-workbook
+- id: fg-budget-07-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:07:00-04:00'
+  subject: 'Re: River laboratory supplies allowance'
+  body: |
+    The district sum checks. Keep the sample workload and supply purchasing periods separate. A repeat analysis may use supplies without being a second sampled customer. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-07-paper
+  reply_to: fg-budget-07-m1
+- id: fg-budget-08-m1
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm217
+  date: '2026-09-09T15:08:00-04:00'
+  subject: River office supplies allowance
+  body: |
+    I have used the dated matched acquisitions, USD 8,093.67, as the comparator. The proposal is USD 8,903.04 with the discussion contingency. The historical district column already includes accepted shared-support allocations. Do not split that column again or assume it reflects district headcount.
+  attachments:
+  - fg-budget-08-workbook
+- id: fg-budget-08-m2
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-09-10T15:08:00-04:00'
+  subject: 'Re: River office supplies allowance'
+  body: |
+    The district sum checks. The historical district column already includes accepted shared-support allocations. Do not split that column again or assume it reflects district headcount. I would leave the approved column at zero until the board sees the service case.
+  attachments:
+  - fg-budget-08-paper
+  reply_to: fg-budget-08-m1
+- id: fg-learning-01-m1
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - awm217
+  date: '2026-06-17T11:10:00-04:00'
+  subject: One receipt, several allocations
+  body: |
+    2026-06-18, 11:00 works for the small group. I have allowed 45 minutes of preparation as well as the 90-minute session. Keep the worked example beside the close checklist; a successful exercise is not a new authorization limit.
+  attachments:
+  - fg-learning-01-plan
+- id: fg-learning-01-m2
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm220
+  date: '2026-06-18T13:10:00-04:00'
+  subject: 'Finished: One receipt, several allocations'
+  body: |
+    The group traced one receipt through two allocations, then checked that the cash total counted it once. Farah repeated the exercise without the example sheet. Emre checked the reconciliation. The note matches what we did.
+  attachments:
+  - fg-learning-01-completion
+- id: fg-learning-01-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - awm219
+  - awm221
+  date: '2026-06-18T13:40:00-04:00'
+  subject: Record for One receipt, several allocations
+  body: |
+    Keep the attendance note private. Flora can use the aggregate time in the learning account; nobody needs to give a speech for this.
+  attachments:
+  - fg-learning-01-recognition
+- id: fg-learning-02-m1
+  story: arwc-governance
+  from: awm220
+  to:
+  - awm221
+  - awm222
+  date: '2026-07-15T11:10:00-04:00'
+  subject: Board record handover
+  body: |
+    2026-07-16, 11:00 works for the small group. I have allowed 30 minutes of preparation as well as the 60-minute session. The next pack still needs Finn's review. No personnel reader group was widened.
+  attachments:
+  - fg-learning-02-plan
+- id: fg-learning-02-m2
+  story: arwc-governance
+  from: awm221
+  to:
+  - awm220
+  - awm222
+  date: '2026-07-16T12:40:00-04:00'
+  subject: 'Finished: Board record handover'
+  body: |
+    Finn walked through a restricted annex and a public agenda. Flora selected the correct audience; Gabriel checked the retained version against the circulation note. They caught a missing annex reference before finishing. The note matches what we did.
+  attachments:
+  - fg-learning-02-completion
+- id: fg-learning-02-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - awm222
+  - awm221
+  date: '2026-07-16T13:10:00-04:00'
+  subject: Record for Board record handover
+  body: |
+    Keep the attendance note private. Flora can use the aggregate time in the learning account; nobody needs to give a speech for this.
+  attachments:
+  - fg-learning-02-recognition
+- id: fg-learning-03-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - rosa
+  - awm168
+  date: '2026-08-17T13:40:00-04:00'
+  subject: Explaining a water bill
+  body: |
+    2026-08-18, 13:30 works for the small group. I have allowed 45 minutes of preparation as well as the 75-minute session. Use the plain-language paragraph as an example, not as a substitute for checking each customer's actual bill.
+  attachments:
+  - fg-learning-03-plan
+- id: fg-learning-03-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm220
+  date: '2026-08-18T15:25:00-04:00'
+  subject: 'Finished: Explaining a water bill'
+  body: |
+    Rosa read a draft from a customer's point of view. Niko rewrote the consumption-period sentence and Mira checked that the revised explanation did not promise a new tariff. All three reviewed the finished paragraph. The note matches what we did.
+  attachments:
+  - fg-learning-03-completion
+- id: fg-learning-03-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - awm164
+  - awm221
+  date: '2026-08-18T15:55:00-04:00'
+  subject: Record for Explaining a water bill
+  body: |
+    Keep the attendance note private. Flora can use the aggregate time in the learning account; nobody needs to give a speech for this.
+  attachments:
+  - fg-learning-03-recognition
+- id: fg-learning-04-m1
+  story: arwc-governance
+  from: awm219
+  to:
+  - awm218
+  - nadia
+  date: '2026-09-07T11:10:00-04:00'
+  subject: Comparing renewal scopes
+  body: |
+    2026-09-08, 11:00 works for the small group. I have allowed 30 minutes of preparation as well as the 60-minute session. This is learning about a comparison, not approval to change the issued planning workbook or release capital.
+  attachments:
+  - fg-learning-04-plan
+- id: fg-learning-04-m2
+  story: arwc-governance
+  from: awm218
+  to:
+  - awm219
+  - awm220
+  date: '2026-09-08T12:40:00-04:00'
+  subject: 'Finished: Comparing renewal scopes'
+  body: |
+    Nadia distinguished the upfront allowance from five years of upkeep. Farah reconciled the two totals; Felix asked her to repeat the comparison with a different access allowance. The exercise retained the survey qualification. The note matches what we did.
+  attachments:
+  - fg-learning-04-completion
+- id: fg-learning-04-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - awm219
+  - awm221
+  date: '2026-09-08T13:10:00-04:00'
+  subject: Record for Comparing renewal scopes
+  body: |
+    Keep the attendance note private. Flora can use the aggregate time in the learning account; nobody needs to give a speech for this.
+  attachments:
+  - fg-learning-04-recognition
+- id: fg-board-01-m1
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-07-06T14:20:00-04:00'
+  subject: 2026-07-08 board papers
+  body: |
+    Papers attached. Meeting 14:00, regional office. The financial annex is for the named readers; please do not forward the working pack as a public report.
+  attachments:
+  - fg-board-01-agenda
+  - fg-board-01-paper
+- id: fg-board-01-m2
+  story: arwc-governance
+  from: board_tessa
+  to:
+  - awm220
+  - awm216
+  - awm217
+  date: '2026-07-06T15:20:00-04:00'
+  subject: 'Re: 2026-07-08 board papers'
+  body: |
+    Where is stock in this figure? I cannot support calling all of it operating cost.
+  reply_to: fg-board-01-m1
+- id: fg-board-01-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-07-08T16:15:00-04:00'
+  subject: 2026-07-08 meeting record
+  body: |
+    Resolution recorded 5 for, 0 against, 1 abstained. Tessa abstained pending the inventory classification. She accepted the arithmetic but would not describe the acquisitions as operating expense. Please identify any recording error; confirmation is a separate item at the next meeting.
+  attachments:
+  - fg-board-01-minutes
+  - fg-board-01-votes
+  - fg-board-01-actions
+- id: fg-board-01-m4
+  story: arwc-governance
+  from: board_sabine
+  to:
+  - awm220
+  - awm216
+  date: '2026-07-08T16:30:00-04:00'
+  subject: 'Re: 2026-07-08 meeting record'
+  body: |
+    The resolution and dissent are recorded correctly. Mark this chair-checked, not confirmed at the next meeting. That meeting has not happened.
+  reply_to: fg-board-01-m3
+- id: fg-board-02-m1
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-08-23T14:20:00-04:00'
+  subject: 2026-08-25 board papers
+  body: |
+    Papers attached. Meeting 14:00, regional office. The financial annex is for the named readers; please do not forward the working pack as a public report.
+  attachments:
+  - fg-board-02-agenda
+  - fg-board-02-paper
+- id: fg-board-02-m2
+  story: arwc-governance
+  from: board_iona
+  to:
+  - awm220
+  - awm216
+  - awm217
+  date: '2026-08-23T15:20:00-04:00'
+  subject: 'Re: 2026-08-25 board papers'
+  body: |
+    Please bring August next time, with the cutoff beside the total. We should not call July the current position in September.
+  reply_to: fg-board-02-m1
+- id: fg-board-02-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-08-25T16:15:00-04:00'
+  subject: 2026-08-25 meeting record
+  body: |
+    Resolution recorded 4 for, 2 against, 0 abstained. Tovan wanted indicative purchasing limits sooner; Remy considered another round of papers unnecessary for small items. The majority required the quantities and service consequences first. Please identify any recording error; confirmation is a separate item at the next meeting.
+  attachments:
+  - fg-board-02-minutes
+  - fg-board-02-votes
+  - fg-board-02-actions
+- id: fg-board-02-m4
+  story: arwc-governance
+  from: board_sabine
+  to:
+  - awm220
+  - awm216
+  date: '2026-08-25T16:30:00-04:00'
+  subject: 'Re: 2026-08-25 meeting record'
+  body: |
+    The resolution and dissent are recorded correctly. Mark this chair-checked, not confirmed at the next meeting. That meeting has not happened.
+  reply_to: fg-board-02-m3
+- id: fg-board-03-m1
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-09-15T09:20:00-04:00'
+  subject: 2026-09-15 board papers
+  body: |
+    Papers attached. Meeting 14:00, regional office. The financial annex is for the named readers; please do not forward the working pack as a public report.
+  attachments:
+  - fg-board-03-agenda
+  - fg-board-03-paper
+- id: fg-board-03-m2
+  story: arwc-governance
+  from: board_tovan
+  to:
+  - awm220
+  - awm216
+  - awm217
+  date: '2026-09-15T10:20:00-04:00'
+  subject: 'Re: 2026-09-15 board papers'
+  body: |
+    I still favour getting prices for the small notice-board option. Please record that if the resolution keeps it behind the survey.
+  reply_to: fg-board-03-m1
+- id: fg-board-03-m3
+  story: arwc-governance
+  from: awm220
+  to:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  - awm216
+  - awm217
+  - luc
+  - awm164
+  date: '2026-09-15T16:15:00-04:00'
+  subject: 2026-09-15 meeting record
+  body: |
+    Resolution recorded 5 for, 1 against, 0 abstained. Tovan preferred an immediate quotation exercise for the small notice-board option. The chair retained the survey condition. His dissent is not recorded as agreement. Please identify any recording error; confirmation is a separate item at the next meeting.
+  attachments:
+  - fg-board-03-minutes
+  - fg-board-03-votes
+  - fg-board-03-actions
+- id: fg-board-03-m4
+  story: arwc-governance
+  from: board_sabine
+  to:
+  - awm220
+  - awm216
+  date: '2026-09-15T16:30:00-04:00'
+  subject: 'Re: 2026-09-15 meeting record'
+  body: |
+    The resolution and dissent are recorded correctly. Mark this chair-checked, not confirmed at the next meeting. That meeting has not happened.
+  reply_to: fg-board-03-m3
+- id: fg-publication-01-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:11:00-04:00'
+  subject: Completed renewal and a service people can maintain draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-01-p1
+- id: fg-publication-01-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:26:00-04:00'
+  subject: 'Re: Completed renewal and a service people can maintain draft for checking'
+  body: |
+    The draft calls the River booster a 2022 completion because of its project number. Use its February 20, 2023 handover. Keep all four costs in the historical period. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-01-review
+  reply_to: fg-publication-01-m1
+- id: fg-publication-01-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:03:00-04:00'
+  subject: Completed renewal and a service people can maintain R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-01-r1
+- id: fg-publication-01-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:06:00-04:00'
+  subject: 'Re: Completed renewal and a service people can maintain R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-01-r1
+  reply_to: fg-publication-01-m3
+- id: fg-publication-01-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:12:00-04:00'
+  subject: Completed renewal and a service people can maintain released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-01-public
+- id: fg-publication-02-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:12:00-04:00'
+  subject: What the water-account figures cover draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-02-p1
+- id: fg-publication-02-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:27:00-04:00'
+  subject: 'Re: What the water-account figures cover draft for checking'
+  body: |
+    The 50,100 figure counts payer accounts. Replace the draft household label, and explain that master meters and residents have different denominators. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-02-review
+  reply_to: fg-publication-02-m1
+- id: fg-publication-02-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:04:00-04:00'
+  subject: What the water-account figures cover R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-02-r1
+- id: fg-publication-02-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:07:00-04:00'
+  subject: 'Re: What the water-account figures cover R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-02-r1
+  reply_to: fg-publication-02-m3
+- id: fg-publication-02-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:13:00-04:00'
+  subject: What the water-account figures cover released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-02-public
+- id: fg-publication-03-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:13:00-04:00'
+  subject: August selected-books financial account draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-03-p1
+- id: fg-publication-03-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:28:00-04:00'
+  subject: 'Re: August selected-books financial account draft for checking'
+  body: |
+    Keep the selected-books label in the heading. These are cash and obligation controls; inventory classification and an external bank comparison remain outstanding. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-03-review
+  reply_to: fg-publication-03-m1
+- id: fg-publication-03-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:05:00-04:00'
+  subject: August selected-books financial account R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-03-r1
+- id: fg-publication-03-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:08:00-04:00'
+  subject: 'Re: August selected-books financial account R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-03-r1
+  reply_to: fg-publication-03-m3
+- id: fg-publication-03-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:14:00-04:00'
+  subject: August selected-books financial account released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-03-public
+- id: fg-publication-04-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:14:00-04:00'
+  subject: Where the next renewal proposals stand draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-04-p1
+- id: fg-publication-04-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:29:00-04:00'
+  subject: 'Re: Where the next renewal proposals stand draft for checking'
+  body: |
+    The headline is accurate but too short to stand alone. State zero release and zero new spend; retain the surveys and the open September 30 actions. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-04-review
+  reply_to: fg-publication-04-m1
+- id: fg-publication-04-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:06:00-04:00'
+  subject: Where the next renewal proposals stand R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-04-r1
+- id: fg-publication-04-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:09:00-04:00'
+  subject: 'Re: Where the next renewal proposals stand R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-04-r1
+  reply_to: fg-publication-04-m3
+- id: fg-publication-04-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:15:00-04:00'
+  subject: Where the next renewal proposals stand released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-04-public
+- id: fg-publication-05-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:15:00-04:00'
+  subject: Learning time and the people who make it possible draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-05-p1
+- id: fg-publication-05-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:30:00-04:00'
+  subject: 'Re: Learning time and the people who make it possible draft for checking'
+  body: |
+    The bounded learning description is right. Include preparation in the aggregate time and leave individual attendance notes out of the public copy; these exercises are not certification. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-05-review
+  reply_to: fg-publication-05-m1
+- id: fg-publication-05-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:07:00-04:00'
+  subject: Learning time and the people who make it possible R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-05-r1
+- id: fg-publication-05-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:10:00-04:00'
+  subject: 'Re: Learning time and the people who make it possible R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-05-r1
+  reply_to: fg-publication-05-m3
+- id: fg-publication-05-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:16:00-04:00'
+  subject: Learning time and the people who make it possible released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-05-public
+- id: fg-publication-06-m1
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T16:16:00-04:00'
+  subject: How the September board decisions will be followed up draft for checking
+  body: |
+    Please check the opening line before 16:30 today. The factual body has already been assembled; I need the headline checked against it before final approval.
+  attachments:
+  - fg-publication-06-p1
+- id: fg-publication-06-m2
+  story: arwc-governance
+  from: rosa
+  to:
+  - awm164
+  - awm217
+  - luc
+  date: '2026-09-15T16:31:00-04:00'
+  subject: 'Re: How the September board decisions will be followed up draft for checking'
+  body: |
+    Do not describe the September vote as unanimous. Keep the recorded five-to-one decision and explain the dissent without identifying it as a management vote. A customer should not have to read an internal annex to find that out.
+  attachments:
+  - fg-publication-06-review
+  reply_to: fg-publication-06-m1
+- id: fg-publication-06-m3
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:08:00-04:00'
+  subject: How the September board decisions will be followed up R1 for release
+  body: |
+    The correction is in R1. Final approval is recorded on the master; release is queued for tomorrow morning. I checked that the PDF contains no review comments or private attachments.
+  attachments:
+  - fg-publication-06-r1
+- id: fg-publication-06-m4
+  story: arwc-governance
+  from: awm216
+  to:
+  - awm164
+  - awm217
+  - luc
+  - rosa
+  date: '2026-09-15T17:11:00-04:00'
+  subject: 'Re: How the September board decisions will be followed up R1 for release'
+  body: |
+    Approved for the stated release. Use this exact copy. Any later factual change comes back for review; the private working papers stay private.
+  attachments:
+  - fg-publication-06-r1
+  reply_to: fg-publication-06-m3
+- id: fg-publication-06-m5
+  story: arwc-governance
+  from: awm164
+  to:
+  - awm216
+  - awm220
+  - rosa
+  date: '2026-09-16T08:17:00-04:00'
+  subject: How the September board decisions will be followed up released
+  body: |
+    R1 is released. The public copy matches the approved master. Rosa, please use this copy for paper requests as well.
+  attachments:
+  - fg-publication-06-public

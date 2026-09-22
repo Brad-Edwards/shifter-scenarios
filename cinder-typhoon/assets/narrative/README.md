@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 38,953 distinct authored messages, 15,507 source documents,
-staff directories for all 294 employees, and 848 calendar items. The
+The collection contains 39,087 distinct authored messages, 15,668 source documents,
+staff directories for all 294 employees, and 858 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -96,6 +96,16 @@ formulas, results, and eight revised versions. Its
 [review record](../../docs/narrative/planning-review.md) documents source-period
 corrections, summary traceability, decision boundaries, the eight planners'
 voices, and the justified reduction in message volume.
+ARWC finance and governance adds 134 messages, 161 document items and ten
+calendars. Four dated closes reconcile the selected purchasing and customer
+books. Twelve renewal decisions, eight budget proposals, four historical
+project accounts, three board meetings, four completed learning sessions and
+six publication histories retain their financial and approval boundaries.
+The archive contains 28 XLSX files, six public PDFs and six CSV schedules.
+Six restricted approved-master items reuse the public PDF bytes; these are
+additional audience placements, not six more reports. Its
+[review record](../../docs/narrative/governance-review.md) separates the counts,
+opening assumptions, public-release contract and validation limits.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -130,6 +140,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/retail-billing-records.zip` | Fourteen completed CSV registers, 50,102 readable NDJSON bill documents and 24 genuine bill PDFs. |
 | `authoring/planning.yaml` | Author-only planning cases, source cut-offs, workbook versions, decisions, threads, counts, and contract boundaries. |
 | `documents/planning-records.zip` | Forty-eight actual XLSX workbooks and five completed CSV traceability registers. |
+| `authoring/governance.yaml` | Author-only close, budget, decision, board, learning and publication joins, counts and source versions. |
+| `documents/governance-records.zip` | Twenty-eight actual XLSX files, six public PDFs and six completed CSV schedules. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
@@ -239,12 +251,32 @@ revision sequence and last-update time. A cancelled occurrence retains its UID;
 a replacement has its own UID. An invitation response does not establish actual
 attendance, which is recorded separately in a completed meeting's note or mail.
 
+`cinder-document-library/v4` retains v1–v3 fields and adds explicit public
+publication and appointed-board readers. Existing items are unchanged and
+remain private to their listed readers. New `document_state` values distinguish
+`draft`, `restricted`, `approved` and `published`; an approved internal document
+is not public. Only an item with `access: public`, `document_state: published`,
+an empty `readers` list, and a `publication` object may be served anonymously.
+The publication object records `approved_by`, `approved_at` and `published_by`;
+approval precedes the item's `published_at`. Empty or absent readers without
+that explicit public contract deny access, never grant it.
+
+Private v4 items retain exact named readers, including the six appointed board
+identities on their own packs and calendars. This grants neither employee
+membership nor access to any other item. Bytes, previews, search text, snippets,
+derived views and metadata must use the same item-level boundary. Public search
+must exclude private draft titles and approval/review records. The six approved
+public PDFs share bytes with their restricted masters, but only their public
+items grant anonymous access. The containing source remains sensitive. The
+materializer must support v4 before claiming readback; this is a static content
+contract, not evidence of a deployed public website.
+
 These data formats are defined by this pack; RAE supplies their source, owner,
 materialization, observation, and compilation semantics.
 
 ## Opening state and editorial scope
 
-The snapshot is 08:30 on 16 September 2026, with a fictional local UTC−04:00
+The snapshot is 08:30 on September 16, 2026, with a fictional local UTC−04:00
 offset. Messages precede that instant. Invitations can concern later dates;
 a tentative lunch remains tentative, and a planned workshop is not already over.
 No timer runs these social events.
