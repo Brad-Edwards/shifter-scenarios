@@ -1,0 +1,3874 @@
+messages:
+- id: pl-arwc-pln-26-01-m1
+  story: planning
+  from: awm197
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-01T09:03:00-04:00'
+  subject: 'ARWC-PLN-26-01: Pine: Single-account household demand'
+  body: |
+    Nadia,
+
+    Pine: Single-account household demand — return attached, through 31 August. Only the billed usage lines belong in this total; fixed charges and private check meters do not. Parallel supply meters remain legitimate separate lines.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-01-input-return
+- id: pl-arwc-pln-26-01-m2
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm197
+  date: '2026-09-02T09:03:00-04:00'
+  subject: 'ARWC-PLN-26-01: Pine: Single-account household demand'
+  body: |
+    Hana,
+
+    I've put the calculation beside the source return for Pine: Single-account household demand. Does the line count mean the same thing as a household count? I want that answered before the short version goes to Luc.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-01-workbook-v1
+  - pl-arwc-pln-26-01-recommendation-p1
+  reply_to: pl-arwc-pln-26-01-m1
+- id: pl-arwc-pln-26-01-m3
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm197
+  date: '2026-09-03T09:03:00-04:00'
+  subject: 'ARWC-PLN-26-01: Pine: Single-account household demand'
+  body: |
+    Nadia,
+
+    No. Some premises have parallel supplies. Use billed volume for the daily comparator and keep the line count only as a reconciliation aid.
+
+    I requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Hana
+  reply_to: pl-arwc-pln-26-01-m2
+- id: pl-arwc-pln-26-01-m4
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm197
+  date: '2026-09-07T09:03:00-04:00'
+  subject: 'ARWC-PLN-26-01: Pine: Single-account household demand'
+  body: |
+    Hana, I can explain this more clearly now. Upper comparison: 13704.63 m³/day.
+
+    I've retained your answer in the review. A second quarter and an independently measured distribution input are needed before discussing seasonal growth or losses.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-01-review-r1
+  - pl-arwc-pln-26-01-workbook-v2
+  reply_to: pl-arwc-pln-26-01-m3
+- id: pl-arwc-pln-26-01-m5
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm197
+  date: '2026-09-08T09:03:00-04:00'
+  subject: 'ARWC-PLN-26-01: Pine: Single-account household demand'
+  body: |
+    Here's the issued paper for Pine: Single-account household demand.
+
+    Use the daily billed comparator for neighbourhood information work. Request another complete quarter before estimating a trend. I'll take this version to the September discussion.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-01-recommendation-r1
+  reply_to: pl-arwc-pln-26-01-m4
+- id: pl-arwc-pln-26-02-m1
+  story: planning
+  from: awm197
+  to:
+  - awm139
+  - awm140
+  date: '2026-09-01T09:09:00-04:00'
+  subject: 'ARWC-PLN-26-02: Pine: Master-metered dwelling demand'
+  body: |
+    Hana,
+
+    Pine: Master-metered dwelling demand — return attached, through 31 August. A master account serves several occupied dwellings. Dividing by account count would produce a misleading household comparison.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-02-input-return
+- id: pl-arwc-pln-26-02-m2
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm197
+  date: '2026-09-02T09:09:00-04:00'
+  subject: 'ARWC-PLN-26-02: Pine: Master-metered dwelling demand'
+  body: |
+    Pine: Master-metered dwelling demand: draft attached.
+
+    Could the building check meters have been counted a second time? Check that point before we issue it.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-02-workbook-v1
+  - pl-arwc-pln-26-02-recommendation-p1
+  reply_to: pl-arwc-pln-26-02-m1
+- id: pl-arwc-pln-26-02-m3
+  story: planning
+  from: awm140
+  to:
+  - awm139
+  - awm197
+  date: '2026-09-03T09:09:00-04:00'
+  subject: 'ARWC-PLN-26-02: Pine: Master-metered dwelling demand'
+  body: |
+    Hana,
+
+    The extract uses authoritative billed usage lines only. Internal check meters contribute no additional billed volume.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Harriet
+  reply_to: pl-arwc-pln-26-02-m2
+- id: pl-arwc-pln-26-02-m4
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm197
+  date: '2026-09-07T09:09:00-04:00'
+  subject: 'ARWC-PLN-26-02: Pine: Master-metered dwelling demand'
+  body: |
+    Review attached. Upper comparison: 2635.89 m³/day.
+
+    No per-household rate is issued until the dwelling denominator is reviewed.
+    Hana
+  attachments:
+  - pl-arwc-pln-26-02-review-r1
+  - pl-arwc-pln-26-02-workbook-v2
+  reply_to: pl-arwc-pln-26-02-m3
+- id: pl-arwc-pln-26-02-m5
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm197
+  date: '2026-09-08T09:09:00-04:00'
+  subject: 'ARWC-PLN-26-02: Pine: Master-metered dwelling demand'
+  body: |
+    Issued R1 attached. Keep master-metered buildings as a separate customer class in the demand pack. Ask Accounts for an aggregate dwelling denominator at the next refresh.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-02-recommendation-r1
+  reply_to: pl-arwc-pln-26-02-m4
+- id: pl-arwc-pln-26-03-m1
+  story: planning
+  from: awm197
+  to:
+  - awm140
+  - awm141
+  date: '2026-09-01T09:15:00-04:00'
+  subject: 'ARWC-PLN-26-03: Pine: Commercial demand reference'
+  body: |
+    Harriet,
+
+    Pine: Commercial demand reference — return attached, through 31 August. The available commercial book covers June. It describes billed use, with no evidence that production or future demand will follow the same pattern.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-03-input-return
+- id: pl-arwc-pln-26-03-m2
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-02T09:15:00-04:00'
+  subject: 'ARWC-PLN-26-03: Pine: Commercial demand reference'
+  body: |
+    I've attached the draft and working sheet for Pine: Commercial demand reference. Can June be used to set a five-year growth percentage?
+
+    Please leave the answer in the review record so it travels with the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-03-workbook-v1
+  - pl-arwc-pln-26-03-recommendation-p1
+  reply_to: pl-arwc-pln-26-03-m1
+- id: pl-arwc-pln-26-03-m3
+  story: planning
+  from: awm141
+  to:
+  - awm140
+  - awm197
+  date: '2026-09-03T09:15:00-04:00'
+  subject: 'ARWC-PLN-26-03: Pine: Commercial demand reference'
+  body: |
+    Harriet,
+
+    A single month cannot establish growth. The upper factor is a chosen sensitivity for discussion; it is not fitted to production data.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Hugo
+  reply_to: pl-arwc-pln-26-03-m2
+- id: pl-arwc-pln-26-03-m4
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-07T09:15:00-04:00'
+  subject: 'ARWC-PLN-26-03: Pine: Commercial demand reference'
+  body: |
+    The handover now includes your review, the units and the source return. Upper comparison: 12045.44 m³/day.
+
+    Still to check: Do not annualize one production month into a promised volume.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-03-review-r1
+  - pl-arwc-pln-26-03-workbook-v2
+  reply_to: pl-arwc-pln-26-03-m3
+- id: pl-arwc-pln-26-03-m5
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-08T09:15:00-04:00'
+  subject: 'ARWC-PLN-26-03: Pine: Commercial demand reference'
+  body: |
+    Issued copy attached, with the review reference left in. Carry June as a dated commercial comparator and ask for a second seasonal period before preparing growth assumptions.
+
+    Please use this one for the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-03-recommendation-r1
+  reply_to: pl-arwc-pln-26-03-m4
+- id: pl-arwc-pln-26-04-m1
+  story: planning
+  from: awm197
+  to:
+  - awm141
+  - awm142
+  date: '2026-09-01T09:21:00-04:00'
+  subject: 'ARWC-PLN-26-04: Pine: Municipal service demand'
+  body: |
+    Hugo,
+
+    Pine: Municipal service demand — return attached, through 31 August. District facilities have different opening patterns. This is an aggregate June return, without employee or public-user records.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-04-input-return
+- id: pl-arwc-pln-26-04-m2
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-02T09:21:00-04:00'
+  subject: 'ARWC-PLN-26-04: Pine: Municipal service demand'
+  body: |
+    For our discussion: Pine: Municipal service demand.
+
+    Should the two districts receive equal quantities because they jointly own ARWC? The arithmetic is in the attachment; I'd like to talk through the practical consequence.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-04-workbook-v1
+  - pl-arwc-pln-26-04-recommendation-p1
+  reply_to: pl-arwc-pln-26-04-m1
+- id: pl-arwc-pln-26-04-m3
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-03T09:21:00-04:00'
+  subject: 'ARWC-PLN-26-04: Pine: Municipal service demand'
+  body: |
+    Hugo,
+
+    Ownership does not set consumption. Each district retains its own billed total and period; neither is adjusted to produce a 50/50 split.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Idris
+  reply_to: pl-arwc-pln-26-04-m2
+- id: pl-arwc-pln-26-04-m4
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-07T09:21:00-04:00'
+  subject: 'ARWC-PLN-26-04: Pine: Municipal service demand'
+  body: |
+    I've written up the point we need for the discussion: Upper comparison: 301.59 m³/day.
+
+    A budget allocation percentage must not replace measured district consumption. The review is attached.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-04-review-r1
+  - pl-arwc-pln-26-04-workbook-v2
+  reply_to: pl-arwc-pln-26-04-m3
+- id: pl-arwc-pln-26-04-m5
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-08T09:21:00-04:00'
+  subject: 'ARWC-PLN-26-04: Pine: Municipal service demand'
+  body: |
+    For the meeting folder: Pine: Municipal service demand, issued R1.
+
+    Use the district total in the owner briefing and request facility opening information before developing a winter comparison. Happy to walk through the comparison in the room.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-04-recommendation-r1
+  reply_to: pl-arwc-pln-26-04-m4
+- id: pl-arwc-pln-26-05-m1
+  story: planning
+  from: awm197
+  to:
+  - awm142
+  - awm143
+  date: '2026-09-01T09:27:00-04:00'
+  subject: 'ARWC-PLN-26-05: River: Single-account household demand'
+  body: |
+    Idris,
+
+    River: Single-account household demand — return attached, through 31 August. Only the billed usage lines belong in this total; fixed charges and private check meters do not. Parallel supply meters remain legitimate separate lines.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-05-input-return
+- id: pl-arwc-pln-26-05-m2
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm197
+  date: '2026-09-02T09:27:00-04:00'
+  subject: 'ARWC-PLN-26-05: River: Single-account household demand'
+  body: |
+    River: Single-account household demand. Draft and figures attached.
+
+    Does the line count mean the same thing as a household count?
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-05-workbook-v1
+  - pl-arwc-pln-26-05-recommendation-p1
+  reply_to: pl-arwc-pln-26-05-m1
+- id: pl-arwc-pln-26-05-m3
+  story: planning
+  from: awm143
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-03T09:27:00-04:00'
+  subject: 'ARWC-PLN-26-05: River: Single-account household demand'
+  body: |
+    Idris,
+
+    No. Some premises have parallel supplies. Use billed volume for the daily comparator and keep the line count only as a reconciliation aid.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Imani
+  reply_to: pl-arwc-pln-26-05-m2
+- id: pl-arwc-pln-26-05-m4
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm197
+  date: '2026-09-07T09:27:00-04:00'
+  subject: 'ARWC-PLN-26-05: River: Single-account household demand'
+  body: |
+    Upper comparison: 10664.34 m³/day.
+    Review attached. A second quarter and an independently measured distribution input are needed before discussing seasonal growth or losses.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-05-review-r1
+  - pl-arwc-pln-26-05-workbook-v2
+  reply_to: pl-arwc-pln-26-05-m3
+- id: pl-arwc-pln-26-05-m5
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm197
+  date: '2026-09-08T09:27:00-04:00'
+  subject: 'ARWC-PLN-26-05: River: Single-account household demand'
+  body: |
+    R1 attached. Use the daily billed comparator for neighbourhood information work. Request another complete quarter before estimating a trend.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-05-recommendation-r1
+  reply_to: pl-arwc-pln-26-05-m4
+- id: pl-arwc-pln-26-06-m1
+  story: planning
+  from: awm197
+  to:
+  - awm143
+  - awm144
+  date: '2026-09-01T09:33:00-04:00'
+  subject: 'ARWC-PLN-26-06: River: Master-metered dwelling demand'
+  body: |
+    Imani,
+
+    River: Master-metered dwelling demand — return attached, through 31 August. A master account serves several occupied dwellings. Dividing by account count would produce a misleading household comparison.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-06-input-return
+- id: pl-arwc-pln-26-06-m2
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm197
+  date: '2026-09-02T09:33:00-04:00'
+  subject: 'ARWC-PLN-26-06: River: Master-metered dwelling demand'
+  body: |
+    Review copy, 2 September: River: Master-metered dwelling demand.
+
+    Could the building check meters have been counted a second time? I need the answer before booking anyone's time for the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-06-workbook-v1
+  - pl-arwc-pln-26-06-recommendation-p1
+  reply_to: pl-arwc-pln-26-06-m1
+- id: pl-arwc-pln-26-06-m3
+  story: planning
+  from: awm144
+  to:
+  - awm143
+  - awm197
+  date: '2026-09-03T09:33:00-04:00'
+  subject: 'ARWC-PLN-26-06: River: Master-metered dwelling demand'
+  body: |
+    Imani,
+
+    The extract uses authoritative billed usage lines only. Internal check meters contribute no additional billed volume.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Iris
+  reply_to: pl-arwc-pln-26-06-m2
+- id: pl-arwc-pln-26-06-m4
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm197
+  date: '2026-09-07T09:33:00-04:00'
+  subject: 'ARWC-PLN-26-06: River: Master-metered dwelling demand'
+  body: |
+    Review copy, 7 September. Upper comparison: 1689.35 m³/day.
+
+    No per-household rate is issued until the dwelling denominator is reviewed. That check needs to stay on my list before we arrange the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-06-review-r1
+  - pl-arwc-pln-26-06-workbook-v2
+  reply_to: pl-arwc-pln-26-06-m3
+- id: pl-arwc-pln-26-06-m5
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm197
+  date: '2026-09-08T09:33:00-04:00'
+  subject: 'ARWC-PLN-26-06: River: Master-metered dwelling demand'
+  body: |
+    8 September — issued paper for River: Master-metered dwelling demand.
+
+    Keep master-metered buildings as a separate customer class in the demand pack. Ask Accounts for an aggregate dwelling denominator at the next refresh. Follow-up is on my 30 September list.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-06-recommendation-r1
+  reply_to: pl-arwc-pln-26-06-m4
+- id: pl-arwc-pln-26-07-m1
+  story: planning
+  from: awm197
+  to:
+  - awm144
+  - awm145
+  date: '2026-09-01T09:39:00-04:00'
+  subject: 'ARWC-PLN-26-07: River: Commercial demand reference'
+  body: |
+    Iris,
+
+    River: Commercial demand reference — return attached, through 31 August. The available commercial book covers June. It describes billed use, with no evidence that production or future demand will follow the same pattern.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-07-input-return
+- id: pl-arwc-pln-26-07-m2
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm197
+  date: '2026-09-02T09:39:00-04:00'
+  subject: 'ARWC-PLN-26-07: River: Commercial demand reference'
+  body: |
+    Isabel, this is the actual River: Commercial demand reference attachment, with the calculation included.
+
+    Can June be used to set a five-year growth percentage? Please check the finished copy as well as the number.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-07-workbook-v1
+  - pl-arwc-pln-26-07-recommendation-p1
+  reply_to: pl-arwc-pln-26-07-m1
+- id: pl-arwc-pln-26-07-m3
+  story: planning
+  from: awm145
+  to:
+  - awm144
+  - awm197
+  date: '2026-09-03T09:39:00-04:00'
+  subject: 'ARWC-PLN-26-07: River: Commercial demand reference'
+  body: |
+    Iris,
+
+    A single month cannot establish growth. The upper factor is a chosen sensitivity for discussion; it is not fitted to production data.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Isabel
+  reply_to: pl-arwc-pln-26-07-m2
+- id: pl-arwc-pln-26-07-m4
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm197
+  date: '2026-09-07T09:39:00-04:00'
+  subject: 'ARWC-PLN-26-07: River: Commercial demand reference'
+  body: |
+    I've opened the reviewed copy and checked its last line: Upper comparison: 9983.49 m³/day.
+
+    Do not annualize one production month into a promised volume. Review attached; let me know if the attachment gives you trouble.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-07-review-r1
+  - pl-arwc-pln-26-07-workbook-v2
+  reply_to: pl-arwc-pln-26-07-m3
+- id: pl-arwc-pln-26-07-m5
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm197
+  date: '2026-09-08T09:39:00-04:00'
+  subject: 'ARWC-PLN-26-07: River: Commercial demand reference'
+  body: |
+    Finished copy attached. Carry June as a dated commercial comparator and ask for a second seasonal period before preparing growth assumptions.
+
+    The draft is still in the folder if you need to see what changed.
+    Iris
+  attachments:
+  - pl-arwc-pln-26-07-recommendation-r1
+  reply_to: pl-arwc-pln-26-07-m4
+- id: pl-arwc-pln-26-08-m1
+  story: planning
+  from: awm197
+  to:
+  - awm145
+  - nadia
+  date: '2026-09-01T09:45:00-04:00'
+  subject: 'ARWC-PLN-26-08: River: Municipal service demand'
+  body: |
+    Isabel,
+
+    River: Municipal service demand — return attached, through 31 August. District facilities have different opening patterns. This is an aggregate June return, without employee or public-user records.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-08-input-return
+- id: pl-arwc-pln-26-08-m2
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm197
+  date: '2026-09-02T09:45:00-04:00'
+  subject: 'ARWC-PLN-26-08: River: Municipal service demand'
+  body: |
+    One question on River: Municipal service demand: Should the two districts receive equal quantities because they jointly own ARWC?
+
+    I've attached my draft so you can see where I'm using the answer.
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-08-workbook-v1
+  - pl-arwc-pln-26-08-recommendation-p1
+  reply_to: pl-arwc-pln-26-08-m1
+- id: pl-arwc-pln-26-08-m3
+  story: planning
+  from: nadia
+  to:
+  - awm145
+  - awm197
+  date: '2026-09-03T09:45:00-04:00'
+  subject: 'ARWC-PLN-26-08: River: Municipal service demand'
+  body: |
+    Isabel,
+
+    Ownership does not set consumption. Each district retains its own billed total and period; neither is adjusted to produce a 50/50 split.
+
+    Hana requested the same 10% upper comparison across all eight customer-class returns; the 8% draft remains available.
+
+    Nadia
+  reply_to: pl-arwc-pln-26-08-m2
+- id: pl-arwc-pln-26-08-m4
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm197
+  date: '2026-09-07T09:45:00-04:00'
+  subject: 'ARWC-PLN-26-08: River: Municipal service demand'
+  body: |
+    I've kept your answer with the calculation. Upper comparison: 480.15 m³/day.
+
+    A budget allocation percentage must not replace measured district consumption. That's the question I'll bring to the meeting.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-08-review-r1
+  - pl-arwc-pln-26-08-workbook-v2
+  reply_to: pl-arwc-pln-26-08-m3
+- id: pl-arwc-pln-26-08-m5
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm197
+  date: '2026-09-08T09:45:00-04:00'
+  subject: 'ARWC-PLN-26-08: River: Municipal service demand'
+  body: |
+    I've issued the recommendation for River: Municipal service demand.
+
+    Use the district total in the owner briefing and request facility opening information before developing a winter comparison.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-08-recommendation-r1
+  reply_to: pl-arwc-pln-26-08-m4
+- id: pl-arwc-pln-26-09-m1
+  story: planning
+  from: theo
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-01T10:03:00-04:00'
+  subject: 'ARWC-PLN-26-09: Pine sample bench'
+  body: |
+    Nadia,
+
+    Pine sample bench — return attached, through 31 August. The drawer-runner request makes the handling space awkward; it does not imply a failed analytical result.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-09-input-return
+- id: pl-arwc-pln-26-09-m2
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-02T10:03:00-04:00'
+  subject: 'ARWC-PLN-26-09: Pine sample bench'
+  body: |
+    Hana,
+
+    I've put the calculation beside the source return for Pine sample bench. Would a bench replacement resolve the open drawer work order? I want that answered before the short version goes to Luc.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-09-workbook-v1
+  - pl-arwc-pln-26-09-recommendation-p1
+  reply_to: pl-arwc-pln-26-09-m1
+- id: pl-arwc-pln-26-09-m3
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - theo
+  date: '2026-09-03T10:03:00-04:00'
+  subject: 'ARWC-PLN-26-09: Pine sample bench'
+  body: |
+    Nadia,
+
+    No. The work order keeps its own state. This study compares five-year upkeep with a replacement allowance.
+
+    Bench dimensions and access must be confirmed before a purchase request.
+
+    Hana
+  reply_to: pl-arwc-pln-26-09-m2
+- id: pl-arwc-pln-26-09-m4
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-07T10:03:00-04:00'
+  subject: 'ARWC-PLN-26-09: Pine sample bench'
+  body: |
+    Hana, I can explain this more clearly now. Orders outside completed state: 3.00 orders.
+
+    I've retained your answer in the review. Bench dimensions and access must be confirmed before a purchase request.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-09-review-r1
+  reply_to: pl-arwc-pln-26-09-m3
+- id: pl-arwc-pln-26-09-m5
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-08T10:03:00-04:00'
+  subject: 'ARWC-PLN-26-09: Pine sample bench'
+  body: |
+    Here's the issued paper for Pine sample bench.
+
+    Ask engineering to measure the bench before seeking a price. Keep the drawer repair with maintenance. I'll take this version to the September discussion.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-09-recommendation-r1
+  reply_to: pl-arwc-pln-26-09-m4
+- id: pl-arwc-pln-26-10-m1
+  story: planning
+  from: theo
+  to:
+  - awm139
+  - awm140
+  date: '2026-09-01T10:09:00-04:00'
+  subject: 'ARWC-PLN-26-10: River sample bench'
+  body: |
+    Hana,
+
+    River sample bench — return attached, through 31 August. River has a separate bench history and should not inherit the Pine dimensions.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-10-input-return
+- id: pl-arwc-pln-26-10-m2
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-02T10:09:00-04:00'
+  subject: 'ARWC-PLN-26-10: River sample bench'
+  body: |
+    River sample bench: draft attached.
+
+    Can the Pine scope be copied into this estimate? Check that point before we issue it.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-10-workbook-v1
+  - pl-arwc-pln-26-10-recommendation-p1
+  reply_to: pl-arwc-pln-26-10-m1
+- id: pl-arwc-pln-26-10-m3
+  story: planning
+  from: awm140
+  to:
+  - awm139
+  - theo
+  date: '2026-09-03T10:09:00-04:00'
+  subject: 'ARWC-PLN-26-10: River sample bench'
+  body: |
+    Hana,
+
+    Only the cost headings travel. Dimensions, access and local fit need a River survey.
+
+    A River measurement record is still required.
+
+    Harriet
+  reply_to: pl-arwc-pln-26-10-m2
+- id: pl-arwc-pln-26-10-m4
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-07T10:09:00-04:00'
+  subject: 'ARWC-PLN-26-10: River sample bench'
+  body: |
+    Review attached. Orders outside completed state: 0.00 orders.
+
+    A River measurement record is still required.
+    Hana
+  attachments:
+  - pl-arwc-pln-26-10-review-r1
+  reply_to: pl-arwc-pln-26-10-m3
+- id: pl-arwc-pln-26-10-m5
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-08T10:09:00-04:00'
+  subject: 'ARWC-PLN-26-10: River sample bench'
+  body: |
+    Issued R1 attached. Survey locally and retain the existing bench until the repair and replacement scopes are comparable.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-10-recommendation-r1
+  reply_to: pl-arwc-pln-26-10-m4
+- id: pl-arwc-pln-26-11-m1
+  story: planning
+  from: theo
+  to:
+  - awm140
+  - awm141
+  date: '2026-09-01T10:15:00-04:00'
+  subject: 'ARWC-PLN-26-11: Pine East notice board'
+  body: |
+    Harriet,
+
+    Pine East notice board — return attached, through 31 August. The board carries route information. A renewal should preserve the useful location rather than create a second source of notices.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-11-input-return
+- id: pl-arwc-pln-26-11-m2
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-02T10:15:00-04:00'
+  subject: 'ARWC-PLN-26-11: Pine East notice board'
+  body: |
+    I've attached the draft and working sheet for Pine East notice board. Does a new board mean the depot can discard the old notice dates?
+
+    Please leave the answer in the review record so it travels with the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-11-workbook-v1
+  - pl-arwc-pln-26-11-recommendation-p1
+  reply_to: pl-arwc-pln-26-11-m1
+- id: pl-arwc-pln-26-11-m3
+  story: planning
+  from: awm141
+  to:
+  - awm140
+  - theo
+  date: '2026-09-03T10:15:00-04:00'
+  subject: 'ARWC-PLN-26-11: Pine East notice board'
+  body: |
+    Harriet,
+
+    Keep the historical notices in Records. Replacement concerns the physical board and weather cover.
+
+    Confirm mounting dimensions and Records retention before ordering.
+
+    Hugo
+  reply_to: pl-arwc-pln-26-11-m2
+- id: pl-arwc-pln-26-11-m4
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-07T10:15:00-04:00'
+  subject: 'ARWC-PLN-26-11: Pine East notice board'
+  body: |
+    The handover now includes your review, the units and the source return. Orders outside completed state: 1.00 orders.
+
+    Still to check: Confirm mounting dimensions and Records retention before ordering.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-11-review-r1
+  reply_to: pl-arwc-pln-26-11-m3
+- id: pl-arwc-pln-26-11-m5
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-08T10:15:00-04:00'
+  subject: 'ARWC-PLN-26-11: Pine East notice board'
+  body: |
+    Issued copy attached, with the review reference left in. Take a weatherproof replacement specification to procurement; the cheaper five-year comparator supports a quotation exercise.
+
+    Please use this one for the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-11-recommendation-r1
+  reply_to: pl-arwc-pln-26-11-m4
+- id: pl-arwc-pln-26-12-m1
+  story: planning
+  from: theo
+  to:
+  - awm141
+  - awm142
+  date: '2026-09-01T10:21:00-04:00'
+  subject: 'ARWC-PLN-26-12: River West notice board'
+  body: |
+    Hugo,
+
+    River West notice board — return attached, through 31 August. River West uses the same record process but the mounting arrangement needs its own check.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-12-input-return
+- id: pl-arwc-pln-26-12-m2
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-02T10:21:00-04:00'
+  subject: 'ARWC-PLN-26-12: River West notice board'
+  body: |
+    For our discussion: River West notice board.
+
+    Is the lowest annual allowance enough reason to replace it now? The arithmetic is in the attachment; I'd like to talk through the practical consequence.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-12-workbook-v1
+  - pl-arwc-pln-26-12-recommendation-p1
+  reply_to: pl-arwc-pln-26-12-m1
+- id: pl-arwc-pln-26-12-m3
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  - theo
+  date: '2026-09-03T10:21:00-04:00'
+  subject: 'ARWC-PLN-26-12: River West notice board'
+  body: |
+    Hugo,
+
+    No. Initial replacement cost dominates this short comparison. Retaining it is cheaper on these assumptions.
+
+    This is a financial comparator, not a structural inspection.
+
+    Idris
+  reply_to: pl-arwc-pln-26-12-m2
+- id: pl-arwc-pln-26-12-m4
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-07T10:21:00-04:00'
+  subject: 'ARWC-PLN-26-12: River West notice board'
+  body: |
+    I've written up the point we need for the discussion: Orders outside completed state: 0.00 orders.
+
+    This is a financial comparator, not a structural inspection. The review is attached.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-12-review-r1
+  reply_to: pl-arwc-pln-26-12-m3
+- id: pl-arwc-pln-26-12-m5
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-08T10:21:00-04:00'
+  subject: 'ARWC-PLN-26-12: River West notice board'
+  body: |
+    For the meeting folder: River West notice board, issued R1.
+
+    Retain and inspect the mounting at the next ordinary visit. Revisit the estimate if upkeep changes. Happy to walk through the comparison in the room.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-12-recommendation-r1
+  reply_to: pl-arwc-pln-26-12-m4
+- id: pl-arwc-pln-26-13-m1
+  story: planning
+  from: theo
+  to:
+  - awm142
+  - awm143
+  date: '2026-09-01T10:27:00-04:00'
+  subject: 'ARWC-PLN-26-13: Pine East hydrant markers'
+  body: |
+    Idris,
+
+    Pine East hydrant markers — return attached, through 31 August. The registered scope is external condition and identity. Marker work does not operate a hydrant.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-13-input-return
+- id: pl-arwc-pln-26-13-m2
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - theo
+  date: '2026-09-02T10:27:00-04:00'
+  subject: 'ARWC-PLN-26-13: Pine East hydrant markers'
+  body: |
+    Pine East hydrant markers. Draft and figures attached.
+
+    Are these estimates for the hydrants themselves?
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-13-workbook-v1
+  - pl-arwc-pln-26-13-recommendation-p1
+  reply_to: pl-arwc-pln-26-13-m1
+- id: pl-arwc-pln-26-13-m3
+  story: planning
+  from: awm143
+  to:
+  - awm142
+  - theo
+  date: '2026-09-03T10:27:00-04:00'
+  subject: 'ARWC-PLN-26-13: Pine East hydrant markers'
+  body: |
+    Idris,
+
+    They cover markers only. No valve, pressure or flow work is priced.
+
+    Survey quantities first; the current allowance is for a bounded pilot.
+
+    Imani
+  reply_to: pl-arwc-pln-26-13-m2
+- id: pl-arwc-pln-26-13-m4
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - theo
+  date: '2026-09-07T10:27:00-04:00'
+  subject: 'ARWC-PLN-26-13: Pine East hydrant markers'
+  body: |
+    Orders outside completed state: 3.00 orders.
+    Review attached. Survey quantities first; the current allowance is for a bounded pilot.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-13-review-r1
+  reply_to: pl-arwc-pln-26-13-m3
+- id: pl-arwc-pln-26-13-m5
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - theo
+  date: '2026-09-08T10:27:00-04:00'
+  subject: 'ARWC-PLN-26-13: Pine East hydrant markers'
+  body: |
+    R1 attached. Develop a marker-only package with a route count before asking for quotations.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-13-recommendation-r1
+  reply_to: pl-arwc-pln-26-13-m4
+- id: pl-arwc-pln-26-14-m1
+  story: planning
+  from: theo
+  to:
+  - awm143
+  - awm144
+  date: '2026-09-01T10:33:00-04:00'
+  subject: 'ARWC-PLN-26-14: River East hydrant markers'
+  body: |
+    Imani,
+
+    River East hydrant markers — return attached, through 31 August. The River route must retain readable identities through any marker work.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-14-input-return
+- id: pl-arwc-pln-26-14-m2
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - theo
+  date: '2026-09-02T10:33:00-04:00'
+  subject: 'ARWC-PLN-26-14: River East hydrant markers'
+  body: |
+    Review copy, 2 September: River East hydrant markers.
+
+    Can a grouped renewal proceed without checking the labels? I need the answer before booking anyone's time for the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-14-workbook-v1
+  - pl-arwc-pln-26-14-recommendation-p1
+  reply_to: pl-arwc-pln-26-14-m1
+- id: pl-arwc-pln-26-14-m3
+  story: planning
+  from: awm144
+  to:
+  - awm143
+  - theo
+  date: '2026-09-03T10:33:00-04:00'
+  subject: 'ARWC-PLN-26-14: River East hydrant markers'
+  body: |
+    Imani,
+
+    Existing identities must be copied and checked at the site. The cost allowance includes no relabelling authority.
+
+    Readability and exact asset identity remain acceptance conditions.
+
+    Iris
+  reply_to: pl-arwc-pln-26-14-m2
+- id: pl-arwc-pln-26-14-m4
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - theo
+  date: '2026-09-07T10:33:00-04:00'
+  subject: 'ARWC-PLN-26-14: River East hydrant markers'
+  body: |
+    Review copy, 7 September. Orders outside completed state: 0.00 orders.
+
+    Readability and exact asset identity remain acceptance conditions. That check needs to stay on my list before we arrange the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-14-review-r1
+  reply_to: pl-arwc-pln-26-14-m3
+- id: pl-arwc-pln-26-14-m5
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - theo
+  date: '2026-09-08T10:33:00-04:00'
+  subject: 'ARWC-PLN-26-14: River East hydrant markers'
+  body: |
+    8 September — issued paper for River East hydrant markers.
+
+    Retain the current sequence and obtain a marker inventory; replacement is not cheaper within five years here. Follow-up is on my 30 September list.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-14-recommendation-r1
+  reply_to: pl-arwc-pln-26-14-m4
+- id: pl-arwc-pln-26-15-m1
+  story: planning
+  from: theo
+  to:
+  - awm144
+  - awm145
+  date: '2026-09-01T10:39:00-04:00'
+  subject: 'ARWC-PLN-26-15: Pine West depot return bench'
+  body: |
+    Iris,
+
+    Pine West depot return bench — return attached, through 31 August. Returns share space with stock checks. An estimate needs an allowance for moving the bench and reinstating the labels.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-15-input-return
+- id: pl-arwc-pln-26-15-m2
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - theo
+  date: '2026-09-02T10:39:00-04:00'
+  subject: 'ARWC-PLN-26-15: Pine West depot return bench'
+  body: |
+    Isabel, this is the actual Pine West depot return bench attachment, with the calculation included.
+
+    Where is the temporary returns space priced? Please check the finished copy as well as the number.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-15-workbook-v1
+  - pl-arwc-pln-26-15-recommendation-p1
+  reply_to: pl-arwc-pln-26-15-m1
+- id: pl-arwc-pln-26-15-m3
+  story: planning
+  from: awm145
+  to:
+  - awm144
+  - theo
+  date: '2026-09-03T10:39:00-04:00'
+  subject: 'ARWC-PLN-26-15: Pine West depot return bench'
+  body: |
+    Iris,
+
+    The access allowance covers a short internal move, using a proposed space that still needs depot agreement.
+
+    Depot agreement is required; this note books no space.
+
+    Isabel
+  reply_to: pl-arwc-pln-26-15-m2
+- id: pl-arwc-pln-26-15-m4
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - theo
+  date: '2026-09-07T10:39:00-04:00'
+  subject: 'ARWC-PLN-26-15: Pine West depot return bench'
+  body: |
+    I've opened the reviewed copy and checked its last line: Orders outside completed state: 0.00 orders.
+
+    Depot agreement is required; this note books no space. Review attached; let me know if the attachment gives you trouble.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-15-review-r1
+  reply_to: pl-arwc-pln-26-15-m3
+- id: pl-arwc-pln-26-15-m5
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - theo
+  date: '2026-09-08T10:39:00-04:00'
+  subject: 'ARWC-PLN-26-15: Pine West depot return bench'
+  body: |
+    Finished copy attached. Ask the depot to identify temporary space before comparing supplier offers.
+
+    The draft is still in the folder if you need to see what changed.
+    Iris
+  attachments:
+  - pl-arwc-pln-26-15-recommendation-r1
+  reply_to: pl-arwc-pln-26-15-m4
+- id: pl-arwc-pln-26-16-m1
+  story: planning
+  from: theo
+  to:
+  - awm145
+  - nadia
+  date: '2026-09-01T10:45:00-04:00'
+  subject: 'ARWC-PLN-26-16: River East depot return bench'
+  body: |
+    Isabel,
+
+    River East depot return bench — return attached, through 31 August. The existing bench can be retained while a more compact layout is considered.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-16-input-return
+- id: pl-arwc-pln-26-16-m2
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - theo
+  date: '2026-09-02T10:45:00-04:00'
+  subject: 'ARWC-PLN-26-16: River East depot return bench'
+  body: |
+    One question on River East depot return bench: Would a compact bench reduce the stores workload?
+
+    I've attached my draft so you can see where I'm using the answer.
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-16-workbook-v1
+  - pl-arwc-pln-26-16-recommendation-p1
+  reply_to: pl-arwc-pln-26-16-m1
+- id: pl-arwc-pln-26-16-m3
+  story: planning
+  from: nadia
+  to:
+  - awm145
+  - theo
+  date: '2026-09-03T10:45:00-04:00'
+  subject: 'ARWC-PLN-26-16: River East depot return bench'
+  body: |
+    Isabel,
+
+    No saving in staffing is assumed. The sheet compares upkeep and a capital allowance only.
+
+    No headcount or productivity saving belongs in this estimate.
+
+    Nadia
+  reply_to: pl-arwc-pln-26-16-m2
+- id: pl-arwc-pln-26-16-m4
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - theo
+  date: '2026-09-07T10:45:00-04:00'
+  subject: 'ARWC-PLN-26-16: River East depot return bench'
+  body: |
+    I've kept your answer with the calculation. Orders outside completed state: 4.00 orders.
+
+    No headcount or productivity saving belongs in this estimate. That's the question I'll bring to the meeting.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-16-review-r1
+  reply_to: pl-arwc-pln-26-16-m3
+- id: pl-arwc-pln-26-16-m5
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - theo
+  date: '2026-09-08T10:45:00-04:00'
+  subject: 'ARWC-PLN-26-16: River East depot return bench'
+  body: |
+    I've issued the recommendation for River East depot return bench.
+
+    Retain the bench this cycle and record the layout question for a later depot review.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-16-recommendation-r1
+  reply_to: pl-arwc-pln-26-16-m4
+- id: pl-arwc-pln-26-17-m1
+  story: planning
+  from: theo
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-01T11:03:00-04:00'
+  subject: 'ARWC-PLN-26-17: Pine ventilation panel enclosure'
+  body: |
+    Nadia,
+
+    Pine ventilation panel enclosure — return attached, through 31 August. The 2022 project changed panel cooling, with control logic and duty sequence retained. This study concerns enclosure upkeep only.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-17-input-return
+- id: pl-arwc-pln-26-17-m2
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-02T11:03:00-04:00'
+  subject: 'ARWC-PLN-26-17: Pine ventilation panel enclosure'
+  body: |
+    Hana,
+
+    I've put the calculation beside the source return for Pine ventilation panel enclosure. Could a replacement enclosure change the panel cooling arrangement? I want that answered before the short version goes to Luc.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-17-workbook-v1
+  - pl-arwc-pln-26-17-recommendation-p1
+  reply_to: pl-arwc-pln-26-17-m1
+- id: pl-arwc-pln-26-17-m3
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - theo
+  date: '2026-09-03T11:03:00-04:00'
+  subject: 'ARWC-PLN-26-17: Pine ventilation panel enclosure'
+  body: |
+    Nadia,
+
+    It might, so engineering must compare against the approved drawing before any detailed scope is written.
+
+    Approved drawing and engineering review are prerequisites to a new design.
+
+    Hana
+  reply_to: pl-arwc-pln-26-17-m2
+- id: pl-arwc-pln-26-17-m4
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-07T11:03:00-04:00'
+  subject: 'ARWC-PLN-26-17: Pine ventilation panel enclosure'
+  body: |
+    Hana, I can explain this more clearly now. Orders outside completed state: 0.00 orders.
+
+    I've retained your answer in the review. Approved drawing and engineering review are prerequisites to a new design.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-17-review-r1
+  reply_to: pl-arwc-pln-26-17-m3
+- id: pl-arwc-pln-26-17-m5
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - theo
+  date: '2026-09-08T11:03:00-04:00'
+  subject: 'ARWC-PLN-26-17: Pine ventilation panel enclosure'
+  body: |
+    Here's the issued paper for Pine ventilation panel enclosure.
+
+    Commission a drawing-based scope check and keep current maintenance in place. I'll take this version to the September discussion.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-17-recommendation-r1
+  reply_to: pl-arwc-pln-26-17-m4
+- id: pl-arwc-pln-26-18-m1
+  story: planning
+  from: theo
+  to:
+  - awm139
+  - awm140
+  date: '2026-09-01T11:09:00-04:00'
+  subject: 'ARWC-PLN-26-18: Upland telemetry cabinet'
+  body: |
+    Hana,
+
+    Upland telemetry cabinet — return attached, through 31 August. The accepted 2023 handover preserved existing points. Cabinet work must not become an informal telemetry expansion.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-18-input-return
+- id: pl-arwc-pln-26-18-m2
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-02T11:09:00-04:00'
+  subject: 'ARWC-PLN-26-18: Upland telemetry cabinet'
+  body: |
+    Upland telemetry cabinet: draft attached.
+
+    Can spare cabinet capacity justify adding points now? Check that point before we issue it.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-18-workbook-v1
+  - pl-arwc-pln-26-18-recommendation-p1
+  reply_to: pl-arwc-pln-26-18-m1
+- id: pl-arwc-pln-26-18-m3
+  story: planning
+  from: awm140
+  to:
+  - awm139
+  - theo
+  date: '2026-09-03T11:09:00-04:00'
+  subject: 'ARWC-PLN-26-18: Upland telemetry cabinet'
+  body: |
+    Hana,
+
+    No. Additional points need their own approved revision. The estimate covers housing and ordinary upkeep.
+
+    No new point, logic change or operating setting is included.
+
+    Harriet
+  reply_to: pl-arwc-pln-26-18-m2
+- id: pl-arwc-pln-26-18-m4
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-07T11:09:00-04:00'
+  subject: 'ARWC-PLN-26-18: Upland telemetry cabinet'
+  body: |
+    Review attached. Orders outside completed state: 0.00 orders.
+
+    No new point, logic change or operating setting is included.
+    Hana
+  attachments:
+  - pl-arwc-pln-26-18-review-r1
+  reply_to: pl-arwc-pln-26-18-m3
+- id: pl-arwc-pln-26-18-m5
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - theo
+  date: '2026-09-08T11:09:00-04:00'
+  subject: 'ARWC-PLN-26-18: Upland telemetry cabinet'
+  body: |
+    Issued R1 attached. Price a like-for-like housing option only after the current arrangement is surveyed.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-18-recommendation-r1
+  reply_to: pl-arwc-pln-26-18-m4
+- id: pl-arwc-pln-26-19-m1
+  story: planning
+  from: theo
+  to:
+  - awm140
+  - awm141
+  date: '2026-09-01T11:15:00-04:00'
+  subject: 'ARWC-PLN-26-19: Pine depot instrument storage'
+  body: |
+    Harriet,
+
+    Pine depot instrument storage — return attached, through 31 August. Instrument storage is considered against the registered Pine depot flow instrument service history.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-19-input-return
+- id: pl-arwc-pln-26-19-m2
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-02T11:15:00-04:00'
+  subject: 'ARWC-PLN-26-19: Pine depot instrument storage'
+  body: |
+    I've attached the draft and working sheet for Pine depot instrument storage. Does new storage extend the instrument service interval?
+
+    Please leave the answer in the review record so it travels with the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-19-workbook-v1
+  - pl-arwc-pln-26-19-recommendation-p1
+  reply_to: pl-arwc-pln-26-19-m1
+- id: pl-arwc-pln-26-19-m3
+  story: planning
+  from: awm141
+  to:
+  - awm140
+  - theo
+  date: '2026-09-03T11:15:00-04:00'
+  subject: 'ARWC-PLN-26-19: Pine depot instrument storage'
+  body: |
+    Harriet,
+
+    No. The interval remains in the accepted asset record; storage is a handling improvement.
+
+    Confirm the instrument dimensions and handling method.
+
+    Hugo
+  reply_to: pl-arwc-pln-26-19-m2
+- id: pl-arwc-pln-26-19-m4
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-07T11:15:00-04:00'
+  subject: 'ARWC-PLN-26-19: Pine depot instrument storage'
+  body: |
+    The handover now includes your review, the units and the source return. Orders outside completed state: 1.00 orders.
+
+    Still to check: Confirm the instrument dimensions and handling method.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-19-review-r1
+  reply_to: pl-arwc-pln-26-19-m3
+- id: pl-arwc-pln-26-19-m5
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - theo
+  date: '2026-09-08T11:15:00-04:00'
+  subject: 'ARWC-PLN-26-19: Pine depot instrument storage'
+  body: |
+    Issued copy attached, with the review reference left in. Develop a storage specification and retain the existing service interval.
+
+    Please use this one for the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-19-recommendation-r1
+  reply_to: pl-arwc-pln-26-19-m4
+- id: pl-arwc-pln-26-20-m1
+  story: planning
+  from: theo
+  to:
+  - awm141
+  - awm142
+  date: '2026-09-01T11:21:00-04:00'
+  subject: 'ARWC-PLN-26-20: River depot motor cover'
+  body: |
+    Hugo,
+
+    River depot motor cover — return attached, through 31 August. The cover allowance concerns storage and handling around the River depot drive motor.
+
+    Theo
+  attachments:
+  - pl-arwc-pln-26-20-input-return
+- id: pl-arwc-pln-26-20-m2
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-02T11:21:00-04:00'
+  subject: 'ARWC-PLN-26-20: River depot motor cover'
+  body: |
+    For our discussion: River depot motor cover.
+
+    Can we count fewer motor failures as a saving? The arithmetic is in the attachment; I'd like to talk through the practical consequence.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-20-workbook-v1
+  - pl-arwc-pln-26-20-recommendation-p1
+  reply_to: pl-arwc-pln-26-20-m1
+- id: pl-arwc-pln-26-20-m3
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  - theo
+  date: '2026-09-03T11:21:00-04:00'
+  subject: 'ARWC-PLN-26-20: River depot motor cover'
+  body: |
+    Hugo,
+
+    There is no failure-rate evidence for that claim. Only the stated upkeep allowances enter the comparison.
+
+    Engineering suitability must precede a specification.
+
+    Idris
+  reply_to: pl-arwc-pln-26-20-m2
+- id: pl-arwc-pln-26-20-m4
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-07T11:21:00-04:00'
+  subject: 'ARWC-PLN-26-20: River depot motor cover'
+  body: |
+    I've written up the point we need for the discussion: Orders outside completed state: 2.00 orders.
+
+    Engineering suitability must precede a specification. The review is attached.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-20-review-r1
+  reply_to: pl-arwc-pln-26-20-m3
+- id: pl-arwc-pln-26-20-m5
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - theo
+  date: '2026-09-08T11:21:00-04:00'
+  subject: 'ARWC-PLN-26-20: River depot motor cover'
+  body: |
+    For the meeting folder: River depot motor cover, issued R1.
+
+    Retain current handling while engineering checks whether a cover is suitable. Happy to walk through the comparison in the room.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-20-recommendation-r1
+  reply_to: pl-arwc-pln-26-20-m4
+- id: pl-arwc-pln-26-21-m1
+  story: planning
+  from: awm146
+  to:
+  - awm141
+  - awm142
+  date: '2026-09-01T11:27:00-04:00'
+  subject: 'ARWC-PLN-26-21: January laboratory workload'
+  body: |
+    Hugo,
+
+    January laboratory workload — return attached, through 31 August. First month of this book; keep the unresolved recollection visible when estimating follow-up time.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-21-input-return
+- id: pl-arwc-pln-26-21-m2
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm146
+  date: '2026-09-02T11:27:00-04:00'
+  subject: 'ARWC-PLN-26-21: January laboratory workload'
+  body: |
+    For our discussion: January laboratory workload.
+
+    Does a recollection request create another collected sample? The arithmetic is in the attachment; I'd like to talk through the practical consequence.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-21-workbook-v1
+  - pl-arwc-pln-26-21-recommendation-p1
+  reply_to: pl-arwc-pln-26-21-m1
+- id: pl-arwc-pln-26-21-m3
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  - awm146
+  date: '2026-09-03T11:27:00-04:00'
+  subject: 'ARWC-PLN-26-21: January laboratory workload'
+  body: |
+    Hugo,
+
+    It creates follow-up work only. Count a replacement sample when one exists.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Idris
+  reply_to: pl-arwc-pln-26-21-m2
+- id: pl-arwc-pln-26-21-m4
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm146
+  date: '2026-09-07T11:27:00-04:00'
+  subject: 'ARWC-PLN-26-21: January laboratory workload'
+  body: |
+    I've written up the point we need for the discussion: Total activity allowance: 103.47 staff-hours.
+
+    Review the time assumptions with the bench team before booking capacity. The review is attached.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-21-review-r1
+  reply_to: pl-arwc-pln-26-21-m3
+- id: pl-arwc-pln-26-21-m5
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm146
+  date: '2026-09-08T11:27:00-04:00'
+  subject: 'ARWC-PLN-26-21: January laboratory workload'
+  body: |
+    For the meeting folder: January laboratory workload, issued R1.
+
+    Reserve a small follow-up allowance in the next monthly workload review. Happy to walk through the comparison in the room.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-21-recommendation-r1
+  reply_to: pl-arwc-pln-26-21-m4
+- id: pl-arwc-pln-26-22-m1
+  story: planning
+  from: awm146
+  to:
+  - awm142
+  - awm143
+  date: '2026-09-01T11:33:00-04:00'
+  subject: 'ARWC-PLN-26-22: February laboratory workload'
+  body: |
+    Idris,
+
+    February laboratory workload — return attached, through 31 August. The shorter month has fewer working days. Compare total effort and per-sample effort before discussing staffing.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-22-input-return
+- id: pl-arwc-pln-26-22-m2
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm146
+  date: '2026-09-02T11:33:00-04:00'
+  subject: 'ARWC-PLN-26-22: February laboratory workload'
+  body: |
+    February laboratory workload. Draft and figures attached.
+
+    Has workload fallen because the monthly total is smaller?
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-22-workbook-v1
+  - pl-arwc-pln-26-22-recommendation-p1
+  reply_to: pl-arwc-pln-26-22-m1
+- id: pl-arwc-pln-26-22-m3
+  story: planning
+  from: awm143
+  to:
+  - awm142
+  - awm146
+  date: '2026-09-03T11:33:00-04:00'
+  subject: 'ARWC-PLN-26-22: February laboratory workload'
+  body: |
+    Idris,
+
+    The calendar contributes to the difference. The extract cannot establish a productivity change.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Imani
+  reply_to: pl-arwc-pln-26-22-m2
+- id: pl-arwc-pln-26-22-m4
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm146
+  date: '2026-09-07T11:33:00-04:00'
+  subject: 'ARWC-PLN-26-22: February laboratory workload'
+  body: |
+    Total activity allowance: 103.33 staff-hours.
+    Review attached. Review the time assumptions with the bench team before booking capacity.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-22-review-r1
+  reply_to: pl-arwc-pln-26-22-m3
+- id: pl-arwc-pln-26-22-m5
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm146
+  date: '2026-09-08T11:33:00-04:00'
+  subject: 'ARWC-PLN-26-22: February laboratory workload'
+  body: |
+    R1 attached. Show the calendar alongside the monthly total at the staffing discussion.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-22-recommendation-r1
+  reply_to: pl-arwc-pln-26-22-m4
+- id: pl-arwc-pln-26-23-m1
+  story: planning
+  from: awm146
+  to:
+  - awm143
+  - awm144
+  date: '2026-09-01T11:39:00-04:00'
+  subject: 'ARWC-PLN-26-23: March laboratory workload'
+  body: |
+    Imani,
+
+    March laboratory workload — return attached, through 31 August. Routine analytical runs dominate the book, but repeated measurements still consume bench time.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-23-input-return
+- id: pl-arwc-pln-26-23-m2
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm146
+  date: '2026-09-02T11:39:00-04:00'
+  subject: 'ARWC-PLN-26-23: March laboratory workload'
+  body: |
+    Review copy, 2 September: March laboratory workload.
+
+    Are repeat runs already included in the result-row count? I need the answer before booking anyone's time for the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-23-workbook-v1
+  - pl-arwc-pln-26-23-recommendation-p1
+  reply_to: pl-arwc-pln-26-23-m1
+- id: pl-arwc-pln-26-23-m3
+  story: planning
+  from: awm144
+  to:
+  - awm143
+  - awm146
+  date: '2026-09-03T11:39:00-04:00'
+  subject: 'ARWC-PLN-26-23: March laboratory workload'
+  body: |
+    Imani,
+
+    Yes. Add no second repeat allowance to the result-row calculation.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Iris
+  reply_to: pl-arwc-pln-26-23-m2
+- id: pl-arwc-pln-26-23-m4
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm146
+  date: '2026-09-07T11:39:00-04:00'
+  subject: 'ARWC-PLN-26-23: March laboratory workload'
+  body: |
+    Review copy, 7 September. Total activity allowance: 113.87 staff-hours.
+
+    Review the time assumptions with the bench team before booking capacity. That check needs to stay on my list before we arrange the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-23-review-r1
+  reply_to: pl-arwc-pln-26-23-m3
+- id: pl-arwc-pln-26-23-m5
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm146
+  date: '2026-09-08T11:39:00-04:00'
+  subject: 'ARWC-PLN-26-23: March laboratory workload'
+  body: |
+    8 September — issued paper for March laboratory workload.
+
+    Retain the repeat rows in the workload return without double-counting them. Follow-up is on my 30 September list.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-23-recommendation-r1
+  reply_to: pl-arwc-pln-26-23-m4
+- id: pl-arwc-pln-26-24-m1
+  story: planning
+  from: awm146
+  to:
+  - awm144
+  - awm145
+  date: '2026-09-01T11:45:00-04:00'
+  subject: 'ARWC-PLN-26-24: April laboratory workload'
+  body: |
+    Iris,
+
+    April laboratory workload — return attached, through 31 August. A sample with three parameters produces three result rows; staffing from sample count alone understates the analytical activity.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-24-input-return
+- id: pl-arwc-pln-26-24-m2
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-02T11:45:00-04:00'
+  subject: 'ARWC-PLN-26-24: April laboratory workload'
+  body: |
+    Isabel, this is the actual April laboratory workload attachment, with the calculation included.
+
+    Can each result row be described as a separate sample? Please check the finished copy as well as the number.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-24-workbook-v1
+  - pl-arwc-pln-26-24-recommendation-p1
+  reply_to: pl-arwc-pln-26-24-m1
+- id: pl-arwc-pln-26-24-m3
+  story: planning
+  from: awm145
+  to:
+  - awm144
+  - awm146
+  date: '2026-09-03T11:45:00-04:00'
+  subject: 'ARWC-PLN-26-24: April laboratory workload'
+  body: |
+    Iris,
+
+    No. Keep the sample count for custody and the result count for bench effort.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Isabel
+  reply_to: pl-arwc-pln-26-24-m2
+- id: pl-arwc-pln-26-24-m4
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-07T11:45:00-04:00'
+  subject: 'ARWC-PLN-26-24: April laboratory workload'
+  body: |
+    I've opened the reviewed copy and checked its last line: Total activity allowance: 113.87 staff-hours.
+
+    Review the time assumptions with the bench team before booking capacity. Review attached; let me know if the attachment gives you trouble.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-24-review-r1
+  reply_to: pl-arwc-pln-26-24-m3
+- id: pl-arwc-pln-26-24-m5
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-08T11:45:00-04:00'
+  subject: 'ARWC-PLN-26-24: April laboratory workload'
+  body: |
+    Finished copy attached. Use two workload columns in the next planning pack: samples and result rows.
+
+    The draft is still in the folder if you need to see what changed.
+    Iris
+  attachments:
+  - pl-arwc-pln-26-24-recommendation-r1
+  reply_to: pl-arwc-pln-26-24-m4
+- id: pl-arwc-pln-26-25-m1
+  story: planning
+  from: awm146
+  to:
+  - awm145
+  - nadia
+  date: '2026-09-01T12:03:00-04:00'
+  subject: 'ARWC-PLN-26-25: May laboratory workload'
+  body: |
+    Isabel,
+
+    May laboratory workload — return attached, through 31 August. The estimate covers record handling and analytical work, without instrument waiting time or shift coverage.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-25-input-return
+- id: pl-arwc-pln-26-25-m2
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm146
+  date: '2026-09-02T12:03:00-04:00'
+  subject: 'ARWC-PLN-26-25: May laboratory workload'
+  body: |
+    One question on May laboratory workload: Does the calculated effort represent a full laboratory roster?
+
+    I've attached my draft so you can see where I'm using the answer.
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-25-workbook-v1
+  - pl-arwc-pln-26-25-recommendation-p1
+  reply_to: pl-arwc-pln-26-25-m1
+- id: pl-arwc-pln-26-25-m3
+  story: planning
+  from: nadia
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-03T12:03:00-04:00'
+  subject: 'ARWC-PLN-26-25: May laboratory workload'
+  body: |
+    Isabel,
+
+    No. It is an activity allowance. Leave roster decisions with the laboratory lead.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Nadia
+  reply_to: pl-arwc-pln-26-25-m2
+- id: pl-arwc-pln-26-25-m4
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm146
+  date: '2026-09-07T12:03:00-04:00'
+  subject: 'ARWC-PLN-26-25: May laboratory workload'
+  body: |
+    I've kept your answer with the calculation. Total activity allowance: 108.43 staff-hours.
+
+    Review the time assumptions with the bench team before booking capacity. That's the question I'll bring to the meeting.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-25-review-r1
+  reply_to: pl-arwc-pln-26-25-m3
+- id: pl-arwc-pln-26-25-m5
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm146
+  date: '2026-09-08T12:03:00-04:00'
+  subject: 'ARWC-PLN-26-25: May laboratory workload'
+  body: |
+    I've issued the recommendation for May laboratory workload.
+
+    Use the estimate to discuss protected review time with Jalen.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-25-recommendation-r1
+  reply_to: pl-arwc-pln-26-25-m4
+- id: pl-arwc-pln-26-26-m1
+  story: planning
+  from: awm146
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-01T12:09:00-04:00'
+  subject: 'ARWC-PLN-26-26: June laboratory workload'
+  body: |
+    Nadia,
+
+    June laboratory workload — return attached, through 31 August. Equipment services occurred during June. Their appointments remain separate from sample effort.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-26-input-return
+- id: pl-arwc-pln-26-26-m2
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm146
+  date: '2026-09-02T12:09:00-04:00'
+  subject: 'ARWC-PLN-26-26: June laboratory workload'
+  body: |
+    Hana,
+
+    I've put the calculation beside the source return for June laboratory workload. Should equipment service time be hidden in the minutes per result? I want that answered before the short version goes to Luc.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-26-workbook-v1
+  - pl-arwc-pln-26-26-recommendation-p1
+  reply_to: pl-arwc-pln-26-26-m1
+- id: pl-arwc-pln-26-26-m3
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm146
+  date: '2026-09-03T12:09:00-04:00'
+  subject: 'ARWC-PLN-26-26: June laboratory workload'
+  body: |
+    Nadia,
+
+    No. Keep service windows visible in the equipment review so capacity is not counted twice.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Hana
+  reply_to: pl-arwc-pln-26-26-m2
+- id: pl-arwc-pln-26-26-m4
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm146
+  date: '2026-09-07T12:09:00-04:00'
+  subject: 'ARWC-PLN-26-26: June laboratory workload'
+  body: |
+    Hana, I can explain this more clearly now. Total activity allowance: 113.87 staff-hours.
+
+    I've retained your answer in the review. Review the time assumptions with the bench team before booking capacity.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-26-review-r1
+  reply_to: pl-arwc-pln-26-26-m3
+- id: pl-arwc-pln-26-26-m5
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm146
+  date: '2026-09-08T12:09:00-04:00'
+  subject: 'ARWC-PLN-26-26: June laboratory workload'
+  body: |
+    Here's the issued paper for June laboratory workload.
+
+    Carry sample effort and service windows as separate planning lines. I'll take this version to the September discussion.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-26-recommendation-r1
+  reply_to: pl-arwc-pln-26-26-m4
+- id: pl-arwc-pln-26-27-m1
+  story: planning
+  from: awm146
+  to:
+  - awm139
+  - awm140
+  date: '2026-09-01T12:15:00-04:00'
+  subject: 'ARWC-PLN-26-27: July laboratory workload'
+  body: |
+    Hana,
+
+    July laboratory workload — return attached, through 31 August. Learning sessions belong to named staff records. The workbook does not equate attendance with new analytical authority.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-27-input-return
+- id: pl-arwc-pln-26-27-m2
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm146
+  date: '2026-09-02T12:15:00-04:00'
+  subject: 'ARWC-PLN-26-27: July laboratory workload'
+  body: |
+    July laboratory workload: draft attached.
+
+    Can training attendance increase assumed output immediately? Check that point before we issue it.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-27-workbook-v1
+  - pl-arwc-pln-26-27-recommendation-p1
+  reply_to: pl-arwc-pln-26-27-m1
+- id: pl-arwc-pln-26-27-m3
+  story: planning
+  from: awm140
+  to:
+  - awm139
+  - awm146
+  date: '2026-09-03T12:15:00-04:00'
+  subject: 'ARWC-PLN-26-27: July laboratory workload'
+  body: |
+    Hana,
+
+    There is no performance evidence for that. The activity estimate uses the same explicit time assumptions.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Harriet
+  reply_to: pl-arwc-pln-26-27-m2
+- id: pl-arwc-pln-26-27-m4
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm146
+  date: '2026-09-07T12:15:00-04:00'
+  subject: 'ARWC-PLN-26-27: July laboratory workload'
+  body: |
+    Review attached. Total activity allowance: 118.77 staff-hours.
+
+    Review the time assumptions with the bench team before booking capacity.
+    Hana
+  attachments:
+  - pl-arwc-pln-26-27-review-r1
+  reply_to: pl-arwc-pln-26-27-m3
+- id: pl-arwc-pln-26-27-m5
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - awm146
+  date: '2026-09-08T12:15:00-04:00'
+  subject: 'ARWC-PLN-26-27: July laboratory workload'
+  body: |
+    Issued R1 attached. Protect learning time without assigning an unsupported productivity gain.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-27-recommendation-r1
+  reply_to: pl-arwc-pln-26-27-m4
+- id: pl-arwc-pln-26-28-m1
+  story: planning
+  from: awm146
+  to:
+  - awm140
+  - awm141
+  date: '2026-09-01T12:21:00-04:00'
+  subject: 'ARWC-PLN-26-28: August laboratory workload'
+  body: |
+    Harriet,
+
+    August laboratory workload — return attached, through 31 August. The August source is the smaller field-handoff book, not a complete routine monthly laboratory census.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-28-input-return
+- id: pl-arwc-pln-26-28-m2
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm146
+  date: '2026-09-02T12:21:00-04:00'
+  subject: 'ARWC-PLN-26-28: August laboratory workload'
+  body: |
+    I've attached the draft and working sheet for August laboratory workload. Can the smaller count justify reducing the laboratory establishment?
+
+    Please leave the answer in the review record so it travels with the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-28-workbook-v1
+  - pl-arwc-pln-26-28-recommendation-p1
+  reply_to: pl-arwc-pln-26-28-m1
+- id: pl-arwc-pln-26-28-m3
+  story: planning
+  from: awm141
+  to:
+  - awm140
+  - awm146
+  date: '2026-09-03T12:21:00-04:00'
+  subject: 'ARWC-PLN-26-28: August laboratory workload'
+  body: |
+    Harriet,
+
+    No. Coverage changed. Keep this as a workload sample and mark it unsuitable for a month-to-month staffing reduction.
+
+    Review the time assumptions with the bench team before booking capacity.
+
+    Hugo
+  reply_to: pl-arwc-pln-26-28-m2
+- id: pl-arwc-pln-26-28-m4
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm146
+  date: '2026-09-07T12:21:00-04:00'
+  subject: 'ARWC-PLN-26-28: August laboratory workload'
+  body: |
+    The handover now includes your review, the units and the source return. Total activity allowance: 36.10 staff-hours.
+
+    Still to check: Review the time assumptions with the bench team before booking capacity.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-28-review-r1
+  reply_to: pl-arwc-pln-26-28-m3
+- id: pl-arwc-pln-26-28-m5
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm146
+  date: '2026-09-08T12:21:00-04:00'
+  subject: 'ARWC-PLN-26-28: August laboratory workload'
+  body: |
+    Issued copy attached, with the review reference left in. Request a comparable full-month return before changing any staffing assumption.
+
+    Please use this one for the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-28-recommendation-r1
+  reply_to: pl-arwc-pln-26-28-m4
+- id: pl-arwc-pln-26-29-m1
+  story: planning
+  from: awm129
+  to:
+  - awm142
+  - awm143
+  date: '2026-09-01T12:27:00-04:00'
+  subject: 'ARWC-PLN-26-29: North reservoir inlet actuator renewal cost comparison'
+  body: |
+    Idris,
+
+    North reservoir inlet actuator renewal cost comparison — return attached, through 31 August. ARWC-CP-2021-01 was handed over on 2021-08-02 at USD 181,940.00. Maintain the existing fail-safe direction and local indication. The completed scope is retained as historical context.
+
+    Edda
+  attachments:
+  - pl-arwc-pln-26-29-input-return
+- id: pl-arwc-pln-26-29-m2
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm129
+  date: '2026-09-02T12:27:00-04:00'
+  subject: 'ARWC-PLN-26-29: North reservoir inlet actuator renewal cost comparison'
+  body: |
+    North reservoir inlet actuator renewal cost comparison. Draft and figures attached.
+
+    Can the actuator cost serve as a price for every valve package?
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-29-workbook-v1
+  - pl-arwc-pln-26-29-recommendation-p1
+  reply_to: pl-arwc-pln-26-29-m1
+- id: pl-arwc-pln-26-29-m3
+  story: planning
+  from: awm143
+  to:
+  - awm142
+  - awm129
+  date: '2026-09-03T12:27:00-04:00'
+  subject: 'ARWC-PLN-26-29: North reservoir inlet actuator renewal cost comparison'
+  body: |
+    Idris,
+
+    The actuator scope is specific to North reservoir. A different valve needs its own access and engineering review.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure.
+
+    Imani
+  reply_to: pl-arwc-pln-26-29-m2
+- id: pl-arwc-pln-26-29-m4
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm129
+  date: '2026-09-07T12:27:00-04:00'
+  subject: 'ARWC-PLN-26-29: North reservoir inlet actuator renewal cost comparison'
+  body: |
+    Illustrative uplifted comparator: 209231.00 USD.
+    Review attached. A current scope, engineering review and quotation are required before a capital request can rely on this figure.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-29-review-r1
+  reply_to: pl-arwc-pln-26-29-m3
+- id: pl-arwc-pln-26-29-m5
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm129
+  date: '2026-09-08T12:27:00-04:00'
+  subject: 'ARWC-PLN-26-29: North reservoir inlet actuator renewal cost comparison'
+  body: |
+    R1 attached. Retain the accepted amount as a scale reference. Use the uplift only to test the sensitivity of an early budget discussion.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-29-recommendation-r1
+  reply_to: pl-arwc-pln-26-29-m4
+- id: pl-arwc-pln-26-30-m1
+  story: planning
+  from: awm130
+  to:
+  - awm143
+  - awm144
+  date: '2026-09-01T12:33:00-04:00'
+  subject: 'ARWC-PLN-26-30: Pine pump hall ventilation refurbishment cost comparison'
+  body: |
+    Imani,
+
+    Pine pump hall ventilation refurbishment cost comparison — return attached, through 31 August. ARWC-CP-2022-02 was handed over on 2022-06-27 at USD 124,320.00. The panel cooling path changes; control logic and duty sequence do not. The completed scope is retained as historical context.
+
+    Eira
+  attachments:
+  - pl-arwc-pln-26-30-input-return
+- id: pl-arwc-pln-26-30-m2
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm130
+  date: '2026-09-02T12:33:00-04:00'
+  subject: 'ARWC-PLN-26-30: Pine pump hall ventilation refurbishment cost comparison'
+  body: |
+    Review copy, 2 September: Pine pump hall ventilation refurbishment cost comparison.
+
+    Does the ventilation saving imply spare project budget? I need the answer before booking anyone's time for the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-30-workbook-v1
+  - pl-arwc-pln-26-30-recommendation-p1
+  reply_to: pl-arwc-pln-26-30-m1
+- id: pl-arwc-pln-26-30-m3
+  story: planning
+  from: awm144
+  to:
+  - awm143
+  - awm130
+  date: '2026-09-03T12:33:00-04:00'
+  subject: 'ARWC-PLN-26-30: Pine pump hall ventilation refurbishment cost comparison'
+  body: |
+    Imani,
+
+    The difference closes the historical comparison; it creates no authority to spend another project budget.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure.
+
+    Iris
+  reply_to: pl-arwc-pln-26-30-m2
+- id: pl-arwc-pln-26-30-m4
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm130
+  date: '2026-09-07T12:33:00-04:00'
+  subject: 'ARWC-PLN-26-30: Pine pump hall ventilation refurbishment cost comparison'
+  body: |
+    Review copy, 7 September. Illustrative uplifted comparator: 142968.00 USD.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure. That check needs to stay on my list before we arrange the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-30-review-r1
+  reply_to: pl-arwc-pln-26-30-m3
+- id: pl-arwc-pln-26-30-m5
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm130
+  date: '2026-09-08T12:33:00-04:00'
+  subject: 'ARWC-PLN-26-30: Pine pump hall ventilation refurbishment cost comparison'
+  body: |
+    8 September — issued paper for Pine pump hall ventilation refurbishment cost comparison.
+
+    Retain the accepted amount as a scale reference. Use the uplift only to test the sensitivity of an early budget discussion. Follow-up is on my 30 September list.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-30-recommendation-r1
+  reply_to: pl-arwc-pln-26-30-m4
+- id: pl-arwc-pln-26-31-m1
+  story: planning
+  from: awm134
+  to:
+  - awm144
+  - awm145
+  date: '2026-09-01T12:39:00-04:00'
+  subject: 'ARWC-PLN-26-31: River booster duty pump renewal cost comparison'
+  body: |
+    Iris,
+
+    River booster duty pump renewal cost comparison — return attached, through 31 August. ARWC-CP-2022-03 was handed over on 2023-02-20 at USD 235,780.00. Retain the established duty/standby selection and downstream protection. The completed scope is retained as historical context.
+
+    Farah
+  attachments:
+  - pl-arwc-pln-26-31-input-return
+- id: pl-arwc-pln-26-31-m2
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm134
+  date: '2026-09-02T12:39:00-04:00'
+  subject: 'ARWC-PLN-26-31: River booster duty pump renewal cost comparison'
+  body: |
+    Isabel, this is the actual River booster duty pump renewal cost comparison attachment, with the calculation included.
+
+    Can the pump amount be carried into a new district without a site survey? Please check the finished copy as well as the number.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-31-workbook-v1
+  - pl-arwc-pln-26-31-recommendation-p1
+  reply_to: pl-arwc-pln-26-31-m1
+- id: pl-arwc-pln-26-31-m3
+  story: planning
+  from: awm145
+  to:
+  - awm144
+  - awm134
+  date: '2026-09-03T12:39:00-04:00'
+  subject: 'ARWC-PLN-26-31: River booster duty pump renewal cost comparison'
+  body: |
+    Iris,
+
+    The accepted amount belongs to River East and its documented scope. Access and duty requirements at another site may differ.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure.
+
+    Isabel
+  reply_to: pl-arwc-pln-26-31-m2
+- id: pl-arwc-pln-26-31-m4
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm134
+  date: '2026-09-07T12:39:00-04:00'
+  subject: 'ARWC-PLN-26-31: River booster duty pump renewal cost comparison'
+  body: |
+    I've opened the reviewed copy and checked its last line: Illustrative uplifted comparator: 271147.00 USD.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure. Review attached; let me know if the attachment gives you trouble.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-31-review-r1
+  reply_to: pl-arwc-pln-26-31-m3
+- id: pl-arwc-pln-26-31-m5
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm134
+  date: '2026-09-08T12:39:00-04:00'
+  subject: 'ARWC-PLN-26-31: River booster duty pump renewal cost comparison'
+  body: |
+    Finished copy attached. Retain the accepted amount as a scale reference. Use the uplift only to test the sensitivity of an early budget discussion.
+
+    The draft is still in the folder if you need to see what changed.
+    Iris
+  attachments:
+  - pl-arwc-pln-26-31-recommendation-r1
+  reply_to: pl-arwc-pln-26-31-m4
+- id: pl-arwc-pln-26-32-m1
+  story: planning
+  from: awm137
+  to:
+  - awm145
+  - nadia
+  date: '2026-09-01T12:45:00-04:00'
+  subject: 'ARWC-PLN-26-32: Upland station telemetry panel renewal cost comparison'
+  body: |
+    Isabel,
+
+    Upland station telemetry panel renewal cost comparison — return attached, through 31 August. ARWC-CP-2023-04 was handed over on 2023-09-18 at USD 96,840.00. Map existing points one for one; additions require a separate approved revision. The completed scope is retained as historical context.
+
+    Flora
+  attachments:
+  - pl-arwc-pln-26-32-input-return
+- id: pl-arwc-pln-26-32-m2
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm137
+  date: '2026-09-02T12:45:00-04:00'
+  subject: 'ARWC-PLN-26-32: Upland station telemetry panel renewal cost comparison'
+  body: |
+    One question on Upland station telemetry panel renewal cost comparison: Would the old telemetry amount cover additional points?
+
+    I've attached my draft so you can see where I'm using the answer.
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-32-workbook-v1
+  - pl-arwc-pln-26-32-recommendation-p1
+  reply_to: pl-arwc-pln-26-32-m1
+- id: pl-arwc-pln-26-32-m3
+  story: planning
+  from: nadia
+  to:
+  - awm145
+  - awm137
+  date: '2026-09-03T12:45:00-04:00'
+  subject: 'ARWC-PLN-26-32: Upland station telemetry panel renewal cost comparison'
+  body: |
+    Isabel,
+
+    The handover preserves the existing point map. Additional points require a separate approved revision and price.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure.
+
+    Nadia
+  reply_to: pl-arwc-pln-26-32-m2
+- id: pl-arwc-pln-26-32-m4
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm137
+  date: '2026-09-07T12:45:00-04:00'
+  subject: 'ARWC-PLN-26-32: Upland station telemetry panel renewal cost comparison'
+  body: |
+    I've kept your answer with the calculation. Illustrative uplifted comparator: 111366.00 USD.
+
+    A current scope, engineering review and quotation are required before a capital request can rely on this figure. That's the question I'll bring to the meeting.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-32-review-r1
+  reply_to: pl-arwc-pln-26-32-m3
+- id: pl-arwc-pln-26-32-m5
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm137
+  date: '2026-09-08T12:45:00-04:00'
+  subject: 'ARWC-PLN-26-32: Upland station telemetry panel renewal cost comparison'
+  body: |
+    I've issued the recommendation for Upland station telemetry panel renewal cost comparison.
+
+    Retain the accepted amount as a scale reference. Use the uplift only to test the sensitivity of an early budget discussion.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-32-recommendation-r1
+  reply_to: pl-arwc-pln-26-32-m4
+- id: pl-arwc-pln-26-33-m1
+  story: planning
+  from: priya
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-01T13:03:00-04:00'
+  subject: 'ARWC-PLN-26-33: Merewick Bulk Water Cooperative reference'
+  body: |
+    Nadia,
+
+    Merewick Bulk Water Cooperative reference — return attached, through 31 August. Agreement A-S-003-AGR-01 runs from 1 January 2024 through 31 December 2027; its ceiling is 20,000 m³ per calendar year. Merewick draws from a separate larger source and storage portfolio. ARWC has an existing utility connection, but availability depends on Merewick commitments and conditions. Cairn Reach is one reserve in ARWC’s wider source portfolio.
+
+    Priya
+  attachments:
+  - pl-arwc-pln-26-33-input-return
+- id: pl-arwc-pln-26-33-m2
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - priya
+  date: '2026-09-02T13:03:00-04:00'
+  subject: 'ARWC-PLN-26-33: Merewick Bulk Water Cooperative reference'
+  body: |
+    Hana,
+
+    I've put the calculation beside the source return for Merewick Bulk Water Cooperative reference. Can the uncalled quantity be entered as available supply? I want that answered before the short version goes to Luc.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-33-workbook-v1
+  - pl-arwc-pln-26-33-recommendation-p1
+  reply_to: pl-arwc-pln-26-33-m1
+- id: pl-arwc-pln-26-33-m3
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - priya
+  date: '2026-09-03T13:03:00-04:00'
+  subject: 'ARWC-PLN-26-33: Merewick Bulk Water Cooperative reference'
+  body: |
+    Nadia,
+
+    No. A dated offer and accepted reservation are still required for each purchase.
+
+    The agreement end date and individual acceptance requirements remain unchanged. No new reservation or delivery is recorded.
+
+    Hana
+  reply_to: pl-arwc-pln-26-33-m2
+- id: pl-arwc-pln-26-33-m4
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - priya
+  date: '2026-09-07T13:03:00-04:00'
+  subject: 'ARWC-PLN-26-33: Merewick Bulk Water Cooperative reference'
+  body: |
+    Hana, I can explain this more clearly now. Ceiling utilization: 11.25 percent.
+
+    I've retained your answer in the review. The agreement end date and individual acceptance requirements remain unchanged. No new reservation or delivery is recorded.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-33-review-r1
+  reply_to: pl-arwc-pln-26-33-m3
+- id: pl-arwc-pln-26-33-m5
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - priya
+  date: '2026-09-08T13:03:00-04:00'
+  subject: 'ARWC-PLN-26-33: Merewick Bulk Water Cooperative reference'
+  body: |
+    Here's the issued paper for Merewick Bulk Water Cooperative reference.
+
+    Retain the agreement and accepted activity as reference for future requests. Keep unconfirmed quantities outside any firm resource total. I'll take this version to the September discussion.
+
+    Nadia
+  attachments:
+  - pl-arwc-pln-26-33-recommendation-r1
+  reply_to: pl-arwc-pln-26-33-m4
+- id: pl-arwc-pln-26-34-m1
+  story: planning
+  from: priya
+  to:
+  - awm139
+  - awm140
+  date: '2026-09-01T13:09:00-04:00'
+  subject: 'ARWC-PLN-26-34: Talvern Growers Cooperative reference'
+  body: |
+    Hana,
+
+    Talvern Growers Cooperative reference — return attached, through 31 August. Agreement A-B-002-AGR-01 runs from 1 May 2025 through 30 September 2027. Talvern’s shared Pine facilities have a limited supplementary June–September irrigation ceiling of 7,500 m³ from treated distribution supply. Members’ other sources and household service are separate.
+
+    Priya
+  attachments:
+  - pl-arwc-pln-26-34-input-return
+- id: pl-arwc-pln-26-34-m2
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - priya
+  date: '2026-09-02T13:09:00-04:00'
+  subject: 'ARWC-PLN-26-34: Talvern Growers Cooperative reference'
+  body: |
+    Talvern Growers Cooperative reference: draft attached.
+
+    Should the full seasonal ceiling be counted as water already delivered? Check that point before we issue it.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-34-workbook-v1
+  - pl-arwc-pln-26-34-recommendation-p1
+  reply_to: pl-arwc-pln-26-34-m1
+- id: pl-arwc-pln-26-34-m3
+  story: planning
+  from: awm140
+  to:
+  - awm139
+  - priya
+  date: '2026-09-03T13:09:00-04:00'
+  subject: 'ARWC-PLN-26-34: Talvern Growers Cooperative reference'
+  body: |
+    Hana,
+
+    Only the three accepted deliveries count as delivered. The ceiling is a limit and does not commit the remainder.
+
+    The agreement end date and individual acceptance requirements remain unchanged. No new reservation or delivery is recorded.
+
+    Harriet
+  reply_to: pl-arwc-pln-26-34-m2
+- id: pl-arwc-pln-26-34-m4
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - priya
+  date: '2026-09-07T13:09:00-04:00'
+  subject: 'ARWC-PLN-26-34: Talvern Growers Cooperative reference'
+  body: |
+    Review attached. Ceiling utilization: 20.93 percent.
+
+    The agreement end date and individual acceptance requirements remain unchanged. No new reservation or delivery is recorded.
+    Hana
+  attachments:
+  - pl-arwc-pln-26-34-review-r1
+  reply_to: pl-arwc-pln-26-34-m3
+- id: pl-arwc-pln-26-34-m5
+  story: planning
+  from: awm139
+  to:
+  - awm140
+  - priya
+  date: '2026-09-08T13:09:00-04:00'
+  subject: 'ARWC-PLN-26-34: Talvern Growers Cooperative reference'
+  body: |
+    Issued R1 attached. Retain the agreement and accepted activity as reference for future requests. Keep unconfirmed quantities outside any firm resource total.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-34-recommendation-r1
+  reply_to: pl-arwc-pln-26-34-m4
+- id: pl-arwc-pln-26-35-m1
+  story: planning
+  from: awm197
+  to:
+  - awm140
+  - awm141
+  date: '2026-09-01T13:15:00-04:00'
+  subject: 'ARWC-PLN-26-35: Pine seasonal screening'
+  body: |
+    Harriet,
+
+    Pine seasonal screening — return attached, through 31 August. Household and master-meter totals cover April–June; business and municipal totals cover June. Daily normalization permits a limited comparison, but does not create a measured common-day demand curve. Treated supply, operational use and unbilled water are outside this extract.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-35-input-return
+- id: pl-arwc-pln-26-35-m2
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-02T13:15:00-04:00'
+  subject: 'ARWC-PLN-26-35: Pine seasonal screening'
+  body: |
+    I've attached the draft and working sheet for Pine seasonal screening. Can the combined line be titled current district demand?
+
+    Please leave the answer in the review record so it travels with the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-35-workbook-v1
+  - pl-arwc-pln-26-35-recommendation-p1
+  reply_to: pl-arwc-pln-26-35-m1
+- id: pl-arwc-pln-26-35-m3
+  story: planning
+  from: awm141
+  to:
+  - awm140
+  - awm197
+  date: '2026-09-03T13:15:00-04:00'
+  subject: 'ARWC-PLN-26-35: Pine seasonal screening'
+  body: |
+    Harriet,
+
+    Use mixed-period billed reference. A common-period extract and distribution-input record are required before presenting a water balance.
+
+    No source capacity, reserve volume, peak-hour factor or district allocation is inferred.
+
+    Hugo
+  reply_to: pl-arwc-pln-26-35-m2
+- id: pl-arwc-pln-26-35-m4
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-07T13:15:00-04:00'
+  subject: 'ARWC-PLN-26-35: Pine seasonal screening'
+  body: |
+    The handover now includes your review, the units and the source return. Summer comparison: 29209.13 m³/day.
+
+    Still to check: No source capacity, reserve volume, peak-hour factor or district allocation is inferred.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-35-review-r1
+  reply_to: pl-arwc-pln-26-35-m3
+- id: pl-arwc-pln-26-35-m5
+  story: planning
+  from: awm140
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-08T13:15:00-04:00'
+  subject: 'ARWC-PLN-26-35: Pine seasonal screening'
+  body: |
+    Issued copy attached, with the review reference left in. Keep the seasonal bounds in the five-year discussion as screening ranges. Request aligned source periods before choosing a growth path.
+
+    Please use this one for the handover.
+    Harriet
+  attachments:
+  - pl-arwc-pln-26-35-recommendation-r1
+  reply_to: pl-arwc-pln-26-35-m4
+- id: pl-arwc-pln-26-36-m1
+  story: planning
+  from: awm197
+  to:
+  - awm141
+  - awm142
+  date: '2026-09-01T13:21:00-04:00'
+  subject: 'ARWC-PLN-26-36: River seasonal screening'
+  body: |
+    Hugo,
+
+    River seasonal screening — return attached, through 31 August. Household and master-meter totals cover April–June; business and municipal totals cover June. Daily normalization permits a limited comparison, but does not create a measured common-day demand curve. Treated supply, operational use and unbilled water are outside this extract.
+
+    Amara
+  attachments:
+  - pl-arwc-pln-26-36-input-return
+- id: pl-arwc-pln-26-36-m2
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-02T13:21:00-04:00'
+  subject: 'ARWC-PLN-26-36: River seasonal screening'
+  body: |
+    For our discussion: River seasonal screening.
+
+    Can the combined line be titled current district demand? The arithmetic is in the attachment; I'd like to talk through the practical consequence.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-36-workbook-v1
+  - pl-arwc-pln-26-36-recommendation-p1
+  reply_to: pl-arwc-pln-26-36-m1
+- id: pl-arwc-pln-26-36-m3
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  - awm197
+  date: '2026-09-03T13:21:00-04:00'
+  subject: 'ARWC-PLN-26-36: River seasonal screening'
+  body: |
+    Hugo,
+
+    Use mixed-period billed reference. A common-period extract and distribution-input record are required before presenting a water balance.
+
+    No source capacity, reserve volume, peak-hour factor or district allocation is inferred.
+
+    Idris
+  reply_to: pl-arwc-pln-26-36-m2
+- id: pl-arwc-pln-26-36-m4
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-07T13:21:00-04:00'
+  subject: 'ARWC-PLN-26-36: River seasonal screening'
+  body: |
+    I've written up the point we need for the discussion: Summer comparison: 23232.18 m³/day.
+
+    No source capacity, reserve volume, peak-hour factor or district allocation is inferred. The review is attached.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-36-review-r1
+  reply_to: pl-arwc-pln-26-36-m3
+- id: pl-arwc-pln-26-36-m5
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  - awm197
+  date: '2026-09-08T13:21:00-04:00'
+  subject: 'ARWC-PLN-26-36: River seasonal screening'
+  body: |
+    For the meeting folder: River seasonal screening, issued R1.
+
+    Keep the seasonal bounds in the five-year discussion as screening ranges. Request aligned source periods before choosing a growth path. Happy to walk through the comparison in the room.
+
+    Hugo
+  attachments:
+  - pl-arwc-pln-26-36-recommendation-r1
+  reply_to: pl-arwc-pln-26-36-m4
+- id: pl-arwc-pln-26-37-m1
+  story: planning
+  from: awm085
+  to:
+  - awm142
+  - awm143
+  date: '2026-09-01T13:27:00-04:00'
+  subject: 'ARWC-PLN-26-37: Pine field return capacity'
+  body: |
+    Idris,
+
+    Pine field return capacity — return attached, through 31 August. The August dispatch book records completed visits, no access and follow-up separately. Those categories describe visits, not unique households or unresolved complaints.
+
+    Nina
+  attachments:
+  - pl-arwc-pln-26-37-input-return
+- id: pl-arwc-pln-26-37-m2
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm085
+  date: '2026-09-02T13:27:00-04:00'
+  subject: 'ARWC-PLN-26-37: Pine field return capacity'
+  body: |
+    Pine field return capacity. Draft and figures attached.
+
+    Does a follow-up count mean a second appointment has already been booked?
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-37-workbook-v1
+  - pl-arwc-pln-26-37-recommendation-p1
+  reply_to: pl-arwc-pln-26-37-m1
+- id: pl-arwc-pln-26-37-m3
+  story: planning
+  from: awm143
+  to:
+  - awm142
+  - awm085
+  date: '2026-09-03T13:27:00-04:00'
+  subject: 'ARWC-PLN-26-37: Pine field return capacity'
+  body: |
+    Idris,
+
+    It identifies further coordination work. Customer contact and field scheduling must agree a return before it becomes an appointment.
+
+    The allowance excludes field crew hours and must not be used as a complete resource budget.
+
+    Imani
+  reply_to: pl-arwc-pln-26-37-m2
+- id: pl-arwc-pln-26-37-m4
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm085
+  date: '2026-09-07T13:27:00-04:00'
+  subject: 'ARWC-PLN-26-37: Pine field return capacity'
+  body: |
+    Return-planning allowance: 2.50 staff-hours.
+    Review attached. The allowance excludes field crew hours and must not be used as a complete resource budget.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-37-review-r1
+  reply_to: pl-arwc-pln-26-37-m3
+- id: pl-arwc-pln-26-37-m5
+  story: planning
+  from: awm142
+  to:
+  - awm143
+  - awm085
+  date: '2026-09-08T13:27:00-04:00'
+  subject: 'ARWC-PLN-26-37: Pine field return capacity'
+  body: |
+    R1 attached. Reserve desk time to scope the returns and keep actual appointments in the existing scheduling process.
+
+    Idris
+  attachments:
+  - pl-arwc-pln-26-37-recommendation-r1
+  reply_to: pl-arwc-pln-26-37-m4
+- id: pl-arwc-pln-26-38-m1
+  story: planning
+  from: awm086
+  to:
+  - awm143
+  - awm144
+  date: '2026-09-01T13:33:00-04:00'
+  subject: 'ARWC-PLN-26-38: River field return capacity'
+  body: |
+    Imani,
+
+    River field return capacity — return attached, through 31 August. The August dispatch book records completed visits, no access and follow-up separately. Those categories describe visits, not unique households or unresolved complaints.
+
+    Omar
+  attachments:
+  - pl-arwc-pln-26-38-input-return
+- id: pl-arwc-pln-26-38-m2
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm086
+  date: '2026-09-02T13:33:00-04:00'
+  subject: 'ARWC-PLN-26-38: River field return capacity'
+  body: |
+    Review copy, 2 September: River field return capacity.
+
+    Does a follow-up count mean a second appointment has already been booked? I need the answer before booking anyone's time for the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-38-workbook-v1
+  - pl-arwc-pln-26-38-recommendation-p1
+  reply_to: pl-arwc-pln-26-38-m1
+- id: pl-arwc-pln-26-38-m3
+  story: planning
+  from: awm144
+  to:
+  - awm143
+  - awm086
+  date: '2026-09-03T13:33:00-04:00'
+  subject: 'ARWC-PLN-26-38: River field return capacity'
+  body: |
+    Imani,
+
+    It identifies further coordination work. Customer contact and field scheduling must agree a return before it becomes an appointment.
+
+    The allowance excludes field crew hours and must not be used as a complete resource budget.
+
+    Iris
+  reply_to: pl-arwc-pln-26-38-m2
+- id: pl-arwc-pln-26-38-m4
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm086
+  date: '2026-09-07T13:33:00-04:00'
+  subject: 'ARWC-PLN-26-38: River field return capacity'
+  body: |
+    Review copy, 7 September. Return-planning allowance: 2.50 staff-hours.
+
+    The allowance excludes field crew hours and must not be used as a complete resource budget. That check needs to stay on my list before we arrange the next step.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-38-review-r1
+  reply_to: pl-arwc-pln-26-38-m3
+- id: pl-arwc-pln-26-38-m5
+  story: planning
+  from: awm143
+  to:
+  - awm144
+  - awm086
+  date: '2026-09-08T13:33:00-04:00'
+  subject: 'ARWC-PLN-26-38: River field return capacity'
+  body: |
+    8 September — issued paper for River field return capacity.
+
+    Reserve desk time to scope the returns and keep actual appointments in the existing scheduling process. Follow-up is on my 30 September list.
+
+    Imani
+  attachments:
+  - pl-arwc-pln-26-38-recommendation-r1
+  reply_to: pl-arwc-pln-26-38-m4
+- id: pl-arwc-pln-26-39-m1
+  story: planning
+  from: awm146
+  to:
+  - awm144
+  - awm145
+  date: '2026-09-01T13:39:00-04:00'
+  subject: 'ARWC-PLN-26-39: Laboratory equipment service windows'
+  body: |
+    Iris,
+
+    Laboratory equipment service windows — return attached, through 31 August. Equipment completion records show finite service windows. Keep them outside sample-processing time so the same capacity is not counted twice.
+
+    Jalen
+  attachments:
+  - pl-arwc-pln-26-39-input-return
+- id: pl-arwc-pln-26-39-m2
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-02T13:39:00-04:00'
+  subject: 'ARWC-PLN-26-39: Laboratory equipment service windows'
+  body: |
+    Isabel, this is the actual Laboratory equipment service windows attachment, with the calculation included.
+
+    Can two staff on cover be shown as actual attendance? Please check the finished copy as well as the number.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-39-workbook-v1
+  - pl-arwc-pln-26-39-recommendation-p1
+  reply_to: pl-arwc-pln-26-39-m1
+- id: pl-arwc-pln-26-39-m3
+  story: planning
+  from: awm145
+  to:
+  - awm144
+  - awm146
+  date: '2026-09-03T13:39:00-04:00'
+  subject: 'ARWC-PLN-26-39: Laboratory equipment service windows'
+  body: |
+    Iris,
+
+    No. The recorded service owner is a fact; two-person cover is an explicit future planning assumption.
+
+    A service booking does not authorize changes to result records.
+
+    Isabel
+  reply_to: pl-arwc-pln-26-39-m2
+- id: pl-arwc-pln-26-39-m4
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-07T13:39:00-04:00'
+  subject: 'ARWC-PLN-26-39: Laboratory equipment service windows'
+  body: |
+    I've opened the reviewed copy and checked its last line: Illustrative cover allowance: 51.00 staff-hours.
+
+    A service booking does not authorize changes to result records. Review attached; let me know if the attachment gives you trouble.
+
+    Iris
+  attachments:
+  - pl-arwc-pln-26-39-review-r1
+  reply_to: pl-arwc-pln-26-39-m3
+- id: pl-arwc-pln-26-39-m5
+  story: planning
+  from: awm144
+  to:
+  - awm145
+  - awm146
+  date: '2026-09-08T13:39:00-04:00'
+  subject: 'ARWC-PLN-26-39: Laboratory equipment service windows'
+  body: |
+    Finished copy attached. Discuss alternate equipment access with Jalen before confirming future service windows.
+
+    The draft is still in the folder if you need to see what changed.
+    Iris
+  attachments:
+  - pl-arwc-pln-26-39-recommendation-r1
+  reply_to: pl-arwc-pln-26-39-m4
+- id: pl-arwc-pln-26-40-m1
+  story: planning
+  from: awm139
+  to:
+  - awm145
+  - nadia
+  date: '2026-09-01T13:45:00-04:00'
+  subject: 'ARWC-PLN-26-40: Resource planning review and learning time'
+  body: |
+    Isabel,
+
+    Resource planning review and learning time — return attached, through 31 August. Eight resource planners form part of the established 32-person department. Laboratory, quality and reporting colleagues have their own workload; they are not spare planning capacity.
+
+    Hana
+  attachments:
+  - pl-arwc-pln-26-40-input-return
+- id: pl-arwc-pln-26-40-m2
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-02T13:45:00-04:00'
+  subject: 'ARWC-PLN-26-40: Resource planning review and learning time'
+  body: |
+    One question on Resource planning review and learning time: Does the remainder mean eight people are definitely free for extra projects?
+
+    I've attached my draft so you can see where I'm using the answer.
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-40-workbook-v1
+  - pl-arwc-pln-26-40-recommendation-p1
+  reply_to: pl-arwc-pln-26-40-m1
+- id: pl-arwc-pln-26-40-m3
+  story: planning
+  from: nadia
+  to:
+  - awm145
+  - awm139
+  date: '2026-09-03T13:45:00-04:00'
+  subject: 'ARWC-PLN-26-40: Resource planning review and learning time'
+  body: |
+    Isabel,
+
+    No. Absence, commitments and individual working arrangements still need checking. The nominal week is only an illustration.
+
+    Hana must check actual availability before a calendar booking; this paper changes no working arrangement.
+
+    Nadia
+  reply_to: pl-arwc-pln-26-40-m2
+- id: pl-arwc-pln-26-40-m4
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-07T13:45:00-04:00'
+  subject: 'ARWC-PLN-26-40: Resource planning review and learning time'
+  body: |
+    I've kept your answer with the calculation. Unallocated allowance: 24.00 staff-hours/week.
+
+    Hana must check actual availability before a calendar booking; this paper changes no working arrangement. That's the question I'll bring to the meeting.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-40-review-r1
+  reply_to: pl-arwc-pln-26-40-m3
+- id: pl-arwc-pln-26-40-m5
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm139
+  date: '2026-09-08T13:45:00-04:00'
+  subject: 'ARWC-PLN-26-40: Resource planning review and learning time'
+  body: |
+    I've issued the recommendation for Resource planning review and learning time.
+
+    Take the proposed review and learning allocations to individual workload discussions. Keep the remainder uncommitted.
+
+    Isabel
+  attachments:
+  - pl-arwc-pln-26-40-recommendation-r1
+  reply_to: pl-arwc-pln-26-40-m4
+- id: pl-arwc-plan-mtg-01-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:10:00-04:00'
+  subject: 'ARWC-PLAN-MTG-01: Pine customer demand periods'
+  body: |
+    Papers for pine customer demand periods are attached.
+
+    14 September, 09:00, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-01-pack
+- id: pl-arwc-plan-mtg-01-notes
+  story: planning
+  from: nadia
+  to:
+  - awm139
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-14T10:01:00-04:00'
+  subject: 'ARWC-PLAN-MTG-01: Pine customer demand periods'
+  body: |
+    Notes attached from pine customer demand periods. The paper references and action owners are included.
+
+    Nadia's next check on pine: single-account household demand stays due on 30 September. Nothing in today's discussion closes it.
+
+    Nadia
+  attachments:
+  - pl-arwc-plan-mtg-01-record
+- id: pl-arwc-plan-mtg-02-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:11:00-04:00'
+  subject: 'ARWC-PLAN-MTG-02: River demand sensitivities'
+  body: |
+    Papers for river demand sensitivities are attached.
+
+    14 September, 10:30, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-02-pack
+- id: pl-arwc-plan-mtg-02-notes
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-14T11:31:00-04:00'
+  subject: 'ARWC-PLAN-MTG-02: River demand sensitivities'
+  body: |
+    Notes attached from river demand sensitivities. The paper references and action owners are included.
+
+    Idris's next check on river: single-account household demand stays due on 30 September. Nothing in today's discussion closes it.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-02-record
+- id: pl-arwc-plan-mtg-03-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:12:00-04:00'
+  subject: 'ARWC-PLAN-MTG-03: Benches, boards and markers'
+  body: |
+    Papers for benches, boards and markers are attached.
+
+    14 September, 13:00, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-03-pack
+- id: pl-arwc-plan-mtg-03-notes
+  story: planning
+  from: awm140
+  to:
+  - nadia
+  - awm139
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-14T14:01:00-04:00'
+  subject: 'ARWC-PLAN-MTG-03: Benches, boards and markers'
+  body: |
+    Notes attached from benches, boards and markers. The paper references and action owners are included.
+
+    Nadia's next check on pine sample bench stays due on 30 September. Nothing in today's discussion closes it.
+
+    Harriet
+  attachments:
+  - pl-arwc-plan-mtg-03-record
+- id: pl-arwc-plan-mtg-04-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:13:00-04:00'
+  subject: 'ARWC-PLAN-MTG-04: Depot and enclosure renewal boundaries'
+  body: |
+    Papers for depot and enclosure renewal boundaries are attached.
+
+    14 September, 14:30, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-04-pack
+- id: pl-arwc-plan-mtg-04-notes
+  story: planning
+  from: awm141
+  to:
+  - nadia
+  - awm139
+  - awm140
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-14T15:31:00-04:00'
+  subject: 'ARWC-PLAN-MTG-04: Depot and enclosure renewal boundaries'
+  body: |
+    Notes attached from depot and enclosure renewal boundaries. The paper references and action owners are included.
+
+    Iris's next check on pine west depot return bench stays due on 30 September. Nothing in today's discussion closes it.
+
+    Hugo
+  attachments:
+  - pl-arwc-plan-mtg-04-record
+- id: pl-arwc-plan-mtg-05-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:14:00-04:00'
+  subject: 'ARWC-PLAN-MTG-05: Laboratory workload: January to April'
+  body: |
+    Papers for laboratory workload: january to april are attached.
+
+    15 September, 09:00, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-05-pack
+- id: pl-arwc-plan-mtg-05-notes
+  story: planning
+  from: awm142
+  to:
+  - nadia
+  - awm139
+  - awm140
+  - awm141
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-15T10:01:00-04:00'
+  subject: 'ARWC-PLAN-MTG-05: Laboratory workload: January to April'
+  body: |
+    Notes attached from laboratory workload: january to april. The paper references and action owners are included.
+
+    Hugo's next check on january laboratory workload stays due on 30 September. Nothing in today's discussion closes it.
+
+    Idris
+  attachments:
+  - pl-arwc-plan-mtg-05-record
+- id: pl-arwc-plan-mtg-06-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:15:00-04:00'
+  subject: 'ARWC-PLAN-MTG-06: Laboratory workload: May to August'
+  body: |
+    Papers for laboratory workload: may to august are attached.
+
+    15 September, 10:30, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-06-pack
+- id: pl-arwc-plan-mtg-06-notes
+  story: planning
+  from: awm143
+  to:
+  - nadia
+  - awm139
+  - awm140
+  - awm141
+  - awm142
+  - awm144
+  - awm145
+  date: '2026-09-15T11:31:00-04:00'
+  subject: 'ARWC-PLAN-MTG-06: Laboratory workload: May to August'
+  body: |
+    Notes attached from laboratory workload: may to august. The paper references and action owners are included.
+
+    Isabel's next check on may laboratory workload stays due on 30 September. Nothing in today's discussion closes it.
+
+    Imani
+  attachments:
+  - pl-arwc-plan-mtg-06-record
+- id: pl-arwc-plan-mtg-07-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:16:00-04:00'
+  subject: 'ARWC-PLAN-MTG-07: Historical project and supply references'
+  body: |
+    Papers for historical project and supply references are attached.
+
+    15 September, 13:00, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-07-pack
+- id: pl-arwc-plan-mtg-07-notes
+  story: planning
+  from: awm144
+  to:
+  - nadia
+  - awm139
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm145
+  date: '2026-09-15T14:01:00-04:00'
+  subject: 'ARWC-PLAN-MTG-07: Historical project and supply references'
+  body: |
+    Notes attached from historical project and supply references. The paper references and action owners are included.
+
+    Idris's next check on north reservoir inlet actuator renewal cost comparison stays due on 30 September. Nothing in today's discussion closes it.
+
+    Iris
+  attachments:
+  - pl-arwc-plan-mtg-07-record
+- id: pl-arwc-plan-mtg-08-invite
+  story: planning
+  from: awm139
+  to:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  date: '2026-09-11T08:17:00-04:00'
+  subject: 'ARWC-PLAN-MTG-08: Seasonal and staff capacity'
+  body: |
+    Papers for seasonal and staff capacity are attached.
+
+    15 September, 14:30, planning room. Please bring the unresolved question from your paper. We have 45 minutes; detailed costing can stay in the follow-up.
+
+    Hana
+  attachments:
+  - pl-arwc-plan-mtg-08-pack
+- id: pl-arwc-plan-mtg-08-notes
+  story: planning
+  from: awm145
+  to:
+  - nadia
+  - awm139
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  date: '2026-09-15T15:31:00-04:00'
+  subject: 'ARWC-PLAN-MTG-08: Seasonal and staff capacity'
+  body: |
+    Notes attached from seasonal and staff capacity. The paper references and action owners are included.
+
+    Harriet's next check on pine seasonal screening stays due on 30 September. Nothing in today's discussion closes it.
+
+    Isabel
+  attachments:
+  - pl-arwc-plan-mtg-08-record
+- id: pl-arwc-plan-note-01-1
+  story: planning
+  from: nadia
+  to:
+  - awm140
+  date: '2026-09-09T11:00:00-04:00'
+  subject: Tuesday lunch
+  body: |
+    I made three possible lunch plans and then remembered we only have an hour. The sandwich place by the office? No route map, I promise.
+
+    Nadia
+- id: pl-arwc-plan-note-01-2
+  story: planning
+  from: awm140
+  to:
+  - nadia
+  date: '2026-09-09T12:00:00-04:00'
+  subject: 'Re: Tuesday lunch'
+  body: |
+    That one works. I'll meet you downstairs at twelve. Please do bring the map if it shows where they've moved the door.
+
+    Harriet
+  reply_to: pl-arwc-plan-note-01-1
+- id: pl-arwc-plan-note-02-1
+  story: planning
+  from: awm141
+  to:
+  - awm142
+  date: '2026-09-09T11:05:00-04:00'
+  subject: The paper copy
+  body: |
+    I've left the marked-up sheet on your chair. Easier to explain in person than in another paragraph. Ten minutes after lunch?
+
+    Hugo
+- id: pl-arwc-plan-note-02-2
+  story: planning
+  from: awm142
+  to:
+  - awm141
+  date: '2026-09-09T12:05:00-04:00'
+  subject: 'Re: The paper copy'
+  body: |
+    Yes. Keep the marks. The clean printout hid the bit I needed to ask about.
+
+    Idris
+  reply_to: pl-arwc-plan-note-02-1
+- id: pl-arwc-plan-note-03-1
+  story: planning
+  from: awm143
+  to:
+  - awm145
+  date: '2026-09-09T11:10:00-04:00'
+  subject: Room on Wednesday
+  body: |
+    16 September, small planning room: I only need it until 10:15. Your review can start then if that helps.
+
+    Imani
+- id: pl-arwc-plan-note-03-2
+  story: planning
+  from: awm145
+  to:
+  - awm143
+  date: '2026-09-09T12:10:00-04:00'
+  subject: 'Re: Room on Wednesday'
+  body: |
+    Thanks. I'll keep mine at 10:30; gives us time to find the adapter. Again.
+
+    Isabel
+  reply_to: pl-arwc-plan-note-03-1
+- id: pl-arwc-plan-note-04-1
+  story: planning
+  from: awm144
+  to:
+  - nadia
+  date: '2026-09-09T11:15:00-04:00'
+  subject: A spare mug
+  body: |
+    Your mug is in our cupboard. I washed it before I realised it wasn't ours. Want me to bring it over?
+
+    Iris
+- id: pl-arwc-plan-note-04-2
+  story: planning
+  from: nadia
+  to:
+  - awm144
+  date: '2026-09-09T12:15:00-04:00'
+  subject: 'Re: A spare mug'
+  body: |
+    Keep it there for now. I'm in your room often enough. It has somehow become better at visiting colleagues than I am.
+
+    Nadia
+  reply_to: pl-arwc-plan-note-04-1
+- id: pl-arwc-plan-note-05-1
+  story: planning
+  from: awm139
+  to:
+  - awm141
+  date: '2026-09-09T11:20:00-04:00'
+  subject: The example for the new starters
+  body: |
+    Use the two different billing periods. A small example is enough; leave the renewal options for another day.
+
+    Hana
+- id: pl-arwc-plan-note-05-2
+  story: planning
+  from: awm141
+  to:
+  - awm139
+  date: '2026-09-09T12:20:00-04:00'
+  subject: 'Re: The example for the new starters'
+  body: |
+    Agreed. I tried the long version on Harriet and got as far as slide three before she stopped me.
+
+    Hugo
+  reply_to: pl-arwc-plan-note-05-1
+- id: pl-arwc-plan-note-06-1
+  story: planning
+  from: awm140
+  to:
+  - awm143
+  date: '2026-09-09T11:25:00-04:00'
+  subject: Notebook
+  body: |
+    Is the green notebook yours? It's beside the printer. I haven't opened it.
+
+    Harriet
+- id: pl-arwc-plan-note-06-2
+  story: planning
+  from: awm143
+  to:
+  - awm140
+  date: '2026-09-09T12:25:00-04:00'
+  subject: 'Re: Notebook'
+  body: |
+    Mine, thank you. Leave it with my folder, please. It has the depot directions I keep meaning to put somewhere sensible.
+
+    Imani
+  reply_to: pl-arwc-plan-note-06-1
+- id: pl-arwc-plan-note-07-1
+  story: planning
+  from: awm142
+  to:
+  - awm144
+  date: '2026-09-09T11:30:00-04:00'
+  subject: Screen in the room
+  body: |
+    The room screen cuts off column E. Zoom to 90% before the meeting.
+
+    Idris
+- id: pl-arwc-plan-note-07-2
+  story: planning
+  from: awm144
+  to:
+  - awm142
+  date: '2026-09-09T12:30:00-04:00'
+  subject: 'Re: Screen in the room'
+  body: |
+    Good catch. I've checked the back row too. It's readable there, as long as nobody puts the coat stand in front of it.
+
+    Iris
+  reply_to: pl-arwc-plan-note-07-1
+- id: pl-arwc-plan-note-08-1
+  story: planning
+  from: awm145
+  to:
+  - awm139
+  date: '2026-09-09T11:35:00-04:00'
+  subject: Learning time
+  body: |
+    Could I sit with Hugo for the first cost comparison? I can follow the sums; I want to hear how he decides which missing detail matters.
+
+    Isabel
+- id: pl-arwc-plan-note-08-2
+  story: planning
+  from: awm139
+  to:
+  - awm145
+  date: '2026-09-09T12:35:00-04:00'
+  subject: 'Re: Learning time'
+  body: |
+    Yes, arrange a short session with him. Leave an hour in your plan, then tell me what needs more time.
+
+    Hana
+  reply_to: pl-arwc-plan-note-08-1

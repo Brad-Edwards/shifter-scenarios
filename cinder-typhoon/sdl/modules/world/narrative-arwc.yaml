@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-37b8de39e3bea6829c593cc0db02188f3c8e8684e0f0272d3a063cf8b948a1e8
+      version: sha256-648bb949e1f99070814469cac8fe37f56aa751304af7a248800c5ead9e20a18b
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v3
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-8ca59b7aa09c68309760e04f2a9cfb6c40ba6388ab937ad4e6f5fbf4d1a05979
+      version: sha256-5a0f51a3572697f5027254f2a02d8f5bd346c9b56d772eff2b2881f410d42b24
     description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
       authored readers and opening state.
     items:
@@ -4242,6 +4242,466 @@ content:
       display_name: Maintenance and engineering commissioning register register
     - name: me-register-project-handovers
       display_name: Maintenance and engineering project handovers register
+    - name: pl-arwc-pln-26-01-input-return
+      display_name: 'Pine: Single-account household demand — input return'
+    - name: pl-arwc-pln-26-01-workbook-v1
+      display_name: 'Pine: Single-account household demand — workbook v1'
+    - name: pl-arwc-pln-26-01-recommendation-p1
+      display_name: 'Pine: Single-account household demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-01-workbook-v2
+      display_name: 'Pine: Single-account household demand — workbook v2'
+    - name: pl-arwc-pln-26-01-review-r1
+      display_name: 'Pine: Single-account household demand — peer review R1'
+    - name: pl-arwc-pln-26-01-recommendation-r1
+      display_name: 'Pine: Single-account household demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-02-input-return
+      display_name: 'Pine: Master-metered dwelling demand — input return'
+    - name: pl-arwc-pln-26-02-workbook-v1
+      display_name: 'Pine: Master-metered dwelling demand — workbook v1'
+    - name: pl-arwc-pln-26-02-recommendation-p1
+      display_name: 'Pine: Master-metered dwelling demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-02-workbook-v2
+      display_name: 'Pine: Master-metered dwelling demand — workbook v2'
+    - name: pl-arwc-pln-26-02-review-r1
+      display_name: 'Pine: Master-metered dwelling demand — peer review R1'
+    - name: pl-arwc-pln-26-02-recommendation-r1
+      display_name: 'Pine: Master-metered dwelling demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-03-input-return
+      display_name: 'Pine: Commercial demand reference — input return'
+    - name: pl-arwc-pln-26-03-workbook-v1
+      display_name: 'Pine: Commercial demand reference — workbook v1'
+    - name: pl-arwc-pln-26-03-recommendation-p1
+      display_name: 'Pine: Commercial demand reference — draft recommendation P1'
+    - name: pl-arwc-pln-26-03-workbook-v2
+      display_name: 'Pine: Commercial demand reference — workbook v2'
+    - name: pl-arwc-pln-26-03-review-r1
+      display_name: 'Pine: Commercial demand reference — peer review R1'
+    - name: pl-arwc-pln-26-03-recommendation-r1
+      display_name: 'Pine: Commercial demand reference — issued recommendation R1'
+    - name: pl-arwc-pln-26-04-input-return
+      display_name: 'Pine: Municipal service demand — input return'
+    - name: pl-arwc-pln-26-04-workbook-v1
+      display_name: 'Pine: Municipal service demand — workbook v1'
+    - name: pl-arwc-pln-26-04-recommendation-p1
+      display_name: 'Pine: Municipal service demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-04-workbook-v2
+      display_name: 'Pine: Municipal service demand — workbook v2'
+    - name: pl-arwc-pln-26-04-review-r1
+      display_name: 'Pine: Municipal service demand — peer review R1'
+    - name: pl-arwc-pln-26-04-recommendation-r1
+      display_name: 'Pine: Municipal service demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-05-input-return
+      display_name: 'River: Single-account household demand — input return'
+    - name: pl-arwc-pln-26-05-workbook-v1
+      display_name: 'River: Single-account household demand — workbook v1'
+    - name: pl-arwc-pln-26-05-recommendation-p1
+      display_name: 'River: Single-account household demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-05-workbook-v2
+      display_name: 'River: Single-account household demand — workbook v2'
+    - name: pl-arwc-pln-26-05-review-r1
+      display_name: 'River: Single-account household demand — peer review R1'
+    - name: pl-arwc-pln-26-05-recommendation-r1
+      display_name: 'River: Single-account household demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-06-input-return
+      display_name: 'River: Master-metered dwelling demand — input return'
+    - name: pl-arwc-pln-26-06-workbook-v1
+      display_name: 'River: Master-metered dwelling demand — workbook v1'
+    - name: pl-arwc-pln-26-06-recommendation-p1
+      display_name: 'River: Master-metered dwelling demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-06-workbook-v2
+      display_name: 'River: Master-metered dwelling demand — workbook v2'
+    - name: pl-arwc-pln-26-06-review-r1
+      display_name: 'River: Master-metered dwelling demand — peer review R1'
+    - name: pl-arwc-pln-26-06-recommendation-r1
+      display_name: 'River: Master-metered dwelling demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-07-input-return
+      display_name: 'River: Commercial demand reference — input return'
+    - name: pl-arwc-pln-26-07-workbook-v1
+      display_name: 'River: Commercial demand reference — workbook v1'
+    - name: pl-arwc-pln-26-07-recommendation-p1
+      display_name: 'River: Commercial demand reference — draft recommendation P1'
+    - name: pl-arwc-pln-26-07-workbook-v2
+      display_name: 'River: Commercial demand reference — workbook v2'
+    - name: pl-arwc-pln-26-07-review-r1
+      display_name: 'River: Commercial demand reference — peer review R1'
+    - name: pl-arwc-pln-26-07-recommendation-r1
+      display_name: 'River: Commercial demand reference — issued recommendation R1'
+    - name: pl-arwc-pln-26-08-input-return
+      display_name: 'River: Municipal service demand — input return'
+    - name: pl-arwc-pln-26-08-workbook-v1
+      display_name: 'River: Municipal service demand — workbook v1'
+    - name: pl-arwc-pln-26-08-recommendation-p1
+      display_name: 'River: Municipal service demand — draft recommendation P1'
+    - name: pl-arwc-pln-26-08-workbook-v2
+      display_name: 'River: Municipal service demand — workbook v2'
+    - name: pl-arwc-pln-26-08-review-r1
+      display_name: 'River: Municipal service demand — peer review R1'
+    - name: pl-arwc-pln-26-08-recommendation-r1
+      display_name: 'River: Municipal service demand — issued recommendation R1'
+    - name: pl-arwc-pln-26-09-input-return
+      display_name: Pine sample bench — input return
+    - name: pl-arwc-pln-26-09-workbook-v1
+      display_name: Pine sample bench — workbook v1
+    - name: pl-arwc-pln-26-09-recommendation-p1
+      display_name: Pine sample bench — draft recommendation P1
+    - name: pl-arwc-pln-26-09-review-r1
+      display_name: Pine sample bench — peer review R1
+    - name: pl-arwc-pln-26-09-recommendation-r1
+      display_name: Pine sample bench — issued recommendation R1
+    - name: pl-arwc-pln-26-10-input-return
+      display_name: River sample bench — input return
+    - name: pl-arwc-pln-26-10-workbook-v1
+      display_name: River sample bench — workbook v1
+    - name: pl-arwc-pln-26-10-recommendation-p1
+      display_name: River sample bench — draft recommendation P1
+    - name: pl-arwc-pln-26-10-review-r1
+      display_name: River sample bench — peer review R1
+    - name: pl-arwc-pln-26-10-recommendation-r1
+      display_name: River sample bench — issued recommendation R1
+    - name: pl-arwc-pln-26-11-input-return
+      display_name: Pine East notice board — input return
+    - name: pl-arwc-pln-26-11-workbook-v1
+      display_name: Pine East notice board — workbook v1
+    - name: pl-arwc-pln-26-11-recommendation-p1
+      display_name: Pine East notice board — draft recommendation P1
+    - name: pl-arwc-pln-26-11-review-r1
+      display_name: Pine East notice board — peer review R1
+    - name: pl-arwc-pln-26-11-recommendation-r1
+      display_name: Pine East notice board — issued recommendation R1
+    - name: pl-arwc-pln-26-12-input-return
+      display_name: River West notice board — input return
+    - name: pl-arwc-pln-26-12-workbook-v1
+      display_name: River West notice board — workbook v1
+    - name: pl-arwc-pln-26-12-recommendation-p1
+      display_name: River West notice board — draft recommendation P1
+    - name: pl-arwc-pln-26-12-review-r1
+      display_name: River West notice board — peer review R1
+    - name: pl-arwc-pln-26-12-recommendation-r1
+      display_name: River West notice board — issued recommendation R1
+    - name: pl-arwc-pln-26-13-input-return
+      display_name: Pine East hydrant markers — input return
+    - name: pl-arwc-pln-26-13-workbook-v1
+      display_name: Pine East hydrant markers — workbook v1
+    - name: pl-arwc-pln-26-13-recommendation-p1
+      display_name: Pine East hydrant markers — draft recommendation P1
+    - name: pl-arwc-pln-26-13-review-r1
+      display_name: Pine East hydrant markers — peer review R1
+    - name: pl-arwc-pln-26-13-recommendation-r1
+      display_name: Pine East hydrant markers — issued recommendation R1
+    - name: pl-arwc-pln-26-14-input-return
+      display_name: River East hydrant markers — input return
+    - name: pl-arwc-pln-26-14-workbook-v1
+      display_name: River East hydrant markers — workbook v1
+    - name: pl-arwc-pln-26-14-recommendation-p1
+      display_name: River East hydrant markers — draft recommendation P1
+    - name: pl-arwc-pln-26-14-review-r1
+      display_name: River East hydrant markers — peer review R1
+    - name: pl-arwc-pln-26-14-recommendation-r1
+      display_name: River East hydrant markers — issued recommendation R1
+    - name: pl-arwc-pln-26-15-input-return
+      display_name: Pine West depot return bench — input return
+    - name: pl-arwc-pln-26-15-workbook-v1
+      display_name: Pine West depot return bench — workbook v1
+    - name: pl-arwc-pln-26-15-recommendation-p1
+      display_name: Pine West depot return bench — draft recommendation P1
+    - name: pl-arwc-pln-26-15-review-r1
+      display_name: Pine West depot return bench — peer review R1
+    - name: pl-arwc-pln-26-15-recommendation-r1
+      display_name: Pine West depot return bench — issued recommendation R1
+    - name: pl-arwc-pln-26-16-input-return
+      display_name: River East depot return bench — input return
+    - name: pl-arwc-pln-26-16-workbook-v1
+      display_name: River East depot return bench — workbook v1
+    - name: pl-arwc-pln-26-16-recommendation-p1
+      display_name: River East depot return bench — draft recommendation P1
+    - name: pl-arwc-pln-26-16-review-r1
+      display_name: River East depot return bench — peer review R1
+    - name: pl-arwc-pln-26-16-recommendation-r1
+      display_name: River East depot return bench — issued recommendation R1
+    - name: pl-arwc-pln-26-17-input-return
+      display_name: Pine ventilation panel enclosure — input return
+    - name: pl-arwc-pln-26-17-workbook-v1
+      display_name: Pine ventilation panel enclosure — workbook v1
+    - name: pl-arwc-pln-26-17-recommendation-p1
+      display_name: Pine ventilation panel enclosure — draft recommendation P1
+    - name: pl-arwc-pln-26-17-review-r1
+      display_name: Pine ventilation panel enclosure — peer review R1
+    - name: pl-arwc-pln-26-17-recommendation-r1
+      display_name: Pine ventilation panel enclosure — issued recommendation R1
+    - name: pl-arwc-pln-26-18-input-return
+      display_name: Upland telemetry cabinet — input return
+    - name: pl-arwc-pln-26-18-workbook-v1
+      display_name: Upland telemetry cabinet — workbook v1
+    - name: pl-arwc-pln-26-18-recommendation-p1
+      display_name: Upland telemetry cabinet — draft recommendation P1
+    - name: pl-arwc-pln-26-18-review-r1
+      display_name: Upland telemetry cabinet — peer review R1
+    - name: pl-arwc-pln-26-18-recommendation-r1
+      display_name: Upland telemetry cabinet — issued recommendation R1
+    - name: pl-arwc-pln-26-19-input-return
+      display_name: Pine depot instrument storage — input return
+    - name: pl-arwc-pln-26-19-workbook-v1
+      display_name: Pine depot instrument storage — workbook v1
+    - name: pl-arwc-pln-26-19-recommendation-p1
+      display_name: Pine depot instrument storage — draft recommendation P1
+    - name: pl-arwc-pln-26-19-review-r1
+      display_name: Pine depot instrument storage — peer review R1
+    - name: pl-arwc-pln-26-19-recommendation-r1
+      display_name: Pine depot instrument storage — issued recommendation R1
+    - name: pl-arwc-pln-26-20-input-return
+      display_name: River depot motor cover — input return
+    - name: pl-arwc-pln-26-20-workbook-v1
+      display_name: River depot motor cover — workbook v1
+    - name: pl-arwc-pln-26-20-recommendation-p1
+      display_name: River depot motor cover — draft recommendation P1
+    - name: pl-arwc-pln-26-20-review-r1
+      display_name: River depot motor cover — peer review R1
+    - name: pl-arwc-pln-26-20-recommendation-r1
+      display_name: River depot motor cover — issued recommendation R1
+    - name: pl-arwc-pln-26-21-input-return
+      display_name: January laboratory workload — input return
+    - name: pl-arwc-pln-26-21-workbook-v1
+      display_name: January laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-21-recommendation-p1
+      display_name: January laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-21-review-r1
+      display_name: January laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-21-recommendation-r1
+      display_name: January laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-22-input-return
+      display_name: February laboratory workload — input return
+    - name: pl-arwc-pln-26-22-workbook-v1
+      display_name: February laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-22-recommendation-p1
+      display_name: February laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-22-review-r1
+      display_name: February laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-22-recommendation-r1
+      display_name: February laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-23-input-return
+      display_name: March laboratory workload — input return
+    - name: pl-arwc-pln-26-23-workbook-v1
+      display_name: March laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-23-recommendation-p1
+      display_name: March laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-23-review-r1
+      display_name: March laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-23-recommendation-r1
+      display_name: March laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-24-input-return
+      display_name: April laboratory workload — input return
+    - name: pl-arwc-pln-26-24-workbook-v1
+      display_name: April laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-24-recommendation-p1
+      display_name: April laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-24-review-r1
+      display_name: April laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-24-recommendation-r1
+      display_name: April laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-25-input-return
+      display_name: May laboratory workload — input return
+    - name: pl-arwc-pln-26-25-workbook-v1
+      display_name: May laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-25-recommendation-p1
+      display_name: May laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-25-review-r1
+      display_name: May laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-25-recommendation-r1
+      display_name: May laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-26-input-return
+      display_name: June laboratory workload — input return
+    - name: pl-arwc-pln-26-26-workbook-v1
+      display_name: June laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-26-recommendation-p1
+      display_name: June laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-26-review-r1
+      display_name: June laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-26-recommendation-r1
+      display_name: June laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-27-input-return
+      display_name: July laboratory workload — input return
+    - name: pl-arwc-pln-26-27-workbook-v1
+      display_name: July laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-27-recommendation-p1
+      display_name: July laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-27-review-r1
+      display_name: July laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-27-recommendation-r1
+      display_name: July laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-28-input-return
+      display_name: August laboratory workload — input return
+    - name: pl-arwc-pln-26-28-workbook-v1
+      display_name: August laboratory workload — workbook v1
+    - name: pl-arwc-pln-26-28-recommendation-p1
+      display_name: August laboratory workload — draft recommendation P1
+    - name: pl-arwc-pln-26-28-review-r1
+      display_name: August laboratory workload — peer review R1
+    - name: pl-arwc-pln-26-28-recommendation-r1
+      display_name: August laboratory workload — issued recommendation R1
+    - name: pl-arwc-pln-26-29-input-return
+      display_name: North reservoir inlet actuator renewal cost comparison — input return
+    - name: pl-arwc-pln-26-29-workbook-v1
+      display_name: North reservoir inlet actuator renewal cost comparison — workbook v1
+    - name: pl-arwc-pln-26-29-recommendation-p1
+      display_name: North reservoir inlet actuator renewal cost comparison — draft recommendation P1
+    - name: pl-arwc-pln-26-29-review-r1
+      display_name: North reservoir inlet actuator renewal cost comparison — peer review R1
+    - name: pl-arwc-pln-26-29-recommendation-r1
+      display_name: North reservoir inlet actuator renewal cost comparison — issued recommendation R1
+    - name: pl-arwc-pln-26-30-input-return
+      display_name: Pine pump hall ventilation refurbishment cost comparison — input return
+    - name: pl-arwc-pln-26-30-workbook-v1
+      display_name: Pine pump hall ventilation refurbishment cost comparison — workbook v1
+    - name: pl-arwc-pln-26-30-recommendation-p1
+      display_name: Pine pump hall ventilation refurbishment cost comparison — draft recommendation P1
+    - name: pl-arwc-pln-26-30-review-r1
+      display_name: Pine pump hall ventilation refurbishment cost comparison — peer review R1
+    - name: pl-arwc-pln-26-30-recommendation-r1
+      display_name: Pine pump hall ventilation refurbishment cost comparison — issued recommendation R1
+    - name: pl-arwc-pln-26-31-input-return
+      display_name: River booster duty pump renewal cost comparison — input return
+    - name: pl-arwc-pln-26-31-workbook-v1
+      display_name: River booster duty pump renewal cost comparison — workbook v1
+    - name: pl-arwc-pln-26-31-recommendation-p1
+      display_name: River booster duty pump renewal cost comparison — draft recommendation P1
+    - name: pl-arwc-pln-26-31-review-r1
+      display_name: River booster duty pump renewal cost comparison — peer review R1
+    - name: pl-arwc-pln-26-31-recommendation-r1
+      display_name: River booster duty pump renewal cost comparison — issued recommendation R1
+    - name: pl-arwc-pln-26-32-input-return
+      display_name: Upland station telemetry panel renewal cost comparison — input return
+    - name: pl-arwc-pln-26-32-workbook-v1
+      display_name: Upland station telemetry panel renewal cost comparison — workbook v1
+    - name: pl-arwc-pln-26-32-recommendation-p1
+      display_name: Upland station telemetry panel renewal cost comparison — draft recommendation P1
+    - name: pl-arwc-pln-26-32-review-r1
+      display_name: Upland station telemetry panel renewal cost comparison — peer review R1
+    - name: pl-arwc-pln-26-32-recommendation-r1
+      display_name: Upland station telemetry panel renewal cost comparison — issued recommendation R1
+    - name: pl-arwc-pln-26-33-input-return
+      display_name: Merewick Bulk Water Cooperative reference — input return
+    - name: pl-arwc-pln-26-33-workbook-v1
+      display_name: Merewick Bulk Water Cooperative reference — workbook v1
+    - name: pl-arwc-pln-26-33-recommendation-p1
+      display_name: Merewick Bulk Water Cooperative reference — draft recommendation P1
+    - name: pl-arwc-pln-26-33-review-r1
+      display_name: Merewick Bulk Water Cooperative reference — peer review R1
+    - name: pl-arwc-pln-26-33-recommendation-r1
+      display_name: Merewick Bulk Water Cooperative reference — issued recommendation R1
+    - name: pl-arwc-pln-26-34-input-return
+      display_name: Talvern Growers Cooperative reference — input return
+    - name: pl-arwc-pln-26-34-workbook-v1
+      display_name: Talvern Growers Cooperative reference — workbook v1
+    - name: pl-arwc-pln-26-34-recommendation-p1
+      display_name: Talvern Growers Cooperative reference — draft recommendation P1
+    - name: pl-arwc-pln-26-34-review-r1
+      display_name: Talvern Growers Cooperative reference — peer review R1
+    - name: pl-arwc-pln-26-34-recommendation-r1
+      display_name: Talvern Growers Cooperative reference — issued recommendation R1
+    - name: pl-arwc-pln-26-35-input-return
+      display_name: Pine seasonal screening — input return
+    - name: pl-arwc-pln-26-35-workbook-v1
+      display_name: Pine seasonal screening — workbook v1
+    - name: pl-arwc-pln-26-35-recommendation-p1
+      display_name: Pine seasonal screening — draft recommendation P1
+    - name: pl-arwc-pln-26-35-review-r1
+      display_name: Pine seasonal screening — peer review R1
+    - name: pl-arwc-pln-26-35-recommendation-r1
+      display_name: Pine seasonal screening — issued recommendation R1
+    - name: pl-arwc-pln-26-36-input-return
+      display_name: River seasonal screening — input return
+    - name: pl-arwc-pln-26-36-workbook-v1
+      display_name: River seasonal screening — workbook v1
+    - name: pl-arwc-pln-26-36-recommendation-p1
+      display_name: River seasonal screening — draft recommendation P1
+    - name: pl-arwc-pln-26-36-review-r1
+      display_name: River seasonal screening — peer review R1
+    - name: pl-arwc-pln-26-36-recommendation-r1
+      display_name: River seasonal screening — issued recommendation R1
+    - name: pl-arwc-pln-26-37-input-return
+      display_name: Pine field return capacity — input return
+    - name: pl-arwc-pln-26-37-workbook-v1
+      display_name: Pine field return capacity — workbook v1
+    - name: pl-arwc-pln-26-37-recommendation-p1
+      display_name: Pine field return capacity — draft recommendation P1
+    - name: pl-arwc-pln-26-37-review-r1
+      display_name: Pine field return capacity — peer review R1
+    - name: pl-arwc-pln-26-37-recommendation-r1
+      display_name: Pine field return capacity — issued recommendation R1
+    - name: pl-arwc-pln-26-38-input-return
+      display_name: River field return capacity — input return
+    - name: pl-arwc-pln-26-38-workbook-v1
+      display_name: River field return capacity — workbook v1
+    - name: pl-arwc-pln-26-38-recommendation-p1
+      display_name: River field return capacity — draft recommendation P1
+    - name: pl-arwc-pln-26-38-review-r1
+      display_name: River field return capacity — peer review R1
+    - name: pl-arwc-pln-26-38-recommendation-r1
+      display_name: River field return capacity — issued recommendation R1
+    - name: pl-arwc-pln-26-39-input-return
+      display_name: Laboratory equipment service windows — input return
+    - name: pl-arwc-pln-26-39-workbook-v1
+      display_name: Laboratory equipment service windows — workbook v1
+    - name: pl-arwc-pln-26-39-recommendation-p1
+      display_name: Laboratory equipment service windows — draft recommendation P1
+    - name: pl-arwc-pln-26-39-review-r1
+      display_name: Laboratory equipment service windows — peer review R1
+    - name: pl-arwc-pln-26-39-recommendation-r1
+      display_name: Laboratory equipment service windows — issued recommendation R1
+    - name: pl-arwc-pln-26-40-input-return
+      display_name: Resource planning review and learning time — input return
+    - name: pl-arwc-pln-26-40-workbook-v1
+      display_name: Resource planning review and learning time — workbook v1
+    - name: pl-arwc-pln-26-40-recommendation-p1
+      display_name: Resource planning review and learning time — draft recommendation P1
+    - name: pl-arwc-pln-26-40-review-r1
+      display_name: Resource planning review and learning time — peer review R1
+    - name: pl-arwc-pln-26-40-recommendation-r1
+      display_name: Resource planning review and learning time — issued recommendation R1
+    - name: pl-arwc-plan-mtg-01-pack
+      display_name: Pine customer demand periods — meeting papers
+    - name: pl-arwc-plan-mtg-01-record
+      display_name: Pine customer demand periods — meeting record
+    - name: pl-arwc-plan-mtg-02-pack
+      display_name: River demand sensitivities — meeting papers
+    - name: pl-arwc-plan-mtg-02-record
+      display_name: River demand sensitivities — meeting record
+    - name: pl-arwc-plan-mtg-03-pack
+      display_name: Benches, boards and markers — meeting papers
+    - name: pl-arwc-plan-mtg-03-record
+      display_name: Benches, boards and markers — meeting record
+    - name: pl-arwc-plan-mtg-04-pack
+      display_name: Depot and enclosure renewal boundaries — meeting papers
+    - name: pl-arwc-plan-mtg-04-record
+      display_name: Depot and enclosure renewal boundaries — meeting record
+    - name: pl-arwc-plan-mtg-05-pack
+      display_name: 'Laboratory workload: January to April — meeting papers'
+    - name: pl-arwc-plan-mtg-05-record
+      display_name: 'Laboratory workload: January to April — meeting record'
+    - name: pl-arwc-plan-mtg-06-pack
+      display_name: 'Laboratory workload: May to August — meeting papers'
+    - name: pl-arwc-plan-mtg-06-record
+      display_name: 'Laboratory workload: May to August — meeting record'
+    - name: pl-arwc-plan-mtg-07-pack
+      display_name: Historical project and supply references — meeting papers
+    - name: pl-arwc-plan-mtg-07-record
+      display_name: Historical project and supply references — meeting record
+    - name: pl-arwc-plan-mtg-08-pack
+      display_name: Seasonal and staff capacity — meeting papers
+    - name: pl-arwc-plan-mtg-08-record
+      display_name: Seasonal and staff capacity — meeting record
+    - name: pl-arwc-plan-method-01-method
+      display_name: Planning calculations and reference boundaries
+    - name: pl-arwc-plan-register-cases
+      display_name: Planning cases register
+    - name: pl-arwc-plan-register-versions
+      display_name: Planning versions register
+    - name: pl-arwc-plan-register-actions
+      display_name: Planning actions register
+    - name: pl-arwc-plan-register-meetings
+      display_name: Planning meetings register
+    - name: pl-arwc-plan-register-results
+      display_name: Planning results register
     - name: ps-0001-requisition
       display_name: ARWC-REQ-26-0001 — purchase requisition
     - name: ps-0001-decision
@@ -17980,6 +18440,22 @@ content:
       display_name: 'ARWC-CA-26-023: instrument condition and calibration service'
     - name: maintenance-contractor-024
       display_name: 'ARWC-CA-26-024: instrument condition and calibration service'
+    - name: planning-meeting-01
+      display_name: Pine customer demand periods
+    - name: planning-meeting-02
+      display_name: River demand sensitivities
+    - name: planning-meeting-03
+      display_name: Benches, boards and markers
+    - name: planning-meeting-04
+      display_name: Depot and enclosure renewal boundaries
+    - name: planning-meeting-05
+      display_name: 'Laboratory workload: January to April'
+    - name: planning-meeting-06
+      display_name: 'Laboratory workload: May to August'
+    - name: planning-meeting-07
+      display_name: Historical project and supply references
+    - name: planning-meeting-08
+      display_name: Seasonal and staff capacity
     - name: rosa-nadia-lunch
       display_name: Lunch with Rosa
     sensitive: true

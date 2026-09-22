@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 38,721 distinct authored messages, 15,277 source documents,
-staff directories for all 294 employees, and 840 calendar items. The
+The collection contains 38,953 distinct authored messages, 15,507 source documents,
+staff directories for all 294 employees, and 848 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -88,6 +88,14 @@ carry billing, reading, payment, balance, appointment, copy, adjustment, and
 arrangement questions. Its
 [review record](../../docs/narrative/retail-billing-review.md) documents the
 11,398-bill model correction, full ledger equation, voice review, and limits.
+ARWC planning adds 232 messages, forty planning histories, 230 documents, and
+eight calendar occurrences. Forty-eight XLSX workbooks cover demand, seasonal
+sensitivities, renewal costs, laboratory workload, completed projects, limited
+bulk agreements, and staffing allowances. They retain visible inputs, units,
+formulas, results, and eight revised versions. Its
+[review record](../../docs/narrative/planning-review.md) documents source-period
+corrections, summary traceability, decision boundaries, the eight planners'
+voices, and the justified reduction in message volume.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -120,6 +128,8 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/purchasing-stores-records.zip` | Thirteen completed CSV registers and 885 genuine supplier PDFs. |
 | `authoring/retail-billing.yaml` | Author-only bill, delivery, payment, adjustment, balance, case, notice, appointment and collection joins. |
 | `documents/retail-billing-records.zip` | Fourteen completed CSV registers, 50,102 readable NDJSON bill documents and 24 genuine bill PDFs. |
+| `authoring/planning.yaml` | Author-only planning cases, source cut-offs, workbook versions, decisions, threads, counts, and contract boundaries. |
+| `documents/planning-records.zip` | Forty-eight actual XLSX workbooks and five completed CSV traceability registers. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |

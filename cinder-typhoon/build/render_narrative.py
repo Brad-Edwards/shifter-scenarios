@@ -160,7 +160,7 @@ def render():
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-', 'sa-', 'op-', 'me-', 'lq-', 'ps-', 'rb-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-', 'sa-', 'op-', 'me-', 'lq-', 'ps-', 'rb-', 'pl-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -248,7 +248,7 @@ def render():
         text = '\r\n'.join(folded) + '\r\n'
         # Bulk operating calendars are complete items in the source package.
         # Avoid redundant standalone members, as with bulk RFC822 messages.
-        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-')):
+        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-')):
             output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
         readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
         kind = 'employment' if '-induction-' in event['id'] else 'documents'

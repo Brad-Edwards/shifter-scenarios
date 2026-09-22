@@ -1,0 +1,225 @@
+events:
+- id: planning-meeting-01
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-14T09:00:00-04:00'
+  end: '2026-09-14T09:45:00-04:00'
+  created_at: '2026-09-11T08:00:00-04:00'
+  updated_at: '2026-09-11T08:00:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: Pine customer demand periods
+  description: 'Papers: pl-arwc-plan-mtg-01-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-02
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-14T10:30:00-04:00'
+  end: '2026-09-14T11:15:00-04:00'
+  created_at: '2026-09-11T08:01:00-04:00'
+  updated_at: '2026-09-11T08:01:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: River demand sensitivities
+  description: 'Papers: pl-arwc-plan-mtg-02-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-03
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-14T13:00:00-04:00'
+  end: '2026-09-14T13:45:00-04:00'
+  created_at: '2026-09-11T08:02:00-04:00'
+  updated_at: '2026-09-11T08:02:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: Benches, boards and markers
+  description: 'Papers: pl-arwc-plan-mtg-03-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-04
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-14T14:30:00-04:00'
+  end: '2026-09-14T15:15:00-04:00'
+  created_at: '2026-09-11T08:03:00-04:00'
+  updated_at: '2026-09-11T08:03:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: Depot and enclosure renewal boundaries
+  description: 'Papers: pl-arwc-plan-mtg-04-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-05
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-15T09:00:00-04:00'
+  end: '2026-09-15T09:45:00-04:00'
+  created_at: '2026-09-11T08:04:00-04:00'
+  updated_at: '2026-09-11T08:04:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: 'Laboratory workload: January to April'
+  description: 'Papers: pl-arwc-plan-mtg-05-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-06
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-15T10:30:00-04:00'
+  end: '2026-09-15T11:15:00-04:00'
+  created_at: '2026-09-11T08:05:00-04:00'
+  updated_at: '2026-09-11T08:05:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: 'Laboratory workload: May to August'
+  description: 'Papers: pl-arwc-plan-mtg-06-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-07
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-15T13:00:00-04:00'
+  end: '2026-09-15T13:45:00-04:00'
+  created_at: '2026-09-11T08:06:00-04:00'
+  updated_at: '2026-09-11T08:06:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: Historical project and supply references
+  description: 'Papers: pl-arwc-plan-mtg-07-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
+- id: planning-meeting-08
+  employer: arwc
+  organizer: awm139
+  attendees:
+  - nadia
+  - awm140
+  - awm141
+  - awm142
+  - awm143
+  - awm144
+  - awm145
+  start: '2026-09-15T14:30:00-04:00'
+  end: '2026-09-15T15:15:00-04:00'
+  created_at: '2026-09-11T08:07:00-04:00'
+  updated_at: '2026-09-11T08:07:00-04:00'
+  sequence: 0
+  location: Regional office planning room
+  summary: Seasonal and staff capacity
+  description: 'Papers: pl-arwc-plan-mtg-08-pack. Outcomes are retained in the separate meeting record.'
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm140: ACCEPTED
+    awm141: ACCEPTED
+    awm142: ACCEPTED
+    awm143: ACCEPTED
+    awm144: ACCEPTED
+    awm145: ACCEPTED
