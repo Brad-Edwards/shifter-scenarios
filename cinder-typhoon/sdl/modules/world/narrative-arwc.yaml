@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-071c49aca967dbf9b7870d584bcf80b05580765a82aa84b6abb0df2e86905750
+      version: sha256-bc5211537740e5a561ea8703fdd6d2d570bbafa93a7680e478c62d2bb8211b8e
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v4
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-408050c184e5a6c90907cefc2b358df191005f659002e143b0e85224ad4700a4
+      version: sha256-4fb102f68616e2d37dbaa7cd42d74809b3e2b01d889b742eb11a8c5d77706b7c
     description: arwc workplace documents. Authenticate exact named readers, including appointed board identities.
       Only explicit access=public items permit anonymous reading; enforce the same access on bytes, search
       and metadata. Preserve document states and publication approvals; no collection-wide bypass.
@@ -2659,6 +2659,1040 @@ content:
       display_name: Budget Proposals
     - name: fg-publication-register
       display_name: Publication Register
+    - name: it-knowledge-01
+      display_name: Find the current invitation
+    - name: it-knowledge-02
+      display_name: Folder and calendar are different views
+    - name: it-knowledge-03
+      display_name: Choose the approved record
+    - name: it-knowledge-04
+      display_name: Preview and exact document
+    - name: it-knowledge-05
+      display_name: Correct a work contact
+    - name: it-knowledge-06
+      display_name: Temporary cover
+    - name: it-knowledge-07
+      display_name: Receipt versus allocation
+    - name: it-knowledge-08
+      display_name: Find an issued bill
+    - name: it-knowledge-09
+      display_name: Find a field return
+    - name: it-knowledge-10
+      display_name: Keep a shift handover intact
+    - name: it-knowledge-11
+      display_name: Approved drawings
+    - name: it-knowledge-12
+      display_name: Parts and work orders
+    - name: it-knowledge-13
+      display_name: A result is not a receipt
+    - name: it-knowledge-14
+      display_name: Read a repeated analysis
+    - name: it-knowledge-15
+      display_name: Source return and assumption
+    - name: it-knowledge-16
+      display_name: Recommendation status
+    - name: it-knowledge-17
+      display_name: Three-way match
+    - name: it-knowledge-18
+      display_name: Quote and accepted order
+    - name: it-knowledge-19
+      display_name: Selected-books close
+    - name: it-knowledge-20
+      display_name: Board and public copies
+    - name: it-knowledge-21
+      display_name: ARWC integration reference
+    - name: it-knowledge-22
+      display_name: Supplier case attachment
+    - name: it-case-0001
+      display_name: ARWC-IT-26-0001 — Workplace mail and calendar
+    - name: it-case-0002
+      display_name: ARWC-IT-26-0002 — Workplace document library
+    - name: it-case-0003
+      display_name: ARWC-IT-26-0003 — Staff contact directory
+    - name: it-case-0004
+      display_name: ARWC-IT-26-0004 — Customer account book
+    - name: it-case-0005
+      display_name: ARWC-IT-26-0005 — Shift and field returns
+    - name: it-case-0006
+      display_name: ARWC-IT-26-0006 — Maintenance register and drawings
+    - name: it-case-0007
+      display_name: ARWC-IT-26-0007 — Laboratory and quality records
+    - name: it-case-0008
+      display_name: ARWC-IT-26-0008 — Planning returns
+    - name: it-case-0009
+      display_name: ARWC-IT-26-0009 — Purchasing and stores book
+    - name: it-case-0010
+      display_name: ARWC-IT-26-0010 — Finance and governance papers
+    - name: it-case-0011
+      display_name: ARWC-IT-26-0011 — FieldKest integration reference
+    - name: it-case-0012
+      display_name: ARWC-IT-26-0012 — Workplace mail and calendar
+    - name: it-case-0013
+      display_name: ARWC-IT-26-0013 — Workplace document library
+    - name: it-case-0014
+      display_name: ARWC-IT-26-0014 — Staff contact directory
+    - name: it-case-0015
+      display_name: ARWC-IT-26-0015 — Customer account book
+    - name: it-case-0016
+      display_name: ARWC-IT-26-0016 — Shift and field returns
+    - name: it-case-0017
+      display_name: ARWC-IT-26-0017 — Maintenance register and drawings
+    - name: it-case-0018
+      display_name: ARWC-IT-26-0018 — Laboratory and quality records
+    - name: it-case-0019
+      display_name: ARWC-IT-26-0019 — Planning returns
+    - name: it-case-0020
+      display_name: ARWC-IT-26-0020 — Purchasing and stores book
+    - name: it-case-0021
+      display_name: ARWC-IT-26-0021 — Finance and governance papers
+    - name: it-case-0022
+      display_name: ARWC-IT-26-0022 — FieldKest integration reference
+    - name: it-case-0023
+      display_name: ARWC-IT-26-0023 — Workplace mail and calendar
+    - name: it-case-0024
+      display_name: ARWC-IT-26-0024 — Workplace document library
+    - name: it-case-0025
+      display_name: ARWC-IT-26-0025 — Staff contact directory
+    - name: it-case-0026
+      display_name: ARWC-IT-26-0026 — Customer account book
+    - name: it-case-0027
+      display_name: ARWC-IT-26-0027 — Shift and field returns
+    - name: it-case-0028
+      display_name: ARWC-IT-26-0028 — Maintenance register and drawings
+    - name: it-case-0029
+      display_name: ARWC-IT-26-0029 — Laboratory and quality records
+    - name: it-case-0030
+      display_name: ARWC-IT-26-0030 — Planning returns
+    - name: it-case-0031
+      display_name: ARWC-IT-26-0031 — Purchasing and stores book
+    - name: it-case-0032
+      display_name: ARWC-IT-26-0032 — Finance and governance papers
+    - name: it-case-0033
+      display_name: ARWC-IT-26-0033 — FieldKest integration reference
+    - name: it-case-0034
+      display_name: ARWC-IT-26-0034 — Workplace mail and calendar
+    - name: it-case-0035
+      display_name: ARWC-IT-26-0035 — Workplace document library
+    - name: it-case-0036
+      display_name: ARWC-IT-26-0036 — Staff contact directory
+    - name: it-case-0037
+      display_name: ARWC-IT-26-0037 — Customer account book
+    - name: it-case-0038
+      display_name: ARWC-IT-26-0038 — Shift and field returns
+    - name: it-case-0039
+      display_name: ARWC-IT-26-0039 — Maintenance register and drawings
+    - name: it-case-0040
+      display_name: ARWC-IT-26-0040 — Laboratory and quality records
+    - name: it-case-0041
+      display_name: ARWC-IT-26-0041 — Planning returns
+    - name: it-case-0042
+      display_name: ARWC-IT-26-0042 — Purchasing and stores book
+    - name: it-case-0043
+      display_name: ARWC-IT-26-0043 — Finance and governance papers
+    - name: it-case-0044
+      display_name: ARWC-IT-26-0044 — FieldKest integration reference
+    - name: it-case-0045
+      display_name: ARWC-IT-26-0045 — Workplace mail and calendar
+    - name: it-case-0046
+      display_name: ARWC-IT-26-0046 — Workplace document library
+    - name: it-case-0047
+      display_name: ARWC-IT-26-0047 — Staff contact directory
+    - name: it-case-0048
+      display_name: ARWC-IT-26-0048 — Customer account book
+    - name: it-case-0049
+      display_name: ARWC-IT-26-0049 — Shift and field returns
+    - name: it-case-0050
+      display_name: ARWC-IT-26-0050 — Maintenance register and drawings
+    - name: it-case-0051
+      display_name: ARWC-IT-26-0051 — Laboratory and quality records
+    - name: it-case-0052
+      display_name: ARWC-IT-26-0052 — Planning returns
+    - name: it-case-0053
+      display_name: ARWC-IT-26-0053 — Purchasing and stores book
+    - name: it-case-0054
+      display_name: ARWC-IT-26-0054 — Finance and governance papers
+    - name: it-case-0055
+      display_name: ARWC-IT-26-0055 — FieldKest integration reference
+    - name: it-case-0056
+      display_name: ARWC-IT-26-0056 — Workplace mail and calendar
+    - name: it-case-0057
+      display_name: ARWC-IT-26-0057 — Workplace document library
+    - name: it-case-0058
+      display_name: ARWC-IT-26-0058 — Staff contact directory
+    - name: it-case-0059
+      display_name: ARWC-IT-26-0059 — Customer account book
+    - name: it-case-0060
+      display_name: ARWC-IT-26-0060 — Shift and field returns
+    - name: it-case-0061
+      display_name: ARWC-IT-26-0061 — Maintenance register and drawings
+    - name: it-case-0062
+      display_name: ARWC-IT-26-0062 — Laboratory and quality records
+    - name: it-case-0063
+      display_name: ARWC-IT-26-0063 — Planning returns
+    - name: it-case-0064
+      display_name: ARWC-IT-26-0064 — Purchasing and stores book
+    - name: it-case-0065
+      display_name: ARWC-IT-26-0065 — Finance and governance papers
+    - name: it-case-0066
+      display_name: ARWC-IT-26-0066 — FieldKest integration reference
+    - name: it-case-0067
+      display_name: ARWC-IT-26-0067 — Workplace mail and calendar
+    - name: it-case-0068
+      display_name: ARWC-IT-26-0068 — Workplace document library
+    - name: it-case-0069
+      display_name: ARWC-IT-26-0069 — Staff contact directory
+    - name: it-case-0070
+      display_name: ARWC-IT-26-0070 — Customer account book
+    - name: it-case-0071
+      display_name: ARWC-IT-26-0071 — Shift and field returns
+    - name: it-case-0072
+      display_name: ARWC-IT-26-0072 — Maintenance register and drawings
+    - name: it-case-0073
+      display_name: ARWC-IT-26-0073 — Laboratory and quality records
+    - name: it-case-0074
+      display_name: ARWC-IT-26-0074 — Planning returns
+    - name: it-case-0075
+      display_name: ARWC-IT-26-0075 — Purchasing and stores book
+    - name: it-case-0076
+      display_name: ARWC-IT-26-0076 — Finance and governance papers
+    - name: it-case-0077
+      display_name: ARWC-IT-26-0077 — FieldKest integration reference
+    - name: it-case-0078
+      display_name: ARWC-IT-26-0078 — Workplace mail and calendar
+    - name: it-case-0079
+      display_name: ARWC-IT-26-0079 — Workplace document library
+    - name: it-case-0080
+      display_name: ARWC-IT-26-0080 — Staff contact directory
+    - name: it-case-0081
+      display_name: ARWC-IT-26-0081 — Customer account book
+    - name: it-case-0082
+      display_name: ARWC-IT-26-0082 — Shift and field returns
+    - name: it-case-0083
+      display_name: ARWC-IT-26-0083 — Maintenance register and drawings
+    - name: it-case-0084
+      display_name: ARWC-IT-26-0084 — Laboratory and quality records
+    - name: it-case-0085
+      display_name: ARWC-IT-26-0085 — Planning returns
+    - name: it-case-0086
+      display_name: ARWC-IT-26-0086 — Purchasing and stores book
+    - name: it-case-0087
+      display_name: ARWC-IT-26-0087 — Finance and governance papers
+    - name: it-case-0088
+      display_name: ARWC-IT-26-0088 — FieldKest integration reference
+    - name: it-case-0089
+      display_name: ARWC-IT-26-0089 — Workplace mail and calendar
+    - name: it-case-0090
+      display_name: ARWC-IT-26-0090 — Workplace document library
+    - name: it-case-0091
+      display_name: ARWC-IT-26-0091 — Staff contact directory
+    - name: it-case-0092
+      display_name: ARWC-IT-26-0092 — Customer account book
+    - name: it-case-0093
+      display_name: ARWC-IT-26-0093 — Shift and field returns
+    - name: it-case-0094
+      display_name: ARWC-IT-26-0094 — Maintenance register and drawings
+    - name: it-case-0095
+      display_name: ARWC-IT-26-0095 — Laboratory and quality records
+    - name: it-case-0096
+      display_name: ARWC-IT-26-0096 — Planning returns
+    - name: it-case-0097
+      display_name: ARWC-IT-26-0097 — Purchasing and stores book
+    - name: it-case-0098
+      display_name: ARWC-IT-26-0098 — Finance and governance papers
+    - name: it-case-0099
+      display_name: ARWC-IT-26-0099 — FieldKest integration reference
+    - name: it-case-0100
+      display_name: ARWC-IT-26-0100 — Workplace mail and calendar
+    - name: it-case-0101
+      display_name: ARWC-IT-26-0101 — Workplace document library
+    - name: it-case-0102
+      display_name: ARWC-IT-26-0102 — Staff contact directory
+    - name: it-case-0103
+      display_name: ARWC-IT-26-0103 — Customer account book
+    - name: it-case-0104
+      display_name: ARWC-IT-26-0104 — Shift and field returns
+    - name: it-case-0105
+      display_name: ARWC-IT-26-0105 — Maintenance register and drawings
+    - name: it-case-0106
+      display_name: ARWC-IT-26-0106 — Laboratory and quality records
+    - name: it-case-0107
+      display_name: ARWC-IT-26-0107 — Planning returns
+    - name: it-case-0108
+      display_name: ARWC-IT-26-0108 — Purchasing and stores book
+    - name: it-case-0109
+      display_name: ARWC-IT-26-0109 — Finance and governance papers
+    - name: it-case-0110
+      display_name: ARWC-IT-26-0110 — FieldKest integration reference
+    - name: it-case-0111
+      display_name: ARWC-IT-26-0111 — Workplace mail and calendar
+    - name: it-case-0112
+      display_name: ARWC-IT-26-0112 — Workplace document library
+    - name: it-case-0113
+      display_name: ARWC-IT-26-0113 — Staff contact directory
+    - name: it-case-0114
+      display_name: ARWC-IT-26-0114 — Customer account book
+    - name: it-case-0115
+      display_name: ARWC-IT-26-0115 — Shift and field returns
+    - name: it-case-0116
+      display_name: ARWC-IT-26-0116 — Maintenance register and drawings
+    - name: it-case-0117
+      display_name: ARWC-IT-26-0117 — Laboratory and quality records
+    - name: it-case-0118
+      display_name: ARWC-IT-26-0118 — Planning returns
+    - name: it-case-0119
+      display_name: ARWC-IT-26-0119 — Purchasing and stores book
+    - name: it-case-0120
+      display_name: ARWC-IT-26-0120 — Finance and governance papers
+    - name: it-case-0121
+      display_name: ARWC-IT-26-0121 — FieldKest integration reference
+    - name: it-case-0122
+      display_name: ARWC-IT-26-0122 — Workplace mail and calendar
+    - name: it-case-0123
+      display_name: ARWC-IT-26-0123 — Workplace document library
+    - name: it-case-0124
+      display_name: ARWC-IT-26-0124 — Staff contact directory
+    - name: it-case-0125
+      display_name: ARWC-IT-26-0125 — Customer account book
+    - name: it-case-0126
+      display_name: ARWC-IT-26-0126 — Shift and field returns
+    - name: it-case-0127
+      display_name: ARWC-IT-26-0127 — Maintenance register and drawings
+    - name: it-case-0128
+      display_name: ARWC-IT-26-0128 — Laboratory and quality records
+    - name: it-case-0129
+      display_name: ARWC-IT-26-0129 — Planning returns
+    - name: it-case-0130
+      display_name: ARWC-IT-26-0130 — Purchasing and stores book
+    - name: it-case-0131
+      display_name: ARWC-IT-26-0131 — Finance and governance papers
+    - name: it-case-0132
+      display_name: ARWC-IT-26-0132 — FieldKest integration reference
+    - name: it-case-0133
+      display_name: ARWC-IT-26-0133 — Workplace mail and calendar
+    - name: it-case-0134
+      display_name: ARWC-IT-26-0134 — Workplace document library
+    - name: it-case-0135
+      display_name: ARWC-IT-26-0135 — Staff contact directory
+    - name: it-case-0136
+      display_name: ARWC-IT-26-0136 — Customer account book
+    - name: it-case-0137
+      display_name: ARWC-IT-26-0137 — Shift and field returns
+    - name: it-case-0138
+      display_name: ARWC-IT-26-0138 — Maintenance register and drawings
+    - name: it-case-0139
+      display_name: ARWC-IT-26-0139 — Laboratory and quality records
+    - name: it-case-0140
+      display_name: ARWC-IT-26-0140 — Planning returns
+    - name: it-case-0141
+      display_name: ARWC-IT-26-0141 — Purchasing and stores book
+    - name: it-case-0142
+      display_name: ARWC-IT-26-0142 — Finance and governance papers
+    - name: it-case-0143
+      display_name: ARWC-IT-26-0143 — FieldKest integration reference
+    - name: it-case-0144
+      display_name: ARWC-IT-26-0144 — Workplace mail and calendar
+    - name: it-case-0145
+      display_name: ARWC-IT-26-0145 — Workplace document library
+    - name: it-case-0146
+      display_name: ARWC-IT-26-0146 — Staff contact directory
+    - name: it-case-0147
+      display_name: ARWC-IT-26-0147 — Customer account book
+    - name: it-case-0148
+      display_name: ARWC-IT-26-0148 — Shift and field returns
+    - name: it-case-0149
+      display_name: ARWC-IT-26-0149 — Maintenance register and drawings
+    - name: it-case-0150
+      display_name: ARWC-IT-26-0150 — Laboratory and quality records
+    - name: it-case-0151
+      display_name: ARWC-IT-26-0151 — Planning returns
+    - name: it-case-0152
+      display_name: ARWC-IT-26-0152 — Purchasing and stores book
+    - name: it-case-0153
+      display_name: ARWC-IT-26-0153 — Finance and governance papers
+    - name: it-case-0154
+      display_name: ARWC-IT-26-0154 — FieldKest integration reference
+    - name: it-case-0155
+      display_name: ARWC-IT-26-0155 — Workplace mail and calendar
+    - name: it-case-0156
+      display_name: ARWC-IT-26-0156 — Workplace document library
+    - name: it-case-0157
+      display_name: ARWC-IT-26-0157 — Staff contact directory
+    - name: it-case-0158
+      display_name: ARWC-IT-26-0158 — Customer account book
+    - name: it-case-0159
+      display_name: ARWC-IT-26-0159 — Shift and field returns
+    - name: it-case-0160
+      display_name: ARWC-IT-26-0160 — Maintenance register and drawings
+    - name: it-case-0161
+      display_name: ARWC-IT-26-0161 — Laboratory and quality records
+    - name: it-case-0162
+      display_name: ARWC-IT-26-0162 — Planning returns
+    - name: it-case-0163
+      display_name: ARWC-IT-26-0163 — Purchasing and stores book
+    - name: it-case-0164
+      display_name: ARWC-IT-26-0164 — Finance and governance papers
+    - name: it-case-0165
+      display_name: ARWC-IT-26-0165 — FieldKest integration reference
+    - name: it-case-0166
+      display_name: ARWC-IT-26-0166 — Workplace mail and calendar
+    - name: it-case-0167
+      display_name: ARWC-IT-26-0167 — Workplace document library
+    - name: it-case-0168
+      display_name: ARWC-IT-26-0168 — Staff contact directory
+    - name: it-case-0169
+      display_name: ARWC-IT-26-0169 — Customer account book
+    - name: it-case-0170
+      display_name: ARWC-IT-26-0170 — Shift and field returns
+    - name: it-case-0171
+      display_name: ARWC-IT-26-0171 — Maintenance register and drawings
+    - name: it-case-0172
+      display_name: ARWC-IT-26-0172 — Laboratory and quality records
+    - name: it-case-0173
+      display_name: ARWC-IT-26-0173 — Planning returns
+    - name: it-case-0174
+      display_name: ARWC-IT-26-0174 — Purchasing and stores book
+    - name: it-case-0175
+      display_name: ARWC-IT-26-0175 — Finance and governance papers
+    - name: it-case-0176
+      display_name: ARWC-IT-26-0176 — FieldKest integration reference
+    - name: it-case-0177
+      display_name: ARWC-IT-26-0177 — Workplace mail and calendar
+    - name: it-case-0178
+      display_name: ARWC-IT-26-0178 — Workplace document library
+    - name: it-case-0179
+      display_name: ARWC-IT-26-0179 — Staff contact directory
+    - name: it-case-0180
+      display_name: ARWC-IT-26-0180 — Customer account book
+    - name: it-case-0181
+      display_name: ARWC-IT-26-0181 — Shift and field returns
+    - name: it-case-0182
+      display_name: ARWC-IT-26-0182 — Maintenance register and drawings
+    - name: it-case-0183
+      display_name: ARWC-IT-26-0183 — Laboratory and quality records
+    - name: it-case-0184
+      display_name: ARWC-IT-26-0184 — Planning returns
+    - name: it-case-0185
+      display_name: ARWC-IT-26-0185 — Purchasing and stores book
+    - name: it-case-0186
+      display_name: ARWC-IT-26-0186 — Finance and governance papers
+    - name: it-case-0187
+      display_name: ARWC-IT-26-0187 — FieldKest integration reference
+    - name: it-case-0188
+      display_name: ARWC-IT-26-0188 — Workplace mail and calendar
+    - name: it-case-0189
+      display_name: ARWC-IT-26-0189 — Workplace document library
+    - name: it-case-0190
+      display_name: ARWC-IT-26-0190 — Staff contact directory
+    - name: it-case-0191
+      display_name: ARWC-IT-26-0191 — Customer account book
+    - name: it-case-0192
+      display_name: ARWC-IT-26-0192 — Shift and field returns
+    - name: it-case-0193
+      display_name: ARWC-IT-26-0193 — Maintenance register and drawings
+    - name: it-case-0194
+      display_name: ARWC-IT-26-0194 — Laboratory and quality records
+    - name: it-case-0195
+      display_name: ARWC-IT-26-0195 — Planning returns
+    - name: it-case-0196
+      display_name: ARWC-IT-26-0196 — Purchasing and stores book
+    - name: it-case-0197
+      display_name: ARWC-IT-26-0197 — Finance and governance papers
+    - name: it-case-0198
+      display_name: ARWC-IT-26-0198 — FieldKest integration reference
+    - name: it-case-0199
+      display_name: ARWC-IT-26-0199 — Workplace mail and calendar
+    - name: it-case-0200
+      display_name: ARWC-IT-26-0200 — Workplace document library
+    - name: it-case-0201
+      display_name: ARWC-IT-26-0201 — Staff contact directory
+    - name: it-case-0202
+      display_name: ARWC-IT-26-0202 — Customer account book
+    - name: it-case-0203
+      display_name: ARWC-IT-26-0203 — Shift and field returns
+    - name: it-case-0204
+      display_name: ARWC-IT-26-0204 — Maintenance register and drawings
+    - name: it-case-0205
+      display_name: ARWC-IT-26-0205 — Laboratory and quality records
+    - name: it-case-0206
+      display_name: ARWC-IT-26-0206 — Planning returns
+    - name: it-case-0207
+      display_name: ARWC-IT-26-0207 — Purchasing and stores book
+    - name: it-case-0208
+      display_name: ARWC-IT-26-0208 — Finance and governance papers
+    - name: it-case-0209
+      display_name: ARWC-IT-26-0209 — FieldKest integration reference
+    - name: it-case-0210
+      display_name: ARWC-IT-26-0210 — Workplace mail and calendar
+    - name: it-case-0211
+      display_name: ARWC-IT-26-0211 — Workplace document library
+    - name: it-case-0212
+      display_name: ARWC-IT-26-0212 — Staff contact directory
+    - name: it-case-0213
+      display_name: ARWC-IT-26-0213 — Customer account book
+    - name: it-case-0214
+      display_name: ARWC-IT-26-0214 — Shift and field returns
+    - name: it-case-0215
+      display_name: ARWC-IT-26-0215 — Maintenance register and drawings
+    - name: it-case-0216
+      display_name: ARWC-IT-26-0216 — Laboratory and quality records
+    - name: it-case-0217
+      display_name: ARWC-IT-26-0217 — Planning returns
+    - name: it-case-0218
+      display_name: ARWC-IT-26-0218 — Purchasing and stores book
+    - name: it-case-0219
+      display_name: ARWC-IT-26-0219 — Finance and governance papers
+    - name: it-case-0220
+      display_name: ARWC-IT-26-0220 — FieldKest integration reference
+    - name: it-case-0221
+      display_name: ARWC-IT-26-0221 — Workplace mail and calendar
+    - name: it-case-0222
+      display_name: ARWC-IT-26-0222 — Workplace document library
+    - name: it-case-0223
+      display_name: ARWC-IT-26-0223 — Staff contact directory
+    - name: it-case-0224
+      display_name: ARWC-IT-26-0224 — Customer account book
+    - name: it-case-0225
+      display_name: ARWC-IT-26-0225 — Shift and field returns
+    - name: it-case-0226
+      display_name: ARWC-IT-26-0226 — Maintenance register and drawings
+    - name: it-case-0227
+      display_name: ARWC-IT-26-0227 — Laboratory and quality records
+    - name: it-case-0228
+      display_name: ARWC-IT-26-0228 — Planning returns
+    - name: it-case-0229
+      display_name: ARWC-IT-26-0229 — Purchasing and stores book
+    - name: it-case-0230
+      display_name: ARWC-IT-26-0230 — Finance and governance papers
+    - name: it-case-0231
+      display_name: ARWC-IT-26-0231 — FieldKest integration reference
+    - name: it-case-0232
+      display_name: ARWC-IT-26-0232 — Workplace mail and calendar
+    - name: it-case-0233
+      display_name: ARWC-IT-26-0233 — Workplace document library
+    - name: it-case-0234
+      display_name: ARWC-IT-26-0234 — Staff contact directory
+    - name: it-case-0235
+      display_name: ARWC-IT-26-0235 — Customer account book
+    - name: it-case-0236
+      display_name: ARWC-IT-26-0236 — Shift and field returns
+    - name: it-case-0237
+      display_name: ARWC-IT-26-0237 — Maintenance register and drawings
+    - name: it-case-0238
+      display_name: ARWC-IT-26-0238 — Laboratory and quality records
+    - name: it-case-0239
+      display_name: ARWC-IT-26-0239 — Planning returns
+    - name: it-case-0240
+      display_name: ARWC-IT-26-0240 — Purchasing and stores book
+    - name: it-case-0241
+      display_name: ARWC-IT-26-0241 — Finance and governance papers
+    - name: it-case-0242
+      display_name: ARWC-IT-26-0242 — FieldKest integration reference
+    - name: it-case-0243
+      display_name: ARWC-IT-26-0243 — Workplace mail and calendar
+    - name: it-case-0244
+      display_name: ARWC-IT-26-0244 — Workplace document library
+    - name: it-case-0245
+      display_name: ARWC-IT-26-0245 — Staff contact directory
+    - name: it-case-0246
+      display_name: ARWC-IT-26-0246 — Customer account book
+    - name: it-case-0247
+      display_name: ARWC-IT-26-0247 — Shift and field returns
+    - name: it-case-0248
+      display_name: ARWC-IT-26-0248 — Maintenance register and drawings
+    - name: it-case-0249
+      display_name: ARWC-IT-26-0249 — Laboratory and quality records
+    - name: it-case-0250
+      display_name: ARWC-IT-26-0250 — Planning returns
+    - name: it-case-0251
+      display_name: ARWC-IT-26-0251 — Purchasing and stores book
+    - name: it-case-0252
+      display_name: ARWC-IT-26-0252 — Finance and governance papers
+    - name: it-case-0253
+      display_name: ARWC-IT-26-0253 — FieldKest integration reference
+    - name: it-case-0254
+      display_name: ARWC-IT-26-0254 — Workplace mail and calendar
+    - name: it-case-0255
+      display_name: ARWC-IT-26-0255 — Workplace document library
+    - name: it-case-0256
+      display_name: ARWC-IT-26-0256 — Staff contact directory
+    - name: it-case-0257
+      display_name: ARWC-IT-26-0257 — Customer account book
+    - name: it-case-0258
+      display_name: ARWC-IT-26-0258 — Shift and field returns
+    - name: it-case-0259
+      display_name: ARWC-IT-26-0259 — Maintenance register and drawings
+    - name: it-case-0260
+      display_name: ARWC-IT-26-0260 — Laboratory and quality records
+    - name: it-case-0261
+      display_name: ARWC-IT-26-0261 — Planning returns
+    - name: it-case-0262
+      display_name: ARWC-IT-26-0262 — Purchasing and stores book
+    - name: it-case-0263
+      display_name: ARWC-IT-26-0263 — Finance and governance papers
+    - name: it-case-0264
+      display_name: ARWC-IT-26-0264 — FieldKest integration reference
+    - name: it-case-0265
+      display_name: ARWC-IT-26-0265 — Workplace mail and calendar
+    - name: it-case-0266
+      display_name: ARWC-IT-26-0266 — Workplace document library
+    - name: it-case-0267
+      display_name: ARWC-IT-26-0267 — Staff contact directory
+    - name: it-case-0268
+      display_name: ARWC-IT-26-0268 — Customer account book
+    - name: it-case-0269
+      display_name: ARWC-IT-26-0269 — Shift and field returns
+    - name: it-case-0270
+      display_name: ARWC-IT-26-0270 — Maintenance register and drawings
+    - name: it-case-0271
+      display_name: ARWC-IT-26-0271 — Laboratory and quality records
+    - name: it-case-0272
+      display_name: ARWC-IT-26-0272 — Planning returns
+    - name: it-case-0273
+      display_name: ARWC-IT-26-0273 — Purchasing and stores book
+    - name: it-case-0274
+      display_name: ARWC-IT-26-0274 — Finance and governance papers
+    - name: it-case-0275
+      display_name: ARWC-IT-26-0275 — FieldKest integration reference
+    - name: it-case-0276
+      display_name: ARWC-IT-26-0276 — Workplace mail and calendar
+    - name: it-case-0277
+      display_name: ARWC-IT-26-0277 — Workplace document library
+    - name: it-case-0278
+      display_name: ARWC-IT-26-0278 — Staff contact directory
+    - name: it-case-0279
+      display_name: ARWC-IT-26-0279 — Customer account book
+    - name: it-case-0280
+      display_name: ARWC-IT-26-0280 — Shift and field returns
+    - name: it-case-0281
+      display_name: ARWC-IT-26-0281 — Maintenance register and drawings
+    - name: it-case-0282
+      display_name: ARWC-IT-26-0282 — Laboratory and quality records
+    - name: it-case-0283
+      display_name: ARWC-IT-26-0283 — Planning returns
+    - name: it-case-0284
+      display_name: ARWC-IT-26-0284 — Purchasing and stores book
+    - name: it-case-0285
+      display_name: ARWC-IT-26-0285 — Finance and governance papers
+    - name: it-case-0286
+      display_name: ARWC-IT-26-0286 — FieldKest integration reference
+    - name: it-case-0287
+      display_name: ARWC-IT-26-0287 — Workplace mail and calendar
+    - name: it-case-0288
+      display_name: ARWC-IT-26-0288 — Workplace document library
+    - name: it-case-0289
+      display_name: ARWC-IT-26-0289 — Staff contact directory
+    - name: it-case-0290
+      display_name: ARWC-IT-26-0290 — Customer account book
+    - name: it-case-0291
+      display_name: ARWC-IT-26-0291 — Shift and field returns
+    - name: it-case-0292
+      display_name: ARWC-IT-26-0292 — Maintenance register and drawings
+    - name: it-case-0293
+      display_name: ARWC-IT-26-0293 — Laboratory and quality records
+    - name: it-case-0294
+      display_name: ARWC-IT-26-0294 — Planning returns
+    - name: it-case-0295
+      display_name: ARWC-IT-26-0295 — Purchasing and stores book
+    - name: it-case-0296
+      display_name: ARWC-IT-26-0296 — Finance and governance papers
+    - name: it-case-0297
+      display_name: ARWC-IT-26-0297 — FieldKest integration reference
+    - name: it-case-0298
+      display_name: ARWC-IT-26-0298 — Workplace mail and calendar
+    - name: it-case-0299
+      display_name: ARWC-IT-26-0299 — Workplace document library
+    - name: it-case-0300
+      display_name: ARWC-IT-26-0300 — Staff contact directory
+    - name: it-case-0301
+      display_name: ARWC-IT-26-0301 — starter
+    - name: it-case-0302
+      display_name: ARWC-IT-26-0302 — starter
+    - name: it-case-0303
+      display_name: ARWC-IT-26-0303 — starter
+    - name: it-case-0304
+      display_name: ARWC-IT-26-0304 — starter
+    - name: it-case-0305
+      display_name: ARWC-IT-26-0305 — starter
+    - name: it-case-0306
+      display_name: ARWC-IT-26-0306 — starter
+    - name: it-case-0307
+      display_name: ARWC-IT-26-0307 — starter
+    - name: it-case-0308
+      display_name: ARWC-IT-26-0308 — starter
+    - name: it-case-0309
+      display_name: ARWC-IT-26-0309 — starter
+    - name: it-case-0310
+      display_name: ARWC-IT-26-0310 — starter
+    - name: it-case-0311
+      display_name: ARWC-IT-26-0311 — starter
+    - name: it-case-0312
+      display_name: ARWC-IT-26-0312 — starter
+    - name: it-case-0313
+      display_name: ARWC-IT-26-0313 — team move
+    - name: it-case-0314
+      display_name: ARWC-IT-26-0314 — team move
+    - name: it-case-0315
+      display_name: ARWC-IT-26-0315 — team move
+    - name: it-case-0316
+      display_name: ARWC-IT-26-0316 — team move
+    - name: it-case-0317
+      display_name: ARWC-IT-26-0317 — team move
+    - name: it-case-0318
+      display_name: ARWC-IT-26-0318 — team move
+    - name: it-case-0319
+      display_name: ARWC-IT-26-0319 — team move
+    - name: it-case-0320
+      display_name: ARWC-IT-26-0320 — team move
+    - name: it-case-0321
+      display_name: ARWC-IT-26-0321 — team move
+    - name: it-case-0322
+      display_name: ARWC-IT-26-0322 — team move
+    - name: it-case-0323
+      display_name: ARWC-IT-26-0323 — team move
+    - name: it-case-0324
+      display_name: ARWC-IT-26-0324 — team move
+    - name: it-case-0325
+      display_name: ARWC-IT-26-0325 — team move
+    - name: it-case-0326
+      display_name: ARWC-IT-26-0326 — team move
+    - name: it-case-0327
+      display_name: ARWC-IT-26-0327 — team move
+    - name: it-case-0328
+      display_name: ARWC-IT-26-0328 — team move
+    - name: it-case-0329
+      display_name: ARWC-IT-26-0329 — team move
+    - name: it-case-0330
+      display_name: ARWC-IT-26-0330 — team move
+    - name: it-case-0331
+      display_name: ARWC-IT-26-0331 — team move
+    - name: it-case-0332
+      display_name: ARWC-IT-26-0332 — team move
+    - name: it-case-0333
+      display_name: ARWC-IT-26-0333 — team move
+    - name: it-case-0334
+      display_name: ARWC-IT-26-0334 — team move
+    - name: it-case-0335
+      display_name: ARWC-IT-26-0335 — team move
+    - name: it-case-0336
+      display_name: ARWC-IT-26-0336 — team move
+    - name: it-case-0337
+      display_name: ARWC-IT-26-0337 — team move
+    - name: it-case-0338
+      display_name: ARWC-IT-26-0338 — team move
+    - name: it-case-0339
+      display_name: ARWC-IT-26-0339 — access review
+    - name: it-case-0340
+      display_name: ARWC-IT-26-0340 — access review
+    - name: it-case-0341
+      display_name: ARWC-IT-26-0341 — access review
+    - name: it-case-0342
+      display_name: ARWC-IT-26-0342 — access review
+    - name: it-case-0343
+      display_name: ARWC-IT-26-0343 — access review
+    - name: it-case-0344
+      display_name: ARWC-IT-26-0344 — access review
+    - name: it-case-0345
+      display_name: ARWC-IT-26-0345 — access review
+    - name: it-case-0346
+      display_name: ARWC-IT-26-0346 — access review
+    - name: it-case-0347
+      display_name: ARWC-IT-26-0347 — access review
+    - name: it-case-0348
+      display_name: ARWC-IT-26-0348 — access review
+    - name: it-case-0349
+      display_name: ARWC-IT-26-0349 — access review
+    - name: it-case-0350
+      display_name: ARWC-IT-26-0350 — access review
+    - name: it-case-0351
+      display_name: ARWC-IT-26-0351 — access review
+    - name: it-case-0352
+      display_name: ARWC-IT-26-0352 — access review
+    - name: it-case-0353
+      display_name: ARWC-IT-26-0353 — access review
+    - name: it-case-0354
+      display_name: ARWC-IT-26-0354 — access review
+    - name: it-case-0355
+      display_name: ARWC-IT-26-0355 — access review
+    - name: it-case-0356
+      display_name: ARWC-IT-26-0356 — access review
+    - name: it-case-0357
+      display_name: ARWC-IT-26-0357 — access review
+    - name: it-case-0358
+      display_name: ARWC-IT-26-0358 — access review
+    - name: it-case-0359
+      display_name: ARWC-IT-26-0359 — access review
+    - name: it-case-0360
+      display_name: ARWC-IT-26-0360 — access review
+    - name: it-case-0361
+      display_name: ARWC-IT-26-0361 — access review
+    - name: it-case-0362
+      display_name: ARWC-IT-26-0362 — access review
+    - name: it-case-0363
+      display_name: ARWC-IT-26-0363 — access review
+    - name: it-case-0364
+      display_name: ARWC-IT-26-0364 — access review
+    - name: it-case-0365
+      display_name: ARWC-IT-26-0365 — access review
+    - name: it-case-0366
+      display_name: ARWC-IT-26-0366 — access review
+    - name: it-case-0367
+      display_name: ARWC-IT-26-0367 — access review
+    - name: it-case-0368
+      display_name: ARWC-IT-26-0368 — access review
+    - name: it-case-0369
+      display_name: ARWC-IT-26-0369 — access review
+    - name: it-case-0370
+      display_name: ARWC-IT-26-0370 — access review
+    - name: it-case-0371
+      display_name: ARWC-IT-26-0371 — access review
+    - name: it-case-0372
+      display_name: ARWC-IT-26-0372 — access review
+    - name: it-case-0373
+      display_name: ARWC-IT-26-0373 — access review
+    - name: it-case-0374
+      display_name: ARWC-IT-26-0374 — access review
+    - name: it-case-0375
+      display_name: ARWC-IT-26-0375 — access review
+    - name: it-case-0376
+      display_name: ARWC-IT-26-0376 — access review
+    - name: it-case-0377
+      display_name: ARWC-IT-26-0377 — access review
+    - name: it-case-0378
+      display_name: ARWC-IT-26-0378 — access review
+    - name: it-case-0379
+      display_name: ARWC-IT-26-0379 — access review
+    - name: it-case-0380
+      display_name: ARWC-IT-26-0380 — access review
+    - name: it-case-0381
+      display_name: ARWC-IT-26-0381 — equipment ARWC-EQ-0001
+    - name: it-case-0382
+      display_name: ARWC-IT-26-0382 — equipment ARWC-EQ-0002
+    - name: it-case-0383
+      display_name: ARWC-IT-26-0383 — equipment ARWC-EQ-0003
+    - name: it-case-0384
+      display_name: ARWC-IT-26-0384 — equipment ARWC-EQ-0004
+    - name: it-case-0385
+      display_name: ARWC-IT-26-0385 — equipment ARWC-EQ-0005
+    - name: it-case-0386
+      display_name: ARWC-IT-26-0386 — equipment ARWC-EQ-0006
+    - name: it-case-0387
+      display_name: ARWC-IT-26-0387 — equipment ARWC-EQ-0007
+    - name: it-case-0388
+      display_name: ARWC-IT-26-0388 — equipment ARWC-EQ-0008
+    - name: it-case-0389
+      display_name: ARWC-IT-26-0389 — equipment ARWC-EQ-0009
+    - name: it-case-0390
+      display_name: ARWC-IT-26-0390 — equipment ARWC-EQ-0010
+    - name: it-case-0391
+      display_name: ARWC-IT-26-0391 — equipment ARWC-EQ-0011
+    - name: it-case-0392
+      display_name: ARWC-IT-26-0392 — equipment ARWC-EQ-0012
+    - name: it-case-0393
+      display_name: ARWC-IT-26-0393 — equipment ARWC-EQ-0013
+    - name: it-case-0394
+      display_name: ARWC-IT-26-0394 — equipment ARWC-EQ-0014
+    - name: it-case-0395
+      display_name: ARWC-IT-26-0395 — equipment ARWC-EQ-0015
+    - name: it-case-0396
+      display_name: ARWC-IT-26-0396 — equipment ARWC-EQ-0016
+    - name: it-case-0397
+      display_name: ARWC-IT-26-0397 — equipment ARWC-EQ-0017
+    - name: it-case-0398
+      display_name: ARWC-IT-26-0398 — equipment ARWC-EQ-0018
+    - name: it-case-0399
+      display_name: ARWC-IT-26-0399 — equipment ARWC-EQ-0019
+    - name: it-case-0400
+      display_name: ARWC-IT-26-0400 — equipment ARWC-EQ-0020
+    - name: it-case-0401
+      display_name: ARWC-IT-26-0401 — equipment ARWC-EQ-0021
+    - name: it-case-0402
+      display_name: ARWC-IT-26-0402 — equipment ARWC-EQ-0022
+    - name: it-case-0403
+      display_name: ARWC-IT-26-0403 — equipment ARWC-EQ-0023
+    - name: it-case-0404
+      display_name: ARWC-IT-26-0404 — equipment ARWC-EQ-0024
+    - name: it-case-0405
+      display_name: ARWC-IT-26-0405 — equipment ARWC-EQ-0025
+    - name: it-case-0406
+      display_name: ARWC-IT-26-0406 — equipment ARWC-EQ-0026
+    - name: it-case-0407
+      display_name: ARWC-IT-26-0407 — equipment ARWC-EQ-0027
+    - name: it-case-0408
+      display_name: ARWC-IT-26-0408 — equipment ARWC-EQ-0028
+    - name: it-case-0409
+      display_name: ARWC-IT-26-0409 — equipment ARWC-EQ-0029
+    - name: it-case-0410
+      display_name: ARWC-IT-26-0410 — equipment ARWC-EQ-0030
+    - name: it-case-0411
+      display_name: ARWC-IT-26-0411 — equipment ARWC-EQ-0031
+    - name: it-case-0412
+      display_name: ARWC-IT-26-0412 — equipment ARWC-EQ-0032
+    - name: it-case-0413
+      display_name: ARWC-IT-26-0413 — equipment ARWC-EQ-0033
+    - name: it-case-0414
+      display_name: ARWC-IT-26-0414 — equipment ARWC-EQ-0034
+    - name: it-case-0415
+      display_name: ARWC-IT-26-0415 — equipment ARWC-EQ-0035
+    - name: it-case-0416
+      display_name: ARWC-IT-26-0416 — equipment ARWC-EQ-0036
+    - name: it-case-0417
+      display_name: ARWC-IT-26-0417 — equipment ARWC-EQ-0037
+    - name: it-case-0418
+      display_name: ARWC-IT-26-0418 — equipment ARWC-EQ-0038
+    - name: it-case-0419
+      display_name: ARWC-IT-26-0419 — equipment ARWC-EQ-0039
+    - name: it-case-0420
+      display_name: ARWC-IT-26-0420 — equipment ARWC-EQ-0040
+    - name: it-case-0421
+      display_name: ARWC-IT-26-0421 — equipment ARWC-EQ-0041
+    - name: it-case-0422
+      display_name: ARWC-IT-26-0422 — equipment ARWC-EQ-0042
+    - name: it-case-0423
+      display_name: ARWC-IT-26-0423 — equipment ARWC-EQ-0043
+    - name: it-case-0424
+      display_name: ARWC-IT-26-0424 — equipment ARWC-EQ-0044
+    - name: it-case-0425
+      display_name: ARWC-IT-26-0425 — equipment ARWC-EQ-0045
+    - name: it-case-0426
+      display_name: ARWC-IT-26-0426 — equipment ARWC-EQ-0046
+    - name: it-case-0427
+      display_name: ARWC-IT-26-0427 — equipment ARWC-EQ-0047
+    - name: it-case-0428
+      display_name: ARWC-IT-26-0428 — equipment ARWC-EQ-0048
+    - name: it-case-0429
+      display_name: ARWC-IT-26-0429 — equipment ARWC-EQ-0049
+    - name: it-case-0430
+      display_name: ARWC-IT-26-0430 — equipment ARWC-EQ-0050
+    - name: it-case-0431
+      display_name: ARWC-IT-26-0431 — calendar reminder text
+    - name: it-case-0432
+      display_name: ARWC-IT-26-0432 — approved-item link
+    - name: it-case-0433
+      display_name: ARWC-IT-26-0433 — team contact card
+    - name: it-case-0434
+      display_name: ARWC-IT-26-0434 — bill-copy lookup
+    - name: it-case-0435
+      display_name: ARWC-IT-26-0435 — visit-return filter
+    - name: it-case-0436
+      display_name: ARWC-IT-26-0436 — drawing index
+    - name: it-case-0437
+      display_name: ARWC-IT-26-0437 — sample-status label
+    - name: it-case-0438
+      display_name: ARWC-IT-26-0438 — workbook version label
+    - name: it-case-0439
+      display_name: ARWC-IT-26-0439 — receipt-match label
+    - name: it-case-0440
+      display_name: ARWC-IT-26-0440 — close preview cutoff
+    - name: it-case-0441
+      display_name: ARWC-IT-26-0441 — calendar reminder text
+    - name: it-case-0442
+      display_name: ARWC-IT-26-0442 — approved-item link
+    - name: it-case-0443
+      display_name: ARWC-IT-26-0443 — team contact card
+    - name: it-case-0444
+      display_name: ARWC-IT-26-0444 — bill-copy lookup
+    - name: it-case-0445
+      display_name: ARWC-IT-26-0445 — visit-return filter
+    - name: it-case-0446
+      display_name: ARWC-IT-26-0446 — drawing index
+    - name: it-case-0447
+      display_name: ARWC-IT-26-0447 — sample-status label
+    - name: it-case-0448
+      display_name: ARWC-IT-26-0448 — workbook version label
+    - name: it-case-0449
+      display_name: ARWC-IT-26-0449 — receipt-match label
+    - name: it-case-0450
+      display_name: ARWC-IT-26-0450 — close preview cutoff
+    - name: it-case-0451
+      display_name: ARWC-IT-26-0451 — calendar reminder text
+    - name: it-case-0452
+      display_name: ARWC-IT-26-0452 — approved-item link
+    - name: it-case-0453
+      display_name: ARWC-IT-26-0453 — team contact card
+    - name: it-case-0454
+      display_name: ARWC-IT-26-0454 — bill-copy lookup
+    - name: it-case-0455
+      display_name: ARWC-IT-26-0455 — visit-return filter
+    - name: it-case-0456
+      display_name: ARWC-IT-26-0456 — drawing index
+    - name: it-case-0457
+      display_name: ARWC-IT-26-0457 — sample-status label
+    - name: it-case-0458
+      display_name: ARWC-IT-26-0458 — workbook version label
+    - name: it-case-0459
+      display_name: ARWC-IT-26-0459 — receipt-match label
+    - name: it-case-0460
+      display_name: ARWC-IT-26-0460 — close preview cutoff
+    - name: it-case-0461
+      display_name: ARWC-IT-26-0461 — Workplace mail and calendar copy check
+    - name: it-case-0462
+      display_name: ARWC-IT-26-0462 — Workplace document library copy check
+    - name: it-case-0463
+      display_name: ARWC-IT-26-0463 — Staff contact directory copy check
+    - name: it-case-0464
+      display_name: ARWC-IT-26-0464 — Customer account book copy check
+    - name: it-case-0465
+      display_name: ARWC-IT-26-0465 — Shift and field returns copy check
+    - name: it-case-0466
+      display_name: ARWC-IT-26-0466 — Maintenance register and drawings copy check
+    - name: it-case-0467
+      display_name: ARWC-IT-26-0467 — Laboratory and quality records copy check
+    - name: it-case-0468
+      display_name: ARWC-IT-26-0468 — Planning returns copy check
+    - name: it-case-0469
+      display_name: ARWC-IT-26-0469 — Purchasing and stores book copy check
+    - name: it-case-0470
+      display_name: ARWC-IT-26-0470 — Finance and governance papers copy check
+    - name: it-case-0471
+      display_name: ARWC-IT-26-0471 — KeplerOps Software review
+    - name: it-case-0472
+      display_name: ARWC-IT-26-0472 — Ternwick Records Bureau review
+    - name: it-case-0473
+      display_name: ARWC-IT-26-0473 — KeplerOps Software review
+    - name: it-case-0474
+      display_name: ARWC-IT-26-0474 — Ternwick Records Bureau review
+    - name: it-case-0475
+      display_name: ARWC-IT-26-0475 — KeplerOps Software review
+    - name: it-case-0476
+      display_name: ARWC-IT-26-0476 — Ternwick Records Bureau review
+    - name: it-case-0477
+      display_name: ARWC-IT-26-0477 — KeplerOps Software review
+    - name: it-case-0478
+      display_name: ARWC-IT-26-0478 — Ternwick Records Bureau review
+    - name: it-case-0479
+      display_name: ARWC-IT-26-0479 — KeplerOps Software review
+    - name: it-case-0480
+      display_name: ARWC-IT-26-0480 — Ternwick Records Bureau review
+    - name: it-service-inventory
+      display_name: ARWC application and service inventory
+    - name: it-equipment-assignments
+      display_name: ARWC equipment assignments
+    - name: it-maintenance-schedule
+      display_name: IT service view maintenance schedule
+    - name: it-access-matrix
+      display_name: Ordinary team reader groups
+    - name: it-catalog-mail
+      display_name: Workplace mail and calendar contact
+    - name: it-catalog-library
+      display_name: Workplace document library contact
+    - name: it-catalog-directory
+      display_name: Staff contact directory contact
+    - name: it-catalog-customer
+      display_name: Customer account book contact
+    - name: it-catalog-field
+      display_name: Shift and field returns contact
+    - name: it-catalog-maintenance
+      display_name: Maintenance register and drawings contact
+    - name: it-catalog-laboratory
+      display_name: Laboratory and quality records contact
+    - name: it-catalog-planning
+      display_name: Planning returns contact
+    - name: it-catalog-purchasing
+      display_name: Purchasing and stores book contact
+    - name: it-catalog-finance
+      display_name: Finance and governance papers contact
+    - name: it-catalog-fieldkest
+      display_name: FieldKest integration reference contact
     - name: lq-specification
       display_name: ARWC Laboratory Operating Specification ARWC-LOS-26-01
     - name: lq-work-guide
@@ -18667,6 +19701,56 @@ content:
       display_name: 2026-08-25 joint board meeting
     - name: governance-board-03
       display_name: 2026-09-15 joint board meeting
+    - name: it-window-02
+      display_name: Workplace document library view check ARWC-IT-26-0432
+    - name: it-window-03
+      display_name: Staff contact directory view check ARWC-IT-26-0433
+    - name: it-window-04
+      display_name: Customer account book view check ARWC-IT-26-0434
+    - name: it-window-05
+      display_name: Shift and field returns view check ARWC-IT-26-0435
+    - name: it-window-06
+      display_name: Maintenance register and drawings view check ARWC-IT-26-0436
+    - name: it-window-08
+      display_name: Planning returns view check ARWC-IT-26-0438
+    - name: it-window-09
+      display_name: Purchasing and stores book view check ARWC-IT-26-0439
+    - name: it-window-10
+      display_name: Finance and governance papers view check ARWC-IT-26-0440
+    - name: it-window-11
+      display_name: Workplace mail and calendar view check ARWC-IT-26-0441
+    - name: it-window-12
+      display_name: Workplace document library view check ARWC-IT-26-0442
+    - name: it-window-14
+      display_name: Customer account book view check ARWC-IT-26-0444
+    - name: it-window-15
+      display_name: Shift and field returns view check ARWC-IT-26-0445
+    - name: it-window-16
+      display_name: Maintenance register and drawings view check ARWC-IT-26-0446
+    - name: it-window-17
+      display_name: Laboratory and quality records view check ARWC-IT-26-0447
+    - name: it-window-18
+      display_name: Planning returns view check ARWC-IT-26-0448
+    - name: it-window-20
+      display_name: Finance and governance papers view check ARWC-IT-26-0450
+    - name: it-window-21
+      display_name: Workplace mail and calendar view check ARWC-IT-26-0451
+    - name: it-window-22
+      display_name: Workplace document library view check ARWC-IT-26-0452
+    - name: it-window-23
+      display_name: Staff contact directory view check ARWC-IT-26-0453
+    - name: it-window-24
+      display_name: Customer account book view check ARWC-IT-26-0454
+    - name: it-window-26
+      display_name: Maintenance register and drawings view check ARWC-IT-26-0456
+    - name: it-window-27
+      display_name: Laboratory and quality records view check ARWC-IT-26-0457
+    - name: it-window-28
+      display_name: Planning returns view check ARWC-IT-26-0458
+    - name: it-window-29
+      display_name: Purchasing and stores book view check ARWC-IT-26-0459
+    - name: it-window-30
+      display_name: Finance and governance papers view check ARWC-IT-26-0460
     - name: lq-equipment-service-001
       display_name: 'ARWC-LQS-26-001: clarity response reader'
     - name: lq-equipment-service-002

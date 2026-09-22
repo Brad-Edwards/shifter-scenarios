@@ -4,8 +4,8 @@ Worldbuilding draft 2, September 19, 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
 accounts, field operations, maintenance/engineering, laboratory/quality, purchasing/stores, and retail billing
-added on 21 September, and resource planning and ARWC governance added on
-22 September.
+added on 21 September, and resource planning, ARWC governance and information
+technology added on 22 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -70,6 +70,7 @@ and unfinished plans of their own.
 | [Planning voices](planning-voices.md) | Writing notes and samples for the eight resource planners, alongside accepted source-owner profiles. |
 | [ARWC governance review](governance-review.md) | Dated financial closes, board decisions, conditional budgets, public releases, counts and verification. |
 | [ARWC governance voices](governance-voices.md) | Finance, management, reporting and six non-employee board profiles and samples. |
+| [ARWC IT service review](it-services-review.md) | Application inventory, case lifecycles, access, equipment, copy checks, supplier reviews and validation. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -175,6 +176,11 @@ earlier sensitivity alongside the reviewed version. The eight resource planners
 remain part of the established 32-person department; other teams retain their
 own responsibilities. Recommendations do not confer operating, funding,
 procurement, project, or reservation authority.
+The information-technology slice develops 480 ordinary histories for the
+accepted twelve-person team, with current reader groups, equipment assignments,
+knowledge, service inventory, planned changes, bounded copy checks and supplier
+reviews. It uses the existing workplace and business record collections and
+does not add a server or broad application administrator grant.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.

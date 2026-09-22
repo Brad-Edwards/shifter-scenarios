@@ -1,4 +1,5 @@
 """Targeted corruption checks for retained correspondence and source artifacts."""
+from copy import deepcopy
 import json
 from pathlib import Path
 import shutil
@@ -111,6 +112,45 @@ class NarrativeIntegrityTests(unittest.TestCase):
                 with patch.object(validator, 'ROOT', root), patch.object(validator, 'PACK', pack):
                     with self.assertRaises(ValueError):
                         validator.check_assets()
+
+
+class ITServiceIntegrityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        author = validator.ROOT / 'authoring'
+        cls.roster = yaml.safe_load((author / 'workforce.yaml').read_text())['employees']
+        cls.identity = yaml.safe_load((author / 'people.yaml').read_text())
+        cls.mail = yaml.safe_load((author / 'mail-it-services.yaml').read_text())['messages']
+        cls.docs = (yaml.safe_load((author / 'documents.yaml').read_text())['documents'] +
+                    yaml.safe_load((author / 'documents-it-services.yaml').read_text())['documents'])
+        cls.events = yaml.safe_load((author / 'calendars-governance.yaml').read_text())['events']
+
+    def test_it_records_reconcile(self):
+        self.assertEqual(validator.check_it_services(validator.ROOT, self.roster, self.identity,
+                                                     self.mail, self.docs, self.events)['cases'], 480)
+
+    def test_it_private_case_rejects_unrelated_reader(self):
+        docs = deepcopy(self.docs)
+        next(d for d in docs if d['id'] == 'it-case-0301')['reader_keys'].append('rosa')
+        with self.assertRaisesRegex(ValueError, 'case readers'):
+            validator.check_it_services(validator.ROOT, self.roster, self.identity,
+                                        self.mail, docs, self.events)
+
+    def test_it_reply_cannot_precede_approval(self):
+        mail = deepcopy(self.mail)
+        next(m for m in mail if m['id'] == 'it-0903')['date'] = '2026-06-01T08:00:00-04:00'
+        with self.assertRaisesRegex(ValueError, 'chronology'):
+            validator.check_it_services(validator.ROOT, self.roster, self.identity,
+                                        mail, self.docs, self.events)
+
+    def test_it_deferred_change_has_no_window(self):
+        events = deepcopy(self.events)
+        fake = deepcopy(next(e for e in events if e['id'].startswith('it-window-')))
+        fake['id'] = 'it-window-01'
+        events.append(fake)
+        with self.assertRaisesRegex(ValueError, 'calendar count|change calendar'):
+            validator.check_it_services(validator.ROOT, self.roster, self.identity,
+                                        self.mail, self.docs, events)
 
 
 if __name__ == '__main__':

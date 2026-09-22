@@ -72,12 +72,14 @@ PLANNING_MESSAGE_COUNT = 232
 PLANNING_DOCUMENT_COUNT = 230
 GOVERNANCE_MESSAGE_COUNT = 134
 GOVERNANCE_DOCUMENT_COUNT = 161
+IT_MESSAGE_COUNT = 1550
+IT_DOCUMENT_COUNT = 517
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT + GOVERNANCE_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT + GOVERNANCE_MESSAGE_COUNT + IT_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT + GOVERNANCE_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT + GOVERNANCE_DOCUMENT_COUNT + IT_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -87,6 +89,224 @@ def require(value, message):
 
 def read_json(path):
     return json.loads(path.read_text())
+
+
+IT_SNAPSHOT = datetime.fromisoformat('2026-09-16T08:30:00-04:00')
+IT_EXPECTED_KINDS = {
+    'support': 300, 'starter': 12, 'team-move': 26, 'access-review': 42,
+    'equipment': 50, 'ordinary-change': 30, 'backup-check': 10, 'vendor-review': 10,
+}
+
+
+def load_it(root, name):
+    return yaml.safe_load((root / 'authoring' / name).read_text())
+
+
+def check_it_services(root, roster, identity, mail, docs, events):
+    source = load_it(root, 'documents-it-services.yaml')['it_services']
+    require(source['snapshot'] == identity['snapshot'], 'snapshot drift')
+    require(source['native_sources'] == {
+        'mail': 'cinder-typhoon/narrative/arwc-mail',
+        'documents': 'cinder-typhoon/narrative/arwc-documents',
+        'logical_owner': 'a-corporate.a-business',
+    }, 'native source ownership drift')
+    by_person = {p['key']: p for p in roster if p['employer'] == 'arwc'}
+    it_staff = {p['key'] for p in by_person.values() if p['department'] == 'Information technology'}
+    require(len(it_staff) == 12 and set(source['it_staff']) == it_staff, 'IT roster mismatch')
+    require({p['team'] for p in by_person.values() if p['key'] in it_staff} ==
+            {'Service desk', 'Business applications', 'Identity services'}, 'IT team drift')
+    services = {s['id']: s for s in source['service_inventory']}
+    require(len(services) == len(source['service_inventory']) == 11, 'service inventory')
+    require(all(s['owner'] in by_person and s['title'] and s['scope'] for s in services.values()),
+            'service owner or scope')
+    require({s['id'] for s in services.values()} == {'mail','library','directory','customer','field',
+            'maintenance','laboratory','planning','purchasing','finance','fieldkest'},
+            'undeclared or missing logical service')
+    cases = source['cases']
+    require(len(cases) == 480 and len({c['id'] for c in cases}) == 480,
+            'case inventory or duplicate case')
+    require(Counter(c['kind'] for c in cases) == IT_EXPECTED_KINDS, 'case class drift')
+    authored_mail = {m['id']: m for m in mail if m['story'] == 'arwc-it-services'}
+    authored_docs = {d['id']: d for d in docs if d['story'] == 'arwc-it-services'}
+    authored_events = {e['id']: e for e in events if e['id'].startswith('it-window-')}
+    require(len(authored_mail) == source['counts']['messages'] == 1550, 'message count')
+    require(len(authored_docs) == source['counts']['documents'] == 517, 'document count')
+    require(len(authored_events) == source['counts']['calendars'] == 25, 'calendar count')
+    require(source['counts']['cases'] == 480 and source['counts']['equipment_assignments'] == 50,
+            'metadata counts')
+    require(set(m['id'] for m in load_it(root, 'mail-it-services.yaml')['messages']) == set(authored_mail),
+            'source message ownership')
+    require(set(d['id'] for d in load_it(root, 'documents-it-services.yaml')['documents']) == set(authored_docs),
+            'source document ownership')
+    require(set(e['id'] for e in load_it(root, 'calendars-governance.yaml')['events'] if e['id'].startswith('it-window-')) == set(authored_events),
+            'source calendar ownership')
+    prior_docs = {d['id'] for d in docs if d['story'] != 'arwc-it-services'}
+    mail_ids = set(authored_mail)
+    case_docs = {c['document'] for c in cases}
+    require(len(case_docs) == 480 and case_docs <= set(authored_docs), 'case document join')
+    require(all(d['audience'] == 'restricted' for d in (authored_docs[i] for i in case_docs)),
+            'case document published broadly')
+    require(len(set(m for c in cases for m in c['messages'])) == 1550 and
+            set(m for c in cases for m in c['messages']) == mail_ids,
+            'message not owned by exactly one case')
+    require(all(c['id'] == f'ARWC-IT-26-{i:04d}' for i, c in enumerate(cases, 1)),
+            'case sequence')
+
+    contacts = {**identity['people'], **identity['correspondents']}
+    for p in roster:
+        contacts.setdefault(p['key'], p)
+    require(contacts['a_it_notices']['email'] == 'it-notices@alterrawaterco.com',
+            'machine sender missing')
+    for case in cases:
+        ref = case['id']
+        opened = datetime.fromisoformat(case['opened_at'])
+        require(opened <= IT_SNAPSHOT and case['service'] in services, 'date/service ' + ref)
+        requester = by_person[case['requester']]
+        assignee = by_person[case['assignee']]
+        require(requester['start_date'] <= opened.date().isoformat() and
+                assignee['start_date'] <= opened.date().isoformat(), 'employee not hired ' + ref)
+        require(assignee['key'] in it_staff, 'case assigned outside IT ' + ref)
+        s = services[case['service']]
+        if case['kind'] == 'support' and s['department']:
+            require(requester['department'] == s['department'], 'support reader duty ' + ref)
+        if case['kind'] in {'starter', 'team-move', 'access-review'}:
+            require(assignee['team'] == 'Identity services', 'identity assignment ' + ref)
+            require(case['approver'] == requester['manager'] and case['approver'],
+                    'manager approval ' + ref)
+            require(case['group'] == requester['groups'][-1], 'current team group ' + ref)
+            if case['kind'] == 'team-move':
+                require(requester.get('move_date') == '2026-06-01' and requester.get('prior_team'),
+                        'move history ' + ref)
+            if case['kind'] == 'starter':
+                require(requester['start_date'].startswith('2026') and
+                        case['source_record'] == 'a-onboard-' + requester['key'],
+                        'starter history ' + ref)
+            if case.get('source_record'):
+                require(case['source_record'] in prior_docs, 'missing prior record ' + ref)
+        elif case['kind'] == 'support':
+            require(assignee['team'] == 'Service desk', 'desk assignment ' + ref)
+        elif case['kind'] in {'ordinary-change','backup-check','vendor-review'}:
+            require(assignee['team'] == 'Business applications', 'applications assignment ' + ref)
+        elif case['kind'] == 'equipment':
+            require(assignee['team'] == 'Service desk', 'equipment assignment ' + ref)
+        ids = case['messages']
+        require(len(ids) in (3, 4), 'thread length ' + ref)
+        thread = [authored_mail[i] for i in ids]
+        require(all(ref in m['subject'] for m in thread), 'subject join ' + ref)
+        times = [datetime.fromisoformat(m['date']) for m in thread]
+        require(times == sorted(times) and times[0] == opened and times[-1] <= IT_SNAPSHOT,
+                'message chronology ' + ref)
+        require(thread[0].get('reply_to') is None and
+                all(thread[i]['reply_to'] == thread[i-1]['id'] for i in range(1, len(thread))),
+                'broken thread ' + ref)
+        require(case['last_message'] == ids[-1], 'last-message join ' + ref)
+        if case['closed_at']:
+            require(datetime.fromisoformat(case['closed_at']) == times[-1] and
+                    case['state'] in {'completed','reviewed'}, 'closed state/date ' + ref)
+        else:
+            require(case['state'] in {'waiting-user','owner-follow-up','deferred','follow-up'},
+                    'open state ' + ref)
+        doc = authored_docs[case['document']]
+        require(ref in doc['title'] and ref in doc['text'] and doc['media_type'] == 'text/markdown',
+                'case document text ' + ref)
+        require(doc['audience'] == 'restricted' and case['requester'] in doc['reader_keys'] and
+                case['assignee'] in doc['reader_keys'] and len(doc['reader_keys']) == len(set(doc['reader_keys'])),
+                'case readers ' + ref)
+        if case['kind'] == 'support':
+            expected_readers = {case['requester'], case['assignee'], case['owner']}
+        elif case['kind'] in {'starter', 'team-move', 'access-review'}:
+            expected_readers = {case['requester'], case['assignee'], case['approver'], 'awm179'}
+        elif case['kind'] == 'equipment':
+            expected_readers = {case['requester'], case['assignee'], requester['manager']}
+        elif case['kind'] == 'ordinary-change':
+            expected_readers = {case['requester'], case['assignee'], case['approver']}
+        elif case['kind'] == 'backup-check':
+            expected_readers = {case['requester'], case['assignee'], 'awm170'}
+        else:
+            expected_readers = {case['requester'], case['assignee'], 'priya', 'awm170'}
+        require(set(doc['reader_keys']) == expected_readers, 'case readers ' + ref)
+        published = datetime.fromisoformat(doc['published_at'])
+        require(opened < published <= IT_SNAPSHOT, 'case publication chronology ' + ref)
+        if case['kind'] == 'support':
+            require(published > times[-1], 'premature support summary ' + ref)
+        for m in thread:
+            require(m['from'] in contacts and all(k in contacts for k in m['to']),
+                    'unknown correspondent ' + ref)
+            require(len(m['to']) == len(set(m['to'])) and m['from'] not in m['to'],
+                    'duplicate or self recipient ' + ref)
+            require(all(contacts[k]['employer'] == 'arwc' for k in [m['from']] + m['to']),
+                    'cross-company private case ' + ref)
+            require(not re.search(r'(?i)\b(flag|challenge|scenario|openrae|credential|password)\b', m['body']),
+                    'fourth-wall or credential text ' + ref)
+            for attached in m.get('attachments', []):
+                require(attached in authored_docs and
+                        datetime.fromisoformat(authored_docs[attached]['published_at']) <=
+                        datetime.fromisoformat(m['date']), 'future/unknown attachment ' + ref)
+                d = authored_docs[attached]
+                require(all(k in d['reader_keys'] for k in m['to'] if k in by_person),
+                        'attachment audience mismatch ' + ref)
+
+    equipment = source['equipment']
+    require(len(equipment) == len({e['asset'] for e in equipment}) == 50, 'equipment register')
+    require({e['document'] for e in equipment} ==
+            {c['document'] for c in cases if c['kind'] == 'equipment'}, 'equipment/case join')
+    rows = list(csv.DictReader(io.StringIO(authored_docs['it-equipment-assignments']['text'])))
+    require(len(rows) == 50 and {r['asset_id'] for r in rows} == {e['asset'] for e in equipment},
+            'equipment CSV join')
+    for row in rows:
+        e = next(e for e in equipment if e['asset'] == row['asset_id'])
+        p = by_person[e['assignee']]
+        require(row['assignee'] == p['name'] and row['team'] == p['team'] and
+                row['site'] == p['site'] and row['state'] == e['state'] and
+                row['last_check'] == e['last_check'], 'equipment assignment detail')
+    inventory = list(csv.DictReader(io.StringIO(authored_docs['it-service-inventory']['text'])))
+    require(len(inventory) == len(services) and {r['service_id'] for r in inventory} == set(services),
+            'service CSV join')
+    for row in inventory:
+        s = services[row['service_id']]
+        require(row['service'] == s['title'] and row['owner'] == by_person[s['owner']]['name'] and
+                row['scope'] == s['scope'], 'service owner/detail')
+    schedule = list(csv.DictReader(io.StringIO(authored_docs['it-maintenance-schedule']['text'])))
+    require(len(schedule) == 25 and {r['case_id'] for r in schedule} ==
+            {c['id'] for c in cases if c['kind'] == 'ordinary-change' and c['state'] == 'completed'},
+            'maintenance schedule inventory')
+    for row in schedule:
+        change = next(c for c in cases if c['id'] == row['case_id'])
+        event = authored_events['it-window-' + f'{int(change["id"][-4:])-430:02d}']
+        require(row['service'] == services[change['service']]['title'] and
+                row['window_start'] == event['start'] and row['window_end'] == event['end'] and
+                row['owner'] == by_person[change['requester']]['name'] and row['result'] == 'completed',
+                'maintenance schedule detail')
+    groups = list(csv.DictReader(io.StringIO(authored_docs['it-access-matrix']['text'])))
+    require({r['team_group'] for r in groups} == {p['groups'][-1] for p in by_person.values()},
+            'team group register')
+    require(all(d['audience'] == 'staff' for d in authored_docs.values() if
+                d['id'].startswith(('it-knowledge-', 'it-catalog-'))), 'public knowledge audience')
+    require(len([d for d in authored_docs if d.startswith('it-knowledge-')]) == 22 and
+            len([d for d in authored_docs if d.startswith('it-catalog-')]) == 11,
+            'knowledge/catalogue count')
+    for change in source['changes']:
+        case = next(c for c in cases if c['id'] == change['case'])
+        require(case['kind'] == 'ordinary-change' and change['service'] == case['service'] and
+                change['status'] == case['state'], 'change record join')
+        if change['status'] == 'completed':
+            event = authored_events['it-window-' + f'{int(case["id"][-4:])-430:02d}']
+            require(event['organizer'] == case['assignee'] and
+                    set(event['attendees']) == {case['requester'],case['approver']} and
+                    event['start'] == change['window'] and
+                    datetime.fromisoformat(event['start']) >
+                    datetime.fromisoformat(case['messages'] and authored_mail[case['messages'][2]]['date']) and
+                    datetime.fromisoformat(event['end']) < datetime.fromisoformat(case['closed_at']),
+                    'change calendar/approval chronology')
+        else:
+            require(change['window'] is None, 'deferred change scheduled')
+    require(len(source['backup_checks']) == 10 and
+            all(x['service'] in services and x['result'] == 'sample-read-matched' for x in source['backup_checks']),
+            'backup sample inventory')
+    vendors = {o['name'] for o in load_it(root, 'business-network.yaml')['organizations']} | {'KeplerOps Software'}
+    require(len(source['vendor_reviews']) == 10 and
+            all(x['vendor'] in vendors for x in source['vendor_reviews']), 'invented vendor')
+    return source['counts']
 
 
 def document_text(document):
@@ -828,6 +1048,7 @@ def check_assets():
     check_retail_billing(ROOT, roster, identity, mail, docs)
     check_planning(ROOT, roster, identity, mail, docs, events)
     check_governance(ROOT, roster, identity, mail, docs, events)
+    check_it_services(ROOT, roster, identity, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -986,7 +1207,7 @@ def check_assets():
                            if contacts[k]['employer'] == org or
                            event['id'].startswith('governance-') and contacts[k]['employer'] == 'arwc-board'}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-', 'it-window-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()

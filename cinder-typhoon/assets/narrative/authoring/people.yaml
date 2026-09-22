@@ -109,6 +109,10 @@ correspondents:
     name: ARWC Workplace Updates
     email: workplace-updates@alterrawaterco.com
     employer: arwc
+  a_it_notices:
+    name: ARWC IT Service Notices
+    email: it-notices@alterrawaterco.com
+    employer: arwc
   ardenvale:
     name: Ardenvale Instrument Services — Customer Service
     email: service@ardenvale.test
