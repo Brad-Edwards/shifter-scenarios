@@ -173,6 +173,20 @@ Open **Operate → CTF Events** and create an event using the Polaris scenario.
 Set a bounded active window, participant limit, and a spin-up allowance of at
 least 45 minutes. Select the approved source for each logical model alias.
 
+Before opening registration, render the private challenge document and import
+it from the event's **Challenges → Import pack** control:
+
+```sh
+python3 polaris/ctfd/export_shifter_challenge_pack.py \
+  --output /tmp/polaris-shifter-challenges.json
+```
+
+The generated file contains answer material. Keep it owner-readable, do not
+attach it to tickets or reports, and delete it after import. Require exactly 38
+created challenges and no per-entry errors before continuing. The importer is
+the supported tenant content-administration path; do not write challenge rows
+directly to the tenant database.
+
 Open registration, invite a dedicated QA participant, and issue that identity a
 temporary password through the participant-management page. Activate the event,
 sign in through the participant login surface, and complete the required

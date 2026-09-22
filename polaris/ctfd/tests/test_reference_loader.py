@@ -22,6 +22,7 @@ sys.path.insert(0, str(CTFD_DIR))
 import polaris_manifest as manifest  # noqa: E402
 import sync_polaris_ctfd as loader  # noqa: E402
 import ctfd_reconcile as reconciliation  # noqa: E402
+import export_shifter_challenge_pack as shifter_export  # noqa: E402
 from common import CtfdClient  # noqa: E402
 
 
@@ -196,6 +197,28 @@ class ManifestTests(unittest.TestCase):
 
             with self.assertRaisesRegex(manifest.SyncError, "duplicate"):
                 manifest.load_manifest(root, runtime_profile_id="aws_event")
+
+    def test_shifter_import_pack_projects_the_complete_private_inventory(self):
+        payload = shifter_export.build_import_pack(PACK_ROOT)
+
+        self.assertEqual(payload["format"], "ctfd")
+        self.assertEqual(len(payload["challenges"]), 38)
+        self.assertTrue(all(len(row["flags"]) == 1 for row in payload["challenges"]))
+        self.assertTrue(all(row["hints"] for row in payload["challenges"]))
+        self.assertTrue(all("source_challenge" not in row for row in payload["challenges"]))
+
+    def test_shifter_import_pack_is_written_owner_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            destination = Path(tmp) / "polaris-shifter-challenges.json"
+
+            shifter_export.write_private_json(
+                destination,
+                shifter_export.build_import_pack(PACK_ROOT),
+            )
+
+            self.assertEqual(stat.S_IMODE(destination.stat().st_mode), 0o600)
+            payload = yaml.safe_load(destination.read_text(encoding="utf-8"))
+            self.assertEqual(len(payload["challenges"]), 38)
 
 
 class SyncTests(unittest.TestCase):
