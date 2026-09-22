@@ -129,6 +129,14 @@ test accounting, authority, privacy, dates, formulas, cached values, district
 rows and PDF selection. Public search text must match the approved PDF bytes;
 drafts and individual learning records retain exact named readers.
 
+ARWC IT checks reconcile 480 cases against the accepted workforce, current
+team reader groups, prior starter and move records, eleven declared services,
+fifty assigned equipment items, machine copy-check notices, existing suppliers,
+and twenty-five approved change windows. The focused fault probes reject an
+unrelated case reader, an approval out of sequence, and a window attached to
+a deferred change. Case summaries and mail attachments retain exact named
+readers; sampled copy checks do not claim complete recovery.
+
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted
 mutations reject premature release, unaccepted evidence, publication of a held

@@ -9,9 +9,10 @@ support intake, onboarding, appointments, and unresolved engineering escalations
 and the [FieldKest slice](fieldkest-engineering-review.md) realizes the linked
 engineering repositories and work history.
 The [generation plan](content-generation-plan.md) records earlier sizing proposals.
-The pack now contains 14,075 messages and 1,542 source documents, including the
-earlier story collection. Other departmental business histories remain future
-content work.
+The pack now contains 40,637 messages and 16,185 source documents, including
+the earlier story collection and the completed ARWC IT slice. The volume
+proposals below are historical planning estimates; each delivered slice records
+its actual unique messages, copies and business records in its review.
 
 ## A reusable world
 
@@ -274,6 +275,11 @@ servers, purchased software, or unapproved network access.
 
 **What should convince a reader:** IT supports identifiable people and services,
 and ordinary records explain how the rest of the enterprise gets its work done.
+
+The accepted IT slice implements this with an eleven-service inventory, 480
+dated cases, approved starter and move groups, equipment assignments, knowledge,
+ordinary view changes, bounded copy checks and established-supplier reviews.
+It retains the twelve-person team and the existing logical workplace owner.
 
 ### Customer service and business support: 36
 

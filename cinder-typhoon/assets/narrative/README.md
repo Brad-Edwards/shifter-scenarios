@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 39,087 distinct authored messages, 15,668 source documents,
-staff directories for all 294 employees, and 858 calendar items. The
+The collection contains 40,637 distinct authored messages, 16,185 source documents,
+staff directories for all 294 employees, and 883 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -106,6 +106,13 @@ Six restricted approved-master items reuse the public PDF bytes; these are
 additional audience placements, not six more reports. Its
 [review record](../../docs/narrative/governance-review.md) separates the counts,
 opening assumptions, public-release contract and validation limits.
+ARWC information technology adds 480 ordinary support, access, equipment,
+change, copy-check and supplier-review histories for the twelve accepted IT
+employees. The 1,550 distinct messages, 517 source documents and 25 maintenance
+windows join to a service inventory, current team readers, fifty equipment
+assignments, 22 knowledge articles and eleven staff service pages. Its
+[review record](../../docs/narrative/it-services-review.md) documents the
+message adjustment, chronology, audiences and validation limits.
 
 The [character writing slice](../../docs/narrative/voice-review.md) selects 30
 samples from the original story collection: nine unchanged messages, fourteen
@@ -142,11 +149,12 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `documents/planning-records.zip` | Forty-eight actual XLSX workbooks and five completed CSV traceability registers. |
 | `authoring/governance.yaml` | Author-only close, budget, decision, board, learning and publication joins, counts and source versions. |
 | `documents/governance-records.zip` | Twenty-eight actual XLSX files, six public PDFs and six completed CSV schedules. |
+| `authoring/documents-it-services.yaml` | Finished IT case, inventory and knowledge items plus author-only service, access, equipment, change, copy-check and vendor joins. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
-| `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Workforce, business, and support RFC 5322 bytes are in the mail source packages to keep the pack under its file limit. |
+| `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Bulk histories, including IT, retain exact RFC 5322 bytes in the mail source packages to keep the pack under its file limit. |
 | `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk support, operating, commercial, office and induction calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |

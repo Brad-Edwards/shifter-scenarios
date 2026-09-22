@@ -239,3 +239,453 @@ events:
     awm217: ACCEPTED
     luc: ACCEPTED
     awm164: ACCEPTED
+- id: it-window-02
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm175
+  - awm170
+  start: '2026-06-25T15:01:00-04:00'
+  end: '2026-06-25T15:26:00-04:00'
+  created_at: '2026-06-24T12:00:00-04:00'
+  updated_at: '2026-06-24T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Workplace document library view check ARWC-IT-26-0432
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm175: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-03
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm179
+  - awm170
+  start: '2026-06-29T15:02:00-04:00'
+  end: '2026-06-29T15:27:00-04:00'
+  created_at: '2026-06-26T12:00:00-04:00'
+  updated_at: '2026-06-26T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Staff contact directory view check ARWC-IT-26-0433
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm179: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-04
+  employer: arwc
+  organizer: awm176
+  attendees:
+  - awm182
+  - awm170
+  start: '2026-07-01T15:03:00-04:00'
+  end: '2026-07-01T15:28:00-04:00'
+  created_at: '2026-06-30T12:00:00-04:00'
+  updated_at: '2026-06-30T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Customer account book view check ARWC-IT-26-0434
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm182: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-05
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm085
+  - awm170
+  start: '2026-07-03T15:04:00-04:00'
+  end: '2026-07-03T15:29:00-04:00'
+  created_at: '2026-07-02T12:00:00-04:00'
+  updated_at: '2026-07-02T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Shift and field returns view check ARWC-IT-26-0435
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm085: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-06
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - theo
+  - awm170
+  start: '2026-07-07T15:05:00-04:00'
+  end: '2026-07-07T15:30:00-04:00'
+  created_at: '2026-07-06T12:00:00-04:00'
+  updated_at: '2026-07-06T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Maintenance register and drawings view check ARWC-IT-26-0436
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    theo: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-08
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - nadia
+  - awm170
+  start: '2026-07-13T15:07:00-04:00'
+  end: '2026-07-13T15:32:00-04:00'
+  created_at: '2026-07-10T12:00:00-04:00'
+  updated_at: '2026-07-10T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Planning returns view check ARWC-IT-26-0438
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-09
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - priya
+  - awm170
+  start: '2026-07-15T15:08:00-04:00'
+  end: '2026-07-15T15:33:00-04:00'
+  created_at: '2026-07-14T12:00:00-04:00'
+  updated_at: '2026-07-14T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Purchasing and stores book view check ARWC-IT-26-0439
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    priya: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-10
+  employer: arwc
+  organizer: awm176
+  attendees:
+  - awm217
+  - awm170
+  start: '2026-07-17T15:09:00-04:00'
+  end: '2026-07-17T15:34:00-04:00'
+  created_at: '2026-07-16T12:00:00-04:00'
+  updated_at: '2026-07-16T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Finance and governance papers view check ARWC-IT-26-0440
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm217: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-11
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm170
+  - awm175
+  start: '2026-07-21T15:10:00-04:00'
+  end: '2026-07-21T15:35:00-04:00'
+  created_at: '2026-07-20T12:00:00-04:00'
+  updated_at: '2026-07-20T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Workplace mail and calendar view check ARWC-IT-26-0441
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm170: ACCEPTED
+    awm175: ACCEPTED
+- id: it-window-12
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm175
+  - awm170
+  start: '2026-07-23T15:11:00-04:00'
+  end: '2026-07-23T15:36:00-04:00'
+  created_at: '2026-07-22T12:00:00-04:00'
+  updated_at: '2026-07-22T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Workplace document library view check ARWC-IT-26-0442
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm175: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-14
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm182
+  - awm170
+  start: '2026-07-29T15:13:00-04:00'
+  end: '2026-07-29T15:38:00-04:00'
+  created_at: '2026-07-28T12:00:00-04:00'
+  updated_at: '2026-07-28T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Customer account book view check ARWC-IT-26-0444
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm182: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-15
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm085
+  - awm170
+  start: '2026-07-31T15:14:00-04:00'
+  end: '2026-07-31T15:39:00-04:00'
+  created_at: '2026-07-30T12:00:00-04:00'
+  updated_at: '2026-07-30T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Shift and field returns view check ARWC-IT-26-0445
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm085: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-16
+  employer: arwc
+  organizer: awm176
+  attendees:
+  - theo
+  - awm170
+  start: '2026-08-04T15:15:00-04:00'
+  end: '2026-08-04T15:40:00-04:00'
+  created_at: '2026-08-03T12:00:00-04:00'
+  updated_at: '2026-08-03T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Maintenance register and drawings view check ARWC-IT-26-0446
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    theo: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-17
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm146
+  - awm170
+  start: '2026-08-06T15:16:00-04:00'
+  end: '2026-08-06T15:41:00-04:00'
+  created_at: '2026-08-05T12:00:00-04:00'
+  updated_at: '2026-08-05T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Laboratory and quality records view check ARWC-IT-26-0447
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm146: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-18
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - nadia
+  - awm170
+  start: '2026-08-10T15:17:00-04:00'
+  end: '2026-08-10T15:42:00-04:00'
+  created_at: '2026-08-07T12:00:00-04:00'
+  updated_at: '2026-08-07T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Planning returns view check ARWC-IT-26-0448
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-20
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm217
+  - awm170
+  start: '2026-08-14T15:19:00-04:00'
+  end: '2026-08-14T15:44:00-04:00'
+  created_at: '2026-08-13T12:00:00-04:00'
+  updated_at: '2026-08-13T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Finance and governance papers view check ARWC-IT-26-0450
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm217: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-21
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm170
+  - awm175
+  start: '2026-08-18T15:20:00-04:00'
+  end: '2026-08-18T15:45:00-04:00'
+  created_at: '2026-08-17T12:00:00-04:00'
+  updated_at: '2026-08-17T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Workplace mail and calendar view check ARWC-IT-26-0451
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm170: ACCEPTED
+    awm175: ACCEPTED
+- id: it-window-22
+  employer: arwc
+  organizer: awm176
+  attendees:
+  - awm175
+  - awm170
+  start: '2026-08-20T15:21:00-04:00'
+  end: '2026-08-20T15:46:00-04:00'
+  created_at: '2026-08-19T12:00:00-04:00'
+  updated_at: '2026-08-19T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Workplace document library view check ARWC-IT-26-0452
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm175: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-23
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - awm179
+  - awm170
+  start: '2026-08-24T15:22:00-04:00'
+  end: '2026-08-24T15:47:00-04:00'
+  created_at: '2026-08-21T12:00:00-04:00'
+  updated_at: '2026-08-21T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Staff contact directory view check ARWC-IT-26-0453
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm179: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-24
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm182
+  - awm170
+  start: '2026-08-26T15:23:00-04:00'
+  end: '2026-08-26T15:48:00-04:00'
+  created_at: '2026-08-25T12:00:00-04:00'
+  updated_at: '2026-08-25T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Customer account book view check ARWC-IT-26-0454
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm182: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-26
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - theo
+  - awm170
+  start: '2026-09-01T15:25:00-04:00'
+  end: '2026-09-01T15:50:00-04:00'
+  created_at: '2026-08-31T12:00:00-04:00'
+  updated_at: '2026-08-31T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Maintenance register and drawings view check ARWC-IT-26-0456
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    theo: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-27
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm146
+  - awm170
+  start: '2026-09-03T15:26:00-04:00'
+  end: '2026-09-03T15:51:00-04:00'
+  created_at: '2026-09-02T12:00:00-04:00'
+  updated_at: '2026-09-02T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Laboratory and quality records view check ARWC-IT-26-0457
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm146: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-28
+  employer: arwc
+  organizer: awm176
+  attendees:
+  - nadia
+  - awm170
+  start: '2026-09-07T15:27:00-04:00'
+  end: '2026-09-07T15:52:00-04:00'
+  created_at: '2026-09-04T12:00:00-04:00'
+  updated_at: '2026-09-04T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Planning returns view check ARWC-IT-26-0458
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    nadia: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-29
+  employer: arwc
+  organizer: awm177
+  attendees:
+  - priya
+  - awm170
+  start: '2026-09-09T15:28:00-04:00'
+  end: '2026-09-09T15:53:00-04:00'
+  created_at: '2026-09-08T12:00:00-04:00'
+  updated_at: '2026-09-08T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Purchasing and stores book view check ARWC-IT-26-0459
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    priya: ACCEPTED
+    awm170: ACCEPTED
+- id: it-window-30
+  employer: arwc
+  organizer: awm178
+  attendees:
+  - awm217
+  - awm170
+  start: '2026-06-10T15:29:00-04:00'
+  end: '2026-06-10T15:54:00-04:00'
+  created_at: '2026-06-09T12:00:00-04:00'
+  updated_at: '2026-06-09T12:00:00-04:00'
+  sequence: 0
+  location: Remote call
+  summary: Finance and governance papers view check ARWC-IT-26-0460
+  description: Bounded display/link check; no source data or reader change.
+  status: CONFIRMED
+  responses:
+    awm217: ACCEPTED
+    awm170: ACCEPTED
