@@ -89,6 +89,11 @@ of the installed readiness document; that value is the adapter binding's
 readiness digest. The participant workstation must contain the pinned Claude
 Code client described in the adapter README.
 
+Bake the Linux machine image from the current `polaris/build/build-v1.tar.gz`.
+Do not bind a newly installed adapter to an image baked from an older archive:
+the adapter and host image form one reviewed compatibility set, including the
+participant DNS forwarding configuration used for broker access.
+
 Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
 client through the broker boundary.

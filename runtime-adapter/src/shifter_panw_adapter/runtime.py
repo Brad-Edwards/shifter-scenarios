@@ -30,38 +30,10 @@ _COMPOSE = """
       - /opt/polaris/model-client:/opt/polaris/model-client:ro
       - /run/polaris-model-access/participant:/run/polaris-model-access/participant
 """.rstrip()
-_GCP_BROKER_HOST_RESOLVE = r'''# Resolve after model-client-setup has written the enrollment-derived broker URL.
-# The host VM is on the private DNS path while the participant container uses
-# scenario DNS, so compose receives one validated private host mapping.
-BROKER_HOST_ENTRY="$(python3 - <<'PY'
-import ipaddress
-import json
-import re
-import socket
-import urllib.parse
-from pathlib import Path
-
-origin = json.loads(Path("/opt/polaris/model-client/client.json").read_text())["broker_url"]
-hostname = urllib.parse.urlsplit(origin).hostname
-if not hostname or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]{0,252}", hostname):
-    raise SystemExit("model broker hostname is invalid")
-addresses = {
-    row[4][0]
-    for row in socket.getaddrinfo(hostname, 443, family=socket.AF_INET, type=socket.SOCK_STREAM)
-}
-if len(addresses) != 1:
-    raise SystemExit("model broker private DNS did not resolve uniquely")
-address = ipaddress.ip_address(addresses.pop())
-if not address.is_private:
-    raise SystemExit("model broker did not resolve to a private address")
-print(f"{hostname}:{address}")
-PY
-)"
-test -n "$BROKER_HOST_ENTRY"
-'''
 _GCP_COMPOSE = """
-    extra_hosts:
-      - "$BROKER_HOST_ENTRY"
+  dns:
+    environment:
+      DNS_FORWARDER: "169.254.169.254"
 """.rstrip()
 _DIRECTORY_FIREWALL_VERIFY = """$ErrorActionPreference = 'Stop'
 $profiles = @(Get-NetFirewallProfile)
@@ -119,7 +91,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.6",
+        version="0.1.7",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -194,7 +166,6 @@ class PolarisAdapter:
             "splice_credential_helper_b64": base64.b64encode(_asset("polaris-splice-credential.py")).decode("ascii"),
             "aws_agent_setup_block": "",
             "aws_agent_compose_block": _COMPOSE,
-            "gcp_model_broker_resolve_block": _GCP_BROKER_HOST_RESOLVE if request.provider == "gcp" else "",
             "gcp_agent_compose_block": _GCP_COMPOSE if request.provider == "gcp" else "",
         }
         scripts = []

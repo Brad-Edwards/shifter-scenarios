@@ -27,7 +27,6 @@ if [[ -z "$KALI_PUBKEY" ]]; then
 fi
 {{ aws_agent_setup_block }}
 cd /opt/polaris/scenario-dev/polaris/build
-{{ gcp_model_broker_resolve_block }}
 
 # Install the exact reviewed helper carried by the provisioner image. The
 # Compose override mounts it read-only into a14-kali and makes it the entrypoint

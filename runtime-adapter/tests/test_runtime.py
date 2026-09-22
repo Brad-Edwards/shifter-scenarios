@@ -60,10 +60,9 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
         )
         if provider == "gcp":
             assert "socket.getaddrinfo" not in model_files
-            assert "socket.getaddrinfo" in container_bootstrap
-            assert "BROKER_HOST_ENTRY" in container_bootstrap
-            assert "extra_hosts:" in container_bootstrap
-            assert '"$BROKER_HOST_ENTRY"' in container_bootstrap
+            assert "socket.getaddrinfo" not in container_bootstrap
+            assert "extra_hosts:" not in container_bootstrap
+            assert 'DNS_FORWARDER: "169.254.169.254"' in container_bootstrap
         else:
             assert "socket.getaddrinfo" not in model_files
             assert "socket.getaddrinfo" not in container_bootstrap
