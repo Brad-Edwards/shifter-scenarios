@@ -191,6 +191,9 @@ No authoring script, new generator or new runtime dependency is shipped.
 
 ## Verification evidence
 
+Content revision: `1429b43`. The final review update records completed checks
+without changing the verified assets.
+
 - Focused governance suite: three tests, including 27 content mutations and
   four checksum-consistent binary mutations. The latest full-calendar check
   also compares every new event with accepted appointments. Passed in 47.6
@@ -209,7 +212,16 @@ No authoring script, new generator or new runtime dependency is shipped.
   parsing passed with env-packs 6.1.0 and RAE 5.0.0: 96 modules, 240 challenges,
   33 capabilities, 36 targets plus Kali, nine subnets, 83 authority domains,
   1,209 prerequisite closures and all sixteen route combinations. Compilation
-  and its final mutation checks are in progress.
+  passed for 3,450 realization requirements and 281 named observations,
+  including the eight workplace source bindings. All fifty technical drafts
+  and six consequence contracts retain their declared relationships.
+- The full `validate_sdl.py --self-test --pack-check` run exited successfully:
+  four narrative SDL mutations, 28 native SDL mutations, two compiled
+  observation mutations and 26 broken topologies/events were rejected. Invalid
+  posture spelling was also rejected. Default-open realization and the exact
+  Kali intent remain unchanged. This is static proof, not runtime deployment.
+- Both pull-request checks passed for the content commit: changed-Markdown
+  prose checks and the external code scan.
 - Baseline comparison preserved all 55,942 existing package items and 69,569
   mailbox memberships. Pack size is 1,021 filesystem members under the pinned
   1,024-member default; no limit increase or content removal was needed.
