@@ -42,7 +42,7 @@ def build(output: Path) -> str:
         {
             "schema_version": "associated-artifact-manifest/v1",
             "manifest_id": "polaris-associated-artifacts",
-            "manifest_version": "0.2.0",
+            "manifest_version": "0.2.1",
             "canonicalization_profile": "associated-artifact-set/v1",
             "scope": "scenario",
             "parent_ref": {"ref_kind": "scenario", "ref_id": "polaris"},

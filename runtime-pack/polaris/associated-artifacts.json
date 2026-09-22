@@ -1,7 +1,7 @@
 {
   "schema_version": "associated-artifact-manifest/v1",
   "manifest_id": "polaris-associated-artifacts",
-  "manifest_version": "0.2.0",
+  "manifest_version": "0.2.1",
   "canonicalization_profile": "associated-artifact-set/v1",
   "scope": "scenario",
   "parent_ref": {
@@ -67,7 +67,7 @@
       "uri": "raes-environment-pack:/pack.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "7dbd985bea4906b62ab91a4cfdd9f7d706290a0f6e58898edfc3ce558254567c"
+        "value": "4ab5ee8605a494b489fa047b7a08b73aaa9815618ec2e79a8dff0b1ce0dbadbb"
       },
       "size_bytes": 406,
       "created_at": "2026-09-17T00:00:00Z",
@@ -83,9 +83,9 @@
       "uri": "raes-environment-pack:/sdl/polaris.sdl.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "6f83173c16a2f6710bb59461070dfd0619a96626134a2dc7dbb1000327f25e4d"
+        "value": "8546c30fa5cecbd5b5bf78e61e86697bbb123e6db66e601bb2fd2535e3aace36"
       },
-      "size_bytes": 1585,
+      "size_bytes": 1724,
       "created_at": "2026-09-17T00:00:00Z",
       "source": "private-pack-owner",
       "satisfies_refs": [],
@@ -93,5 +93,5 @@
       "description": null
     }
   },
-  "set_digest": "sha256:47a9af30553305a188924131d3c3b808326453dce33a4b520279fe435c14878e"
+  "set_digest": "sha256:df8841c3b51f68a123d66270db493de308e7d8bc4180380bbca7fcf5be87af57"
 }

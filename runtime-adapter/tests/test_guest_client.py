@@ -124,7 +124,9 @@ def test_launcher_removes_provider_credentials_and_uses_refresh_helper_without_t
     assert argv[-2:] == ["-p", "hello"]
     assert env["HOME"] == "/home/kali"
     assert env["ANTHROPIC_BASE_URL"] == config["broker_url"]
+    assert env["CLAUDE_CONFIG_DIR"] == "/tmp/polaris-claude-config"
     assert env["CLAUDE_CODE_API_KEY_HELPER_TTL_MS"] == "1000"
+    assert env["DISABLE_NON_ESSENTIAL_MODEL_CALLS"] == "1"
     assert env["DISABLE_PROMPT_CACHING"] == "1"
     assert env["DISABLE_INTERLEAVED_THINKING"] == "1"
     for key in (

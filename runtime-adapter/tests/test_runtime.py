@@ -54,14 +54,29 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
         ]
         assert plan.actions[0].binding == "directory"
         assert "Set-NetFirewallProfile" in plan.actions[0].script
+        model_files = next(action.script for action in plan.actions if action.action_id == "model-client-files")
+        container_bootstrap = next(
+            action.script for action in plan.actions if action.action_id == "container-bootstrap"
+        )
+        if provider == "gcp":
+            assert "socket.getaddrinfo" in model_files
+            assert 'temporary.replace(config / "broker-host")' in model_files
+            assert "extra_hosts:" in container_bootstrap
+            assert "$(cat /opt/polaris/model-client/broker-host)" in container_bootstrap
+        else:
+            assert "socket.getaddrinfo" not in model_files
+            assert "extra_hosts:" not in container_bootstrap
     elif phase == "verify":
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready",
             "bootstrap-ready",
             "model-client-ready",
+            "model-client-result",
         ]
         assert plan.actions[0].binding == "directory"
         assert "Get-NetFirewallProfile" in plan.actions[0].script
+        result_check = next(action.script for action in plan.actions if action.action_id == "model-client-result")
+        assert 'test "$client_status" = "model-client-ready"' in result_check
     elif phase == "cleanup":
         assert plan.actions
     else:

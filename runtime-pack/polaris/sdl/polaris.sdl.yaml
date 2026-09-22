@@ -7,8 +7,10 @@ nodes:
   a14-kali:
     type: compute
     os: linux
-    os_distribution: x-shifter:kali
-    os_version: rolling
+    # This RAES node is the observed VM substrate. The participant Kali
+    # environment is the adapter-bound container hosted by this Debian image.
+    os_distribution: debian
+    os_version: '12'
     source:
       name: polaris-vm
     resources:

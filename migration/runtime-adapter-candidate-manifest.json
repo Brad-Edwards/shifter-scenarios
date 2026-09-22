@@ -1,10 +1,10 @@
 {
   "protocol": "shifter.runtime-plugin/v1",
   "plugin_id": "panw.polaris",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "distribution": "shifter-panw-adapter",
   "entry_point": "polaris",
-  "worker_image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
+  "worker_image": "ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter@sha256:2a8070692f02aaa7aee6a09b8e716d2b1ba2b14f0f3992c54cc59208c14a45c3",
   "capabilities": [
     "guest.configure",
     "guest.verify"

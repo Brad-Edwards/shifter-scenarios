@@ -29,6 +29,10 @@ def test_outer_hosts_use_allocated_addresses_and_explicit_participant_access():
     access = data["agents"]["participant"]["interactive_access"]["kali_ssh"]
     assert access == {"target_ref": "a14-kali", "channel": "ssh", "account_ref": "kali_login"}
     assert data["accounts"]["kali_login"]["auth_method"] == "key"
+    assert data["nodes"]["a14-kali"]["os_distribution"] == "debian"
+    assert data["nodes"]["a14-kali"]["os_version"] == "12"
+    assert data["nodes"]["dc01"]["os_distribution"] == "windows-server"
+    assert data["nodes"]["dc01"]["os_version"] == "2022"
 
 
 def test_pack_declares_bounded_participant_model_demand_without_a_source():
