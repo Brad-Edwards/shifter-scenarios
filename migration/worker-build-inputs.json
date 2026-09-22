@@ -2,19 +2,19 @@
   "schema": "private-adapter-build-inputs/v1",
   "platform": "linux/amd64",
   "sdk_version": "0.1.0",
-  "adapter_version": "0.1.0",
+  "adapter_version": "0.1.5",
   "dockerfile_sha256": "7448db1a6ae81d70db5abfc962092acf033d4175c5b7a93cd78add9f6d759e9c",
   "wheels": {
     "annotated_types-0.8.0-py3-none-any.whl": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
     "pydantic-2.13.5-py3-none-any.whl": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
     "pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl": "0fc5be0abd4a407e200d844b404e33639a554e7bd0d448e7b9ae181be4789ac2",
-    "shifter_adapter_sdk-0.1.0-py3-none-any.whl": "709f416acc766ab22fb683668d9e43637f59b5224c0b650604d4b53f6798faba",
-    "shifter_panw_adapter-0.1.0-py3-none-any.whl": "379e6da37ae54178a536c177a0375d7037243f9afe159b9df1f8655508781d0f",
+    "shifter_adapter_sdk-0.1.0-py3-none-any.whl": "077ab87dbc420dbccd71c95a34b4acc4d95f70291e168ddca524549bfce80850",
+    "shifter_panw_adapter-0.1.5-py3-none-any.whl": "884f7d81589688e8eb42c61a964254297c80dbeacdc1768e281d76a6996845e3",
     "typing_extensions-4.16.0-py3-none-any.whl": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
     "typing_inspection-0.4.4-py3-none-any.whl": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
   },
-  "registry_digest": "sha256:beac1099838ad7f118a85a68b3e7bd84e8c58c14394d29e7d2eac52cab676a80",
+  "registry_digest": "sha256:2a8070692f02aaa7aee6a09b8e716d2b1ba2b14f0f3992c54cc59208c14a45c3",
   "live_qualified": false,
   "sdk_source_revision": "1a1d21796b03a2fdc2c93046d05819f7fff4fe02",
-  "adapter_source_revision": "b60933d429a27a2809bf2b31b38285876d97ad6c"
+  "adapter_source_revision": "2f5d2ba469349f7f29d70b0a443bb86ecd98edc5"
 }
