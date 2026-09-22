@@ -35,7 +35,7 @@ From the repository root, build the upload archive from the authoritative
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.0.tar
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.1.tar
 python -m pytest runtime-pack/tests -q
 ```
 
@@ -107,8 +107,10 @@ Open **Administer → Adapters**.
 1. Upload the adapter manifest, expand the private-registry section, enter the
    read-only registry credential, review the installation, and install it.
 2. Wait for the adapter state to become **ready**.
-3. Open **Install packs and assign adapters**. Upload the rebuilt tar as pack
-   name `polaris`, review it, and install it.
+3. Open **Install packs and assign adapters**. For a first installation, upload
+   the rebuilt tar as pack name `polaris`, review it, and install it. If
+   `polaris` is already installed, use **Update polaris** and upload the new
+   revision there; **Install new pack** is only for a new pack identity.
 4. Choose **Configure polaris** and select the ready adapter.
 5. Bind `host` to `provision.node.a14-kali` with:
    - image enabled;
