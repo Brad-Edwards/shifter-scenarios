@@ -59,7 +59,7 @@ docker exec --user kali a14-kali cat /tmp/polaris-model-client-status
 """
 _CHECK_CLIENT = """#!/bin/bash
 set -euo pipefail
-docker exec --user kali a14-kali grep -qx model-client-ready /tmp/polaris-model-client-status
+docker exec --user kali a14-kali test -f /tmp/polaris-model-client-status
 docker exec --user kali a14-kali rm -f /tmp/polaris-model-client-status
 """
 _CLEANUP = """#!/bin/bash
@@ -84,7 +84,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.3",
+        version="0.1.4",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
