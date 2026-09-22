@@ -73,9 +73,10 @@ python -m unittest discover -s cinder-typhoon/tests -p test_commercial.py
 python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
 python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineering.py
 python -m unittest discover -s cinder-typhoon/tests -p test_laboratory_quality.py
-python -m unittest discover -s cinder-typhoon/tests -p test_purchasing_stores.py
-python -m unittest discover -s cinder-typhoon/tests -p test_retail_billing.py
+python cinder-typhoon/tests/validate_purchasing_stores.py
+python cinder-typhoon/tests/validate_retail_billing.py
 python -m unittest discover -s cinder-typhoon/tests -p test_planning.py
+python -m unittest discover -s cinder-typhoon/tests -p test_governance.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -118,6 +119,15 @@ classification, dates, readers, replies, attachments, summaries, and meeting
 records. Three checksum-consistent binary mutations corrupt a formula, a cached
 result, and an open action. These checks do not establish forecast accuracy or
 prove the fictional work described in the records occurred.
+
+ARWC governance checks independently reconstruct four dated closes from invoices,
+signed adjustments, receipts, matched acquisitions and settled payments. They
+check exact district amounts, 28 Office formula/input/cache sets, historical
+costs, conditional proposals, board votes, ten calendars and six public releases.
+Twenty-seven content mutations and four checksum-consistent binary mutations
+test accounting, authority, privacy, dates, formulas, cached values, district
+rows and PDF selection. Public search text must match the approved PDF bytes;
+drafts and individual learning records retain exact named readers.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted

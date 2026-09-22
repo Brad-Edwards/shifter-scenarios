@@ -1,10 +1,11 @@
 # KeplerOps and Alterra: the enterprise world
 
-Worldbuilding draft 2, 19 September 2026, with the workforce, business,
+Worldbuilding draft 2, September 19, 2026, with the workforce, business,
 support-intake, engineering, product-quality, release/platform, customer-follow-up,
 commercial, and finance slices added on 20 September, and office life, service
 accounts, field operations, maintenance/engineering, laboratory/quality, purchasing/stores, and retail billing
-added on 21 September, and resource planning added on 22 September.
+added on 21 September, and resource planning and ARWC governance added on
+22 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -67,6 +68,8 @@ and unfinished plans of their own.
 | [Retail billing voices](retail-billing-voices.md) | Distinct writing habits and finished samples for the customer-contact team. |
 | [Planning review](planning-review.md) | Demand, seasonal, resource, renewal and project comparisons, workbook lineage, meetings, counts, and validation evidence. |
 | [Planning voices](planning-voices.md) | Writing notes and samples for the eight resource planners, alongside accepted source-owner profiles. |
+| [ARWC governance review](governance-review.md) | Dated financial closes, board decisions, conditional budgets, public releases, counts and verification. |
+| [ARWC governance voices](governance-voices.md) | Finance, management, reporting and six non-employee board profiles and samples. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |

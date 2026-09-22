@@ -214588,6 +214588,30 @@
       },
       "attachments": []
     },
+    "fg-learning-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<bc7b61d6-a5ba-52a2-862d-27ac234529a4@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-01-plan"
+      ]
+    },
     "bn-0314": {
       "story": "elverden",
       "file": null,
@@ -219032,6 +219056,30 @@
       },
       "attachments": []
     },
+    "fg-learning-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<6685aafd-1070-551b-a875-9e390f6a79a1@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-01-completion"
+      ]
+    },
     "bn-0316": {
       "story": "elverden",
       "file": null,
@@ -219165,6 +219213,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-learning-01-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<53c41096-a559-5367-abef-d58bd700155a@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-01-recognition"
+      ]
     },
     "rp-0223": {
       "story": "release-platform",
@@ -279206,6 +279278,57 @@
       },
       "attachments": []
     },
+    "fg-close-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<51531952-bf39-5d99-a1cf-ba65ad239c75@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-01-workbook",
+        "fg-close-01-summary",
+        "fg-close-01-payables",
+        "fg-close-01-receivables",
+        "fg-close-01-cash",
+        "fg-close-01-district"
+      ]
+    },
+    "fg-close-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<2a88251a-84cb-5aff-9982-98433d4208fc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "bn-1569": {
       "story": "ternwick",
       "file": null,
@@ -279214,6 +279337,28 @@
         "arwc": [
           {
             "mailbox": "dario.torren@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-01-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3496ff25-d764-5989-85a4-2b96d1fe5f7b@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -279758,6 +279903,31 @@
       },
       "attachments": []
     },
+    "fg-close-01-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<de256bc2-4a19-5aaa-a008-4ba34b4280fd@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-01-summary",
+        "fg-close-01-review"
+      ]
+    },
     "pq-3570": {
       "story": "product-quality",
       "file": null,
@@ -279953,6 +280123,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-01-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<75768129-9622-5cc4-aaac-3d330d13fd8e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-01-approval"
+      ]
     },
     "rp-0396": {
       "story": "release-platform",
@@ -287951,6 +288145,39 @@
       },
       "attachments": []
     },
+    "fg-board-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<90f9b9cf-aa27-5c2c-a5c8-739e7eae86e6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-01-agenda",
+        "fg-board-01-paper"
+      ]
+    },
     "lq-check-015-2": {
       "story": "laboratory-quality",
       "file": null,
@@ -288959,6 +289186,28 @@
           },
           {
             "mailbox": "morgan.havelin@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-board-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<b9f632c3-9f64-5bc3-9497-fe7f2e533900@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -300110,6 +300359,58 @@
           },
           {
             "mailbox": "ari.havelin@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-board-01-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<32b1d3dc-cf39-51e4-8c58-a79772f70b01@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-01-minutes",
+        "fg-board-01-votes",
+        "fg-board-01-actions"
+      ]
+    },
+    "fg-board-01-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7ec1cd23-6732-5d3c-90ea-e430f98b9ea0@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -327234,6 +327535,30 @@
       },
       "attachments": []
     },
+    "fg-learning-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<8c9e5415-159f-54e8-9081-ffa83e4eb17d@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "gabriel.wellard@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-02-plan"
+      ]
+    },
     "pq-3591": {
       "story": "product-quality",
       "file": null,
@@ -332421,6 +332746,30 @@
       },
       "attachments": []
     },
+    "fg-learning-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<d9d78d79-b974-5c04-b892-87b7bae7bc19@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "gabriel.wellard@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-02-completion"
+      ]
+    },
     "ol-1089": {
       "story": "office-life",
       "file": null,
@@ -332560,6 +332909,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-learning-02-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<50ca71cd-71a5-5eee-832b-9cf494cabfc0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "gabriel.wellard@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-02-recognition"
+      ]
     },
     "bn-1527": {
       "story": "orrenvale",
@@ -419271,6 +419644,35 @@
       },
       "attachments": []
     },
+    "fg-close-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<35077735-2911-5036-acdf-0e4bf288c9a3@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-02-workbook",
+        "fg-close-02-summary",
+        "fg-close-02-payables",
+        "fg-close-02-receivables",
+        "fg-close-02-cash",
+        "fg-close-02-district"
+      ]
+    },
     "rb-case-0413-01": {
       "story": "retail-billing",
       "file": null,
@@ -419285,6 +419687,28 @@
       },
       "attachments": []
     },
+    "fg-close-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<324b1552-86c1-5410-b9ef-2bab53319539@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "rb-case-0287-05": {
       "story": "retail-billing",
       "file": null,
@@ -419293,6 +419717,28 @@
         "arwc": [
           {
             "mailbox": "tamsin.peveran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-02-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<5b1096f8-5128-5c2c-b3a5-2427492485d6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -419386,6 +419832,31 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-02-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3c3ac56e-2897-50d5-a0c5-e5933fc78e70@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-02-summary",
+        "fg-close-02-review"
+      ]
     },
     "ol-1631": {
       "story": "office-life",
@@ -420276,6 +420747,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-02-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c3b62761-cd69-5b9e-bf22-2e5e954a12c9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-02-approval"
+      ]
     },
     "rb-case-0784-03": {
       "story": "retail-billing",
@@ -499804,6 +500299,30 @@
       },
       "attachments": []
     },
+    "fg-learning-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<6505991c-6d31-5059-9c9e-86b4a646b71e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "niko.narsen@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-03-plan"
+      ]
+    },
     "rp-0919": {
       "story": "release-platform",
       "file": null,
@@ -509181,6 +509700,30 @@
       },
       "attachments": []
     },
+    "fg-learning-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c02978a5-fe84-56b2-954c-51d49c2d24c0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-03-completion"
+      ]
+    },
     "rb-payment-confirmation-0039": {
       "story": "retail-billing",
       "file": null,
@@ -509322,6 +509865,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-learning-03-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<d03b9564-3294-52ce-8ce1-6bfd57acc579@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-03-recognition"
+      ]
     },
     "cm-0044": {
       "story": "commercial",
@@ -535933,6 +536500,39 @@
       },
       "attachments": []
     },
+    "fg-board-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<e5842649-42aa-5f2d-829a-89568627ac44@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-02-agenda",
+        "fg-board-02-paper"
+      ]
+    },
     "rb-payment-confirmation-0094": {
       "story": "retail-billing",
       "file": null,
@@ -536133,6 +536733,28 @@
           },
           {
             "mailbox": "anika.selwyn@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-board-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<1b4d7d1d-d383-5c79-adb2-583b3081ea75@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -553789,6 +554411,58 @@
           },
           {
             "mailbox": "kaisa.fennard@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-board-02-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<4a9fc3b9-88f0-58e2-9e29-bf3a11593d10@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-02-minutes",
+        "fg-board-02-votes",
+        "fg-board-02-actions"
+      ]
+    },
+    "fg-board-02-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<22d9b74c-fdd9-594f-82ed-221e0e7a26db@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -638362,6 +639036,35 @@
       },
       "attachments": []
     },
+    "fg-close-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<a2d2daa0-bd14-56de-962b-4076bd79d283@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-03-workbook",
+        "fg-close-03-summary",
+        "fg-close-03-payables",
+        "fg-close-03-receivables",
+        "fg-close-03-cash",
+        "fg-close-03-district"
+      ]
+    },
     "sa-0721": {
       "story": "service-accounts",
       "file": null,
@@ -638413,6 +639116,50 @@
           {
             "mailbox": "hugo.dravik@keplerops.com",
             "folder": "Sent"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<5d6b0bae-b518-54a1-a706-61b856c1449e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-03-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<d451ee34-cdfa-56ee-b700-76eeb1c4760c@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
           }
         ]
       },
@@ -638719,6 +639466,31 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-03-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<9fbdd4fc-4194-596c-b7ff-765f5ed005db@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-03-summary",
+        "fg-close-03-review"
+      ]
     },
     "rb-case-0186-05": {
       "story": "retail-billing",
@@ -639449,6 +640221,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-03-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<4f004859-a673-523e-970a-3a3a37f088c9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-03-approval"
+      ]
     },
     "rb-case-0558-05": {
       "story": "retail-billing",
@@ -654832,6 +655628,30 @@
       },
       "attachments": []
     },
+    "fg-completed-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3543b541-fb1f-56ef-a7ec-645d50d6614b@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "edda.ferrell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-completed-01-brief"
+      ]
+    },
     "bn-0292": {
       "story": "davenmoor",
       "file": null,
@@ -654878,6 +655698,30 @@
       },
       "attachments": []
     },
+    "fg-completed-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c6ab47fc-675b-5288-b4f0-aa653275de94@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "eira.parnell@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-completed-02-brief"
+      ]
+    },
     "rb-balance-reminder-0194": {
       "story": "retail-billing",
       "file": null,
@@ -654914,6 +655758,30 @@
       },
       "attachments": []
     },
+    "fg-completed-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<b1a3ddca-67a4-5b6c-9adb-733def4f7b89@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.zorrel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-completed-03-brief"
+      ]
+    },
     "pl-arwc-pln-26-09-m4": {
       "story": "planning",
       "file": null,
@@ -654936,6 +655804,30 @@
       },
       "attachments": [
         "pl-arwc-pln-26-09-review-r1"
+      ]
+    },
+    "fg-completed-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<168148a4-db70-5509-b26b-9023fa3135cc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "flora.aldren@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-completed-04-brief"
       ]
     },
     "rb-case-0588-09": {
@@ -657055,6 +657947,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-learning-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ee204da5-6927-5cfd-bd27-8e77802d55f6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-04-plan"
+      ]
     },
     "cf-1390": {
       "story": "customer-followup",
@@ -663031,6 +663947,50 @@
         "bak-2026-023-sample"
       ]
     },
+    "fg-completed-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ae9d6a11-2a9c-59e1-b09a-8d6a0a3875ea@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "edda.ferrell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-completed-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7e55dfe1-7ad4-55c1-ad29-bc3060386cf1@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "eira.parnell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
     "rb-case-0682-09": {
       "story": "retail-billing",
       "file": null,
@@ -663053,6 +664013,28 @@
         "keplerops": [
           {
             "mailbox": "gabriel.delmont@keplerops.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-completed-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<8acb0dca-9446-5206-aa70-91c737dd3498@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.zorrel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
             "folder": "INBOX"
           }
         ]
@@ -663144,6 +664126,28 @@
       "attachments": [
         "customer-sup-2026-0435-change"
       ]
+    },
+    "fg-completed-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<0df2bc58-4ef6-5083-8e0c-63b31b1c5266@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "flora.aldren@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
     },
     "rb-arrangement-confirmation-0065": {
       "story": "retail-billing",
@@ -668475,6 +669479,30 @@
       },
       "attachments": []
     },
+    "fg-learning-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<48e7f2fe-72c0-513b-a765-00857370edd4@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-04-completion"
+      ]
+    },
     "cf-1404": {
       "story": "customer-followup",
       "file": null,
@@ -669020,6 +670048,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-learning-04-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<9e8135b4-05dc-528b-8477-a18ef995dbac@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "flora.odrin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-learning-04-recognition"
+      ]
     },
     "cf-2289": {
       "story": "customer-followup",
@@ -672619,6 +673671,30 @@
         "po-26-036-invoice"
       ]
     },
+    "fg-capital-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<76b32146-0b26-50c9-930a-d4373aed9088@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-01-options"
+      ]
+    },
     "cf-2259": {
       "story": "customer-followup",
       "file": null,
@@ -672657,6 +673733,30 @@
       },
       "attachments": []
     },
+    "fg-capital-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<6ed6143a-2f10-5a92-9634-52fcfc772285@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-02-options"
+      ]
+    },
     "cf-1467": {
       "story": "customer-followup",
       "file": null,
@@ -672674,6 +673774,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<fe510412-e56e-54ce-b135-9a81481d9ab2@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-03-options"
+      ]
     },
     "bn-0297": {
       "story": "davenmoor",
@@ -672693,6 +673817,30 @@
       },
       "attachments": []
     },
+    "fg-capital-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f2856c3c-e3e3-506e-9998-902eeed9fda5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-04-options"
+      ]
+    },
     "cf-1288": {
       "story": "customer-followup",
       "file": null,
@@ -672710,6 +673858,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-05-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<9679fa9c-f4d0-5e89-9eae-75ce96c87194@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "idris.renshaw@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-05-options"
+      ]
     },
     "cf-1497": {
       "story": "customer-followup",
@@ -672761,6 +673933,54 @@
       },
       "attachments": []
     },
+    "fg-capital-06-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<be623615-b069-5aff-a8d4-ed8235da270a@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "imani.bravelle@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-06-options"
+      ]
+    },
+    "fg-capital-07-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7429d850-a472-5c56-bead-54abef45452e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "iris.iversen@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-07-options"
+      ]
+    },
     "cf-1318": {
       "story": "customer-followup",
       "file": null,
@@ -672778,6 +673998,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-08-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f3595bfe-2518-5deb-abb6-8260beb81f63@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "isabel.rivelin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-08-options"
+      ]
     },
     "cf-1527": {
       "story": "customer-followup",
@@ -672797,6 +674041,30 @@
       },
       "attachments": []
     },
+    "fg-capital-09-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<cdd35046-63c6-577d-a93c-7e740bd1e5a1@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-09-options"
+      ]
+    },
     "cf-2331": {
       "story": "customer-followup",
       "file": null,
@@ -672814,6 +674082,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-10-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f4d13f38-aa04-5272-aad7-ab01a5157f6f@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-10-options"
+      ]
     },
     "rb-balance-reminder-0250": {
       "story": "retail-billing",
@@ -672851,6 +674143,30 @@
       },
       "attachments": []
     },
+    "fg-capital-11-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<530b68e1-0c0c-5ede-adaa-8edee63d871e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-11-options"
+      ]
+    },
     "cf-1557": {
       "story": "customer-followup",
       "file": null,
@@ -672868,6 +674184,30 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-12-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<4a301ebe-dc68-5b30-abec-abe172fa886e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-12-options"
+      ]
     },
     "bn-0597": {
       "story": "haveril",
@@ -677434,6 +678774,30 @@
       },
       "attachments": []
     },
+    "fg-budget-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ff2c9bb1-52ab-5d13-a5b0-ac79e4505fd9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-01-workbook"
+      ]
+    },
     "k-workshop-4": {
       "story": "workshop",
       "file": "generated/messages/k-workshop-4.eml",
@@ -677452,6 +678816,54 @@
       },
       "attachments": []
     },
+    "fg-budget-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<52eb8d94-4927-5139-892c-fe6d46291b71@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-02-workbook"
+      ]
+    },
+    "fg-budget-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<e0878e6f-e2af-5d3b-970e-a38c221a506a@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-03-workbook"
+      ]
+    },
     "bn-0298": {
       "story": "davenmoor",
       "file": null,
@@ -677465,6 +678877,126 @@
         ]
       },
       "attachments": []
+    },
+    "fg-budget-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<a8a5dfc4-6e0b-5c60-a09d-5a7c4671a5bb@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-04-workbook"
+      ]
+    },
+    "fg-budget-05-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<14842e14-cc46-559e-b5aa-a8f8e44e134f@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-05-workbook"
+      ]
+    },
+    "fg-budget-06-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<6ce28708-c864-5c0a-91d0-b833dcc83415@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-06-workbook"
+      ]
+    },
+    "fg-budget-07-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f73d7408-0cec-51b1-bcb7-5ae90e72dbd8@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-07-workbook"
+      ]
+    },
+    "fg-budget-08-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<e2ee99a2-fcc3-5f54-8ac9-1be1e6bd6723@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-08-workbook"
+      ]
     },
     "a-outreach-1": {
       "story": "outreach",
@@ -679438,6 +680970,146 @@
         "office-2026-049-request"
       ]
     },
+    "fg-capital-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<2653e6a1-1876-59ec-bf3e-01c32afc5ba6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-01-paper"
+      ]
+    },
+    "fg-capital-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<5a196e68-7d54-5631-89ae-ef12e7ba754e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-02-paper"
+      ]
+    },
+    "fg-capital-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f6c73627-5785-53ac-a296-9a142b8e25af@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-03-paper"
+      ]
+    },
+    "fg-capital-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c3e1d586-b8cf-5779-8143-d58e5a83ba67@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-04-paper"
+      ]
+    },
+    "fg-capital-05-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<dedc9858-a444-50f2-87b0-bf925f8cb6ec@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "idris.renshaw@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-05-paper"
+      ]
+    },
     "k-bike-3": {
       "story": "bicycle",
       "file": "generated/messages/k-bike-3.eml",
@@ -679455,6 +681127,146 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-06-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<979e28e7-7b34-5452-ba44-c2a766b5a9b0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "imani.bravelle@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-06-paper"
+      ]
+    },
+    "fg-capital-07-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<b4918e6d-7d64-5307-9fc4-4c1a4eae0efd@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "iris.iversen@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-07-paper"
+      ]
+    },
+    "fg-capital-08-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<2bb354be-8101-5c8d-bf2d-7c6b92d6ad6b@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "isabel.rivelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-08-paper"
+      ]
+    },
+    "fg-capital-09-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<d4972386-1326-56af-91c5-02b5e8fff031@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-09-paper"
+      ]
+    },
+    "fg-capital-10-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<bf5836f8-d77d-52a8-ae76-409499914a25@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-10-paper"
+      ]
     },
     "ol-1707": {
       "story": "office-life",
@@ -679477,6 +681289,62 @@
         ]
       },
       "attachments": []
+    },
+    "fg-capital-11-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<773dc465-b9af-5093-894a-ed2f811f04ba@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-11-paper"
+      ]
+    },
+    "fg-capital-12-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<68b96a6a-309d-5858-badd-c26400a5ad73@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-12-paper"
+      ]
     },
     "rb-arrangement-confirmation-0186": {
       "story": "retail-billing",
@@ -681759,6 +683627,198 @@
         ]
       },
       "attachments": []
+    },
+    "fg-budget-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<41e6615d-519c-50c9-8883-9ca6263bd793@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-01-paper"
+      ]
+    },
+    "fg-budget-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3919746c-9dc5-57b5-95f0-104678adeb62@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-02-paper"
+      ]
+    },
+    "fg-budget-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<d0900c75-d8b9-58e8-b8cc-6db1d12a9778@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-03-paper"
+      ]
+    },
+    "fg-budget-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7cd597af-9cf3-541e-a32e-576005dfbf66@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-04-paper"
+      ]
+    },
+    "fg-budget-05-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<52464c11-a49d-5800-ae5f-defcaad7711c@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-05-paper"
+      ]
+    },
+    "fg-budget-06-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<0d7ea318-0b68-5c3d-809e-ac07ab2d53ae@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-06-paper"
+      ]
+    },
+    "fg-budget-07-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<4cb6e95d-f68f-5fa9-b900-37def728f737@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-07-paper"
+      ]
+    },
+    "fg-budget-08-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<0e43c58d-0e45-5f6c-9540-19b3ef3946cc@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-budget-08-paper"
+      ]
     },
     "rb-balance-reminder-0287": {
       "story": "retail-billing",
@@ -684066,6 +686126,342 @@
       },
       "attachments": [
         "bak-2026-024-report"
+      ]
+    },
+    "fg-capital-01-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<1f1a7de9-cbd3-5b9a-b58b-c26791a5d6b6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-01-decision"
+      ]
+    },
+    "fg-capital-02-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<16affe90-e3c3-5063-a6fc-6e2c330e1ca6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-02-decision"
+      ]
+    },
+    "fg-capital-03-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<8adba7ed-e226-5394-982f-26ba5f175c4e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-03-decision"
+      ]
+    },
+    "fg-capital-04-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3cd7a058-c372-5699-804b-ee4178adc1a5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-04-decision"
+      ]
+    },
+    "fg-capital-05-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c0963983-da1e-501d-8425-36b8352cbfc0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "idris.renshaw@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-05-decision"
+      ]
+    },
+    "fg-capital-06-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<92eab830-b2fc-5889-9fe2-a15630f2fad5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "imani.bravelle@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-06-decision"
+      ]
+    },
+    "fg-capital-07-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<dc4fa299-d793-54e7-8560-48f5dfdc907e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "iris.iversen@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-07-decision"
+      ]
+    },
+    "fg-capital-08-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<929c2d57-2a28-5cd7-91ea-addb922119fa@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "isabel.rivelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-08-decision"
+      ]
+    },
+    "fg-capital-09-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<a28e6f74-19c3-5a95-9643-8545d0f274c5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "nadia.corvane@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-09-decision"
+      ]
+    },
+    "fg-capital-10-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<099b2bae-e08c-5035-98a8-6acc8003e88e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hana.radvell@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-10-decision"
+      ]
+    },
+    "fg-capital-11-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<2df016c2-550e-510a-a7c0-8c45cd54144d@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "harriet.belsart@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-11-decision"
+      ]
+    },
+    "fg-capital-12-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<4cf7b541-4d34-5699-958c-042a0f412ca5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "hugo.havelin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-capital-12-decision"
       ]
     },
     "rp-1455": {
@@ -686802,6 +689198,39 @@
         "a-billing-explanation"
       ]
     },
+    "fg-board-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<07e83ba2-4acf-5826-a61a-db9b93712d0d@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-03-agenda",
+        "fg-board-03-paper"
+      ]
+    },
     "cf-2486": {
       "story": "customer-followup",
       "file": null,
@@ -686975,6 +689404,28 @@
       "attachments": [
         "k-workshop-outline-v3"
       ]
+    },
+    "fg-board-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<cdcb442f-6953-5909-af10-78c188b76147@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
     },
     "cf-2497": {
       "story": "customer-followup",
@@ -689674,6 +692125,38 @@
         "handover-sup-2026-0496"
       ]
     },
+    "fg-publication-01-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<5d2ff7c1-83f5-59e8-9e91-6c1c1a9ff445@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-01-p1"
+      ]
+    },
     "cf-0884": {
       "story": "customer-followup",
       "file": null,
@@ -689754,6 +692237,38 @@
         "handover-sup-2026-0497"
       ]
     },
+    "fg-publication-02-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<27374ad1-1002-5437-bcd7-210310d0a9cd@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-02-p1"
+      ]
+    },
     "cf-0889": {
       "story": "customer-followup",
       "file": null,
@@ -689832,6 +692347,38 @@
       },
       "attachments": [
         "handover-sup-2026-0498"
+      ]
+    },
+    "fg-publication-03-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<26f34d3f-de07-51b3-a12a-b14a651b6857@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-03-p1"
       ]
     },
     "cf-0894": {
@@ -689920,6 +692467,38 @@
         "handover-sup-2026-0499"
       ]
     },
+    "fg-publication-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<24b64dd3-92b3-52e1-849d-773ea8f1ad7c@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-04-p1"
+      ]
+    },
     "cf-0899": {
       "story": "customer-followup",
       "file": null,
@@ -690000,6 +692579,72 @@
         "handover-sup-2026-0500"
       ]
     },
+    "fg-board-03-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7aa230d6-cc39-5154-97c3-f9a3f00d3cd6@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-board-03-minutes",
+        "fg-board-03-votes",
+        "fg-board-03-actions"
+      ]
+    },
+    "fg-publication-05-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<9b317712-82b1-50c7-b25d-b3a370938242@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-05-p1"
+      ]
+    },
     "cf-0904": {
       "story": "customer-followup",
       "file": null,
@@ -690054,6 +692699,38 @@
         "handover-sup-2026-0493"
       ]
     },
+    "fg-publication-06-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<6259c308-2519-56f9-a02f-30321525d0f9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-06-p1"
+      ]
+    },
     "cf-0909": {
       "story": "customer-followup",
       "file": null,
@@ -690099,6 +692776,192 @@
         ]
       },
       "attachments": []
+    },
+    "fg-publication-01-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<5894ff62-f9c6-5a3a-b452-f01ad64e726e@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-01-review"
+      ]
+    },
+    "fg-publication-02-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<66ae8e17-3fe7-5f01-91d3-1be6a823a7f2@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-02-review"
+      ]
+    },
+    "fg-publication-03-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<04574a09-b993-540b-ab43-a206a535fef1@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-03-review"
+      ]
+    },
+    "fg-publication-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<c25195e2-7190-5697-8a43-4f8577698d50@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-04-review"
+      ]
+    },
+    "fg-board-03-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<83e1ea3f-5b7e-5be5-a209-fcef08e82b29@alterraboard.test>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-publication-05-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<b8ee8328-8d6c-5db1-9a59-394fd19fc6e0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-05-review"
+      ]
+    },
+    "fg-publication-06-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<3f0562bb-f1d5-5550-b4cf-8502bddd0cd5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-06-review"
+      ]
     },
     "cf-0915": {
       "story": "customer-followup",
@@ -690800,6 +693663,390 @@
         "com-2026-060-account-plan"
       ]
     },
+    "fg-publication-01-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<828ce3b9-5463-5313-9261-3e85460befd3@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-01-r1"
+      ]
+    },
+    "fg-publication-02-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<7be290a2-ccd5-5564-b543-04d86bbc25a5@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-02-r1"
+      ]
+    },
+    "fg-publication-03-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<16d6a98a-7ef3-5d1a-82ad-a02685e17595@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-03-r1"
+      ]
+    },
+    "fg-publication-01-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<db52e78c-ecd9-5b5d-a40a-e712c20e1433@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-01-r1"
+      ]
+    },
+    "fg-publication-04-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<9a8c3d9e-f73a-58e9-9f8c-440965d3c60a@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-04-r1"
+      ]
+    },
+    "fg-publication-02-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<360295b3-8136-5dae-9f12-255fb42ba0d9@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-02-r1"
+      ]
+    },
+    "fg-publication-05-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f92616c8-4a57-5f50-acd5-65dac3ca1fd0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-05-r1"
+      ]
+    },
+    "fg-publication-03-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<a7b40c07-a322-5e6e-96df-918b81342d6f@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-03-r1"
+      ]
+    },
+    "fg-publication-06-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ce09f919-244e-54ff-ae2d-b74adfca0a07@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-06-r1"
+      ]
+    },
+    "fg-publication-04-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<275dde74-f461-52b1-95d7-4e2c9482cda4@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-04-r1"
+      ]
+    },
+    "fg-publication-05-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<e0c9220e-0853-5584-8729-aa4586e143c7@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-05-r1"
+      ]
+    },
+    "fg-publication-06-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<e0b40bd0-a492-5453-b027-bc8485dad503@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-06-r1"
+      ]
+    },
     "b-path-1": {
       "story": "friends",
       "file": "generated/messages/b-path-1.eml",
@@ -690813,6 +694060,296 @@
         ]
       },
       "attachments": []
+    },
+    "fg-close-04-m1": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<29effc1c-3292-573b-8285-8ea438fef98f@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-04-workbook",
+        "fg-close-04-summary",
+        "fg-close-04-payables",
+        "fg-close-04-receivables",
+        "fg-close-04-cash",
+        "fg-close-04-district"
+      ]
+    },
+    "fg-close-04-m2": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<69d3871e-0a51-5109-8f70-3538f3a95371@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-04-m3": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<cdf78989-a191-5221-bcf4-e58fa3d254a8@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "farah.nelcourt@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "felix.warden@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": []
+    },
+    "fg-close-04-m4": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ada1ab1f-8b3e-50d9-afba-294cd24d1862@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-04-summary",
+        "fg-close-04-review"
+      ]
+    },
+    "fg-close-04-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<bc10b656-cb62-5d6b-aa5d-9548b0b180a7@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "emre.edran@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "luc.venn-morel@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-close-04-approval"
+      ]
+    },
+    "fg-publication-01-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<f5ce6761-658e-5f48-bb08-c23e81e9ae67@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-01-public"
+      ]
+    },
+    "fg-publication-02-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<649e5273-6d46-5aa3-89fe-968fd61de1b0@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-02-public"
+      ]
+    },
+    "fg-publication-03-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ca793c3c-54b5-563c-95ad-f2aed7dcbf24@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-03-public"
+      ]
+    },
+    "fg-publication-04-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<2b0c9615-6274-58e8-b040-3e71635e93c4@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-04-public"
+      ]
+    },
+    "fg-publication-05-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<a74fe9c7-d5a5-5fb7-803e-9e3554206300@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-05-public"
+      ]
+    },
+    "fg-publication-06-m5": {
+      "story": "arwc-governance",
+      "file": null,
+      "message_id": "<ad720673-ab3c-5971-9d80-6cfc5bf7698c@alterrawaterco.com>",
+      "retained": {
+        "arwc": [
+          {
+            "mailbox": "mira.delmont@alterrawaterco.com",
+            "folder": "Sent"
+          },
+          {
+            "mailbox": "elin.verrin@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "finn.elvarn@alterrawaterco.com",
+            "folder": "INBOX"
+          },
+          {
+            "mailbox": "rosa.nerivet@alterrawaterco.com",
+            "folder": "INBOX"
+          }
+        ]
+      },
+      "attachments": [
+        "fg-publication-06-public"
+      ]
     }
   },
   "documents": {
@@ -708563,6 +712100,972 @@
       "file": null,
       "path": "finance-cash-statement.pdf",
       "employer": "keplerops"
+    },
+    "fg-close-basis": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-basis.md",
+      "employer": "arwc"
+    },
+    "fg-opening-balances": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/opening-balances.csv",
+      "employer": "arwc"
+    },
+    "fg-close-01-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-close-01-summary": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-summary.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-payables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-payables.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-receivables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-receivables.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-cash": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-cash.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-district": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-district.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-review.md",
+      "employer": "arwc"
+    },
+    "fg-close-01-approval": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-01-approval.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-close-02-summary": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-summary.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-payables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-payables.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-receivables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-receivables.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-cash": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-cash.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-district": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-district.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-review.md",
+      "employer": "arwc"
+    },
+    "fg-close-02-approval": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-02-approval.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-close-03-summary": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-summary.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-payables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-payables.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-receivables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-receivables.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-cash": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-cash.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-district": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-district.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-review.md",
+      "employer": "arwc"
+    },
+    "fg-close-03-approval": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-03-approval.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-close-04-summary": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-summary.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-payables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-payables.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-receivables": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-receivables.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-cash": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-cash.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-district": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-district.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-review.md",
+      "employer": "arwc"
+    },
+    "fg-close-04-approval": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/close-04-approval.md",
+      "employer": "arwc"
+    },
+    "fg-district-movements": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/district-movements.csv",
+      "employer": "arwc"
+    },
+    "fg-period-controls": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/period-controls.csv",
+      "employer": "arwc"
+    },
+    "fg-capital-01-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-01-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-01-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-01-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-01-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-01-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-02-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-02-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-02-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-02-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-02-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-02-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-03-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-03-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-03-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-03-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-03-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-03-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-04-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-04-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-04-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-04-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-04-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-04-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-05-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-05-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-05-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-05-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-05-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-05-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-06-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-06-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-06-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-06-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-06-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-06-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-07-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-07-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-07-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-07-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-07-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-07-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-08-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-08-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-08-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-08-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-08-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-08-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-09-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-09-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-09-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-09-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-09-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-09-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-10-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-10-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-10-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-10-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-10-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-10-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-11-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-11-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-11-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-11-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-11-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-11-decision.md",
+      "employer": "arwc"
+    },
+    "fg-capital-12-options": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-12-options.xlsx",
+      "employer": "arwc"
+    },
+    "fg-capital-12-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-12-paper.md",
+      "employer": "arwc"
+    },
+    "fg-capital-12-decision": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-12-decision.md",
+      "employer": "arwc"
+    },
+    "fg-completed-01-costs": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-01-costs.xlsx",
+      "employer": "arwc"
+    },
+    "fg-completed-01-brief": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-01-brief.md",
+      "employer": "arwc"
+    },
+    "fg-completed-01-acknowledgment": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-01-acknowledgment.md",
+      "employer": "arwc"
+    },
+    "fg-completed-02-costs": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-02-costs.xlsx",
+      "employer": "arwc"
+    },
+    "fg-completed-02-brief": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-02-brief.md",
+      "employer": "arwc"
+    },
+    "fg-completed-02-acknowledgment": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-02-acknowledgment.md",
+      "employer": "arwc"
+    },
+    "fg-completed-03-costs": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-03-costs.xlsx",
+      "employer": "arwc"
+    },
+    "fg-completed-03-brief": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-03-brief.md",
+      "employer": "arwc"
+    },
+    "fg-completed-03-acknowledgment": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-03-acknowledgment.md",
+      "employer": "arwc"
+    },
+    "fg-completed-04-costs": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-04-costs.xlsx",
+      "employer": "arwc"
+    },
+    "fg-completed-04-brief": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-04-brief.md",
+      "employer": "arwc"
+    },
+    "fg-completed-04-acknowledgment": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/completed-04-acknowledgment.md",
+      "employer": "arwc"
+    },
+    "fg-budget-01-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-01-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-01-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-01-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-02-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-02-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-02-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-02-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-03-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-03-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-03-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-03-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-04-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-04-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-04-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-04-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-05-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-05-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-05-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-05-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-06-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-06-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-06-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-06-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-07-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-07-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-07-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-07-paper.md",
+      "employer": "arwc"
+    },
+    "fg-budget-08-workbook": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-08-workbook.xlsx",
+      "employer": "arwc"
+    },
+    "fg-budget-08-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-08-paper.md",
+      "employer": "arwc"
+    },
+    "fg-learning-01-plan": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-01-plan.md",
+      "employer": "arwc"
+    },
+    "fg-learning-01-completion": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-01-completion.md",
+      "employer": "arwc"
+    },
+    "fg-learning-01-recognition": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-01-recognition.md",
+      "employer": "arwc"
+    },
+    "fg-learning-02-plan": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-02-plan.md",
+      "employer": "arwc"
+    },
+    "fg-learning-02-completion": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-02-completion.md",
+      "employer": "arwc"
+    },
+    "fg-learning-02-recognition": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-02-recognition.md",
+      "employer": "arwc"
+    },
+    "fg-learning-03-plan": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-03-plan.md",
+      "employer": "arwc"
+    },
+    "fg-learning-03-completion": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-03-completion.md",
+      "employer": "arwc"
+    },
+    "fg-learning-03-recognition": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-03-recognition.md",
+      "employer": "arwc"
+    },
+    "fg-learning-04-plan": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-04-plan.md",
+      "employer": "arwc"
+    },
+    "fg-learning-04-completion": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-04-completion.md",
+      "employer": "arwc"
+    },
+    "fg-learning-04-recognition": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-04-recognition.md",
+      "employer": "arwc"
+    },
+    "fg-governance-remit": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/governance-remit.md",
+      "employer": "arwc"
+    },
+    "fg-board-01-agenda": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-01-agenda.md",
+      "employer": "arwc"
+    },
+    "fg-board-01-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-01-paper.md",
+      "employer": "arwc"
+    },
+    "fg-board-01-minutes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-01-minutes.md",
+      "employer": "arwc"
+    },
+    "fg-board-01-votes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-01-votes.md",
+      "employer": "arwc"
+    },
+    "fg-board-01-actions": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-01-actions.md",
+      "employer": "arwc"
+    },
+    "fg-board-02-agenda": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-02-agenda.md",
+      "employer": "arwc"
+    },
+    "fg-board-02-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-02-paper.md",
+      "employer": "arwc"
+    },
+    "fg-board-02-minutes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-02-minutes.md",
+      "employer": "arwc"
+    },
+    "fg-board-02-votes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-02-votes.md",
+      "employer": "arwc"
+    },
+    "fg-board-02-actions": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-02-actions.md",
+      "employer": "arwc"
+    },
+    "fg-board-03-agenda": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-03-agenda.md",
+      "employer": "arwc"
+    },
+    "fg-board-03-paper": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-03-paper.md",
+      "employer": "arwc"
+    },
+    "fg-board-03-minutes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-03-minutes.md",
+      "employer": "arwc"
+    },
+    "fg-board-03-votes": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-03-votes.md",
+      "employer": "arwc"
+    },
+    "fg-board-03-actions": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-03-actions.md",
+      "employer": "arwc"
+    },
+    "fg-publication-01-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-01-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-01-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-01-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-01-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/service-improvements-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-01-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/service-improvements.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-01-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-01-release.md",
+      "employer": "arwc"
+    },
+    "fg-publication-02-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-02-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-02-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-02-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-02-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/your-bill-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-02-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/your-bill.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-02-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-02-release.md",
+      "employer": "arwc"
+    },
+    "fg-publication-03-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-03-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-03-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-03-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-03-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/financial-controls-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-03-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/financial-controls.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-03-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-03-release.md",
+      "employer": "arwc"
+    },
+    "fg-publication-04-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-04-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-04-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-04-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-04-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/renewal-programme-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-04-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/renewal-programme.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-04-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-04-release.md",
+      "employer": "arwc"
+    },
+    "fg-publication-05-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-05-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-05-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-05-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-05-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/learning-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-05-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/learning.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-05-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-05-release.md",
+      "employer": "arwc"
+    },
+    "fg-publication-06-p1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-06-p1.md",
+      "employer": "arwc"
+    },
+    "fg-publication-06-review": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-06-review.md",
+      "employer": "arwc"
+    },
+    "fg-publication-06-r1": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/board-account-r1.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-06-public": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Public reports/board-account.pdf",
+      "employer": "arwc"
+    },
+    "fg-publication-06-release": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-06-release.md",
+      "employer": "arwc"
+    },
+    "fg-capital-screen-register": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/capital-screen-register.csv",
+      "employer": "arwc"
+    },
+    "fg-budget-proposals": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/budget-proposals.csv",
+      "employer": "arwc"
+    },
+    "fg-publication-register": {
+      "story": "arwc-governance",
+      "file": null,
+      "path": "Finance and governance/publication-register.csv",
+      "employer": "arwc"
     },
     "lq-specification": {
       "story": "laboratory-quality",

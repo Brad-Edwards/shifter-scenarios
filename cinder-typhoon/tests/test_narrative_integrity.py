@@ -70,9 +70,35 @@ class NarrativeIntegrityTests(unittest.TestCase):
             case['outcome'] = 'Engineering fixed the behavior and released it to the customer.'
             p.write_text(yaml.safe_dump(support, sort_keys=False))
 
+        def change_private_package_access(root, public):
+            import hashlib
+            path = root / 'generated/packages/arwc-documents.json'
+            data = json.loads(path.read_text())
+            draft = next(d for d in data['documents'] if d['name']=='fg-publication-01-p1')
+            draft['readers'] = []
+            if public:
+                draft['access'] = 'public'
+                draft['document_state'] = 'published'
+            path.write_text(json.dumps(data))
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            catalog_path = root / 'artifact-catalog.json'
+            catalog = json.loads(catalog_path.read_text())
+            for entry in catalog['artifacts']:
+                if entry['content_ref'] == 'narrative-arwc.documents':
+                    entry['sha256'] = digest
+                    entry['source']['version'] = 'sha256-' + digest
+            catalog_path.write_text(json.dumps(catalog))
+
+        def publish_private_draft(root):
+            change_private_package_access(root, True)
+
+        def empty_private_readers(root):
+            change_private_package_access(root, False)
+
         for mutate in (alter_attachment, add_unrelated_mailbox_copy, change_source,
                        detach_reply, create_reporting_loop, alter_accepted_delivery_amount,
-                       bridge_support_visibility_threads, fabricate_engineering_resolution):
+                       bridge_support_visibility_threads, fabricate_engineering_resolution,
+                       publish_private_draft, empty_private_readers):
             with self.subTest(mutation=mutate.__name__), tempfile.TemporaryDirectory() as temp:
                 pack = Path(temp)
                 root = pack / 'assets/narrative'

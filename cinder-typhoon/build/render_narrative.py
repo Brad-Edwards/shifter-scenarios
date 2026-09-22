@@ -160,7 +160,7 @@ def render():
         # The workplace source package carries every exact RFC822 message.
         # Keep the original story messages as separate review files; the larger
         # workforce and business slices stay in source packages to respect pack member limits.
-        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-', 'sa-', 'op-', 'me-', 'lq-', 'ps-', 'rb-', 'pl-')) else f'generated/messages/{m["id"]}.eml'
+        path = None if m['id'].startswith(('wm-', 'bn-', 'si-', 'fe-', 'pq-', 'rp-', 'cf-', 'cm-', 'fn-', 'ol-', 'sa-', 'op-', 'me-', 'lq-', 'ps-', 'rb-', 'pl-', 'fg-')) else f'generated/messages/{m["id"]}.eml'
         if path:
             output[path] = raw
         destinations = {}
@@ -182,13 +182,22 @@ def render():
         if d['audience'] == 'staff':
             audience = [p['email'] for p in people.values() if p['employer'] == d['employer']]
         elif d['audience'] == 'restricted':
-            audience = list(dict.fromkeys(people[k]['email'] for k in d['reader_keys']))
+            audience = list(dict.fromkeys(contacts[k]['email'] for k in d['reader_keys']))
+        elif d['audience'] == 'public':
+            assert d['document_state'] == 'published' and d['publication'], d['id']
+            assert datetime.fromisoformat(d['publication']['approved_at']) < datetime.fromisoformat(d['published_at']), d['id']
+            audience = []
         else:
             audience = [people[k]['email'] for k in AUDIENCES[d['audience']]]
         kind = d.get('collection', 'documents')
         libraries[d['employer']][kind]['documents'].append({'name': d['id'], 'title': d['title'], 'path': document_path(d),
             'media_type': d.get('media_type', 'text/markdown'), 'published_at': d['published_at'],
             'readers': audience, 'text': document_text(d)})
+        if 'document_state' in d:
+            libraries[d['employer']][kind]['documents'][-1]['document_state'] = d['document_state']
+        if d['audience'] == 'public':
+            libraries[d['employer']][kind]['documents'][-1].update(
+                access='public', publication=d['publication'])
         if 'archive' in d:
             library = libraries[d['employer']][kind]
             library['schema_version'] = library['schema_version'].replace('/v1', '/v2')
@@ -248,12 +257,23 @@ def render():
         text = '\r\n'.join(folded) + '\r\n'
         # Bulk operating calendars are complete items in the source package.
         # Avoid redundant standalone members, as with bulk RFC822 messages.
-        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-')):
+        if '-induction-' not in event['id'] and not event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-')):
             output[f'generated/calendars/{event["id"]}.ics'] = text.encode()
-        readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == event['employer']]
+        readers = [contacts[k]['email'] for k in [event['organizer']] + event['attendees']
+                   if contacts[k]['employer'] == event['employer']
+                   or event['id'].startswith('governance-') and contacts[k]['employer'] == 'arwc-board']
         kind = 'employment' if '-induction-' in event['id'] else 'documents'
         libraries[event['employer']][kind]['documents'].append({'name': event['id'], 'title': event['summary'], 'path': event['id'] + '.ics',
             'media_type': 'text/calendar', 'readers': readers, 'text': text})
+    # v4 is a pack-owned extension, not a new RAE source kind. Older items keep
+    # their exact fields and default to named-reader access. Never infer public
+    # access from a missing or empty reader list.
+    staff_addresses = {p['email'] for p in people.values()}
+    for org in ORGS:
+        library = libraries[org]['documents']
+        if any('document_state' in d or d.get('access') == 'public'
+               or not set(d['readers']) <= staff_addresses for d in library['documents']):
+            library['schema_version'] = 'cinder-document-library/v4'
     catalog = {'schema_version': 'cinder-world-artifacts/v1', 'artifacts': []}
     modules = {}
     for org, (node, domain) in ORGS.items():
@@ -274,6 +294,11 @@ def render():
                       'Exact document readers')
             description = (f'{org} workplace {kind}. Require an individual staff identity; {access}. '
                            'Preserve authored readers and opening state.')
+            if payload['schema_version'] == 'cinder-document-library/v4':
+                description = (f'{org} workplace documents. Authenticate exact named readers, including '
+                               'appointed board identities. Only explicit access=public items permit anonymous '
+                               'reading; enforce the same access on bytes, search and metadata. Preserve '
+                               'document states and publication approvals; no collection-wide bypass.')
             content_decl = {'type': 'dataset', 'target': node, 'format': payload['schema_version'], 'source': source,
                 'description': description}
             # The package source is authoritative. Very large display-name lists duplicate
@@ -298,6 +323,10 @@ def render():
             module['observation_boundaries'][key] = {'projection_basis': 'Ordinary authenticated reader access; each mailbox owner or listed document reader sees their own authorized collection.',
                 'observable_refs': ['content.' + kind], 'redaction_policy': 'Preserve authored content only for its listed audience; no collection-wide bypass.',
                 'latency_profile': 'Initial content available before participant admission.'}
+            if payload['schema_version'] == 'cinder-document-library/v4':
+                module['observation_boundaries'][key]['projection_basis'] = (
+                    'Named-reader access to private items and anonymous access only to explicit public items. '
+                    'Verify restricted drafts and their metadata are absent from public search and downloads.')
             module['evidence_requirements'][key] = {'source_refs': ['content.' + kind], 'scope': 'Native workplace service readback',
                 'boundary_kind': 'participant_equivalent', 'channel': 'api_response', 'artifact_role': 'service_materialization_readback',
                 'media_types': ['application/json'], 'sensitivity': 'plain', 'redaction': 'redact_secrets', 'integrity': 'checksum', 'retention': 'run_lifetime', 'loss_disclosure': 'required',

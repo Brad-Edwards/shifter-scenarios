@@ -2925,3 +2925,39 @@ correspondents:
     name: ARWC Field Desk
     email: field-desk@alterrawaterco.com
     employer: arwc
+  board_sabine:
+    name: Sabine Morlenn
+    email: sabine.morlenn@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: Independent chair
+  board_tessa:
+    name: Tessa Quelvane
+    email: tessa.quelvane@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: Independent member
+  board_elva:
+    name: Elva Sornivet
+    email: elva.sornivet@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: Pine-appointed member
+  board_tovan:
+    name: Tovan Kelreth
+    email: tovan.kelreth@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: Pine-appointed member
+  board_iona:
+    name: Iona Varneset
+    email: iona.varneset@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: River-appointed member
+  board_remy:
+    name: Remy Delsovar
+    email: remy.delsovar@alterraboard.test
+    employer: arwc-board
+    department: Joint board
+    job: River-appointed member

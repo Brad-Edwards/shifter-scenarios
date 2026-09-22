@@ -1,0 +1,1679 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+required_base:
+  repository_commit: 643c5cd
+  accepted_purchasing_commit: 46b6980
+  accepted_retail_commit: 58c1396
+  accepted_planning_commit: 76e1a64
+native_sources:
+  mail: cinder-typhoon/narrative/arwc-mail
+  documents: cinder-typhoon/narrative/arwc-documents
+  logical_owner: a-corporate.a-business
+ownership_release: governance-2026-09-16/v1
+source_digests:
+  authoring/purchasing-stores.yaml: fb5cd7378b06ba0f551324664a97b60f1bebf50c5032aa84d02f4333b21b934e
+  authoring/planning.yaml: 67b4c60823adddda2dbefc7ac035caf868ca7f3cfc8e37c9ee3ec14e086f2da3
+  authoring/workforce.yaml: 5620bb88631f35b880eb77e93539b70ae74a23c2c51bfe599458233dcc2a6b3a
+  authoring/maintenance-engineering.yaml: a8caa2376ace24b5e1c2ba94857224a605b356b3feee127c789fdf3579d04694
+  documents/purchasing-stores-records.zip: aa07140d7d366b9936d6c73677f54139a9b4bb6d5f8bd30f03e899ee7fb87b69
+  documents/service-account-records.zip: 085e7b1323e8b1e12654ddba766e2d2853a8f01806321f94777ff9eeaf365827
+  documents/retail-billing-records.zip: 490958e40a69da558c0d18a07862b57a8f4f0d701e16a15fe295f138a647df40
+board_keys:
+- board_sabine
+- board_tessa
+- board_elva
+- board_tovan
+- board_iona
+- board_remy
+finance_readers:
+- awm216
+- awm217
+- awm218
+- awm219
+- luc
+- awm197
+reporting_readers:
+- awm164
+- rosa
+- awm216
+- awm217
+- luc
+- awm220
+opening_balances:
+- district: PINE
+  as_of: '2026-05-31'
+  cash_cents: 27500000
+  receivables_cents: 0
+  payables_cents: 228591
+  grni_cents: 0
+  commitments_cents: 206304
+- district: RIVER
+  as_of: '2026-05-31'
+  cash_cents: 22500000
+  receivables_cents: 0
+  payables_cents: 271069
+  grni_cents: 0
+  commitments_cents: 352836
+periods:
+- id: close-01
+  cutoff: '2026-06-30'
+  previous: '2026-05-31'
+  released_at: '2026-07-03T09:00:00-04:00'
+  opening:
+    cash: 50000000
+    receivables: 0
+    payables: 499660
+  movements:
+    billing: 51750
+    receipt: 51750
+    adjustment: 0
+    acquisition: 7081730
+    payment: 4419940
+  closing:
+    cash: 45631810
+    receivables: 0
+    payables: 3161450
+  grni_cents: 163345
+  commitments_cents: 2023032
+  documents:
+  - fg-close-01-workbook
+  - fg-close-01-summary
+  - fg-close-01-payables
+  - fg-close-01-receivables
+  - fg-close-01-cash
+  - fg-close-01-district
+  - fg-close-01-review
+  - fg-close-01-approval
+- id: close-02
+  cutoff: '2026-07-31'
+  previous: '2026-06-30'
+  released_at: '2026-08-04T09:00:00-04:00'
+  opening:
+    cash: 45631810
+    receivables: 0
+    payables: 3161450
+  movements:
+    billing: 582669865
+    receipt: 379179142
+    adjustment: -340150
+    acquisition: 5256456
+    payment: 7441086
+  closing:
+    cash: 417369866
+    receivables: 203150573
+    payables: 976820
+  grni_cents: 0
+  commitments_cents: 1269815
+  documents:
+  - fg-close-02-workbook
+  - fg-close-02-summary
+  - fg-close-02-payables
+  - fg-close-02-receivables
+  - fg-close-02-cash
+  - fg-close-02-district
+  - fg-close-02-review
+  - fg-close-02-approval
+- id: close-03
+  cutoff: '2026-08-31'
+  previous: '2026-07-31'
+  released_at: '2026-09-04T09:00:00-04:00'
+  opening:
+    cash: 417369866
+    receivables: 203150573
+    payables: 976820
+  movements:
+    billing: 0
+    receipt: 105787468
+    adjustment: 0
+    acquisition: 5696356
+    payment: 3827092
+  closing:
+    cash: 519330242
+    receivables: 97363105
+    payables: 2846084
+  grni_cents: 2026035
+  commitments_cents: 1212005
+  documents:
+  - fg-close-03-workbook
+  - fg-close-03-summary
+  - fg-close-03-payables
+  - fg-close-03-receivables
+  - fg-close-03-cash
+  - fg-close-03-district
+  - fg-close-03-review
+  - fg-close-03-approval
+- id: close-04
+  cutoff: '2026-09-15'
+  previous: '2026-08-31'
+  released_at: '2026-09-16T06:00:00-04:00'
+  opening:
+    cash: 519330242
+    receivables: 97363105
+    payables: 2846084
+  movements:
+    billing: 0
+    receipt: 0
+    adjustment: 0
+    acquisition: 1093360
+    payment: 1996784
+  closing:
+    cash: 517333458
+    receivables: 97363105
+    payables: 1942660
+  grni_cents: 2026035
+  commitments_cents: 1222420
+  documents:
+  - fg-close-04-workbook
+  - fg-close-04-summary
+  - fg-close-04-payables
+  - fg-close-04-receivables
+  - fg-close-04-cash
+  - fg-close-04-district
+  - fg-close-04-review
+  - fg-close-04-approval
+capital:
+- id: capital-01
+  planning: ARWC-PLN-26-09
+  district: PINE
+  retain_cents: 140000
+  replace_cents: 250000
+  upfront_cents: 190000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-01-options
+  - fg-capital-01-paper
+  - fg-capital-01-decision
+- id: capital-02
+  planning: ARWC-PLN-26-10
+  district: RIVER
+  retain_cents: 155000
+  replace_cents: 220000
+  upfront_cents: 170000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-02-options
+  - fg-capital-02-paper
+  - fg-capital-02-decision
+- id: capital-03
+  planning: ARWC-PLN-26-11
+  district: PINE
+  retain_cents: 70000
+  replace_cents: 60500
+  upfront_cents: 48000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-03-options
+  - fg-capital-03-paper
+  - fg-capital-03-decision
+- id: capital-04
+  planning: ARWC-PLN-26-12
+  district: RIVER
+  retain_cents: 45000
+  replace_cents: 71000
+  upfront_cents: 56000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-04-options
+  - fg-capital-04-paper
+  - fg-capital-04-decision
+- id: capital-05
+  planning: ARWC-PLN-26-13
+  district: PINE
+  retain_cents: 125000
+  replace_cents: 130000
+  upfront_cents: 95000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-05-options
+  - fg-capital-05-paper
+  - fg-capital-05-decision
+- id: capital-06
+  planning: ARWC-PLN-26-14
+  district: RIVER
+  retain_cents: 115000
+  replace_cents: 158500
+  upfront_cents: 116000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-06-options
+  - fg-capital-06-paper
+  - fg-capital-06-decision
+- id: capital-07
+  planning: ARWC-PLN-26-15
+  district: PINE
+  retain_cents: 95000
+  replace_cents: 102000
+  upfront_cents: 82000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-07-options
+  - fg-capital-07-paper
+  - fg-capital-07-decision
+- id: capital-08
+  planning: ARWC-PLN-26-16
+  district: RIVER
+  retain_cents: 75000
+  replace_cents: 113500
+  upfront_cents: 91000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-08-options
+  - fg-capital-08-paper
+  - fg-capital-08-decision
+- id: capital-09
+  planning: ARWC-PLN-26-17
+  district: PINE
+  retain_cents: 210000
+  replace_cents: 375000
+  upfront_cents: 300000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-09-options
+  - fg-capital-09-paper
+  - fg-capital-09-decision
+- id: capital-10
+  planning: ARWC-PLN-26-18
+  district: UNALLOCATED
+  retain_cents: 250000
+  replace_cents: 325000
+  upfront_cents: 265000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-10-options
+  - fg-capital-10-paper
+  - fg-capital-10-decision
+- id: capital-11
+  planning: ARWC-PLN-26-19
+  district: PINE
+  retain_cents: 80000
+  replace_cents: 86500
+  upfront_cents: 69000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-11-options
+  - fg-capital-11-paper
+  - fg-capital-11-decision
+- id: capital-12
+  planning: ARWC-PLN-26-20
+  district: RIVER
+  retain_cents: 60000
+  replace_cents: 99000
+  upfront_cents: 84000
+  authorized_cents: 0
+  committed_cents: 0
+  spent_cents: 0
+  due: '2026-09-30'
+  state: open
+  documents:
+  - fg-capital-12-options
+  - fg-capital-12-paper
+  - fg-capital-12-decision
+projects:
+- id: completed-01
+  project: ARWC-CP-2021-01
+  estimate_cents: 18460000
+  accepted_cents: 18194000
+  handover: '2021-08-02'
+  documents:
+  - fg-completed-01-costs
+  - fg-completed-01-brief
+  - fg-completed-01-acknowledgment
+- id: completed-02
+  project: ARWC-CP-2022-02
+  estimate_cents: 12680000
+  accepted_cents: 12432000
+  handover: '2022-06-27'
+  documents:
+  - fg-completed-02-costs
+  - fg-completed-02-brief
+  - fg-completed-02-acknowledgment
+- id: completed-03
+  project: ARWC-CP-2022-03
+  estimate_cents: 23840000
+  accepted_cents: 23578000
+  handover: '2023-02-20'
+  documents:
+  - fg-completed-03-costs
+  - fg-completed-03-brief
+  - fg-completed-03-acknowledgment
+- id: completed-04
+  project: ARWC-CP-2023-04
+  estimate_cents: 9720000
+  accepted_cents: 9684000
+  handover: '2023-09-18'
+  documents:
+  - fg-completed-04-costs
+  - fg-completed-04-brief
+  - fg-completed-04-acknowledgment
+budgets:
+- id: budget-01
+  district: PINE
+  category: maintenance-material
+  base_cents: 3634325
+  contingency_cents: 363433
+  proposal_cents: 3997758
+  approved_cents: 0
+  documents:
+  - fg-budget-01-workbook
+  - fg-budget-01-paper
+- id: budget-02
+  district: PINE
+  category: stock-replenishment
+  base_cents: 1745739
+  contingency_cents: 174574
+  proposal_cents: 1920313
+  approved_cents: 0
+  documents:
+  - fg-budget-02-workbook
+  - fg-budget-02-paper
+- id: budget-03
+  district: PINE
+  category: laboratory-supply
+  base_cents: 2495462
+  contingency_cents: 249546
+  proposal_cents: 2745008
+  approved_cents: 0
+  documents:
+  - fg-budget-03-workbook
+  - fg-budget-03-paper
+- id: budget-04
+  district: PINE
+  category: office-supply
+  base_cents: 600323
+  contingency_cents: 60032
+  proposal_cents: 660355
+  approved_cents: 0
+  documents:
+  - fg-budget-04-workbook
+  - fg-budget-04-paper
+- id: budget-05
+  district: RIVER
+  category: maintenance-material
+  base_cents: 2743345
+  contingency_cents: 274335
+  proposal_cents: 3017680
+  approved_cents: 0
+  documents:
+  - fg-budget-05-workbook
+  - fg-budget-05-paper
+- id: budget-06
+  district: RIVER
+  category: stock-replenishment
+  base_cents: 2039136
+  contingency_cents: 203914
+  proposal_cents: 2243050
+  approved_cents: 0
+  documents:
+  - fg-budget-06-workbook
+  - fg-budget-06-paper
+- id: budget-07
+  district: RIVER
+  category: laboratory-supply
+  base_cents: 4093388
+  contingency_cents: 409339
+  proposal_cents: 4502727
+  approved_cents: 0
+  documents:
+  - fg-budget-07-workbook
+  - fg-budget-07-paper
+- id: budget-08
+  district: RIVER
+  category: office-supply
+  base_cents: 809367
+  contingency_cents: 80937
+  proposal_cents: 890304
+  approved_cents: 0
+  documents:
+  - fg-budget-08-workbook
+  - fg-budget-08-paper
+meetings:
+- id: board-01
+  date: '2026-07-08'
+  close: close-01
+  motion: Receive the June selected-books close and retain its scope limitations.
+  for_keys:
+  - board_sabine
+  - board_elva
+  - board_tovan
+  - board_iona
+  - board_remy
+  against_keys: []
+  abstain_keys:
+  - board_tessa
+  documents:
+  - fg-board-01-agenda
+  - fg-board-01-paper
+  - fg-board-01-minutes
+  - fg-board-01-votes
+  - fg-board-01-actions
+  state: chair-checked; confirmation pending
+- id: board-02
+  date: '2026-08-25'
+  close: close-02
+  motion: Require quantity-based budget proposals before approving any 2027 purchasing envelope.
+  for_keys:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_iona
+  against_keys:
+  - board_tovan
+  - board_remy
+  abstain_keys: []
+  documents:
+  - fg-board-02-agenda
+  - fg-board-02-paper
+  - fg-board-02-minutes
+  - fg-board-02-votes
+  - fg-board-02-actions
+  state: chair-checked; confirmation pending
+- id: board-03
+  date: '2026-09-15'
+  close: close-03
+  motion: Carry conditional renewal screens forward without a capital release and authorize the six public report
+    topics for final general-manager approval.
+  for_keys:
+  - board_sabine
+  - board_tessa
+  - board_elva
+  - board_iona
+  - board_remy
+  against_keys:
+  - board_tovan
+  abstain_keys: []
+  documents:
+  - fg-board-03-agenda
+  - fg-board-03-paper
+  - fg-board-03-minutes
+  - fg-board-03-votes
+  - fg-board-03-actions
+  state: chair-checked; confirmation pending
+learning:
+- id: learning-01
+  date: '2026-06-18'
+  host: awm219
+  attendees:
+  - awm218
+  - awm217
+  minutes: 90
+  preparation_minutes: 45
+  total_person_minutes: 315
+  documents:
+  - fg-learning-01-plan
+  - fg-learning-01-completion
+  - fg-learning-01-recognition
+- id: learning-02
+  date: '2026-07-16'
+  host: awm220
+  attendees:
+  - awm221
+  - awm222
+  minutes: 60
+  preparation_minutes: 30
+  total_person_minutes: 210
+  documents:
+  - fg-learning-02-plan
+  - fg-learning-02-completion
+  - fg-learning-02-recognition
+- id: learning-03
+  date: '2026-08-18'
+  host: awm164
+  attendees:
+  - rosa
+  - awm168
+  minutes: 75
+  preparation_minutes: 45
+  total_person_minutes: 270
+  documents:
+  - fg-learning-03-plan
+  - fg-learning-03-completion
+  - fg-learning-03-recognition
+- id: learning-04
+  date: '2026-09-08'
+  host: awm219
+  attendees:
+  - awm218
+  - nadia
+  minutes: 60
+  preparation_minutes: 30
+  total_person_minutes: 210
+  documents:
+  - fg-learning-04-plan
+  - fg-learning-04-completion
+  - fg-learning-04-recognition
+publications:
+- id: publication-01
+  title: Completed renewal and a service people can maintain
+  draft: fg-publication-01-p1
+  review: fg-publication-01-review
+  master: fg-publication-01-r1
+  public: fg-publication-01-public
+  release: fg-publication-01-release
+  approved_at: '2026-09-15T17:01:00-04:00'
+  published_at: '2026-09-16T08:01:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: 35be410877fd178aefe1c175b0a6577cef3a3fb3a01b0bf5478237ee2b6c08f1
+  correction: The draft calls the River booster a 2022 completion because of its project number. Use its February
+    20, 2023 handover. Keep all four costs in the historical period.
+- id: publication-02
+  title: What the water-account figures cover
+  draft: fg-publication-02-p1
+  review: fg-publication-02-review
+  master: fg-publication-02-r1
+  public: fg-publication-02-public
+  release: fg-publication-02-release
+  approved_at: '2026-09-15T17:02:00-04:00'
+  published_at: '2026-09-16T08:02:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: bad9bf9929519d7faef3d75f5cd38156cba5d6bceeda6a6078ea76cb087172e3
+  correction: The 50,100 figure counts payer accounts. Replace the draft household label, and explain that master
+    meters and residents have different denominators.
+- id: publication-03
+  title: August selected-books financial account
+  draft: fg-publication-03-p1
+  review: fg-publication-03-review
+  master: fg-publication-03-r1
+  public: fg-publication-03-public
+  release: fg-publication-03-release
+  approved_at: '2026-09-15T17:03:00-04:00'
+  published_at: '2026-09-16T08:03:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: a334502dce805f289837fda61944902febaa692fd440dd03fa45e91cba5914bc
+  correction: Keep the selected-books label in the heading. These are cash and obligation controls; inventory
+    classification and an external bank comparison remain outstanding.
+- id: publication-04
+  title: Where the next renewal proposals stand
+  draft: fg-publication-04-p1
+  review: fg-publication-04-review
+  master: fg-publication-04-r1
+  public: fg-publication-04-public
+  release: fg-publication-04-release
+  approved_at: '2026-09-15T17:04:00-04:00'
+  published_at: '2026-09-16T08:04:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: be08af9b56d703a291775ca0d842e2230522afaeefab1d153a92624631c7e855
+  correction: The headline is accurate but too short to stand alone. State zero release and zero new spend; retain
+    the surveys and the open September 30 actions.
+- id: publication-05
+  title: Learning time and the people who make it possible
+  draft: fg-publication-05-p1
+  review: fg-publication-05-review
+  master: fg-publication-05-r1
+  public: fg-publication-05-public
+  release: fg-publication-05-release
+  approved_at: '2026-09-15T17:05:00-04:00'
+  published_at: '2026-09-16T08:05:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: 9bc8dd8682c6acf0e79e66df51ed0818eb4137871fe3e226f90853e33c25fe0e
+  correction: The bounded learning description is right. Include preparation in the aggregate time and leave individual
+    attendance notes out of the public copy; these exercises are not certification.
+- id: publication-06
+  title: How the September board decisions will be followed up
+  draft: fg-publication-06-p1
+  review: fg-publication-06-review
+  master: fg-publication-06-r1
+  public: fg-publication-06-public
+  release: fg-publication-06-release
+  approved_at: '2026-09-15T17:06:00-04:00'
+  published_at: '2026-09-16T08:06:00-04:00'
+  approved_by: awm216
+  publisher: awm164
+  sha256: 6ebf9e7ecb6c23c976fa00d5f31cee66e13128684513b640fc8ee9737b08870d
+  correction: Do not describe the September vote as unanimous. Keep the recorded five-to-one decision and explain
+    the dissent without identifying it as a management vote.
+workbooks:
+- document: fg-close-01-workbook
+  kind: close
+  selector:
+    cutoff: '2026-06-30'
+    previous: '2026-05-31'
+  inputs:
+  - - Opening cash
+    - 50000000
+    - USD cents
+    - 2026-05-31 opening
+  - - Customer receipts
+    - 51750
+    - USD cents
+    - 2026-05-31 exclusive through 2026-06-30 inclusive
+  - - Supplier payments
+    - 4419940
+    - USD cents
+    - 2026-05-31 exclusive through 2026-06-30 inclusive
+  - - Opening receivables
+    - 0
+    - USD cents
+    - 2026-05-31 opening
+  - - Invoices issued
+    - 51750
+    - USD cents
+    - 2026-05-31 exclusive through 2026-06-30 inclusive
+  - - Signed adjustments
+    - 0
+    - USD cents
+    - 2026-05-31 exclusive through 2026-06-30 inclusive
+  - - Opening payables
+    - 499660
+    - USD cents
+    - 2026-05-31 opening
+  - - Matched acquisitions
+    - 7081730
+    - USD cents
+    - 2026-05-31 exclusive through 2026-06-30 inclusive
+  calculation:
+  - - Closing cash
+    - =Inputs!B2+Inputs!B3-Inputs!B4
+    - 45631810
+    - USD cents
+  - - Closing receivables
+    - =Inputs!B5+Inputs!B6+Inputs!B7-Inputs!B3
+    - 0
+    - USD cents
+  - - Closing payables
+    - =Inputs!B8+Inputs!B9-Inputs!B4
+    - 3161450
+    - USD cents
+  scope: Selected purchasing and customer books only. Period 2026-05-31 exclusive to 2026-06-30 inclusive. June
+    contains the first seasonal customer invoice. Most household billing belongs to July; a quiet receivables
+    column is not a fall in water use.
+- document: fg-close-02-workbook
+  kind: close
+  selector:
+    cutoff: '2026-07-31'
+    previous: '2026-06-30'
+  inputs:
+  - - Opening cash
+    - 45631810
+    - USD cents
+    - 2026-06-30 opening
+  - - Customer receipts
+    - 379179142
+    - USD cents
+    - 2026-06-30 exclusive through 2026-07-31 inclusive
+  - - Supplier payments
+    - 7441086
+    - USD cents
+    - 2026-06-30 exclusive through 2026-07-31 inclusive
+  - - Opening receivables
+    - 0
+    - USD cents
+    - 2026-06-30 opening
+  - - Invoices issued
+    - 582669865
+    - USD cents
+    - 2026-06-30 exclusive through 2026-07-31 inclusive
+  - - Signed adjustments
+    - -340150
+    - USD cents
+    - 2026-06-30 exclusive through 2026-07-31 inclusive
+  - - Opening payables
+    - 3161450
+    - USD cents
+    - 2026-06-30 opening
+  - - Matched acquisitions
+    - 5256456
+    - USD cents
+    - 2026-06-30 exclusive through 2026-07-31 inclusive
+  calculation:
+  - - Closing cash
+    - =Inputs!B2+Inputs!B3-Inputs!B4
+    - 417369866
+    - USD cents
+  - - Closing receivables
+    - =Inputs!B5+Inputs!B6+Inputs!B7-Inputs!B3
+    - 203150573
+    - USD cents
+  - - Closing payables
+    - =Inputs!B8+Inputs!B9-Inputs!B4
+    - 976820
+    - USD cents
+  scope: Selected purchasing and customer books only. Period 2026-06-30 exclusive to 2026-07-31 inclusive. July
+    includes the main bill issue and subsequent collections. The bill is a charge for its stated consumption period,
+    not July output.
+- document: fg-close-03-workbook
+  kind: close
+  selector:
+    cutoff: '2026-08-31'
+    previous: '2026-07-31'
+  inputs:
+  - - Opening cash
+    - 417369866
+    - USD cents
+    - 2026-07-31 opening
+  - - Customer receipts
+    - 105787468
+    - USD cents
+    - 2026-07-31 exclusive through 2026-08-31 inclusive
+  - - Supplier payments
+    - 3827092
+    - USD cents
+    - 2026-07-31 exclusive through 2026-08-31 inclusive
+  - - Opening receivables
+    - 203150573
+    - USD cents
+    - 2026-07-31 opening
+  - - Invoices issued
+    - 0
+    - USD cents
+    - 2026-07-31 exclusive through 2026-08-31 inclusive
+  - - Signed adjustments
+    - 0
+    - USD cents
+    - 2026-07-31 exclusive through 2026-08-31 inclusive
+  - - Opening payables
+    - 976820
+    - USD cents
+    - 2026-07-31 opening
+  - - Matched acquisitions
+    - 5696356
+    - USD cents
+    - 2026-07-31 exclusive through 2026-08-31 inclusive
+  calculation:
+  - - Closing cash
+    - =Inputs!B2+Inputs!B3-Inputs!B4
+    - 519330242
+    - USD cents
+  - - Closing receivables
+    - =Inputs!B5+Inputs!B6+Inputs!B7-Inputs!B3
+    - 97363105
+    - USD cents
+  - - Closing payables
+    - =Inputs!B8+Inputs!B9-Inputs!B4
+    - 2846084
+    - USD cents
+  scope: Selected purchasing and customer books only. Period 2026-07-31 exclusive to 2026-08-31 inclusive. August
+    receipts reduce the existing book; no second monthly household billing run has been invented. Keep the unresolved
+    purchase classifications visible.
+- document: fg-close-04-workbook
+  kind: close
+  selector:
+    cutoff: '2026-09-15'
+    previous: '2026-08-31'
+  inputs:
+  - - Opening cash
+    - 519330242
+    - USD cents
+    - 2026-08-31 opening
+  - - Customer receipts
+    - 0
+    - USD cents
+    - 2026-08-31 exclusive through 2026-09-15 inclusive
+  - - Supplier payments
+    - 1996784
+    - USD cents
+    - 2026-08-31 exclusive through 2026-09-15 inclusive
+  - - Opening receivables
+    - 97363105
+    - USD cents
+    - 2026-08-31 opening
+  - - Invoices issued
+    - 0
+    - USD cents
+    - 2026-08-31 exclusive through 2026-09-15 inclusive
+  - - Signed adjustments
+    - 0
+    - USD cents
+    - 2026-08-31 exclusive through 2026-09-15 inclusive
+  - - Opening payables
+    - 2846084
+    - USD cents
+    - 2026-08-31 opening
+  - - Matched acquisitions
+    - 1093360
+    - USD cents
+    - 2026-08-31 exclusive through 2026-09-15 inclusive
+  calculation:
+  - - Closing cash
+    - =Inputs!B2+Inputs!B3-Inputs!B4
+    - 517333458
+    - USD cents
+  - - Closing receivables
+    - =Inputs!B5+Inputs!B6+Inputs!B7-Inputs!B3
+    - 97363105
+    - USD cents
+  - - Closing payables
+    - =Inputs!B8+Inputs!B9-Inputs!B4
+    - 1942660
+    - USD cents
+  scope: Selected purchasing and customer books only. Period 2026-08-31 exclusive to 2026-09-15 inclusive. This
+    is an interim close through September 15, not a September month-end. Later payroll and the September 30 planning
+    returns remain outside it.
+- document: fg-capital-01-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-09
+  inputs:
+  - - Replacement allowance
+    - 180000
+    - USD cents
+    - ARWC-PLN-26-09 screening assumption
+  - - Access allowance
+    - 10000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 28000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 12000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 140000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 250000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 110000
+    - USD cents
+  scope: ARWC-PLN-26-09 issued September 8. Bench dimensions and access must be confirmed before a purchase request.
+    No approved capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-02-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-10
+  inputs:
+  - - Replacement allowance
+    - 160000
+    - USD cents
+    - ARWC-PLN-26-10 screening assumption
+  - - Access allowance
+    - 10000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 31000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 10000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 155000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 220000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 65000
+    - USD cents
+  scope: ARWC-PLN-26-10 issued September 8. A River measurement record is still required. No approved capital
+    release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-03-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-11
+  inputs:
+  - - Replacement allowance
+    - 45000
+    - USD cents
+    - ARWC-PLN-26-11 screening assumption
+  - - Access allowance
+    - 3000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 14000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 2500
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 70000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 60500
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - -9500
+    - USD cents
+  scope: ARWC-PLN-26-11 issued September 8. Confirm mounting dimensions and Records retention before ordering.
+    No approved capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-04-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-12
+  inputs:
+  - - Replacement allowance
+    - 52000
+    - USD cents
+    - ARWC-PLN-26-12 screening assumption
+  - - Access allowance
+    - 4000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 9000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 3000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 45000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 71000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 26000
+    - USD cents
+  scope: ARWC-PLN-26-12 issued September 8. This is a financial comparator, not a structural inspection. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-05-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-13
+  inputs:
+  - - Replacement allowance
+    - 90000
+    - USD cents
+    - ARWC-PLN-26-13 screening assumption
+  - - Access allowance
+    - 5000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 25000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 7000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 125000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 130000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 5000
+    - USD cents
+  scope: ARWC-PLN-26-13 issued September 8. Survey quantities first; the current allowance is for a bounded pilot.
+    No approved capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-06-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-14
+  inputs:
+  - - Replacement allowance
+    - 110000
+    - USD cents
+    - ARWC-PLN-26-14 screening assumption
+  - - Access allowance
+    - 6000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 23000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 8500
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 115000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 158500
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 43500
+    - USD cents
+  scope: ARWC-PLN-26-14 issued September 8. Readability and exact asset identity remain acceptance conditions.
+    No approved capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-07-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-15
+  inputs:
+  - - Replacement allowance
+    - 75000
+    - USD cents
+    - ARWC-PLN-26-15 screening assumption
+  - - Access allowance
+    - 7000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 19000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 4000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 95000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 102000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 7000
+    - USD cents
+  scope: ARWC-PLN-26-15 issued September 8. Depot agreement is required; this note books no space. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-08-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-16
+  inputs:
+  - - Replacement allowance
+    - 82000
+    - USD cents
+    - ARWC-PLN-26-16 screening assumption
+  - - Access allowance
+    - 9000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 15000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 4500
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 75000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 113500
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 38500
+    - USD cents
+  scope: ARWC-PLN-26-16 issued September 8. No headcount or productivity saving belongs in this estimate. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-09-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-17
+  inputs:
+  - - Replacement allowance
+    - 280000
+    - USD cents
+    - ARWC-PLN-26-17 screening assumption
+  - - Access allowance
+    - 20000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 42000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 15000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 210000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 375000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 165000
+    - USD cents
+  scope: ARWC-PLN-26-17 issued September 8. Approved drawing and engineering review are prerequisites to a new
+    design. No approved capital release; spend and commitment are both zero. No inflation, salvage or financing
+    model.
+- document: fg-capital-10-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-18
+  inputs:
+  - - Replacement allowance
+    - 240000
+    - USD cents
+    - ARWC-PLN-26-18 screening assumption
+  - - Access allowance
+    - 25000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 50000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 12000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 250000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 325000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 75000
+    - USD cents
+  scope: ARWC-PLN-26-18 issued September 8. No new point, logic change or operating setting is included. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-11-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-19
+  inputs:
+  - - Replacement allowance
+    - 64000
+    - USD cents
+    - ARWC-PLN-26-19 screening assumption
+  - - Access allowance
+    - 5000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 16000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 3500
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 80000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 86500
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 6500
+    - USD cents
+  scope: ARWC-PLN-26-19 issued September 8. Confirm the instrument dimensions and handling method. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-capital-12-options
+  kind: capital
+  selector:
+    planning: ARWC-PLN-26-20
+  inputs:
+  - - Replacement allowance
+    - 78000
+    - USD cents
+    - ARWC-PLN-26-20 screening assumption
+  - - Access allowance
+    - 6000
+    - USD cents
+    - Survey required
+  - - Retention annual upkeep
+    - 12000
+    - USD cents/year
+    - Not measured failure cost
+  - - Replacement annual upkeep
+    - 3000
+    - USD cents/year
+    - Screening estimate
+  - - Years
+    - 5
+    - years
+    - Undiscounted
+  calculation:
+  - - Retention allowance
+    - =Inputs!B4*Inputs!B6
+    - 60000
+    - USD cents
+  - - Replacement allowance
+    - =Inputs!B2+Inputs!B3+Inputs!B5*Inputs!B6
+    - 99000
+    - USD cents
+  - - Replacement premium
+    - =B3-B2
+    - 39000
+    - USD cents
+  scope: ARWC-PLN-26-20 issued September 8. Engineering suitability must precede a specification. No approved
+    capital release; spend and commitment are both zero. No inflation, salvage or financing model.
+- document: fg-completed-01-costs
+  kind: project
+  selector:
+    project: ARWC-CP-2021-01
+  inputs:
+  - - Original estimate
+    - 18460000
+    - USD cents
+    - ARWC-CP-2021-01
+  - - Accepted cost
+    - 18194000
+    - USD cents
+    - Historical handover 2021-08-02
+  calculation:
+  - - Estimate less accepted
+    - =Inputs!B2-Inputs!B3
+    - 266000
+    - USD cents
+  scope: ARWC-CP-2021-01 completed 2021-08-02. Prior-period cost only; not current cash, an asset valuation or
+    a new appropriation.
+- document: fg-completed-02-costs
+  kind: project
+  selector:
+    project: ARWC-CP-2022-02
+  inputs:
+  - - Original estimate
+    - 12680000
+    - USD cents
+    - ARWC-CP-2022-02
+  - - Accepted cost
+    - 12432000
+    - USD cents
+    - Historical handover 2022-06-27
+  calculation:
+  - - Estimate less accepted
+    - =Inputs!B2-Inputs!B3
+    - 248000
+    - USD cents
+  scope: ARWC-CP-2022-02 completed 2022-06-27. Prior-period cost only; not current cash, an asset valuation or
+    a new appropriation.
+- document: fg-completed-03-costs
+  kind: project
+  selector:
+    project: ARWC-CP-2022-03
+  inputs:
+  - - Original estimate
+    - 23840000
+    - USD cents
+    - ARWC-CP-2022-03
+  - - Accepted cost
+    - 23578000
+    - USD cents
+    - Historical handover 2023-02-20
+  calculation:
+  - - Estimate less accepted
+    - =Inputs!B2-Inputs!B3
+    - 262000
+    - USD cents
+  scope: ARWC-CP-2022-03 completed 2023-02-20. Prior-period cost only; not current cash, an asset valuation or
+    a new appropriation.
+- document: fg-completed-04-costs
+  kind: project
+  selector:
+    project: ARWC-CP-2023-04
+  inputs:
+  - - Original estimate
+    - 9720000
+    - USD cents
+    - ARWC-CP-2023-04
+  - - Accepted cost
+    - 9684000
+    - USD cents
+    - Historical handover 2023-09-18
+  calculation:
+  - - Estimate less accepted
+    - =Inputs!B2-Inputs!B3
+    - 36000
+    - USD cents
+  scope: ARWC-CP-2023-04 completed 2023-09-18. Prior-period cost only; not current cash, an asset valuation or
+    a new appropriation.
+- document: fg-budget-01-workbook
+  kind: budget
+  selector:
+    district: PINE
+    category: maintenance-material
+  inputs:
+  - - Selected historical acquisitions
+    - 3634325
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 363433
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 3997758
+    - USD cents
+  scope: 2027 proposal for PINE maintenance materials. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-02-workbook
+  kind: budget
+  selector:
+    district: PINE
+    category: stock-replenishment
+  inputs:
+  - - Selected historical acquisitions
+    - 1745739
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 174574
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 1920313
+    - USD cents
+  scope: 2027 proposal for PINE stores replenishment. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-03-workbook
+  kind: budget
+  selector:
+    district: PINE
+    category: laboratory-supply
+  inputs:
+  - - Selected historical acquisitions
+    - 2495462
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 249546
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 2745008
+    - USD cents
+  scope: 2027 proposal for PINE laboratory supplies. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-04-workbook
+  kind: budget
+  selector:
+    district: PINE
+    category: office-supply
+  inputs:
+  - - Selected historical acquisitions
+    - 600323
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 60032
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 660355
+    - USD cents
+  scope: 2027 proposal for PINE office supplies. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-05-workbook
+  kind: budget
+  selector:
+    district: RIVER
+    category: maintenance-material
+  inputs:
+  - - Selected historical acquisitions
+    - 2743345
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 274335
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 3017680
+    - USD cents
+  scope: 2027 proposal for RIVER maintenance materials. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-06-workbook
+  kind: budget
+  selector:
+    district: RIVER
+    category: stock-replenishment
+  inputs:
+  - - Selected historical acquisitions
+    - 2039136
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 203914
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 2243050
+    - USD cents
+  scope: 2027 proposal for RIVER stores replenishment. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-07-workbook
+  kind: budget
+  selector:
+    district: RIVER
+    category: laboratory-supply
+  inputs:
+  - - Selected historical acquisitions
+    - 4093388
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 409339
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 4502727
+    - USD cents
+  scope: 2027 proposal for RIVER laboratory supplies. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+- document: fg-budget-08-workbook
+  kind: budget
+  selector:
+    district: RIVER
+    category: office-supply
+  inputs:
+  - - Selected historical acquisitions
+    - 809367
+    - USD cents
+    - Accepted matches through August 31
+  - - Contingency factor
+    - 0.1
+    - multiplier
+    - Discussion assumption, not forecast
+  calculation:
+  - - Contingency
+    - =ROUND(Inputs!B2*Inputs!B3,0)
+    - 80937
+    - USD cents
+  - - Proposed envelope
+    - =Inputs!B2+B2
+    - 890304
+    - USD cents
+  scope: 2027 proposal for RIVER office supplies. The dated January-August selected acquisitions are a comparator,
+    not eight months of complete expenditure. A chosen 10% allowance is not a price forecast. No funding or order
+    is approved.
+counts:
+  logical_messages: 134
+  retained_copies: 483
+  document_items: 161
+  calendar_occurrences: 10
+  distinct_archive_members: 40
+  xlsx: 28
+  pdf: 6
+  csv: 6
+  close_histories: 4
+  renewal_decisions: 12
+  historical_project_accounts: 4
+  budget_proposals: 8
+  board_meetings: 3
+  completed_learning_sessions: 4
+  publication_histories: 6
+volume_adjustment:
+  initial_logical_messages: 5500
+  delivered_logical_messages: 134
+  reduction: 5366
+  reason: Finite close, decision and publication exchanges; retained copies and attachments are not additional
+    messages.

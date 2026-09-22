@@ -31,6 +31,7 @@ from validate_laboratory_quality import check_laboratory_quality
 from validate_purchasing_stores import check_purchasing_stores
 from validate_retail_billing import check_retail_billing
 from validate_planning import check_planning
+from validate_governance import check_governance
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -69,12 +70,14 @@ RETAIL_BILLING_MESSAGE_COUNT = 7600
 RETAIL_BILLING_DOCUMENT_COUNT = 839
 PLANNING_MESSAGE_COUNT = 232
 PLANNING_DOCUMENT_COUNT = 230
+GOVERNANCE_MESSAGE_COUNT = 134
+GOVERNANCE_DOCUMENT_COUNT = 161
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT + GOVERNANCE_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT + GOVERNANCE_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -824,6 +827,7 @@ def check_assets():
     check_purchasing_stores(ROOT, roster, identity, mail, docs)
     check_retail_billing(ROOT, roster, identity, mail, docs)
     check_planning(ROOT, roster, identity, mail, docs, events)
+    check_governance(ROOT, roster, identity, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -904,9 +908,23 @@ def check_assets():
                         for group in person['groups']:
                             groups.setdefault(group, []).append(person['email'])
                 require(payload['reader_groups'] == groups, 'Reader group membership drift')
-            require(all(d['readers'] and len(d['readers']) == len(set(d['readers'])) for d in payload['documents']), 'Invalid document audience')
             allowed = {p['email'] for p in identity['people'].values() if p['employer'] == org}
-            require(all(set(d['readers']) <= allowed for d in payload['documents']), 'Cross-company document audience')
+            board_readers = {p['email'] for p in identity['correspondents'].values()
+                             if p['employer'] == 'arwc-board'} if org == 'arwc' and kind == 'documents' else set()
+            for item in payload['documents']:
+                public = item.get('access') == 'public'
+                require(item.get('access') in (None, 'public'), 'Unknown item access')
+                require(len(item['readers']) == len(set(item['readers'])) and
+                        (not item['readers'] if public else bool(item['readers'])), 'Invalid document audience')
+                if public:
+                    require(payload['schema_version'] == 'cinder-document-library/v4' and
+                            item['name'] in doc_by_id and doc_by_id[item['name']]['audience'] == 'public',
+                            'Unauthorized public document')
+                external = not set(item['readers']) <= allowed
+                require(set(item['readers']) <= allowed | board_readers, 'Cross-company document audience')
+                if external:
+                    require(payload['schema_version'] == 'cinder-document-library/v4' and
+                            item['name'].startswith(('fg-', 'governance-')), 'Unexpected board audience')
             for d in docs:
                 if d['employer'] != org or d.get('collection', 'documents') != kind: continue
                 if kind == 'employment':
@@ -917,11 +935,11 @@ def check_assets():
                 require(len(match) == 1 and match[0]['text'] == document_text(d),
                         'Library omitted or changed document')
                 if 'archive' in d:
-                    require(payload['schema_version'].endswith(('/v2', '/v3')), 'Binary library schema drift')
+                    require(payload['schema_version'].endswith(('/v2', '/v3', '/v4')), 'Binary library schema drift')
                     content = base64.b64decode(match[0]['content_base64'], validate=True)
                     require(match[0].get('content_encoding') == d.get('content_encoding'), 'Binary encoding drift')
                     if d.get('content_encoding'):
-                        require(d['content_encoding'] == 'gzip' and payload['schema_version'].endswith('/v3'),
+                        require(d['content_encoding'] == 'gzip' and payload['schema_version'].endswith(('/v3', '/v4')),
                                 'Compressed library schema drift')
                         content = gzip.decompress(content)
                     require(content == document_bytes(d) and match[0]['sha256'] == d['binary_sha256'],
@@ -932,11 +950,18 @@ def check_assets():
                 if d['audience'] == 'staff':
                     readers = allowed
                 elif d['audience'] == 'restricted':
-                    readers = {identity['people'][k]['email'] for k in d['reader_keys']}
-                    require(readers < allowed, 'Restricted document exposed to all staff')
+                    readers = {contacts[k]['email'] for k in d['reader_keys']}
+                    require(not allowed <= readers, 'Restricted document exposed to all staff')
+                elif d['audience'] == 'public':
+                    readers = set()
+                    require(match[0].get('access') == 'public' and
+                            match[0].get('publication') == d['publication'], 'Public release metadata drift')
                 else:
                     readers = {identity['people'][k]['email'] for k in groups[d['audience']]}
                 require(set(match[0]['readers']) == readers, 'Document reader set changed')
+                require(match[0].get('document_state') == d.get('document_state'), 'Document state drift')
+                if d['audience'] != 'public':
+                    require('access' not in match[0] and 'publication' not in match[0], 'Private item made public')
                 require(match[0]['media_type'] == d.get('media_type', 'text/markdown'), 'Document format drift')
                 require(match[0]['published_at'] == d['published_at'] and datetime.fromisoformat(d['published_at']) <= snapshot, 'Document date changed')
             library = {d['name']: d for d in payload['documents']}
@@ -957,9 +982,11 @@ def check_assets():
             for event in events:
                 if event['employer'] != org or ('employment' if '-induction-' in event['id'] else 'documents') != kind: continue
                 item = library[event['id']]
-                readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees'] if contacts[k]['employer'] == org}
+                readers = {contacts[k]['email'] for k in [event['organizer']] + event['attendees']
+                           if contacts[k]['employer'] == org or
+                           event['id'].startswith('governance-') and contacts[k]['employer'] == 'arwc-board'}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()

@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/arwc-mail
-      version: sha256-648bb949e1f99070814469cac8fe37f56aa751304af7a248800c5ead9e20a18b
+      version: sha256-071c49aca967dbf9b7870d584bcf80b05580765a82aa84b6abb0df2e86905750
     description: arwc workplace mail. Require an individual staff identity; Exact mailbox membership. Preserve
       authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -63,12 +63,13 @@ content:
   documents:
     type: dataset
     target: a-corporate.a-business
-    format: cinder-document-library/v3
+    format: cinder-document-library/v4
     source:
       name: cinder-typhoon/narrative/arwc-documents
-      version: sha256-5a0f51a3572697f5027254f2a02d8f5bd346c9b56d772eff2b2881f410d42b24
-    description: arwc workplace documents. Require an individual staff identity; Exact document readers. Preserve
-      authored readers and opening state.
+      version: sha256-408050c184e5a6c90907cefc2b358df191005f659002e143b0e85224ad4700a4
+    description: arwc workplace documents. Authenticate exact named readers, including appointed board identities.
+      Only explicit access=public items permit anonymous reading; enforce the same access on bytes, search
+      and metadata. Preserve document states and publication approvals; no collection-wide bypass.
     items:
     - name: com-2026-001-offer-r2-arwc
       display_name: Alterra service budget review — offer 2
@@ -2336,6 +2337,328 @@ content:
       display_name: Alterra Regional Water Company invoice KO-26-0055
     - name: statement-arwc-arwc
       display_name: Alterra Regional Water Company account statement
+    - name: fg-close-basis
+      display_name: Selected-books accounting basis
+    - name: fg-opening-balances
+      display_name: Opening Balances
+    - name: fg-close-01-workbook
+      display_name: 2026-06-30 control accounts
+    - name: fg-close-01-summary
+      display_name: 2026-06-30 financial control summary
+    - name: fg-close-01-payables
+      display_name: 2026-06-30 supplier reconciliation
+    - name: fg-close-01-receivables
+      display_name: 2026-06-30 customer reconciliation
+    - name: fg-close-01-cash
+      display_name: 2026-06-30 receipts and settlement bridge
+    - name: fg-close-01-district
+      display_name: 2026-06-30 district allocation check
+    - name: fg-close-01-review
+      display_name: 2026-06-30 close review and outstanding work
+    - name: fg-close-01-approval
+      display_name: 2026-06-30 management acceptance
+    - name: fg-close-02-workbook
+      display_name: 2026-07-31 control accounts
+    - name: fg-close-02-summary
+      display_name: 2026-07-31 financial control summary
+    - name: fg-close-02-payables
+      display_name: 2026-07-31 supplier reconciliation
+    - name: fg-close-02-receivables
+      display_name: 2026-07-31 customer reconciliation
+    - name: fg-close-02-cash
+      display_name: 2026-07-31 receipts and settlement bridge
+    - name: fg-close-02-district
+      display_name: 2026-07-31 district allocation check
+    - name: fg-close-02-review
+      display_name: 2026-07-31 close review and outstanding work
+    - name: fg-close-02-approval
+      display_name: 2026-07-31 management acceptance
+    - name: fg-close-03-workbook
+      display_name: 2026-08-31 control accounts
+    - name: fg-close-03-summary
+      display_name: 2026-08-31 financial control summary
+    - name: fg-close-03-payables
+      display_name: 2026-08-31 supplier reconciliation
+    - name: fg-close-03-receivables
+      display_name: 2026-08-31 customer reconciliation
+    - name: fg-close-03-cash
+      display_name: 2026-08-31 receipts and settlement bridge
+    - name: fg-close-03-district
+      display_name: 2026-08-31 district allocation check
+    - name: fg-close-03-review
+      display_name: 2026-08-31 close review and outstanding work
+    - name: fg-close-03-approval
+      display_name: 2026-08-31 management acceptance
+    - name: fg-close-04-workbook
+      display_name: 2026-09-15 control accounts
+    - name: fg-close-04-summary
+      display_name: 2026-09-15 financial control summary
+    - name: fg-close-04-payables
+      display_name: 2026-09-15 supplier reconciliation
+    - name: fg-close-04-receivables
+      display_name: 2026-09-15 customer reconciliation
+    - name: fg-close-04-cash
+      display_name: 2026-09-15 receipts and settlement bridge
+    - name: fg-close-04-district
+      display_name: 2026-09-15 district allocation check
+    - name: fg-close-04-review
+      display_name: 2026-09-15 close review and outstanding work
+    - name: fg-close-04-approval
+      display_name: 2026-09-15 management acceptance
+    - name: fg-district-movements
+      display_name: District Movements
+    - name: fg-period-controls
+      display_name: Period Controls
+    - name: fg-capital-01-options
+      display_name: Pine sample bench cost comparison
+    - name: fg-capital-01-paper
+      display_name: Pine sample bench management paper
+    - name: fg-capital-01-decision
+      display_name: Pine sample bench management direction
+    - name: fg-capital-02-options
+      display_name: River sample bench cost comparison
+    - name: fg-capital-02-paper
+      display_name: River sample bench management paper
+    - name: fg-capital-02-decision
+      display_name: River sample bench management direction
+    - name: fg-capital-03-options
+      display_name: Pine East notice board cost comparison
+    - name: fg-capital-03-paper
+      display_name: Pine East notice board management paper
+    - name: fg-capital-03-decision
+      display_name: Pine East notice board management direction
+    - name: fg-capital-04-options
+      display_name: River West notice board cost comparison
+    - name: fg-capital-04-paper
+      display_name: River West notice board management paper
+    - name: fg-capital-04-decision
+      display_name: River West notice board management direction
+    - name: fg-capital-05-options
+      display_name: Pine East hydrant markers cost comparison
+    - name: fg-capital-05-paper
+      display_name: Pine East hydrant markers management paper
+    - name: fg-capital-05-decision
+      display_name: Pine East hydrant markers management direction
+    - name: fg-capital-06-options
+      display_name: River East hydrant markers cost comparison
+    - name: fg-capital-06-paper
+      display_name: River East hydrant markers management paper
+    - name: fg-capital-06-decision
+      display_name: River East hydrant markers management direction
+    - name: fg-capital-07-options
+      display_name: Pine West depot return bench cost comparison
+    - name: fg-capital-07-paper
+      display_name: Pine West depot return bench management paper
+    - name: fg-capital-07-decision
+      display_name: Pine West depot return bench management direction
+    - name: fg-capital-08-options
+      display_name: River East depot return bench cost comparison
+    - name: fg-capital-08-paper
+      display_name: River East depot return bench management paper
+    - name: fg-capital-08-decision
+      display_name: River East depot return bench management direction
+    - name: fg-capital-09-options
+      display_name: Pine ventilation panel enclosure cost comparison
+    - name: fg-capital-09-paper
+      display_name: Pine ventilation panel enclosure management paper
+    - name: fg-capital-09-decision
+      display_name: Pine ventilation panel enclosure management direction
+    - name: fg-capital-10-options
+      display_name: Upland telemetry cabinet cost comparison
+    - name: fg-capital-10-paper
+      display_name: Upland telemetry cabinet management paper
+    - name: fg-capital-10-decision
+      display_name: Upland telemetry cabinet management direction
+    - name: fg-capital-11-options
+      display_name: Pine depot instrument storage cost comparison
+    - name: fg-capital-11-paper
+      display_name: Pine depot instrument storage management paper
+    - name: fg-capital-11-decision
+      display_name: Pine depot instrument storage management direction
+    - name: fg-capital-12-options
+      display_name: River depot motor cover cost comparison
+    - name: fg-capital-12-paper
+      display_name: River depot motor cover management paper
+    - name: fg-capital-12-decision
+      display_name: River depot motor cover management direction
+    - name: fg-completed-01-costs
+      display_name: North reservoir inlet actuator renewal accepted-cost bridge
+    - name: fg-completed-01-brief
+      display_name: North reservoir inlet actuator renewal completed-work account
+    - name: fg-completed-01-acknowledgment
+      display_name: North reservoir inlet actuator renewal acknowledgment record
+    - name: fg-completed-02-costs
+      display_name: Pine pump hall ventilation refurbishment accepted-cost bridge
+    - name: fg-completed-02-brief
+      display_name: Pine pump hall ventilation refurbishment completed-work account
+    - name: fg-completed-02-acknowledgment
+      display_name: Pine pump hall ventilation refurbishment acknowledgment record
+    - name: fg-completed-03-costs
+      display_name: River booster duty pump renewal accepted-cost bridge
+    - name: fg-completed-03-brief
+      display_name: River booster duty pump renewal completed-work account
+    - name: fg-completed-03-acknowledgment
+      display_name: River booster duty pump renewal acknowledgment record
+    - name: fg-completed-04-costs
+      display_name: Upland station telemetry panel renewal accepted-cost bridge
+    - name: fg-completed-04-brief
+      display_name: Upland station telemetry panel renewal completed-work account
+    - name: fg-completed-04-acknowledgment
+      display_name: Upland station telemetry panel renewal acknowledgment record
+    - name: fg-budget-01-workbook
+      display_name: Pine maintenance materials proposal
+    - name: fg-budget-01-paper
+      display_name: Pine maintenance materials budget note
+    - name: fg-budget-02-workbook
+      display_name: Pine stores replenishment proposal
+    - name: fg-budget-02-paper
+      display_name: Pine stores replenishment budget note
+    - name: fg-budget-03-workbook
+      display_name: Pine laboratory supplies proposal
+    - name: fg-budget-03-paper
+      display_name: Pine laboratory supplies budget note
+    - name: fg-budget-04-workbook
+      display_name: Pine office supplies proposal
+    - name: fg-budget-04-paper
+      display_name: Pine office supplies budget note
+    - name: fg-budget-05-workbook
+      display_name: River maintenance materials proposal
+    - name: fg-budget-05-paper
+      display_name: River maintenance materials budget note
+    - name: fg-budget-06-workbook
+      display_name: River stores replenishment proposal
+    - name: fg-budget-06-paper
+      display_name: River stores replenishment budget note
+    - name: fg-budget-07-workbook
+      display_name: River laboratory supplies proposal
+    - name: fg-budget-07-paper
+      display_name: River laboratory supplies budget note
+    - name: fg-budget-08-workbook
+      display_name: River office supplies proposal
+    - name: fg-budget-08-paper
+      display_name: River office supplies budget note
+    - name: fg-learning-01-plan
+      display_name: One receipt, several allocations session plan
+    - name: fg-learning-01-completion
+      display_name: One receipt, several allocations attendance and task record
+    - name: fg-learning-01-recognition
+      display_name: One receipt, several allocations acknowledgment
+    - name: fg-learning-02-plan
+      display_name: Board record handover session plan
+    - name: fg-learning-02-completion
+      display_name: Board record handover attendance and task record
+    - name: fg-learning-02-recognition
+      display_name: Board record handover acknowledgment
+    - name: fg-learning-03-plan
+      display_name: Explaining a water bill session plan
+    - name: fg-learning-03-completion
+      display_name: Explaining a water bill attendance and task record
+    - name: fg-learning-03-recognition
+      display_name: Explaining a water bill acknowledgment
+    - name: fg-learning-04-plan
+      display_name: Comparing renewal scopes session plan
+    - name: fg-learning-04-completion
+      display_name: Comparing renewal scopes attendance and task record
+    - name: fg-learning-04-recognition
+      display_name: Comparing renewal scopes acknowledgment
+    - name: fg-governance-remit
+      display_name: Joint board and management responsibilities
+    - name: fg-board-01-agenda
+      display_name: 2026-07-08 joint board agenda
+    - name: fg-board-01-paper
+      display_name: 2026-07-08 board financial and service paper
+    - name: fg-board-01-minutes
+      display_name: 2026-07-08 joint board minutes
+    - name: fg-board-01-votes
+      display_name: 2026-07-08 resolution roll call
+    - name: fg-board-01-actions
+      display_name: 2026-07-08 board action note
+    - name: fg-board-02-agenda
+      display_name: 2026-08-25 joint board agenda
+    - name: fg-board-02-paper
+      display_name: 2026-08-25 board financial and service paper
+    - name: fg-board-02-minutes
+      display_name: 2026-08-25 joint board minutes
+    - name: fg-board-02-votes
+      display_name: 2026-08-25 resolution roll call
+    - name: fg-board-02-actions
+      display_name: 2026-08-25 board action note
+    - name: fg-board-03-agenda
+      display_name: 2026-09-15 joint board agenda
+    - name: fg-board-03-paper
+      display_name: 2026-09-15 board financial and service paper
+    - name: fg-board-03-minutes
+      display_name: 2026-09-15 joint board minutes
+    - name: fg-board-03-votes
+      display_name: 2026-09-15 resolution roll call
+    - name: fg-board-03-actions
+      display_name: 2026-09-15 board action note
+    - name: fg-publication-01-p1
+      display_name: Completed renewal and a service people can maintain / draft P1
+    - name: fg-publication-01-review
+      display_name: Completed renewal and a service people can maintain / factual review
+    - name: fg-publication-01-r1
+      display_name: Completed renewal and a service people can maintain / approved master R1
+    - name: fg-publication-01-public
+      display_name: Completed renewal and a service people can maintain
+    - name: fg-publication-01-release
+      display_name: Completed renewal and a service people can maintain / release record
+    - name: fg-publication-02-p1
+      display_name: What the water-account figures cover / draft P1
+    - name: fg-publication-02-review
+      display_name: What the water-account figures cover / factual review
+    - name: fg-publication-02-r1
+      display_name: What the water-account figures cover / approved master R1
+    - name: fg-publication-02-public
+      display_name: What the water-account figures cover
+    - name: fg-publication-02-release
+      display_name: What the water-account figures cover / release record
+    - name: fg-publication-03-p1
+      display_name: August selected-books financial account / draft P1
+    - name: fg-publication-03-review
+      display_name: August selected-books financial account / factual review
+    - name: fg-publication-03-r1
+      display_name: August selected-books financial account / approved master R1
+    - name: fg-publication-03-public
+      display_name: August selected-books financial account
+    - name: fg-publication-03-release
+      display_name: August selected-books financial account / release record
+    - name: fg-publication-04-p1
+      display_name: Where the next renewal proposals stand / draft P1
+    - name: fg-publication-04-review
+      display_name: Where the next renewal proposals stand / factual review
+    - name: fg-publication-04-r1
+      display_name: Where the next renewal proposals stand / approved master R1
+    - name: fg-publication-04-public
+      display_name: Where the next renewal proposals stand
+    - name: fg-publication-04-release
+      display_name: Where the next renewal proposals stand / release record
+    - name: fg-publication-05-p1
+      display_name: Learning time and the people who make it possible / draft P1
+    - name: fg-publication-05-review
+      display_name: Learning time and the people who make it possible / factual review
+    - name: fg-publication-05-r1
+      display_name: Learning time and the people who make it possible / approved master R1
+    - name: fg-publication-05-public
+      display_name: Learning time and the people who make it possible
+    - name: fg-publication-05-release
+      display_name: Learning time and the people who make it possible / release record
+    - name: fg-publication-06-p1
+      display_name: How the September board decisions will be followed up / draft P1
+    - name: fg-publication-06-review
+      display_name: How the September board decisions will be followed up / factual review
+    - name: fg-publication-06-r1
+      display_name: How the September board decisions will be followed up / approved master R1
+    - name: fg-publication-06-public
+      display_name: How the September board decisions will be followed up
+    - name: fg-publication-06-release
+      display_name: How the September board decisions will be followed up / release record
+    - name: fg-capital-screen-register
+      display_name: Capital Screen Register
+    - name: fg-budget-proposals
+      display_name: Budget Proposals
+    - name: fg-publication-register
+      display_name: Publication Register
     - name: lq-specification
       display_name: ARWC Laboratory Operating Specification ARWC-LOS-26-01
     - name: lq-work-guide
@@ -18324,6 +18647,26 @@ content:
       display_name: Portable-kit return and damage note
     - name: op-calendar-training-arwc-tr-awm080-06
       display_name: Concise visit return
+    - name: governance-close-01
+      display_name: 2026-06-30 management close review
+    - name: governance-close-02
+      display_name: 2026-07-31 management close review
+    - name: governance-close-03
+      display_name: 2026-08-31 management close review
+    - name: governance-learning-01
+      display_name: One receipt, several allocations
+    - name: governance-learning-02
+      display_name: Board record handover
+    - name: governance-learning-03
+      display_name: Explaining a water bill
+    - name: governance-learning-04
+      display_name: Comparing renewal scopes
+    - name: governance-board-01
+      display_name: 2026-07-08 joint board meeting
+    - name: governance-board-02
+      display_name: 2026-08-25 joint board meeting
+    - name: governance-board-03
+      display_name: 2026-09-15 joint board meeting
     - name: lq-equipment-service-001
       display_name: 'ARWC-LQS-26-001: clarity response reader'
     - name: lq-equipment-service-002
@@ -18987,8 +19330,8 @@ observation_boundaries:
     redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
     latency_profile: Initial content available before participant admission.
   documents-visible:
-    projection_basis: Ordinary authenticated reader access; each mailbox owner or listed document reader sees
-      their own authorized collection.
+    projection_basis: Named-reader access to private items and anonymous access only to explicit public items.
+      Verify restricted drafts and their metadata are absent from public search and downloads.
     observable_refs:
     - content.documents
     redaction_policy: Preserve authored content only for its listed audience; no collection-wide bypass.
