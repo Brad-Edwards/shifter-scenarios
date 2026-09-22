@@ -63,6 +63,7 @@ def _model_context(access: AwsModelAccess | GcpModelAccess) -> dict[str, str]:
         "anthropic_small_fast_model": access.small_model,
         "aws_agent_setup_block": "",
         "aws_agent_compose_block": "",
+        "gcp_model_broker_resolve_block": "",
         "gcp_agent_compose_block": "",
     }
     if isinstance(access, AwsModelAccess):
