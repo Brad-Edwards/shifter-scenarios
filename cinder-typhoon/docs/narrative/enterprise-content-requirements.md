@@ -9,8 +9,8 @@ support intake, onboarding, appointments, and unresolved engineering escalations
 and the [FieldKest slice](fieldkest-engineering-review.md) realizes the linked
 engineering repositories and work history.
 The [generation plan](content-generation-plan.md) records earlier sizing proposals.
-The pack now contains 40,637 messages and 16,185 source documents, including
-the earlier story collection and the completed ARWC IT slice. The volume
+The pack now contains 42,916 messages and 17,838 source documents, including
+the earlier story collection and the completed ARWC IT and community-life slices. The volume
 proposals below are historical planning estimates; each delivered slice records
 its actual unique messages, copies and business records in its review.
 

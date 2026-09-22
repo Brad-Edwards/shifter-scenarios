@@ -77,6 +77,7 @@ python cinder-typhoon/tests/validate_purchasing_stores.py
 python cinder-typhoon/tests/validate_retail_billing.py
 python -m unittest discover -s cinder-typhoon/tests -p test_planning.py
 python -m unittest discover -s cinder-typhoon/tests -p test_governance.py
+python -m unittest discover -s cinder-typhoon/tests -p test_community_life.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -136,6 +137,15 @@ and twenty-five approved change windows. The focused fault probes reject an
 unrelated case reader, an approval out of sequence, and a window attached to
 a deferred change. Case summaries and mail attachments retain exact named
 readers; sampled copy checks do not claim complete recovery.
+
+ARWC community-life checks reconcile 112 publications, exact contributor consent,
+624 calendar histories, scheduling attachments, response states, actual attendance,
+private personnel records, room/resource availability and accepted story continuity.
+They compare bookings with accepted calendars, field duty rosters, visits and timed
+observations. Thirty-two deliberate faults cover privacy, publication, attendance,
+cover, chronology and independent calendar/field-book conflicts. Earlier local
+staff arrangements do not imply a complete operating roster outside the accepted
+field-record window.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted

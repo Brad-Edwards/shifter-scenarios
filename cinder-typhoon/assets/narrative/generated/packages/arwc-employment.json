@@ -2,6 +2,762 @@
   "schema_version": "cinder-employment-records/v1",
   "documents": [
     {
+      "name": "community-2026-241-note",
+      "title": "A quieter handover - Mina Selverin - agreed note",
+      "path": "community-2026-241-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-08T23:15:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Mina Selverin\n\nJune 08, 2026\n\nPresent: Nina Rivelin, Mina Selverin.\n\nMina Selverin brought this wording: \"Meet at the old works.\" We considered the question \"Which entrance does a visitor use?\" Meet at the Pine plant staff entrance; ask the shift lead before going beyond reception.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-249-note",
+      "title": "A quieter handover - Remi Cernault - agreed note",
+      "path": "community-2026-249-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-14T08:50:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "remi.cernault@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Remi Cernault\n\nSeptember 14, 2026\n\nPresent: Nina Rivelin, Remi Cernault.\n\nRemi Cernault brought this wording: \"Meet at the old works.\" We considered the question \"Which entrance does a visitor use?\" Meet at the Pine plant staff entrance; ask the shift lead before going beyond reception.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-257-note",
+      "title": "A quieter handover - Tariq Telmire - agreed note",
+      "path": "community-2026-257-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-14T09:50:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "tariq.telmire@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Tariq Telmire\n\nSeptember 14, 2026\n\nPresent: Nina Rivelin, Tariq Telmire.\n\nTariq Telmire brought this wording: \"Meet at the old works.\" We considered the question \"Which entrance does a visitor use?\" Meet at the Pine plant staff entrance; ask the shift lead before going beyond reception.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-265-note",
+      "title": "A quieter handover - Yara Narsen - agreed note",
+      "path": "community-2026-265-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-31T07:15:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "yara.narsen@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Yara Narsen\n\nJuly 31, 2026\n\nPresent: Vera Velswick, Yara Narsen.\n\nYara Narsen brought this wording: \"Notice replaced.\" We considered the question \"Did both crews get the current version?\" Replace the staff-room copy and the handover-folder copy; record both locations.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-273-note",
+      "title": "A quieter handover - Avery Ferrell - agreed note",
+      "path": "community-2026-273-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-09T07:15:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "avery.ferrell@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Avery Ferrell\n\nJuly 09, 2026\n\nPresent: Vera Velswick, Avery Ferrell.\n\nAvery Ferrell brought this wording: \"Notice replaced.\" We considered the question \"Did both crews get the current version?\" Replace the staff-room copy and the handover-folder copy; record both locations.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-281-note",
+      "title": "A quieter handover - Corin Aldren - agreed note",
+      "path": "community-2026-281-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-24T07:15:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "corin.aldren@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Corin Aldren\n\nJune 24, 2026\n\nPresent: Vera Velswick, Corin Aldren.\n\nCorin Aldren brought this wording: \"Notice replaced.\" We considered the question \"Did both crews get the current version?\" Replace the staff-room copy and the handover-folder copy; record both locations.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-289-note",
+      "title": "A quieter handover - Elias Iversen - agreed note",
+      "path": "community-2026-289-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-09T13:50:00-04:00",
+      "readers": [
+        "dario.radvell@alterrawaterco.com",
+        "elias.iversen@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Elias Iversen\n\nJune 09, 2026\n\nPresent: Dario Radvell, Elias Iversen.\n\nElias Iversen brought this wording: \"Back after lunch.\" We considered the question \"When should someone try again?\" Leave a return time with the depot desk; do not leave household details on the public noticeboard.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-297-note",
+      "title": "A quieter handover - Hana Cernault - agreed note",
+      "path": "community-2026-297-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-02T13:50:00-04:00",
+      "readers": [
+        "dario.radvell@alterrawaterco.com",
+        "hana.cernault@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Hana Cernault\n\nSeptember 02, 2026\n\nPresent: Dario Radvell, Hana Cernault.\n\nHana Cernault brought this wording: \"Back after lunch.\" We considered the question \"When should someone try again?\" Leave a return time with the depot desk; do not leave household details on the public noticeboard.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-305-note",
+      "title": "A quieter handover - Jamie Telmire - agreed note",
+      "path": "community-2026-305-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-18T13:50:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Jamie Telmire\n\nAugust 18, 2026\n\nPresent: Nina Rivelin, Jamie Telmire.\n\nJamie Telmire brought this wording: \"Jamie said yes.\" We considered the question \"Which Jamie and which request?\" Give the colleague's full name and the dated request when recording a staff arrangement.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-313-note",
+      "title": "A quieter handover - Leo Narsen - agreed note",
+      "path": "community-2026-313-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-03T13:50:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "leo.narsen@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Leo Narsen\n\nAugust 03, 2026\n\nPresent: Jamie Telmire, Leo Narsen.\n\nLeo Narsen brought this wording: \"Jamie said yes.\" We considered the question \"Which Jamie and which request?\" Give the colleague's full name and the dated request when recording a staff arrangement.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-321-note",
+      "title": "A quieter handover - Mica Fennard - agreed note",
+      "path": "community-2026-321-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T13:50:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "mica.fennard@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Mica Fennard\n\nJuly 10, 2026\n\nPresent: Jamie Telmire, Mica Fennard.\n\nMica Fennard brought this wording: \"Jamie said yes.\" We considered the question \"Which Jamie and which request?\" Give the colleague's full name and the dated request when recording a staff arrangement.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-329-note",
+      "title": "A quieter handover - Orla Zorrel - agreed note",
+      "path": "community-2026-329-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-25T13:50:00-04:00",
+      "readers": [
+        "nina.garsen@alterrawaterco.com",
+        "orla.zorrel@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Orla Zorrel\n\nJune 25, 2026\n\nPresent: Nina Garsen, Orla Zorrel.\n\nOrla Zorrel brought this wording: \"Time changed.\" We considered the question \"Which staff appointment moved?\" State the original date, replacement date and who needs the revised invitation.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-337-note",
+      "title": "A quieter handover - Samira Renshaw - agreed note",
+      "path": "community-2026-337-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-10T09:50:00-04:00",
+      "readers": [
+        "ren.belsart@alterrawaterco.com",
+        "samira.renshaw@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Samira Renshaw\n\nJune 10, 2026\n\nPresent: Ren Belsart, Samira Renshaw.\n\nSamira Renshaw brought this wording: \"Latest in the folder.\" We considered the question \"Which copy is being discussed?\" Name the document and revision when requesting a reading session; do not change the work instruction.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-345-note",
+      "title": "A quieter handover - Tomas Kelswick - agreed note",
+      "path": "community-2026-345-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T09:50:00-04:00",
+      "readers": [
+        "ren.belsart@alterrawaterco.com",
+        "tomas.kelswick@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Tomas Kelswick\n\nSeptember 03, 2026\n\nPresent: Ren Belsart, Tomas Kelswick.\n\nTomas Kelswick brought this wording: \"Latest in the folder.\" We considered the question \"Which copy is being discussed?\" Name the document and revision when requesting a reading session; do not change the work instruction.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-353-note",
+      "title": "A quieter handover - Zane Tarlowe - agreed note",
+      "path": "community-2026-353-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-19T09:50:00-04:00",
+      "readers": [
+        "yara.dalver@alterrawaterco.com",
+        "zane.tarlowe@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Zane Tarlowe\n\nAugust 19, 2026\n\nPresent: Yara Dalver, Zane Tarlowe.\n\nZane Tarlowe brought this wording: \"See the diagram.\" We considered the question \"Can the reader identify the relevant part?\" Name the drawing and the labelled area being discussed. Keep approval and revision authority on the drawing record.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-361-note",
+      "title": "A quieter handover - Theo Marrivel - agreed note",
+      "path": "community-2026-361-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T11:50:00-04:00",
+      "readers": [
+        "ben.narsen@alterrawaterco.com",
+        "theo.marrivel@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Theo Marrivel\n\nAugust 04, 2026\n\nPresent: Ben Narsen, Theo Marrivel.\n\nTheo Marrivel brought this wording: \"Booked.\" We considered the question \"Is the invitation confirmed?\" Record a tentative hold until the people and room are confirmed.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-369-note",
+      "title": "A quieter handover - Dana Wellard - agreed note",
+      "path": "community-2026-369-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-13T11:20:00-04:00",
+      "readers": [
+        "ben.narsen@alterrawaterco.com",
+        "dana.wellard@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Dana Wellard\n\nJuly 13, 2026\n\nPresent: Ben Narsen, Dana Wellard.\n\nDana Wellard brought this wording: \"Booked.\" We considered the question \"Is the invitation confirmed?\" Record a tentative hold until the people and room are confirmed.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-377-note",
+      "title": "A quieter handover - Emre Peveran - agreed note",
+      "path": "community-2026-377-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-26T11:50:00-04:00",
+      "readers": [
+        "della.orvel@alterrawaterco.com",
+        "emre.peveran@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Emre Peveran\n\nJune 26, 2026\n\nPresent: Della Orvel, Emre Peveran.\n\nEmre Peveran brought this wording: \"We all worked on this.\" We considered the question \"Who actually witnessed the stage described?\" Attribute the memory to its contributor and distinguish recollection from the project record.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-385-note",
+      "title": "A quieter handover - Harriet Belsart - agreed note",
+      "path": "community-2026-385-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-11T11:50:00-04:00",
+      "readers": [
+        "hana.radvell@alterrawaterco.com",
+        "harriet.belsart@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Harriet Belsart\n\nJune 11, 2026\n\nPresent: Hana Radvell, Harriet Belsart.\n\nHarriet Belsart brought this wording: \"The period is the same.\" We considered the question \"Are issue date and covered period being confused?\" Label each date by what it means before comparing it with another record.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-393-note",
+      "title": "A quieter handover - Jonas Sarnell - agreed note",
+      "path": "community-2026-393-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-04T11:50:00-04:00",
+      "readers": [
+        "jalen.carsten@alterrawaterco.com",
+        "jonas.sarnell@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Jonas Sarnell\n\nSeptember 04, 2026\n\nPresent: Jalen Carsten, Jonas Sarnell.\n\nJonas Sarnell brought this wording: \"Use the July sheet.\" We considered the question \"Which July sheet is intended?\" Give the title and date of the staff handout. Analytical records keep their own identifiers.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-401-note",
+      "title": "A quieter handover - Lila Lestrel - agreed note",
+      "path": "community-2026-401-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-20T11:50:00-04:00",
+      "readers": [
+        "jalen.carsten@alterrawaterco.com",
+        "lila.lestrel@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Lila Lestrel\n\nAugust 20, 2026\n\nPresent: Jalen Carsten, Lila Lestrel.\n\nLila Lestrel brought this wording: \"Use the July sheet.\" We considered the question \"Which July sheet is intended?\" Give the title and date of the staff handout. Analytical records keep their own identifiers.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-409-note",
+      "title": "A quieter handover - Mira Delmont - agreed note",
+      "path": "community-2026-409-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-05T11:20:00-04:00",
+      "readers": [
+        "hana.radvell@alterrawaterco.com",
+        "mira.delmont@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Mira Delmont\n\nAugust 05, 2026\n\nPresent: Hana Radvell, Mira Delmont.\n\nMira Delmont brought this wording: \"Put this out on Friday.\" We considered the question \"Is approval already recorded?\" Keep the draft with its reviewers until the dated publication approval is available.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-417-note",
+      "title": "A quieter handover - Pascal Warden - agreed note",
+      "path": "community-2026-417-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-14T11:20:00-04:00",
+      "readers": [
+        "omar.edran@alterrawaterco.com",
+        "pascal.warden@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Pascal Warden\n\nJuly 14, 2026\n\nPresent: Omar Edran, Pascal Warden.\n\nPascal Warden brought this wording: \"It does not work.\" We considered the question \"What can the colleague report safely?\" Describe the affected service and the visible symptom; do not include another person's account data.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-425-note",
+      "title": "A quieter handover - Sela Parnell - agreed note",
+      "path": "community-2026-425-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-29T11:20:00-04:00",
+      "readers": [
+        "samira.ferrell@alterrawaterco.com",
+        "sela.parnell@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Sela Parnell\n\nJune 29, 2026\n\nPresent: Samira Ferrell, Sela Parnell.\n\nSela Parnell brought this wording: \"Send the details to the group.\" We considered the question \"Does the group need personal information?\" Send the minimum request to the named responsible colleague.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-433-note",
+      "title": "A quieter handover - Tomas Aldren - agreed note",
+      "path": "community-2026-433-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-12T14:50:00-04:00",
+      "readers": [
+        "soren.garsen@alterrawaterco.com",
+        "tomas.aldren@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Tomas Aldren\n\nJune 12, 2026\n\nPresent: Soren Garsen, Tomas Aldren.\n\nTomas Aldren brought this wording: \"First explain our process.\" We considered the question \"What did the caller actually ask?\" Write down the customer's question before choosing the relevant explanation.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-441-note",
+      "title": "A quieter handover - Adele Sarnell - agreed note",
+      "path": "community-2026-441-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T14:50:00-04:00",
+      "readers": [
+        "soren.garsen@alterrawaterco.com",
+        "adele.sarnell@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Adele Sarnell\n\nSeptember 07, 2026\n\nPresent: Soren Garsen, Adele Sarnell.\n\nAdele Sarnell brought this wording: \"First explain our process.\" We considered the question \"What did the caller actually ask?\" Write down the customer's question before choosing the relevant explanation.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-449-note",
+      "title": "A quieter handover - Callum Lestrel - agreed note",
+      "path": "community-2026-449-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-21T14:50:00-04:00",
+      "readers": [
+        "amara.kelswick@alterrawaterco.com",
+        "callum.lestrel@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Callum Lestrel\n\nAugust 21, 2026\n\nPresent: Amara Kelswick, Callum Lestrel.\n\nCallum Lestrel brought this wording: \"Payment date.\" We considered the question \"Is this receipt or allocation?\" Label the field by the event it records and keep the authoritative record unchanged.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-457-note",
+      "title": "A quieter handover - Dario Torren - agreed note",
+      "path": "community-2026-457-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-06T14:50:00-04:00",
+      "readers": [
+        "soren.garsen@alterrawaterco.com",
+        "dario.torren@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Dario Torren\n\nAugust 06, 2026\n\nPresent: Soren Garsen, Dario Torren.\n\nDario Torren brought this wording: \"The new one is up.\" We considered the question \"Were the depot copies changed too?\" List the locations replaced and the date on the current copy.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-464-note",
+      "title": "A quieter handover - Emre Edran - agreed note",
+      "path": "community-2026-464-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-15T11:50:00-04:00",
+      "readers": [
+        "elin.verrin@alterrawaterco.com",
+        "emre.edran@alterrawaterco.com"
+      ],
+      "text": "# A quieter handover - Emre Edran\n\nJuly 15, 2026\n\nPresent: Elin Verrin, Emre Edran.\n\nDiscussed labelling dates on an internal staff explanation. Issue, receipt and allocation dates need their own labels; the accounting records remain authoritative.\n\nKeep one concrete example for our next conversation; do not add another daily report.\n"
+    },
+    {
+      "name": "community-2026-470-note",
+      "title": "Follow-up: A quieter handover - agreed note",
+      "path": "community-2026-470-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-14T10:50:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "mina.selverin@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: A quieter handover\n\nSeptember 14, 2026\n\nPresent: Nina Rivelin, Mina Selverin.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-479-note",
+      "title": "Follow-up: Work already in progress - agreed note",
+      "path": "community-2026-479-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-11T07:15:00-04:00",
+      "readers": [
+        "nina.rivelin@alterrawaterco.com",
+        "silas.tarlowe@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: Work already in progress\n\nSeptember 11, 2026\n\nPresent: Nina Rivelin, Silas Tarlowe.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-488-note",
+      "title": "Follow-up: Room to ask - agreed note",
+      "path": "community-2026-488-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-14T15:50:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "ari.wernick@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: Room to ask\n\nSeptember 14, 2026\n\nPresent: Vera Velswick, Ari Wernick.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-497-note",
+      "title": "Follow-up: A useful example - agreed note",
+      "path": "community-2026-497-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T13:50:00-04:00",
+      "readers": [
+        "dario.radvell@alterrawaterco.com",
+        "della.belsart@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: A useful example\n\nSeptember 09, 2026\n\nPresent: Dario Radvell, Della Belsart.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-506-note",
+      "title": "Follow-up: Room to ask - agreed note",
+      "path": "community-2026-506-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-08T14:20:00-04:00",
+      "readers": [
+        "dario.radvell@alterrawaterco.com",
+        "gabriel.selwyn@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: Room to ask\n\nSeptember 08, 2026\n\nPresent: Dario Radvell, Gabriel Selwyn.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-515-note",
+      "title": "Follow-up: A useful example - agreed note",
+      "path": "community-2026-515-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T14:20:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "kiran.delmont@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: A useful example\n\nSeptember 07, 2026\n\nPresent: Jamie Telmire, Kiran Delmont.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-524-note",
+      "title": "Follow-up: Room to ask - agreed note",
+      "path": "community-2026-524-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-04T07:50:00-04:00",
+      "readers": [
+        "jamie.telmire@alterrawaterco.com",
+        "martin.wellard@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: Room to ask\n\nSeptember 04, 2026\n\nPresent: Jamie Telmire, Martin Wellard.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-2026-533-note",
+      "title": "Follow-up: Working across sites - agreed note",
+      "path": "community-2026-533-note.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T14:20:00-04:00",
+      "readers": [
+        "nina.garsen@alterrawaterco.com",
+        "quinn.aldren@alterrawaterco.com"
+      ],
+      "text": "# Follow-up: Working across sites\n\nSeptember 03, 2026\n\nPresent: Nina Garsen, Quinn Aldren.\n\nThe question is still open. We agreed to leave it with the current owner and ask again after the next ordinary work cycle.\n"
+    },
+    {
+      "name": "community-people-01",
+      "title": "Request for internal practice",
+      "path": "community-people-01.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-17T10:00:00-04:00",
+      "readers": [
+        "pascal.sarnell@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Pascal Sarnell\nManager: Nina Rivelin\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-07-16. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-02",
+      "title": "Written follow-up preference",
+      "path": "community-people-02.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-11T10:00:00-04:00",
+      "readers": [
+        "silas.tarlowe@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Silas Tarlowe\nManager: Nina Rivelin\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-07-10. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-03",
+      "title": "Preparation in learning time",
+      "path": "community-people-03.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-07T10:00:00-04:00",
+      "readers": [
+        "vera.velswick@alterrawaterco.com",
+        "nina.rivelin@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Vera Velswick\nManager: Nina Rivelin\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-07-06. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-04",
+      "title": "Open development question",
+      "path": "community-people-04.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-01T10:00:00-04:00",
+      "readers": [
+        "ari.wernick@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Ari Wernick\nManager: Vera Velswick\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-06-30. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-05",
+      "title": "Request for internal practice",
+      "path": "community-people-05.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-25T10:00:00-04:00",
+      "readers": [
+        "corin.aldren@alterrawaterco.com",
+        "vera.velswick@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Corin Aldren\nManager: Vera Velswick\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-06-24. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-06",
+      "title": "Written follow-up preference",
+      "path": "community-people-06.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-19T10:00:00-04:00",
+      "readers": [
+        "elin.rivelin@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Elin Rivelin\nManager: Dario Radvell\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-06-18. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-07",
+      "title": "Preparation in learning time",
+      "path": "community-people-07.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-13T10:00:00-04:00",
+      "readers": [
+        "hugo.senvard@alterrawaterco.com",
+        "dario.radvell@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Hugo Senvard\nManager: Dario Radvell\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-06-12. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-08",
+      "title": "Open development question",
+      "path": "community-people-08.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-09T10:00:00-04:00",
+      "readers": [
+        "kaisa.torren@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Kaisa Torren\nManager: Jamie Telmire\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-06-08. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-09",
+      "title": "Request for internal practice",
+      "path": "community-people-09.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-11T10:00:00-04:00",
+      "readers": [
+        "luca.warden@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Luca Warden\nManager: Jamie Telmire\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-09-10. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-10",
+      "title": "Written follow-up preference",
+      "path": "community-people-10.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-05T10:00:00-04:00",
+      "readers": [
+        "niko.yervan@alterrawaterco.com",
+        "jamie.telmire@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Niko Yervan\nManager: Jamie Telmire\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-09-04. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-11",
+      "title": "Preparation in learning time",
+      "path": "community-people-11.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-01T10:00:00-04:00",
+      "readers": [
+        "ren.belsart@alterrawaterco.com",
+        "luc.venn-morel@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Ren Belsart\nManager: Luc Venn-Morel\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-08-31. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-12",
+      "title": "Open development question",
+      "path": "community-people-12.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-26T10:00:00-04:00",
+      "readers": [
+        "thane.cavelin@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Thane Cavelin\nManager: Ren Belsart\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-08-25. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-13",
+      "title": "Request for internal practice",
+      "path": "community-people-13.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-20T10:00:00-04:00",
+      "readers": [
+        "zane.tarlowe@alterrawaterco.com",
+        "yara.dalver@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Zane Tarlowe\nManager: Yara Dalver\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-08-19. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-14",
+      "title": "Written follow-up preference",
+      "path": "community-people-14.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-14T10:00:00-04:00",
+      "readers": [
+        "ben.narsen@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Ben Narsen\nManager: Ren Belsart\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-08-13. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-15",
+      "title": "Preparation in learning time",
+      "path": "community-people-15.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-08T10:00:00-04:00",
+      "readers": [
+        "della.orvel@alterrawaterco.com",
+        "ren.belsart@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Della Orvel\nManager: Ren Belsart\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-08-07. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-16",
+      "title": "Open development question",
+      "path": "community-people-16.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-04T10:00:00-04:00",
+      "readers": [
+        "finn.quillan@alterrawaterco.com",
+        "della.orvel@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Finn Quillan\nManager: Della Orvel\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-08-03. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-17",
+      "title": "Request for internal practice",
+      "path": "community-people-17.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-29T10:00:00-04:00",
+      "readers": [
+        "iris.iversen@alterrawaterco.com",
+        "hana.radvell@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Iris Iversen\nManager: Hana Radvell\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-07-28. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-18",
+      "title": "Written follow-up preference",
+      "path": "community-people-18.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-16T10:00:00-04:00",
+      "readers": [
+        "leila.larmont@alterrawaterco.com",
+        "jalen.carsten@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Leila Larmont\nManager: Jalen Carsten\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-07-15. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-19",
+      "title": "Preparation in learning time",
+      "path": "community-people-19.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-10T10:00:00-04:00",
+      "readers": [
+        "martin.marrent@alterrawaterco.com",
+        "louis.danwick@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Martin Marrent\nManager: Louis Danwick\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-07-09. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-20",
+      "title": "Open development question",
+      "path": "community-people-20.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-04T10:00:00-04:00",
+      "readers": [
+        "orla.nelcourt@alterrawaterco.com",
+        "omar.edran@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Orla Nelcourt\nManager: Omar Edran\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-07-03. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-21",
+      "title": "Request for internal practice",
+      "path": "community-people-21.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-30T10:00:00-04:00",
+      "readers": [
+        "sela.parnell@alterrawaterco.com",
+        "samira.ferrell@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Request for internal practice\n\nEmployee: Sela Parnell\nManager: Samira Ferrell\nPeople Services: Flora Odrin\n\nEmployee asks for a short practice session using a blank staff example. Manager will propose a covered slot; no supplier booking, fee or qualification has been approved.\n\nRelated conversation: 2026-06-29. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-22",
+      "title": "Written follow-up preference",
+      "path": "community-people-22.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-24T10:00:00-04:00",
+      "readers": [
+        "uma.harlowe@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Written follow-up preference\n\nEmployee: Uma Harlowe\nManager: Soren Garsen\nPeople Services: Gabriel Wellard\n\nEmployee prefers a short written decision after a spoken conversation. Use the ordinary staff address. No personal contact details are required on a shared calendar.\n\nRelated conversation: 2026-06-23. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-23",
+      "title": "Preparation in learning time",
+      "path": "community-people-23.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-18T10:00:00-04:00",
+      "readers": [
+        "amara.kelswick@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "flora.odrin@alterrawaterco.com"
+      ],
+      "text": "# Preparation in learning time\n\nEmployee: Amara Kelswick\nManager: Soren Garsen\nPeople Services: Flora Odrin\n\nThe request must show preparation separately from delivery time. Manager will check the hours with the employee before confirming a session; no date is committed by this note.\n\nRelated conversation: 2026-06-17. Retain this note with the named participants.\n"
+    },
+    {
+      "name": "community-people-24",
+      "title": "Open development question",
+      "path": "community-people-24.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-12T10:00:00-04:00",
+      "readers": [
+        "cara.danwick@alterrawaterco.com",
+        "soren.garsen@alterrawaterco.com",
+        "gabriel.wellard@alterrawaterco.com"
+      ],
+      "text": "# Open development question\n\nEmployee: Cara Danwick\nManager: Soren Garsen\nPeople Services: Gabriel Wellard\n\nKeep the development question open for a later conversation. The employee has not applied for another role and this record does not approve a promotion or pay change.\n\nRelated conversation: 2026-06-11. Retain this note with the named participants.\n"
+    },
+    {
       "name": "lq-training-001",
       "title": "ARWC-LQT-26-001 training completion",
       "path": "lq-training-001.md",

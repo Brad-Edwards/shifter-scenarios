@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 40,637 distinct authored messages, 16,185 source documents,
-staff directories for all 294 employees, and 883 calendar items. The
+The collection contains 42,916 distinct authored messages, 17,838 source documents,
+staff directories for all 294 employees, and 1,507 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -121,6 +121,14 @@ profiles in place. The other 45 original messages remain unchanged. Private
 profiles, sample annotations, ownership,
 and base-version records stay under `docs/narrative/` and are not deployed.
 
+ARWC community life adds 2,279 messages, 1,653 source documents and 624 calendar
+occurrences. Its 112 dated posts/notices, thirteen comments, sixteen references,
+private people records, shift-aware arrangements and story continuations use
+the existing native collections. Its
+[review record](../../docs/narrative/community-life-review.md) separates messages,
+retained copies, business records, scheduling attachments and occurrences,
+and records consent, duty cover, the volume adjustment and preservation checks.
+
 ## Sources and outputs
 
 | Location | Purpose |
@@ -155,7 +163,7 @@ and base-version records stay under `docs/narrative/` and are not deployed.
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |
 | `generated/messages/` | Individual RFC 5322 review files for the earlier story messages. Bulk histories, including IT, retain exact RFC 5322 bytes in the mail source packages to keep the pack under its file limit. |
-| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk support, operating, commercial, office and induction calendars are complete items in the document source package. |
+| `generated/directories/`, `generated/calendars/` | CSV contacts and original RFC 5545 calendar files. Bulk support, operating, maintenance, commercial, office, community and induction calendars are complete items in the document source package. |
 | `generated/packages/` | Eight self-contained JSON source artifacts for native RAE content declarations. |
 | `artifact-catalog.json` | Exact source-name/version to pack-relative file mapping and SHA-256 digests. |
 | `story-coverage.json` | Author-only map from narrative threads to records and retained copies. |

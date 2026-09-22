@@ -86,8 +86,10 @@ class OfficeLifeTests(unittest.TestCase):
         def room_capacity(f, m, d, e): f['rooms']['small']['capacity'] = 1
         def room_storage(f, m, d, e): event(e, f['meetings'][0]['id'])['location'] = 'Storage room'
         def cover_attending(f, m, d, e):
-            x = next(x for x in e if x.get('cover')); x['cover'] = [x['organizer']]
-        def cover_removed(f, m, d, e): next(x for x in e if x.get('cover'))['cover'] = []
+            x = next(x for x in e if x['id'].startswith('office-') and x.get('cover'))
+            x['cover'] = [x['organizer']]
+        def cover_removed(f, m, d, e):
+            next(x for x in e if x['id'].startswith('office-') and x.get('cover'))['cover'] = []
         def cover_late(f, m, d, e):
             h = next(h for h in f['meetings'] if 'cover_agreement' in h)
             msg(m, h['cover_agreement'])['date'] = event(e, h['id'])['end']

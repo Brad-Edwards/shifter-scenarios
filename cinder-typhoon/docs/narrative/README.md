@@ -5,7 +5,7 @@ support-intake, engineering, product-quality, release/platform, customer-follow-
 commercial, and finance slices added on 20 September, and office life, service
 accounts, field operations, maintenance/engineering, laboratory/quality, purchasing/stores, and retail billing
 added on 21 September, and resource planning, ARWC governance and information
-technology added on 22 September.
+technology and community life added on 22 September.
 These documents establish two fictional companies, the region around
 them, and the people who work there. The authored records are in
 `assets/narrative/`.
@@ -71,6 +71,8 @@ and unfinished plans of their own.
 | [ARWC governance review](governance-review.md) | Dated financial closes, board decisions, conditional budgets, public releases, counts and verification. |
 | [ARWC governance voices](governance-voices.md) | Finance, management, reporting and six non-employee board profiles and samples. |
 | [ARWC IT service review](it-services-review.md) | Application inventory, case lifecycles, access, equipment, copy checks, supplier reviews and validation. |
+| [ARWC community life review](community-life-review.md) | Staff posts, calendars, consent, private people records, duty cover, story continuity and validation. |
+| [ARWC community life voices](community-life-voices.md) | Editorial, People Services and private correspondence profiles and samples. |
 | [Content ownership](content-ownership.json) | Per-record environment ownership, required world base, source versions, and empty scenario overlay. |
 | [Workplace life and small stories](workplace-life.md) | Social geography, daily and seasonal rhythms, shared memories, and ordinary stories with beginnings and consequences. |
 | [Suppliers and customers](business-network.md) | Eight supporting businesses with their own habits, objectives, and relationships. |
@@ -181,6 +183,10 @@ accepted twelve-person team, with current reader groups, equipment assignments,
 knowledge, service inventory, planned changes, bounded copy checks and supplier
 reviews. It uses the existing workplace and business record collections and
 does not add a server or broad application administrator grant.
+The community-life slice adds 112 dated staff and depot publications, sixteen
+reference pages, 624 calendar occurrences and 2,279 retained logical messages.
+It extends the accepted photography, choir, outreach, history, billing and walk
+stories while preserving private audiences, unsettled dates and shift cover.
 Generator infrastructure is outside that milestone's scope.
 
 Worldbuilding owns personalities, histories, relationships, and ordinary work.
