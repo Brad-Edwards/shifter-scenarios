@@ -67,6 +67,7 @@ python -m unittest discover -s cinder-typhoon/tests -p test_finance.py
 python -m unittest discover -s cinder-typhoon/tests -p test_maintenance_engineering.py
 python -m unittest discover -s cinder-typhoon/tests -p test_laboratory_quality.py
 python -m unittest discover -s cinder-typhoon/tests -p test_purchasing_stores.py
+python -m unittest discover -s cinder-typhoon/tests -p test_retail_billing.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -92,6 +93,13 @@ all 180 maintenance joins, all sixty field-stock replenishments, twelve Ternwick
 batches, district and shared allocations, invoice and payment ledger totals,
 thirteen CSV registers, 885 strictly parsed supplier PDFs, thread separation,
 exact attachments, reader boundaries, and visible provenance leakage.
+
+Retail billing checks project all 50,102 accepted invoices and 101,641 lines
+without duplicate authority, reconstruct issue-date electronic/postal
+preferences, reconcile 31,920 payments and allocations, 500 adjustments and
+50,100 balances, and validate 800 substantive cases, 200 appointments, 300
+collections histories, 200 arrangements, 7,600 messages, fourteen registers,
+50,102 readable bill renderings, and 24 strictly parsed PDFs.
 
 Release and platform checks join the 120 operating histories to their accepted
 quality evidence, exact revisions, source bytes, and calendars. Ten targeted
