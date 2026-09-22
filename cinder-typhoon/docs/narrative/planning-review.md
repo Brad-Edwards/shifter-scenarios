@@ -159,8 +159,12 @@ requirements:
 - Vale 3.9.1 passes all six changed Markdown files; the diff has no whitespace
   errors.
 
-The remaining campaign-wide negative tests are still running; this review will
-record their result before the pull request leaves draft state.
+The full `validate_sdl.py --self-test --pack-check` command completed
+successfully. Its remaining checks rejected all 28 native type-valid SDL
+mutations, invalid realization-posture spelling, two compiled observation
+mutations, and 26 deliberately broken topologies/events. Event replay and
+independent progress passed, and all eight narrative collections retained their
+compiled source and service bindings.
 
 Local bytecode caches were moved outside the pack, and verification ran with
 `PYTHONDONTWRITEBYTECODE=1`. The default pack-member limit was not raised.
