@@ -150,6 +150,17 @@ call from the participant's interactive workstation and require nonzero output
 tokens. Participant web research also needs explicit egress; the model path
 alone does not provide general internet access.
 
+For a bulk GCP event, verify the egress topology before provisioning the
+roster. The current range-cell `status-quo` mode creates a Cloud Router/NAT per
+range and can hit the per-network router ceiling after only a few launches;
+the organizer event workspace's policy does not override the personal
+workspace policy used for participant and managed-spare launches. Setting
+those workspaces to `none` avoids that router creation but also disables the
+built-in public-web lane. Until the platform provides scalable shared egress,
+an operator must arrange and verify a separately approved participant internet
+path rather than assuming that Private Google Access or the profile flag alone
+provides it. Do not use a successful model probe as the web-access check.
+
 ## Install and bind in Shifter
 
 Open **Administer → Adapters**.
