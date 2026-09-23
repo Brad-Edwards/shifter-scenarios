@@ -136,3 +136,33 @@ The complete narrative checks verify MIME bytes, exact mailbox placement, reply
 identity, attachment publication, source hashes, ownership and native readback.
 Pinned native validation uses RAE 5.0.0 and env-packs 6.1.0. These are static
 authoring checks; no runtime materialization or deployment proof is claimed.
+
+Final local results on September 23, 2026:
+
+- All 44 regression tests pass, including the 26 new corruption cases. The
+  task-local regression runner uses PyYAML's C safe loader for the same YAML
+  inputs; no test assertions are bypassed or repository test runner changed.
+- All 92 rendered outputs reproduce byte-for-byte with the normal renderer.
+  The pack contains 1,016 members against the pinned limit of 1,024.
+- The comparison against `f208f42` preserves all 62,895 accepted packaged items,
+  exact reader lists and prior mailbox memberships. Eighteen new messages are
+  retained in both company packages with one identity and identical bytes.
+  Directory and employment packages are unchanged. No existing file is deleted.
+- Vale 3.9.1 reports no findings in the four changed Markdown files. Python
+  syntax and whitespace checks pass.
+- RAE 5.0.0 and env-packs 6.1.0 validate the author pack and compose 96 modules.
+  All 240 challenges, 33 capabilities, 1,209 minimal prerequisite closures and
+  sixteen finale route combinations retain their contracts. Compilation verifies
+  3,450 realization requirements and 281 observation bindings, including the
+  eight exact workplace source/readback bindings and default-open realization.
+- Four narrative SDL mutations, 28 other native SDL mutations, two compiled
+  observation mutations and 26 broken topology/event cases are rejected.
+  As in the previous slice, a task-local runner reuses a complete asset check
+  only while every pack-file SHA-256 remains identical. It verifies that identity
+  for all 24 repeated asset-check requests. No cache framework is shipped.
+
+The issue thread records the 2,281-message allocation reduction and its effect
+on the milestone. The three dependency commits are ancestors of the accepted
+base. Challenge technical data, operation modules, routes and the scenario entry
+point remain unchanged. These results cover the finished implementation; this
+final evidence entry changes only the author-only review record.
