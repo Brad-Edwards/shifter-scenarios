@@ -138,12 +138,17 @@ Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
 client through the broker boundary.
 
-The GCP range plane must use broker-only egress. Set the tenant deployment's
-`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `false` and deploy that
-configuration before launching the event. Private Google Access is a separate
-direct-Google-API lane and is intentionally incompatible with source-preserving,
-identity-less broker clients. General participant internet egress remains
-disabled.
+For the broker-backed `polaris` adapter described by the steps below, set the
+tenant deployment's `GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `false` and
+deploy that configuration before launching the event. The separate
+`polaris_direct` adapter described in
+[`runtime-adapter/README.md`](../../runtime-adapter/README.md) instead requires
+Private Google Access, a narrowly scoped range-host service account, and an
+unset broker guest VIP. Do not bind that direct adapter to the broker pack or
+assume the broker settings qualify its model access. Test a real `claude -p`
+call from the participant's interactive workstation and require nonzero output
+tokens. Participant web research also needs explicit egress; the model path
+alone does not provide general internet access.
 
 ## Install and bind in Shifter
 
