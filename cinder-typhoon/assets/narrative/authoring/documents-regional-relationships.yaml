@@ -1,0 +1,1969 @@
+documents:
+- id: rr-arwc-01
+  story: regional-relationships
+  employer: keplerops
+  title: When the familiar contact is away
+  published_at: '2026-06-23T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  path: Relationships/K-C-001/rr-arwc-01.md
+  media_type: text/markdown
+  text: |
+    # When the familiar contact is away
+
+    Maya Ranscombe | 23 June 2026
+
+    Theo's point was about continuity rather than a shorter response promise. A question left with one engineer should not have to be retold from the beginning when that person is away. The useful handover is the record reference, what the reviewer expected to see and the last answer already tried.
+
+    Maya will keep the customer conversation with the support history. Theo will use that conversation for a follow-up instead of opening a second personal exchange. A photograph of a local work sheet is not needed when its record reference and the disputed field will do.
+
+    This note records a working preference. It leaves ARWC's own acceptance responsibilities and the agreed support scope in place. A familiar name is welcome; an answer that survives the next shift is more useful.
+- id: rr-arwc-01-arwc
+  story: regional-relationships
+  employer: arwc
+  title: When the familiar contact is away
+  published_at: '2026-06-23T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/K-C-001/rr-arwc-01.md
+  media_type: text/markdown
+  text: |
+    # When the familiar contact is away
+
+    Maya Ranscombe | 23 June 2026
+
+    Theo's point was about continuity rather than a shorter response promise. A question left with one engineer should not have to be retold from the beginning when that person is away. The useful handover is the record reference, what the reviewer expected to see and the last answer already tried.
+
+    Maya will keep the customer conversation with the support history. Theo will use that conversation for a follow-up instead of opening a second personal exchange. A photograph of a local work sheet is not needed when its record reference and the disputed field will do.
+
+    This note records a working preference. It leaves ARWC's own acceptance responsibilities and the agreed support scope in place. A familiar name is welcome; an answer that survives the next shift is more useful.
+- id: rr-arwc-02
+  story: regional-relationships
+  employer: keplerops
+  title: A useful handover question
+  published_at: '2026-07-08T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rowan
+  path: Relationships/K-C-001/rr-arwc-02.md
+  media_type: text/markdown
+  text: |
+    # A useful handover question
+
+    Clara Morivelle | 08 July 2026
+
+    A reviewer asking whether a replacement has been accepted is asking about authority, not merely which attachment appears first. The question should name the submission being compared and the acceptance entry being read. A newer upload can still await review.
+
+    For their next technical conversation Clara and Rowan will use a written pair of descriptions, not copies of operating records. One describes a received replacement; the other describes the reviewer's later acceptance. They should remain separate sentences. Combining them into “the latest version is accepted” would make the example easier to read but wrong.
+
+    Clara will check whether the words describe ARWC's review practice. Rowan can explain the product's presentation. Neither role makes an unreviewed document effective for work.
+- id: rr-arwc-02-arwc
+  story: regional-relationships
+  employer: arwc
+  title: A useful handover question
+  published_at: '2026-07-08T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/K-C-001/rr-arwc-02.md
+  media_type: text/markdown
+  text: |
+    # A useful handover question
+
+    Clara Morivelle | 08 July 2026
+
+    A reviewer asking whether a replacement has been accepted is asking about authority, not merely which attachment appears first. The question should name the submission being compared and the acceptance entry being read. A newer upload can still await review.
+
+    For their next technical conversation Clara and Rowan will use a written pair of descriptions, not copies of operating records. One describes a received replacement; the other describes the reviewer's later acceptance. They should remain separate sentences. Combining them into “the latest version is accepted” would make the example easier to read but wrong.
+
+    Clara will check whether the words describe ARWC's review practice. Rowan can explain the product's presentation. Neither role makes an unreviewed document effective for work.
+- id: rr-arwc-03
+  story: regional-relationships
+  employer: keplerops
+  title: 'Reference conversation: questions worth asking'
+  published_at: '2026-08-20T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  path: Relationships/K-C-001/rr-arwc-03.md
+  media_type: text/markdown
+  text: |
+    # Reference conversation: questions worth asking
+
+    Theo Marrivel | 20 August 2026
+
+    Possible questions for a future reference discussion, collected before any date or participants are agreed.
+
+    What did ARWC have to settle internally before the submission process became useful? How does a maintenance planner know which colleague still owes a review? What should a new customer budget staff time for, besides learning the screen? Theo is comfortable describing the habits that changed and the habits that did not.
+
+    The answer should include the cost of keeping local work records intelligible. It should not imply that purchasing a product makes unclear instructions disappear. There is no request here for a testimonial, slides or a public quotation. Maya will ask separately about a defined audience and staff time if the discussion develops. No customer data or operating screenshots are included.
+- id: rr-arwc-03-arwc
+  story: regional-relationships
+  employer: arwc
+  title: 'Reference conversation: questions worth asking'
+  published_at: '2026-08-20T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/K-C-001/rr-arwc-03.md
+  media_type: text/markdown
+  text: |
+    # Reference conversation: questions worth asking
+
+    Theo Marrivel | 20 August 2026
+
+    Possible questions for a future reference discussion, collected before any date or participants are agreed.
+
+    What did ARWC have to settle internally before the submission process became useful? How does a maintenance planner know which colleague still owes a review? What should a new customer budget staff time for, besides learning the screen? Theo is comfortable describing the habits that changed and the habits that did not.
+
+    The answer should include the cost of keeping local work records intelligible. It should not imply that purchasing a product makes unclear instructions disappear. There is no request here for a testimonial, slides or a public quotation. Maya will ask separately about a defined audience and staff time if the discussion develops. No customer data or operating screenshots are included.
+- id: rr-arwc-04
+  story: regional-relationships
+  employer: keplerops
+  title: 'Account review: term and responsibilities'
+  published_at: '2026-09-03T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - kwm048
+  - maya
+  path: Relationships/K-C-001/rr-arwc-04.md
+  media_type: text/markdown
+  text: |
+    # Account review: term and responsibilities
+
+    Louis Zorrel | 03 September 2026
+
+    Louis checked the account review against K-C-001-AGR-01. The current term ends on 31 March 2028. The annual service fee is USD 154,000, billed in four instalments of USD 38,500. A budget conversation this autumn is not an expiring-contract renewal.
+
+    Maya continues to own the support relationship. Commercial questions go to Louis; a promise made during a reference discussion must not be treated as a contract variation. Delivery staff need the agreed question and relevant records, rather than commercial discussion copied into every technical thread.
+
+    For the next internal review, Louis wants one unresolved customer preference and its owner, not a retrospective list of everything support has done. The continuity preference is worth checking. This note makes no new charge and does not certify any invoice as paid.
+- id: rr-arwc-05
+  story: regional-relationships
+  employer: keplerops
+  title: Customer questions without customer records
+  published_at: '2026-09-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rowan
+  - maya
+  path: Relationships/K-C-001/rr-arwc-05.md
+  media_type: text/markdown
+  text: |
+    # Customer questions without customer records
+
+    Rowan Ito | 07 September 2026
+
+    The proposed technical discussion can use invented submission labels A and B. A is received first; B corrects the description but still requires the customer's reviewer. The participants can ask where each fact appears without seeing an ARWC work order, employee comment or site photograph.
+
+    Rowan originally suggested a screen from a familiar support conversation. Maya rejected that shortcut: knowing the people in the conversation does not give permission to send their records to a prospective customer. A written example also avoids spending the call explaining local asset names.
+
+    Rowan will keep the example short enough to read aloud. Maya will check that it illustrates a question rather than claiming a promised product change. Any later use of an actual customer example requires that customer's specific agreement.
+- id: rr-arwc-06
+  story: regional-relationships
+  employer: keplerops
+  title: 'Reference preparation: what stays in the room'
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  - kwm052
+  - kwm048
+  path: Relationships/K-C-001/rr-arwc-06.md
+  media_type: text/markdown
+  text: |
+    # Reference preparation: what stays in the room
+
+    Maya Ranscombe | 10 September 2026
+
+    The agreed reference agenda covers a thirty-minute conversation with Theo and Clara. Martin holds 29 September, 10:00–10:30, as tentative because prospective utility participants have not confirmed. The allowance is sixty ARWC person-minutes. The call is not an endorsement recording session.
+
+    Questions can cover practical adoption, continuing internal work and ordinary limitations. Do not distribute ARWC screenshots, customer-support attachments or a quotation drafted in Theo's voice. If someone asks to record the call, Martin must ask the people involved; the existing hold supplies no recording permission.
+
+    The organizer should confirm the eventual audience before changing the calendar state. There are no attendance notes or completed actions from this future discussion. Maya will use the approved agenda, not make another longer deck to fill the time.
+- id: rr-arwc-07
+  story: regional-relationships
+  employer: keplerops
+  title: 'Continuity preference: a shorter question'
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  path: Relationships/K-C-001/rr-arwc-07.md
+  media_type: text/markdown
+  text: |
+    # Continuity preference: a shorter question
+
+    Maya Ranscombe | 11 September 2026
+
+    The June preference was to keep the last answer with the original customer question. Theo has now clarified the smallest useful follow-up: state what remains unclear, quote the disputed label and preserve the existing reference. Resending an entire handover pack makes the recipient guess which part has changed.
+
+    Maya's reply should identify the next person responsible if the question needs a different role. “Passed on” alone leaves Theo unable to tell whether he should wait or supply more information. This is an expectation about useful communication, not a new response-time commitment.
+
+    Theo does not want weekly status mail when there is no open question. An answer should close its own small loop. If a later shift has a different question, it can say what has changed rather than repeat the original request.
+- id: rr-arwc-07-arwc
+  story: regional-relationships
+  employer: arwc
+  title: 'Continuity preference: a shorter question'
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/K-C-001/rr-arwc-07.md
+  media_type: text/markdown
+  text: |
+    # Continuity preference: a shorter question
+
+    Maya Ranscombe | 11 September 2026
+
+    The June preference was to keep the last answer with the original customer question. Theo has now clarified the smallest useful follow-up: state what remains unclear, quote the disputed label and preserve the existing reference. Resending an entire handover pack makes the recipient guess which part has changed.
+
+    Maya's reply should identify the next person responsible if the question needs a different role. “Passed on” alone leaves Theo unable to tell whether he should wait or supply more information. This is an expectation about useful communication, not a new response-time commitment.
+
+    Theo does not want weekly status mail when there is no open question. An answer should close its own small loop. If a later shift has a different question, it can say what has changed rather than repeat the original request.
+- id: rr-arwc-08
+  story: regional-relationships
+  employer: arwc
+  title: 'ARWC reference: private preparation reminder'
+  published_at: '2026-09-14T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  - theo
+  path: Relationships/K-C-001/rr-arwc-08.md
+  media_type: text/markdown
+  text: |
+    # ARWC reference: private preparation reminder
+
+    Clara Morivelle | 14 September 2026
+
+    Clara's preparation reminder for Theo: talk about the review process we use, including the parts we still perform ourselves. Keep local plant and staff detail out of the example. A prospective customer needs to hear what a reviewer does, not learn our asset naming scheme.
+
+    Theo can describe planning and handover habits. Clara can explain why receipt and acceptance are separate. Neither needs to represent every department or describe a colleague's support question. If a question falls outside their experience, they can leave it for the appropriate owner.
+
+    The September 29 hold is still a hold. This is a private reminder for the two invited ARWC colleagues, not approved minutes, a statement on behalf of management or permission to publish their comments. No further staff time has been agreed here.
+- id: rr-arwc-09
+  story: regional-relationships
+  employer: keplerops
+  title: A technical answer is not a delivery promise
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rowan
+  - maya
+  - kwm048
+  path: Relationships/K-C-001/rr-arwc-09.md
+  media_type: text/markdown
+  text: |
+    # A technical answer is not a delivery promise
+
+    Rowan Ito | 15 September 2026
+
+    When Rowan answers a question about comparing submissions, the answer can explain current behavior and the customer's review responsibility. It must not imply that a suggested layout change has been scheduled. Louis needs the distinction before he describes the account conversation elsewhere.
+
+    The internal wording is: “We can discuss how the current review is presented; a requested change needs its own assessment.” Avoid “we can do that” when the subject of “that” has shifted from an explanation to development work. Maya will ask which question the customer means if the thread becomes ambiguous.
+
+    No new feature, interface, project effort or delivery date is committed by this note. The next reference conversation is an opportunity to describe experience, not a route around the existing scope and acceptance process.
+- id: rr-arwc-10
+  story: regional-relationships
+  employer: keplerops
+  title: 'Reference hold: morning status'
+  published_at: '2026-09-16T07:45:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  - kwm052
+  - kwm048
+  path: Relationships/K-C-001/rr-arwc-10.md
+  media_type: text/markdown
+  text: |
+    # Reference hold: morning status
+
+    Maya Ranscombe | 16 September 2026
+
+    Status at 07:45 on 16 September: the proposed ARWC reference conversation remains on 29 September, 10:00–10:30, with prospective participants unconfirmed. The agreed agenda and sixty ARWC person-minutes remain the preparation basis. No slides, public quotation or recording permission has been added.
+
+    Theo and Clara will discuss their own experience of maintenance submissions and review. Martin still owes the participant confirmation. If the audience or time changes, he must bring that change back to the invited colleagues rather than silently treating the current hold as general availability.
+
+    This is a preparation status note, not a second invitation. The existing calendar occurrence remains authoritative. There has been no call, attendance, completion or customer endorsement to report.
+- id: rr-arwc-10-arwc
+  story: regional-relationships
+  employer: arwc
+  title: 'Reference hold: morning status'
+  published_at: '2026-09-16T07:45:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  - clara
+  path: Relationships/K-C-001/rr-arwc-10.md
+  media_type: text/markdown
+  text: |
+    # Reference hold: morning status
+
+    Maya Ranscombe | 16 September 2026
+
+    Status at 07:45 on 16 September: the proposed ARWC reference conversation remains on 29 September, 10:00–10:30, with prospective participants unconfirmed. The agreed agenda and sixty ARWC person-minutes remain the preparation basis. No slides, public quotation or recording permission has been added.
+
+    Theo and Clara will discuss their own experience of maintenance submissions and review. Martin still owes the participant confirmation. If the audience or time changes, he must bring that change back to the invited colleagues rather than silently treating the current hold as general availability.
+
+    This is a preparation status note, not a second invitation. The existing calendar occurrence remains authoritative. There has been no call, attendance, completion or customer endorsement to report.
+- id: rr-veybridge-01
+  story: regional-relationships
+  employer: arwc
+  title: Visit feedback / ARWC-PO-26-201
+  published_at: '2026-06-18T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-01.md
+  media_type: text/markdown
+  text: |
+    # Visit feedback / ARWC-PO-26-201
+
+    Theo Marrivel | 18 June 2026
+
+    VB-SR-26-001 records the standard commissioning witness visit on 12 June, 13:00–16:00, against ARWC-WO-26-0181. ARWC-GR-26-001 records receipt on 15 June. The accepted order amount is USD 1,240.00; this follow-up does not add work to it.
+
+    Theo found the report reference easier to use than the diary subject when answering the next planner. Jules asks that later questions keep both the order and report numbers. A visit date alone can refer to several jobs in his diary.
+
+    For a subsequent booking, dispatch should receive the scheduling question. Jules remains the useful contact for an observation he actually made. There is no request for a return visit in this feedback, and no finding that the accepted service needs repeating.
+- id: rr-veybridge-02
+  story: regional-relationships
+  employer: arwc
+  title: Dispatch desk / a booking request that can be used
+  published_at: '2026-06-30T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-02.md
+  media_type: text/markdown
+  text: |
+    # Dispatch desk / a booking request that can be used
+
+    Dana Veskell | 30 June 2026
+
+    Dana's dispatch note for ARWC: begin with the order reference, the requested attendance window and the person who can settle access arrangements. Say whether the time is a request or an already agreed appointment. A forwarded chain with “same as last time” does not tell dispatch which details still apply.
+
+    Dana can coordinate the diary without asking Jules to relay each message from the road. A change to scope or travel still needs written authority through the purchasing route. Dispatch cannot infer that authority from a friendly request to stay longer.
+
+    For uncertain dates, give the constraint that matters: a planner being available is different from the site being ready. Dana will return one clear question if the booking lacks that information, rather than copy every earlier contact into a new thread.
+- id: rr-veybridge-03
+  story: regional-relationships
+  employer: arwc
+  title: Report question / the last line
+  published_at: '2026-07-02T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-03.md
+  media_type: text/markdown
+  text: |
+    # Report question / the last line
+
+    Jules Orswick | 02 July 2026
+
+    Review of VB-SR-26-006, the 26 June visit against ARWC-PO-26-206 and ARWC-WO-26-0271. The report records serviceable condition for the stated scope. Its result does not extend to equipment outside that order.
+
+    Jules would like later questions to point to an observation or a missing explanation. “Can you sign the whole thing off?” is too broad: he can stand behind the observations he made, while ARWC's reviewer owns its acceptance decision. The report and receipt remain separate records.
+
+    Theo will retain the report with the accepted job and use its reference when asking a specific question. This writing feedback leaves the original report intact. It records no additional inspection, revisited condition or new engineering conclusion.
+- id: rr-veybridge-04
+  story: regional-relationships
+  employer: arwc
+  title: Account desk / summer service review
+  published_at: '2026-07-22T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-001/rr-veybridge-04.md
+  media_type: text/markdown
+  text: |
+    # Account desk / summer service review
+
+    Aiden Rellard | 22 July 2026
+
+    Aiden's service-review note concerns the standard visit arrangement, not a new service package. Under A-S-001-AGR-01 a standard visit is USD 1,240. Travel or extra scope needs a written order. A diary confirmation cannot supply that order.
+
+    Priya wants future quotations to make additional attendance conspicuous rather than bury it in a description of the standard service. Aiden can keep the standard visit and a separately requested addition on separate lines. That makes a decision easier without assuming the addition will be bought.
+
+    There is no blanket instruction to add travel to accepted summer jobs. Their existing quotations, reports, receipts and payment records stand. The account desk will use this preference when an actual new request arrives; it does not create a purchase by itself.
+- id: rr-veybridge-05
+  story: regional-relationships
+  employer: arwc
+  title: Visit feedback / a different familiar face
+  published_at: '2026-07-28T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-05.md
+  media_type: text/markdown
+  text: |
+    # Visit feedback / a different familiar face
+
+    Theo Marrivel | 28 July 2026
+
+    ARWC's note after VB-SR-26-012 and ARWC-GR-26-012. The 14 July appointment was delivered under ARWC-PO-26-212, for the accepted USD 1,240.00 standard visit. The report is the evidence of service, regardless of which familiar contact arranged the diary.
+
+    Theo found it useful to have a named dispatch reply before the visit. He does not need every booking to pass through Jules. Dana wants the same arrangement to remain useful when one of the usual contacts is away; the order reference should carry the work, rather than a person's memory.
+
+    The next booking still needs its own accepted order and appointment. This feedback is about continuity after completed work. It is neither a standing booking nor a promise that the same specialist will attend every future job.
+- id: rr-veybridge-06
+  story: regional-relationships
+  employer: arwc
+  title: Teaching notes / describing an observation
+  published_at: '2026-08-06T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-06.md
+  media_type: text/markdown
+  text: |
+    # Teaching notes / describing an observation
+
+    Jules Orswick | 06 August 2026
+
+    Jules is collecting a small teaching example for newer field colleagues. The invented note says “checked, all fine”. The exercise is to ask what was checked, under which order and what the person actually observed. There is deliberately no real plant, reading or acceptance signature to borrow.
+
+    A useful answer does not have to become an essay. It should let the next person distinguish a direct observation from something reported by somebody else. If the writer did not see the result, they should say who supplied it rather than adopt it as their own inspection.
+
+    Theo can comment on what makes a report usable for planning. Veybridge owns its own training decisions and staff competence. Sharing this wording example does not qualify anybody, book an ARWC training session or change the scope of a field visit.
+- id: rr-veybridge-07
+  story: regional-relationships
+  employer: arwc
+  title: Dispatch feedback / one changed detail
+  published_at: '2026-08-18T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  path: Relationships/A-S-001/rr-veybridge-07.md
+  media_type: text/markdown
+  text: |
+    # Dispatch feedback / one changed detail
+
+    Dana Veskell | 18 August 2026
+
+    A follow-up to the June dispatch note. When changing a proposed time, keep the original order reference and state the changed detail at the start. Sending a fresh subject without the reference makes it look like another visit request. Keeping an obsolete time buried above the change makes the other error possible.
+
+    Dana's preferred reply is a compact confirmation of the new proposal and the remaining question. It should not silently carry forward a site-access name that has not been checked. Theo will say when only the planner's availability has changed.
+
+    No actual appointment is moved by this note. Existing accepted appointment records remain the source for their dates. The account team will revisit the wording if a real booking shows a difficulty; there is no need for a recurring reminder when nothing has changed.
+- id: rr-veybridge-08
+  story: regional-relationships
+  employer: arwc
+  title: Practical workshop / return information
+  published_at: '2026-09-03T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-001/rr-veybridge-08.md
+  media_type: text/markdown
+  text: |
+    # Practical workshop / return information
+
+    Jules Orswick | 03 September 2026
+
+    Jules's response to Ardenvale's autumn workshop question. A return example is useful if it shows the information that lets the service desk identify the item and understand the reported problem. It should also show what is still unknown. A copied diagnosis from another job would make the example look complete for the wrong reason.
+
+    Clara has asked for the practical session to be separate from the product demonstration. Jules supports that arrangement: a field colleague should be able to attend for the work question without staying for a catalogue tour. No date or place has been selected.
+
+    Ardenvale may use this feedback to shape its programme. It does not receive Veybridge customer records or ARWC instrument histories through this exchange. Any practical handling instruction must come from the appropriate service information for the actual item.
+- id: rr-veybridge-09
+  story: regional-relationships
+  employer: arwc
+  title: Internal note / specialist continuity
+  published_at: '2026-09-08T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - theo
+  - priya
+  path: Relationships/A-S-001/rr-veybridge-09.md
+  media_type: text/markdown
+  text: |
+    # Internal note / specialist continuity
+
+    Theo Marrivel | 08 September 2026
+
+    Theo's internal account note: the summer reports are usable and the dispatch replies are helping the relationship depend less on one specialist's phone. Keep that distinction in the next supplier review. We can value Jules's practical judgment without routing every booking through him.
+
+    Priya should ask about the supplier's route for continuity, not request a guarantee of one named person for all visits. If an actual future job needs particular experience, explain that in its scope before ordering. A preference expressed in a friendly conversation is not an accepted personnel condition.
+
+    Jules's interest in teaching is his own development at Veybridge. ARWC has not offered him employment, appointed him as an internal trainer or acquired authority to allocate his time. This note stays with the two ARWC account colleagues.
+- id: rr-veybridge-10
+  story: regional-relationships
+  employer: arwc
+  title: Account follow-up / topics left for the next request
+  published_at: '2026-09-14T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-001/rr-veybridge-10.md
+  media_type: text/markdown
+  text: |
+    # Account follow-up / topics left for the next request
+
+    Aiden Rellard | 14 September 2026
+
+    The account desk retains two preferences from ARWC: separate additional attendance from the standard visit line, and send scheduling questions to dispatch with a usable order reference. Both can be applied when the next real request arrives.
+
+    Aiden suggested a general autumn review call. Priya would prefer to collect any further questions first rather than reserve time for a conversation with no new work to discuss. No appointment has been confirmed. Veybridge has other customer reviews to arrange and will leave the time unreserved.
+
+    The present agreement continues through 31 December 2027. This exchange neither renews it early nor changes the USD 1,240 standard-visit basis. Existing accepted jobs remain closed on their own records. If a future request includes training or extra travel, the account desk will ask for that scope explicitly.
+- id: rr-ardenvale-01
+  story: regional-relationships
+  employer: arwc
+  title: 'Service feedback: the reference on the sheet'
+  published_at: '2026-07-24T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-01.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Service feedback: the reference on the sheet</title></head><body>
+    <header>Service notebook</header>
+    <h1>Service feedback: the reference on the sheet</h1>
+    <p>Clara Morivelle · 24 July 2026</p>
+    <p>Clara reviewed the presentation of AV-SR-26-013 after ARWC receipt ARWC-GR-26-013. The service took place on 20 July under ARWC-PO-26-213 for ARWC-WO-26-0397. Its result is serviceable for the stated instrument condition and calibration scope; no parts or extra work were undertaken.</p>
+    <p>The useful feature is the order reference beside the observed result. A service desk colleague can answer a question about the sheet without first asking which visit the customer means. Clara would keep that layout even if a later report becomes longer.</p>
+    <p>This is feedback on a completed report, not a request to issue another calibration record. The accepted report and receipt retain their original dates and authority. Any later instrument question needs to identify the item and the question rather than reuse this result by association.</p>
+    </body></html>
+- id: rr-ardenvale-02
+  story: regional-relationships
+  employer: arwc
+  title: 'Practical learning: what the return desk needs'
+  published_at: '2026-08-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-02.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Practical learning: what the return desk needs</title></head><body>
+    <header>Service notebook</header>
+    <h1>Practical learning: what the return desk needs</h1>
+    <p>Reece Fendell · 07 August 2026</p>
+    <p>Reece&#x27;s draft teaching note distinguishes identifying information from a diagnosis. The service desk needs the item&#x27;s own reference, the reported behavior, when it was noticed and a contact who can explain the circumstances. If a detail is unknown, write that rather than borrowing it from an earlier return.</p>
+    <p>A photograph can help identify a label when suitable to share, but it should not bring unrelated work papers or people into the picture. The example for discussion will use an invented label. No actual instrument is being shipped under this note.</p>
+    <p>Physical preparation, permitted packaging and any handling restrictions must be checked against the item&#x27;s service instructions. This page is about the information accompanying a return. It is not generic permission to pack or send any item in the same way.</p>
+    </body></html>
+- id: rr-ardenvale-03
+  story: regional-relationships
+  employer: arwc
+  title: 'Service feedback: scope travels with the result'
+  published_at: '2026-08-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-03.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Service feedback: scope travels with the result</title></head><body>
+    <header>Service notebook</header>
+    <h1>Service feedback: scope travels with the result</h1>
+    <p>Clara Morivelle · 11 August 2026</p>
+    <p>The review uses AV-SR-26-018 and its ARWC receipt, for ARWC-PO-26-218. The service report records attendance on 3 August, 13:00–16:00, and a serviceable result within the stated scope. That result is not a finding about every instrument of the same type.</p>
+    <p>Clara asks that a service summary retain the scope when quoted in an account review. Removing it makes a neat sentence less accurate. Vera can describe the completed work without putting a sales claim around the result.</p>
+    <p>No replacement parts were included in this completed service. A discussion of possible equipment later must have its own question and quotation. The review leaves the accepted service amount, date and original report unchanged. It supplies communication feedback for the account team, not another engineering approval.</p>
+    </body></html>
+- id: rr-ardenvale-04
+  story: regional-relationships
+  employer: arwc
+  title: 'Completed service: a question for the next reviewer'
+  published_at: '2026-08-25T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-04.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Completed service: a question for the next reviewer</title></head><body>
+    <header>Service notebook</header>
+    <h1>Completed service: a question for the next reviewer</h1>
+    <p>Reece Fendell · 25 August 2026</p>
+    <p>AV-SR-26-024 concerns ARWC-PO-26-224 and ARWC-WO-26-0595. Its 19 August attendance and ARWC receipt belong to the accepted service history. This correspondence asks how the next reviewer should locate that history; it does not reopen the work.</p>
+    <p>Reece recommends keeping the report reference in the question and describing the precise entry being queried. Clara agrees that a bare forwarded attachment is easy to mistake for a new submission. An explanatory subject should distinguish “question about the accepted report” from “replacement for review”.</p>
+    <p>The original report remains the accepted version. No new observation, calibration value or condition claim has been supplied. If a future question reveals a need for further service, it must return through the ordinary request and approval route rather than be implied by the wording of this note.</p>
+    </body></html>
+- id: rr-ardenvale-05
+  story: regional-relationships
+  employer: arwc
+  title: 'Autumn programme: two separate choices'
+  published_at: '2026-09-04T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-05.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Autumn programme: two separate choices</title></head><body>
+    <header>Service notebook</header>
+    <h1>Autumn programme: two separate choices</h1>
+    <p>Vera Tolwick · 04 September 2026</p>
+    <p>Vera&#x27;s programme response separates the proposed practical return-information session from a product demonstration. Clara wants staff to choose the part that helps their work. The demonstration may interest some customers, but it is not a condition of attending the practical discussion.</p>
+    <p>The practical outline will ask how to identify an item, describe a reported problem and leave unknowns explicit. It will not use ARWC service records as demonstration material. Ardenvale can prepare a made-up example with the same kind of information problem.</p>
+    <p>Dates, attendance and venue are still unconfirmed. This note is a programme preference, not a booking or a promise of places. Vera will send the two choices separately when the programme is ready. There is no training charge, purchase order or new qualification in this exchange.</p>
+    </body></html>
+- id: rr-ardenvale-06
+  story: regional-relationships
+  employer: arwc
+  title: 'Return example: an incomplete note that can be answered'
+  published_at: '2026-09-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-06.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Return example: an incomplete note that can be answered</title></head><body>
+    <header>Service notebook</header>
+    <h1>Return example: an incomplete note that can be answered</h1>
+    <p>Reece Fendell · 07 September 2026</p>
+    <p>Working exercise, using invented item EXAMPLE-17. The note reads: “The display changed during use. We stopped and kept the item aside. The time is on the local sheet; I do not have that sheet with me.” There is no diagnosis and no real calibration result.</p>
+    <p>The desk response should ask for the observation time and the person who has the sheet, then check the relevant service route. It should not turn “display changed” into an assumed failure mode. The useful lesson is that a limited observation can still be passed on honestly.</p>
+    <p>Clara suggests leaving the unknown time visible in the first version, then adding it in a later exercise step. The teaching version has no actual serial number, operating site, personal data or customer attachment. It is suitable for a written discussion while the autumn session dates remain open.</p>
+    </body></html>
+- id: rr-ardenvale-07
+  story: regional-relationships
+  employer: arwc
+  title: 'ARWC note: a demonstration can wait'
+  published_at: '2026-09-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  - priya
+  path: Relationships/A-S-002/rr-ardenvale-07.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>ARWC note: a demonstration can wait</title></head><body>
+    <header>Service notebook</header>
+    <h1>ARWC note: a demonstration can wait</h1>
+    <p>Clara Morivelle · 09 September 2026</p>
+    <p>Clara recommends the proposed return-information exercise for consideration when dates are available. She is not requesting a product demonstration or approving new instruments. The practical topic addresses clearer service information; a buying decision would need an identified requirement and a separate commercial process.</p>
+    <p>Priya can keep the programme correspondence with the account without treating it as an order. Under A-S-002-AGR-01, orders are bounded by the service schedule, with parts quoted separately. The limit of USD 18,000 per order is not a standing instruction to spend that amount.</p>
+    <p>There are no named attendees or agreed travel arrangements yet. Clara will bring an actual date and relevance to the staff concerned before asking for time. This private assessment is not to be attached to Ardenvale&#x27;s invitation or forwarded to other suppliers.</p>
+    </body></html>
+- id: rr-ardenvale-08
+  story: regional-relationships
+  employer: arwc
+  title: 'Service-desk wording: return, repair, replacement'
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-002/rr-ardenvale-08.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Service-desk wording: return, repair, replacement</title></head><body>
+    <header>Service notebook</header>
+    <h1>Service-desk wording: return, repair, replacement</h1>
+    <p>Vera Tolwick · 10 September 2026</p>
+    <p>The account desk has recorded ARWC&#x27;s preference for clearer headings. A request for advice on a return is not an order to repair. A repair quotation is not authority to supply a replacement. Using those words interchangeably creates unnecessary purchasing questions.</p>
+    <p>Vera will identify which decision a future quotation is asking the customer to make. If parts are an option, they should appear as an option with their own price rather than inside a description of a completed service. Priya still owns ARWC&#x27;s written purchasing response.</p>
+    <p>This note changes no accepted quotation or invoice. It is a communication preference for future work under the existing agreement. Service staff can continue to ask a technical question without the account desk treating that question as an instruction to sell equipment.</p>
+    </body></html>
+- id: rr-ardenvale-09
+  story: regional-relationships
+  employer: arwc
+  title: 'Autumn feedback: written material before a date'
+  published_at: '2026-09-14T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-09.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Autumn feedback: written material before a date</title></head><body>
+    <header>Service notebook</header>
+    <h1>Autumn feedback: written material before a date</h1>
+    <p>Reece Fendell · 14 September 2026</p>
+    <p>The return-information example can circulate for comment before the autumn programme is scheduled. Clara has asked for the question and the incomplete starting note on the same page, so a colleague reading it between jobs does not need to find an earlier email.</p>
+    <p>Reece will keep the exercise separate from item-specific handling instructions. The exercise teaches how to state an observation and ask for missing information; it does not teach physical repair or certify practical competence. Feedback should identify an unclear sentence or missing decision, not add every possible service problem.</p>
+    <p>The public programme remains unpublished. No attendance claim follows from receiving the page. Ardenvale can use the comments in its preparation, while ARWC decides separately whether any eventual session fits staff availability.</p>
+    </body></html>
+- id: rr-ardenvale-10
+  story: regional-relationships
+  employer: arwc
+  title: 'Programme status: no seats reserved'
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - clara
+  path: Relationships/A-S-002/rr-ardenvale-10.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Programme status: no seats reserved</title></head><body>
+    <header>Service notebook</header>
+    <h1>Programme status: no seats reserved</h1>
+    <p>Vera Tolwick · 15 September 2026</p>
+    <p>The autumn practical-session preferences are retained: use an incomplete but honest return note, separate the demonstration, and make the written question understandable on its own. These are agreed preparation preferences, not an accepted timetable.</p>
+    <p>Clara has not supplied a list of attendees. Ardenvale has not confirmed dates or seats. The next useful contact is a dated programme that lets staff decide which session is relevant. Sending repeated requests for names before then would not settle the question.</p>
+    <p>The account team will leave attendance open until that information exists. No missed appointment, cancelled training or refusal by ARWC is recorded. Both companies have other work to schedule; the absence of a booking is an ordinary unfinished arrangement, not a service complaint.</p>
+    </body></html>
+- id: rr-merewick-01
+  story: regional-relationships
+  employer: arwc
+  title: 'MW account slip: June delivery reference'
+  published_at: '2026-06-16T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-01.md
+  media_type: text/markdown
+  text: |
+    # MW account slip: June delivery reference
+
+    Mabel Dornell | 16 June 2026
+
+    Delivery reference MW-26-0612, dated 12 June: accepted quantity 600 m³ at USD 0.92 per delivered m³, giving USD 552.00. This slip identifies the accepted activity when discussing the account. It is not a replacement invoice or an instruction to pay twice.
+
+    Mabel asks ARWC to use the delivery reference when asking about the amount. A requested quantity or a planning estimate could be different; neither should be substituted for the accepted delivered quantity. Priya will retain the slip beside the account correspondence rather than create another purchase record.
+
+    The standing annual ceiling remains 20,000 m³ under A-S-003-AGR-01. This one accepted delivery does not reserve any further volume. A later request still needs the dated availability and acceptance arrangements for that request.
+- id: rr-merewick-02
+  story: regional-relationships
+  employer: arwc
+  title: 'MW account slip: July opening delivery'
+  published_at: '2026-07-06T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-02.md
+  media_type: text/markdown
+  text: |
+    # MW account slip: July opening delivery
+
+    Mabel Dornell | 06 July 2026
+
+    MW-26-0702 is the accepted 2 July delivery of 900 m³. At the agreed USD 0.92 per delivered m³ its accepted amount is USD 828.00. Keep the quantity attached to that dated reference, rather than relabel it as a monthly standing order.
+
+    Together with MW-26-0612, the selected accepted deliveries total 1,500 m³ and USD 1,380.00. This is a historical subtotal of the two identified activities. It is not a forecast, a balance due or an availability confirmation for the rest of July.
+
+    Mabel's account desk can clarify the recorded amount. Gideon's operations contact can help with the information needed for a future request. Neither discussion alone reserves capacity. Priya will make clear which kind of question she is asking before forwarding it between desks.
+- id: rr-merewick-03
+  story: regional-relationships
+  employer: arwc
+  title: 'MW account slip: three accepted activities'
+  published_at: '2026-07-23T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-03.md
+  media_type: text/markdown
+  text: |
+    # MW account slip: three accepted activities
+
+    Mabel Dornell | 23 July 2026
+
+    The accepted 20 July activity MW-26-0720 is 750 m³ at USD 0.92 per delivered m³, amount USD 690.00. The other two selected activities are MW-26-0612, 600 m³ and USD 552.00, and MW-26-0702, 900 m³ and USD 828.00.
+
+    Those three references total 2,250 m³ and USD 2,070.00. The annual ceiling is 20,000 m³, leaving 17,750 m³ of uncalled contractual quantity on this record. That difference is not water already available to ARWC. Availability must be confirmed for each new request.
+
+    The slip records accepted activity and arithmetic. It does not assert an unpaid balance, create a new reservation or replace the agreement. Mabel will answer an account question against the dated reference rather than interpret the ceiling as a delivery plan.
+- id: rr-merewick-04
+  story: regional-relationships
+  employer: arwc
+  title: 'Forecast return: information before a request'
+  published_at: '2026-08-04T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - nadia
+  path: Relationships/A-S-003/rr-merewick-04.md
+  media_type: text/markdown
+  text: |
+    # Forecast return: information before a request
+
+    Gideon Sarrick | 04 August 2026
+
+    Gideon's requested forecast description should state the period, the customer's estimate and the assumptions that would change it. It should distinguish a planning range from a quantity the customer is asking to reserve. A blank return cannot be read as zero demand, and a forecast cannot be read as an accepted order.
+
+    Nadia will identify which parts of an ARWC estimate are measured history and which are assumptions. She does not need to send customer-level account data to explain a regional planning range. If the estimate changes, the later version should name the earlier date and the reason.
+
+    Merewick has its own maintenance and member planning to consider. Receiving better information helps that work; it does not make uncommitted capacity certain. No new quantity, reservation or delivery is agreed by this note.
+- id: rr-merewick-05
+  story: regional-relationships
+  employer: arwc
+  title: 'Account distinction: customer and member returns'
+  published_at: '2026-08-12T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-05.md
+  media_type: text/markdown
+  text: |
+    # Account distinction: customer and member returns
+
+    Mabel Dornell | 12 August 2026
+
+    ARWC is an external contract customer of Merewick, not a member owner. Its account correspondence belongs under A-S-003. A member planning meeting and a customer request can concern similar information without conferring the same standing.
+
+    Mabel will send ARWC the customer-facing information request when relevant. She will not forward another member's return or a member-only discussion to explain an available date. Priya can supply the particulars of ARWC's request and ask whether they are sufficient for an account response.
+
+    The agreement remains a limited supplementary-supply arrangement, with availability confirmed per request. This note changes no rights, voting role or ownership interest. It also does not make ARWC responsible for predicting the cooperative's wider commitments. Each party can explain its own planning constraints without disclosing somebody else's confidential return.
+- id: rr-merewick-06
+  story: regional-relationships
+  employer: arwc
+  title: 'Planning note: ceiling is not firm supply'
+  published_at: '2026-08-24T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - nadia
+  - priya
+  path: Relationships/A-S-003/rr-merewick-06.md
+  media_type: text/markdown
+  text: |
+    # Planning note: ceiling is not firm supply
+
+    Nadia Corvane | 24 August 2026
+
+    Nadia's internal reminder uses the three accepted Merewick activities: 2,250 m³, with accepted charges of USD 2,070.00. Subtracting the quantity from the 20,000 m³ annual ceiling gives 17,750 m³. It does not establish physical availability or a right to call on that quantity at any chosen time.
+
+    A forecast can carry the agreement as context while keeping unconfirmed supply outside a firm total. A later request needs a dated response and accepted reservation. The current record supplies neither for a new delivery.
+
+    Priya should remain the account route for commercial availability questions. Nadia can explain the planning assumptions without presenting them as purchasing authority. This note stays with ARWC's two responsible colleagues; it is not a supplier commitment and should not be forwarded as one.
+- id: rr-merewick-07
+  story: regional-relationships
+  employer: arwc
+  title: 'Forecast version note: what changed'
+  published_at: '2026-09-03T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - nadia
+  path: Relationships/A-S-003/rr-merewick-07.md
+  media_type: text/markdown
+  text: |
+    # Forecast version note: what changed
+
+    Gideon Sarrick | 03 September 2026
+
+    A revised forecast should identify the earlier return by date, retain the same period and say which assumption changed. Replacing the attachment without explanation forces the recipient to compare numbers without knowing why they differ. If the period changes as well, say so at the start.
+
+    Gideon and Nadia discussed using a short version note with the return. The example is descriptive: “The planning range has changed because the assumed timing changed; this is still a forecast.” It carries no invented quantity and is not a request for a reservation.
+
+    The earlier return should remain available to the people who used it. A later estimate does not retrospectively alter an accepted delivery. This working note gives the two planners a consistent question to ask when a revision arrives, without sharing member or individual customer information.
+- id: rr-merewick-08
+  story: regional-relationships
+  employer: arwc
+  title: 'Customer information request: minimum useful fields'
+  published_at: '2026-09-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-08.md
+  media_type: text/markdown
+  text: |
+    # Customer information request: minimum useful fields
+
+    Mabel Dornell | 07 September 2026
+
+    The account desk's information checklist asks for ARWC's account reference, the period being discussed, the quantity and units if a quantity is proposed, and whether the note is a forecast or an actual request. It also needs a contact who can answer a follow-up before any offer expires.
+
+    If the question is about an existing delivery, use its accepted reference instead. The desk should not turn a historical reconciliation into a request for another delivery. Nor should an incomplete planning note silently become an order because it contains a number.
+
+    Priya has asked for the distinction to appear near the start of future correspondence. Mabel agrees. This checklist is not an offer form carrying reserved capacity. The per-request availability and acceptance process remains necessary under A-S-003-AGR-01.
+- id: rr-merewick-09
+  story: regional-relationships
+  employer: arwc
+  title: 'Forecast-format conversation: proposed time'
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - nadia
+  path: Relationships/A-S-003/rr-merewick-09.md
+  media_type: text/markdown
+  text: |
+    # Forecast-format conversation: proposed time
+
+    Gideon Sarrick | 10 September 2026
+
+    Gideon has proposed 23 September, 09:00–09:20, for a short conversation about forecast format. Nadia may hold the time provisionally but has not accepted the invitation. The discussion would cover periods, units and version notes, not a new supply reservation.
+
+    The useful input is one written question from each planner. Neither needs customer-level records, cooperative member papers or a presentation. A confirmed appointment would still be a conversation about information, not acceptance of a quantity.
+
+    If Nadia cannot make the proposed time, the two questions can be answered by mail. There is no dependency on holding a meeting merely to use the existing agreement. The slot remains tentative, with no minutes or attendance to record at the September 16 opening state.
+- id: rr-merewick-10
+  story: regional-relationships
+  employer: arwc
+  title: 'September account position: no further reservation'
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-003/rr-merewick-10.md
+  media_type: text/markdown
+  text: |
+    # September account position: no further reservation
+
+    Mabel Dornell | 15 September 2026
+
+    The account correspondence at this review contains the same three accepted deliveries, totaling 2,250 m³ and USD 2,070.00. No later reservation is made by the forecast-format exchange. The proposed September 23 conversation concerns the information format only.
+
+    The annual ceiling remains 20,000 m³. The agreement continues through 31 December 2027, with availability confirmed for each request. ARWC remains an external customer rather than a member owner. These facts should travel together when the account is summarized.
+
+    There is no present request for Mabel to hold a quantity or quote a new delivery. The next action is for Nadia to answer the proposed time if a conversation is still useful. The desk will not manufacture an order to make the account review look complete.
+- id: rr-rillhaven-01
+  story: regional-relationships
+  employer: keplerops
+  title: Summer review questions from the maintenance desk
+  published_at: '2026-07-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  path: Relationships/K-C-002/rr-rillhaven-01.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Summer review questions from the maintenance desk</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Summer review questions from the maintenance desk</h1>
+    <p>Greer Aldervin · 07 July 2026</p>
+    <p>Greer&#x27;s questions for the summer account conversation:</p>
+    <p>First, make the person who needs the result visible before explaining the submission. A records reviewer and a maintenance coordinator may open the same package for different reasons. Second, keep the actual question near the top of support mail. The desk loses time rereading a history to find what still needs an answer.</p>
+    <p>One thing to retain is the ability to ask a small question without turning it into a large demonstration. Rillhaven has seasonal work to finish and other tasks competing for the same staff time. Greer would prefer a short written answer where that is enough.</p>
+    <p>Maya will use these preferences in the ordinary relationship correspondence. They are feedback about how to work together, not a list of unresolved product incidents.</p>
+    </body></html>
+- id: rr-rillhaven-02
+  story: regional-relationships
+  employer: keplerops
+  title: 'Desk example: write a question another shift can inherit'
+  published_at: '2026-08-04T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - talia
+  path: Relationships/K-C-002/rr-rillhaven-02.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Desk example: write a question another shift can inherit</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Desk example: write a question another shift can inherit</h1>
+    <p>Kit Merrowin · 04 August 2026</p>
+    <p>Kit&#x27;s written exercise for discussing support questions. It is an invented example, not a report of an open Rillhaven incident.</p>
+    <p>Starting sentence: “The copy is wrong.” The next shift cannot tell which copy, what was expected or whether someone has already asked about it. Better working sentence: “For the named package and revision, I expected the accepted description; I see the earlier wording. Is this the view I should be reading?” The writer must supply the real reference when using that form for actual work.</p>
+    <p>The exercise is about making the question answerable. It does not assume that the product is at fault, that a later revision has been accepted or that the sender is the reviewer. Kit wants the colleague inheriting the question to see those distinctions without a telephone explanation.</p>
+    </body></html>
+- id: rr-rillhaven-03
+  story: regional-relationships
+  employer: keplerops
+  title: 'Seasonal account conversation: budget versus service work'
+  published_at: '2026-08-19T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - kwm049
+  path: Relationships/K-C-002/rr-rillhaven-03.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Seasonal account conversation: budget versus service work</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Seasonal account conversation: budget versus service work</h1>
+    <p>Arel Vornell · 19 August 2026</p>
+    <p>Arel&#x27;s account note separates the budget view from the seasonal maintenance handover. The current FieldKest agreement K-C-002-AGR-01 runs through 31 October 2027. Its annual service fee is USD 89,000, in four instalments of USD 22,250. Those are existing terms, not a new proposal.</p>
+    <p>The account conversation can help Arel explain the current commitment internally. Greer&#x27;s maintenance questions should remain with the service conversation, where the relevant reviewer can answer them. A budget summary should not claim that every suggestion made by the maintenance desk has become included future work.</p>
+    <p>Arel will bring a concrete scope question if the business wants a further proposal. Luca will distinguish that proposal from the current service. No additional price, accepted order or invoice is created by this note.</p>
+    </body></html>
+- id: rr-rillhaven-04
+  story: regional-relationships
+  employer: keplerops
+  title: 'Handover feedback: keep the small answers usable'
+  published_at: '2026-09-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  path: Relationships/K-C-002/rr-rillhaven-04.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Handover feedback: keep the small answers usable</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Handover feedback: keep the small answers usable</h1>
+    <p>Greer Aldervin · 07 September 2026</p>
+    <p>The maintenance office confirmed the seasonal handover complete on 4 September. This follow-up asks what helped the working relationship. Greer values replies that name the submission and say what the next reviewer needs, without reopening an already settled question.</p>
+    <p>For the autumn workshop, staff still want an example and time to ask questions. Completion of the handover has not removed that need. The workshop should let the staff explain their working day as well as hear the supplier explain the product.</p>
+    <p>Greer&#x27;s next action is to collect a small number of questions that need discussion, rather than send the whole archive of resolved mail. Maya will keep later support requests distinct from those workshop questions. Nothing in the feedback changes the completed handover or creates another seasonal support case.</p>
+    </body></html>
+- id: rr-rillhaven-05
+  story: regional-relationships
+  employer: keplerops
+  title: 'Workshop questions: who uses the answer'
+  published_at: '2026-09-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - talia
+  path: Relationships/K-C-002/rr-rillhaven-05.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Workshop questions: who uses the answer</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Workshop questions: who uses the answer</h1>
+    <p>Kit Merrowin · 09 September 2026</p>
+    <p>Kit&#x27;s question list for Talia, retained in the account correspondence:</p>
+    <p>Who needs the accepted record next? How does that person distinguish a later draft from the accepted revision? If a colleague returns to the conversation after a shift change, which reference tells them where to start?</p>
+    <p>The list is deliberately shorter than the range of product suggestions. These questions can be explored through one ordinary example; a tour of every screen would leave little time for the reasons behind the review. Kit asks Talia to preserve the customer&#x27;s chance to explain why an apparently small distinction matters at the desk.</p>
+    <p>These are preparatory questions. There are no participant answers, attendance results or minutes. The final workshop material will be issued separately by the agreed lead.</p>
+    </body></html>
+- id: rr-rillhaven-06
+  story: regional-relationships
+  employer: keplerops
+  title: Suggestion triage for the account file
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  - talia
+  - kwm049
+  path: Relationships/K-C-002/rr-rillhaven-06.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Suggestion triage for the account file</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Suggestion triage for the account file</h1>
+    <p>Maya Ranscombe · 10 September 2026</p>
+    <p>Working triage for the KeplerOps account team.</p>
+    <p>A question about current behavior belongs with support and needs a concrete reference. A suggestion about presentation can be recorded with the reason it would help. A request for an additional interface or a delivery date needs an assessment and the appropriate commercial conversation. These categories may emerge in one discussion, but they need different next actions.</p>
+    <p>Talia leads the workshop. Maya takes the ongoing-support questions. Luca should receive a bounded scope request if one arises, not an enthusiastic summary that sounds as though a project was agreed. The existing Rillhaven interface remains the supported one.</p>
+    <p>This sheet is an internal reminder for listening and recording. It does not add to the customer workshop packet, promise a feature or allocate unapproved delivery effort.</p>
+    </body></html>
+- id: rr-rillhaven-07
+  story: regional-relationships
+  employer: keplerops
+  title: 'Workshop preparation: printed questions'
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - talia
+  path: Relationships/K-C-002/rr-rillhaven-07.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Workshop preparation: printed questions</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Workshop preparation: printed questions</h1>
+    <p>Greer Aldervin · 11 September 2026</p>
+    <p>Greer&#x27;s practical preparation note: the shift desk can use printed material, and the question should be readable without opening a chain of previous email. Keep the reference and revision visible on the same page as the exercise. Do not shrink the example to make room for an expanded product introduction.</p>
+    <p>Greer will gather the desk&#x27;s remaining questions in advance where possible. A colleague who has no question should not have to invent one to be counted as interested. The session can also contain quiet reading time before discussion.</p>
+    <p>This note concerns preparation for 24 September. It does not record attendance, a completed exercise or a change to the agreed lead. Talia owns the opening and example; Maya supports the ongoing-support discussion. The actual packet will remain the separately issued agenda, example and invitation.</p>
+    </body></html>
+- id: rr-rillhaven-08
+  story: regional-relationships
+  employer: keplerops
+  title: 'Preparing to listen: question parking sheet'
+  published_at: '2026-09-14T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - talia
+  - maya
+  path: Relationships/K-C-002/rr-rillhaven-08.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Preparing to listen: question parking sheet</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Preparing to listen: question parking sheet</h1>
+    <p>Talia Mornac · 14 September 2026</p>
+    <p>Working page for the two facilitators, not part of the participant packet.</p>
+    <p>If a question concerns the example, keep it in the example discussion. If it concerns an individual&#x27;s live support request, ask for the reference and arrange the appropriate follow-up without projecting the person&#x27;s record to the room. If it is a product suggestion, record the need before debating an implementation.</p>
+    <p>Leave an unanswered question visible with an owner. There is no need to tidy every uncertainty into a promise before the session ends. Maya can identify the support route; Talia can ask whether the question belongs to the whole group or just the person asking.</p>
+    <p>This page has no filled participant results. Its purpose is to help us listen on 24 September, especially when the conversation is more interesting than the prepared example.</p>
+    </body></html>
+- id: rr-rillhaven-09
+  story: regional-relationships
+  employer: keplerops
+  title: Reading the final example without answering it for people
+  published_at: '2026-09-15T12:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - talia
+  - maya
+  path: Relationships/K-C-002/rr-rillhaven-09.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Reading the final example without answering it for people</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Reading the final example without answering it for people</h1>
+    <p>Talia Mornac · 15 September 2026</p>
+    <p>Facilitator reading note, after the working example was issued on 15 September.</p>
+    <p>RH-WORKSHOP-026 retains r1 as Returned at 18 units, r2 as Accepted at 18 units and r3 as Draft at 19 units. The changed label on r2 does not change its value. The later draft does not silently replace the accepted revision. Keep those facts intact when referring to the worksheet.</p>
+    <p>The participants should do the reasoning themselves at the workshop. Talia will ask which revision the reviewer should cite and wait before explaining. Maya can ask what reference belongs in a support question if the discussion becomes abstract.</p>
+    <p>The final customer packet still consists of the agenda, working example and invitation. This internal reading note is not an extra answer sheet for participants. No exercise has been completed and no customer answer is scored here.</p>
+    </body></html>
+- id: rr-rillhaven-10
+  story: regional-relationships
+  employer: keplerops
+  title: 'Account handover: workshop still ahead'
+  published_at: '2026-09-16T07:45:00-04:00'
+  audience: restricted
+  reader_keys:
+  - maya
+  - kwm049
+  path: Relationships/K-C-002/rr-rillhaven-10.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Account handover: workshop still ahead</title></head><body>
+    <header>Maintenance office working papers</header>
+    <h1>Account handover: workshop still ahead</h1>
+    <p>Maya Ranscombe · 16 September 2026</p>
+    <p>Morning account handover, 16 September. The seasonal support handover is complete. The workshop is prepared for 24 September, 10:00–11:30, and has not been delivered. Talia leads the opening, example and discussion; Maya takes the ongoing-support questions.</p>
+    <p>The prepared allocation is 10 + 25 + 20 + 25 + 10 minutes, totaling ninety minutes. The final participant packet has three items: agenda, working example and invitation. Internal listening notes are not extra customer deliverables.</p>
+    <p>Luca should describe the session as prepared when asked for account status. Attendance, customer questions, minutes and any agreed follow-up will come after the session. The workshop does not by itself complete or charge for a separate winter project, and no new commercial commitment has been collected from prospective workshop questions.</p>
+    </body></html>
+- id: rr-belvarn-01
+  story: regional-relationships
+  employer: arwc
+  title: A-B-001 / reading explanation retained
+  published_at: '2026-07-27T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-01.md
+  media_type: text/markdown
+  text: |
+    # A-B-001 / reading explanation retained
+
+    Rosa Nerivet | 27 July 2026
+
+    Account note for Lila, following ARWC-BC-2026-0001. Invoice ARWC-INV-2026-048481 uses actual readings 210631 and 218731 on meter ARWC-M-048751. The difference is 8,100 m³. The reading question was explained on 23 July; this note retains the explanation for the accounts file.
+
+    | Entry | Meaning for this question |
+    | --- | --- |
+    | 210631 | Earlier actual reading used on the usage line |
+    | 218731 | Later actual reading used on the usage line |
+    | 8100 m³ | Difference between those readings |
+
+    The total is the metered interval quantity. It does not say which production run used the water. Lila can use the bill reference to ask a further account question without reopening the answered reading query as a new complaint.
+- id: rr-belvarn-02
+  story: regional-relationships
+  employer: arwc
+  title: 'Production notebook: three dates on a water bill'
+  published_at: '2026-08-03T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-02.md
+  media_type: text/markdown
+  text: |
+    # Production notebook: three dates on a water bill
+
+    Bram Vellard | 03 August 2026
+
+    Bram's question sheet for the production team.
+
+    Bill issue date: when the bill was issued. Reading dates: the dates of the readings used for the consumption calculation. Production dates: our own dates for making particular orders. These can describe different intervals and should not be put in the same column just because a spreadsheet wants one date.
+
+    Before comparing water use with output, identify the interval each number covers and the unit used. If the periods do not line up, mark the comparison as incomplete. A precise division of mismatched totals is still a poor comparison.
+
+    Rosa can explain the account entries. Belvarn must supply its own production information and decide how to compare it. This notebook does not claim a saving, assign consumption to a particular line or propose a meter change.
+- id: rr-belvarn-03
+  story: regional-relationships
+  employer: arwc
+  title: 'Appointment request card: ask the production office'
+  published_at: '2026-08-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-03.md
+  media_type: text/markdown
+  text: |
+    # Appointment request card: ask the production office
+
+    Bram Vellard | 11 August 2026
+
+    Belvarn's practical contact card for arranging a meter appointment at the River plant.
+
+    Use the production office to establish a current workable window. The mix of short runs means that a convenient time in one week may be poor in the next. Ask for the named person meeting the visitor and the access point when the actual appointment is being arranged.
+
+    Do not infer an appointment from a question about a bill. Do not carry a suggested time forward indefinitely. Once the appointment team and Belvarn agree the time, retain that confirmation where the staff on duty can find it.
+
+    This card supplies the contact preference only. There is no new visit date, completed meter work or change to the water account. The agreed appointment record for any actual work will carry those details.
+- id: rr-belvarn-04
+  story: regional-relationships
+  employer: arwc
+  title: 'Short-run planning: what advance notice helps'
+  published_at: '2026-08-24T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-04.md
+  media_type: text/markdown
+  text: |
+    # Short-run planning: what advance notice helps
+
+    Bram Vellard | 24 August 2026
+
+    Bram's feedback about planned-visit communication is practical: name the purpose, proposed window and person who needs to respond. “An engineer may attend” leaves production unable to judge whether the proposal touches a busy part of the day.
+
+    An early proposal can still be useful if it says what remains unsettled. Bram would rather see a provisional window clearly described than a confident date copied from an internal diary before anyone has asked the plant. The final confirmation must then distinguish itself from the proposal.
+
+    The smaller runs are a business scheduling concern, not evidence of a water-service incident. Belvarn has not reported a supply interruption in this exchange. Rosa will retain the communication preference and ask the appointment team to use it when there is an actual request.
+- id: rr-belvarn-05
+  story: regional-relationships
+  employer: arwc
+  title: 'Careers conversation: questions before an invitation'
+  published_at: '2026-09-02T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-05.md
+  media_type: text/markdown
+  text: |
+    # Careers conversation: questions before an invitation
+
+    Lila Perrow | 02 September 2026
+
+    Belvarn maintains an apprenticeship relationship with its local training college. Lila is collecting possible subjects for a later careers conversation: how an experienced employee explains a routine task, how a new colleague knows when to ask for help, and what makes a useful handover.
+
+    The idea is not yet an event invitation. There is no date, speaker list or commitment of ARWC staff time. Rosa has asked for the intended audience and format before suggesting whether a colleague could contribute. A discussion of everyday work may suit; a technical demonstration would be a different request.
+
+    Lila will take the questions back to the people planning the conversation. Belvarn's interest in apprenticeships belongs to its own business life. It is not a condition attached to its water account or a promised customer benefit.
+- id: rr-belvarn-06
+  story: regional-relationships
+  employer: arwc
+  title: 'Efficiency enquiry: information needed before a comparison'
+  published_at: '2026-09-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-06.md
+  media_type: text/markdown
+  text: |
+    # Efficiency enquiry: information needed before a comparison
+
+    Rosa Nerivet | 09 September 2026
+
+    The production office is considering an efficiency project. The first account question is what the ordinary meter bill can and cannot tell the team. Its readings describe consumption over the identified interval; they do not allocate that consumption to particular products or short runs.
+
+    A useful comparison needs matching periods and a stated production measure. Belvarn should also decide what operational changes occurred during the period before attributing a difference to an efficiency measure. Rosa can explain the bill entries, but does not have the plant's internal production records.
+
+    The billing-period explanation is being finalized separately and will be sent when ready. This enquiry has no promised saving, equipment recommendation, appointment or changed tariff. Bram will first identify the internal question the comparison is supposed to answer.
+- id: rr-belvarn-07
+  story: regional-relationships
+  employer: arwc
+  title: Working comparison card for the production desk
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-07.md
+  media_type: text/markdown
+  text: |
+    # Working comparison card for the production desk
+
+    Bram Vellard | 10 September 2026
+
+    Bram's working comparison card after the account explanation:
+
+    | Question | Information to put beside it |
+    | --- | --- |
+    | Which interval? | Start and end of both the metered and production records |
+    | Which quantity? | Metered m³ and the chosen production measure, separately labeled |
+    | What changed? | Known changes in run mix or working pattern during that interval |
+    | What is missing? | Unmatched periods or incomplete production information |
+
+    The card has no efficiency result because Belvarn has not supplied a matching production series in this conversation. Rosa has checked only that the bill side is described as an interval quantity. The next internal task is to decide which records Belvarn wants to compare. A blank result is preferable to an unsupported savings claim.
+- id: rr-belvarn-08
+  story: regional-relationships
+  employer: arwc
+  title: 'Customer follow-up: keep the two contact routes'
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  - priya
+  path: Relationships/A-B-001/rr-belvarn-08.md
+  media_type: text/markdown
+  text: |
+    # Customer follow-up: keep the two contact routes
+
+    Rosa Nerivet | 11 September 2026
+
+    Internal ARWC follow-up for the Belvarn relationship. Lila's accounts questions and Bram's production scheduling questions need different working contacts. Do not replace one with the other merely to make the account record look simpler.
+
+    The July reading query is already explained. The September efficiency enquiry asks how to use the bill information; it is not a reported supply problem. Rosa has promised the finished billing-period explanation when ready, not a free assessment of the plant's efficiency proposal.
+
+    Priya may encounter the same company through ordinary purchasing or community contacts. Those connections do not grant access to unrelated account details. Keep this internal assessment out of customer attachments. The next customer action is the explanatory document, while a meter appointment still requires a separately agreed time.
+- id: rr-belvarn-09
+  story: regional-relationships
+  employer: arwc
+  title: 'Cover note: the finished billing-period explanation'
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-09.md
+  media_type: text/markdown
+  text: |
+    # Cover note: the finished billing-period explanation
+
+    Rosa Nerivet | 15 September 2026
+
+    Rosa's cover note for the accepted explanation “Which period does my water bill cover?”, issued on 15 September. It distinguishes the billing interval from the issue date and explains how the bill identifies readings and whether they are actual or estimated.
+
+    For Belvarn's efficiency discussion, use it to establish which interval a bill describes before comparing that bill with production information. It does not supply production data or attribute consumption to individual runs. A specific reading question can still be answered against the named bill.
+
+    The explanation also distinguishes a bill question from a meter appointment. The existing production-office contact preference remains useful, but a visit must be agreed separately. The attached explanation is the accepted text, unchanged; the cover note adds the reason it was sent to Bram.
+- id: rr-belvarn-10
+  story: regional-relationships
+  employer: arwc
+  title: 'Account follow-up: questions retained, visit unbooked'
+  published_at: '2026-09-16T07:45:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-001/rr-belvarn-10.md
+  media_type: text/markdown
+  text: |
+    # Account follow-up: questions retained, visit unbooked
+
+    Rosa Nerivet | 16 September 2026
+
+    September 16 account follow-up. The July reading explanation remains the answer to ARWC-BC-2026-0001. Bram has now received the finished billing-period explanation for the production team's information gathering. Its arrival does not change the readings or create an adjustment.
+
+    The plant's efficiency discussion remains Belvarn's own project consideration. There is no recorded saving or accepted engineering proposal in this correspondence. The ordinary account route remains available for a question about a specific bill entry.
+
+    No new meter appointment has been booked here. The production office remains the place to agree a current practical window if a visit is requested. Lila and Bram can keep their different contact roles without one receiving every detail of the other's internal work.
+- id: rr-talvern-01
+  story: regional-relationships
+  employer: arwc
+  title: Shared-facility supply / June account note
+  published_at: '2026-06-16T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-B-002/rr-talvern-01.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Shared-facility supply / June account note</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Shared-facility supply / June account note</h1>
+    <p>Selma Ardenn · 16 June 2026</p>
+    <p>Account A-B-002, delivery TG-26-0612. Accepted on 12 June: 450 m³ at USD 1.15 per delivered m³, amount USD 517.50. This is the shared-facility supplementary supply, not a statement of individual members&#x27; water use.</p>
+    <p>Selma wants the distinction retained when answering member questions. The cooperative can explain the shared arrangement without collecting a household account history from everybody who attends an information session. A member&#x27;s separate source or domestic service is not part of this delivery reference.</p>
+    <p>The agreement allows at most 7,500 m³ in the June–September season. This account note describes the one accepted activity. It neither allocates the seasonal ceiling between members nor guarantees a further quantity. Priya can answer a question about the accepted reference through the usual account correspondence.</p>
+    </body></html>
+- id: rr-talvern-02
+  story: regional-relationships
+  employer: arwc
+  title: Shared-facility supply / July reference
+  published_at: '2026-07-06T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-B-002/rr-talvern-02.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Shared-facility supply / July reference</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Shared-facility supply / July reference</h1>
+    <p>Selma Ardenn · 06 July 2026</p>
+    <p>Accepted activity TG-26-0702 records 620 m³ on 2 July, at USD 1.15 per delivered m³. Its amount is USD 713.00. Together with TG-26-0612, the two identified activities total 1,070 m³ and USD 1,230.50.</p>
+    <p>Selma will use the dated references when answering a question about the cooperative account. A season is not the same thing as an invoice issue date, and a seasonal ceiling is not the volume already supplied. The period and the kind of number should be stated before a total is repeated in member correspondence.</p>
+    <p>This note is an account explanation. It does not apportion costs to members, describe any grower&#x27;s independent supply or authorize another delivery. Talvern owns its own internal member arrangements and will answer those questions separately.</p>
+    </body></html>
+- id: rr-talvern-03
+  story: regional-relationships
+  employer: arwc
+  title: The seasonal billing answer for the account file
+  published_at: '2026-07-27T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-03.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>The seasonal billing answer for the account file</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>The seasonal billing answer for the account file</h1>
+    <p>Rosa Nerivet · 27 July 2026</p>
+    <p>Following ARWC-BC-2026-0002, the three accepted shared-facility bills total USD 1,805.50 and are settled. Their delivered quantities total 1,570 m³. The third reference, TG-26-0720, is 500 m³ at USD 1.15, amount USD 575.00.</p>
+    <p>| Reference | Delivered m³ | Accepted USD |<br>| --- | ---: | ---: |<br>| TG-26-0612 | 450 | 517.50 |<br>| TG-26-0702 | 620 | 713.00 |<br>| TG-26-0720 | 500 | 575.00 |</p>
+    <p>The recorded billing answer remains unchanged. It concerns Talvern&#x27;s shared-facility arrangement, not members&#x27; other water arrangements. Subtracting 1,570 from the 7,500 m³ seasonal ceiling gives 5,930 m³ of uncalled quantity; it does not describe an additional delivery or an amount now due.</p>
+    </body></html>
+- id: rr-talvern-04
+  story: regional-relationships
+  employer: arwc
+  title: 'Member questions: which arrangement are we discussing?'
+  published_at: '2026-08-05T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-04.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Member questions: which arrangement are we discussing?</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Member questions: which arrangement are we discussing?</h1>
+    <p>Nico Pelwick · 05 August 2026</p>
+    <p>Nico&#x27;s question card for a later information session.</p>
+    <p>Does the supplementary allowance describe all the water a member uses? No; it concerns the shared Pine facilities under the stated contract. Can a household bill be answered from the cooperative total? No; the relevant household account has its own information. Is the seasonal maximum a record of actual delivery? No; delivered quantities need their dated accepted references.</p>
+    <p>A useful first question from the presenter is “Which arrangement do you mean?” It is less intimidating than asking a member to know the right department before speaking. A personal account question should then move to the appropriate private route rather than be answered in front of the group.</p>
+    <p>The card contains proposed explanations only. There is no new session date or completed attendance record.</p>
+    </body></html>
+- id: rr-talvern-05
+  story: regional-relationships
+  employer: arwc
+  title: A short explanation for the shared-facility notice
+  published_at: '2026-08-18T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-B-002/rr-talvern-05.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>A short explanation for the shared-facility notice</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>A short explanation for the shared-facility notice</h1>
+    <p>Selma Ardenn · 18 August 2026</p>
+    <p>Draft wording for a Talvern notice, retained for account review:</p>
+    <p>“Our ARWC arrangement is a limited supplementary supply for the shared Pine facilities. The seasonal maximum is 7,500 m³ during June–September. Actual supplied quantities are recorded against accepted deliveries. This arrangement does not replace each member&#x27;s other water arrangements.”</p>
+    <p>Priya has been asked to check that description of the contract. Talvern will decide the notice&#x27;s audience and publication route. The draft does not set internal member charges, promise equal shares or convert the ceiling into available water.</p>
+    <p>Selma prefers a short explanatory paragraph with the member-services contact beside it. A long list of exceptions would obscure the first distinction people need. Questions about another arrangement should be directed to the right account owner rather than answered from this paragraph.</p>
+    </body></html>
+- id: rr-talvern-06
+  story: regional-relationships
+  employer: arwc
+  title: 'Packing-facility discussion: leave room in the agenda'
+  published_at: '2026-09-03T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-06.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Packing-facility discussion: leave room in the agenda</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Packing-facility discussion: leave room in the agenda</h1>
+    <p>Nico Pelwick · 03 September 2026</p>
+    <p>Nico&#x27;s scheduling note explains why Talvern cannot simply add another subject to the next member meeting. The packing and storage discussion already needs time for members to compare a staged approach with one larger interruption. Different members have different busy periods and will not all find the same week convenient.</p>
+    <p>The water-information session should have its own useful time rather than become the last item after a long debate. A written question list can be collected while the dates are reconsidered. Members who cannot attend should still have a route to the general explanation.</p>
+    <p>There is no agreed facility investment or construction programme in this note. ARWC is not being asked to decide the cooperative&#x27;s packing project. Rosa needs the scheduling constraint so she can offer a suitable information arrangement later.</p>
+    </body></html>
+- id: rr-talvern-07
+  story: regional-relationships
+  employer: arwc
+  title: 'Information session: move the date search later'
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-07.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Information session: move the date search later</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Information session: move the date search later</h1>
+    <p>Rosa Nerivet · 10 September 2026</p>
+    <p>Talvern asked on 8 September to move the member information session later in the autumn. The proposed week overlapped with several members&#x27; busy period, and the packing-facility discussion had already filled the next meeting. Rosa agreed on 9 September to seek later dates.</p>
+    <p>The useful next step is a short list of common questions and availability constraints. There is no need to put a water topic into the existing meeting merely to say it has been covered. A written general explanation can still be retained for members who cannot attend later.</p>
+    <p>No replacement session date is confirmed. This follow-up retains the postponement and the reason, without inventing a cancelled booking or a completed session. Talvern will return possible dates when the member-services team has compared them.</p>
+    </body></html>
+- id: rr-talvern-08
+  story: regional-relationships
+  employer: arwc
+  title: 'ARWC preparation: general questions and private accounts'
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  - priya
+  path: Relationships/A-B-002/rr-talvern-08.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>ARWC preparation: general questions and private accounts</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>ARWC preparation: general questions and private accounts</h1>
+    <p>Rosa Nerivet · 11 September 2026</p>
+    <p>Internal preparation for Talvern&#x27;s later information session. The shared-facility contract explanation is suitable for general discussion. An individual member&#x27;s household balance, bill or supply arrangement is not. Rosa should provide a route for private questions without collecting those details in the public question list.</p>
+    <p>The three accepted shared-facility bills are settled at USD 1,805.50. That accepted answer is not a reason to discuss individual members&#x27; finances. Priya can explain the contract boundary if a general question concerns the seasonal ceiling or the shared facilities.</p>
+    <p>The session remains undated. No staff attendance or travel is authorized by this preparation note. When possible dates arrive, Rosa will ask the relevant colleagues about a bounded session rather than assume availability from their willingness to help.</p>
+    </body></html>
+- id: rr-talvern-09
+  story: regional-relationships
+  employer: arwc
+  title: 'Member-services draft: how to send a useful question'
+  published_at: '2026-09-14T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-09.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>Member-services draft: how to send a useful question</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>Member-services draft: how to send a useful question</h1>
+    <p>Selma Ardenn · 14 September 2026</p>
+    <p>Draft member-services wording, returned to ARWC for a clarity check:</p>
+    <p>“If you have a general question about our supplementary shared-facility arrangement, send the question to Member Services for the later information session. Say which part of the explanation is unclear. Please do not include a household bill or another person&#x27;s account information in the group question list. We can point you to a private account route.”</p>
+    <p>Rosa has been asked whether the distinction is understandable before Talvern chooses how to circulate it. This draft does not publish anyone&#x27;s question or promise that ARWC can answer it from the cooperative&#x27;s records. It also avoids naming a session date before the availability check is complete.</p>
+    </body></html>
+- id: rr-talvern-10
+  story: regional-relationships
+  employer: arwc
+  title: A planning call before the member session
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - rosa
+  path: Relationships/A-B-002/rr-talvern-10.html
+  media_type: text/html
+  text: |
+    <!doctype html>
+    <html lang="en"><head><meta charset="utf-8"><title>A planning call before the member session</title></head><body>
+    <header>Member Services circular file</header>
+    <h1>A planning call before the member session</h1>
+    <p>Nico Pelwick · 15 September 2026</p>
+    <p>Nico proposes a twenty-minute planning call on 14 October, 10:00–10:20, to compare the question list and the remaining date constraints. Rosa has not yet confirmed the time. This is a possible planning call between contacts, not the member information session itself.</p>
+    <p>The call would check whether the general explanation answers the collected questions and whether a later session is still useful. It would not discuss household account details. If availability is still unsettled, the same check can be done in writing.</p>
+    <p>No member session, venue, staff travel or public invitation is created by this proposal. The information session remains later in the autumn with its date open. The proposed planning slot is retained as tentative, with no attendance or minutes.</p>
+    </body></html>
+- id: rr-orrenvale-01
+  story: regional-relationships
+  employer: keplerops
+  title: Account desk note / start with the actual question
+  published_at: '2026-06-24T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-01.md
+  media_type: text/markdown
+  text: |
+    # Account desk note / start with the actual question
+
+    Isaac Devren | 24 June 2026
+
+    Isaac's desk note for the KeplerOps relationship.
+
+    A useful request begins with the internal service or endpoint concerned and the observed behavior. KeplerOps does not need a general explanation of what a backup is before it can ask about a retained support item. Equally, knowing the customer is technical does not remove the need to identify which item is being discussed.
+
+    If the question concerns a product workload, say so before proposing work. Orren & Vale's retained service covers the agreed internal scope; KeplerOps' platform team owns product workloads. Isaac will ask for clarification when a request crosses that boundary rather than assume authority from the sender's role.
+
+    No passwords, recovery material or unrelated logs belong in this account note. It gives the next desk colleague a way to ask a precise first question.
+- id: rr-orrenvale-02
+  story: regional-relationships
+  employer: keplerops
+  title: Account continuity / what the next colleague should find
+  published_at: '2026-07-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-02.md
+  media_type: text/markdown
+  text: |
+    # Account continuity / what the next colleague should find
+
+    Tessa Marrowell | 09 July 2026
+
+    Tessa's continuity checklist for the account file:
+
+    Current service description; the contact who owns a question; the last answer that was actually given; and any decision still needed. Keep those together. A familiar colleague remembering the meeting is helpful but should not be the only way to discover what was agreed.
+
+    The summary should distinguish a completed item from a proposal. A proposed addition with a blank approval field stays proposed even if someone has helpfully described how it might be done. The original dated decision should remain findable when the summary is revised.
+
+    Noor asks for a short account record rather than a second copy of every service attachment. Tessa will use references where the original is already retained. The aim is continuity of the ordinary account conversation, with private operational material left in its proper place.
+- id: rr-orrenvale-03
+  story: regional-relationships
+  employer: keplerops
+  title: Review wording / a sampled check has a scope
+  published_at: '2026-07-29T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-03.md
+  media_type: text/markdown
+  text: |
+    # Review wording / a sampled check has a scope
+
+    Isaac Devren | 29 July 2026
+
+    A service-review sentence needs to say what a check covered. “Checked” alone does not tell a reader whether an individual item was inspected, a sample was read back or a wider recovery was exercised. Isaac and Noor want that scope visible in the account summary.
+
+    This note records wording guidance, not a new test result. An actual result must retain its own item, date, method and observation. A successful sample must not be expanded into a claim that every file can be recovered or that every product workload has been tested.
+
+    Orren & Vale can explain the internal service work it performs. KeplerOps continues to own product-platform operations. If a future review needs a broader exercise, the parties must first identify what is being requested and who is responsible for it. The account summary cannot supply missing evidence.
+- id: rr-orrenvale-04
+  story: regional-relationships
+  employer: keplerops
+  title: Internal preparation / questions for the service review
+  published_at: '2026-08-12T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  - evan
+  path: Relationships/K-S-001/rr-orrenvale-04.md
+  media_type: text/markdown
+  text: |
+    # Internal preparation / questions for the service review
+
+    Noor Aveling | 12 August 2026
+
+    Noor's preparation note for the next internal-service review. Keep the discussion on the retained IT and backup-support scope. Evan can help identify where a question actually belongs to KeplerOps' own product operation, so the account discussion does not accidentally assign it to Orren & Vale.
+
+    Useful account questions concern the clarity of the service record and the route for ordinary follow-up. They do not require putting platform credentials, recovery material or product-customer information into the supplier's account file. Ask for the evidence appropriate to the specific item being reviewed.
+
+    The review should finish with an owner for any real open question. Do not create an action simply because the meeting template has an empty row. If the completed items are understood and no further question remains, the summary can say that.
+- id: rr-orrenvale-05
+  story: regional-relationships
+  employer: keplerops
+  title: Service account / current term and change requests
+  published_at: '2026-08-26T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - kwm047
+  path: Relationships/K-S-001/rr-orrenvale-05.md
+  media_type: text/markdown
+  text: |
+    # Service account / current term and change requests
+
+    Tessa Marrowell | 26 August 2026
+
+    Account K-S-001 retains the existing internal service under K-S-001-AGR-01, from 1 October 2025 through 30 September 2027. The annual amount is USD 22,800 for that stated scope. Changes require a written order.
+
+    Lina wants a future proposal to identify the change from the retained service, not restate the entire service description in a way that makes comparison difficult. Tessa can put the additional question and proposed work together, leaving the current agreement as the reference for what is already included.
+
+    This correspondence makes no change to the price or term and does not issue an invoice. Product workloads remain with KeplerOps. Any future change request must be clear about the service it touches before the parties discuss a price.
+- id: rr-orrenvale-06
+  story: regional-relationships
+  employer: keplerops
+  title: After the review / no open question on completed items
+  published_at: '2026-09-04T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-06.md
+  media_type: text/markdown
+  text: |
+    # After the review / no open question on completed items
+
+    Noor Aveling | 04 September 2026
+
+    The 3 September service review is complete. The accepted summary acknowledges completed routine maintenance and records no further question against those completed items at the meeting. This follow-up preserves that outcome; it does not turn the review into an open incident list.
+
+    Both parties agreed that account documentation should let a colleague pick up an ordinary question without relying on one person's memory. The useful change is in the quality of the retained account explanation, not an expansion of the service.
+
+    KeplerOps' platform team still owns product workloads. Future changes will be described explicitly if proposed. Noor has not supplied a week for the next account review yet, and no next review date has been booked. The existing summary remains the record of the completed September meeting.
+- id: rr-orrenvale-07
+  story: regional-relationships
+  employer: keplerops
+  title: Desk card / keep the decision beside the question
+  published_at: '2026-09-07T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-07.md
+  media_type: text/markdown
+  text: |
+    # Desk card / keep the decision beside the question
+
+    Isaac Devren | 07 September 2026
+
+    Desk handover card, following the September account review.
+
+    Question: what is the customer asking now? Reference: where is the last answer or decision? Owner: who can answer the remaining point? State: is the item complete, waiting for information or only proposed? These four entries are enough for a compact ordinary handover when the source record is retained.
+
+    Do not replace the last answer with “see previous mail”. That instruction is only useful if the next colleague knows which previous mail. Use the exact subject or record reference. Do not paste private service material into the card merely to make it self-contained.
+
+    Isaac will use the card for account continuity. Noor prefers one actionable question to a polished recap that leaves the recipient uncertain what to do next.
+- id: rr-orrenvale-08
+  story: regional-relationships
+  employer: keplerops
+  title: Commercial note / no need to renew early
+  published_at: '2026-09-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - kwm047
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-08.md
+  media_type: text/markdown
+  text: |
+    # Commercial note / no need to renew early
+
+    Lina Peveran | 09 September 2026
+
+    Lina's internal account note retains the current Orren & Vale term through 30 September 2027 and the USD 22,800 annual amount. The completed service review does not create a renewal or a scope change. Noor's next useful contribution is an actual open service question if one appears, not a new commercial exercise merely because the review finished.
+
+    Tessa's interest in booking the next review is understandable, but KeplerOps has not settled the planning week. Lina would rather return a useful week than agree a date which immediately needs to move. Noor will keep the account contact informed when that information exists.
+
+    This note contains an internal scheduling preference. It is not a supplier performance judgment, an instruction to end the service or an authority to buy additional support.
+- id: rr-orrenvale-09
+  story: regional-relationships
+  employer: keplerops
+  title: Account summary / what a colleague should not infer
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-09.md
+  media_type: text/markdown
+  text: |
+    # Account summary / what a colleague should not infer
+
+    Tessa Marrowell | 11 September 2026
+
+    Tessa's account summary guidance: preserve the scope stated in the accepted September review. “Internal IT and backup-support work” must not be shortened to “platform support” when a new colleague picks up the account. The shorter phrase would conceal the distinction that both parties took time to record.
+
+    A completed review tells the next colleague what was discussed and agreed at that meeting. It does not prove the state of every system at a later date. If a new question arrives, record its own reference and observation instead of retroactively adding it to the closed review.
+
+    The next review remains unbooked pending KeplerOps' planning calendar. A reminder to ask for a week can stay in the account desk's work list without appearing as a confirmed customer appointment.
+- id: rr-orrenvale-10
+  story: regional-relationships
+  employer: keplerops
+  title: September follow-up / waiting for a useful week
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - noor
+  path: Relationships/K-S-001/rr-orrenvale-10.md
+  media_type: text/markdown
+  text: |
+    # September follow-up / waiting for a useful week
+
+    Tessa Marrowell | 15 September 2026
+
+    Tessa's September account follow-up has one pending administrative item: KeplerOps will suggest a suitable week for the next review after its planning calendar is settled. No date is confirmed, and there is no attendance or agenda for a future meeting yet.
+
+    The completed 3 September review remains complete. Its acknowledged maintenance items and retained internal-service scope are not reopened by a scheduling reminder. KeplerOps' product workloads remain its own responsibility.
+
+    Noor would prefer to return once with a usable week rather than trade several provisional dates. Tessa will wait for that reply. If an ordinary service question arises before then, it can be handled on its own merits through the existing desk route; it does not need to wait for an account meeting.
+- id: rr-ternwick-01
+  story: regional-relationships
+  employer: arwc
+  title: TR-26-04 / acceptance reference slip
+  published_at: '2026-06-16T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-01.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    TR-26-04 / acceptance reference slip
+    Filed 16 June 2026; Huw Delvern
+
+    Batch TR-26-04: 120 accepted pages. ARWC-RMBA-26-0184 records acceptance on 12 June after the file names, page order and description were checked and the originals returned. The related order is ARWC-PO-26-1184.
+
+    Charge check: USD 180.00 for the approved batch plus 120 × USD 0.42 = USD 50.40 for accepted pages; total USD 230.40. This is a reference slip for the account conversation, not a second invoice.
+
+    Huw asks that any later description question name the batch and the relevant page reference. That lets production find the material without asking ARWC to send the whole set again. Acceptance remains recorded on the original ARWC record; this slip does not replace it or add another scanning pass.
+- id: rr-ternwick-02
+  story: regional-relationships
+  employer: arwc
+  title: TR-26-05 / page count and batch charge
+  published_at: '2026-07-06T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-004/rr-ternwick-02.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    TR-26-05 / page count and batch charge
+    Filed 06 July 2026; Edie Ransell
+
+    The account reference for TR-26-05 is 96 accepted pages, received on 2 July under ARWC-PO-26-1185 and accepted as ARWC-RMBA-26-0185. The page charge is 96 × USD 0.42 = USD 40.32. Adding the approved USD 180.00 batch charge gives USD 220.32.
+
+    The fixed charge belongs to the approved batch, not to each file in the delivered set. Splitting the retained files into folders for a reader does not create another approved batch or another fixed charge. Priya asked for that distinction to be visible in the account explanation.
+
+    Additional description work, if requested later, needs its own defined proposal. This completed batch keeps its accepted count and amount. No new work is ordered by filing this explanation.
+- id: rr-ternwick-03
+  story: regional-relationships
+  employer: arwc
+  title: TR-26-06 / finding a page again
+  published_at: '2026-07-23T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-03.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    TR-26-06 / finding a page again
+    Filed 23 July 2026; Huw Delvern
+
+    TR-26-06 contains 132 accepted pages. ARWC-RMBA-26-0186 records the 20 July acceptance under ARWC-PO-26-1186, including checks of names, page order and description and the return of originals. The accepted charge is USD 235.44: USD 180.00 plus 132 × USD 0.42.
+
+    For a later retrieval question, Dario will quote the batch and the existing page reference before describing the subject. Huw can then find the right item even when two descriptions use similar words. Renaming a retained file without keeping its reference would make that task harder.
+
+    A question about finding a page is not evidence that scanning was incomplete. The accepted batch remains accepted. If a real correction is needed, the request should identify the exact description to review, leaving the earlier version available.
+- id: rr-ternwick-04
+  story: regional-relationships
+  employer: arwc
+  title: TR-26-07 / a compact accepted-batch record
+  published_at: '2026-08-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-004/rr-ternwick-04.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    TR-26-07 / a compact accepted-batch record
+    Filed 11 August 2026; Edie Ransell
+
+    TR-26-07 was accepted on 7 August with 88 pages under ARWC-PO-26-1187. Acceptance reference: ARWC-RMBA-26-0187. The accepted amount is USD 216.96, comprising the USD 180.00 approved-batch charge and USD 36.96 for pages at USD 0.42 each.
+
+    Edie will use this compact record for an account enquiry. The ARWC acceptance records the actual check and return of originals; the supplier's short explanation should point to that record rather than appear to approve its own invoice.
+
+    Priya wants later questions about expanded descriptions kept separate from this amount. An interesting idea about making a collection easier to search may be useful work, but it has not been purchased by accepting the present batch. The next proposal needs a settled selection and a clear description of the additional task.
+- id: rr-ternwick-05
+  story: regional-relationships
+  employer: arwc
+  title: Description workshop note / identify, then interpret
+  published_at: '2026-08-25T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-05.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Description workshop note / identify, then interpret
+    Filed 25 August 2026; Huw Delvern
+
+    Worked wording example, not a description of an actual photograph:
+
+    Starting description: “Old office.” Reader question: which office, and what in the available record supports that identification? Better working description: “Office interior; location not established in the accompanying note.” If an authoritative label is later found, record that source before making the location definite.
+
+    Huw prefers a candid uncertainty to a confident guess. Dario wants readers to find the item even while that question remains open, so the stable reference should accompany the description. Searchable wording and settled historical identification are related tasks, not the same task.
+
+    This example teaches a description habit. It adds no facts to an accepted ARWC image, names no unidentified person and does not alter any completed batch's acceptance or amount.
+- id: rr-ternwick-06
+  story: regional-relationships
+  employer: arwc
+  title: Staff-history correspondence / acceptance and later ideas
+  published_at: '2026-09-08T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  path: Relationships/A-S-004/rr-ternwick-06.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Staff-history correspondence / acceptance and later ideas
+    Filed 08 September 2026; Priya Naravel
+
+    Ternwick's 4 September message confirms that ARWC records colleagues accepted the staff-history scanning work, including corrected descriptions for the old office photographs. Priya's 7 September reply acknowledges acceptance and the ordinary invoice route.
+
+    This correspondence does not state a numbered batch reference. Retain it by its subject with the account conversation; do not guess a TR number from a nearby date. The numbered purchasing records retain their own identities, counts and amounts.
+
+    The clearer descriptions are appreciated because a reader no longer needs to find somebody who worked in the old office to understand the location. Suggestions for additional description remain a separate future proposal once ARWC has settled the selection. This follow-up neither orders that work nor changes the accepted scanning outcome.
+- id: rr-ternwick-07
+  story: regional-relationships
+  employer: arwc
+  title: 'Records desk: selection before a proposal'
+  published_at: '2026-09-09T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  - priya
+  path: Relationships/A-S-004/rr-ternwick-07.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Records desk: selection before a proposal
+    Filed 09 September 2026; Dario Torren
+
+    Dario's internal note for the next possible Ternwick request. Start by identifying which records need additional description and what a reader cannot currently determine. “Make the archive easier to use” is a reasonable ambition but too broad to price as a task.
+
+    A selection list should preserve the current item reference, the present description and the question to resolve. Where there is no evidence for an identification, the task may be to record uncertainty more clearly rather than discover a definite answer. The supplier should not be asked to guess names or locations to fill a column.
+
+    Priya can seek a proposal after the selection and desired output are settled. No new batch, price, purchase order or completion date is authorized here. The accepted histories and their returned originals remain unchanged.
+- id: rr-ternwick-08
+  story: regional-relationships
+  employer: arwc
+  title: Proposal preparation card / description work
+  published_at: '2026-09-10T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-08.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Proposal preparation card / description work
+    Filed 10 September 2026; Edie Ransell
+
+    Edie's preparation card for a possible description proposal:
+
+    Item reference — keep the existing reference. Present description — supply the text the reader sees now. Question — explain what the reader cannot tell. Available evidence — identify the label, note or other material that might answer it. Desired output — say whether ARWC wants a corrected description, a recorded uncertainty or a cross-reference.
+
+    A proposal can then distinguish the selected work from a new scanning batch. Returning a description question does not itself place an order, and the current batch price cannot be assumed to include an open-ended research task.
+
+    Dario will complete the selection at ARWC before requesting a price. Edie can comment on whether the stated output is clear. The card contains no actual unapproved selection or invented historical identification.
+- id: rr-ternwick-09
+  story: regional-relationships
+  employer: arwc
+  title: Description questions / proposed short call
+  published_at: '2026-09-11T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-09.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Description questions / proposed short call
+    Filed 11 September 2026; Edie Ransell
+
+    Edie proposes 22 September, 15:30–15:50, to check whether ARWC's description questions are clear enough for a later proposal. Dario is holding the time tentatively while he checks his diary. No selection or price has been accepted.
+
+    The call would use the preparation card: current reference, present description, question, evidence and desired output. It should end with a clearer request, not an assumption that every interesting archive question has become contracted work. If the selection is still too uncertain, a written exchange may be enough.
+
+    This is a future appointment proposal. It has no attendance, minutes or completed description work. The accepted scanning batches and their amounts remain as recorded. Any later order requires the normal purchasing decision.
+- id: rr-ternwick-10
+  story: regional-relationships
+  employer: arwc
+  title: Twelve-batch account cross-check
+  published_at: '2026-09-15T09:30:00-04:00'
+  audience: restricted
+  reader_keys:
+  - priya
+  - awm210
+  path: Relationships/A-S-004/rr-ternwick-10.txt
+  media_type: text/plain
+  text: |
+    TERNWICK / ARWC RECORDS CORRESPONDENCE
+    Twelve-batch account cross-check
+    Filed 15 September 2026; Priya Naravel
+
+    The twelve accepted purchasing batches are cross-checked below. The dates are the existing receipt and payment dates. These rows are a finding aid to those records, not twelve new acceptances or invoices.
+
+    Batch | Accepted pages | Accepted USD | Received | Paid
+    TR-26-01 | 79 | 213.18 | 2026-02-12 | 2026-02-22
+    TR-26-02 | 86 | 216.12 | 2026-03-09 | 2026-03-19
+    TR-26-03 | 93 | 219.06 | 2026-04-17 | 2026-04-27
+    TR-26-04 | 120 | 230.40 | 2026-06-12 | 2026-06-22
+    TR-26-05 | 96 | 220.32 | 2026-07-02 | 2026-07-12
+    TR-26-06 | 132 | 235.44 | 2026-07-20 | 2026-07-30
+    TR-26-07 | 88 | 216.96 | 2026-08-07 | 2026-08-17
+    TR-26-08 | 128 | 233.76 | 2026-08-14 | 2026-08-24
+    TR-26-09 | 135 | 236.70 | 2026-08-21 | 2026-08-31
+    TR-26-10 | 142 | 239.64 | 2026-08-28 | 2026-09-07
+    TR-26-11 | 149 | 242.58 | 2026-09-02 | 2026-09-12
+    TR-26-12 | 156 | 245.52 | 2026-09-04 | 2026-09-14
+
+    Total: 1404 pages; USD 2749.68. The total comprises twelve approved-batch charges of USD 180.00 plus the accepted pages at USD 0.42 each. Originals are recorded as returned on the batch acceptance records.
+
+    The separately retained staff-history correspondence does not state a batch number, so this account check does not assign it one. Further description ideas remain unpriced and unordered. A new proposal can use the completed history without changing its accepted counts, dates or amounts.

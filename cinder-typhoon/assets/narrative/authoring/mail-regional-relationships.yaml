@@ -1,0 +1,3352 @@
+messages:
+- id: rr-arwc-01-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  date: '2026-06-23T09:05:00-04:00'
+  subject: When the familiar contact is away
+  body: |
+    Maya, can we keep the last answer with the question when someone else picks it up? I spent more time finding my sent mail than explaining the field this morning.
+- id: rr-arwc-01-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  date: '2026-06-23T09:42:00-04:00'
+  subject: 'Re: When the familiar contact is away'
+  body: |
+    Yes. I've written down the handover we actually need. Keep replying on the customer conversation; I'll make sure the next person can see the last answer.
+  reply_to: rr-arwc-01-m1
+  attachments:
+  - rr-arwc-01
+- id: rr-arwc-01-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  date: '2026-06-23T10:28:00-04:00'
+  subject: 'Re: When the familiar contact is away'
+  body: |
+    The record reference and disputed field are enough. Please don't ask the next shift for the whole work sheet again.
+  reply_to: rr-arwc-01-m2
+- id: rr-arwc-01-m4
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  date: '2026-06-23T11:56:00-04:00'
+  subject: 'Re: When the familiar contact is away'
+  body: |
+    Agreed. If we do need something from it, we'll ask for that part and say why.
+  reply_to: rr-arwc-01-m3
+- id: rr-arwc-02-m1
+  story: regional-relationships
+  from: rowan
+  to:
+  - clara
+  date: '2026-07-08T09:05:00-04:00'
+  subject: A useful handover question
+  body: |
+    Would a pair of descriptions help? One for the replacement arriving, one for the reviewer accepting it. I started putting them in the same sentence and it got muddy.
+- id: rr-arwc-02-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - rowan
+  date: '2026-07-08T09:42:00-04:00'
+  subject: 'Re: A useful handover question'
+  body: |
+    Keep them separate. I've attached the wording question. Arrival isn't approval.
+  reply_to: rr-arwc-02-m1
+  attachments:
+  - rr-arwc-02
+- id: rr-arwc-02-m3
+  story: regional-relationships
+  from: rowan
+  to:
+  - clara
+  date: '2026-07-08T10:28:00-04:00'
+  subject: 'Re: A useful handover question'
+  body: |
+    Right. I'll drop 'latest accepted copy' from the first sentence. It was doing two jobs.
+  reply_to: rr-arwc-02-m2
+- id: rr-arwc-02-m4
+  story: regional-relationships
+  from: clara
+  to:
+  - rowan
+  date: '2026-07-08T11:56:00-04:00'
+  subject: 'Re: A useful handover question'
+  body: |
+    That reads properly now. We can discuss the display without making it the approval record.
+  reply_to: rr-arwc-02-m3
+- id: rr-arwc-03-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  date: '2026-08-20T09:05:00-04:00'
+  subject: 'Reference conversation: questions worth asking'
+  body: |
+    If we ask about a reference conversation later, what would you actually want someone to ask? I can send a list of product questions, but they may be the wrong ones.
+- id: rr-arwc-03-m2
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  date: '2026-08-20T09:42:00-04:00'
+  subject: 'Re: Reference conversation: questions worth asking'
+  body: |
+    The questions in the note would be more use. Ask what we had to sort out ourselves. It's a less shiny conversation, admittedly.
+  reply_to: rr-arwc-03-m1
+  attachments:
+  - rr-arwc-03
+- id: rr-arwc-03-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  date: '2026-08-20T10:28:00-04:00'
+  subject: 'Re: Reference conversation: questions worth asking'
+  body: |
+    I would rather they hear that before buying. I'll bring you an audience and a time request when there is one.
+  reply_to: rr-arwc-03-m2
+- id: rr-arwc-04-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - kwm048
+  date: '2026-09-03T09:05:00-04:00'
+  subject: 'Account review: term and responsibilities'
+  body: |
+    Louis, before the account review: are you expecting a renewal discussion or a budget question? Theo is asking about support continuity.
+- id: rr-arwc-04-m2
+  story: regional-relationships
+  from: kwm048
+  to:
+  - maya
+  date: '2026-09-03T09:42:00-04:00'
+  subject: 'Re: Account review: term and responsibilities'
+  body: |
+    Budget and continuity. I've put the term and instalment figures in the attached note so I don't use the wrong heading again.
+  reply_to: rr-arwc-04-m1
+  attachments:
+  - rr-arwc-04
+- id: rr-arwc-04-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - kwm048
+  date: '2026-09-03T10:28:00-04:00'
+  subject: 'Re: Account review: term and responsibilities'
+  body: |
+    I'll bring the continuity question. Leave the cost discussion with Priya; Clara doesn't need it to answer a record question.
+  reply_to: rr-arwc-04-m2
+- id: rr-arwc-04-m4
+  story: regional-relationships
+  from: kwm048
+  to:
+  - maya
+  date: '2026-09-03T11:56:00-04:00'
+  subject: 'Re: Account review: term and responsibilities'
+  body: |
+    Yes. Separate conversations. I only need to know if the working preference changes the agreed service.
+  reply_to: rr-arwc-04-m3
+- id: rr-arwc-05-m1
+  story: regional-relationships
+  from: rowan
+  to:
+  - maya
+  date: '2026-09-07T09:05:00-04:00'
+  subject: Customer questions without customer records
+  body: |
+    I have a screen that shows the distinction neatly. It's from an ARWC question, so we would need to ask them first.
+- id: rr-arwc-05-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - rowan
+  date: '2026-09-07T09:42:00-04:00'
+  subject: 'Re: Customer questions without customer records'
+  body: |
+    Let's use invented labels. The attached note gives us enough to explain the question without circulating somebody's record.
+  reply_to: rr-arwc-05-m1
+  attachments:
+  - rr-arwc-05
+- id: rr-arwc-05-m3
+  story: regional-relationships
+  from: rowan
+  to:
+  - maya
+  date: '2026-09-07T10:28:00-04:00'
+  subject: 'Re: Customer questions without customer records'
+  body: |
+    Fair. A and B it is. I'll resist giving them an elaborate backstory.
+  reply_to: rr-arwc-05-m2
+- id: rr-arwc-05-m4
+  story: regional-relationships
+  from: maya
+  to:
+  - rowan
+  date: '2026-09-07T11:56:00-04:00'
+  subject: 'Re: Customer questions without customer records'
+  body: |
+    Two sentences will do. Keep the reviewer decision in the second one.
+  reply_to: rr-arwc-05-m3
+- id: rr-arwc-06-m1
+  story: regional-relationships
+  from: kwm052
+  to:
+  - maya
+  - kwm048
+  date: '2026-09-10T09:05:00-04:00'
+  subject: 'Reference preparation: what stays in the room'
+  body: |
+    Do I need a deck for the reference hold, or just the agenda? I am keeping the invitation tentative.
+- id: rr-arwc-06-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - kwm052
+  - kwm048
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Reference preparation: what stays in the room'
+  body: |
+    Just the agenda. Attached my preparation note for us. Theo specifically doesn't want a presentation written for him.
+  reply_to: rr-arwc-06-m1
+  attachments:
+  - rr-arwc-06
+- id: rr-arwc-06-m3
+  story: regional-relationships
+  from: kwm048
+  to:
+  - maya
+  - kwm052
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Reference preparation: what stays in the room'
+  body: |
+    Please don't turn a good comment into proposed website copy either. That's a separate request.
+  reply_to: rr-arwc-06-m2
+- id: rr-arwc-06-m4
+  story: regional-relationships
+  from: kwm052
+  to:
+  - maya
+  - kwm048
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Reference preparation: what stays in the room'
+  body: |
+    Understood. I still need the other participants before I can confirm the call.
+  reply_to: rr-arwc-06-m3
+- id: rr-arwc-07-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'Re: Continuity preference: a shorter question'
+  body: |
+    Coming back to our June note: can 'passed on' include who it went to? I don't need a weekly update, just to know whether someone is waiting for me.
+  reply_to: rr-arwc-01-m4
+- id: rr-arwc-07-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: Continuity preference: a shorter question'
+  body: |
+    Yes. I've added that distinction to the follow-up note. No weekly mail for a quiet account.
+  reply_to: rr-arwc-07-m1
+  attachments:
+  - rr-arwc-07
+- id: rr-arwc-07-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: Continuity preference: a shorter question'
+  body: |
+    Good. Quiet can stay quiet. I will put the changed bit at the top when I do reply.
+  reply_to: rr-arwc-07-m2
+- id: rr-arwc-08-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - clara
+  date: '2026-09-14T09:05:00-04:00'
+  subject: 'ARWC reference: private preparation reminder'
+  body: |
+    Clara, I can cover the planning side. Are you happy to take receipt versus acceptance, if they ask?
+- id: rr-arwc-08-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - theo
+  date: '2026-09-14T09:42:00-04:00'
+  subject: 'Re: ARWC reference: private preparation reminder'
+  body: |
+    Yes. My reminder is attached. We don't need plant names to explain it.
+  reply_to: rr-arwc-08-m1
+  attachments:
+  - rr-arwc-08
+- id: rr-arwc-08-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - clara
+  date: '2026-09-14T10:28:00-04:00'
+  subject: 'Re: ARWC reference: private preparation reminder'
+  body: |
+    Agreed. I would like to say what still takes work here. Otherwise it sounds as though the software does the planning.
+  reply_to: rr-arwc-08-m2
+- id: rr-arwc-08-m4
+  story: regional-relationships
+  from: clara
+  to:
+  - theo
+  date: '2026-09-14T11:56:00-04:00'
+  subject: 'Re: ARWC reference: private preparation reminder'
+  body: |
+    It doesn't. Say that plainly.
+  reply_to: rr-arwc-08-m3
+- id: rr-arwc-09-m1
+  story: regional-relationships
+  from: kwm048
+  to:
+  - rowan
+  - maya
+  date: '2026-09-15T09:05:00-04:00'
+  subject: A technical answer is not a delivery promise
+  body: |
+    If someone asks whether we can put the two descriptions together, what can I safely say? I'm not asking for a roadmap item.
+- id: rr-arwc-09-m2
+  story: regional-relationships
+  from: rowan
+  to:
+  - maya
+  - kwm048
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: A technical answer is not a delivery promise'
+  body: |
+    I've attached the wording I'd use. Explain the current view first. 'We can do that' is too easy to hear as a promise.
+  reply_to: rr-arwc-09-m1
+  attachments:
+  - rr-arwc-09
+- id: rr-arwc-09-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - rowan
+  - kwm048
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: A technical answer is not a delivery promise'
+  body: |
+    And I can ask whether they mean an explanation or a change. We need their question, not a commitment we guessed at.
+  reply_to: rr-arwc-09-m2
+- id: rr-arwc-10-m1
+  story: regional-relationships
+  from: kwm052
+  to:
+  - maya
+  - theo
+  - clara
+  - kwm048
+  date: '2026-09-16T07:20:00-04:00'
+  subject: 'Re: Reference hold: morning status'
+  body: |
+    Morning. Still no prospective participant confirmation. Shall I leave the 29th exactly as it is?
+  reply_to: cm-1376
+- id: rr-arwc-10-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - theo
+  - clara
+  - kwm052
+  - kwm048
+  date: '2026-09-16T07:49:00-04:00'
+  subject: 'Re: Reference hold: morning status'
+  body: |
+    Yes, tentative. The status note is attached for everyone on this conversation. Theo's last reply hasn't changed that.
+  reply_to: rr-arwc-10-m1
+  attachments:
+  - rr-arwc-10
+- id: rr-arwc-10-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - maya
+  - clara
+  - kwm052
+  - kwm048
+  date: '2026-09-16T07:58:00-04:00'
+  subject: 'Re: Reference hold: morning status'
+  body: |
+    Fine with me. No slides is still the most useful part of the arrangement.
+  reply_to: rr-arwc-10-m2
+- id: rr-arwc-10-m4
+  story: regional-relationships
+  from: clara
+  to:
+  - maya
+  - theo
+  - kwm052
+  - kwm048
+  date: '2026-09-16T08:09:00-04:00'
+  subject: 'Re: Reference hold: morning status'
+  body: |
+    And the same thirty minutes. If that changes, please ask before moving it.
+  reply_to: rr-arwc-10-m3
+- id: rr-veybridge-01-m1
+  story: regional-relationships
+  from: jules
+  to:
+  - theo
+  date: '2026-06-18T09:05:00-04:00'
+  subject: Visit feedback / ARWC-PO-26-201
+  body: |
+    Theo, anything you wanted presented differently in the report from the 12th? I mean the report, not another visit.
+- id: rr-veybridge-01-m2
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-06-18T09:42:00-04:00'
+  subject: 'Re: Visit feedback / ARWC-PO-26-201'
+  body: |
+    The report is useful. My note is attached. I'll quote both the order and report when I ask about an observation.
+  reply_to: rr-veybridge-01-m1
+  attachments:
+  - rr-veybridge-01
+- id: rr-veybridge-01-m3
+  story: regional-relationships
+  from: jules
+  to:
+  - theo
+  date: '2026-06-18T10:28:00-04:00'
+  subject: 'Re: Visit feedback / ARWC-PO-26-201'
+  body: |
+    That helps. Dates blur when you've been three places in a week.
+  reply_to: rr-veybridge-01-m2
+- id: rr-veybridge-01-m4
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-06-18T11:56:00-04:00'
+  subject: 'Re: Visit feedback / ARWC-PO-26-201'
+  body: |
+    Scheduling goes to dispatch; questions about what you saw can stay with you. I'll keep those apart.
+  reply_to: rr-veybridge-01-m3
+- id: rr-veybridge-02-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-06-30T09:05:00-04:00'
+  subject: Dispatch desk / a booking request that can be used
+  body: |
+    Dana, what should I put first in a booking request so it reaches the right person? People still send it to Jules because they know him.
+- id: rr-veybridge-02-m2
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-06-30T09:42:00-04:00'
+  subject: 'Re: Dispatch desk / a booking request that can be used'
+  body: |
+    Order, window, access contact. Attached the desk note. I can arrange a diary without making Jules the postbox.
+  reply_to: rr-veybridge-02-m1
+  attachments:
+  - rr-veybridge-02
+- id: rr-veybridge-02-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-06-30T10:28:00-04:00'
+  subject: 'Re: Dispatch desk / a booking request that can be used'
+  body: |
+    I'll use that. Does an uncertain date need a separate email?
+  reply_to: rr-veybridge-02-m2
+- id: rr-veybridge-02-m4
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-06-30T11:56:00-04:00'
+  subject: 'Re: Dispatch desk / a booking request that can be used'
+  body: |
+    No, just say what makes it uncertain. 'Planner available' and 'site ready' aren't the same thing.
+  reply_to: rr-veybridge-02-m3
+- id: rr-veybridge-02-m5
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-06-30T13:20:00-04:00'
+  subject: 'Re: Dispatch desk / a booking request that can be used'
+  body: |
+    Useful distinction. I had only written the first one.
+  reply_to: rr-veybridge-02-m4
+- id: rr-veybridge-03-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-07-02T09:05:00-04:00'
+  subject: 'Re: Report question / the last line'
+  body: |
+    On the last line of the 26 June report: people keep asking for a general sign-off. Can you give me a sentence to stop that getting muddled?
+  reply_to: rr-veybridge-01-m4
+- id: rr-veybridge-03-m2
+  story: regional-relationships
+  from: jules
+  to:
+  - theo
+  date: '2026-07-02T09:42:00-04:00'
+  subject: 'Re: Report question / the last line'
+  body: |
+    My note is attached. I can answer for what I saw on that order. Your reviewer still makes your acceptance decision.
+  reply_to: rr-veybridge-03-m1
+  attachments:
+  - rr-veybridge-03
+- id: rr-veybridge-03-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-07-02T10:28:00-04:00'
+  subject: 'Re: Report question / the last line'
+  body: |
+    That is the sentence. I will stop calling both things a sign-off.
+  reply_to: rr-veybridge-03-m2
+- id: rr-veybridge-04-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_veybridge_3
+  date: '2026-07-22T09:05:00-04:00'
+  subject: Account desk / summer service review
+  body: |
+    Aiden, can additional attendance sit on its own line next time? It is easier to approve the service we actually need.
+- id: rr-veybridge-04-m2
+  story: regional-relationships
+  from: bc_veybridge_3
+  to:
+  - priya
+  date: '2026-07-22T09:42:00-04:00'
+  subject: 'Re: Account desk / summer service review'
+  body: |
+    Yes. I've recorded that preference. The standard visit stays USD 1,240; any extra request needs its own written order.
+  reply_to: rr-veybridge-04-m1
+  attachments:
+  - rr-veybridge-04
+- id: rr-veybridge-04-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_veybridge_3
+  date: '2026-07-22T10:28:00-04:00'
+  subject: 'Re: Account desk / summer service review'
+  body: |
+    Please make it an option until accepted. I do not want the summary to look like a total already approved.
+  reply_to: rr-veybridge-04-m2
+- id: rr-veybridge-04-m4
+  story: regional-relationships
+  from: bc_veybridge_3
+  to:
+  - priya
+  date: '2026-07-22T11:56:00-04:00'
+  subject: 'Re: Account desk / summer service review'
+  body: |
+    An option, clearly marked. No change to the accepted summer jobs.
+  reply_to: rr-veybridge-04-m3
+- id: rr-veybridge-05-m1
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-07-28T09:05:00-04:00'
+  subject: 'Re: Visit feedback / a different familiar face'
+  body: |
+    Was having the confirmation from me workable for the 14 July job? Trying to stop every diary question ending up on one phone.
+  reply_to: rr-veybridge-02-m5
+- id: rr-veybridge-05-m2
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-07-28T09:42:00-04:00'
+  subject: 'Re: Visit feedback / a different familiar face'
+  body: |
+    It worked. Attached the feedback against the report. I need someone who can settle the booking, not necessarily the person I've known longest.
+  reply_to: rr-veybridge-05-m1
+  attachments:
+  - rr-veybridge-05
+- id: rr-veybridge-05-m3
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-07-28T10:28:00-04:00'
+  subject: 'Re: Visit feedback / a different familiar face'
+  body: |
+    Good. Keep sending the order number. That is how the next person at the desk can help too.
+  reply_to: rr-veybridge-05-m2
+- id: rr-veybridge-06-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-08-06T09:05:00-04:00'
+  subject: Teaching notes / describing an observation
+  body: |
+    You mentioned teaching some of the newer colleagues. Is there a report example you'd like a planner's view on?
+- id: rr-veybridge-06-m2
+  story: regional-relationships
+  from: jules
+  to:
+  - theo
+  date: '2026-08-06T09:42:00-04:00'
+  subject: 'Re: Teaching notes / describing an observation'
+  body: |
+    This one. It's made up; 'checked, all fine' is the whole starting note. What would you have to ring back and ask?
+  reply_to: rr-veybridge-06-m1
+  attachments:
+  - rr-veybridge-06
+- id: rr-veybridge-06-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - jules
+  date: '2026-08-06T10:28:00-04:00'
+  subject: 'Re: Teaching notes / describing an observation'
+  body: |
+    What, which order, and did you see it yourself? Probably in that order.
+  reply_to: rr-veybridge-06-m2
+- id: rr-veybridge-06-m4
+  story: regional-relationships
+  from: jules
+  to:
+  - theo
+  date: '2026-08-06T11:56:00-04:00'
+  subject: 'Re: Teaching notes / describing an observation'
+  body: |
+    Same questions as mine, less tidily written on my pad. I'll keep the example short.
+  reply_to: rr-veybridge-06-m3
+- id: rr-veybridge-07-m1
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-08-18T09:05:00-04:00'
+  subject: 'Re: Dispatch feedback / one changed detail'
+  body: |
+    One addition to the booking note: if only the planner's time changes, should I start a fresh request?
+  reply_to: rr-veybridge-05-m3
+- id: rr-veybridge-07-m2
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-08-18T09:42:00-04:00'
+  subject: 'Re: Dispatch feedback / one changed detail'
+  body: |
+    Reply on the same one. Put the changed detail first. The attached note says what I need to avoid booking two visits by accident.
+  reply_to: rr-veybridge-07-m1
+  attachments:
+  - rr-veybridge-07
+- id: rr-veybridge-07-m3
+  story: regional-relationships
+  from: theo
+  to:
+  - bc_veybridge_2
+  date: '2026-08-18T10:28:00-04:00'
+  subject: 'Re: Dispatch feedback / one changed detail'
+  body: |
+    Same reference, changed detail. Makes sense.
+  reply_to: rr-veybridge-07-m2
+- id: rr-veybridge-07-m4
+  story: regional-relationships
+  from: bc_veybridge_2
+  to:
+  - theo
+  date: '2026-08-18T11:56:00-04:00'
+  subject: 'Re: Dispatch feedback / one changed detail'
+  body: |
+    And don't carry the old access contact forward unless you've checked. That's the bit a forwarded chain makes too easy.
+  reply_to: rr-veybridge-07-m3
+- id: rr-veybridge-08-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - jules
+  - ardenvale
+  date: '2026-09-03T09:05:00-04:00'
+  subject: 'Re: Practical workshop / return information'
+  body: |
+    Jules, anything else you want in the return example before Ardenvale fixes the programme?
+  reply_to: b-ardenvale-2
+- id: rr-veybridge-08-m2
+  story: regional-relationships
+  from: jules
+  to:
+  - clara
+  - ardenvale
+  date: '2026-09-03T09:42:00-04:00'
+  subject: 'Re: Practical workshop / return information'
+  body: |
+    The attached note is my bit. Show a box for what we don't know. Otherwise a new person thinks they have to invent a diagnosis.
+  reply_to: rr-veybridge-08-m1
+  attachments:
+  - rr-veybridge-08
+- id: rr-veybridge-08-m3
+  story: regional-relationships
+  from: ardenvale
+  to:
+  - jules
+  - clara
+  date: '2026-09-03T10:28:00-04:00'
+  subject: 'Re: Practical workshop / return information'
+  body: |
+    We can use that question in the programme outline. Dates are still being collected; the practical session will be listed separately from the demonstration.
+  reply_to: rr-veybridge-08-m2
+- id: rr-veybridge-08-m4
+  story: regional-relationships
+  from: jules
+  to:
+  - clara
+  - ardenvale
+  date: '2026-09-03T11:56:00-04:00'
+  subject: 'Re: Practical workshop / return information'
+  body: |
+    Thanks. I'll wait for the dates before promising anybody a seat.
+  reply_to: rr-veybridge-08-m3
+- id: rr-veybridge-09-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - theo
+  date: '2026-09-08T09:05:00-04:00'
+  subject: Internal note / specialist continuity
+  body: |
+    Anything specific for the next Veybridge account review, beyond keeping the scope lines clear?
+- id: rr-veybridge-09-m2
+  story: regional-relationships
+  from: theo
+  to:
+  - priya
+  date: '2026-09-08T09:42:00-04:00'
+  subject: 'Re: Internal note / specialist continuity'
+  body: |
+    Continuity. My internal note is attached. Dispatch is making it easier to ask the right person without losing the personal contact.
+  reply_to: rr-veybridge-09-m1
+  attachments:
+  - rr-veybridge-09
+- id: rr-veybridge-09-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - theo
+  date: '2026-09-08T10:28:00-04:00'
+  subject: 'Re: Internal note / specialist continuity'
+  body: |
+    I can ask how that works when someone is away. I will not turn it into a promise that Jules always attends.
+  reply_to: rr-veybridge-09-m2
+- id: rr-veybridge-10-m1
+  story: regional-relationships
+  from: bc_veybridge_3
+  to:
+  - priya
+  date: '2026-09-14T09:05:00-04:00'
+  subject: 'Re: Account follow-up / topics left for the next request'
+  body: |
+    Would you like a general autumn review call? I have your two preferences, but no new order question from you.
+  reply_to: rr-veybridge-04-m4
+- id: rr-veybridge-10-m2
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_veybridge_3
+  date: '2026-09-14T09:42:00-04:00'
+  subject: 'Re: Account follow-up / topics left for the next request'
+  body: |
+    Let's leave it for a real question. I've retained your follow-up note with the account. No need to keep a slot for us.
+  reply_to: rr-veybridge-10-m1
+  attachments:
+  - rr-veybridge-10
+- id: rr-veybridge-10-m3
+  story: regional-relationships
+  from: bc_veybridge_3
+  to:
+  - priya
+  date: '2026-09-14T10:28:00-04:00'
+  subject: 'Re: Account follow-up / topics left for the next request'
+  body: |
+    All right, I will release that idea rather than chase a date. Send the next scope when you have it.
+  reply_to: rr-veybridge-10-m2
+- id: rr-veybridge-10-m4
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_veybridge_3
+  date: '2026-09-14T11:56:00-04:00'
+  subject: 'Re: Account follow-up / topics left for the next request'
+  body: |
+    Will do. Please keep the additional-attendance line separate when it comes.
+  reply_to: rr-veybridge-10-m3
+- id: rr-ardenvale-01-m1
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-07-24T09:05:00-04:00'
+  subject: 'Service feedback: the reference on the sheet'
+  body: |
+    Clara, was the reference beside the result useful on the July service sheet, or does it get in the way?
+- id: rr-ardenvale-01-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-07-24T09:42:00-04:00'
+  subject: 'Re: Service feedback: the reference on the sheet'
+  body: |
+    Useful. Feedback attached against AV-SR-26-013. Please keep it there.
+  reply_to: rr-ardenvale-01-m1
+  attachments:
+  - rr-ardenvale-01
+- id: rr-ardenvale-01-m3
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-07-24T10:28:00-04:00'
+  subject: 'Re: Service feedback: the reference on the sheet'
+  body: |
+    Will pass that to the service desk. No replacement report needed, then.
+  reply_to: rr-ardenvale-01-m2
+- id: rr-ardenvale-01-m4
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-07-24T11:56:00-04:00'
+  subject: 'Re: Service feedback: the reference on the sheet'
+  body: |
+    Correct. The accepted report stands.
+  reply_to: rr-ardenvale-01-m3
+- id: rr-ardenvale-02-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-08-07T09:05:00-04:00'
+  subject: 'Practical learning: what the return desk needs'
+  body: |
+    The return-desk example needs an unknown field. Our newer colleagues sometimes think every box must contain a confident answer.
+- id: rr-ardenvale-02-m2
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-08-07T09:42:00-04:00'
+  subject: 'Re: Practical learning: what the return desk needs'
+  body: |
+    I've put that into the working note. Unknown is useful information if we know who can check.
+  reply_to: rr-ardenvale-02-m1
+  attachments:
+  - rr-ardenvale-02
+- id: rr-ardenvale-02-m3
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-08-07T10:28:00-04:00'
+  subject: 'Re: Practical learning: what the return desk needs'
+  body: |
+    Please keep physical packing instructions elsewhere. Different items need different handling.
+  reply_to: rr-ardenvale-02-m2
+- id: rr-ardenvale-02-m4
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-08-07T11:56:00-04:00'
+  subject: 'Re: Practical learning: what the return desk needs'
+  body: |
+    Yes. This one is only the information travelling with the item.
+  reply_to: rr-ardenvale-02-m3
+- id: rr-ardenvale-03-m1
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-08-11T09:05:00-04:00'
+  subject: 'Re: Service feedback: scope travels with the result'
+  body: |
+    Can I use the August result in the service review as “all checked and serviceable”?
+  reply_to: rr-ardenvale-01-m4
+- id: rr-ardenvale-03-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_1
+  date: '2026-08-11T09:42:00-04:00'
+  subject: 'Re: Service feedback: scope travels with the result'
+  body: |
+    Use the stated scope as well. Attached my note. “All” is wider than the report.
+  reply_to: rr-ardenvale-03-m1
+  attachments:
+  - rr-ardenvale-03
+- id: rr-ardenvale-03-m3
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-08-11T10:28:00-04:00'
+  subject: 'Re: Service feedback: scope travels with the result'
+  body: |
+    Fair point. I'll name the service, and leave replacement ideas for a separate discussion.
+  reply_to: rr-ardenvale-03-m2
+- id: rr-ardenvale-04-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-08-25T09:05:00-04:00'
+  subject: 'Re: Completed service: a question for the next reviewer'
+  body: |
+    For the 19 August report, would your desk prefer the report number or the order number in a later question?
+  reply_to: rr-ardenvale-03-m3
+- id: rr-ardenvale-04-m2
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-08-25T09:42:00-04:00'
+  subject: 'Re: Completed service: a question for the next reviewer'
+  body: |
+    Report number first; keep the order too. The note attached distinguishes a question from a replacement submission.
+  reply_to: rr-ardenvale-04-m1
+  attachments:
+  - rr-ardenvale-04
+- id: rr-ardenvale-04-m3
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-08-25T10:28:00-04:00'
+  subject: 'Re: Completed service: a question for the next reviewer'
+  body: |
+    Good. We can leave the accepted file where it is and ask about the entry.
+  reply_to: rr-ardenvale-04-m2
+- id: rr-ardenvale-04-m4
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-08-25T11:56:00-04:00'
+  subject: 'Re: Completed service: a question for the next reviewer'
+  body: |
+    Exactly. Please don't rename the old report as though we reissued it.
+  reply_to: rr-ardenvale-04-m3
+- id: rr-ardenvale-05-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-04T09:05:00-04:00'
+  subject: 'Autumn programme: two separate choices'
+  body: |
+    Following the service-office thread: can the two programme choices really be separate, including on the invitation?
+- id: rr-ardenvale-05-m2
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-09-04T09:42:00-04:00'
+  subject: 'Re: Autumn programme: two separate choices'
+  body: |
+    Yes. Attached the programme response. We can offer the demonstration without making everyone sit through it.
+  reply_to: rr-ardenvale-05-m1
+  attachments:
+  - rr-ardenvale-05
+- id: rr-ardenvale-05-m3
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-04T10:28:00-04:00'
+  subject: 'Re: Autumn programme: two separate choices'
+  body: |
+    That's all I wanted. I cannot put names against a session until there are dates.
+  reply_to: rr-ardenvale-05-m2
+- id: rr-ardenvale-05-m4
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-09-04T11:56:00-04:00'
+  subject: 'Re: Autumn programme: two separate choices'
+  body: |
+    Understood. Preferences first; places later.
+  reply_to: rr-ardenvale-05-m3
+- id: rr-ardenvale-06-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-09-07T09:05:00-04:00'
+  subject: 'Re: Return example: an incomplete note that can be answered'
+  body: |
+    Could the example start before the writer has found every detail? A perfect return form is less useful for practice.
+  reply_to: rr-ardenvale-02-m4
+- id: rr-ardenvale-06-m2
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-09-07T09:42:00-04:00'
+  subject: 'Re: Return example: an incomplete note that can be answered'
+  body: |
+    Try EXAMPLE-17 in the attachment. The time exists somewhere, but the person writing doesn't have it yet.
+  reply_to: rr-ardenvale-06-m1
+  attachments:
+  - rr-ardenvale-06
+- id: rr-ardenvale-06-m3
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-09-07T10:28:00-04:00'
+  subject: 'Re: Return example: an incomplete note that can be answered'
+  body: |
+    That works. Ask who has the sheet; do not guess the cause from “display changed”.
+  reply_to: rr-ardenvale-06-m2
+- id: rr-ardenvale-07-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - clara
+  date: '2026-09-09T09:05:00-04:00'
+  subject: 'ARWC note: a demonstration can wait'
+  body: |
+    Are you asking for the demonstration as well as the practical session? I need to know if this is turning into an equipment request.
+- id: rr-ardenvale-07-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - priya
+  date: '2026-09-09T09:42:00-04:00'
+  subject: 'Re: ARWC note: a demonstration can wait'
+  body: |
+    No equipment request. Internal note attached. I'd wait for the practical date and decide on that alone.
+  reply_to: rr-ardenvale-07-m1
+  attachments:
+  - rr-ardenvale-07
+- id: rr-ardenvale-07-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - clara
+  date: '2026-09-09T10:28:00-04:00'
+  subject: 'Re: ARWC note: a demonstration can wait'
+  body: |
+    Then no order and no assumed travel. Send the date when there is one.
+  reply_to: rr-ardenvale-07-m2
+- id: rr-ardenvale-08-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-10T09:05:00-04:00'
+  subject: 'Service-desk wording: return, repair, replacement'
+  body: |
+    One small wording request: “return” keeps becoming “replacement” as messages move between desks. Can the account reply name the decision it needs?
+- id: rr-ardenvale-08-m2
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - priya
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Service-desk wording: return, repair, replacement'
+  body: |
+    Yes. Attached the distinction I'll use with our desk. I would rather know whether you want advice, a repair price or a replacement option.
+  reply_to: rr-ardenvale-08-m1
+  attachments:
+  - rr-ardenvale-08
+- id: rr-ardenvale-08-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Service-desk wording: return, repair, replacement'
+  body: |
+    Good. Please leave the last two unapproved until the written response.
+  reply_to: rr-ardenvale-08-m2
+- id: rr-ardenvale-08-m4
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - priya
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Service-desk wording: return, repair, replacement'
+  body: |
+    Of course. Asking a question is not an order.
+  reply_to: rr-ardenvale-08-m3
+- id: rr-ardenvale-09-m1
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-09-14T09:05:00-04:00'
+  subject: 'Re: Autumn feedback: written material before a date'
+  body: |
+    Could the written exercise carry the starting note as well as the questions? People will read it between jobs, not with the whole thread open.
+  reply_to: rr-ardenvale-06-m3
+- id: rr-ardenvale-09-m2
+  story: regional-relationships
+  from: bc_ardenvale_2
+  to:
+  - clara
+  date: '2026-09-14T09:42:00-04:00'
+  subject: 'Re: Autumn feedback: written material before a date'
+  body: |
+    Yes. I've filed the layout request with the exercise note. Keeping it to one page is harder than adding another section.
+  reply_to: rr-ardenvale-09-m1
+  attachments:
+  - rr-ardenvale-09
+- id: rr-ardenvale-09-m3
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_2
+  date: '2026-09-14T10:28:00-04:00'
+  subject: 'Re: Autumn feedback: written material before a date'
+  body: |
+    Leave the handling instructions out of this one. That will save most of a page.
+  reply_to: rr-ardenvale-09-m2
+- id: rr-ardenvale-10-m1
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: Programme status: no seats reserved'
+  body: |
+    Shall I keep provisional places against your name while the dates are settled?
+  reply_to: rr-ardenvale-05-m4
+- id: rr-ardenvale-10-m2
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: Programme status: no seats reserved'
+  body: |
+    Please do not. Attached the status note from our exchange. We have a topic preference, not people or dates.
+  reply_to: rr-ardenvale-10-m1
+  attachments:
+  - rr-ardenvale-10
+- id: rr-ardenvale-10-m3
+  story: regional-relationships
+  from: bc_ardenvale_1
+  to:
+  - clara
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: Programme status: no seats reserved'
+  body: |
+    All right. I'll send the programme when it's dated and stop asking for a headcount before then.
+  reply_to: rr-ardenvale-10-m2
+- id: rr-ardenvale-10-m4
+  story: regional-relationships
+  from: clara
+  to:
+  - bc_ardenvale_1
+  date: '2026-09-15T11:56:00-04:00'
+  subject: 'Re: Programme status: no seats reserved'
+  body: |
+    Thanks. That is the useful next message.
+  reply_to: rr-ardenvale-10-m3
+- id: rr-merewick-01-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-06-16T09:05:00-04:00'
+  subject: 'MW account slip: June delivery reference'
+  body: |
+    Mabel, can you give me the compact June reference for the account correspondence? I have the activity, but want the quantity and amount together.
+- id: rr-merewick-01-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-06-16T09:42:00-04:00'
+  subject: 'Re: MW account slip: June delivery reference'
+  body: |
+    Attached: MW-26-0612, 600 m³, USD 552.00. Use that delivery reference if you need us to check the amount.
+  reply_to: rr-merewick-01-m1
+  attachments:
+  - rr-merewick-01
+- id: rr-merewick-01-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-06-16T10:28:00-04:00'
+  subject: 'Re: MW account slip: June delivery reference'
+  body: |
+    That is enough. I will keep it as an account note, not a second invoice.
+  reply_to: rr-merewick-01-m2
+- id: rr-merewick-02-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-07-06T09:05:00-04:00'
+  subject: 'MW account slip: July opening delivery'
+  body: |
+    Is the 2 July entry best described as a July standing amount? I want the heading to be unambiguous.
+- id: rr-merewick-02-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-07-06T09:42:00-04:00'
+  subject: 'Re: MW account slip: July opening delivery'
+  body: |
+    No: a dated delivery. Attached the two-entry subtotal. “July standing amount” would suggest a commitment we have not made.
+  reply_to: rr-merewick-02-m1
+  attachments:
+  - rr-merewick-02
+- id: rr-merewick-02-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-07-06T10:28:00-04:00'
+  subject: 'Re: MW account slip: July opening delivery'
+  body: |
+    Dated delivery it is. My heading was doing too much.
+  reply_to: rr-merewick-02-m2
+- id: rr-merewick-02-m4
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-07-06T11:56:00-04:00'
+  subject: 'Re: MW account slip: July opening delivery'
+  body: |
+    Thanks. The reference is MW-26-0702 if the same question comes back from accounts.
+  reply_to: rr-merewick-02-m3
+- id: rr-merewick-03-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-07-23T09:05:00-04:00'
+  subject: 'MW account slip: three accepted activities'
+  body: |
+    Can we put all three accepted references on one slip now the 20 July activity is recorded?
+- id: rr-merewick-03-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-07-23T09:42:00-04:00'
+  subject: 'Re: MW account slip: three accepted activities'
+  body: |
+    Attached. Total 2,250 m³ and USD 2,070.00. I have called the difference “uncalled contractual quantity”, not availability.
+  reply_to: rr-merewick-03-m1
+  attachments:
+  - rr-merewick-03
+- id: rr-merewick-03-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-07-23T10:28:00-04:00'
+  subject: 'Re: MW account slip: three accepted activities'
+  body: |
+    Please keep that wording. The shorter heading was liable to be read as a supply promise.
+  reply_to: rr-merewick-03-m2
+- id: rr-merewick-04-m1
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-08-04T09:05:00-04:00'
+  subject: 'Forecast return: information before a request'
+  body: |
+    What is most useful in a forecast return before we have an actual request? I can separate measured history from assumptions.
+- id: rr-merewick-04-m2
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-08-04T09:42:00-04:00'
+  subject: 'Re: Forecast return: information before a request'
+  body: |
+    That separation, and the period. Attached the information note. Please also say what would move the estimate.
+  reply_to: rr-merewick-04-m1
+  attachments:
+  - rr-merewick-04
+- id: rr-merewick-04-m3
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-08-04T10:28:00-04:00'
+  subject: 'Re: Forecast return: information before a request'
+  body: |
+    A range with its assumptions, labelled as planning information. No customer account list.
+  reply_to: rr-merewick-04-m2
+- id: rr-merewick-04-m4
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-08-04T11:56:00-04:00'
+  subject: 'Re: Forecast return: information before a request'
+  body: |
+    Exactly. A range is useful. An unlabeled number looks firmer than it is.
+  reply_to: rr-merewick-04-m3
+- id: rr-merewick-05-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-08-12T09:05:00-04:00'
+  subject: 'Account distinction: customer and member returns'
+  body: |
+    Our diary note called the next information round a member return. We are a customer; is there a separate version for us?
+- id: rr-merewick-05-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-08-12T09:42:00-04:00'
+  subject: 'Re: Account distinction: customer and member returns'
+  body: |
+    Yes. Account distinction attached. I'll send the customer request when it is ready, not the member papers.
+  reply_to: rr-merewick-05-m1
+  attachments:
+  - rr-merewick-05
+- id: rr-merewick-05-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-08-12T10:28:00-04:00'
+  subject: 'Re: Account distinction: customer and member returns'
+  body: |
+    Thank you. I will correct our description before it travels any further.
+  reply_to: rr-merewick-05-m2
+- id: rr-merewick-05-m4
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-08-12T11:56:00-04:00'
+  subject: 'Re: Account distinction: customer and member returns'
+  body: |
+    Please do. Similar questions, different standing.
+  reply_to: rr-merewick-05-m3
+- id: rr-merewick-06-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - nadia
+  date: '2026-08-24T09:05:00-04:00'
+  subject: 'Planning note: ceiling is not firm supply'
+  body: |
+    For the planning note, is the unused ceiling going into a firm supply line?
+- id: rr-merewick-06-m2
+  story: regional-relationships
+  from: nadia
+  to:
+  - priya
+  date: '2026-08-24T09:42:00-04:00'
+  subject: 'Re: Planning note: ceiling is not firm supply'
+  body: |
+    No. Attached the arithmetic and the boundary. It is an uncalled contractual quantity, and I haven't counted it as available supply.
+  reply_to: rr-merewick-06-m1
+  attachments:
+  - rr-merewick-06
+- id: rr-merewick-06-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - nadia
+  date: '2026-08-24T10:28:00-04:00'
+  subject: 'Re: Planning note: ceiling is not firm supply'
+  body: |
+    Good. A new dated request will still come through the account route.
+  reply_to: rr-merewick-06-m2
+- id: rr-merewick-07-m1
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-09-03T09:05:00-04:00'
+  subject: 'Re: Forecast version note: what changed'
+  body: |
+    If the estimate changes, do you want the previous version attached again or a note saying what changed?
+  reply_to: rr-merewick-04-m4
+- id: rr-merewick-07-m2
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-09-03T09:42:00-04:00'
+  subject: 'Re: Forecast version note: what changed'
+  body: |
+    The note first. Attached the version wording we discussed. Keep the period visible as well; a different period can look like a changed estimate.
+  reply_to: rr-merewick-07-m1
+  attachments:
+  - rr-merewick-07
+- id: rr-merewick-07-m3
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-09-03T10:28:00-04:00'
+  subject: 'Re: Forecast version note: what changed'
+  body: |
+    Yes, that is easy to miss. I will name both the date of the earlier return and the period.
+  reply_to: rr-merewick-07-m2
+- id: rr-merewick-07-m4
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-09-03T11:56:00-04:00'
+  subject: 'Re: Forecast version note: what changed'
+  body: |
+    That will save a comparison done for the wrong reason.
+  reply_to: rr-merewick-07-m3
+- id: rr-merewick-08-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-09-07T09:05:00-04:00'
+  subject: 'Re: Customer information request: minimum useful fields'
+  body: |
+    Could the first question on the information request be whether it is planning or an actual request? It changes who needs to answer.
+  reply_to: rr-merewick-05-m4
+- id: rr-merewick-08-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-09-07T09:42:00-04:00'
+  subject: 'Re: Customer information request: minimum useful fields'
+  body: |
+    Added to the checklist attached. Existing-delivery questions use the delivery reference instead.
+  reply_to: rr-merewick-08-m1
+  attachments:
+  - rr-merewick-08
+- id: rr-merewick-08-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-09-07T10:28:00-04:00'
+  subject: 'Re: Customer information request: minimum useful fields'
+  body: |
+    That separates the three things clearly. Please keep the units next to any quantity.
+  reply_to: rr-merewick-08-m2
+- id: rr-merewick-09-m1
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-09-10T09:05:00-04:00'
+  subject: 'Re: Forecast-format conversation: proposed time'
+  body: |
+    Would 23 September, 09:00 for twenty minutes work for the format question? Mail is fine if it is a bad week.
+  reply_to: rr-merewick-07-m4
+- id: rr-merewick-09-m2
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Forecast-format conversation: proposed time'
+  body: |
+    I've retained the proposed agenda attached. Tentative for me; I need to check the morning before accepting.
+  reply_to: rr-merewick-09-m1
+  attachments:
+  - rr-merewick-09
+- id: rr-merewick-09-m3
+  story: regional-relationships
+  from: bc_merewick_2
+  to:
+  - nadia
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Forecast-format conversation: proposed time'
+  body: |
+    Leave it tentative. One question each, no presentation.
+  reply_to: rr-merewick-09-m2
+- id: rr-merewick-09-m4
+  story: regional-relationships
+  from: nadia
+  to:
+  - bc_merewick_2
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Forecast-format conversation: proposed time'
+  body: |
+    Agreed on the format. I will confirm the time separately.
+  reply_to: rr-merewick-09-m3
+- id: rr-merewick-10-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: September account position: no further reservation'
+  body: |
+    Final check for my account file: the format discussion has not created a reservation, has it?
+  reply_to: rr-merewick-08-m3
+- id: rr-merewick-10-m2
+  story: regional-relationships
+  from: bc_merewick_1
+  to:
+  - priya
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: September account position: no further reservation'
+  body: |
+    No. Attached the September position. Same three accepted deliveries; no new quantity held.
+  reply_to: rr-merewick-10-m1
+  attachments:
+  - rr-merewick-10
+- id: rr-merewick-10-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_merewick_1
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: September account position: no further reservation'
+  body: |
+    Thank you. I will keep the meeting proposal out of the supply total.
+  reply_to: rr-merewick-10-m2
+- id: rr-rillhaven-01-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - bc_rillhaven_1
+  date: '2026-07-07T09:05:00-04:00'
+  subject: Summer review questions from the maintenance desk
+  body: |
+    Before the next account conversation, what would make our replies easier for the maintenance desk to use?
+- id: rr-rillhaven-01-m2
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - maya
+  date: '2026-07-07T09:42:00-04:00'
+  subject: 'Re: Summer review questions from the maintenance desk'
+  body: |
+    Two things in the attached note. Reader first, actual question near the top. We do not always need a demonstration.
+  reply_to: rr-rillhaven-01-m1
+  attachments:
+  - rr-rillhaven-01
+- id: rr-rillhaven-01-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - bc_rillhaven_1
+  date: '2026-07-07T10:28:00-04:00'
+  subject: 'Re: Summer review questions from the maintenance desk'
+  body: |
+    That is useful. I'll ask who needs the result when it isn't clear, rather than guessing from the sender.
+  reply_to: rr-rillhaven-01-m2
+- id: rr-rillhaven-01-m4
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - maya
+  date: '2026-07-07T11:56:00-04:00'
+  subject: 'Re: Summer review questions from the maintenance desk'
+  body: |
+    Yes. Sender and reader are quite often different people here.
+  reply_to: rr-rillhaven-01-m3
+- id: rr-rillhaven-02-m1
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_2
+  date: '2026-08-04T09:05:00-04:00'
+  subject: 'Desk example: write a question another shift can inherit'
+  body: |
+    Can you give me an example of the kind of wording that makes a question hard to inherit? An invented one is fine.
+- id: rr-rillhaven-02-m2
+  story: regional-relationships
+  from: bc_rillhaven_2
+  to:
+  - talia
+  date: '2026-08-04T09:42:00-04:00'
+  subject: 'Re: Desk example: write a question another shift can inherit'
+  body: |
+    'The copy is wrong.' I've worked it through in the attachment. The missing bit is usually which copy and why.
+  reply_to: rr-rillhaven-02-m1
+  attachments:
+  - rr-rillhaven-02
+- id: rr-rillhaven-02-m3
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_2
+  date: '2026-08-04T10:28:00-04:00'
+  subject: 'Re: Desk example: write a question another shift can inherit'
+  body: |
+    Useful. I would ask what the reviewer expected before calling it a defect.
+  reply_to: rr-rillhaven-02-m2
+- id: rr-rillhaven-02-m4
+  story: regional-relationships
+  from: bc_rillhaven_2
+  to:
+  - talia
+  date: '2026-08-04T11:56:00-04:00'
+  subject: 'Re: Desk example: write a question another shift can inherit'
+  body: |
+    Exactly. Otherwise we start by defending an answer to a question nobody asked.
+  reply_to: rr-rillhaven-02-m3
+- id: rr-rillhaven-03-m1
+  story: regional-relationships
+  from: kwm049
+  to:
+  - bc_rillhaven_3
+  date: '2026-08-19T09:05:00-04:00'
+  subject: 'Seasonal account conversation: budget versus service work'
+  body: |
+    Arel, is the autumn account question a current-cost view or a request for more work?
+- id: rr-rillhaven-03-m2
+  story: regional-relationships
+  from: bc_rillhaven_3
+  to:
+  - kwm049
+  date: '2026-08-19T09:42:00-04:00'
+  subject: 'Re: Seasonal account conversation: budget versus service work'
+  body: |
+    Current-cost view for now. Attached my note. The maintenance suggestions need their own discussion; they are not a budget commitment.
+  reply_to: rr-rillhaven-03-m1
+  attachments:
+  - rr-rillhaven-03
+- id: rr-rillhaven-03-m3
+  story: regional-relationships
+  from: kwm049
+  to:
+  - bc_rillhaven_3
+  date: '2026-08-19T10:28:00-04:00'
+  subject: 'Re: Seasonal account conversation: budget versus service work'
+  body: |
+    Then I will keep the existing term and instalments explicit. We can discuss a proposal when there is a scope.
+  reply_to: rr-rillhaven-03-m2
+- id: rr-rillhaven-04-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - bc_rillhaven_1
+  date: '2026-09-07T09:05:00-04:00'
+  subject: 'Re: Handover feedback: keep the small answers usable'
+  body: |
+    Now the seasonal handover is complete, was there anything in the way we worked together that you want kept for next time?
+  reply_to: b-rillhaven-1
+- id: rr-rillhaven-04-m2
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - maya
+  date: '2026-09-07T09:42:00-04:00'
+  subject: 'Re: Handover feedback: keep the small answers usable'
+  body: |
+    The small answers were useful. Attached the feedback. Please keep the workshop practical; completion has not made us run out of questions.
+  reply_to: rr-rillhaven-04-m1
+  attachments:
+  - rr-rillhaven-04
+- id: rr-rillhaven-04-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - bc_rillhaven_1
+  date: '2026-09-07T10:28:00-04:00'
+  subject: 'Re: Handover feedback: keep the small answers usable'
+  body: |
+    I didn't expect it would. Send the questions that need a discussion, not all the resolved mail.
+  reply_to: rr-rillhaven-04-m2
+- id: rr-rillhaven-04-m4
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - maya
+  date: '2026-09-07T11:56:00-04:00'
+  subject: 'Re: Handover feedback: keep the small answers usable'
+  body: |
+    A shorter list, then. Kit will be pleased.
+  reply_to: rr-rillhaven-04-m3
+- id: rr-rillhaven-05-m1
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_2
+  date: '2026-09-09T09:05:00-04:00'
+  subject: 'Re: Workshop questions: who uses the answer'
+  body: |
+    Which questions would you keep if we only had time for one example?
+  reply_to: rr-rillhaven-02-m4
+- id: rr-rillhaven-05-m2
+  story: regional-relationships
+  from: bc_rillhaven_2
+  to:
+  - talia
+  date: '2026-09-09T09:42:00-04:00'
+  subject: 'Re: Workshop questions: who uses the answer'
+  body: |
+    The three in the attachment. All start with the next reader, which is probably the point.
+  reply_to: rr-rillhaven-05-m1
+  attachments:
+  - rr-rillhaven-05
+- id: rr-rillhaven-05-m3
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_2
+  date: '2026-09-09T10:28:00-04:00'
+  subject: 'Re: Workshop questions: who uses the answer'
+  body: |
+    Yes. I will keep room for you to explain why the distinction matters, rather than answer every question myself.
+  reply_to: rr-rillhaven-05-m2
+- id: rr-rillhaven-06-m1
+  story: regional-relationships
+  from: kwm049
+  to:
+  - maya
+  - talia
+  date: '2026-09-10T09:05:00-04:00'
+  subject: Suggestion triage for the account file
+  body: |
+    If a new interface idea comes up in the workshop, what do you want me to do with it?
+- id: rr-rillhaven-06-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - talia
+  - kwm049
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Suggestion triage for the account file'
+  body: |
+    Wait for the actual scope question. The attached triage note keeps suggestions separate from work we've agreed to deliver.
+  reply_to: rr-rillhaven-06-m1
+  attachments:
+  - rr-rillhaven-06
+- id: rr-rillhaven-06-m3
+  story: regional-relationships
+  from: talia
+  to:
+  - maya
+  - kwm049
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Suggestion triage for the account file'
+  body: |
+    I'll write down what would help and why. I won't turn an interesting idea into a date.
+  reply_to: rr-rillhaven-06-m2
+- id: rr-rillhaven-06-m4
+  story: regional-relationships
+  from: kwm049
+  to:
+  - maya
+  - talia
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Suggestion triage for the account file'
+  body: |
+    Fine. Send me the scope if there is one; no need for me to attend just to collect possible ideas.
+  reply_to: rr-rillhaven-06-m3
+- id: rr-rillhaven-07-m1
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_1
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'Workshop preparation: printed questions'
+  body: |
+    Would the desk rather have the question list on paper? I am checking the practicalities before the packet is finished.
+- id: rr-rillhaven-07-m2
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - talia
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: Workshop preparation: printed questions'
+  body: |
+    Paper works. Attached the practical note. Please do not make the type tiny to fit a longer introduction.
+  reply_to: rr-rillhaven-07-m1
+  attachments:
+  - rr-rillhaven-07
+- id: rr-rillhaven-07-m3
+  story: regional-relationships
+  from: talia
+  to:
+  - bc_rillhaven_1
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: Workshop preparation: printed questions'
+  body: |
+    No longer introduction. I will leave a little reading time before people have to answer.
+  reply_to: rr-rillhaven-07-m2
+- id: rr-rillhaven-07-m4
+  story: regional-relationships
+  from: bc_rillhaven_1
+  to:
+  - talia
+  date: '2026-09-11T11:56:00-04:00'
+  subject: 'Re: Workshop preparation: printed questions'
+  body: |
+    Good. Some of our best questions arrive after people have looked quietly for a minute.
+  reply_to: rr-rillhaven-07-m3
+- id: rr-rillhaven-08-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - talia
+  date: '2026-09-14T09:05:00-04:00'
+  subject: 'Preparing to listen: question parking sheet'
+  body: |
+    Do you want me to answer live support questions as they come up, or keep a list?
+- id: rr-rillhaven-08-m2
+  story: regional-relationships
+  from: talia
+  to:
+  - maya
+  date: '2026-09-14T09:42:00-04:00'
+  subject: 'Re: Preparing to listen: question parking sheet'
+  body: |
+    Depends who needs the answer. I've attached the working page. Please don't open someone's actual case to the whole room.
+  reply_to: rr-rillhaven-08-m1
+  attachments:
+  - rr-rillhaven-08
+- id: rr-rillhaven-08-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - talia
+  date: '2026-09-14T10:28:00-04:00'
+  subject: 'Re: Preparing to listen: question parking sheet'
+  body: |
+    Yes. Reference and owner on our list; private details stay in the support conversation.
+  reply_to: rr-rillhaven-08-m2
+- id: rr-rillhaven-09-m1
+  story: regional-relationships
+  from: maya
+  to:
+  - talia
+  date: '2026-09-15T12:05:00-04:00'
+  subject: Reading the final example without answering it for people
+  body: |
+    I have the issued example. Do you want me to explain the accepted revision when we hand it out?
+- id: rr-rillhaven-09-m2
+  story: regional-relationships
+  from: talia
+  to:
+  - maya
+  date: '2026-09-15T12:42:00-04:00'
+  subject: 'Re: Reading the final example without answering it for people'
+  body: |
+    Wait for them to read it. My note is attached. The point is to hear how they decide, not give them the answer immediately.
+  reply_to: rr-rillhaven-09-m1
+  attachments:
+  - rr-rillhaven-09
+- id: rr-rillhaven-09-m3
+  story: regional-relationships
+  from: maya
+  to:
+  - talia
+  date: '2026-09-15T13:28:00-04:00'
+  subject: 'Re: Reading the final example without answering it for people'
+  body: |
+    Right. I will ask for the package and revision if we need to bring the discussion back to a record.
+  reply_to: rr-rillhaven-09-m2
+- id: rr-rillhaven-10-m1
+  story: regional-relationships
+  from: kwm049
+  to:
+  - maya
+  date: '2026-09-16T07:20:00-04:00'
+  subject: 'Account handover: workshop still ahead'
+  body: |
+    For this morning’s account note, is the workshop ready or delivered? I want the heading right.
+- id: rr-rillhaven-10-m2
+  story: regional-relationships
+  from: maya
+  to:
+  - kwm049
+  date: '2026-09-16T07:49:00-04:00'
+  subject: 'Re: Account handover: workshop still ahead'
+  body: |
+    Prepared, not delivered. Attached the handover note. The session is still next week.
+  reply_to: rr-rillhaven-10-m1
+  attachments:
+  - rr-rillhaven-10
+- id: rr-rillhaven-10-m3
+  story: regional-relationships
+  from: kwm049
+  to:
+  - maya
+  date: '2026-09-16T07:58:00-04:00'
+  subject: 'Re: Account handover: workshop still ahead'
+  body: |
+    Thanks. I will leave outcomes blank and use the existing term for the cost view.
+  reply_to: rr-rillhaven-10-m2
+- id: rr-belvarn-01-m1
+  story: regional-relationships
+  from: bc_belvarn_1
+  to:
+  - rosa
+  date: '2026-07-27T09:05:00-04:00'
+  subject: A-B-001 / reading explanation retained
+  body: |
+    Rosa, can I retain the reading arithmetic with the accounts file? The explanation answered my question, but the figures are scattered through my mail.
+- id: rr-belvarn-01-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_1
+  date: '2026-07-27T09:42:00-04:00'
+  subject: 'Re: A-B-001 / reading explanation retained'
+  body: |
+    Attached in one place. The difference is 8,100 m³ on ARWC-M-048751. Your original reading question remains answered.
+  reply_to: rr-belvarn-01-m1
+  attachments:
+  - rr-belvarn-01
+- id: rr-belvarn-01-m3
+  story: regional-relationships
+  from: bc_belvarn_1
+  to:
+  - rosa
+  date: '2026-07-27T10:28:00-04:00'
+  subject: 'Re: A-B-001 / reading explanation retained'
+  body: |
+    Good. I can give production the interval quantity without pretending it is a figure for one run.
+  reply_to: rr-belvarn-01-m2
+- id: rr-belvarn-01-m4
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_1
+  date: '2026-07-27T11:56:00-04:00'
+  subject: 'Re: A-B-001 / reading explanation retained'
+  body: |
+    Exactly. Their production breakdown would need its own information.
+  reply_to: rr-belvarn-01-m3
+- id: rr-belvarn-02-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-03T09:05:00-04:00'
+  subject: 'Production notebook: three dates on a water bill'
+  body: |
+    Bram, what would help production use the ordinary bill information without mixing it with your run records?
+- id: rr-belvarn-02-m2
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-08-03T09:42:00-04:00'
+  subject: 'Re: Production notebook: three dates on a water bill'
+  body: |
+    Dates, mostly. Attached my question sheet. Our spreadsheet wants one date and the bill has several that mean different things.
+  reply_to: rr-belvarn-02-m1
+  attachments:
+  - rr-belvarn-02
+- id: rr-belvarn-02-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-03T10:28:00-04:00'
+  subject: 'Re: Production notebook: three dates on a water bill'
+  body: |
+    I can explain those entries against a named bill. Keep the production dates with your own records.
+  reply_to: rr-belvarn-02-m2
+- id: rr-belvarn-02-m4
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-08-03T11:56:00-04:00'
+  subject: 'Re: Production notebook: three dates on a water bill'
+  body: |
+    Yes. I will leave a gap where the intervals do not match rather than manufacture a neat rate.
+  reply_to: rr-belvarn-02-m3
+- id: rr-belvarn-03-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-11T09:05:00-04:00'
+  subject: 'Appointment request card: ask the production office'
+  body: |
+    Would the production office remain the right place to settle a meter visit, even if the account question comes from Lila?
+- id: rr-belvarn-03-m2
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-08-11T09:42:00-04:00'
+  subject: 'Re: Appointment request card: ask the production office'
+  body: |
+    Yes. Contact card attached. Please ask us for a current window; last month’s quiet hour may not be quiet now.
+  reply_to: rr-belvarn-03-m1
+  attachments:
+  - rr-belvarn-03
+- id: rr-belvarn-03-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-11T10:28:00-04:00'
+  subject: 'Re: Appointment request card: ask the production office'
+  body: |
+    Understood. The bill conversation can stay with accounts, and the time request can come to production.
+  reply_to: rr-belvarn-03-m2
+- id: rr-belvarn-04-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-24T09:05:00-04:00'
+  subject: 'Re: Short-run planning: what advance notice helps'
+  body: |
+    For planned-visit notices, is the early date the useful part, or knowing what the visit needs from you?
+  reply_to: rr-belvarn-03-m3
+- id: rr-belvarn-04-m2
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-08-24T09:42:00-04:00'
+  subject: 'Re: Short-run planning: what advance notice helps'
+  body: |
+    Purpose and response needed first. Attached the note. An early guess at a date is useful if everyone knows it is a guess.
+  reply_to: rr-belvarn-04-m1
+  attachments:
+  - rr-belvarn-04
+- id: rr-belvarn-04-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-08-24T10:28:00-04:00'
+  subject: 'Re: Short-run planning: what advance notice helps'
+  body: |
+    A proposal with the unsettled part visible. Then a separate confirmation once agreed.
+  reply_to: rr-belvarn-04-m2
+- id: rr-belvarn-04-m4
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-08-24T11:56:00-04:00'
+  subject: 'Re: Short-run planning: what advance notice helps'
+  body: |
+    Yes. That is something I can put in front of a shift lead without translating it.
+  reply_to: rr-belvarn-04-m3
+- id: rr-belvarn-05-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_1
+  date: '2026-09-02T09:05:00-04:00'
+  subject: 'Careers conversation: questions before an invitation'
+  body: |
+    You mentioned the careers conversation. Is there a date or an audience yet? I would need that before asking anyone about time.
+- id: rr-belvarn-05-m2
+  story: regional-relationships
+  from: bc_belvarn_1
+  to:
+  - rosa
+  date: '2026-09-02T09:42:00-04:00'
+  subject: 'Re: Careers conversation: questions before an invitation'
+  body: |
+    Only possible subjects so far, attached. The college conversation is still being shaped. Please do not reserve anyone.
+  reply_to: rr-belvarn-05-m1
+  attachments:
+  - rr-belvarn-05
+- id: rr-belvarn-05-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_1
+  date: '2026-09-02T10:28:00-04:00'
+  subject: 'Re: Careers conversation: questions before an invitation'
+  body: |
+    All right. A question about ordinary work might be possible when the format is clearer.
+  reply_to: rr-belvarn-05-m2
+- id: rr-belvarn-06-m1
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-09T09:05:00-04:00'
+  subject: 'Re: Efficiency enquiry: information needed before a comparison'
+  body: |
+    For the efficiency discussion, can the bill tell us whether the smaller runs are using more water per order?
+  reply_to: b-belvarn-2
+- id: rr-belvarn-06-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-09-09T09:42:00-04:00'
+  subject: 'Re: Efficiency enquiry: information needed before a comparison'
+  body: |
+    Not on its own. Attached the information note. You would need matching production periods and a measure of output as well.
+  reply_to: rr-belvarn-06-m1
+  attachments:
+  - rr-belvarn-06
+- id: rr-belvarn-06-m3
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-09T10:28:00-04:00'
+  subject: 'Re: Efficiency enquiry: information needed before a comparison'
+  body: |
+    That is useful before somebody draws a graph. I will get the question settled internally first.
+  reply_to: rr-belvarn-06-m2
+- id: rr-belvarn-06-m4
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-09-09T11:56:00-04:00'
+  subject: 'Re: Efficiency enquiry: information needed before a comparison'
+  body: |
+    I will send the finished billing-period explanation once it is ready.
+  reply_to: rr-belvarn-06-m3
+- id: rr-belvarn-07-m1
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-10T09:05:00-04:00'
+  subject: 'Re: Working comparison card for the production desk'
+  body: |
+    I have turned yesterday’s answer into a small comparison card. Can you check that I have described the bill side properly?
+  reply_to: rr-belvarn-06-m4
+- id: rr-belvarn-07-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Working comparison card for the production desk'
+  body: |
+    Reviewed copy attached. “Metered m³ for the interval” is right. I cannot check the production measure for you.
+  reply_to: rr-belvarn-07-m1
+  attachments:
+  - rr-belvarn-07
+- id: rr-belvarn-07-m3
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Working comparison card for the production desk'
+  body: |
+    Understood. I have left the result empty; this is a question card, not a project business case.
+  reply_to: rr-belvarn-07-m2
+- id: rr-belvarn-08-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - rosa
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'Customer follow-up: keep the two contact routes'
+  body: |
+    Do you want one Belvarn contact on the follow-up, or separate accounts and production names?
+- id: rr-belvarn-08-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - priya
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: Customer follow-up: keep the two contact routes'
+  body: |
+    Separate. Internal note attached. Lila needs account answers; Bram needs a workable time and a clear description of the bill information.
+  reply_to: rr-belvarn-08-m1
+  attachments:
+  - rr-belvarn-08
+- id: rr-belvarn-08-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - rosa
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: Customer follow-up: keep the two contact routes'
+  body: |
+    All right. I will not treat the efficiency question as a new service complaint.
+  reply_to: rr-belvarn-08-m2
+- id: rr-belvarn-09-m1
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: Cover note: the finished billing-period explanation'
+  body: |
+    Is the billing-period explanation ready now? I would like to keep the finished version with our question card.
+  reply_to: rr-belvarn-07-m3
+- id: rr-belvarn-09-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_2
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: Cover note: the finished billing-period explanation'
+  body: |
+    Yes. Attached the accepted explanation and a short cover note for your comparison work. The reading dates and issue date are different things.
+  reply_to: rr-belvarn-09-m1
+  attachments:
+  - rr-belvarn-09
+  - a-billing-explanation
+- id: rr-belvarn-09-m3
+  story: regional-relationships
+  from: bc_belvarn_2
+  to:
+  - rosa
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: Cover note: the finished billing-period explanation'
+  body: |
+    Received. I will keep the explanation with the bill information, and our production assumptions on the other side.
+  reply_to: rr-belvarn-09-m2
+- id: rr-belvarn-10-m1
+  story: regional-relationships
+  from: bc_belvarn_1
+  to:
+  - rosa
+  date: '2026-09-16T07:20:00-04:00'
+  subject: 'Re: Account follow-up: questions retained, visit unbooked'
+  body: |
+    Bram says he has the finished explanation. Do I need to do anything on the account, or is this just information for their project discussion?
+  reply_to: rr-belvarn-01-m4
+- id: rr-belvarn-10-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_belvarn_1
+  date: '2026-09-16T07:49:00-04:00'
+  subject: 'Re: Account follow-up: questions retained, visit unbooked'
+  body: |
+    Just information. Attached the follow-up note. It changes no reading or account entry, and it does not book a visit.
+  reply_to: rr-belvarn-10-m1
+  attachments:
+  - rr-belvarn-10
+- id: rr-belvarn-10-m3
+  story: regional-relationships
+  from: bc_belvarn_1
+  to:
+  - rosa
+  date: '2026-09-16T07:58:00-04:00'
+  subject: 'Re: Account follow-up: questions retained, visit unbooked'
+  body: |
+    Good, I can file it without opening another account query.
+  reply_to: rr-belvarn-10-m2
+- id: rr-talvern-01-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-06-16T09:05:00-04:00'
+  subject: Shared-facility supply / June account note
+  body: |
+    For the June reference, shall I describe this as the cooperative’s total water use?
+- id: rr-talvern-01-m2
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - priya
+  date: '2026-06-16T09:42:00-04:00'
+  subject: 'Re: Shared-facility supply / June account note'
+  body: |
+    Shared-facility supplementary supply, please. Attached the account note. “Total” makes members think we are counting their other arrangements.
+  reply_to: rr-talvern-01-m1
+  attachments:
+  - rr-talvern-01
+- id: rr-talvern-01-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-06-16T10:28:00-04:00'
+  subject: 'Re: Shared-facility supply / June account note'
+  body: |
+    Agreed. TG-26-0612, 450 m³ and USD 517.50, under the shared arrangement.
+  reply_to: rr-talvern-01-m2
+- id: rr-talvern-02-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-07-06T09:05:00-04:00'
+  subject: 'Re: Shared-facility supply / July reference'
+  body: |
+    I have the July activity. Do you want the two-reference subtotal for your member questions?
+  reply_to: rr-talvern-01-m3
+- id: rr-talvern-02-m2
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - priya
+  date: '2026-07-06T09:42:00-04:00'
+  subject: 'Re: Shared-facility supply / July reference'
+  body: |
+    Yes, attached my account wording. Two deliveries, 1,070 m³, USD 1,230.50. Please keep the period beside the total.
+  reply_to: rr-talvern-02-m1
+  attachments:
+  - rr-talvern-02
+- id: rr-talvern-02-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-07-06T10:28:00-04:00'
+  subject: 'Re: Shared-facility supply / July reference'
+  body: |
+    That reads clearly. I have not included any member allocation.
+  reply_to: rr-talvern-02-m2
+- id: rr-talvern-02-m4
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - priya
+  date: '2026-07-06T11:56:00-04:00'
+  subject: 'Re: Shared-facility supply / July reference'
+  body: |
+    Good. That is ours to explain, and it is not the same question.
+  reply_to: rr-talvern-02-m3
+- id: rr-talvern-03-m1
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - rosa
+  date: '2026-07-27T09:05:00-04:00'
+  subject: The seasonal billing answer for the account file
+  body: |
+    Can I keep the settled-bills explanation in one note for the account file? People ask the same seasonal question in different words.
+- id: rr-talvern-03-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_1
+  date: '2026-07-27T09:42:00-04:00'
+  subject: 'Re: The seasonal billing answer for the account file'
+  body: |
+    Attached. The three accepted bills total USD 1,805.50 and are settled, as the case answer says. The ceiling is a different number.
+  reply_to: rr-talvern-03-m1
+  attachments:
+  - rr-talvern-03
+- id: rr-talvern-03-m3
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - rosa
+  date: '2026-07-27T10:28:00-04:00'
+  subject: 'Re: The seasonal billing answer for the account file'
+  body: |
+    That lets me answer without reopening the billing question. I will keep individual members’ arrangements out of it.
+  reply_to: rr-talvern-03-m2
+- id: rr-talvern-04-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_2
+  date: '2026-08-05T09:05:00-04:00'
+  subject: 'Member questions: which arrangement are we discussing?'
+  body: |
+    What are the common questions you want the later information session to cover?
+- id: rr-talvern-04-m2
+  story: regional-relationships
+  from: bc_talvern_2
+  to:
+  - rosa
+  date: '2026-08-05T09:42:00-04:00'
+  subject: 'Re: Member questions: which arrangement are we discussing?'
+  body: |
+    The card attached is the recurring one: which arrangement are we talking about? People start with “our water” and mean different things.
+  reply_to: rr-talvern-04-m1
+  attachments:
+  - rr-talvern-04
+- id: rr-talvern-04-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_2
+  date: '2026-08-05T10:28:00-04:00'
+  subject: 'Re: Member questions: which arrangement are we discussing?'
+  body: |
+    I can start there, then take an individual account question privately.
+  reply_to: rr-talvern-04-m2
+- id: rr-talvern-04-m4
+  story: regional-relationships
+  from: bc_talvern_2
+  to:
+  - rosa
+  date: '2026-08-05T11:56:00-04:00'
+  subject: 'Re: Member questions: which arrangement are we discussing?'
+  body: |
+    Yes. Nobody should need to read out a household bill to ask the first question.
+  reply_to: rr-talvern-04-m3
+- id: rr-talvern-05-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-08-18T09:05:00-04:00'
+  subject: 'Re: A short explanation for the shared-facility notice'
+  body: |
+    Would a short paragraph about the shared arrangement help more than another table?
+  reply_to: rr-talvern-02-m4
+- id: rr-talvern-05-m2
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - priya
+  date: '2026-08-18T09:42:00-04:00'
+  subject: 'Re: A short explanation for the shared-facility notice'
+  body: |
+    Yes. Draft attached. Can you check the contract description without turning it into a page of small print?
+  reply_to: rr-talvern-05-m1
+  attachments:
+  - rr-talvern-05
+- id: rr-talvern-05-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_talvern_1
+  date: '2026-08-18T10:28:00-04:00'
+  subject: 'Re: A short explanation for the shared-facility notice'
+  body: |
+    The description is right. Keep “supplementary” and “shared Pine facilities”; they do the useful work.
+  reply_to: rr-talvern-05-m2
+- id: rr-talvern-05-m4
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - priya
+  date: '2026-08-18T11:56:00-04:00'
+  subject: 'Re: A short explanation for the shared-facility notice'
+  body: |
+    I will keep both. The publication decision stays with our member-services team.
+  reply_to: rr-talvern-05-m3
+- id: rr-talvern-06-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_2
+  date: '2026-09-03T09:05:00-04:00'
+  subject: 'Re: Packing-facility discussion: leave room in the agenda'
+  body: |
+    Would a short water-information item fit at the next member meeting, or would that make the agenda worse?
+  reply_to: rr-talvern-04-m4
+- id: rr-talvern-06-m2
+  story: regional-relationships
+  from: bc_talvern_2
+  to:
+  - rosa
+  date: '2026-09-03T09:42:00-04:00'
+  subject: 'Re: Packing-facility discussion: leave room in the agenda'
+  body: |
+    Worse, I think. Attached the scheduling note. The packing discussion needs its own time, and people have quite different views on the interruption.
+  reply_to: rr-talvern-06-m1
+  attachments:
+  - rr-talvern-06
+- id: rr-talvern-06-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_2
+  date: '2026-09-03T10:28:00-04:00'
+  subject: 'Re: Packing-facility discussion: leave room in the agenda'
+  body: |
+    Then I will leave that meeting alone and collect the water questions separately.
+  reply_to: rr-talvern-06-m2
+- id: rr-talvern-07-m1
+  story: regional-relationships
+  from: talvern
+  to:
+  - rosa
+  date: '2026-09-10T09:05:00-04:00'
+  subject: 'Re: Information session: move the date search later'
+  body: |
+    Thank you for leaving the next meeting clear. Shall we send questions now, even without a new date?
+  reply_to: b-talvern-2
+- id: rr-talvern-07-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - talvern
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Information session: move the date search later'
+  body: |
+    Yes, please. Attached the follow-up note so the date search stays separate from the questions.
+  reply_to: rr-talvern-07-m1
+  attachments:
+  - rr-talvern-07
+- id: rr-talvern-07-m3
+  story: regional-relationships
+  from: talvern
+  to:
+  - rosa
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Information session: move the date search later'
+  body: |
+    We can collect the questions first. Availability will take a little longer.
+  reply_to: rr-talvern-07-m2
+- id: rr-talvern-07-m4
+  story: regional-relationships
+  from: rosa
+  to:
+  - talvern
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Information session: move the date search later'
+  body: |
+    That is fine. I have not booked a replacement session.
+  reply_to: rr-talvern-07-m3
+- id: rr-talvern-08-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - rosa
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'ARWC preparation: general questions and private accounts'
+  body: |
+    Do you need the member question list to include account numbers?
+- id: rr-talvern-08-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - priya
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: ARWC preparation: general questions and private accounts'
+  body: |
+    Only if someone raises a private account question through the private route. Internal preparation note attached; the general list should not collect household details.
+  reply_to: rr-talvern-08-m1
+  attachments:
+  - rr-talvern-08
+- id: rr-talvern-08-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - rosa
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: ARWC preparation: general questions and private accounts'
+  body: |
+    Agreed. I can help with the contract explanation once there is a date to consider.
+  reply_to: rr-talvern-08-m2
+- id: rr-talvern-09-m1
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_1
+  date: '2026-09-14T09:05:00-04:00'
+  subject: 'Re: Member-services draft: how to send a useful question'
+  body: |
+    Would it help to tell members what to leave out of the group question list?
+  reply_to: rr-talvern-06-m3
+- id: rr-talvern-09-m2
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - rosa
+  date: '2026-09-14T09:42:00-04:00'
+  subject: 'Re: Member-services draft: how to send a useful question'
+  body: |
+    Draft attached. I have asked for the unclear part of the explanation, not a copy of a bill. Does the private route make sense?
+  reply_to: rr-talvern-09-m1
+  attachments:
+  - rr-talvern-09
+- id: rr-talvern-09-m3
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_1
+  date: '2026-09-14T10:28:00-04:00'
+  subject: 'Re: Member-services draft: how to send a useful question'
+  body: |
+    Yes. Keep “another person’s account information” as well as the household example.
+  reply_to: rr-talvern-09-m2
+- id: rr-talvern-09-m4
+  story: regional-relationships
+  from: bc_talvern_1
+  to:
+  - rosa
+  date: '2026-09-14T11:56:00-04:00'
+  subject: 'Re: Member-services draft: how to send a useful question'
+  body: |
+    Will do. We will settle circulation here; it is still a draft.
+  reply_to: rr-talvern-09-m3
+- id: rr-talvern-10-m1
+  story: regional-relationships
+  from: bc_talvern_2
+  to:
+  - rosa
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: A planning call before the member session'
+  body: |
+    Would 14 October at 10:00 work for twenty minutes on the question list? Just us, not the member session.
+  reply_to: rr-talvern-09-m4
+- id: rr-talvern-10-m2
+  story: regional-relationships
+  from: rosa
+  to:
+  - bc_talvern_2
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: A planning call before the member session'
+  body: |
+    I can hold it tentatively. Attached the proposal note. I still need to check that morning before accepting.
+  reply_to: rr-talvern-10-m1
+  attachments:
+  - rr-talvern-10
+- id: rr-talvern-10-m3
+  story: regional-relationships
+  from: bc_talvern_2
+  to:
+  - rosa
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: A planning call before the member session'
+  body: |
+    That is fine. If it stays awkward we can do the question check by mail.
+  reply_to: rr-talvern-10-m2
+- id: rr-orrenvale-01-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-06-24T09:05:00-04:00'
+  subject: Account desk note / start with the actual question
+  body: |
+    Can the desk start with the item and the question when we contact you? We can skip the introductory explanation most of the time.
+- id: rr-orrenvale-01-m2
+  story: regional-relationships
+  from: bc_orrenvale_2
+  to:
+  - noor
+  date: '2026-06-24T09:42:00-04:00'
+  subject: 'Re: Account desk note / start with the actual question'
+  body: |
+    Yes. Attached my desk note. I still need to know whether we are talking about internal IT or a product workload.
+  reply_to: rr-orrenvale-01-m1
+  attachments:
+  - rr-orrenvale-01
+- id: rr-orrenvale-01-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-06-24T10:28:00-04:00'
+  subject: 'Re: Account desk note / start with the actual question'
+  body: |
+    Fair. I can put that in the first line. Saves both of us guessing.
+  reply_to: rr-orrenvale-01-m2
+- id: rr-orrenvale-01-m4
+  story: regional-relationships
+  from: bc_orrenvale_2
+  to:
+  - noor
+  date: '2026-06-24T11:56:00-04:00'
+  subject: 'Re: Account desk note / start with the actual question'
+  body: |
+    Good. Then the next question can be about the work rather than the vocabulary.
+  reply_to: rr-orrenvale-01-m3
+- id: rr-orrenvale-02-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_1
+  date: '2026-07-09T09:05:00-04:00'
+  subject: Account continuity / what the next colleague should find
+  body: |
+    For continuity, I would rather have a short account record with the last decision than another bundle of everything we sent you.
+- id: rr-orrenvale-02-m2
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-07-09T09:42:00-04:00'
+  subject: 'Re: Account continuity / what the next colleague should find'
+  body: |
+    Checklist attached. I can keep the last answer and the open decision together without duplicating every attachment.
+  reply_to: rr-orrenvale-02-m1
+  attachments:
+  - rr-orrenvale-02
+- id: rr-orrenvale-02-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_1
+  date: '2026-07-09T10:28:00-04:00'
+  subject: 'Re: Account continuity / what the next colleague should find'
+  body: |
+    That works. Please make proposed additions look proposed, even if someone has written a detailed description.
+  reply_to: rr-orrenvale-02-m2
+- id: rr-orrenvale-02-m4
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-07-09T11:56:00-04:00'
+  subject: 'Re: Account continuity / what the next colleague should find'
+  body: |
+    Yes. A detailed description can still be waiting for a decision.
+  reply_to: rr-orrenvale-02-m3
+- id: rr-orrenvale-03-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-07-29T09:05:00-04:00'
+  subject: 'Re: Review wording / a sampled check has a scope'
+  body: |
+    When a summary says “checked”, could it say what was checked? A sample and a full recovery are not interchangeable.
+  reply_to: rr-orrenvale-01-m4
+- id: rr-orrenvale-03-m2
+  story: regional-relationships
+  from: bc_orrenvale_2
+  to:
+  - noor
+  date: '2026-07-29T09:42:00-04:00'
+  subject: 'Re: Review wording / a sampled check has a scope'
+  body: |
+    Agreed. Attached the wording note, without inventing a new result. The actual item and observation need their own record.
+  reply_to: rr-orrenvale-03-m1
+  attachments:
+  - rr-orrenvale-03
+- id: rr-orrenvale-03-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-07-29T10:28:00-04:00'
+  subject: 'Re: Review wording / a sampled check has a scope'
+  body: |
+    Thanks. “Sample read back” is a useful statement when that is what happened.
+  reply_to: rr-orrenvale-03-m2
+- id: rr-orrenvale-04-m1
+  story: regional-relationships
+  from: evan
+  to:
+  - noor
+  date: '2026-08-12T09:05:00-04:00'
+  subject: Internal preparation / questions for the service review
+  body: |
+    Do you need anything from product release for the internal-service review?
+- id: rr-orrenvale-04-m2
+  story: regional-relationships
+  from: noor
+  to:
+  - evan
+  date: '2026-08-12T09:42:00-04:00'
+  subject: 'Re: Internal preparation / questions for the service review'
+  body: |
+    Only a check on the boundary. Internal note attached. I do not want a supplier review quietly acquiring product work.
+  reply_to: rr-orrenvale-04-m1
+  attachments:
+  - rr-orrenvale-04
+- id: rr-orrenvale-04-m3
+  story: regional-relationships
+  from: evan
+  to:
+  - noor
+  date: '2026-08-12T10:28:00-04:00'
+  subject: 'Re: Internal preparation / questions for the service review'
+  body: |
+    Understood. I can point out the boundary without sending release material to their account desk.
+  reply_to: rr-orrenvale-04-m2
+- id: rr-orrenvale-04-m4
+  story: regional-relationships
+  from: noor
+  to:
+  - evan
+  date: '2026-08-12T11:56:00-04:00'
+  subject: 'Re: Internal preparation / questions for the service review'
+  body: |
+    Exactly. No extra attachment bundle.
+  reply_to: rr-orrenvale-04-m3
+- id: rr-orrenvale-05-m1
+  story: regional-relationships
+  from: kwm047
+  to:
+  - bc_orrenvale_1
+  date: '2026-08-26T09:05:00-04:00'
+  subject: Service account / current term and change requests
+  body: |
+    Tessa, if we ask for a change later, can the proposal show the difference from the retained service first?
+- id: rr-orrenvale-05-m2
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - kwm047
+  date: '2026-08-26T09:42:00-04:00'
+  subject: 'Re: Service account / current term and change requests'
+  body: |
+    Yes. Attached the account note. Current term and USD 22,800 annual amount stay as they are until an actual written change.
+  reply_to: rr-orrenvale-05-m1
+  attachments:
+  - rr-orrenvale-05
+- id: rr-orrenvale-05-m3
+  story: regional-relationships
+  from: kwm047
+  to:
+  - bc_orrenvale_1
+  date: '2026-08-26T10:28:00-04:00'
+  subject: 'Re: Service account / current term and change requests'
+  body: |
+    Thank you. A clear additional scope is easier to review than a rewritten description of everything.
+  reply_to: rr-orrenvale-05-m2
+- id: rr-orrenvale-06-m1
+  story: regional-relationships
+  from: orrenvale
+  to:
+  - noor
+  date: '2026-09-04T09:05:00-04:00'
+  subject: 'Re: After the review / no open question on completed items'
+  body: |
+    Would you like any further wording in the review summary before we file it?
+  reply_to: b-orren-2
+- id: rr-orrenvale-06-m2
+  story: regional-relationships
+  from: noor
+  to:
+  - orrenvale
+  date: '2026-09-04T09:42:00-04:00'
+  subject: 'Re: After the review / no open question on completed items'
+  body: |
+    The summary is right. Follow-up note attached; nothing remains open against the completed items from the meeting.
+  reply_to: rr-orrenvale-06-m1
+  attachments:
+  - rr-orrenvale-06
+- id: rr-orrenvale-06-m3
+  story: regional-relationships
+  from: orrenvale
+  to:
+  - noor
+  date: '2026-09-04T10:28:00-04:00'
+  subject: 'Re: After the review / no open question on completed items'
+  body: |
+    Filed. We will wait for your planning week before arranging the next review.
+  reply_to: rr-orrenvale-06-m2
+- id: rr-orrenvale-06-m4
+  story: regional-relationships
+  from: noor
+  to:
+  - orrenvale
+  date: '2026-09-04T11:56:00-04:00'
+  subject: 'Re: After the review / no open question on completed items'
+  body: |
+    Thanks. I do not have the week yet.
+  reply_to: rr-orrenvale-06-m3
+- id: rr-orrenvale-07-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-09-07T09:05:00-04:00'
+  subject: 'Re: Desk card / keep the decision beside the question'
+  body: |
+    The continuity card looks close. Can “last answer” name the mail or record rather than just say “see previous”?
+  reply_to: rr-orrenvale-03-m3
+- id: rr-orrenvale-07-m2
+  story: regional-relationships
+  from: bc_orrenvale_2
+  to:
+  - noor
+  date: '2026-09-07T09:42:00-04:00'
+  subject: 'Re: Desk card / keep the decision beside the question'
+  body: |
+    Revised card attached. Question, reference, owner, state. It should be enough to pick up the next ordinary exchange.
+  reply_to: rr-orrenvale-07-m1
+  attachments:
+  - rr-orrenvale-07
+- id: rr-orrenvale-07-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_2
+  date: '2026-09-07T10:28:00-04:00'
+  subject: 'Re: Desk card / keep the decision beside the question'
+  body: |
+    Yes. One actionable question is better than a recap with no request.
+  reply_to: rr-orrenvale-07-m2
+- id: rr-orrenvale-08-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - kwm047
+  date: '2026-09-09T09:05:00-04:00'
+  subject: Commercial note / no need to renew early
+  body: |
+    Do you need an early renewal discussion after the review? Tessa is asking about the next diary slot, not a new term.
+- id: rr-orrenvale-08-m2
+  story: regional-relationships
+  from: kwm047
+  to:
+  - noor
+  date: '2026-09-09T09:42:00-04:00'
+  subject: 'Re: Commercial note / no need to renew early'
+  body: |
+    No early renewal needed. Internal note attached. Give her a useful week when we have one; do not promise a date just to clear the email.
+  reply_to: rr-orrenvale-08-m1
+  attachments:
+  - rr-orrenvale-08
+- id: rr-orrenvale-08-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - kwm047
+  date: '2026-09-09T10:28:00-04:00'
+  subject: 'Re: Commercial note / no need to renew early'
+  body: |
+    That is my preference too. I will leave the next review unbooked.
+  reply_to: rr-orrenvale-08-m2
+- id: rr-orrenvale-09-m1
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_1
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'Re: Account summary / what a colleague should not infer'
+  body: |
+    Please keep “internal” in the scope heading when the account summary moves to another colleague.
+  reply_to: rr-orrenvale-02-m4
+- id: rr-orrenvale-09-m2
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: Account summary / what a colleague should not infer'
+  body: |
+    Yes. Attached the summary guidance. “Platform support” would be the wrong shorthand here.
+  reply_to: rr-orrenvale-09-m1
+  attachments:
+  - rr-orrenvale-09
+- id: rr-orrenvale-09-m3
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_1
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: Account summary / what a colleague should not infer'
+  body: |
+    Thanks. No week for the next review yet.
+  reply_to: rr-orrenvale-09-m2
+- id: rr-orrenvale-09-m4
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-09-11T11:56:00-04:00'
+  subject: 'Re: Account summary / what a colleague should not infer'
+  body: |
+    I will leave it as a reminder to ask later, not a booked appointment.
+  reply_to: rr-orrenvale-09-m3
+- id: rr-orrenvale-10-m1
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: September follow-up / waiting for a useful week'
+  body: |
+    Any useful week for the next review yet, Noor? I can leave it a little longer if the calendar is still unsettled.
+  reply_to: rr-orrenvale-06-m4
+- id: rr-orrenvale-10-m2
+  story: regional-relationships
+  from: noor
+  to:
+  - bc_orrenvale_1
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: September follow-up / waiting for a useful week'
+  body: |
+    Please leave it. Follow-up note attached so this does not look like an open service item. I would rather return with a week I can use.
+  reply_to: rr-orrenvale-10-m1
+  attachments:
+  - rr-orrenvale-10
+- id: rr-orrenvale-10-m3
+  story: regional-relationships
+  from: bc_orrenvale_1
+  to:
+  - noor
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: September follow-up / waiting for a useful week'
+  body: |
+    All right. No date booked. The desk is there if a service question comes up meanwhile.
+  reply_to: rr-orrenvale-10-m2
+- id: rr-ternwick-01-m1
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-06-16T09:05:00-04:00'
+  subject: TR-26-04 / acceptance reference slip
+  body: |
+    Huw, can we retain a short acceptance reference for TR-26-04 with the correspondence? I do not want another invoice copy.
+- id: rr-ternwick-01-m2
+  story: regional-relationships
+  from: bc_ternwick_2
+  to:
+  - awm210
+  date: '2026-06-16T09:42:00-04:00'
+  subject: 'Re: TR-26-04 / acceptance reference slip'
+  body: |
+    Slip attached. 120 pages, USD 230.40 including the batch charge. The original acceptance is ARWC-RMBA-26-0184.
+  reply_to: rr-ternwick-01-m1
+  attachments:
+  - rr-ternwick-01
+- id: rr-ternwick-01-m3
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-06-16T10:28:00-04:00'
+  subject: 'Re: TR-26-04 / acceptance reference slip'
+  body: |
+    Thanks. A description question will carry the batch and page reference, not the whole folder.
+  reply_to: rr-ternwick-01-m2
+- id: rr-ternwick-02-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ternwick_1
+  date: '2026-07-06T09:05:00-04:00'
+  subject: TR-26-05 / page count and batch charge
+  body: |
+    For the account explanation, please make clear that the fixed charge is per approved batch, not per folder.
+- id: rr-ternwick-02-m2
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - priya
+  date: '2026-07-06T09:42:00-04:00'
+  subject: 'Re: TR-26-05 / page count and batch charge'
+  body: |
+    Done in the attached slip. TR-26-05 is 96 pages and USD 220.32 in total. Dividing the files into folders does not create a new batch.
+  reply_to: rr-ternwick-02-m1
+  attachments:
+  - rr-ternwick-02
+- id: rr-ternwick-02-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ternwick_1
+  date: '2026-07-06T10:28:00-04:00'
+  subject: 'Re: TR-26-05 / page count and batch charge'
+  body: |
+    That answers the question. No change requested to the accepted batch.
+  reply_to: rr-ternwick-02-m2
+- id: rr-ternwick-03-m1
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-07-23T09:05:00-04:00'
+  subject: TR-26-06 / finding a page again
+  body: |
+    If two descriptions use similar words, what is the quickest way to ask you about one page in TR-26-06?
+- id: rr-ternwick-03-m2
+  story: regional-relationships
+  from: bc_ternwick_2
+  to:
+  - awm210
+  date: '2026-07-23T09:42:00-04:00'
+  subject: 'Re: TR-26-06 / finding a page again'
+  body: |
+    Batch and existing page reference first. Attached the retrieval note and count. The subject description helps after that.
+  reply_to: rr-ternwick-03-m1
+  attachments:
+  - rr-ternwick-03
+- id: rr-ternwick-03-m3
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-07-23T10:28:00-04:00'
+  subject: 'Re: TR-26-06 / finding a page again'
+  body: |
+    Understood. We will keep the reference when arranging the files for our readers.
+  reply_to: rr-ternwick-03-m2
+- id: rr-ternwick-03-m4
+  story: regional-relationships
+  from: bc_ternwick_2
+  to:
+  - awm210
+  date: '2026-07-23T11:56:00-04:00'
+  subject: 'Re: TR-26-06 / finding a page again'
+  body: |
+    Good. A useful new folder should not make the original page harder to find.
+  reply_to: rr-ternwick-03-m3
+- id: rr-ternwick-04-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ternwick_1
+  date: '2026-08-11T09:05:00-04:00'
+  subject: 'Re: TR-26-07 / a compact accepted-batch record'
+  body: |
+    Can we keep the TR-26-07 charge explanation separate from ideas for more description work?
+  reply_to: rr-ternwick-02-m3
+- id: rr-ternwick-04-m2
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - priya
+  date: '2026-08-11T09:42:00-04:00'
+  subject: 'Re: TR-26-07 / a compact accepted-batch record'
+  body: |
+    Yes. Compact record attached: 88 pages, USD 216.96. Extra description belongs in a later proposal, once you have a selection.
+  reply_to: rr-ternwick-04-m1
+  attachments:
+  - rr-ternwick-04
+- id: rr-ternwick-04-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - bc_ternwick_1
+  date: '2026-08-11T10:28:00-04:00'
+  subject: 'Re: TR-26-07 / a compact accepted-batch record'
+  body: |
+    Good. That will stop a useful suggestion looking like an item already ordered.
+  reply_to: rr-ternwick-04-m2
+- id: rr-ternwick-05-m1
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-08-25T09:05:00-04:00'
+  subject: 'Re: Description workshop note / identify, then interpret'
+  body: |
+    Could you give us a short wording example for an uncertain photograph description? Something we can discuss without guessing about an actual image.
+  reply_to: rr-ternwick-03-m4
+- id: rr-ternwick-05-m2
+  story: regional-relationships
+  from: bc_ternwick_2
+  to:
+  - awm210
+  date: '2026-08-25T09:42:00-04:00'
+  subject: 'Re: Description workshop note / identify, then interpret'
+  body: |
+    Worked example attached. “Location not established” is useful information. “Old office” sounds definite until someone asks which one.
+  reply_to: rr-ternwick-05-m1
+  attachments:
+  - rr-ternwick-05
+- id: rr-ternwick-05-m3
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_2
+  date: '2026-08-25T10:28:00-04:00'
+  subject: 'Re: Description workshop note / identify, then interpret'
+  body: |
+    I like keeping the stable reference beside the uncertainty. People can still find it while the question is open.
+  reply_to: rr-ternwick-05-m2
+- id: rr-ternwick-05-m4
+  story: regional-relationships
+  from: bc_ternwick_2
+  to:
+  - awm210
+  date: '2026-08-25T11:56:00-04:00'
+  subject: 'Re: Description workshop note / identify, then interpret'
+  body: |
+    Exactly. Finding a thing and knowing everything about it are different jobs.
+  reply_to: rr-ternwick-05-m3
+- id: rr-ternwick-06-m1
+  story: regional-relationships
+  from: ternwick
+  to:
+  - priya
+  date: '2026-09-08T09:05:00-04:00'
+  subject: 'Re: Staff-history correspondence / acceptance and later ideas'
+  body: |
+    Would you like the suggestions for the next selection included with the accepted staff-history correspondence, or sent separately?
+  reply_to: b-ternwick-2
+- id: rr-ternwick-06-m2
+  story: regional-relationships
+  from: priya
+  to:
+  - ternwick
+  date: '2026-09-08T09:42:00-04:00'
+  subject: 'Re: Staff-history correspondence / acceptance and later ideas'
+  body: |
+    Separately, please. Follow-up note attached. The accepted work can stay complete while records decides what it wants next.
+  reply_to: rr-ternwick-06-m1
+  attachments:
+  - rr-ternwick-06
+- id: rr-ternwick-06-m3
+  story: regional-relationships
+  from: ternwick
+  to:
+  - priya
+  date: '2026-09-08T10:28:00-04:00'
+  subject: 'Re: Staff-history correspondence / acceptance and later ideas'
+  body: |
+    We will wait for the selection. The description suggestions are available when it is settled.
+  reply_to: rr-ternwick-06-m2
+- id: rr-ternwick-07-m1
+  story: regional-relationships
+  from: priya
+  to:
+  - awm210
+  date: '2026-09-09T09:05:00-04:00'
+  subject: 'Records desk: selection before a proposal'
+  body: |
+    Do you have a settled selection for the extra description work, or should I hold off asking for a price?
+- id: rr-ternwick-07-m2
+  story: regional-relationships
+  from: awm210
+  to:
+  - priya
+  date: '2026-09-09T09:42:00-04:00'
+  subject: 'Re: Records desk: selection before a proposal'
+  body: |
+    Hold off. Internal selection note attached. I want a question against each item, not a general request to improve everything.
+  reply_to: rr-ternwick-07-m1
+  attachments:
+  - rr-ternwick-07
+- id: rr-ternwick-07-m3
+  story: regional-relationships
+  from: priya
+  to:
+  - awm210
+  date: '2026-09-09T10:28:00-04:00'
+  subject: 'Re: Records desk: selection before a proposal'
+  body: |
+    That will be easier to quote. Let me know when the selection is ready.
+  reply_to: rr-ternwick-07-m2
+- id: rr-ternwick-08-m1
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_1
+  date: '2026-09-10T09:05:00-04:00'
+  subject: Proposal preparation card / description work
+  body: |
+    What would you need beside each selected item to quote description work?
+- id: rr-ternwick-08-m2
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - awm210
+  date: '2026-09-10T09:42:00-04:00'
+  subject: 'Re: Proposal preparation card / description work'
+  body: |
+    Preparation card attached. The question and desired output matter more than a long account of why the archive is interesting.
+  reply_to: rr-ternwick-08-m1
+  attachments:
+  - rr-ternwick-08
+- id: rr-ternwick-08-m3
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_1
+  date: '2026-09-10T10:28:00-04:00'
+  subject: 'Re: Proposal preparation card / description work'
+  body: |
+    Good. We can state “record the uncertainty” where there is no source for a definite answer.
+  reply_to: rr-ternwick-08-m2
+- id: rr-ternwick-08-m4
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - awm210
+  date: '2026-09-10T11:56:00-04:00'
+  subject: 'Re: Proposal preparation card / description work'
+  body: |
+    Yes. That is a clearer task than asking us to make every description conclusive.
+  reply_to: rr-ternwick-08-m3
+- id: rr-ternwick-09-m1
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - awm210
+  date: '2026-09-11T09:05:00-04:00'
+  subject: 'Re: Description questions / proposed short call'
+  body: |
+    Could we do twenty minutes on 22 September at 15:30 to check the questions before a proposal?
+  reply_to: rr-ternwick-08-m4
+- id: rr-ternwick-09-m2
+  story: regional-relationships
+  from: awm210
+  to:
+  - bc_ternwick_1
+  date: '2026-09-11T09:42:00-04:00'
+  subject: 'Re: Description questions / proposed short call'
+  body: |
+    Tentatively, yes. Attached the proposed-call note. I need to check the diary before accepting the time.
+  reply_to: rr-ternwick-09-m1
+  attachments:
+  - rr-ternwick-09
+- id: rr-ternwick-09-m3
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - awm210
+  date: '2026-09-11T10:28:00-04:00'
+  subject: 'Re: Description questions / proposed short call'
+  body: |
+    Leave it tentative. We can still use mail if the selection is not ready.
+  reply_to: rr-ternwick-09-m2
+- id: rr-ternwick-10-m1
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - priya
+  - awm210
+  date: '2026-09-15T09:05:00-04:00'
+  subject: 'Re: Twelve-batch account cross-check'
+  body: |
+    Before we talk about another selection, can you confirm that your twelve numbered batch references match our account view?
+  reply_to: rr-ternwick-04-m3
+- id: rr-ternwick-10-m2
+  story: regional-relationships
+  from: priya
+  to:
+  - awm210
+  - bc_ternwick_1
+  date: '2026-09-15T09:42:00-04:00'
+  subject: 'Re: Twelve-batch account cross-check'
+  body: |
+    Cross-check attached: 1404 pages, USD 2749.68, with the existing receipt and payment dates. These are the accepted purchasing records, not a new invoice.
+  reply_to: rr-ternwick-10-m1
+  attachments:
+  - rr-ternwick-10
+- id: rr-ternwick-10-m3
+  story: regional-relationships
+  from: awm210
+  to:
+  - priya
+  - bc_ternwick_1
+  date: '2026-09-15T10:28:00-04:00'
+  subject: 'Re: Twelve-batch account cross-check'
+  body: |
+    The batch references match the records file. I have left the unnumbered staff-history conversation under its subject rather than guessed a link.
+  reply_to: rr-ternwick-10-m2
+- id: rr-ternwick-10-m4
+  story: regional-relationships
+  from: bc_ternwick_1
+  to:
+  - priya
+  - awm210
+  date: '2026-09-15T11:56:00-04:00'
+  subject: 'Re: Twelve-batch account cross-check'
+  body: |
+    That is sensible. The later description proposal can wait for its own selection.
+  reply_to: rr-ternwick-10-m3

@@ -1,0 +1,2008 @@
+snapshot: '2026-09-16T08:30:00-04:00'
+required_base:
+  repository_commit: f208f42626b21ec2dbdbc060a16d8a1b569ec43c
+  commercial_commit: 9c0e210
+  maintenance_engineering_commit: 0b7f0b2
+  retail_billing_commit: 58c1396
+source_digests:
+  business-network.yaml: 5e8159c2dc204b4f7f3f422ef01586406508cf81173bb0238cf11de25dacfc4f
+  commercial.yaml: 120164d7eef061c62a0e5d051d76b70e7993d9e1e361af440c9bfef4b44e4c3a
+  maintenance-engineering.yaml: a8caa2376ace24b5e1c2ba94857224a605b356b3feee127c789fdf3579d04694
+  purchasing-stores.yaml: fb5cd7378b06ba0f551324664a97b60f1bebf50c5032aa84d02f4333b21b934e
+  retail-billing.yaml: c204279ea53aad10266eb3c15985a4027e80c199db84b4c30a14fd3d95572b99
+  planning.yaml: 67b4c60823adddda2dbefc7ac035caf868ca7f3cfc8e37c9ee3ec14e086f2da3
+  people.yaml: e77e3ff2c9fea9a0282b808828a753b78dec605e56ee098e50b30d6bd9e0ed35
+  workforce.yaml: 5620bb88631f35b880eb77e93539b70ae74a23c2c51bfe599458233dcc2a6b3a
+native_sources:
+  keplerops: k-corporate.k-staff
+  arwc: a-corporate.a-business
+records:
+- id: rr-arwc-01
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: maya
+  participants:
+  - theo
+  - maya
+  private: false
+  documents:
+  - rr-arwc-01
+  - rr-arwc-01-arwc
+  messages:
+  - rr-arwc-01-m1
+  - rr-arwc-01-m2
+  - rr-arwc-01-m3
+  - rr-arwc-01-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-arwc-02
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: clara
+  participants:
+  - clara
+  - rowan
+  private: false
+  documents:
+  - rr-arwc-02
+  - rr-arwc-02-arwc
+  messages:
+  - rr-arwc-02-m1
+  - rr-arwc-02-m2
+  - rr-arwc-02-m3
+  - rr-arwc-02-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-arwc-03
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: theo
+  participants:
+  - theo
+  - maya
+  private: false
+  documents:
+  - rr-arwc-03
+  - rr-arwc-03-arwc
+  messages:
+  - rr-arwc-03-m1
+  - rr-arwc-03-m2
+  - rr-arwc-03-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-arwc-04
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: terms
+  author: kwm048
+  participants:
+  - kwm048
+  - maya
+  private: true
+  documents:
+  - rr-arwc-04
+  messages:
+  - rr-arwc-04-m1
+  - rr-arwc-04-m2
+  - rr-arwc-04-m3
+  - rr-arwc-04-m4
+  previous_message: null
+  source_documents:
+  - document: kc001-agreement-summary
+    sha256: 8519803c084ba70958cd02ab75bc8106806b6add06dd079f0f2b08f4694dee5d
+  facts: {}
+- id: rr-arwc-05
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: rowan
+  participants:
+  - rowan
+  - maya
+  private: true
+  documents:
+  - rr-arwc-05
+  messages:
+  - rr-arwc-05-m1
+  - rr-arwc-05-m2
+  - rr-arwc-05-m3
+  - rr-arwc-05-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-arwc-06
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: reference
+  author: maya
+  participants:
+  - maya
+  - kwm052
+  - kwm048
+  private: true
+  documents:
+  - rr-arwc-06
+  messages:
+  - rr-arwc-06-m1
+  - rr-arwc-06-m2
+  - rr-arwc-06-m3
+  - rr-arwc-06-m4
+  previous_message: null
+  source_documents:
+  - document: commercial-arwc-reference-agenda
+    sha256: 3fe5b3ec70dfc69ecd0b55d94c73b27a0f8d130aabb7846812264be099c0b8ac
+  facts: {}
+- id: rr-arwc-07
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: maya
+  participants:
+  - theo
+  - maya
+  private: false
+  documents:
+  - rr-arwc-07
+  - rr-arwc-07-arwc
+  messages:
+  - rr-arwc-07-m1
+  - rr-arwc-07-m2
+  - rr-arwc-07-m3
+  previous_message: rr-arwc-01-m4
+  source_documents: []
+  facts: {}
+- id: rr-arwc-08
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: reference
+  author: clara
+  participants:
+  - clara
+  - theo
+  private: true
+  documents:
+  - rr-arwc-08
+  messages:
+  - rr-arwc-08-m1
+  - rr-arwc-08-m2
+  - rr-arwc-08-m3
+  - rr-arwc-08-m4
+  previous_message: null
+  source_documents:
+  - document: commercial-arwc-reference-agenda-arwc
+    sha256: 3fe5b3ec70dfc69ecd0b55d94c73b27a0f8d130aabb7846812264be099c0b8ac
+  facts: {}
+- id: rr-arwc-09
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: correspondence
+  author: rowan
+  participants:
+  - rowan
+  - maya
+  - kwm048
+  private: true
+  documents:
+  - rr-arwc-09
+  messages:
+  - rr-arwc-09-m1
+  - rr-arwc-09-m2
+  - rr-arwc-09-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-arwc-10
+  organization: arwc
+  account_id: K-C-001
+  agreement_id: K-C-001-AGR-01
+  kind: reference
+  author: maya
+  participants:
+  - maya
+  - theo
+  - clara
+  - kwm052
+  - kwm048
+  private: false
+  documents:
+  - rr-arwc-10
+  - rr-arwc-10-arwc
+  messages:
+  - rr-arwc-10-m1
+  - rr-arwc-10-m2
+  - rr-arwc-10-m3
+  - rr-arwc-10-m4
+  previous_message: cm-1376
+  source_documents:
+  - document: commercial-arwc-reference-agenda
+    sha256: 3fe5b3ec70dfc69ecd0b55d94c73b27a0f8d130aabb7846812264be099c0b8ac
+  - document: commercial-arwc-reference-agenda-arwc
+    sha256: 3fe5b3ec70dfc69ecd0b55d94c73b27a0f8d130aabb7846812264be099c0b8ac
+  facts: {}
+- id: rr-veybridge-01
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: contractor
+  author: theo
+  participants:
+  - theo
+  - jules
+  private: false
+  documents:
+  - rr-veybridge-01
+  messages:
+  - rr-veybridge-01-m1
+  - rr-veybridge-01-m2
+  - rr-veybridge-01-m3
+  - rr-veybridge-01-m4
+  previous_message: null
+  source_documents:
+  - document: me-contractor-report-001
+    sha256: 734a5f9939fb704daedffdcc8c77e2e5232d9727e8d779027e543961a44825cc
+  - document: me-contractor-receipt-001
+    sha256: 1be5be65398831334b7c33d21c397b5f8c7dcfaa20104f77665552ca8149474a
+  facts:
+    job: 1
+- id: rr-veybridge-02
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: correspondence
+  author: bc_veybridge_2
+  participants:
+  - theo
+  - bc_veybridge_2
+  private: false
+  documents:
+  - rr-veybridge-02
+  messages:
+  - rr-veybridge-02-m1
+  - rr-veybridge-02-m2
+  - rr-veybridge-02-m3
+  - rr-veybridge-02-m4
+  - rr-veybridge-02-m5
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-03
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: contractor
+  author: jules
+  participants:
+  - jules
+  - theo
+  private: false
+  documents:
+  - rr-veybridge-03
+  messages:
+  - rr-veybridge-03-m1
+  - rr-veybridge-03-m2
+  - rr-veybridge-03-m3
+  previous_message: rr-veybridge-01-m4
+  source_documents:
+  - document: me-contractor-report-006
+    sha256: 9e85e429e90837f751a639750d18f97e9eb0eba6023f39905616c3bb716452be
+  - document: me-contractor-receipt-006
+    sha256: 440d8c7781a4226cb08829f22b6241a1610c1dccd7df69beb1ecded55f2368a7
+  facts:
+    job: 6
+- id: rr-veybridge-04
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: terms
+  author: bc_veybridge_3
+  participants:
+  - priya
+  - bc_veybridge_3
+  private: false
+  documents:
+  - rr-veybridge-04
+  messages:
+  - rr-veybridge-04-m1
+  - rr-veybridge-04-m2
+  - rr-veybridge-04-m3
+  - rr-veybridge-04-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-05
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: contractor
+  author: theo
+  participants:
+  - theo
+  - bc_veybridge_2
+  private: false
+  documents:
+  - rr-veybridge-05
+  messages:
+  - rr-veybridge-05-m1
+  - rr-veybridge-05-m2
+  - rr-veybridge-05-m3
+  previous_message: rr-veybridge-02-m5
+  source_documents:
+  - document: me-contractor-report-012
+    sha256: ad2ec676d1fd98bc3c1b11544b805992640c0659663ac8e2c2311236659758ab
+  - document: me-contractor-receipt-012
+    sha256: 9bc416d75d6abec9725a7a3780bfc4dbb2e54ccbb82e915db11a4acb93454cd1
+  facts:
+    job: 12
+- id: rr-veybridge-06
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: correspondence
+  author: jules
+  participants:
+  - jules
+  - theo
+  private: false
+  documents:
+  - rr-veybridge-06
+  messages:
+  - rr-veybridge-06-m1
+  - rr-veybridge-06-m2
+  - rr-veybridge-06-m3
+  - rr-veybridge-06-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-07
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: correspondence
+  author: bc_veybridge_2
+  participants:
+  - theo
+  - bc_veybridge_2
+  private: false
+  documents:
+  - rr-veybridge-07
+  messages:
+  - rr-veybridge-07-m1
+  - rr-veybridge-07-m2
+  - rr-veybridge-07-m3
+  - rr-veybridge-07-m4
+  previous_message: rr-veybridge-05-m3
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-08
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: correspondence
+  author: jules
+  participants:
+  - jules
+  - clara
+  - ardenvale
+  private: false
+  documents:
+  - rr-veybridge-08
+  messages:
+  - rr-veybridge-08-m1
+  - rr-veybridge-08-m2
+  - rr-veybridge-08-m3
+  - rr-veybridge-08-m4
+  previous_message: b-ardenvale-2
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-09
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: correspondence
+  author: theo
+  participants:
+  - theo
+  - priya
+  private: true
+  documents:
+  - rr-veybridge-09
+  messages:
+  - rr-veybridge-09-m1
+  - rr-veybridge-09-m2
+  - rr-veybridge-09-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-veybridge-10
+  organization: veybridge
+  account_id: A-S-001
+  agreement_id: A-S-001-AGR-01
+  kind: terms
+  author: bc_veybridge_3
+  participants:
+  - priya
+  - bc_veybridge_3
+  private: false
+  documents:
+  - rr-veybridge-10
+  messages:
+  - rr-veybridge-10-m1
+  - rr-veybridge-10-m2
+  - rr-veybridge-10-m3
+  - rr-veybridge-10-m4
+  previous_message: rr-veybridge-04-m4
+  source_documents:
+  - document: as001-agreement-summary
+    sha256: ff96d5a4f2e0b34fec39570e4df970747069d16bca18560c30163484e5f036c5
+  facts: {}
+- id: rr-ardenvale-01
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: contractor
+  author: clara
+  participants:
+  - clara
+  - bc_ardenvale_2
+  private: false
+  documents:
+  - rr-ardenvale-01
+  messages:
+  - rr-ardenvale-01-m1
+  - rr-ardenvale-01-m2
+  - rr-ardenvale-01-m3
+  - rr-ardenvale-01-m4
+  previous_message: null
+  source_documents:
+  - document: me-contractor-report-013
+    sha256: 3138c9ed5fef465ee128b6c636f9be32bd79cb51b43893b4e1825f58a01ea967
+  - document: me-contractor-receipt-013
+    sha256: e7893d30bf663a56204177f211774d9d5af5489984f1ef31fd6dfc59727ff587
+  facts:
+    job: 13
+- id: rr-ardenvale-02
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_2
+  participants:
+  - clara
+  - bc_ardenvale_2
+  private: false
+  documents:
+  - rr-ardenvale-02
+  messages:
+  - rr-ardenvale-02-m1
+  - rr-ardenvale-02-m2
+  - rr-ardenvale-02-m3
+  - rr-ardenvale-02-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-ardenvale-03
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: contractor
+  author: clara
+  participants:
+  - clara
+  - bc_ardenvale_1
+  private: false
+  documents:
+  - rr-ardenvale-03
+  messages:
+  - rr-ardenvale-03-m1
+  - rr-ardenvale-03-m2
+  - rr-ardenvale-03-m3
+  previous_message: rr-ardenvale-01-m4
+  source_documents:
+  - document: me-contractor-report-018
+    sha256: 612af7315ca1f0f6a36214cde5458f0dbef07a3fdcf43630633f6dfdcd6de6fc
+  - document: me-contractor-receipt-018
+    sha256: bbeeb9b672e7f51af0b30297fc5fa7cf57652d2385a2057b4a17d42726af8072
+  facts:
+    job: 18
+- id: rr-ardenvale-04
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: contractor
+  author: bc_ardenvale_2
+  participants:
+  - clara
+  - bc_ardenvale_2
+  private: false
+  documents:
+  - rr-ardenvale-04
+  messages:
+  - rr-ardenvale-04-m1
+  - rr-ardenvale-04-m2
+  - rr-ardenvale-04-m3
+  - rr-ardenvale-04-m4
+  previous_message: rr-ardenvale-03-m3
+  source_documents:
+  - document: me-contractor-report-024
+    sha256: f33830d2ba627c69e78f43bded06de6894c31da643ad55135c113fb28f418f54
+  - document: me-contractor-receipt-024
+    sha256: 7899129f982da48209040169cd560126739e672260ee4eab2424c9077a0a799d
+  facts:
+    job: 24
+- id: rr-ardenvale-05
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_1
+  participants:
+  - clara
+  - bc_ardenvale_1
+  private: false
+  documents:
+  - rr-ardenvale-05
+  messages:
+  - rr-ardenvale-05-m1
+  - rr-ardenvale-05-m2
+  - rr-ardenvale-05-m3
+  - rr-ardenvale-05-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-ardenvale-06
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_2
+  participants:
+  - clara
+  - bc_ardenvale_2
+  private: false
+  documents:
+  - rr-ardenvale-06
+  messages:
+  - rr-ardenvale-06-m1
+  - rr-ardenvale-06-m2
+  - rr-ardenvale-06-m3
+  previous_message: rr-ardenvale-02-m4
+  source_documents: []
+  facts: {}
+- id: rr-ardenvale-07
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: terms
+  author: clara
+  participants:
+  - clara
+  - priya
+  private: true
+  documents:
+  - rr-ardenvale-07
+  messages:
+  - rr-ardenvale-07-m1
+  - rr-ardenvale-07-m2
+  - rr-ardenvale-07-m3
+  previous_message: null
+  source_documents:
+  - document: as002-agreement-summary
+    sha256: 7ca931e588a54c004cc99a5cdf04133e59924b93293da270dc968e31e2a36143
+  facts: {}
+- id: rr-ardenvale-08
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_1
+  participants:
+  - priya
+  - bc_ardenvale_1
+  private: false
+  documents:
+  - rr-ardenvale-08
+  messages:
+  - rr-ardenvale-08-m1
+  - rr-ardenvale-08-m2
+  - rr-ardenvale-08-m3
+  - rr-ardenvale-08-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-ardenvale-09
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_2
+  participants:
+  - clara
+  - bc_ardenvale_2
+  private: false
+  documents:
+  - rr-ardenvale-09
+  messages:
+  - rr-ardenvale-09-m1
+  - rr-ardenvale-09-m2
+  - rr-ardenvale-09-m3
+  previous_message: rr-ardenvale-06-m3
+  source_documents: []
+  facts: {}
+- id: rr-ardenvale-10
+  organization: ardenvale
+  account_id: A-S-002
+  agreement_id: A-S-002-AGR-01
+  kind: correspondence
+  author: bc_ardenvale_1
+  participants:
+  - clara
+  - bc_ardenvale_1
+  private: false
+  documents:
+  - rr-ardenvale-10
+  messages:
+  - rr-ardenvale-10-m1
+  - rr-ardenvale-10-m2
+  - rr-ardenvale-10-m3
+  - rr-ardenvale-10-m4
+  previous_message: rr-ardenvale-05-m4
+  source_documents: []
+  facts: {}
+- id: rr-merewick-01
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: bulk
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-01
+  messages:
+  - rr-merewick-01-m1
+  - rr-merewick-01-m2
+  - rr-merewick-01-m3
+  previous_message: null
+  source_documents:
+  - document: as003-accepted-schedule
+    sha256: c26fb99826d3feb83cc806c432d45827f0acf493754cc210dbc2695b52f8f4ec
+  facts:
+    activity: MW-26-0612
+    quantity: 600
+    amount: '552.00'
+- id: rr-merewick-02
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: bulk
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-02
+  messages:
+  - rr-merewick-02-m1
+  - rr-merewick-02-m2
+  - rr-merewick-02-m3
+  - rr-merewick-02-m4
+  previous_message: null
+  source_documents:
+  - document: as003-accepted-schedule
+    sha256: c26fb99826d3feb83cc806c432d45827f0acf493754cc210dbc2695b52f8f4ec
+  facts:
+    activity: MW-26-0702
+    quantity: 900
+    amount: '828.00'
+- id: rr-merewick-03
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: bulk
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-03
+  messages:
+  - rr-merewick-03-m1
+  - rr-merewick-03-m2
+  - rr-merewick-03-m3
+  previous_message: null
+  source_documents:
+  - document: as003-accepted-schedule
+    sha256: c26fb99826d3feb83cc806c432d45827f0acf493754cc210dbc2695b52f8f4ec
+  facts:
+    activity: MW-26-0720
+    quantity: 750
+    amount: '690.00'
+    total_quantity: 2250
+    total_amount: '2070.00'
+    headroom: 17750
+- id: rr-merewick-04
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: correspondence
+  author: bc_merewick_2
+  participants:
+  - nadia
+  - bc_merewick_2
+  private: false
+  documents:
+  - rr-merewick-04
+  messages:
+  - rr-merewick-04-m1
+  - rr-merewick-04-m2
+  - rr-merewick-04-m3
+  - rr-merewick-04-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-merewick-05
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: correspondence
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-05
+  messages:
+  - rr-merewick-05-m1
+  - rr-merewick-05-m2
+  - rr-merewick-05-m3
+  - rr-merewick-05-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-merewick-06
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: bulk
+  author: nadia
+  participants:
+  - nadia
+  - priya
+  private: true
+  documents:
+  - rr-merewick-06
+  messages:
+  - rr-merewick-06-m1
+  - rr-merewick-06-m2
+  - rr-merewick-06-m3
+  previous_message: null
+  source_documents:
+  - document: as003-accepted-schedule
+    sha256: c26fb99826d3feb83cc806c432d45827f0acf493754cc210dbc2695b52f8f4ec
+  facts:
+    total_quantity: 2250
+    total_amount: '2070.00'
+    headroom: 17750
+- id: rr-merewick-07
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: correspondence
+  author: bc_merewick_2
+  participants:
+  - nadia
+  - bc_merewick_2
+  private: false
+  documents:
+  - rr-merewick-07
+  messages:
+  - rr-merewick-07-m1
+  - rr-merewick-07-m2
+  - rr-merewick-07-m3
+  - rr-merewick-07-m4
+  previous_message: rr-merewick-04-m4
+  source_documents: []
+  facts: {}
+- id: rr-merewick-08
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: correspondence
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-08
+  messages:
+  - rr-merewick-08-m1
+  - rr-merewick-08-m2
+  - rr-merewick-08-m3
+  previous_message: rr-merewick-05-m4
+  source_documents: []
+  facts: {}
+- id: rr-merewick-09
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: appointment
+  author: bc_merewick_2
+  participants:
+  - nadia
+  - bc_merewick_2
+  private: false
+  documents:
+  - rr-merewick-09
+  messages:
+  - rr-merewick-09-m1
+  - rr-merewick-09-m2
+  - rr-merewick-09-m3
+  - rr-merewick-09-m4
+  previous_message: rr-merewick-07-m4
+  source_documents: []
+  facts: {}
+  calendar: rr-merewick-09-call
+- id: rr-merewick-10
+  organization: merewick
+  account_id: A-S-003
+  agreement_id: A-S-003-AGR-01
+  kind: bulk
+  author: bc_merewick_1
+  participants:
+  - priya
+  - bc_merewick_1
+  private: false
+  documents:
+  - rr-merewick-10
+  messages:
+  - rr-merewick-10-m1
+  - rr-merewick-10-m2
+  - rr-merewick-10-m3
+  previous_message: rr-merewick-08-m3
+  source_documents:
+  - document: as003-agreement-summary
+    sha256: 0acdba247d7cb4f6facfb451f15a9ea7a77b64b77a76ad0e781c35be112bd55a
+  - document: pl-arwc-pln-26-33-recommendation-r1
+    sha256: d9f1ac471d2421188cf74429c3e863a33e223a3fbcd244a59f67f70fbe404b95
+  facts:
+    total_quantity: 2250
+    total_amount: '2070.00'
+    headroom: 17750
+- id: rr-rillhaven-01
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: bc_rillhaven_1
+  participants:
+  - maya
+  - bc_rillhaven_1
+  private: false
+  documents:
+  - rr-rillhaven-01
+  messages:
+  - rr-rillhaven-01-m1
+  - rr-rillhaven-01-m2
+  - rr-rillhaven-01-m3
+  - rr-rillhaven-01-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-02
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: bc_rillhaven_2
+  participants:
+  - talia
+  - bc_rillhaven_2
+  private: false
+  documents:
+  - rr-rillhaven-02
+  messages:
+  - rr-rillhaven-02-m1
+  - rr-rillhaven-02-m2
+  - rr-rillhaven-02-m3
+  - rr-rillhaven-02-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-03
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: terms
+  author: bc_rillhaven_3
+  participants:
+  - kwm049
+  - bc_rillhaven_3
+  private: false
+  documents:
+  - rr-rillhaven-03
+  messages:
+  - rr-rillhaven-03-m1
+  - rr-rillhaven-03-m2
+  - rr-rillhaven-03-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-04
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: bc_rillhaven_1
+  participants:
+  - maya
+  - bc_rillhaven_1
+  private: false
+  documents:
+  - rr-rillhaven-04
+  messages:
+  - rr-rillhaven-04-m1
+  - rr-rillhaven-04-m2
+  - rr-rillhaven-04-m3
+  - rr-rillhaven-04-m4
+  previous_message: b-rillhaven-1
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-05
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: bc_rillhaven_2
+  participants:
+  - talia
+  - bc_rillhaven_2
+  private: false
+  documents:
+  - rr-rillhaven-05
+  messages:
+  - rr-rillhaven-05-m1
+  - rr-rillhaven-05-m2
+  - rr-rillhaven-05-m3
+  previous_message: rr-rillhaven-02-m4
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-06
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: maya
+  participants:
+  - maya
+  - talia
+  - kwm049
+  private: true
+  documents:
+  - rr-rillhaven-06
+  messages:
+  - rr-rillhaven-06-m1
+  - rr-rillhaven-06-m2
+  - rr-rillhaven-06-m3
+  - rr-rillhaven-06-m4
+  previous_message: null
+  source_documents:
+  - document: k-workshop-outline
+    sha256: cea0865251c28c52a2f1650c61a7bcf6db11f9990ab85f992fb42472ad8dbb87
+  facts: {}
+- id: rr-rillhaven-07
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: bc_rillhaven_1
+  participants:
+  - talia
+  - bc_rillhaven_1
+  private: false
+  documents:
+  - rr-rillhaven-07
+  messages:
+  - rr-rillhaven-07-m1
+  - rr-rillhaven-07-m2
+  - rr-rillhaven-07-m3
+  - rr-rillhaven-07-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-rillhaven-08
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: correspondence
+  author: talia
+  participants:
+  - talia
+  - maya
+  private: true
+  documents:
+  - rr-rillhaven-08
+  messages:
+  - rr-rillhaven-08-m1
+  - rr-rillhaven-08-m2
+  - rr-rillhaven-08-m3
+  previous_message: null
+  source_documents:
+  - document: k-workshop-outline
+    sha256: cea0865251c28c52a2f1650c61a7bcf6db11f9990ab85f992fb42472ad8dbb87
+  facts: {}
+- id: rr-rillhaven-09
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: workshop
+  author: talia
+  participants:
+  - talia
+  - maya
+  private: true
+  documents:
+  - rr-rillhaven-09
+  messages:
+  - rr-rillhaven-09-m1
+  - rr-rillhaven-09-m2
+  - rr-rillhaven-09-m3
+  previous_message: null
+  source_documents:
+  - document: rillhaven-workshop-example
+    sha256: c81c617e91de70752058e44454dcdea9e338a23716b4c9f0d2b4bab5f42399f1
+  facts: {}
+- id: rr-rillhaven-10
+  organization: rillhaven
+  account_id: K-C-002
+  agreement_id: K-C-002-AGR-01
+  kind: workshop
+  author: maya
+  participants:
+  - maya
+  - kwm049
+  private: true
+  documents:
+  - rr-rillhaven-10
+  messages:
+  - rr-rillhaven-10-m1
+  - rr-rillhaven-10-m2
+  - rr-rillhaven-10-m3
+  previous_message: null
+  source_documents:
+  - document: rillhaven-workshop-preparation
+    sha256: cf476625ca668e1702128819431bc02f662098d7b652f1a849a2ab23ed9fc935
+  - document: rillhaven-workshop-invitation
+    sha256: 0a05edae75376a97f904d415a1a7305cb671ba37f4d01d71348c8c32500f4f26
+  facts: {}
+- id: rr-belvarn-01
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: retail
+  author: rosa
+  participants:
+  - rosa
+  - bc_belvarn_1
+  private: false
+  documents:
+  - rr-belvarn-01
+  messages:
+  - rr-belvarn-01-m1
+  - rr-belvarn-01-m2
+  - rr-belvarn-01-m3
+  - rr-belvarn-01-m4
+  previous_message: null
+  source_documents:
+  - document: rb-case-document-0001
+    sha256: cb91c52566e1ecd1c0a73291d48c01f6a918aa43806992085703c26ec2dbc1ec
+  facts:
+    case: ARWC-BC-2026-0001
+    reading_start: 210631
+    reading_end: 218731
+    quantity: 8100
+- id: rr-belvarn-02
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: bc_belvarn_2
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-02
+  messages:
+  - rr-belvarn-02-m1
+  - rr-belvarn-02-m2
+  - rr-belvarn-02-m3
+  - rr-belvarn-02-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-03
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: bc_belvarn_2
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-03
+  messages:
+  - rr-belvarn-03-m1
+  - rr-belvarn-03-m2
+  - rr-belvarn-03-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-04
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: bc_belvarn_2
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-04
+  messages:
+  - rr-belvarn-04-m1
+  - rr-belvarn-04-m2
+  - rr-belvarn-04-m3
+  - rr-belvarn-04-m4
+  previous_message: rr-belvarn-03-m3
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-05
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: bc_belvarn_1
+  participants:
+  - rosa
+  - bc_belvarn_1
+  private: false
+  documents:
+  - rr-belvarn-05
+  messages:
+  - rr-belvarn-05-m1
+  - rr-belvarn-05-m2
+  - rr-belvarn-05-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-06
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: rosa
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-06
+  messages:
+  - rr-belvarn-06-m1
+  - rr-belvarn-06-m2
+  - rr-belvarn-06-m3
+  - rr-belvarn-06-m4
+  previous_message: b-belvarn-2
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-07
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: bc_belvarn_2
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-07
+  messages:
+  - rr-belvarn-07-m1
+  - rr-belvarn-07-m2
+  - rr-belvarn-07-m3
+  previous_message: rr-belvarn-06-m4
+  source_documents: []
+  facts: {}
+- id: rr-belvarn-08
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: rosa
+  participants:
+  - rosa
+  - priya
+  private: true
+  documents:
+  - rr-belvarn-08
+  messages:
+  - rr-belvarn-08-m1
+  - rr-belvarn-08-m2
+  - rr-belvarn-08-m3
+  previous_message: null
+  source_documents:
+  - document: rb-case-document-0001
+    sha256: cb91c52566e1ecd1c0a73291d48c01f6a918aa43806992085703c26ec2dbc1ec
+  facts: {}
+- id: rr-belvarn-09
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: retail
+  author: rosa
+  participants:
+  - rosa
+  - bc_belvarn_2
+  private: false
+  documents:
+  - rr-belvarn-09
+  messages:
+  - rr-belvarn-09-m1
+  - rr-belvarn-09-m2
+  - rr-belvarn-09-m3
+  previous_message: rr-belvarn-07-m3
+  source_documents:
+  - document: a-billing-explanation
+    sha256: ec2ff1c954733c588bbcf720370bda392d15790513087a1d6930ce9977e2a867
+  facts: {}
+- id: rr-belvarn-10
+  organization: belvarn
+  account_id: A-B-001
+  agreement_id: A-B-001-AGR-01
+  kind: correspondence
+  author: rosa
+  participants:
+  - rosa
+  - bc_belvarn_1
+  private: false
+  documents:
+  - rr-belvarn-10
+  messages:
+  - rr-belvarn-10-m1
+  - rr-belvarn-10-m2
+  - rr-belvarn-10-m3
+  previous_message: rr-belvarn-01-m4
+  source_documents:
+  - document: rb-case-document-0001
+    sha256: cb91c52566e1ecd1c0a73291d48c01f6a918aa43806992085703c26ec2dbc1ec
+  - document: a-billing-explanation
+    sha256: ec2ff1c954733c588bbcf720370bda392d15790513087a1d6930ce9977e2a867
+  facts: {}
+- id: rr-talvern-01
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: bulk
+  author: bc_talvern_1
+  participants:
+  - priya
+  - bc_talvern_1
+  private: false
+  documents:
+  - rr-talvern-01
+  messages:
+  - rr-talvern-01-m1
+  - rr-talvern-01-m2
+  - rr-talvern-01-m3
+  previous_message: null
+  source_documents:
+  - document: ab002-accepted-schedule
+    sha256: bfd586049cc6b2e9c0fc18a4302eb62d27f8875ad97cf26bd4f73f3c113f269e
+  facts:
+    activity: TG-26-0612
+    quantity: 450
+    amount: '517.50'
+- id: rr-talvern-02
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: bulk
+  author: bc_talvern_1
+  participants:
+  - priya
+  - bc_talvern_1
+  private: false
+  documents:
+  - rr-talvern-02
+  messages:
+  - rr-talvern-02-m1
+  - rr-talvern-02-m2
+  - rr-talvern-02-m3
+  - rr-talvern-02-m4
+  previous_message: rr-talvern-01-m3
+  source_documents:
+  - document: ab002-accepted-schedule
+    sha256: bfd586049cc6b2e9c0fc18a4302eb62d27f8875ad97cf26bd4f73f3c113f269e
+  facts:
+    activity: TG-26-0702
+    quantity: 620
+    amount: '713.00'
+- id: rr-talvern-03
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: bulk
+  author: rosa
+  participants:
+  - rosa
+  - bc_talvern_1
+  private: false
+  documents:
+  - rr-talvern-03
+  messages:
+  - rr-talvern-03-m1
+  - rr-talvern-03-m2
+  - rr-talvern-03-m3
+  previous_message: null
+  source_documents:
+  - document: rb-case-document-0002
+    sha256: e551b3914571286f71c7aae2dcfdfd20395d479907dc22b94443e70f38ddda20
+  - document: ab002-accepted-schedule
+    sha256: bfd586049cc6b2e9c0fc18a4302eb62d27f8875ad97cf26bd4f73f3c113f269e
+  facts:
+    activity: TG-26-0720
+    quantity: 500
+    amount: '575.00'
+    total_quantity: 1570
+    total_amount: '1805.50'
+    headroom: 5930
+- id: rr-talvern-04
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: bc_talvern_2
+  participants:
+  - rosa
+  - bc_talvern_2
+  private: false
+  documents:
+  - rr-talvern-04
+  messages:
+  - rr-talvern-04-m1
+  - rr-talvern-04-m2
+  - rr-talvern-04-m3
+  - rr-talvern-04-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-talvern-05
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: bc_talvern_1
+  participants:
+  - priya
+  - bc_talvern_1
+  private: false
+  documents:
+  - rr-talvern-05
+  messages:
+  - rr-talvern-05-m1
+  - rr-talvern-05-m2
+  - rr-talvern-05-m3
+  - rr-talvern-05-m4
+  previous_message: rr-talvern-02-m4
+  source_documents: []
+  facts: {}
+- id: rr-talvern-06
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: bc_talvern_2
+  participants:
+  - rosa
+  - bc_talvern_2
+  private: false
+  documents:
+  - rr-talvern-06
+  messages:
+  - rr-talvern-06-m1
+  - rr-talvern-06-m2
+  - rr-talvern-06-m3
+  previous_message: rr-talvern-04-m4
+  source_documents: []
+  facts: {}
+- id: rr-talvern-07
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: rosa
+  participants:
+  - rosa
+  - talvern
+  private: false
+  documents:
+  - rr-talvern-07
+  messages:
+  - rr-talvern-07-m1
+  - rr-talvern-07-m2
+  - rr-talvern-07-m3
+  - rr-talvern-07-m4
+  previous_message: b-talvern-2
+  source_documents: []
+  facts: {}
+- id: rr-talvern-08
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: rosa
+  participants:
+  - rosa
+  - priya
+  private: true
+  documents:
+  - rr-talvern-08
+  messages:
+  - rr-talvern-08-m1
+  - rr-talvern-08-m2
+  - rr-talvern-08-m3
+  previous_message: null
+  source_documents:
+  - document: rb-case-document-0002
+    sha256: e551b3914571286f71c7aae2dcfdfd20395d479907dc22b94443e70f38ddda20
+  facts: {}
+- id: rr-talvern-09
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: correspondence
+  author: bc_talvern_1
+  participants:
+  - rosa
+  - bc_talvern_1
+  private: false
+  documents:
+  - rr-talvern-09
+  messages:
+  - rr-talvern-09-m1
+  - rr-talvern-09-m2
+  - rr-talvern-09-m3
+  - rr-talvern-09-m4
+  previous_message: rr-talvern-06-m3
+  source_documents: []
+  facts: {}
+- id: rr-talvern-10
+  organization: talvern
+  account_id: A-B-002
+  agreement_id: A-B-002-AGR-01
+  kind: appointment
+  author: bc_talvern_2
+  participants:
+  - rosa
+  - bc_talvern_2
+  private: false
+  documents:
+  - rr-talvern-10
+  messages:
+  - rr-talvern-10-m1
+  - rr-talvern-10-m2
+  - rr-talvern-10-m3
+  previous_message: rr-talvern-09-m4
+  source_documents: []
+  facts: {}
+  calendar: rr-talvern-10-call
+- id: rr-orrenvale-01
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_2
+  participants:
+  - noor
+  - bc_orrenvale_2
+  private: false
+  documents:
+  - rr-orrenvale-01
+  messages:
+  - rr-orrenvale-01-m1
+  - rr-orrenvale-01-m2
+  - rr-orrenvale-01-m3
+  - rr-orrenvale-01-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-orrenvale-02
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_1
+  participants:
+  - noor
+  - bc_orrenvale_1
+  private: false
+  documents:
+  - rr-orrenvale-02
+  messages:
+  - rr-orrenvale-02-m1
+  - rr-orrenvale-02-m2
+  - rr-orrenvale-02-m3
+  - rr-orrenvale-02-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-orrenvale-03
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_2
+  participants:
+  - noor
+  - bc_orrenvale_2
+  private: false
+  documents:
+  - rr-orrenvale-03
+  messages:
+  - rr-orrenvale-03-m1
+  - rr-orrenvale-03-m2
+  - rr-orrenvale-03-m3
+  previous_message: rr-orrenvale-01-m4
+  source_documents: []
+  facts: {}
+- id: rr-orrenvale-04
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: noor
+  participants:
+  - noor
+  - evan
+  private: true
+  documents:
+  - rr-orrenvale-04
+  messages:
+  - rr-orrenvale-04-m1
+  - rr-orrenvale-04-m2
+  - rr-orrenvale-04-m3
+  - rr-orrenvale-04-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-orrenvale-05
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: terms
+  author: bc_orrenvale_1
+  participants:
+  - kwm047
+  - bc_orrenvale_1
+  private: false
+  documents:
+  - rr-orrenvale-05
+  messages:
+  - rr-orrenvale-05-m1
+  - rr-orrenvale-05-m2
+  - rr-orrenvale-05-m3
+  previous_message: null
+  source_documents:
+  - document: ks001-accepted-schedule
+    sha256: f063228258c841ca7bac183fbdbe1fc9af2b8ba2cf33896f7e1fa45dc4e3c57d
+  facts: {}
+- id: rr-orrenvale-06
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: noor
+  participants:
+  - noor
+  - orrenvale
+  private: false
+  documents:
+  - rr-orrenvale-06
+  messages:
+  - rr-orrenvale-06-m1
+  - rr-orrenvale-06-m2
+  - rr-orrenvale-06-m3
+  - rr-orrenvale-06-m4
+  previous_message: b-orren-2
+  source_documents:
+  - document: k-service-review
+    sha256: ee32c299b1fa1426a1eee70bc2769e64066d7b700be63f9f53703bbe0aae4d07
+  facts: {}
+- id: rr-orrenvale-07
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_2
+  participants:
+  - noor
+  - bc_orrenvale_2
+  private: false
+  documents:
+  - rr-orrenvale-07
+  messages:
+  - rr-orrenvale-07-m1
+  - rr-orrenvale-07-m2
+  - rr-orrenvale-07-m3
+  previous_message: rr-orrenvale-03-m3
+  source_documents:
+  - document: k-service-review
+    sha256: ee32c299b1fa1426a1eee70bc2769e64066d7b700be63f9f53703bbe0aae4d07
+  facts: {}
+- id: rr-orrenvale-08
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: terms
+  author: kwm047
+  participants:
+  - kwm047
+  - noor
+  private: true
+  documents:
+  - rr-orrenvale-08
+  messages:
+  - rr-orrenvale-08-m1
+  - rr-orrenvale-08-m2
+  - rr-orrenvale-08-m3
+  previous_message: null
+  source_documents:
+  - document: ks001-agreement-summary
+    sha256: 5a91dcc206e03e965420e04dc04d66161fa7b301aadfbaed4f92e2244336c922
+  - document: k-service-review
+    sha256: ee32c299b1fa1426a1eee70bc2769e64066d7b700be63f9f53703bbe0aae4d07
+  facts: {}
+- id: rr-orrenvale-09
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_1
+  participants:
+  - noor
+  - bc_orrenvale_1
+  private: false
+  documents:
+  - rr-orrenvale-09
+  messages:
+  - rr-orrenvale-09-m1
+  - rr-orrenvale-09-m2
+  - rr-orrenvale-09-m3
+  - rr-orrenvale-09-m4
+  previous_message: rr-orrenvale-02-m4
+  source_documents:
+  - document: k-service-review
+    sha256: ee32c299b1fa1426a1eee70bc2769e64066d7b700be63f9f53703bbe0aae4d07
+  facts: {}
+- id: rr-orrenvale-10
+  organization: orrenvale
+  account_id: K-S-001
+  agreement_id: K-S-001-AGR-01
+  kind: correspondence
+  author: bc_orrenvale_1
+  participants:
+  - noor
+  - bc_orrenvale_1
+  private: false
+  documents:
+  - rr-orrenvale-10
+  messages:
+  - rr-orrenvale-10-m1
+  - rr-orrenvale-10-m2
+  - rr-orrenvale-10-m3
+  previous_message: rr-orrenvale-06-m4
+  source_documents:
+  - document: k-service-review
+    sha256: ee32c299b1fa1426a1eee70bc2769e64066d7b700be63f9f53703bbe0aae4d07
+  facts: {}
+- id: rr-ternwick-01
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: batch
+  author: bc_ternwick_2
+  participants:
+  - awm210
+  - bc_ternwick_2
+  private: false
+  documents:
+  - rr-ternwick-01
+  messages:
+  - rr-ternwick-01-m1
+  - rr-ternwick-01-m2
+  - rr-ternwick-01-m3
+  previous_message: null
+  source_documents:
+  - document: ps-0184-batch-acceptance
+    sha256: 39917d354cd4b981384969dc27c725586d88808ad791b777608e60f406d4aa33
+  facts:
+    history: ARWC-PH-26-0184
+- id: rr-ternwick-02
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: batch
+  author: bc_ternwick_1
+  participants:
+  - priya
+  - bc_ternwick_1
+  private: false
+  documents:
+  - rr-ternwick-02
+  messages:
+  - rr-ternwick-02-m1
+  - rr-ternwick-02-m2
+  - rr-ternwick-02-m3
+  previous_message: null
+  source_documents:
+  - document: ps-0185-batch-acceptance
+    sha256: 690488e3ecaacb1174575da4d3f5d6fac19cb1ded446dd2b99e1099709cd8456
+  facts:
+    history: ARWC-PH-26-0185
+- id: rr-ternwick-03
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: batch
+  author: bc_ternwick_2
+  participants:
+  - awm210
+  - bc_ternwick_2
+  private: false
+  documents:
+  - rr-ternwick-03
+  messages:
+  - rr-ternwick-03-m1
+  - rr-ternwick-03-m2
+  - rr-ternwick-03-m3
+  - rr-ternwick-03-m4
+  previous_message: null
+  source_documents:
+  - document: ps-0186-batch-acceptance
+    sha256: 6e76778ac5613ff220b4aad02cb61804d87582e1cbe3c940da5e0a846139947b
+  facts:
+    history: ARWC-PH-26-0186
+- id: rr-ternwick-04
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: batch
+  author: bc_ternwick_1
+  participants:
+  - priya
+  - bc_ternwick_1
+  private: false
+  documents:
+  - rr-ternwick-04
+  messages:
+  - rr-ternwick-04-m1
+  - rr-ternwick-04-m2
+  - rr-ternwick-04-m3
+  previous_message: rr-ternwick-02-m3
+  source_documents:
+  - document: ps-0187-batch-acceptance
+    sha256: e4a645fb3b7279037004409fb2e35af5aaa1a8b9dfa569d38b0728ddca52cc29
+  facts:
+    history: ARWC-PH-26-0187
+- id: rr-ternwick-05
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: correspondence
+  author: bc_ternwick_2
+  participants:
+  - awm210
+  - bc_ternwick_2
+  private: false
+  documents:
+  - rr-ternwick-05
+  messages:
+  - rr-ternwick-05-m1
+  - rr-ternwick-05-m2
+  - rr-ternwick-05-m3
+  - rr-ternwick-05-m4
+  previous_message: rr-ternwick-03-m4
+  source_documents: []
+  facts: {}
+- id: rr-ternwick-06
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: correspondence
+  author: priya
+  participants:
+  - priya
+  - ternwick
+  private: false
+  documents:
+  - rr-ternwick-06
+  messages:
+  - rr-ternwick-06-m1
+  - rr-ternwick-06-m2
+  - rr-ternwick-06-m3
+  previous_message: b-ternwick-2
+  source_documents: []
+  facts: {}
+- id: rr-ternwick-07
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: correspondence
+  author: awm210
+  participants:
+  - awm210
+  - priya
+  private: true
+  documents:
+  - rr-ternwick-07
+  messages:
+  - rr-ternwick-07-m1
+  - rr-ternwick-07-m2
+  - rr-ternwick-07-m3
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-ternwick-08
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: correspondence
+  author: bc_ternwick_1
+  participants:
+  - awm210
+  - bc_ternwick_1
+  private: false
+  documents:
+  - rr-ternwick-08
+  messages:
+  - rr-ternwick-08-m1
+  - rr-ternwick-08-m2
+  - rr-ternwick-08-m3
+  - rr-ternwick-08-m4
+  previous_message: null
+  source_documents: []
+  facts: {}
+- id: rr-ternwick-09
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: appointment
+  author: bc_ternwick_1
+  participants:
+  - awm210
+  - bc_ternwick_1
+  private: false
+  documents:
+  - rr-ternwick-09
+  messages:
+  - rr-ternwick-09-m1
+  - rr-ternwick-09-m2
+  - rr-ternwick-09-m3
+  previous_message: rr-ternwick-08-m4
+  source_documents: []
+  facts: {}
+  calendar: rr-ternwick-09-call
+- id: rr-ternwick-10
+  organization: ternwick
+  account_id: A-S-004
+  agreement_id: A-S-004-AGR-01
+  kind: batch-register
+  author: priya
+  participants:
+  - priya
+  - awm210
+  - bc_ternwick_1
+  private: false
+  documents:
+  - rr-ternwick-10
+  messages:
+  - rr-ternwick-10-m1
+  - rr-ternwick-10-m2
+  - rr-ternwick-10-m3
+  - rr-ternwick-10-m4
+  previous_message: rr-ternwick-04-m3
+  source_documents:
+  - document: ps-0181-batch-acceptance
+    sha256: 18d3e460d74cae73261aaeab6ff2a003f088a0fc7fb81490d0f5fc379c9b63a5
+  - document: ps-0182-batch-acceptance
+    sha256: 8f5bfb7f8b675bb9c4ae2630b7dafee73b25500fe43359e184151b8baff5c8a7
+  - document: ps-0183-batch-acceptance
+    sha256: f1f8b7e2096f67224359b9ffb67d62a36c6d4a4f5ce1969051efd33416d840fb
+  - document: ps-0184-batch-acceptance
+    sha256: 39917d354cd4b981384969dc27c725586d88808ad791b777608e60f406d4aa33
+  - document: ps-0185-batch-acceptance
+    sha256: 690488e3ecaacb1174575da4d3f5d6fac19cb1ded446dd2b99e1099709cd8456
+  - document: ps-0186-batch-acceptance
+    sha256: 6e76778ac5613ff220b4aad02cb61804d87582e1cbe3c940da5e0a846139947b
+  - document: ps-0187-batch-acceptance
+    sha256: e4a645fb3b7279037004409fb2e35af5aaa1a8b9dfa569d38b0728ddca52cc29
+  - document: ps-0188-batch-acceptance
+    sha256: c3d49fda2cd52b6ac9e027602b94e7dce3d4dc00d97de29110a91b711464318d
+  - document: ps-0189-batch-acceptance
+    sha256: 4bbd13aeb052dec5478bdcff554a8e1cd60eee613e127c854bbb768e1bba6534
+  - document: ps-0190-batch-acceptance
+    sha256: 6831df39e2cdc8c8b0683a81a204e8da00f27a10abffc6f15e47e87a2cda5518
+  - document: ps-0191-batch-acceptance
+    sha256: 3fddd4bd7b3120526f78f85586e686033b323c8b55b9e046f2405382877d24b2
+  - document: ps-0192-batch-acceptance
+    sha256: eef3fed94b1885a356704409b59bd1f83ea7bcec54e5fd057933abfc16028b28
+  facts:
+    histories:
+    - ARWC-PH-26-0181
+    - ARWC-PH-26-0182
+    - ARWC-PH-26-0183
+    - ARWC-PH-26-0184
+    - ARWC-PH-26-0185
+    - ARWC-PH-26-0186
+    - ARWC-PH-26-0187
+    - ARWC-PH-26-0188
+    - ARWC-PH-26-0189
+    - ARWC-PH-26-0190
+    - ARWC-PH-26-0191
+    - ARWC-PH-26-0192
+    total_pages: 1404
+    total_cents: 274968
+counts:
+  relationship_records: 90
+  original_documents: 90
+  source_documents: 95
+  counterpart_placements: 5
+  messages: 319
+  retained_copies: 421
+  calendars: 3
+  business_table_rows: 12
+  distinct_message_bodies: 319
+  messages_by_relationship:
+    arwc: 37
+    veybridge: 38
+    ardenvale: 36
+    merewick: 35
+    rillhaven: 35
+    belvarn: 34
+    talvern: 35
+    orrenvale: 35
+    ternwick: 34
+volume_adjustment:
+  initial_allocation: 2600
+  delivered: 319
+  unallocated_difference: 2281
+  milestone_messages_before: 42916
+  milestone_messages_after: 43235
+  reason: Ninety bounded relationship records use the completed upstream histories. A reply is retained
+    where it adds a question, correction, decision or next step; supplier follow-up does not repeat the
+    transaction traffic already delivered by other slices.
