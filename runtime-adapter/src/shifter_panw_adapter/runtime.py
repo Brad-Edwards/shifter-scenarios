@@ -31,11 +31,8 @@ _COMPOSE = """
       - /opt/polaris/model-client:/opt/polaris/model-client:ro
       - /run/polaris-model-access/participant:/run/polaris-model-access/participant
 """.rstrip()
-_GCP_COMPOSE = """
-  dns:
-    environment:
-      DNS_FORWARDER: "169.254.169.254"
-""".rstrip()
+_GCP_DNS_ANCHOR = '      DC01_IP: "$DC_IP"\n'
+_GCP_DNS_FORWARDER = '      DNS_FORWARDER: "169.254.169.254"\n'
 _DIRECTORY_FIREWALL_VERIFY = """$ErrorActionPreference = 'Stop'
 $profiles = @(Get-NetFirewallProfile)
 if ($profiles.Count -ne 3 -or @($profiles | Where-Object Enabled).Count -ne 0) {
@@ -92,7 +89,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.8",
+        version="0.1.9",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -161,20 +158,24 @@ class PolarisAdapter:
             or int(params["max-output-tokens"]) > 8192
         ):
             raise ValueError("Invalid model client parameters")
+        bootstrap = POLARIS_RANGE_BOOTSTRAP_SCRIPT.replace(
+            "      - /usr/local/libexec/polaris-splice-credential.py\n      - entrypoint",
+            "      - /opt/polaris/model-client/entrypoint.sh",
+        )
+        if request.provider == "gcp":
+            if bootstrap.count(_GCP_DNS_ANCHOR) != 1:
+                raise ValueError("Missing DNS override anchor")
+            bootstrap = bootstrap.replace(_GCP_DNS_ANCHOR, _GCP_DNS_ANCHOR + _GCP_DNS_FORWARDER)
         context = {
             "dc_ip": "$(read_runtime_value directory-address)",
             "public_key": "$(read_runtime_value participant-key)",
             "splice_credential_helper_b64": base64.b64encode(_asset("polaris-splice-credential.py")).decode("ascii"),
             "aws_agent_setup_block": "",
             "aws_agent_compose_block": _COMPOSE,
-            "gcp_agent_compose_block": _GCP_COMPOSE if request.provider == "gcp" else "",
+            "gcp_agent_compose_block": "",
         }
         scripts = []
         if request.phase == "configure":
-            bootstrap = POLARIS_RANGE_BOOTSTRAP_SCRIPT.replace(
-                "      - /usr/local/libexec/polaris-splice-credential.py\n      - entrypoint",
-                "      - /opt/polaris/model-client/entrypoint.sh",
-            )
             scripts = [
                 (
                     "metadata-firewall",
