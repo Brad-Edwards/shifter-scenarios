@@ -43,8 +43,10 @@ from shell history.
 - Flags 37, 18, and 19 are solved in the live CTF. The long participant command
   reached the SCADA trigger, and GCE serial output shows
   `polaris-splice-watcher: splice established` at `2026-09-23T04:35:26Z`.
-- Current solved count: 19 (flags 1-16, 37, 18, and 19).
-- Flag 17 (Domain Admin) remains unproven and unsolved.
+- All 38 flags are now recovered through the participant workstation route and
+  accepted by the live CTF (final score 4700). Flag 17's SPN, Kerberoast,
+  DCSync, and admin-share chain completed; flags 38 and 20-30 passed through
+  the analyst/lab pivot; flags 31-36 passed through the post-splice relay.
 - The combined lab batch for flags 38 and 20-30 produced no browser-side
   output after more than 14 minutes. Its local browser process was stopped and
   the existing participant shell recovered. A bounded four-flag lab probe then
@@ -52,10 +54,10 @@ from shell history.
   advanced QA runner was then found to echo its complete completion marker
   before execution and wait forever on that first copy. Its marker is now
   split across two shell writes, as in the already-working short runner. These
-  timeouts do not prove a lab service failure. No lab flag has been counted as
-  proven yet.
-- Flags 31-36 and the final Claude Code participant readiness check remain
-  pending.
+  timeouts did not indicate a lab service failure: the corrected runner
+  subsequently recovered and submitted every lab answer.
+- The remaining participant acceptance check is Claude Code with a successful
+  broker-backed response and nonzero output-token usage.
 
 ## Bugs / Fix Queue
 
@@ -131,15 +133,18 @@ from shell history.
   `Terminal session cap reached, rejecting: user_id=6 {'active_sessions': 10, 'distinct_users': 1}`
   on a portal worker after `Unexpected ASGI message 'websocket.close'` in the
   terminal read loop.
-- At 05:22 UTC, fresh participant terminal connections were still being
-  rejected with the same cap and close-race error. This currently blocks the
-  remaining manual QA path unless a healthy worker or an existing supported
-  recovery mechanism becomes available.
+- At 05:22 UTC, some fresh participant terminal connections were rejected with
+  the same cap and close-race error. Healthy workers later accepted enough
+  connections to complete all 38 challenge submissions, but a fresh attach
+  could still return code 1006 before the fix rolled out.
 - Source fix filed: public Shifter PR #2366 releases SSH resources/session slots
   before best-effort WebSocket close and adds regression coverage for this close
   race.
 - Public PR #2366 passed the local full ADR guard and import-layer checker;
   its title was adjusted to satisfy the repository's conventional-title gate.
+- The exact fix commit `9e0c5d18a` is on `nazgul`. The operator authorized a
+  Nazgul deploy, and workflow run `35822997718` is in progress. No range
+  rebuild or teardown was requested.
 - Follow-up still needed: investigate whether there is also a worker-level
   recovery/observability gap. Operators should not need to rely on retries or a
   pod restart to escape a saturated worker during an event.
@@ -149,12 +154,11 @@ from shell history.
 
 ## Next Work
 
-- Restore a working participant terminal through an existing non-deploy path
-  if available, then run bounded lab checks for flags 38 and 20-30.
-- Continue flags 31-36 from the splice relay.
-- Revisit flag 17 with bounded commands and submit only after participant-visible
-  evidence proves it.
-- Validate Claude Code on the workstation. If normal resolver still blocks it,
-  use only non-persistent/transient diagnostics and keep the source fix in PR.
+- Verify Claude Code on the participant workstation and require nonzero output
+  tokens. If the current image's resolver still blocks it, use a transient,
+  reversible workaround only for diagnostic coverage; source fix remains in
+  private PR #164 and requires a later rebuilt host image for acceptance.
+- Verify the authorized Nazgul workflow run completes and the terminal fix is
+  actually live. Do not rebuild or tear down the range without permission.
 - As soon as a source fix is concrete, push it to the appropriate PR rather
   than accumulating unrecorded local changes.
