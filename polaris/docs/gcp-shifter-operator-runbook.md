@@ -83,6 +83,20 @@ otherwise preserve the bake identity, and a range launch will either require an
 unsafe `iam.serviceAccounts.actAs` grant on that build identity or fail. Never
 grant that impersonation permission to the range provisioner.
 
+Plan machine-image capacity before a multi-range event. Compute Engine permits
+at most **six VM creations from one machine image in a rolling 60 minutes**;
+after that, launch fails with `RESOURCE_OPERATION_RATE_EXCEEDED`. Retries and
+staggering cannot raise this ceiling. Publish enough separately named machine
+images from the same stopped, service-account-free bake VM (at least
+`ceil(host launches in 60 minutes / 6)`). The current pack binding names one
+host image at a time: rotate that binding through the ready replicas via the
+normal administrator pack-configuration UI after at most six launches per
+source in the rolling hour. For example, 30
+near-simultaneous range launches require at least five host machine images.
+Verify every replica is `READY` and has the same reviewed bake source before
+launching the event. A single bound image is not sufficient merely because
+other images exist in the project.
+
 The Linux build must preserve the participant readiness contract from
 `polaris/build/a14/participant-readiness.json`. Calculate and record the SHA-256
 of the installed readiness document; that value is the adapter binding's
