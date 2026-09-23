@@ -55,7 +55,11 @@ timeout 120 docker exec --user kali --workdir /home/kali a14-kali bash -ic '
   test -n "$CLOUD_ML_REGION" &&
   /usr/local/bin/claude -p "Reply with OK." --output-format json --tools "" \\
     --max-turns 1 --no-session-persistence
-' | python3 -c 'import json,sys; response=json.load(sys.stdin); sys.exit(0 if not response.get("is_error") and int(response.get("usage",{}).get("output_tokens",0)) > 0 else 1)'
+' | python3 -c 'import json,sys
+response=json.load(sys.stdin)
+success=(not response.get("is_error") and
+         int(response.get("usage",{}).get("output_tokens",0)) > 0)
+sys.exit(0 if success else 1)'
 """
 
 
@@ -65,14 +69,20 @@ def _vertex_shell_env(params: dict[str, str]) -> str:
 set -euo pipefail
 docker exec -i --user root a14-kali sh -c 'cat > /etc/profile.d/polaris-vertex.sh' <<'VERTEX_ENV'
 export CLAUDE_CODE_USE_VERTEX=1
-export ANTHROPIC_VERTEX_PROJECT_ID={params['project']}
-export CLOUD_ML_REGION={params['region']}
-export ANTHROPIC_MODEL={params['main-model']}
-export ANTHROPIC_DEFAULT_SONNET_MODEL={params['main-model']}
-export ANTHROPIC_DEFAULT_HAIKU_MODEL={params['small-model']}
+export ANTHROPIC_VERTEX_PROJECT_ID={params["project"]}
+export CLOUD_ML_REGION={params["region"]}
+export ANTHROPIC_MODEL={params["main-model"]}
+export ANTHROPIC_DEFAULT_SONNET_MODEL={params["main-model"]}
+export ANTHROPIC_DEFAULT_HAIKU_MODEL={params["small-model"]}
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 VERTEX_ENV
-docker exec --user root a14-kali sh -c 'chmod 0644 /etc/profile.d/polaris-vertex.sh; for file in /home/kali/.bashrc /home/kali/.profile; do grep -Fqx ". /etc/profile.d/polaris-vertex.sh" "$file" || printf "\\n. /etc/profile.d/polaris-vertex.sh\\n" >> "$file"; done'
+docker exec --user root a14-kali sh -c '
+chmod 0644 /etc/profile.d/polaris-vertex.sh
+for file in /home/kali/.bashrc /home/kali/.profile; do
+  grep -Fqx ". /etc/profile.d/polaris-vertex.sh" "$file" || \
+    printf "\\n. /etc/profile.d/polaris-vertex.sh\\n" >> "$file"
+done
+'
 """
 
 
@@ -142,10 +152,10 @@ class PolarisDirectAdapter:
             f'\n      ANTHROPIC_DEFAULT_SONNET_MODEL: "{params["main-model"]}"'
             f'\n      ANTHROPIC_DEFAULT_HAIKU_MODEL: "{params["small-model"]}"'
             '\n      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"'
-            '\n    volumes:'
-            '\n      - /opt/polaris/libexec/polaris-splice-credential.py:'
-            '/usr/local/libexec/polaris-splice-credential.py:ro'
-            '\n    extra_hosts:'
+            "\n    volumes:"
+            "\n      - /opt/polaris/libexec/polaris-splice-credential.py:"
+            "/usr/local/libexec/polaris-splice-credential.py:ro"
+            "\n    extra_hosts:"
             '\n      - "oauth2.googleapis.com:199.36.153.8"'
             '\n      - "www.googleapis.com:199.36.153.8"'
             '\n      - "aiplatform.googleapis.com:199.36.153.8"'
