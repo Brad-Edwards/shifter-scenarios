@@ -13,6 +13,17 @@ rate limits. The source broker pack is not modified by this build. Install it
 with the separate `panw.polaris-direct` adapter and explicit GCP project,
 region, and model parameters. Live range qualification is still required.
 
+Before launching the direct variant on a GCP tenant, set its deployment's
+`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` GitHub Environment variable to `true` and run
+the tenant's normal deploy workflow. Verify the deployed `platform-runtime`
+setting is `true` and a newly created range subnet has Private Google Access
+enabled. Changing the variable cannot repair an existing range; destroy and
+reprovision it through the normal CTF controls. The broker-only operator runbook
+deliberately uses `false` and does not apply to the direct variant. The direct
+range also needs its minimally scoped range-host Vertex identity, required GCP
+APIs and selected models, and participant web egress if public search is part
+of the workstation task.
+
 `polaris/` is the tenant-uploadable RAES 3.5.0 launch wrapper for the separately
 installed runtime adapter. It describes the baked container host and directory
 guest. The maintained logical scenario, images, content and answers remain in
