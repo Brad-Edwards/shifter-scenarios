@@ -29,6 +29,9 @@ def test_outer_hosts_use_allocated_addresses_and_explicit_participant_access():
     access = data["agents"]["participant"]["interactive_access"]["kali_ssh"]
     assert access == {"target_ref": "a14-kali", "channel": "ssh", "account_ref": "kali_login"}
     assert data["accounts"]["kali_login"]["auth_method"] == "key"
+    rdp = data["agents"]["participant"]["interactive_access"]["kali_rdp"]
+    assert rdp == {"target_ref": "a14-kali", "channel": "rdp", "account_ref": "kali_desktop_login"}
+    assert data["accounts"]["kali_desktop_login"]["auth_method"] == "password"
     assert data["nodes"]["a14-kali"]["os_distribution"] == "debian"
     assert data["nodes"]["a14-kali"]["os_version"] == "12"
     assert data["nodes"]["dc01"]["os_distribution"] == "windows-server"

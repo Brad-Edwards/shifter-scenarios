@@ -97,6 +97,8 @@ def test_runtime_values_are_deferred_and_no_core_fetch_is_planned(provider):
     assert "$(read_runtime_value directory-address)" in bootstrap.script
     assert "{{.Names}}" in bootstrap.script  # Docker templates survive author rendering.
     assert "polaris-splice-credential.py" in bootstrap.script
+    assert "docker exec -i a14-kali chpasswd --encrypted" in bootstrap.script
+    assert "getent shadow kali" in bootstrap.script
     assert all("fetch" not in a.action_id for a in plan.actions)
     assert all("PRESIGNED_URL" not in a.script for a in plan.actions)
 

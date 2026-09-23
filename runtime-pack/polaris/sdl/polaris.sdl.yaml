@@ -45,17 +45,26 @@ accounts:
     username: kali
     node: a14-kali
     auth_method: key
+  kali_desktop_login:
+    username: kali
+    node: a14-kali
+    auth_method: password
 agents:
   participant:
     entity: participant
-    description: Participant with SSH access to the Kali docker-host
+    description: Participant with SSH and RDP access to the Kali workstation
     starting_accounts:
     - kali_login
+    - kali_desktop_login
     interactive_access:
       kali_ssh:
         target_ref: a14-kali
         channel: ssh
         account_ref: kali_login
+      kali_rdp:
+        target_ref: a14-kali
+        channel: rdp
+        account_ref: kali_desktop_login
 realization:
   constraints:
   - field_pointer: /nodes/a14-kali
