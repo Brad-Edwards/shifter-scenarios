@@ -23,7 +23,8 @@ def request(phase="configure", provider="gcp", parameters=None):
             "host": {"node_address": "node.lab", "os_family": "linux"},
             "directory": {"node_address": "node.directory", "os_family": "windows"},
         },
-        parameters=parameters or {
+        parameters=parameters
+        or {
             "project": "prod-qjpjnv",
             "region": "us-east5",
             "main-model": "claude-sonnet-4-6",
@@ -46,13 +47,18 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert "model-client/entrypoint.sh" not in action.script
     if phase == "configure":
         assert [action.action_id for action in plan.actions] == [
-            "directory-firewall", "container-bootstrap", "vertex-shell-env", "splice-watcher"
+            "directory-firewall",
+            "container-bootstrap",
+            "vertex-shell-env",
+            "splice-watcher",
         ]
         bootstrap = plan.actions[1].script
         assert 'CLAUDE_CODE_USE_VERTEX: "1"' in bootstrap
         assert 'CLOUD_ML_REGION: "us-east5"' in bootstrap
         assert 'ANTHROPIC_VERTEX_PROJECT_ID: "prod-qjpjnv"' in bootstrap
         assert 'DNS_FORWARDER: "169.254.169.254"' in bootstrap
+        assert "www.googleapis.com:199.36.153.8" in bootstrap
+        assert "target=/etc/environment" in bootstrap
         assert "- /usr/local/libexec/polaris-splice-credential.py" in bootstrap
         shell_env = plan.actions[2].script
         assert "export CLAUDE_CODE_USE_VERTEX=1" in shell_env
@@ -62,12 +68,15 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert "/home/kali/.bashrc" in shell_env
     if phase == "verify":
         assert [action.action_id for action in plan.actions] == [
-            "directory-firewall-ready", "bootstrap-ready", "vertex-ready"
+            "directory-firewall-ready",
+            "bootstrap-ready",
+            "vertex-ready",
         ]
         assert "/usr/local/bin/claude -p" in plan.actions[2].script
         assert "--output-format json" in plan.actions[2].script
         assert 'response.get("is_error")' in plan.actions[2].script
         assert 'get("output_tokens",0)' in plan.actions[2].script
+        assert "grep -q pam_env.so /etc/pam.d/xrdp-sesman" in plan.actions[2].script
 
 
 def test_direct_variant_rejects_other_clouds():
@@ -77,9 +86,30 @@ def test_direct_variant_rejects_other_clouds():
 
 def test_direct_variant_rejects_shell_metacharacters():
     with pytest.raises(ValueError, match="Invalid project"):
-        PolarisDirectAdapter().plan(request(parameters={
-            "project": "prod-qjpjnv; touch /tmp/bad",
-            "region": "us-east5",
-            "main-model": "claude-sonnet-4-6",
-            "small-model": "claude-haiku-4-5",
-        }))
+        PolarisDirectAdapter().plan(
+            request(
+                parameters={
+                    "project": "prod-qjpjnv; touch /tmp/bad",
+                    "region": "us-east5",
+                    "main-model": "claude-sonnet-4-6",
+                    "small-model": "claude-haiku-4-5",
+                }
+            )
+        )
+
+
+def test_direct_worker_loads_the_exact_installed_release():
+    import os
+    import sys
+
+    invocation = request("configure")
+    result = subprocess.run(
+        [sys.executable, "-m", "shifter_adapter_sdk.worker"],
+        env={"PATH": os.environ.get("PATH", ""), "SHIFTER_PLUGIN_INPUT": invocation.model_dump_json()},
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert result.returncode == 0, result.stderr
+    assert not result.stderr
+    assert parse_result(result.stdout, invocation).status == "planned"
