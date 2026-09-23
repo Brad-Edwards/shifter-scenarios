@@ -56,9 +56,8 @@ from shell history.
   split across two shell writes, as in the already-working short runner. These
   timeouts did not indicate a lab service failure: the corrected runner
   subsequently recovered and submitted every lab answer.
-- The original range-54 walkthrough recovered and submitted all 38 flags.
-  Claude Code was not proved on that same range; see the event-range update
-  below for a separate participant-workstation proof.
+- The remaining participant acceptance check is Claude Code with a successful
+  broker-backed response and nonzero output-token usage.
 
 ## Bugs / Fix Queue
 
@@ -153,48 +152,13 @@ from shell history.
   A live portal pod restart would clear process-local counters but is an
   operational recovery action, not a persistent infra change.
 
-## Event-range update (2026-09-23)
-
-- The active event has 30 participant ranges reporting READY; two additional
-  spare Engine ranges report READY. Its recorded end is 2026-09-25 06:34 UTC.
-- The designated SolidSnake test seat launched RDP through the participant UI.
-  The browser rendered the Kali desktop. From a terminal on that desktop,
-  Claude Code 2.1.108 returned a successful response with 138 output tokens.
-  These checks used event Engine range 58, not the earlier 38-flag QA range 54.
-- A short event-range workstation smoke resolved the scenario website through
-  range DNS, received HTTP 200 from that website, and reached an external HTTPS
-  site with HTTP 200. Three negative pivot probes were attempted, but RDP
-  terminal keystrokes were not reliable enough to treat their labels/exit codes
-  as independent proof. The earlier range-54 walkthrough remains the accepted
-  negative-gate evidence.
-- Current event ranges were created before the RDP declaration and credential
-  fix in private PR #167. For event continuity, their 30 Engine records and
-  both ready spare records received a live RDP binding and one test-purpose
-  Secret Manager credential each. This is an intentional hand repair, not
-  evidence that new unpatched ranges provision RDP correctly. The platform
-  source fix is in public PR #2375 and on `nazgul`; the private pack fix is in
-  PR #167. Neither fix was used to rebuild these live ranges.
-- The GKE default-deny policy also lacked the portal-to-Guacamole token-API
-  path. Two narrowly scoped NetworkPolicy objects were applied live from the
-  `nazgul` source manifests. No workload redeploy, range rebuild, or teardown
-  occurred. The temporary IAP rule and extra VM SSH-key metadata used for
-  diagnosis were removed; the mistakenly enabled Network Management API was
-  disabled again.
-- The 32 emergency `shifter-range-<id>-raes-provision-node-a14-kali-0-rdp-password`
-  secrets are outside the provisioner's RAES account-secret inventory. After
-  the event ranges and spares are destroyed, confirm no live range refers to
-  them and delete this exact labeled set explicitly. Do not leave them orphaned.
-- The remaining 29 event accounts still require their first-login password
-  change. Their participant desktops were not individually opened; only the
-  designated test account was used for end-to-end RDP and Claude Code proof.
-
 ## Next Work
 
-- Keep PR #167 and public PR #2375 green and have both merged through the
-  normal repository process. Then validate a newly provisioned range in a
-  separate approved run; the live event hand repair is not that validation.
-- Preserve the active event until its scheduled end. Do not rebuild or tear
-  down range 54 or any event range without the operator's direction.
-- At authorized event cleanup, check participant and spare cloud resources
-  and retire the 32 emergency RDP secrets after confirming their references
-  are no longer live.
+- Verify Claude Code on the participant workstation and require nonzero output
+  tokens. If the current image's resolver still blocks it, use a transient,
+  reversible workaround only for diagnostic coverage; source fix remains in
+  private PR #164 and requires a later rebuilt host image for acceptance.
+- Verify the authorized Nazgul workflow run completes and the terminal fix is
+  actually live. Do not rebuild or tear down the range without permission.
+- As soon as a source fix is concrete, push it to the appropriate PR rather
+  than accumulating unrecorded local changes.
