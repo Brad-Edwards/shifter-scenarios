@@ -32,6 +32,7 @@ from validate_purchasing_stores import check_purchasing_stores
 from validate_retail_billing import check_retail_billing
 from validate_planning import check_planning
 from validate_governance import check_governance
+from validate_community_life import check_community_life
 
 PACK = Path(__file__).resolve().parents[1]
 ROOT = PACK / 'assets/narrative'
@@ -74,12 +75,14 @@ GOVERNANCE_MESSAGE_COUNT = 134
 GOVERNANCE_DOCUMENT_COUNT = 161
 IT_MESSAGE_COUNT = 1550
 IT_DOCUMENT_COUNT = 517
+COMMUNITY_MESSAGE_COUNT = 2279
+COMMUNITY_DOCUMENT_COUNT = 1653
 TOTAL_MESSAGE_COUNT = (1475 + BUSINESS_MESSAGE_COUNT + SUPPORT_MESSAGE_COUNT +
                        FIELDKEST_MESSAGE_COUNT + PRODUCT_QUALITY_MESSAGE_COUNT +
-                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT + GOVERNANCE_MESSAGE_COUNT + IT_MESSAGE_COUNT)
+                       RELEASE_PLATFORM_MESSAGE_COUNT + CUSTOMER_FOLLOWUP_MESSAGE_COUNT + COMMERCIAL_MESSAGE_COUNT + FINANCE_MESSAGE_COUNT + OFFICE_MESSAGE_COUNT + SERVICE_MESSAGE_COUNT + OPERATIONS_MESSAGE_COUNT + MAINTENANCE_MESSAGE_COUNT + LABORATORY_QUALITY_MESSAGE_COUNT + PURCHASING_STORES_MESSAGE_COUNT + RETAIL_BILLING_MESSAGE_COUNT + PLANNING_MESSAGE_COUNT + GOVERNANCE_MESSAGE_COUNT + IT_MESSAGE_COUNT + COMMUNITY_MESSAGE_COUNT)
 TOTAL_DOCUMENT_COUNT = (155 + 89 + SUPPORT_DOCUMENT_COUNT + FIELDKEST_DOCUMENT_COUNT +
                         PRODUCT_QUALITY_DOCUMENT_COUNT + RELEASE_PLATFORM_DOCUMENT_COUNT +
-                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT + GOVERNANCE_DOCUMENT_COUNT + IT_DOCUMENT_COUNT)
+                        CUSTOMER_FOLLOWUP_DOCUMENT_COUNT + COMMERCIAL_DOCUMENT_COUNT + FINANCE_DOCUMENT_COUNT + OFFICE_DOCUMENT_COUNT + SERVICE_DOCUMENT_COUNT + OPERATIONS_DOCUMENT_COUNT + MAINTENANCE_DOCUMENT_COUNT + LABORATORY_QUALITY_DOCUMENT_COUNT + PURCHASING_STORES_DOCUMENT_COUNT + RETAIL_BILLING_DOCUMENT_COUNT + PLANNING_DOCUMENT_COUNT + GOVERNANCE_DOCUMENT_COUNT + IT_DOCUMENT_COUNT + COMMUNITY_DOCUMENT_COUNT)
 
 
 def require(value, message):
@@ -1049,6 +1052,7 @@ def check_assets():
     check_planning(ROOT, roster, identity, mail, docs, events)
     check_governance(ROOT, roster, identity, mail, docs, events)
     check_it_services(ROOT, roster, identity, mail, docs, events)
+    check_community_life(ROOT, identity, roster, mail, docs, events)
     require(STORIES <= {m['story'] for m in mail}, 'An ordinary story has no correspondence')
     require({d['file'] for d in docs if 'file' in d} | {d['archive'] for d in docs if 'archive' in d} ==
             {str(p.relative_to(ROOT)) for p in (ROOT / 'documents').rglob('*') if p.is_file()},
@@ -1207,7 +1211,7 @@ def check_assets():
                            if contacts[k]['employer'] == org or
                            event['id'].startswith('governance-') and contacts[k]['employer'] == 'arwc-board'}
                 require(set(item['readers']) == readers, 'Private calendar audience widened')
-                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-', 'it-window-')):
+                if '-induction-' in event['id'] or event['id'].startswith(('rel-2026-', 'chg-2026-', 'com-2026-', 'commercial-', 'office-2026-', 'support-appointment-', 'op-', 'lq-', 'planning-', 'governance-', 'it-window-', 'community-2026-', 'maintenance-contractor-')):
                     raw_calendar = item['text'].encode()
                 else:
                     raw_calendar = (ROOT / 'generated/calendars' / (event['id'] + '.ics')).read_bytes()
