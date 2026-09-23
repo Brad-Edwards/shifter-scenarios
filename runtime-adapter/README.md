@@ -19,7 +19,7 @@ The direct participant container can obtain the host's metadata identity. Keep
 that identity restricted to model invocation and low-risk telemetry permissions;
 do not grant it broad project access.
 
-The `0.1.16` direct release pins the additional Google API hostname used by
+The `0.1.17` direct release pins the additional Google API hostname used by
 Claude Code to the Private Google Access VIP in Docker Compose, so the mapping
 survives a workstation-container restart. Its configure plan also synchronizes
 the provisioned desktop account's password verifier from the host into the

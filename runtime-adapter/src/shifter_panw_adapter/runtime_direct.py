@@ -25,7 +25,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.16",
+        version="0.1.17",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
