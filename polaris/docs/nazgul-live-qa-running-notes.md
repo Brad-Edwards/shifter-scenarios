@@ -162,3 +162,30 @@ from shell history.
   actually live. Do not rebuild or tear down the range without permission.
 - As soon as a source fix is concrete, push it to the appropriate PR rather
   than accumulating unrecorded local changes.
+
+## 2026-09-23 direct event outcome
+
+- Event `4f9b3f4e-bb11-4c31-b4cc-273bbb6c829c` has 30 of 30 participant
+  ranges READY. Its configured close time is 2026-09-25 06:34 UTC. The original
+  broker-backed range 54 was not rebuilt or torn down.
+- A direct-adapter participant on range 104 completed the documented manual
+  walkthrough from the portal workstation: negative pre-pivot gates passed,
+  all 38 challenge answers were recovered and accepted, and an independent
+  readback reports 38 solved, zero unsolved, score 4700. Normal interactive
+  Claude Code returned five output tokens with `is_error=false`.
+- A second, newly launched participant on range 143 logged in through the CTF
+  portal. Its workstation passed public DNS, HTTP, HTTPS, and normal Claude
+  invocation with five output tokens and no error. GCP inventory confirms all
+  30 event workstations have an external IP and the event-scoped egress tag.
+- This is live event acceptance, not proof of a reproducible zero-drift deploy
+  or 200-range burst capacity. Event Kali internet currently depends on a
+  live-scoped egress firewall plus ephemeral external IPs; 30 generated
+  participant personal workspaces were set to `none` egress to avoid the
+  five-Cloud-Router-per-network limit. A live launcher memory increase,
+  plugin-controller `jobs/status` permission, plugin quota increase, scheduler
+  bucket IAM, and direct-model runtime settings also need source reconciliation.
+- Source tracking: private direct adapter and installation notes in PR #166;
+  public generic fixes in PRs #2367, #2369, #2370, #2373; image-pool capacity,
+  CTF event egress, and failed-range recovery in issues #2371, #2372, #2374.
+  A single GCP machine image is limited to six VM creations in 60 minutes;
+  retries alone do not enable a large simultaneous event.
