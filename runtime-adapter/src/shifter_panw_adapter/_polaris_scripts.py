@@ -246,6 +246,23 @@ if ! docker ps --format '{{.Names}} {{.Status}}' | grep -q '^a14-kali .*Up'; the
   echo "polaris bootstrap: a14-kali did not restart after XRDP repair" >&2
   exit 1
 fi
+# The provisioner installed the per-range password on the VM's authored kali
+# account. XRDP terminates in the container, so install the same verifier there
+# without reading or logging the plaintext password from the secret store.
+kali_rdp_hash=$(getent shadow kali | cut -d: -f2)
+case "$kali_rdp_hash" in
+  ""|"!"*|"*"*)
+    echo "polaris bootstrap: provisioned Kali desktop password is unavailable" >&2
+    exit 1
+    ;;
+esac
+printf 'kali:%s\n' "$kali_rdp_hash" | docker exec -i a14-kali chpasswd --encrypted
+container_rdp_hash=$(docker exec a14-kali getent shadow kali | cut -d: -f2)
+if [ "$container_rdp_hash" != "$kali_rdp_hash" ]; then
+  echo "polaris bootstrap: Kali desktop password was not synchronized" >&2
+  exit 1
+fi
+unset kali_rdp_hash container_rdp_hash
 if ! docker exec a14-kali id kali | grep -q 'sudo'; then
   echo "polaris bootstrap: kali sudo entitlement missing after repair" >&2
   exit 1
