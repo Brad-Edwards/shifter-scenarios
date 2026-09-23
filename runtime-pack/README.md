@@ -14,7 +14,7 @@ with the separate `panw.polaris-direct` adapter and explicit GCP project,
 region, and model parameters. Live range qualification is still required.
 
 For the RDP-capable revision, build the `0.2.2` archive from this source and
-publish the `0.1.17` adapter distribution as an image by digest. Install the
+publish the `0.1.18` adapter distribution as an image by digest. Install the
 adapter, upload the new pack revision, then bind the pack's `host` and
 `directory` targets to the installed direct adapter. Pack upload and adapter
 installation are tenant content operations; they do not require a core Shifter
