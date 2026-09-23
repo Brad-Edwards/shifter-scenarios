@@ -19,6 +19,13 @@ The direct participant container can obtain the host's metadata identity. Keep
 that identity restricted to model invocation and low-risk telemetry permissions;
 do not grant it broad project access.
 
+Private Google Access only reaches approved Google APIs; it does not provide
+general web research. If participants need web search from Kali, configure the
+host profile's opt-in public web egress and a working shared-VPC Cloud NAT path
+before launching an event, then verify public DNS and HTTP/HTTPS from the
+participant terminal. A profile flag alone is insufficient when its workspace
+has no NAT. Do not treat a successful model call as proof of internet access.
+
 The `0.1.18` direct release pins the additional Google API hostname used by
 Claude Code to the Private Google Access VIP in Docker Compose, so the mapping
 survives a workstation-container restart. Its configure plan also synchronizes
