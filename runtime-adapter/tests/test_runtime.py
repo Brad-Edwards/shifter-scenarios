@@ -59,6 +59,10 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
             action.script for action in plan.actions if action.action_id == "container-bootstrap"
         )
         if provider == "gcp":
+            firewall = next(action.script for action in plan.actions if action.action_id == "metadata-firewall")
+            assert '"$protocol" --dport 53 -j RETURN' in firewall
+            assert "-d 169.254.169.254/32 -j DROP" in firewall
+            assert "fd20:ce::254/128" in firewall
             assert "socket.getaddrinfo" not in model_files
             assert "socket.getaddrinfo" not in container_bootstrap
             assert "extra_hosts:" not in container_bootstrap

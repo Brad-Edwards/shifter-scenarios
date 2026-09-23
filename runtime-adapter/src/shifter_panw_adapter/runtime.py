@@ -11,6 +11,7 @@ from shifter_adapter_sdk.runtime import PROTOCOL, GuestAction, PluginManifest, R
 from ._polaris_scripts import POLARIS_RANGE_BOOTSTRAP_SCRIPT
 from ._polaris_scripts_aux import INSTALL_SPLICE_WATCHER_SCRIPT, VERIFY_POLARIS_BOOTSTRAP_COMMON
 from ._polaris_scripts_aws import INSTALL_IMDS_FIREWALL_SCRIPT
+from ._polaris_scripts_gcp import INSTALL_GCP_METADATA_FIREWALL_SCRIPT
 
 _PREFIX = """#!/bin/bash
 set -euo pipefail
@@ -91,7 +92,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.7",
+        version="0.1.8",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,
@@ -175,7 +176,11 @@ class PolarisAdapter:
                 "      - /opt/polaris/model-client/entrypoint.sh",
             )
             scripts = [
-                ("metadata-firewall", INSTALL_IMDS_FIREWALL_SCRIPT, 60),
+                (
+                    "metadata-firewall",
+                    INSTALL_GCP_METADATA_FIREWALL_SCRIPT if request.provider == "gcp" else INSTALL_IMDS_FIREWALL_SCRIPT,
+                    60,
+                ),
                 ("model-client-files", _model_files(params), 60),
                 ("container-bootstrap", bootstrap, 300),
                 ("splice-watcher", INSTALL_SPLICE_WATCHER_SCRIPT, 60),

@@ -53,11 +53,12 @@ paths and SHA-256 hashes. Install neither Shifter's application nor its provisio
 in this image. Docker performs a network-free, hash-checked installation and
 `pip check`; build with `docker build --network=none`.
 
-On GCP, the configure plan resolves the tenant-private broker hostname from the
-trusted host and adds that hostname/address pair to the participant container.
-This preserves broker resolution when the scenario container uses its own DNS
-server. The verify plan then runs the real Claude Code launcher inside that
-container and reports ready only after the request succeeds.
+On GCP, the configure plan forwards the scenario DNS service to the VM's
+`169.254.169.254` resolver so the participant container can resolve the
+tenant-private broker hostname. The GCP metadata firewall allows only DNS
+traffic to that address from containers; HTTP and HTTPS metadata access remain
+blocked. The verify plan runs the real Claude Code launcher inside the
+participant container and reports ready only after the request succeeds.
 
 The selected worker registry is the GitHub Container Registry package
 `ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter`. Its approved visibility
