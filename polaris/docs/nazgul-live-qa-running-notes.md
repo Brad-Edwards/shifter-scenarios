@@ -189,3 +189,13 @@ from shell history.
   CTF event egress, and failed-range recovery in issues #2371, #2372, #2374.
   A single GCP machine image is limited to six VM creations in 60 minutes;
   retries alone do not enable a large simultaneous event.
+- Two warm spares were requested through the organizer control. The first two
+  failed before VM creation because newly generated managed spare users also
+  inherit per-user status-quo NAT egress and hit the GCP router limit. A
+  one-time invocation of the authorized spare service assigned `none` egress
+  to only the two newly generated managed spare users before their launches.
+  Replacement spares 146 and 147 reached READY; failed 144 and 145 remain as
+  diagnostic history, not available pool members. Public issue #2372 covers
+  both participant and spare-user event egress ownership. PR #2369 now also
+  carries the live-sized plugin Job/Secret object quotas while keeping pod,
+  CPU, memory, and storage execution ceilings unchanged.
