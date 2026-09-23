@@ -23,6 +23,10 @@ current digest as its expected revision; a first registration has no expected
 digest. The tenant still needs Private Google Access, a minimally scoped
 range-host Vertex identity, the required GCP APIs and selected models enabled,
 and participant web egress if public search is part of the workstation task.
+For that search capability, enable the administrator-selected GCP host image
+profile's public-web option in the pack assignment; leave the directory
+profile's option off. The setting applies to new ranges, so reprovision an
+already launched range before using it as web-access evidence.
 When creating a CTF for this pack, clear the event's "Visible instance OS types"
 field (show all), or include `linux`. The form defaults to `kali`, but the
 compiled workstation guest declares `os: linux`; leaving the default would
