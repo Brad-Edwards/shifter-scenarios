@@ -67,3 +67,13 @@ adapter image must be delivered to a registry, the participant image rebuilt wit
 client, and both cloud deployments qualified before cutover. Keep those records
 in this private repository. A locally built SDK wheel is sufficient for this work;
 SDK publication is a separate release-model decision.
+
+## Direct GCP deployment prerequisite
+
+Before launching the direct variant on a GCP tenant, set its deployment's
+`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` GitHub Environment variable to `true` and run
+the tenant's normal deploy workflow. Verify the deployed `platform-runtime`
+setting is `true` and a newly created range subnet has Private Google Access
+enabled. Changing the variable cannot repair an existing range; destroy and
+reprovision it through the normal CTF controls. The broker-only operator runbook
+deliberately uses `false` and does not apply to the direct variant.
