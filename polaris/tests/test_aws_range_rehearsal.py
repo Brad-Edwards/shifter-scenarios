@@ -41,6 +41,7 @@ class BuildArtifactTests(unittest.TestCase):
         named = (PACK_ROOT / "build" / "dns" / "named.conf").read_text(encoding="utf-8")
         entrypoint = (PACK_ROOT / "build" / "dns" / "entrypoint.sh").read_text(encoding="utf-8")
         self.assertIn("forwarders { __DNS_FORWARDER__; };", named)
+        self.assertIn('validate-except { "internal"; };', named)
         self.assertIn('DNS_FORWARDER="${DNS_FORWARDER:-8.8.8.8}"', entrypoint)
         self.assertIn("DNS_FORWARDER must be an IPv4 address", entrypoint)
 

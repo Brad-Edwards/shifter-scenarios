@@ -111,11 +111,14 @@ services:
 ```
 
 Build and start DNS with both Compose files, then verify that the participant
-container resolves a public hostname through it. The adapter's range bootstrap
-replaces the bake-only directory address with that range's actual controller
-address. Remove bake-time SSH keys, access tags, startup scripts, and temporary
-payloads before capture; the machine image must have no attached service
-account.
+container resolves a public hostname through it. Also query the tenant's
+private `.internal` model-broker name against the scenario DNS service and
+confirm it resolves to the expected private broker address. BIND must exempt
+`.internal` from public DNSSEC validation; forwarding alone does not qualify
+private-zone resolution. The adapter's range bootstrap replaces the bake-only
+directory address with that range's actual controller address. Remove bake-time
+SSH keys, access tags, startup scripts, and temporary payloads before capture;
+the machine image must have no attached service account.
 
 Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
