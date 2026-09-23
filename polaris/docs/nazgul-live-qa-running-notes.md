@@ -205,3 +205,20 @@ from shell history.
   temporary IAP ingress rules. Readback found none of those three resources;
   the event-scoped Kali outbound internet rule remains. The tunnel VM's boot
   disk was auto-deleted with it. No event range was deleted.
+- Issued a unique 32-character password to each of the 30 generated event
+  accounts through the organizer's supported password action. The roster is
+  held in project `prod-hwmvjy` Secret Manager secret
+  `shifter-nazgul-ctf-20260923-participant-roster`, enabled version 1, and in
+  a mode-0600 file under the mode-0700 local operator runtime directory.
+  Sample seats 1 and 30 passed actual login and reached the expected required
+  first-login password-change page; no credential was printed in chat/logs.
+  The roster must be delivered to attendees through an approved secure channel.
+- Seat 6 was the participant used for the 38-challenge QA walkthrough. Before
+  any handoff, precisely its 38 active QA submission rows were soft-deleted
+  under a transaction and its materialized score recomputed, preserving the
+  range and the historical rows. Organizer readback reports all 30 event
+  accounts at zero score, zero solves, zero attempts. A temporary operator
+  tunnel was re-created solely for that scoped cleanup, then removed again;
+  readback confirms the VM and IAP rule are absent. Event remains active with
+  30 READY assigned ranges, two READY spares, and 38 challenges; end time is
+  2026-09-25 06:34 UTC.
