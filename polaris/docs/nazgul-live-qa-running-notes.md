@@ -195,7 +195,13 @@ from shell history.
   one-time invocation of the authorized spare service assigned `none` egress
   to only the two newly generated managed spare users before their launches.
   Replacement spares 146 and 147 reached READY; failed 144 and 145 remain as
-  diagnostic history, not available pool members. Public issue #2372 covers
+  diagnostic history, not available pool members. GCP inventory confirms all
+  32 active event Kali VMs (30 assigned plus two spares) have the egress tag
+  and an external IP. Public issue #2372 covers
   both participant and spare-user event egress ownership. PR #2369 now also
   carries the live-sized plugin Job/Secret object quotas while keeping pod,
   CPU, memory, and storage execution ceilings unchanged.
+- After spare verification, removed the temporary operator tunnel VM and both
+  temporary IAP ingress rules. Readback found none of those three resources;
+  the event-scoped Kali outbound internet rule remains. The tunnel VM's boot
+  disk was auto-deleted with it. No event range was deleted.
