@@ -92,7 +92,8 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
         assert plan.actions[0].binding == "directory"
         assert "Get-NetFirewallProfile" in plan.actions[0].script
         result_check = next(action.script for action in plan.actions if action.action_id == "model-client-result")
-        assert 'test "$client_status" = "model-client-ready"' in result_check
+        assert 'model-client-ready) exit 0' in result_check
+        assert 'broker-transport-failed) exit 43' in result_check
     elif phase == "cleanup":
         assert plan.actions
     else:
@@ -121,6 +122,51 @@ def test_missing_model_binding_cannot_fall_back_to_legacy_provider_credentials()
     )
     with pytest.raises(ValueError):
         module.PolarisAdapter().plan(invocation)
+
+
+@pytest.mark.parametrize(
+    ("marker", "exit_code"),
+    [
+        ("model-client-ready", 0),
+        ("client-exited-before-request", 41),
+        ("request-normalization-failed", 42),
+        ("broker-transport-failed", 43),
+        ("broker-response-200", 44),
+        ("broker-response-400", 45),
+        ("broker-response-401", 46),
+        ("broker-response-403", 46),
+        ("broker-response-404", 47),
+        ("broker-response-429", 48),
+        ("broker-response-503", 49),
+        ("broker-response-502-provider_unavailable", 49),
+        ("broker-response-422", 50),
+        ("unrecognized", 59),
+    ],
+)
+def test_model_client_check_returns_only_bounded_diagnostic_exit_code(marker, exit_code):
+    import os
+
+    module = importlib.import_module("shifter_panw_adapter.runtime")
+    script = module._CHECK_CLIENT
+    fake_docker = """docker() {
+  case "$*" in
+    *'test -f'*) return 0 ;;
+    *'cat /tmp/polaris-model-client-status'*) printf '%s\\n' "$TEST_MARKER" ;;
+    *'rm -f'*) return 0 ;;
+    *) return 99 ;;
+  esac
+}
+"""
+    result = subprocess.run(
+        ["bash", "-c", fake_docker + script],
+        env={**os.environ, "TEST_MARKER": marker},
+        text=True,
+        capture_output=True,
+        timeout=5,
+    )
+    assert result.returncode == exit_code
+    assert not result.stdout
+    assert not result.stderr
 
 
 def test_sdk_worker_loads_the_exact_installed_entrypoint_in_a_clean_process():

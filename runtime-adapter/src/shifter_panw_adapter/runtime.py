@@ -65,7 +65,20 @@ set -euo pipefail
 docker exec --user kali a14-kali test -f /tmp/polaris-model-client-status
 client_status=$(docker exec --user kali a14-kali cat /tmp/polaris-model-client-status)
 docker exec --user kali a14-kali rm -f /tmp/polaris-model-client-status
-test "$client_status" = "model-client-ready"
+case "$client_status" in
+  model-client-ready) exit 0 ;;
+  client-exited-before-request) exit 41 ;;
+  request-normalization-failed) exit 42 ;;
+  broker-transport-failed) exit 43 ;;
+  broker-response-2*) exit 44 ;;
+  broker-response-400*) exit 45 ;;
+  broker-response-401*|broker-response-403*) exit 46 ;;
+  broker-response-404*) exit 47 ;;
+  broker-response-429*) exit 48 ;;
+  broker-response-5*) exit 49 ;;
+  broker-response-*) exit 50 ;;
+  *) exit 59 ;;
+esac
 """
 _CLEANUP = """#!/bin/bash
 set -euo pipefail
@@ -89,7 +102,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris",
-        version="0.1.9",
+        version="0.1.10",
         distribution="shifter-panw-adapter",
         entry_point="polaris",
         worker_image=worker_image,

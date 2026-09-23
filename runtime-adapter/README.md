@@ -60,6 +60,17 @@ traffic to that address from containers; HTTP and HTTPS metadata access remain
 blocked. The verify plan runs the real Claude Code launcher inside the
 participant container and reports ready only after the request succeeds.
 
+If the verify action fails, the generic provisioner log records its action
+ordinal and numeric exit code without guest output. In this adapter's nine-action
+GCP plan, ordinal 9 is the model-client result check. Exit 41 means the client
+exited before making a request; 42 means request normalization failed; 43 means
+broker transport failed; 44 means a broker 2xx response did not yield a
+successful client exit; 45/46/47/48/49 mean broker HTTP 400, 401 or 403, 404,
+429, or 5xx respectively; 50 means another broker response; 59 means an
+unrecognized status. These categories contain no prompt, capability, or
+provider error detail and do not substitute for the participant-side Claude
+Code response and output-token check.
+
 The selected worker registry is the GitHub Container Registry package
 `ghcr.io/paloaltonetworks/shifter-scenarios/runtime-adapter`. Its approved visibility
 is `internal`, matching this repository. The image carries this repository's
@@ -132,4 +143,5 @@ Required live acceptance targets are **AWS and GCP**. Both require tenant
 installation, pack assignment, real guest configuration/readiness, model budget
 and revocation checks, retry, cancellation and verified cleanup. Local tests and
 installed-wheel inspection are not cloud qualification. Keep deployment evidence
-in this private repository. No live environment has been used for these checks.
+in this private repository, and do not claim qualification until the complete
+participant walkthrough has passed.
