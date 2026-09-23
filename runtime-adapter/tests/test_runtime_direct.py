@@ -54,12 +54,14 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert 'ANTHROPIC_VERTEX_PROJECT_ID: "prod-qjpjnv"' in bootstrap
         assert 'DNS_FORWARDER: "169.254.169.254"' in bootstrap
         assert 'www.googleapis.com:199.36.153.8' in bootstrap
+        assert 'target=/etc/environment' in bootstrap
         assert "- /usr/local/libexec/polaris-splice-credential.py" in bootstrap
     if phase == "verify":
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready", "bootstrap-ready", "vertex-ready"
         ]
         assert "/usr/local/bin/claude -p" in plan.actions[2].script
+        assert 'grep -q pam_env.so /etc/pam.d/xrdp-sesman' in plan.actions[2].script
 
 
 def test_direct_variant_rejects_other_clouds():

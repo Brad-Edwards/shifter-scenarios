@@ -25,7 +25,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.17",
+        version="0.1.18",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
@@ -39,10 +39,44 @@ _VERIFY_VERTEX = """#!/bin/bash
 set -euo pipefail
 docker exec --user kali a14-kali sh -c \
   'test "$CLAUDE_CODE_USE_VERTEX" = 1 && test -n "$ANTHROPIC_VERTEX_PROJECT_ID" && test -n "$CLOUD_ML_REGION"'
+docker exec a14-kali sh -c '
+set -eu
+for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \
+  ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
+  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
+  grep -Fqx "$key=$(printenv "$key")" /etc/environment
+done
+grep -q pam_env.so /etc/pam.d/sshd
+grep -q pam_env.so /etc/pam.d/xrdp-sesman
+'
 # This is the participant's real CLI and the participant container's metadata identity.
 timeout 120 docker exec --user kali --workdir /home/kali a14-kali \\
   /usr/local/bin/claude -p 'Reply with OK.' --tools '' --max-turns 1 \\
   --no-session-persistence >/dev/null
+"""
+
+
+# Docker environment reaches docker exec, but PAM constructs a fresh
+# environment for participant SSH and XRDP logins. Both services load
+# /etc/environment through pam_env.so in the qualified Kali image.
+_PAM_ENV_BLOCK = r"""
+docker exec a14-kali sh -c '
+set -eu
+target=/etc/environment
+tmp=$(mktemp)
+trap "rm -f $tmp" EXIT
+if [ -f "$target" ]; then
+  cp "$target" "$tmp"
+fi
+for key in CLAUDE_CODE_USE_VERTEX CLOUD_ML_REGION ANTHROPIC_VERTEX_PROJECT_ID \
+  ANTHROPIC_MODEL ANTHROPIC_DEFAULT_SONNET_MODEL ANTHROPIC_DEFAULT_HAIKU_MODEL \
+  CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC; do
+  sed -i "/^$key=/d" "$tmp"
+  value=$(printenv "$key")
+  printf "%s=%s\n" "$key" "$value" >> "$tmp"
+done
+install -m 0644 "$tmp" "$target"
+'
 """
 
 _CLEANUP = """#!/bin/bash
@@ -71,6 +105,10 @@ class PolarisDirectAdapter:
             if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,127}", params[key]):
                 raise ValueError(f"Invalid {key}")
         bootstrap = POLARIS_RANGE_BOOTSTRAP_SCRIPT
+        compose_up = "docker compose up -d --force-recreate dns a14-kali a9-splice\n"
+        if bootstrap.count(compose_up) != 1:
+            raise ValueError("Missing container recreation anchor")
+        bootstrap = bootstrap.replace(compose_up, compose_up + _PAM_ENV_BLOCK)
         if bootstrap.count(_GCP_DNS_ANCHOR) != 1:
             raise ValueError("Missing DNS override anchor")
         bootstrap = bootstrap.replace(_GCP_DNS_ANCHOR, _GCP_DNS_ANCHOR + _GCP_DNS_FORWARDER)
