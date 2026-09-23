@@ -80,7 +80,8 @@ from shell history.
   DNS source now has a scoped `validate-except` for `.internal`; this is an
   inference from the observed resolver split and BIND's documented behavior,
   pending a rebuilt image and live validation.
-- Current status: source patch in private branch, not deployed to the live range.
+- Current status: source patch, rebuilt archive, and pre-bake DNS check are in
+  private PR #164. The live range has not been rebuilt or redeployed.
 
 ### QA harness: first-flag extraction caused false negatives
 
@@ -124,6 +125,8 @@ from shell history.
 - Source fix filed: public Shifter PR #2366 releases SSH resources/session slots
   before best-effort WebSocket close and adds regression coverage for this close
   race.
+- Public PR #2366 passed the local full ADR guard and import-layer checker;
+  its title was adjusted to satisfy the repository's conventional-title gate.
 - Follow-up still needed: investigate whether there is also a worker-level
   recovery/observability gap. Operators should not need to rely on retries or a
   pod restart to escape a saturated worker during an event.
