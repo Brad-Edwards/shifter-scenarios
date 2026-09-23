@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "shifter-panw-adapter"
-version = "0.1.10"
+version = "0.1.15"
 description = "Private scenario runtime adapter components"
 requires-python = ">=3.12"
 dependencies = ["shifter-adapter-sdk[runtime]==0.1.0"]
 
 [project.entry-points."shifter.runtime.plugins"]
 polaris = "shifter_panw_adapter.runtime:PolarisAdapter"
+polaris_direct = "shifter_panw_adapter.runtime_direct:PolarisDirectAdapter"
 
 [tool.setuptools.packages.find]
 where = ["src"]

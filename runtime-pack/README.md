@@ -1,5 +1,18 @@
 # Private runtime installation package
 
+The default build remains the broker-backed `polaris` pack. For a separate
+keyless GCP Vertex variant, run:
+
+```sh
+python runtime-pack/build.py --variant direct --output /tmp/private-runtime-pack/polaris-direct.tar
+```
+
+The direct archive has pack/scenario identity `polaris-direct` and omits
+`model-needs.json`, so it does not enroll the participant in broker spend or
+rate limits. The source broker pack is not modified by this build. Install it
+with the separate `panw.polaris-direct` adapter and explicit GCP project,
+region, and model parameters. Live range qualification is still required.
+
 `polaris/` is the tenant-uploadable RAES 3.5.0 launch wrapper for the separately
 installed runtime adapter. It describes the baked container host and directory
 guest. The maintained logical scenario, images, content and answers remain in
