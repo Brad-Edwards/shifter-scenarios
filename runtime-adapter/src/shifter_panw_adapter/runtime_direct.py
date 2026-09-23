@@ -17,7 +17,7 @@ def manifest(worker_image: str) -> PluginManifest:
     return PluginManifest(
         protocol=PROTOCOL,
         plugin_id="panw.polaris-direct",
-        version="0.1.15",
+        version="0.1.16",
         distribution="shifter-panw-adapter",
         entry_point="polaris_direct",
         worker_image=worker_image,
@@ -29,11 +29,32 @@ def manifest(worker_image: str) -> PluginManifest:
 
 _VERIFY_VERTEX = """#!/bin/bash
 set -euo pipefail
-docker exec --user kali a14-kali sh -c 'test "$CLAUDE_CODE_USE_VERTEX" = 1 && test -n "$ANTHROPIC_VERTEX_PROJECT_ID" && test -n "$CLOUD_ML_REGION"'
-# This is the participant's real CLI and the participant container's metadata identity.
-timeout 120 docker exec --user kali --workdir /home/kali a14-kali \\
-  /usr/local/bin/claude -p 'Reply with OK.' --tools '' --max-turns 1 \\
-  --no-session-persistence >/dev/null
+# Use the participant's interactive shell, not Docker Compose's container
+# environment, and require a successful response with actual output tokens.
+timeout 120 docker exec --user kali --workdir /home/kali a14-kali bash -ic '
+  test "$CLAUDE_CODE_USE_VERTEX" = 1 &&
+  test -n "$ANTHROPIC_VERTEX_PROJECT_ID" &&
+  test -n "$CLOUD_ML_REGION" &&
+  /usr/local/bin/claude -p "Reply with OK." --output-format json --tools "" \\
+    --max-turns 1 --no-session-persistence
+' | python3 -c 'import json,sys; response=json.load(sys.stdin); sys.exit(0 if not response.get("is_error") and int(response.get("usage",{}).get("output_tokens",0)) > 0 else 1)'
+"""
+
+
+def _vertex_shell_env(params: dict[str, str]) -> str:
+    """Persist public Vertex selection in the participant's Bash startup files."""
+    return f"""#!/bin/bash
+set -euo pipefail
+docker exec -i --user root a14-kali sh -c 'cat > /etc/profile.d/polaris-vertex.sh' <<'VERTEX_ENV'
+export CLAUDE_CODE_USE_VERTEX=1
+export ANTHROPIC_VERTEX_PROJECT_ID={params['project']}
+export CLOUD_ML_REGION={params['region']}
+export ANTHROPIC_MODEL={params['main-model']}
+export ANTHROPIC_DEFAULT_SONNET_MODEL={params['main-model']}
+export ANTHROPIC_DEFAULT_HAIKU_MODEL={params['small-model']}
+export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+VERTEX_ENV
+docker exec --user root a14-kali sh -c 'chmod 0644 /etc/profile.d/polaris-vertex.sh; for file in /home/kali/.bashrc /home/kali/.profile; do grep -Fqx ". /etc/profile.d/polaris-vertex.sh" "$file" || printf "\\n. /etc/profile.d/polaris-vertex.sh\\n" >> "$file"; done'
 """
 
 _CLEANUP = """#!/bin/bash
@@ -96,6 +117,7 @@ class PolarisDirectAdapter:
             scripts = [
                 ("directory-firewall", "directory", _DIRECTORY_FIREWALL, 30),
                 ("container-bootstrap", "host", bootstrap, 300),
+                ("vertex-shell-env", "host", _vertex_shell_env(params), 30),
                 ("splice-watcher", "host", INSTALL_SPLICE_WATCHER_SCRIPT, 60),
             ]
         elif request.phase == "verify":

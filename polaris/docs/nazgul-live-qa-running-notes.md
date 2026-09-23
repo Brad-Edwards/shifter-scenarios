@@ -162,3 +162,63 @@ from shell history.
   actually live. Do not rebuild or tear down the range without permission.
 - As soon as a source fix is concrete, push it to the appropriate PR rather
   than accumulating unrecorded local changes.
+
+## 2026-09-23 direct event outcome
+
+- Event `4f9b3f4e-bb11-4c31-b4cc-273bbb6c829c` has 30 of 30 participant
+  ranges READY. Its configured close time is 2026-09-25 06:34 UTC. The original
+  broker-backed range 54 was not rebuilt or torn down.
+- A direct-adapter participant on range 104 completed the documented manual
+  walkthrough from the portal workstation: negative pre-pivot gates passed,
+  all 38 challenge answers were recovered and accepted, and an independent
+  readback reports 38 solved, zero unsolved, score 4700. Normal interactive
+  Claude Code returned five output tokens with `is_error=false`.
+- A second, newly launched participant on range 143 logged in through the CTF
+  portal. Its workstation passed public DNS, HTTP, HTTPS, and normal Claude
+  invocation with five output tokens and no error. GCP inventory confirms all
+  30 event workstations have an external IP and the event-scoped egress tag.
+- This is live event acceptance, not proof of a reproducible zero-drift deploy
+  or 200-range burst capacity. Event Kali internet currently depends on a
+  live-scoped egress firewall plus ephemeral external IPs; 30 generated
+  participant personal workspaces were set to `none` egress to avoid the
+  five-Cloud-Router-per-network limit. A live launcher memory increase,
+  plugin-controller `jobs/status` permission, plugin quota increase, scheduler
+  bucket IAM, and direct-model runtime settings also need source reconciliation.
+- Source tracking: private direct adapter and installation notes in PR #166;
+  public generic fixes in PRs #2367, #2369, #2370, #2373; image-pool capacity,
+  CTF event egress, and failed-range recovery in issues #2371, #2372, #2374.
+  A single GCP machine image is limited to six VM creations in 60 minutes;
+  retries alone do not enable a large simultaneous event.
+- Two warm spares were requested through the organizer control. The first two
+  failed before VM creation because newly generated managed spare users also
+  inherit per-user status-quo NAT egress and hit the GCP router limit. A
+  one-time invocation of the authorized spare service assigned `none` egress
+  to only the two newly generated managed spare users before their launches.
+  Replacement spares 146 and 147 reached READY; failed 144 and 145 remain as
+  diagnostic history, not available pool members. GCP inventory confirms all
+  32 active event Kali VMs (30 assigned plus two spares) have the egress tag
+  and an external IP. Public issue #2372 covers
+  both participant and spare-user event egress ownership. PR #2369 now also
+  carries the live-sized plugin Job/Secret object quotas while keeping pod,
+  CPU, memory, and storage execution ceilings unchanged.
+- After spare verification, removed the temporary operator tunnel VM and both
+  temporary IAP ingress rules. Readback found none of those three resources;
+  the event-scoped Kali outbound internet rule remains. The tunnel VM's boot
+  disk was auto-deleted with it. No event range was deleted.
+- Issued a unique 32-character password to each of the 30 generated event
+  accounts through the organizer's supported password action. The roster is
+  held in project `prod-hwmvjy` Secret Manager secret
+  `shifter-nazgul-ctf-20260923-participant-roster`, enabled version 1, and in
+  a mode-0600 file under the mode-0700 local operator runtime directory.
+  Sample seats 1 and 30 passed actual login and reached the expected required
+  first-login password-change page; no credential was printed in chat/logs.
+  The roster must be delivered to attendees through an approved secure channel.
+- Seat 6 was the participant used for the 38-challenge QA walkthrough. Before
+  any handoff, precisely its 38 active QA submission rows were soft-deleted
+  under a transaction and its materialized score recomputed, preserving the
+  range and the historical rows. Organizer readback reports all 30 event
+  accounts at zero score, zero solves, zero attempts. A temporary operator
+  tunnel was re-created solely for that scoped cleanup, then removed again;
+  readback confirms the VM and IAP rule are absent. Event remains active with
+  30 READY assigned ranges, two READY spares, and 38 challenges; end time is
+  2026-09-25 06:34 UTC.

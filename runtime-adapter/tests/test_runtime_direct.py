@@ -46,7 +46,7 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert "model-client/entrypoint.sh" not in action.script
     if phase == "configure":
         assert [action.action_id for action in plan.actions] == [
-            "directory-firewall", "container-bootstrap", "splice-watcher"
+            "directory-firewall", "container-bootstrap", "vertex-shell-env", "splice-watcher"
         ]
         bootstrap = plan.actions[1].script
         assert 'CLAUDE_CODE_USE_VERTEX: "1"' in bootstrap
@@ -54,11 +54,20 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert 'ANTHROPIC_VERTEX_PROJECT_ID: "prod-qjpjnv"' in bootstrap
         assert 'DNS_FORWARDER: "169.254.169.254"' in bootstrap
         assert "- /usr/local/libexec/polaris-splice-credential.py" in bootstrap
+        shell_env = plan.actions[2].script
+        assert "export CLAUDE_CODE_USE_VERTEX=1" in shell_env
+        assert "export ANTHROPIC_VERTEX_PROJECT_ID=prod-qjpjnv" in shell_env
+        assert "export CLOUD_ML_REGION=us-east5" in shell_env
+        assert "/etc/profile.d/polaris-vertex.sh" in shell_env
+        assert "/home/kali/.bashrc" in shell_env
     if phase == "verify":
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready", "bootstrap-ready", "vertex-ready"
         ]
         assert "/usr/local/bin/claude -p" in plan.actions[2].script
+        assert "--output-format json" in plan.actions[2].script
+        assert 'response.get("is_error")' in plan.actions[2].script
+        assert 'get("output_tokens",0)' in plan.actions[2].script
 
 
 def test_direct_variant_rejects_other_clouds():

@@ -19,6 +19,13 @@ The direct participant container can obtain the host's metadata identity. Keep
 that identity restricted to model invocation and low-risk telemetry permissions;
 do not grant it broad project access.
 
+Private Google Access only reaches approved Google APIs; it does not provide
+general web research. If participants need web search from Kali, configure the
+host profile's opt-in public web egress and a working shared-VPC Cloud NAT path
+before launching an event, then verify public DNS and HTTP/HTTPS from the
+participant terminal. A profile flag alone is insufficient when its workspace
+has no NAT. Do not treat a successful model call as proof of internet access.
+
 The `polaris` worker entry point builds against `shifter-adapter-sdk[runtime]==0.1.0`
 alone. It imports no Shifter application code. `runtime.PolarisAdapter` produces
 configure, verify and cleanup plans for both AWS and GCP and requires the
