@@ -3,8 +3,8 @@
 This collection realizes the [worldbuilding draft](../../docs/narrative/README.md)
 as correspondence and records people can encounter inside the companies.
 
-The collection contains 42,916 distinct authored messages, 17,838 source documents,
-staff directories for all 294 employees, and 1,507 calendar items. The
+The collection contains 43,235 distinct authored messages, 17,933 source documents,
+staff directories for all 294 employees, and 1,510 calendar items. The
 workforce slice added 1,400 messages and 140 documents to the earlier story
 collection. The business slice adds 1,600 messages and 89 documents for twelve
 KeplerOps utility accounts and seven other established partner relationships.
@@ -129,6 +129,15 @@ the existing native collections. Its
 retained copies, business records, scheduling attachments and occurrences,
 and records consent, duty cover, the volume adjustment and preservation checks.
 
+Regional relationships add 319 messages, 95 source documents and three tentative
+appointments. Ninety original records cover KeplerOps and ARWC's relationship
+and all eight supporting businesses; five additional document placements retain
+identical copies at ARWC. The mail produces 421 retained mailbox copies. Twelve
+scanning-register rows point to accepted purchases and are not new transactions.
+The [review record](../../docs/narrative/regional-relationships-review.md) explains
+the smaller message allocation, source joins, supplier formats, privacy and
+unfinished arrangements. No supplier service or infrastructure is introduced.
+
 ## Sources and outputs
 
 | Location | Purpose |
@@ -159,6 +168,7 @@ and records consent, duty cover, the volume adjustment and preservation checks.
 | `documents/governance-records.zip` | Twenty-eight actual XLSX files, six public PDFs and six completed CSV schedules. |
 | `authoring/documents-it-services.yaml` | Finished IT case, inventory and knowledge items plus author-only service, access, equipment, change, copy-check and vendor joins. |
 | `authoring/commercial.yaml` | Account histories, accepted-version joins, billing schedules, project reservations, and reference-call arrangements. |
+| `authoring/regional-relationships.yaml` | Relationship records, accepted-source digests, account and transaction joins, exact audiences, document counterparts, appointment proposals and separate counts. |
 | `authoring/mail-*.yaml` | Authored message text, dates, recipients, reply relationships, and attachment references. |
 | `authoring/documents*.yaml`, `documents/` | Inline or file-backed authored documents, titles, display paths, and intended readers. |
 | `authoring/calendars*.yaml` | Historical operating windows and agreed, cancelled, or tentative arrangements as of the snapshot. |

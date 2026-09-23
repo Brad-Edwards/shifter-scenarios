@@ -39,7 +39,7 @@ content:
     format: cinder-mailbox-set/v1
     source:
       name: cinder-typhoon/narrative/keplerops-mail
-      version: sha256-d6eed4759358e5fcb74aa153c89fef3b11c9fe8fd2f7504f3336f09a52d2369f
+      version: sha256-4a787031a275cf32d78f4152edf2c86beccefef767909ceae1f1edba0aea0bb5
     description: keplerops workplace mail. Require an individual staff identity; Exact mailbox membership.
       Preserve authored readers and opening state. Source package is the complete item inventory.
     sensitive: true
@@ -66,7 +66,7 @@ content:
     format: cinder-document-library/v2
     source:
       name: cinder-typhoon/narrative/keplerops-documents
-      version: sha256-c37294547a354e8d7e91226ddb4126ccf554058129d6d3fe4669f0a7de820a7e
+      version: sha256-3061f09b7452259f8967fbd8751e5ed44a33bca1b12af80ee028dc17562e6405
     description: keplerops workplace documents. Require an individual staff identity; Exact document readers.
       Preserve authored readers and opening state.
     items:
@@ -10155,6 +10155,64 @@ content:
       display_name: Outstanding product limitations
     - name: product-quality-review-calendar
       display_name: Product and quality review calendar
+    - name: rr-arwc-01
+      display_name: When the familiar contact is away
+    - name: rr-arwc-02
+      display_name: A useful handover question
+    - name: rr-arwc-03
+      display_name: 'Reference conversation: questions worth asking'
+    - name: rr-arwc-04
+      display_name: 'Account review: term and responsibilities'
+    - name: rr-arwc-05
+      display_name: Customer questions without customer records
+    - name: rr-arwc-06
+      display_name: 'Reference preparation: what stays in the room'
+    - name: rr-arwc-07
+      display_name: 'Continuity preference: a shorter question'
+    - name: rr-arwc-09
+      display_name: A technical answer is not a delivery promise
+    - name: rr-arwc-10
+      display_name: 'Reference hold: morning status'
+    - name: rr-rillhaven-01
+      display_name: Summer review questions from the maintenance desk
+    - name: rr-rillhaven-02
+      display_name: 'Desk example: write a question another shift can inherit'
+    - name: rr-rillhaven-03
+      display_name: 'Seasonal account conversation: budget versus service work'
+    - name: rr-rillhaven-04
+      display_name: 'Handover feedback: keep the small answers usable'
+    - name: rr-rillhaven-05
+      display_name: 'Workshop questions: who uses the answer'
+    - name: rr-rillhaven-06
+      display_name: Suggestion triage for the account file
+    - name: rr-rillhaven-07
+      display_name: 'Workshop preparation: printed questions'
+    - name: rr-rillhaven-08
+      display_name: 'Preparing to listen: question parking sheet'
+    - name: rr-rillhaven-09
+      display_name: Reading the final example without answering it for people
+    - name: rr-rillhaven-10
+      display_name: 'Account handover: workshop still ahead'
+    - name: rr-orrenvale-01
+      display_name: Account desk note / start with the actual question
+    - name: rr-orrenvale-02
+      display_name: Account continuity / what the next colleague should find
+    - name: rr-orrenvale-03
+      display_name: Review wording / a sampled check has a scope
+    - name: rr-orrenvale-04
+      display_name: Internal preparation / questions for the service review
+    - name: rr-orrenvale-05
+      display_name: Service account / current term and change requests
+    - name: rr-orrenvale-06
+      display_name: After the review / no open question on completed items
+    - name: rr-orrenvale-07
+      display_name: Desk card / keep the decision beside the question
+    - name: rr-orrenvale-08
+      display_name: Commercial note / no need to renew early
+    - name: rr-orrenvale-09
+      display_name: Account summary / what a colleague should not infer
+    - name: rr-orrenvale-10
+      display_name: September follow-up / waiting for a useful week
     - name: rel-2026-001-manifest
       display_name: FieldKest 4.9.1 qualification manifest REL-2026-001
     - name: rel-2026-001-notes-v1

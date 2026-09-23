@@ -78,6 +78,7 @@ python cinder-typhoon/tests/validate_retail_billing.py
 python -m unittest discover -s cinder-typhoon/tests -p test_planning.py
 python -m unittest discover -s cinder-typhoon/tests -p test_governance.py
 python -m unittest discover -s cinder-typhoon/tests -p test_community_life.py
+python -m unittest discover -s cinder-typhoon/tests -p test_regional_relationships.py
 ```
 
 These check deterministic rendering, source hashes, message headers and bodies,
@@ -153,6 +154,16 @@ mutations reject premature release, unaccepted evidence, publication of a held
 bundle, changed readback bytes, fabricated recovery hashes, altered machine
 values, overbooked capacity, unrelated readers, confirmed cancelled windows,
 and invented service owners. Attachment checks include declared MIME types.
+
+Regional relationship checks reconcile ninety records with accepted account terms,
+contractor reports, delivery quantities, reading explanations and scanning batches.
+They check five exact document counterparts, principal-company audiences, private
+reply boundaries, published attachment versions and three tentative appointment
+proposals against existing calendars. Twenty-six deliberate faults cover money,
+quantities, dates, rewritten evidence, private attachments and ancestry, altered
+counterparts, missing explanations, future completion, calendar conflicts and
+authoring metadata. Full narrative validation also checks that cross-company mail
+retains one identity and identical RFC 5322 bytes in both native sources.
 
 Customer follow-up checks join 290 case histories, ten shared corrections,
 five later releases, 24 knowledge revisions, and the Rillhaven preparations.

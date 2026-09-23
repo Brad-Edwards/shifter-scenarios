@@ -112563,6 +112563,340 @@
       "text": "review,date,status,output\nspring roadmap,2026-03-01,complete,roadmap revision 1\nmid-year capacity,2026-06-30,complete,roadmap revision 2\nacceptance baseline,2026-09-15,complete,roadmap revision 3\n"
     },
     {
+      "name": "rr-arwc-01",
+      "title": "When the familiar contact is away",
+      "path": "Relationships/K-C-001/rr-arwc-01.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-23T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "# When the familiar contact is away\n\nMaya Ranscombe | 23 June 2026\n\nTheo's point was about continuity rather than a shorter response promise. A question left with one engineer should not have to be retold from the beginning when that person is away. The useful handover is the record reference, what the reviewer expected to see and the last answer already tried.\n\nMaya will keep the customer conversation with the support history. Theo will use that conversation for a follow-up instead of opening a second personal exchange. A photograph of a local work sheet is not needed when its record reference and the disputed field will do.\n\nThis note records a working preference. It leaves ARWC's own acceptance responsibilities and the agreed support scope in place. A familiar name is welcome; an answer that survives the next shift is more useful.\n"
+    },
+    {
+      "name": "rr-arwc-02",
+      "title": "A useful handover question",
+      "path": "Relationships/K-C-001/rr-arwc-02.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-08T09:30:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com"
+      ],
+      "text": "# A useful handover question\n\nClara Morivelle | 08 July 2026\n\nA reviewer asking whether a replacement has been accepted is asking about authority, not merely which attachment appears first. The question should name the submission being compared and the acceptance entry being read. A newer upload can still await review.\n\nFor their next technical conversation Clara and Rowan will use a written pair of descriptions, not copies of operating records. One describes a received replacement; the other describes the reviewer's later acceptance. They should remain separate sentences. Combining them into “the latest version is accepted” would make the example easier to read but wrong.\n\nClara will check whether the words describe ARWC's review practice. Rowan can explain the product's presentation. Neither role makes an unreviewed document effective for work.\n"
+    },
+    {
+      "name": "rr-arwc-03",
+      "title": "Reference conversation: questions worth asking",
+      "path": "Relationships/K-C-001/rr-arwc-03.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-20T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "# Reference conversation: questions worth asking\n\nTheo Marrivel | 20 August 2026\n\nPossible questions for a future reference discussion, collected before any date or participants are agreed.\n\nWhat did ARWC have to settle internally before the submission process became useful? How does a maintenance planner know which colleague still owes a review? What should a new customer budget staff time for, besides learning the screen? Theo is comfortable describing the habits that changed and the habits that did not.\n\nThe answer should include the cost of keeping local work records intelligible. It should not imply that purchasing a product makes unclear instructions disappear. There is no request here for a testimonial, slides or a public quotation. Maya will ask separately about a defined audience and staff time if the discussion develops. No customer data or operating screenshots are included.\n"
+    },
+    {
+      "name": "rr-arwc-04",
+      "title": "Account review: term and responsibilities",
+      "path": "Relationships/K-C-001/rr-arwc-04.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-03T09:30:00-04:00",
+      "readers": [
+        "louis.zorrel@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "# Account review: term and responsibilities\n\nLouis Zorrel | 03 September 2026\n\nLouis checked the account review against K-C-001-AGR-01. The current term ends on 31 March 2028. The annual service fee is USD 154,000, billed in four instalments of USD 38,500. A budget conversation this autumn is not an expiring-contract renewal.\n\nMaya continues to own the support relationship. Commercial questions go to Louis; a promise made during a reference discussion must not be treated as a contract variation. Delivery staff need the agreed question and relevant records, rather than commercial discussion copied into every technical thread.\n\nFor the next internal review, Louis wants one unresolved customer preference and its owner, not a retrospective list of everything support has done. The continuity preference is worth checking. This note makes no new charge and does not certify any invoice as paid.\n"
+    },
+    {
+      "name": "rr-arwc-05",
+      "title": "Customer questions without customer records",
+      "path": "Relationships/K-C-001/rr-arwc-05.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T09:30:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "# Customer questions without customer records\n\nRowan Ito | 07 September 2026\n\nThe proposed technical discussion can use invented submission labels A and B. A is received first; B corrects the description but still requires the customer's reviewer. The participants can ask where each fact appears without seeing an ARWC work order, employee comment or site photograph.\n\nRowan originally suggested a screen from a familiar support conversation. Maya rejected that shortcut: knowing the people in the conversation does not give permission to send their records to a prospective customer. A written example also avoids spending the call explaining local asset names.\n\nRowan will keep the example short enough to read aloud. Maya will check that it illustrates a question rather than claiming a promised product change. Any later use of an actual customer example requires that customer's specific agreement.\n"
+    },
+    {
+      "name": "rr-arwc-06",
+      "title": "Reference preparation: what stays in the room",
+      "path": "Relationships/K-C-001/rr-arwc-06.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-10T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com",
+        "martin.harlowe@keplerops.com",
+        "louis.zorrel@keplerops.com"
+      ],
+      "text": "# Reference preparation: what stays in the room\n\nMaya Ranscombe | 10 September 2026\n\nThe agreed reference agenda covers a thirty-minute conversation with Theo and Clara. Martin holds 29 September, 10:00–10:30, as tentative because prospective utility participants have not confirmed. The allowance is sixty ARWC person-minutes. The call is not an endorsement recording session.\n\nQuestions can cover practical adoption, continuing internal work and ordinary limitations. Do not distribute ARWC screenshots, customer-support attachments or a quotation drafted in Theo's voice. If someone asks to record the call, Martin must ask the people involved; the existing hold supplies no recording permission.\n\nThe organizer should confirm the eventual audience before changing the calendar state. There are no attendance notes or completed actions from this future discussion. Maya will use the approved agenda, not make another longer deck to fill the time.\n"
+    },
+    {
+      "name": "rr-arwc-07",
+      "title": "Continuity preference: a shorter question",
+      "path": "Relationships/K-C-001/rr-arwc-07.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-11T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "# Continuity preference: a shorter question\n\nMaya Ranscombe | 11 September 2026\n\nThe June preference was to keep the last answer with the original customer question. Theo has now clarified the smallest useful follow-up: state what remains unclear, quote the disputed label and preserve the existing reference. Resending an entire handover pack makes the recipient guess which part has changed.\n\nMaya's reply should identify the next person responsible if the question needs a different role. “Passed on” alone leaves Theo unable to tell whether he should wait or supply more information. This is an expectation about useful communication, not a new response-time commitment.\n\nTheo does not want weekly status mail when there is no open question. An answer should close its own small loop. If a later shift has a different question, it can say what has changed rather than repeat the original request.\n"
+    },
+    {
+      "name": "rr-arwc-09",
+      "title": "A technical answer is not a delivery promise",
+      "path": "Relationships/K-C-001/rr-arwc-09.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-15T09:30:00-04:00",
+      "readers": [
+        "rowan.ito@keplerops.com",
+        "maya.ranscombe@keplerops.com",
+        "louis.zorrel@keplerops.com"
+      ],
+      "text": "# A technical answer is not a delivery promise\n\nRowan Ito | 15 September 2026\n\nWhen Rowan answers a question about comparing submissions, the answer can explain current behavior and the customer's review responsibility. It must not imply that a suggested layout change has been scheduled. Louis needs the distinction before he describes the account conversation elsewhere.\n\nThe internal wording is: “We can discuss how the current review is presented; a requested change needs its own assessment.” Avoid “we can do that” when the subject of “that” has shifted from an explanation to development work. Maya will ask which question the customer means if the thread becomes ambiguous.\n\nNo new feature, interface, project effort or delivery date is committed by this note. The next reference conversation is an opportunity to describe experience, not a route around the existing scope and acceptance process.\n"
+    },
+    {
+      "name": "rr-arwc-10",
+      "title": "Reference hold: morning status",
+      "path": "Relationships/K-C-001/rr-arwc-10.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-16T07:45:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com",
+        "martin.harlowe@keplerops.com",
+        "louis.zorrel@keplerops.com"
+      ],
+      "text": "# Reference hold: morning status\n\nMaya Ranscombe | 16 September 2026\n\nStatus at 07:45 on 16 September: the proposed ARWC reference conversation remains on 29 September, 10:00–10:30, with prospective participants unconfirmed. The agreed agenda and sixty ARWC person-minutes remain the preparation basis. No slides, public quotation or recording permission has been added.\n\nTheo and Clara will discuss their own experience of maintenance submissions and review. Martin still owes the participant confirmation. If the audience or time changes, he must bring that change back to the invited colleagues rather than silently treating the current hold as general availability.\n\nThis is a preparation status note, not a second invitation. The existing calendar occurrence remains authoritative. There has been no call, attendance, completion or customer endorsement to report.\n"
+    },
+    {
+      "name": "rr-rillhaven-01",
+      "title": "Summer review questions from the maintenance desk",
+      "path": "Relationships/K-C-002/rr-rillhaven-01.html",
+      "media_type": "text/html",
+      "published_at": "2026-07-07T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Summer review questions from the maintenance desk</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Summer review questions from the maintenance desk</h1>\n<p>Greer Aldervin · 07 July 2026</p>\n<p>Greer&#x27;s questions for the summer account conversation:</p>\n<p>First, make the person who needs the result visible before explaining the submission. A records reviewer and a maintenance coordinator may open the same package for different reasons. Second, keep the actual question near the top of support mail. The desk loses time rereading a history to find what still needs an answer.</p>\n<p>One thing to retain is the ability to ask a small question without turning it into a large demonstration. Rillhaven has seasonal work to finish and other tasks competing for the same staff time. Greer would prefer a short written answer where that is enough.</p>\n<p>Maya will use these preferences in the ordinary relationship correspondence. They are feedback about how to work together, not a list of unresolved product incidents.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-02",
+      "title": "Desk example: write a question another shift can inherit",
+      "path": "Relationships/K-C-002/rr-rillhaven-02.html",
+      "media_type": "text/html",
+      "published_at": "2026-08-04T09:30:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Desk example: write a question another shift can inherit</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Desk example: write a question another shift can inherit</h1>\n<p>Kit Merrowin · 04 August 2026</p>\n<p>Kit&#x27;s written exercise for discussing support questions. It is an invented example, not a report of an open Rillhaven incident.</p>\n<p>Starting sentence: “The copy is wrong.” The next shift cannot tell which copy, what was expected or whether someone has already asked about it. Better working sentence: “For the named package and revision, I expected the accepted description; I see the earlier wording. Is this the view I should be reading?” The writer must supply the real reference when using that form for actual work.</p>\n<p>The exercise is about making the question answerable. It does not assume that the product is at fault, that a later revision has been accepted or that the sender is the reviewer. Kit wants the colleague inheriting the question to see those distinctions without a telephone explanation.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-03",
+      "title": "Seasonal account conversation: budget versus service work",
+      "path": "Relationships/K-C-002/rr-rillhaven-03.html",
+      "media_type": "text/html",
+      "published_at": "2026-08-19T09:30:00-04:00",
+      "readers": [
+        "luca.gervain@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Seasonal account conversation: budget versus service work</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Seasonal account conversation: budget versus service work</h1>\n<p>Arel Vornell · 19 August 2026</p>\n<p>Arel&#x27;s account note separates the budget view from the seasonal maintenance handover. The current FieldKest agreement K-C-002-AGR-01 runs through 31 October 2027. Its annual service fee is USD 89,000, in four instalments of USD 22,250. Those are existing terms, not a new proposal.</p>\n<p>The account conversation can help Arel explain the current commitment internally. Greer&#x27;s maintenance questions should remain with the service conversation, where the relevant reviewer can answer them. A budget summary should not claim that every suggestion made by the maintenance desk has become included future work.</p>\n<p>Arel will bring a concrete scope question if the business wants a further proposal. Luca will distinguish that proposal from the current service. No additional price, accepted order or invoice is created by this note.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-04",
+      "title": "Handover feedback: keep the small answers usable",
+      "path": "Relationships/K-C-002/rr-rillhaven-04.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-07T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Handover feedback: keep the small answers usable</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Handover feedback: keep the small answers usable</h1>\n<p>Greer Aldervin · 07 September 2026</p>\n<p>The maintenance office confirmed the seasonal handover complete on 4 September. This follow-up asks what helped the working relationship. Greer values replies that name the submission and say what the next reviewer needs, without reopening an already settled question.</p>\n<p>For the autumn workshop, staff still want an example and time to ask questions. Completion of the handover has not removed that need. The workshop should let the staff explain their working day as well as hear the supplier explain the product.</p>\n<p>Greer&#x27;s next action is to collect a small number of questions that need discussion, rather than send the whole archive of resolved mail. Maya will keep later support requests distinct from those workshop questions. Nothing in the feedback changes the completed handover or creates another seasonal support case.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-05",
+      "title": "Workshop questions: who uses the answer",
+      "path": "Relationships/K-C-002/rr-rillhaven-05.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-09T09:30:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Workshop questions: who uses the answer</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Workshop questions: who uses the answer</h1>\n<p>Kit Merrowin · 09 September 2026</p>\n<p>Kit&#x27;s question list for Talia, retained in the account correspondence:</p>\n<p>Who needs the accepted record next? How does that person distinguish a later draft from the accepted revision? If a colleague returns to the conversation after a shift change, which reference tells them where to start?</p>\n<p>The list is deliberately shorter than the range of product suggestions. These questions can be explored through one ordinary example; a tour of every screen would leave little time for the reasons behind the review. Kit asks Talia to preserve the customer&#x27;s chance to explain why an apparently small distinction matters at the desk.</p>\n<p>These are preparatory questions. There are no participant answers, attendance results or minutes. The final workshop material will be issued separately by the agreed lead.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-06",
+      "title": "Suggestion triage for the account file",
+      "path": "Relationships/K-C-002/rr-rillhaven-06.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-10T09:30:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com",
+        "talia.mornac@keplerops.com",
+        "luca.gervain@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Suggestion triage for the account file</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Suggestion triage for the account file</h1>\n<p>Maya Ranscombe · 10 September 2026</p>\n<p>Working triage for the KeplerOps account team.</p>\n<p>A question about current behavior belongs with support and needs a concrete reference. A suggestion about presentation can be recorded with the reason it would help. A request for an additional interface or a delivery date needs an assessment and the appropriate commercial conversation. These categories may emerge in one discussion, but they need different next actions.</p>\n<p>Talia leads the workshop. Maya takes the ongoing-support questions. Luca should receive a bounded scope request if one arises, not an enthusiastic summary that sounds as though a project was agreed. The existing Rillhaven interface remains the supported one.</p>\n<p>This sheet is an internal reminder for listening and recording. It does not add to the customer workshop packet, promise a feature or allocate unapproved delivery effort.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-07",
+      "title": "Workshop preparation: printed questions",
+      "path": "Relationships/K-C-002/rr-rillhaven-07.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-11T09:30:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Workshop preparation: printed questions</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Workshop preparation: printed questions</h1>\n<p>Greer Aldervin · 11 September 2026</p>\n<p>Greer&#x27;s practical preparation note: the shift desk can use printed material, and the question should be readable without opening a chain of previous email. Keep the reference and revision visible on the same page as the exercise. Do not shrink the example to make room for an expanded product introduction.</p>\n<p>Greer will gather the desk&#x27;s remaining questions in advance where possible. A colleague who has no question should not have to invent one to be counted as interested. The session can also contain quiet reading time before discussion.</p>\n<p>This note concerns preparation for 24 September. It does not record attendance, a completed exercise or a change to the agreed lead. Talia owns the opening and example; Maya supports the ongoing-support discussion. The actual packet will remain the separately issued agenda, example and invitation.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-08",
+      "title": "Preparing to listen: question parking sheet",
+      "path": "Relationships/K-C-002/rr-rillhaven-08.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-14T09:30:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Preparing to listen: question parking sheet</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Preparing to listen: question parking sheet</h1>\n<p>Talia Mornac · 14 September 2026</p>\n<p>Working page for the two facilitators, not part of the participant packet.</p>\n<p>If a question concerns the example, keep it in the example discussion. If it concerns an individual&#x27;s live support request, ask for the reference and arrange the appropriate follow-up without projecting the person&#x27;s record to the room. If it is a product suggestion, record the need before debating an implementation.</p>\n<p>Leave an unanswered question visible with an owner. There is no need to tidy every uncertainty into a promise before the session ends. Maya can identify the support route; Talia can ask whether the question belongs to the whole group or just the person asking.</p>\n<p>This page has no filled participant results. Its purpose is to help us listen on 24 September, especially when the conversation is more interesting than the prepared example.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-09",
+      "title": "Reading the final example without answering it for people",
+      "path": "Relationships/K-C-002/rr-rillhaven-09.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-15T12:30:00-04:00",
+      "readers": [
+        "talia.mornac@keplerops.com",
+        "maya.ranscombe@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Reading the final example without answering it for people</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Reading the final example without answering it for people</h1>\n<p>Talia Mornac · 15 September 2026</p>\n<p>Facilitator reading note, after the working example was issued on 15 September.</p>\n<p>RH-WORKSHOP-026 retains r1 as Returned at 18 units, r2 as Accepted at 18 units and r3 as Draft at 19 units. The changed label on r2 does not change its value. The later draft does not silently replace the accepted revision. Keep those facts intact when referring to the worksheet.</p>\n<p>The participants should do the reasoning themselves at the workshop. Talia will ask which revision the reviewer should cite and wait before explaining. Maya can ask what reference belongs in a support question if the discussion becomes abstract.</p>\n<p>The final customer packet still consists of the agenda, working example and invitation. This internal reading note is not an extra answer sheet for participants. No exercise has been completed and no customer answer is scored here.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-rillhaven-10",
+      "title": "Account handover: workshop still ahead",
+      "path": "Relationships/K-C-002/rr-rillhaven-10.html",
+      "media_type": "text/html",
+      "published_at": "2026-09-16T07:45:00-04:00",
+      "readers": [
+        "maya.ranscombe@keplerops.com",
+        "luca.gervain@keplerops.com"
+      ],
+      "text": "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Account handover: workshop still ahead</title></head><body>\n<header>Maintenance office working papers</header>\n<h1>Account handover: workshop still ahead</h1>\n<p>Maya Ranscombe · 16 September 2026</p>\n<p>Morning account handover, 16 September. The seasonal support handover is complete. The workshop is prepared for 24 September, 10:00–11:30, and has not been delivered. Talia leads the opening, example and discussion; Maya takes the ongoing-support questions.</p>\n<p>The prepared allocation is 10 + 25 + 20 + 25 + 10 minutes, totaling ninety minutes. The final participant packet has three items: agenda, working example and invitation. Internal listening notes are not extra customer deliverables.</p>\n<p>Luca should describe the session as prepared when asked for account status. Attendance, customer questions, minutes and any agreed follow-up will come after the session. The workshop does not by itself complete or charge for a separate winter project, and no new commercial commitment has been collected from prospective workshop questions.</p>\n</body></html>\n"
+    },
+    {
+      "name": "rr-orrenvale-01",
+      "title": "Account desk note / start with the actual question",
+      "path": "Relationships/K-S-001/rr-orrenvale-01.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-06-24T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Account desk note / start with the actual question\n\nIsaac Devren | 24 June 2026\n\nIsaac's desk note for the KeplerOps relationship.\n\nA useful request begins with the internal service or endpoint concerned and the observed behavior. KeplerOps does not need a general explanation of what a backup is before it can ask about a retained support item. Equally, knowing the customer is technical does not remove the need to identify which item is being discussed.\n\nIf the question concerns a product workload, say so before proposing work. Orren & Vale's retained service covers the agreed internal scope; KeplerOps' platform team owns product workloads. Isaac will ask for clarification when a request crosses that boundary rather than assume authority from the sender's role.\n\nNo passwords, recovery material or unrelated logs belong in this account note. It gives the next desk colleague a way to ask a precise first question.\n"
+    },
+    {
+      "name": "rr-orrenvale-02",
+      "title": "Account continuity / what the next colleague should find",
+      "path": "Relationships/K-S-001/rr-orrenvale-02.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-09T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Account continuity / what the next colleague should find\n\nTessa Marrowell | 09 July 2026\n\nTessa's continuity checklist for the account file:\n\nCurrent service description; the contact who owns a question; the last answer that was actually given; and any decision still needed. Keep those together. A familiar colleague remembering the meeting is helpful but should not be the only way to discover what was agreed.\n\nThe summary should distinguish a completed item from a proposal. A proposed addition with a blank approval field stays proposed even if someone has helpfully described how it might be done. The original dated decision should remain findable when the summary is revised.\n\nNoor asks for a short account record rather than a second copy of every service attachment. Tessa will use references where the original is already retained. The aim is continuity of the ordinary account conversation, with private operational material left in its proper place.\n"
+    },
+    {
+      "name": "rr-orrenvale-03",
+      "title": "Review wording / a sampled check has a scope",
+      "path": "Relationships/K-S-001/rr-orrenvale-03.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-07-29T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Review wording / a sampled check has a scope\n\nIsaac Devren | 29 July 2026\n\nA service-review sentence needs to say what a check covered. “Checked” alone does not tell a reader whether an individual item was inspected, a sample was read back or a wider recovery was exercised. Isaac and Noor want that scope visible in the account summary.\n\nThis note records wording guidance, not a new test result. An actual result must retain its own item, date, method and observation. A successful sample must not be expanded into a claim that every file can be recovered or that every product workload has been tested.\n\nOrren & Vale can explain the internal service work it performs. KeplerOps continues to own product-platform operations. If a future review needs a broader exercise, the parties must first identify what is being requested and who is responsible for it. The account summary cannot supply missing evidence.\n"
+    },
+    {
+      "name": "rr-orrenvale-04",
+      "title": "Internal preparation / questions for the service review",
+      "path": "Relationships/K-S-001/rr-orrenvale-04.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-12T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com",
+        "evan.calderoux@keplerops.com"
+      ],
+      "text": "# Internal preparation / questions for the service review\n\nNoor Aveling | 12 August 2026\n\nNoor's preparation note for the next internal-service review. Keep the discussion on the retained IT and backup-support scope. Evan can help identify where a question actually belongs to KeplerOps' own product operation, so the account discussion does not accidentally assign it to Orren & Vale.\n\nUseful account questions concern the clarity of the service record and the route for ordinary follow-up. They do not require putting platform credentials, recovery material or product-customer information into the supplier's account file. Ask for the evidence appropriate to the specific item being reviewed.\n\nThe review should finish with an owner for any real open question. Do not create an action simply because the meeting template has an empty row. If the completed items are understood and no further question remains, the summary can say that.\n"
+    },
+    {
+      "name": "rr-orrenvale-05",
+      "title": "Service account / current term and change requests",
+      "path": "Relationships/K-S-001/rr-orrenvale-05.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-08-26T09:30:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com"
+      ],
+      "text": "# Service account / current term and change requests\n\nTessa Marrowell | 26 August 2026\n\nAccount K-S-001 retains the existing internal service under K-S-001-AGR-01, from 1 October 2025 through 30 September 2027. The annual amount is USD 22,800 for that stated scope. Changes require a written order.\n\nLina wants a future proposal to identify the change from the retained service, not restate the entire service description in a way that makes comparison difficult. Tessa can put the additional question and proposed work together, leaving the current agreement as the reference for what is already included.\n\nThis correspondence makes no change to the price or term and does not issue an invoice. Product workloads remain with KeplerOps. Any future change request must be clear about the service it touches before the parties discuss a price.\n"
+    },
+    {
+      "name": "rr-orrenvale-06",
+      "title": "After the review / no open question on completed items",
+      "path": "Relationships/K-S-001/rr-orrenvale-06.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-04T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# After the review / no open question on completed items\n\nNoor Aveling | 04 September 2026\n\nThe 3 September service review is complete. The accepted summary acknowledges completed routine maintenance and records no further question against those completed items at the meeting. This follow-up preserves that outcome; it does not turn the review into an open incident list.\n\nBoth parties agreed that account documentation should let a colleague pick up an ordinary question without relying on one person's memory. The useful change is in the quality of the retained account explanation, not an expansion of the service.\n\nKeplerOps' platform team still owns product workloads. Future changes will be described explicitly if proposed. Noor has not supplied a week for the next account review yet, and no next review date has been booked. The existing summary remains the record of the completed September meeting.\n"
+    },
+    {
+      "name": "rr-orrenvale-07",
+      "title": "Desk card / keep the decision beside the question",
+      "path": "Relationships/K-S-001/rr-orrenvale-07.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-07T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Desk card / keep the decision beside the question\n\nIsaac Devren | 07 September 2026\n\nDesk handover card, following the September account review.\n\nQuestion: what is the customer asking now? Reference: where is the last answer or decision? Owner: who can answer the remaining point? State: is the item complete, waiting for information or only proposed? These four entries are enough for a compact ordinary handover when the source record is retained.\n\nDo not replace the last answer with “see previous mail”. That instruction is only useful if the next colleague knows which previous mail. Use the exact subject or record reference. Do not paste private service material into the card merely to make it self-contained.\n\nIsaac will use the card for account continuity. Noor prefers one actionable question to a polished recap that leaves the recipient uncertain what to do next.\n"
+    },
+    {
+      "name": "rr-orrenvale-08",
+      "title": "Commercial note / no need to renew early",
+      "path": "Relationships/K-S-001/rr-orrenvale-08.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-09T09:30:00-04:00",
+      "readers": [
+        "lina.peveran@keplerops.com",
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Commercial note / no need to renew early\n\nLina Peveran | 09 September 2026\n\nLina's internal account note retains the current Orren & Vale term through 30 September 2027 and the USD 22,800 annual amount. The completed service review does not create a renewal or a scope change. Noor's next useful contribution is an actual open service question if one appears, not a new commercial exercise merely because the review finished.\n\nTessa's interest in booking the next review is understandable, but KeplerOps has not settled the planning week. Lina would rather return a useful week than agree a date which immediately needs to move. Noor will keep the account contact informed when that information exists.\n\nThis note contains an internal scheduling preference. It is not a supplier performance judgment, an instruction to end the service or an authority to buy additional support.\n"
+    },
+    {
+      "name": "rr-orrenvale-09",
+      "title": "Account summary / what a colleague should not infer",
+      "path": "Relationships/K-S-001/rr-orrenvale-09.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-11T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# Account summary / what a colleague should not infer\n\nTessa Marrowell | 11 September 2026\n\nTessa's account summary guidance: preserve the scope stated in the accepted September review. “Internal IT and backup-support work” must not be shortened to “platform support” when a new colleague picks up the account. The shorter phrase would conceal the distinction that both parties took time to record.\n\nA completed review tells the next colleague what was discussed and agreed at that meeting. It does not prove the state of every system at a later date. If a new question arrives, record its own reference and observation instead of retroactively adding it to the closed review.\n\nThe next review remains unbooked pending KeplerOps' planning calendar. A reminder to ask for a week can stay in the account desk's work list without appearing as a confirmed customer appointment.\n"
+    },
+    {
+      "name": "rr-orrenvale-10",
+      "title": "September follow-up / waiting for a useful week",
+      "path": "Relationships/K-S-001/rr-orrenvale-10.md",
+      "media_type": "text/markdown",
+      "published_at": "2026-09-15T09:30:00-04:00",
+      "readers": [
+        "noor.aveling@keplerops.com"
+      ],
+      "text": "# September follow-up / waiting for a useful week\n\nTessa Marrowell | 15 September 2026\n\nTessa's September account follow-up has one pending administrative item: KeplerOps will suggest a suitable week for the next review after its planning calendar is settled. No date is confirmed, and there is no attendance or agenda for a future meeting yet.\n\nThe completed 3 September review remains complete. Its acknowledged maintenance items and retained internal-service scope are not reopened by a scheduling reminder. KeplerOps' product workloads remain its own responsibility.\n\nNoor would prefer to return once with a usable week rather than trade several provisional dates. Tessa will wait for that reply. If an ordinary service question arises before then, it can be handled on its own merits through the existing desk route; it does not need to wait for an account meeting.\n"
+    },
+    {
       "name": "rel-2026-001-manifest",
       "title": "FieldKest 4.9.1 qualification manifest REL-2026-001",
       "path": "rel-2026-001-manifest.json",
