@@ -58,6 +58,15 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
         container_bootstrap = next(
             action.script for action in plan.actions if action.action_id == "container-bootstrap"
         )
+        override = container_bootstrap.split("cat > docker-compose.override.yml.new <<COMPOSE_EOF\n", 1)[1].split(
+            "\nCOMPOSE_EOF", 1
+        )[0]
+        assert override.count("\n  dns:\n") == 1
+        workstation, remainder = override.split("\n  a9-splice:\n", 1)
+        assert "    entrypoint:\n      - /opt/polaris/model-client/entrypoint.sh" in workstation
+        assert "\n  dns:\n" in remainder
+        dns = remainder.split("\n  dns:\n", 1)[1]
+        assert '      DC01_IP: "$DC_IP"' in dns
         if provider == "gcp":
             firewall = next(action.script for action in plan.actions if action.action_id == "metadata-firewall")
             assert '"$protocol" --dport 53 -j RETURN' in firewall
@@ -67,10 +76,12 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
             assert "socket.getaddrinfo" not in container_bootstrap
             assert "extra_hosts:" not in container_bootstrap
             assert 'DNS_FORWARDER: "169.254.169.254"' in container_bootstrap
+            assert '      DNS_FORWARDER: "169.254.169.254"' in dns
         else:
             assert "socket.getaddrinfo" not in model_files
             assert "socket.getaddrinfo" not in container_bootstrap
             assert "extra_hosts:" not in container_bootstrap
+            assert "DNS_FORWARDER:" not in dns
     elif phase == "verify":
         assert [action.action_id for action in plan.actions] == [
             "directory-firewall-ready",
