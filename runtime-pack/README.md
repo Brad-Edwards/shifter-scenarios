@@ -20,9 +20,15 @@ adapter, upload the new pack revision, then bind the pack's `host` and
 installation are tenant content operations; they do not require a core Shifter
 deployment. An update to an existing pack needs a new package version and the
 current digest as its expected revision; a first registration has no expected
-digest. The tenant still needs Private Google Access, a minimally scoped
-range-host Vertex identity, the required GCP APIs and selected models enabled,
-and participant web egress if public search is part of the workstation task.
+digest. Before launching any direct-Vertex range, set the GCP tenant deployment's
+`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` GitHub Environment variable to `true` and run
+that tenant's normal deploy workflow. Confirm the deployed `platform-runtime`
+setting is `true` and a newly created range subnet has Private Google Access
+enabled; changing the variable does not repair an existing range. The broker-only
+operator runbook deliberately sets this variable to `false` and does not apply
+to the direct variant. The tenant also needs a minimally scoped range-host
+Vertex identity, the required GCP APIs and selected models enabled, and
+participant web egress if public search is part of the workstation task.
 For that search capability, enable the administrator-selected GCP host image
 profile's public-web option in the pack assignment; leave the directory
 profile's option off. The setting applies to new ranges, so reprovision an

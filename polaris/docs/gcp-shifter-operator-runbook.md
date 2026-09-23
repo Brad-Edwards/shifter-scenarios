@@ -129,7 +129,8 @@ The GCP range plane must use broker-only egress. Set the tenant deployment's
 configuration before launching the event. Private Google Access is a separate
 direct-Google-API lane and is intentionally incompatible with source-preserving,
 identity-less broker clients. General participant internet egress remains
-disabled.
+disabled. This setting is for the broker-backed pack only; the separate
+direct-Vertex variant requires `true` as described in `runtime-pack/README.md`.
 
 ## Install and bind in Shifter
 
