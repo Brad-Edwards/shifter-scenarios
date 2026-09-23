@@ -10,7 +10,15 @@ from shifter_adapter_sdk.runtime import PROTOCOL, GuestAction, PluginManifest, R
 
 from ._polaris_scripts import POLARIS_RANGE_BOOTSTRAP_SCRIPT
 from ._polaris_scripts_aux import INSTALL_SPLICE_WATCHER_SCRIPT, VERIFY_POLARIS_BOOTSTRAP_COMMON
-from .runtime import _DIRECTORY_FIREWALL, _DIRECTORY_FIREWALL_VERIFY, _GCP_DNS_ANCHOR, _GCP_DNS_FORWARDER, _PREFIX, _VALUES, _render
+from .runtime import (
+    _DIRECTORY_FIREWALL,
+    _DIRECTORY_FIREWALL_VERIFY,
+    _GCP_DNS_ANCHOR,
+    _GCP_DNS_FORWARDER,
+    _PREFIX,
+    _VALUES,
+    _render,
+)
 
 
 def manifest(worker_image: str) -> PluginManifest:
@@ -97,9 +105,12 @@ class PolarisDirectAdapter:
             f'\n      ANTHROPIC_DEFAULT_HAIKU_MODEL: "{params["small-model"]}"'
             '\n      CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: "1"'
             '\n    volumes:'
-            '\n      - /opt/polaris/libexec/polaris-splice-credential.py:/usr/local/libexec/polaris-splice-credential.py:ro'
+            '\n      - /opt/polaris/libexec/polaris-splice-credential.py:'
+            '/usr/local/libexec/polaris-splice-credential.py:ro'
             '\n    extra_hosts:'
             '\n      - "oauth2.googleapis.com:199.36.153.8"'
+            '\n      - "www.googleapis.com:199.36.153.8"'
+            '\n      - "www.googleapis.com:199.36.153.8"'
             '\n      - "aiplatform.googleapis.com:199.36.153.8"'
             f'\n      - "{params["region"]}-aiplatform.googleapis.com:199.36.153.8"'
         )

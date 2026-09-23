@@ -26,6 +26,14 @@ before launching an event, then verify public DNS and HTTP/HTTPS from the
 participant terminal. A profile flag alone is insufficient when its workspace
 has no NAT. Do not treat a successful model call as proof of internet access.
 
+The `0.1.16` direct release pins the additional Google API hostname used by
+Claude Code to the Private Google Access VIP in Docker Compose, so the mapping
+survives a workstation-container restart. Its configure plan also synchronizes
+the provisioned desktop account's password verifier from the host into the
+participant container after the XRDP repair, without handling plaintext in the
+adapter action or its logs. The pack must declare the matching RDP participant
+access account and endpoint; the adapter cannot add an undeclared endpoint.
+
 The `polaris` worker entry point builds against `shifter-adapter-sdk[runtime]==0.1.0`
 alone. It imports no Shifter application code. `runtime.PolarisAdapter` produces
 configure, verify and cleanup plans for both AWS and GCP and requires the

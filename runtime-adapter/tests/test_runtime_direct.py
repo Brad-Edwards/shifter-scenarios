@@ -53,6 +53,7 @@ def test_direct_plan_uses_container_identity_without_broker(phase):
         assert 'CLOUD_ML_REGION: "us-east5"' in bootstrap
         assert 'ANTHROPIC_VERTEX_PROJECT_ID: "prod-qjpjnv"' in bootstrap
         assert 'DNS_FORWARDER: "169.254.169.254"' in bootstrap
+        assert 'www.googleapis.com:199.36.153.8' in bootstrap
         assert "- /usr/local/libexec/polaris-splice-credential.py" in bootstrap
         shell_env = plan.actions[2].script
         assert "export CLAUDE_CODE_USE_VERTEX=1" in shell_env
@@ -83,3 +84,20 @@ def test_direct_variant_rejects_shell_metacharacters():
             "main-model": "claude-sonnet-4-6",
             "small-model": "claude-haiku-4-5",
         }))
+
+
+def test_direct_worker_loads_the_exact_installed_release():
+    import os
+    import sys
+
+    invocation = request("configure")
+    result = subprocess.run(
+        [sys.executable, "-m", "shifter_adapter_sdk.worker"],
+        env={"PATH": os.environ.get("PATH", ""), "SHIFTER_PLUGIN_INPUT": invocation.model_dump_json()},
+        text=True,
+        capture_output=True,
+        timeout=10,
+    )
+    assert result.returncode == 0, result.stderr
+    assert not result.stderr
+    assert parse_result(result.stdout, invocation).status == "planned"

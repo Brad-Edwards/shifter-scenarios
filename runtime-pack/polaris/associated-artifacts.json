@@ -1,7 +1,7 @@
 {
   "schema_version": "associated-artifact-manifest/v1",
   "manifest_id": "polaris-associated-artifacts",
-  "manifest_version": "0.2.1",
+  "manifest_version": "0.2.2",
   "canonicalization_profile": "associated-artifact-set/v1",
   "scope": "scenario",
   "parent_ref": {
@@ -67,7 +67,7 @@
       "uri": "raes-environment-pack:/pack.yaml",
       "checksum": {
         "algorithm": "sha256",
-        "value": "4ab5ee8605a494b489fa047b7a08b73aaa9815618ec2e79a8dff0b1ce0dbadbb"
+        "value": "ae49da612e8aeac848b7e2258defd29d87f2dbc412957d8d71bf50246740162f"
       },
       "size_bytes": 406,
       "created_at": "2026-09-17T00:00:00Z",
@@ -93,5 +93,5 @@
       "description": null
     }
   },
-  "set_digest": "sha256:6ee99c7f0e2e9e8a63292dfd4f7e1dd4f6ad1a1557d06179a84aa4905555a048"
+  "set_digest": "sha256:449f1f077bd364fb058f9df44af5f21df7a299668cdca887254e2cc6c6669e1b"
 }
