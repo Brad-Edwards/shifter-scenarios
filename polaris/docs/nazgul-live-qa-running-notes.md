@@ -48,8 +48,12 @@ from shell history.
 - The combined lab batch for flags 38 and 20-30 produced no browser-side
   output after more than 14 minutes. Its local browser process was stopped and
   the existing participant shell recovered. A bounded four-flag lab probe then
-  hit its 180-second terminal command timeout without a result. No lab flag
-  has been counted as proven yet.
+  hit its 180-second terminal command timeout without a result. The local
+  advanced QA runner was then found to echo its complete completion marker
+  before execution and wait forever on that first copy. Its marker is now
+  split across two shell writes, as in the already-working short runner. These
+  timeouts do not prove a lab service failure. No lab flag has been counted as
+  proven yet.
 - Flags 31-36 and the final Claude Code participant readiness check remain
   pending.
 
@@ -93,6 +97,15 @@ from shell history.
   each challenge while still requiring participant-visible evidence.
 - Current status: not a product bug; no repo PR needed unless we decide to
   formalize this harness.
+
+### QA harness: advanced completion marker echoed before execution
+
+- Area: local advanced participant QA runner only.
+- Finding: the command text contained the full completion marker. The
+  interactive shell echoed that text before executing it; the runner checked
+  only the first marker occurrence and never advanced to the numeric result.
+- Fix applied: split the marker across two `printf` calls in the local runner.
+  Rerun the lab checks once terminal access is restored. No product PR needed.
 
 ### QA harness: terminal WebSocket closes with code 1006
 
