@@ -23,6 +23,10 @@ current digest as its expected revision; a first registration has no expected
 digest. The tenant still needs Private Google Access, a minimally scoped
 range-host Vertex identity, the required GCP APIs and selected models enabled,
 and participant web egress if public search is part of the workstation task.
+When creating a CTF for this pack, clear the event's "Visible instance OS types"
+field (show all), or include `linux`. The form defaults to `kali`, but the
+compiled workstation guest declares `os: linux`; leaving the default would
+hide the workstation from participants even when the range is ready.
 
 `polaris/` is the tenant-uploadable RAES 3.5.0 launch wrapper for the separately
 installed runtime adapter. It describes the baked container host and directory
