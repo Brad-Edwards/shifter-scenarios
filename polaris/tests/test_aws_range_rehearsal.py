@@ -37,6 +37,13 @@ def _driver():
 
 
 class BuildArtifactTests(unittest.TestCase):
+    def test_dns_seed_accepts_the_gcp_private_resolver(self) -> None:
+        named = (PACK_ROOT / "build" / "dns" / "named.conf").read_text(encoding="utf-8")
+        entrypoint = (PACK_ROOT / "build" / "dns" / "entrypoint.sh").read_text(encoding="utf-8")
+        self.assertIn("forwarders { __DNS_FORWARDER__; };", named)
+        self.assertIn('DNS_FORWARDER="${DNS_FORWARDER:-8.8.8.8}"', entrypoint)
+        self.assertIn("DNS_FORWARDER must be an IPv4 address", entrypoint)
+
     def test_dc_content_seed_accepts_a_provider_dns_forwarder(self) -> None:
         seed = (PACK_ROOT / "aws-range" / "a2_setup.ps1").read_text(encoding="utf-8")
         self.assertIn('[string]$DnsForwarder = "169.254.169.253"', seed)

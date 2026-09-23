@@ -59,12 +59,17 @@ def test_production_plans_use_only_sdk_and_trusted_guest_enrollment(provider, ph
             action.script for action in plan.actions if action.action_id == "container-bootstrap"
         )
         if provider == "gcp":
-            assert "socket.getaddrinfo" in model_files
-            assert 'temporary.replace(config / "broker-host")' in model_files
-            assert "extra_hosts:" in container_bootstrap
-            assert "$(cat /opt/polaris/model-client/broker-host)" in container_bootstrap
+            firewall = next(action.script for action in plan.actions if action.action_id == "metadata-firewall")
+            assert '"$protocol" --dport 53 -j RETURN' in firewall
+            assert "-d 169.254.169.254/32 -j DROP" in firewall
+            assert "fd20:ce::254/128" in firewall
+            assert "socket.getaddrinfo" not in model_files
+            assert "socket.getaddrinfo" not in container_bootstrap
+            assert "extra_hosts:" not in container_bootstrap
+            assert 'DNS_FORWARDER: "169.254.169.254"' in container_bootstrap
         else:
             assert "socket.getaddrinfo" not in model_files
+            assert "socket.getaddrinfo" not in container_bootstrap
             assert "extra_hosts:" not in container_bootstrap
     elif phase == "verify":
         assert [action.action_id for action in plan.actions] == [

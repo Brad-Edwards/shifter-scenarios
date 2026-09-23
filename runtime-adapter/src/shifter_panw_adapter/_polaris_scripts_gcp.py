@@ -21,6 +21,75 @@ GCP_AGENT_COMPOSE_BLOCK = (
 )
 
 
+# GCE uses the metadata server address as its VM DNS resolver. Containers must
+# be able to forward DNS there, but must not reach metadata over HTTP/HTTPS.
+# The rules act only on forwarded Docker traffic; the host remains unaffected.
+INSTALL_GCP_METADATA_FIREWALL_SCRIPT = """#!/bin/bash
+set -euo pipefail
+
+FIREWALL_SCRIPT=/usr/local/bin/shifter-block-gcp-metadata.sh
+FIREWALL_SERVICE=/etc/systemd/system/shifter-block-gcp-metadata.service
+DOCKER_DROPIN_DIR=/etc/systemd/system/docker.service.d
+DOCKER_DROPIN=$DOCKER_DROPIN_DIR/99-shifter-block-gcp-metadata.conf
+
+cat > "$FIREWALL_SCRIPT" <<'FW_EOF'
+#!/bin/bash
+set -euo pipefail
+
+# DOCKER-USER is traversed before Docker's own accept rules. Add the broad
+# metadata drop first, then the two DNS returns above it. Re-running after a
+# Docker restart is idempotent and leaves the intended order unchanged.
+if ! iptables -C DOCKER-USER -d 169.254.169.254/32 -j DROP 2>/dev/null; then
+  iptables -I DOCKER-USER -d 169.254.169.254/32 -j DROP
+fi
+for protocol in tcp udp; do
+  if ! iptables -C DOCKER-USER -d 169.254.169.254/32 -p "$protocol" --dport 53 -j RETURN 2>/dev/null; then
+    iptables -I DOCKER-USER -d 169.254.169.254/32 -p "$protocol" --dport 53 -j RETURN
+  fi
+done
+
+if command -v ip6tables >/dev/null 2>&1 && ip6tables -L DOCKER-USER >/dev/null 2>&1; then
+  if ! ip6tables -C DOCKER-USER -d fd20:ce::254/128 -j DROP 2>/dev/null; then
+    ip6tables -I DOCKER-USER -d fd20:ce::254/128 -j DROP
+  fi
+fi
+FW_EOF
+chmod 0755 "$FIREWALL_SCRIPT"
+chown root:root "$FIREWALL_SCRIPT"
+"$FIREWALL_SCRIPT"
+
+mkdir -p "$DOCKER_DROPIN_DIR"
+cat > "$FIREWALL_SERVICE" <<UNIT_EOF
+[Unit]
+Description=Shifter GCP metadata firewall for participant containers
+After=docker.service
+Requires=docker.service
+PartOf=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=$FIREWALL_SCRIPT
+
+[Install]
+WantedBy=multi-user.target
+UNIT_EOF
+cat > "$DOCKER_DROPIN" <<DROPIN_EOF
+[Service]
+ExecStartPost=$FIREWALL_SCRIPT
+DROPIN_EOF
+
+systemctl daemon-reload
+systemctl enable --now shifter-block-gcp-metadata.service
+for protocol in tcp udp; do
+  iptables -C DOCKER-USER -d 169.254.169.254/32 -p "$protocol" --dport 53 -j RETURN
+done
+iptables -C DOCKER-USER -d 169.254.169.254/32 -j DROP
+systemctl is-enabled --quiet shifter-block-gcp-metadata.service
+systemctl is-active --quiet shifter-block-gcp-metadata.service
+"""
+
+
 # GCE twin of FETCH_POLARIS_TESTS_SCRIPT. Pulls the tests/ tree from a
 # provisioner-minted, short-lived, generation-bound V4 signed download URL
 # (agent_assets.get_polaris_tests_presigned_url) instead of using the range-host

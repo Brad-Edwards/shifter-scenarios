@@ -89,6 +89,34 @@ of the installed readiness document; that value is the adapter binding's
 readiness digest. The participant workstation must contain the pinned Claude
 Code client described in the adapter README.
 
+Bake the Linux machine image from the current `polaris/build/build-v1.tar.gz`.
+Do not bind a newly installed adapter to an image baked from an older archive:
+the adapter and host image form one reviewed compatibility set, including the
+participant DNS forwarding configuration used for broker access.
+
+When refreshing a bake VM, extract the current archive, compare its `build/`
+tree with the installed source, and rebuild every changed Compose service. In
+particular, the GCP DNS image must contain the current `dns/entrypoint.sh` and
+`dns/named.conf`; restarting an older DNS image does not apply those changes.
+The preconfigured bake host needs a placeholder `DC01_IP` so DNS stays running
+before any range exists, plus the GCP resolver as its forwarder. Use a
+`gcp-preconfigured-host.override.yml` with a `dns.environment` section such as:
+
+```yaml
+services:
+  dns:
+    environment:
+      DC01_IP: "10.201.0.11" # Bake-only placeholder; no directory is required.
+      DNS_FORWARDER: "169.254.169.254"
+```
+
+Build and start DNS with both Compose files, then verify that the participant
+container resolves a public hostname through it. The adapter's range bootstrap
+replaces the bake-only directory address with that range's actual controller
+address. Remove bake-time SSH keys, access tags, startup scripts, and temporary
+payloads before capture; the machine image must have no attached service
+account.
+
 Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
 client through the broker boundary.
@@ -106,10 +134,10 @@ Open **Administer → Adapters**.
 
 1. Upload the adapter manifest, expand the private-registry section, enter the
    read-only registry credential, review the installation, and install it.
-2. Wait for the adapter state to become **ready**. For this adapter, readiness
-   includes a bounded Claude Code request from the participant container through
-   the broker, so allow at least two minutes and treat a readiness failure as a
-   participant model-path failure rather than proceeding to event launch.
+2. Wait for the adapter installation state to become **ready**. This proves
+   registry access and isolated worker compatibility, not guest setup or model
+   access. The range provisioner's guest verification makes a bounded Claude
+   Code request, and participant acceptance repeats it with usage evidence.
 3. Open **Install packs and assign adapters**. For a first installation, upload
    the rebuilt tar as pack name `polaris`, review it, and install it. If
    `polaris` is already installed, use **Update polaris** and upload the new

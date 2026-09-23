@@ -14,7 +14,7 @@ Build with the public contracts, without installing Shifter:
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.0.tar
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.1.tar
 python -m pytest runtime-pack/tests -q
 ```
 
