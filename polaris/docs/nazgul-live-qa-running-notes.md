@@ -161,6 +161,12 @@ from shell history.
   The browser rendered the Kali desktop. From a terminal on that desktop,
   Claude Code 2.1.108 returned a successful response with 138 output tokens.
   These checks used event Engine range 58, not the earlier 38-flag QA range 54.
+- A short event-range workstation smoke resolved the scenario website through
+  range DNS, received HTTP 200 from that website, and reached an external HTTPS
+  site with HTTP 200. Three negative pivot probes were attempted, but RDP
+  terminal keystrokes were not reliable enough to treat their labels/exit codes
+  as independent proof. The earlier range-54 walkthrough remains the accepted
+  negative-gate evidence.
 - Current event ranges were created before the RDP declaration and credential
   fix in private PR #167. For event continuity, their 30 Engine records and
   both ready spare records received a live RDP binding and one test-purpose
