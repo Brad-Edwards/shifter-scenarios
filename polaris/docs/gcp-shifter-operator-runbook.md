@@ -35,7 +35,7 @@ From the repository root, build the upload archive from the authoritative
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.1.tar
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.2.tar
 python -m pytest runtime-pack/tests -q
 ```
 
@@ -150,16 +150,17 @@ call from the participant's interactive workstation and require nonzero output
 tokens. Participant web research also needs explicit egress; the model path
 alone does not provide general internet access.
 
-For a bulk GCP event, verify the egress topology before provisioning the
-roster. The current range-cell `status-quo` mode creates a Cloud Router/NAT per
-range and can hit the per-network router ceiling after only a few launches;
-the organizer event workspace's policy does not override the personal
-workspace policy used for participant and managed-spare launches. Setting
-those workspaces to `none` avoids that router creation but also disables the
-built-in public-web lane. Until the platform provides scalable shared egress,
-an operator must arrange and verify a separately approved participant internet
-path rather than assuming that Private Google Access or the profile flag alone
-provides it. Do not use a successful model probe as the web-access check.
+For a bulk GCP event using the direct variant, select an event workspace with
+`status-quo` egress before importing participants or provisioning managed
+spares. In a Shifter build with event-policy pinning and shared range-VPC NAT,
+that workspace policy is the source for both participant and spare launches;
+the provisioner enrolls their subnets in an explicitly scoped regional NAT
+instead of creating one router per range. Confirm the tenant build has those
+capabilities before depending on this path for a multi-range event. A workspace
+set to `none` intentionally creates no outbound NAT path, even if the pack's
+host profile opts in to public web access. Private Google Access alone does
+not supply public web research. Qualify both a real Claude Code response and
+public DNS/HTTP(S) from a fresh participant workstation before bulk launch.
 
 ## Install and bind in Shifter
 
@@ -280,9 +281,9 @@ operations pivot must fail, bunker access before the splice opens must fail,
 and the intended post-splice path must succeed.
 
 Also run Claude Code from the participant workstation with a small deterministic
-prompt. Require a successful response from the configured broker-backed model
-and verify that the returned usage reports a nonzero output-token count. Client
-startup alone is not model-access proof.
+prompt. Require a successful response from the configured direct-Vertex or
+broker-backed model path and verify that the returned usage reports a nonzero
+output-token count. Client startup alone is not model-access proof.
 
 Record only sanitized verdicts, counts, immutable artifact identifiers, and
 timestamps. Never copy flags, passwords, model capabilities, session tokens, or
