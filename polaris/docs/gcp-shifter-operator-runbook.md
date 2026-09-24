@@ -259,6 +259,15 @@ temporary password through the participant-management page. Activate the event,
 sign in through the participant login surface, and complete the required
 password change. Back in the operator participant page, choose **Provision**.
 
+For a multi-participant event, assign readable login handles through the
+organizer participant-management control after import. The current isolated CTF
+account policy requires a `range-` prefix, so a codename such as
+`GraphiteRaven` uses `range-graphiteraven` to sign in; the scoreboard displays
+the participant name separately. Bulk provisioning is paced across the event's
+spin-up allowance. Request the desired warm-spare count through the organizer
+spare-pool control, then verify every participant range and spare reaches
+**ready**; running VMs and accepted provision requests are not readiness.
+
 Wait until the participant range reports **ready** and exposes the declared
 attack-workstation access target. A compatibility result, prepared allocation,
 or running cloud VM is not a readiness verdict.
