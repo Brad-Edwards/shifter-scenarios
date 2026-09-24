@@ -88,8 +88,8 @@ identity from Shifter's administrator-owned range-host selection, not the bake
 VM. Never grant the range provisioner impersonation permission on the build
 identity.
 
-This source choice matters for events: Google limits a single machine image to
-six VM creations in a rolling 60 minutes, while custom-image API/CLI creates
+This source choice matters for events: [Google limits a single machine image](https://cloud.google.com/compute/docs/machine-images/create-instance-from-machine-image) to
+six VM creations in a rolling 60 minutes, while [custom-image API/CLI creates](https://cloud.google.com/compute/docs/instances/create-vm-from-custom-image)
 support a much higher documented rate. A machine image remains appropriate
 only if the host needs captured secondary disks and the launch volume fits
 that limit. Capacity, CPU, disk, address, and project quotas still need to
