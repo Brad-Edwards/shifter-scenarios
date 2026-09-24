@@ -265,7 +265,12 @@ organizer participant-management control after import. The current isolated CTF
 account policy requires a `range-` prefix, so a codename such as
 `GraphiteRaven` uses `range-graphiteraven` to sign in; the scoreboard displays
 the participant name separately. Bulk provisioning is paced across the event's
-spin-up allowance. Request the desired warm-spare count through the organizer
+spin-up allowance: the scheduler spaces requests by the allowance divided by
+the roster size, clamped to 5–120 seconds. For 20 participants with a 45-minute
+allowance, the inter-request waits alone can take about 38 minutes; guest
+readiness adds time. Start provisioning before participants arrive and watch
+the organizer's READY count rather than treating the allowance as a completion
+deadline. Request the desired warm-spare count through the organizer
 spare-pool control, then verify every participant range and spare reaches
 **ready**; running VMs and accepted provision requests are not readiness.
 
