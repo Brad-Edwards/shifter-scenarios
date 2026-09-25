@@ -83,6 +83,20 @@ otherwise preserve the bake identity, and a range launch will either require an
 unsafe `iam.serviceAccounts.actAs` grant on that build identity or fail. Never
 grant that impersonation permission to the range provisioner.
 
+Plan machine-image capacity before a multi-range event. Compute Engine permits
+at most **six VM creations from one machine image in a rolling 60 minutes**;
+after that, launch fails with `RESOURCE_OPERATION_RATE_EXCEEDED`. Retries and
+staggering cannot raise this ceiling. Publish enough separately named machine
+images from the same stopped, service-account-free bake VM (at least
+`ceil(host launches in 60 minutes / 6)`). The current pack binding names one
+host image at a time: rotate that binding through the ready replicas via the
+normal administrator pack-configuration UI after at most six launches per
+source in the rolling hour. For example, 30
+near-simultaneous range launches require at least five host machine images.
+Verify every replica is `READY` and has the same reviewed bake source before
+launching the event. A single bound image is not sufficient merely because
+other images exist in the project.
+
 The Linux build must preserve the participant readiness contract from
 `polaris/build/a14/participant-readiness.json`. Calculate and record the SHA-256
 of the installed readiness document; that value is the adapter binding's
@@ -111,22 +125,41 @@ services:
 ```
 
 Build and start DNS with both Compose files, then verify that the participant
-container resolves a public hostname through it. The adapter's range bootstrap
-replaces the bake-only directory address with that range's actual controller
-address. Remove bake-time SSH keys, access tags, startup scripts, and temporary
-payloads before capture; the machine image must have no attached service
-account.
+container resolves a public hostname through it. Also query the tenant's
+private `.internal` model-broker name against the scenario DNS service and
+confirm it resolves to the expected private broker address. BIND must exempt
+`.internal` from public DNSSEC validation; forwarding alone does not qualify
+private-zone resolution. The adapter's range bootstrap replaces the bake-only
+directory address with that range's actual controller address. Remove bake-time
+SSH keys, access tags, startup scripts, and temporary payloads before capture;
+the machine image must have no attached service account.
 
 Do not grant model-invocation credentials to the participant-controlled range
 host. The adapter receives a Shifter model grant and configures the participant
 client through the broker boundary.
 
-The GCP range plane must use broker-only egress. Set the tenant deployment's
-`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `false` and deploy that
-configuration before launching the event. Private Google Access is a separate
-direct-Google-API lane and is intentionally incompatible with source-preserving,
-identity-less broker clients. General participant internet egress remains
-disabled.
+For the broker-backed `polaris` adapter described by the steps below, set the
+tenant deployment's `GCP_RANGE_PRIVATE_GOOGLE_ACCESS` variable to `false` and
+deploy that configuration before launching the event. The separate
+`polaris_direct` adapter described in
+[`runtime-adapter/README.md`](../../runtime-adapter/README.md) instead requires
+Private Google Access, a narrowly scoped range-host service account, and an
+unset broker guest VIP. Do not bind that direct adapter to the broker pack or
+assume the broker settings qualify its model access. Test a real `claude -p`
+call from the participant's interactive workstation and require nonzero output
+tokens. Participant web research also needs explicit egress; the model path
+alone does not provide general internet access.
+
+For a bulk GCP event, verify the egress topology before provisioning the
+roster. The current range-cell `status-quo` mode creates a Cloud Router/NAT per
+range and can hit the per-network router ceiling after only a few launches;
+the organizer event workspace's policy does not override the personal
+workspace policy used for participant and managed-spare launches. Setting
+those workspaces to `none` avoids that router creation but also disables the
+built-in public-web lane. Until the platform provides scalable shared egress,
+an operator must arrange and verify a separately approved participant internet
+path rather than assuming that Private Google Access or the profile flag alone
+provides it. Do not use a successful model probe as the web-access check.
 
 ## Install and bind in Shifter
 

@@ -29,6 +29,9 @@ def test_outer_hosts_use_allocated_addresses_and_explicit_participant_access():
     access = data["agents"]["participant"]["interactive_access"]["kali_ssh"]
     assert access == {"target_ref": "a14-kali", "channel": "ssh", "account_ref": "kali_login"}
     assert data["accounts"]["kali_login"]["auth_method"] == "key"
+    rdp = data["agents"]["participant"]["interactive_access"]["kali_rdp"]
+    assert rdp == {"target_ref": "a14-kali", "channel": "rdp", "account_ref": "kali_desktop_login"}
+    assert data["accounts"]["kali_desktop_login"]["auth_method"] == "password"
     assert data["nodes"]["a14-kali"]["os_distribution"] == "debian"
     assert data["nodes"]["a14-kali"]["os_version"] == "12"
     assert data["nodes"]["dc01"]["os_distribution"] == "windows-server"
@@ -63,3 +66,25 @@ def test_archive_is_reproducible_and_contains_exactly_the_validated_package(tmp_
         for member in archive.getmembers():
             assert member.isfile() and member.mode == 0o644
             assert archive.extractfile(member).read() == expected[member.name]
+
+
+def test_direct_archive_has_separate_identity_and_no_broker_enrollment(tmp_path):
+    spec = importlib.util.spec_from_file_location("pack_builder_direct", ROOT.parent / "build.py")
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    builder.ROOT = tmp_path / "polaris"
+    shutil.copytree(ROOT, builder.ROOT)
+    output = tmp_path / "direct.tar"
+    first = builder.build(output, "direct")
+    second = builder.build(tmp_path / "direct-second.tar", "direct")
+    assert first == second
+    assert output.read_bytes() == (tmp_path / "direct-second.tar").read_bytes()
+    with tarfile.open(output) as archive:
+        names = archive.getnames()
+        assert all(name.startswith("polaris-direct/") for name in names)
+        assert "polaris-direct/model-needs.json" not in names
+        pack = yaml.safe_load(archive.extractfile("polaris-direct/pack.yaml").read())
+        assert pack["name"] == "polaris-direct"
+        scenario = yaml.safe_load(archive.extractfile("polaris-direct/sdl/polaris.sdl.yaml").read())
+        assert scenario["name"] == "polaris-direct"
+    assert (builder.ROOT / "model-needs.json").exists()

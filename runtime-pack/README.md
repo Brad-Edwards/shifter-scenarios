@@ -1,5 +1,37 @@
 # Private runtime installation package
 
+The default build remains the broker-backed `polaris` pack. For a separate
+keyless GCP Vertex variant, run:
+
+```sh
+python runtime-pack/build.py --variant direct --output /tmp/private-runtime-pack/polaris-direct.tar
+```
+
+The direct archive has pack/scenario identity `polaris-direct` and omits
+`model-needs.json`, so it does not enroll the participant in broker spend or
+rate limits. The source broker pack is not modified by this build. Install it
+with the separate `panw.polaris-direct` adapter and explicit GCP project,
+region, and model parameters. Live range qualification is still required.
+
+For the RDP-capable revision, build the `0.2.2` archive from this source and
+publish the `0.1.18` adapter distribution as an image by digest. Install the
+adapter, upload the new pack revision, then bind the pack's `host` and
+`directory` targets to the installed direct adapter. Pack upload and adapter
+installation are tenant content operations; they do not require a core Shifter
+deployment. An update to an existing pack needs a new package version and the
+current digest as its expected revision; a first registration has no expected
+digest. The tenant still needs Private Google Access, a minimally scoped
+range-host Vertex identity, the required GCP APIs and selected models enabled,
+and participant web egress if public search is part of the workstation task.
+For that search capability, enable the administrator-selected GCP host image
+profile's public-web option in the pack assignment; leave the directory
+profile's option off. The setting applies to new ranges, so reprovision an
+already launched range before using it as web-access evidence.
+When creating a CTF for this pack, clear the event's "Visible instance OS types"
+field (show all), or include `linux`. The form defaults to `kali`, but the
+compiled workstation guest declares `os: linux`; leaving the default would
+hide the workstation from participants even when the range is ready.
+
 `polaris/` is the tenant-uploadable RAES 3.5.0 launch wrapper for the separately
 installed runtime adapter. It describes the baked container host and directory
 guest. The maintained logical scenario, images, content and answers remain in
@@ -14,7 +46,7 @@ Build with the public contracts, without installing Shifter:
 
 ```sh
 python -m pip install -r runtime-pack/requirements.txt
-python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.1.tar
+python runtime-pack/build.py --output /tmp/private-runtime-pack/polaris-0.2.2.tar
 python -m pytest runtime-pack/tests -q
 ```
 
@@ -35,3 +67,13 @@ adapter image must be delivered to a registry, the participant image rebuilt wit
 client, and both cloud deployments qualified before cutover. Keep those records
 in this private repository. A locally built SDK wheel is sufficient for this work;
 SDK publication is a separate release-model decision.
+
+## Direct GCP deployment prerequisite
+
+Before launching the direct variant on a GCP tenant, set its deployment's
+`GCP_RANGE_PRIVATE_GOOGLE_ACCESS` GitHub Environment variable to `true` and run
+the tenant's normal deploy workflow. Verify the deployed `platform-runtime`
+setting is `true` and a newly created range subnet has Private Google Access
+enabled. Changing the variable cannot repair an existing range; destroy and
+reprovision it through the normal CTF controls. The broker-only operator runbook
+deliberately uses `false` and does not apply to the direct variant.
