@@ -7,17 +7,30 @@ capability uplift, and full delegation is allowed.
 
 ## How choices become legible
 
-Show a small current lead set with an expandable list of other discovered work.
-Do not hide earned choices to force an intended sequence. Each lead gives:
-the operational question, the capability already held, the kind of work,
-the proposed difficulty, and the consequence. Mark missing evidence honestly.
-A source file visible early does not imply permission to use its live service.
+Make a few useful next questions apparent through records the participant can
+actually obtain: a job response, work order, repository reference, service
+manual, or correspondence. Preserve other discovered leads without forcing an
+intended sequence. An in-world lead explains a business or operational need,
+points to evidence within the earned access, and gives a reason to investigate.
+An inaccessible record should produce the service's ordinary denial, not a
+message announcing a missing challenge or prerequisite. A source file visible
+early does not imply permission to use its live service.
 
-Use three scope labels: **short success**, **investigation**, and **research**.
-They describe the shape of work until assisted timings exist. They are not
-minute estimates. Provide a recommended next lead with a reason, while letting
-the participant or agent choose another. Keep completed local objectives visible
-alongside unfinished ones; the board should not imply failure for leaving work.
+The scope labels **short success**, **investigation**, and **research**, along
+with challenge IDs and proposed difficulty tiers below, are author planning
+tools only. They are not labels to publish inside the scenario. Do not add
+challenge boards, numbered hints, unlock notices, score commentary, or dialogue
+about a CTF to scenario documents, interfaces, responses, or characters.
+Ordinary documentation may explain how a service works; it must have a credible
+owner, audience, and business purpose rather than narrate the intended exploit.
+Author acceptance checks and event administration remain outside the fiction.
+
+Every new usable access path needs a discoverable way to exercise it and an
+observable result. Record where its address and request format can be found,
+which existing identity it uses, what an allowed request returns, what remains
+denied, and how the work can resume after a break. Test those facts from the
+participant's position, without author knowledge or scoring-generated access.
+Do not confuse permissions on paper with an interface the participant can use.
 
 ### At the borrowed desk
 
@@ -54,8 +67,9 @@ The gate result receives its conclusion immediately. The handler then offers
 optional follow-on objectives: hold supplier delivery through a release change
 (K29), reconstruct the customer migration (K30), choose a more precise economic
 effect (W33), or manipulate the planning view that accompanies a release (W34).
-Each states its remaining prerequisites; completing W30 does not grant every
-optional privilege. Other discovered work remains selectable.
+The dispatch refers to known records and operational circumstances, not a list
+of numbered prerequisites; completing W30 does not grant every optional
+privilege. Other discovered work remains available.
 
 These operations are available as soon as their actual prerequisites are earned,
 including before W30 where applicable. They are not a new compulsory phase or
@@ -179,7 +193,8 @@ does not repair a shortage of content.
 ## Recovery and bounded rehearsals
 
 K29, W33, and W34 change scenario state during private rehearsals. Starting one
-shows the checkpoint, the declared transition, and what proof it will evaluate.
+shows the dated operating state, the proposed transition, and the measurements
+that the rehearsal records. It does not expose the hidden evaluation rules.
 It preserves earned capabilities and main-campaign results. Resetting a failed
 rehearsal resets its local effects, not other operations or another player.
 
@@ -209,8 +224,11 @@ individual competition, with campaign milestones shown separately.
 Permit discussion of techniques, documentation, and agent troubleshooting.
 Prohibit sharing live flags, player credentials, and current-instance solutions
 between participants. Public pre-existing writeups remain allowed under the
-challenge-reuse policy. Published hints are available on the same terms to all
-players; support staff distinguish infrastructure help from solution hints.
+challenge-reuse policy. Do not publish solution hints in the scenario. Technical
+documentation and operational correspondence remain ordinary world records,
+with the same visibility for equivalent participant identities. Support staff
+can resolve infrastructure faults without supplying a missing solve or quietly
+granting target permissions.
 People can help each other learn while each participant earns their own effects.
 
 The closing debrief explains selected cross-organization callbacks and celebrates

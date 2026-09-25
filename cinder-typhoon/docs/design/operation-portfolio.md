@@ -57,8 +57,9 @@ every flag. Capability names refer to the [main campaign ledger](capability-rout
 The [entry ledger](entry-routes.json) records ordinary ARWC entry at challenge
 level. All 240 allocations now have [individual challenge briefs](challenges/README.md):
 [16 training](challenges/training.md), [104 KeplerOps](challenges/keplerops.md),
-and [120 ARWC](challenges/arwc.md). Their technical design and three hint sections
-remain blank; the briefs specify objectives and outcomes without solutions.
+and [120 ARWC](challenges/arwc.md). Fifty have technical drafts and 190 remain
+briefs. The inherited hint headings stay empty; useful discovery belongs in
+ordinary scenario records and interfaces, not published solution hints.
 
 The work column groups distinct insights and effects. A receipt, login,
 confirmation, or repeated use of a capability adds no score by itself.
@@ -245,7 +246,7 @@ room-wide recognition are unscored.
 
 Source reuse is intentional. Preserve the mechanism and explain its product
 purpose; do not preserve an old tier through obscure clues, retries, or waiting.
-Every challenge still needs a complete proof contract, hint ladder, explicit
+Every challenge still needs a complete proof contract, in-world discovery path, explicit
 prerequisites, reset behavior, and independent solve. Validate later easy work
 through an appropriate easier access route, rather than counting an obvious
 file hidden behind an elite-only prerequisite as novice content.

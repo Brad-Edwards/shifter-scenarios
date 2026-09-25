@@ -1,4 +1,3 @@
-# In-world draft. Unspecified realization remains open.
 name: cinder-t01
 version: 0.1.0
 semantic_revision: raes-progressive-semantics/v1
@@ -40,27 +39,20 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: |-
-      Recover the actual handover and its delivery reference. It provides story context but no required campaign credential.
+    description: 'Recover the actual handover and its delivery reference. It provides story context but no required
+      campaign credential.
 
-      Required technical proof: Completion requires the historical handover contents and its matching delivery
-      reference. The scorer checks the fixture revision and tracker ID against the
-      player's isolated evidence record; no credential or standing authority results.
-    source_refs: &id001
+
+      Required technical proof: The recovered handover carries the delivery reference matching the tracker.
+
+      Its bytes belong to an actual historical revision, not a file fabricated after
+
+      the fact. Recovery creates no credential or standing authority.'
+    source_refs:
     - features.training.t-workbench
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -90,18 +82,22 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Verify the visible note is empty, its prior content is recoverable through an
-      ordinary local path, the tracker reference resolves once, arbitrary filenames
-      do not score, and a reset returns the starting checkout.
-  c2:
-    description: |-
-      Recover the actual unpublished amendment and its delivery binding. Finding an address alone does not count.
+    - 'Author checks: Verify the current note is empty, the historical bytes are genuinely
 
-      Required technical proof: The amendment carries a delivery binding that matches the public notice. A
-      server-side retrieval event and the amendment's immutable record ID establish
-      completion; an address or a guessed identifier alone does not.
-    source_refs: &id002
+      recoverable, the tracker reference resolves once, and ordinary reads preserve
+
+      both history and tracker data.'
+  c2:
+    description: 'Recover the actual unpublished amendment and its delivery binding. Finding an address alone does
+      not count.
+
+
+      Required technical proof: The retrieved amendment''s immutable record ID and delivery reference agree
+
+      with the public notice. The server retains its ordinary retrieval audit.
+
+      An address alone is not the amendment.'
+    source_refs:
     - features.training.t-workbench
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -131,18 +127,21 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Check that the notice supplies a fair content lead, metadata names one relevant
-      retired item, the amendment matches the delivery record, random path scans do
-      not create completion, and the expected retrieval is auditable.
-  c3:
-    description: |-
-      Recover and use the limited credential to obtain the protected manifest. Credential discovery and use earn one score.
+    - 'Author checks: Check that the notice supplies a content lead, metadata names the relevant
 
-      Required technical proof: The API emits a manifest-read event containing the token's courier ID, target
-      delivery ID, and object version. Scoring accepts only the expected scoped read,
-      which also makes the manifest available as player evidence.
-    source_refs: &id003
+      retired item, the amendment matches the delivery, and its retrieval is audited.
+
+      Verify that no published route writes the collection.'
+  c3:
+    description: 'Recover and use the limited credential to obtain the protected manifest.
+
+
+      Required technical proof: The API returns the actual manifest and emits its ordinary manifest-read audit
+
+      with courier ID, delivery ID, and object version. The response makes the
+
+      document available without changing the credential''s permissions.'
+    source_refs:
     - features.training.t-workbench
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -172,18 +171,20 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Confirm a normal courier read succeeds, the intended profile maps to one
-      courier, a different delivery is denied, copied token text without an API event
-      does not score, and reset invalidates the old token.
-  c4:
-    description: |-
-      Recover the internal summary through an action in the helper's actual context. Echoing supplied text or returning an ordinary report is insufficient.
+    - 'Author checks: Check the courier/profile binding, manifest revision, denial for another
 
-      Required technical proof: The helper records a successful internal-summary retrieval with the selected
-      delivery and returns the record's immutable summary. Completion requires that
-      server-side action, not echoed input or an ordinary public report.
-    source_refs: &id004
+      delivery, repeated successful reads, and unchanged credential scope.'
+  c4:
+    description: 'Recover the internal summary through an action in the helper''s actual context. Echoing supplied
+      text or returning an ordinary report is insufficient.
+
+
+      Required technical proof: The helper returns the existing internal summary for the selected delivery
+
+      and records that retrieval in its ordinary service audit. Echoed input and
+
+      the public report are not the internal record.'
+    source_refs:
     - features.training.t-workbench
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -213,15 +214,15 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Test an ordinary report, the intended bounded secondary action, rejected
-      malformed selectors, absence of access outside the fixture directory, the audit
-      record, and a clean reset.
+    - 'Author checks: Check ordinary reporting, the intended bounded secondary action, invalid
+
+      selectors, confinement to the rehearsal data, and retained service audit.'
 propositions:
   c1:
-    description: Recover the actual handover and its delivery reference. It provides story context but
-      no required campaign credential.
-    subjects: *id001
+    description: Recover the actual handover and its delivery reference. It provides story context but no required
+      campaign credential.
+    subjects:
+    - features.training.t-workbench
     basis: observed_state
     predicate:
       kind: boolean
@@ -233,9 +234,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Recover the actual unpublished amendment and its delivery binding. Finding an address
-      alone does not count.
-    subjects: *id002
+    description: Recover the actual unpublished amendment and its delivery binding. Finding an address alone does
+      not count.
+    subjects:
+    - features.training.t-workbench
     basis: observed_state
     predicate:
       kind: boolean
@@ -247,9 +249,9 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Recover and use the limited credential to obtain the protected manifest. Credential discovery
-      and use earn one score.
-    subjects: *id003
+    description: Recover and use the limited credential to obtain the protected manifest.
+    subjects:
+    - features.training.t-workbench
     basis: observed_state
     predicate:
       kind: boolean
@@ -261,9 +263,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Recover the internal summary through an action in the helper's actual context. Echoing
-      supplied text or returning an ordinary report is insufficient.
-    subjects: *id004
+    description: Recover the internal summary through an action in the helper's actual context. Echoing supplied
+      text or returning an ordinary report is insufficient.
+    subjects:
+    - features.training.t-workbench
     basis: observed_state
     predicate:
       kind: boolean
@@ -310,14 +313,15 @@ assertions:
 objectives:
   c1:
     name: 'T01.1: The copy nobody deleted'
-    description: |-
-      The last training operator left an empty handover note and an unfinished delivery. Recover the missing handover from the supplied workspace.
+    description: 'The last training operator left an empty handover note and an unfinished delivery. Recover the
+      missing handover from the supplied workspace.
 
-      Gives a new player a quick evidence-recovery success with a recognizable purpose.
+
+      Gives a new player a quick evidence-recovery success with a recognizable purpose.'
     agent: participant.operator
     actions:
     - t01.c1
-    targets: &id005
+    targets:
     - features.training.t-workbench
     success:
       mode: all_of
@@ -328,14 +332,15 @@ objectives:
       - t01.c1
   c2:
     name: 'T01.2: Off the menu'
-    description: |-
-      The training dispatch site removed its rehearsal page from the menu. Find the page and recover the delivery amendment the public notice omits.
+    description: 'The training dispatch site removed its rehearsal page from the menu. Find the page and recover
+      the delivery amendment the public notice omits.
 
-      Introduces a separate web discovery with useful information.
+
+      Introduces a separate web discovery with useful information.'
     agent: participant.operator
     actions:
     - t01.c2
-    targets: &id006
+    targets:
     - features.training.t-workbench
     success:
       mode: all_of
@@ -346,14 +351,15 @@ objectives:
       - t01.c2
   c3:
     name: 'T01.3: A token with a job'
-    description: |-
-      Recover the retired courier client's usable access and retrieve the sealed manifest assigned to that courier.
+    description: 'Recover the retired courier client''s usable access and retrieve the sealed manifest assigned
+      to that courier.
 
-      Turns recovered access into a scoped information result.
+
+      Turns recovered access into a scoped information result.'
     agent: participant.operator
     actions:
     - t01.c3
-    targets: &id007
+    targets:
     - features.training.t-workbench
     success:
       mode: all_of
@@ -364,14 +370,15 @@ objectives:
       - t01.c3
   c4:
     name: 'T01.4: The helper has another job'
-    description: |-
-      Make the dispatch diagnostic helper reveal the internal delivery summary that its ordinary report leaves out.
+    description: 'Make the dispatch diagnostic helper reveal the internal delivery summary that its ordinary report
+      leaves out.
 
-      Provides an early application-exploitation payoff.
+
+      Provides an early application-exploitation payoff.'
     agent: participant.operator
     actions:
     - t01.c4
-    targets: &id008
+    targets:
     - features.training.t-workbench
     success:
       mode: all_of
@@ -382,8 +389,8 @@ objectives:
       - t01.c4
 workflows:
   c1:
-    description: 'T01.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T01.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -405,8 +412,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'T01.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T01.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -428,8 +435,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'T01.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T01.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -451,8 +458,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'T01.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T01.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -478,55 +485,74 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This is an evidence-recovery exercise: the visible workspace does not represent
-      the complete local history. The intended solution class is inspection of normal
-      local artifacts and revision history, then correlation with the tracker rather
-      than filename guessing.
+    procedure_basis: 'The current tree is intentionally incomplete while the ancestor object remains
+
+      reachable through ordinary Git history. The intended solution is to clone or
+
+      browse that repository, recover the ancestor `handover.md`, and correlate its
+
+      single delivery ID with the tracker. No hidden path or arbitrary filename guess
+
+      is required.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t01.c1
       - features.training.t-workbench
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The supplied workspace contains an ordinary shared handover directory, a local
-        Git worktree, and a delivery tracker export. The outgoing operator replaced a
-        handover file with an empty template while retaining the worktree history and
-        the tracker record named by the note.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: '`workbench.training:8080` publishes the workspace index, the read-only
 
-        The worktree is read-only and contains only training fixtures. Reset restores
-        the checkout and removes the player's evidence event without changing the
-        shared commit graph.
+        `handover.git` smart-HTTP repository, and `workspace/delivery-tracker.csv`.
+
+        The repository has exactly two deterministic commits. `handover-written`
+
+        contains a completed `handover.md` naming `DL-204` and courier `CR-17`;
+
+        `blank-template` is its child and replaces that file with the visible blank
+
+        template. The tracker contains exactly one `DL-204` row. Authors, committers,
+
+        UTC times, messages, modes, parents, paths, and bytes are fixed by
+
+        `repository-seed.json`.'
+      support_refs:
+      - features.training.t-workbench
+      - content.training-workbench-content.workbench-index-md
+      - content.training-workbench-content.workbench-workspace-handover-current-md
+      - content.training-workbench-content.workbench-workspace-delivery-tracker-csv
+      - content.training-workbench-content.workbench-workspace-repository-seed-json
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The worktree is read-only and contains only training fixtures. The retained
+
+        commit graph and tracker remain unchanged by reads.'
       support_refs:
       - features.training.t-workbench
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual handover and its delivery reference. It provides story context but
-        no required campaign credential.
-      target_refs: *id005
+      description: Recover the actual handover and its delivery reference. It provides story context but no required
+        campaign credential.
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        Completion requires the historical handover contents and its matching delivery
-        reference. The scorer checks the fixture revision and tracker ID against the
-        player's isolated evidence record; no credential or standing authority results.
-      target_refs: *id001
+      description: 'The recovered handover carries the delivery reference matching the tracker.
+
+        Its bytes belong to an actual historical revision, not a file fabricated after
+
+        the fact. Recovery creates no credential or standing authority.'
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c1
     failure_classes:
@@ -540,55 +566,72 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      Removal from navigation incorrectly substitutes for removal from the site's
-      published content inventory. The intended solution is evidence-led discovery
-      from the notice and published site metadata, followed by retrieving and
-      validating the actual amendment rather than enumerating arbitrary paths.
+    procedure_basis: 'The amendment was removed from navigation but not from the published retired
+
+      content index or its fixed route. The intended solution follows the notice,
+
+      manifest, and retired index in order, then retrieves the bound record. Directory
+
+      enumeration and wordlists are unnecessary.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t01.c2
       - features.training.t-workbench
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The training dispatch site is a small authored read-only web application. Its
-        public delivery notice names a rehearsal shipment; its static site manifest,
-        retired-content index, and ordinary linked assets retain a specific amendment
-        that the navigation no longer presents.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: '`workbench.training:8081` is a read-only dispatch site. `/notice-DL-204.md`
 
-        Only the fixed rehearsal content namespace is exposed. The site has no write
-        route, and reset clears the player event while leaving the published inventory
-        unchanged.
+        names the shipment and tells offline clients to use `/site.webmanifest`. That
+
+        manifest names `/content/current.json` and `/content/retired.json`; the retired
+
+        index binds record `AMEND-204` and delivery `DL-204` to
+
+        `/retired/amendment-AMEND-204.json`. The amendment contains revision 2, Bay 4,
+
+        and the courier-verification instruction. Unknown paths return 404 and every
+
+        non-read method returns 405.'
+      support_refs:
+      - features.training.t-workbench
+      - content.training-workbench-content.workbench-dispatch-index-md
+      - content.training-workbench-content.workbench-dispatch-notice-dl-204-md
+      - content.training-workbench-content.workbench-dispatch-site-webmanifest
+      - content.training-workbench-content.workbench-dispatch-current-json
+      - content.training-workbench-content.workbench-dispatch-retired-json
+      - content.training-workbench-content.workbench-dispatch-amendment-amend-204-json
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'Only the fixed rehearsal content namespace is exposed. The site has no write
+
+        route. Reading a document does not modify the published inventory.'
       support_refs:
       - features.training.t-workbench
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the actual unpublished amendment and its delivery binding. Finding an address
-        alone does not count.
-      target_refs: *id006
+      description: Recover the actual unpublished amendment and its delivery binding. Finding an address alone does
+        not count.
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        The amendment carries a delivery binding that matches the public notice. A
-        server-side retrieval event and the amendment's immutable record ID establish
-        completion; an address or a guessed identifier alone does not.
-      target_refs: *id002
+      description: 'The retrieved amendment''s immutable record ID and delivery reference agree
+
+        with the public notice. The server retains its ordinary retrieval audit.
+
+        An address alone is not the amendment.'
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c2
     failure_classes:
@@ -602,52 +645,71 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      A decommissioned client profile retains a still-valid, narrowly scoped bearer
-      credential. The intended solution is to identify its scope from surrounding
-      client material and use the actual courier API for the assigned delivery.
+    procedure_basis: 'The decommissioned profile retains the still-valid bearer value in an ordinary
+
+      client field. The intended solution is to read its explicit courier/delivery
+
+      scope and replay the normal manifest request. Reading the profile alone is not
+
+      the required protected read.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t01.c3
       - features.training.t-workbench
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        Retired courier-client material in the workspace includes a configuration
-        profile, request history, and a courier API with normal manifest retrieval.
-        Each courier token is bound to a courier record and one sealed delivery.
-      support_refs: *id007
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: 'The workspace publishes `/retired-client/profile.json` and its request history.
 
-        The token can read one synthetic manifest and cannot list, write, or access any
-        non-training service. Its per-player copy is revoked and reissued on reset.
+        The profile names courier `CR-17`, delivery `DL-204`, the API at
+
+        `workbench.training:8082`, and the synthetic bearer credential. Native
+
+        application RBAC grants that principal only `read` on `manifest/DL-204`.
+
+        `GET /api/deliveries/{delivery_id}/manifest` returns object `MF-204` revision 4
+
+        for the permitted delivery, 401 for missing/wrong access, 403 for another
+
+        delivery or listing, and 405 for writes.'
+      support_refs:
+      - features.training.t-workbench
+      - content.training-workbench-content.workbench-courier-profile-json
+      - content.training-workbench-content.workbench-courier-request-history-txt
+      - content.training-workbench-content.workbench-courier-manifest-dl-204-json
+      - content.training-workbench-content.workbench-service-contract-json
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The courier credential is individual to this rehearsal workspace. It can read
+
+        one synthetic manifest and cannot list, write, or access a non-training service.
+
+        Reading the manifest does not consume the credential or change its permissions.'
       support_refs:
       - features.training.t-workbench
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover and use the limited credential to obtain the protected manifest. Credential
-        discovery and use earn one score.
-      target_refs: *id007
+      description: Recover and use the limited credential to obtain the protected manifest.
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        The API emits a manifest-read event containing the token's courier ID, target
-        delivery ID, and object version. Scoring accepts only the expected scoped read,
-        which also makes the manifest available as player evidence.
-      target_refs: *id003
+      description: 'The API returns the actual manifest and emits its ordinary manifest-read audit
+
+        with courier ID, delivery ID, and object version. The response makes the
+
+        document available without changing the credential''s permissions.'
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c3
     failure_classes:
@@ -661,55 +723,75 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      One helper argument is incorporated into a secondary diagnostic action without
-      the validation applied to the public report path. The intended solution class
-      is analysis of the supplied helper's real input handling to invoke that action
-      in its existing context; it is not a generic host compromise exercise.
+    procedure_basis: 'The helper first checks that the raw, not-yet-decoded `view` begins with
+
+      `public/`; it then percent-decodes exactly once and normalizes the result without
+
+      rechecking the public prefix. The intended value is
+
+      `public%2F..%2Finternal%2FDL-204.json`, which normalizes to the existing internal
+
+      record while remaining inside the fixed diagnostic root. Paths outside that
+
+      root are rejected. Values are never interpolated into a command or executed.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t01.c4
       - features.training.t-workbench
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The dispatch diagnostic helper accepts a delivery selector and produces a
-        sanitized public report from a local rehearsal dataset. A separate internal
-        summary is available only to the helper's service context and is tied to the
-        same delivery record.
-      support_refs: *id008
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: '`workbench.training:8083` exposes
 
-        The helper runs against a card-local data directory with no network route,
-        shell persistence, or reusable system credential. Reset recreates its player
-        workspace and diagnostic audit log.
+        `GET /api/diagnostics/render?delivery_id=DL-204&view=...`. The default view is
+
+        `public/DL-204.json`; the separate existing internal record is
+
+        `internal/DL-204.json` with summary ID `DS-204-I`. The helper accepts only
+
+        delivery `DL-204`, reads JSON beneath `/var/lib/cinder-workbench/diagnostics`,
+
+        and records the raw view, normalized relative path, summary ID, status, and UTC
+
+        time.'
+      support_refs:
+      - features.training.t-workbench
+      - content.training-workbench-content.workbench-diagnostics-public-dl-204-json
+      - content.training-workbench-content.workbench-diagnostics-internal-dl-204-json
+      - content.training-workbench-content.workbench-service-contract-json
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The helper uses only its private rehearsal data directory. Its service context
+
+        has no outbound network access, persistent shell, or reusable system credential.
+
+        A report request does not recreate the workspace or erase earlier activity.'
       support_refs:
       - features.training.t-workbench
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the internal summary through an action in the helper's actual context. Echoing
-        supplied text or returning an ordinary report is insufficient.
-      target_refs: *id008
+      description: Recover the internal summary through an action in the helper's actual context. Echoing supplied
+        text or returning an ordinary report is insufficient.
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        The helper records a successful internal-summary retrieval with the selected
-        delivery and returns the record's immutable summary. Completion requires that
-        server-side action, not echoed input or an ordinary public report.
-      target_refs: *id004
+      description: 'The helper returns the existing internal summary for the selected delivery
+
+        and records that retrieval in its ordinary service audit. Echoed input and
+
+        the public report are not the internal record.'
+      target_refs:
+      - features.training.t-workbench
       evidence_refs:
       - evidence_requirements.t01.c4
     failure_classes:
@@ -719,122 +801,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-workbench
-    description: T01.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t01.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-workbench
-    description: T01.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t01.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-workbench
-    description: T01.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t01.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-workbench
-    description: T01.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t01.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      T01.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The supplied training workspace, dispatch site, retired courier-client material, and a diagnostic helper.
-
-      The supplied workspace contains an ordinary shared handover directory, a local
-      Git worktree, and a delivery tracker export. The outgoing operator replaced a
-      handover file with an empty template while retaining the worktree history and
-      the tracker record named by the note.
-    target: training.t-workbench
-    tags:
-    - synthetic
-    - t01
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The supplied training workspace, dispatch site, retired courier-client material, and
-        a diagnostic helper.
-  c2-records-1:
-    type: dataset
-    description: |-
-      T01.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The supplied training workspace and dispatch site. The site's ordinary, accessible page material retains a reference to the withdrawn rehearsal material; following that evidence leads to the amendment. Inspecting the reference requires no other challenge completion. The retired courier-client material and diagnostic helper are also available for the other training objectives.
-
-      The training dispatch site is a small authored read-only web application. Its
-      public delivery notice names a rehearsal shipment; its static site manifest,
-      retired-content index, and ordinary linked assets retain a specific amendment
-      that the navigation no longer presents.
-    target: training.t-workbench
-    tags:
-    - synthetic
-    - t01
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The supplied training workspace and dispatch site. The site's ordinary, accessible
-        page material retains a reference to the withdrawn rehearsal material; following that evidence
-        leads to the amendment. Inspecting the reference requires no other challenge completion. The retired
-        courier-client material and diagnostic helper are also available for the other training objectives.
-  c3-records-1:
-    type: dataset
-    description: |-
-      T01.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The supplied training workspace, dispatch site, retired courier-client material, and a diagnostic helper.
-
-      Retired courier-client material in the workspace includes a configuration
-      profile, request history, and a courier API with normal manifest retrieval.
-      Each courier token is bound to a courier record and one sealed delivery.
-    target: training.t-workbench
-    tags:
-    - synthetic
-    - t01
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The supplied training workspace, dispatch site, retired courier-client material, and
-        a diagnostic helper.
-  c4-records-1:
-    type: dataset
-    description: |-
-      T01.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      The supplied training workspace, dispatch site, retired courier-client material, and a diagnostic helper.
-
-      The dispatch diagnostic helper accepts a delivery selector and produces a
-      sanitized public report from a local rehearsal dataset. A separate internal
-      summary is available only to the helper's service context and is tied to the
-      same delivery record.
-    target: training.t-workbench
-    tags:
-    - synthetic
-    - t01
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: The supplied training workspace, dispatch site, retired courier-client material, and
-        a diagnostic helper.

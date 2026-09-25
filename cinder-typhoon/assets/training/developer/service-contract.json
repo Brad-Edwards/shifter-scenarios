@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "audit_directory": "/var/lib/cinder-developer/audit",
+  "forge": {
+    "seed": "/var/lib/cinder-developer/repository-seed.json",
+    "repository_path": "/var/lib/cinder-developer/delivery-formatter.git",
+    "read_only": true,
+    "construction": "Create commits in listed order with the exact author, committer, UTC time, message, file mode, parent, deletions, paths and UTF-8 bytes; expose repository history and files through Forge and read-only Git smart HTTP."
+  },
+  "registry": {
+    "credential": "publisher_CINDER_7K4M9Q2V6R8D",
+    "protected_manifest_route": "/api/channels/rehearsal/manifest",
+    "publish_route": "/api/packages/@cinder/delivery-formatter/{version}",
+    "publish_method": "PUT",
+    "publish_content_type": "application/json",
+    "publish_body": {"name": "@cinder/delivery-formatter", "version": "route version", "files": {"package.json": "UTF-8 string", "index.js": "UTF-8 string"}},
+    "exact_body_fields": true,
+    "maximum_body_bytes": 262144,
+    "allowed_name": "@cinder/delivery-formatter",
+    "allowed_versions": ">1.4.0 <2.0.0 stable SemVer only",
+    "existing_version_status": 409,
+    "invalid_status": 400,
+    "wrong_scope_status": 403,
+    "missing_or_wrong_credential_status": 401,
+    "success_status": 201,
+    "digest": "SHA-256 of UTF-8 JSON with recursively sorted object keys and no insignificant whitespace",
+    "persistence": "Published immutable versions remain for the environment lifetime.",
+    "audit_fields": ["observed_at", "publisher_id", "package", "version", "digest", "status"]
+  },
+  "consumer": {
+    "run_route": "/api/consumer/run",
+    "run_method": "POST",
+    "request_body": {},
+    "exact_body_fields": true,
+    "input": {"delivery_id": "DL-204", "destination": "Cinder receiving desk", "parcel_count": 3},
+    "range": ">=1.4.0 <2.0.0",
+    "allow_prerelease": false,
+    "selection": "highest compatible SemVer version at request acceptance time",
+    "entrypoint": "index.js export formatDelivery",
+    "process": {"timeout_seconds": 2, "memory_mib": 64, "network": false, "read_only_filesystem": true, "environment": {}, "one_invocation": true},
+    "valid_output": "A JSON object preserving delivery_id, destination, parcel_count and the DF-1 summary; rehearsal_marker may equal Cinder rehearsal.",
+    "invalid_output_status": 422,
+    "success_status": 200,
+    "receipt_fields": ["receipt_id", "accepted_at", "input", "selected_version", "package_digest", "output", "output_digest"],
+    "receipt_id": "monotonically increasing CR-000001 form",
+    "persistence": "Receipts are append-only for the environment lifetime."
+  },
+  "sample": {
+    "presentation": "static files only",
+    "install_or_execute": false,
+    "source": "/opt/cinder-sample/fixtures/rehearsal-source.json",
+    "destination": "http://developer.training:8084/api/rehearsal/ingest"
+  }
+}

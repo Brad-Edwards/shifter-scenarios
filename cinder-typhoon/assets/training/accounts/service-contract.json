@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "realm_file": "/var/lib/cinder-accounts/realm.json",
+  "audit_directory": "/var/lib/cinder-accounts/audit",
+  "lookup": {
+    "route": "/api/recovery/lookup",
+    "method": "POST",
+    "body": {"account": "string"},
+    "exact_fields": true,
+    "maximum_requests_per_minute": 6,
+    "active": {"status": 200, "fields": ["account", "state", "case_fragment"], "case_fragment": "CASE-7Q4M"},
+    "inactive": {"status": 410, "fields": ["account", "state"]},
+    "unknown": {"status": 404, "fields": ["state"]},
+    "audit_fields": ["observed_at", "submitted_account", "response_class", "status"]
+  },
+  "directory_detail": {
+    "route": "/api/directory/staff/{staff_id}/assignment",
+    "method": "GET",
+    "authentication_checked": false,
+    "allowed_without_authentication": "STF-204",
+    "unrelated_known_status": 403,
+    "unknown_status": 404,
+    "audit_fields": ["observed_at", "staff_id", "staff_record_revision", "status"]
+  },
+  "recovery": {
+    "route": "/api/recovery/redeem",
+    "method": "POST",
+    "body": {"account": "string", "case_fragment": "string", "staff_detail": "string"},
+    "exact_fields": true,
+    "accepted_tuple": ["rhea.moss", "CASE-7Q4M", "Blue cabinet 17"],
+    "single_redemption": true,
+    "insufficient_or_wrong_status": 403,
+    "already_redeemed_status": 409,
+    "success_status": 201,
+    "session": {
+      "subject": "rhea.moss",
+      "random_bytes": 32,
+      "encoding": "base64url-no-padding",
+      "cookie": "CINDER_REHEARSAL_SESSION",
+      "http_only": true,
+      "same_site": "Strict",
+      "path": "/",
+      "expires": null,
+      "persist_for_environment_lifetime": true
+    },
+    "audit_fields": ["observed_at", "account", "factor_match", "session_subject", "status"]
+  },
+  "handover": {
+    "route": "/api/handover",
+    "method": "GET",
+    "session_required": true,
+    "resource_binding": "handover/{session.subject}",
+    "other_subject_status": 403,
+    "audit_fields": ["observed_at", "session_subject", "document_subject", "status"]
+  },
+  "assignments": {
+    "list_route": "/api/assignments",
+    "brief_route": "/api/assignments/{assignment_id}/brief",
+    "method": "GET",
+    "session_required": true,
+    "list_filter": "owner equals session.subject",
+    "brief_authorization": "Allow when the session subject owns any assignment; do not compare the requested assignment owner.",
+    "known_assignments": ["ASG-204", "ASG-317"],
+    "unknown_status": 404,
+    "unauthenticated_status": 401,
+    "audit_fields": ["observed_at", "session_subject", "assignment_id", "document_revision", "status"]
+  }
+}

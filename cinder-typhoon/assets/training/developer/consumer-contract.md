@@ -1,0 +1,30 @@
+# Delivery formatter contract
+
+Contract DF-1, revision 1.
+
+The formatter consumes a JSON object with the fields `delivery_id`,
+`destination`, and `parcel_count`. `delivery_id` and `destination` are non-empty
+strings; `parcel_count` is a positive integer. It returns a JSON object with
+those same values and a `summary` string.
+
+For this input:
+
+```json
+{"delivery_id":"DL-204","destination":"Cinder receiving desk","parcel_count":3}
+```
+
+the ordinary output is:
+
+```json
+{"delivery_id":"DL-204","destination":"Cinder receiving desk","parcel_count":3,"summary":"DL-204 | Cinder receiving desk | 3 parcels"}
+```
+
+Field order and insignificant JSON whitespace do not affect this contract.
+Values and the summary do. The singular form for one parcel is `1 parcel`.
+An invalid input produces an error record without a delivery report; it does
+not coerce strings into numbers or silently discard missing fields.
+
+The rehearsal extension adds the field `rehearsal_marker` with the value
+`Cinder rehearsal`. Existing fields retain their ordinary values. Each consumer
+receipt records the input, selected package version and digest, completion
+time, and output digest. An earlier receipt remains an earlier receipt.

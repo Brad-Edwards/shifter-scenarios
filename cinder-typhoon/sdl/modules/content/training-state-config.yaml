@@ -1,0 +1,32 @@
+name: cinder-training-state-config-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/training-state-config-content
+  version: 0.1.0
+  exports:
+    content:
+    - state-service-contract-json
+realization:
+  default: open
+content:
+  state-service-contract-json:
+    type: file
+    target: training.t-state
+    path: /etc/cinder-state/service-contract.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"version\": 1,\n  \"initial_state\": \"/var/lib/cinder-state/initial.json\",\n  \"live_directory\"\
+      : \"/var/lib/cinder-state/live\",\n  \"clock\": \"UTC monotonic application clock for movement; wall-clock\
+      \ UTC for retained timestamps\",\n  \"state_bits\": {\"ready\": 0, \"outlet_open\": 1, \"service_hold\": 2,\
+      \ \"transfer_active\": 3},\n  \"hold\": {\"method\": \"POST\", \"path\": \"/api/practice/hold\", \"exact_body\"\
+      : [\"request_id\", \"active\"], \"active_type\": \"boolean\"},\n  \"transfer\": {\"method\": \"POST\", \"\
+      path\": \"/api/practice/transfer\", \"exact_body\": [\"request_id\", \"quantity_l\"], \"quantity_type\": \"\
+      integer\", \"minimum_l\": 1, \"maximum_l\": 200, \"minimum_retained_l\": 200, \"flow_l_per_second\": 20},\n\
+      \  \"idempotency\": \"Identical valid content for a retained request_id returns the original receipt and status\
+      \ without another state change; different content returns 409.\",\n  \"serialization\": \"Validate and accept\
+      \ requests one at a time in server acceptance order; at most one transfer is active.\",\n  \"observations\"\
+      : \"Record the pre-movement sample, every elapsed whole second, and the exact terminal sample once. Use 0.1\
+      \ L resolution and no noise.\",\n  \"persistence\": \"Load initial_state once when preparing the environment.\
+      \ Thereafter retain state, requests, and observations in live_directory.\",\n  \"unknown_path_status\": 404,\n\
+      \  \"unsupported_method_status\": 405\n}\n"
+    sensitive: true

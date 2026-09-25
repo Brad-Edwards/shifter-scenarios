@@ -1,0 +1,10 @@
+{
+  "capture_id": "VC-017",
+  "tank_id": "CT-01",
+  "sample_id": "VS-017",
+  "observed_at": "2026-06-18T08:00:00Z",
+  "requested_volume_l": 1000.0,
+  "observed_volume_l": 1200.0,
+  "unit": "L",
+  "quality": "good"
+}

@@ -230,8 +230,10 @@ def make_topology(graph):
 
     configure_routes(model)
 
-    # Flags/validated completions cause discrete events. No time loop, hydraulic
-    # model, or automatic opening when the player merely earns control.
+    # Validated completions permit consequence presentation/retention. The
+    # in-world actions have already produced their independently observed
+    # effects: a score cannot cause the process transition needed to earn it.
+    # This graph does not simulate command execution or hydraulic state.
     live = 'PROCESS_INTERPRETATION CONTROL MODE CONSEQUENCE_PLAN'
     model.events = {
         'reservoir_release': either('W30.2 ' + live),
@@ -326,7 +328,7 @@ def configure_routes(model):
     # Privileged interfaces below require an earned execution or identity context.
     for box in model.boxes.values():
         if box.zone == 'training':
-            link('training-' + box.ident, 'player', box.ident, 'service artifact', 'TRAINING')
+            link('training-' + box.ident, 'player', box.ident, 'service artifact')
         elif box.ident.startswith('k-') and box.ident not in ('k-dev', 'k-staff', 'k-cert', 'k-workload'):
             modes = 'service artifact delivery' if box.ident in ('k-registry', 'k-support') else 'service artifact'
             link('developer-' + box.ident, 'k-dev', box.ident, modes, 'FOOTHOLD')
@@ -602,10 +604,10 @@ def check_boundaries(graph, model):
         command_targets = set(accessible(model, facts, 'control'))
         require(ACTUATORS <= command_targets, f'{terminal}: control scope incomplete')
         require('a-instruments' not in command_targets, f'{terminal}: independent instrumentation became writable')
-        require('reservoir_release' not in events(model, facts), f'{terminal}: authority alone opened the gates')
+        require('reservoir_release' not in events(model, facts), f'{terminal}: authority alone published a completed incident')
     before = shortest(graph, 'W30.RESULT') - {'W30.2'}
-    require('reservoir_release' not in events(model, earned(graph, before)), 'Preparation opened the gates')
-    require('reservoir_release' in events(model, earned(graph, before | {'W30.2'})), 'Final completion did not open the gates')
+    require('reservoir_release' not in events(model, earned(graph, before)), 'Preparation published a completed incident')
+    require('reservoir_release' in events(model, earned(graph, before | {'W30.2'})), 'Verified completion did not permit incident presentation')
 
     # Optional compromises are present in these states. Checking only the
     # shortest main route previously missed CI and diagnostic-origin bypasses.
@@ -792,12 +794,12 @@ def self_test(graph, model):
     variant('control authority includes independent instrumentation',
             lambda m: m.links.append(Link('bad-instruments', 'a-control-broker', 'a-instruments', ('control',), either('CONTROL'))),
             lambda m: check_boundaries(graph, m), 'instrumentation became writable')
-    variant('control automatically triggers the reservoir',
+    variant('control authority publishes a completed reservoir incident',
             lambda m: m.events.update({'reservoir_release': either('CONTROL')}),
-            lambda m: check_boundaries(graph, m), 'authority alone opened')
+            lambda m: check_boundaries(graph, m), 'authority alone published')
     variant('command plan mistaken for executed release',
             lambda m: m.events.update({'reservoir_release': either('W30.1')}),
-            lambda m: check_boundaries(graph, m), 'Preparation opened')
+            lambda m: check_boundaries(graph, m), 'Preparation published')
     variant('compromised CI runner crosses directly into ARWC',
             lambda m: m.links.append(Link('bad-ci-pivot', 'k-ci/runner', 'a-business', ('service',), either('K09.4'))),
             lambda m: check_boundaries(graph, m), 'Post-compromise supplier bypass')
@@ -932,7 +934,7 @@ def main():
     print('PASS: service reachability does not grant forwarding; OT reads do not grant commands')
     print(f'PASS: {len(model.domains)} authority domains / {len(model.contexts)} contexts; scoped compromise and acquisition checked')
     print('PASS: accumulated optional compromises do not bypass supplier, OT visibility, or command boundaries')
-    print('PASS: reservoir changes only on completion events; no continuously running simulation')
+    print('PASS: incident presentation requires verified completion; graph does not simulate process effects')
     if args.self_test:
         self_test(graph, model)
     if args.json:

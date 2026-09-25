@@ -1,0 +1,2 @@
+2026-06-18T07:12:00Z GET /api/deliveries/DL-204/manifest Authorization: Bearer [profile]
+2026-06-18T07:12:00Z 200 object=manifest/DL-204 revision=4

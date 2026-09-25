@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "audit_directory": "/var/lib/cinder-workbench/audit",
+  "git": {
+    "seed": "/var/lib/cinder-workbench/repository-seed.json",
+    "repository_path": "/var/lib/cinder-workbench/handover.git",
+    "protocol": "git-smart-http",
+    "read_only": true,
+    "construction": "Create commits in listed order with the exact author, committer, UTC time, message, file mode, parent, paths and UTF-8 bytes; expose the resulting bare repository."
+  },
+  "dispatch": {
+    "root": "/srv/cinder-workbench/dispatch",
+    "methods": ["GET", "HEAD"],
+    "unknown_status": 404,
+    "other_method_status": 405,
+    "audit_fields": ["observed_at", "method", "path", "status", "record_id", "delivery_id"]
+  },
+  "courier": {
+    "route": "/api/deliveries/{delivery_id}/manifest",
+    "credential": "courier_DL204_CR17_4N7Q2M9K",
+    "allowed_delivery_id": "DL-204",
+    "allowed_method": "GET",
+    "success_status": 200,
+    "missing_or_wrong_credential_status": 401,
+    "other_delivery_status": 403,
+    "list_status": 403,
+    "write_status": 405,
+    "audit_fields": ["observed_at", "courier_id", "delivery_id", "manifest_id", "object_version", "status"]
+  },
+  "diagnostics": {
+    "route": "/api/diagnostics/render",
+    "root": "/var/lib/cinder-workbench/diagnostics",
+    "delivery_parameter": "delivery_id",
+    "view_parameter": "view",
+    "default_view": "public/{delivery_id}.json",
+    "decision_order": [
+      "Require delivery_id to equal DL-204.",
+      "Require the raw, not-yet-percent-decoded view value to begin with public/.",
+      "Percent-decode view exactly once.",
+      "Normalize the decoded relative path beneath the diagnostics root.",
+      "Reject a normalized path outside the diagnostics root.",
+      "Read the selected existing JSON record without interpolation or execution."
+    ],
+    "intended_view": "public%2F..%2Finternal%2FDL-204.json",
+    "success_status": 200,
+    "invalid_status": 400,
+    "missing_status": 404,
+    "audit_fields": ["observed_at", "delivery_id", "raw_view", "normalized_relative_path", "summary_id", "status"],
+    "execution": false,
+    "outbound_network": false,
+    "writable_data": false
+  }
+}

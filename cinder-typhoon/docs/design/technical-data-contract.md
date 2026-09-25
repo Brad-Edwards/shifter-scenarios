@@ -158,6 +158,11 @@ An event contains the actor, target record, evidence IDs, precondition revision,
 and resulting revision. Challenge scoring observes the event and its independent
 evidence; it does not score a client-side claim. The reservoir state changes only
 after an accepted command creates a matching independent process transition.
+For W30.2, the process records and the reserve-planning cost, restrictions, and
+continuity notice must share that command's participant, target, and revision
+before scoring succeeds. The completion-triggered `reservoir-release` inject
+only retains/presents the verified incident. It must not command the gates,
+create its own prerequisite evidence, or apply the loss again on replay.
 Private rehearsals fork only mutable state at an earned checkpoint and retain
 their own event history. They never alter the player’s completed campaign route.
 

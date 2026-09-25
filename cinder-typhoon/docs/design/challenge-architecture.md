@@ -150,7 +150,9 @@ Training remains available later; all sixteen flags are never a gate.
 The [sixteen training challenge briefs](challenges/training.md) specify
 player-facing descriptions, distinct outcomes, and the small identity and
 package-delivery dependency chains. They preserve the 12 easy / four medium
-allocation. Technical design and all three hints remain blank.
+allocation. All sixteen now have technical drafts; their
+[hand-build readiness gate](training-readiness.md) remains separate from that
+document status. The inherited hint headings remain empty and unpublished.
 
 The opening KeplerOps workspace exposes three different invitations:
 
@@ -374,9 +376,10 @@ ordinary entry routes by their whole-operation work and common campaign
 milestone, not by forcing an equal number of submissions. The milestone itself
 does not award extra points.
 Do not equate campaign completion with overall scoreboard victory or use a
-score total to grant access. Record hints consistently; introductory explanations
-and recovery from infrastructure faults should be free. More revealing hints
-can affect the operation's score under a published, uniform rule.
+score total to grant access. Introductions, useful service documentation, and
+discovery records belong naturally to the scenario; they are not a purchasable
+hint ladder. Do not publish solution hints or fourth-wall commentary inside the
+scenario. Infrastructure recovery is free and grants no target authority.
 
 Day two begins with the player's own access/evidence summary, retained artifacts,
 and unfinished leads. Session recovery must preserve earned capabilities.
@@ -400,16 +403,19 @@ player-experience contract. The briefs cover sixteen training challenges,
 
 Each document follows the [shared template](challenges/TEMPLATE.md): a
 player-facing description, story purpose, prerequisites and starting position,
-completion and downstream use, and difficulty/source references. Technical
-design and three hint sections are deliberately blank. The briefs contain
-no solution walkthroughs or implementation plans; hints follow technical design.
+completion and downstream use, and difficulty/source references. Fifty cards
+have technical drafts and 190 remain briefs. The inherited empty hint headings
+are not a plan to deliver hints. Discoverability must be authored through
+in-world records and ordinary interfaces under the
+[experience contract](player-experience.md#how-choices-become-legible).
 
-First validate ordinary entry, accessible ARWC interpretation, and the bounded
-process fiction. Then prototype representative difficult mechanisms and the
-new decisions that could invalidate the revision: K29's release rollover,
-K30/K31's cloud trust composition, W33's constrained control, and W34's reporting
-join. The revised [calibration plan](calibration.md) includes choice, partial
-progress, source-aware transfer, and returning on day two.
+Complete the full-scenario design corrections and native SDL first. Then follow
+the [calibration plan's design and golden-range gates](calibration.md#1-design-and-golden-range-gates):
+tutorial design, its hand-built golden range, KeplerOps design and extension,
+then ARWC design and extension. Tests include ordinary entry, the bounded
+process fiction, release rollover, cloud trust composition, constrained control,
+reporting, partial progress, and returning on day two. No prototype precedes
+the design gate for its scope.
 
 The event layer supplies optional short dispatches, unscored recognition of
 varied milestones, and a closing debrief. Technique discussion and agent help

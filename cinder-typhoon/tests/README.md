@@ -7,13 +7,19 @@ the matching upstream releases:
 export PYTHONDONTWRITEBYTECODE=1
 python3.12 -m venv /tmp/cinder-sdl-check
 /tmp/cinder-sdl-check/bin/python -m pip install -r cinder-typhoon/tests/requirements-sdl.txt
-/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check
+/tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --self-test --pack-check --pack-max-members 2048
 ```
 
 Use a clean checkout or move any existing `__pycache__` directories outside the
 pack before the pack check. The default member limit counts local cache files
 and directories too. Keep bytecode writing disabled for the checks below; do
 not raise the member limit to accommodate development caches.
+
+The authored source pack now exceeds the upstream default 1,024-member budget
+even without caches. The command above explicitly selects 2,048 using upstream
+`PackValidationLimits`. The checker default remains unchanged; omitting the
+override currently fails `resource.member-limit`. This is an author-check
+budget, not a claim that an unchanged consumer will accept the distributed pack.
 
 The command performs these checks:
 
@@ -58,6 +64,59 @@ The [validation record](../docs/sdl-validation.md) states what was established.
 The earlier standard-library authoring checks remain beside their inputs in
 [docs/design/](../docs/design/README.md). None of these checks establishes runtime
 exploitability, isolation, evidence-adapter correctness, or event capacity.
+
+## Training content and hand-build gate
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python -m unittest discover -s cinder-typhoon/tests -p test_training_design.py -v
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python cinder-typhoon/tests/validate_sdl.py --pack-check --pack-max-members 2048 --training-hand-build-gate
+```
+
+The fifteen focused tests check all 47 exact native content/file/route bindings,
+public versus private ownership, network addressing, scoped application RBAC,
+independent recorded/practice/replay state, the stale report join, prerequisite
+preservation, and removal of private Training/recovery semantics. Structural
+tests skip upstream semantic validation for speed; the second command performs
+the full upstream validation, instantiation, compilation, and hand-build gate.
+
+The final hand-build gate is expected to pass. The
+[readiness record](../docs/design/training-readiness.md) states the remaining
+manual-build, integration-test, and playtest boundary. Passing does not claim a
+running implementation exists. No test starts a service or exercises an
+intended weakness.
+
+## Build-worker handoff checks
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 /tmp/cinder-sdl-check/bin/python -m unittest discover -s cinder-typhoon/tests -p test_k09_handoff.py -v
+```
+
+These seventeen focused tests check the authored K09 documents against native file
+content, owning paths, the concrete command example, independent worker
+and receiving-service proof, unchanged Easy/Easy/Medium/Medium allocation, and
+the existing downstream entry routes. Negative cases remove the connection or
+destination proof, grant access too early, move a protected document onto the
+developer workspace, replace the harmless example with a protected answer, or
+insert out-of-world copy. They use native structural parsing of the operation
+module and reject replacing a product's real read API with an invented path.
+They also check shell syntax and argument expansion (with a curl stand-in that
+prints arguments only; no network or credentials), reject forced
+worker authentication for separately earned identities, and require the native
+action contract to retain command execution, installed clients, private file
+continuity, externally enforced isolation, and worker credential expiry. Proof
+cannot rely on a request ID or participant-writable log alone. These text and
+contract regressions are not an implementation of the job or its restrictions.
+The command profile also requires the retained reference from an actual completed
+integration review, rather than merely a guessed profile name or a score state.
+Complete reference validation and compilation still run in the full
+SDL command above. Live job execution, service authorization, reset, and fresh
+player discovery remain golden-range acceptance checks.
+
+The downstream route checks exercise the existing abstract design graph. They
+do not establish that a client can present a newly obtained identity or speak
+the destination's protocol. The approved command job removes the worker-only
+HTTP restriction, but K19/K20 still require complete certificate/delegation
+designs and tests using real clients and the identities actually obtained.
 
 ## Workplace asset checks
 

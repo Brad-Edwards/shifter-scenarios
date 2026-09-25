@@ -1,0 +1,8 @@
+{
+  "name": "@cinder/delivery-formatter",
+  "version": "1.4.0",
+  "files": {
+    "package.json": "{\"name\":\"@cinder/delivery-formatter\",\"version\":\"1.4.0\",\"main\":\"index.js\"}",
+    "index.js": "exports.formatDelivery = function (input) { if (!input || typeof input.delivery_id !== 'string' || !input.delivery_id || typeof input.destination !== 'string' || !input.destination || !Number.isInteger(input.parcel_count) || input.parcel_count < 1) throw new TypeError('invalid delivery'); const unit = input.parcel_count === 1 ? 'parcel' : 'parcels'; return {...input, summary: input.delivery_id + ' | ' + input.destination + ' | ' + input.parcel_count + ' ' + unit}; };"
+  }
+}

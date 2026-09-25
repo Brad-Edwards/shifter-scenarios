@@ -1,0 +1,36 @@
+{
+  "repository": "handover",
+  "default_branch": "main",
+  "object_format": "sha1",
+  "files_mode": "100644",
+  "commits": [
+    {
+      "logical_id": "handover-written",
+      "parent": null,
+      "author_name": "Mara Vale",
+      "author_email": "mara.vale@training.invalid",
+      "author_time": "2026-06-18T07:30:00Z",
+      "committer_name": "Mara Vale",
+      "committer_email": "mara.vale@training.invalid",
+      "committer_time": "2026-06-18T07:30:00Z",
+      "message": "record courier handover",
+      "tree": {
+        "handover.md": "# Operator handover\n\nDelivery: DL-204\n\nStatus: The sealed manifest is still assigned to courier CR-17. The dispatch amendment was withdrawn from navigation, not from publication.\n\nNotes: Finish the rehearsal from the dispatch workbench.\n"
+      }
+    },
+    {
+      "logical_id": "blank-template",
+      "parent": "handover-written",
+      "author_name": "Mara Vale",
+      "author_email": "mara.vale@training.invalid",
+      "author_time": "2026-06-18T07:42:00Z",
+      "committer_name": "Mara Vale",
+      "committer_email": "mara.vale@training.invalid",
+      "committer_time": "2026-06-18T07:42:00Z",
+      "message": "leave blank handover template",
+      "tree": {
+        "handover.md": "# Operator handover\n\nDelivery:\n\nStatus:\n\nNotes:\n"
+      }
+    }
+  ]
+}

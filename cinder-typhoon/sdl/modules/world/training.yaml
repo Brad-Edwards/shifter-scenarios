@@ -1,4 +1,3 @@
-# In-world draft. Unspecified realization remains open.
 name: cinder-training
 version: 0.1.0
 semantic_revision: raes-progressive-semantics/v1
@@ -25,35 +24,1921 @@ module:
     - t-accounts
     - t-developer
     - t-state
+    accounts:
+    - rhea-moss
+    - mina-cho
 realization:
   default: open
 nodes:
   subnet:
     type: switch
-    description: 'Training: Training. Logical network segment; physical realization and addressing remain
-      open.'
+    description: Training
   t-workbench:
     type: compute
     description: Workbench
     features:
       t-workbench: ''
+    os: linux
+    services:
+    - name: workbench
+      port: 8080
+      protocol: tcp
+    - name: dispatch
+      port: 8081
+      protocol: tcp
+    - name: courier
+      port: 8082
+      protocol: tcp
+    - name: diagnostics
+      port: 8083
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /srv/cinder-workbench/public/index.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 7c8a032b24a8458c51401d75e4e9ccd4b046517de398695ede35fee59dc1b4e6
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/public/workspace/handover-current.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: e381cb6a774877143ba112c7ddc77c45d3029dae882e26df65d73e7157d6e218
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/public/workspace/delivery-tracker.csv
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: c5059c03367d85895e3212fec18d1b8df838124f0da15893102f353b2434d357
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-workbench/repository-seed.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0440'
+        content_digest: 2c775b67641f5b91a8532bee50f25719f53e4a6714b75bd07b5b18fd5c19db24
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/index.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 71beac1876e4c60f6c367f6538554b8ee78903d613e15d1e08d08ed24518431c
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/notice-DL-204.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 60a78ebd08596449de59d982237862d0404dcd27d2fb536a74596a7ac72922c6
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/site.webmanifest
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 1264dfa900e59f33daeb14e17baeb115b90e250ba7f702a5c3b2b29b9b511279
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/content/current.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: d8e14188dc8abea5e01bc11174081da023452b78833c7b5d5a9f97623575df6d
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/content/retired.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: d929c9dc9386d14d8b4bbc3a3ee472e457b8f91ac275fe35596930d6af51f43f
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/dispatch/retired/amendment-AMEND-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 82c900ec8b61d123d3539bc77bd3a463e61c5e34e5e599a5101d53070ad6b27d
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-workbench/public/retired-client/profile.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: 9ea2719ea7b90b825cb8a43bbcb3fd291d6cac3c2ffe6e131a075066a1f5e526
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: secret_fixture
+      - path: /srv/cinder-workbench/public/retired-client/request-history.txt
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0444'
+        content_digest: fd2c471c1f8bd45c4c8b9da678e54c9c6d3b53a4031c6f19d1bbc2ebcda75c97
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-workbench/courier/manifest-DL-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0440'
+        content_digest: 87bd23aef1e592c965795b2d2270b8c38ec165c2b3aae3617eac8a082de5514c
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-workbench/diagnostics/public/DL-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0440'
+        content_digest: eb0943fb115ec04d56701aa5b1b76daf8ed88dec1dcf7ff00daa7b5c5afc89ac
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-workbench/diagnostics/internal/DL-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0440'
+        content_digest: 49f3e813050be44dc38465f1f879aeda505ee4861066183b0226a58cab526e48
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /etc/cinder-workbench/service-contract.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-workbench
+        mode: '0440'
+        content_digest: 1cfeb358773ee147611318008a96d13e7680558ce19309229e30425b43ee6529
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: secret_fixture
+      - path: /var/lib/cinder-workbench/audit
+        entry_type: directory
+        owner_user: cinder-workbench
+        owner_group: cinder-workbench
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Service-owned persistent state.
+      - path: /var/lib/cinder-workbench/handover.git
+        entry_type: directory
+        owner_user: cinder-workbench
+        owner_group: cinder-workbench
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: plain
+        description: Read-only bare Git repository constructed exactly from repository-seed.json.
+      local_identity:
+        users:
+        - username: cinder-workbench
+          primary_group: cinder-workbench
+          locked: true
+          no_login: true
+        groups:
+        - name: cinder-workbench
+          members:
+          - cinder-workbench
+      network:
+        hostname: workbench
+        domainname: training
+        endpoints:
+        - network: training.subnet
+          ip_address: 10.77.40.20
+          ip_prefix_length: 24
+          gateway: 10.77.40.1
+          aliases:
+          - workbench
+          dns_names:
+          - workbench.training
+          backend:
+            driver: bridge
+            description: Isolated Training bridge.
+          description: Static Training endpoint.
+      service_listeners:
+      - service_listener_id: workbench
+        service: workbench
+        address: 0.0.0.0
+        port: 8080
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: dispatch
+        service: dispatch
+        address: 0.0.0.0
+        port: 8081
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: courier
+        service: courier
+        address: 0.0.0.0
+        port: 8082
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: diagnostics
+        service: diagnostics
+        address: 0.0.0.0
+        port: 8083
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: workbench
+        service: workbench
+        protocol: http
+        base_path: /
+        description: Read-only workspace and Git smart-HTTP service. Unknown paths return 404 and unsupported methods
+          405.
+        routes:
+        - route_id: workbench-index
+          path: /
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/public/index.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: handover-current
+          path: /workspace/handover/current.md
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/public/workspace/handover-current.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: delivery-tracker
+          path: /workspace/delivery-tracker.csv
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/public/workspace/delivery-tracker.csv
+          responses:
+          - status_code: 200
+            content_type: text/csv; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: courier-profile
+          path: /retired-client/profile.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/public/retired-client/profile.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: courier-history
+          path: /retired-client/request-history.txt
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/public/retired-client/request-history.txt
+          responses:
+          - status_code: 200
+            content_type: text/plain; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: handover-git-advertise
+          path: /git/handover.git/info/refs
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: service
+            location: query
+            required: true
+            data_type: string
+            description: Only git-upload-pack is accepted.
+          responses:
+          - status_code: 200
+            content_type: application/x-git-upload-pack-advertisement
+            description: Read-only Git reference advertisement.
+          - status_code: 400
+            content_type: application/json
+        - route_id: handover-git-upload
+          path: /git/handover.git/git-upload-pack
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          responses:
+          - status_code: 200
+            content_type: application/x-git-upload-pack-result
+            description: Read-only Git object transfer.
+          - status_code: 400
+            content_type: application/json
+      - application_id: dispatch
+        service: dispatch
+        protocol: http
+        base_path: /
+        description: Read-only authored dispatch site. Retired content remains published although absent from navigation.
+        routes:
+        - route_id: dispatch-index
+          path: /
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/index.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: dispatch-notice
+          path: /notice-DL-204.md
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/notice-DL-204.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: dispatch-manifest
+          path: /site.webmanifest
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/site.webmanifest
+          responses:
+          - status_code: 200
+            content_type: application/manifest+json
+            description: Return the exact authored record without changing it.
+        - route_id: dispatch-current
+          path: /content/current.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/content/current.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: dispatch-retired
+          path: /content/retired.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/content/retired.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: dispatch-amendment
+          path: /retired/amendment-AMEND-204.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-workbench/dispatch/retired/amendment-AMEND-204.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+      - application_id: courier
+        service: courier
+        protocol: http
+        base_path: /
+        description: Courier manifest API. Bearer access is bound to one courier and one delivery by the authorization
+          inventory.
+        routes:
+        - route_id: courier-manifest
+          path: /api/deliveries/{delivery_id}/manifest
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: false
+          parameters:
+          - name: delivery_id
+            location: path
+            required: true
+            data_type: string
+          static_assets:
+          - /var/lib/cinder-workbench/courier/manifest-DL-204.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+      - application_id: diagnostics
+        service: diagnostics
+        protocol: http
+        base_path: /
+        description: Bounded JSON diagnostic renderer. Its raw-prefix check precedes one percent decode and path
+          normalization exactly as configured.
+        routes:
+        - route_id: diagnostic-index
+          path: /
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Describes GET /api/diagnostics/render?delivery_id=DL-204&view=public/DL-204.json.
+          responses:
+          - status_code: 200
+            content_type: text/plain; charset=utf-8
+        - route_id: diagnostic-render
+          path: /api/diagnostics/render
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: delivery_id
+            location: query
+            required: true
+            data_type: string
+          - name: view
+            location: query
+            required: false
+            data_type: string
+          static_assets:
+          - /var/lib/cinder-workbench/diagnostics/public/DL-204.json
+          - /var/lib/cinder-workbench/diagnostics/internal/DL-204.json
+          disclosures:
+          - trigger: Raw view public%2F..%2Finternal%2FDL-204.json passes the public/ prefix check before decoding
+              and normalization.
+            status_code: 200
+            disclosure: Existing internal delivery summary DS-204-I.
+            sensitivity: plain
+            description: Traversal remains confined to the fixed diagnostic data root; no path is executed.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: courier-authorization
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: courier-cr17
+          kind: api_key
+          name: Courier CR-17
+          credential_classification: redacted
+        roles:
+        - role_id: manifest-dl204-reader
+          name: DL-204 manifest reader
+        permission_grants:
+        - grant_id: read-dl204
+          role_ref: manifest-dl204-reader
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - manifest/DL-204
+          effect: allow
+        role_mappings:
+        - mapping_id: courier-cr17-reader
+          role_ref: manifest-dl204-reader
+          users:
+          - courier-cr17
+        tenants:
+        - tenant_id: cinder-rehearsal
+          name: Cinder rehearsal
+        description: No list, write, or other-delivery grant exists.
+      software_components:
+      - component_id: cinder-workbench
+        name: Cinder workbench services
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/cinder-workbench
+        description: Application implementing the exact authored service contract and native route inventory.
   t-accounts:
     type: compute
     description: Accounts
     features:
       t-accounts: ''
+    os: linux
+    services:
+    - name: identity-desk
+      port: 8080
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /srv/cinder-accounts/public/index.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0444'
+        content_digest: 0617aca7b899aa98090993968d862aa9002fa7a094112d03dff1ff0def92cf74
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-accounts/public/candidates.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0444'
+        content_digest: 07f8c2d9d9b071596fea679e17ff53308464a8843116655aff8c90cf1e22b05b
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-accounts/public/directory/index.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0444'
+        content_digest: 17435c6ddc7294d436c3022996df1180a240610c364b07790ba2bf58114a33b3
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-accounts/public/directory/app.js
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0444'
+        content_digest: 2b141dd9b512d1826461b6c4525e1a7932eda0c485487bc65c62566a5535577b
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-accounts/directory/assignment-STF-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: 7bf8b885906d4eed409883a9d7abc7f19de2446e8e781a658ff60642682261de
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-accounts/realm.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: a52f010e8f9c146865e63e376d9befcdc657fbf2c02bb4ab56046a4db152e9bc
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-accounts/handovers/rhea.moss.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: c28eaa7ad4b6fb43ce9368c23fc2c984ae0ab4b46710c868992b5001b4a357c4
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-accounts/assignments/ASG-204.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: eb8d57f6931ddd27524985385d0026eb9e941f0180f2b6cd00b6d6a78a69addb
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-accounts/assignments/ASG-317.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: a50f663242fa8c97368c4df5f006b870ed730f962beae7b2c7b57c1e2b44fd2c
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /etc/cinder-accounts/service-contract.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-accounts
+        mode: '0440'
+        content_digest: f6a213ab7e12638e9a281451d9afc622420ed29fa8629ebe36dfa94277ce1bdb
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: secret_fixture
+      - path: /var/lib/cinder-accounts/audit
+        entry_type: directory
+        owner_user: cinder-accounts
+        owner_group: cinder-accounts
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Service-owned persistent state.
+      - path: /var/lib/cinder-accounts/sessions
+        entry_type: directory
+        owner_user: cinder-accounts
+        owner_group: cinder-accounts
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: secret_fixture
+        description: Persistent opaque recovery sessions; raw values are generated at runtime and never authored
+          in SDL.
+      local_identity:
+        users:
+        - username: cinder-accounts
+          primary_group: cinder-accounts
+          locked: true
+          no_login: true
+        groups:
+        - name: cinder-accounts
+          members:
+          - cinder-accounts
+      network:
+        hostname: accounts
+        domainname: training
+        endpoints:
+        - network: training.subnet
+          ip_address: 10.77.40.30
+          ip_prefix_length: 24
+          gateway: 10.77.40.1
+          aliases:
+          - accounts
+          dns_names:
+          - accounts.training
+          backend:
+            driver: bridge
+            description: Isolated Training bridge.
+          description: Static Training endpoint.
+      service_listeners:
+      - service_listener_id: identity-desk
+        service: identity-desk
+        address: 0.0.0.0
+        port: 8080
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: identity-desk
+        service: identity-desk
+        protocol: http
+        base_path: /
+        description: Rehearsal identity, directory, recovery, handover, and assignment application. Unknown paths
+          return 404 and unsupported methods 405.
+        routes:
+        - route_id: accounts-index
+          path: /
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-accounts/public/index.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: candidate-notes
+          path: /candidates.md
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-accounts/public/candidates.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: directory-index
+          path: /directory/
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-accounts/public/directory/index.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: directory-client
+          path: /directory/app.js
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-accounts/public/directory/app.js
+          responses:
+          - status_code: 200
+            content_type: text/javascript; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: directory-api
+          path: /api/directory/staff
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-accounts/public/directory/index.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: directory-assignment
+          path: /api/directory/staff/{staff_id}/assignment
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: staff_id
+            location: path
+            required: true
+            data_type: string
+          static_assets:
+          - /var/lib/cinder-accounts/directory/assignment-STF-204.json
+          exposed_fields:
+          - name: staff_detail
+            sensitivity: plain
+            value: Blue cabinet 17
+            description: STF-204 detail returned without server-side authorization.
+          disclosures:
+          - trigger: GET for STF-204 without a session
+            status_code: 200
+            disclosure: Private assignment detail and staff-record revision.
+            sensitivity: plain
+            description: The browser hides the coordinator control, but the route performs no authorization check.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+        - route_id: recovery-lookup
+          path: /api/recovery/lookup
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: account
+            location: json_body
+            required: true
+            data_type: string
+          exposed_fields:
+          - name: case_fragment
+            sensitivity: plain
+            value: CASE-7Q4M
+            description: Returned only for the active rhea.moss record.
+          disclosures:
+          - trigger: Exact active, inactive, and unknown candidate handles
+            status_code: 200
+            disclosure: Distinct status classes; the active response also reveals its account-bound case fragment.
+            sensitivity: plain
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 410
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+          - status_code: 429
+            content_type: application/json
+        - route_id: recovery-redeem
+          path: /api/recovery/redeem
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: account
+            location: json_body
+            required: true
+            data_type: string
+          - name: case_fragment
+            location: json_body
+            required: true
+            data_type: string
+          - name: staff_detail
+            location: json_body
+            required: true
+            data_type: string
+          description: Exact observable tuple creates one opaque rhea.moss session. Any subset or wrong value is
+            denied; the transaction redeems once.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+        - route_id: own-handover
+          path: /api/handover
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: CINDER_REHEARSAL_SESSION cookie or Bearer
+          session_required: true
+          static_assets:
+          - /var/lib/cinder-accounts/handovers/rhea.moss.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+          - status_code: 401
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: own-assignments
+          path: /api/assignments
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: CINDER_REHEARSAL_SESSION cookie or Bearer
+          session_required: true
+          description: List only assignments whose owner equals the authenticated subject.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+        - route_id: assignment-brief
+          path: /api/assignments/{assignment_id}/brief
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: CINDER_REHEARSAL_SESSION cookie or Bearer
+          session_required: true
+          parameters:
+          - name: assignment_id
+            location: path
+            required: true
+            data_type: string
+          static_assets:
+          - /var/lib/cinder-accounts/assignments/ASG-204.json
+          - /var/lib/cinder-accounts/assignments/ASG-317.json
+          description: Authorization checks only that the caller owns any assignment; it does not compare requested-record
+            ownership.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+          - status_code: 404
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: assignment-authorization
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rhea-moss
+          kind: user
+          name: rhea.moss
+          credential_classification: none
+        - principal_id: dax-hale
+          kind: user
+          name: dax.hale
+          credential_classification: none
+        roles:
+        - role_id: recovered-assignee
+          name: Recovered rehearsal assignee
+        permission_grants:
+        - grant_id: read-own-handover
+          role_ref: recovered-assignee
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - handover/rhea.moss
+          effect: allow
+        - grant_id: list-own-assignments
+          role_ref: recovered-assignee
+          resource_kind: app_resource
+          actions:
+          - list
+          resource_patterns:
+          - assignments/owner/rhea.moss
+          effect: allow
+        - grant_id: read-any-training-brief
+          role_ref: recovered-assignee
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - assignment-briefs/*
+          effect: allow
+          description: 'Deliberately over-broad record scope: ASG-204 and ASG-317 both match.'
+        role_mappings:
+        - mapping_id: rhea-recovered
+          role_ref: recovered-assignee
+          users:
+          - rhea-moss
+        tenants:
+        - tenant_id: cinder-rehearsal
+          name: Cinder rehearsal
+        description: Application RBAC after recovery. No account mutation permission exists.
+      software_components:
+      - component_id: cinder-accounts
+        name: Cinder identity desk
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/cinder-accounts
+        description: Application implementing the exact authored service contract and native route inventory.
   t-developer:
     type: compute
     description: Developer artifacts
     features:
       t-developer: ''
+    os: linux
+    services:
+    - name: developer-documents
+      port: 8080
+      protocol: tcp
+    - name: forge
+      port: 8081
+      protocol: tcp
+    - name: build-records
+      port: 8082
+      protocol: tcp
+    - name: registry
+      port: 8083
+      protocol: tcp
+    - name: consumer
+      port: 8084
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /srv/cinder-developer/public/consumer-contract.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: 19a0ebc39bca70d45d818171d91150ee904604b4bb725c351dfeb2e3ea71e5a9
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/index.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: f866f1a49d67db38322e5ac9497ae71c6ce3c3f49fb75d1df2092f1e5f2952ca
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-developer/repository-seed.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0440'
+        content_digest: e954e6e9a8773a23724b2c972e878c4a516b15d403fae06ea4e5a19a1b8138e4
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/build/BLD-204.log
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: a54954ce3da3121b1846807ea295232a827dcd5b77bcc5361f5afaa13e065e1a
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: secret_fixture
+      - path: /var/lib/cinder-developer/registry/channel-manifest.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0440'
+        content_digest: 1cb6e1aa639c1fc63cf1b326165c89a7a49180acc7f6b7e4ad03ae16e6923c37
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/sample-package/package.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: d1d33e9d5ff05a22469fa5c70f97994abba0cc10c3167d42dd7a1456d5f6f49e
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/sample-package/package-lock.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: da5e3d324f26d3003147cbb0d2789a937589929256ac100513cefe271a05eb51
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/sample-package/scripts/register-rehearsal.js
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: b9a6160121b8b0603d6d4127cc99c3771ae4d313f5f3098bf66d22e3346a7699
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-developer/public/sample-package/fixtures/rehearsal-source.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0444'
+        content_digest: 9d4bbd8dfb9035657b706d4bfc0a5e43f964f127deb31f9023658ba49a3da666
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-developer/registry/packages/1.4.0.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0440'
+        content_digest: 4fe22eaa6842859635f48c81ac9a7090e0b188909878b5e00d5cd01fea3a5aff
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /etc/cinder-developer/service-contract.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-developer
+        mode: '0440'
+        content_digest: cd6bd3641b76450ab9acfa48dec966a4169ba73bfdc1509fdc642fd35410b73b
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: secret_fixture
+      - path: /var/lib/cinder-developer/audit
+        entry_type: directory
+        owner_user: cinder-developer
+        owner_group: cinder-developer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Service-owned persistent state.
+      - path: /var/lib/cinder-developer/delivery-formatter.git
+        entry_type: directory
+        owner_user: cinder-developer
+        owner_group: cinder-developer
+        mode: '0750'
+        stability: runtime_created
+        sensitivity: plain
+        description: Read-only bare Git repository constructed exactly from repository-seed.json.
+      - path: /var/lib/cinder-developer/registry/published
+        entry_type: directory
+        owner_user: cinder-developer
+        owner_group: cinder-developer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Immutable participant-published package versions.
+      - path: /var/lib/cinder-developer/consumer/receipts
+        entry_type: directory
+        owner_user: cinder-developer
+        owner_group: cinder-developer
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Append-only consumer receipts.
+      local_identity:
+        users:
+        - username: cinder-developer
+          primary_group: cinder-developer
+          locked: true
+          no_login: true
+        groups:
+        - name: cinder-developer
+          members:
+          - cinder-developer
+      network:
+        hostname: developer
+        domainname: training
+        endpoints:
+        - network: training.subnet
+          ip_address: 10.77.40.40
+          ip_prefix_length: 24
+          gateway: 10.77.40.1
+          aliases:
+          - developer
+          dns_names:
+          - developer.training
+          backend:
+            driver: bridge
+            description: Isolated Training bridge.
+          description: Static Training endpoint.
+      service_listeners:
+      - service_listener_id: developer-documents
+        service: developer-documents
+        address: 0.0.0.0
+        port: 8080
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: forge
+        service: forge
+        address: 0.0.0.0
+        port: 8081
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: build-records
+        service: build-records
+        address: 0.0.0.0
+        port: 8082
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: registry
+        service: registry
+        address: 0.0.0.0
+        port: 8083
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      - service_listener_id: consumer
+        service: consumer
+        address: 0.0.0.0
+        port: 8084
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: developer-documents
+        service: developer-documents
+        protocol: http
+        base_path: /
+        description: Read-only developer desk and unpacked sample. Static inspection never invokes package lifecycle
+          code.
+        routes:
+        - route_id: developer-index
+          path: /
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/index.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: consumer-contract-md
+          path: /consumer-contract.md
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/consumer-contract.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: sample-package-json
+          path: /sample-package/package.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/sample-package/package.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: sample-lock-json
+          path: /sample-package/package-lock.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/sample-package/package-lock.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+        - route_id: sample-script
+          path: /sample-package/scripts/register-rehearsal.js
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/sample-package/scripts/register-rehearsal.js
+          responses:
+          - status_code: 200
+            content_type: text/javascript; charset=utf-8
+            description: Return the exact authored record without changing it.
+        - route_id: sample-fixture
+          path: /sample-package/fixtures/rehearsal-source.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/sample-package/fixtures/rehearsal-source.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Return the exact authored record without changing it.
+      - application_id: forge
+        service: forge
+        protocol: http
+        base_path: /
+        description: Read-only Forge browser and Git smart-HTTP endpoint backed by the exact two-commit repository.
+        routes:
+        - route_id: forge-repository
+          path: /cinder/delivery-formatter
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Repository head, review note, commits, and parent diffs.
+          responses:
+          - status_code: 200
+            content_type: text/html; charset=utf-8
+        - route_id: forge-source
+          path: /cinder/delivery-formatter/src/{revision}/{path}
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: revision
+            location: path
+            required: true
+            data_type: string
+          - name: path
+            location: path
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: text/plain; charset=utf-8
+          - status_code: 404
+            content_type: application/json
+        - route_id: forge-git-advertise
+          path: /cinder/delivery-formatter.git/info/refs
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          parameters:
+          - name: service
+            location: query
+            required: true
+            data_type: string
+          responses:
+          - status_code: 200
+            content_type: application/x-git-upload-pack-advertisement
+          - status_code: 400
+            content_type: application/json
+        - route_id: forge-git-upload
+          path: /cinder/delivery-formatter.git/git-upload-pack
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          responses:
+          - status_code: 200
+            content_type: application/x-git-upload-pack-result
+          - status_code: 400
+            content_type: application/json
+      - application_id: build-records
+        service: build-records
+        protocol: http
+        base_path: /
+        description: Read-only retained build records.
+        routes:
+        - route_id: build-log
+          path: /jobs/BLD-204/log
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-developer/public/build/BLD-204.log
+          responses:
+          - status_code: 200
+            content_type: text/plain; charset=utf-8
+            description: Return the exact authored record without changing it.
+      - application_id: registry
+        service: registry
+        protocol: http
+        base_path: /
+        description: Individual-world formatter registry. Authentication is bearer-token based and authorization
+          is the native scoped grant inventory.
+        routes:
+        - route_id: registry-index
+          path: /
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Documents manifest and publication endpoints.
+          responses:
+          - status_code: 200
+            content_type: text/plain; charset=utf-8
+        - route_id: channel-manifest
+          path: /api/channels/rehearsal/manifest
+          methods:
+          - GET
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: false
+          static_assets:
+          - /var/lib/cinder-developer/registry/channel-manifest.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+        - route_id: publish-formatter
+          path: /api/packages/@cinder/delivery-formatter/{version}
+          methods:
+          - PUT
+          auth_required: true
+          auth_scheme: Bearer
+          session_required: false
+          parameters:
+          - name: version
+            location: path
+            required: true
+            data_type: SemVer string
+          - name: name
+            location: json_body
+            required: true
+            data_type: string
+          - name: version
+            location: json_body
+            required: true
+            data_type: string
+          - name: files
+            location: json_body
+            required: true
+            data_type: object with package.json and index.js UTF-8 strings
+          description: Accept only a new stable version greater than 1.4.0 and below 2.0.0 for the exact formatter
+            name; immutable after acceptance.
+          responses:
+          - status_code: 201
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+          - status_code: 401
+            content_type: application/json
+          - status_code: 403
+            content_type: application/json
+          - status_code: 409
+            content_type: application/json
+          - status_code: 413
+            content_type: application/json
+      - application_id: consumer
+        service: consumer
+        protocol: http
+        base_path: /
+        description: Fresh formatter resolver and isolated one-shot consumer. Receipts are append-only.
+        routes:
+        - route_id: consumer-index
+          path: /
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Shows baseline output, the run control, and retained receipt links.
+          responses:
+          - status_code: 200
+            content_type: text/html; charset=utf-8
+        - route_id: consumer-run
+          path: /api/consumer/run
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          description: Resolve highest stable >=1.4.0 <2.0.0, execute formatDelivery once with the fixed DL-204
+            input in a 2-second, 64-MiB, no-network, read-only worker, validate DF-1, and retain a receipt.
+          responses:
+          - status_code: 200
+            content_type: application/json
+          - status_code: 400
+            content_type: application/json
+          - status_code: 422
+            content_type: application/json
+          - status_code: 500
+            content_type: application/json
+        - route_id: consumer-receipts
+          path: /api/consumer/receipts
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Append-only receipts in acceptance order.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: sample-ingest
+          path: /api/rehearsal/ingest
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          description: Named destination present for static package analysis. The supplied sample is never installed
+            or executed; direct calls return 405.
+          responses:
+          - status_code: 405
+            content_type: application/json
+      app_authorizations:
+      - app_authorization_id: registry-authorization
+        resource_vocabulary: app_resource
+        auth_enabled: true
+        principals:
+        - principal_id: rehearsal-publisher
+          kind: api_key
+          name: Rehearsal publisher
+          credential_classification: redacted
+        roles:
+        - role_id: formatter-publisher
+          name: Formatter publisher
+        permission_grants:
+        - grant_id: read-rehearsal-manifest
+          role_ref: formatter-publisher
+          resource_kind: app_resource
+          actions:
+          - read
+          resource_patterns:
+          - channels/rehearsal/manifest
+          effect: allow
+        - grant_id: publish-training-formatter
+          role_ref: formatter-publisher
+          resource_kind: app_resource
+          actions:
+          - publish
+          resource_patterns:
+          - packages/@cinder/delivery-formatter
+          effect: allow
+        role_mappings:
+        - mapping_id: publisher-binding
+          role_ref: formatter-publisher
+          users:
+          - rehearsal-publisher
+        tenants:
+        - tenant_id: cinder-rehearsal
+          name: Cinder rehearsal
+        description: No other package, channel, build, or administrative grant exists.
+      repository_state:
+        repositories:
+        - repository_id: cinder-formatter
+          presence: required
+      dependency_manifests:
+      - ecosystem: npm
+        path: /srv/cinder-developer/public/sample-package/package.json
+        format: npm-package-json
+        name: '@cinder/parcel-audit-sample'
+        version: 0.8.0
+      - ecosystem: npm
+        path: /srv/cinder-developer/public/sample-package/package-lock.json
+        format: npm-package-lock-v3
+        name: '@cinder/parcel-audit-sample'
+        version: 0.8.0
+      software_components:
+      - component_id: cinder-developer
+        name: Cinder developer rehearsal services
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/cinder-developer
+        description: Application implementing the exact authored service contract and native route inventory.
+      - component_id: nodejs-runtime
+        name: Node.js
+        version: 22.12.0
+        component_type: platform
+        provenance: package_manager
+        ecosystem: npm
+        installed_paths:
+        - /usr/bin/node
+        description: Worker runtime for the isolated formatter invocation.
   t-state:
     type: compute
     description: State exercise
     features:
       t-state: ''
+    os: linux
+    services:
+    - name: tank-desk
+      port: 8080
+      protocol: tcp
+    runtime:
+      filesystem_inventory:
+      - path: /srv/cinder-state/public/captures/status.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: 074a12ac3e40c4ac7e57ca40ce0542a6a6eeda803addba15b2b7f3cc52b3c949
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/captures/volume.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: 1d3c4a0080598c837eec4f5a81478b43d547466daf3bc8262066b9e242dc0bc5
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/field-guide.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: aa8efb543635d4c746dc521dc9300aaf9ce35ca02e0509af46a51a1220090fc4
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/index.md
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: acebcecaa8c0c38f34c35b0e0ebdceafcf1437ea15741a1ac99fd36e38418c94
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-state/initial.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0440'
+        content_digest: 2980f52ce96349d7b3fb89bdbda1a02b6ec0a36f6d21f5359ad6a5b1d47afcd8
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/replay/observations.csv
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: a4222d6de3185b82a30b011a6eeed8038fb400ec3e453891c4f09ea907df9bfd
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/replay/report.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: f578fe7a486909299a2f3f1361dc39f6e2d224e9155b6a98afc6fbfebbf41ea2
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /srv/cinder-state/public/replay/requests.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0444'
+        content_digest: 2da6e74bd44f3fb9c64b66259b505aef77b493a12c07bd8aa763b048b1e59370
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      - path: /var/lib/cinder-state/live
+        entry_type: directory
+        owner_user: cinder-state
+        owner_group: cinder-state
+        mode: '0700'
+        stability: runtime_created
+        sensitivity: plain
+        description: Service-owned persistent live tank state and request/observation records. No public static
+          route.
+      - path: /etc/cinder-state/service-contract.json
+        entry_type: file
+        owner_user: root
+        owner_group: cinder-state
+        mode: '0440'
+        content_digest: 22b0462a039a67fb89fc3aa06eb72557a5b54d1982f40b153b813855322045cb
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      local_identity:
+        users:
+        - username: cinder-state
+          primary_group: cinder-state
+          locked: true
+          no_login: true
+        groups:
+        - name: cinder-state
+          members:
+          - cinder-state
+      service_listeners:
+      - service_listener_id: tank-desk
+        service: tank-desk
+        address: 0.0.0.0
+        port: 8080
+        protocol: tcp
+        address_family: ipv4
+        scope: wildcard
+      applications:
+      - application_id: tank-desk
+        service: tank-desk
+        protocol: http
+        base_path: /
+        description: Individual-world application. Unknown paths return 404 and unsupported methods return 405.
+          Published documents are read-only; private state is not a static asset. Hosting, framework and implementation
+          remain separate from these required observable behaviors.
+        routes:
+        - route_id: captures-status-json
+          path: /captures/status.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/captures/status.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: captures-volume-json
+          path: /captures/volume.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/captures/volume.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: field-guide-md
+          path: /field-guide.md
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/field-guide.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: index-md
+          path: /
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/index.md
+          responses:
+          - status_code: 200
+            content_type: text/markdown; charset=utf-8
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: replay-observations-csv
+          path: /replay/observations.csv
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/replay/observations.csv
+          responses:
+          - status_code: 200
+            content_type: text/csv; charset=utf-8
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: replay-report-json
+          path: /replay/report.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/replay/report.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: replay-requests-json
+          path: /replay/requests.json
+          methods:
+          - GET
+          - HEAD
+          auth_required: false
+          session_required: false
+          static_assets:
+          - /srv/cinder-state/public/replay/requests.json
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: The exact authored document, without evaluator state or injected success text.
+        - route_id: practice
+          path: /practice
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Human-readable current state, ordinary hold and bounded-transfer controls, and links to the
+            guide and both registers.
+          responses:
+          - status_code: 200
+            content_type: text/html; charset=utf-8
+        - route_id: state
+          path: /api/practice/state
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Current measured tank state. Never a client-supplied measurement.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: requests
+          path: /api/practice/requests
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Retained request register in server acceptance order.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: observations
+          path: /api/practice/observations
+          methods:
+          - GET
+          auth_required: false
+          session_required: false
+          description: Independent observation register in sample order.
+          responses:
+          - status_code: 200
+            content_type: application/json
+        - route_id: hold
+          path: /api/practice/hold
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          description: Set or clear the hold only while idle. Request validation, persistence and idempotency follow
+            the published field guide.
+          parameters:
+          - name: request_id
+            location: json_body
+            required: true
+            data_type: string
+            description: 1–64 ASCII letters, digits, underscores or hyphens; unique across all practice requests.
+          - name: active
+            location: json_body
+            required: true
+            data_type: boolean
+          responses:
+          - status_code: 200
+            content_type: application/json
+            description: Retained receipt; identical retry returns the original receipt and status without a second
+              action.
+          - status_code: 400
+            content_type: application/json
+            description: Invalid body, field, type or quantity; no tank mutation and no reserved request ID.
+          - status_code: 409
+            content_type: application/json
+            description: Operating-condition rejection or recorded request ID reused with different contents; no
+              tank mutation.
+        - route_id: transfer
+          path: /api/practice/transfer
+          methods:
+          - POST
+          auth_required: false
+          session_required: false
+          description: Transfer 1–200 L, leaving at least 200 L, at 20 L/s; close outlet at the exact terminal time.
+            Request validation, persistence and idempotency follow the published field guide.
+          parameters:
+          - name: request_id
+            location: json_body
+            required: true
+            data_type: string
+            description: 1–64 ASCII letters, digits, underscores or hyphens; unique across all practice requests.
+          - name: quantity_l
+            location: json_body
+            required: true
+            data_type: integer
+          responses:
+          - status_code: 202
+            content_type: application/json
+            description: Retained receipt; identical retry returns the original receipt and status without a second
+              action.
+          - status_code: 400
+            content_type: application/json
+            description: Invalid body, field, type or quantity; no tank mutation and no reserved request ID.
+          - status_code: 409
+            content_type: application/json
+            description: Operating-condition rejection or recorded request ID reused with different contents; no
+              tank mutation.
+      network:
+        hostname: state
+        domainname: training
+        endpoints:
+        - network: training.subnet
+          ip_address: 10.77.40.50
+          ip_prefix_length: 24
+          gateway: 10.77.40.1
+          aliases:
+          - state
+          dns_names:
+          - state.training
+          backend:
+            driver: bridge
+            description: Isolated Training bridge.
+          description: Static Training endpoint.
+      software_components:
+      - component_id: cinder-state
+        name: Cinder tank desk
+        version: 1.0.0
+        component_type: application
+        provenance: operator
+        installed_paths:
+        - /opt/cinder-state
+        description: Application implementing the exact authored service contract and native route inventory.
 infrastructure:
-  subnet: {}
+  subnet:
+    properties:
+      cidr: 10.77.40.0/24
+      gateway: 10.77.40.1
+      internal: true
+    description: One internal Training segment with no infrastructure links to KeplerOps or ARWC.
   t-workbench:
     links:
     - subnet
@@ -75,20 +1960,34 @@ features:
   t-workbench:
     name: Published interfaces
     type: service
-    description: Published interfaces on t-workbench. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Dispatch workspace, site, courier API, and bounded diagnostic helper.
   t-accounts:
     name: Published interfaces
     type: service
-    description: Published interfaces on t-accounts. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Identity lookup, directory, recovery, handover, and assignment service.
   t-developer:
     name: Published interfaces
     type: service
-    description: Published interfaces on t-developer. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Source, build records, scoped registry, and isolated consumer.
   t-state:
     name: Published interfaces
     type: service
-    description: Published interfaces on t-state. A separately scoped in-world interface or principal;
-      access does not imply ownership of the other authorities on this system.
+    description: Recorded instrumentation, retained replay, and persistent practice tank.
+accounts:
+  rhea-moss:
+    username: rhea.moss
+    node: t-accounts
+    groups:
+    - rehearsal-assignees
+    password_strength: none
+    auth_method: x-cinder:recovery-session
+    description: Active synthetic account recoverable only through the authored application workflow.
+  mina-cho:
+    username: mina.cho
+    node: t-accounts
+    groups:
+    - former-rehearsal-staff
+    password_strength: none
+    auth_method: x-cinder:recovery-session
+    disabled: true
+    description: Inactive synthetic account retained for stable lookup behavior.

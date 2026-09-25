@@ -1,4 +1,3 @@
-# In-world draft. Unspecified realization remains open.
 name: cinder-t04
 version: 0.1.0
 semantic_revision: raes-progressive-semantics/v1
@@ -40,27 +39,20 @@ module:
     - c2
     - c3
     - c4
-    relationships:
-    - c1-surface-1
-    - c2-surface-1
-    - c3-surface-1
-    - c4-surface-1
-    content:
-    - c1-records-1
-    - c2-records-1
-    - c3-records-1
-    - c4-records-1
 realization:
   default: open
 evidence_requirements:
   c1:
-    description: |-
-      Recover the measured volume bound to its sample and units. A target setting or unitless guess is insufficient.
+    description: 'Recover the measured volume bound to its sample and units. A target setting or unitless guess
+      is insufficient.
 
-      Required technical proof: Scoring accepts the observation's sample ID, measured value, and unit only when
-      they match the current practice trace. It adds no control authority or mutable
-      state.
-    source_refs: &id001
+
+      Required technical proof: The capture binds its measured volume to sample ID, engineering units,
+
+      quality, and timestamp. The requested level is a separate field and is not
+
+      substituted for the measurement.'
+    source_refs:
     - features.training.t-state
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -90,18 +82,22 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Confirm requested and measured values visibly differ, the legend identifies
-      units, a setpoint answer fails, the target observation resolves once, and a
-      reset reproduces the trace.
-  c2:
-    description: |-
-      Identify the actual blocking condition and its state in the capture. Selecting an arbitrary alarm from the legend does not count.
+    - 'Author checks: Check that requested and measured quantities differ, units and quality are
 
-      Required technical proof: The player submits the sample ID, controller revision, blocking condition, and
-      its state. The score verifies that tuple against the practice trace and makes
-      the condition visible for T04.3.
-    source_refs: &id002
+      visible, the recorded sample is unique, and live practice cannot alter it.'
+  c2:
+    description: 'Identify the actual blocking condition and its state in the capture. Selecting an arbitrary alarm
+      from the legend does not count.
+
+
+      Required technical proof: The capture binds one status word to its sample ID and controller revision.
+
+      The matching legend identifies the asserted blocking condition. Reading this
+
+      record does not reveal, change, or authorize anything in the live practice
+
+      application; that application already exposes its own status and legend.'
+    source_refs:
     - features.training.t-state
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -131,19 +127,24 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Verify the correct legend is reachable, version mismatch leads to a distinct
-      wrong interpretation, only one bit explains the observed block, arbitrary
-      alarm selection fails, and the evidence tuple is retained.
-  c3:
-    description: |-
-      Demonstrate the requested transfer and final outlet state within the published bounds. An accepted request alone is insufficient; no campaign authority is granted.
+    - 'Author checks: Check that the revision-matched legend is present, exactly one asserted
 
-      Required technical proof: Completion requires an accepted request, final outlet state, and matching
-      before/after measurements showing the requested transfer within tolerance.
-      Scoring consumes the independent practice transition rather than the request
-      receipt alone.
-    source_refs: &id003
+      condition explains the recorded block, and the live application can be used
+
+      independently without reading or submitting this task.'
+  c3:
+    description: 'Demonstrate the requested transfer and final outlet state within the published bounds. An accepted
+      request alone is insufficient; no campaign authority is granted.
+
+
+      Required technical proof: The request record, final outlet state, and independent before/after
+
+      measurements identify the same transfer. The observed volume difference must
+
+      match the requested amount within the documented tolerance. Request acceptance
+
+      alone does not establish physical movement in the practice model.'
+    source_refs:
     - features.training.t-state
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -173,18 +174,24 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Test the block prevents movement, an in-range normal request succeeds, an
-      out-of-range request is rejected, request-only evidence fails, the observation
-      delta is correct, and reset returns the initial state.
-  c4:
-    description: |-
-      Recover the current attempt's result and the evidence establishing the report's error. This separate replay does not reuse T04.3's result for another score.
+    - 'Author checks: Check blocked requests cause no movement, bounded transfers finish with the
 
-      Required technical proof: The completion record names the attempt, actual result, stale source record,
-      and contradictory observation. The scorer validates their correlation IDs and
-      timestamps, not a generic claim that the report is wrong.
-    source_refs: &id004
+      outlet closed, invalid requests cannot change volume, independent measurements
+
+      show the exact delta, and a reconnect preserves the live tank and history.'
+  c4:
+    description: 'Recover the recorded attempt''s result and the evidence establishing the report''s error. This
+      replay is independent of the live practice tank.
+
+
+      Required technical proof: The retained records identify the current attempt, its actual outcome, the
+
+      stale source used in the report, and contradictory measurements. Their
+
+      correlation IDs and timestamps explain the discrepancy without depending on
+
+      the current practice tank or any external grading state.'
+    source_refs:
     - features.training.t-state
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
@@ -214,15 +221,17 @@ evidence_requirements:
       required: true
       basis: observed
     notes:
-    - |-
-      Author checks: Verify report and trace initially disagree, identifiers make the stale join
-      discoverable, the current attempt has a unique result, an unrelated trace fails,
-      T04.3's event cannot score this card, and reset is deterministic.
+    - 'Author checks: Check that the report and independent trace disagree, the stale join is
+
+      unambiguous, the current attempt has a unique result, and practice requests
+
+      cannot alter any replay record.'
 propositions:
   c1:
-    description: Recover the measured volume bound to its sample and units. A target setting or unitless
-      guess is insufficient.
-    subjects: *id001
+    description: Recover the measured volume bound to its sample and units. A target setting or unitless guess is
+      insufficient.
+    subjects:
+    - features.training.t-state
     basis: observed_state
     predicate:
       kind: boolean
@@ -234,9 +243,10 @@ propositions:
     - c1
     quantifier: all
   c2:
-    description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary
-      alarm from the legend does not count.
-    subjects: *id002
+    description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary alarm
+      from the legend does not count.
+    subjects:
+    - features.training.t-state
     basis: observed_state
     predicate:
       kind: boolean
@@ -248,9 +258,10 @@ propositions:
     - c2
     quantifier: all
   c3:
-    description: Demonstrate the requested transfer and final outlet state within the published bounds.
-      An accepted request alone is insufficient; no campaign authority is granted.
-    subjects: *id003
+    description: Demonstrate the requested transfer and final outlet state within the published bounds. An accepted
+      request alone is insufficient; no campaign authority is granted.
+    subjects:
+    - features.training.t-state
     basis: observed_state
     predicate:
       kind: boolean
@@ -262,9 +273,10 @@ propositions:
     - c3
     quantifier: all
   c4:
-    description: Recover the current attempt's result and the evidence establishing the report's error.
-      This separate replay does not reuse T04.3's result for another score.
-    subjects: *id004
+    description: Recover the recorded attempt's result and the evidence establishing the report's error. This replay
+      is independent of the live practice tank.
+    subjects:
+    - features.training.t-state
     basis: observed_state
     predicate:
       kind: boolean
@@ -311,14 +323,15 @@ assertions:
 objectives:
   c1:
     name: 'T04.1: Which value is real'
-    description: |-
-      Read the supplied training-tank observation and recover how much water it actually contains, distinguishing the measurement from the requested level.
+    description: 'Read the supplied training-tank observation and recover how much water it actually contains, distinguishing
+      the measurement from the requested level.
 
-      Establishes the difference between intention and observation.
+
+      Establishes the difference between intention and observation.'
     agent: participant.operator
     actions:
     - t04.c1
-    targets: &id005
+    targets:
     - features.training.t-state
     success:
       mode: all_of
@@ -329,14 +342,15 @@ objectives:
       - t04.c1
   c2:
     name: 'T04.2: The light behind the number'
-    description: |-
-      Decode the supplied controller status capture and identify the condition preventing the practice outlet from moving.
+    description: 'Decode the supplied controller status capture and identify the condition preventing the practice
+      outlet from moving.
 
-      Connects a compact representation to a meaningful operating condition.
+
+      Connects a compact representation to a meaningful operating condition.'
     agent: participant.operator
     actions:
     - t04.c2
-    targets: &id006
+    targets:
     - features.training.t-state
     success:
       mode: all_of
@@ -347,14 +361,15 @@ objectives:
       - t04.c2
   c3:
     name: 'T04.3: A request is not a movement'
-    description: |-
-      Move the specified bounded amount of water through the training outlet and verify the transfer from the tank's observations.
+    description: 'Move the specified bounded amount of water through the training outlet and verify the transfer
+      from the tank''s observations.
 
-      Connects commands and operating conditions to actual effect.
+
+      Connects commands and operating conditions to actual effect.'
     agent: participant.operator
     actions:
     - t04.c3
-    targets: &id007
+    targets:
     - features.training.t-state
     success:
       mode: all_of
@@ -365,14 +380,15 @@ objectives:
       - t04.c3
   c4:
     name: 'T04.4: Yesterday''s green light'
-    description: |-
-      The training report says the latest outlet test succeeded, but the observations disagree. Determine what actually happened during this attempt and explain the discrepancy through the supplied evidence.
+    description: 'The training report says the latest outlet test succeeded, but the observations disagree. Determine
+      what actually happened during this attempt and explain the discrepancy through the supplied evidence.
 
-      Ends training with a compact investigation into conflicting process claims.
+
+      Ends training with a compact investigation into conflicting process claims.'
     agent: participant.operator
     actions:
     - t04.c4
-    targets: &id008
+    targets:
     - features.training.t-state
     success:
       mode: all_of
@@ -383,8 +399,8 @@ objectives:
       - t04.c4
 workflows:
   c1:
-    description: 'T04.1: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T04.1: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -406,8 +422,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c2:
-    description: 'T04.2: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T04.2: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -429,8 +445,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c3:
-    description: 'T04.3: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T04.3: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -452,8 +468,8 @@ workflows:
         on_success: available
         on_failure: unavailable
   c4:
-    description: 'T04.4: availability follows the evidence/authority alternatives. This independent objective
-      may be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
+    description: 'T04.4: availability follows the evidence/authority alternatives. This independent objective may
+      be revisited when facts change; no campaign-wide sequence or deadline is imposed.'
     start: requirements
     steps:
       requirements:
@@ -479,52 +495,65 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This is a measurement-literacy task. The intended solution is to distinguish a
+    procedure_basis: 'This is a measurement-literacy task. The intended solution is to distinguish a
+
       setpoint from the independent observation and bind the reported volume to its
-      sample and units, using the supplied HMI and tag legend.
+
+      sample and units, using the supplied HMI and tag legend.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t04.c1
       - features.training.t-state
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The training HMI displays a requested level alongside a timestamped tank
-        observation from a deterministic practice model. The observation includes tag,
-        sample ID, engineering units, value, and quality.
-      support_refs: *id005
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: 'The training HMI displays a requested level alongside a timestamped tank
 
-        The display is read-only and contains a small synthetic trace. Reset restores
-        the same deterministic sample sequence and clears evidence events.
+        observation from a deterministic practice model. The observation includes tag,
+
+        sample ID, engineering units, value, and quality. The immutable VC-017 record is
+
+        served at `/captures/volume.json`: sample VS-017 measures 1,200 L with good
+
+        quality while its requested volume is 1,000 L. `/field-guide.md` defines the
+
+        fields. This capture is not the live tank.'
+      support_refs:
+      - features.training.t-state
+      - content.training-state-content.index
+      - content.training-state-content.field-guide
+      - content.training-state-content.captures-volume
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The capture is immutable and separate from the writable practice tank.
+
+        Practice requests cannot alter this recorded sample.'
       support_refs:
       - features.training.t-state
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the measured volume bound to its sample and units. A target setting or unitless
-        guess is insufficient.
-      target_refs: *id005
+      description: Recover the measured volume bound to its sample and units. A target setting or unitless guess
+        is insufficient.
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c1
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        Scoring accepts the observation's sample ID, measured value, and unit only when
-        they match the current practice trace. It adds no control authority or mutable
-        state.
-      target_refs: *id001
+      description: 'The capture binds its measured volume to sample ID, engineering units,
+
+        quality, and timestamp. The requested level is a separate field and is not
+
+        substituted for the measurement.'
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c1
     failure_classes:
@@ -538,53 +567,73 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This is a bounded protocol-and-documentation interpretation exercise. The
+    procedure_basis: 'This is a bounded protocol-and-documentation interpretation exercise. The
+
       intended solution decodes the captured status with the matching controller
+
       revision and correlates the asserted bit with the outlet state, rather than
-      selecting an alarm label by guesswork.
+
+      selecting an alarm label by guesswork.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t04.c2
       - features.training.t-state
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The practice controller publishes a compact status word and a versioned legend
-        alongside its HMI diagram. The captured record represents one outlet, one
-        sample time, and the condition that blocks a requested practice transition.
-      support_refs: *id006
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: 'The practice controller publishes a compact status word and a versioned legend
 
-        Only a recorded status capture is exposed. It cannot alter the controller or
-        issue a command, and reset restores the exact trace and legend.
+        alongside its HMI diagram. The captured record represents one outlet, one
+
+        sample time, and the condition that blocks a requested practice transition.
+
+        The immutable SC-018 record is served at `/captures/status.json`; its TR-1
+
+        status word is 5, meaning ready and service hold, with the outlet closed.
+
+        The matching bit legend is published at `/field-guide.md`. No other controller
+
+        revision is needed to interpret this small recorded case.'
+      support_refs:
+      - features.training.t-state
+      - content.training-state-content.index
+      - content.training-state-content.field-guide
+      - content.training-state-content.captures-status
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The capture and its legend are immutable records, separate from the live
+
+        practice view. Reading this capture cannot alter the controller or issue a
+
+        command. The live view supplies its own current status and matching legend.'
       support_refs:
       - features.training.t-state
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary
-        alarm from the legend does not count.
-      target_refs: *id006
+      description: Identify the actual blocking condition and its state in the capture. Selecting an arbitrary alarm
+        from the legend does not count.
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c2
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        The player submits the sample ID, controller revision, blocking condition, and
-        its state. The score verifies that tuple against the practice trace and makes
-        the condition visible for T04.3.
-      target_refs: *id002
+      description: 'The capture binds one status word to its sample ID and controller revision.
+
+        The matching legend identifies the asserted blocking condition. Reading this
+
+        record does not reveal, change, or authorize anything in the live practice
+
+        application; that application already exposes its own status and legend.'
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c2
     failure_classes:
@@ -598,55 +647,81 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      This is a safe control-verification task, not an authorization bypass. The
-      intended solution is to clear the condition learned in T04.2 through the normal
-      practice workflow, request the specified bounded transfer, and validate the
-      result against observations.
+    procedure_basis: 'This is a safe control-verification task, not an authorization bypass. The
+
+      intended solution is to inspect the live status and its available legend,
+
+      clear the condition through the normal practice workflow, request the specified bounded transfer, and validate
+      the
+
+      result against observations.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t04.c3
       - features.training.t-state
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        The training HMI drives a deterministic isolated tank-and-outlet practice model.
-        It exposes a documented request interface, operating bounds, accepted/rejected
-        command record, and independently published tank observations.
-      support_refs: *id007
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: 'The training HMI drives a deterministic isolated tank-and-outlet practice model.
 
-        The practice model is per-player, has fixed water and movement bounds, and
-        cannot reach any campaign control state. Reset restores the initial tank volume,
-        mode, and trace history.
+        It exposes a documented request interface, operating bounds, accepted/rejected
+
+        command record, and independently published tank observations. The interface
+
+        and numerical contract are published at `/field-guide.md`; the live view is
+
+        `/practice` and its current state is `/api/practice/state`. Initial tank PT-01
+
+        contains 1,200 L, is ready, has a service hold, and has its outlet closed.
+
+        The requested 200 L transfer leaves 1,000 L and a closed outlet after 10 seconds
+
+        at 20 L/s. The server retains its request register and independent observation
+
+        register. Read-only captures and the report replay belong to other tank IDs.'
+      support_refs:
+      - features.training.t-state
+      - content.training-state-content.index
+      - content.training-state-content.field-guide
+      - content.training-state-content.practice-initial
+      - content.training-state-config-content.state-service-contract-json
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The practice model belongs to the individual workspace and cannot reach any
+
+        campaign control state. No automatic rewind or refilling follows a transfer.
+
+        Initial state is established once when the environment is prepared; subsequent
+
+        state changes occur only through the documented operating controls.'
       support_refs:
       - features.training.t-state
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Demonstrate the requested transfer and final outlet state within the published bounds.
-        An accepted request alone is insufficient; no campaign authority is granted.
-      target_refs: *id007
+      description: Demonstrate the requested transfer and final outlet state within the published bounds. An accepted
+        request alone is insufficient; no campaign authority is granted.
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c3
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        Completion requires an accepted request, final outlet state, and matching
-        before/after measurements showing the requested transfer within tolerance.
-        Scoring consumes the independent practice transition rather than the request
-        receipt alone.
-      target_refs: *id003
+      description: 'The request record, final outlet state, and independent before/after
+
+        measurements identify the same transfer. The observed volume difference must
+
+        match the requested amount within the documented tolerance. Request acceptance
+
+        alone does not establish physical movement in the practice model.'
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c3
     failure_classes:
@@ -660,53 +735,81 @@ action_contracts:
     semantic_version: 1.0.0
     lifecycle_state: draft
     behavioral_granularity: aggregate
-    procedure_basis: |-
-      The reporting job correlates a stale accepted request with the latest test
+    procedure_basis: 'The reporting job correlates a stale accepted request with the latest test
+
       record, ignoring the later blocked transition. The intended solution is a
+
       timeline reconstruction from the supplied records; T04.3 is neither required
-      nor sufficient because this card uses a separate attempt.
+
+      nor sufficient because this card uses a separate attempt.'
     realization_profile: backend-declared
-    fidelity_claim: The authored mechanism, normal behavior, proof, authority limits, and reset requirements
-      are required. Hosting and their implementation remain backend-declared.
+    fidelity_claim: The authored mechanism, normal behavior, observable outcome, and authority boundaries constrain
+      realization. Validation is not evidence that the application has been built or that the mechanism works.
     preconditions:
     - precondition_id: eligibility
       precondition_class: authority
-      description: Satisfy one complete alternative in the referenced workflow and obtain the required
-        scoped access to every listed surface.
+      description: Satisfy one complete alternative in the referenced workflow and obtain the required scoped access
+        to every listed surface.
       support_refs:
       - workflows.t04.c4
       - features.training.t-state
     - precondition_id: normal-surface
       precondition_class: target
-      description: |-
-        A training report records a green test outcome while the same attempt has an
-        immutable controller request, HMI status capture, and independent observation
-        trace. The report's author and generation timestamp are ordinary seeded data.
-      support_refs: *id008
-    - precondition_id: boundaries-and-reset
-      precondition_class: realization
-      description: |-
-        These are requirements on the realized environment. Apply reset behavior only when a participant reset is requested, not on challenge completion.
+      description: 'A training report records a green test outcome while the same attempt has an
 
-        All records are read-only training evidence and the report cannot be edited.
-        Reset removes player conclusions only; it does not rewrite the discrepancy.
+        immutable controller request, HMI status capture, and independent observation
+
+        trace. The report''s author and generation timestamp are ordinary seeded data.
+
+        The desk publishes `/replay/report.json`, `/replay/requests.json`, and
+
+        `/replay/observations.csv`. OR-042 concerns AT-042/RQ-042 on tank RT-02 but uses
+
+        the accepted RQ-041 record from the preceding hour. AT-042 was rejected with a
+
+        service hold; its independent samples retain 1,000 L and a closed outlet.
+
+        The earlier accepted attempt really moved 200 L, so the source record is stale
+
+        rather than fabricated. No report generator needs to run to establish this
+
+        authored historical discrepancy.'
+      support_refs:
+      - features.training.t-state
+      - content.training-state-content.index
+      - content.training-state-content.field-guide
+      - content.training-state-content.replay-report
+      - content.training-state-content.replay-requests
+      - content.training-state-content.replay-observations
+    - precondition_id: boundaries
+      precondition_class: realization
+      description: 'The report, request records, status, and observation trace are immutable.
+
+        They belong to a separate recorded attempt, not the current practice tank.
+
+        Live commands cannot rewrite this discrepancy.'
       support_refs:
       - features.training.t-state
     effects:
     - effect_id: outcome
       effect_class: intended_effect
-      description: Recover the current attempt's result and the evidence establishing the report's error.
-        This separate replay does not reuse T04.3's result for another score.
-      target_refs: *id008
+      description: Recover the recorded attempt's result and the evidence establishing the report's error. This
+        replay is independent of the live practice tank.
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c4
     - effect_id: verified-evidence
       effect_class: evidence_effect
-      description: |-
-        The completion record names the attempt, actual result, stale source record,
-        and contradictory observation. The scorer validates their correlation IDs and
-        timestamps, not a generic claim that the report is wrong.
-      target_refs: *id004
+      description: 'The retained records identify the current attempt, its actual outcome, the
+
+        stale source used in the report, and contradictory measurements. Their
+
+        correlation IDs and timestamps explain the discrepancy without depending on
+
+        the current practice tank or any external grading state.'
+      target_refs:
+      - features.training.t-state
       evidence_refs:
       - evidence_requirements.t04.c4
     failure_classes:
@@ -716,117 +819,3 @@ action_contracts:
     - partial_success
     - backend_error
     - unknown
-relationships:
-  c1-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-state
-    description: T04.1 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t04.c1
-      mode: service
-  c2-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-state
-    description: T04.2 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t04.c2
-      mode: service
-  c3-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-state
-    description: T04.3 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t04.c3
-      mode: service
-  c4-surface-1:
-    type: depends_on
-    source: agents.participant.operator
-    target: features.training.t-state
-    description: T04.4 requires this scoped interaction; it does not confer forwarding or a shell.
-    properties:
-      cinder_kind: challenge_surface
-      objective: objectives.t04.c4
-      mode: service
-content:
-  c1-records-1:
-    type: dataset
-    description: |-
-      T04.1: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
-
-      The training HMI displays a requested level alongside a timestamped tank
-      observation from a deterministic practice model. The observation includes tag,
-      sample ID, engineering units, value, and quality.
-    target: training.t-state
-    tags:
-    - synthetic
-    - t04
-    - c1
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Small training snapshots, readable field and status legends, a private practice tank,
-        and a separate reporting replay case.
-  c2-records-1:
-    type: dataset
-    description: |-
-      T04.2: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
-
-      The practice controller publishes a compact status word and a versioned legend
-      alongside its HMI diagram. The captured record represents one outlet, one
-      sample time, and the condition that blocks a requested practice transition.
-    target: training.t-state
-    tags:
-    - synthetic
-    - t04
-    - c2
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Small training snapshots, readable field and status legends, a private practice tank,
-        and a separate reporting replay case.
-  c3-records-1:
-    type: dataset
-    description: |-
-      T04.3: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
-
-      The training HMI drives a deterministic isolated tank-and-outlet practice model.
-      It exposes a documented request interface, operating bounds, accepted/rejected
-      command record, and independently published tank observations.
-    target: training.t-state
-    tags:
-    - synthetic
-    - t04
-    - c3
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Small training snapshots, readable field and status legends, a private practice tank,
-        and a separate reporting replay case.
-  c4-records-1:
-    type: dataset
-    description: |-
-      T04.4: required in-world starting records. Allocate each record to its actual owning service; this declaration does not duplicate secrets across services or grant their visibility.
-      Small training snapshots, readable field and status legends, a private practice tank, and a separate reporting replay case.
-
-      A training report records a green test outcome while the same attempt has an
-      immutable controller request, HMI status capture, and independent observation
-      trace. The report's author and generation timestamp are ordinary seeded data.
-    target: training.t-state
-    tags:
-    - synthetic
-    - t04
-    - c4
-    - seed-requirement
-    items:
-    - name: starting-records
-      description: Small training snapshots, readable field and status legends, a private practice tank,
-        and a separate reporting replay case.

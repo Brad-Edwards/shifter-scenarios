@@ -1,0 +1,6 @@
+2026-06-19T11:00:00Z job=BLD-204 step=release status=started
+2026-06-19T11:00:01Z npm_registry=http://developer.training:8083
+2026-06-19T11:00:01Z npm_scope=@cinder/delivery-formatter
+2026-06-19T11:00:01Z npm_token=publisher_CINDER_7K4M9Q2V6R8D
+2026-06-19T11:00:02Z error=package-version-already-exists version=1.4.0
+2026-06-19T11:00:02Z job=BLD-204 step=release status=failed

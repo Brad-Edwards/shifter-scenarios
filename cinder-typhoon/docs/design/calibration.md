@@ -6,13 +6,35 @@ and source selection, not measured participant outcomes. See the
 [architecture](challenge-architecture.md), [portfolio](operation-portfolio.md),
 and [source catalog](reference-catalog.md).
 
-## 1. Prototype the decisions that could invalidate the design
+## 1. Design and golden-range gates
 
-Before choosing the full topology, build a few isolated vertical prototypes.
-They can use temporary fixtures; they do not commit the campaign to hosts,
-subnets, products, or deployment size.
+The current work is design correction, not realization. Complete the scenario's
+SDL using native RAE contracts before starting a golden range. Resolve intended
+authority, asset ownership, progression, and contradictory requirements first;
+native parser/validator/processor success is necessary but does not prove that
+the authored design is complete or playable. A suspected missing upstream
+semantic is a blocker to discuss with the scenario owner, not permission to
+introduce a scenario-specific SDL dialect or adapter interpretation.
 
-| Prototype | Question it must answer |
+Use the following sequence. Later materialization implements parts of the
+complete scenario SDL progressively; it does not replace that SDL with a pilot.
+
+| Stage | Required work and exit evidence |
+| --- | --- |
+| 1 | Resolve full-scenario ambiguities, design gaps, contradictions, and asset ownership; replace custom SDL semantics with native RAE contracts; validate with the pinned upstream validators and processor. |
+| 2 | Finish the complete tutorial design, including mechanisms, normal workflows, assets, proof, in-world discoverability, recovery, and player-facing continuity. Run design and SDL tests. |
+| 2.5 | Hand-build the tutorial golden range from the approved design; it becomes the source of bakes. Test ordinary workflows, intended and alternate solves, negative cases, and reset. |
+| 3 | Finish the complete KeplerOps design and its tutorial/campaign joins. Run design and SDL tests. |
+| 3.5 | Extend the same golden range with KeplerOps. Run integration tests and record initial playtest observations. |
+| 4 | Finish the complete ARWC design and its campaign joins, including the reviewed process quantities. Run design and SDL tests. |
+| 4.5 | Extend the golden range with ARWC. Run integration tests and record initial playtest observations. |
+| 5 | Run full integration testing and playtesting across the complete campaign. |
+
+Testing applies at every stage. The questions below are acceptance targets for
+the appropriate design and golden-range stage, not authorization to start
+isolated realization before the design gates are satisfied.
+
+| Acceptance focus | Question it must answer |
 | --- | --- |
 | Six-achievement package and seven-achievement diagnostic entry routes | Does each complete route remain medium with the provided agent? Does it create actual customer execution while preserving the connector interface? Can each route stand alone? |
 | K01/K02 and W09 | Can a first-time participant get an intelligible early win, change something meaningful, and finish a memorable local episode? |
@@ -46,7 +68,7 @@ correctness checks but not fresh-player timing.
 An initial pilot of several testers per cohort diagnoses problems; it does not
 estimate a 300-person completion distribution. Expand the sample after changes,
 using new testers for discovery-time measures. Report sample size, prior
-familiarity with the source challenge, hint use, agent version, elapsed active
+familiarity with the source challenge, staff interventions, agent version, elapsed active
 time, waiting time, retries, and whether the player finished.
 
 Unfinished attempts are observations, not discarded bad data. Retain the time
@@ -185,7 +207,7 @@ trials makes that evidence weaker. Track and diagnose failures rather than
 promising determinism from a temperature setting.
 
 No mandatory campaign gate depends on generated output. For optional AI tasks,
-provide clear retry/reset and hint behavior, and grade independent tool/data
+provide clear retry/reset behavior and discoverable in-world records, and grade independent tool/data
 effects. If a generative task remains unstable, simplify or replace it before
 release. Do not make staff improvisation the expected solve mechanism.
 
@@ -198,10 +220,10 @@ participant agent and optional BYO agents.
 
 ## 8. Production release evidence
 
-Before full authoring commitment, resolve the prototype questions above in
-order of design risk, capture selected source revisions, and validate the
-process story. Prototype ordinary progression first, followed by representative
-source mechanisms and new capstone joins.
+At each design gate, resolve the relevant acceptance questions above, capture
+selected source revisions, and validate the process story. Then use the staged
+golden range to test the approved design. An unresolved design is not permission
+to start an isolated realization experiment.
 Before the event, require:
 
 - A complete challenge-card inventory with honest accepted counts, category and
@@ -214,7 +236,7 @@ Before the event, require:
   recovery. Do not publish invented percentile completion forecasts beforehand.
 - Independent proof and isolation checks, load tests for 300 simultaneous users
   plus measured burst headroom, and reset/recovery rehearsals.
-- Frozen hints and scoring. Operation budgets prevent extra flags from creating
+- Frozen in-world discovery records and scoring. Operation budgets prevent extra flags from creating
   disproportionate points; infrastructure recovery never costs participant points.
 - A costed agent/model plan, failure handling, and staffing based on observed
   support demand rather than a guessed organizer-to-player ratio.

@@ -7,6 +7,16 @@ Alterra Regional Water Company. The challenge briefs now have a first logical
 network architecture with explicit authority boundaries and operational flows;
 this is not yet an executable scenario pack.
 
+The [23 September SDL readiness review](sdl-readiness-review.md) records the
+current blockers, corrections, validation limits, and required design-first
+sequence. Native parser success does not mean the design is complete.
+
+The [25 September Training hand-build gate](training-readiness.md) records the
+complete native Training environment, exact artifacts and weakness mechanics,
+external adjudication/recovery boundary, and passing design gate. It supersedes
+the Training details of the earlier review, not the unfinished KeplerOps and
+ARWC findings.
+
 - [Architecture](challenge-architecture.md): product and story, medium
   entry routes, explicit process-evidence joins, progression, and review responses.
 - [Enterprise world design](../narrative/README.md): the company histories,

@@ -1,0 +1,8 @@
+{
+  "profile": "retired-courier-client",
+  "courier_id": "CR-17",
+  "api_base": "http://workbench.training:8082",
+  "delivery_id": "DL-204",
+  "authorization": "Bearer courier_DL204_CR17_4N7Q2M9K",
+  "scope": ["manifest:DL-204:read"]
+}

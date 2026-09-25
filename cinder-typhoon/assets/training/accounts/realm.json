@@ -1,0 +1,8 @@
+{
+  "realm": "cinder-rehearsal",
+  "accounts": [
+    {"account": "mina.cho", "state": "inactive"},
+    {"account": "rhea.moss", "state": "active", "case_reference": "CASE-7Q4M", "staff_id": "STF-204", "recovery_redeemed": false}
+  ],
+  "unknown_candidates": ["owen.pike"]
+}

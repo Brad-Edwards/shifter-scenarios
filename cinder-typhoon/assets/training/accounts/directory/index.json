@@ -1,0 +1,7 @@
+{
+  "revision": 12,
+  "staff": [
+    {"staff_id": "STF-204", "display_name": "Rhea Moss", "team": "Receiving"},
+    {"staff_id": "STF-317", "display_name": "Dax Hale", "team": "Dispatch"}
+  ]
+}

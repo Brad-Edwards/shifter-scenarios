@@ -38,10 +38,12 @@ from model_topology import (  # noqa: E402
     check_context_scopes, check_structure, make_topology, self_test,
 )
 from sdl_contracts import (  # noqa: E402
-    CONSEQUENCES, CONSEQUENCE_SUFFIX, ELIGIBILITY, FAILURE_CLASSES, RESET_CONTEXT,
+    CONSEQUENCES, CONSEQUENCE_SUFFIX, ELIGIBILITY, FAILURE_CLASSES, RESET_CONTEXT, TRAINING_CONTENT,
     action_refs, capability_sources, evidence_refs, record_specs, technical_sections,
     text_section,
 )
+from validate_k09_handoff import check_k09_handoff  # noqa: E402
+from validate_training import check_training, hand_build_gaps  # noqa: E402
 
 FACT_PREFIX = 'urn:cinder-typhoon:fact:'
 KALI = 'participant.kali'
@@ -171,10 +173,35 @@ def decode(scenario, briefs):
     graph = Graph({'schema_version': 1, 'roots': roots, 'challenges': cards,
                    'capabilities': dict(capabilities)}, briefs)
     placements = defaultdict(list)
+    # Native objective targets are sufficient for Training's service surfaces.
+    # This projection into the old design test model adds no language semantics,
+    # permission grant, network policy, or materialization adapter.
+    for key, objective in scenario.objectives.items():
+        if key.startswith(('t01.', 't02.', 't03.', 't04.')):
+            for ref in objective.targets:
+                require(ref in feature_endpoints and
+                        enum(scenario.features[ref.removeprefix('features.')].type) == 'service',
+                        f'Training target is not a declared service feature: {key}')
+                placements[card_id(key)].append(Surface(feature_endpoints[ref], 'service'))
+    access = scenario.agents[ACTOR].interactive_access
+    require('workstation' in access and access['workstation'].target_ref == 'nodes.' + KALI
+            and enum(access['workstation'].channel) == 'ssh', 'Missing native workstation access')
+    model.contexts['player'] = Context('player', 'player', ((),), 'workspace')
     for key, relation in scenario.relationships.items():
         props = relation.properties
         kind = props.get('cinder_kind')
-        if kind == 'challenge_surface':
+        if key.startswith('flows-participant.'):
+            require(not props and enum(relation.type) == 'connects_to'
+                    and relation.source == 'nodes.' + KALI
+                    and relation.target in feature_endpoints
+                    and relation.target.startswith('features.training.'),
+                    f'Invalid native Training connection: {key}')
+            model.links.append(Link(key.split('.', 1)[1], 'player',
+                                    feature_endpoints[relation.target],
+                                    ('service', 'artifact'), ((),), 'access', relation.description))
+        elif kind == 'challenge_surface':
+            require(not key.startswith(('t01.', 't02.', 't03.', 't04.')),
+                    f'Training reintroduces private surface semantics: {key}')
             require(set(props) == {'cinder_kind', 'objective', 'mode'} and enum(relation.type) == 'depends_on',
                     f'Unknown surface contract: {key}')
             require(relation.source == 'agents.' + ACTOR, f'Surface uses another actor: {key}')
@@ -241,7 +268,8 @@ def check_expected(scenario, briefs, expected_graph, expected_model):
             and enum(access['workstation'].channel) == 'ssh', 'Missing or changed Kali access')
     kali = scenario.nodes[KALI]
     require(enum(kali.os) == 'linux' and str(kali.os_distribution) == 'x-kali:kali', 'Kali OS requirement changed')
-    require(not scenario.infrastructure[KALI].links, 'Kali has an undeclared direct subnet attachment')
+    require(scenario.infrastructure[KALI].links == ['training.subnet'],
+            'Kali has an undeclared direct subnet attachment')
     require(set(scenario.action_contracts) == set(scenario.objectives), 'Missing action contracts')
     require(not scenario.scripts, 'Unexpected continuously timed scenario script')
     require(set(scenario.evidence_requirements) == set(scenario.objectives) |
@@ -303,6 +331,8 @@ def check_expected(scenario, briefs, expected_graph, expected_model):
         require(inject.name == name and inject.environment == ['nodes.' + ref for ref in owners]
                 and inject.description == description + CONSEQUENCE_SUFFIX,
                 f'Consequence effect drift: {ident}')
+    check_k09_handoff(scenario, briefs, graph, model)
+    check_training(scenario, briefs)
     return graph, model
 
 
@@ -328,10 +358,13 @@ def check_action_contract(scenario, key, brief, model, ident):
     if technical:
         preconditions.extend([
             {'precondition_id': 'normal-surface', 'precondition_class': 'target',
-             'description': technical['Surface and normal behavior'], 'support_refs': targets,
+             'description': technical['Surface and normal behavior'],
+             'support_refs': targets + ['content.' + ref for ref in TRAINING_CONTENT.get(ident, ())],
              'evidence_refs': []},
-            {'precondition_id': 'boundaries-and-reset', 'precondition_class': 'realization',
-             'description': RESET_CONTEXT + technical['Boundaries and reset'],
+            {'precondition_id': 'boundaries' if ident.startswith('T') else 'boundaries-and-reset',
+             'precondition_class': 'realization',
+             'description': technical['Boundaries'] if ident.startswith('T') else
+                            RESET_CONTEXT + technical['Boundaries and reset'],
              'support_refs': list(dict.fromkeys(targets + sources)), 'evidence_refs': []},
         ])
         effects.append({'effect_id': 'verified-evidence', 'effect_class': 'evidence_effect',
@@ -421,7 +454,12 @@ def check_compiled_open(instantiated, runtime):
             require(path in requirements and requirements[path].explicitness is ExplicitnessClass.OPEN,
                     f'Unspecified realization is not open after compilation: {path}')
         path = f'nodes.{key}.os'
-        if key != KALI:
+        if key in {'training.t-workbench', 'training.t-accounts',
+                   'training.t-state', 'training.t-developer'}:
+            require(enum(node.os) == 'linux' and
+                    requirements[path].explicitness is ExplicitnessClass.EXACT,
+                    f'Training POSIX ownership requires exact Linux intent: {key}')
+        elif key != KALI:
             require(requirements[path].explicitness is ExplicitnessClass.OPEN, f'Unspecified OS closed: {key}')
     for suffix in ('os', 'os_distribution'):
         requirement = requirements[f'nodes.{KALI}.{suffix}']
@@ -578,18 +616,25 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test', action='store_true')
     parser.add_argument('--pack-check', action='store_true')
+    parser.add_argument('--pack-max-members', type=int, default=1024,
+                        help='Explicit upstream pack file/directory budget; default remains 1024')
+    parser.add_argument('--training-hand-build-gate', action='store_true',
+                        help='Also fail for unresolved Training starting records and service placement')
     args = parser.parse_args()
     require(version('raes') == '5.0.0', 'Use pinned raes==5.0.0 for reproducible validation')
     entry = PACK / 'sdl/cinder-typhoon.sdl.yaml'
     count = check_authored_open(entry)
     if args.pack_check:
         require(version('raes-env-packs') == '6.1.0', 'Use pinned raes-env-packs==6.1.0')
-        from raes_env_packs.validation import _validate_pack_for_author_ci
-        result, scenarios = _validate_pack_for_author_ci(PACK)
+        from raes_env_packs.validation import _validate_pack_for_author_ci, PackValidationLimits
+        require(args.pack_max_members > 0, 'Pack member budget must be positive')
+        result, scenarios = _validate_pack_for_author_ci(
+            PACK, limits=PackValidationLimits(max_members=args.pack_max_members))
         require(result.ok, f'Environment-pack author validation failed: {result.errors}')
         require(len(scenarios) == 1, 'Expected exactly one pack scenario entry point')
         scenario = scenarios[0]
-        print('PASS: env-packs 6.1.0 author validation (local imports enabled)', flush=True)
+        print(f'PASS: env-packs 6.1.0 author validation (local imports enabled; '
+              f'member budget {args.pack_max_members})', flush=True)
     else:
         scenario = parse_sdl_file(entry)
     print(f'PASS: RAE 5.0.0 parsed and composed {count} modules', flush=True)
@@ -623,6 +668,10 @@ def main():
         self_test(graph, model)
     print('PASS: eight narrative collections retain compiled source and service bindings', flush=True)
     print('Static proof only: assets are authored; runtime materialization and deployment remain untested.', flush=True)
+    if args.training_hand_build_gate:
+        gaps = hand_build_gaps(scenario)
+        require(not gaps, 'Training hand-build gate has gaps:\n- ' + '\n- '.join(gaps))
+        print('PASS: Training hand-build design gate; no materialization was performed', flush=True)
 
 
 if __name__ == '__main__':

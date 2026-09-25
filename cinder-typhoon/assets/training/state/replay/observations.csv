@@ -1,0 +1,6 @@
+sample_id,observed_at,tank_id,attempt_id,request_id,observed_volume_l,unit,outlet_position,status_word,quality
+RS-041-0,2026-06-18T08:59:59Z,RT-02,AT-041,RQ-041,1200.0,L,closed,1,good
+RS-041-1,2026-06-18T09:00:05Z,RT-02,AT-041,RQ-041,1100.0,L,open,11,good
+RS-041-2,2026-06-18T09:00:10Z,RT-02,AT-041,RQ-041,1000.0,L,closed,1,good
+RS-042-0,2026-06-18T09:59:59Z,RT-02,AT-042,RQ-042,1000.0,L,closed,5,good
+RS-042-1,2026-06-18T10:00:01Z,RT-02,AT-042,RQ-042,1000.0,L,closed,5,good

@@ -1,0 +1,12 @@
+{
+  "capture_id": "SC-018",
+  "tank_id": "CT-01",
+  "sample_id": "SS-018",
+  "observed_at": "2026-06-18T08:00:01Z",
+  "controller_revision": "TR-1",
+  "status_word": 5,
+  "outlet_position": "closed",
+  "request_id": "CR-018",
+  "request_result": "rejected",
+  "quality": "good"
+}

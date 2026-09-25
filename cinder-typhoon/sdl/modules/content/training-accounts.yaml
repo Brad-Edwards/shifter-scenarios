@@ -1,0 +1,183 @@
+name: cinder-training-accounts-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/training-accounts-content
+  version: 0.1.0
+  exports:
+    content:
+    - accounts-index-md
+    - accounts-candidates-md
+    - accounts-directory-index-json
+    - accounts-directory-app-js
+    - accounts-directory-assignment-stf-204-json
+    - accounts-realm-json
+    - accounts-handover-rhea-moss-md
+    - accounts-assignment-asg-204-json
+    - accounts-assignment-asg-317-json
+    - accounts-service-contract-json
+realization:
+  default: open
+content:
+  accounts-index-md:
+    type: file
+    target: training.t-accounts
+    path: /srv/cinder-accounts/public/index.md
+    description: Exact authored starting artifact.
+    text: '# Rehearsal identity desk
+
+
+      - [Candidate notes](candidates.md)
+
+      - [Public staff directory](directory/)
+
+      - Account lookup: `POST /api/recovery/lookup`
+
+      - Account recovery: `POST /api/recovery/redeem`
+
+      - Own handover: `GET /api/handover`
+
+      - Own assignments: `GET /api/assignments`
+
+
+      The lookup accepts `{"account":"exact.handle"}`. Recovery accepts exactly
+
+      `{"account":"...","case_fragment":"...","staff_detail":"..."}`.
+
+      Authenticated requests use the session returned by recovery, either through the
+
+      `CINDER_REHEARSAL_SESSION` cookie or as a bearer value.
+
+      '
+    sensitive: false
+  accounts-candidates-md:
+    type: file
+    target: training.t-accounts
+    path: /srv/cinder-accounts/public/candidates.md
+    description: Exact authored starting artifact.
+    text: '# Return-to-duty notes
+
+
+      Three copied handles need review after the roster import:
+
+
+      - `mina.cho` — departure paperwork was received.
+
+      - `rhea.moss` — returned for the Bay 4 rehearsal.
+
+      - `owen.pike` — the spelling was copied from an unsigned note.
+
+
+      The identity desk lookup accepts one exact handle at a time. Automated batches
+
+      are not accepted.
+
+      '
+    sensitive: false
+  accounts-directory-index-json:
+    type: file
+    target: training.t-accounts
+    path: /srv/cinder-accounts/public/directory/index.json
+    description: Exact authored starting artifact.
+    text: "{\n  \"revision\": 12,\n  \"staff\": [\n    {\"staff_id\": \"STF-204\", \"display_name\": \"Rhea Moss\"\
+      , \"team\": \"Receiving\"},\n    {\"staff_id\": \"STF-317\", \"display_name\": \"Dax Hale\", \"team\": \"\
+      Dispatch\"}\n  ]\n}\n"
+    sensitive: false
+  accounts-directory-app-js:
+    type: file
+    target: training.t-accounts
+    path: /srv/cinder-accounts/public/directory/app.js
+    description: Exact authored starting artifact.
+    text: "export async function loadPublicDirectory() {\n  return fetch('/api/directory/staff').then((response)\
+      \ => response.json());\n}\n\nexport async function loadCoordinatorAssignment(staffId) {\n  return fetch(`/api/directory/staff/${staffId}/assignment`).then((response)\
+      \ => response.json());\n}\n"
+    sensitive: false
+  accounts-directory-assignment-stf-204-json:
+    type: file
+    target: training.t-accounts
+    path: /var/lib/cinder-accounts/directory/assignment-STF-204.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"staff_id\": \"STF-204\",\n  \"staff_record_revision\": 8,\n  \"account\": \"rhea.moss\",\n  \"\
+      assignment_id\": \"ASG-204\",\n  \"staff_detail\": \"Blue cabinet 17\",\n  \"rehearsal\": \"Bay 4 receiving\"\
+      \n}\n"
+    sensitive: true
+  accounts-realm-json:
+    type: file
+    target: training.t-accounts
+    path: /var/lib/cinder-accounts/realm.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"realm\": \"cinder-rehearsal\",\n  \"accounts\": [\n    {\"account\": \"mina.cho\", \"state\":\
+      \ \"inactive\"},\n    {\"account\": \"rhea.moss\", \"state\": \"active\", \"case_reference\": \"CASE-7Q4M\"\
+      , \"staff_id\": \"STF-204\", \"recovery_redeemed\": false}\n  ],\n  \"unknown_candidates\": [\"owen.pike\"\
+      ]\n}\n"
+    sensitive: true
+  accounts-handover-rhea-moss-md:
+    type: file
+    target: training.t-accounts
+    path: /var/lib/cinder-accounts/handovers/rhea.moss.md
+    description: Exact authored private service data or configuration.
+    text: '# Rhea Moss private handover
+
+
+      Subject: `rhea.moss`
+
+
+      Your receiving assignment is `ASG-204`. It is paired with dispatch assignment
+
+      `ASG-317` for the sealed rehearsal transfer. Use the assignment desk to read
+
+      your own receiving brief.
+
+      '
+    sensitive: true
+  accounts-assignment-asg-204-json:
+    type: file
+    target: training.t-accounts
+    path: /var/lib/cinder-accounts/assignments/ASG-204.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"assignment_id\": \"ASG-204\",\n  \"owner\": \"rhea.moss\",\n  \"revision\": 3,\n  \"title\": \"\
+      Bay 4 receiving\",\n  \"sealed_brief\": \"Receive three sealed parcels from CR-17 and retain the manifest\
+      \ audit.\",\n  \"paired_assignment_id\": \"ASG-317\"\n}\n"
+    sensitive: true
+  accounts-assignment-asg-317-json:
+    type: file
+    target: training.t-accounts
+    path: /var/lib/cinder-accounts/assignments/ASG-317.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"assignment_id\": \"ASG-317\",\n  \"owner\": \"dax.hale\",\n  \"revision\": 5,\n  \"title\": \"\
+      Dispatch transfer\",\n  \"sealed_brief\": \"Release DL-204 only after the Bay 4 courier and seal values agree.\"\
+      \n}\n"
+    sensitive: true
+  accounts-service-contract-json:
+    type: file
+    target: training.t-accounts
+    path: /etc/cinder-accounts/service-contract.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"version\": 1,\n  \"realm_file\": \"/var/lib/cinder-accounts/realm.json\",\n  \"audit_directory\"\
+      : \"/var/lib/cinder-accounts/audit\",\n  \"lookup\": {\n    \"route\": \"/api/recovery/lookup\",\n    \"method\"\
+      : \"POST\",\n    \"body\": {\"account\": \"string\"},\n    \"exact_fields\": true,\n    \"maximum_requests_per_minute\"\
+      : 6,\n    \"active\": {\"status\": 200, \"fields\": [\"account\", \"state\", \"case_fragment\"], \"case_fragment\"\
+      : \"CASE-7Q4M\"},\n    \"inactive\": {\"status\": 410, \"fields\": [\"account\", \"state\"]},\n    \"unknown\"\
+      : {\"status\": 404, \"fields\": [\"state\"]},\n    \"audit_fields\": [\"observed_at\", \"submitted_account\"\
+      , \"response_class\", \"status\"]\n  },\n  \"directory_detail\": {\n    \"route\": \"/api/directory/staff/{staff_id}/assignment\"\
+      ,\n    \"method\": \"GET\",\n    \"authentication_checked\": false,\n    \"allowed_without_authentication\"\
+      : \"STF-204\",\n    \"unrelated_known_status\": 403,\n    \"unknown_status\": 404,\n    \"audit_fields\":\
+      \ [\"observed_at\", \"staff_id\", \"staff_record_revision\", \"status\"]\n  },\n  \"recovery\": {\n    \"\
+      route\": \"/api/recovery/redeem\",\n    \"method\": \"POST\",\n    \"body\": {\"account\": \"string\", \"\
+      case_fragment\": \"string\", \"staff_detail\": \"string\"},\n    \"exact_fields\": true,\n    \"accepted_tuple\"\
+      : [\"rhea.moss\", \"CASE-7Q4M\", \"Blue cabinet 17\"],\n    \"single_redemption\": true,\n    \"insufficient_or_wrong_status\"\
+      : 403,\n    \"already_redeemed_status\": 409,\n    \"success_status\": 201,\n    \"session\": {\n      \"\
+      subject\": \"rhea.moss\",\n      \"random_bytes\": 32,\n      \"encoding\": \"base64url-no-padding\",\n  \
+      \    \"cookie\": \"CINDER_REHEARSAL_SESSION\",\n      \"http_only\": true,\n      \"same_site\": \"Strict\"\
+      ,\n      \"path\": \"/\",\n      \"expires\": null,\n      \"persist_for_environment_lifetime\": true\n  \
+      \  },\n    \"audit_fields\": [\"observed_at\", \"account\", \"factor_match\", \"session_subject\", \"status\"\
+      ]\n  },\n  \"handover\": {\n    \"route\": \"/api/handover\",\n    \"method\": \"GET\",\n    \"session_required\"\
+      : true,\n    \"resource_binding\": \"handover/{session.subject}\",\n    \"other_subject_status\": 403,\n \
+      \   \"audit_fields\": [\"observed_at\", \"session_subject\", \"document_subject\", \"status\"]\n  },\n  \"\
+      assignments\": {\n    \"list_route\": \"/api/assignments\",\n    \"brief_route\": \"/api/assignments/{assignment_id}/brief\"\
+      ,\n    \"method\": \"GET\",\n    \"session_required\": true,\n    \"list_filter\": \"owner equals session.subject\"\
+      ,\n    \"brief_authorization\": \"Allow when the session subject owns any assignment; do not compare the requested\
+      \ assignment owner.\",\n    \"known_assignments\": [\"ASG-204\", \"ASG-317\"],\n    \"unknown_status\": 404,\n\
+      \    \"unauthenticated_status\": 401,\n    \"audit_fields\": [\"observed_at\", \"session_subject\", \"assignment_id\"\
+      , \"document_revision\", \"status\"]\n  }\n}\n"
+    sensitive: true

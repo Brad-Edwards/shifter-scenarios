@@ -25,11 +25,14 @@ realization:
 injects:
   reservoir-release:
     name: Cairn Reach reserve incident
-    description: The verified outlet transition advances this participant’s persisted reservoir stage.
-      Independent gate-position and usable-volume records show the bounded release; reserve planning reports
-      financial loss and water restrictions. A command acknowledgement alone does not establish this result.
-      No catastrophic effects. Apply once per validated participant event; repeated evidence is idempotent.
-      No continuous process simulation.
+    description: Retain and present this participant’s already verified reservoir incident and continuity
+      notice. The accepted in-world command produces the persisted process transition and independent
+      gate-position and usable-volume records; reserve planning calculates financial loss and water
+      restrictions before W30.2 is satisfied. This post-completion event neither commands the gates nor
+      creates the evidence required to trigger itself. Replaying it cannot release more water or duplicate
+      the financial loss. A command acknowledgement alone does not establish the result. No catastrophic
+      effects. Apply once per validated participant event; repeated evidence is idempotent. No continuous
+      process simulation.
     environment:
     - nodes.a-control.a-reservoir
     - nodes.a-control.a-instruments

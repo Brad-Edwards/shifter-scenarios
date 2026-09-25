@@ -1,5 +1,10 @@
 # SDL validation record
 
+This is a historical validation snapshot, not current readiness approval.
+See the [23 September readiness review](design/sdl-readiness-review.md) for the
+remaining private SDL interpretations, incomplete designs, and updated access
+requirements. The counts and digest below identify the earlier snapshot.
+
 The Cinder Typhoon SDL is an authoring draft of the in-world scenario. Its
 reference implementation is [OpenRAE/rae v5.0.0](https://github.com/OpenRAE/rae/tree/v5.0.0),
 commit `9773b262771e0d79c9e083cb3e05b33f165201b7`. Environment-pack author validation

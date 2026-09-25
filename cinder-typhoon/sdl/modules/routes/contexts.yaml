@@ -6,7 +6,6 @@ module:
   version: 0.1.0
   exports:
     relationships:
-    - context-player
     - context-developer
     - context-runner
     - context-indexer
@@ -33,7 +32,6 @@ module:
     - context-program-output
     - context-assistant-review
     workflows:
-    - context-player
     - context-developer
     - context-runner
     - context-indexer
@@ -62,16 +60,6 @@ module:
 realization:
   default: open
 relationships:
-  context-player:
-    type: authenticates_with
-    source: agents.participant.operator
-    target: nodes.participant.kali
-    description: 'player: workspace context; only the listed interaction modes.'
-    properties:
-      cinder_kind: context
-      context_kind: workspace
-      modes: service,artifact,read,delivery,control,report,telemetry
-      guard: workflows.contexts.context-player
   context-developer:
     type: authenticates_with
     source: agents.participant.operator
@@ -323,13 +311,6 @@ relationships:
       modes: service
       guard: workflows.contexts.context-assistant-review
 workflows:
-  context-player:
-    description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
-      not acquire its principal.
-    start: available
-    steps:
-      available:
-        type: end
   context-developer:
     description: Acquisition of this scoped execution/delegation context. Reaching a service alone does
       not acquire its principal.

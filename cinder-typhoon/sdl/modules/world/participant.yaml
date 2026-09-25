@@ -38,8 +38,48 @@ nodes:
     description: One individual operator’s Kali attacker workstation. The provided co-hacking agent and
       optional personal tools act through this workspace and the same earned authorities. Target systems
       are separate; no automatic access to all subnets.
+    runtime:
+      filesystem_inventory:
+      - path: /home/cinder/TRAINING.md
+        entry_type: file
+        owner_user: cinder
+        owner_group: cinder
+        mode: '0444'
+        content_digest: 72e66a8561e4579801a66b1730c6bcd393799c5b1360465c0fb1cdbe86948da6
+        digest_algorithm: sha256
+        stability: stable
+        sensitivity: plain
+      local_identity:
+        users:
+        - username: cinder
+          primary_group: cinder
+          locked: false
+          no_login: false
+        groups:
+        - name: cinder
+          members:
+          - cinder
+      network:
+        hostname: kali
+        domainname: training
+        endpoints:
+        - network: training.subnet
+          ip_address: 10.77.40.10
+          ip_prefix_length: 24
+          gateway: 10.77.40.1
+          aliases:
+          - kali
+          dns_names:
+          - kali.training
+          backend:
+            driver: bridge
+            description: Isolated Training bridge.
+          description: Static participant endpoint on the Training segment.
 infrastructure:
-  kali: {}
+  kali:
+    links:
+    - training.subnet
+    description: Attached to the isolated Training segment for the optional rehearsal systems.
 propositions:
   training:
     description: The operator has the supplied Cinder training workspace.

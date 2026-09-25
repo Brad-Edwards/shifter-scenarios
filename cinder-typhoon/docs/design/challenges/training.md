@@ -10,8 +10,16 @@ a short identity chain and T03 a publication branch. T04's replay is independent
 of its writable practice tank. Players may leave training for the supplied
 KeplerOps foothold at any time and return later.
 
-Session setup and ordinary tool help are unscored. Technical design and all
-three hints in each document remain empty.
+All sixteen cards now have complete technical designs. Submission adjudication
+belongs to the external event system. Fault recovery is an organizer action,
+not a participant operation, completion effect, or SDL inject. Only a separately
+justified in-world operation belongs in application behavior. Native objective
+assertions describe observable world outcomes.
+
+See the [Training hand-build gate](../training-readiness.md) and
+[authored artifact placement](../../../assets/training/README.md). The gate must
+fail if any mechanism, required asset, or access path again requires invention.
+It currently passes; no range build has started.
 
 ## Operations
 

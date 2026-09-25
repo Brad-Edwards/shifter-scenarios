@@ -155,11 +155,14 @@ reservoir. This supplies the existing evidence joins without putting every
 answer on a single control screen. Instrumentation remains outside the command
 broker's write scope.
 
-The reservoir and reporting systems expose persisted stage state. Accepted
-completion events change that state; there is no continuously running plant
-simulation. Earning CONTROL alone does not open the gates. The main release
-requires the existing process interpretation, mode, consequence plan, and
-completed release action. Optional rehearsals and reporting outcomes remain
+The reservoir and reporting systems expose persisted stage state. An accepted
+in-world command produces a discrete process transition and independently
+observed results; scoring observes those results. The completion-triggered
+incident event retains and presents the already verified result, without
+changing the gates or applying the loss again. There is no continuously running
+plant simulation. Earning CONTROL alone does not open the gates. The main
+release requires the existing process interpretation, mode, consequence plan,
+and executed release action. Optional rehearsals and reporting outcomes remain
 separate from that main result.
 
 ## Model check

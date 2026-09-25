@@ -1,0 +1,9 @@
+{
+  "channel": "rehearsal",
+  "revision": 6,
+  "package": "@cinder/delivery-formatter",
+  "baseline_version": "1.4.0",
+  "consumer_range": ">=1.4.0 <2.0.0",
+  "prerelease_allowed": false,
+  "selection": "highest compatible SemVer version"
+}

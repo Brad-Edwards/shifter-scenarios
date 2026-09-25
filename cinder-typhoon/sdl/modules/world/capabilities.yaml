@@ -1406,6 +1406,7 @@ evidence_requirements:
     source_refs:
     - features.a-control.a-instruments
     - features.a-control.a-reservoir
+    - features.a-corporate.a-data
     scope: Per-participant in-world evidence; no other participant state.
     boundary_kind: assertion_evaluation
     channel: other
@@ -1428,6 +1429,7 @@ evidence_requirements:
         component_refs:
         - features.a-control.a-instruments
         - features.a-control.a-reservoir
+        - features.a-corporate.a-data
       collection: require
       retention: require
       redaction: redact-secrets

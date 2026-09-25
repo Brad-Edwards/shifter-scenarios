@@ -105,7 +105,9 @@ def check_design_sections(text, status, ident):
     if status == 'Challenge brief':
         require(not technical.strip(), f'Technical content in brief-only stage: {ident}')
     else:
-        for section in TECHNICAL_SECTIONS:
+        sections = tuple('Boundaries' if ident.startswith('T') and section == 'Boundaries and reset'
+                         else section for section in TECHNICAL_SECTIONS)
+        for section in sections:
             parts = re.findall(r'^### ' + re.escape(section) + r'\n(.*?)(?=^### |\Z)',
                                technical, re.M | re.S)
             require(len(parts) == 1 and parts[0].strip(),

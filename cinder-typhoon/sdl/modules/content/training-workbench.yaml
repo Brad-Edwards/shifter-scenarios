@@ -1,0 +1,258 @@
+name: cinder-training-workbench-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/training-workbench-content
+  version: 0.1.0
+  exports:
+    content:
+    - workbench-index-md
+    - workbench-workspace-handover-current-md
+    - workbench-workspace-delivery-tracker-csv
+    - workbench-workspace-repository-seed-json
+    - workbench-dispatch-index-md
+    - workbench-dispatch-notice-dl-204-md
+    - workbench-dispatch-site-webmanifest
+    - workbench-dispatch-current-json
+    - workbench-dispatch-retired-json
+    - workbench-dispatch-amendment-amend-204-json
+    - workbench-courier-profile-json
+    - workbench-courier-request-history-txt
+    - workbench-courier-manifest-dl-204-json
+    - workbench-diagnostics-public-dl-204-json
+    - workbench-diagnostics-internal-dl-204-json
+    - workbench-service-contract-json
+realization:
+  default: open
+content:
+  workbench-index-md:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/public/index.md
+    description: Exact authored starting artifact.
+    text: '# Dispatch rehearsal workbench
+
+
+      The outgoing operator left four work areas:
+
+
+      - [Handover repository](git/handover.git)
+
+      - [Delivery tracker export](workspace/delivery-tracker.csv)
+
+      - [Dispatch desk](http://workbench.training:8081/)
+
+      - [Retired courier client](retired-client/profile.json)
+
+      - [Diagnostic helper](http://workbench.training:8083/api/diagnostics/render?delivery_id=DL-204&view=public/DL-204.json)
+
+
+      The handover repository is read-only. Clone it with:
+
+
+      ```text
+
+      git clone http://workbench.training:8080/git/handover.git
+
+      ```
+
+
+      The current handover is only a blank replacement. Its ordinary repository
+
+      history was retained.
+
+      '
+    sensitive: false
+  workbench-workspace-handover-current-md:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/public/workspace/handover-current.md
+    description: Exact authored starting artifact.
+    text: '# Operator handover
+
+
+      Delivery:
+
+
+      Status:
+
+
+      Notes:
+
+      '
+    sensitive: false
+  workbench-workspace-delivery-tracker-csv:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/public/workspace/delivery-tracker.csv
+    description: Exact authored starting artifact.
+    text: 'delivery_id,customer,service,status,updated_at
+
+      DL-204,Cinder receiving desk,courier rehearsal,awaiting handover,2026-06-18T07:45:00Z
+
+      DL-219,North annex,inventory rehearsal,closed,2026-06-17T16:20:00Z
+
+      '
+    sensitive: false
+  workbench-workspace-repository-seed-json:
+    type: file
+    target: training.t-workbench
+    path: /var/lib/cinder-workbench/repository-seed.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"repository\": \"handover\",\n  \"default_branch\": \"main\",\n  \"object_format\": \"sha1\",\n\
+      \  \"files_mode\": \"100644\",\n  \"commits\": [\n    {\n      \"logical_id\": \"handover-written\",\n   \
+      \   \"parent\": null,\n      \"author_name\": \"Mara Vale\",\n      \"author_email\": \"mara.vale@training.invalid\"\
+      ,\n      \"author_time\": \"2026-06-18T07:30:00Z\",\n      \"committer_name\": \"Mara Vale\",\n      \"committer_email\"\
+      : \"mara.vale@training.invalid\",\n      \"committer_time\": \"2026-06-18T07:30:00Z\",\n      \"message\"\
+      : \"record courier handover\",\n      \"tree\": {\n        \"handover.md\": \"# Operator handover\\n\\nDelivery:\
+      \ DL-204\\n\\nStatus: The sealed manifest is still assigned to courier CR-17. The dispatch amendment was withdrawn\
+      \ from navigation, not from publication.\\n\\nNotes: Finish the rehearsal from the dispatch workbench.\\n\"\
+      \n      }\n    },\n    {\n      \"logical_id\": \"blank-template\",\n      \"parent\": \"handover-written\"\
+      ,\n      \"author_name\": \"Mara Vale\",\n      \"author_email\": \"mara.vale@training.invalid\",\n      \"\
+      author_time\": \"2026-06-18T07:42:00Z\",\n      \"committer_name\": \"Mara Vale\",\n      \"committer_email\"\
+      : \"mara.vale@training.invalid\",\n      \"committer_time\": \"2026-06-18T07:42:00Z\",\n      \"message\"\
+      : \"leave blank handover template\",\n      \"tree\": {\n        \"handover.md\": \"# Operator handover\\\
+      n\\nDelivery:\\n\\nStatus:\\n\\nNotes:\\n\"\n      }\n    }\n  ]\n}\n"
+    sensitive: true
+  workbench-dispatch-index-md:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/index.md
+    description: Exact authored starting artifact.
+    text: '# Dispatch desk
+
+
+      The current navigation contains the [public delivery notice](notice-DL-204.md).
+
+      The prior rehearsal page was withdrawn from the menu during cleanup. Static
+
+      client metadata is still published for offline desk clients.
+
+      '
+    sensitive: false
+  workbench-dispatch-notice-dl-204-md:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/notice-DL-204.md
+    description: Exact authored starting artifact.
+    text: '# Delivery notice DL-204
+
+
+      Courier CR-17 is assigned three sealed rehearsal parcels for the Cinder
+
+      receiving desk. The public notice does not include the bay amendment.
+
+
+      Offline clients load the current and retired content indexes declared by
+
+      `/site.webmanifest`.
+
+      '
+    sensitive: false
+  workbench-dispatch-site-webmanifest:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/site.webmanifest
+    description: Exact authored starting artifact.
+    text: "{\n  \"name\": \"Dispatch desk\",\n  \"start_url\": \"/\",\n  \"content_indexes\": [\n    \"/content/current.json\"\
+      ,\n    \"/content/retired.json\"\n  ]\n}\n"
+    sensitive: false
+  workbench-dispatch-current-json:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/content/current.json
+    description: Exact authored starting artifact.
+    text: "{\n  \"revision\": 7,\n  \"records\": [\n    {\"record_id\": \"NOTICE-204\", \"delivery_id\": \"DL-204\"\
+      , \"path\": \"/notice-DL-204.md\"}\n  ]\n}\n"
+    sensitive: false
+  workbench-dispatch-retired-json:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/content/retired.json
+    description: Exact authored starting artifact.
+    text: "{\n  \"revision\": 3,\n  \"records\": [\n    {\"record_id\": \"AMEND-204\", \"delivery_id\": \"DL-204\"\
+      , \"path\": \"/retired/amendment-AMEND-204.json\", \"state\": \"withdrawn-from-navigation\"}\n  ]\n}\n"
+    sensitive: false
+  workbench-dispatch-amendment-amend-204-json:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/dispatch/retired/amendment-AMEND-204.json
+    description: Exact authored starting artifact.
+    text: "{\n  \"record_id\": \"AMEND-204\",\n  \"revision\": 2,\n  \"delivery_id\": \"DL-204\",\n  \"issued_at\"\
+      : \"2026-06-18T07:10:00Z\",\n  \"receiving_bay\": \"Bay 4\",\n  \"instruction\": \"Hold the sealed parcels\
+      \ for courier CR-17 verification.\"\n}\n"
+    sensitive: false
+  workbench-courier-profile-json:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/public/retired-client/profile.json
+    description: Exact authored starting artifact.
+    text: "{\n  \"profile\": \"retired-courier-client\",\n  \"courier_id\": \"CR-17\",\n  \"api_base\": \"http://workbench.training:8082\"\
+      ,\n  \"delivery_id\": \"DL-204\",\n  \"authorization\": \"Bearer courier_DL204_CR17_4N7Q2M9K\",\n  \"scope\"\
+      : [\"manifest:DL-204:read\"]\n}\n"
+    sensitive: true
+  workbench-courier-request-history-txt:
+    type: file
+    target: training.t-workbench
+    path: /srv/cinder-workbench/public/retired-client/request-history.txt
+    description: Exact authored starting artifact.
+    text: '2026-06-18T07:12:00Z GET /api/deliveries/DL-204/manifest Authorization: Bearer [profile]
+
+      2026-06-18T07:12:00Z 200 object=manifest/DL-204 revision=4
+
+      '
+    sensitive: false
+  workbench-courier-manifest-dl-204-json:
+    type: file
+    target: training.t-workbench
+    path: /var/lib/cinder-workbench/courier/manifest-DL-204.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"manifest_id\": \"MF-204\",\n  \"object_version\": 4,\n  \"delivery_id\": \"DL-204\",\n  \"courier_id\"\
+      : \"CR-17\",\n  \"destination\": \"Cinder receiving desk\",\n  \"parcel_count\": 3,\n  \"seal\": \"CINDER-204-A\"\
+      \n}\n"
+    sensitive: true
+  workbench-diagnostics-public-dl-204-json:
+    type: file
+    target: training.t-workbench
+    path: /var/lib/cinder-workbench/diagnostics/public/DL-204.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"delivery_id\": \"DL-204\",\n  \"state\": \"awaiting handover\",\n  \"parcel_count\": 3,\n  \"\
+      detail\": \"Internal routing detail omitted.\"\n}\n"
+    sensitive: true
+  workbench-diagnostics-internal-dl-204-json:
+    type: file
+    target: training.t-workbench
+    path: /var/lib/cinder-workbench/diagnostics/internal/DL-204.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"summary_id\": \"DS-204-I\",\n  \"revision\": 1,\n  \"delivery_id\": \"DL-204\",\n  \"routing\"\
+      : \"Bay 4 sealed intake\",\n  \"courier_id\": \"CR-17\",\n  \"internal_note\": \"Retain the withdrawn amendment\
+      \ with the manifest audit.\"\n}\n"
+    sensitive: true
+  workbench-service-contract-json:
+    type: file
+    target: training.t-workbench
+    path: /etc/cinder-workbench/service-contract.json
+    description: Exact authored private service data or configuration.
+    text: "{\n  \"version\": 1,\n  \"audit_directory\": \"/var/lib/cinder-workbench/audit\",\n  \"git\": {\n   \
+      \ \"seed\": \"/var/lib/cinder-workbench/repository-seed.json\",\n    \"repository_path\": \"/var/lib/cinder-workbench/handover.git\"\
+      ,\n    \"protocol\": \"git-smart-http\",\n    \"read_only\": true,\n    \"construction\": \"Create commits\
+      \ in listed order with the exact author, committer, UTC time, message, file mode, parent, paths and UTF-8\
+      \ bytes; expose the resulting bare repository.\"\n  },\n  \"dispatch\": {\n    \"root\": \"/srv/cinder-workbench/dispatch\"\
+      ,\n    \"methods\": [\"GET\", \"HEAD\"],\n    \"unknown_status\": 404,\n    \"other_method_status\": 405,\n\
+      \    \"audit_fields\": [\"observed_at\", \"method\", \"path\", \"status\", \"record_id\", \"delivery_id\"\
+      ]\n  },\n  \"courier\": {\n    \"route\": \"/api/deliveries/{delivery_id}/manifest\",\n    \"credential\"\
+      : \"courier_DL204_CR17_4N7Q2M9K\",\n    \"allowed_delivery_id\": \"DL-204\",\n    \"allowed_method\": \"GET\"\
+      ,\n    \"success_status\": 200,\n    \"missing_or_wrong_credential_status\": 401,\n    \"other_delivery_status\"\
+      : 403,\n    \"list_status\": 403,\n    \"write_status\": 405,\n    \"audit_fields\": [\"observed_at\", \"\
+      courier_id\", \"delivery_id\", \"manifest_id\", \"object_version\", \"status\"]\n  },\n  \"diagnostics\":\
+      \ {\n    \"route\": \"/api/diagnostics/render\",\n    \"root\": \"/var/lib/cinder-workbench/diagnostics\"\
+      ,\n    \"delivery_parameter\": \"delivery_id\",\n    \"view_parameter\": \"view\",\n    \"default_view\":\
+      \ \"public/{delivery_id}.json\",\n    \"decision_order\": [\n      \"Require delivery_id to equal DL-204.\"\
+      ,\n      \"Require the raw, not-yet-percent-decoded view value to begin with public/.\",\n      \"Percent-decode\
+      \ view exactly once.\",\n      \"Normalize the decoded relative path beneath the diagnostics root.\",\n  \
+      \    \"Reject a normalized path outside the diagnostics root.\",\n      \"Read the selected existing JSON\
+      \ record without interpolation or execution.\"\n    ],\n    \"intended_view\": \"public%2F..%2Finternal%2FDL-204.json\"\
+      ,\n    \"success_status\": 200,\n    \"invalid_status\": 400,\n    \"missing_status\": 404,\n    \"audit_fields\"\
+      : [\"observed_at\", \"delivery_id\", \"raw_view\", \"normalized_relative_path\", \"summary_id\", \"status\"\
+      ],\n    \"execution\": false,\n    \"outbound_network\": false,\n    \"writable_data\": false\n  }\n}\n"
+    sensitive: true

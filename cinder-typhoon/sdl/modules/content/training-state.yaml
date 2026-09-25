@@ -1,0 +1,279 @@
+name: cinder-training-state-content
+version: 0.1.0
+semantic_revision: raes-progressive-semantics/v1
+module:
+  id: cinder-typhoon/training-state-content
+  version: 0.1.0
+  exports:
+    content:
+    - index
+    - field-guide
+    - captures-volume
+    - captures-status
+    - replay-report
+    - replay-requests
+    - replay-observations
+    - practice-initial
+realization:
+  default: open
+content:
+  index:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/index.md
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      # Outlet desk
+
+      The tank desk retains two instrument captures and one outlet-test review.
+      Recorded cases do not change when the practice tank is operated.
+
+      - [Field and operating guide](field-guide.md)
+      - [Volume capture: VC-017](captures/volume.json)
+      - [Controller capture: SC-018](captures/status.json)
+      - [Issued outlet report: OR-042](replay/report.json)
+      - [Outlet request register](replay/requests.json)
+      - [Independent observation register](replay/observations.csv)
+      - [Practice tank](practice)
+
+      The practice view shows its current volume, outlet position, operating condition,
+      request register, and observation register. Returning to this desk leaves the
+      tank in its current condition.
+    sensitive: false
+  field-guide:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/field-guide.md
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      # Tank desk field and operating guide
+
+      Document TD-04, revision 1. Controller family TR-1.
+
+      ## Instrument records
+
+      `requested_volume_l` is a requested setting, not an instrument reading.
+      `observed_volume_l` is the measured quantity. Volume is expressed in litres (`L`).
+      Each observation has its own sample ID, UTC timestamp, tank ID, and quality.
+      Only `good` quality is usable as a current measurement. A recorded capture is
+      labelled with its capture ID and time; it is not the live practice display.
+
+      ## Controller status
+
+      Read the legend matching `controller_revision`. Bit numbers start at zero;
+      an asserted bit has value one. The TR-1 legend is:
+
+      | Bit | Name | Meaning when asserted |
+      | --- | --- | --- |
+      | 0 | ready | Instrument and actuator checks passed. |
+      | 1 | outlet_open | Outlet position feedback is open. |
+      | 2 | service_hold | Transfer is blocked by the operating hold. |
+      | 3 | transfer_active | A bounded transfer is in progress. |
+
+      `ready` is not a transfer acknowledgement. `service_hold` prevents a new
+      transfer even when `ready` is asserted. Reserved bits remain zero.
+
+      ## Practice tank
+
+      The practice tank is PT-01. Its capacity is 1,500 L and its initial measured
+      volume is 1,200 L. The outlet starts closed, `ready` is asserted, and
+      `service_hold` is asserted. The operating request on this desk is to transfer
+      200 L and leave the outlet closed. There is no inlet or automatic replenishment.
+
+      The practice view provides these ordinary controls:
+
+      - Set or clear the operating hold while no transfer is active.
+      - Request a bounded transfer, expressed as a whole number of litres.
+      - Read current instrument state, requests, and observations.
+
+      The allowed transfer quantity is 1–200 L inclusive. At least 200 L must remain
+      in the tank. An active hold or an already active transfer rejects a new request.
+      Rejected requests leave volume and outlet state unchanged and record the
+      reason. Changing the hold during a transfer is also rejected.
+
+      An accepted transfer runs at 20 L/s and closes the outlet after the requested
+      quantity has moved. For an accepted request of Q litres, the outlet is open for
+      Q/20 seconds. Observed volume at elapsed time t is the starting volume minus
+      the smaller of Q and 20t. Closing occurs at the exact terminal time, including
+      for a quantity not divisible by 20. Measurements use 0.1 L resolution, with
+      no added noise. The independent final volume check allows 0.1 L difference.
+
+      The tank publishes an observation before movement, at every elapsed whole
+      second while movement continues, and at the exact terminal time. Every sample
+      identifies the request, measured volume, outlet position, status word, and
+      quality. The terminal sample is retained once, even when it coincides with a
+      whole second. Request receipts and observations are separate records.
+
+      Requests use a caller-selected request ID. Repeating the same ID with identical
+      contents returns its original result without moving more water. Reusing the
+      ID for different contents is rejected. Concurrent requests are considered in
+      server acceptance order. Only one transfer can be active.
+
+      Leaving the page does not stop a transfer. Reopening it shows the persisted
+      current state and retained records. No page action clears records, refills the
+      tank, or restores an earlier state.
+
+      ## Request interface
+
+      The practice view uses the same interface available to desk clients:
+
+      | Method and path | Operation |
+      | --- | --- |
+      | `GET /api/practice/state` | Current tank ID, measured volume, outlet position, status word, quality and observation time. |
+      | `GET /api/practice/requests` | Retained request records, in acceptance order. |
+      | `GET /api/practice/observations` | Retained observations, in sample order. |
+      | `POST /api/practice/hold` | JSON fields `request_id` and boolean `active`. |
+      | `POST /api/practice/transfer` | JSON fields `request_id` and integer `quantity_l`. |
+
+      Request IDs contain 1–64 ASCII letters, digits, underscores or hyphens. Inputs
+      are JSON objects with exactly the listed fields. Missing fields, extra fields,
+      wrong types and out-of-range quantities return HTTP 400 without changing tank
+      state. Invalid requests do not reserve a request ID. Valid requests rejected
+      by operating conditions return HTTP 409 with the condition recorded. An accepted
+      hold change returns HTTP 200; an accepted transfer returns HTTP 202 with its
+      request ID and acceptance time. Identical retries return the original receipt
+      and status code. Reusing a recorded ID with different contents returns HTTP 409.
+
+      Read responses and request receipts are JSON. The request register retains the
+      requested action and arguments, acceptance sequence, UTC time, result, and any
+      rejection reason. Observation timestamps and movement use the same service
+      clock, independent of the browser. Unknown paths return HTTP 404; unsupported
+      methods return HTTP 405. There is no client operation for writing observations.
+
+      ## Outlet-test review
+
+      The issued report and its source records use attempt IDs and request IDs.
+      Check both identifiers and the observation times when comparing a report with
+      the controller and instrument records. The review concerns tank RT-02, not
+      the live practice tank PT-01.
+    sensitive: false
+  captures-volume:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/captures/volume.json
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      {
+        "capture_id": "VC-017",
+        "tank_id": "CT-01",
+        "sample_id": "VS-017",
+        "observed_at": "2026-06-18T08:00:00Z",
+        "requested_volume_l": 1000.0,
+        "observed_volume_l": 1200.0,
+        "unit": "L",
+        "quality": "good"
+      }
+    sensitive: false
+  captures-status:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/captures/status.json
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      {
+        "capture_id": "SC-018",
+        "tank_id": "CT-01",
+        "sample_id": "SS-018",
+        "observed_at": "2026-06-18T08:00:01Z",
+        "controller_revision": "TR-1",
+        "status_word": 5,
+        "outlet_position": "closed",
+        "request_id": "CR-018",
+        "request_result": "rejected",
+        "quality": "good"
+      }
+    sensitive: false
+  replay-report:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/replay/report.json
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      {
+        "report_id": "OR-042",
+        "revision": 1,
+        "author": "Outlet reporting service",
+        "generated_at": "2026-06-18T10:00:03Z",
+        "tank_id": "RT-02",
+        "attempt_id": "AT-042",
+        "request_id": "RQ-042",
+        "source_request_id": "RQ-041",
+        "source_accepted_at": "2026-06-18T09:00:00Z",
+        "display_result": "green",
+        "reported_transfer_l": 200.0
+      }
+    sensitive: false
+  replay-requests:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/replay/requests.json
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      [
+        {
+          "request_id": "RQ-041",
+          "attempt_id": "AT-041",
+          "tank_id": "RT-02",
+          "requested_at": "2026-06-18T09:00:00Z",
+          "transfer_l": 200,
+          "result": "accepted",
+          "controller_revision": "TR-1",
+          "status_before": 1
+        },
+        {
+          "request_id": "RQ-042",
+          "attempt_id": "AT-042",
+          "tank_id": "RT-02",
+          "requested_at": "2026-06-18T10:00:00Z",
+          "transfer_l": 200,
+          "result": "rejected",
+          "reason": "service_hold",
+          "controller_revision": "TR-1",
+          "status_before": 5
+        }
+      ]
+    sensitive: false
+  replay-observations:
+    type: file
+    target: training.t-state
+    path: /srv/cinder-state/public/replay/observations.csv
+    description: Read-only published desk document. The associated application route serves this exact
+      content.
+    text: |
+      sample_id,observed_at,tank_id,attempt_id,request_id,observed_volume_l,unit,outlet_position,status_word,quality
+      RS-041-0,2026-06-18T08:59:59Z,RT-02,AT-041,RQ-041,1200.0,L,closed,1,good
+      RS-041-1,2026-06-18T09:00:05Z,RT-02,AT-041,RQ-041,1100.0,L,open,11,good
+      RS-041-2,2026-06-18T09:00:10Z,RT-02,AT-041,RQ-041,1000.0,L,closed,1,good
+      RS-042-0,2026-06-18T09:59:59Z,RT-02,AT-042,RQ-042,1000.0,L,closed,5,good
+      RS-042-1,2026-06-18T10:00:01Z,RT-02,AT-042,RQ-042,1000.0,L,closed,5,good
+    sensitive: false
+  practice-initial:
+    type: file
+    target: training.t-state
+    path: /var/lib/cinder-state/initial.json
+    description: Private initial practice state; loaded once when preparing the environment, never served
+      as a public asset.
+    text: |
+      {
+        "tank_id": "PT-01",
+        "controller_revision": "TR-1",
+        "capacity_l": 1500,
+        "observed_volume_l": 1200.0,
+        "minimum_retained_volume_l": 200,
+        "maximum_transfer_l": 200,
+        "flow_l_per_second": 20,
+        "measurement_resolution_l": 0.1,
+        "comparison_tolerance_l": 0.1,
+        "outlet_position": "closed",
+        "status_word": 5,
+        "quality": "good",
+        "requests": [],
+        "observations": []
+      }
+    sensitive: false

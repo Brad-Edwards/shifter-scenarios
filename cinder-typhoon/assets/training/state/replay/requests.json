@@ -1,0 +1,23 @@
+[
+  {
+    "request_id": "RQ-041",
+    "attempt_id": "AT-041",
+    "tank_id": "RT-02",
+    "requested_at": "2026-06-18T09:00:00Z",
+    "transfer_l": 200,
+    "result": "accepted",
+    "controller_revision": "TR-1",
+    "status_before": 1
+  },
+  {
+    "request_id": "RQ-042",
+    "attempt_id": "AT-042",
+    "tank_id": "RT-02",
+    "requested_at": "2026-06-18T10:00:00Z",
+    "transfer_l": 200,
+    "result": "rejected",
+    "reason": "service_hold",
+    "controller_revision": "TR-1",
+    "status_before": 5
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "tank_id": "PT-01",
+  "controller_revision": "TR-1",
+  "capacity_l": 1500,
+  "observed_volume_l": 1200.0,
+  "minimum_retained_volume_l": 200,
+  "maximum_transfer_l": 200,
+  "flow_l_per_second": 20,
+  "measurement_resolution_l": 0.1,
+  "comparison_tolerance_l": 0.1,
+  "outlet_position": "closed",
+  "status_word": 5,
+  "quality": "good",
+  "requests": [],
+  "observations": []
+}

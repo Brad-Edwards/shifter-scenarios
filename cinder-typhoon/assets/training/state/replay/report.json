@@ -1,0 +1,13 @@
+{
+  "report_id": "OR-042",
+  "revision": 1,
+  "author": "Outlet reporting service",
+  "generated_at": "2026-06-18T10:00:03Z",
+  "tank_id": "RT-02",
+  "attempt_id": "AT-042",
+  "request_id": "RQ-042",
+  "source_request_id": "RQ-041",
+  "source_accepted_at": "2026-06-18T09:00:00Z",
+  "display_result": "green",
+  "reported_transfer_l": 200.0
+}

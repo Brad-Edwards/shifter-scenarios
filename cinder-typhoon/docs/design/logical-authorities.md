@@ -38,7 +38,7 @@ listed as reachable retain the object and action permissions in their briefs.
 | --- | --- | --- | --- |
 | `player` | Operator workspace | Supplied | Training access; no target-system identity. |
 | `developer` | `k-dev` / execution | FOOTHOLD | Published supplier interfaces and delivery submission workflows. |
-| `runner` | `k-ci` / job execution | K09.4 | Source/package reads, scoped staff/enrollment interfaces, authenticated build records, cloud policy, and maintenance management. |
+| `runner` | `k-ci` / repeatable isolated job execution | K09.4 | Ordinary commands, scripts, and native authentication clients in a private retained workspace. Initially scoped to source/package reads, staff/enrollment interfaces, authenticated build records, cloud policy, and own-job maintenance management. May explicitly use separately earned credentials. No host/CI administration or general network transit; worker credentials are job-scoped, readable, and revoked at job exit. |
 | `indexer` | `k-indexer` / service execution | K04.4 | Its protected release-exception queue. |
 | `preview` | `k-preview` / renderer execution | K12.4 | Its compatible preview output. |
 | `completion` | `k-assistant` / completion-job execution | K24.3 | Its internal handover. |
@@ -67,6 +67,19 @@ Other achievements can disclose records or perform protected actions without
 creating another execution origin. In particular, diagnostic signing authority,
 historical review identities, and retained device-image changes do not become
 live control identities.
+
+The runner's permissions already belong to `svc-fieldlink-ci`; K09.4 establishes
+the ability to run commands through its diagnostic job path, not a score-triggered role grant.
+K09.3's protected review provides the request reference. The worker-only note
+then documents the actual service connections and a read-only status command.
+Completion joins two real jobs with the receiving build-record service's audit.
+The status response does not contain K14's trust record, K30's backup principal,
+or K31's maintenance policy. Failed requests and finished jobs do not consume
+the submission path. Native clients can use independently obtained identities
+without an intermediary forcing the worker's credentials onto their requests.
+Persistent workspace files are distinct from per-run worker leases and processes.
+The [full card contract](challenges/K09/K09.4.md) defines
+continued use, ownership, retry, and reset boundaries.
 
 ## Boundaries inside shared systems
 

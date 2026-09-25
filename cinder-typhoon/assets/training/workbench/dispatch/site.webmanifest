@@ -1,0 +1,8 @@
+{
+  "name": "Dispatch desk",
+  "start_url": "/",
+  "content_indexes": [
+    "/content/current.json",
+    "/content/retired.json"
+  ]
+}

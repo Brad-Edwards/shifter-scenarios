@@ -295,3 +295,24 @@ imports:
 - source: local:modules/routes/relays.yaml
   namespace: relays
   version: 0.1.0
+- source: local:modules/content/training-state.yaml
+  namespace: training-state-content
+  version: 0.1.0
+- source: local:modules/content/training-developer.yaml
+  namespace: training-developer-content
+  version: 0.1.0
+- source: local:modules/content/training-workstation.yaml
+  namespace: training-workstation-content
+  version: 0.1.0
+- source: local:modules/content/training-workbench.yaml
+  namespace: training-workbench-content
+  version: 0.1.0
+- source: local:modules/content/training-accounts.yaml
+  namespace: training-accounts-content
+  version: 0.1.0
+- source: local:modules/content/training-developer-system.yaml
+  namespace: training-developer-system-content
+  version: 0.1.0
+- source: local:modules/content/training-state-config.yaml
+  namespace: training-state-config-content
+  version: 0.1.0

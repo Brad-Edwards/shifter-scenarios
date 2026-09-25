@@ -1,0 +1,8 @@
+{
+  "name": "@cinder/parcel-audit-sample",
+  "version": "0.8.0",
+  "description": "Archived parcel audit helper",
+  "scripts": {
+    "postinstall": "node scripts/register-rehearsal.js"
+  }
+}
